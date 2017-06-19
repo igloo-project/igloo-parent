@@ -23,7 +23,7 @@ import fr.openwide.core.jpa.more.infinispan.action.SwitchStatusQueueTaskManagerR
 import fr.openwide.core.jpa.more.infinispan.model.QueueTaskManagerStatus;
 import fr.openwide.core.jpa.more.infinispan.model.TaskQueueStatus;
 
-public class InfinispanQueueTaskManagerServiceImpl implements IInfinispanQueueTaskManagerService{
+public class InfinispanQueueTaskManagerServiceImpl implements IInfinispanQueueTaskManagerService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(InfinispanQueueTaskManagerServiceImpl.class);
 

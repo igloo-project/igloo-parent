@@ -158,7 +158,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		TaskQueue queue = new TaskQueue(queueId.getUniqueStringId());
 		for (int i = 0 ; i < numberOfThreads ; ++i) {
 			TaskConsumer consumer;
-			if (queueId instanceof IInfinispanQueue && ((IInfinispanQueue) queueId).handleInfinispan()) {
+			if (infinispanClusterService != null
+					&& queueId instanceof IInfinispanQueue
+					&& ((IInfinispanQueue) queueId).handleInfinispan()) {
 				IInfinispanQueue infinispanQueue = (IInfinispanQueue) queueId;
 				if (numberOfThreads != 1) {
 					throw new IllegalStateException("If you want to manage infinispan in queue, you must use only one thread");
@@ -508,6 +510,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	 * This method MUST NOT be called if cache is disabled
 	 */
 	private synchronized void initializeCache() {
+		if (infinispanClusterService == null) {
+			throw new IllegalStateException("This code must not be called as infinispan is not enabled");
+		}
 		if (infinispanClusterService.getCacheManager().cacheExists(CACHE_KEY_TASK_ID)) {
 			return;
 		}
