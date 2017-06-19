@@ -68,6 +68,9 @@ public abstract class AbstractJpaConfig {
 		flyway.setTable(flywayConfiguration.getTable());
 		flyway.setLocations(flywayConfiguration.getLocations());
 		flyway.setBaselineOnMigrate(true);
+		// difficult to handle this case for the moment; we ignore mismatching checksums
+		// TODO allow developers to handle mismatches during their tests.
+		flyway.setValidateOnMigrate(false);
 		return flyway;
 	}
 
