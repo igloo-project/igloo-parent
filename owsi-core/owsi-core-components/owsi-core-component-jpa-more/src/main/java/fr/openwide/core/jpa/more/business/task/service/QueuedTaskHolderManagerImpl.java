@@ -66,6 +66,7 @@ import fr.openwide.core.spring.util.SpringBeanUtils;
 public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, ApplicationListener<ContextRefreshedEvent> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(QueuedTaskHolderManagerImpl.class);
 	private static final String CACHE_KEY_TASK_ID = "QueuedTaskHolderManagerImpl##taskIds";
+	private static final String INIT_QUEUES_EXECUTOR_NAME = "QueueTaskHolder#initQueuesFromDatabase";
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -90,6 +91,8 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	private Collection<? extends IQueueId> queueIds;
 
 	private int stopTimeout;
+
+	private ScheduledThreadPoolExecutor initQueuesFromDatabaseExecutor;
 
 	private final Multimap<TaskQueue, TaskConsumer> consumersByQueue
 			= Multimaps.newListMultimap(new HashMap<TaskQueue, Collection<TaskConsumer>>(), new Supplier<List<TaskConsumer>>() {
@@ -333,8 +336,8 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		};
 		if (infinispanClusterService != null) {
 			LockRequest lockRequest = LockRequest.with(
-					SimpleRole.from("QueueTaskHolder#initQueuesFromDatabase"),
-					SimpleLock.from("QueueTaskHolder#initQueuesFromDatabase", "QueueTaskHolder")
+					SimpleRole.from(INIT_QUEUES_EXECUTOR_NAME),
+					SimpleLock.from(INIT_QUEUES_EXECUTOR_NAME, "QueueTaskHolder")
 			);
 			try {
 				infinispanClusterService.doIfRoleWithLock(lockRequest, runnable);
@@ -432,14 +435,53 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			
 			try {
 				// TODO YRO gérer le timeout plus intelligemment
+				
+				// send interrupt to all threads
+				// if working, wait timeout before asking interrupt
+				if (initQueuesFromDatabaseExecutor != null) {
+					initQueuesFromDatabaseExecutor.shutdownNow(); // remaining tasks are not important
+				}
 				for (TaskQueue queue : queuesById.values()) {
 					for (TaskConsumer consumer : consumersByQueue.get(queue)) {
 						try {
+							LOGGER.info("Stopping {}", queue.getId());
 							consumer.stop(stopTimeout);
 						} catch (RuntimeException e) {
-							LOGGER.error("Error while trying to stop consumer " + consumer, e);
+							LOGGER.error("Error while trying to stop consumer {}", consumer.getName(), e);
 						}
 					}
+				}
+				
+				// wait for effective shutdown on each thread and executor
+				for (TaskQueue queue : queuesById.values()) {
+					for (TaskConsumer consumer : consumersByQueue.get(queue)) {
+						while (true) {
+							try {
+								LOGGER.info("Waiting for {} stop", consumer.getName());
+								consumer.joinThread();
+								LOGGER.info("{} stopped", consumer.getName());
+								break;
+							} catch (InterruptedException e) {
+								LOGGER.warn("Interrupted waiting for {} stop", consumer.getName());
+							}
+						}
+					}
+				}
+				if (initQueuesFromDatabaseExecutor != null) {
+					while (true) {
+						try {
+							LOGGER.info("Waiting for {} stop", INIT_QUEUES_EXECUTOR_NAME);
+							initQueuesFromDatabaseExecutor.awaitTermination(1, TimeUnit.HOURS); // forever
+							LOGGER.info("{} stopped", INIT_QUEUES_EXECUTOR_NAME);
+							break;
+						} catch (InterruptedException e) {
+							LOGGER.warn("Interrupted waiting for {} stop", INIT_QUEUES_EXECUTOR_NAME);
+						}
+					}
+				}
+				
+				// mark tasks as interrupted
+				for (TaskQueue queue : queuesById.values()) {
 					interruptQueueProcesses(queue);
 				}
 			} finally {
@@ -517,12 +559,15 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			return;
 		}
 		infinispanClusterService.getCacheManager().getCache(CACHE_KEY_TASK_ID);
-		ScheduledThreadPoolExecutor pool = new ScheduledThreadPoolExecutor(1,
-				new ThreadFactoryBuilder().setDaemon(true).setNameFormat("QueueTaskHolder#initQueuesFromDatabase-%d").build());
-		pool.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
-		pool.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
-		pool.prestartAllCoreThreads();
-		pool.scheduleAtFixedRate(new Runnable() {
+		initQueuesFromDatabaseExecutor = new ScheduledThreadPoolExecutor(1,
+				new ThreadFactoryBuilder()
+					.setDaemon(true)
+					.setNameFormat(String.format("%s-%%d", INIT_QUEUES_EXECUTOR_NAME)) // %%d is an escaped %d
+					.build());
+		initQueuesFromDatabaseExecutor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+		initQueuesFromDatabaseExecutor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
+		initQueuesFromDatabaseExecutor.prestartAllCoreThreads();
+		initQueuesFromDatabaseExecutor.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() {
 				initQueuesFromDatabase();

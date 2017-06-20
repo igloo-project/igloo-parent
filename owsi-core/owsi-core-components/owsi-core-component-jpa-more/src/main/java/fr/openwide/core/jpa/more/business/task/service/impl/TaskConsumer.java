@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.more.business.task.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
@@ -9,6 +11,8 @@ import fr.openwide.core.infinispan.model.IPriorityQueue;
 import fr.openwide.core.spring.util.SpringBeanUtils;
 
 public final class TaskConsumer {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(TaskConsumer.class);
 
 	private static final String THREAD_NAME_FORMAT = "TaskConsumer-%1$s-%2$s";
 
@@ -49,6 +53,7 @@ public final class TaskConsumer {
 	 */
 	public synchronized void start(long startDelay) {
 		if (thread == null || !thread.isAlive()) { // synchronized access
+			thread = null;
 			String id = String.format(THREAD_NAME_FORMAT, queue.getId(), threadIdForThisQueue);
 			if (lock != null) {
 				thread = new ConsumerInfinispanAwareThread(
@@ -71,7 +76,14 @@ public final class TaskConsumer {
 	public synchronized void stop(long stopTimeout) {
 		if (thread != null) { // synchronized access
 			thread.stop(stopTimeout);
-			thread = null;
+		}
+	}
+
+	public synchronized void joinThread() throws InterruptedException {
+		if (thread != null) {
+			thread.join();
+		} else {
+			LOGGER.warn("joinThread called as thread is not present");
 		}
 	}
 	
@@ -81,5 +93,9 @@ public final class TaskConsumer {
 	
 	public boolean isActive(){
 		return thread != null && thread.isActive();
+	}
+
+	public String getName() {
+		return thread != null ? thread.getName() : "ABSENT";
 	}
 }
