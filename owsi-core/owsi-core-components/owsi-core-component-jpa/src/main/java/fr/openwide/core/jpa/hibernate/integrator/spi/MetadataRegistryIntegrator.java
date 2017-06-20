@@ -1,4 +1,4 @@
-package fr.openwide.core.basicapp.init.integrator.spi;
+package fr.openwide.core.jpa.hibernate.integrator.spi;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
