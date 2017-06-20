@@ -1,7 +1,6 @@
 package fr.openwide.core.jpa.more.business.task.service.impl;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,6 +131,7 @@ class ConsumerThread extends Thread {
 			 * consumer thread to stop ASAP.
 			 */
 			this.interrupt();
+			LOGGER.info("Interrupt sent to {}", this.getName());
 		}
 	}
 	
@@ -143,8 +143,8 @@ class ConsumerThread extends Thread {
 		return active;
 	}
 	
-	public synchronized boolean setWorking(boolean working) {
-		return working;
+	public synchronized void setWorking(boolean working) {
+		this.working = working;
 	}
 	
 	@Override
@@ -175,10 +175,10 @@ class ConsumerThread extends Thread {
 				// this allow to have a chance to read working flag when there is no job to be done.
 				rateLimiter.acquire();
 				try {
-					queuedTaskHolderId = queue.poll(100, TimeUnit.MILLISECONDS);
-					
-					if (queuedTaskHolderId != null) {
-						setWorking(working);
+					queuedTaskHolderId = queue.take();
+					setWorking(true);
+					// if not active, we are about to stop
+					if (active) {
 						entityManagerUtils.openEntityManager();
 						try {
 							tryConsumeTask(queuedTaskHolderId);
