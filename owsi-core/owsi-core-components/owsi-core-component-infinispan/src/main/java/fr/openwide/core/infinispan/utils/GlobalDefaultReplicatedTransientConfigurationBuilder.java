@@ -22,7 +22,7 @@ public class GlobalDefaultReplicatedTransientConfigurationBuilder extends Global
 		if (transportProperties != null) {
 			properties.putAll(transportProperties);
 		}
-		String jgroupsConfigurationFile = "default-configs/default-jgroups-udp.xml";
+		String jgroupsConfigurationFile = "default-configs/enhanced-jgroups-udp.xml";
 		if (properties.containsKey("configurationFile")) {
 			jgroupsConfigurationFile = transportProperties.getProperty("configurationFile");
 			transportProperties.remove("configurationFile");
