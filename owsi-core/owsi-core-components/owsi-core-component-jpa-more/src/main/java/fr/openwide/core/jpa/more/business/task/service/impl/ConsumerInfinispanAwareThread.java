@@ -55,23 +55,26 @@ class ConsumerInfinispanAwareThread extends ConsumerThread {
 								Long queuedTaskHolderId = queue.poll(100, TimeUnit.MILLISECONDS);
 								
 								if (queuedTaskHolderId != null) {
-									setWorking(working);
-									entityManagerUtils.openEntityManager();
-									try {
-										tryConsumeTask(queuedTaskHolderId);
-									} finally {
-										entityManagerUtils.closeEntityManager();
+									setWorking(true);
+									// if not active, we are about to stop, ignoring task
+									if (active) {
+										entityManagerUtils.openEntityManager();
+										try {
+											tryConsumeTask(queuedTaskHolderId);
+										} finally {
+											entityManagerUtils.closeEntityManager();
+										}
 									}
 								}
 							} catch (InterruptedException e) {
 								Thread.currentThread().interrupt();
+							} finally {
+								setWorking(false);
 							}
 						}
 					});
 				} catch (ExecutionException e) {
 					throw new IllegalStateException(e);
-				} finally {
-					setWorking(false);
 				}
 			}
 		} catch (InterruptedException interrupted) {
