@@ -227,7 +227,6 @@ class ConsumerThread extends Thread {
 			runnableTask.run();
 		} catch (RuntimeException e) {
 			LOGGER.error("Error while trying to consume a task (holder: " + queuedTaskHolder + "); the task holder was probably left in a stale state.", e);
-			return;
 		}
 		
 		try {

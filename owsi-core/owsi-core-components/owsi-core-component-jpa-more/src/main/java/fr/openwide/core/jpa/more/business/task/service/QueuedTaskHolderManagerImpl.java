@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -49,6 +50,7 @@ import fr.openwide.core.infinispan.model.impl.LockRequest;
 import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.task.event.QueuedTaskFinishedEvent;
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
 import fr.openwide.core.jpa.more.business.task.model.IInfinispanQueue;
 import fr.openwide.core.jpa.more.business.task.model.IQueueId;
@@ -70,6 +72,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 
 	@Autowired
 	private ApplicationContext applicationContext;
+
+	@Autowired
+	private ApplicationEventPublisher eventPublisher;
 
 	@Autowired
 	private IQueuedTaskHolderService queuedTaskHolderService;
@@ -587,5 +592,6 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 				LOGGER.warn("Task {} finished but attribution does not match", taskId);
 			}
 		}
+		eventPublisher.publishEvent(new QueuedTaskFinishedEvent(taskId));
 	}
 }
