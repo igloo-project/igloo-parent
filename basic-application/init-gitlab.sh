@@ -31,7 +31,7 @@ git remote add origin ${git_root_url}
 find . -mindepth 1 -maxdepth 1 -type d -exec git add {} \;
 git add pom.xml
 for file in `find . -name pom.xml`; do
-	echo -e "target\n.classpath\n.project\n.settings"> $(dirname $file)/.gitignore
+	echo -e "target\ntarget2\n.classpath\n.project\n.settings"> $(dirname $file)/.gitignore
 	git add $(dirname $file)/.gitignore
 done
 

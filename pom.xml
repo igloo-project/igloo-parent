@@ -96,6 +96,17 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>target2</id>
+			<activation>
+				<property>
+					<name>target2</name>
+				</property>
+			</activation>
+			<build>
+				<directory>${project.basedir}/target2</directory>
+			</build>
+		</profile>
 	</profiles>
 	
 	<build>
