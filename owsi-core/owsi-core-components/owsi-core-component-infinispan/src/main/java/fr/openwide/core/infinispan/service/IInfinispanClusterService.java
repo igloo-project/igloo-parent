@@ -1,5 +1,6 @@
 package fr.openwide.core.infinispan.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -210,5 +211,23 @@ public interface IInfinispanClusterService {
 	 *   handling - send to target node, action execution, result sent back).
 	 */
 	<A extends IAction<V>, V> V syncedAction(A action, int timeout, TimeUnit unit) throws ExecutionException, TimeoutException;
+
+	/**
+	 * Check if roles are all assigned  (always) and if balance is fair (only if checkFairness is true). For each node
+	 * with too much or too few roles, a comment is pushed in return String collection.
+	 * 
+	 * @param checkFairness true if check balance fairness is to be checked
+	 * @return <true if fair/false if unfair, comments>
+	 */
+
+	Pair<Boolean, List<String>> checkRoles(boolean checkFairness);
+
+	/**
+	 * Trigger a rebalance. clearRoles is done by target node. Rebalance involves all nodes.
+	 * 
+	 * @param clearRoles true if clear all roles is needed before rebalance
+	 * @param rolesToKeep if clearRoles, role's keys of roles not to reassign
+	 */
+	void rebalanceRoles(boolean clearRoles, Collection<String> rolesToKeep);
 
 }

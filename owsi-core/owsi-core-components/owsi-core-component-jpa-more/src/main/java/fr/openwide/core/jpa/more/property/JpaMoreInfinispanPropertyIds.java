@@ -11,12 +11,6 @@ public final class JpaMoreInfinispanPropertyIds extends AbstractPropertyIds {
 	
 	private JpaMoreInfinispanPropertyIds() {
 	}
-
-	/*
-	 * Mutable Properties
-	 */
-	
-	// None
 	
 	/*
 	 * Immutable Properties
@@ -25,7 +19,13 @@ public final class JpaMoreInfinispanPropertyIds extends AbstractPropertyIds {
 	public static final ImmutablePropertyId<Boolean> INFINISPAN_ENABLED = immutable("infinispan.enabled");
 	public static final ImmutablePropertyId<String> INFINISPAN_CLUSTER_NAME = immutable("infinispan.clusterName");
 	public static final ImmutablePropertyId<String> INFINISPAN_NODE_NAME = immutable("infinispan.nodeName");
+	/**
+	 * Complete list of roles
+	 */
 	public static final ImmutablePropertyId<Set<String>> INFINISPAN_ROLES = immutable("infinispan.roles");
+	/**
+	 * Roles allowed to be captured by node on rebalance (allow to statically assign roles on some nodes)
+	 */
 	public static final ImmutablePropertyId<Set<String>> INFINISPAN_ROLES_REBALANCE = immutable("infinispan.rolesRebalance");
 	public static final ImmutablePropertyId<String> INFINISPAN_TRANSPORT_CONFIGURATION_FILE = immutable("infinispan.transport.configurationFile");
 	public static final ImmutablePropertyId<Set<String>> INFINISPAN_TRANSPORT_PROPERTIES = immutable("infinispan.transport.properties");

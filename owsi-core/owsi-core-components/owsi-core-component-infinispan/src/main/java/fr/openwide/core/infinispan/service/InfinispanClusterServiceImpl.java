@@ -1,8 +1,10 @@
 package fr.openwide.core.infinispan.service;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
@@ -28,13 +30,18 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.BoundType;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.Range;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import fr.openwide.core.commons.util.functional.SerializableFunction;
@@ -558,6 +565,29 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		return cacheManager.<String, IAction<?>> getCache(CACHE_ACTIONS_RESULTS);
 	}
 
+	@Override
+	public void rebalanceRoles(boolean clearRoles, Collection<String> rolesToKeep) {
+		if (clearRoles) {
+			Collection<IRole> roles = Lists.newArrayList(rolesProvider.getRoles());
+			Collection<IRole> rolesToRemove = Lists.newArrayList();
+			if (rolesToKeep != null) {
+				for (IRole role : roles) {
+					if (rolesToKeep.contains(role.getKey())) {
+						rolesToRemove.add(role);
+					}
+				}
+			}
+			
+			roles.removeAll(rolesToRemove);
+			
+			for (IRole role : roles) {
+				getRolesCache().remove(role);
+			}
+		}
+		
+		rebalanceRoles();
+	}
+
 	public void rebalanceRoles() {
 		resultLessAction(RebalanceAction.rebalance(getAddress()));
 	}
@@ -949,6 +979,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				
 				if (updated) {
 					cleanCachesByCoordinator();
+					rebalanceRoles();
 				}
 			}
 		} catch (RuntimeException e) {
@@ -1029,6 +1060,52 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				}
 			}
 		}
+	}
+
+	@Override
+	public Pair<Boolean, List<String>> checkRoles(boolean checkFairness) {
+		boolean fair = true;
+		List<String> comments = Lists.newArrayList();
+		
+		List<IRole> allRoles = Lists.newArrayList(rolesProvider.getRoles());
+		allRoles.removeAll(getRolesCache().keySet());
+		if ( ! allRoles.isEmpty()) {
+			String status = String.format("Role balance has missing roles (missing roles: %s)",
+					Joiner.on(",").join(allRoles));
+			fair = false;
+			comments.add(String.format(status));
+		}
+		
+		if (checkFairness) {
+			float rolesPerNode = (float) rolesProvider.getRoles().size() / cacheManager.getMembers().size();
+			int allowedStep = 2;
+			// we can't go lower than 0
+			int lowerRolesPerNode = Math.max(0, Math.round(rolesPerNode - allowedStep));
+			// we can't go higher than the number of roles
+			int upperRolesPerNode = Math.min(rolesProvider.getRoles().size(), Math.round(rolesPerNode + allowedStep));
+			
+			Range<Integer> range = Range.range(lowerRolesPerNode, BoundType.CLOSED, upperRolesPerNode, BoundType.CLOSED);
+			
+			Map<IRole, IRoleAttribution> roles = Maps.newHashMap(getRolesCache());
+			ListMultimap<Address, IRole> rolesByMember = roles.entrySet().stream().collect(
+					Multimaps.<Entry<IRole, IRoleAttribution>, Address, IRole, ListMultimap<Address, IRole>>toMultimap(
+							(item) -> item.getValue().getOwner(),
+							(item) -> item.getKey(),
+							MultimapBuilder.linkedHashKeys().arrayListValues()::<Address, IRole>build
+			));
+			for (Entry<Address, Collection<IRole>> rolesByMemberEntry : rolesByMember.asMap().entrySet()) {
+				if ( ! range.contains(rolesByMemberEntry.getValue().size())) {
+					String status = String.format("Role balance not fair on %s; %s not in %s (roles: %s)",
+							rolesByMemberEntry.getKey(), rolesByMemberEntry.getValue().size(), range,
+							Joiner.on(",").join(rolesByMemberEntry.getValue()));
+					comments.add(status);
+					LOGGER.warn(status);
+					fair = false;
+				}
+			}
+		}
+		
+		return Pair.with(fair, comments);
 	}
 
 	private static final ToJgroupsAddress INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS = new ToJgroupsAddress();
