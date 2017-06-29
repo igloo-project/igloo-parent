@@ -13,11 +13,14 @@ public class DefaultConfigurationLocationProvider implements IConfigurationLocat
 
 	public static final String CONFIGURER_USER_PLACEHOLDER = "${user}";
 
+	public static final String CONFIGURER_ENVIRONMENT_PLACEHOLDER = "${environment}";
+
 	@Override
-	public List<String> getLocations(String applicationName, String... locationPatterns) {
+	public List<String> getLocations(String applicationName, String environment, String... locationPatterns) {
 		List<String> locations = Lists.newArrayList();
 		String applicationNameEscapedPattern = Pattern.quote(CONFIGURER_APPLICATION_NAME_PLACEHOLDER);
 		String userEscapedPattern = Pattern.quote(CONFIGURER_USER_PLACEHOLDER);
+		String environmentEscapedPattern = Pattern.quote(CONFIGURER_ENVIRONMENT_PLACEHOLDER);
 		for (String location : locationPatterns) {
 			location = location.replaceAll(applicationNameEscapedPattern, applicationName);
 			
@@ -25,6 +28,8 @@ public class DefaultConfigurationLocationProvider implements IConfigurationLocat
 			if (StringUtils.isNotEmpty(username)) {
 				location = location.replaceAll(userEscapedPattern, username);
 			}
+			
+			location = location.replaceAll(environmentEscapedPattern, environment);
 			
 			locations.add(location);
 		}

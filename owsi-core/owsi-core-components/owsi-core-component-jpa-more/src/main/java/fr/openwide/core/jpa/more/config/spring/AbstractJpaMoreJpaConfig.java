@@ -22,7 +22,10 @@ import fr.openwide.core.jpa.more.business.task.search.IQueuedTaskHolderSearchQue
 import fr.openwide.core.jpa.more.business.task.search.QueuedTaskHolderSearchQueryImpl;
 import fr.openwide.core.jpa.more.util.CoreJpaMoreUtilPackage;
 
-@Import(JpaMoreApplicationPropertyRegistryConfig.class)
+@Import({
+	JpaMoreApplicationPropertyRegistryConfig.class,
+	JpaMoreInfinispanConfig.class
+})
 @ComponentScan(basePackageClasses = { CoreJpaMoreBusinessPackage.class, CoreJpaMoreUtilPackage.class })
 public abstract class AbstractJpaMoreJpaConfig extends AbstractJpaConfig {
 

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,16 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
 	
 	@Autowired
 	private IEntityService entityService;
+	
+	@Override
+	public Analyzer getAnalyzer(String analyzerName) {
+		return hibernateSearchDao.getAnalyzer(analyzerName);
+	}
+	
+	@Override
+	public Analyzer getAnalyzer(Class<?> entityType) {
+		return hibernateSearchDao.getAnalyzer(entityType);
+	}
 	
 	@Override
 	public void reindexAll() throws ServiceException {

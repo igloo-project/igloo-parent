@@ -18,6 +18,7 @@ public @interface ConfigurationLocations {
 		"classpath:configuration-private.properties",
 		"classpath:configuration.properties",
 		"file:/etc/${applicationName}/configuration.properties",
+		"classpath:configuration-${environment}.properties",
 		"classpath:configuration-${user}.properties"
 	};
 

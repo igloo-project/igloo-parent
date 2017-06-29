@@ -2,7 +2,8 @@ package fr.openwide.core.jpa.more.business.task.service;
 
 import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.START_MODE;
 import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.STOP_TIMEOUT;
-import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.*;
+import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.queueNumberOfThreads;
+import static fr.openwide.core.jpa.more.property.JpaMoreTaskPropertyIds.queueStartDelay;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -12,31 +13,46 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
+import org.infinispan.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Joiner;
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
+import fr.openwide.core.infinispan.model.IAttribution;
+import fr.openwide.core.infinispan.model.SimpleLock;
+import fr.openwide.core.infinispan.model.SimpleRole;
+import fr.openwide.core.infinispan.model.impl.Attribution;
+import fr.openwide.core.infinispan.model.impl.LockRequest;
+import fr.openwide.core.infinispan.service.IInfinispanClusterService;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.more.business.task.event.QueuedTaskFinishedEvent;
 import fr.openwide.core.jpa.more.business.task.model.AbstractTask;
+import fr.openwide.core.jpa.more.business.task.model.IInfinispanQueue;
 import fr.openwide.core.jpa.more.business.task.model.IQueueId;
 import fr.openwide.core.jpa.more.business.task.model.QueuedTaskHolder;
 import fr.openwide.core.jpa.more.business.task.service.impl.TaskConsumer;
@@ -51,9 +67,14 @@ import fr.openwide.core.spring.util.SpringBeanUtils;
 	
 public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, ApplicationListener<ContextRefreshedEvent> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(QueuedTaskHolderManagerImpl.class);
+	private static final String CACHE_KEY_TASK_ID = "QueuedTaskHolderManagerImpl##taskIds";
+	private static final String INIT_QUEUES_EXECUTOR_NAME = "QueueTaskHolder#initQueuesFromDatabase";
 
 	@Autowired
 	private ApplicationContext applicationContext;
+
+	@Autowired
+	private ApplicationEventPublisher eventPublisher;
 
 	@Autowired
 	private IQueuedTaskHolderService queuedTaskHolderService;
@@ -64,15 +85,20 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 
 	@Autowired
 	private IPropertyService propertyService;
-	
+
 	@Autowired
 	private ITransactionSynchronizationTaskManagerService synchronizationManager;
-	
+
+	@Autowired
+	private IInfinispanClusterService infinispanClusterService;
+
 	@Resource
 	private Collection<? extends IQueueId> queueIds;
-	
+
 	private int stopTimeout;
-	
+
+	private ScheduledThreadPoolExecutor initQueuesFromDatabaseExecutor;
+
 	private final Multimap<TaskQueue, TaskConsumer> consumersByQueue
 			= Multimaps.newListMultimap(new HashMap<TaskQueue, Collection<TaskConsumer>>(), new Supplier<List<TaskConsumer>>() {
 				@Override
@@ -112,9 +138,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			LOGGER.warn("Task queue start configured in \"manual\" mode.");
 		}
 	}
-	
+
 	private final void initQueues() {
-		Collection<String> queueIdsAsStrings = Lists.newArrayList();
+		Collection<IQueueId> queueIdsAsStrings = Lists.newArrayList();
 		
 		// Sanity checks
 		for (IQueueId queueId : queueIds) {
@@ -122,38 +148,49 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			Assert.state(!IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING.equals(queueIdAsString),
 					"Queue ID '" + IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING + "' is reserved for implementation purposes. Please choose another ID.");
 			Assert.state(!queueIdsAsStrings.contains(queueIdAsString), "Queue ID '" + queueIdAsString + "' was defined more than once. Queue IDs must be unique.");
-			queueIdsAsStrings.add(queueIdAsString);
+			queueIdsAsStrings.add(queueId);
 		}
 
 		defaultQueue = initQueue(IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING, 1);
-		for (String queueIdAsString : queueIdsAsStrings) {
-			int numberOfThreads = propertyService.get(queueNumberOfThreads(queueIdAsString));
+		for (IQueueId queueId : queueIdsAsStrings) {
+			int numberOfThreads = propertyService.get(queueNumberOfThreads(queueId));
 			if (numberOfThreads < 1) {
-				LOGGER.warn("Number of threads for queue '{}' is set to an invalid value ({}); defaulting to 1", queueIdAsString, numberOfThreads);
+				LOGGER.warn("Number of threads for queue '{}' is set to an invalid value ({}); defaulting to 1", queueId.getUniqueStringId(), numberOfThreads);
 				numberOfThreads = 1;
 			}
-			initQueue(queueIdAsString, numberOfThreads);
+			initQueue(queueId, numberOfThreads);
 		}
 	}
-	
-	private TaskQueue initQueue(String queueId, int numberOfThreads) {
-		TaskQueue queue = new TaskQueue(queueId);
+
+	private TaskQueue initQueue(IQueueId queueId, int numberOfThreads) {
+		TaskQueue queue = new TaskQueue(queueId.getUniqueStringId());
 		for (int i = 0 ; i < numberOfThreads ; ++i) {
-			TaskConsumer consumer = new TaskConsumer(queue, i);
+			TaskConsumer consumer;
+			if (infinispanClusterService != null
+					&& queueId instanceof IInfinispanQueue
+					&& ((IInfinispanQueue) queueId).handleInfinispan()) {
+				IInfinispanQueue infinispanQueue = (IInfinispanQueue) queueId;
+				if (numberOfThreads != 1) {
+					throw new IllegalStateException("If you want to manage infinispan in queue, you must use only one thread");
+				}
+				consumer = new TaskConsumer(queue, i, infinispanQueue.getLock(), infinispanQueue.getPriorityQueue());
+			} else {
+				consumer = new TaskConsumer(queue, i);
+			}
 			SpringBeanUtils.autowireBean(applicationContext, consumer);
 			consumersByQueue.put(queue, consumer);
 		}
-		queuesById.put(queueId, queue);
+		queuesById.put(queueId.getUniqueStringId(), queue);
 		return queue;
 	}
-	
+
 	private String selectQueue(AbstractTask task) {
 		SpringBeanUtils.autowireBean(applicationContext, task);
 		IQueueId queueId = task.selectQueue();
 		String queueIdString = queueId == null ? null : queueId.getUniqueStringId();
 		return queueIdString;
 	}
-	
+
 	private TaskQueue getQueue(String queueId) {
 		if (queueId == null) {
 			return defaultQueue;
@@ -178,12 +215,33 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	}
 
 	@Override
+	public boolean isTaskQueueActive(String queueId){
+		TaskQueue queue = queuesById.get(queueId);
+		Collection<TaskConsumer> consumers= consumersByQueue.get(queue);
+		if(consumers.isEmpty()){
+			return false;
+		}
+		return consumers.iterator().next().isActive();
+	}
+
+	@Override
+	public int getNumberOfTaskConsumer(String queueId){
+		TaskQueue queue = queuesById.get(queueId);
+		return consumersByQueue.get(queue).size();
+	}
+
+	@Override
 	public int getNumberOfWaitingTasks() {
 		int total = 0;
 		for (TaskQueue queue : queuesById.values()) {
 			total += queue.size();
 		}
 		return total;
+	}
+
+	@Override
+	public int getNumberOfWaitingTasks(String queueId){
+		return queuesById.get(queueId).size();
 	}
 
 	@Override
@@ -199,7 +257,20 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		}
 		return total;
 	}
-	
+
+	@Override
+	public int getNumberOfRunningTasks(String queueId){
+		int total = 0;
+		TaskQueue queue = queuesById.get(queueId);
+		Collection<TaskConsumer> consumers = consumersByQueue.get(queue);
+		for (TaskConsumer consumer : consumers) {
+			if (consumer.isWorking()) {
+				total++;
+			}
+		}
+		return total; 
+	}
+
 	@Override
 	public Collection<IQueueId> getQueueIds() {
 		return Collections.unmodifiableCollection(queueIds);
@@ -213,6 +284,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	protected synchronized void startConsumers() {
 		if (!active.get()) {
 			availableForAction.set(false);
+			
+			// load infinispan backend if needed
+			getCache();
 			
 			try {
 				initQueuesFromDatabase();
@@ -235,21 +309,48 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	}
 
 	private void initQueuesFromDatabase() {
-		for (TaskQueue queue : queuesById.values()) {
-			try {
-				List<Long> taskIds = queuedTaskHolderService.initializeTasksAndListConsumable(queue.getId());
-				if (queue == defaultQueue) {
-					taskIds.addAll(queuedTaskHolderService.initializeTasksAndListConsumable(null));
-				}
-				for (Long taskId : taskIds) {
-					boolean status = queue.offer(taskId);
-					if (!status) {
-						LOGGER.error("Unable to offer the task " + taskId + " to the queue");
+		// NOTE : infinispanClusterService is initialized @PostConstruct, so infinispan subsystem is initialized at
+		// this time.
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				for (TaskQueue queue : queuesById.values()) {
+					try {
+						List<Long> taskIds = queuedTaskHolderService.initializeTasksAndListConsumable(queue.getId());
+						
+						// remove already loaded keys
+						if (infinispanClusterService != null) {
+							taskIds.removeAll(getCache().keySet());
+						}
+						if (! taskIds.isEmpty()) {
+							LOGGER.warn("Reload {} tasks in QueuedTaskHolderManager", taskIds.size());
+							LOGGER.warn("Reloaded tasks: {}", Joiner.on(",").join(taskIds));
+						}
+						
+						if (queue == defaultQueue) {
+							taskIds.addAll(queuedTaskHolderService.initializeTasksAndListConsumable(null));
+						}
+						for (Long taskId : taskIds) {
+							queueOffer(queue, taskId);
+						}
+					} catch (RuntimeException | ServiceException | SecurityServiceException e) {
+						LOGGER.error("Error while trying to init queue " + queue + " from database", e);
 					}
 				}
-			} catch (RuntimeException | ServiceException | SecurityServiceException e) {
-				LOGGER.error("Error while trying to init queue " + queue + " from database", e);
 			}
+		};
+		if (infinispanClusterService != null) {
+			LockRequest lockRequest = LockRequest.with(
+					SimpleRole.from(INIT_QUEUES_EXECUTOR_NAME),
+					SimpleLock.from(INIT_QUEUES_EXECUTOR_NAME, "QueueTaskHolder")
+			);
+			try {
+				infinispanClusterService.doIfRoleWithLock(lockRequest, runnable);
+			} catch (ExecutionException e) {
+				throw new RuntimeException(e);
+			}
+		} else {
+			runnable.run();
 		}
 	}
 
@@ -288,17 +389,14 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		
 		return newQueuedTaskHolder;
 	}
-	
+
 	protected void doSubmit(String queueId, Long newQueuedTaskHolderId) throws ServiceException {
 		if (active.get()) {
 			TaskQueue selectedQueue = getQueue(queueId);
-			boolean status = selectedQueue.offer(newQueuedTaskHolderId);
-			if (!status) {
-				LOGGER.error("Unable to offer the task " + newQueuedTaskHolderId + " to the queue");
-			}
+			queueOffer(selectedQueue, newQueuedTaskHolderId);
 		}
 	}
-	
+
 	@Override
 	public void reload(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException {
 		QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
@@ -310,14 +408,11 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			TaskQueue queue = getQueue(queuedTaskHolder.getQueueId());
 			
 			if (active.get()) {
-				boolean status = queue.offer(queuedTaskHolder.getId());
-				if (!status) {
-					LOGGER.error("Unable to offer the task " + queuedTaskHolder.getId() + " to the queue");
-				}
+				queueOffer(queue, queuedTaskHolder.getId());
 			}
 		}
 	}
-	
+
 	@Override
 	public void cancel(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException {
 		QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
@@ -345,14 +440,53 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			
 			try {
 				// TODO YRO gérer le timeout plus intelligemment
+				
+				// send interrupt to all threads
+				// if working, wait timeout before asking interrupt
+				if (initQueuesFromDatabaseExecutor != null) {
+					initQueuesFromDatabaseExecutor.shutdownNow(); // remaining tasks are not important
+				}
 				for (TaskQueue queue : queuesById.values()) {
 					for (TaskConsumer consumer : consumersByQueue.get(queue)) {
 						try {
+							LOGGER.info("Stopping {}", queue.getId());
 							consumer.stop(stopTimeout);
 						} catch (RuntimeException e) {
-							LOGGER.error("Error while trying to stop consumer " + consumer, e);
+							LOGGER.error("Error while trying to stop consumer {}", consumer.getName(), e);
 						}
 					}
+				}
+				
+				// wait for effective shutdown on each thread and executor
+				for (TaskQueue queue : queuesById.values()) {
+					for (TaskConsumer consumer : consumersByQueue.get(queue)) {
+						while (true) {
+							try {
+								LOGGER.info("Waiting for {} stop", consumer.getName());
+								consumer.joinThread();
+								LOGGER.info("{} stopped", consumer.getName());
+								break;
+							} catch (InterruptedException e) {
+								LOGGER.warn("Interrupted waiting for {} stop", consumer.getName());
+							}
+						}
+					}
+				}
+				if (initQueuesFromDatabaseExecutor != null) {
+					while (true) {
+						try {
+							LOGGER.info("Waiting for {} stop", INIT_QUEUES_EXECUTOR_NAME);
+							initQueuesFromDatabaseExecutor.awaitTermination(1, TimeUnit.HOURS); // forever
+							LOGGER.info("{} stopped", INIT_QUEUES_EXECUTOR_NAME);
+							break;
+						} catch (InterruptedException e) {
+							LOGGER.warn("Interrupted waiting for {} stop", INIT_QUEUES_EXECUTOR_NAME);
+						}
+					}
+				}
+				
+				// mark tasks as interrupted
+				for (TaskQueue queue : queuesById.values()) {
 					interruptQueueProcesses(queue);
 				}
 			} finally {
@@ -379,5 +513,85 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 				}
 			}
 		}
+	}
+
+	/**
+	 * Cluster-safe offer a task in a queue ; if task is already loaded on the cluster, we don't load it.
+	 * 
+	 * @param queue
+	 * @param taskId
+	 * @return true if task is added to the queue
+	 */
+	private boolean queueOffer(TaskQueue queue, Long taskId) {
+		// check if task is already in a queue
+		if (getCache() != null) {
+			IAttribution previous = getCache().putIfAbsent(taskId, Attribution.from(infinispanClusterService.getLocalAddress(), new Date()));
+			if (previous != null) {
+				// if already loaded, stop processing
+				LOGGER.warn("Task {} already loaded in cluster and ignored", taskId);
+				return false;
+			}
+		}
+		// else offer in queue
+		boolean status = queue.offer(taskId);
+		if (!status) {
+			LOGGER.error("Unable to offer the task " + taskId + " to the queue");
+		}
+		return status;
+	}
+
+	/**
+	 * Check if cache exists and returns it ; null if infinispan is disabled
+	 */
+	private Cache<Long, IAttribution> getCache() {
+		if (infinispanClusterService != null) {
+			if (!infinispanClusterService.getCacheManager().cacheExists(CACHE_KEY_TASK_ID)) {
+				initializeCache();
+			}
+			return infinispanClusterService.getCacheManager().getCache();
+		}
+		return null;
+	}
+
+	/**
+	 * This method MUST NOT be called if cache is disabled
+	 */
+	private synchronized void initializeCache() {
+		if (infinispanClusterService == null) {
+			throw new IllegalStateException("This code must not be called as infinispan is not enabled");
+		}
+		if (infinispanClusterService.getCacheManager().cacheExists(CACHE_KEY_TASK_ID)) {
+			return;
+		}
+		infinispanClusterService.getCacheManager().getCache(CACHE_KEY_TASK_ID);
+		initQueuesFromDatabaseExecutor = new ScheduledThreadPoolExecutor(1,
+				new ThreadFactoryBuilder()
+					.setDaemon(true)
+					.setNameFormat(String.format("%s-%%d", INIT_QUEUES_EXECUTOR_NAME)) // %%d is an escaped %d
+					.build());
+		initQueuesFromDatabaseExecutor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+		initQueuesFromDatabaseExecutor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
+		initQueuesFromDatabaseExecutor.prestartAllCoreThreads();
+		initQueuesFromDatabaseExecutor.scheduleAtFixedRate(new Runnable() {
+			@Override
+			public void run() {
+				initQueuesFromDatabase();
+			}
+		}, 1, 1, TimeUnit.MINUTES);
+	}
+
+	@Override
+	public void onTaskFinish(Long taskId) {
+		if (getCache() != null) {
+			IAttribution previous = getCache().remove(taskId);
+			if (previous == null) {
+				// if already loaded, stop processing
+				LOGGER.warn("Task {} finished but not in cache map", taskId);
+			}
+			if (previous != null && ! previous.match(infinispanClusterService.getLocalAddress())) {
+				LOGGER.warn("Task {} finished but attribution does not match", taskId);
+			}
+		}
+		eventPublisher.publishEvent(new QueuedTaskFinishedEvent(taskId));
 	}
 }

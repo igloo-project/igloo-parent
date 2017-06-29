@@ -212,7 +212,8 @@ public class ThreadedProcessor {
 					}
 				}
 			} catch (InterruptedException e) {
-				throw new IllegalStateException("Batch error: timeout.", e);
+				Thread.currentThread().interrupt();
+				throw new IllegalStateException("Batch error: work interrupted.", e);
 			}
 
 			if (!executionExceptions.isEmpty()) {
@@ -236,6 +237,7 @@ public class ThreadedProcessor {
 				try {
 					loggingThread.join();
 				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
 					LOGGER.warn("{} - Thread interrupted while waiting for the end of the logging thread execution.",
 							loggerContext);
 				}
@@ -268,6 +270,7 @@ public class ThreadedProcessor {
 					Thread.sleep(loggingCheckIntervalTimeUnit.toMillis(loggingCheckIntervalTime));
 					log(false);
 				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
 					log(true);
 					LOGGER.info("Logging thread interrupted.");
 					return;

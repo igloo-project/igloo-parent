@@ -22,6 +22,7 @@ import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.loader.BatchFetchStyle;
+import org.hibernate.search.elasticsearch.cfg.ElasticsearchEnvironment;
 import org.hibernate.search.store.impl.FSDirectoryProvider;
 import org.hibernate.search.store.impl.RAMDirectoryProvider;
 import org.springframework.aop.Advisor;
@@ -45,6 +46,9 @@ import fr.openwide.core.jpa.config.spring.provider.IJpaConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.IJpaPropertiesProvider;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.hibernate.analyzers.CoreElasticSearchAnalyzersDefinitionProvider;
+import fr.openwide.core.jpa.hibernate.analyzers.CoreLuceneAnalyzersDefinitionProvider;
+import fr.openwide.core.jpa.hibernate.analyzers.CoreLuceneClientAnalyzersDefinitionProvider;
 import fr.openwide.core.jpa.hibernate.jpa.PerTableSequenceStrategyProvider;
 import fr.openwide.core.jpa.hibernate.model.naming.PostgreSQLPhysicalNamingStrategyImpl;
 
@@ -123,7 +127,15 @@ public final class JpaConfigUtils {
 		}
 
 		String hibernateSearchIndexBase = configuration.getHibernateSearchIndexBase();
-		if (StringUtils.hasText(hibernateSearchIndexBase)) {
+		
+		if (configuration.isHibernateSearchElasticSearchEnabled()) {
+			properties.setProperty(ElasticsearchEnvironment.ANALYZER_DEFINITION_PROVIDER, CoreElasticSearchAnalyzersDefinitionProvider.class.getName());
+			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYZER_DEFINITION_PROVIDER, CoreLuceneClientAnalyzersDefinitionProvider.class.getName());
+			properties.setProperty("hibernate.search.default.indexmanager", "elasticsearch");
+			properties.setProperty("hibernate.search.default.elasticsearch.host", configuration.getElasticSearchHost());
+			properties.setProperty("hibernate.search.default.elasticsearch.index_schema_management_strategy", configuration.getElasticSearchIndexSchemaManagementStrategy());
+		} else if (StringUtils.hasText(hibernateSearchIndexBase)) {
+			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYZER_DEFINITION_PROVIDER, CoreLuceneAnalyzersDefinitionProvider.class.getName());
 			if (configuration.isHibernateSearchIndexInRam()) {
 				properties.setProperty("hibernate.search.default.directory_provider", RAMDirectoryProvider.class.getName());
 			} else {
@@ -180,6 +192,10 @@ public final class JpaConfigUtils {
 		if (isNewGeneratorMappingsEnabled != null) {
 			properties.setProperty(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, isNewGeneratorMappingsEnabled.toString());
 		}
+		
+		// Override properties
+		properties.putAll(configuration.getDefaultExtraProperties());
+		properties.putAll(configuration.getExtraProperties());
 		
 		return properties;
 	}

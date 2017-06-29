@@ -22,6 +22,7 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
 import org.apache.wicket.resource.NoOpTextCompressor;
+import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.IResourceStream;
@@ -32,8 +33,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 
+import com.google.common.collect.ImmutableList;
+
 import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.spring.util.StringUtils;
+import fr.openwide.core.wicket.more.console.resources.CoreWicketConsoleResources;
 import fr.openwide.core.wicket.more.console.template.style.CoreConsoleCssScope;
 import fr.openwide.core.wicket.more.css.lesscss.service.ILessCssService;
 import fr.openwide.core.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -149,6 +153,13 @@ public abstract class CoreWicketApplication extends WebApplication {
 		registerLessImportScopes();
 		// TODO SCSS
 //		registerScssImportScopes();
+		
+		getResourceSettings().getStringResourceLoaders().addAll(
+				0, // Override the keys in existing resource loaders with the following
+				ImmutableList.of(
+						new ClassStringResourceLoader(CoreWicketConsoleResources.class)
+				)
+		);
 	}
 	
 	protected void registerLessImportScopes() {
