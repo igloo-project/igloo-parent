@@ -16,7 +16,7 @@ simpleProject {
 	config.triggerSetPollSpecCronExpression = 'H H/3 * * *'
 	config.notificationRecipients = 'grp-jenkins@lists.projects.openwide.fr'
 	config.buildBlockerSimpleLock = 'owsi-core.*'
-	// build use toolchains to handle jdk 7 builds
+	// owsi-core prerequisites: java 8
 	config.jdk = 'JDK 1.8'
 	config.buildTarget = 'install'
 	config.defaultMavenArgs = '-Ptest -Ddistribution=owsi-core-release -Dmaven.repo.local="${WORKSPACE}/m2-repository/"'
