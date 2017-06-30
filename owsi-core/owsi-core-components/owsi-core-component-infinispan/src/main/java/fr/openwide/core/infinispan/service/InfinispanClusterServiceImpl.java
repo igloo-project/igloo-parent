@@ -271,37 +271,37 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			// update to last known status
 			getNodesCache().put(getAddress(), node);
 
-			for (Entry<IRole, IRoleAttribution> role : getRolesCache().entrySet()) {
-				if (role.getValue() != null && role.getValue().match(getAddress())) {
+			for (Entry<IRole, IRoleAttribution> roleEntry : getRolesCache().entrySet()) {
+				if (roleEntry.getValue() != null && roleEntry.getValue().match(getAddress())) {
 					// race condition; we can remove an third-party assignation
-					getRolesCache().remove(role);
+					getRolesCache().remove(roleEntry.getKey());
 				}
 			}
 			for (Entry<IRole, IAttribution> role : getRolesRequestsCache().entrySet()) {
 				if (role.getValue() != null && role.getValue().match(getAddress())) {
 					// race condition; we can remove an third-party assignation
-					getRolesRequestsCache().remove(role);
+					getRolesRequestsCache().remove(role.getKey());
 				}
 			}
 
 			// priority queue · clean asked priority
-			for (Entry<IPriorityQueue, List<IAttribution>> priorityQueue : getPriorityQueuesCache().entrySet()) {
+			for (Entry<IPriorityQueue, List<IAttribution>> priorityQueueEntry : getPriorityQueuesCache().entrySet()) {
 				boolean commitPriorityQueue = true;
 				try {
 					// lock entry
 					getPriorityQueuesCache().startBatch();
-					getPriorityQueuesCache().getAdvancedCache().lock(priorityQueue.getKey());
+					getPriorityQueuesCache().getAdvancedCache().lock(priorityQueueEntry.getKey());
 
 					// build new cleaned new value
 					List<IAttribution> updatedPriorityQueue = Lists.newArrayList();
-					for (IAttribution attribution : priorityQueue.getValue()) {
+					for (IAttribution attribution : priorityQueueEntry.getValue()) {
 						if (!attribution.match(getAddress())) {
 							updatedPriorityQueue.add(attribution);
 						}
 					}
 
 					// put
-					getPriorityQueuesCache().put(priorityQueue.getKey(), updatedPriorityQueue);
+					getPriorityQueuesCache().put(priorityQueueEntry.getKey(), updatedPriorityQueue);
 				} finally {
 					getPriorityQueuesCache().endBatch(commitPriorityQueue);
 				}

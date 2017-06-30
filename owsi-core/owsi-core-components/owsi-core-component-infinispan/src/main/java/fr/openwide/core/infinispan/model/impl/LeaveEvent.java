@@ -7,6 +7,8 @@ import fr.openwide.core.infinispan.model.ILeaveEvent;
 
 public class LeaveEvent implements Serializable, ILeaveEvent {
 
+	private static final long serialVersionUID = 8395173480053265998L;
+
 	private final Date leaveDate;
 
 	private LeaveEvent(Date leaveDate) {
