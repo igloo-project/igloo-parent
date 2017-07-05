@@ -29,6 +29,7 @@ import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.jpa.search.bridge.GenericEntityIdFieldBridge;
 import fr.openwide.core.jpa.search.bridge.NullEncodingGenericEntityIdFieldBridge;
+import fr.openwide.core.jpa.search.util.SortFieldUtil;
 import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
 public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>> extends AbstractSearchQuery<T, S> /* NOT Serializable */ {
@@ -185,7 +186,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		
 		Sort sort = SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts);
 		if (sort != null && sort.getSort().length > 0) {
-			fullTextQuery.setSort(sort);
+			SortFieldUtil.setSort(fullTextQuery, fullTextEntityManager, mainClass, sort);
 		}
 		return fullTextQuery;
 	}

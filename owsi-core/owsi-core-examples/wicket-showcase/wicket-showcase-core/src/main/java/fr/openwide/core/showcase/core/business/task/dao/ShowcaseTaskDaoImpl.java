@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.lucene.search.Sort;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
@@ -22,6 +23,7 @@ import fr.openwide.core.jpa.more.business.task.search.QueuedTaskHolderSort;
 import fr.openwide.core.jpa.more.business.task.util.TaskResult;
 import fr.openwide.core.jpa.more.business.task.util.TaskStatus;
 import fr.openwide.core.jpa.more.util.binding.CoreJpaMoreBindings;
+import fr.openwide.core.jpa.search.util.SortFieldUtil;
 import fr.openwide.core.showcase.core.business.task.model.ShowcaseTaskQueueId;
 import fr.openwide.core.showcase.core.business.task.model.TaskTypeEnum;
 import fr.openwide.core.showcase.core.business.task.model.search.TaskSearchQueryParameters;
@@ -43,9 +45,8 @@ public class ShowcaseTaskDaoImpl extends GenericEntityDaoImpl<Long, QueuedTaskHo
 				fullTextQuery.setMaxResults(limit.intValue());
 			}
 			
-			fullTextQuery.setSort(SortUtils.getLuceneSortWithDefaults(
-					searchParameters.getSort(), QueuedTaskHolderSort.ID)
-			);
+			Sort sort = SortUtils.getLuceneSortWithDefaults(searchParameters.getSort(), QueuedTaskHolderSort.ID);
+			SortFieldUtil.setSort(fullTextQuery, getEntityManager(), QueuedTaskHolder.class, sort);
 			fullTextQuery.initializeObjectsWith(ObjectLookupMethod.SECOND_LEVEL_CACHE, DatabaseRetrievalMethod.QUERY);
 			
 			return (List<QueuedTaskHolder>) fullTextQuery.getResultList();

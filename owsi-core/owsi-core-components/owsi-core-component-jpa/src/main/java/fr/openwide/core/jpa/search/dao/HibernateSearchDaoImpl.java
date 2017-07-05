@@ -55,6 +55,7 @@ import fr.openwide.core.jpa.business.generic.model.GenericEntity;
 import fr.openwide.core.jpa.config.spring.provider.IJpaPropertiesProvider;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.hibernate.analyzers.CoreLuceneClientAnalyzersDefinitionProvider;
+import fr.openwide.core.jpa.search.util.SortFieldUtil;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
 @Repository("hibernateSearchDao")
@@ -244,8 +245,10 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			if (limit != null) {
 				hibernateQuery.setMaxResults(limit);
 			}
-			if (sort != null) {
-				hibernateQuery.setSort(sort);
+			if (sort != null && !classes.isEmpty()) {
+				SortFieldUtil.setSort(hibernateQuery, fullTextSession, Iterables.getFirst(classes, null), sort);
+			} else if (classes.size() == 0) {
+				throw new IllegalStateException("No class for search is no longer supported (owsi-core >= 0.14)");
 			} else if (offset != null || limit != null) {
 				LOGGER.warn("La requête ne spécifie pas de sort mais spécifie une limite ou un offset.");
 			}
