@@ -16,6 +16,7 @@ public class DefaultReplicatedTransientConfigurationBuilder extends Configuratio
 			// synchronous with l1 cache
 			.cacheMode(CacheMode.REPL_SYNC).sync()
 			.expiration().lifespan(-1)
+			.deadlockDetection()
 			// transactional (to allow block locking)
 			.transaction().lockingMode(LockingMode.PESSIMISTIC)
 			.locking().isolationLevel(IsolationLevel.REPEATABLE_READ).lockAcquisitionTimeout(20, TimeUnit.SECONDS)
