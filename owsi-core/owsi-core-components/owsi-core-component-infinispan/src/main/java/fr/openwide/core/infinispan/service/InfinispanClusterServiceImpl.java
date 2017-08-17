@@ -828,10 +828,10 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 						RoleAttribution.from(getAddress(), new Date()));
 				if (previousAttribution != null) {
 					if (!previousAttribution.match(getAddress())) {
-						LOGGER.info("Role rebalance - try {} uselessly; already attributed to {} {}", role,
+						LOGGER.debug("Role rebalance - try {} uselessly; already attributed to {} {}", role,
 								previousAttribution, toStringClusterNode());
 					} else {
-						LOGGER.info("Role rebalance - try {} uselessly; already attributed {}", role,
+						LOGGER.debug("Role rebalance - try {} uselessly; already attributed {}", role,
 								toStringClusterNode());
 						acquiredRoles.add(role);
 					}
