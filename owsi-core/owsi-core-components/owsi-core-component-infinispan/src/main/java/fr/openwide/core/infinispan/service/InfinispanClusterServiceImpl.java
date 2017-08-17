@@ -183,13 +183,13 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				public void run() {
 					InfinispanClusterServiceImpl.this.rebalanceRoles();
 				}
-			}, 5, TimeUnit.SECONDS);
+			}, 1, TimeUnit.MINUTES);
 			checkerExecutor.scheduleAtFixedRate(new Runnable() {
 				@Override
 				public void run() {
 					InfinispanClusterServiceImpl.this.updateCoordinator();
 				}
-			}, 1, 1, TimeUnit.MINUTES);
+			}, 1, 5, TimeUnit.MINUTES);
 
 			initialized = true;
 		}
@@ -792,22 +792,23 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				TimeUnit.MILLISECONDS.sleep((waitWeight * acquiredRoles.size()) + Math.round(Math.random() * 1000));
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
-				LOGGER.debug("Interrupted while rebalancing {}", toStringClusterNode());
+				LOGGER.warn("Interrupted while rebalancing {}", toStringClusterNode());
 				return;
 			}
 			IRole role = roles.remove(0);
 			LOGGER.debug("Starting role rebalance - trying {} {}", role, toStringClusterNode());
 			IAttribution request = getRolesRequestsCache().getOrDefault(role, null);
 			if (request != null) {
+				// check already existing request
 				if (request.match(getAddress())) {
 					IAttribution previousAttribution = getRolesCache().putIfAbsent(role,
 							RoleAttribution.from(getAddress(), new Date()));
 					if (previousAttribution != null) {
 						if (!previousAttribution.match(getAddress())) {
-							LOGGER.debug("Role rebalance - request on {} fails; already attributed to {} {}", role,
+							LOGGER.warn("Role rebalance - request on {} fails; already attributed to {} {}", role,
 									previousAttribution, toStringClusterNode());
 						} else {
-							LOGGER.debug("Role rebalance - request on {} uselessly; already attributed {}", role,
+							LOGGER.warn("Role rebalance - request on {} uselessly; already attributed {}", role,
 									toStringClusterNode());
 							acquiredRoles.add(role);
 						}
@@ -818,18 +819,19 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 					}
 				} else {
 					// TODO timeout request (?)
-					LOGGER.debug("Role rebalance - {} skipped because it exists a running request on it {}", role,
+					LOGGER.warn("Role rebalance - {} skipped because it exists a running request on it {}", role,
 							toStringClusterNode());
 				}
 			} else {
+				// no request, acquire it if not attributed
 				IAttribution previousAttribution = getRolesCache().putIfAbsent(role,
 						RoleAttribution.from(getAddress(), new Date()));
 				if (previousAttribution != null) {
 					if (!previousAttribution.match(getAddress())) {
-						LOGGER.debug("Role rebalance - try {} uselessly; already attributed to {} {}", role,
+						LOGGER.info("Role rebalance - try {} uselessly; already attributed to {} {}", role,
 								previousAttribution, toStringClusterNode());
 					} else {
-						LOGGER.debug("Role rebalance - try {} uselessly; already attributed {}", role,
+						LOGGER.info("Role rebalance - try {} uselessly; already attributed {}", role,
 								toStringClusterNode());
 						acquiredRoles.add(role);
 					}
@@ -971,7 +973,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				boolean updated = infinispanClusterCheckerService.updateCoordinatorTimestamp(getLocalAddress());
 				if (!updated) {
 					LOGGER.warn("Infinispan checker coordinator update failed by {}", getLocalAddress());
-					updated = infinispanClusterCheckerService.tryForceUpdate(getLocalAddress(), 3, TimeUnit.MINUTES);
+					updated = infinispanClusterCheckerService.tryForceUpdate(getLocalAddress(), 6, TimeUnit.MINUTES);
 					if (updated) {
 						LOGGER.warn("Infinispan checker coordinator update forced by {}", getLocalAddress());
 					}
