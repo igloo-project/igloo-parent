@@ -18,6 +18,7 @@ public enum MediaType {
 	APPLICATION_XML("application/xml", "xml"),
 	APPLICATION_JSON("application/json", "json"),
 	APPLICATION_ZIP("application/zip", "zip"),
+	APPLICATION_JAR("application/jar", "jar"),
 	APPLICATION_RAR("application/rar", "rar"),
 	APPLICATION_7Z("application/x-7z-compressed", "7z"),
 	APPLICATION_TAR_GZ("application/x-tgz", "tar.gz"),

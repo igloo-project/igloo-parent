@@ -6,7 +6,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import fr.openwide.core.basicapp.core.config.scheduling.service.ISchedulingService;
-import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 
 @EnableScheduling
@@ -21,10 +20,4 @@ public class BasicApplicationCoreSchedulingConfig {
 		schedulingService.temporaryFilesCleaning();
 	}
 	
-	@Scheduled(cron = "${dataupgrade.cron}")
-	public void executeAutoPerformDataUpgrade() throws ServiceException, SecurityServiceException {
-		// TODO voir si cron nécessaire
-		schedulingService.executeAutoPerformDataUpgrade();
-	}
-
 }

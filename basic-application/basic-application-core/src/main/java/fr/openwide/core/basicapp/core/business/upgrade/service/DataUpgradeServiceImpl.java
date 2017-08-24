@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableList;
 
 import fr.openwide.core.basicapp.core.business.upgrade.dao.IDataUpgradeDao;
 import fr.openwide.core.basicapp.core.business.upgrade.model.DataUpgradePackage;
+import fr.openwide.core.basicapp.core.business.upgrade.model.ImportExcel;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
 import fr.openwide.core.jpa.more.business.upgrade.model.IDataUpgrade;
@@ -49,6 +50,7 @@ public class DataUpgradeServiceImpl extends AbstractDataUpgradeServiceImpl imple
 	@Override
 	public List<IDataUpgrade> listDataUpgrades() {
 		return ImmutableList.<IDataUpgrade>of(
+				new ImportExcel()
 		);
 	}
 	

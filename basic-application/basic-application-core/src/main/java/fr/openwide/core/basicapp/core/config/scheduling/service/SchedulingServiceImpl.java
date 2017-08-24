@@ -6,22 +6,15 @@ import java.util.Calendar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.openwide.core.basicapp.core.business.upgrade.service.IDataUpgradeService;
 import fr.openwide.core.commons.util.FileUtils;
-import fr.openwide.core.jpa.exception.SecurityServiceException;
-import fr.openwide.core.jpa.exception.ServiceException;
 
 @Service("schedulingService")
 public class SchedulingServiceImpl implements ISchedulingService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SchedulingServiceImpl.class);
 	
-	@Autowired
-	private IDataUpgradeService dataUpgradeService;
-
 	@Override
 	public void temporaryFilesCleaning() {
 		//Par défaut, on ne vide aucun répertoire.
@@ -40,13 +33,6 @@ public class SchedulingServiceImpl implements ISchedulingService {
 		} catch (IOException e) {
 			LOGGER.error("Erreur lors du nettoyage du répertoire " + file, e);
 		}
-	}
-	
-	@Override
-	public void executeAutoPerformDataUpgrade() throws ServiceException, SecurityServiceException{
-		LOGGER.trace("Executing data upgrades (starting) ");
-		dataUpgradeService.autoPerformDataUpgrades();
-		LOGGER.trace("Executing data upgrades (success)");
 	}
 	
 }

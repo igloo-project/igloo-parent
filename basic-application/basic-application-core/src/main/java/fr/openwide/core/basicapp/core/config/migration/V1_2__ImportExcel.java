@@ -15,12 +15,14 @@ import org.springframework.jdbc.core.PreparedStatementCallback;
 
 import fr.openwide.core.jpa.more.business.parameter.model.Parameter;
 
-public class V1_1__AddMigrationToParameterTable implements SpringJdbcMigration, MigrationChecksumProvider{
+public class V1_2__ImportExcel implements SpringJdbcMigration, MigrationChecksumProvider{
+	
+	private String DATA_UPGRADE_NAME = "ImportExcel";
 
 	@Override
 	public void migrate(JdbcTemplate jdbcTemplate) throws Exception {
 		final Integer id = new Integer(jdbcTemplate.queryForObject("SELECT NEXTVAL('" + Parameter.class.getSimpleName() + "_id_seq');", Integer.class));
-		jdbcTemplate.execute("INSERT INTO parameter (id,datevalue,name,stringvalue) VALUES (?,?,'" + DATA_UPGRADE_AUTOPERFOM_PREFIX + ".MigrationTest." + DATA_UPGRADE_AUTOPERFOM_SUFFIX + "',true);"
+		jdbcTemplate.execute("INSERT INTO parameter (id,datevalue,name,stringvalue) VALUES (?,?,'" + DATA_UPGRADE_AUTOPERFOM_PREFIX + "." + DATA_UPGRADE_NAME + "." + DATA_UPGRADE_AUTOPERFOM_SUFFIX + "',true);"
 				, new PreparedStatementCallback<Boolean>() {
 					@Override
 					public Boolean doInPreparedStatement(PreparedStatement ps)

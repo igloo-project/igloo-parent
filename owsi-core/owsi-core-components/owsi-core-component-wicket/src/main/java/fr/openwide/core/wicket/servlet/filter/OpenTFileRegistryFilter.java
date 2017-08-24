@@ -12,6 +12,9 @@ import javax.servlet.ServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+
 import de.schlichtherle.truezip.file.TArchiveDetector;
 import de.schlichtherle.truezip.file.TConfig;
 import de.schlichtherle.truezip.util.SuffixSet;
@@ -28,7 +31,11 @@ public class OpenTFileRegistryFilter implements Filter {
 	}
 	
 	protected void configureGlobally(TConfig trueZipConfig) {
-		trueZipConfig.setArchiveDetector(new TArchiveDetector(new SuffixSet(MediaType.APPLICATION_ZIP.supportedExtensions()).toString()));
+		trueZipConfig.setArchiveDetector(new TArchiveDetector(new SuffixSet(
+				ImmutableList.copyOf(Iterables.<String>concat(
+						MediaType.APPLICATION_ZIP.supportedExtensions(),
+						MediaType.APPLICATION_JAR.supportedExtensions()
+				))).toString()));
 	}
 	
 	@Override
