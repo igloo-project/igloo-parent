@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.BooleanQuery;
 import org.flywaydb.core.Flyway;
 import org.springframework.aop.Advisor;
@@ -66,7 +67,7 @@ public abstract class AbstractJpaConfig {
 		flyway.setDataSource(dataSource);
 		flyway.setSchemas(flywayConfiguration.getSchemas()); 
 		flyway.setTable(flywayConfiguration.getTable());
-		flyway.setLocations(flywayConfiguration.getLocations());
+		flyway.setLocations(StringUtils.split(flywayConfiguration.getLocations(), ","));
 		flyway.setBaselineOnMigrate(true);
 		// difficult to handle this case for the moment; we ignore mismatching checksums
 		// TODO allow developers to handle mismatches during their tests.
