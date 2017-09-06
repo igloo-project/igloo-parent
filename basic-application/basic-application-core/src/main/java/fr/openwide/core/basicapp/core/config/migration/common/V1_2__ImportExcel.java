@@ -1,4 +1,4 @@
-package fr.openwide.core.basicapp.core.config.migration;
+package fr.openwide.core.basicapp.core.config.migration.common;
 
 import static fr.openwide.core.basicapp.core.business.upgrade.util.DataUpgradeConstants.DATA_UPGRADE_AUTOPERFOM_PREFIX;
 import static fr.openwide.core.basicapp.core.business.upgrade.util.DataUpgradeConstants.DATA_UPGRADE_AUTOPERFOM_SUFFIX;

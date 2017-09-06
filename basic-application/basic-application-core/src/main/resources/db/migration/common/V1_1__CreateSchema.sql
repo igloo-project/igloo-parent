@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS basic_application;
+
 create sequence basic_application.Authority_id_seq start 1 increment 1;
 create sequence basic_application.City_id_seq start 1 increment 1;
 create sequence basic_application.HistoryDifference_id_seq start 1 increment 1;
