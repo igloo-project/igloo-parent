@@ -1,7 +1,9 @@
 package fr.openwide.core.jpa.config.spring.provider;
 
 import java.util.List;
+import java.util.Properties;
 
+import javax.annotation.Resource;
 import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
@@ -20,6 +22,9 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 
 	@Value("${${db.type}.db.dialect}")
 	private Class<Dialect> dialect;
+
+	@Value("${hibernate.defaultSchema:${db.user}}")
+	private String defaultSchema;
 
 	@Value("${hibernate.hbm2ddl.auto}")
 	private String hbm2Ddl;
@@ -74,6 +79,21 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 
 	@Value("${hibernate.create_empty_composites.enabled}")
 	private boolean createEmptyCompositesEnabled;
+
+	@Value("${hibernate.search.elasticsearch.enabled:false}")
+	private boolean isHibernateSearchElasticSearchEnabled;
+	
+	@Value("${hibernate.search.default.elasticsearch.host}")
+	private String elasticSearchHost;
+
+	@Value("${hibernate.search.default.elasticsearch.index_schema_management_strategy}")
+	private String elasticSearchIndexSchemaManagementStrategy;
+	
+	@Resource(name = "hibernateDefaultExtraProperties")
+	private Properties defaultExtraProperties;
+
+	@Resource(name = "hibernateExtraProperties")
+	private Properties extraProperties;
 
 	@Override
 	public List<JpaPackageScanProvider> getJpaPackageScanProviders() {
@@ -173,6 +193,61 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Override
 	public boolean isCreateEmptyCompositesEnabled() {
 		return createEmptyCompositesEnabled;
+	}
+
+	@Override
+	public String getDefaultSchema() {
+		return defaultSchema;
+	}
+
+	@Override
+	public boolean isHibernateSearchElasticSearchEnabled() {
+		return isHibernateSearchElasticSearchEnabled;
+	}
+
+	@Override
+	public void setHibernateSearchElasticSearchEnabled(boolean isElasticSearchEnabled) {
+		this.isHibernateSearchElasticSearchEnabled = isElasticSearchEnabled;
+	}
+
+	@Override
+	public String getElasticSearchHost() {
+		return elasticSearchHost;
+	}
+
+	@Override
+	public void setElasticSearchHost(String elasticSearchHost) {
+		this.elasticSearchHost = elasticSearchHost;
+	}
+
+	@Override
+	public String getElasticSearchIndexSchemaManagementStrategy() {
+		return elasticSearchIndexSchemaManagementStrategy;
+	}
+
+	@Override
+	public void setElasticSearchIndexSchemaManagementStrategy(String elasticSearchIndexSchemaManagementStrategy) {
+		this.elasticSearchIndexSchemaManagementStrategy = elasticSearchIndexSchemaManagementStrategy;
+	}
+
+	@Override
+	public Properties getDefaultExtraProperties() {
+		return defaultExtraProperties;
+	}
+
+	@Override
+	public void setDefaultExtraProperties(Properties defaultExtraProperties) {
+		this.defaultExtraProperties = defaultExtraProperties;
+	}
+
+	@Override
+	public Properties getExtraProperties() {
+		return extraProperties;
+	}
+
+	@Override
+	public void setExtraProperties(Properties extraProperties) {
+		this.extraProperties = extraProperties;
 	}
 
 }

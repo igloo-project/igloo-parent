@@ -18,21 +18,16 @@
 package fr.openwide.core.jpa.hibernate.dialect;
 
 import org.hibernate.dialect.PostgreSQL82Dialect;
-import org.hibernate.id.IdentifierGenerator;
+import org.hibernate.jpa.AvailableSettings;
 
 import fr.openwide.core.jpa.hibernate.dialect.function.PostgreSQLIntervalFunction;
 import fr.openwide.core.jpa.hibernate.dialect.function.PostgreSQLRegexpOperatorFunction;
 
 /**
- * <p>Surcharge du dialecte PostgreSQL qui permet de gérer les séquences par table plutôt que d'avoir une seule séquence
- * globale pour tous les objets.</p>
+ * <p>Register custom functions to allow advanced queryDSL queries.</p>
  * 
- * <p>Les séquences sont gérées via des types serial et ce dialect suit donc les conventions de nommage de séquence de
- * PostgreSQL.</p>
- * 
- * <p>Hibernate est assez peu finaud sur la gestion des séquences PostgreSQL.</p>
- * 
- * <p>Par ailleurs, il pose maintenant l'architecture pour nous permettre d'utiliser des choses plus proches du SQL via QueryDSL.</p>
+ * <p>Previously (<= 0.13): register custom SequenceStyleGenerator; now configured with
+ * {@link AvailableSettings#IDENTIFIER_GENERATOR_STRATEGY_PROVIDER}</p>
  * 
  * @author Open Wide
  */
@@ -41,11 +36,6 @@ public class PostgreSQLAdvancedDialect extends PostgreSQL82Dialect {
 	public PostgreSQLAdvancedDialect() {
 		registerFunction("interval", new PostgreSQLIntervalFunction());
 		registerFunction("regexp_operator", new PostgreSQLRegexpOperatorFunction());
-	}
-
-	@Override
-	public Class<? extends IdentifierGenerator> getNativeIdentifierGeneratorClass() {
-		return PostgreSQLSequenceStyleGenerator.class;
 	}
 
 }

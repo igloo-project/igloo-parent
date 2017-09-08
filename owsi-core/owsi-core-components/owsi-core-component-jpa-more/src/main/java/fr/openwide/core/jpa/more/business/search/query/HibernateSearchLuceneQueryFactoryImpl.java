@@ -17,6 +17,7 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -24,6 +25,7 @@ import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.search.bridge.GenericEntityIdFieldBridge;
 import fr.openwide.core.jpa.search.bridge.NullEncodingGenericEntityIdFieldBridge;
+import fr.openwide.core.jpa.search.service.IHibernateSearchService;
 import fr.openwide.core.spring.util.StringUtils;
 import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
@@ -39,12 +41,15 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 					return input.getPath();
 				}
 			};
-
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
+	@Autowired
+	private IHibernateSearchService hibernateSearchService;
+	
 	private FullTextEntityManager fullTextEntityManager;
-
+	
 	private Map<Class<?>, QueryBuilder> queryBuilderCache = new HashMap<Class<?>, QueryBuilder>();
 	private Map<Class<?>, Analyzer> analyzerCache = Maps.newHashMap();
 	
@@ -105,7 +110,7 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	}
 	
 	protected Analyzer createAnalyzer(FullTextEntityManager fullTextEntityManager, Class<?> clazz) {
-		return fullTextEntityManager.getSearchFactory().getAnalyzer(clazz);
+		return hibernateSearchService.getAnalyzer(clazz);
 	}
 	
 	// 	Any/all

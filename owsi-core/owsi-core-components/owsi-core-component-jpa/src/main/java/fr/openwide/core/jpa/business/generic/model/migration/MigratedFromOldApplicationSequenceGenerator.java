@@ -2,9 +2,9 @@ package fr.openwide.core.jpa.business.generic.model.migration;
 
 import java.io.Serializable;
 
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 
-import fr.openwide.core.jpa.hibernate.dialect.PostgreSQLSequenceStyleGenerator;
+import fr.openwide.core.jpa.hibernate.dialect.PerTableSequenceStyleGenerator;
 
 /**
  * Sequence generator used to define the new id from the id used in an old application.
@@ -19,12 +19,12 @@ import fr.openwide.core.jpa.hibernate.dialect.PostgreSQLSequenceStyleGenerator;
  * }
  * </pre>
  */
-public class MigratedFromOldApplicationSequenceGenerator extends PostgreSQLSequenceStyleGenerator {
+public class MigratedFromOldApplicationSequenceGenerator extends PerTableSequenceStyleGenerator {
 	
 	public static final String CLASS_NAME = "fr.openwide.core.jpa.business.generic.model.migration.MigratedFromOldApplicationSequenceGenerator";
 	
 	@Override
-	public Serializable generate(SessionImplementor session, Object obj) {
+	public Serializable generate(SharedSessionContractImplementor session, Object obj) {
 		if (obj instanceof IMigratedFromOldApplicationEntity) {
 			IMigratedFromOldApplicationEntity<?> migratedEntity = (IMigratedFromOldApplicationEntity<?>) obj;
 			Serializable oldApplicationId = migratedEntity.getOldApplicationId();

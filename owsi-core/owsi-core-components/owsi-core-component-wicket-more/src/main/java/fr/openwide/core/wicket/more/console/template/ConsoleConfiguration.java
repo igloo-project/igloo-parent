@@ -13,6 +13,8 @@ import org.springframework.util.StringUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import fr.openwide.core.jpa.more.property.JpaMoreInfinispanPropertyIds;
+import fr.openwide.core.spring.property.service.IPropertyService;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItem;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
 import fr.openwide.core.wicket.more.console.common.model.ConsoleMenuSection;
@@ -20,6 +22,8 @@ import fr.openwide.core.wicket.more.console.maintenance.authentication.page.Cons
 import fr.openwide.core.wicket.more.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
 import fr.openwide.core.wicket.more.console.maintenance.file.page.ConsoleMaintenanceFilePage;
 import fr.openwide.core.wicket.more.console.maintenance.gestion.page.ConsoleMaintenanceGestionPage;
+import fr.openwide.core.wicket.more.console.maintenance.infinispan.page.ConsoleMaintenanceInfinispanPage;
+import fr.openwide.core.wicket.more.console.maintenance.queuemanager.page.ConsoleMaintenanceQueueManagerPage;
 import fr.openwide.core.wicket.more.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import fr.openwide.core.wicket.more.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
@@ -47,11 +51,16 @@ public final class ConsoleConfiguration {
 		return INSTANCE;
 	}
 	
-	public static ConsoleConfiguration build(String baseUrl) {
-		return build(baseUrl, "console.pageTitle", true);
+	public static ConsoleConfiguration build(String baseUrl, IPropertyService propertyService) {
+		return build(baseUrl, "console.pageTitle", true, propertyService);
 	}
 	
-	public static ConsoleConfiguration build(String baseUrl, String consolePageTitleKey, boolean buildDefault) {
+	public static ConsoleConfiguration build(
+			String baseUrl,
+			String consolePageTitleKey,
+			boolean buildDefault,
+			IPropertyService propertyService
+	) {
 		INSTANCE.setBaseUrl(UrlUtils.normalizePath(baseUrl));
 		INSTANCE.setConsolePageTitleKey(consolePageTitleKey);
 		
@@ -82,6 +91,15 @@ public final class ConsoleConfiguration {
 			ConsoleMenuItem fileMenuItem = new ConsoleMenuItem("fileMenuItem",
 					"console.maintenance.file", "file", ConsoleMaintenanceFilePage.class);
 			maintenanceMenuSection.addMenuItem(fileMenuItem);
+			
+			if (Boolean.TRUE.equals(propertyService.get(JpaMoreInfinispanPropertyIds.INFINISPAN_ENABLED))) {
+				ConsoleMenuItem infinispanMenuItem = new ConsoleMenuItem("infinispanMenuItem",
+						"console.maintenance.infinispan", "infinispan", ConsoleMaintenanceInfinispanPage.class);
+				maintenanceMenuSection.addMenuItem(infinispanMenuItem);
+				ConsoleMenuItem queueManagerMenuItem = new ConsoleMenuItem("queuemanagerMenuItem", 
+						"console.maintenance.queuemanager", "queuemanager", ConsoleMaintenanceQueueManagerPage.class);
+				maintenanceMenuSection.addMenuItem(queueManagerMenuItem);
+			}
 			
 			INSTANCE.addMenuSection(maintenanceMenuSection);
 			INSTANCE.addCssResourceReference(ConsoleLessCssResourceReference.get());

@@ -10,12 +10,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -27,13 +30,18 @@ import org.apache.lucene.search.Sort;
 import org.hibernate.CacheMode;
 import org.hibernate.search.MassIndexer;
 import org.hibernate.search.SearchFactory;
+import org.hibernate.search.analyzer.impl.ScopedLuceneAnalyzer;
 import org.hibernate.search.batchindexing.MassIndexerProgressMonitor;
 import org.hibernate.search.batchindexing.impl.MassIndexerImpl;
+import org.hibernate.search.elasticsearch.analyzer.impl.ElasticsearchAnalyzer;
+import org.hibernate.search.elasticsearch.analyzer.impl.ScopedElasticsearchAnalyzer;
 import org.hibernate.search.engine.integration.impl.ExtendedSearchIntegrator;
 import org.hibernate.search.hcore.util.impl.HibernateHelper;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
+import org.hibernate.search.spi.SearchIntegrator;
+import org.hibernate.search.util.impl.PassThroughAnalyzer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +49,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
 
 import fr.openwide.core.jpa.business.generic.model.GenericEntity;
+import fr.openwide.core.jpa.config.spring.provider.IJpaPropertiesProvider;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.hibernate.analyzers.CoreLuceneClientAnalyzersDefinitionProvider;
+import fr.openwide.core.jpa.search.util.SortFieldUtil;
 import fr.openwide.core.spring.property.service.IPropertyService;
 
 @Repository("hibernateSearchDao")
@@ -54,10 +66,53 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	@Autowired
 	private IPropertyService propertyService;
 	
+	@Autowired
+	private IJpaPropertiesProvider jpaPropertiesProvider;
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
 	public HibernateSearchDaoImpl() {
+	}
+	
+	@Override
+	public Analyzer getAnalyzer(String analyzerName) {
+		if (jpaPropertiesProvider.isHibernateSearchElasticSearchEnabled()) {
+			if ("default".equals(analyzerName)) {
+				return PassThroughAnalyzer.INSTANCE;
+			} else {
+				return Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(SearchIntegrator.class)
+						.getAnalyzer(CoreLuceneClientAnalyzersDefinitionProvider.ANALYZER_NAME_PREFIX + analyzerName);
+			}
+		} else {
+			return Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(SearchIntegrator.class).getAnalyzer(analyzerName);
+		}
+	}
+	
+	@Override
+	public Analyzer getAnalyzer(Class<?> entityType) {
+		if (jpaPropertiesProvider.isHibernateSearchElasticSearchEnabled()) {
+			ExtendedSearchIntegrator searchIntegrator = Search.getFullTextEntityManager(getEntityManager())
+					.getSearchFactory().unwrap(ExtendedSearchIntegrator.class);
+			ScopedElasticsearchAnalyzer scopedAnalyzer = (ScopedElasticsearchAnalyzer) searchIntegrator.getAnalyzerReference(entityType).getAnalyzer();
+			
+			try {
+				// these properties are package protected !
+				ElasticsearchAnalyzer globalAnalyzer = (ElasticsearchAnalyzer) FieldUtils.getField(ScopedElasticsearchAnalyzer.class, "globalAnalyzer", true).get(scopedAnalyzer);
+				@SuppressWarnings("unchecked")
+				Map<String, ElasticsearchAnalyzer> analyzers = (Map<String, ElasticsearchAnalyzer>) FieldUtils.getField(ScopedElasticsearchAnalyzer.class, "scopedAnalyzers", true).get(scopedAnalyzer);
+				
+				Map<String, Analyzer> luceneAnalyzers = Maps.newHashMap();
+				for (Entry<String, ElasticsearchAnalyzer> analyzer : analyzers.entrySet()) {
+					luceneAnalyzers.put(analyzer.getKey(), getAnalyzer(analyzer.getValue().getName(null)));
+				}
+				return new ScopedLuceneAnalyzer(getAnalyzer(globalAnalyzer.getName(null)) /* parameter is not used */, luceneAnalyzers);
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException("illegal access on scoped analyzer", e);
+			}
+		} else {
+			return Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(SearchIntegrator.class).getAnalyzer(entityType);
+		}
 	}
 	
 	@Override
@@ -83,7 +138,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		classes.add(clazz);
 		
 		return search(classes, fields, searchPattern,
-				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(clazz),
+				getAnalyzer(clazz),
 				null, limit, offset, sort);
 	}
 
@@ -99,7 +154,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
 			Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return search(classes, fields, searchPattern,
-				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName),
+				getAnalyzer(analyzerName),
 				null, limit, offset, sort);
 	}
 
@@ -136,7 +191,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		classes.add(clazz);
 		
 		return search(classes, fields, searchPattern,
-				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(clazz),
+				getAnalyzer(clazz),
 				additionalLuceneQuery, limit, offset, sort);
 	}
 
@@ -152,7 +207,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
 			Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
 		return search(classes, fields, searchPattern,
-				Search.getFullTextEntityManager(entityManager).getSearchFactory().getAnalyzer(analyzerName),
+				getAnalyzer(analyzerName),
 				additionalLuceneQuery, limit, offset, sort);
 	}
 
@@ -190,8 +245,10 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			if (limit != null) {
 				hibernateQuery.setMaxResults(limit);
 			}
-			if (sort != null) {
-				hibernateQuery.setSort(sort);
+			if (sort != null && !classes.isEmpty()) {
+				SortFieldUtil.setSort(hibernateQuery, fullTextSession, Iterables.getFirst(classes, null), sort);
+			} else if (classes.size() == 0) {
+				throw new IllegalStateException("No class for search is no longer supported (owsi-core >= 0.14)");
 			} else if (offset != null || limit != null) {
 				LOGGER.warn("La requête ne spécifie pas de sort mais spécifie une limite ou un offset.");
 			}
@@ -231,9 +288,9 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		}
 		
 		for (Class<?> clazz : entityClasses) {
-			LOGGER.info(String.format("Reindexing %1$s.", clazz));
 			ProgressMonitor progressMonitor = new ProgressMonitor();
 			Thread t = new Thread(progressMonitor);
+			LOGGER.info(String.format("Reindexing %1$s.", clazz));
 			t.start();
 			MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
 			indexer.batchSizeToLoadObjects(batchSize)
@@ -246,7 +303,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			LOGGER.info(String.format("Reindexing %1$s done.", clazz));
 		}
 	}
-	
+
 	@Override
 	public Set<Class<?>> getIndexedRootEntities(Class<?>... selection) {
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);

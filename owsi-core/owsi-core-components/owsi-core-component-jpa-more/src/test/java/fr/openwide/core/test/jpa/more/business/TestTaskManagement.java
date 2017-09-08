@@ -8,6 +8,7 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -248,7 +249,8 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
 		// concurrency mechanism to ensure that task 1 is pushed to queue before task 2
 		// for each step, offer then take must be done
-		final LinkedBlockingQueue<Boolean> concurrentLinkedQueue = new LinkedBlockingQueue<Boolean>(1);
+		final LinkedBlockingQueue<Boolean> step1ConcurrentLinkedQueue = new LinkedBlockingQueue<Boolean>(1);
+		final LinkedBlockingQueue<Boolean> step2ConcurrentLinkedQueue = new LinkedBlockingQueue<Boolean>(1);
 		
 		Runnable runnable = new Runnable() {
 			@Override
@@ -261,18 +263,20 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 									new SimpleTestTask<>(result, "success", TaskExecutionResult.completed())
 							);
 							// signal that submit is called for task 1
-							concurrentLinkedQueue.offer(true); // STEP 1 signal
+							step1ConcurrentLinkedQueue.offer(true); // STEP 1 signal
 							
 							taskHolderId.set(taskHolder.getId());
 							
 							// wait for task 2 to be pushed and committed
-							concurrentLinkedQueue.offer(true); // STEP 2 wait
+							step2ConcurrentLinkedQueue.take(); // STEP 2 wait
 							
 							// Check that the task has not been consumed during this transaction
 							// (which could be aborted)
 							// and that task 2 is allowed to be done
 							assertNull(result.get());
 						} catch (ServiceException e) {
+							throw new IllegalStateException(e);
+						} catch (InterruptedException e) {
 							throw new IllegalStateException(e);
 						}
 					}
@@ -284,7 +288,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		t.start();
 		
 		// wait task 1 submit (submitted but not committed, so task not in queue)
-		concurrentLinkedQueue.take(); // STEP 1 wait
+		step1ConcurrentLinkedQueue.take(); // STEP 1 wait
 		
 		// push another task
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -301,7 +305,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		});
 		
 		// signal that task 2 submit transaction is completed
-		concurrentLinkedQueue.offer(true); // STEP 2 signal
+		step2ConcurrentLinkedQueue.offer(true); // STEP 2 signal
 		
 		// wait for task 2 transaction & post-transaction completion
 		while (t.isAlive()) {
@@ -324,7 +328,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		
 		@Autowired
 		private IQueuedTaskHolderManager manager;
-
+		
 		protected SelfInterruptingTask() {
 			super();
 		}
@@ -336,8 +340,17 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 		
 		@Override
 		protected TaskExecutionResult doTask() throws Exception {
-			// Stop the manager, then wait for it to interrupt us (waiting duration specified through setTimeToWait())
-			manager.stop();
+			Thread thread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					manager.stop();
+				}
+			});
+			// stop the manager in a separate thread so that there is no lockup
+			// (as manager will wait uninterruptibly for all threads to stop)
+			thread.start();
+			// wait forever (we are going to be interrupted by manager stop)
+			TimeUnit.HOURS.sleep(1);
 			return super.doTask();
 		}
 	}

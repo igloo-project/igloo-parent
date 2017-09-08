@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.13.4</version>
+		<version>0.14</version>
 	</parent>
 
 	<artifactId>owsi-core-component-jpa</artifactId>
@@ -14,6 +14,7 @@
 	<description>Capitalisation des outils génériques pour la technologie JPA</description>
 
 	<dependencies>
+		
 		<!-- OWSI Core dependencies -->
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
@@ -48,11 +49,27 @@
 			<groupId>net.sf.ehcache.internal</groupId>
 			<artifactId>ehcache-core</artifactId>
 		</dependency>
+	
+		<!-- hibernate-search -->
 		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-search-orm</artifactId>
 			<version>${owsi-core.hibernate-search.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search-elasticsearch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
+		<!-- Http Client -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
 		</dependency>
 		
 		<dependency>
@@ -91,6 +108,11 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
 		</dependency>
 		
 		<!-- Test dependencies -->
@@ -154,17 +176,6 @@
 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>antlr-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<grammars>
-						extended-sql-stmt.g
-					</grammars>
-					<outputDirectory>${basedir}/src/main/java</outputDirectory>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

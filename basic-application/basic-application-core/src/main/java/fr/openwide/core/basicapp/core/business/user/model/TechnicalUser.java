@@ -13,5 +13,5 @@ import org.hibernate.search.annotations.Indexed;
 public class TechnicalUser extends User {
 
 	private static final long serialVersionUID = 1796077904296031306L;
-
+	
 }

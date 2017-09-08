@@ -1,5 +1,7 @@
 package fr.openwide.core.jpa.config.spring.provider;
 
+import java.util.Properties;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
@@ -41,5 +43,27 @@ public interface IJpaPropertiesProvider {
 	Class<? extends PhysicalNamingStrategy> getPhysicalNamingStrategy();
 
 	Boolean isNewGeneratorMappingsEnabled();
+
+	String getDefaultSchema();
+
+	boolean isHibernateSearchElasticSearchEnabled();
+
+	void setHibernateSearchElasticSearchEnabled(boolean isElasticSearchEnabled);
+
+	String getElasticSearchHost();
+
+	void setElasticSearchHost(String elasticSearchHost);
+
+	String getElasticSearchIndexSchemaManagementStrategy();
+
+	void setElasticSearchIndexSchemaManagementStrategy(String elasticSearchIndexSchemaManagementStrategy);
+
+	Properties getDefaultExtraProperties();
+
+	void setDefaultExtraProperties(Properties defaultExtraProperties);
+
+	Properties getExtraProperties();
+
+	void setExtraProperties(Properties extraProperties);
 
 }

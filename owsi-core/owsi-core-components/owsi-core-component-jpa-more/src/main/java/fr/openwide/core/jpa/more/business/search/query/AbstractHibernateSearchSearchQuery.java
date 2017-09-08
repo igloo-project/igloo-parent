@@ -2,6 +2,7 @@ package fr.openwide.core.jpa.more.business.search.query;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -28,6 +29,7 @@ import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.jpa.search.bridge.GenericEntityIdFieldBridge;
 import fr.openwide.core.jpa.search.bridge.NullEncodingGenericEntityIdFieldBridge;
+import fr.openwide.core.jpa.search.util.SortFieldUtil;
 import fr.openwide.core.spring.util.lucene.search.LuceneUtils;
 
 public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>> extends AbstractSearchQuery<T, S> /* NOT Serializable */ {
@@ -184,7 +186,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		
 		Sort sort = SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts);
 		if (sort != null && sort.getSort().length > 0) {
-			fullTextQuery.setSort(sort);
+			SortFieldUtil.setSort(fullTextQuery, fullTextEntityManager, mainClass, sort);
 		}
 		return fullTextQuery;
 	}
@@ -318,6 +320,10 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 
 	protected Query matchAutocompleteIfGiven(String terms, Iterable<String> fieldPaths) {
 		return getFactory().matchAutocompleteIfGiven(terms, fieldPaths);
+	}
+
+	protected Query matchAutocompleteIfGiven(String terms, String fieldPath) {
+		return getFactory().matchAutocompleteIfGiven(terms, Collections.singleton(fieldPath));
 	}
 	
 	protected Query matchAutocompleteIfGiven(Analyzer analyzer, String terms, Iterable<String> fieldPaths) {

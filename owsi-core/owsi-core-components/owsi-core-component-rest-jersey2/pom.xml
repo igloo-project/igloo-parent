@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.13.4</version>
+		<version>0.14</version>
 	</parent>
 
 	<artifactId>owsi-core-component-rest-jersey2</artifactId>
@@ -56,7 +56,17 @@
 					<groupId>org.glassfish.hk2.external</groupId>
 					<artifactId>bean-validator</artifactId>
 				</exclusion>
+				<exclusion>
+					<!-- outdated version -->
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-validator</artifactId>
+				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 		
 		<dependency>

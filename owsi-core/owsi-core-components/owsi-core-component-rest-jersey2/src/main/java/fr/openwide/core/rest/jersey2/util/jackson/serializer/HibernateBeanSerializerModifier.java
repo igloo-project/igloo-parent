@@ -48,21 +48,11 @@ public class HibernateBeanSerializerModifier extends BeanSerializerModifier {
 			this.serializer = src;
 		}
 
-		protected BeanSerializerWrapper(BeanSerializerWrapper src, String[] toIgnore) {
-			super(src.serializer, toIgnore);
-			this.serializer = src;
-		}
-
 		@Override
 		public BeanSerializerWrapper withObjectIdWriter(ObjectIdWriter objectIdWriter) {
 			return new BeanSerializerWrapper(this, objectIdWriter);
 		}
 
-		@Override
-		protected BeanSerializerWrapper withIgnorals(String[] toIgnore) {
-			return new BeanSerializerWrapper(this, toIgnore);
-		}
-		
 		private <T> T unwrapBean(T bean) {
 			// Pour serializeFields* :
 			// C'est une étape non nécessaire car le serializerFactory utilisé en amont a modifié le type

@@ -90,7 +90,10 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 						IConfigurationLocationProvider.class);
 				
 				// récupération des locations et répartition par numéro d'ordre
-				for (String location : provider.getLocations(applicationName, annotation.locations())) {
+				for (String location : provider.getLocations(
+						applicationName,
+						applicationContext.getEnvironment().getProperty("environment", "default"),
+						annotation.locations())) {
 					List<Resource> locationGroup;
 					if (locationGroups.containsKey(annotation.order())) {
 						locationGroup = locationGroups.get(annotation.order());

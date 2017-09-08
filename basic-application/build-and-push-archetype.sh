@@ -15,7 +15,6 @@ if [ "${basic_application_directory}" == "" ] || [ ! -d "${basic_application_dir
 fi
 
 pushd "${basic_application_directory}"
-branch=$(git rev-parse --abbrev-ref HEAD)
 
 deploy_environment="$2"
 case "${deploy_environment}" in
@@ -33,8 +32,7 @@ temp_directory=$(mktemp --suffix=-archetype -d)
 
 mkdir ${temp_directory}/basic_application
 
-# copy the original directory to a temporary one, excluding VCS files
-#git archive ${branch} | tar -x -C ${temp_directory}/basic_application
+# copy the original directory to a temporary one
 tar -c --exclude-vcs . | tar -x -C ${temp_directory}/basic_application
 
 if [ $? -ne 0 ]; then

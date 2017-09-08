@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-maven-configuration-common</artifactId>
-		<version>0.13.4</version>
+		<version>0.14</version>
 		<relativePath>../owsi-core-parent-maven-configuration-common/pom.xml</relativePath>
 	</parent>
 	
@@ -16,44 +16,43 @@
 	
 	<properties>
 		<owsi-core.version>${project.version}</owsi-core.version>
-		
-		<owsi-core.spring.version>4.2.6.RELEASE</owsi-core.spring.version>
-		<owsi-core.aspectj.version>1.8.9</owsi-core.aspectj.version>
 
-		<owsi-core.hibernate-core.version>5.1.0.Final</owsi-core.hibernate-core.version>
+		<owsi-core.spring.version>4.3.8.RELEASE</owsi-core.spring.version>
+		<owsi-core.aspectj.version>1.8.10</owsi-core.aspectj.version>
+
+		<owsi-core.hibernate-core.version>5.2.10.Final</owsi-core.hibernate-core.version>
 		<owsi-core.hibernate-jpa-2.1-api.version>1.0.0.Final</owsi-core.hibernate-jpa-2.1-api.version>
 		<owsi-core.hibernate-commons-annotations.version>5.0.1.Final</owsi-core.hibernate-commons-annotations.version>
-		<owsi-core.jboss-logging.version>3.3.0.Final</owsi-core.jboss-logging.version>
-		<owsi-core.tomcat-jdbc.version>7.0.69</owsi-core.tomcat-jdbc.version>
-		<owsi-core.hikaricp.version>2.4.6</owsi-core.hikaricp.version>
+		<owsi-core.hibernate-validator.version>5.4.1.Final</owsi-core.hibernate-validator.version>
+		<owsi-core.jboss-logging.version>3.3.1.Final</owsi-core.jboss-logging.version>
+		<owsi-core.tomcat-jdbc.version>7.0.77</owsi-core.tomcat-jdbc.version>
+		<owsi-core.hikaricp.version>2.6.1</owsi-core.hikaricp.version>
 		<owsi-core.hibernate-ehcache.version>${owsi-core.hibernate-core.version}</owsi-core.hibernate-ehcache.version>
-		<owsi-core.ehcache.version>2.10.2</owsi-core.ehcache.version>
-		<owsi-core.querydsl.version>4.1.1</owsi-core.querydsl.version>
+		<owsi-core.ehcache.version>2.10.4</owsi-core.ehcache.version>
+		<owsi-core.querydsl.version>4.1.4</owsi-core.querydsl.version>
 		
-		<owsi-core.guava.version>19.0</owsi-core.guava.version>
+		<owsi-core.guava.version>21.0</owsi-core.guava.version>
 		
 		<owsi-core.joda-time.version>2.9.2</owsi-core.joda-time.version>
 		
 		<owsi-core.postgresql.version>9.4.1208.jre7</owsi-core.postgresql.version>
-		<owsi-core.pgjdbc-ng.version>0.6</owsi-core.pgjdbc-ng.version>
+		<owsi-core.pgjdbc-ng.version>0.7.1</owsi-core.pgjdbc-ng.version>
 		<owsi-core.oracle10g.version>10.2.0.5</owsi-core.oracle10g.version>
 		<owsi-core.mysql.version>5.1.14</owsi-core.mysql.version>
 		
-		<owsi-core.cglib.version>3.2.2</owsi-core.cglib.version>
+		<owsi-core.cglib.version>3.2.5</owsi-core.cglib.version>
 		<owsi-core.javassist.version>3.20.0-GA</owsi-core.javassist.version>
 		
-		<owsi-core.bindgen.version>3.0.1</owsi-core.bindgen.version>
-		<owsi-core.bindgen-java.version>0.2.1</owsi-core.bindgen-java.version>
-		<owsi-core.bindgen-java-jdk7.version>0.2.1.jdk7</owsi-core.bindgen-java-jdk7.version>
+		<owsi-core.bindgen.version>3.1.0</owsi-core.bindgen.version>
+		<owsi-core.bindgen-java.version>0.2.2</owsi-core.bindgen-java.version>
+		<owsi-core.bindgen-java-jdk7.version>0.2.2.jdk7</owsi-core.bindgen-java-jdk7.version>
 		
-		<owsi-core.spring-security.version>4.1.0.RELEASE</owsi-core.spring-security.version>
+		<owsi-core.spring-security.version>4.2.2.RELEASE</owsi-core.spring-security.version>
 		
-		<owsi-core.spring-ldap.version>2.1.0.RELEASE</owsi-core.spring-ldap.version>
+		<owsi-core.spring-ldap.version>2.3.1.RELEASE</owsi-core.spring-ldap.version>
 		
-		<owsi-core.hibernate-search.version>5.5.5.Final</owsi-core.hibernate-search.version>
-		<owsi-core.lucene.version>5.3.2</owsi-core.lucene.version>
-		
-		<owsi-core.quartz.version>2.2.3</owsi-core.quartz.version>
+		<owsi-core.hibernate-search.version>5.7.0.Final</owsi-core.hibernate-search.version>
+		<owsi-core.lucene.version>5.5.4</owsi-core.lucene.version>
 		
 		<owsi-core.javatuples.version>1.2</owsi-core.javatuples.version>
 		
@@ -78,14 +77,15 @@
 		<owsi-core.commons-io.version>2.4</owsi-core.commons-io.version>
 		
 		<owsi-core.commons-lang.version>2.6</owsi-core.commons-lang.version>
-		<owsi-core.commons-lang3.version>3.4</owsi-core.commons-lang3.version>
+		<owsi-core.commons-lang3.version>3.5</owsi-core.commons-lang3.version>
 		<owsi-core.commons-math3.version>3.6.1</owsi-core.commons-math3.version>
-		<owsi-core.commons-cli.version>1.3.1</owsi-core.commons-cli.version>
+		<owsi-core.commons-cli.version>1.4</owsi-core.commons-cli.version>
 		<owsi-core.commons-codec.version>1.10</owsi-core.commons-codec.version>
 		<owsi-core.commons-exec.version>1.3</owsi-core.commons-exec.version>
 		<owsi-core.commons-compress.version>1.11</owsi-core.commons-compress.version>
 		<owsi-core.commons-validator.version>1.5.1</owsi-core.commons-validator.version>
 		<owsi-core.commons-collections.version>3.2.2</owsi-core.commons-collections.version>
+		<owsi-core.commons-collections4.version>4.1</owsi-core.commons-collections4.version>
 		<owsi-core.commons-beanutils.version>1.9.2</owsi-core.commons-beanutils.version>
 		<owsi-core.commons-fileupload.version>1.3.2</owsi-core.commons-fileupload.version>
 		
@@ -95,14 +95,14 @@
 		<!-- Warning: versions 2.x.y seem to be an abandoned branch of development (they are older than 1.x.y) -->
 		<owsi-core.xml-apis.version>1.4.01</owsi-core.xml-apis.version>
 		
-		<owsi-core.slf4j.version>1.7.21</owsi-core.slf4j.version>
+		<owsi-core.slf4j.version>1.7.25</owsi-core.slf4j.version>
 		<owsi-core.log4j.version>1.2.17</owsi-core.log4j.version>
 		
 		<owsi-core.opencsv.version>3.7</owsi-core.opencsv.version>
 		<owsi-core.freemarker.version>2.3.23</owsi-core.freemarker.version>
 		<owsi-core.dom4j.version>1.6.1</owsi-core.dom4j.version>
 		
-		<owsi-core.poi.version>3.14</owsi-core.poi.version>
+		<owsi-core.poi.version>3.16</owsi-core.poi.version>
 		
 		<!-- 
 		Version 3 does not exist.
@@ -116,28 +116,30 @@
 		
 		<owsi-core.json-lib.version>2.3</owsi-core.json-lib.version>
 		<owsi-core.jackson.version>1.9.13</owsi-core.jackson.version>
-		<owsi-core.jackson2-core.version>2.7.4</owsi-core.jackson2-core.version>
+		<owsi-core.jackson2-core.version>2.8.8</owsi-core.jackson2-core.version>
 		<owsi-core.jackson2-annotations.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-annotations.version>
 		<owsi-core.jackson2-databind.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-databind.version>
 		<owsi-core.jackson2-jaxrs.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-jaxrs.version>
 		<owsi-core.jackson2-dataformat-xml.version>${owsi-core.jackson2-core.version}</owsi-core.jackson2-dataformat-xml.version>
 		
 		<!-- See comments on property owsi-core.commons-io.version -->
-		<owsi-core.truezip.version>7.7.9</owsi-core.truezip.version>
+		<owsi-core.truezip.version>7.7.10</owsi-core.truezip.version>
+		<owsi-core.bouncycastle.version>2.55</owsi-core.bouncycastle.version>
 		
 		<owsi-core.flying-saucer.version>9.0.9</owsi-core.flying-saucer.version>
 		<owsi-core.jfreechart.version>1.0.19</owsi-core.jfreechart.version>
 		<owsi-core.imageinfo.version>1.9</owsi-core.imageinfo.version>
-		<owsi-core.jsoup.version>1.9.2</owsi-core.jsoup.version>
+		<owsi-core.jsoup.version>1.10.2</owsi-core.jsoup.version>
 		<owsi-core.rhino.version>1.7.7.1</owsi-core.rhino.version>
-		<owsi-core.httpclient.version>4.5.2</owsi-core.httpclient.version>
-		<owsi-core.httpcore.version>4.4.4</owsi-core.httpcore.version>
+		<owsi-core.httpclient.version>4.5.3</owsi-core.httpclient.version>
+		<owsi-core.httpcore.version>4.4.6</owsi-core.httpcore.version>
 		<owsi-core.prettytime.version>4.0.1.Final</owsi-core.prettytime.version>
 		<owsi-core.ph-css.version>4.1.3</owsi-core.ph-css.version>
 		<owsi-core.galimatias.version>0.2.1</owsi-core.galimatias.version>
 		
-		<owsi-core.jersey.version>1.19.1</owsi-core.jersey.version>
-		<owsi-core.jersey2.version>2.23</owsi-core.jersey2.version>
+		<owsi-core.jersey.version>1.19.3</owsi-core.jersey.version>
+		<owsi-core.jersey2.version>2.25.1</owsi-core.jersey2.version>
+		<owsi-core.glassfish-asm-all-repackaged.version>2.5.0-b05</owsi-core.glassfish-asm-all-repackaged.version>
 		
 		<owsi-core.jstl.version>1.2</owsi-core.jstl.version>
 		<owsi-core.jsp-api.version>2.2</owsi-core.jsp-api.version>
@@ -149,7 +151,7 @@
 		<owsi-core.javax-activation.version>1.1.1</owsi-core.javax-activation.version>
 		<owsi-core.javax-validation-api.version>1.1.0.Final</owsi-core.javax-validation-api.version>
 		
-		<owsi-core.wicket.version>7.3.0</owsi-core.wicket.version>
+		<owsi-core.wicket.version>7.6.0</owsi-core.wicket.version>
 		<owsi-core.wiquery.version>7.0</owsi-core.wiquery.version>
 		<owsi-core.wicket-select2.version>1.2.0</owsi-core.wicket-select2.version>
 		<owsi-core.wqplot.version>7.1.0.owsi1</owsi-core.wqplot.version>
@@ -157,13 +159,19 @@
 		<owsi-core.less4j.version>1.17.2</owsi-core.less4j.version>
 		<owsi-core.jsass.version>3.3.0</owsi-core.jsass.version>
 		
+		<owsi-core.flywaydb.version>4.0.3</owsi-core.flywaydb.version>
+		<!-- infinispan >= 8.0 requires java 8 -->
+		<owsi-core.infinispan.version>7.2.5.Final</owsi-core.infinispan.version>
+		
 		<owsi-core.junit.version>4.12</owsi-core.junit.version>
 		<owsi-core.mockito.version>1.10.19</owsi-core.mockito.version>
-		<owsi-core.grizzly.version>1.9.63</owsi-core.grizzly.version>
+		<owsi-core.grizzly.version>1.9.65</owsi-core.grizzly.version>
 		<owsi-core.findbugs-annotations.version>3.0.1</owsi-core.findbugs-annotations.version>
 		
 		<owsi-core.passay.version>1.1.0</owsi-core.passay.version>
 		<owsi-core.java-object-diff.version>0.92</owsi-core.java-object-diff.version>
+		<owsi-core.elasticsearch.version>2.4.5</owsi-core.elasticsearch.version>
+		<owsi-core.gson.version>2.6.2</owsi-core.gson.version>
 		
 		<owsi-core.localization-properties-consistency-maven-plugin.version>1.0.0</owsi-core.localization-properties-consistency-maven-plugin.version>
 	</properties>
@@ -283,6 +291,18 @@
 					<groupId>commons-collections</groupId>
 					<artifactId>commons-collections</artifactId>
 					<version>${owsi-core.commons-collections.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>commons-collections4</groupId>
+					<artifactId>commons-collections4</artifactId>
+					<version>${owsi-core.commons-collections4.version}</version>
 					<exclusions>
 						<exclusion>
 							<groupId>commons-logging</groupId>
@@ -558,6 +578,22 @@
 					</dependency>
 					
 					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-validator</artifactId>
+						<version>${owsi-core.hibernate-validator.version}</version>
+						<exclusions>
+							<exclusion>
+								<!-- let hibernate-core choose the right version
+								     (we suppose that hibernate-core is included in all
+								     projects using hibernate-validator)
+								-->
+								<groupId>com.fasterxml</groupId>
+								<artifactId>classmate</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+
+					<dependency>
 						<groupId>org.jboss.logging</groupId>
 						<artifactId>jboss-logging</artifactId>
 						<version>${owsi-core.jboss-logging.version}</version>
@@ -749,6 +785,11 @@
 							<groupId>commons-logging</groupId>
 							<artifactId>commons-logging</artifactId>
 						</exclusion>
+						<!-- resolve manually conflict (hibernate-search-elasticsearch) -->
+						<exclusion>
+							<groupId>com.google.code.gson</groupId>
+							<artifactId>gson</artifactId>
+						</exclusion>
 					</exclusions>
 				</dependency>
 				
@@ -896,20 +937,6 @@
 					</exclusions>
 				</dependency>
 			
-			<!-- Scheduling -->
-			
-				<dependency>
-					<groupId>org.quartz-scheduler</groupId>
-					<artifactId>quartz</artifactId>
-					<version>${owsi-core.quartz.version}</version>
-					<exclusions>
-						<exclusion>
-							<artifactId>c3p0</artifactId>
-							<groupId>c3p0</groupId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-			
 			<!-- Apache POI -->
 			
 				<dependency>
@@ -963,6 +990,19 @@
 					<groupId>de.schlichtherle.truezip</groupId>
 					<artifactId>truezip-driver-zip</artifactId>
 					<version>${owsi-core.truezip.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>bouncycastle</groupId>
+							<artifactId>bcprov-jdk15on</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+			<!-- Explicit bouncycastle dependency (excluded from transitive) -->
+				<dependency>
+					<groupId>bouncycastle</groupId>
+					<artifactId>bcprov-jdk15on</artifactId>
+					<version>${owsi-core.bouncycastle.version}</version>
 				</dependency>
 			
 			<!-- Wicket -->
@@ -1094,6 +1134,21 @@
 					<groupId>org.glassfish.jersey.ext</groupId>
 					<artifactId>jersey-spring3</artifactId>
 					<version>${owsi-core.jersey2.version}</version>
+					<exclusions>
+						<exclusion>
+							<!-- from version >= 2.5.0-b06, asm-all is packaged with
+							     a module-info.class that cannot be handled by
+							     animal-sniffer ; switch to 2.5.0-b05 (same lib,
+							     different packaging)-->
+							<groupId>org.glassfish.hk2.external</groupId>
+							<artifactId>asm-all-repackaged</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				<dependency>
+					<groupId>org.glassfish.hk2.external</groupId>
+					<artifactId>asm-all-repackaged</artifactId>
+					<version>${owsi-core.glassfish-asm-all-repackaged.version}</version>
 				</dependency>
 			
 			<!-- Servlet / JSP -->
@@ -1127,7 +1182,44 @@
 					<artifactId>jsp-api</artifactId>
 					<version>${owsi-core.jsp-api.version}</version>
 				</dependency>
-			
+				
+				<dependency>
+					<groupId>org.flywaydb</groupId>
+					<artifactId>flyway-core</artifactId>
+					<version>${owsi-core.flywaydb.version}</version>
+				</dependency>
+				
+			<!-- Elasticsearch -->
+				<dependency>
+					<groupId>org.elasticsearch</groupId>
+					<artifactId>elasticsearch</artifactId>
+					<version>${owsi-core.elasticsearch.version}</version>
+				</dependency>
+				
+				<!-- Hibernate-search -->
+				<dependency>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-search-elasticsearch</artifactId>
+					<version>${owsi-core.hibernate-search.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+						<!-- resolve manually conflict (hibernate-search-elasticsearch) -->
+						<exclusion>
+							<groupId>com.google.code.gson</groupId>
+							<artifactId>gson</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<dependency>
+					<groupId>com.google.code.gson</groupId>
+					<artifactId>gson</artifactId>
+					<version>${owsi-core.gson.version}</version>
+				</dependency>
+		
 			<!-- Test dependencies -->
 			
 				<dependency>

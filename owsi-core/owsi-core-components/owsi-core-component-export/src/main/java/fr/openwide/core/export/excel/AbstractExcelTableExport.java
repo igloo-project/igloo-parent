@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -235,7 +235,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected void initStyles() {
 		CellStyle defaultStyle = workbook.createCellStyle();
 		defaultStyle.setFont(getFont(FONT_NORMAL_NAME));
-		setStyleFillForegroundColor(defaultStyle, colorRegistry, HSSFColor.WHITE.index);
+		setStyleFillForegroundColor(defaultStyle, colorRegistry, HSSFColorPredefined.WHITE.getIndex());
 		defaultStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		defaultStyle.setBorderBottom(CellStyle.BORDER_THIN);
 		setStyleBottomBorderColor(defaultStyle, colorRegistry, BORDER_COLOR_INDEX);

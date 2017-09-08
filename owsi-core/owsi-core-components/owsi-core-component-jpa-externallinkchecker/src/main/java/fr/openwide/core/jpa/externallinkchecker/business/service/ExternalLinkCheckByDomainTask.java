@@ -54,7 +54,7 @@ public class ExternalLinkCheckByDomainTask implements Callable<Void> {
 			@Override
 			public Void doInTransaction(TransactionStatus status) {
 				Session session = entityManagerUtils.getEntityManager().unwrap(Session.class);
-				session.setFlushMode(FlushMode.COMMIT);
+				session.setHibernateFlushMode(FlushMode.COMMIT);
 				
 				int count = 0;
 				for (Map.Entry<io.mola.galimatias.URL, Collection<Long>> urlToIdsEntry : urlToIdsMap.entrySet()) {

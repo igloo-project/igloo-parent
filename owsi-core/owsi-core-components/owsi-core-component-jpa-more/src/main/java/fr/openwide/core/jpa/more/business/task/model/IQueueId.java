@@ -23,7 +23,7 @@ public interface IQueueId {
 	/**
 	 * A string that is reserved to {@link IQueuedTaskHolderManager} implementors.
 	 */
-	String RESERVED_DEFAULT_QUEUE_ID_STRING = "&__DEFAULT_QUEUE__&";
+	IQueueId RESERVED_DEFAULT_QUEUE_ID_STRING = DefaultQueueId.DEFAULT;
 	
 	/**
 	 * Returns a string that uniquely identifies the queue.

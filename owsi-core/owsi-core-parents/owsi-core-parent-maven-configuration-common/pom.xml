@@ -4,7 +4,7 @@
 	
 	<groupId>fr.openwide.core.parents</groupId>
 	<artifactId>owsi-core-parent-maven-configuration-common</artifactId>
-	<version>0.13.4</version>
+	<version>0.14</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Parent - Maven configuration - Common</name>
@@ -32,13 +32,14 @@
 		
 		<owsi-core.maven-toolchains-plugin.version>1.1</owsi-core.maven-toolchains-plugin.version>
 		<owsi-core.maven-jgitflow-plugin.version>1.0-m5.1</owsi-core.maven-jgitflow-plugin.version>
-		<owsi-core.maven-compiler-plugin.version>3.6.0</owsi-core.maven-compiler-plugin.version>
+		<owsi-core.maven-compiler-plugin.version>3.6.1</owsi-core.maven-compiler-plugin.version>
 		<owsi-core.maven-resources-plugin.version>3.0.2</owsi-core.maven-resources-plugin.version>
-		<owsi-core.maven-surefire-plugin.version>2.19.1</owsi-core.maven-surefire-plugin.version>
+		<owsi-core.maven-surefire-plugin.version>2.20</owsi-core.maven-surefire-plugin.version>
+		<owsi-core.maven-surefire-plugin.argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=256m</owsi-core.maven-surefire-plugin.argLine>
 		<owsi-core.maven-install-plugin.version>2.5.2</owsi-core.maven-install-plugin.version>
 		<owsi-core.maven-release-plugin.version>2.5.3</owsi-core.maven-release-plugin.version>
-		<owsi-core.maven-war-plugin.version>2.6</owsi-core.maven-war-plugin.version>
-		<owsi-core.maven-assembly-plugin.version>2.6</owsi-core.maven-assembly-plugin.version>
+		<owsi-core.maven-war-plugin.version>3.1.0</owsi-core.maven-war-plugin.version>
+		<owsi-core.maven-assembly-plugin.version>3.0.0</owsi-core.maven-assembly-plugin.version>
 		<!-- Jar-plugin downgraded from 3.0.0 to 2.6 due to https://issues.apache.org/jira/browse/MJAR-226 -->
 		<owsi-core.maven-jar-plugin.version>2.6</owsi-core.maven-jar-plugin.version>
 		<owsi-core.maven-deploy-plugin.version>2.8.2</owsi-core.maven-deploy-plugin.version>
@@ -50,9 +51,9 @@
 		<owsi-core.exec-maven-plugin.version>1.5.0</owsi-core.exec-maven-plugin.version>
 		
 		<owsi-core.wagon-maven-plugin.version>1.0</owsi-core.wagon-maven-plugin.version>
-		<owsi-core.wagon-ssh-external-plugin.version>2.10</owsi-core.wagon-ssh-external-plugin.version>
+		<owsi-core.wagon-ssh-external-plugin.version>2.12</owsi-core.wagon-ssh-external-plugin.version>
 		
-		<owsi-core.maven-processor-plugin.version>3.1.0</owsi-core.maven-processor-plugin.version>
+		<owsi-core.maven-processor-plugin.version>3.3.1</owsi-core.maven-processor-plugin.version>
 		<owsi-core.maven-yui-compressor-plugin.version>1.5.1</owsi-core.maven-yui-compressor-plugin.version>
 		<owsi-core.aspectj-maven-plugin.version>1.8</owsi-core.aspectj-maven-plugin.version>
 	</properties>
@@ -222,7 +223,7 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${owsi-core.maven-surefire-plugin.version}</version>
 					<configuration>
-						<argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=256m</argLine>
+						<argLine>${owsi-core.maven-surefire-plugin.argLine}</argLine>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -453,6 +454,8 @@
 				<jdk.signature.artifactId>java18</jdk.signature.artifactId>
 				<jdk.signature.version>1.0</jdk.signature.version>
 				<jdk.version>1.8</jdk.version>
+				<maven.compiler.source>1.8</maven.compiler.source>
+				<maven.compiler.target>1.8</maven.compiler.target>
 			</properties>
 			<build>
 				<plugins>

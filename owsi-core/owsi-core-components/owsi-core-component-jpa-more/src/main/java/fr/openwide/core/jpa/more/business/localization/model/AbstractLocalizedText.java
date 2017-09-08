@@ -65,7 +65,7 @@ public abstract class AbstractLocalizedText implements Serializable, Cloneable {
 	/**
 	 * Null-safe version of {@link #getFirstNonEmpty(Collection)}.
 	 */
-	public static String getText(AbstractLocalizedText text, Collection<Locale> locales) {
+	public static String getFirstNonEmpty(AbstractLocalizedText text, Collection<Locale> locales) {
 		if (text == null) {
 			return null;
 		} else {

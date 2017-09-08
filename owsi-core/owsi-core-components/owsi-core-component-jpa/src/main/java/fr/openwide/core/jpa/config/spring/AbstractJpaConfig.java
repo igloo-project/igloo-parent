@@ -7,13 +7,19 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.apache.lucene.search.BooleanQuery;
+import org.flywaydb.core.Flyway;
 import org.springframework.aop.Advisor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.core.io.Resource;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -22,6 +28,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import fr.openwide.core.jpa.batch.CoreJpaBatchPackage;
 import fr.openwide.core.jpa.business.generic.CoreJpaBusinessGenericPackage;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
+import fr.openwide.core.jpa.more.config.util.FlywayConfiguration;
 import fr.openwide.core.jpa.search.CoreJpaSearchPackage;
 import fr.openwide.core.jpa.util.CoreJpaUtilPackage;
 import fr.openwide.core.spring.property.service.IPropertyService;
@@ -39,6 +46,9 @@ import fr.openwide.core.spring.property.service.IPropertyService;
 	excludeFilters = @Filter(Configuration.class)
 )
 public abstract class AbstractJpaConfig {
+
+	@Autowired
+	protected DefaultJpaConfig defaultJpaConfig;
 	
 	@Autowired
 	@Lazy
@@ -49,7 +59,56 @@ public abstract class AbstractJpaConfig {
 		BooleanQuery.setMaxClauseCount(propertyService.get(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT));
 	}
 
+	@Bean(initMethod = "migrate", value = { "flyway", "databaseInitialization" })
+	@Profile("flyway")
+	public Flyway flyway(DataSource dataSource, FlywayConfiguration flywayConfiguration) {
+		Flyway flyway = new Flyway();
+		flyway.setDataSource(dataSource);
+		flyway.setSchemas(flywayConfiguration.getSchemas()); 
+		flyway.setTable(flywayConfiguration.getTable());
+		flyway.setLocations(flywayConfiguration.getLocations());
+		flyway.setBaselineOnMigrate(true);
+		// difficult to handle this case for the moment; we ignore mismatching checksums
+		// TODO allow developers to handle mismatches during their tests.
+		flyway.setValidateOnMigrate(false);
+		return flyway;
+	}
+
 	@Bean
+	@Profile("flyway")
+	public FlywayConfiguration flywayConfiguration() {
+		return new FlywayConfiguration();
+	}
+
+	/**
+	 * Placeholder when flyway is not enabled
+	 */
+	@Bean(value = { "flyway", "databaseInitialization" })
+	@Profile("!flyway")
+	public Object notFlyway() {
+		return new Object();
+	}
+
+	@Bean(name = "hibernateDefaultExtraProperties")
+	public PropertiesFactoryBean hibernateDefaultExtraProperties(@Value("${hibernate.defaultExtraPropertiesUrl}") Resource defaultExtraPropertiesUrl) {
+		PropertiesFactoryBean f = new PropertiesFactoryBean();
+		f.setIgnoreResourceNotFound(false);
+		f.setFileEncoding("UTF-8");
+		f.setLocations(defaultExtraPropertiesUrl);
+		return f;
+	}
+
+	@Bean(name = "hibernateExtraProperties")
+	public PropertiesFactoryBean hibernateExtraProperties(@Value("${hibernate.extraPropertiesUrl}") Resource extraPropertiesUrl) {
+		PropertiesFactoryBean f = new PropertiesFactoryBean();
+		f.setIgnoreResourceNotFound(true);
+		f.setFileEncoding("UTF-8");
+		f.setLocations(extraPropertiesUrl);
+		return f;
+	}
+
+	@Bean
+	@DependsOn("databaseInitialization")
 	public abstract LocalContainerEntityManagerFactoryBean entityManagerFactory();
 
 	/**

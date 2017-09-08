@@ -10,7 +10,7 @@ public interface IJpaConfigurationProvider extends IJpaPropertiesProvider {
 	List<JpaPackageScanProvider> getJpaPackageScanProviders();
 
 	DataSource getDataSource();
-
+	
 	PersistenceProvider getPersistenceProvider();
 
 }

@@ -4,7 +4,7 @@
 	
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-parent</artifactId>
-	<version>0.13.4</version>
+	<version>0.14</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Parent</name>
@@ -73,6 +73,10 @@
 					<name>jdk8</name>
 				</property>
 			</activation>
+			<properties>
+				<maven.compiler.source>1.8</maven.compiler.source>
+				<maven.compiler.target>1.8</maven.compiler.target>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -94,6 +98,17 @@
 						</configuration>
 					</plugin>
 				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>target2</id>
+			<activation>
+				<property>
+					<name>target2</name>
+				</property>
+			</activation>
+			<build>
+				<directory>${project.basedir}/target2</directory>
 			</build>
 		</profile>
 	</profiles>

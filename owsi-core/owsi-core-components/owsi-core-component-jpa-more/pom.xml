@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.13.4</version>
+		<version>0.14</version>
 	</parent>
 
 	<artifactId>owsi-core-component-jpa-more</artifactId>
@@ -27,6 +27,12 @@
 			<artifactId>owsi-core-dependency-core-spring-security</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>owsi-core-component-infinispan</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<!-- Jackson est utilisé pour sérialiser les tâches avant persistence -->

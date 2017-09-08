@@ -19,9 +19,10 @@ import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
 import org.hibernate.cache.ehcache.EhCacheRegionFactory;
 import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
-import org.hibernate.jpa.AvailableSettings;
 import org.hibernate.loader.BatchFetchStyle;
+import org.hibernate.search.elasticsearch.cfg.ElasticsearchEnvironment;
 import org.hibernate.search.store.impl.FSDirectoryProvider;
 import org.hibernate.search.store.impl.RAMDirectoryProvider;
 import org.springframework.aop.Advisor;
@@ -45,6 +46,10 @@ import fr.openwide.core.jpa.config.spring.provider.IJpaConfigurationProvider;
 import fr.openwide.core.jpa.config.spring.provider.IJpaPropertiesProvider;
 import fr.openwide.core.jpa.config.spring.provider.JpaPackageScanProvider;
 import fr.openwide.core.jpa.exception.ServiceException;
+import fr.openwide.core.jpa.hibernate.analyzers.CoreElasticSearchAnalyzersDefinitionProvider;
+import fr.openwide.core.jpa.hibernate.analyzers.CoreLuceneAnalyzersDefinitionProvider;
+import fr.openwide.core.jpa.hibernate.analyzers.CoreLuceneClientAnalyzersDefinitionProvider;
+import fr.openwide.core.jpa.hibernate.jpa.PerTableSequenceStrategyProvider;
 import fr.openwide.core.jpa.hibernate.model.naming.PostgreSQLPhysicalNamingStrategyImpl;
 
 public final class JpaConfigUtils {
@@ -72,6 +77,7 @@ public final class JpaConfigUtils {
 
 	public static Properties getJpaProperties(IJpaPropertiesProvider configuration) {
 		Properties properties = new Properties();
+		properties.setProperty(Environment.DEFAULT_SCHEMA, configuration.getDefaultSchema());
 		properties.setProperty(Environment.DIALECT, configuration.getDialect().getName());
 		properties.setProperty(Environment.HBM2DDL_AUTO, configuration.getHbm2Ddl());
 		properties.setProperty(Environment.SHOW_SQL, Boolean.FALSE.toString());
@@ -104,7 +110,7 @@ public final class JpaConfigUtils {
 					properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
 				}
 			}
-			properties.setProperty(AvailableSettings.SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
+			properties.setProperty(AvailableSettings.JPA_SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
 			properties.setProperty(EhCacheRegionFactory.NET_SF_EHCACHE_CONFIGURATION_RESOURCE_NAME, ehCacheConfiguration);
 			properties.setProperty(Environment.USE_SECOND_LEVEL_CACHE, Boolean.TRUE.toString());
 			if (queryCacheEnabled) {
@@ -121,7 +127,15 @@ public final class JpaConfigUtils {
 		}
 
 		String hibernateSearchIndexBase = configuration.getHibernateSearchIndexBase();
-		if (StringUtils.hasText(hibernateSearchIndexBase)) {
+		
+		if (configuration.isHibernateSearchElasticSearchEnabled()) {
+			properties.setProperty(ElasticsearchEnvironment.ANALYZER_DEFINITION_PROVIDER, CoreElasticSearchAnalyzersDefinitionProvider.class.getName());
+			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYZER_DEFINITION_PROVIDER, CoreLuceneClientAnalyzersDefinitionProvider.class.getName());
+			properties.setProperty("hibernate.search.default.indexmanager", "elasticsearch");
+			properties.setProperty("hibernate.search.default.elasticsearch.host", configuration.getElasticSearchHost());
+			properties.setProperty("hibernate.search.default.elasticsearch.index_schema_management_strategy", configuration.getElasticSearchIndexSchemaManagementStrategy());
+		} else if (StringUtils.hasText(hibernateSearchIndexBase)) {
+			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYZER_DEFINITION_PROVIDER, CoreLuceneAnalyzersDefinitionProvider.class.getName());
 			if (configuration.isHibernateSearchIndexInRam()) {
 				properties.setProperty("hibernate.search.default.directory_provider", RAMDirectoryProvider.class.getName());
 			} else {
@@ -149,8 +163,12 @@ public final class JpaConfigUtils {
 
 		String validationMode = configuration.getValidationMode();
 		if (StringUtils.hasText(validationMode)) {
-			properties.setProperty(AvailableSettings.VALIDATION_MODE, validationMode);
+			properties.setProperty(AvailableSettings.JPA_VALIDATION_MODE, validationMode);
 		}
+		
+		// custom generator strategy provider that handles one sequence by entity
+		properties.setProperty(org.hibernate.jpa.AvailableSettings.IDENTIFIER_GENERATOR_STRATEGY_PROVIDER,
+				PerTableSequenceStrategyProvider.class.getName());
 		
 		Class<? extends ImplicitNamingStrategy> implicitNamingStrategy = configuration.getImplicitNamingStrategy();
 		if (implicitNamingStrategy != null) {
@@ -172,8 +190,12 @@ public final class JpaConfigUtils {
 		
 		Boolean isNewGeneratorMappingsEnabled = configuration.isNewGeneratorMappingsEnabled();
 		if (isNewGeneratorMappingsEnabled != null) {
-			properties.setProperty(org.hibernate.cfg.AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, isNewGeneratorMappingsEnabled.toString());
+			properties.setProperty(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, isNewGeneratorMappingsEnabled.toString());
 		}
+		
+		// Override properties
+		properties.putAll(configuration.getDefaultExtraProperties());
+		properties.putAll(configuration.getExtraProperties());
 		
 		return properties;
 	}

@@ -21,7 +21,7 @@ public class CssDeclarationPrecedence implements Comparable<CssDeclarationPreced
 	private final CssSelectorSpecificity selectorSpecificity;
 	
 	public CssDeclarationPrecedence(boolean isImportant, Collection<CssSelectorSpecificity> selectorsSpecificity) {
-		Assert.isTrue(!Iterables.isEmpty(selectorsSpecificity));
+		Assert.isTrue(!Iterables.isEmpty(selectorsSpecificity), "[Assertion failed] - this expression must be true");
 		this.isImportant = isImportant;
 		this.selectorSpecificity = Ordering.natural().max(selectorsSpecificity);
 	}

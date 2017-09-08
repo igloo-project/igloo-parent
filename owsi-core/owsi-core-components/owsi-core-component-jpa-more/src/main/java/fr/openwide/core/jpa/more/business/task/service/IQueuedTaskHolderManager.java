@@ -17,16 +17,24 @@ public interface IQueuedTaskHolderManager {
 
 	boolean isActive();
 
+	boolean isTaskQueueActive(String queueId);
+
+	int getNumberOfTaskConsumer(String queueId);
+
 	int getNumberOfWaitingTasks();
+
+	int getNumberOfWaitingTasks(String queueId);
 
 	int getNumberOfRunningTasks();
 
+	int getNumberOfRunningTasks(String queueId);
+
 	Collection<IQueueId> getQueueIds();
-	
+
 	void start();
-	
+
 	void stop();
-	
+
 	@Transactional
 	QueuedTaskHolder submit(AbstractTask task) throws ServiceException;
 
@@ -35,5 +43,7 @@ public interface IQueuedTaskHolderManager {
 
 	@Transactional
 	void cancel(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException;
+
+	void onTaskFinish(Long id);
 
 }
