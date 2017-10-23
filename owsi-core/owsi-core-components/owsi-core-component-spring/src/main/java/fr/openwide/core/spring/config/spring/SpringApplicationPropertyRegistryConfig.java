@@ -8,6 +8,7 @@ import static fr.openwide.core.spring.property.SpringPropertyIds.DB_USER;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_FROM;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_RECIPIENTS_FILTERED;
+import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SENDER;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SUBJECT_PREFIX;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_TEST_EMAILS;
 import static fr.openwide.core.spring.property.SpringPropertyIds.OWSI_CORE_VERSION;
@@ -88,6 +89,7 @@ public class SpringApplicationPropertyRegistryConfig extends AbstractApplication
 		
 		registry.registerString(NOTIFICATION_MAIL_FROM);
 		registry.registerString(NOTIFICATION_MAIL_SUBJECT_PREFIX);
+		registry.registerString(NOTIFICATION_MAIL_SENDER);
 		registry.registerBoolean(NOTIFICATION_MAIL_RECIPIENTS_FILTERED);
 		registry.register(NOTIFICATION_TEST_EMAILS, new StringCollectionConverter<String, List<String>>(Converter.<String>identity(), Suppliers2.<String>arrayList()), Lists.<String>newArrayList());
 		registry.register(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK, new StringCollectionConverter<String, List<String>>(Converter.<String>identity(), Suppliers2.<String>arrayList()), Lists.<String>newArrayList());
