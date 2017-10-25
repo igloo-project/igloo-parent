@@ -170,7 +170,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	}
 	
 	@Override
-	public INotificationBuilderBaseState from(String from) {
+	public INotificationBuilderReplyToState from(String from) {
 		Assert.hasText(from, "Sender's email address must contain text");
 		this.from = from;
 		return this;

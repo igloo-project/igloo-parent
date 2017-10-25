@@ -7,7 +7,7 @@ public interface INotificationBuilderBaseState extends INotificationBuilderReply
 	 * @param from
 	 * @return
 	 */
-	INotificationBuilderBaseState from(String from);
+	INotificationBuilderReplyToState from(String from);
 	
 	/**
 	 * Defines the sender email address that may need to differ from the "from" address due to SPF rules
