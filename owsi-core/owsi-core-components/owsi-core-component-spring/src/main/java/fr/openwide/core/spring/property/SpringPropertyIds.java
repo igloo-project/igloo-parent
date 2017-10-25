@@ -42,6 +42,7 @@ public final class SpringPropertyIds extends AbstractPropertyIds {
 	public static final ImmutablePropertyId<Set<Locale>> AVAILABLE_LOCALES = immutable("locale.availableLocales");
 	public static final ImmutablePropertyId<Locale> DEFAULT_LOCALE = immutable("locale.default");
 	
+	public static final ImmutablePropertyId<String> NOTIFICATION_MAIL_SENDER = immutable("notification.mail.sender");
 	public static final ImmutablePropertyId<String> NOTIFICATION_MAIL_FROM = immutable("notification.mail.from");
 	public static final ImmutablePropertyId<String> NOTIFICATION_MAIL_SUBJECT_PREFIX = immutable("notification.mail.subjectPrefix");
 	public static final ImmutablePropertyId<Boolean> NOTIFICATION_MAIL_RECIPIENTS_FILTERED = immutable("notification.mail.recipientsFiltered");

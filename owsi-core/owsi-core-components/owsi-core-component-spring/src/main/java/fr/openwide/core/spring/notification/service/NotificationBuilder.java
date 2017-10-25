@@ -5,6 +5,7 @@ import static fr.openwide.core.spring.property.SpringPropertyIds.DEFAULT_LOCALE;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_FROM;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_RECIPIENTS_FILTERED;
+import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SENDER;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SUBJECT_PREFIX;
 import static fr.openwide.core.spring.property.SpringPropertyIds.NOTIFICATION_TEST_EMAILS;
 
@@ -105,6 +106,8 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	private String from;
 	
+	private NotificationTarget sender;
+	
 	private NotificationTarget replyTo;
 	
 	private final Map<NotificationTarget, INotificationRecipient> toByAddress = Maps.newLinkedHashMap();
@@ -192,6 +195,17 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		}
 		return this;
 	}
+	
+	@Override
+	public INotificationBuilderBaseState sender(String sender) {
+		if (StringUtils.hasText(sender)) {
+			this.sender = NotificationTarget.of(sender);
+		} else {
+			this.sender = null;
+		}
+		return this;	
+	}
+
 	
 	@Override
 	@Deprecated
@@ -483,7 +497,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 			Address[] effectiveBcc;
 			Address[] from;
 			Address[] replyTo;
-			
+			Address sender;
 			try {
 				// Step 1 : Build message. Effective recipients could be different than expected ones, we store.
 				message = buildMessage(contentDescriptor, targets, charset.name());
@@ -492,6 +506,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 				effectiveBcc = message.getRecipients(RecipientType.BCC);
 				replyTo = message.getReplyTo();
 				from = message.getFrom();
+				sender = message.getSender();
 			} catch (NotificationContentRenderingException e) {
 				throw new ServiceException("Error while rendering email notification", e);
 			} catch (MessagingException e) {
@@ -507,10 +522,10 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 			} catch (MailException e) {
 				throw new ServiceException(
 						String.format("Error sending email notification "
-								+ "(from:%s, reply-to: %s; "
+								+ "(from:%s, sender:%s, reply-to: %s; "
 								+ "original to:%s, cc:%s, bcc:%s; "
 								+ "effective to:%s, cc:%s, bcc:%s)",
-								Arrays.toString(from), Arrays.toString(replyTo),
+								Arrays.toString(from), sender, Arrays.toString(replyTo),
 								targets.to, targets.cc, targets.bcc, 
 								Arrays.toString(effectiveTo), Arrays.toString(effectiveCc), Arrays.toString(effectiveBcc)),
 						e
@@ -672,13 +687,23 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		String subject = buildSubject(contentDescriptor.renderSubject());
 		String textBody = contentDescriptor.renderTextBody();
 		String htmlBody = contentDescriptor.renderHtmlBody();
-		
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, isMultipartNeeded(textBody, htmlBody), encoding);
 		
 		if (from == null) {
 			from = getDefaultFrom();
 		}
+		helper.setFrom(from);
+		
+		if (sender != null) {
+			message.setSender(sender.getAddress());
+		} else {
+			String defaultEmailSender = getDefaultSender();
+			if(defaultEmailSender != null && !defaultEmailSender.isEmpty()) {
+				message.setSender(NotificationTarget.of(getDefaultSender()).getAddress());
+			}
+		}
+		
 		Collection<NotificationTarget> filteredTos = filterTo(recipients.to);
 		Collection<NotificationTarget> filteredCcs = filterCcBcc(recipients.cc);
 		Collection<NotificationTarget> filteredBccs = filterCcBcc(recipients.bcc);
@@ -686,7 +711,6 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 			return null;
 		}
 		
-		helper.setFrom(from);
 		if (replyTo != null) {
 			helper.setReplyTo(replyTo.getAddress());
 		}
@@ -752,6 +776,10 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	private String getDefaultFrom() {
 		return propertyService.get(NOTIFICATION_MAIL_FROM);
+	}
+	
+	private String getDefaultSender() {
+		return propertyService.get(NOTIFICATION_MAIL_SENDER);
 	}
 	
 	private Locale getDefaultLocale() {
