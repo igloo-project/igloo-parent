@@ -122,7 +122,7 @@
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<flowInitContext>
-						<masterBranchName>master</masterBranchName>
+						<masterBranchName>mt-0.14</masterBranchName>
 						<developBranchName>dev</developBranchName>
 						<featureBranchPrefix>ft-</featureBranchPrefix>
 						<releaseBranchPrefix>rl-</releaseBranchPrefix>
