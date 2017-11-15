@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>wicket-showcase</artifactId>
 		<groupId>fr.openwide.core.showcase</groupId>
-		<version>0.15</version>
+		<version>0.15.1</version>
 	</parent>
 	
 	<artifactId>wicket-showcase-webapp</artifactId>
