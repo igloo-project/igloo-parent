@@ -515,6 +515,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			List<IAttribution> values = cache.getOrDefault(priorityQueue, Lists.<IAttribution> newArrayList());
 			List<IAttribution> newValues = Lists.newArrayList(Collections2.filter(values, attributionPredicate));
 			cache.put(priorityQueue, newValues);
+			commit = true;
 		} finally {
 			cache.endBatch(commit);
 		}
