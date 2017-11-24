@@ -17,7 +17,7 @@
 
 package fr.openwide.core.jpa.hibernate.dialect;
 
-import org.hibernate.dialect.PostgreSQL82Dialect;
+import org.hibernate.dialect.PostgreSQL94Dialect;
 import org.hibernate.id.IdentifierGenerator;
 
 import fr.openwide.core.jpa.hibernate.dialect.function.PostgreSQLIntervalFunction;
@@ -36,7 +36,7 @@ import fr.openwide.core.jpa.hibernate.dialect.function.PostgreSQLRegexpOperatorF
  * 
  * @author Open Wide
  */
-public class PostgreSQLAdvancedDialect extends PostgreSQL82Dialect {
+public class PostgreSQLAdvancedDialect extends PostgreSQL94Dialect {
 	
 	public PostgreSQLAdvancedDialect() {
 		registerFunction("interval", new PostgreSQLIntervalFunction());

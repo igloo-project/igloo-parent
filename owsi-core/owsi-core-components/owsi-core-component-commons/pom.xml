@@ -101,6 +101,11 @@
 			<artifactId>bindgen</artifactId>
 		</dependency>
 		
+		<dependency>
+			<groupId>fr.openwide.core.components</groupId>
+			<artifactId>bindgen-java</artifactId>
+		</dependency>
+		
 		<!-- Joda time -->
 		<dependency>
 			<groupId>joda-time</groupId>
