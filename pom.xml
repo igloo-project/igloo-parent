@@ -4,7 +4,7 @@
 	
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-parent</artifactId>
-	<version>O.11-SNAPSHOT</version>
+	<version>0.11-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Parent</name>
@@ -14,6 +14,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
 		<owsi-core.maven-release-plugin.version>2.5.2</owsi-core.maven-release-plugin.version>
+		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
 	</properties>
 	
 	<profiles>
@@ -44,6 +45,24 @@
 	</profiles>
 	
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>external.atlassian.jgitflow</groupId>
+				<artifactId>jgitflow-maven-plugin</artifactId>
+				<version>${maven-jgitflow-plugin.version}</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<flowInitContext>
+						<masterBranchName>owsi-core-0.11-master</masterBranchName>
+						<developBranchName>owsi-core-0.11-MAINTENANCE</developBranchName>
+						<featureBranchPrefix>ft-0.11-</featureBranchPrefix>
+						<releaseBranchPrefix>rl-0.11-</releaseBranchPrefix>
+						<hotfixBranchPrefix>hf-0.11-</hotfixBranchPrefix>
+						<versionTagPrefix>v</versionTagPrefix>
+					</flowInitContext>
+				</configuration>
+			</plugin>
+		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -121,32 +140,9 @@
 		</developer>
 	</developers>
 	
-	<distributionManagement>
-		<repository>
-			<id>nexus-owsi-core</id>
-			<name>Nexus OWSI Core</name>
-			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core</url>
-		</repository>
-		<snapshotRepository>
-			<id>nexus-owsi-core-snapshots</id>
-			<name>Nexus OWSI Core Snapshots</name>
-			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
-
-	<issueManagement>
-		<system>Trac</system>
-		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/report</url>
-	</issueManagement>
-
-	<ciManagement>
-		<system>Jenkins</system>
-		<url>https://projects.openwide.fr/services/ci/hudson/jenkins/owsi-core/</url>
-	</ciManagement>
-
 	<scm>
-		<developerConnection>scm:git:git@github.com:openwide-java/owsi-core-parent.git</developerConnection>
-		<url>https://github.com/openwide-java/owsi-core-parent</url>
+		<developerConnection>scm:git:git@github.com:igloo-project/igloo-parent.git</developerConnection>
+		<url>https://github.com/igloo-project/igloo-parent</url>
 		<tag>owsi-core-0.11-MAINTENANCE</tag>
 	</scm>
 	

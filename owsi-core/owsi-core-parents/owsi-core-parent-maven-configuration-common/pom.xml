@@ -4,7 +4,7 @@
 	
 	<groupId>fr.openwide.core.parents</groupId>
 	<artifactId>owsi-core-parent-maven-configuration-common</artifactId>
-	<version>O.11-SNAPSHOT</version>
+	<version>0.11-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>OWSI Core - Parent - Maven configuration - Common</name>
@@ -14,8 +14,10 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
 		
-		<jdk.version>1.7</jdk.version>
+		<jdk.version>1.8</jdk.version>
+		<minimal.jdk.version>1.8</minimal.jdk.version>
 		
+		<owsi-core.maven-jgitflow-plugin.version>1.0-m5.1</owsi-core.maven-jgitflow-plugin.version>
 		<minimal.maven.version>3.2.5</minimal.maven.version>
 		
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
@@ -50,6 +52,22 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>external.atlassian.jgitflow</groupId>
+				<artifactId>jgitflow-maven-plugin</artifactId>
+				<version>${owsi-core.maven-jgitflow-plugin.version}</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<flowInitContext>
+						<masterBranchName>master</masterBranchName>
+						<developBranchName>dev</developBranchName>
+						<featureBranchPrefix>ft-</featureBranchPrefix>
+						<releaseBranchPrefix>rl-</releaseBranchPrefix>
+						<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
+						<versionTagPrefix>v</versionTagPrefix>
+					</flowInitContext>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<version>${owsi-core.maven-enforcer-plugin.version}</version>
@@ -80,7 +98,7 @@
 									<version>[${minimal.maven.version},)</version>
 								</requireMavenVersion>
 								<requireJavaVersion>
-									<version>${jdk.version}</version>
+									<version>${minimal.jdk.version}</version>
 								</requireJavaVersion>
 							</rules>
 						</configuration>
@@ -335,24 +353,6 @@
 										<versionRange>[1.0,)</versionRange>
 										<goals>
 											<goal>copy-dependencies</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<!--
-										This does not mean that we prevent "cleans" on Eclipse, just that the
-										custom maven-clean-plugin executions explicitly mapped to lifecycle phases are
-										not executed on Eclipse.
-										-->
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-clean-plugin</artifactId>
-										<versionRange>[1.0.0,)</versionRange>
-										<goals>
-											<goal>clean</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
