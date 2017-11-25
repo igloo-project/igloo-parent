@@ -113,7 +113,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${owsi-core.maven-compiler-plugin.version}</version>
 					<configuration>
-						<source>${jdk.version}</source>
+						<source>1.7</source>
 						<target>${jdk.version}</target>
 						<compilerArgument>-proc:none</compilerArgument>
 						<testCompilerArgument>-proc:none</testCompilerArgument>
