@@ -19,11 +19,18 @@ public interface IQueuedTaskHolderService extends IGenericEntityService<Long, Qu
 
 	QueuedTaskHolder getRandomStalledTask(String taskType, int executionTimeLimitInSeconds);
 
-	List<Long> initializeTasksAndListConsumable(String queueId) throws ServiceException, SecurityServiceException;
-
 	List<String> listTypes();
 
 	boolean isReloadable(QueuedTaskHolder task);
 
 	boolean isCancellable(QueuedTaskHolder task);
+
+	/**
+	 * Gets the tasks that may be run
+	 * @param queueId
+	 * @return
+	 * @throws ServiceException
+	 * @throws SecurityServiceException
+	 */
+	List<QueuedTaskHolder> getListConsumable(String queueId) throws ServiceException, SecurityServiceException;
 }

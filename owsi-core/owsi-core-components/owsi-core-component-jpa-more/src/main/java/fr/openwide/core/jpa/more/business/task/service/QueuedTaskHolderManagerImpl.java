@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
@@ -316,23 +317,27 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			public void run() {
 				for (TaskQueue queue : queuesById.values()) {
 					try {
-						List<Long> taskIds = queuedTaskHolderService.initializeTasksAndListConsumable(queue.getId());
-						
-						// remove already loaded keys
-						if (infinispanClusterService != null) {
-							taskIds.removeAll(getCache().keySet());
-						}
-						if (! taskIds.isEmpty()) {
-							LOGGER.warn("Reload {} tasks in QueuedTaskHolderManager", taskIds.size());
-							LOGGER.warn("Reloaded tasks: {}", Joiner.on(",").join(taskIds));
-						}
+						// Gets the tasks that can be run from DB
+						List<QueuedTaskHolder> tasks = queuedTaskHolderService.getListConsumable(queue.getId());
 						
 						if (queue == defaultQueue) {
-							taskIds.addAll(queuedTaskHolderService.initializeTasksAndListConsumable(null));
+							tasks.addAll(queuedTaskHolderService.getListConsumable(null));
 						}
-						for (Long taskId : taskIds) {
-							queueOffer(queue, taskId);
+						
+						if (! tasks.isEmpty()) {
+							// remove already loaded keys
+							if (infinispanClusterService != null) {
+								tasks.removeIf(t -> getCache().keySet().contains(t.getId()));
+							}
+							LOGGER.warn("Reload {} tasks in QueuedTaskHolderManager", tasks.size());
+							// Gets tasks  Id
+							List<Long> taskIds = tasks.stream().map(QueuedTaskHolder::getId).collect(Collectors.toList());
+							LOGGER.warn("Reloaded tasks: {}", Joiner.on(",").join(taskIds));
+
+							// Initialize and submit the task to the queue
+							tasks.forEach(t -> queueOffer(queue, t));
 						}
+						
 					} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 						LOGGER.error("Error while trying to init queue " + queue + " from database", e);
 					}
@@ -401,14 +406,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	public void reload(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException {
 		QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
 		if (queuedTaskHolder != null) {
-			queuedTaskHolder.setStatus(TaskStatus.TO_RUN);
-			queuedTaskHolder.resetExecutionInformation();
-			queuedTaskHolderService.update(queuedTaskHolder);
-			
 			TaskQueue queue = getQueue(queuedTaskHolder.getQueueId());
-			
 			if (active.get()) {
-				queueOffer(queue, queuedTaskHolder.getId());
+				queueOffer(queue, queuedTaskHolder);
 			}
 		}
 	}
@@ -538,6 +538,12 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			LOGGER.error("Unable to offer the task " + taskId + " to the queue");
 		}
 		return status;
+	}
+	
+	private boolean queueOffer(TaskQueue queue, QueuedTaskHolder task) {
+		task.setStatus(TaskStatus.TO_RUN);
+		task.resetExecutionInformation();
+		return queueOffer(queue, task.getId());
 	}
 
 	/**
