@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>fr.openwide.core.archetype</groupId>
-		<version>0.15.3-SNAPSHOT</version>
+		<version>0.15.3</version>
 	</parent>
 	
 	<packaging>war</packaging>
