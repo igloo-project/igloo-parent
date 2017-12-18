@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
@@ -241,19 +242,18 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 
 	@Override
 	public int getNumberOfWaitingTasks(String queueId){
-		return queuesById.get(queueId).size();
+		try {
+			return queuesById.get(queueId).size();
+		} catch (NullPointerException e) {
+			return -1;
+		}
 	}
 
 	@Override
 	public int getNumberOfRunningTasks() {
 		int total = 0;
 		for (TaskQueue queue : queuesById.values()) {
-			Collection<TaskConsumer> consumers = consumersByQueue.get(queue);
-			for (TaskConsumer consumer : consumers) {
-				if (consumer.isWorking()) {
-					total++;
-				}
-			}
+			total += getNumberOfRunningTasks(queue.getId());
 		}
 		return total;
 	}
@@ -288,6 +288,12 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			// load infinispan backend if needed
 			getCache();
 			
+			if (infinispanClusterService  != null) {
+				// Init the recurrent executor for initQueues.
+				// Must be used only in a cluster context
+				initializeDatabaseExecutor();
+			}
+			
 			try {
 				initQueuesFromDatabase();
 				for (TaskConsumer consumer : consumersByQueue.values()) {
@@ -308,6 +314,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		return propertyService.get(queueStartDelay(queueId));
 	}
 
+	/**
+	 * Initialize queues with the tasks to be run from the database
+	 */
 	private void initQueuesFromDatabase() {
 		// NOTE : infinispanClusterService is initialized @PostConstruct, so infinispan subsystem is initialized at
 		// this time.
@@ -316,23 +325,27 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			public void run() {
 				for (TaskQueue queue : queuesById.values()) {
 					try {
-						List<Long> taskIds = queuedTaskHolderService.initializeTasksAndListConsumable(queue.getId());
-						
-						// remove already loaded keys
-						if (infinispanClusterService != null) {
-							taskIds.removeAll(getCache().keySet());
-						}
-						if (! taskIds.isEmpty()) {
-							LOGGER.warn("Reload {} tasks in QueuedTaskHolderManager", taskIds.size());
-							LOGGER.warn("Reloaded tasks: {}", Joiner.on(",").join(taskIds));
-						}
+						// Gets the tasks that can be run from DB
+						List<QueuedTaskHolder> tasks = queuedTaskHolderService.getListConsumable(queue.getId());
 						
 						if (queue == defaultQueue) {
-							taskIds.addAll(queuedTaskHolderService.initializeTasksAndListConsumable(null));
+							tasks.addAll(queuedTaskHolderService.getListConsumable(null));
 						}
-						for (Long taskId : taskIds) {
-							queueOffer(queue, taskId);
+						
+						if (! tasks.isEmpty()) {
+							// remove already loaded keys
+							if (infinispanClusterService != null) {
+								tasks.removeIf(t -> getCache().keySet().contains(t.getId()));
+							}
+							LOGGER.warn("Reload {} tasks in QueuedTaskHolderManager", tasks.size());
+							// Gets tasks  Id
+							List<Long> taskIds = tasks.stream().map(QueuedTaskHolder::getId).collect(Collectors.toList());
+							LOGGER.warn("Reloaded tasks: {}", Joiner.on(",").join(taskIds));
+
+							// Initialize and submit the task to the queue
+							tasks.forEach(t -> queueOffer(queue, t));
 						}
+						
 					} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 						LOGGER.error("Error while trying to init queue " + queue + " from database", e);
 					}
@@ -401,14 +414,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	public void reload(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException {
 		QueuedTaskHolder queuedTaskHolder = queuedTaskHolderService.getById(queuedTaskHolderId);
 		if (queuedTaskHolder != null) {
-			queuedTaskHolder.setStatus(TaskStatus.TO_RUN);
-			queuedTaskHolder.resetExecutionInformation();
-			queuedTaskHolderService.update(queuedTaskHolder);
-			
 			TaskQueue queue = getQueue(queuedTaskHolder.getQueueId());
-			
 			if (active.get()) {
-				queueOffer(queue, queuedTaskHolder.getId());
+				queueOffer(queue, queuedTaskHolder);
 			}
 		}
 	}
@@ -539,6 +547,19 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		}
 		return status;
 	}
+	
+	/**
+	 * Cluster-safe offer a task in a queue ; if task is already loaded on the cluster, we don't load it.
+	 * Reinit the task information before doing it
+	 * @param queue
+	 * @param task
+	 * @return
+	 */
+	private boolean queueOffer(TaskQueue queue, QueuedTaskHolder task) {
+		task.setStatus(TaskStatus.TO_RUN);
+		task.resetExecutionInformation();
+		return queueOffer(queue, task.getId());
+	}
 
 	/**
 	 * Check if cache exists and returns it ; null if infinispan is disabled
@@ -546,7 +567,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	private Cache<Long, IAttribution> getCache() {
 		if (infinispanClusterService != null) {
 			if (!infinispanClusterService.getCacheManager().cacheExists(CACHE_KEY_TASK_ID)) {
-				initializeCache();
+				infinispanClusterService.getCacheManager().getCache(CACHE_KEY_TASK_ID);
 			}
 			return infinispanClusterService.getCacheManager().getCache();
 		}
@@ -554,21 +575,19 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	}
 
 	/**
+	 * Initialize the executor that will submit the tasks from DB every 1 minute
+	 * 
 	 * This method MUST NOT be called if cache is disabled
 	 */
-	private synchronized void initializeCache() {
+	private synchronized void initializeDatabaseExecutor() {
 		if (infinispanClusterService == null) {
 			throw new IllegalStateException("This code must not be called as infinispan is not enabled");
 		}
-		if (infinispanClusterService.getCacheManager().cacheExists(CACHE_KEY_TASK_ID)) {
-			return;
-		}
-		infinispanClusterService.getCacheManager().getCache(CACHE_KEY_TASK_ID);
 		initQueuesFromDatabaseExecutor = new ScheduledThreadPoolExecutor(1,
-				new ThreadFactoryBuilder()
-					.setDaemon(true)
-					.setNameFormat(String.format("%s-%%d", INIT_QUEUES_EXECUTOR_NAME)) // %%d is an escaped %d
-					.build());
+					new ThreadFactoryBuilder()
+						.setDaemon(true)
+						.setNameFormat(String.format("%s-%%d", INIT_QUEUES_EXECUTOR_NAME)) // %%d is an escaped %d
+						.build());
 		initQueuesFromDatabaseExecutor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
 		initQueuesFromDatabaseExecutor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
 		initQueuesFromDatabaseExecutor.prestartAllCoreThreads();

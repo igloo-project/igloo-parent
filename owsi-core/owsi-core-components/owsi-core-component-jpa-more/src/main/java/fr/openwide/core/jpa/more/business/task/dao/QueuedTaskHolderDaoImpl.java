@@ -85,23 +85,12 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 	
 	@Override
 	public List<QueuedTaskHolder> listConsumable() {
-		JPQLQuery<QueuedTaskHolder> query = new JPAQuery<QueuedTaskHolder>(getEntityManager());
-		
-		query.from(qQueuedTaskHolder)
-				.where(qQueuedTaskHolder.status.in(TaskStatus.CONSUMABLE_TASK_STATUS))
-				.orderBy(qQueuedTaskHolder.id.asc());
-		
-		return query.fetch();
+		return getConsumableBaseQuery().fetch();
 	}
 	
 	@Override
 	public List<QueuedTaskHolder> listConsumable(String queueId) {
-		JPQLQuery<QueuedTaskHolder> query = new JPAQuery<QueuedTaskHolder>(getEntityManager());
-		
-		query.from(qQueuedTaskHolder)
-				.where(qQueuedTaskHolder.status.in(TaskStatus.CONSUMABLE_TASK_STATUS))
-				.orderBy(qQueuedTaskHolder.id.asc());
-		
+		JPQLQuery<QueuedTaskHolder> query = getConsumableBaseQuery();
 		if (queueId != null) {
 			query.where(qQueuedTaskHolder.queueId.eq(queueId));
 		} else {
@@ -111,6 +100,19 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 		return query.fetch();
 	}
 
+	/**
+	 * Base query to retrieve tasks to run
+	 * @return
+	 */
+	private JPQLQuery<QueuedTaskHolder> getConsumableBaseQuery() {
+		JPQLQuery<QueuedTaskHolder> query = new JPAQuery<QueuedTaskHolder>(getEntityManager());
+		
+		query.from(qQueuedTaskHolder)
+				.where(qQueuedTaskHolder.status.in(TaskStatus.CONSUMABLE_TASK_STATUS))
+				.orderBy(qQueuedTaskHolder.id.asc());
+		return query;
+	}
+	
 	@Override
 	public List<String> listTypes() {
 		JPQLQuery<String> query = new JPAQuery<String>(getEntityManager());
