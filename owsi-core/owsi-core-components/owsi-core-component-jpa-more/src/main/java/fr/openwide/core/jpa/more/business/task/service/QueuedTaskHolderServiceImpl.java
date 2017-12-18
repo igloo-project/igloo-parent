@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.collect.Lists;
-
 import fr.openwide.core.jpa.business.generic.service.GenericEntityServiceImpl;
 import fr.openwide.core.jpa.exception.SecurityServiceException;
 import fr.openwide.core.jpa.exception.ServiceException;
@@ -52,18 +50,8 @@ public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Long, 
 	}
 	
 	@Override
-	public List<Long> initializeTasksAndListConsumable(String queueId) throws ServiceException, SecurityServiceException {
-		List<QueuedTaskHolder> queuedTaskHolderList = queuedTaskHolderDao.listConsumable(queueId);
-		List<Long> taskIds = Lists.newArrayListWithExpectedSize(queuedTaskHolderList.size());
-
-		for (QueuedTaskHolder queuedTaskHolder : queuedTaskHolderList) {
-			queuedTaskHolder.setStatus(TaskStatus.TO_RUN);
-			queuedTaskHolder.resetExecutionInformation();
-			update(queuedTaskHolder);
-			taskIds.add(queuedTaskHolder.getId());
-		}
-
-		return taskIds;
+	public List<QueuedTaskHolder> getListConsumable(String queueId)  throws ServiceException, SecurityServiceException {
+		return queuedTaskHolderDao.listConsumable(queueId);
 	}
 
 	@Override
