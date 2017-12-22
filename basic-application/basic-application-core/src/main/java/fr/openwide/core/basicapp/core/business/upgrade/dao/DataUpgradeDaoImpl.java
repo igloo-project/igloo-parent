@@ -20,6 +20,7 @@ public class DataUpgradeDaoImpl extends JpaDaoSupport implements IDataUpgradeDao
 	
 	private static final QParameter qParameter = QParameter.parameter;
 
+	@Override
 	public List<String> listDataUpgradeAutoPerfom() {
 		List<Parameter> listParameter = new JPAQuery<>(getEntityManager())
 				.select(qParameter).distinct()

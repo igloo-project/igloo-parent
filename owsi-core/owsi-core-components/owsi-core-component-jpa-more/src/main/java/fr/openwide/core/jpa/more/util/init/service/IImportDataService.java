@@ -12,5 +12,5 @@ public interface IImportDataService extends ITransactionalAspectAwareService {
 
 	void importDirectory(File directory) throws ServiceException, SecurityServiceException,
 			FileNotFoundException, IOException ;
-	
+
 }

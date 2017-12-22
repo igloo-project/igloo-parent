@@ -29,4 +29,5 @@ public class ImportDataServiceImpl extends AbstractImportDataServiceImpl {
 		doImportItem(idsMapping, workbook, UserGroup.class);
 		doImportItem(idsMapping, workbook, TechnicalUser.class);
 	}
+
 }
