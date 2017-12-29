@@ -1,0 +1,44 @@
+package org.iglooproject.jpa.more.config.spring;
+
+import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.DATABASE_INITIALIZED;
+import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.DATA_UPGRADE_DONE_TEMPLATE;
+import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.IMAGE_MAGICK_CONVERT_BINARY_PATH;
+import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
+
+import java.io.File;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+
+import com.google.common.base.Function;
+
+import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
+import org.iglooproject.spring.property.service.IPropertyRegistry;
+import org.iglooproject.spring.util.StringUtils;
+
+@Import(JpaMoreTaskApplicationPropertyRegistryConfig.class)
+@Configuration
+public class JpaMoreApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
+
+	@Override
+	protected void register(IPropertyRegistry registry) {
+		registry.registerBoolean(DATABASE_INITIALIZED, false);
+		registry.registerBoolean(DATA_UPGRADE_DONE_TEMPLATE, false);
+		registry.registerBoolean(MAINTENANCE, false);
+		
+		registry.register( // NOSONAR findbugs:DMI_HARDCODED_ABSOLUTE_FILENAME
+				IMAGE_MAGICK_CONVERT_BINARY_PATH,
+				new Function<String, File>() {
+					@Override
+					public File apply(String input) {
+						if (!StringUtils.hasText(input)) {
+							return null;
+						}
+						return new File(input);
+					}
+				},
+				new File("/usr/bin/convert")
+		);
+	}
+
+}

@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.iglooproject</groupId>
+		<artifactId>igloo-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>igloo</artifactId>
+	<packaging>pom</packaging>
+	
+	<name>Igloo</name>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+	
+	<profiles>
+		<profile>
+			<id>igloo-release</id>
+			<activation>
+				<property>
+					<name>distribution</name>
+					<value>igloo-release</value>
+				</property>
+			</activation>
+			<modules>
+				<module>igloo-dependencies</module>
+				<module>igloo-parents</module>
+				<module>igloo-components</module>
+				<module>igloo-packages</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>all</id>
+			<activation>
+				<property>
+					<name>!distribution</name>
+				</property>
+			</activation>
+			<modules>
+				<module>igloo-dependencies</module>
+				<module>igloo-parents</module>
+				<module>igloo-components</module>
+				<module>igloo-examples</module>
+				<module>igloo-packages</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>cli</id>
+			<build>
+				<directory>${project.basedir}/target-cli</directory>
+			</build>
+		</profile>
+	</profiles>
+		
+</project>

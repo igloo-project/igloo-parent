@@ -1,0 +1,63 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.iglooproject.parents</groupId>
+		<artifactId>igloo-parent-core-project</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../../igloo-parents/igloo-parent-core-project/pom.xml</relativePath>
+	</parent>
+	
+	<groupId>org.iglooproject.showcase</groupId>
+	<artifactId>wicket-showcase</artifactId>
+	
+	<name>Igloo - Wicket Showcase</name>
+	<packaging>pom</packaging>
+	
+	<modules>
+		<module>wicket-showcase-core</module>
+		<module>wicket-showcase-webapp</module>
+	</modules>
+	
+	<properties>
+		<h2database.version>1.3.162</h2database.version>
+		<jetty-server.version>8.0.4.v20111024</jetty-server.version>
+		<google-geocoder.version>0.16</google-geocoder.version>
+	</properties>
+	
+	<!-- Project information -->
+
+	<organization>
+		<name>Open Wide</name>
+		<url>http://www.openwide.fr/</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	
+	<developers>
+		<developer>
+			<id>jgonzalez</id>
+			<name>Julien Gonzalez</name>
+			<email>julien.gonzalez@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+	</developers>
+	
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/igloo-project/igloo-parent/issues</url>
+	</issueManagement>
+	
+	<ciManagement>
+		<system>GitLab</system>
+		<url>https://gitlab.tools.kobalt-si.fr/Igloo/igloo-parent/pipelines</url>
+	</ciManagement>
+	
+</project>

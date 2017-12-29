@@ -10,16 +10,16 @@ simpleProject {
 	config.deployEnabled = true
 	config.gitlabEnabled = false
 	config.githubEnabled = true
-	config.githubUrl = 'https://github.com/openwide-java/owsi-core-parent/'
+	config.githubUrl = 'https://github.com/igloo-project/igloo-parent/'
 
 	// jenkins choose to poll once by 3 hours
 	config.triggerSetPollSpecCronExpression = 'H H/3 * * *'
 	config.notificationRecipients = 'grp-jenkins@lists.projects.openwide.fr'
-	config.buildBlockerSimpleLock = 'owsi-core.*'
-	// owsi-core prerequisites: java 8
+	config.buildBlockerSimpleLock = 'igloo.*'
+	// igloo prerequisites: java 8
 	config.jdk = 'JDK 1.8'
 	config.buildTarget = 'install'
-	config.defaultMavenArgs = '-Ptest -Ddistribution=owsi-core-release -Dmaven.repo.local="${WORKSPACE}/m2-repository/"'
+	config.defaultMavenArgs = '-Ptest -Ddistribution=igloo-release -Dmaven.repo.local="${WORKSPACE}/m2-repository/"'
 	config.deployMavenArgs = '-DperformRelease=true -Dmaven.javadoc.skip=true'
 	config.beforeNotification = {
 		util_sh 'rm -rf "${WORKSPACE}/m2-repository/"'

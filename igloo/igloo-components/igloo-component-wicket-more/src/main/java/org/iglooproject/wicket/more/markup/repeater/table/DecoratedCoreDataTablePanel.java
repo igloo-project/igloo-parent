@@ -1,0 +1,226 @@
+package org.iglooproject.wicket.more.markup.repeater.table;
+
+import java.util.Map;
+
+import org.apache.wicket.Component;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.navigation.paging.IPageable;
+import org.apache.wicket.markup.html.navigation.paging.IPageableItems;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
+
+import com.google.common.collect.Multimap;
+
+import org.iglooproject.jpa.more.business.sort.ISort;
+import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+import org.iglooproject.wicket.markup.html.basic.CountLabel;
+import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
+import org.iglooproject.wicket.more.markup.html.factory.AbstractComponentFactory;
+import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
+import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.more.markup.html.navigation.paging.HideableAjaxPagingNavigator;
+import org.iglooproject.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
+import org.iglooproject.wicket.more.markup.repeater.FactoryRepeatingView;
+import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
+import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFactory;
+import org.iglooproject.wicket.more.model.IErrorAwareDataProvider;
+import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
+
+public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel implements IPageableItems {
+	
+	private static final long serialVersionUID = 3327546179785797119L;
+	
+	private final CoreDataTable<T, S> dataTable;
+	
+	private final ISequenceProvider<T> sequenceProvider;
+	
+	public static enum AddInPlacement {
+		HEADING_MAIN,
+		HEADING_LEFT,
+		HEADING_RIGHT,
+		BODY_TOP,
+		BODY_BOTTOM,
+		FOOTER_LEFT,
+		FOOTER_RIGHT
+	}
+	
+	public DecoratedCoreDataTablePanel(
+			String id,
+			IDataTableFactory<T, S> factory,
+			Map<IColumn<T, S>, Condition> columns,
+			ISequenceProvider<T> sequenceProvider,
+			long rowsPerPage,
+			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories,
+			Condition responsiveCondition) {
+		super(id);
+		
+		this.sequenceProvider = sequenceProvider;
+		
+		dataTable = newDataTable("dataTable", factory, columns, sequenceProvider, rowsPerPage);
+		
+		add(
+				new WebMarkupContainer("dataTableContainer")
+						.add(dataTable)
+						.setRenderBodyOnly(responsiveCondition.negate().applies())
+		);
+		
+		dataTable.setComponentToRefresh(this);
+		
+		FactoryRepeatingView headingMainAddins = new FactoryRepeatingView("mainAddIn");
+		FactoryRepeatingView headingRightAddins = new FactoryRepeatingView("rightAddIn");
+		FactoryRepeatingView headingLeftAddins = new FactoryRepeatingView("leftAddIn");
+		
+		FactoryRepeatingView bodyTopAddins = new FactoryRepeatingView("bodyTopAddIn");
+		FactoryRepeatingView bodyBottomAddins = new FactoryRepeatingView("bodyBottomAddIn");
+		
+		FactoryRepeatingView footerRightAddins = new FactoryRepeatingView("rightAddIn");
+		FactoryRepeatingView footerLeftAddins = new FactoryRepeatingView("leftAddIn");
+		
+		add(
+				new EnclosureContainer("headingAddInContainer")
+						.condition(Condition.anyChildVisible(headingMainAddins).or(Condition.anyChildVisible(headingRightAddins).or(Condition.anyChildVisible(headingLeftAddins))))
+						.add(headingMainAddins, headingRightAddins, headingLeftAddins),
+				new EnclosureContainer("bodyTopAddInContainer")
+						.condition(Condition.anyChildVisible(bodyTopAddins))
+						.add(bodyTopAddins),
+				new EnclosureContainer("bodyBottomAddInContainer")
+						.condition(Condition.anyChildVisible(bodyBottomAddins))
+						.add(bodyBottomAddins),
+				new EnclosureContainer("footerAddInContainer")
+						.condition(Condition.anyChildVisible(footerRightAddins).or(Condition.anyChildVisible(footerLeftAddins)))
+						.add(footerRightAddins, footerLeftAddins)
+		);
+
+		headingMainAddins.addAll(addInComponentFactories.get(AddInPlacement.HEADING_MAIN), this);
+		headingRightAddins.addAll(addInComponentFactories.get(AddInPlacement.HEADING_RIGHT), this);
+		headingLeftAddins.addAll(addInComponentFactories.get(AddInPlacement.HEADING_LEFT), this);
+		bodyTopAddins.addAll(addInComponentFactories.get(AddInPlacement.BODY_TOP), this);
+		bodyBottomAddins.addAll(addInComponentFactories.get(AddInPlacement.BODY_BOTTOM), this);
+		footerRightAddins.addAll(addInComponentFactories.get(AddInPlacement.FOOTER_RIGHT), this);
+		footerLeftAddins.addAll(addInComponentFactories.get(AddInPlacement.FOOTER_LEFT), this);
+	}
+	
+	protected CoreDataTable<T, S> newDataTable(String id, IDataTableFactory<T, S> factory,
+			Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider, long rowsPerPage) {
+		return factory.create(id, columns, sequenceProvider, rowsPerPage);
+	}
+	
+	public CoreDataTable<T, S> getDataTable() {
+		return dataTable;
+	}
+
+	@Override
+	public long getCurrentPage() {
+		return dataTable.getCurrentPage();
+	}
+
+	@Override
+	public long getPageCount() {
+		return dataTable.getPageCount();
+	}
+
+	@Override
+	public void setCurrentPage(long page) {
+		dataTable.setCurrentPage(page);
+	}
+
+	@Override
+	public long getItemCount() {
+		return dataTable.getItemCount();
+	}
+
+	@Override
+	public long getItemsPerPage() {
+		return dataTable.getItemsPerPage();
+	}
+
+	@Override
+	public void setItemsPerPage(long arg0) {
+		dataTable.setItemsPerPage(arg0);
+	}
+	
+	public static class LabelAddInComponentFactory extends AbstractComponentFactory<Component> {
+		private static final long serialVersionUID = 7358590231263113101L;
+		
+		private final IModel<?> labelModel;
+		
+		public LabelAddInComponentFactory(IModel<?> labelModel) {
+			super();
+			this.labelModel = labelModel;
+		}
+		
+		@Override
+		public Component create(String wicketId) {
+			return new Label(wicketId, labelModel);
+		}
+	}
+	
+	public static class CountAddInComponentFactory extends AbstractComponentFactory<Component> {
+		private static final long serialVersionUID = 7358590231263113101L;
+		
+		private final ISequenceProvider<?> sequenceProvider;
+		private final String countResourceKey;
+		
+		public CountAddInComponentFactory(ISequenceProvider<?> sequenceProvider, String countResourceKey) {
+			super();
+			this.sequenceProvider = sequenceProvider;
+			this.countResourceKey = countResourceKey;
+		}
+		
+		@Override
+		public Component create(String wicketId) {
+			IModel<Integer> countModel = new PropertyModel<Integer>(sequenceProvider,
+					CoreWicketMoreBindings.iBindableDataProvider().size().getPath());
+			return new CountLabel(wicketId, countResourceKey, countModel);
+		}
+	}
+	
+	public static class AjaxPagerAddInComponentFactory extends AbstractParameterizedComponentFactory<Component, DecoratedCoreDataTablePanel<?, ?>> {
+		private static final long serialVersionUID = 7358590231263113101L;
+		
+		private final int viewSize;
+		
+		public AjaxPagerAddInComponentFactory(int viewSize) {
+			super();
+			this.viewSize = viewSize;
+		}
+		
+		@Override
+		public Component create(String wicketId, DecoratedCoreDataTablePanel<?, ?> dataTable) {
+			dataTable.setOutputMarkupId(true);
+			return new HideableAjaxPagingNavigator(wicketId, dataTable, viewSize)
+					.add(new ClassAttributeAppender("add-in-pagination"));
+		}
+	}
+	
+	public static class PagerAddInComponentFactory extends AbstractParameterizedComponentFactory<Component, IPageable> {
+		private static final long serialVersionUID = 7358590231263113101L;
+		
+		private final int viewSize;
+		
+		public PagerAddInComponentFactory(int viewSize) {
+			super();
+			this.viewSize = viewSize;
+		}
+		
+		@Override
+		public Component create(String wicketId, IPageable pageable) {
+			return new HideablePagingNavigator(wicketId, pageable, viewSize)
+					.add(new ClassAttributeAppender("add-in-pagination"));
+		}
+	}
+
+	@Override
+	protected void onBeforeRender() {
+		super.onBeforeRender();
+		// notification en cas d'erreur
+		if ((sequenceProvider instanceof IErrorAwareDataProvider) 
+				&& (((IErrorAwareDataProvider) sequenceProvider).hasError())) {
+			error(getString("common.error.unexpected"));
+		}
+	}
+}

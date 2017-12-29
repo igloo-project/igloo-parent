@@ -1,0 +1,258 @@
+/*
+ * Copyright (C) 2009-2010 Open Wide
+ * Contact: contact@openwide.fr
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.iglooproject.test.generic;
+
+import java.util.List;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.test.AbstractJpaCoreTestCase;
+import org.iglooproject.test.business.person.dao.IPersonDao;
+import org.iglooproject.test.business.person.dao.IPersonReferenceDao;
+import org.iglooproject.test.business.person.model.Person;
+import org.iglooproject.test.business.person.model.PersonReference;
+import org.iglooproject.test.business.person.model.PersonSubTypeA;
+import org.iglooproject.test.business.person.model.PersonSubTypeB;
+import org.iglooproject.test.business.person.model.QPerson;
+
+public class TestGenericDao extends AbstractJpaCoreTestCase {
+
+	@Autowired
+	private IPersonDao personDao;
+
+	@Autowired
+	private IPersonReferenceDao personReferenceDao;
+
+	@Test
+	public void testGet() throws ServiceException, SecurityServiceException {
+		Person person = new Person("Firstname", "Lastname");
+		personService.create(person);
+		
+		{
+			Person person1 = (Person) personDao.getById(Person.class, person.getId());
+			Person person2 = personDao.getById(person.getId());
+			
+			Assert.assertTrue(person.equals(person1));
+			Assert.assertTrue(person.equals(person2));
+		}
+		
+		{
+			Person person1 = (Person) personDao.getById(Person.class, person.getId());
+			Person person2 = personDao.getById(person.getId());
+			
+			Assert.assertTrue(person.equals(person1));
+			Assert.assertTrue(person.equals(person2));
+		}
+	}
+
+	@Test
+	public void testSubTypeGet() throws ServiceException, SecurityServiceException {
+		Person personA = new PersonSubTypeA("Firstname", "A", "DATA");
+		Person personB = new PersonSubTypeB("Firstname", "B", 3);
+		personService.create(personA);
+		personService.create(personB);
+
+		Person personA1 = personDao.getById(personA.getId());
+		Person personA2 = personDao.getById(Person.class, personA.getId());
+		PersonSubTypeA personA3 = personDao.getById(PersonSubTypeA.class, personA.getId());
+		PersonSubTypeB personA4 = personDao.getById(PersonSubTypeB.class, personA.getId());
+
+		Person personB1 = personDao.getById(personB.getId());
+		Person personB2 = personDao.getById(Person.class, personB.getId());
+		PersonSubTypeB personB3 = personDao.getById(PersonSubTypeB.class, personB.getId());
+		PersonSubTypeA personB4 = personDao.getById(PersonSubTypeA.class, personB.getId());
+
+		Assert.assertTrue(personA.equals(personA1));
+		Assert.assertTrue(personA.equals(personA2));
+		Assert.assertTrue(personA.equals(personA3));
+		Assert.assertNull(personA4);
+		
+		Assert.assertTrue(personB.equals(personB1));
+		Assert.assertTrue(personB.equals(personB2));
+		Assert.assertTrue(personB.equals(personB3));
+		Assert.assertNull(personB4);
+		
+		cleanAll();
+		Assert.assertEquals(new Long(0), personService.count());
+		Assert.assertEquals(new Long(0), personDao.count(QPerson.person));
+	}
+
+	@Test
+	public void testPolymorphicSubTypeGet() throws ServiceException, SecurityServiceException {
+		Person person = new PersonSubTypeA("Firstname", "A", "DATA");
+		PersonReference personReference = new PersonReference(person);
+		personService.create(person);
+		personReferenceService.create(personReference);
+		
+		// Vidage de la session
+		personService.flush();
+		personService.clear();
+		
+		PersonReference personReference1 = personReferenceDao.getById(personReference.getId());
+		Person person1 = personReference1.getPerson();
+		Assert.assertEquals(person, person1);
+		Assert.assertFalse(person1 instanceof PersonSubTypeA); // person1 devrait être chargé en session en tant que proxy de Person
+		
+		Person person2 = personDao.getById(PersonSubTypeA.class, person.getId());
+		Assert.assertEquals(person, person2);
+		Assert.assertTrue(person2 instanceof PersonSubTypeA); // Chargement en session SANS proxy
+	}
+
+	@SuppressWarnings("deprecation")
+	@Test
+	public void testSaveDelete() throws ServiceException, SecurityServiceException {
+		Person person = new Person("Firstname", "Lastname");
+		personService.save(person);
+		personService.flush();
+		Assert.assertTrue(personService.list().contains(person));
+
+		personService.delete(person);
+		personService.flush();
+		Assert.assertFalse(personService.list().contains(person));
+	}
+
+	@Test
+	public void testUpdate() throws ServiceException, SecurityServiceException {
+		Person person = new Person("Firstname", "Lastname");
+		personService.create(person);
+		Assert.assertEquals("Firstname", personService.getById(person.getId()).getFirstName());
+
+		person.setFirstName("NewFirstname");
+		personDao.update(person);
+		Assert.assertEquals("NewFirstname", personService.getById(person.getId()).getFirstName());
+	}
+
+	@Test
+	public void testRefresh() throws ServiceException, SecurityServiceException {
+		Person person = new Person("Firstname", "Lastname");
+		personService.create(person);
+
+		person.setFirstName("AAAAA");
+		Assert.assertEquals("AAAAA", person.getFirstName());
+
+		personService.refresh(person);
+		Assert.assertEquals("Firstname", person.getFirstName());
+
+		Person person1 = new Person("Firstname", "Lastname");
+
+		try {
+			personService.refresh(person1);
+			Assert.fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
+		} catch (IllegalArgumentException e) {
+		}
+
+		personService.create(person1);
+		personService.delete(person1);
+
+		try {
+			personService.refresh(person1);
+			Assert.fail("Faire un refresh sur un objet non persisté doit lever une exception");
+		} catch (IllegalArgumentException e) {
+		}
+	}
+
+	@Test
+	public void testLists() throws ServiceException, SecurityServiceException {
+		{
+			List<Person> emptyList = personDao.list();
+			Assert.assertEquals(0, emptyList.size());
+		}
+		
+		{
+			List<Person> emptyList = personDao.list(QPerson.person);
+			Assert.assertEquals(0, emptyList.size());
+		}
+		
+		Person person1 = new Person("Firstname1", "Lastname1");
+		personService.create(person1);
+		Person person2 = new Person("Firstname2", "AAAA");
+		personService.create(person2);
+		Person person3 = new Person("Firstname3", "AAAA");
+		personService.create(person3);
+		Person person4 = new Person("Firstname4", "Lastname4");
+		personService.create(person4);
+		
+		{
+			List<Person> list = personDao.list();
+			
+			Assert.assertEquals(4, list.size());
+			Assert.assertTrue(list.contains(person1));
+			Assert.assertTrue(list.contains(person2));
+			Assert.assertTrue(list.contains(person3));
+			Assert.assertTrue(list.contains(person4));
+		}
+		
+		{
+			List<Person> list = personDao.list(QPerson.person);
+			
+			Assert.assertEquals(4, list.size());
+			Assert.assertTrue(list.contains(person1));
+			Assert.assertTrue(list.contains(person2));
+			Assert.assertTrue(list.contains(person3));
+			Assert.assertTrue(list.contains(person4));
+		}
+	}
+
+	@Test
+	public void testCounts() throws ServiceException, SecurityServiceException {
+		{
+			Assert.assertEquals(new Long(0), personDao.count());
+		}
+		
+		{
+			Assert.assertEquals(new Long(0), personDao.count(QPerson.person));
+			Assert.assertEquals(new Long(0), personDao.countByField(QPerson.person, QPerson.person.lastName, "AAAA"));
+		}
+		
+		Person person1 = new Person("Firstname1", "Lastname1");
+		personService.create(person1);
+		Person person2 = new Person("Firstname2", "AAAA");
+		personService.create(person2);
+		Person person3 = new Person("Firstname3", "AAAA");
+		personService.create(person3);
+		Person person4 = new Person("Firstname4", "Lastname4");
+		personService.create(person4);
+		
+		{
+			Assert.assertEquals(new Long(4), personDao.count());
+		}
+		
+		{
+			Assert.assertEquals(new Long(4), personDao.count(QPerson.person));
+			Assert.assertEquals(new Long(2), personDao.countByField(QPerson.person, QPerson.person.lastName, "AAAA"));
+		}
+	}
+	
+	@Before
+	@Override
+	public void init() throws ServiceException, SecurityServiceException {
+		super.init();
+	}
+	
+	@After
+	@Override
+	public void close() throws ServiceException, SecurityServiceException {
+		super.close();
+	}
+}

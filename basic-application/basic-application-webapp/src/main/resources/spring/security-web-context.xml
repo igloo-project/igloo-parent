@@ -40,10 +40,10 @@
 		<security:headers disabled="true"/>
 		<security:csrf disabled="true"/>
 		
-		<security:intercept-url pattern="^/wicket/resource/fr.openwide.core.basicapp.web.application.common.template.js.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="^/wicket/resource/fr.openwide.core.basicapp.web.application.common.template.styles.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="^/wicket/resource/fr.openwide.core.basicapp.web.application.common.template.images.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="^/wicket/resource/fr.openwide.core.basicapp.web.application.[^/]+.*" access="hasRole('ROLE_AUTHENTICATED')" />
+		<security:intercept-url pattern="^/wicket/resource/org.iglooproject.basicapp.web.application.common.template.js.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="^/wicket/resource/org.iglooproject.basicapp.web.application.common.template.styles.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="^/wicket/resource/org.iglooproject.basicapp.web.application.common.template.images.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="^/wicket/resource/org.iglooproject.basicapp.web.application.[^/]+.*" access="hasRole('ROLE_AUTHENTICATED')" />
 		<security:intercept-url pattern="^/wicket/resource/.*" access="hasRole('ROLE_ANONYMOUS')" />
 	</security:http>
 	

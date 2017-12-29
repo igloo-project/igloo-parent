@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.iglooproject.parents</groupId>
+		<artifactId>igloo-parent-maven-configuration-core</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
+	</parent>
+	
+	<groupId>org.iglooproject.components</groupId>
+	<artifactId>igloo-components</artifactId>
+	<packaging>pom</packaging>
+
+	<name>Igloo - Components</name>
+
+	<modules>
+		<module>igloo-component-commons</module>
+		<module>igloo-component-spring</module>
+		
+		<module>igloo-component-jpa</module>
+		<module>igloo-component-jpa-more</module>
+		<module>igloo-component-jpa-security</module>
+		<module>igloo-component-jpa-externallinkchecker</module>
+		
+		<module>igloo-component-export</module>
+		<module>igloo-component-imports</module>
+		
+		<module>igloo-component-wicket</module>
+		<module>igloo-component-wicket-more</module>
+		<module>igloo-component-wicket-more-jqplot</module>
+		
+		<module>igloo-component-rest-jersey</module>
+		<module>igloo-component-web-security</module>
+		<module>igloo-component-rest-jersey2</module>
+		<module>igloo-component-jpa-migration</module>
+		<module>igloo-component-infinispan</module>
+		<module>igloo-component-elasticsearch-plugin</module>
+	</modules>
+	
+	<!-- Project information -->
+
+	<organization>
+		<name>Open Wide</name>
+		<url>http://www.openwide.fr/</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>gsmet</id>
+			<name>Guillaume Smet</name>
+			<email>guillaume.smet@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+		<developer>
+			<id>lalmeras</id>
+			<name>Laurent Almeras</name>
+			<email>laurent.almeras@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+		<developer>
+			<id>jgonzalez</id>
+			<name>Julien Gonzalez</name>
+			<email>julien.gonzalez@openwide.fr</email>
+			<organization>Open Wide</organization>
+		</developer>
+	</developers>
+
+</project>

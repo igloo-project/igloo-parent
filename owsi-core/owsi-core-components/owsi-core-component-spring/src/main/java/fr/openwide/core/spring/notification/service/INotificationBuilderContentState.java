@@ -1,8 +1,0 @@
-package fr.openwide.core.spring.notification.service;
-
-
-public interface INotificationBuilderContentState extends INotificationBuilderSendState {
-	
-	INotificationBuilderTemplateState template(String templateKey);
-	
-}

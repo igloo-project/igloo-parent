@@ -13,12 +13,12 @@
 	
 	<context-param>
 		<param-name>contextInitializerClasses</param-name>
-		<param-value>fr.openwide.core.spring.config.ExtendedApplicationContextInitializer</param-value>
+		<param-value>org.iglooproject.spring.config.ExtendedApplicationContextInitializer</param-value>
 	</context-param>
 	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>fr.openwide.core.basicapp.web.application.config.spring.BasicApplicationWebappConfig</param-value>
+		<param-value>org.iglooproject.basicapp.web.application.config.spring.BasicApplicationWebappConfig</param-value>
 	</context-param>
 	
 	<session-config>
@@ -28,7 +28,7 @@
 	
 	<listener>
 		<!-- branchement de java.util.logging sur slf4j (permet de gérer les logs de jersey)  -->
-		<listener-class>fr.openwide.core.commons.util.logging.SLF4JLoggingListener</listener-class>
+		<listener-class>org.iglooproject.commons.util.logging.SLF4JLoggingListener</listener-class>
 	</listener>
 	
 	<listener>
@@ -37,12 +37,12 @@
 	
 	<filter>
 		<filter-name>log4jUrlFilter</filter-name>
-		<filter-class>fr.openwide.core.wicket.servlet.filter.Log4jUrlFilter</filter-class>
+		<filter-class>org.iglooproject.wicket.servlet.filter.Log4jUrlFilter</filter-class>
 	</filter>
 	
 	<filter>
 		<filter-name>openTFileRegistryFilter</filter-name>
-		<filter-class>fr.openwide.core.wicket.servlet.filter.OpenTFileRegistryFilter</filter-class>
+		<filter-class>org.iglooproject.wicket.servlet.filter.OpenTFileRegistryFilter</filter-class>
 	</filter>
 	
 	<filter>
