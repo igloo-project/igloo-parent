@@ -18,13 +18,18 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.search.query.engine.spi.FacetManager;
+import org.hibernate.search.query.facet.Facet;
+import org.hibernate.search.query.facet.FacetingRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 
+import fr.openwide.core.commons.util.functional.SerializableFunction;
 import fr.openwide.core.jpa.more.business.sort.ISort;
 import fr.openwide.core.jpa.more.business.sort.SortUtils;
 import fr.openwide.core.jpa.search.bridge.GenericEntityIdFieldBridge;
@@ -468,5 +473,45 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	protected <P> Query matchRange(QueryBuilder builder, String fieldPath, P min, P max) {
 		return getFactory().matchRange(builder, fieldPath, min, max);
 	}
+	
+	// Facets management
+	
+	private FacetManager getFacetManager() {
+		return getFullTextQuery().getFacetManager();
+	}
+	
+	protected void registerFacet(FacetingRequest facetingRequest) {
+		getFacetManager().enableFaceting(facetingRequest);
+	}
+	
+	protected void registerFacet(String facetName, String fieldPath) {
+		FacetingRequest facetingRequest = getFactory().getDefaultQueryBuilder().facet()
+				.name(facetName)
+				.onField(fieldPath)
+				.discrete()
+				.includeZeroCounts(false)
+				.createFacetingRequest();
+		
+		registerFacet(facetingRequest);
+	}
+	
+	protected Collection<Facet> getFacets(String facetName) {
+		return getFacetManager().getFacets(facetName);
+	}
 
+	@Override
+	public final List<String> listFacetValues(String facetName) {
+		return Lists.newArrayList(
+				Iterables.transform(
+						getFacets(facetName),
+						new SerializableFunction<Facet, String>() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public String apply(Facet facet) {
+								return facet.getValue();
+							}
+						}
+				)
+		);
+	}
 }
