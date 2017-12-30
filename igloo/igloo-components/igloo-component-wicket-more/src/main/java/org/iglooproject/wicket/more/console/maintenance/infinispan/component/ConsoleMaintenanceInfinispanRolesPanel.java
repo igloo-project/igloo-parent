@@ -108,6 +108,7 @@ public class ConsoleMaintenanceInfinispanRolesPanel extends Panel {
 										BootstrapRenderer.constant("console.maintenance.infinispan.roles.actions.assign", "fa fa-exchange fa-fw", BootstrapColor.PRIMARY),
 										new OneParameterModalOpenAjaxAction<IModel<IRole>>(assignPopup) {
 											private static final long serialVersionUID = 1L;
+											@Override
 											protected void onShow(AjaxRequestTarget target, IModel<IRole> parameter) {
 												assignPopup.init(parameter);
 											}
@@ -139,6 +140,7 @@ public class ConsoleMaintenanceInfinispanRolesPanel extends Panel {
 										.when(
 												new SerializablePredicate<IRole>() {
 													private static final long serialVersionUID = 1L;
+													@Override
 													public boolean apply(IRole input) {
 														IRoleAttribution roleAttribution = infinispanClusterService.getRoleAttribution(input);
 														return roleAttribution != null && roleAttribution.getAttributionDate() != null && roleAttribution.getOwner() != null;

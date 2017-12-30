@@ -7,19 +7,24 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.bindgen.Bindable;
-import org.hibernate.annotations.Index;
 import org.hibernate.annotations.Type;
-
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 @MappedSuperclass
 @Bindable
+@Table(
+		indexes = {
+				@Index(name = "idx_Execution_endDate", columnList = "endDate")
+		}
+)
 public abstract class AbstractExecution<E extends GenericEntity<Long, E>, ET extends IExecutionType> extends GenericEntity<Long, E> {
 	private static final long serialVersionUID = 6026078483841894077L;
 
@@ -49,7 +54,6 @@ public abstract class AbstractExecution<E extends GenericEntity<Long, E>, ET ext
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date startDate;
 
-	@Index(name = "idx_Execution_endDate")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date endDate;
 

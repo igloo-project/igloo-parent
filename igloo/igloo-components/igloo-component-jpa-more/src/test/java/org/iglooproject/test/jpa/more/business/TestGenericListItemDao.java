@@ -85,7 +85,6 @@ public class TestGenericListItemDao extends AbstractJpaMoreTestCase {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void testCount() throws ServiceException, SecurityServiceException {
 		Assert.assertEquals(new Long(3), genericListItemDao.count(MockAuditAction.class));

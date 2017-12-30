@@ -125,6 +125,7 @@ public class ConsoleMaintenanceInfinispanRolesRequestsPanel extends Panel {
 										.when(
 												new SerializablePredicate<IRole>() {
 													private static final long serialVersionUID = 1L;
+													@Override
 													public boolean apply(IRole input) {
 														IAttribution roleAttribution = infinispanClusterService.getRoleRequestAttribution(input);
 														return roleAttribution != null && roleAttribution.getAttributionDate() != null && roleAttribution.getOwner() != null;

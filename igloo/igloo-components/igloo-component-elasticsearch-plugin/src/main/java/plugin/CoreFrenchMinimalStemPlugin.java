@@ -12,24 +12,23 @@ import index.CoreFrenchMinimalStemFilterFactory;
  */
 public class CoreFrenchMinimalStemPlugin extends Plugin {
 
-    private final Settings settings;
+	private final Settings settings;
 
-    public CoreFrenchMinimalStemPlugin(Settings settings) {
-        this.settings = settings;
-    }
+	public CoreFrenchMinimalStemPlugin(Settings settings) {
+		this.settings = settings;
+	}
 
-    @Override
-    public String name() {
-        return "jvm-example";
-    }
+	@Override
+	public String name() {
+		return "jvm-example";
+	}
 
-    @Override
-    public String description() {
-        return "A plugin that extends all extension points";
-    }
+	@Override
+	public String description() {
+		return "A plugin that extends all extension points";
+	}
 
-    public void onModule(AnalysisModule module) {
-    	module.addTokenFilter("corefrenchminimalstem", (Class<? extends TokenFilterFactory>) CoreFrenchMinimalStemFilterFactory.class);
-    }
-
+	public void onModule(AnalysisModule module) {
+		module.addTokenFilter("corefrenchminimalstem", (Class<? extends TokenFilterFactory>) CoreFrenchMinimalStemFilterFactory.class);
+	}
 }

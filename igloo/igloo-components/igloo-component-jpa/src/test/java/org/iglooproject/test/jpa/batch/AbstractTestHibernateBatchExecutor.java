@@ -6,6 +6,13 @@ import static org.junit.Assert.assertNotEquals;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.iglooproject.commons.util.functional.Joiners;
+import org.iglooproject.jpa.batch.runnable.ReadWriteBatchRunnable;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.test.AbstractJpaCoreTestCase;
+import org.iglooproject.test.business.person.model.Person;
+import org.iglooproject.test.business.person.model.QPerson;
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,23 +25,11 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.google.common.collect.Lists;
 import com.querydsl.jpa.impl.JPAQuery;
 
-import org.iglooproject.commons.util.functional.Joiners;
-import org.iglooproject.jpa.batch.executor.BatchExecutorCreator;
-import org.iglooproject.jpa.batch.runnable.ReadWriteBatchRunnable;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.test.AbstractJpaCoreTestCase;
-import org.iglooproject.test.business.person.model.Person;
-import org.iglooproject.test.business.person.model.QPerson;
-
 public abstract class AbstractTestHibernateBatchExecutor extends AbstractJpaCoreTestCase {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTestHibernateBatchExecutor.class);
 
 	protected static final String NEW_LASTNAME_VALUE = "NEW_LASTNAME_VALUE";
-
-	@Autowired
-	private BatchExecutorCreator executorCreator;
 
 	protected List<Long> personIds;
 

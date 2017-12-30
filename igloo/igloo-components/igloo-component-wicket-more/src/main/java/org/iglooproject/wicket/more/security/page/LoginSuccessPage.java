@@ -1,7 +1,8 @@
 package org.iglooproject.wicket.more.security.page;
 
 import org.apache.wicket.Page;
-
+import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -44,9 +45,9 @@ public class LoginSuccessPage extends CoreWebPage {
 			redirectUrl = RequestCycleUtils.getSpringSecuritySavedRequest();
 		}
 		if (isUrlValid(redirectUrl)) {
-			redirect(redirectUrl);
+			throw new RedirectToUrlException(redirectUrl);
 		} else {
-			redirect(getDefaultRedirectPage());
+			throw new RestartResponseException(getDefaultRedirectPage());
 		}
 	}
 	

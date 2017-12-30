@@ -62,6 +62,7 @@ public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParame
 			return ActionColumnBuilder.this.addLink(renderer, binding, mapper);
 		}
 		
+		@Override
 		public IActionColumnAddedLinkState<T, I> addLabelledLink(BootstrapRenderer<? super T> renderer,
 				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
 			return ActionColumnBuilder.this.addLabelledLink(renderer, mapper);

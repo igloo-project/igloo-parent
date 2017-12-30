@@ -47,8 +47,10 @@ public interface IActionColumnBuildState<T, I> extends IActionColumnCommonBuildS
 	IActionColumnAddedActionState<T, I> addLabelledAction(BootstrapRenderer<? super T> renderer,
 			IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory);
 
+	@Override
 	IActionColumnBuildState<T, I> withClassOnElements(String cssClassOnElements);
 
+	@Override
 	I end();
 
 }

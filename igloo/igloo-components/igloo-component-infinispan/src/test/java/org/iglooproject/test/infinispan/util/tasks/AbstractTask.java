@@ -17,6 +17,7 @@ public abstract class AbstractTask implements Runnable {
 		return cacheManager;
 	}
 
+	@Override
 	public final void run() {
 		MDC.put("processId", TestCacheManagerBuilder.PROCESS_ID);
 		try {

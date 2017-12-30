@@ -16,6 +16,7 @@ public class CoreFrenchMinimalStemFilterFactory extends AbstractTokenFilterFacto
 		super(index, indexSettingsService.getSettings(), name, settings);
 	}
 
+	@Override
 	public TokenStream create(TokenStream input) {
 		return new CoreFrenchMinimalStemFilter(input);
 	}
