@@ -151,8 +151,8 @@
 	<!-- Project information -->
 
 	<organization>
-		<name>Open Wide</name>
-		<url>http://www.openwide.fr/</url>
+		<name>Kobalt</name>
+		<url>https://www.kobalt-si.fr/</url>
 	</organization>
 
 	<licenses>
@@ -173,20 +173,20 @@
 		<developer>
 			<id>lalmeras</id>
 			<name>Laurent Almeras</name>
-			<email>laurent.almeras@openwide.fr</email>
-			<organization>Open Wide</organization>
+			<email>laurent.almeras@kobalt-si.fr</email>
+			<organization>Kobalt</organization>
 		</developer>
 		<developer>
 			<id>jgonzalez</id>
 			<name>Julien Gonzalez</name>
-			<email>julien.gonzalez@openwide.fr</email>
-			<organization>Open Wide</organization>
+			<email>julien.gonzalez@kobalt-si.fr</email>
+			<organization>Kobalt</organization>
 		</developer>
 		<developer>
 			<id>rjoly</id>
 			<name>Renaud Joly</name>
-			<email>renaud.joly@openwide.fr</email>
-			<organization>Open Wide</organization>
+			<email>renaud.joly@kobalt-si.fr</email>
+			<organization>Kobalt</organization>
 		</developer>
 		<developer>
 			<id>yrodiere</id>
@@ -197,8 +197,8 @@
 		<developer>
 			<id>flacreuse</id>
 			<name>Florian Lacreuse</name>
-			<email>florian.lacreuse@openwide.fr</email>
-			<organization>Open Wide</organization>
+			<email>florian.lacreuse@kobalt-si.fr</email>
+			<organization>Kobalt</organization>
 		</developer>
 		<developer>
 			<id>nbarithel</id>
@@ -209,21 +209,21 @@
 		<developer>
 			<id>jbenichou</id>
 			<name>Julien Bénichou</name>
-			<email>julien.benichou@openwide.fr</email>
-			<organization>Open Wide</organization>
+			<email>julien.benichou@kobalt-si.fr</email>
+			<organization>Kobalt</organization>
 		</developer>
 	</developers>
 	
 	<distributionManagement>
 		<repository>
-			<id>nexus-kobalt-releases</id>
-			<name>Nexus Igloo</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/kobalt-releases</url>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus Igloo Releases</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
 		</repository>
 		<snapshotRepository>
-			<id>nexus-kobalt-snapshots</id>
+			<id>nexus-igloo-snapshots</id>
 			<name>Nexus Igloo Snapshots</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/kobalt-snapshots</url>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
@@ -233,8 +233,8 @@
 	</issueManagement>
 
 	<ciManagement>
-		<system>Jenkins</system>
-		<url>https://projects.openwide.fr/services/ci/hudson/jenkins/igloo/</url>
+		<system>GitLab</system>
+		<url>https://gitlab.tools.kobalt-si.fr/igloo/igloo-parent/pipelines</url>
 	</ciManagement>
 
 	<scm>
