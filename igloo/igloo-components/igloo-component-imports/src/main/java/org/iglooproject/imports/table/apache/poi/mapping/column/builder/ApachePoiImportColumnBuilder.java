@@ -71,7 +71,7 @@ public class ApachePoiImportColumnBuilder extends AbstractTableImportColumnBuild
 					}
 					
 					switch(ApachePoiImportUtils.getCellActualValueType(cell)) {
-						case Cell.CELL_TYPE_NUMERIC:
+						case NUMERIC:
 							return cell.getNumericCellValue();
 						default:
 							return null;
@@ -95,9 +95,9 @@ public class ApachePoiImportColumnBuilder extends AbstractTableImportColumnBuild
 					}
 					
 					switch(ApachePoiImportUtils.getCellActualValueType(cell)) {
-						case Cell.CELL_TYPE_NUMERIC:
+						case NUMERIC:
 							return formatIfNumeric.get().format(cell.getNumericCellValue());
-						case Cell.CELL_TYPE_STRING:
+						case STRING:
 							return StringUtils.trimToNull(cell.getStringCellValue());
 						default:
 							return null;
@@ -116,7 +116,7 @@ public class ApachePoiImportColumnBuilder extends AbstractTableImportColumnBuild
 					}
 					
 					switch(ApachePoiImportUtils.getCellActualValueType(cell)) {
-						case Cell.CELL_TYPE_STRING:
+						case STRING:
 							return null;
 						default:
 							return cell.getDateCellValue();

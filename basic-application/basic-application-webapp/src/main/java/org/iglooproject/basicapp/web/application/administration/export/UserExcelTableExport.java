@@ -3,7 +3,7 @@ package org.iglooproject.basicapp.web.application.administration.export;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.poi.ss.usermodel.Hyperlink;
+import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -11,14 +11,13 @@ import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserBinding;
 import org.iglooproject.export.excel.ColumnInformation;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.wicket.more.export.excel.AbstractSimpleExcelTableExport;
+
+import com.google.common.collect.ImmutableList;
 
 public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 	
@@ -73,7 +72,7 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 		addTextCell(row, columnIndex++, binding.firstName().getSafely());
 		
 		XSSFCreationHelper helper= (XSSFCreationHelper) workbook.getCreationHelper();
-		XSSFHyperlink emailLink = helper.createHyperlink(Hyperlink.LINK_EMAIL);
+		XSSFHyperlink emailLink = helper.createHyperlink(HyperlinkType.EMAIL);
 		String emailAddress = binding.email().getSafely();
 		emailLink.setAddress("mailto:" + emailAddress);
 		addLinkToCell(addTextCell(row, columnIndex++, emailAddress), emailLink);

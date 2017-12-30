@@ -49,9 +49,9 @@ public class ApachePoiImportNavigator implements ITableImportNavigator<Sheet, Ro
 	
 	protected boolean cellHasContent(Cell cell) {
 		switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
-		case Cell.CELL_TYPE_BLANK:
+		case BLANK:
 			return false;
-		case Cell.CELL_TYPE_STRING:
+		case STRING:
 			return !StringUtils.isEmpty(cell.getStringCellValue());
 		default:
 			// In other cases we cannot detect whether the cell is actually empty in the

@@ -24,12 +24,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
@@ -212,7 +217,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		Font fontHeader = workbook.createFont();
 		fontHeader.setFontHeightInPoints(getHeaderFontHeight());
 		fontHeader.setFontName(getFontName());
-		fontHeader.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		fontHeader.setBold(true);
 		setFontColor(fontHeader, colorRegistry, HEADER_FONT_COLOR_INDEX);
 		registerFont(FONT_HEADER_NAME, fontHeader);
 
@@ -236,31 +241,31 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		CellStyle defaultStyle = workbook.createCellStyle();
 		defaultStyle.setFont(getFont(FONT_NORMAL_NAME));
 		setStyleFillForegroundColor(defaultStyle, colorRegistry, HSSFColorPredefined.WHITE.getIndex());
-		defaultStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-		defaultStyle.setBorderBottom(CellStyle.BORDER_THIN);
+		defaultStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		defaultStyle.setBorderBottom(BorderStyle.THIN);
 		setStyleBottomBorderColor(defaultStyle, colorRegistry, BORDER_COLOR_INDEX);
-		defaultStyle.setBorderLeft(CellStyle.BORDER_THIN);
+		defaultStyle.setBorderLeft(BorderStyle.THIN);
 		setStyleLeftBorderColor(defaultStyle, colorRegistry, BORDER_COLOR_INDEX);
-		defaultStyle.setBorderRight(CellStyle.BORDER_THIN);
+		defaultStyle.setBorderRight(BorderStyle.THIN);
 		setStyleRightBorderColor(defaultStyle, colorRegistry, BORDER_COLOR_INDEX);
-		defaultStyle.setBorderTop(CellStyle.BORDER_THIN);
+		defaultStyle.setBorderTop(BorderStyle.THIN);
 		setStyleTopBorderColor(defaultStyle, colorRegistry, BORDER_COLOR_INDEX);
-		defaultStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		defaultStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 		defaultStyle.setWrapText(true);
 		registerStyle(STYLE_DEFAULT_NAME, defaultStyle);
 
 		CellStyle styleHeader = workbook.createCellStyle();
-		styleHeader.setAlignment(CellStyle.ALIGN_CENTER);
+		styleHeader.setAlignment(HorizontalAlignment.CENTER);
 		styleHeader.setFont(getFont(FONT_HEADER_NAME));
 		setStyleFillForegroundColor(styleHeader, colorRegistry, HEADER_BACKGROUND_COLOR_INDEX);
-		styleHeader.setFillPattern(CellStyle.SOLID_FOREGROUND);
-		styleHeader.setBorderBottom(CellStyle.BORDER_THIN);
+		styleHeader.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		styleHeader.setBorderBottom(BorderStyle.THIN);
 		setStyleBottomBorderColor(styleHeader, colorRegistry, BORDER_COLOR_INDEX);
-		styleHeader.setBorderLeft(CellStyle.BORDER_THIN);
+		styleHeader.setBorderLeft(BorderStyle.THIN);
 		setStyleLeftBorderColor(styleHeader, colorRegistry, BORDER_COLOR_INDEX);
-		styleHeader.setBorderRight(CellStyle.BORDER_THIN);
+		styleHeader.setBorderRight(BorderStyle.THIN);
 		setStyleRightBorderColor(styleHeader, colorRegistry, BORDER_COLOR_INDEX);
-		styleHeader.setBorderTop(CellStyle.BORDER_THIN);
+		styleHeader.setBorderTop(BorderStyle.THIN);
 		setStyleTopBorderColor(styleHeader, colorRegistry, BORDER_COLOR_INDEX);
 		styleHeader.setDataFormat((short) 0);
 		styleHeader.setWrapText(true);
@@ -277,12 +282,12 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		short integerFormatIndex = dataFormat.getFormat(integerDataFormat);
 
 		CellStyle styleOddInteger = cloneStyle(styleOdd);
-		styleOddInteger.setAlignment(CellStyle.ALIGN_RIGHT);
+		styleOddInteger.setAlignment(HorizontalAlignment.RIGHT);
 		styleOddInteger.setDataFormat(integerFormatIndex);
 		registerStyle(STYLE_INTEGER_NAME + ROW_ODD_NAME, styleOddInteger);
 
 		CellStyle styleEvenInteger = cloneStyle(styleEven);
-		styleEvenInteger.setAlignment(CellStyle.ALIGN_RIGHT);
+		styleEvenInteger.setAlignment(HorizontalAlignment.RIGHT);
 		styleEvenInteger.setDataFormat(integerFormatIndex);
 		registerStyle(STYLE_INTEGER_NAME + ROW_EVEN_NAME, styleEvenInteger);
 		
@@ -290,12 +295,12 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		short decimalFormatIndex = dataFormat.getFormat(decimalDataFormat);
 
 		CellStyle styleOddDecimal = cloneStyle(styleOdd);
-		styleOddDecimal.setAlignment(CellStyle.ALIGN_RIGHT);
+		styleOddDecimal.setAlignment(HorizontalAlignment.RIGHT);
 		styleOddDecimal.setDataFormat(decimalFormatIndex);
 		registerStyle(STYLE_DECIMAL_NAME + ROW_ODD_NAME, styleOddDecimal);
 
 		CellStyle styleEvenDecimal = cloneStyle(styleEven);
-		styleEvenDecimal.setAlignment(CellStyle.ALIGN_RIGHT);
+		styleEvenDecimal.setAlignment(HorizontalAlignment.RIGHT);
 		styleEvenDecimal.setDataFormat(decimalFormatIndex);
 		registerStyle(STYLE_DECIMAL_NAME + ROW_EVEN_NAME, styleEvenDecimal);
 
@@ -374,7 +379,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected Cell addTextCell(Row row, int columnIndex, String text) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellStyle(getRowStyle(STYLE_STANDARD_NAME, row.getRowNum()));
-		cell.setCellType(Cell.CELL_TYPE_STRING);
+		cell.setCellType(CellType.STRING);
 		cell.setCellValue(creationHelper.createRichTextString(normalizeLineBreaks(text == null ? "" : text)));
 
 		return cell;
@@ -391,7 +396,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected Cell addFormulaCell(Row row, int columnIndex, String formula) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellStyle(getRowStyle(STYLE_STANDARD_NAME, row.getRowNum()));
-		cell.setCellType(Cell.CELL_TYPE_FORMULA);
+		cell.setCellType(CellType.FORMULA);
 		cell.setCellFormula(formula);
 
 		return cell;
@@ -408,7 +413,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected Cell addHeaderCell(Row row, int columnIndex, String text) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellStyle(getStyle(STYLE_HEADER_NAME));
-		cell.setCellType(Cell.CELL_TYPE_STRING);
+		cell.setCellType(CellType.STRING);
 		cell.setCellValue(creationHelper.createRichTextString(normalizeLineBreaks(text == null ? "" : text)));
 
 		return cell;
@@ -470,7 +475,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addIntegerCell(Row row, int columnIndex, Number number) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+		cell.setCellType(CellType.NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_INTEGER_NAME, row.getRowNum()));
 		
 		if (number != null) {
@@ -490,7 +495,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addDecimalCell(Row row, int columnIndex, Number number) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+		cell.setCellType(CellType.NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_DECIMAL_NAME, row.getRowNum()));
 
 		if (number != null) {
@@ -510,7 +515,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addPercentCell(Row row, int columnIndex, Number number) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+		cell.setCellType(CellType.NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_PERCENT_NAME, row.getRowNum()));
 		
 		if (number != null) {
@@ -530,7 +535,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addPercentRelativeCell(Row row, int columnIndex, Number number) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+		cell.setCellType(CellType.NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_PERCENT_RELATIVE_NAME, row.getRowNum()));
 		
 		if (number != null) {
@@ -564,7 +569,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addFileSizeCell(Row row, int columnIndex, Long fileSizeInBytes) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+		cell.setCellType(CellType.NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_FILE_SIZE_NAME, row.getRowNum()));
 		
 		if (fileSizeInBytes != null) {

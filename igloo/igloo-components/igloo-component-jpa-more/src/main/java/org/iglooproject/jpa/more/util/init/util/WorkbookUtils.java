@@ -14,15 +14,15 @@ import java.util.Set;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CellValue;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.iglooproject.spring.util.StringUtils;
 
 import com.google.common.collect.Sets;
-
-import org.iglooproject.spring.util.StringUtils;
 
 public final class WorkbookUtils {
 	
@@ -75,10 +75,10 @@ public final class WorkbookUtils {
 	}
 	
 	private static Object getCellValue(FormulaEvaluator formulaEvaluator, Cell cell) {
-		Object cellPrimitiveValue = getCellPrimitiveValue(cell, cell.getCellType());
+		Object cellPrimitiveValue = getCellPrimitiveValue(cell, cell.getCellTypeEnum());
 		if (cellPrimitiveValue != null) {
 			return cellPrimitiveValue;
-		} else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+		} else if (cell.getCellTypeEnum().equals(CellType.FORMULA)) {
 			return getCellValueFromFormula(formulaEvaluator, cell);
 		}
 		return null;
@@ -88,7 +88,7 @@ public final class WorkbookUtils {
 		try {
 			CellValue cellValue = formulaEvaluator.evaluate(cell);
 			
-			if (cellValue.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+			if (cellValue.getCellTypeEnum().equals(CellType.NUMERIC)) {
 				if (DateUtil.isCellDateFormatted(cell)) {
 					Calendar calendar = GregorianCalendar.getInstance();
 					calendar.setTime(DateUtil.getJavaDate(cellValue.getNumberValue()));
@@ -97,7 +97,7 @@ public final class WorkbookUtils {
 				} else {
 					return DECIMAL_FORMAT.format(cellValue.getNumberValue());
 				}
-			} else if (cellValue.getCellType() == Cell.CELL_TYPE_STRING) {
+			} else if (cellValue.getCellTypeEnum().equals(CellType.STRING)) {
 				if (StringUtils.hasText(cellValue.getStringValue())) {
 					return cellValue.getStringValue();
 				}
@@ -107,7 +107,7 @@ public final class WorkbookUtils {
 			// we can retrieve the cached value (which may no longer be correct, depending of what you do on your file).
 			FormulaFeature feature = EnumUtils.getEnum(FormulaFeature.class, e.getCause().getMessage());
 			if (ALLOWED_NOT_IMPLEMENTED_FORMULA_FEATURES.contains(feature)) {
-				return getCellPrimitiveValue(cell, cell.getCachedFormulaResultType());
+				return getCellPrimitiveValue(cell, cell.getCachedFormulaResultTypeEnum());
 			} else {
 				throw e;
 			}
@@ -116,8 +116,8 @@ public final class WorkbookUtils {
 		return null;
 	}
 	
-	private static Object getCellPrimitiveValue(Cell cell, int cellType) {
-		if (cellType == Cell.CELL_TYPE_NUMERIC) {
+	private static Object getCellPrimitiveValue(Cell cell, CellType cellType) {
+		if (cellType.equals(CellType.NUMERIC)) {
 			if (DateUtil.isCellDateFormatted(cell)) {
 				Calendar calendar = GregorianCalendar.getInstance();
 				calendar.setTime(DateUtil.getJavaDate(cell.getNumericCellValue()));
@@ -126,7 +126,7 @@ public final class WorkbookUtils {
 			} else {
 				return DECIMAL_FORMAT.format(cell.getNumericCellValue());
 			}
-		} else if (cellType == Cell.CELL_TYPE_STRING) {
+		} else if (cellType.equals(CellType.STRING)) {
 			if (StringUtils.hasText(cell.getStringCellValue())) {
 				return cell.getStringCellValue();
 			}
