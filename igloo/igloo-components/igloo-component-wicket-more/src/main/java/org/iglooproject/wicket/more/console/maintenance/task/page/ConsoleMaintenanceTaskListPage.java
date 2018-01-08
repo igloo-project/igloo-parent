@@ -1,7 +1,6 @@
 package org.iglooproject.wicket.more.console.maintenance.task.page;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.wicket.more.console.maintenance.task.component.TaskFilterPanel;
 import org.iglooproject.wicket.more.console.maintenance.task.component.TaskManagerInformationPanel;
 import org.iglooproject.wicket.more.console.maintenance.task.component.TaskResultsPanel;
@@ -32,7 +31,7 @@ public class ConsoleMaintenanceTaskListPage extends ConsoleMaintenanceTemplate {
 
 		add(new TaskManagerInformationPanel("taskManagerInformationPanel"));
 
-		add(new TaskFilterPanel("filterPanel", queuedTaskHolderDataProvider, resultsPanel.getPageable()));
+		add(new TaskFilterPanel("filterPanel", queuedTaskHolderDataProvider, resultsPanel.getDataTable()));
 	}
 
 	@Override

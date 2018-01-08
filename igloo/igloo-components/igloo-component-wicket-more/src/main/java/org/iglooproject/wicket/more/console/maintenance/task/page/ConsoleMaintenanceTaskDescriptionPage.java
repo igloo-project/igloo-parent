@@ -12,13 +12,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
 import org.iglooproject.jpa.more.business.task.model.AbstractTask;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
@@ -36,7 +29,7 @@ import org.iglooproject.wicket.more.console.maintenance.template.ConsoleMaintena
 import org.iglooproject.wicket.more.console.template.ConsoleTemplate;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
+import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.action.AbstractAjaxAction;
 import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
@@ -45,6 +38,12 @@ import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.boots
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.util.DatePattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTemplate {
 
@@ -55,11 +54,10 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL)
 			.enable(SerializationFeature.INDENT_OUTPUT);
 
-	public static final IPageLinkDescriptor linkDescriptor(IModel<QueuedTaskHolder> queuedTaskHolderModel) {
-		return LinkDescriptorBuilder.start()
-				.map(CommonParameters.ID, queuedTaskHolderModel, QueuedTaskHolder.class).mandatory()
+	public static final ILinkDescriptorMapper<IPageLinkDescriptor, IModel<QueuedTaskHolder>> MAPPER =
+		LinkDescriptorBuilder.start()
+				.model(QueuedTaskHolder.class)
 				.page(ConsoleMaintenanceTaskDescriptionPage.class);
-	}
 	
 	@SpringBean
 	private IQueuedTaskHolderManager queuedTaskHolderManager;
@@ -72,7 +70,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		setOutputMarkupId(true);
 		
 		final IModel<QueuedTaskHolder> queuedTaskHolderModel = new GenericEntityModel<Long, QueuedTaskHolder>(null);
-		linkDescriptor(queuedTaskHolderModel).extractSafely(parameters, ConsoleMaintenanceTaskListPage.linkDescriptor(),
+		MAPPER.map(queuedTaskHolderModel).extractSafely(parameters, ConsoleMaintenanceTaskListPage.linkDescriptor(),
 				getString("common.notExists"));
 		
 		addHeadPageTitleKey("console.maintenance.tasks");
@@ -146,7 +144,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 								try {
 									queuedTaskHolderManager.reload(queuedTaskHolderModel.getObject().getId());
 									Session.get().success(getString("console.maintenance.task.description.mainInformation.reload.success"));
-									throw linkDescriptor(queuedTaskHolderModel).newRestartResponseException();
+									throw MAPPER.map(queuedTaskHolderModel).newRestartResponseException();
 								} catch (RestartResponseException e) {
 									throw e;
 								} catch (Exception e) {
@@ -181,7 +179,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 								try {
 									queuedTaskHolderManager.cancel(queuedTaskHolderModel.getObject().getId());
 									Session.get().success(getString("console.maintenance.task.description.mainInformation.cancel.success"));
-									throw linkDescriptor(queuedTaskHolderModel).newRestartResponseException();
+									throw MAPPER.map(queuedTaskHolderModel).newRestartResponseException();
 								} catch (RestartResponseException e) {
 									throw e;
 								} catch (Exception e) {

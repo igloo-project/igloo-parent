@@ -13,9 +13,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.showcase.core.business.user.service.IUserService;
 import org.iglooproject.showcase.core.util.binding.Bindings;
@@ -24,6 +21,8 @@ import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.BindingModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EditUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 	private static final long serialVersionUID = 3066059572097078436L;
@@ -109,7 +108,7 @@ public class EditUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 					userService.update(user);
 					getSession().success(getString("common.success"));
 					
-					UserDescriptionPage.linkDescriptor(EditUserPopupPanel.this.getModel()).setResponsePage();
+					UserDescriptionPage.MAPPER.map(EditUserPopupPanel.this.getModel()).setResponsePage();
 				} catch (Exception e) {
 					LOGGER.error("Error during user update", e);
 					getSession().error(getString("common.error.unexpected"));

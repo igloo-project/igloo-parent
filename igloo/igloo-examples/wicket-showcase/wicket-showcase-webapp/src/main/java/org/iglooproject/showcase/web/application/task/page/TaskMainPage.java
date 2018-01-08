@@ -18,9 +18,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolderBinding;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
@@ -46,6 +43,8 @@ import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.model.BindingModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TaskMainPage extends MainTemplate {
 
@@ -296,7 +295,7 @@ public class TaskMainPage extends MainTemplate {
 		
 		TaskPortfolioPanel portfolio = new TaskPortfolioPanel("portfolio", dataProvider, ApplicationPropertyModel.of(ShowcaseWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE).getObject());
 		add(
-				new TaskSearchPanel("search", portfolio.getPageable(), dataProvider),
+				new TaskSearchPanel("search", portfolio.getDataTable(), dataProvider),
 				portfolio
 		);
 	}

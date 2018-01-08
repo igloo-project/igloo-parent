@@ -2,8 +2,6 @@ package org.iglooproject.basicapp.web.application.administration.component;
 
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION;
 
-import java.util.Locale;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -15,9 +13,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.search.UserSort;
@@ -32,11 +27,8 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.link.model.ComponentPageModel;
-import org.iglooproject.wicket.more.markup.html.action.AbstractAjaxAction;
 import org.iglooproject.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -45,6 +37,8 @@ import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 
@@ -111,45 +105,16 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 							.end()
 							.withClass("actions")
 					.bootstrapPanel()
-					.actions(AddInPlacement.HEADING_MAIN, new GenericEntityModel<Long, UserGroup>(new UserGroup()))
-								.addAction(ActionRenderers.add(), new AbstractOneParameterAjaxAction<IModel<UserGroup>>() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public void execute(AjaxRequestTarget target, IModel<UserGroup> parameter) {
-									}
-								})
-								.end()
-					.actions(AddInPlacement.BODY_BOTTOM)
-							.addAction(ActionRenderers.remove(), new AbstractAjaxAction() {
+							.addIn(AddInPlacement.FOOTER_RIGHT, new AbstractParameterizedComponentFactory<Component, Component>() {
 								private static final long serialVersionUID = 1L;
 								@Override
-								public void execute(AjaxRequestTarget target) {
+								public Component create(String wicketId, final Component table ) {
+									return new UserGroupAddUserFragment(wicketId)
+										.add(new ClassAttributeAppender("add-in-quick-add"));
 								}
 							})
-							.addAction(new BootstrapRenderer<Void>() {
-								private static final long serialVersionUID = 1L;
-								@Override
-								protected BootstrapRendererInformation doRender(Void value, Locale locale) {
-									return BootstrapRendererInformation.builder().color(BootstrapColor.PRIMARY).label("hi").build();
-								}
-							}, new AbstractAjaxAction() {
-								private static final long serialVersionUID = 1L;
-								@Override
-								public void execute(AjaxRequestTarget target) {
-									System.out.println("");
-								}
-							})
-							.end()
-					.addIn(AddInPlacement.FOOTER_RIGHT, new AbstractParameterizedComponentFactory<Component, Component>() {
-						private static final long serialVersionUID = 1L;
-						@Override
-						public Component create(String wicketId, final Component table ) {
-							return new UserGroupAddUserFragment(wicketId)
-								.add(new ClassAttributeAppender("add-in-quick-add"));
-						}
-					})
-					.ajaxPager(AddInPlacement.HEADING_RIGHT)
-					.count("administration.usergroup.members.count")
+							.ajaxPager(AddInPlacement.HEADING_RIGHT)
+							.count("administration.usergroup.members.count")
 					.build("groupMemberships", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION));
 		add(
 				groupMemberships

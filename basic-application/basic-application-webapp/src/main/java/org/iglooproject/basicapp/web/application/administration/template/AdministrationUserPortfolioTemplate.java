@@ -15,8 +15,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.security.model.BasicApplicationPermissionConstants;
@@ -27,6 +25,7 @@ import org.iglooproject.basicapp.web.application.administration.form.AbstractUse
 import org.iglooproject.basicapp.web.application.administration.model.AbstractUserDataProvider;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.commons.util.functional.Predicates2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -45,6 +44,7 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuild
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.rendering.BooleanRenderer;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public abstract class AdministrationUserPortfolioTemplate<U extends User> extends AdministrationTemplate {
 
@@ -164,7 +164,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 								})
 								.whenPermission(BasicApplicationPermissionConstants.DELETE)
 								.hidePlaceholder()
-						.withClassOnElements("btn-xs")
+						.withClassOnElements(CssClassConstants.BTN_XS)
 						.end()
 						.withClass("actions actions-2x")
 						

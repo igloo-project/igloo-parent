@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.showcase.core.business.user.search.IUserSearchQuery;
 import org.iglooproject.showcase.web.application.portfolio.page.UserDescriptionPage;
@@ -22,7 +21,7 @@ public class UserQuickSearchComponent extends AbstractQuickSearchComponent<User>
 	}
 
 	private UserQuickSearchComponent(String id, IModel<User> userModel) {
-		super(id, userModel, USER_CHOICE_RENDERER, UserDescriptionPage.linkDescriptor(userModel));
+		super(id, userModel, USER_CHOICE_RENDERER, UserDescriptionPage.MAPPER.map(userModel));
 	}
 
 	@Override

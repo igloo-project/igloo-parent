@@ -3,7 +3,6 @@ package org.iglooproject.showcase.web.application.portfolio.page;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.showcase.web.application.portfolio.component.UserPortfolioPanel;
 import org.iglooproject.showcase.web.application.portfolio.component.UserSearchPanel;
 import org.iglooproject.showcase.web.application.portfolio.model.UserDataProvider;
@@ -35,7 +34,7 @@ public class PortfolioMainPage extends MainTemplate {
 		add(portfolioPanel);
 		
 		// Search
-		add(new UserSearchPanel("userSearchPanel", portfolioPanel.getPageable(), userDataProvider));
+		add(new UserSearchPanel("userSearchPanel", portfolioPanel.getDataTable(), userDataProvider));
 	}
 	
 	@Override
