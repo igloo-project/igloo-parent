@@ -6,9 +6,12 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
-
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupPanel<O> implements IAjaxModalPopupPanel {
 
 	private static final long serialVersionUID = 2483564542384270295L;

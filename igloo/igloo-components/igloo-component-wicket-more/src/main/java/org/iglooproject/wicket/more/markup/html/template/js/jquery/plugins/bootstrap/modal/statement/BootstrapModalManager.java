@@ -5,6 +5,10 @@ import javax.annotation.Nonnull;
 import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
 import org.wicketstuff.wiquery.core.options.LiteralOption;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public final class BootstrapModalManager implements ChainableStatement {
 
 	public static final String BOOTSTRAP_MODAL_MANAGER_CHAIN_LABEL = "modalmanager";

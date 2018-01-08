@@ -12,6 +12,7 @@ import org.iglooproject.showcase.web.application.util.template.MainTemplate;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
+import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
@@ -23,6 +24,7 @@ public class UserDescriptionPage extends MainTemplate {
 	public static final ILinkDescriptorMapper<IPageLinkDescriptor, IModel<User>> MAPPER =
 			LinkDescriptorBuilder.start()
 					.model(User.class)
+					.map(CommonParameters.ID).mandatory()
 					.page(UserDescriptionPage.class);
 	
 	public UserDescriptionPage(PageParameters parameters) {

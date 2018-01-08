@@ -7,6 +7,10 @@ import org.wicketstuff.wiquery.core.javascript.JsUtils;
 import org.wicketstuff.wiquery.core.options.LiteralOption;
 import org.wicketstuff.wiquery.core.options.Options;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public final class BootstrapModal implements ChainableStatement, Serializable {
 
 	private static final long serialVersionUID = 7943137804361253044L;

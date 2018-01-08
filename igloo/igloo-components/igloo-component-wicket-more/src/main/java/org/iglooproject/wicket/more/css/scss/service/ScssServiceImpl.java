@@ -1,13 +1,5 @@
 package org.iglooproject.wicket.more.css.scss.service;
 
-import io.bit3.jsass.CompilationException;
-import io.bit3.jsass.Compiler;
-import io.bit3.jsass.Options;
-import io.bit3.jsass.Output;
-import io.bit3.jsass.OutputStyle;
-import io.bit3.jsass.context.Context;
-import io.bit3.jsass.context.StringContext;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,22 +8,30 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.wicket.util.io.IOUtils;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.wicket.more.config.spring.WicketMoreServiceConfig;
+import org.iglooproject.wicket.more.css.scss.model.ScssStylesheetInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Maps;
 
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.wicket.more.config.spring.WicketMoreServiceConfig;
-import org.iglooproject.wicket.more.css.scss.model.ScssStylesheetInformation;
+import io.bit3.jsass.CompilationException;
+import io.bit3.jsass.Compiler;
+import io.bit3.jsass.Options;
+import io.bit3.jsass.Output;
+import io.bit3.jsass.OutputStyle;
+import io.bit3.jsass.context.Context;
+import io.bit3.jsass.context.StringContext;
 
 /**
  * @see WicketMoreServiceConfig
  */
-// TODO SCSS : @Service("scssService")
+@Service("scssService")
 public class ScssServiceImpl implements IScssService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScssServiceImpl.class);

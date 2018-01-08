@@ -4,6 +4,10 @@ import org.wicketstuff.wiquery.core.javascript.JsUtils;
 import org.wicketstuff.wiquery.core.options.IComplexOption;
 import org.wicketstuff.wiquery.core.options.ITypedOption;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public enum BootstrapModalBackdrop implements ITypedOption<BootstrapModalBackdrop>, IComplexOption {
 
 	NORMAL(Boolean.TRUE.toString()),

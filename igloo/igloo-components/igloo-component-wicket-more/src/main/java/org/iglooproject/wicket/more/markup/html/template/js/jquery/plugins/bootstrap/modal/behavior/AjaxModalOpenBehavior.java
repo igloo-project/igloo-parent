@@ -9,16 +9,16 @@ import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalEvent;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.events.EventLabel;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalEvent;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
 
 /**
  * Permet de provoquer l'ouverture d'un popup via une requête ajax. L'ordre des événements est le suivant :
@@ -27,6 +27,10 @@ import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.boots
  * 2. requête ajax
  * 3. arrêt du mode attente et affichage du popup avec la réponse
  */
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public class AjaxModalOpenBehavior extends AjaxEventBehavior {
 
 	private static final long serialVersionUID = 3299212684157849227L;

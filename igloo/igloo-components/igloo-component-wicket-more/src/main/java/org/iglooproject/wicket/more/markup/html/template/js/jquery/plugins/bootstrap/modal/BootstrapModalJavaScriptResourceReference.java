@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
 import com.google.common.collect.Lists;
 
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
-
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public final class BootstrapModalJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 	private static final long serialVersionUID = -8799742276479282371L;
 	

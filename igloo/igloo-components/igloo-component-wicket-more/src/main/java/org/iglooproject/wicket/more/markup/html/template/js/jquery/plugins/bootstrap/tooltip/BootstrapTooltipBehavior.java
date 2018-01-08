@@ -7,6 +7,10 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public class BootstrapTooltipBehavior extends Behavior {
 
 	private static final long serialVersionUID = 1645525017124363380L;

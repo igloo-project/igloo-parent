@@ -30,11 +30,6 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
@@ -68,6 +63,10 @@ import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.iglooproject.wicket.more.security.page.LogoutPage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ImmutableList;
 
 public abstract class MainTemplate extends AbstractWebPageTemplate {
 
@@ -305,7 +304,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	
 	@Override
 	public String getVariation() {
-		return BOOTSTRAP3_VARIATION;
+		return BOOTSTRAP4_VARIATION;
 	}
 	
 	protected BootstrapTooltip getBootstrapTooltip() {

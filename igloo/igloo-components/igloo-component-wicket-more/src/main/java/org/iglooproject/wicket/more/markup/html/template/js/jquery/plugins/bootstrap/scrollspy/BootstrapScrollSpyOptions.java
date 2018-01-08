@@ -1,10 +1,14 @@
 package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.scrollspy;
 
 import org.apache.wicket.Component;
+import org.springframework.util.StringUtils;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 import org.wicketstuff.wiquery.core.options.Options;
-import org.springframework.util.StringUtils;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public class BootstrapScrollSpyOptions extends Options {
 
 	private static final long serialVersionUID = 5736038438319652356L;

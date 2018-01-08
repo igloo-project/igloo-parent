@@ -3,6 +3,7 @@ package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.boot
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.SimpleOptions;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsScopeContext;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
@@ -10,11 +11,10 @@ import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
 import com.google.common.collect.ImmutableMap;
 
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.SimpleOptions;
-
 /**
- * Options du plugin <a href="http://twitter.github.com/bootstrap/javascript.html#popovers">Bootstrap Popover</a>.
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
  */
+@Deprecated
 public class BootstrapPopoverOptions extends SimpleOptions {
 
 	private static final long serialVersionUID = 680573363463468690L;

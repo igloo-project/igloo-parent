@@ -2,6 +2,10 @@ package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.boot
 
 import java.util.Locale;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public enum PopoverPlacement {
 	
 	TOP("top"),

@@ -5,8 +5,9 @@ import org.wicketstuff.wiquery.core.javascript.JsUtils;
 import org.wicketstuff.wiquery.core.options.Options;
 
 /**
- * Voir documentation sur http://twitter.github.com/bootstrap/javascript.html#tooltips
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
  */
+@Deprecated
 public class BootstrapTooltip implements IBootstrapTooltip {
 
 	private static final long serialVersionUID = -2571067418057286728L;

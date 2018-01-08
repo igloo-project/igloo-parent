@@ -30,6 +30,7 @@ import org.iglooproject.wicket.more.console.template.ConsoleTemplate;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
+import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.markup.html.action.AbstractAjaxAction;
 import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
@@ -57,6 +58,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 	public static final ILinkDescriptorMapper<IPageLinkDescriptor, IModel<QueuedTaskHolder>> MAPPER =
 		LinkDescriptorBuilder.start()
 				.model(QueuedTaskHolder.class)
+				.map(CommonParameters.ID).mandatory()
 				.page(ConsoleMaintenanceTaskDescriptionPage.class);
 	
 	@SpringBean

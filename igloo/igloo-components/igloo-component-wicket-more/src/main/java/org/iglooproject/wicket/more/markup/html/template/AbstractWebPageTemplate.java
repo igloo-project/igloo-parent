@@ -13,7 +13,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.CoreWebPage;
 import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
@@ -24,8 +23,10 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 
 	private static final long serialVersionUID = -5598937641577320345L;
 	
+	@Deprecated
 	public static final String BOOTSTRAP3_VARIATION = "bs3";
-
+	public static final String BOOTSTRAP4_VARIATION = "bs4";
+	
 	protected static final String DEFAULT_HEAD_PAGE_TITLE_SEPARATOR = " › ";
 	
 	protected static final String DEFAULT_HEAD_PAGE_TITLE_SEPARATOR_REVERSE = " ‹ ";

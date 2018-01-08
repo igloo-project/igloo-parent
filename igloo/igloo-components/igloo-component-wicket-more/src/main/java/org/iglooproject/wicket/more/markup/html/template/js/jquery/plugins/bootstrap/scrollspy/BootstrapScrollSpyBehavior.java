@@ -10,6 +10,10 @@ import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public class BootstrapScrollSpyBehavior extends Behavior {
 
 	private static final long serialVersionUID = -5665173800881237350L;

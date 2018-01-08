@@ -13,6 +13,10 @@ import org.wicketstuff.wiquery.core.options.IModelOption;
 import org.wicketstuff.wiquery.core.options.IOptionsRenderer;
 import org.wicketstuff.wiquery.core.options.ITypedOption;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public abstract class SimpleOptions implements IDetachable {
 
 	private static final long serialVersionUID = 1L;

@@ -11,6 +11,10 @@ import org.apache.wicket.markup.html.panel.FragmentMarkupSourcingStrategy;
 import org.apache.wicket.markup.html.panel.IMarkupSourcingStrategy;
 import org.apache.wicket.markup.html.panel.Panel;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public class DelegatedMarkupPanel extends Panel {
 
 	private static final long serialVersionUID = -5918955824552499431L;

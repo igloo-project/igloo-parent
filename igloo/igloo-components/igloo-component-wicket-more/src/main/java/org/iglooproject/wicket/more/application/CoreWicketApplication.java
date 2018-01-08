@@ -32,12 +32,14 @@ import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.console.resources.CoreWicketConsoleResources;
 import org.iglooproject.wicket.more.console.template.style.CoreConsoleCssScope;
 import org.iglooproject.wicket.more.css.lesscss.service.ILessCssService;
+import org.iglooproject.wicket.more.css.scss.service.IScssService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.CoreBootstrap3CssScope;
 import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.fontawesome.CoreFontAwesomeCssScope;
 import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.jqueryui.JQueryUiCssResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.css.bootstrap4.CoreBootstrap4CssScope;
 import org.iglooproject.wicket.request.mapper.NoVersionMountedMapper;
 import org.iglooproject.wicket.request.mapper.PageParameterAwareMountedMapper;
 import org.iglooproject.wicket.request.mapper.StaticResourceMapper;
@@ -62,9 +64,8 @@ public abstract class CoreWicketApplication extends WebApplication {
 	@Autowired
 	protected ILessCssService lessCssService;
 	
-	// TODO SCSS
-	// @Autowired
-	// protected IScssService scssService;
+	@Autowired
+	protected IScssService scssService;
 	
 	/**
 	 * Déclaré au démarrage de l'application ; ne doit pas être modifié par la suite
@@ -149,8 +150,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 		mountApplicationPages();
 		
 		registerLessImportScopes();
-		// TODO SCSS
-//		registerScssImportScopes();
+		registerScssImportScopes();
 		
 		getResourceSettings().getStringResourceLoaders().addAll(
 				0, // Override the keys in existing resource loaders with the following
@@ -166,10 +166,9 @@ public abstract class CoreWicketApplication extends WebApplication {
 		lessCssService.registerImportScope("core-font-awesome", CoreFontAwesomeCssScope.class);
 	}
 	
-	// TODO SCSS
-//	protected void registerScssImportScopes() {
-//		scssService.registerImportScope("core-bs4", CoreBootstrap4CssScope.class);
-//	}
+	protected void registerScssImportScopes() {
+		scssService.registerImportScope("core-bs4", CoreBootstrap4CssScope.class);
+	}
 	
 	protected void mountCommonPages() {
 	}

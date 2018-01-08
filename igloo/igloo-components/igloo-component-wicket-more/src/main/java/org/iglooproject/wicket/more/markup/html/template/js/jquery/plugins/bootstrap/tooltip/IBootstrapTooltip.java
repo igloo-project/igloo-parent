@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public interface IBootstrapTooltip extends ChainableStatement, Serializable {
 
 	CharSequence getSelector();

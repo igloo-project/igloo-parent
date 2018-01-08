@@ -5,8 +5,9 @@ import java.io.Serializable;
 import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
 
 /**
- * Voir documentation sur http://twitter.github.com/bootstrap/javascript.html#tabs
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
  */
+@Deprecated
 public class BootstrapTab implements ChainableStatement, Serializable {
 
 	private static final long serialVersionUID = -5404079169397799951L;

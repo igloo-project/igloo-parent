@@ -10,10 +10,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
-
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tab.BootstrapTabBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap4.tab.BootstrapTabBehavior;
 
 public class NavTabsPanel extends Panel {
 	

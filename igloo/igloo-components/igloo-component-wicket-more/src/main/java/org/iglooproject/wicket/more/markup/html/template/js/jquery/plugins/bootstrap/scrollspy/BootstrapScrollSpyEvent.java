@@ -2,6 +2,10 @@ package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.boot
 
 import org.wicketstuff.wiquery.core.events.EventLabel;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public enum BootstrapScrollSpyEvent implements EventLabel {
 
 	ACTIVATE("activate.bs.scrollspy");

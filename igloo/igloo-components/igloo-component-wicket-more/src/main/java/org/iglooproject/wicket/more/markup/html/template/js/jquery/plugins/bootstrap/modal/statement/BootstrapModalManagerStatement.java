@@ -3,6 +3,10 @@ package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.boot
 import org.apache.wicket.Component;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
+/**
+ * @deprecated Use Bootstrap 4 CSS et JS from now on.
+ */
+@Deprecated
 public final class BootstrapModalManagerStatement {
 
 	public static final String MODAL_MANAGER = "modalmanager";

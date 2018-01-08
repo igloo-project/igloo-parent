@@ -22,9 +22,6 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.google.common.collect.Lists;
-
 import org.iglooproject.jpa.more.business.upgrade.service.IAbstractDataUpgradeService;
 import org.iglooproject.jpa.security.business.person.model.GenericUser;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -44,6 +41,8 @@ import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.boots
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.security.page.LogoutPage;
+
+import com.google.common.collect.Lists;
 
 public abstract class ConsoleTemplate extends CoreWebPage {
 	
@@ -223,8 +222,7 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 
 	@Override
 	public String getVariation() {
-		// La console en BS3 quoi qu'il arrive, il ne faut pas laisser l'application
-		// qui l'utilise choisir si on utilise BS2 ou BS3.
-		return AbstractWebPageTemplate.BOOTSTRAP3_VARIATION;
+		// La console en BS4 quoi qu'il arrive, il ne faut pas laisser l'application qui l'utilise choisir la version.
+		return AbstractWebPageTemplate.BOOTSTRAP4_VARIATION;
 	}
 }

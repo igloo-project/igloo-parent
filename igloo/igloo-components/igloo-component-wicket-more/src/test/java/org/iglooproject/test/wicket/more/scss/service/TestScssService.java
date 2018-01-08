@@ -2,20 +2,18 @@ package org.iglooproject.test.wicket.more.scss.service;
 
 import java.io.InputStream;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import org.iglooproject.test.wicket.more.AbstractWicketMoreTestCase;
 import org.iglooproject.test.wicket.more.scss.service.resource.TestScssServiceResourceScope;
 import org.iglooproject.test.wicket.more.scss.service.resource.other.scope.TestScssServiceOtherResourceScope;
 import org.iglooproject.wicket.more.css.scss.model.ScssStylesheetInformation;
 import org.iglooproject.wicket.more.css.scss.service.IScssService;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Ignore
 public class TestScssService extends AbstractWicketMoreTestCase {
 	
-	// TODO SCSS @Autowired
+	@Autowired
 	private IScssService scssService;
 	
 	@Test

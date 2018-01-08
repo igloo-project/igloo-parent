@@ -2,8 +2,6 @@ package org.iglooproject.showcase.web.application.portfolio.component;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
-
 import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.showcase.core.util.binding.Bindings;
 import org.iglooproject.showcase.web.application.portfolio.form.EditUserPopupPanel;
@@ -15,6 +13,7 @@ import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.boots
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.emailobfuscator.ObfuscatedEmailLink;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.DatePattern;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public class UserProfilePanel extends GenericPanel<User> {
 	private static final long serialVersionUID = 646894189220818498L;
