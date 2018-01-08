@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.fontawesome;
+package org.iglooproject.wicket.more.markup.html.template.css.fontawesome;
 
 public class CoreFontAwesomeCssScope { // NOSONAR
 

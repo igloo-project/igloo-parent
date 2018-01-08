@@ -37,9 +37,10 @@ import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.CoreBootstrap3CssScope;
-import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.fontawesome.CoreFontAwesomeCssScope;
+import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.fontawesome.CoreFontAwesome4CssScope;
 import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.css.bootstrap4.CoreBootstrap4CssScope;
+import org.iglooproject.wicket.more.markup.html.template.css.fontawesome.CoreFontAwesomeCssScope;
 import org.iglooproject.wicket.request.mapper.NoVersionMountedMapper;
 import org.iglooproject.wicket.request.mapper.PageParameterAwareMountedMapper;
 import org.iglooproject.wicket.request.mapper.StaticResourceMapper;
@@ -163,11 +164,12 @@ public abstract class CoreWicketApplication extends WebApplication {
 	protected void registerLessImportScopes() {
 		lessCssService.registerImportScope("core-bs3", CoreBootstrap3CssScope.class);
 		lessCssService.registerImportScope("core-console", CoreConsoleCssScope.class);
-		lessCssService.registerImportScope("core-font-awesome", CoreFontAwesomeCssScope.class);
+		lessCssService.registerImportScope("core-font-awesome", CoreFontAwesome4CssScope.class);
 	}
 	
 	protected void registerScssImportScopes() {
 		scssService.registerImportScope("core-bs4", CoreBootstrap4CssScope.class);
+		scssService.registerImportScope("core-fa", CoreFontAwesomeCssScope.class);
 	}
 	
 	protected void mountCommonPages() {
@@ -175,7 +177,8 @@ public abstract class CoreWicketApplication extends WebApplication {
 	
 	protected void mountCommonResources() {
 		mountStaticResourceDirectory("/common", AbstractWebPageTemplate.class);
-		mountStaticResourceDirectory("/font-awesome", CoreFontAwesomeCssScope.class);
+		mountStaticResourceDirectory("/font-awesome-4", CoreFontAwesome4CssScope.class);
+		mountStaticResourceDirectory("/fontawesome", CoreFontAwesomeCssScope.class);
 	}
 	
 	protected abstract void mountApplicationPages();
