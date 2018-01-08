@@ -36,7 +36,7 @@ import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
 import org.iglooproject.basicapp.web.application.common.component.EnvironmentPanel;
-import org.iglooproject.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.styles.StylesScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.AdministrationUserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
@@ -298,7 +298,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		
-		response.render(CssHeaderItem.forReference(StylesLessCssResourceReference.get()));
+		response.render(CssHeaderItem.forReference(StylesScssResourceReference.get()));
 		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
 	}
 	

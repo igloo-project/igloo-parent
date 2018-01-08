@@ -1,4 +1,4 @@
-package org.iglooproject.basicapp.web.application.common.template.styles.notification;
+package org.iglooproject.basicapp.web.application.common.template.styles.old.notification;
 
 import org.iglooproject.wicket.more.css.lesscss.LessCssResourceReference;
 

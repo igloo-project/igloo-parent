@@ -14,7 +14,7 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.config.spring.BasicApplicationCoreCommonConfig;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
-import org.iglooproject.basicapp.web.application.common.template.styles.notification.NotificationLessCssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.styles.old.notification.NotificationLessCssResourceReference;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.wicket.more.config.spring.AbstractWebappConfig;

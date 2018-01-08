@@ -4,21 +4,20 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.HeaderItem;
+import org.iglooproject.wicket.more.css.scss.ScssResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.jqueryui.JQueryUiCssResourceReference;
 import org.retzlaff.select2.resource.Select2CssResourceReference;
 
 import com.google.common.collect.Lists;
 
-import org.iglooproject.wicket.more.css.lesscss.LessCssResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.jqueryui.JQueryUiCssResourceReference;
-
-public final class StylesLessCssResourceReference extends LessCssResourceReference {
+public final class StylesScssResourceReference extends ScssResourceReference {
 
 	private static final long serialVersionUID = -6024518060296236148L;
 
-	private static final StylesLessCssResourceReference INSTANCE = new StylesLessCssResourceReference();
+	private static final StylesScssResourceReference INSTANCE = new StylesScssResourceReference();
 
-	private StylesLessCssResourceReference() {
-		super(StylesLessCssResourceReference.class, "styles.less");
+	private StylesScssResourceReference() {
+		super(StylesScssResourceReference.class, "styles.scss");
 	}
 	
 	@Override
@@ -30,7 +29,7 @@ public final class StylesLessCssResourceReference extends LessCssResourceReferen
 		return dependencies;
 	}
 
-	public static StylesLessCssResourceReference get() {
+	public static StylesScssResourceReference get() {
 		return INSTANCE;
 	}
 

@@ -10,10 +10,6 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.basicapp.core.business.common.model.PostalCode;
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
@@ -31,9 +27,9 @@ import org.iglooproject.basicapp.web.application.common.renderer.AuthorityRender
 import org.iglooproject.basicapp.web.application.common.renderer.UserGroupRenderer;
 import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
-import org.iglooproject.basicapp.web.application.common.template.styles.StylesLessCssResourceReference;
-import org.iglooproject.basicapp.web.application.common.template.styles.application_access.ApplicationAccessLessCssResourceReference;
-import org.iglooproject.basicapp.web.application.common.template.styles.notification.NotificationLessCssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.styles.StylesScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.styles.old.application_access.ApplicationAccessLessCssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.styles.old.notification.NotificationLessCssResourceReference;
 import org.iglooproject.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import org.iglooproject.basicapp.web.application.history.renderer.HistoryValueRenderer;
 import org.iglooproject.basicapp.web.application.navigation.page.HomePage;
@@ -73,6 +69,9 @@ import org.iglooproject.wicket.more.rendering.LocaleRenderer;
 import org.iglooproject.wicket.more.security.page.LoginFailurePage;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.iglooproject.wicket.more.util.convert.HibernateProxyAwareConverterLocator;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.collect.ImmutableList;
 
 public class BasicApplicationApplication extends CoreWicketAuthenticatedApplication {
 	
@@ -100,7 +99,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 					ConsoleLessCssResourceReference.get(),
 					NotificationLessCssResourceReference.get(),
 					ApplicationAccessLessCssResourceReference.get(),
-					StylesLessCssResourceReference.get()
+					StylesScssResourceReference.get()
 			);
 		}
 
