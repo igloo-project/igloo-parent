@@ -9,7 +9,7 @@ import org.retzlaff.select2.resource.Select2CssResourceReference;
 import com.google.common.collect.Lists;
 
 import org.iglooproject.wicket.more.css.lesscss.LessCssResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.css.bootstrap2.jqueryui.JQueryUiCssResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.jqueryui.JQueryUiCssResourceReference;
 
 public final class StylesLessCssResourceReference extends LessCssResourceReference {
 

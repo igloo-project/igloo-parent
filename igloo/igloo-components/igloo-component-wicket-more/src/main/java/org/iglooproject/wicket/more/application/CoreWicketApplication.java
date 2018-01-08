@@ -27,14 +27,6 @@ import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.time.Duration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.console.resources.CoreWicketConsoleResources;
@@ -43,13 +35,19 @@ import org.iglooproject.wicket.more.css.lesscss.service.ILessCssService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
-import org.iglooproject.wicket.more.markup.html.template.css.bootstrap2.CoreBootstrap2CssScope;
-import org.iglooproject.wicket.more.markup.html.template.css.bootstrap2.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.CoreBootstrap3CssScope;
 import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.fontawesome.CoreFontAwesomeCssScope;
+import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.request.mapper.NoVersionMountedMapper;
 import org.iglooproject.wicket.request.mapper.PageParameterAwareMountedMapper;
 import org.iglooproject.wicket.request.mapper.StaticResourceMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
+
+import com.google.common.collect.ImmutableList;
 
 public abstract class CoreWicketApplication extends WebApplication {
 	
@@ -163,7 +161,6 @@ public abstract class CoreWicketApplication extends WebApplication {
 	}
 	
 	protected void registerLessImportScopes() {
-		lessCssService.registerImportScope("core", CoreBootstrap2CssScope.class);
 		lessCssService.registerImportScope("core-bs3", CoreBootstrap3CssScope.class);
 		lessCssService.registerImportScope("core-console", CoreConsoleCssScope.class);
 		lessCssService.registerImportScope("core-font-awesome", CoreFontAwesomeCssScope.class);

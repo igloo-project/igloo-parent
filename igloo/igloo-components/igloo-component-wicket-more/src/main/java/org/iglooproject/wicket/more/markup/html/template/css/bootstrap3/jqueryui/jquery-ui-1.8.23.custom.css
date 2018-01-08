@@ -580,7 +580,13 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 	font-weight: bold;
 	color: #FFFFFF;
 }
-
+.ui-icon-arrowthickstop-1-n { background-position: -192px -48px; }
+.ui-icon-arrowthickstop-1-e { background-position: -208px -48px; }
+.ui-icon-arrowthickstop-1-s { background-position: -224px -48px; }
+.ui-icon-arrowthickstop-1-w { background-position: -240px -48px; }
+.ui-icon-arrowreturnthick-1-w { background-position: 0 -64px; }
+.ui-icon-arrowreturnthick-1-n { background-position: -16px -64px; }
+.ui-icon-arrowreturnthick-1-e { background-position: -32px -64px; }
 .ui-datepicker-next.ui-state-hover,
 .ui-datepicker-prev.ui-state-hover {
 	border-color: transparent;
