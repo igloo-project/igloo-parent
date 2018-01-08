@@ -5,6 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.model.IModel;
+import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterMappingEntryBuilder;
+import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
+import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
+import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
@@ -12,13 +18,6 @@ import org.javatuples.Tuple;
 import org.javatuples.Unit;
 
 import com.google.common.collect.Lists;
-
-import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterMappingEntryBuilder;
-import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
-import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
-import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public final class BuilderMapperLinkDescriptorFactory<TTarget, TLinkDescriptor>
 		implements IBuilderMapperLinkDescriptorFactory<TLinkDescriptor> {
@@ -83,7 +82,7 @@ public final class BuilderMapperLinkDescriptorFactory<TTarget, TLinkDescriptor>
 		Collection<ILinkParameterMappingEntry> addedParameterMappingEntries = Lists.newArrayList();
 		Collection<ILinkParameterValidator> addedValidators = Lists.newArrayList();
 		
-		IModel<? extends TTarget> target = doCreate(targetFactory.getValue0(), parameters, targetFactory.getValue1());
+		IModel<? extends TTarget> target = doCreate((IDetachableFactory<? extends Tuple, ? extends IModel<? extends TTarget>>) targetFactory.getValue0(), parameters, targetFactory.getValue1());
 		
 		for (Map.Entry<LinkParameterMappingEntryBuilder<?>, List<Integer>> entry : mappingEntryBuilders.entrySet()) {
 			List<Integer> indices = entry.getValue();

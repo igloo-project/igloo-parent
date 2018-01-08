@@ -6,9 +6,6 @@ import java.util.Map;
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.javatuples.Pair;
-import org.javatuples.Tuple;
-
 import org.iglooproject.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IResourceLinkDescriptor;
@@ -22,6 +19,8 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkPar
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
+import org.javatuples.Pair;
+import org.javatuples.Tuple;
 
 public abstract class BuilderLinkDescriptorFactory<TTarget, TLinkDescriptor>
 		implements IBuilderLinkDescriptorFactory<TTarget, TLinkDescriptor> {
