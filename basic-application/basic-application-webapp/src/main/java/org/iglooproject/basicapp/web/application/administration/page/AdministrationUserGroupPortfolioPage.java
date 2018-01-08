@@ -21,7 +21,7 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate {

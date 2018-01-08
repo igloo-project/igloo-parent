@@ -20,15 +20,15 @@ import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.action.AbstractAjaxAction;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmButton;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.ConfirmLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalBackdrop;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.confirm.component.AjaxConfirmButton;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.confirm.component.AjaxConfirmLink;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.confirm.component.ConfirmLink;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.AbstractModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.statement.BootstrapModal;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.statement.BootstrapModalBackdrop;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.popover.BootstrapPopoverBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.popover.BootstrapPopoverOptions;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class ModalPage extends WidgetsTemplate {

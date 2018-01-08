@@ -5,7 +5,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.BootstrapModalJavaScriptResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap4.confirm.behavior.ConfirmContentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap4.confirm.fluid.IConfirmLinkBuilderStepStart;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap4.confirm.statement.BootstrapConfirmEvent;

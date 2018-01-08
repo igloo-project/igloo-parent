@@ -6,8 +6,8 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.AbstractAjaxModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.statement.BootstrapModalManagerStatement;
 
 public class OneParameterModalOpenAjaxAction<T> extends AbstractOneParameterAjaxAction<T> {
 

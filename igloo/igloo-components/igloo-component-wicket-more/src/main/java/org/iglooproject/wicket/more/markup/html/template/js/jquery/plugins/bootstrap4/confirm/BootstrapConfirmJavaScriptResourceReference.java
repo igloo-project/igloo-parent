@@ -7,7 +7,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 
 import com.google.common.collect.Lists;
 
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalManagerJavaScriptResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.BootstrapModalManagerJavaScriptResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
 public final class BootstrapConfirmJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {

@@ -32,7 +32,7 @@ import org.iglooproject.wicket.more.jqplot.data.adapter.JQPlotContinuousDateKeys
 import org.iglooproject.wicket.more.jqplot.data.adapter.JQPlotDiscreteKeysDataAdapter;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tab.BootstrapTabBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.tab.BootstrapTabBehavior;
 import org.iglooproject.wicket.more.model.ContiguousSetModel;
 import org.iglooproject.wicket.more.model.RangeModel;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;

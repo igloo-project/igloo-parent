@@ -26,7 +26,7 @@ import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.factory.ConditionFactories;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.confirm.component.AjaxConfirmLink;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.factory.ActionColumnActionFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.factory.ActionColumnAjaxActionFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnAddedActionState;

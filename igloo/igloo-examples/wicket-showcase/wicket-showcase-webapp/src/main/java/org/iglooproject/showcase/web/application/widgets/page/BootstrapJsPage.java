@@ -10,9 +10,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tab.BootstrapTabBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.popover.BootstrapPopoverBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.popover.BootstrapPopoverOptions;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.tab.BootstrapTabBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public class BootstrapJsPage extends WidgetsTemplate {

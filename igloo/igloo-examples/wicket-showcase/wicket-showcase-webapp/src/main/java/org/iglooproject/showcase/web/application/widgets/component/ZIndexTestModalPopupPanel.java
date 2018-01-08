@@ -12,10 +12,10 @@ import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.popover.BootstrapPopoverOptions;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.AbstractModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.popover.BootstrapPopoverBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.popover.BootstrapPopoverOptions;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 
 public class ZIndexTestModalPopupPanel extends AbstractModalPopupPanel<Void> {

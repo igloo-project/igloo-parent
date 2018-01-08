@@ -34,10 +34,10 @@ import org.iglooproject.wicket.more.console.maintenance.upgrade.page.ConsoleMain
 import org.iglooproject.wicket.more.markup.html.CoreWebPage;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropDownJavaScriptResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.collapse.BootstrapCollapseJavaScriptResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.dropdown.BootstrapDropDownJavaScriptResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.tooltip.BootstrapTooltip;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.tooltip.BootstrapTooltipDocumentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.security.page.LogoutPage;

@@ -32,7 +32,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.IAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.repeater.IRefreshableOnDemandRepeater;
 import org.iglooproject.wicket.more.util.visit.VisitFilters;
 import org.iglooproject.wicket.more.util.visit.Visitors;

@@ -9,11 +9,11 @@ import org.apache.wicket.model.Model;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalBackdrop;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalManagerStatement;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.AbstractModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.statement.BootstrapModal;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.statement.BootstrapModalBackdrop;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.statement.BootstrapModalManagerStatement;
 
 public class WorkInProgressPopup extends AbstractModalPopupPanel<String> {
 	

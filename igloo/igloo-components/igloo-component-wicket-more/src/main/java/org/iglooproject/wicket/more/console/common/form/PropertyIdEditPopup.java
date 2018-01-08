@@ -20,8 +20,8 @@ import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.console.common.component.PropertyIdListPanel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.AbstractAjaxModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class PropertyIdEditPopup extends AbstractAjaxModalPopupPanel<MutablePropertyId<?>> {

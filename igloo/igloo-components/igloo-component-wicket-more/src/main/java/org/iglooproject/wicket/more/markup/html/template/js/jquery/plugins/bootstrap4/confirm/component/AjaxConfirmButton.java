@@ -10,7 +10,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.BootstrapModalJavaScriptResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap4.confirm.behavior.ConfirmContentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap4.confirm.statement.BootstrapConfirmStatement;
 import org.wicketstuff.wiquery.core.events.Event;
