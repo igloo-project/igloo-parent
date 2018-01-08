@@ -6,16 +6,17 @@ import java.util.Map;
 import org.iglooproject.wicket.more.jqplot.config.AbstractJQPlotConfigurer;
 import org.iglooproject.wicket.more.jqplot.data.adapter.IJQPlotDataAdapter;
 import org.iglooproject.wicket.more.jqplot.data.adapter.JQPlotDataAdapters;
+
 import nl.topicus.wqplot.components.plugins.JQPlotBarRenderer;
 import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PlotSeries;
 import nl.topicus.wqplot.options.PlotTick;
 
-public class JQPlotBarsPanel<S, K, V extends Number & Comparable<V>> extends JQPlotPanel<S, K, V> {
+public class JQPlotBarsPanel<S, K, V extends Number & Comparable<V>, TK> extends JQPlotPanel<S, K, V, TK> {
 
 	private static final long serialVersionUID = -5575918534912813908L;
 
-	public JQPlotBarsPanel(String id, IJQPlotDataAdapter<S, K, V> dataAdapter) {
+	public JQPlotBarsPanel(String id, IJQPlotDataAdapter<S, K, V, TK> dataAdapter) {
 		super(id, JQPlotDataAdapters.fix(dataAdapter));
 		
 		add(new AbstractJQPlotConfigurer<S, K>() {

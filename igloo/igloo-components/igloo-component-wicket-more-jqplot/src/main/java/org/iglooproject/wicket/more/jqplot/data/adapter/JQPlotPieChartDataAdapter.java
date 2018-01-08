@@ -5,11 +5,11 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.wicket.model.IModel;
+import org.iglooproject.commons.util.rendering.IRenderer;
+import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
 
 import com.google.common.collect.Lists;
 
-import org.iglooproject.commons.util.rendering.IRenderer;
-import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
 import nl.topicus.wqplot.data.StringNumberSeries;
 import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PlotSeries;
@@ -26,7 +26,7 @@ import nl.topicus.wqplot.options.PlotTick;
  * </ul>
  */
 public class JQPlotPieChartDataAdapter<S, K, V extends Number & Comparable<V>>
-		extends AbstractMissingValuesJQPlotDataAdapter<S, K, V> {
+		extends AbstractMissingValuesJQPlotDataAdapter<S, K, V, String> {
 	
 	private static final long serialVersionUID = 3961697302069579609L;
 	

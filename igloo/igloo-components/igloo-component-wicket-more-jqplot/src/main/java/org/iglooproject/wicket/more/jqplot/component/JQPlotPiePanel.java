@@ -5,7 +5,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.wicket.more.jqplot.config.AbstractJQPlotConfigurer;
 import org.iglooproject.wicket.more.jqplot.config.JQPlotConfigurers;
 import org.iglooproject.wicket.more.jqplot.data.adapter.JQPlotDataAdapters;
@@ -13,12 +12,13 @@ import org.iglooproject.wicket.more.jqplot.data.adapter.JQPlotPieChartDataAdapte
 import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
 import org.iglooproject.wicket.more.jqplot.data.provider.JQPlotMapDataProvider;
 import org.iglooproject.wicket.more.rendering.Renderer;
+
 import nl.topicus.wqplot.components.plugins.JQPlotPieRenderer;
 import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PlotSeries;
 import nl.topicus.wqplot.options.PlotTick;
 
-public class JQPlotPiePanel<K, V extends Number & Comparable<V>> extends JQPlotPanel<Object, K, V> {
+public class JQPlotPiePanel<K, V extends Number & Comparable<V>> extends JQPlotPanel<Object, K, V, String> {
 
 	private static final long serialVersionUID = -5575918534912813908L;
 

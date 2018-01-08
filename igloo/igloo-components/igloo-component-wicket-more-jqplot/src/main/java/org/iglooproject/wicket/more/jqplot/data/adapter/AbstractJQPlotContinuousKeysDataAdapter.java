@@ -4,17 +4,18 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
+import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
-import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
 import nl.topicus.wqplot.data.BaseSeries;
 import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PlotSeries;
 import nl.topicus.wqplot.options.PlotTick;
 
 public abstract class AbstractJQPlotContinuousKeysDataAdapter<S, K, V extends Number>
-		extends AbstractJQPlotDataAdapter<S, K, V> {
+		extends AbstractJQPlotDataAdapter<S, K, V, K> {
 	
 	private static final long serialVersionUID = 3961697302069579609L;
 	

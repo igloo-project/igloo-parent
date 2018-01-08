@@ -7,14 +7,15 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
-
 import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.wicket.more.jqplot.util.LabelledSeries;
 import org.iglooproject.wicket.more.jqplot.util.LabelledSeriesEntry;
 import org.iglooproject.wicket.more.rendering.Renderer;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
+
 import nl.topicus.wqplot.data.AbstractSeries;
 import nl.topicus.wqplot.data.Series;
 import nl.topicus.wqplot.data.SeriesEntry;
@@ -27,11 +28,11 @@ public final class JQPlotDataAdapters {
 	
 	private JQPlotDataAdapters() { }
 	
-	public static <S, K, V extends Number> IJQPlotDataAdapter<S, K, V> addPercentLabels(final IJQPlotDataAdapter<S, K, V> adapter, final Renderer<? super Double> percentRenderer) {
-		return new ForwardingJQPlotDataAdapter<S, K, V>(adapter) {	
+	public static <S, K, V extends Number, TK, SE extends SeriesEntry<TK, V>> IJQPlotDataAdapter<S, K, V, TK> addPercentLabels(final IJQPlotDataAdapter<S, K, V, TK> adapter, final Renderer<? super Double> percentRenderer) {
+		return new ForwardingJQPlotDataAdapter<S, K, V, TK>(adapter) {	
 			private static final long serialVersionUID = 1L;
 			@Override
-			protected Collection<? extends AbstractSeries<?, V, ?>> transformOnGet(Collection<? extends AbstractSeries<?, V, ?>> delegateObject, Locale locale) {
+			protected Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>> transformOnGet(Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>> delegateObject, Locale locale) {
 				return addPercentLabels(delegateObject, percentRenderer, locale);
 			}
 			@Override
@@ -46,12 +47,12 @@ public final class JQPlotDataAdapters {
 		};
 	}
 	
-	private static <K, V extends Number, E extends SeriesEntry<? extends K, V>> Collection<LabelledSeries<K, V>> addPercentLabels(
-			Collection<? extends AbstractSeries<? extends K, V, ? extends E>> input, Renderer<? super Double> percentRenderer, Locale locale) {
-		final Map<K, Double> sums = Maps.newHashMap();
-		for (Series<?, ?, ? extends E> series : input) {
-			for (E entry : series.getData()) {
-				K key = entry.getKey();
+	private static <K, V extends Number, TK> Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>> addPercentLabels(
+			Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>> delegateObject, Renderer<? super Double> percentRenderer, Locale locale) {
+		final Map<TK, Double> sums = Maps.newHashMap();
+		for (AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>> series : delegateObject) {
+			for (SeriesEntry<TK, V> entry : series.getData()) {
+				TK key = entry.getKey();
 				Double currentSum = sums.get(key);
 				if (currentSum == null) {
 					currentSum = 0.0;
@@ -64,10 +65,10 @@ public final class JQPlotDataAdapters {
 			}
 		}
 		
-		Renderer<E> entryRenderer = percentRenderer.onResultOf(new SerializableFunction<E, Double>() {
+		Renderer<SeriesEntry<TK, V>> entryRenderer = percentRenderer.onResultOf(new SerializableFunction<SeriesEntry<TK, V>, Double>() {
 			private static final long serialVersionUID = 595417526944754574L;
 			@Override
-			public Double apply(@Nonnull E entry) {
+			public Double apply(@Nonnull SeriesEntry<TK, V> entry) {
 				V absoluteValue = entry.getValue();
 				if (absoluteValue == null) {
 					return null;
@@ -77,10 +78,10 @@ public final class JQPlotDataAdapters {
 			}
 		});
 		
-		return addLabels(input, entryRenderer, locale);
+		return addLabels(delegateObject, entryRenderer, locale);
 	}
 	
-	private static <K, V extends Number, E extends SeriesEntry<? extends K, V>> Collection<LabelledSeries<K, V>> addLabels(
+	private static <K, V extends Number, E extends SeriesEntry<K, V>> Collection<LabelledSeries<K, V>> addLabels(
 			Collection<? extends AbstractSeries<? extends K, V, ? extends E>> input, Renderer<? super E> renderer, Locale locale) {
 		List<LabelledSeries<K, V>> seriesList = Lists.newArrayListWithCapacity(input.size());
 		for (Series<?, ?, ? extends E> series : input) {
@@ -93,8 +94,8 @@ public final class JQPlotDataAdapters {
 		return seriesList;
 	}
 	
-	public static <S, K, V extends Number & Comparable<V>> IJQPlotDataAdapter<S, K, V> fix(final IJQPlotDataAdapter<S, K, V> adapter) {
-		return new ForwardingJQPlotDataAdapter<S, K, V>(adapter) {
+	public static <S, K, V extends Number & Comparable<V>, TK, SE extends SeriesEntry<TK, V>> IJQPlotDataAdapter<S, K, V, TK> fix(final IJQPlotDataAdapter<S, K, V, TK> adapter) {
+		return new ForwardingJQPlotDataAdapter<S, K, V, TK>(adapter) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public void afterConfigure(PlotOptions options, Map<? extends S, PlotSeries> seriesMap,
@@ -126,8 +127,8 @@ public final class JQPlotDataAdapters {
 			}
 			
 			@Override
-			protected Collection<? extends AbstractSeries<?, V, ?>> transformOnGet(
-					Collection<? extends AbstractSeries<?, V, ?>> delegateObject, Locale locale) {
+			protected Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>> transformOnGet(
+					Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>> delegateObject, Locale locale) {
 				// jqPlot bug workaround
 				// jqPlot doesn't work if we give it an empty series or null ("No data specified")
 				// The only way to make it accept the fact that we want to display a series (for instance in the legend) even

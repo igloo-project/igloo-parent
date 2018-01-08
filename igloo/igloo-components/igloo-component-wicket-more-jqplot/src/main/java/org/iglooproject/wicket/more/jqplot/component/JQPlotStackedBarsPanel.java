@@ -11,11 +11,11 @@ import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PlotSeries;
 import nl.topicus.wqplot.options.PlotTick;
 
-public class JQPlotStackedBarsPanel<S, K, V extends Number & Comparable<V>> extends JQPlotPanel<S, K, V> {
+public class JQPlotStackedBarsPanel<S, K, V extends Number & Comparable<V>, TK> extends JQPlotPanel<S, K, V, TK> {
 
 	private static final long serialVersionUID = -5575918534912813908L;
 
-	public JQPlotStackedBarsPanel(String id, IJQPlotDataAdapter<S, K, V> dataAdapter) {
+	public JQPlotStackedBarsPanel(String id, IJQPlotDataAdapter<S, K, V, TK> dataAdapter) {
 		super(id, JQPlotDataAdapters.fix(dataAdapter));
 		
 		add(new AbstractJQPlotConfigurer<S, K>() {

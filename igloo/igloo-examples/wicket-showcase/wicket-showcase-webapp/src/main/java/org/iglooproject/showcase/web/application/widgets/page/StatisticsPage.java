@@ -17,11 +17,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Range;
-import com.google.common.collect.Table;
-
 import org.iglooproject.commons.util.collections.DateDiscreteDomain;
 import org.iglooproject.showcase.core.business.statistic.service.IStatisticService;
 import org.iglooproject.showcase.core.business.user.model.UserGender;
@@ -43,6 +38,11 @@ import org.iglooproject.wicket.more.model.RangeModel;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;
 import org.iglooproject.wicket.more.rendering.Renderer;
 import org.iglooproject.wicket.more.util.DatePattern;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Range;
+import com.google.common.collect.Table;
+
 import nl.topicus.wqplot.components.JQPlot;
 import nl.topicus.wqplot.data.BaseSeries;
 import nl.topicus.wqplot.data.SimpleNumberSeries;
@@ -135,7 +135,7 @@ public class StatisticsPage extends WidgetsTemplate {
 					}
 				};
 
-		IJQPlotDataAdapter<UserGender, Date, Integer> userCreationCountByGenderByWeekContinuousDataAdapter =
+		IJQPlotDataAdapter<UserGender, Date, Integer, Date> userCreationCountByGenderByWeekContinuousDataAdapter =
 				new JQPlotContinuousDateKeysDataAdapter<>(userCreationCountByGenderByWeekModel, "%d/%m/%y");
 		highLevelPlotsTab.add(
 				new JQPlotLinesPanel<>(
@@ -151,7 +151,7 @@ public class StatisticsPage extends WidgetsTemplate {
 		);
 		
 		IModel<? extends Set<Date>> timelineModel = ContiguousSetModel.create(timeboundsModel, DateDiscreteDomain.weeks());
-		IJQPlotDataAdapter<UserGender, Date, Integer> userCreationCountByGenderByWeekDiscreteDataAdapter =
+		IJQPlotDataAdapter<UserGender, Date, Integer, Integer> userCreationCountByGenderByWeekDiscreteDataAdapter =
 				new JQPlotDiscreteKeysDataAdapter<UserGender, Date, Integer>(
 						userCreationCountByGenderByWeekModel, null,
 						timelineModel, // For unrepresented dates

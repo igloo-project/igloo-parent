@@ -9,16 +9,17 @@ import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.util.lang.Classes;
-
 import org.iglooproject.wicket.more.jqplot.data.provider.AbstractJQPlotDataProvider;
 import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
+
 import nl.topicus.wqplot.data.AbstractSeries;
+import nl.topicus.wqplot.data.SeriesEntry;
 import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PlotSeries;
 import nl.topicus.wqplot.options.PlotTick;
 
-public abstract class AbstractJQPlotDataAdapter<S, K, V> extends AbstractJQPlotDataProvider<S, K, V>
-		implements IJQPlotDataAdapter<S, K, V> {
+public abstract class AbstractJQPlotDataAdapter<S, K, V, TK> extends AbstractJQPlotDataProvider<S, K, V>
+		implements IJQPlotDataAdapter<S, K, V, TK> {
 	
 	private static final long serialVersionUID = 51423240690775236L;
 	
@@ -30,14 +31,14 @@ public abstract class AbstractJQPlotDataAdapter<S, K, V> extends AbstractJQPlotD
 	}
 	
 	@Override
-	public final Collection<? extends AbstractSeries<?, V, ?>> getObject() {
+	public final Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>> getObject() {
 		return getObject(Session.get().getLocale());
 	}
 	
-	protected abstract Collection<? extends AbstractSeries<?, V, ?>> getObject(Locale locale);
+	protected abstract Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>> getObject(Locale locale);
 
 	@Override
-	public void setObject(Collection<? extends AbstractSeries<?, V, ?>> object) {
+	public void setObject(Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>> object) {
 		setObject(object, Session.get().getLocale());
 	}
 
@@ -95,11 +96,11 @@ public abstract class AbstractJQPlotDataAdapter<S, K, V> extends AbstractJQPlotD
 	}
 	
 	@Override
-	public IWrapModel<Collection<? extends AbstractSeries<?, V, ?>>> wrapOnAssignment(Component component) {
+	public IWrapModel<Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>>> wrapOnAssignment(Component component) {
 		return new WrapModel(component);
 	}
 	
-	protected class WrapModel implements IWrapModel<Collection<? extends AbstractSeries<?, V, ?>>> {
+	protected class WrapModel implements IWrapModel<Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>>> {
 		private static final long serialVersionUID = -3127520838702743514L;
 		
 		private final Component component;
@@ -110,12 +111,12 @@ public abstract class AbstractJQPlotDataAdapter<S, K, V> extends AbstractJQPlotD
 		}
 
 		@Override
-		public Collection<? extends AbstractSeries<?, V, ?>> getObject() {
+		public Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>> getObject() {
 			return AbstractJQPlotDataAdapter.this.getObject(component.getLocale());
 		}
 
 		@Override
-		public void setObject(Collection<? extends AbstractSeries<?, V, ?>> object) {
+		public void setObject(Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>> object) {
 			AbstractJQPlotDataAdapter.this.setObject(object, component.getLocale());
 		}
 

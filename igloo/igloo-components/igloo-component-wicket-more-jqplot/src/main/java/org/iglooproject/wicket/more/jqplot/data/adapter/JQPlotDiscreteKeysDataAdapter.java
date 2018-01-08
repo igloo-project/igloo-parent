@@ -6,10 +6,6 @@ import java.util.Map;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Table;
-
 import org.iglooproject.commons.util.collections.DateDiscreteDomain;
 import org.iglooproject.commons.util.collections.PartitionDiscreteDomain;
 import org.iglooproject.commons.util.rendering.IRenderer;
@@ -18,6 +14,10 @@ import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
 import org.iglooproject.wicket.more.jqplot.data.provider.JQPlotMapDataProvider;
 import org.iglooproject.wicket.more.jqplot.data.provider.JQPlotTableDataProvider;
 import org.iglooproject.wicket.more.model.ContiguousSetModel;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Table;
+
 import nl.topicus.wqplot.components.plugins.JQPlotCategoryAxisRenderer;
 import nl.topicus.wqplot.data.NumberSeries;
 import nl.topicus.wqplot.options.PlotOptions;
@@ -39,7 +39,7 @@ import nl.topicus.wqplot.options.PlotTick;
  * @see DateDiscreteDomain
  * @see JQPlotConfigurers#xAxisExplicitTicks(IConverter)
  */
-public class JQPlotDiscreteKeysDataAdapter<S, K, V extends Number> extends AbstractMissingValuesJQPlotDataAdapter<S, K, V> {
+public class JQPlotDiscreteKeysDataAdapter<S, K, V extends Number> extends AbstractMissingValuesJQPlotDataAdapter<S, K, V, Integer> {
 	
 	private static final long serialVersionUID = 3961697302069579609L;
 	

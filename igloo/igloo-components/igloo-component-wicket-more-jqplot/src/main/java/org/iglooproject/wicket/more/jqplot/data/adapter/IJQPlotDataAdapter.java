@@ -10,6 +10,7 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.more.jqplot.config.IJQPlotConfigurer;
 import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
 import nl.topicus.wqplot.data.AbstractSeries;
+import nl.topicus.wqplot.data.SeriesEntry;
 import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PlotSeries;
 import nl.topicus.wqplot.options.PlotTick;
@@ -27,9 +28,9 @@ import nl.topicus.wqplot.options.PlotTick;
  * @param <K> The type for keys (generally the X axis)
  * @param <V> The type for values (generally the Y axis)
  */
-public interface IJQPlotDataAdapter<S, K, V> extends IJQPlotDataProvider<S, K, V>,
+public interface IJQPlotDataAdapter<S, K, V, TK> extends IJQPlotDataProvider<S, K, V>,
 		IJQPlotConfigurer<S, K>,
-		IComponentAssignedModel<Collection<? extends AbstractSeries<?, V, ?>>> {
+		IComponentAssignedModel<Collection<? extends AbstractSeries<TK, V, ? extends SeriesEntry<TK, V>>>> {
 
 
 	/**

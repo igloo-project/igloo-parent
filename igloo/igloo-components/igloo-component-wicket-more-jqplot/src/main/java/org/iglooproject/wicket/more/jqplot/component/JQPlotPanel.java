@@ -7,22 +7,12 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 
-import nl.topicus.wqplot.components.JQPlot;
-import nl.topicus.wqplot.options.PlotOptions;
-import nl.topicus.wqplot.options.PlotSeries;
-import nl.topicus.wqplot.options.PlotTick;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import org.iglooproject.commons.util.functional.Predicates2;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -31,6 +21,15 @@ import org.iglooproject.wicket.more.jqplot.config.IJQPlotConfigurer;
 import org.iglooproject.wicket.more.jqplot.data.adapter.IJQPlotDataAdapter;
 import org.iglooproject.wicket.more.jqplot.plugin.autoresize.JQPlotAutoresizeJavascriptReference;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import nl.topicus.wqplot.components.JQPlot;
+import nl.topicus.wqplot.options.PlotOptions;
+import nl.topicus.wqplot.options.PlotSeries;
+import nl.topicus.wqplot.options.PlotTick;
 
 /**
  * A wrapper component around {@link JQPlot} that makes it dynamic:
@@ -48,11 +47,11 @@ import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
  * @see JQPlotBarsPanel
  * @see JQPlotStackedBarsPanel
  */
-public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extends Panel {
+public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>, TK> extends Panel {
 
 	private static final long serialVersionUID = -138468277129057498L;
 
-	private final IJQPlotDataAdapter<S, K, V> dataAdapter;
+	private final IJQPlotDataAdapter<S, K, V, TK> dataAdapter;
 	
 	@SpringBean
 	private DefaultJQPlotRendererOptionsFactory optionsFactory;
@@ -69,7 +68,7 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 	
 	private Predicate<Collection<V>> nonEmptyDataPredicate = Predicates2.notEmpty();
 	
-	protected JQPlotPanel(String id, IJQPlotDataAdapter<S, K, V> dataAdapter) {
+	protected JQPlotPanel(String id, IJQPlotDataAdapter<S, K, V, TK> dataAdapter) {
 		super(id, dataAdapter);
 		
 		add(defaultjqPlotConfigurer);
@@ -94,7 +93,7 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 	}
 	
 	@SafeVarargs
-	public final JQPlotPanel<S, K, V> add(IJQPlotConfigurer<? super S, ? super K> configurer,
+	public final JQPlotPanel<S, K, V, TK> add(IJQPlotConfigurer<? super S, ? super K> configurer,
 			IJQPlotConfigurer<? super S, ? super K> ... otherConfigurers) {
 		jqPlotConfigurers.addAll(Lists.asList(configurer, otherConfigurers));
 		return this;
@@ -165,7 +164,7 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>> extend
 		}
 	}
 	
-	public JQPlotPanel<S, K, V> setNonEmptyDataPredicate(Predicate<Collection<V>> nonEmptyDataPredicate) {
+	public JQPlotPanel<S, K, V, TK> setNonEmptyDataPredicate(Predicate<Collection<V>> nonEmptyDataPredicate) {
 		this.nonEmptyDataPredicate = checkNotNull(nonEmptyDataPredicate);
 		return this;
 	}

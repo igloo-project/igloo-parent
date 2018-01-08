@@ -7,11 +7,10 @@ import javax.annotation.Nullable;
 
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
 import org.iglooproject.wicket.more.util.model.Models;
 
-public abstract class AbstractMissingValuesJQPlotDataAdapter<S, K, V> extends AbstractJQPlotDataAdapter<S, K, V> {
+public abstract class AbstractMissingValuesJQPlotDataAdapter<S, K, V, TK> extends AbstractJQPlotDataAdapter<S, K, V, TK> {
 	
 	private static final long serialVersionUID = 51423240690775236L;
 	
