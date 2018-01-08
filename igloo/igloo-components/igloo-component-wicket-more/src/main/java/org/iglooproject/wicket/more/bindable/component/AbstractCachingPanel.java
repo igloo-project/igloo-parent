@@ -9,8 +9,8 @@ import org.bindgen.BindingRoot;
 import com.google.common.base.Objects;
 
 import org.iglooproject.wicket.more.bindable.model.IBindableModel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.IAjaxModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.IAjaxModalShowListener;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.IAjaxModalShowListener;
 
 /**
  * A panel that uses bindable models for sub-components models, in order to leverage caching capabilities, and resets

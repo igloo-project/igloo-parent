@@ -12,7 +12,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.confirm.behavior.ConfirmContentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.confirm.statement.BootstrapConfirmStatement;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.BootstrapModalJavaScriptResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 import org.wicketstuff.wiquery.core.events.WiQueryEventBehavior;

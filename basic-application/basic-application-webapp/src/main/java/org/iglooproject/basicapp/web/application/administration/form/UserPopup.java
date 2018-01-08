@@ -7,7 +7,7 @@ import org.apache.wicket.model.IModel;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 
 public class UserPopup<U extends User> extends AbstractUserPopup<U> {
 

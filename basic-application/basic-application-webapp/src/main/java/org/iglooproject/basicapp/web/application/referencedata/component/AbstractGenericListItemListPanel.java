@@ -23,7 +23,7 @@ import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;

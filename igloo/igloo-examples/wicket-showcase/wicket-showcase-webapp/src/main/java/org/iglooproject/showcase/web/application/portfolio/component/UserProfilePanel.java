@@ -9,7 +9,7 @@ import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.emailobfuscator.ObfuscatedEmailLink;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.DatePattern;

@@ -10,7 +10,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.jpa.more.business.generic.model.GenericListItem;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.BindingModel;
 
 public abstract class SimpleGenericListItemPopup<T extends GenericListItem<? super T>>

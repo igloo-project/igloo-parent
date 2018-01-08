@@ -9,7 +9,7 @@ import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.boots
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.confirm.fluid.IConfirmLinkBuilderStepStart;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.confirm.statement.BootstrapConfirmEvent;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.confirm.statement.BootstrapConfirmStatement;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.BootstrapModalJavaScriptResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;

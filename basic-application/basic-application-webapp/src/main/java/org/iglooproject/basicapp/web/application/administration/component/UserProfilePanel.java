@@ -36,7 +36,7 @@ import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.confirm.component.AjaxConfirmLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.DatePattern;
 
