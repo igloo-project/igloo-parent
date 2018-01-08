@@ -157,7 +157,7 @@
 		<igloo.wqplot.version>7.1.0.owsi1</igloo.wqplot.version>
 		
 		<igloo.less4j.version>1.17.2</igloo.less4j.version>
-		<igloo.jsass.version>3.3.0</igloo.jsass.version>
+		<igloo.jsass.version>5.5.4</igloo.jsass.version>
 		
 		<igloo.flywaydb.version>4.0.3</igloo.flywaydb.version>
 		<!-- infinispan >= 8.0 requires java 8 -->

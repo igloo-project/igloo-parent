@@ -1,8 +1,5 @@
 package org.iglooproject.wicket.more.css.scss.service;
 
-import io.bit3.jsass.importer.Import;
-import io.bit3.jsass.importer.Importer;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,9 +15,12 @@ import org.springframework.core.io.ClassPathResource;
 
 import com.google.common.collect.Lists;
 
+import io.bit3.jsass.importer.Import;
+import io.bit3.jsass.importer.Importer;
+
 public class JSassScopeAwareImporter implements Importer {
 	
-	private static final Pattern LESSCSS_IMPORT_SCOPE_PATTERN = Pattern.compile("^\\$\\(scope-([a-zA-Z0-9_-]*)\\)(.*)$");
+	private static final Pattern SCSS_IMPORT_SCOPE_PATTERN = Pattern.compile("^\\$\\(scope-([a-zA-Z0-9_-]*)\\)(.*)$");
 	
 	private final Map<String, Class<?>> scopes;
 	
@@ -32,12 +32,12 @@ public class JSassScopeAwareImporter implements Importer {
 
 	@Override
 	public Collection<Import> apply(String url, Import previous) {
-		return Collections.singletonList(getInputSource(url, previous.getUri()));
+		return Collections.singletonList(getInputSource(url, previous.getAbsoluteUri()));
 	}
 	
 	public Import getInputSource(String url, URI base) {
 		try {
-			Matcher scopeMatcher = LESSCSS_IMPORT_SCOPE_PATTERN.matcher(url);
+			Matcher scopeMatcher = SCSS_IMPORT_SCOPE_PATTERN.matcher(url);
 			if (scopeMatcher.matches()) {
 				Class<?> referencedScope = scopes.get(scopeMatcher.group(1));
 				if (referencedScope == null) {
@@ -64,7 +64,7 @@ public class JSassScopeAwareImporter implements Importer {
 				ClassPathResource cpr = new ClassPathResource(classpathUri);
 				try {
 					addSourceUri(classpathUri);
-					return new Import(potentialUri, null, IOUtils.toString(cpr.getInputStream()));
+					return new Import(potentialIdentifier, potentialUri, IOUtils.toString(cpr.getInputStream()));
 				} catch (IOException e) {
 				}
 			}
