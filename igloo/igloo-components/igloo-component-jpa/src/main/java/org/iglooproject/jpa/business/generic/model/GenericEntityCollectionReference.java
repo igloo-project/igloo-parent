@@ -83,12 +83,12 @@ public class GenericEntityCollectionReference<K extends Comparable<K> & Serializ
 	}
 
 	@SuppressWarnings("unchecked")
-	protected static <K extends Comparable<K> & Serializable> Class<? extends GenericEntity<K, ?>> getUpperEntityClass(Class<? extends GenericEntity<K, ?>> entityClass) {
+	protected static Class<? extends GenericEntity<?, ?>> getUpperEntityClass(Class<? extends GenericEntity<?, ?>> entityClass) {
 		Class<?> currentClass = entityClass;
 		while (currentClass != null && currentClass.getAnnotation(Entity.class) == null) {
 			currentClass = currentClass.getSuperclass();
 		}
-		return (Class<? extends GenericEntity<K, ?>>) currentClass;
+		return (Class<? extends GenericEntity<?, ?>>) currentClass;
 	}
 
 	@Override
