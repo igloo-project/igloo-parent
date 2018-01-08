@@ -1,1 +1,12 @@
+// Bootstrap
 @import "$(scope-core-bs4)bootstrap/bootstrap";
+
+// Font Awesome
+@import "$(scope-core-fa)scss/fontawesome";
+@import "$(scope-core-fa)scss/fa-solid";
+@import "$(scope-core-fa)scss/fa-regular";
+@import "$(scope-core-fa)scss/fa-brands";
+
+
+@import "variables";
+@import "common";

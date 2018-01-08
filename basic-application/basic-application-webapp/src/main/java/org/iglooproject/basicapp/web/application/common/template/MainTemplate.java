@@ -45,16 +45,14 @@ import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
-import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.collapse.BootstrapCollapseJavaScriptResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.dropdown.BootstrapDropdownBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.tooltip.BootstrapTooltip;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.tooltip.BootstrapTooltipDocumentBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.dropdown.BootstrapDropdownBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltip;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstraphoverdropdown.BootstrapHoverDropdownBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -63,6 +61,7 @@ import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.iglooproject.wicket.more.security.page.LogoutPage;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,47 +99,38 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(new TransparentWebMarkupContainer("htmlRootElement")
 				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage())));
 		
-		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
+//		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
 		
 		// Page title
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
 		add(createHeadPageTitle("headPageTitle"));
 		
-		// Bread crumb
-		Component breadCrumb;
-		if (isBreadCrumbDisplayed()) {
-			breadCrumb = createBodyBreadCrumb("breadCrumb");
-		} else {
-			breadCrumb = new InvisiblePanel("breadCrumb");
-		}
-		add(breadCrumb);
-		
-		// Environment
-		add(new EnvironmentPanel("environment"));
-		
-		// Main navigation bar
 		add(new ListView<NavigationMenuItem>("mainNav", getMainNav()) {
-			private static final long serialVersionUID = -2257358650754295013L;
+			private static final long serialVersionUID = 1L;
 			
 			@Override
 			protected void populateItem(ListItem<NavigationMenuItem> item) {
 				NavigationMenuItem navItem = item.getModelObject();
 				
-				AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
-				navLink.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
-				navLink.add(
-						new Label("label", navItem.getLabelModel()),
-						new EnclosureContainer("icon").condition(Condition.modelNotNull(navItem.getIconClassesModel()))
-								.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
-				);
-				
 				if (navItem.isActive(MainTemplate.this.getFirstMenuPage())) {
 					item.add(new ClassAttributeAppender("active"));
 				}
 				
-				item.add(navLink);
+				AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
+				
+				item.add(
+						navLink
+								.add(
+										new EnclosureContainer("icon")
+												.condition(Condition.modelNotNull(navItem.getIconClassesModel()))
+												.add(new ClassAttributeAppender(navItem.getIconClassesModel())),
+										new CoreLabel("label", navItem.getLabelModel())
+								)
+								.add(new ClassAttributeAppender(navItem.getCssClassesModel()))
+				);
 				
 				List<NavigationMenuItem> subMenuItems = navItem.getSubMenuItems();
+				
 				if (!subMenuItems.isEmpty()) {
 					item.add(new ClassAttributeAppender("dropdown"));
 					navLink.add(new ClassAttributeAppender("dropdown-toggle"));
@@ -148,48 +138,49 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 					navLink.add(new AttributeModifier("data-hover", "dropdown"));
 				}
 				
-				item.add(new ListView<NavigationMenuItem>("subNav", subMenuItems) {
-					private static final long serialVersionUID = -2257358650754295013L;
-					
-					@Override
-					protected void populateItem(ListItem<NavigationMenuItem> item) {
-						NavigationMenuItem navItem = item.getModelObject();
-						
-						AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
-						navLink.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
-						navLink.add(
-								new Label("label", navItem.getLabelModel()),
-								new EnclosureContainer("icon").condition(Condition.modelNotNull(navItem.getIconClassesModel()))
-										.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
-						);
-						
-						if (navItem.isActive(MainTemplate.this.getSecondMenuPage())) {
-							item.add(new ClassAttributeAppender("active"));
-						}
-						
-						item.add(navLink);
-					}
-					
-					@Override
-					protected void onDetach() {
-						super.onDetach();
-						for (NavigationMenuItem item : getModelObject()) {
-							item.detach();
-						}
-					}
-				});
+				item.add(
+						new WebMarkupContainer("subNavContainer")
+								.add(
+										new ListView<NavigationMenuItem>("subNav", subMenuItems) {
+											private static final long serialVersionUID = -2257358650754295013L;
+											
+											@Override
+											protected void populateItem(ListItem<NavigationMenuItem> item) {
+												NavigationMenuItem navItem = item.getModelObject();
+												
+												AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
+												navLink.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
+												navLink.add(
+														new Label("label", navItem.getLabelModel()),
+														new EnclosureContainer("icon").condition(Condition.modelNotNull(navItem.getIconClassesModel()))
+																.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
+												);
+												
+												if (navItem.isActive(MainTemplate.this.getSecondMenuPage())) {
+													item.add(new ClassAttributeAppender("active"));
+												}
+												
+												item.add(navLink);
+											}
+											
+											@Override
+											protected void onDetach() {
+												super.onDetach();
+												Detachables.detach(getModelObject());
+											}
+										}
+								)
+								.setVisibilityAllowed(!subMenuItems.isEmpty())
+				);
 			}
 			
 			@Override
 			protected void onDetach() {
 				super.onDetach();
-				for (NavigationMenuItem item : getModelObject()) {
-					item.detach();
-				}
+				Detachables.detach(getModelObject());
 			}
 		});
 		
-		// User menu
 		add(
 				new Label(
 						"originalAuthentication",
@@ -241,7 +232,13 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class)
 		);
 		
-		// Footer
+		add(new EnvironmentPanel("environment"));
+		
+		add(
+				createBodyBreadCrumb("breadCrumb")
+						.add(displayBreadcrumb().thenShow())
+		);
+		
 		add(
 				new Label("version", propertyService.get(VERSION))
 						.add(new AttributeModifier("title", new StringResourceModel("common.version.full")
@@ -249,14 +246,11 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 						))
 		);
 		
-		// Tooltip
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		
-		// Dropdown
 		add(new BootstrapDropdownBehavior());
 		add(new BootstrapHoverDropdownBehavior());
 		
-		// Scroll to top
 		add(new WebMarkupContainer("scrollToTop").add(new ScrollToTopBehavior()));
 	}
 
@@ -290,8 +284,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				.setTrailingSeparator(true);
 	}
 	
-	protected boolean isBreadCrumbDisplayed() {
-		return true;
+	protected Condition displayBreadcrumb() {
+		return Condition.alwaysTrue();
 	}
 	
 	@Override

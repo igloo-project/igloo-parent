@@ -1,0 +1,39 @@
+.environment-container {
+	@extend .bg-warning;
+	padding: 10px;
+}
+
+.page-container {
+	@extend .container;
+	margin-top: 1rem;
+}
+
+.footer-container {
+	@extend .container;
+	@extend .bg-light;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	padding: 15px;
+	
+	.footer-info {
+		@extend .text-right;
+	}
+}
+
+.scroll-to-top {
+	opacity: 0;
+	display: none;
+	position: fixed;
+	left: 10px;
+	bottom: 10px;
+	color: $white;
+	background-color: $primary;
+	border-radius: .2rem;
+	z-index: $zindex-scroll-to-top;
+	cursor: pointer;
+	padding: 8px;
+	
+	@include media-breakpoint-down(xs) {
+		display: none !important;
+	}
+}

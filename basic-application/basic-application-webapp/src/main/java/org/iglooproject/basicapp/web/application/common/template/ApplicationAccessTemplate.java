@@ -97,4 +97,9 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 		return null;
 	}
 
+	@Override
+	public String getVariation() {
+		return BOOTSTRAP3_VARIATION;
+	}
+
 }

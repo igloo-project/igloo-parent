@@ -3,12 +3,8 @@ package org.iglooproject.wicket.more.markup.html.template.model;
 import java.io.Serializable;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
-import org.iglooproject.wicket.more.markup.html.template.component.LinkBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.markup.html.template.component.LinkGeneratorBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.markup.html.template.component.SimpleBreadCrumbElementPanel;
 
@@ -21,24 +17,8 @@ public class BreadCrumbElement implements Serializable {
 	
 	private ILinkGenerator linkGenerator;
 	
-	private Class<? extends Page> pageClass;
-	
-	private PageParameters pageParameters;
-	
 	public BreadCrumbElement(IModel<String> labelModel) {
 		this.labelModel = labelModel;
-	}
-	
-	@Deprecated
-	public BreadCrumbElement(IModel<String> labelModel, Class<? extends Page> pageClass) {
-		this(labelModel, pageClass, null);
-	}
-	
-	@Deprecated
-	public BreadCrumbElement(IModel<String> labelModel, Class<? extends Page> pageClass, PageParameters pageParameters) {
-		this.labelModel = labelModel;
-		this.pageClass = pageClass;
-		this.pageParameters = pageParameters;
 	}
 	
 	public BreadCrumbElement(IModel<String> labelModel, ILinkGenerator linkGenerator) {
@@ -50,16 +30,6 @@ public class BreadCrumbElement implements Serializable {
 		return labelModel;
 	}
 
-	@Deprecated
-	public Class<? extends Page> getPageClass() {
-		return pageClass;
-	}
-
-	@Deprecated
-	public PageParameters getPageParameters() {
-		return pageParameters;
-	}
-	
 	public ILinkGenerator getLinkGenerator() {
 		return linkGenerator;
 	}
@@ -68,11 +38,7 @@ public class BreadCrumbElement implements Serializable {
 		if (linkGenerator != null) {
 			return new LinkGeneratorBreadCrumbElementPanel(wicketId, this, renderingBehavior);
 		} else {
-			if (pageClass != null) {
-				return new LinkBreadCrumbElementPanel(wicketId, this, renderingBehavior);
-			} else {
-				return new SimpleBreadCrumbElementPanel(wicketId, this, renderingBehavior);
-			}
+			return new SimpleBreadCrumbElementPanel(wicketId, this, renderingBehavior);
 		}
 	}
 
