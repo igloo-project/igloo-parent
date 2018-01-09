@@ -5,7 +5,6 @@ import static org.iglooproject.basicapp.web.application.property.BasicApplicatio
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
@@ -14,10 +13,10 @@ import org.iglooproject.basicapp.web.application.history.model.HistoryLogDataPro
 import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
-import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
-import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
+import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
+import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.util.DatePattern;
 
 public class UserHistoryLogPanel extends GenericPanel<User> {
@@ -42,7 +41,7 @@ public class UserHistoryLogPanel extends GenericPanel<User> {
 								.withClass("text text-sm")
 						.addColumn(new HistoryLogDetailColumn())
 								.withClass("text")
-						.bootstrapPanel()
+						.bootstrapCard()
 								.title("administration.user.audits")
 								.ajaxPager(AddInPlacement.FOOTER_RIGHT)
 						.build("history", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE))

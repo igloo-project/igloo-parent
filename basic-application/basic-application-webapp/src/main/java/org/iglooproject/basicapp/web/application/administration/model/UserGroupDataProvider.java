@@ -2,9 +2,6 @@ package org.iglooproject.basicapp.web.application.administration.model;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
-import com.google.common.collect.ImmutableMap;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.search.IUserGroupSearchQuery;
@@ -15,11 +12,13 @@ import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.Co
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 
+import com.google.common.collect.ImmutableMap;
+
 public class UserGroupDataProvider extends AbstractSearchQueryDataProvider<UserGroup, UserGroupSort> {
 
 	private static final long serialVersionUID = 7805366114079528005L;
 
-	private final IModel<User> userModel;
+	private final IModel<? extends User> userModel;
 
 	private final IModel<String> nameModel = new Model<String>();
 
@@ -34,7 +33,7 @@ public class UserGroupDataProvider extends AbstractSearchQueryDataProvider<UserG
 			)
 	);
 
-	public UserGroupDataProvider(IModel<User> userModel) {
+	public UserGroupDataProvider(IModel<? extends User> userModel) {
 		super();
 		this.userModel = userModel;
 	}

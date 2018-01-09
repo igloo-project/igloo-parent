@@ -1,0 +1,15 @@
+.container.description-container {
+	@extend .container-g-1;
+	
+	> .row.description-row {
+		
+		.description-label {
+			color: $gray-700;
+			font-weight: bold;
+		}
+		
+		.description-value {
+			
+		}
+	}
+}

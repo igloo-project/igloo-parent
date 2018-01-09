@@ -11,15 +11,11 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFact
 
 import com.google.common.collect.Multimap;
 
-/**
- * @deprecated Use {@link BootstrapCardCoreDataTablePanel} instead with Bootstrap 4.
- */
-@Deprecated
-public class BootstrapPanelCoreDataTablePanel<T, S extends ISort<?>> extends DecoratedCoreDataTablePanel<T, S> {
+public class BootstrapCardCoreDataTablePanel<T, S extends ISort<?>> extends DecoratedCoreDataTablePanel<T, S> {
 
 	private static final long serialVersionUID = -5953180156268489658L;
 
-	public BootstrapPanelCoreDataTablePanel(
+	public BootstrapCardCoreDataTablePanel(
 			String id,
 			IDataTableFactory<T, S> factory,
 			Map<IColumn<T, S>, Condition> columns,

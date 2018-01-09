@@ -1,22 +1,35 @@
 .environment-container {
 	@extend .bg-warning;
-	padding: 10px;
+	padding: .5rem;
 }
 
 .page-container {
 	@extend .container;
 	margin-top: 1rem;
+	min-height: 450px;
+	
+	> .page-content {
+		> .page-header, > .page-body, > .page-footer {
+			> .container {
+				padding-left: 0 !important;
+				padding-right: 0 !important;
+			}
+		}
+	}
 }
 
 .footer-container {
 	@extend .container;
-	@extend .bg-light;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
-	padding: 15px;
 	
-	.footer-info {
-		@extend .text-right;
+	.footer {
+		@extend .bg-light;
+		padding: 1rem;
+		
+		.footer-info {
+			@extend .text-right;
+		}
 	}
 }
 
@@ -31,7 +44,7 @@
 	border-radius: .2rem;
 	z-index: $zindex-scroll-to-top;
 	cursor: pointer;
-	padding: 8px;
+	padding: .5rem;
 	
 	@include media-breakpoint-down(xs) {
 		display: none !important;

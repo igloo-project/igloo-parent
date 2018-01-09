@@ -11,13 +11,6 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-
 import org.iglooproject.commons.util.binding.AbstractCoreBinding;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
@@ -42,6 +35,7 @@ import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
+import org.iglooproject.wicket.more.markup.repeater.table.BootstrapCardCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.BootstrapPanelCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
@@ -76,6 +70,12 @@ import org.iglooproject.wicket.more.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.rendering.Renderer;
 import org.iglooproject.wicket.more.util.IDatePattern;
 import org.iglooproject.wicket.more.util.model.SequenceProviders;
+
+import com.google.common.base.Function;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 
 public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnState<T, S> {
 
@@ -427,6 +427,15 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
+	public IDecoratedBuildState<T, S> bootstrapCard() {
+		return new BootstrapCardBuildState();
+	}
+	
+	/**
+	 * @deprecated Use {@link #bootstrapCard()} instead with Bootstrap 4.
+	 */
+	@Deprecated
+	@Override
 	public IDecoratedBuildState<T, S> bootstrapPanel() {
 		return new BootstrapPanelBuildState();
 	}
@@ -578,6 +587,15 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 			return DataTableBuilder.this.decorate();
 		}
 		
+		@Override
+		public IDecoratedBuildState<T, S> bootstrapCard() {
+			return DataTableBuilder.this.bootstrapCard();
+		}
+		
+		/**
+		 * @deprecated Use {@link #bootstrapCard()} instead with Boostrap 4.
+		 */
+		@Deprecated
 		@Override
 		public IDecoratedBuildState<T, S> bootstrapPanel() {
 			return DataTableBuilder.this.bootstrapPanel();
@@ -1063,6 +1081,34 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 	}
 
+	private class BootstrapCardBuildState extends DecoratedBuildState {
+		
+		@Override
+		protected String getTitleCssClass() {
+			return "panel-title";
+		}
+		
+		@Override
+		protected String getPaginationCssClass() {
+			return "add-in-pagination add-in-pagination-panel";
+		}
+		
+		@Override
+		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
+			BootstrapCardCoreDataTablePanel<T, S> panel = new BootstrapCardCoreDataTablePanel<T, S>(id, factory,
+					columns, sequenceProvider, rowsPerPage, addInComponentFactories, responsiveCondition);
+			if (noRecordsResourceKey == null && countResourceKey != null) {
+				withNoRecordsResourceKey(countResourceKey + ".zero");
+			}
+			DataTableBuilder.this.finalizeBuild(panel.getDataTable());
+			return panel;
+		}
+	}
+
+	/**
+	 * @deprecated Use {@link BootstrapCardCoreDataTablePanel} instead with Bootstrap 4.
+	 */
+	@Deprecated
 	private class BootstrapPanelBuildState extends DecoratedBuildState {
 		
 		@Override

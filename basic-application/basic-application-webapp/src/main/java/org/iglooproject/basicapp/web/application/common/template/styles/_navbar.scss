@@ -1,0 +1,27 @@
+.navbar {
+	.navbar-nav {
+		> li {
+			&.nav-item {
+				a {
+					&.nav-link {
+						&:before {
+							@include fa-mixin-font();
+						}
+						
+						&.home:before {
+							@include fa-mixin-content($fa-var-home);
+						}
+						
+						&.administration:before {
+							@include fa-mixin-content($fa-var-cog);
+						}
+						
+						&.reference-data:before {
+							@include fa-mixin-content($fa-var-list);
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -13,12 +13,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
-import org.iglooproject.basicapp.core.business.user.search.UserGroupSort;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.web.application.administration.model.UserGroupDataProvider;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
@@ -34,11 +30,12 @@ import org.iglooproject.wicket.more.markup.html.factory.AbstractDetachableFactor
 import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
-import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserMembershipsPanel extends GenericPanel<User> {
 
@@ -54,15 +51,15 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 	
 	private final UserGroupDataProvider dataProvider;
 	
-	private IModel<User> userModel;
+	private IModel<? extends User> userModel;
 	
-	public UserMembershipsPanel(String id, final IModel<User> userModel) {
+	public UserMembershipsPanel(String id, final IModel<? extends User> userModel) {
 		super(id, userModel);
 		
 		this.userModel = userModel;
+		this.dataProvider = new UserGroupDataProvider(userModel);
 		
-		dataProvider = new UserGroupDataProvider(userModel);
-		DecoratedCoreDataTablePanel<UserGroup, UserGroupSort> userMemberships = 
+		add(
 				DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 						.addLabelColumn(new ResourceModel("administration.usergroup.field.name"))
 							.withLink(AdministrationUserGroupDescriptionPage.MAPPER)
@@ -100,23 +97,21 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 											}
 										})
 										.hideLabel()
-								.withClassOnElements(CssClassConstants.BTN_SM)
+								.withClassOnElements(CssClassConstants.BTN_XS)
 								.end()
 								.withClass("actions")
-						.bootstrapPanel()
-						.addIn(AddInPlacement.FOOTER_RIGHT,  new AbstractParameterizedComponentFactory<Component, Component>() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public Component create(String wicketId, final Component table ) {
-								return new UserGroupAddFragment(wicketId)
-									.add(new ClassAttributeAppender("add-in-quick-add"));
-							}
-						})
-						.ajaxPager(AddInPlacement.HEADING_RIGHT)
-						.count("administration.user.groups.count")
-						.build("userMemberships", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION));
-		add(
-				userMemberships
+						.bootstrapCard()
+								.addIn(AddInPlacement.FOOTER_RIGHT,  new AbstractParameterizedComponentFactory<Component, Component>() {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public Component create(String wicketId, final Component table ) {
+										return new UserGroupAddFragment(wicketId)
+											.add(new ClassAttributeAppender("add-in-quick-add"));
+									}
+								})
+								.ajaxPager(AddInPlacement.HEADING_RIGHT)
+								.count("administration.user.groups.count")
+						.build("userMemberships", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION))
 		);
 	}
 	

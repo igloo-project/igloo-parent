@@ -182,17 +182,14 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		});
 		
 		add(
-				new Label(
+				new CoreLabel(
 						"originalAuthentication",
 						new StringResourceModel("console.authentication.originalAuthentication.help")
 								.setParameters(BasicApplicationSession.get().getOriginalAuthentication() != null 
 											? BasicApplicationSession.get().getOriginalAuthentication().getName()
 											: null)
-						.getObject()
 				) {
-					
-					private static final long serialVersionUID = -5789260462449121142L;
-					
+					private static final long serialVersionUID = 1L;
 					@Override
 					protected void onConfigure() {
 						super.onConfigure();
@@ -209,7 +206,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				
 				new AjaxLink<Void>("reconnexionLink") {
 					private static final long serialVersionUID = 1L;
-					
 					@Override
 					public void onClick(AjaxRequestTarget target) {
 						try {
@@ -259,7 +255,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				BasicApplicationApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.home"))
 						.setCssClassesModel(Model.of("home")),
 				ReferenceDataPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.referenceData"))
-						.setCssClassesModel(Model.of("referenceData")),
+						.setCssClassesModel(Model.of("reference-data")),
 				AdministrationUserTypeDescriptor.BASIC_USER.portfolio().navigationMenuItem(new ResourceModel("navigation.administration"))
 						.setCssClassesModel(Model.of("administration"))
 						.setSubMenuItems(ImmutableList.of(
@@ -294,11 +290,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		response.render(CssHeaderItem.forReference(StylesScssResourceReference.get()));
 		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
-	}
-	
-	@Override
-	public String getVariation() {
-		return BOOTSTRAP4_VARIATION;
 	}
 	
 	protected BootstrapTooltip getBootstrapTooltip() {

@@ -1,5 +1,6 @@
 // Bootstrap
 @import "$(scope-core-bs4)bootstrap/bootstrap";
+@import "$(scope-core-bs4)bootstrap/override/override";
 
 // Font Awesome
 @import "$(scope-core-fa)scss/fontawesome";
@@ -7,6 +8,8 @@
 @import "$(scope-core-fa)scss/fa-regular";
 @import "$(scope-core-fa)scss/fa-brands";
 
-
 @import "variables";
+@import "mixins";
 @import "common";
+@import "navbar";
+@import "description";

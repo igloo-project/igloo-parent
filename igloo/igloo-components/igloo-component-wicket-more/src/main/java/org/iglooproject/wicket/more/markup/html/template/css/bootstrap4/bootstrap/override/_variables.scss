@@ -1,0 +1,24 @@
+$grid-gutter-widths: (
+  0: 0,
+  1: 8px,
+  2: 15px,
+  3: 30px,
+  4: 40px,
+  5: 50px
+) !default;
+
+$font-size-xs:					($font-size-base * .875) !default;
+
+$line-height-xs:				1rem;
+
+$border-radius-xs:				.2rem !default;
+
+$input-btn-padding-y-xs:		.25rem !default;
+$input-btn-padding-x-xs:		.35rem !default;
+$input-btn-line-height-xs:		$line-height-xs !default;
+
+$btn-padding-y-xs:				$input-btn-padding-y-xs !default;
+$btn-padding-x-xs:				$input-btn-padding-x-xs !default;
+$btn-line-height-xs:			$input-btn-line-height-xs !default;
+
+$btn-border-radius-xs:			$border-radius-xs !default;

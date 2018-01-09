@@ -37,6 +37,12 @@ public interface IBuildState<T, S extends ISort<?>> {
 	
 	IDecoratedBuildState<T, S> decorate();
 	
+	IDecoratedBuildState<T, S> bootstrapCard();
+	
+	/**
+	 * @deprecated Use {@link #bootstrapCard()} instead with Bootstrap 4.
+	 */
+	@Deprecated
 	IDecoratedBuildState<T, S> bootstrapPanel();
 
 }
