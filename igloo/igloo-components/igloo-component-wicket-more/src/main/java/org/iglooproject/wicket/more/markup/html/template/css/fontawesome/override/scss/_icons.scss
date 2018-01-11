@@ -1,0 +1,5 @@
+.fa {
+	&.#{$fa-css-prefix}-square:before {
+		@extend .far;
+	}
+}

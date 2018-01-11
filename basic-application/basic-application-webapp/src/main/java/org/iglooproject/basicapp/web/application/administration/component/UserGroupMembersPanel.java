@@ -15,14 +15,12 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
-import org.iglooproject.basicapp.core.business.user.search.UserSort;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.web.application.administration.model.UserDataProvider;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDescriptionTemplate;
 import org.iglooproject.basicapp.web.application.common.form.UserAutocompleteAjaxComponent;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
-import org.iglooproject.basicapp.web.application.navigation.link.LinkFactory;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
@@ -33,7 +31,6 @@ import org.iglooproject.wicket.more.markup.html.factory.AbstractDetachableFactor
 import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
-import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
@@ -58,66 +55,62 @@ public class UserGroupMembersPanel extends GenericPanel<UserGroup> {
 		super(id, userGroupModel);
 		setOutputMarkupId(true);
 		
-		// Members list
 		dataProvider = new UserDataProvider();
 		dataProvider.getGroupModel().setObject(userGroupModel.getObject());
 		
-		LinkFactory.get();
-		DecoratedCoreDataTablePanel<User, UserSort> groupMemberships = 
-				DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
-					.addLabelColumn(new ResourceModel("administration.usergroup.field.name"))
-							.withLink(AdministrationUserDescriptionTemplate.mapper().setParameter2(new ComponentPageModel(this)))
-							.withClass("text text-md")
-					.addActionColumn()
-							.addConfirmAction(ActionRenderers.constant("administration.usergroup.members.delete", "fa fa-fw fa-times", BootstrapColor.DANGER))
-									.title(new ResourceModel("administration.usergroup.members.delete.confirmation.title"))
-									.content(new AbstractDetachableFactory<IModel<User>, IModel<String>>() {
-										private static final long serialVersionUID = 1L;
-										@Override
-										public IModel<String> create(IModel<User> userModel) {
-											return new StringResourceModel("administration.usergroup.members.delete.confirmation.text")
-													.setParameters(userModel.getObject().getFullName(), UserGroupMembersPanel.this.getModelObject().getName());
-										}
-									})
-									.confirm()
-									.onClick(new AbstractOneParameterAjaxAction<IModel<User>>() {
-										private static final long serialVersionUID = 1L;
-										@Override
-										public void execute(AjaxRequestTarget target, IModel<User> parameter) {
-											try {
-												UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
-												User user = parameter.getObject();
-												
-												userGroupService.removeUser(userGroup, user);
-												Session.get().success(getString("administration.usergroup.members.delete.success"));
-												throw new RestartResponseException(getPage());
-											} catch (RestartResponseException e) {
-												throw e;
-											} catch (Exception e) {
-												LOGGER.error("Unknown error occured while removing a group from the user", e);
-												getSession().error(getString("common.error.unexpected"));
-												FeedbackUtils.refreshFeedback(target, getPage());
-											}
-										}
-									})
-									.hideLabel()
-							.withClassOnElements(CssClassConstants.BTN_SM)
-							.end()
-							.withClass("actions")
-					.bootstrapPanel()
-							.addIn(AddInPlacement.FOOTER_RIGHT, new AbstractParameterizedComponentFactory<Component, Component>() {
-								private static final long serialVersionUID = 1L;
-								@Override
-								public Component create(String wicketId, final Component table ) {
-									return new UserGroupAddUserFragment(wicketId)
-										.add(new ClassAttributeAppender("add-in-quick-add"));
-								}
-							})
-							.ajaxPager(AddInPlacement.HEADING_RIGHT)
-							.count("administration.usergroup.members.count")
-					.build("groupMemberships", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION));
 		add(
-				groupMemberships
+				DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
+						.addLabelColumn(new ResourceModel("administration.usergroup.field.name"))
+								.withLink(AdministrationUserDescriptionTemplate.mapper().setParameter2(new ComponentPageModel(this)))
+								.withClass("text text-md")
+						.addActionColumn()
+								.addConfirmAction(ActionRenderers.constant("administration.usergroup.members.delete", "fa fa-fw fa-times", BootstrapColor.DANGER))
+										.title(new ResourceModel("administration.usergroup.members.delete.confirmation.title"))
+										.content(new AbstractDetachableFactory<IModel<User>, IModel<String>>() {
+											private static final long serialVersionUID = 1L;
+											@Override
+											public IModel<String> create(IModel<User> userModel) {
+												return new StringResourceModel("administration.usergroup.members.delete.confirmation.text")
+														.setParameters(userModel.getObject().getFullName(), UserGroupMembersPanel.this.getModelObject().getName());
+											}
+										})
+										.confirm()
+										.onClick(new AbstractOneParameterAjaxAction<IModel<User>>() {
+											private static final long serialVersionUID = 1L;
+											@Override
+											public void execute(AjaxRequestTarget target, IModel<User> parameter) {
+												try {
+													UserGroup userGroup = UserGroupMembersPanel.this.getModelObject();
+													User user = parameter.getObject();
+													
+													userGroupService.removeUser(userGroup, user);
+													Session.get().success(getString("administration.usergroup.members.delete.success"));
+													throw new RestartResponseException(getPage());
+												} catch (RestartResponseException e) {
+													throw e;
+												} catch (Exception e) {
+													LOGGER.error("Unknown error occured while removing a group from the user", e);
+													getSession().error(getString("common.error.unexpected"));
+													FeedbackUtils.refreshFeedback(target, getPage());
+												}
+											}
+										})
+										.hideLabel()
+								.withClassOnElements(CssClassConstants.BTN_SM)
+								.end()
+								.withClass("actions")
+						.bootstrapCard()
+								.addIn(AddInPlacement.FOOTER_RIGHT, new AbstractParameterizedComponentFactory<Component, Component>() {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public Component create(String wicketId, final Component table ) {
+										return new UserGroupAddUserFragment(wicketId)
+											.add(new ClassAttributeAppender("add-in-quick-add"));
+									}
+								})
+								.ajaxPager(AddInPlacement.HEADING_RIGHT)
+								.count("administration.usergroup.members.count")
+						.build("groupMemberships", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION))
 		);
 	}
 

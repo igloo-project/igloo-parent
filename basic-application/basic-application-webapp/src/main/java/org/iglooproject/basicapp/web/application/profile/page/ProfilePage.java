@@ -1,18 +1,18 @@
 package org.iglooproject.basicapp.web.application.profile.page;
 
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.profile.component.ProfileInformationPanel;
 import org.iglooproject.basicapp.web.application.profile.template.ProfileTemplate;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.BindingModel;
+import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class ProfilePage extends ProfileTemplate {
 
@@ -31,7 +31,10 @@ public class ProfilePage extends ProfileTemplate {
 		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Bindings.user().fullName())));
 		
 		add(
-				new Label("pageTitle", BindingModel.of(userModel, Bindings.user().fullName())),
+				new CoreLabel("pageTitle", BindingModel.of(userModel, Bindings.user().fullName()))
+		);
+		
+		add(
 				new ProfileInformationPanel("description", userModel)
 		);
 	}
@@ -39,7 +42,7 @@ public class ProfilePage extends ProfileTemplate {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		userModel.detach();
+		Detachables.detach(userModel);
 	}
 
 }

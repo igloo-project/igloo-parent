@@ -2,69 +2,126 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
-		<div wicket:id="passwordUpdatePopup"></div>
-		<div class="panel-heading">
-			<h2 class="panel-title">
-				<span class="btn-group btn-group-sm pull-right">
-					<a wicket:id="passwordUpdateButton" class="btn btn-primary ">
-						<span class="fa fa-key"></span>
-						<span class="hidden-xs hidden-sm"><wicket:message key="profile.password.update" /></span>
-					</a>
-				</span>
-				<wicket:message key="profile.information" />
-			</h2>
-		</div>
-		<div class="panel-body">
-			<div class="info-group">
-				<div class="info-pair">
-					<div class="info-label">
-						<wicket:message key="business.user.userName" />
+		<div wicket:id="passwordUpdatePopup" />
+		
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title"><wicket:message key="profile.information" /></h5>
+				
+				<div class="description-section">
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.userName" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<span wicket:id="userName" />
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="info-content" wicket:id="userName" />
-				</div>
-				<div class="info-pair">
-					<div class="info-label">
-						<wicket:message key="business.user.active" />
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.active" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<span wicket:id="active" />
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="info-content">
-						<span wicket:id="active"></span>
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.email" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<a wicket:id="email"></a>
+									<wicket:container wicket:id="emailPlaceholder" />
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
-				<div class="info-pair">
-					<div class="info-label">
-						<wicket:message key="business.user.email" />
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.locale" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<span wicket:id="locale" />
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="info-content">
-						<a wicket:id="email"></a>
-						<wicket:container wicket:id="emailPlaceholder" />
-					</div>
-				</div>
-				<div class="info-pair">
-					<div class="info-label">
-						<wicket:message key="business.user.locale" />
-					</div>
-					<div class="info-content" wicket:id="locale" />
-				</div>
-			</div>
-			<div class="info-group">
-				<div class="info-pair">
-					<div class="info-label">
-						<wicket:message key="business.user.creationDate" />
-					</div>
-					<div class="info-content" wicket:id="creationDate" />
-				</div>
-				<div class="info-pair">
-					<div class="info-label">
-						<wicket:message key="business.user.lastUpdateDate" />
-					</div>
-					<div class="info-content" wicket:id="lastUpdateDate" />
 				</div>
 				
-				<div class="info-pair">
-					<div class="info-label">
-						<wicket:message key="business.user.lastLoginDate" />
+				<div class="description-section">
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.creationDate" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<span wicket:id="creationDate" />
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="info-content" wicket:id="lastLoginDate" />
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.lastUpdateDate" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<span wicket:id="lastUpdateDate" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.lastLoginDate" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<span wicket:id="lastLoginDate" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="card-action">
+					<div class="basic-container">
+						<div wicket:enclosure="passwordUpdateButton" class="basic-item">
+							<button type="button" wicket:id="passwordUpdateButton" class="btn btn-primary">
+								<span class="fa fa-key" />
+								<wicket:message key="profile.password.update" />
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

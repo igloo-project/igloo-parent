@@ -7,28 +7,26 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
-import org.wicketstuff.wiquery.core.events.StateEvent;
-
 import org.iglooproject.basicapp.core.business.referencedata.model.City;
 import org.iglooproject.basicapp.web.application.referencedata.model.AbstractGenericListItemDataProvider;
 import org.iglooproject.jpa.more.business.generic.model.EnabledFilter;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.wicketstuff.wiquery.core.events.StateEvent;
 
 public class CitySearchPanel extends Panel {
 	
 	private static final long serialVersionUID = -2395663840251286432L;
 
-	public CitySearchPanel(String id, final AbstractGenericListItemDataProvider<City, ?> dataProvider,
-			final Component table) {
+	public CitySearchPanel(String id, final AbstractGenericListItemDataProvider<City, ?> dataProvider, final Component table) {
 		super(id);
 		
-		Form<Void> searchForm = new Form<Void>("searchForm");
-		add(searchForm);
+		Form<Void> form = new Form<Void>("form");
+		add(form);
 		
-		searchForm.add(
-				new AjaxFormSubmitBehavior(searchForm, StateEvent.CHANGE.getEventLabel()) {
+		form.add(
+				new AjaxFormSubmitBehavior(form, StateEvent.CHANGE.getEventLabel()) {
 					private static final long serialVersionUID = 1L;
 					@Override
 					protected void onSubmit(AjaxRequestTarget target) {
@@ -41,7 +39,7 @@ public class CitySearchPanel extends Panel {
 				}
 		);
 		
-		searchForm.add(
+		form.add(
 				new TextField<String>("label", dataProvider.getLabelModel(), String.class)
 						.setLabel(new ResourceModel("business.listItem.label"))
 						.add(

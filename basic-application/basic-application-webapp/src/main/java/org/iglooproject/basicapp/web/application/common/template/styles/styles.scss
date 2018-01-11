@@ -7,9 +7,12 @@
 @import "$(scope-core-fa)scss/fa-solid";
 @import "$(scope-core-fa)scss/fa-regular";
 @import "$(scope-core-fa)scss/fa-brands";
+@import "$(scope-core-fa)override/scss/override";
 
 @import "variables";
 @import "mixins";
 @import "common";
 @import "navbar";
+@import "card";
 @import "description";
+@import "forms";

@@ -2,15 +2,12 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div class="page-title">
-			<div class="container">
-				<h1 class="page-title-text" wicket:id="pageTitle"></h1>
+		<div class="page-content">
+			<div class="page-header">
+				<h2 class="m-0"><wicket:container wicket:id="pageTitle" /></h2>
 			</div>
-		</div>
-		
-		<div class="main-content">
-			<div class="container">
-				<div wicket:id="tabs" class="row" />
+			<div class="page-body">
+				<div wicket:id="tabs" class="row row-g-3" />
 			</div>
 		</div>
 	</wicket:extend>

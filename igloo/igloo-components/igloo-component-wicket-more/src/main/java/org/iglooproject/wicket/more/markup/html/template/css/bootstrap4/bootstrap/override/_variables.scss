@@ -7,18 +7,37 @@ $grid-gutter-widths: (
   5: 50px
 ) !default;
 
-$font-size-xs:					($font-size-base * .875) !default;
+// Font Awesome
+$fa-font-family:					'Font Awesome 5 Free';
+$fa-font-weight:					900;
 
-$line-height-xs:				1rem;
+// Z-index master list
 
-$border-radius-xs:				.2rem !default;
+$zindex-dropdown:                   1000 !default;
+$zindex-sticky:                     1020 !default;
+$zindex-fixed:                      1030 !default;
+$zindex-modal-backdrop:             1040 !default;
+$zindex-modal:                      1050 !default;
+$zindex-popover:                    1060 !default;
+$zindex-tooltip:                    1070 !default;
 
-$input-btn-padding-y-xs:		.25rem !default;
-$input-btn-padding-x-xs:		.35rem !default;
-$input-btn-line-height-xs:		$line-height-xs !default;
+//$zindex-modal-backdrop:				1011;
+//$zindex-modal-background:			1012;
+//$zindex-modal:						1013;
+$zindex-scroll-to-top:				1035;
 
-$btn-padding-y-xs:				$input-btn-padding-y-xs !default;
-$btn-padding-x-xs:				$input-btn-padding-x-xs !default;
-$btn-line-height-xs:			$input-btn-line-height-xs !default;
+$font-size-xs:						($font-size-base * .875) !default;
 
-$btn-border-radius-xs:			$border-radius-xs !default;
+$line-height-xs:					1rem;
+
+$border-radius-xs:					.2rem !default;
+
+$input-btn-padding-y-xs:			.25rem !default;
+$input-btn-padding-x-xs:			.35rem !default;
+$input-btn-line-height-xs:			$line-height-xs !default;
+
+$btn-padding-y-xs:					$input-btn-padding-y-xs !default;
+$btn-padding-x-xs:					$input-btn-padding-x-xs !default;
+$btn-line-height-xs:				$input-btn-line-height-xs !default;
+
+$btn-border-radius-xs:				$border-radius-xs !default;

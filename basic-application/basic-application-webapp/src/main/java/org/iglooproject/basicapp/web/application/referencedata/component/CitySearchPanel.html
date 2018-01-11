@@ -2,17 +2,17 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
-		<form wicket:id="searchForm">
-			<div class="row">
-				<div class="col-sm-3">
+		<form wicket:id="form">
+			<div class="form-row">
+				<div class="col-md-3">
 					<label class="sr-only" wicket:for="label"><wicket:label /></label>
 					<input wicket:id="label" class="form-control input-sm" type="text" />
 				</div>
-				<div class="col-sm-2">
+				<div class="col-md-2">
 					<label class="sr-only" wicket:for="postalCode"><wicket:label /></label>
 					<input wicket:id="postalCode" class="form-control input-sm" type="text" />
 				</div>
-				<div class="col-sm-3">
+				<div class="col-md-3">
 					<label class="sr-only" wicket:for="enabledFilter"><wicket:label /></label>
 					<select class="form-control input-sm" wicket:id="enabledFilter" />
 				</div>

@@ -76,7 +76,7 @@ public class NavTabsPanel extends Panel {
 		Component content = factory.createContent(tabsContentsRepeatingView.newChildId());
 		
 		if (first) {
-			Behavior activeBehavior = new ClassAttributeAppender("active");
+			Behavior activeBehavior = new ClassAttributeAppender("active show");
 			tab.add(activeBehavior);
 			content.add(activeBehavior);
 		}

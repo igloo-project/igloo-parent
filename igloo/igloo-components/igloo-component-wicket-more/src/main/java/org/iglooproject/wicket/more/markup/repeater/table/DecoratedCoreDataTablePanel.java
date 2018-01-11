@@ -11,9 +11,6 @@ import org.apache.wicket.markup.html.navigation.paging.IPageableItems;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-
-import com.google.common.collect.Multimap;
-
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CountLabel;
@@ -29,6 +26,8 @@ import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFactory;
 import org.iglooproject.wicket.more.model.IErrorAwareDataProvider;
 import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
+
+import com.google.common.collect.Multimap;
 
 public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel implements IPageableItems {
 	
@@ -70,6 +69,10 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		
 		dataTable.setComponentToRefresh(this);
 		
+		EnclosureContainer headingMainAddinWrapper = new EnclosureContainer("mainAddInWrapper");
+		EnclosureContainer headingRightAddinWrapper = new EnclosureContainer("rightAddInWrapper");
+		EnclosureContainer headingLeftAddinWrapper = new EnclosureContainer("leftAddInWrapper");
+		
 		FactoryRepeatingView headingMainAddins = new FactoryRepeatingView("mainAddIn");
 		FactoryRepeatingView headingRightAddins = new FactoryRepeatingView("rightAddIn");
 		FactoryRepeatingView headingLeftAddins = new FactoryRepeatingView("leftAddIn");
@@ -77,13 +80,26 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		FactoryRepeatingView bodyTopAddins = new FactoryRepeatingView("bodyTopAddIn");
 		FactoryRepeatingView bodyBottomAddins = new FactoryRepeatingView("bodyBottomAddIn");
 		
+		EnclosureContainer footerRightAddinWrapper = new EnclosureContainer("rightAddInWrapper");
+		EnclosureContainer footerLeftAddinWrapper = new EnclosureContainer("leftAddInWrapper");
+		
 		FactoryRepeatingView footerRightAddins = new FactoryRepeatingView("rightAddIn");
 		FactoryRepeatingView footerLeftAddins = new FactoryRepeatingView("leftAddIn");
 		
 		add(
 				new EnclosureContainer("headingAddInContainer")
-						.condition(Condition.anyChildVisible(headingMainAddins).or(Condition.anyChildVisible(headingRightAddins).or(Condition.anyChildVisible(headingLeftAddins))))
-						.add(headingMainAddins, headingRightAddins, headingLeftAddins),
+						.condition(Condition.anyChildVisible(headingMainAddinWrapper).or(Condition.anyChildVisible(headingRightAddinWrapper).or(Condition.anyChildVisible(headingLeftAddinWrapper))))
+						.add(
+								headingMainAddinWrapper
+										.condition(Condition.anyChildVisible(headingMainAddins))
+										.add(headingMainAddins),
+								headingRightAddinWrapper
+										.condition(Condition.anyChildVisible(headingRightAddins))
+										.add(headingRightAddins),
+								headingLeftAddinWrapper
+										.condition(Condition.anyChildVisible(headingLeftAddins))
+										.add(headingLeftAddins)
+						),
 				new EnclosureContainer("bodyTopAddInContainer")
 						.condition(Condition.anyChildVisible(bodyTopAddins))
 						.add(bodyTopAddins),
@@ -91,8 +107,15 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 						.condition(Condition.anyChildVisible(bodyBottomAddins))
 						.add(bodyBottomAddins),
 				new EnclosureContainer("footerAddInContainer")
-						.condition(Condition.anyChildVisible(footerRightAddins).or(Condition.anyChildVisible(footerLeftAddins)))
-						.add(footerRightAddins, footerLeftAddins)
+						.condition(Condition.anyChildVisible(footerRightAddinWrapper).or(Condition.anyChildVisible(footerLeftAddinWrapper)))
+						.add(
+								footerRightAddinWrapper
+										.condition(Condition.anyChildVisible(footerRightAddins))
+										.add(footerRightAddins),
+								footerLeftAddinWrapper
+										.condition(Condition.anyChildVisible(footerLeftAddins))
+										.add(footerLeftAddins)
+						)
 		);
 
 		headingMainAddins.addAll(addInComponentFactories.get(AddInPlacement.HEADING_MAIN), this);

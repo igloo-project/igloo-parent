@@ -1,26 +1,24 @@
 package org.iglooproject.basicapp.web.application.administration.component;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
-
 import org.iglooproject.basicapp.core.business.authority.BasicApplicationAuthorityUtils;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.administration.form.UserGroupPopup;
 import org.iglooproject.basicapp.web.application.administration.model.RoleDataProvider;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
 import org.iglooproject.wicket.more.model.BindingModel;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 
@@ -35,22 +33,19 @@ public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 		UserGroupPopup updatePopup = new UserGroupPopup("updatePopup", getModel());
 		
 		add(
-				new WebMarkupContainer("lockedWarningContainer") {
-					private static final long serialVersionUID = 1L;
-					@Override
-					protected void onConfigure() {
-						super.onConfigure();
-						setVisible(userGroupModel.getObject().isLocked());
-					}
-				},
-				new MultiLineLabel("description", BindingModel.of(userGroupModel, Bindings.userGroup().description())),
+				new EnclosureContainer("lockedWarningContainer")
+						.condition(Condition.isTrue(BindingModel.of(getModel(), Bindings.userGroup().locked()))),
+				
+				new CoreLabel("description", BindingModel.of(userGroupModel, Bindings.userGroup().description()))
+						.multiline()
+						.showPlaceholder(),
 				
 				new SequenceView<Authority>("authorities", new RoleDataProvider()) {
 					private static final long serialVersionUID = 1L;
 					@Override
 					protected void populateItem(final Item<Authority> item) {
 						item.add(
-								new Label("authorityName", item.getModel()),
+								new CoreLabel("authorityName", item.getModel()),
 								new BooleanIcon(
 										"authorityCheck", 
 										Condition.contains(

@@ -3,7 +3,6 @@ package org.iglooproject.basicapp.web.application.administration.page;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -14,6 +13,7 @@ import org.iglooproject.basicapp.web.application.administration.component.UserGr
 import org.iglooproject.basicapp.web.application.administration.component.UserGroupMembersPanel;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationTemplate;
 import org.iglooproject.basicapp.web.application.navigation.link.LinkFactory;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -49,11 +49,14 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 		super(parameters);
 		
 		IModel<UserGroup> userGroupModel = new GenericEntityModel<Long, UserGroup>(null);
-		
 		IModel<Page> sourcePageModel = new PageModel<Page>();
 		
-		linkDescriptor(userGroupModel, sourcePageModel).extractSafely(parameters, AdministrationUserGroupPortfolioPage.linkDescriptor(),
-				getString("administration.usergroup.error"));
+		linkDescriptor(userGroupModel, sourcePageModel)
+				.extractSafely(
+						parameters,
+						AdministrationUserGroupPortfolioPage.linkDescriptor(),
+						getString("administration.usergroup.error")
+				);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.usergroup"),
 				AdministrationUserGroupPortfolioPage.linkDescriptor()));
@@ -61,16 +64,22 @@ public class AdministrationUserGroupDescriptionPage extends AdministrationTempla
 		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userGroupModel, Bindings.userGroup().name()),
 				AdministrationUserGroupDescriptionPage.linkDescriptor(userGroupModel, sourcePageModel)));
 		
-		
-		Component backToSourcePage = LinkFactory.get().linkGenerator(sourcePageModel, AdministrationUserGroupPortfolioPage.class)
+		Component backToSourcePage =
+				LinkFactory.get().linkGenerator(
+						sourcePageModel,
+						AdministrationUserGroupPortfolioPage.class
+				)
 				.link("backToSourcePage").hideIfInvalid();
+		
 		add(
-				new Label("pageTitle", BindingModel.of(userGroupModel, Bindings.userGroup().name())),
+				new CoreLabel("pageTitle", BindingModel.of(userGroupModel, Bindings.userGroup().name())),
 				
 				backToSourcePage,
 				AdministrationUserGroupPortfolioPage.linkDescriptor().link("backToList")
-						.add(Condition.componentVisible(backToSourcePage).thenHide()),
-				
+						.add(Condition.componentVisible(backToSourcePage).thenHide())
+		);
+		
+		add(
 				new UserGroupDescriptionPanel("description", userGroupModel),
 				new UserGroupMembersPanel("members", userGroupModel)
 		);

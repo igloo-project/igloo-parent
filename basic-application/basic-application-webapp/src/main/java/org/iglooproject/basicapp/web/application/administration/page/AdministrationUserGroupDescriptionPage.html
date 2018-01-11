@@ -2,27 +2,29 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div class="administration user-group description">
-			<div class="page-title">
-				<div class="container">
-					<a wicket:id="backToSourcePage" class="btn btn-sm btn-default back-to-source" wicket:message="title:common.backToList">
-						<span class="fa fa-arrow-left" />
-					</a>
-					<a wicket:id="backToList" class="btn btn-sm btn-default back-to-source" wicket:message="title:common.backToList">
-						<span class="fa fa-arrow-left" />
-					</a>
-					<h1 class="page-title-text"><wicket:container wicket:id="pageTitle" /></h1>
+		<div class="page-content">
+			<div class="page-header">
+				<div class="d-flex flex-g-1 flex-wrap">
+					<div class="flex-item">
+						<a wicket:id="backToSourcePage" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
+							<span class="fa fa-arrow-left" />
+						</a>
+						<a wicket:id="backToList" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
+							<span class="fa fa-arrow-left" />
+						</a>
+					</div>
+					<div class="flex-item">
+						<h2 class="m-0"><wicket:container wicket:id="pageTitle" /></h2>
+					</div>
 				</div>
 			</div>
-			<div class="main-content">
-				<div class="container">
-					<div class="row">
-						<div class="col-sm-6">
-							<div wicket:id="description" class="panel panel-default description-section"></div>
-						</div>
-						<div class="col-sm-6">
-							<div wicket:id="members" class="panel panel-default description-section"></div>
-						</div>
+			<div class="page-body">
+				<div class="row">
+					<div class="col-sm-6">
+						<div wicket:id="description" />
+					</div>
+					<div class="col-sm-6">
+						<div wicket:id="members" />
 					</div>
 				</div>
 			</div>

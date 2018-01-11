@@ -1,4 +1,16 @@
 .card {
+	> .card-body {
+		> .card-action {
+			@extend .mt-3;
+			
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+	}
+}
+
+.card {
 	> .table,
 	> .table-responsive > .table {
 		border: 0;

@@ -2,3 +2,13 @@
 @import "grid";
 @import "card";
 @import "buttons";
+@import "bootstrap-modal";
+
+.modal-backdrop {
+	z-index: $zindex-modal-backdrop;
+}
+
+.modal-backdrop,
+.modal-backdrop.fade.in {
+	opacity: .4;
+}

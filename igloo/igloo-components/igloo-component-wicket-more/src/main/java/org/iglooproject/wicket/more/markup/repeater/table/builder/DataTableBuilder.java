@@ -1085,7 +1085,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		protected String getTitleCssClass() {
-			return "panel-title";
+			return "add-in-title";
 		}
 		
 		@Override

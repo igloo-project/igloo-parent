@@ -11,8 +11,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
-
 import org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds;
 import org.iglooproject.basicapp.web.application.referencedata.form.AbstractGenericListItemPopup;
 import org.iglooproject.jpa.more.business.generic.model.GenericListItem;
@@ -32,6 +30,7 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IDecorat
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.util.DataTableUtil;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public abstract class AbstractGenericListItemListPanel<
 		T extends GenericListItem<? super T>,
@@ -66,9 +65,9 @@ public abstract class AbstractGenericListItemListPanel<
 									addActionColumn(
 											addColumns(builder)
 									)
-											.bootstrapPanel()
-											.count("listItem.count")
-											.ajaxPagers()
+											.bootstrapCard()
+													.ajaxPagers()
+													.count("listItem.count")
 							)
 					)
 							.build("resultats", propertyService.get(BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE));

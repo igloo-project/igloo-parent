@@ -3,27 +3,26 @@ package org.iglooproject.basicapp.web.application.administration.template;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import com.google.common.base.Function;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.navigation.link.LinkFactory;
 import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.link.model.PageModel;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
+
+import com.google.common.base.Function;
 
 public class AdministrationUserDescriptionTemplate<U extends User> extends AdministrationTemplate {
 
@@ -65,16 +64,13 @@ public class AdministrationUserDescriptionTemplate<U extends User> extends Admin
 		super(parameters);
 		this.typeDescriptor = typeDescriptor;
 		
-		mapper(typeDescriptor.getEntityClass()).map(userModel, sourcePageModel)
+		mapper(typeDescriptor.getEntityClass())
+				.map(userModel, sourcePageModel)
 				.extractSafely(
 						parameters,
 						typeDescriptor.administrationTypeDescriptor().portfolio(),
 						getString("common.error.unexpected")
 				);
-		
-		add(
-				new Label("pageTitle", BindingModel.of(userModel, Bindings.user().fullName()))
-		);
 		
 		Component backToSourcePage =
 				LinkFactory.get().linkGenerator(
@@ -82,7 +78,10 @@ public class AdministrationUserDescriptionTemplate<U extends User> extends Admin
 						typeDescriptor.administrationTypeDescriptor().getPortfolioClass()
 				)
 				.link("backToSourcePage").hideIfInvalid();
+		
 		add(
+				new CoreLabel("pageTitle", BindingModel.of(userModel, Bindings.user().fullName())),
+				
 				backToSourcePage,
 				typeDescriptor.administrationTypeDescriptor().portfolio().link("backToList")
 						.add(Condition.componentVisible(backToSourcePage).thenHide())

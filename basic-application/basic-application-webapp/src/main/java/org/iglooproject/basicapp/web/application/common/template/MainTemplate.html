@@ -41,41 +41,45 @@
 				<span class="navbar-text">
 					<span wicket:id="originalAuthentication" />
 					
-					<a wicket:id="profileLink" wicket:message="title:common.profile.tooltip">
+					<a wicket:id="profileLink" wicket:message="title:common.profile.tooltip" data-placement="left">
 						<wicket:container wicket:id="userFullName" />
 					</a>
 					
-					<a wicket:id="reconnexionLink" wicket:message="title:common.signInAsMe.tooltip">
-						<span class="fa fa-fw fa-repeat" />
+					<a wicket:id="reconnexionLink" class="ml-2" wicket:message="title:common.signInAsMe.tooltip" data-placement="left">
+						<span class="fa fa-undo" />
 					</a>
 					
-					<a wicket:id="logoutLink" class="user-logout" wicket:message="title:common.logout">
-						<span class="fas fa-power-off" />
+					<a wicket:id="logoutLink" class="ml-2" wicket:message="title:common.logout" data-placement="left">
+						<span class="fa fa-power-off" />
 					</a>
 				</span>
 			</div>
 		</nav>
 		
-		<div class="environment-container">
-			<div class="container">
+		<div class="environment-section">
+			<div class="environment-container">
 				<wicket:container wicket:id="environment" />
 			</div>
 		</div>
 		
-		<div class="page-container">
-			<div wicket:id="breadCrumb" />
-			
-			<wicket:child />
-			
-			<div wicket:id="scrollToTop" class="scroll-to-top">
-				<span class="fa fa-arrow-up fa-fw fa-2x" />
+		<div class="page-section">
+			<div class="page-container">
+				<div wicket:id="breadCrumb" />
+				
+				<wicket:child />
+				
+				<div wicket:id="scrollToTop" class="scroll-to-top">
+					<span class="fa fa-arrow-up fa-fw fa-2x" />
+				</div>
 			</div>
 		</div>
 		
-		<div class="footer-container">
-			<div class="footer">
-				<div class="footer-info">
-					<wicket:message key="common.rootPageTitle" />&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span wicket:id="version"></span>
+		<div class="footer-section">
+			<div class="footer-container">
+				<div class="footer">
+					<div class="footer-info">
+						<wicket:message key="common.rootPageTitle" />&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span wicket:id="version"></span>
+					</div>
 				</div>
 			</div>
 		</div>
