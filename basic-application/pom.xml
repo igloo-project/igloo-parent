@@ -86,27 +86,6 @@
 				<enabled>false</enabled>
 			</releases>
 		</repository>
-		
-		<repository>
-			<id>nexus-kobalt-releases</id>
-			<name>Nexus Kobalt Releases</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/kobalt-releases/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		
-		<repository>
-			<id>nexus-kobalt-snapshots</id>
-			<name>Nexus Kobalt Snapshots</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/kobalt-snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
 	</repositories>
 	
 	<issueManagement>
