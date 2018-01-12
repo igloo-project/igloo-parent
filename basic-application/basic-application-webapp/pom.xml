@@ -31,6 +31,13 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-bootstrap4</artifactId>
+			<version>${igloo.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.iglooproject.packages</groupId>
 			<artifactId>igloo-package-web-spring-security</artifactId>
 			<version>${igloo.version}</version>

@@ -7,6 +7,7 @@ import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.io.FileUtils;
@@ -22,25 +23,16 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
 import org.apache.wicket.resource.NoOpTextCompressor;
-import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.time.Duration;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.more.console.resources.CoreWicketConsoleResources;
-import org.iglooproject.wicket.more.console.template.style.CoreConsoleCssScope;
 import org.iglooproject.wicket.more.css.lesscss.service.ILessCssService;
 import org.iglooproject.wicket.more.css.scss.service.IScssService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
-import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.CoreBootstrap3CssScope;
-import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.fontawesome.CoreFontAwesome4CssScope;
-import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.jqueryui.JQueryUiCssResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.css.bootstrap4.CoreBootstrap4CssScope;
-import org.iglooproject.wicket.more.markup.html.template.css.fontawesome.CoreFontAwesomeCssScope;
 import org.iglooproject.wicket.request.mapper.NoVersionMountedMapper;
 import org.iglooproject.wicket.request.mapper.PageParameterAwareMountedMapper;
 import org.iglooproject.wicket.request.mapper.StaticResourceMapper;
@@ -48,9 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
-
-import com.google.common.collect.ImmutableList;
 
 public abstract class CoreWicketApplication extends WebApplication {
 	
@@ -67,6 +56,9 @@ public abstract class CoreWicketApplication extends WebApplication {
 	
 	@Autowired
 	protected IScssService scssService;
+	
+	@Autowired
+	protected List<IWicketModule> modules;
 	
 	/**
 	 * Déclaré au démarrage de l'application ; ne doit pas être modifié par la suite
@@ -121,9 +113,6 @@ public abstract class CoreWicketApplication extends WebApplication {
 		// gestion du cache sur les ressources
 		getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
 		
-		// surcharge des ressources jQuery et jQuery UI
-		addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
-		
 		// on place les éléments présents dans le wicket:head en premier
 		getResourceSettings().setHeaderItemComparator(new PriorityFirstComparator(true));
 		
@@ -144,6 +133,8 @@ public abstract class CoreWicketApplication extends WebApplication {
 			}
 		}
 		
+		addResourceReplacements();
+		
 		mountCommonResources();
 		mountCommonPages();
 		
@@ -153,32 +144,42 @@ public abstract class CoreWicketApplication extends WebApplication {
 		registerLessImportScopes();
 		registerScssImportScopes();
 		
-		getResourceSettings().getStringResourceLoaders().addAll(
-				0, // Override the keys in existing resource loaders with the following
-				ImmutableList.of(
-						new ClassStringResourceLoader(CoreWicketConsoleResources.class)
-				)
-		);
+		updateResourceSettings();
 	}
 	
-	protected void registerLessImportScopes() {
-		lessCssService.registerImportScope("core-bs3", CoreBootstrap3CssScope.class);
-		lessCssService.registerImportScope("core-console", CoreConsoleCssScope.class);
-		lessCssService.registerImportScope("core-font-awesome", CoreFontAwesome4CssScope.class);
+	protected void addResourceReplacements() {
+		for (IWicketModule module : modules) {
+			module.addResourceReplacements(this);
+		}
 	}
 	
-	protected void registerScssImportScopes() {
-		scssService.registerImportScope("core-bs4", CoreBootstrap4CssScope.class);
-		scssService.registerImportScope("core-fa", CoreFontAwesomeCssScope.class);
+	protected void mountCommonResources() {
+		for (IWicketModule module : modules) {
+			for (StaticResourceMapper mapper : module.listStaticResources()) {
+				mount(mapper);
+			}
+		}
 	}
 	
 	protected void mountCommonPages() {
 	}
 	
-	protected void mountCommonResources() {
-		mountStaticResourceDirectory("/common", AbstractWebPageTemplate.class);
-		mountStaticResourceDirectory("/font-awesome-4", CoreFontAwesome4CssScope.class);
-		mountStaticResourceDirectory("/fontawesome", CoreFontAwesomeCssScope.class);
+	protected void registerLessImportScopes() {
+		for (IWicketModule module : modules) {
+			module.registerLessImportScopes(lessCssService);
+		}
+	}
+	
+	protected void registerScssImportScopes() {
+		for (IWicketModule module : modules) {
+			module.registerScssImportScopes(scssService);
+		}
+	}
+	
+	protected void updateResourceSettings() {
+		for (IWicketModule module : modules) {
+			module.updateResourceSettings(getResourceSettings());
+		}
 	}
 	
 	protected abstract void mountApplicationPages();
