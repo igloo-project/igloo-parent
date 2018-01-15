@@ -8,9 +8,8 @@ import org.apache.wicket.markup.html.form.ListMultipleChoice;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.apache.wicket.util.string.Strings;
-import org.retzlaff.select2.Select2Behavior;
-
 import org.iglooproject.showcase.core.business.user.model.User;
+import org.retzlaff.select2.Select2Behavior;
 
 public class UserSelect2ListMultipleChoice extends ListMultipleChoice<User> {
 	

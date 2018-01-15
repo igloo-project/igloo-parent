@@ -15,11 +15,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
-
 import org.iglooproject.showcase.core.business.fileupload.model.ShowcaseFile;
 import org.iglooproject.showcase.core.business.fileupload.service.IShowcaseFileService;
 import org.iglooproject.showcase.web.application.widgets.resource.FileUploadResource;
@@ -27,6 +22,10 @@ import org.iglooproject.wicket.more.fileapi.behavior.FileUploadBehavior;
 import org.iglooproject.wicket.more.fileapi.model.FileApiFile;
 import org.iglooproject.wicket.more.fileapi.model.FileUploadFailType;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Lists;
 
 public class FileUploadPanel extends Panel {
 

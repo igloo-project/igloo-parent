@@ -4,11 +4,10 @@ import java.util.List;
 
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.retzlaff.select2.ISelect2AjaxAdapter;
-
 import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.showcase.core.business.user.search.IUserSearchQuery;
 import org.iglooproject.showcase.core.business.user.service.IUserService;
+import org.retzlaff.select2.ISelect2AjaxAdapter;
 
 public class UserSelect2AjaxAdapter implements ISelect2AjaxAdapter<User> {
 

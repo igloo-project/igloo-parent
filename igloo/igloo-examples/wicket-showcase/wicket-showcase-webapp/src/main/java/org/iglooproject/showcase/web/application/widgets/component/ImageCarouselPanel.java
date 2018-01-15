@@ -17,15 +17,14 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
-
-import com.google.common.collect.Lists;
-
 import org.iglooproject.showcase.web.application.util.template.MainTemplate;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.caroufredsel.CarouFredSel;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.caroufredsel.CarouFredSelBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.modal.Modal;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.ModalDiaporamaBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.modal.behavior.ModalHeaderFooterBehavior;
+
+import com.google.common.collect.Lists;
 
 public class ImageCarouselPanel extends Panel {
 

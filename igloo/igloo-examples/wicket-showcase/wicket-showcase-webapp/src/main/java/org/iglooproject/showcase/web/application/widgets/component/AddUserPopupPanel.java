@@ -16,13 +16,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.showcase.core.business.user.service.IUserService;
 import org.iglooproject.showcase.core.util.binding.Bindings;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 

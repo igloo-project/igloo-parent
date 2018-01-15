@@ -26,9 +26,6 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidationError;
 import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
@@ -50,10 +47,12 @@ import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormPanelMode;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.iglooproject.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModalPopupPanel<U> {
 

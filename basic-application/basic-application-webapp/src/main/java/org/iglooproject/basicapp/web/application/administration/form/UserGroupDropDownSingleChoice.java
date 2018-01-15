@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.search.IUserGroupSearchQuery;
 import org.iglooproject.basicapp.web.application.common.form.impl.UserGroupChoiceRenderer;

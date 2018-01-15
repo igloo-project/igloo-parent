@@ -1,7 +1,5 @@
 package org.iglooproject.wicket.bootstrap3.console.maintenance.ehcache.component;
 
-import net.sf.ehcache.Cache;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -13,15 +11,16 @@ import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformation;
+import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.more.model.BindingModel;
+import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformation;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
-import org.iglooproject.wicket.more.model.BindingModel;
-import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
+import net.sf.ehcache.Cache;
 
 public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<EhCacheCacheInformation> {
 

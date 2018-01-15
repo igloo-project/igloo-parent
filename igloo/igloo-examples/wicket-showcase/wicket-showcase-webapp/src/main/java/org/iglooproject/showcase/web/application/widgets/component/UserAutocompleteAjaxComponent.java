@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.showcase.core.business.user.search.IUserSearchQuery;
 import org.iglooproject.wicket.more.markup.html.form.AutocompleteAjaxComponent;

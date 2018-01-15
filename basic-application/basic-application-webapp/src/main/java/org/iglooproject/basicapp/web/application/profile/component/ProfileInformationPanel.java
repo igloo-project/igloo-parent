@@ -6,8 +6,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
@@ -21,9 +19,10 @@ import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.markup.html.basic.DefaultPlaceholderPanel;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.DatePattern;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public class ProfileInformationPanel extends GenericPanel<User> {
 

@@ -1,12 +1,11 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action;
 
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLinkBuilder;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLinkBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnAddedConfirmActionState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepContent;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepEndContent;

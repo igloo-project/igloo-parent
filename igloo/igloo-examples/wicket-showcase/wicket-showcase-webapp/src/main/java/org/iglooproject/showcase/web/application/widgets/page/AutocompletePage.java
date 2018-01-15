@@ -4,7 +4,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.showcase.web.application.widgets.component.UserAutocompleteAjaxComponent;
 import org.iglooproject.showcase.web.application.widgets.component.UserItemItField;

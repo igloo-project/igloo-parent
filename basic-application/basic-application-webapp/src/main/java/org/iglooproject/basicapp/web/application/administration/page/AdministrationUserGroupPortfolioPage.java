@@ -10,8 +10,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
-
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.web.application.administration.component.UserGroupPortfolioPanel;
@@ -21,8 +19,9 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate {
 

@@ -4,12 +4,11 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.HeaderItem;
+import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.jqueryui.JQueryUiCssResourceReference;
+import org.iglooproject.wicket.more.css.lesscss.LessCssResourceReference;
 import org.retzlaff.select2.resource.Select2CssResourceReference;
 
 import com.google.common.collect.Lists;
-
-import org.iglooproject.wicket.more.css.lesscss.LessCssResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.jqueryui.JQueryUiCssResourceReference;
 
 public class StylesLessCssResourceReference extends LessCssResourceReference {
 

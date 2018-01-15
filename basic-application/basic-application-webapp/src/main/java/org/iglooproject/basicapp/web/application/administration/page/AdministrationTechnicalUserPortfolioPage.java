@@ -2,7 +2,6 @@ package org.iglooproject.basicapp.web.application.administration.page;
 
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.web.application.administration.form.AbstractUserPopup;
 import org.iglooproject.basicapp.web.application.administration.form.UserPopup;

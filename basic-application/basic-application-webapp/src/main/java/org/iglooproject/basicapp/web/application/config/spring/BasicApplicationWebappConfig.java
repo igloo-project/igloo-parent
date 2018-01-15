@@ -2,12 +2,6 @@ package org.iglooproject.basicapp.web.application.config.spring;
 
 import java.util.Date;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -17,7 +11,7 @@ import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
 import org.iglooproject.basicapp.web.application.common.template.styles.old.notification.NotificationLessCssResourceReference;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
-import org.iglooproject.wicket.more.config.spring.AbstractWebappConfig;
+import org.iglooproject.wicket.bootstrap4.config.spring.AbstractBootstrapWebappConfig;
 import org.iglooproject.wicket.more.notification.model.IWicketNotificationDescriptor;
 import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssService;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
@@ -25,6 +19,11 @@ import org.iglooproject.wicket.more.rendering.BooleanRenderer;
 import org.iglooproject.wicket.more.rendering.Renderer;
 import org.iglooproject.wicket.more.rendering.service.RendererServiceImpl;
 import org.iglooproject.wicket.more.util.DatePattern;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
@@ -39,7 +38,7 @@ import org.iglooproject.wicket.more.util.DatePattern;
 		},
 		excludeFilters = @Filter(Configuration.class)
 )
-public class BasicApplicationWebappConfig extends AbstractWebappConfig {
+public class BasicApplicationWebappConfig extends AbstractBootstrapWebappConfig {
 
 	@Override
 	@Bean(name = { "BasicApplicationApplication", "application" })

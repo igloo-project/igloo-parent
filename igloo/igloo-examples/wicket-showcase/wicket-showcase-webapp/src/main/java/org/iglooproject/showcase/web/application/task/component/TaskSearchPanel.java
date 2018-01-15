@@ -4,7 +4,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
-
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
 import org.iglooproject.showcase.core.business.task.model.TaskTypeEnum;

@@ -3,7 +3,6 @@ package org.iglooproject.wicket.bootstrap3.console.maintenance.ehcache.component
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 

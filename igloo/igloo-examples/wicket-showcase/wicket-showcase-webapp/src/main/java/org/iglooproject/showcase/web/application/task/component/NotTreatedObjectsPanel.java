@@ -5,7 +5,6 @@ import java.util.Set;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.showcase.core.business.task.model.ShowcaseBatchReportBean;
 import org.iglooproject.showcase.web.application.task.model.NotTreatedObjectNameModel;
 import org.iglooproject.showcase.web.application.task.model.NotTreatedObjectsIdsModel;

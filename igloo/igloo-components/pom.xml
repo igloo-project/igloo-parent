@@ -39,8 +39,6 @@
 		<module>igloo-component-jpa-migration</module>
 		<module>igloo-component-infinispan</module>
 		<module>igloo-component-elasticsearch-plugin</module>
-		<module>igloo-component-wicket-bootstrap3</module>
-		<module>igloo-component-wicket-bootstrap4</module>
 	</modules>
 	
 	<!-- Project information -->

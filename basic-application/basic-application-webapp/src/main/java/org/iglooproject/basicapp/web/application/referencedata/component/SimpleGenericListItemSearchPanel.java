@@ -7,14 +7,13 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
-import org.wicketstuff.wiquery.core.events.StateEvent;
-
 import org.iglooproject.basicapp.web.application.referencedata.model.AbstractGenericListItemDataProvider;
 import org.iglooproject.jpa.more.business.generic.model.EnabledFilter;
 import org.iglooproject.jpa.more.business.generic.model.GenericListItem;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.wicketstuff.wiquery.core.events.StateEvent;
 
 public class SimpleGenericListItemSearchPanel<T extends GenericListItem<? super T>> extends Panel {
 	

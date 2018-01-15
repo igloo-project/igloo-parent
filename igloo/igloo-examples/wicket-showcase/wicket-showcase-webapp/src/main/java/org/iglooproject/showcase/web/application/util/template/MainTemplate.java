@@ -17,9 +17,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.showcase.web.application.ShowcaseApplication;
 import org.iglooproject.showcase.web.application.ShowcaseSession;
@@ -46,22 +43,24 @@ import org.iglooproject.showcase.web.application.widgets.page.SortableListPage;
 import org.iglooproject.showcase.web.application.widgets.page.StatisticsPage;
 import org.iglooproject.showcase.web.application.widgets.page.WidgetsMainPage;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+import org.iglooproject.wicket.bootstrap3.console.template.ConsoleConfiguration;
+import org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.console.template.ConsoleConfiguration;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.collapse.BootstrapCollapseJavaScriptResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.dropdown.BootstrapDropdownBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.tooltip.BootstrapTooltip;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.tooltip.BootstrapTooltipDocumentBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstraphoverdropdown.BootstrapHoverDropdownBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 import org.iglooproject.wicket.more.security.page.LogoutPage;
+
+import com.google.common.collect.ImmutableList;
 
 public abstract class MainTemplate extends AbstractWebPageTemplate {
 	private static final long serialVersionUID = -2487769225221281241L;

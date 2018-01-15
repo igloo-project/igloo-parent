@@ -3,7 +3,6 @@ package org.iglooproject.basicapp.web.application.referencedata.component;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.ResourceModel;
-
 import org.iglooproject.basicapp.core.business.referencedata.model.City;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.referencedata.form.AbstractGenericListItemPopup;

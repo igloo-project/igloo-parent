@@ -4,11 +4,10 @@ import java.io.File;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.javatuples.LabelValue;
-
 import org.iglooproject.commons.util.mime.MediaType;
 import org.iglooproject.wicket.more.common.WorkInProgressPopup;
 import org.iglooproject.wicket.more.export.util.ExportFileUtils;
+import org.javatuples.LabelValue;
 
 public abstract class SimpleFileDownloadAjaxLink extends AbstractFileDownloadAjaxLink {
 

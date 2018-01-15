@@ -5,7 +5,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.web.application.administration.form.UserGroupDropDownSingleChoice;
 import org.iglooproject.basicapp.web.application.administration.model.AbstractUserDataProvider;

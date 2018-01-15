@@ -3,9 +3,8 @@ package org.iglooproject.showcase.web.application.widgets.component;
 import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
-import org.retzlaff.select2.Select2MultipleChoice;
-
 import org.iglooproject.showcase.core.business.user.model.User;
+import org.retzlaff.select2.Select2MultipleChoice;
 
 public class UserSelect2AjaxMultipleChoice extends Select2MultipleChoice<User> {
 	

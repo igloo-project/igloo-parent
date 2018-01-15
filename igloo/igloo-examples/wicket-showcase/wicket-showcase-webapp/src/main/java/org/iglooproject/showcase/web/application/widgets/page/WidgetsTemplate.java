@@ -3,7 +3,6 @@ package org.iglooproject.showcase.web.application.widgets.page;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.showcase.web.application.util.template.MainTemplate;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 

@@ -1,16 +1,15 @@
 package org.iglooproject.showcase.web.application.config.spring;
 
 import org.apache.wicket.protocol.http.WebApplication;
+import org.iglooproject.showcase.core.config.spring.ShowcaseCoreConfig;
+import org.iglooproject.showcase.web.ShowcaseWebPackage;
+import org.iglooproject.showcase.web.application.ShowcaseApplication;
+import org.iglooproject.wicket.bootstrap3.config.spring.AbstractBootstrapWebappConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-import org.iglooproject.showcase.core.config.spring.ShowcaseCoreConfig;
-import org.iglooproject.showcase.web.ShowcaseWebPackage;
-import org.iglooproject.showcase.web.application.ShowcaseApplication;
-import org.iglooproject.wicket.more.config.spring.AbstractWebappConfig;
 
 @Configuration
 @Import({
@@ -25,7 +24,7 @@ import org.iglooproject.wicket.more.config.spring.AbstractWebappConfig;
 		},
 		excludeFilters = @Filter(Configuration.class)
 )
-public class ShowcaseWebappConfig extends AbstractWebappConfig {
+public class ShowcaseWebappConfig extends AbstractBootstrapWebappConfig {
 
 	@Override
 	@Bean(name = { "showcaseApplication", "application" })

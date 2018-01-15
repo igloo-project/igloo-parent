@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.HeaderItem;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.more.css.scss.ScssResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.css.bootstrap3.jqueryui.JQueryUiCssResourceReference;
 import org.retzlaff.select2.resource.Select2CssResourceReference;
 
 import com.google.common.collect.Lists;

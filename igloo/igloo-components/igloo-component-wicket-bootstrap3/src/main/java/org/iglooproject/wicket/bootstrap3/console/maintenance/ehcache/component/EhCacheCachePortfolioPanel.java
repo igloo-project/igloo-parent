@@ -12,10 +12,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
-
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.list.OddEvenListView;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
@@ -27,14 +23,18 @@ import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.model.PercentageFloatToBigDecimalModel;
 import org.iglooproject.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardBehavior;
 import org.iglooproject.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardDataAttributeModifier;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.rendering.CoreRenderers;
 import org.iglooproject.wicket.more.rendering.ShortenedJavaNameRenderer;
 import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
+
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 

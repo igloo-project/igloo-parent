@@ -9,15 +9,15 @@ import org.apache.commons.lang3.RandomUtils;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.springframework.cglib.proxy.UndeclaredThrowableException;
-
-import de.schlichtherle.truezip.file.TFile;
 import org.iglooproject.commons.util.mime.MediaType;
 import org.iglooproject.commons.util.registry.TFileRegistry;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.common.WorkInProgressPopup;
 import org.iglooproject.wicket.more.export.file.component.SimpleFileDownloadAjaxLink;
+import org.springframework.cglib.proxy.UndeclaredThrowableException;
+
+import de.schlichtherle.truezip.file.TFile;
 
 public class FileDownloadPanel extends Panel {
 

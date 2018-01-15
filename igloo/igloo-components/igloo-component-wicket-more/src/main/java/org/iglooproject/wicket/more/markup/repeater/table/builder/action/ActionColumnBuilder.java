@@ -7,13 +7,6 @@ import java.util.Set;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
-import org.springframework.security.acls.model.Permission;
-
-import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 import org.iglooproject.commons.util.binding.AbstractCoreBinding;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
@@ -26,7 +19,7 @@ import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.factory.ConditionFactories;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.factory.ActionColumnActionFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.factory.ActionColumnAjaxActionFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnAddedActionState;
@@ -37,6 +30,12 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.I
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnBuildState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepStart;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnNoParameterBuildState;
+import org.springframework.security.acls.model.Permission;
+
+import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParameterBuildState<T, I>, IActionColumnBuildState<T, I> {
 

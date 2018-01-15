@@ -11,8 +11,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
-
 import org.iglooproject.showcase.web.application.widgets.component.AddUserPopupPanel;
 import org.iglooproject.showcase.web.application.widgets.component.ZIndexTestModalPopupPanel;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
@@ -20,16 +18,17 @@ import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.action.AbstractAjaxAction;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmButton;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.AjaxConfirmLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.confirm.component.ConfirmLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModal;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.statement.BootstrapModalBackdrop;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.popover.BootstrapPopoverBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.popover.BootstrapPopoverOptions;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmButton;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.ConfirmLink;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModal;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalBackdrop;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.popover.BootstrapPopoverBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.popover.BootstrapPopoverOptions;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public class ModalPage extends WidgetsTemplate {
 

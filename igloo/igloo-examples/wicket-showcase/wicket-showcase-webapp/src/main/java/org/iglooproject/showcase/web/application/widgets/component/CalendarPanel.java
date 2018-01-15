@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
-
 import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.markup.html.form.DatePicker;
 import org.iglooproject.wicket.more.markup.html.form.MonthPicker;

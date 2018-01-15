@@ -5,7 +5,6 @@ import java.util.Locale;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.showcase.core.business.user.search.IUserSearchQuery;
 import org.iglooproject.showcase.core.business.user.service.IUserService;

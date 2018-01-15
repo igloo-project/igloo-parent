@@ -15,7 +15,7 @@ import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.wicketstuff.wiquery.core.events.MouseEvent;

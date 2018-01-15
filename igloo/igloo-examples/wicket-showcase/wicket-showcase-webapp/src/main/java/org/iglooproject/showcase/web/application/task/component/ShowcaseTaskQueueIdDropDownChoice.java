@@ -4,7 +4,6 @@ import org.apache.commons.lang3.EnumUtils;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.util.ListModel;
-
 import org.iglooproject.showcase.core.business.task.model.ShowcaseTaskQueueId;
 import org.iglooproject.wicket.more.markup.html.select2.GenericSelect2DropDownSingleChoice;
 

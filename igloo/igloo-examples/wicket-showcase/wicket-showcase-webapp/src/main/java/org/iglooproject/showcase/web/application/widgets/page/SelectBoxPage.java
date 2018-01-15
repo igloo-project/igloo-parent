@@ -14,9 +14,6 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.util.CollectionModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.google.common.collect.Lists;
-
 import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.showcase.core.business.user.service.IUserService;
 import org.iglooproject.showcase.core.util.binding.Bindings;
@@ -27,6 +24,8 @@ import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.BindingModel;
+
+import com.google.common.collect.Lists;
 
 public class SelectBoxPage extends WidgetsTemplate {
 

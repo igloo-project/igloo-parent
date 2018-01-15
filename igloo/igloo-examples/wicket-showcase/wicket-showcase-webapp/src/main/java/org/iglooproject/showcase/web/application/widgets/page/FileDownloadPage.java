@@ -2,7 +2,6 @@ package org.iglooproject.showcase.web.application.widgets.page;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.showcase.web.application.widgets.component.FileDownloadPanel;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;

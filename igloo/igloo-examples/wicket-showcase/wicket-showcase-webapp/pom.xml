@@ -31,6 +31,12 @@
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-bootstrap3</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-more-jqplot</artifactId>
 			<version>${project.version}</version>
 		</dependency>

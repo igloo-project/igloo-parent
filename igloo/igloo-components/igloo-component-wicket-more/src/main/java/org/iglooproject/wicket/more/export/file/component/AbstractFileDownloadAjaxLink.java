@@ -7,14 +7,13 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.javatuples.LabelValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.wicket.more.common.WorkInProgressPopup;
 import org.iglooproject.wicket.more.export.file.behavior.FileDeferredDownloadBehavior;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.util.model.Detachables;
+import org.javatuples.LabelValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractFileDownloadAjaxLink extends AjaxLink<Void> {
 

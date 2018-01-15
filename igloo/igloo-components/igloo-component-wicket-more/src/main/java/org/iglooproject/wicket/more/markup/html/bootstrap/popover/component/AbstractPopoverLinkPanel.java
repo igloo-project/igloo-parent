@@ -9,15 +9,14 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.popover.BootstrapPopoverBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.popover.BootstrapPopoverOptions;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.popover.PopoverPlacement;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap3.popover.PopoverTrigger;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.popover.BootstrapPopoverBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.popover.BootstrapPopoverOptions;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.popover.PopoverPlacement;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.popover.PopoverTrigger;
 
 public abstract class AbstractPopoverLinkPanel<T> extends GenericPanel<T> {
 

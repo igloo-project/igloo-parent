@@ -10,11 +10,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Throwables;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.form.UserAutocompleteAjaxComponent;
@@ -22,6 +17,10 @@ import org.iglooproject.spring.notification.exception.NotificationContentRenderi
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Throwables;
 
 public class NotificationDemoPage extends WebPage {
 	

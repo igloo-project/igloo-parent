@@ -3,9 +3,6 @@ package org.iglooproject.basicapp.web.application.referencedata.component;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.ResourceModel;
-
-import com.google.common.base.Supplier;
-
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.referencedata.form.AbstractGenericListItemPopup;
 import org.iglooproject.basicapp.web.application.referencedata.form.SimpleGenericListItemPopup;
@@ -17,6 +14,8 @@ import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
+
+import com.google.common.base.Supplier;
 
 public class SimpleGenericListItemListPanel<T extends GenericListItem<? super T>> 
 		extends AbstractGenericListItemListPanel<T, GenericListItemSort, AbstractGenericListItemDataProvider<T, GenericListItemSort>> {

@@ -5,8 +5,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.iglooproject.showcase.web.application.links.page.LinksPage1;
 import org.iglooproject.showcase.web.application.links.page.LinksPage2;
 import org.iglooproject.showcase.web.application.links.page.LinksPage3;
@@ -33,11 +31,12 @@ import org.iglooproject.showcase.web.application.widgets.page.SortableListPage;
 import org.iglooproject.showcase.web.application.widgets.page.StatisticsPage;
 import org.iglooproject.showcase.web.application.widgets.page.WidgetsMainPage;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.bootstrap3.console.template.ConsoleConfiguration;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
-import org.iglooproject.wicket.more.console.template.ConsoleConfiguration;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.security.page.LoginFailurePage;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ShowcaseApplication extends CoreWicketAuthenticatedApplication {
 	

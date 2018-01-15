@@ -28,7 +28,6 @@ import org.iglooproject.basicapp.web.application.common.renderer.UserGroupRender
 import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
 import org.iglooproject.basicapp.web.application.common.template.styles.StylesScssResourceReference;
-import org.iglooproject.basicapp.web.application.common.template.styles.old.application_access.ApplicationAccessLessCssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.styles.old.notification.NotificationLessCssResourceReference;
 import org.iglooproject.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import org.iglooproject.basicapp.web.application.history.renderer.HistoryValueRenderer;
@@ -52,6 +51,14 @@ import org.iglooproject.infinispan.model.impl.Node;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.bootstrap4.console.common.model.ConsoleMenuSection;
+import org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.renderer.INodeRenderer;
+import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleAccessDeniedPage;
+import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleLoginFailurePage;
+import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleLoginSuccessPage;
+import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleSignInPage;
+import org.iglooproject.wicket.bootstrap4.console.template.ConsoleConfiguration;
+import org.iglooproject.wicket.bootstrap4.console.template.style.ConsoleLessCssResourceReference;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
@@ -90,7 +97,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 			preloadStyleSheets(
 					ConsoleLessCssResourceReference.get(),
 					NotificationLessCssResourceReference.get(),
-					ApplicationAccessLessCssResourceReference.get(),
+//					ApplicationAccessLessCssResourceReference.get(),
 					StylesScssResourceReference.get()
 			);
 		}

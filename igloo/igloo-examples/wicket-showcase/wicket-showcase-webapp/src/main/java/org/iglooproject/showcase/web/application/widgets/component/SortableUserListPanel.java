@@ -17,12 +17,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.wiquery.core.javascript.JsScopeContext;
-import org.wicketstuff.wiquery.ui.core.JsScopeUiEvent;
-import org.wicketstuff.wiquery.ui.sortable.SortableBehavior;
-import org.wicketstuff.wiquery.ui.sortable.SortableBehavior.ToleranceEnum;
-import org.wicketstuff.wiquery.ui.sortable.SortableRevert;
-
 import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.showcase.core.business.user.service.IUserService;
 import org.iglooproject.showcase.core.util.binding.Bindings;
@@ -30,6 +24,11 @@ import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.sortable.SortableListUpdateJavaScriptResourceReference;
 import org.iglooproject.wicket.more.model.BindingModel;
+import org.wicketstuff.wiquery.core.javascript.JsScopeContext;
+import org.wicketstuff.wiquery.ui.core.JsScopeUiEvent;
+import org.wicketstuff.wiquery.ui.sortable.SortableBehavior;
+import org.wicketstuff.wiquery.ui.sortable.SortableBehavior.ToleranceEnum;
+import org.wicketstuff.wiquery.ui.sortable.SortableRevert;
 
 public class SortableUserListPanel extends GenericPanel<List<User>> {
 

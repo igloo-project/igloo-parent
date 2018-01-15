@@ -17,9 +17,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.basicapp.core.business.authority.BasicApplicationAuthorityUtils;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
@@ -33,11 +30,13 @@ import org.iglooproject.wicket.markup.html.form.CheckGroup;
 import org.iglooproject.wicket.more.link.model.PageModel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormPanelMode;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstrap.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 

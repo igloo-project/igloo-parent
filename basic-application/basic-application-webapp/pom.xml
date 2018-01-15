@@ -34,7 +34,6 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-bootstrap4</artifactId>
 			<version>${igloo.version}</version>
-			<type>pom</type>
 		</dependency>
 		
 		<dependency>
