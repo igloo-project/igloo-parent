@@ -151,7 +151,7 @@
 		<igloo.javax-activation.version>1.1.1</igloo.javax-activation.version>
 		<igloo.javax-validation-api.version>1.1.0.Final</igloo.javax-validation-api.version>
 		
-		<igloo.wicket.version>7.6.0</igloo.wicket.version>
+		<igloo.wicket.version>7.9.0</igloo.wicket.version>
 		<igloo.wiquery.version>7.0</igloo.wiquery.version>
 		<igloo.wicket-select2.version>1.2.0</igloo.wicket-select2.version>
 		<igloo.wqplot.version>7.1.0.owsi1</igloo.wqplot.version>
