@@ -28,6 +28,7 @@ import org.iglooproject.basicapp.web.application.common.renderer.UserGroupRender
 import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
 import org.iglooproject.basicapp.web.application.common.template.styles.StylesScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.styles.applicationaccess.ApplicationAccessScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.styles.old.notification.NotificationLessCssResourceReference;
 import org.iglooproject.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import org.iglooproject.basicapp.web.application.history.renderer.HistoryValueRenderer;
@@ -97,7 +98,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 			preloadStyleSheets(
 					ConsoleLessCssResourceReference.get(),
 					NotificationLessCssResourceReference.get(),
-//					ApplicationAccessLessCssResourceReference.get(),
+					ApplicationAccessScssResourceReference.get(),
 					StylesScssResourceReference.get()
 			);
 		}

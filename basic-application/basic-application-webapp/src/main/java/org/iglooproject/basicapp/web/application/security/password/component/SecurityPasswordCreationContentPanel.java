@@ -13,17 +13,18 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.common.validator.EmailExistsValidator;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.iglooproject.wicket.more.util.model.Detachables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 
@@ -33,7 +34,7 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 
 	private final IModel<String> emailModel = Model.of("");
 
-	private final IModel<String> newPasswordModel = Model.of("");
+	private final IModel<String> passwordModel = Model.of("");
 
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
@@ -41,8 +42,10 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 	public SecurityPasswordCreationContentPanel(String wicketId, IModel<User> userModel) {
 		super(wicketId, userModel);
 		
+		UserTypeDescriptor<?> typeDescriptor = UserTypeDescriptor.get(getModelObject());
+		
 		Form<?> form = new Form<Void>("form");
-		TextField<String> newPasswordField = new PasswordTextField("newPassword", newPasswordModel);
+		TextField<String> passwordField = new PasswordTextField("password", passwordModel);
 		TextField<String> confirmPasswordField = new PasswordTextField("confirmPassword", Model.of(""));
 		
 		add(form);
@@ -52,14 +55,21 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 						.add(EmailAddressValidator.getInstance())
 						.add(EmailExistsValidator.get())
 						.add(new LabelPlaceholderBehavior()),
-				newPasswordField
-						.setLabel(new ResourceModel("business.user.newPassword"))
+				passwordField
+						.setLabel(new ResourceModel("business.user.password"))
 						.setRequired(true)
 						.add(
 								new UserPasswordValidator(UserTypeDescriptor.get(userModel.getObject()))
 										.userModel(userModel)
 						)
 						.add(new LabelPlaceholderBehavior()),
+				new CoreLabel("passwordHelp",
+						new ResourceModel(
+								typeDescriptor.securityTypeDescriptor().resourceKeyGenerator().resourceKey("password.help"),
+								new ResourceModel(UserTypeDescriptor.USER.securityTypeDescriptor()
+										.resourceKeyGenerator().resourceKey("password.help"))
+						)
+				),
 				confirmPasswordField
 						.setLabel(new ResourceModel("business.user.confirmPassword"))
 						.setRequired(true)
@@ -71,7 +81,7 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 					protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 						try {
 							User user = SecurityPasswordCreationContentPanel.this.getModelObject();
-							securityManagementService.updatePassword(user, newPasswordModel.getObject());
+							securityManagementService.updatePassword(user, passwordModel.getObject());
 							
 							getSession().success(getString("security.password.creation.validate.success"));
 							
@@ -93,14 +103,13 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 					}
 				}
 		);
-		form.add(new EqualPasswordInputValidator(newPasswordField, confirmPasswordField));
+		form.add(new EqualPasswordInputValidator(passwordField, confirmPasswordField));
 	}
 
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		emailModel.detach();
-		newPasswordModel.detach();
+		Detachables.detach(emailModel, passwordModel);
 	}
 
 }

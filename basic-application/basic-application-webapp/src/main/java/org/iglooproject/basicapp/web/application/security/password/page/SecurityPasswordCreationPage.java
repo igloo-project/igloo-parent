@@ -5,12 +5,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordCreationContentPanel;
-import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordIntroPanel;
 import org.iglooproject.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -18,6 +16,7 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDesc
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 
@@ -63,11 +62,6 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 	}
 
 	@Override
-	protected Component getIntroComponent(String wicketId) {
-		return new SecurityPasswordIntroPanel(wicketId, "security.password.creation.intro");
-	}
-
-	@Override
 	protected Component getContentComponent(String wicketId) {
 		return new SecurityPasswordCreationContentPanel(wicketId, userModel);
 	}
@@ -75,7 +69,7 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		userModel.detach();
+		Detachables.detach(userModel);
 	}
 
 }

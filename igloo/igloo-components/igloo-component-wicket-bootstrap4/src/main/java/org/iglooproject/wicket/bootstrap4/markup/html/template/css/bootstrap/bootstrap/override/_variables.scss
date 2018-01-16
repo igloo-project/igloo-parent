@@ -24,7 +24,9 @@ $zindex-tooltip:                    1070 !default;
 //$zindex-modal-backdrop:				1011;
 //$zindex-modal-background:			1012;
 //$zindex-modal:						1013;
-$zindex-scroll-to-top:				1035;
+$zindex-alert-global:				1100 !default;
+$zindex-alert-global-close:			1101 !default;
+$zindex-scroll-to-top:				1035 !default;
 
 $font-size-xs:						($font-size-base * .875) !default;
 

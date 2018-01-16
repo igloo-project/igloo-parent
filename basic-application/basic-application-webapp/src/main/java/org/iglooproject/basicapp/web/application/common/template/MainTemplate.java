@@ -48,6 +48,7 @@ import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.coll
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
+import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
@@ -99,7 +100,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(new TransparentWebMarkupContainer("htmlRootElement")
 				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage())));
 		
-//		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
+		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
 		
 		// Page title
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));

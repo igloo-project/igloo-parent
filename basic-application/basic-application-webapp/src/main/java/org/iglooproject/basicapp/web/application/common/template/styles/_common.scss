@@ -44,6 +44,10 @@
 	@extend .flex-wrap;
 	@extend .flex-g-1;
 	
+	&.basic-container-right {
+		@extend .justify-content-end;
+	}
+	
 	.basic-item {
 		@extend .flex-item;
 	}

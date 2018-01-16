@@ -6,6 +6,7 @@
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		
 		<wicket:header-items/>
 	</head>
@@ -15,21 +16,16 @@
 			<div wicket:id="feedback" data-placement="bottom"></div>
 			
 			<div class="container">
-				<div class="row content">
-					<div class="application-access-header">
-						<img class="logo" src="static/application/images/logo_openwide.png" alt="Company logo" width="210" height="66" />
+				<div class="card">
+					<div class="card-img-top">
+						<img src="static/application/images/logo.png" alt="Basic Application" width="114" height="55" />
 					</div>
-					<h1 class="application-access-title" wicket:id="title" />
-					
-					<wicket:container wicket:id="environment" />
-					
-					<div class="application-access-intro" wicket:id="intro" />
-					
-					<div class="application-access-content" wicket:id="content" />
-					
+					<div class="card-header card-main-title" wicket:id="title" />
+					<div class="card-header card-environment" wicket:id="environment" />
+					<div wicket:id="content" />
 					<wicket:child/>
+					<div class="card-footer" wicket:id="footer" />
 				</div>
-				<div class="application-access-footer" wicket:id="footer" />
 			</div>
 		</div>
 	</body>

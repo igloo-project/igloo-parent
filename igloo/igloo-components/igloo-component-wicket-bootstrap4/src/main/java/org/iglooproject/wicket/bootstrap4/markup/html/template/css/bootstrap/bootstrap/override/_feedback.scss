@@ -1,0 +1,37 @@
+.alert-global-panel {
+	position: fixed;
+	display: none;
+	overflow: hidden;
+	z-index: $zindex-alert-global;
+	width: 100%;
+	
+	@include media-breakpoint-up(md) {
+		margin: 0 40px;
+		max-width: 650px;
+	}
+
+	> .alert {
+		@include border-radius(0);
+		border: 0;
+		margin: 0;
+		padding-right: (2 * $alert-padding-x) + 1,25; // fa-fw = 1,25em;
+		
+		> ul.feedbackPanel {
+			@include list-unstyled;
+			margin: 0;
+		}
+	}
+	
+	
+	.close {
+		float: none;
+		text-shadow: none;
+		color: $gray-500;
+		z-index: $zindex-alert-global-close;
+		font-size: 1rem;
+		position: absolute;
+		padding: $alert-padding-y $alert-padding-x;
+		right: 0;
+		top: 0;
+	}
+}

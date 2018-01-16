@@ -4,9 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordIntroPanel;
 import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordRecoveryContentPanel;
 import org.iglooproject.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -36,11 +34,6 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 	@Override
 	protected IModel<String> getTitleModel() {
 		return new ResourceModel("security.password.recovery.pageTitle");
-	}
-
-	@Override
-	protected Component getIntroComponent(String wicketId) {
-		return new SecurityPasswordIntroPanel(wicketId, "security.password.recovery.intro");
 	}
 
 	@Override

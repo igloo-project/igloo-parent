@@ -6,12 +6,10 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordIntroPanel;
 import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordResetContentPanel;
 import org.iglooproject.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -20,6 +18,7 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDesc
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 
@@ -75,11 +74,6 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 	}
 
 	@Override
-	protected Component getIntroComponent(String wicketId) {
-		return new SecurityPasswordIntroPanel(wicketId, "security.password.reset.intro");
-	}
-
-	@Override
 	protected Component getContentComponent(String wicketId) {
 		return new SecurityPasswordResetContentPanel(wicketId, userModel);
 	}
@@ -87,7 +81,7 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		userModel.detach();
+		Detachables.detach(userModel);
 	}
 
 }

@@ -11,17 +11,16 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class SignInContentPanel<U extends User> extends Panel {
 
@@ -39,7 +38,7 @@ public class SignInContentPanel<U extends User> extends Panel {
 	public SignInContentPanel(String wicketId, final UserTypeDescriptor<U> defaultTypeDescriptor) {
 		super(wicketId);
 		
-		Form<Void> signInForm = new Form<Void>("signInForm") {
+		Form<Void> form = new Form<Void>("form") {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
@@ -84,18 +83,18 @@ public class SignInContentPanel<U extends User> extends Panel {
 				throw defaultTypeDescriptor.securityTypeDescriptor().signInPageLinkDescriptor().newRestartResponseException();
 			}
 		};
-		add(signInForm);
+		add(form);
 		
 		userNameField = new RequiredTextField<String>("userName", Model.of(""));
 		userNameField.setLabel(new ResourceModel("signIn.userName"));
 		userNameField.add(new LabelPlaceholderBehavior());
 		userNameField.setOutputMarkupId(true);
-		signInForm.add(userNameField);
+		form.add(userNameField);
 		
 		passwordField = new PasswordTextField("password", Model.of("")).setRequired(true);
 		passwordField.setLabel(new ResourceModel("signIn.password"));
 		passwordField.add(new LabelPlaceholderBehavior());
-		signInForm.add(passwordField);
+		form.add(passwordField);
 	}
 
 	@Override

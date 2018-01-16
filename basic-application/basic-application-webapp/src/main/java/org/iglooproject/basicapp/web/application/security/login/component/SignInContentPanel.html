@@ -2,22 +2,36 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
-		<form wicket:id="signInForm">
-			<fieldset>
-				<div class="form-group">
-					<input class="form-control input-lg" wicket:id="userName" type="text" id="username" />
-				</div>
-				<div class="form-group">
-					<input class="form-control input-lg" wicket:id="password" type="password" id="password" />
-				</div>
-				<div class="form-actions clearfix">
-					<button class="btn btn-success btn-lg pull-right" type="submit">
-						<span class="fa fa-lock" />
-						<wicket:message key="signIn.button" />
-					</button>
-				</div>
-			</fieldset>
-		</form>
+		<div class="card-body">
+			<form wicket:id="form">
+				<fieldset>
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><span class="fa fa-user fa-fw" /></span>
+							</div>
+							<input class="form-control form-control-username" wicket:id="userName" type="text" id="username" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><span class="fa fa-lock fa-fw" /></span>
+							</div>
+							<input class="form-control form-control-password" wicket:id="password" type="password" id="password" />
+						</div>
+					</div>
+					<div class="basic-container basic-container-right">
+						<div class="basic-item">
+							<button class="btn btn-success" type="submit">
+								<span class="fa fa-sign-in-alt" />
+								<wicket:message key="signIn.button" />
+							</button>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
 		
 		<script type="text/javascript">
 			var usernameField = document.getElementById('username');
