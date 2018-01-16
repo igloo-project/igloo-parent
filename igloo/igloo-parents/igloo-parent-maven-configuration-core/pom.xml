@@ -31,7 +31,7 @@
 		<igloo.ehcache.version>2.10.4</igloo.ehcache.version>
 		<igloo.querydsl.version>4.1.4</igloo.querydsl.version>
 		
-		<igloo.guava.version>21.0</igloo.guava.version>
+		<igloo.guava.version>23.6-jre</igloo.guava.version>
 		
 		<igloo.joda-time.version>2.9.2</igloo.joda-time.version>
 		
