@@ -1,1 +1,7 @@
-
+form {
+	&.form-grid {
+		> .form-row {
+			margin-bottom: -1 * $form-group-margin-bottom;
+		}
+	}
+}

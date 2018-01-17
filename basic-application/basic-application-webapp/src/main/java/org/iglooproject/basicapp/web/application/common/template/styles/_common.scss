@@ -46,12 +46,6 @@
 					&:last-child {
 						margin-bottom: 0;
 					}
-					
-					form {
-						> .form-row {
-							margin-bottom: -1 * $form-group-margin-bottom;
-						}
-					}
 				}
 			}
 		}

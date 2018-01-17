@@ -171,7 +171,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 				.withNoRecordsResourceKey("administration.user.noUsers")
 				.decorate()
 						.ajaxPagers()
-				.build(wicketId, 1);
+				.build(wicketId, itemsPerPage);
 	}
 
 	@SuppressWarnings("rawtypes")
