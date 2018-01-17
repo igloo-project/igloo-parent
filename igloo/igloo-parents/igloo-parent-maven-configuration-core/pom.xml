@@ -25,7 +25,7 @@
 		<igloo.hibernate-commons-annotations.version>5.0.1.Final</igloo.hibernate-commons-annotations.version>
 		<igloo.hibernate-validator.version>5.4.1.Final</igloo.hibernate-validator.version>
 		<igloo.jboss-logging.version>3.3.1.Final</igloo.jboss-logging.version>
-		<igloo.tomcat-jdbc.version>7.0.77</igloo.tomcat-jdbc.version>
+		<igloo.tomcat-jdbc.version>8.5.24</igloo.tomcat-jdbc.version>
 		<igloo.hikaricp.version>2.7.4</igloo.hikaricp.version>
 		<igloo.hibernate-ehcache.version>${igloo.hibernate-core.version}</igloo.hibernate-ehcache.version>
 		<igloo.ehcache.version>2.10.4</igloo.ehcache.version>
