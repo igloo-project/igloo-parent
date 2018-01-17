@@ -131,7 +131,7 @@
 		<igloo.imageinfo.version>1.9</igloo.imageinfo.version>
 		<igloo.jsoup.version>1.11.2</igloo.jsoup.version>
 		<igloo.rhino.version>1.7.7.1</igloo.rhino.version>
-		<igloo.httpclient.version>4.5.3</igloo.httpclient.version>
+		<igloo.httpclient.version>4.5.4</igloo.httpclient.version>
 		<igloo.httpcore.version>4.4.6</igloo.httpcore.version>
 		<igloo.prettytime.version>4.0.1.Final</igloo.prettytime.version>
 		<igloo.ph-css.version>4.1.3</igloo.ph-css.version>
