@@ -1,11 +1,16 @@
-.card {
-	> .card-body {
-		> .card-action {
-			@extend .mt-3;
-			
-			&:first-child {
-				margin-top: 0;
-			}
+.card-action {
+	@extend .mt-3;
+	
+	&:first-child {
+		margin-top: 0;
+	}
+	
+	> .card-action-container {
+		@extend .basic-container;
+		@extend .basic-container-right;
+		
+		> .card-action-item {
+			@extend .basic-item;
 		}
 	}
 }

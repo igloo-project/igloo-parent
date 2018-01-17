@@ -1,0 +1,77 @@
+.add-in-container {
+	@extend .basic-container;
+	
+	> .add-in-section {
+		@extend .basic-item;
+		
+		> .add-in-wrapper {
+			@extend .basic-container;
+			
+			> .add-in {
+				@extend .basic-item;
+				
+				> nav {
+					> .pagination {
+						@extend .pagination-sm;
+						@extend .m-0;
+					}
+				}
+			}
+		}
+		
+		&.add-in-section-main {
+			width: 100%;
+			
+			> .add-in-wrapper.add-in-wrapper-main {
+				> .add-in.add-in-main {
+					flex-basis: 100%;
+				}
+			}
+		}
+		
+		&.add-in-section-right {
+			@extend .ml-auto;
+		}
+		
+		&.add-in-section-left {
+			> .add-in-wrapper.add-in-wrapper-left {
+				> .add-in {
+					&.add-in-title, &.add-in-emphasize {
+						@extend .card-title;
+						@extend .h5;
+						@extend .m-0;
+					}
+				}
+			}
+		}
+	}
+	
+	&.add-in-container-top {
+	}
+	
+	&.add-in-container-bottom {
+	}
+}
+
+.decorated-data-table {
+	> .decorated-data-table-section {
+		margin: 0 .5rem;
+		
+		&.decorated-data-table-section-heading {
+			margin-bottom: 1rem;
+		}
+		&.decorated-data-table-section-body-top {
+			margin-bottom: 1rem;
+		}
+		&.decorated-data-table-section-body-bottom {
+			margin-top: 1rem;
+		}
+		&.decorated-data-table-section-footer {
+			margin-top: 1rem;
+		}
+	}
+	
+	.table {
+		margin: 0;
+	}
+}

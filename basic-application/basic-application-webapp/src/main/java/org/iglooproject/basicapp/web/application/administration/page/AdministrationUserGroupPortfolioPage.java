@@ -58,7 +58,7 @@ public class AdministrationUserGroupPortfolioPage extends AdministrationTemplate
 				new UserGroupPortfolioPanel("portfolio", userGroupListModel, propertyService.get(PORTFOLIO_ITEMS_PER_PAGE)),
 				
 				addPopup,
-				new BlankLink("addButton")
+				new BlankLink("add")
 						.add(new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK))
 		);
 	}

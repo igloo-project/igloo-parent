@@ -23,7 +23,7 @@ public final class ActionRenderers {
 	}
 
 	public static <T> BootstrapRenderer<T> delete() {
-		return constant("common.action.delete", "fa fa-fw fa-trash-o", BootstrapColor.DANGER);
+		return constant("common.action.delete", "fa fa-fw fa-trash-alt", BootstrapColor.DANGER);
 	}
 
 	public static <T> BootstrapRenderer<T> enable() {

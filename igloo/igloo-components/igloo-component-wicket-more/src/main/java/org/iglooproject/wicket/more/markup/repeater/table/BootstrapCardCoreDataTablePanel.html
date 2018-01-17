@@ -32,17 +32,25 @@
 			</div>
 		</wicket:enclosure>
 		
-		<div wicket:id="bodyTopAddInContainer" class="card-body add-in-container add-in-container-body-top">
-			<div wicket:id="bodyTopAddIn" />
-		</div>
+		<wicket:enclosure child="bodyTopAddInContainer">
+			<div class="card-body">
+				<div wicket:id="bodyTopAddInContainer" class="add-in-container add-in-container-body-top">
+					<div wicket:id="bodyTopAddIn" />
+				</div>
+			</div>
+		</wicket:enclosure>
 		
 		<div wicket:id="dataTableContainer" class="table-responsive">
 			<table wicket:id="dataTable" class="table table-striped table-bordered table-condensed" />
 		</div>
 		
-		<div wicket:id="bodyBottomAddInContainer" class="card-body add-in-container add-in-container-body-bottom">
-			<div wicket:id="bodyBottomAddIn" />
-		</div>
+		<wicket:enclosure child="bodyBottomAddInContainer">
+			<div class="card-body">
+				<div wicket:id="bodyBottomAddInContainer" class="add-in-container add-in-container-body-bottom">
+					<div wicket:id="bodyBottomAddIn" />
+				</div>
+			</div>
+		</wicket:enclosure>
 		
 		<wicket:enclosure child="footerAddInContainer">
 			<div class="card-body">

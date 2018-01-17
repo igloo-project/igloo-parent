@@ -9,6 +9,8 @@
 @import "$(scope-core-fa)scss/fa-brands";
 @import "$(scope-core-fa)override/scss/override";
 
+@import "$(scope-core-bs4)autocomplete";
+
 @import "variables";
 @import "mixins";
 @import "common";
@@ -16,3 +18,4 @@
 @import "card";
 @import "description";
 @import "forms";
+@import "tables"

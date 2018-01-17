@@ -15,7 +15,44 @@
 		
 		> .page-content {
 			> .page-header {
-				margin-bottom: 1rem;
+				margin-bottom: 1.25rem;
+				
+				> .page-header-title {
+					margin: 0;
+				}
+				
+				> .page-header-action {
+					margin-top: 1rem;
+					
+					&:first-child {
+						margin-top: 0;
+					}
+					
+					> .page-header-action-container {
+						@extend .basic-container;
+						@extend .basic-container-right;
+						
+						> .page-header-action-item {
+							@extend .basic-item;
+						}
+					}
+				}
+			}
+			
+			> .page-body {
+				> .page-search {
+					margin-bottom: 1.25rem;
+					
+					&:last-child {
+						margin-bottom: 0;
+					}
+					
+					form {
+						> .form-row {
+							margin-bottom: -1 * $form-group-margin-bottom;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -48,7 +85,7 @@
 		@extend .justify-content-end;
 	}
 	
-	.basic-item {
+	> .basic-item {
 		@extend .flex-item;
 	}
 }

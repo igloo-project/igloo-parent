@@ -21,14 +21,11 @@ public class UserSearchPanel<U extends User> extends Panel {
 			AbstractUserDataProvider<U> dataProvider) {
 		super(id);
 		
-		// Quick search
 		UserQuickSearchComponent<?> userQuickSearch = new UserQuickSearchComponent<>("userQuickSearch", typeDescriptor);
 		userQuickSearch.setAutoUpdate(true);
 		userQuickSearch.getAutocompleteField().setLabel(new ResourceModel("common.quickAccess"));
 		userQuickSearch.getAutocompleteField().add(new LabelPlaceholderBehavior());
-		add(userQuickSearch);
 		
-		// Search form
 		add(
 				new PageableSearchForm<Void>("form", pageable)
 						.add(
@@ -39,7 +36,8 @@ public class UserSearchPanel<U extends User> extends Panel {
 										.setLabel(new ResourceModel("administration.user.search.group"))
 										.add(new LabelPlaceholderBehavior()),
 								new CheckBox("active", dataProvider.getIncludeInactivesModel())
-										.setLabel(new ResourceModel("administration.user.search.includeInactives"))
+										.setLabel(new ResourceModel("administration.user.search.includeInactives")),
+								userQuickSearch
 						)
 		);
 	}

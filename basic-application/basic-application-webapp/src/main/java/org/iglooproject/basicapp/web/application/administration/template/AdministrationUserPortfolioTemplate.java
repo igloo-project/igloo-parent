@@ -8,7 +8,6 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
@@ -29,6 +28,7 @@ import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.commons.util.functional.Predicates2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.link.EmailLink;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.export.excel.component.AbstractExcelExportAjaxLink;
@@ -65,28 +65,20 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 		AbstractUserPopup<U> addPopup = createAddPopup("addPopup");
 		
 		final AbstractUserDataProvider<U> dataProvider = newDataProvider();
-		DecoratedCoreDataTablePanel<U, ?> dataTablePanel =
-				createDataTable("dataTable", dataProvider, propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
+		DecoratedCoreDataTablePanel<U, ?> dataTablePanel = createDataTable("dataTable", dataProvider, propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 		
 		add(
-				new Label("title", pageTitleModel),
-				
-				new UserSearchPanel<>("searchPanel", dataTablePanel, typeDescriptor, dataProvider),
-				
-				dataTablePanel,
-				
 				addPopup,
-				new BlankLink("addButton")
+				new BlankLink("add")
 						.add(
 								new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK)
 						)
 		);
 		
-		// Export Excel
 		ExcelExportWorkInProgressModalPopupPanel loadingPopup = new ExcelExportWorkInProgressModalPopupPanel("loadingPopup");
 		add(
 				loadingPopup,
-				new AbstractExcelExportAjaxLink("exportExcelButton", loadingPopup, "export-users-") {
+				new AbstractExcelExportAjaxLink("exportExcel", loadingPopup, "export-users-") {
 					private static final long serialVersionUID = 1L;
 					
 					@Override
@@ -96,6 +88,14 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 					}
 				}
 		);
+		
+		add(
+				new CoreLabel("title", pageTitleModel),
+				
+				new UserSearchPanel<>("searchPanel", dataTablePanel, typeDescriptor, dataProvider),
+				dataTablePanel
+		);
+		
 	}
 	
 	protected abstract AbstractUserDataProvider<U> newDataProvider();
@@ -164,14 +164,14 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 								})
 								.whenPermission(BasicApplicationPermissionConstants.DELETE)
 								.hidePlaceholder()
-						.withClassOnElements(CssClassConstants.BTN_XS)
+						.withClassOnElements(CssClassConstants.BTN_SM)
 						.end()
 						.withClass("actions actions-2x")
 						
 				.withNoRecordsResourceKey("administration.user.noUsers")
 				.decorate()
 						.ajaxPagers()
-				.build(wicketId, itemsPerPage);
+				.build(wicketId, 1);
 	}
 
 	@SuppressWarnings("rawtypes")

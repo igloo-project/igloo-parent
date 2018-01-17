@@ -4,22 +4,23 @@
 	<wicket:extend>
 		<div wicket:id="addPopup" />
 		
-		<div class="administration usergroup-portfolio">
-			<div class="page-title">
-				<div class="container">
-					<a wicket:id="addButton" class="btn btn-primary pull-right">
-						<span class="fa fa-plus"></span>
-						<wicket:message key="common.action.create" />
-					</a>
-					
-					<h1 class="page-title-text"><wicket:message key="administration.usergroup.title"/></h1>
+		<div class="page-content">
+			<div class="page-header">
+				<h2 class="page-header-title"><wicket:message key="administration.usergroup.title"/></h2>
+				
+				<div class="page-header-action">
+					<div class="page-header-action-container">
+						<div wicket:enclosure="add" class="page-header-action-item">
+							<button wicket:id="add" type="button" class="btn btn-primary">
+								<span class="fa fa-plus" />
+								<wicket:message key="common.action.create" />
+							</button>
+						</div>
+					</div>
 				</div>
 			</div>
-			
-			<div class="main-content">
-				<div class="container">
-					<div wicket:id="portfolio" />
-				</div>
+			<div class="page-body">
+				<div wicket:id="portfolio" />
 			</div>
 		</div>
 	</wicket:extend>
