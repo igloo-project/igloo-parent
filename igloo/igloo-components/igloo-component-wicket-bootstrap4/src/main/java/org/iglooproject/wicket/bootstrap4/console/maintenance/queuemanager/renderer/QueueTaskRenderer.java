@@ -32,7 +32,7 @@ public class QueueTaskRenderer {
 			}
 
 			return BootstrapRendererInformation.builder()
-					.color(BootstrapColor.DEFAULT)
+					.color(BootstrapColor.SECONDARY)
 					.label(getString("business.queuemanager.queueid.status.stopped", locale))
 					.build();
 		}

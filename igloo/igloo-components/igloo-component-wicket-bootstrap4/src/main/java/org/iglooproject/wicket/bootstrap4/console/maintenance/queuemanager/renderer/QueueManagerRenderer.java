@@ -31,7 +31,7 @@ public class QueueManagerRenderer {
 			}
 
 			return BootstrapRendererInformation.builder()
-					.color(BootstrapColor.DEFAULT)
+					.color(BootstrapColor.SECONDARY)
 					.label(getString("business.queuemanager.status.stopped", locale))
 					.build();
 		}

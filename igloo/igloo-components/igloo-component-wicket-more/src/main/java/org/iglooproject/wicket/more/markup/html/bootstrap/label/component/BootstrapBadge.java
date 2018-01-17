@@ -4,7 +4,6 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.bootstrap.label.behavior.BootstrapColorBehavior;
@@ -17,7 +16,8 @@ public class BootstrapBadge<T> extends GenericPanel<T> {
 
 	public BootstrapBadge(String id, IModel<T> model, final BootstrapRenderer<? super T> renderer) {
 		super(id, model);
-
+		setOutputMarkupPlaceholderTag(true);
+		
 		IBootstrapRendererModel labelModel = renderer.asModel(model);
 		IModel<String> iconCssClassModel = labelModel.getIconCssClassModel();
 		
@@ -28,7 +28,7 @@ public class BootstrapBadge<T> extends GenericPanel<T> {
 		
 		add(
 				Condition.modelNotNull(iconCssClassModel).thenShowInternal(), // No icon => No badge
-				BootstrapColorBehavior.label(labelModel.getColorModel()),
+				BootstrapColorBehavior.badge(labelModel.getColorModel()),
 				new AttributeAppender("title", labelModel)
 		);
 	}

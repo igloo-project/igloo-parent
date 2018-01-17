@@ -1,8 +1,10 @@
 package org.iglooproject.wicket.more.markup.html.bootstrap.label.model;
 
 public enum BootstrapColor implements IBootstrapColor {
+	@Deprecated
 	DEFAULT("default"),
 	PRIMARY("primary"),
+	SECONDARY("secondary"),
 	SUCCESS("success"),
 	INFO("info"),
 	TODO("todo"),

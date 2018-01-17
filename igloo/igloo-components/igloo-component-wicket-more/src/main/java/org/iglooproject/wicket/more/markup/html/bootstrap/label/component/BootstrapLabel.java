@@ -5,7 +5,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.commons.util.functional.Predicates2;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -31,7 +30,7 @@ public class BootstrapLabel<T> extends GenericPanel<T> {
 		);
 		
 		add(
-				BootstrapColorBehavior.label(labelModel.getColorModel()),
+				BootstrapColorBehavior.badge(labelModel.getColorModel()),
 				Condition.predicate(labelModel, Predicates2.hasText()).thenShowInternal(),
 				new AttributeAppender("title", labelModel.getTooltipModel())
 		);

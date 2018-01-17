@@ -2,16 +2,21 @@ package org.iglooproject.wicket.more.markup.html.bootstrap.label.behavior;
 
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.bootstrap.label.model.IBootstrapColor;
+import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class BootstrapColorBehavior extends ClassAttributeAppender {
 
 	private static final long serialVersionUID = 7272137227196691195L;
 	
+	@Deprecated
 	public static BootstrapColorBehavior label(IModel<IBootstrapColor> colorModel) {
 		return new BootstrapColorBehavior("label label-", colorModel);
+	}
+	
+	public static BootstrapColorBehavior badge(IModel<IBootstrapColor> colorModel) {
+		return new BootstrapColorBehavior("badge badge-", colorModel);
 	}
 	
 	public static BootstrapColorBehavior alert(IModel<IBootstrapColor> colorModel) {
@@ -43,7 +48,7 @@ public class BootstrapColorBehavior extends ClassAttributeAppender {
 			@Override
 			public void detach() {
 				super.detach();
-				colorModel.detach();
+				Detachables.detach(colorModel);
 			}
 		});
 	}

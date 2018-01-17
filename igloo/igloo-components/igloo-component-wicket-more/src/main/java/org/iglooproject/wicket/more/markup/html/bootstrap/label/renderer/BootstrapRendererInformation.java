@@ -39,7 +39,7 @@ public final class BootstrapRendererInformation implements Serializable {
 		
 		private String iconCssClass;
 		
-		private IBootstrapColor color = BootstrapColor.DEFAULT;
+		private IBootstrapColor color = BootstrapColor.SECONDARY;
 		
 		private String tooltip;
 		
