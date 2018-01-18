@@ -11,13 +11,12 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.retzlaff.select2.Select2Settings;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.markup.html.select2.GenericSelect2DropDownSingleChoice;
-import org.iglooproject.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
+import org.iglooproject.wicket.more.markup.html.select2.util.Select2Utils;
+import org.wicketstuff.select2.Settings;
+
+import com.google.common.collect.ImmutableList;
 
 public class LocaleDropDownChoice extends GenericSelect2DropDownSingleChoice<Locale> {
 
@@ -28,14 +27,12 @@ public class LocaleDropDownChoice extends GenericSelect2DropDownSingleChoice<Loc
 	public LocaleDropDownChoice(String id, IModel<Locale> model) {
 		super(id, model, new LocaleChoiceList(), CHOICE_RENDERER);
 		setNullValid(false);
-		setWidth(DropDownChoiceWidth.SMALL);
 	}
 	
 	@Override
-	protected void fillSelect2Settings(Select2Settings settings) {
+	protected void fillSelect2Settings(Settings settings) {
 		super.fillSelect2Settings(settings);
-		settings.setAllowClear(false);
-		settings.setMinimumResultsForSearch(Integer.MAX_VALUE);
+		Select2Utils.disableSearch(settings);
 	}
 
 	private static class LocaleChoiceRenderer extends ChoiceRenderer<Locale> {

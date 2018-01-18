@@ -102,7 +102,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 					StylesScssResourceReference.get()
 			);
 		}
-
+		
 		getResourceSettings().getStringResourceLoaders().addAll(
 				0, // Override the keys in existing resource loaders with the following 
 				ImmutableList.of(
@@ -115,6 +115,10 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 						new ClassStringResourceLoader(BasicApplicationNotificationResources.class)
 				)
 		);
+		
+		// Don't include css files from wicketstuff-select2.
+		// We take care of Select2 css file and Select2 Bootstrap scss files on our side.
+		org.wicketstuff.select2.ApplicationSettings.get().setIncludeCss(false);
 	}
 	
 	@Override

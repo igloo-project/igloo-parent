@@ -3,29 +3,24 @@ package org.iglooproject.wicket.more.markup.html.select2;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.retzlaff.select2.Select2Behavior;
-import org.retzlaff.select2.Select2Settings;
-
 import org.iglooproject.wicket.more.markup.html.model.ChoicesWrapperModel;
-import org.iglooproject.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
 import org.iglooproject.wicket.more.markup.html.select2.util.IDropDownChoiceWidth;
 import org.iglooproject.wicket.more.markup.html.select2.util.Select2Utils;
+import org.iglooproject.wicket.more.util.model.Detachables;
+import org.wicketstuff.select2.Select2Behavior;
+import org.wicketstuff.select2.Settings;
 
 public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoice<T> {
+
 	private static final long serialVersionUID = -3776700270762640109L;
-	
-	private IDropDownChoiceWidth width = DropDownChoiceWidth.AUTO;
-	
+
 	private ChoicesWrapperModel<T> choicesWrapperModel;
-	
-	private final Select2Behavior<T, T> select2Behavior;
-	
+
+	private final Select2Behavior select2Behavior;
+
 	protected GenericSelect2DropDownSingleChoice(String id, IModel<T> model, IModel<? extends Collection<? extends T>> choicesModel, IChoiceRenderer<? super T> renderer) {
 		super(id);
 		
@@ -35,7 +30,7 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 		setChoiceRenderer(renderer);
 		setNullValid(true);
 		
-		select2Behavior = Select2Behavior.forChoice(this);
+		select2Behavior = Select2Behavior.forSingleChoice();
 		fillSelect2Settings(select2Behavior.getSettings());
 		add(select2Behavior);
 	}
@@ -56,30 +51,7 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 			}
 		}
 	}
-	
-	@Override
-	protected void onInitialize() {
-		ensureChoicesModelIsWrapped();
-		
-		super.onInitialize();
-		
-		add(new AttributeModifier("style", new LoadableDetachableModel<String>() {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected String load() {
-				return "width: " + width.getWidth();
-			}
-		}) {
-			private static final long serialVersionUID = 1L;
 
-			@Override
-			public boolean isEnabled(Component component) {
-				return width != null;
-			}
-		});
-	}
-	
 	@Override
 	protected void onConfigure() {
 		ensureChoicesModelIsWrapped();
@@ -90,17 +62,17 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 			Select2Utils.setRequiredSettings(getSettings());
 		}
 	}
-	
-	protected void fillSelect2Settings(Select2Settings settings) {
+
+	protected void fillSelect2Settings(Settings settings) {
 		Select2Utils.setDefaultSettings(settings);
 	}
-	
-	protected final Select2Settings getSettings() {
+
+	protected final Settings getSettings() {
 		return select2Behavior.getSettings();
 	}
-	
+
 	public GenericSelect2DropDownSingleChoice<T> setWidth(IDropDownChoiceWidth width) {
-		this.width = width;
+		getSettings().setWidth(width.getWidth());
 		return this;
 	}
 	
@@ -130,8 +102,6 @@ public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoi
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		if (choicesWrapperModel != null) {
-			choicesWrapperModel.detach();
-		}
+		Detachables.detach(choicesWrapperModel);
 	}
 }

@@ -1,0 +1,10 @@
+.select2-container--bootstrap {
+	.select2-selection--multiple {
+		.select2-search--inline {
+			.select2-search__field {
+				margin-top: -1 * $border-width;
+				margin-bottom: -1 * $border-width;
+			}
+		}
+	}
+}

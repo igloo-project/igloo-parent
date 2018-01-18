@@ -153,7 +153,7 @@
 		
 		<igloo.wicket.version>7.9.0</igloo.wicket.version>
 		<igloo.wiquery.version>7.0</igloo.wiquery.version>
-		<igloo.wicket-select2.version>1.2.0</igloo.wicket-select2.version>
+		<igloo.wicketstuff-select2.version>7.9.0</igloo.wicketstuff-select2.version>
 		<igloo.wqplot.version>7.1.0.owsi1</igloo.wqplot.version>
 		
 		<igloo.less4j.version>1.17.2</igloo.less4j.version>
@@ -1079,9 +1079,9 @@
 				<!-- wicket-select2 -->
 				
 					<dependency>
-						<groupId>org.retzlaff</groupId>
-						<artifactId>wicket-select2</artifactId>
-						<version>${igloo.wicket-select2.version}</version>
+						<groupId>org.wicketstuff</groupId>
+						<artifactId>wicketstuff-select2</artifactId>
+						<version>${igloo.wicketstuff-select2.version}</version>
 					</dependency>
 			
 			<!-- Jersey -->

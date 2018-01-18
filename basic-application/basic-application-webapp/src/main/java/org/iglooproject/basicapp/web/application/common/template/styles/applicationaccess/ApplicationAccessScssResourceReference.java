@@ -6,7 +6,6 @@ import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.HeaderItem;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.more.css.scss.ScssResourceReference;
-import org.retzlaff.select2.resource.Select2CssResourceReference;
 
 import com.google.common.collect.Lists;
 
@@ -24,7 +23,6 @@ public final class ApplicationAccessScssResourceReference extends ScssResourceRe
 	public List<HeaderItem> getDependencies() {
 		List<HeaderItem> dependencies = Lists.newArrayListWithExpectedSize(2);
 		dependencies.add(CssHeaderItem.forReference(JQueryUiCssResourceReference.get()));
-		dependencies.add(CssHeaderItem.forReference(Select2CssResourceReference.get()));
 		return dependencies;
 	}
 

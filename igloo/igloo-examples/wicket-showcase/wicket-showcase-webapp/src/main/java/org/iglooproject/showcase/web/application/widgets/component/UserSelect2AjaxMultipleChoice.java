@@ -4,9 +4,9 @@ import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.showcase.core.business.user.model.User;
-import org.retzlaff.select2.Select2MultipleChoice;
+import org.wicketstuff.select2.Select2MultiChoice;
 
-public class UserSelect2AjaxMultipleChoice extends Select2MultipleChoice<User> {
+public class UserSelect2AjaxMultipleChoice extends Select2MultiChoice<User> {
 	
 	private static final long serialVersionUID = -794964174746182964L;
 	
@@ -18,7 +18,7 @@ public class UserSelect2AjaxMultipleChoice extends Select2MultipleChoice<User> {
 //		getSettings().setNoMatchesKey("widgets.selectbox.noMatches");
 //		getSettings().setInputTooShortKey("widgets.selectbox.inputTooShort");
 //		getSettings().setSelectionTooBigKey("widgets.selectbox.selectionTooBig");
-		getSettings().setMaximumSelectionSize(3);
+		getSettings().setMaximumSelectionLength(3);
 	}
 
 }

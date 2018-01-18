@@ -46,7 +46,6 @@ import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormPanelMode;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
-import org.iglooproject.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.BindingModel;
@@ -165,7 +164,6 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 						.add(EmailAddressValidator.getInstance())
 						.add(new EmailUnicityValidator(getModel())),
 				new LocaleDropDownChoice("locale", BindingModel.of(getModel(), Bindings.user().locale()))
-						.setWidth(DropDownChoiceWidth.AUTO)
 						.setNullValid(true)
 						.setLabel(new ResourceModel("business.user.locale"))
 		);

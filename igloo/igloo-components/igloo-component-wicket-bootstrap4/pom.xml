@@ -61,13 +61,6 @@
 			<scope>provided</scope>
 		</dependency>
 		
-		<!-- Wicket Select2 -->
-		
-		<dependency>
-			<groupId>org.retzlaff</groupId>
-			<artifactId>wicket-select2</artifactId>
-		</dependency>
-		
 		<!-- SCSS -->
 		
 		<dependency>

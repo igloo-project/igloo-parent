@@ -7,14 +7,13 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.retzlaff.select2.Select2Settings;
-
-import com.google.common.collect.Lists;
-
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.markup.html.select2.GenericSelect2DropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.select2.util.Select2Utils;
 import org.iglooproject.wicket.more.rendering.BooleanRenderer;
+import org.wicketstuff.select2.Settings;
+
+import com.google.common.collect.Lists;
 
 public class BooleanDropDownSingleChoice extends GenericSelect2DropDownSingleChoice<Boolean> {
 
@@ -33,7 +32,7 @@ public class BooleanDropDownSingleChoice extends GenericSelect2DropDownSingleCho
 	}
 	
 	@Override
-	protected void fillSelect2Settings(Select2Settings settings) {
+	protected void fillSelect2Settings(Settings settings) {
 		super.fillSelect2Settings(settings);
 		Select2Utils.disableSearch(settings);
 	}

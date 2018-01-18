@@ -51,6 +51,14 @@
 			<artifactId>wiquery-jquery-ui</artifactId>
 		</dependency>
 		
+		
+		<!-- Wicketstuff Select2 -->
+		
+		<dependency>
+			<groupId>org.wicketstuff</groupId>
+			<artifactId>wicketstuff-select2</artifactId>
+		</dependency>
+		
 		<!--
 		Nécessaire car déclaré provided dans wiquery, ce qui ne suffit pas
 		See http://code.google.com/p/wiquery/issues/detail?id=148
@@ -59,13 +67,6 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
-		</dependency>
-		
-		<!-- Wicket Select2 -->
-		
-		<dependency>
-			<groupId>org.retzlaff</groupId>
-			<artifactId>wicket-select2</artifactId>
 		</dependency>
 		
 		<!-- LessCSS -->

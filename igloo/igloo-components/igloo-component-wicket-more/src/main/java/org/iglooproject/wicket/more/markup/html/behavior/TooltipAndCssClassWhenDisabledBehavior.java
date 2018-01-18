@@ -4,7 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.IModel;
-import org.retzlaff.select2.Select2Behavior;
+import org.wicketstuff.select2.Select2Behavior;
 
 public class TooltipAndCssClassWhenDisabledBehavior extends Behavior {
 

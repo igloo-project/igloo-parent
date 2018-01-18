@@ -9,7 +9,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.apache.wicket.util.string.Strings;
 import org.iglooproject.showcase.core.business.user.model.User;
-import org.retzlaff.select2.Select2Behavior;
+import org.wicketstuff.select2.Select2Behavior;
 
 public class UserSelect2ListMultipleChoice extends ListMultipleChoice<User> {
 	
@@ -30,12 +30,12 @@ public class UserSelect2ListMultipleChoice extends ListMultipleChoice<User> {
 	private User last;
 
 	private void addSelect2Behavior() {
-		Select2Behavior<User, User> behavior = Select2Behavior.forChoice(this);
-		behavior.getSettings().setPlaceholderKey("widgets.selectbox.empty");
-		behavior.getSettings().setNoMatchesKey("widgets.selectbox.noMatches");
-		behavior.getSettings().setInputTooShortKey("widgets.selectbox.inputTooShort");
-		behavior.getSettings().setSelectionTooBigKey("widgets.selectbox.selectionTooBig");
-		behavior.getSettings().setMaximumSelectionSize(3);
+		Select2Behavior behavior = Select2Behavior.forMultiChoice();
+//		behavior.getSettings().setPlaceholderKey("widgets.selectbox.empty");
+//		behavior.getSettings().setNoMatchesKey("widgets.selectbox.noMatches");
+//		behavior.getSettings().setInputTooShortKey("widgets.selectbox.inputTooShort");
+//		behavior.getSettings().setSelectionTooBigKey("widgets.selectbox.selectionTooBig");
+		behavior.getSettings().setMaximumSelectionLength(3);
 		add(behavior);
 	}
 	

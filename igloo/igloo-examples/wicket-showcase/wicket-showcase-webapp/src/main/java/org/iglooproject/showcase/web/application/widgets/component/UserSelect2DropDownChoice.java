@@ -8,7 +8,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.apache.wicket.util.string.Strings;
 import org.iglooproject.showcase.core.business.user.model.User;
-import org.retzlaff.select2.Select2Behavior;
+import org.wicketstuff.select2.Select2Behavior;
 
 public class UserSelect2DropDownChoice extends DropDownChoice<User> {
 	
@@ -29,10 +29,10 @@ public class UserSelect2DropDownChoice extends DropDownChoice<User> {
 	private User last;
 
 	private void addSelect2Behavior() {
-		Select2Behavior<User, User> behavior = Select2Behavior.forChoice(this);
-		behavior.getSettings().setPlaceholderKey("widgets.selectbox.empty");
-		behavior.getSettings().setNoMatchesKey("widgets.selectbox.noMatches");
-		behavior.getSettings().setInputTooShortKey("widgets.selectbox.inputTooShort");
+		Select2Behavior behavior = Select2Behavior.forSingleChoice();
+//		behavior.getSettings().setPlaceholderKey("widgets.selectbox.empty");
+//		behavior.getSettings().setNoMatchesKey("widgets.selectbox.noMatches");
+//		behavior.getSettings().setInputTooShortKey("widgets.selectbox.inputTooShort");
 		behavior.getSettings().setAllowClear(true);
 		add(behavior);
 		setNullValid(true);

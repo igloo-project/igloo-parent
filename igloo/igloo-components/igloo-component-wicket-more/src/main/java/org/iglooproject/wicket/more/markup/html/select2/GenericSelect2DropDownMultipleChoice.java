@@ -3,33 +3,27 @@ package org.iglooproject.wicket.more.markup.html.select2;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
-import org.retzlaff.select2.Select2Behavior;
-import org.retzlaff.select2.Select2Settings;
-
-import com.google.common.base.Supplier;
-
 import org.iglooproject.wicket.markup.html.form.ListMultipleChoice;
 import org.iglooproject.wicket.markup.html.model.ConcreteCollectionToCollectionWrapperModel;
 import org.iglooproject.wicket.more.markup.html.model.MultipleChoicesWrapperModel;
-import org.iglooproject.wicket.more.markup.html.select2.util.DropDownChoiceWidth;
 import org.iglooproject.wicket.more.markup.html.select2.util.IDropDownChoiceWidth;
 import org.iglooproject.wicket.more.markup.html.select2.util.Select2Utils;
+import org.iglooproject.wicket.more.util.model.Detachables;
+import org.wicketstuff.select2.Select2Behavior;
+import org.wicketstuff.select2.Settings;
+
+import com.google.common.base.Supplier;
 
 public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultipleChoice<T> {
-	
+
 	private static final long serialVersionUID = -6179538711780820058L;
-	
-	private IDropDownChoiceWidth width = DropDownChoiceWidth.AUTO;
-	
+
 	private MultipleChoicesWrapperModel<T> choicesWrapperModel;
-	
-	private final Select2Behavior<T, T> select2Behavior;
-	
+
+	private final Select2Behavior select2Behavior;
+
 	/**
 	 * @param id The wicket ID.
 	 * @param collectionModel The model containing the selected elements.
@@ -49,11 +43,11 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 		setSelectedObjectForcedInChoices(true);
 		setChoiceRenderer(renderer);
 		
-		select2Behavior = Select2Behavior.forChoice(this);
+		select2Behavior = Select2Behavior.forMultiChoice();
 		fillSelect2Settings(select2Behavior.getSettings());
 		add(select2Behavior);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected void ensureChoicesModelIsWrapped() {
 		/*
@@ -70,30 +64,7 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 			}
 		}
 	}
-	
-	@Override
-	protected void onInitialize() {
-		ensureChoicesModelIsWrapped();
-		
-		super.onInitialize();
-		
-		add(new AttributeModifier("style", new LoadableDetachableModel<String>() {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected String load() {
-				return "width: " + width.getWidth();
-			}
-		}) {
-			private static final long serialVersionUID = 1L;
 
-			@Override
-			public boolean isEnabled(Component component) {
-				return width != null;
-			}
-		});
-	}
-	
 	@Override
 	protected void onConfigure() {
 		ensureChoicesModelIsWrapped();
@@ -104,25 +75,32 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 		}
 	}
 
-	protected void fillSelect2Settings(Select2Settings settings) {
+	protected void fillSelect2Settings(Settings settings) {
 		Select2Utils.setDefaultSettings(settings);
 	}
-	
-	protected final Select2Settings getSettings() {
+
+	public final Settings getSettings() {
 		return select2Behavior.getSettings();
 	}
-	
+
 	public GenericSelect2DropDownMultipleChoice<T> setWidth(IDropDownChoiceWidth width) {
-		this.width = width;
+		getSettings().setWidth(width.getWidth());
 		return this;
 	}
-	
+
 	public boolean isSelectedObjectForcedInChoices() {
 		return choicesWrapperModel.isSelectedObjectForcedInChoices();
 	}
-	
+
 	public GenericSelect2DropDownMultipleChoice<T> setSelectedObjectForcedInChoices(boolean selectedObjectForcedInChoices) {
 		choicesWrapperModel.setSelectedObjectForcedInChoices(selectedObjectForcedInChoices);
 		return this;
 	}
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		Detachables.detach(choicesWrapperModel);
+	}
+
 }
