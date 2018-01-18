@@ -49,7 +49,7 @@
 		
 		<igloo.spring-security.version>4.2.3.RELEASE</igloo.spring-security.version>
 		
-		<igloo.spring-ldap.version>2.3.1.RELEASE</igloo.spring-ldap.version>
+		<igloo.spring-ldap.version>2.3.2.RELEASE</igloo.spring-ldap.version>
 		
 		<igloo.hibernate-search.version>5.7.0.Final</igloo.hibernate-search.version>
 		<igloo.lucene.version>5.5.4</igloo.lucene.version>
