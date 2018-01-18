@@ -17,7 +17,7 @@
 	<properties>
 		<igloo.version>${project.version}</igloo.version>
 		
-		<igloo.spring.version>4.3.13.RELEASE</igloo.spring.version>
+		<igloo.spring.version>5.0.2.RELEASE</igloo.spring.version>
 		<igloo.aspectj.version>1.8.13</igloo.aspectj.version>
 		
 		<igloo.hibernate-core.version>5.2.12.Final</igloo.hibernate-core.version>
