@@ -1,4 +1,4 @@
-package org.iglooproject.basicapp.web.application.common.template.styles.applicationaccess;
+package org.iglooproject.basicapp.web.application.common.template.resources.styles.applicationaccess;
 
 import java.util.List;
 

@@ -36,7 +36,7 @@ import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
 import org.iglooproject.basicapp.web.application.common.component.EnvironmentPanel;
-import org.iglooproject.basicapp.web.application.common.template.styles.StylesScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.StylesScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.AdministrationUserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;

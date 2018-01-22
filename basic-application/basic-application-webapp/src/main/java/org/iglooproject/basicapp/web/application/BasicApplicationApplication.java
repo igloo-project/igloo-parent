@@ -9,6 +9,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.iglooproject.basicapp.core.business.common.model.PostalCode;
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
@@ -26,10 +27,11 @@ import org.iglooproject.basicapp.web.application.common.converter.PostalCodeConv
 import org.iglooproject.basicapp.web.application.common.renderer.AuthorityRenderer;
 import org.iglooproject.basicapp.web.application.common.renderer.UserGroupRenderer;
 import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
-import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
-import org.iglooproject.basicapp.web.application.common.template.styles.StylesScssResourceReference;
-import org.iglooproject.basicapp.web.application.common.template.styles.applicationaccess.ApplicationAccessScssResourceReference;
-import org.iglooproject.basicapp.web.application.common.template.styles.old.notification.NotificationLessCssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.favicon.ApplicationFaviconPackage;
+import org.iglooproject.basicapp.web.application.common.template.resources.BasicApplicationResourcesPackage;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.StylesScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.applicationaccess.ApplicationAccessScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.old.notification.NotificationLessCssResourceReference;
 import org.iglooproject.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import org.iglooproject.basicapp.web.application.history.renderer.HistoryValueRenderer;
 import org.iglooproject.basicapp.web.application.navigation.page.HomePage;
@@ -140,7 +142,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		converterLocator.set(PostalCode.class, PostalCodeConverter.get());
 		
 		converterLocator.set(Node.class, INodeRenderer.get());
-		
+		https://realfavicongenerator.net/
 		return new HibernateProxyAwareConverterLocator(converterLocator);
 	}
 
@@ -196,7 +198,18 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 
 	@Override
 	protected void mountApplicationResources() {
-		mountStaticResourceDirectory("/application", MainTemplate.class);
+		mountStaticResourceDirectory("/application", BasicApplicationResourcesPackage.class);
+		
+		// See favicon generator https://realfavicongenerator.net/
+		mountResource("/android-chrome-192x192.png", new PackageResourceReference(ApplicationFaviconPackage.class, "android-chrome-192x192.png"));
+		mountResource("/apple-touch-icon.png", new PackageResourceReference(ApplicationFaviconPackage.class, "apple-touch-icon.png"));
+		mountResource("/browserconfig.xml", new PackageResourceReference(ApplicationFaviconPackage.class, "browserconfig.xml"));
+		mountResource("/favicon-16x16.png", new PackageResourceReference(ApplicationFaviconPackage.class, "favicon-16x16.png"));
+		mountResource("/favicon-32x32.png", new PackageResourceReference(ApplicationFaviconPackage.class, "favicon-32x32.png"));
+		mountResource("/favicon.ico", new PackageResourceReference(ApplicationFaviconPackage.class, "favicon.ico"));
+		mountResource("/manifest.json", new PackageResourceReference(ApplicationFaviconPackage.class, "manifest.json"));
+		mountResource("/mstile-150x150.png", new PackageResourceReference(ApplicationFaviconPackage.class, "mstile-150x150.png"));
+		mountResource("/safari-pinned-tab.svg", new PackageResourceReference(ApplicationFaviconPackage.class, "safari-pinned-tab.svg"));
 	}
 
 	@Override

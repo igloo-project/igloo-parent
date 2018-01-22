@@ -1,7 +1,6 @@
 package org.iglooproject.basicapp.web.application.security.password.template;
 
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.basicapp.web.application.common.template.ApplicationAccessTemplate;
 
 public abstract class SecurityPasswordTemplate extends ApplicationAccessTemplate {

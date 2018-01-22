@@ -5,7 +5,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
 import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDataPage;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
