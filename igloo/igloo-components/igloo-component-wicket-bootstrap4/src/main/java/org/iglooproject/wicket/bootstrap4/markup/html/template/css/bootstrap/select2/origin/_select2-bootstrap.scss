@@ -1,5 +1,5 @@
 /**
- * From https://github.com/angel-vladov/select2-bootstrap-theme/blob/50fb555aa3aec116ebc0a881269d36d0a63f19e6/src/select2-bootstrap.scss
+ * From https://github.com/angel-vladov/select2-bootstrap-theme/blob/8ff04c0d05d36a547ea17e9d9082b67e2a62aa91/src/select2-bootstrap.scss
  */
 
 //
@@ -398,13 +398,13 @@ $s2bs-form-control-transition: $input-transition !default;
    */
 
   .select2-dropdown {
-   box-shadow: $s2bs-dropdown-box-shadow;
+    @include box-shadow($s2bs-dropdown-box-shadow);
     border-color: $s2bs-input-border-focus;
     overflow-x: hidden;
     margin-top: -1px;
 
     &--above {
-     box-shadow: $s2bs-dropdown-box-shadow-above;
+      @include box-shadow($s2bs-dropdown-box-shadow-above);
       margin-top: 1px;
     }
   }
@@ -805,7 +805,7 @@ $s2bs-form-control-transition: $input-transition !default;
   flex: 1 1 auto;
   position: relative;
   z-index: 2;
-  width: 100%;
+  width: 1%;
   margin-bottom: 0;
 
   > .selection {
@@ -836,8 +836,10 @@ $s2bs-form-control-transition: $input-transition !default;
    */
 
   &,
-  .input-group-btn,
-  .input-group-btn .btn {
+  .input-group-append,
+  .input-group-prepend,
+  .input-group-append .btn,
+  .input-group-prepend .btn {
     vertical-align: top;
   }
 }
