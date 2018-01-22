@@ -42,17 +42,13 @@ public class CitySearchPanel extends Panel {
 		form.add(
 				new TextField<String>("label", dataProvider.getLabelModel(), String.class)
 						.setLabel(new ResourceModel("business.listItem.label"))
-						.add(
-								new LabelPlaceholderBehavior()
-						),
+						.add(new LabelPlaceholderBehavior()),
 				new TextField<String>("postalCode", dataProvider.getCodeModel(), String.class)
 						.setLabel(new ResourceModel("business.postalCode"))
-						.add(
-								new LabelPlaceholderBehavior()
-						),
-				new EnumDropDownSingleChoice<EnabledFilter>("enabledFilter",
-						dataProvider.getEnabledFilterModel(), EnabledFilter.class)
+						.add(new LabelPlaceholderBehavior()),
+				new EnumDropDownSingleChoice<EnabledFilter>("enabledFilter", dataProvider.getEnabledFilterModel(), EnabledFilter.class)
 						.setLabel(new ResourceModel("business.listItem.enabledState"))
+						.add(new LabelPlaceholderBehavior())
 		);
 	}
 }
