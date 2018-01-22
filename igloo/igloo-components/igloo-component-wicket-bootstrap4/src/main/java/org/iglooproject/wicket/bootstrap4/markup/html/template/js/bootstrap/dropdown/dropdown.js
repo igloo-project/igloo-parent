@@ -1,7 +1,3 @@
-import $ from 'jquery'
-import Popper from 'popper.js'
-import Util from './util'
-
 /**
  * --------------------------------------------------------------------------
  * Bootstrap (v4.0.0): dropdown.js
@@ -466,5 +462,3 @@ const Dropdown = (($) => {
 
   return Dropdown
 })($, Popper)
-
-export default Dropdown

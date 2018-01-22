@@ -1,6 +1,3 @@
-import $ from 'jquery'
-import Util from './util'
-
 /**
  * --------------------------------------------------------------------------
  * Bootstrap (v4.0.0): carousel.js
@@ -514,5 +511,3 @@ const Carousel = (($) => {
 
   return Carousel
 })($)
-
-export default Carousel

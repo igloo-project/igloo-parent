@@ -1,6 +1,3 @@
-import $ from 'jquery'
-import Util from './util'
-
 /**
  * --------------------------------------------------------------------------
  * Bootstrap (v4.0.0): collapse.js
@@ -399,5 +396,3 @@ const Collapse = (($) => {
 
   return Collapse
 })($)
-
-export default Collapse

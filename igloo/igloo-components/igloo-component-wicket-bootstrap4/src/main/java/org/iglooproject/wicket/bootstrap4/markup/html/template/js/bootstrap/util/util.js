@@ -1,5 +1,3 @@
-import $ from 'jquery'
-
 /**
  * --------------------------------------------------------------------------
  * Bootstrap (v4.0.0): util.js
@@ -157,5 +155,3 @@ const Util = (($) => {
 
   return Util
 })($)
-
-export default Util

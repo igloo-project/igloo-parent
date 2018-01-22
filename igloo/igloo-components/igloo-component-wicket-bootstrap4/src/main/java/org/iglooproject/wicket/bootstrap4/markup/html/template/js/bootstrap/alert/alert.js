@@ -1,6 +1,3 @@
-import $ from 'jquery'
-import Util from './util'
-
 /**
  * --------------------------------------------------------------------------
  * Bootstrap (v4.0.0): alert.js
@@ -177,5 +174,3 @@ const Alert = (($) => {
 
   return Alert
 })($)
-
-export default Alert

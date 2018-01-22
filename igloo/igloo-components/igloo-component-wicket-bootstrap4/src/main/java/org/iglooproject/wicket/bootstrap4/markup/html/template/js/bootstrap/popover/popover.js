@@ -1,6 +1,3 @@
-import $ from 'jquery'
-import Tooltip from './tooltip'
-
 /**
  * --------------------------------------------------------------------------
  * Bootstrap (v4.0.0): popover.js
@@ -184,5 +181,3 @@ const Popover = (($) => {
 
   return Popover
 })($)
-
-export default Popover

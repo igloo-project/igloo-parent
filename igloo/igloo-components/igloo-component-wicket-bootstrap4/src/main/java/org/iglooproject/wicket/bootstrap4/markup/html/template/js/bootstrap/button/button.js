@@ -1,5 +1,3 @@
-import $ from 'jquery'
-
 /**
  * --------------------------------------------------------------------------
  * Bootstrap (v4.0.0): button.js
@@ -171,5 +169,3 @@ const Button = (($) => {
 
   return Button
 })($)
-
-export default Button
