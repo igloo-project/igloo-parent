@@ -31,7 +31,6 @@ public class UserSearchPanel<U extends User> extends Panel {
 						.add(
 								new TextField<String>("name", dataProvider.getNameModel())
 										.setLabel(new ResourceModel("administration.user.search.name"))
-										.setRequired(true)
 										.add(new LabelPlaceholderBehavior()),
 								new UserGroupDropDownSingleChoice("userGroup", dataProvider.getGroupModel())
 										.setLabel(new ResourceModel("administration.user.search.group"))
