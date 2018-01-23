@@ -11,7 +11,7 @@ import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.comp
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModal;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalBackdrop;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalManagerStatement;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalStatement;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 public class WorkInProgressPopup extends AbstractModalPopupPanel<String> {
@@ -39,9 +39,9 @@ public class WorkInProgressPopup extends AbstractModalPopupPanel<String> {
 	}
 	
 	public void updateAjaxAttributes(AjaxRequestAttributes attributes) {
-		CharSequence hideIfNotRedirecting = doIfNotRedirecting(BootstrapModalManagerStatement.hide(getContainer()));
+		CharSequence hideIfNotRedirecting = doIfNotRedirecting(BootstrapModalStatement.hide(getContainer()));
 		AjaxCallListener listener = new AjaxCallListener()
-				.onBeforeSend(BootstrapModalManagerStatement.show(getContainer(), getBootstrapModal()).render())
+				.onBeforeSend(BootstrapModalStatement.show(getContainer(), getBootstrapModal()).render())
 				.onComplete(hideIfNotRedirecting);
 		attributes.getAjaxCallListeners().add(listener);
 	}

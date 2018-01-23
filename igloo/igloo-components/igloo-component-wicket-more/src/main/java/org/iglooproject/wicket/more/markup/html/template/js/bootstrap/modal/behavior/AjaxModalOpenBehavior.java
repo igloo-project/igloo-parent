@@ -14,7 +14,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.IBootstrapModalModule;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.IAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalEvent;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalManagerStatement;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalStatement;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.events.EventLabel;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
@@ -74,7 +74,6 @@ public class AjaxModalOpenBehavior extends AjaxEventBehavior {
 		if (onModalStart != null) {
 			onBeforeStatement.append(onModalStart.render(true));
 		}
-		onBeforeStatement.append(BootstrapModalManagerStatement.loading().render(true));
 		openModalListener.onBefore(onBeforeStatement.render());
 		
 		// après retour ajax, on exécute le onModalComplete puis on affiche la popup
@@ -83,10 +82,9 @@ public class AjaxModalOpenBehavior extends AjaxEventBehavior {
 		if (onModalComplete != null) {
 			onSuccessStatement.append(onModalComplete.render(true));
 		}
-		onSuccessStatement.append(BootstrapModalManagerStatement.show(modal.getContainer(), modal.getBootstrapModal()).render(true));
+		onSuccessStatement.append(BootstrapModalStatement.show(modal.getContainer(), modal.getBootstrapModal()).render(true));
 		openModalListener.onSuccess(onSuccessStatement.render());
 		
-		openModalListener.onFailure(BootstrapModalManagerStatement.removeLoading().render());
 		
 		return openModalListener;
 	}

@@ -6,7 +6,7 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalManagerStatement;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalStatement;
 
 public class OneParameterModalOpenAjaxAction<T> extends AbstractOneParameterAjaxAction<T> {
 
@@ -33,9 +33,7 @@ public class OneParameterModalOpenAjaxAction<T> extends AbstractOneParameterAjax
 
 	protected IAjaxCallListener getOpenModalCallListener() {
 		AjaxCallListener openModalListener = new AjaxCallListener();
-		openModalListener.onBefore(BootstrapModalManagerStatement.loading().render(true));
-		openModalListener.onSuccess(BootstrapModalManagerStatement.show(modal.getContainer(), modal.getBootstrapModal()).render(true));
-		openModalListener.onFailure(BootstrapModalManagerStatement.removeLoading().render());
+		openModalListener.onSuccess(BootstrapModalStatement.show(modal.getContainer(), modal.getBootstrapModal()).render(true));
 		return openModalListener;
 	}
 

@@ -10,7 +10,7 @@
 .page-section {
 	> .page-container {
 		@extend .container;
-		margin-top: 1rem;
+		padding-top: 1rem;
 		min-height: 450px;
 		
 		> .page-content {
@@ -55,8 +55,8 @@
 .footer-section {
 	> .footer-container {
 		@extend .container;
-		margin-top: 1rem;
-		margin-bottom: 1rem;
+		padding-top: 1rem;
+		padding-bottom: 1rem;
 		
 		.footer {
 			@extend .bg-light;

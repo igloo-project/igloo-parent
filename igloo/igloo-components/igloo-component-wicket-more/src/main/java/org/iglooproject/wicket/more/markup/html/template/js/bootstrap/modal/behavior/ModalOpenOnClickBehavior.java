@@ -9,7 +9,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.IBootstrapModalModule;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.IModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalEvent;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalManagerStatement;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalStatement;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryAbstractBehavior;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
@@ -50,7 +50,7 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 				if (onModalStart != null) {
 					jsStatement.append(onModalStart.render(true));
 				}
-				jsStatement.append(BootstrapModalManagerStatement.show(modal.getContainer(), modal.getBootstrapModal()).render(true));
+				jsStatement.append(BootstrapModalStatement.show(modal.getContainer(), modal.getBootstrapModal()).render(true));
 				if (onModalComplete != null) {
 					jsStatement.append(onModalComplete.render(true));
 				}

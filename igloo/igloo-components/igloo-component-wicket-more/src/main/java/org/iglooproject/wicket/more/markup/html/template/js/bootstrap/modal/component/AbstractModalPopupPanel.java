@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.Markup;
 import org.apache.wicket.markup.MarkupFactory;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -13,12 +12,14 @@ import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.IBootstrapModalModule;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.ModalOpenOnClickBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModal;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalBackdrop;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalManagerStatement;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalStatement;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IModalPopupPanel {
@@ -36,7 +37,11 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 
 	private final WebMarkupContainer container;
 
+	private final WebMarkupContainer dialog;
+
 	private BootstrapModal bootstrapModal;
+
+	private IModel<String> dialogCssClassModel;
 
 	public AbstractModalPopupPanel(String id, IModel<? extends O> model) {
 		super(id, model);
@@ -44,9 +49,17 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		
 		// doit être présent dès le début pour le bon fonctionnement de prepareLink
 		container = new WebMarkupContainer("container");
-		container.setOutputMarkupId(true);
-		container.add(new AttributeAppender("class", getCssClassNamesModel(), " "));
-		add(container);
+		dialog = new WebMarkupContainer("dialog");
+		
+		add(
+				container
+						.add(
+								dialog
+										.add(new ClassAttributeAppender(dialogCssClassModel))
+						)
+						.add(new ClassAttributeAppender(getCssClassNamesModel()))
+						.setOutputMarkupId(true)
+		);
 	}
 
 	/**
@@ -83,9 +96,9 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	protected void onInitialize() {
 		super.onInitialize();
 		
-		container.add(createHeader(HEADER_WICKET_ID));
-		container.add(createBody(BODY_WICKET_ID));
-		container.add(createFooter(FOOTER_WICKET_ID));
+		dialog.add(createHeader(HEADER_WICKET_ID));
+		dialog.add(createBody(BODY_WICKET_ID));
+		dialog.add(createFooter(FOOTER_WICKET_ID));
 	}
 
 	protected abstract Component createHeader(String wicketId);
@@ -95,15 +108,15 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	protected abstract Component createFooter(String wicketId);
 
 	protected final Component getHeader() {
-		return container.get(HEADER_WICKET_ID);
+		return dialog.get(HEADER_WICKET_ID);
 	}
 
 	protected final Component getBody() {
-		return container.get(BODY_WICKET_ID);
+		return dialog.get(BODY_WICKET_ID);
 	}
 
 	protected final Component getFooter() {
-		return container.get(FOOTER_WICKET_ID);
+		return dialog.get(FOOTER_WICKET_ID);
 	}
 
 	@Override
@@ -133,6 +146,15 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	 */
 	protected IModel<String> getCssClassNamesModel() {
 		return Model.of();
+	}
+
+	public AbstractModalPopupPanel<O> dialogCssClass(String dialogCssClass) {
+		return dialogCssClass(Model.of(dialogCssClass));
+	}
+
+	public AbstractModalPopupPanel<O> dialogCssClass(IModel<String> dialogCssClassModel) {
+		this.dialogCssClassModel = dialogCssClassModel;
+		return this;
 	}
 
 	/**
@@ -167,7 +189,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	 * Permet de récupérer le code de fermeture de la popup.
 	 */
 	public JsStatement closeStatement() {
-		return BootstrapModalManagerStatement.hide(getContainer());
+		return BootstrapModalStatement.hide(getContainer());
 	}
 
 	protected void addCancelBehavior(AbstractLink link) {
@@ -190,6 +212,12 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		bootstrapModal.setKeyboard(false);
 		bootstrapModal.setBackdrop(BootstrapModalBackdrop.STATIC);
 		return this;
+	}
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		Detachables.detach(dialogCssClassModel);
 	}
 
 }
