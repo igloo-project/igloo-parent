@@ -12,7 +12,6 @@ $fa-font-family:					'Font Awesome 5 Free';
 $fa-font-weight:					900;
 
 // Z-index master list
-
 $zindex-dropdown:                   1000 !default;
 $zindex-sticky:                     1020 !default;
 $zindex-fixed:                      1030 !default;
@@ -21,9 +20,6 @@ $zindex-modal:                      1050 !default;
 $zindex-popover:                    1060 !default;
 $zindex-tooltip:                    1070 !default;
 
-//$zindex-modal-backdrop:				1011;
-//$zindex-modal-background:			1012;
-//$zindex-modal:						1013;
 $zindex-alert-global:				1100 !default;
 $zindex-alert-global-close:			1101 !default;
 $zindex-scroll-to-top:				1035 !default;

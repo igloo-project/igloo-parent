@@ -106,6 +106,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
 		add(createHeadPageTitle("headPageTitle"));
 		
+		// Navbar
 		add(new ListView<NavigationMenuItem>("mainNav", getMainNav()) {
 			private static final long serialVersionUID = 1L;
 			

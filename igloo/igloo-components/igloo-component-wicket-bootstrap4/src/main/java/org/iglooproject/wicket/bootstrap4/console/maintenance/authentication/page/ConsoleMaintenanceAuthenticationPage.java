@@ -1,9 +1,6 @@
 package org.iglooproject.wicket.bootstrap4.console.maintenance.authentication.page;
 
-import org.apache.wicket.Application;
-import org.apache.wicket.markup.head.CssHeaderItem;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -16,12 +13,11 @@ import org.iglooproject.jpa.security.business.person.model.GenericUser;
 import org.iglooproject.jpa.security.business.person.service.IGenericUserService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
-import org.iglooproject.wicket.bootstrap4.console.template.ConsoleTemplate;
-import org.iglooproject.wicket.bootstrap4.console.template.style.ConsoleSignInLessCssResourceReference;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 
 public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> extends ConsoleMaintenanceTemplate {
@@ -41,7 +37,7 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> e
 	public ConsoleMaintenanceAuthenticationPage(PageParameters parameters) {
 		super(parameters);
 		
-		addHeadPageTitleKey("console.maintenance.authentication");
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.authentication")));
 		
 		Form<Void> signInForm = new Form<Void>("signInForm") {
 			private static final long serialVersionUID = 1L;
@@ -72,17 +68,9 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> e
 		userNameField.setOutputMarkupId(true);
 		signInForm.add(userNameField);
 	}
-	
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		
-		response.render(JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference()));
-		response.render(CssHeaderItem.forReference(ConsoleSignInLessCssResourceReference.get()));
-	}
 
 	@Override
-	protected Class<? extends ConsoleTemplate> getMenuItemPageClass() {
+	protected Class<? extends WebPage> getSecondMenuPage() {
 		return ConsoleMaintenanceAuthenticationPage.class;
 	}
 

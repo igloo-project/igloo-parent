@@ -4,9 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.Session;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.notification.service.INotificationService;
@@ -17,9 +18,11 @@ import org.iglooproject.basicapp.web.application.console.notification.demo.util.
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
-import org.iglooproject.wicket.bootstrap4.console.template.ConsoleTemplate;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
+import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.repeater.collection.SpecificModelCollectionView;
 import org.iglooproject.wicket.more.util.model.SequenceProviders;
 import org.slf4j.Logger;
@@ -48,7 +51,7 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 	public ConsoleNotificationDemoIndexPage(PageParameters parameters) {
 		super(parameters);
 		
-		addHeadPageTitleKey("console.notifications");
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.notifications")));
 		
 		add(new Link<Void>("sendExample") {
 			private static final long serialVersionUID = 1L;
@@ -64,36 +67,33 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 			}
 		});
 		
-		add(new SpecificModelCollectionView<INotificationContentDescriptor, NotificationDemoEntry>(
-				"notifications", SequenceProviders.fromItemModels(createDemoEntries())) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected void populateItem(SpecificModelItem item) {
-				final NotificationDemoEntry entry = item.getSpecificModel();
-				Link<Void> link = new Link<Void>("link") {
+		add(
+				new SpecificModelCollectionView<INotificationContentDescriptor, NotificationDemoEntry>(
+						"notifications", SequenceProviders.fromItemModels(createDemoEntries())) {
 					private static final long serialVersionUID = 1L;
 					@Override
-					public void onClick() {
-						try {
-							setResponsePage(new NotificationDemoPage(entry));
-						} catch (NotificationContentRenderingException e) {
-							LOGGER.error("Error while instanciating notification demo page", e);
-							Session.get().error(getString("common.error.unexpected"));
-						}
+					protected void populateItem(SpecificModelItem item) {
+						final NotificationDemoEntry entry = item.getSpecificModel();
+						Link<Void> link = new Link<Void>("link") {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void onClick() {
+								try {
+									setResponsePage(new NotificationDemoPage(entry));
+								} catch (NotificationContentRenderingException e) {
+									LOGGER.error("Error while instanciating notification demo page", e);
+									Session.get().error(getString("common.error.unexpected"));
+								}
+							}
+						};
+						link.add(new Label("label", entry.getLabelModel()));
+						item.add(link);
 					}
-				};
-				link.add(new Label("label", entry.getLabelModel()));
-				item.add(link);
-			}
-		});
+				}
+						.add(Condition.collectionModelNotEmpty(SequenceProviders.fromItemModels(createDemoEntries())).thenShow())
+		);
 		
-		add(new WebMarkupContainer("emptyList") {
-			private static final long serialVersionUID = 6700720373087584498L;
-			@Override
-			public boolean isVisible() {
-				return createDemoEntries().isEmpty();
-			}
-		});
+		add(new PlaceholderContainer("emptyList").condition(Condition.collectionModelNotEmpty(SequenceProviders.fromItemModels(createDemoEntries()))));
 	}
 
 	private List<NotificationDemoEntry> createDemoEntries() {
@@ -108,14 +108,10 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 				// Add new demo entries here
 		);
 	}
-	
+
 	@Override
-	protected Class<? extends ConsoleTemplate> getMenuSectionPageClass() {
+	protected Class<? extends WebPage> getSecondMenuPage() {
 		return ConsoleNotificationDemoIndexPage.class;
 	}
-	
-	@Override
-	protected Class<? extends ConsoleTemplate> getMenuItemPageClass() {
-		return ConsoleNotificationDemoIndexPage.class;
-	}
+
 }

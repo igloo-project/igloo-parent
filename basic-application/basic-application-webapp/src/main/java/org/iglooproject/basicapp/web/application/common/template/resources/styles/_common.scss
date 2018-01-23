@@ -11,6 +11,7 @@
 	> .page-container {
 		@extend .container;
 		padding-top: 1rem;
+		padding-bottom: 1rem;
 		min-height: 450px;
 		
 		> .page-content {
@@ -59,7 +60,7 @@
 		padding-bottom: 1rem;
 		
 		.footer {
-			@extend .bg-light;
+			background-color: $gray-200;
 			
 			padding: 1rem;
 			

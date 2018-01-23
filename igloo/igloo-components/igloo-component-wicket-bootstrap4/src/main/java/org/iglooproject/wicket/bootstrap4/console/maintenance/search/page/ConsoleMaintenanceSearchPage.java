@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.SubmitLink;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -20,8 +21,8 @@ import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.bootstrap4.console.common.component.JavaClassesListMultipleChoice;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
-import org.iglooproject.wicket.bootstrap4.console.template.ConsoleTemplate;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.autosize.AutosizeBehavior;
+import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +40,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 	public ConsoleMaintenanceSearchPage(PageParameters parameters) {
 		super(parameters);
 		
-		addHeadPageTitleKey("console.maintenance.search");
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.search")));
 		
 		// Réindexation complète
 		add(new Link<Void>("reindexContentLink") {
@@ -128,9 +129,10 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 			reindexClassesForm.setVisible(false);
 		}
 	}
-	
+
 	@Override
-	protected Class<? extends ConsoleTemplate> getMenuItemPageClass() {
+	protected Class<? extends WebPage> getSecondMenuPage() {
 		return ConsoleMaintenanceSearchPage.class;
 	}
+
 }

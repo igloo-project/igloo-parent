@@ -6,6 +6,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -23,7 +24,6 @@ import org.iglooproject.wicket.bootstrap4.console.maintenance.task.component.Tas
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.component.TaskResultPanel;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.component.TaskStatusPanel;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
-import org.iglooproject.wicket.bootstrap4.console.template.ConsoleTemplate;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.basic.EnumCoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -36,6 +36,7 @@ import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
+import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.util.DatePattern;
@@ -75,7 +76,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		MAPPER.map(queuedTaskHolderModel).extractSafely(parameters, ConsoleMaintenanceTaskListPage.linkDescriptor(),
 				getString("common.notExists"));
 		
-		addHeadPageTitleKey("console.maintenance.tasks");
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.tasks")));
 		
 		WebMarkupContainer statusContainer = new WebMarkupContainer("statusContainer") {
 			private static final long serialVersionUID = 1L;
@@ -247,7 +248,8 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 	}
 
 	@Override
-	protected Class<? extends ConsoleTemplate> getMenuItemPageClass() {
-		return ConsoleMaintenanceTaskListPage.class;
+	protected Class<? extends WebPage> getSecondMenuPage() {
+		return ConsoleMaintenanceTaskDescriptionPage.class;
 	}
+
 }

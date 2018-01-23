@@ -6,4 +6,15 @@
  *          are not supported either.
  */
 
-@body-bg: #FFF;
+body {
+	font-family: $font-family-base;
+	font-size: $font-size-base;
+	line-height: $line-height-base;
+	color: $body-color;
+	background-color: $body-bg;
+}
+
+a {
+	color: $link-color;
+	text-decoration: none;
+}

@@ -12,6 +12,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.time.Time;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.wicket.more.css.ICssResourceReference;
+import org.iglooproject.wicket.more.notification.service.impl.SimplePhlocCssHtmlNotificationCssRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,17 +24,13 @@ import com.helger.css.ECSSVersion;
 import com.helger.css.decl.CascadingStyleSheet;
 import com.helger.css.reader.CSSReader;
 
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.wicket.more.css.lesscss.LessCssResourceReference;
-import org.iglooproject.wicket.more.notification.service.impl.SimplePhlocCssHtmlNotificationCssRegistry;
-
 public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotificationCssService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PhlocCssHtmlNotificationCssServiceImpl.class);
 	
-	private final Map<LessCssResourceReference, Pair<IHtmlNotificationCssRegistry, Time>> registryCache = Maps.newHashMap();
+	private final Map<ICssResourceReference, Pair<IHtmlNotificationCssRegistry, Time>> registryCache = Maps.newHashMap();
 	
-	private final Map<String, LessCssResourceReference> registrySpecs = Maps.newHashMap();
+	private final Map<String, ICssResourceReference> registrySpecs = Maps.newHashMap();
 
 	@Override
 	public synchronized boolean hasRegistry(String componentVariation) {
@@ -40,7 +39,7 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 	
 	@Override
 	public synchronized IHtmlNotificationCssRegistry getRegistry(String componentVariation) throws ServiceException {
-		LessCssResourceReference cssResourceReference = registrySpecs.get(componentVariation);
+		ICssResourceReference cssResourceReference = registrySpecs.get(componentVariation);
 		if (cssResourceReference == null) {
 			return null;
 		}
@@ -48,7 +47,7 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 		return getRegistry(cssResourceReference);
 	}
 
-	private synchronized IHtmlNotificationCssRegistry getRegistry(LessCssResourceReference cssResourceReference) throws ServiceException {
+	private synchronized IHtmlNotificationCssRegistry getRegistry(ICssResourceReference cssResourceReference) throws ServiceException {
 		IResourceStream resourceStream = cssResourceReference.getResource().getResourceStream();
 		if (resourceStream == null) { // NOSONAR findbugs:RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE
 			throw new ServiceException("Could not retrieve resource stream for resource reference " + cssResourceReference + " when accessing a notification CSS style registry");
@@ -66,7 +65,7 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 	}
 	
 	@Override
-	public synchronized void registerStyles(String componentVariation, LessCssResourceReference cssResourceReference) throws ServiceException {
+	public synchronized void registerStyles(String componentVariation, ICssResourceReference cssResourceReference) throws ServiceException {
 		if (registrySpecs.containsKey(componentVariation)) {
 			LOGGER.warn("Overrding Html notification style registry for component variation " + componentVariation);
 		}

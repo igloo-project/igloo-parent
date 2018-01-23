@@ -2,27 +2,27 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div class="console-section">
-			<h2>
-				<button type="button" wicket:id="sendExample" class="btn btn-primary pull-right">
-					<span class="fa fa-send" />
-					<wicket:message key="console.notifications.example.send" />
-				</button>
-				<wicket:message key="console.notifications" />
-			</h2>
-			<div class="container">
-				<div class="row">
-					<div class="list-group col-sm-6">
-						<wicket:container wicket:id="notifications">
-							<a wicket:id="link" class="list-group-item">
-								<i class="fa fa-share-square-o" />
-								<span wicket:id="label" />
-							</a>
-						</wicket:container>
-					</div>
+			<h2><wicket:message key="console.notifications" /></h2>
+			
+			<button type="button" wicket:id="sendExample" class="btn btn-primary mb-3">
+				<span class="fa fa-paper-plane" />
+				<wicket:message key="console.notifications.example.send" />
+			</button>
+			
+			<div class="row">
+				<div class="col-sm-6">
+					<wicket:enclosure child="notifications">
+						<div class="list-group">
+							<wicket:container wicket:id="notifications">
+								<a wicket:id="link" class="list-group-item">
+									<span class="fa fa-share-square" />
+									<span wicket:id="label" />
+								</a>
+							</wicket:container>
+						</div>
+					</wicket:enclosure>
+					<div wicket:id="emptyList" class="alert alert-secondary"><wicket:message key="common.emptyList" /></div>
 				</div>
 			</div>
-			<div wicket:id="emptyList"><wicket:message key="common.emptyList" /></div>
-		</div>
 	</wicket:extend>
 </html>

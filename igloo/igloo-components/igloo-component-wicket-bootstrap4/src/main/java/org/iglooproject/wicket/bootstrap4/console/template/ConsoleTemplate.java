@@ -6,6 +6,7 @@ import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOL
 
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -15,8 +16,6 @@ import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Fragment;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -28,27 +27,24 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.bootstrap4.console.common.model.ConsoleMenuItem;
 import org.iglooproject.wicket.bootstrap4.console.common.model.ConsoleMenuSection;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.dropdown.BootstrapDropDownJavaScriptResourceReference;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.AbstractCoreSession;
-import org.iglooproject.wicket.more.markup.html.CoreWebPage;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstraphoverdropdown.BootstrapHoverDropdownBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
+import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.security.page.LogoutPage;
 
-import com.google.common.collect.Lists;
-
-public abstract class ConsoleTemplate extends CoreWebPage {
+public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 	
 	private static final long serialVersionUID = -477123413708677528L;
-	
-	private static final String HEAD_PAGE_TITLE_SEPARATOR = " ‹ ";
 	
 	@SpringBean
 	protected IPropertyService propertyService;
@@ -56,55 +52,77 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 	@SpringBean(required = false)
 	protected IAbstractDataUpgradeService dataUpgradeService;
 	
-	private List<String> headPageTitleKeys = Lists.newArrayList();
-	
 	public ConsoleTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		ConsoleConfiguration configuration = ConsoleConfiguration.get();
-		
 		// Page title
-		addHeadPageTitleKey(configuration.getConsolePageTitleKey());
-		add(new ListView<String>("headPageTitle", headPageTitleKeys) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void populateItem(final ListItem<String> item) {
-				item.add(new Label("headPageTitleSeparator", HEAD_PAGE_TITLE_SEPARATOR) {
-					private static final long serialVersionUID = 1L;
-					
-					@Override
-					protected void onConfigure() {
-						super.onConfigure();
-						setVisible(item.getIndex() > 0);
-					}
-				});
-				item.add(new Label("headPageTitleElement", new ResourceModel(item.getModelObject())));
-			}
-		});
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
+		add(createHeadPageTitle("headPageTitle"));
 		
 		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel",
 				propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE),
 				propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT))
 		);
 		
-		// Menu sections
-		ListView<ConsoleMenuSection> menuSectionsListView = new ListView<ConsoleMenuSection>("menuSectionListView", 
-				ConsoleConfiguration.get().getMenuSections()) {
+		// Navbar
+		add(new ListView<ConsoleMenuSection>("mainNav", ConsoleConfiguration.get().getMenuSections()) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			protected void populateItem(ListItem<ConsoleMenuSection> item) {
-				if (item.getModelObject().getMenuItems().size() > 0) {
-					item.add(new MenuSectionWithDropDownFragment("menuSectionFragment", "menuSectionWithDropDown", item.getModel()));
-				} else {
-					item.add(new MenuSectionWithoutDropDownFragment("menuSectionFragment", "menuSectionWithoutDropDown", item.getModel()));
+				ConsoleMenuSection navItem = item.getModelObject();
+				
+				if (navItem.getPageClass() != null && navItem.getPageClass().equals(ConsoleTemplate.this.getFirstMenuPage())) {
+					item.add(new ClassAttributeAppender("active"));
 				}
+				
+				AbstractLink navLink = new BookmarkablePageLink<Void>("navLink", navItem.getPageClass());
+				
+				item.add(
+						navLink
+								.add(
+										new CoreLabel("label", new ResourceModel(navItem.getDisplayStringKey()))
+								)
+				);
+				
+				List<ConsoleMenuItem> subMenuItems = navItem.getMenuItems();
+				
+				if (!subMenuItems.isEmpty()) {
+					item.add(new ClassAttributeAppender("dropdown"));
+					navLink.add(new ClassAttributeAppender("dropdown-toggle"));
+					navLink.add(new AttributeModifier("data-toggle", "dropdown"));
+					navLink.add(new AttributeModifier("data-hover", "dropdown"));
+				}
+				
+				item.add(
+						new WebMarkupContainer("subNavContainer")
+								.add(
+										new ListView<ConsoleMenuItem>("subNav", subMenuItems) {
+											private static final long serialVersionUID = 1L;
+											
+											@Override
+											protected void populateItem(ListItem<ConsoleMenuItem> item) {
+												ConsoleMenuItem navItem = item.getModelObject();
+												
+												AbstractLink navLink = new BookmarkablePageLink<Void>("navLink", navItem.getPageClass());
+												
+												navLink.add(
+														new Label("label", new ResourceModel(navItem.getDisplayStringKey()))
+												);
+												
+												if (navItem.getPageClass() != null && navItem.getPageClass().equals(ConsoleTemplate.this.getFirstMenuPage())) {
+													item.add(new ClassAttributeAppender("active"));
+												}
+												
+												item.add(navLink);
+											}
+										}
+								)
+								.setVisibilityAllowed(!subMenuItems.isEmpty())
+				);
 			}
-		};
-		add(menuSectionsListView);
+		});
 		
-		// User menu
 		add(new CoreLabel("userFullName", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
 			
@@ -121,12 +139,13 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 		
 		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
 		
-		// Version
 		add(new Label("version", ApplicationPropertyModel.of(VERSION)));
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		
-		// Scroll to top
+		add(new BootstrapDropdownBehavior());
+		add(new BootstrapHoverDropdownBehavior());
+		
 		add(new WebMarkupContainer("scrollToTop").add(new ScrollToTopBehavior()));
 	}
 	
@@ -138,14 +157,6 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 		return bootstrapTooltip;
 	}
 	
-	protected abstract Class<? extends ConsoleTemplate> getMenuSectionPageClass();
-	
-	protected abstract Class<? extends ConsoleTemplate> getMenuItemPageClass();
-	
-	protected void addHeadPageTitleKey(String titleElementKey) {
-		headPageTitleKeys.add(0, titleElementKey);
-	}
-	
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
@@ -154,70 +165,6 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 		}
 		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
 		response.render(JavaScriptHeaderItem.forReference(BootstrapDropDownJavaScriptResourceReference.get()));
-	}
-
-	private class MenuSectionWithoutDropDownFragment extends Fragment {
-		private static final long serialVersionUID = 8410165897953003122L;
-		
-		public MenuSectionWithoutDropDownFragment(String id, String markupId, IModel<ConsoleMenuSection> menuSectionModel) {
-			super(id, markupId, ConsoleTemplate.this, menuSectionModel);
-			
-			ConsoleMenuSection menuSection = menuSectionModel.getObject();
-			
-			WebMarkupContainer menuSectionContainer = new WebMarkupContainer("menuSection");
-			add(menuSectionContainer);
-			
-			AbstractLink menuSectionLink = new BookmarkablePageLink<Void>("menuSectionLink", menuSection.getPageClass())
-					.setBody(new ResourceModel(menuSection.getDisplayStringKey()));
-			menuSectionContainer.add(menuSectionLink);
-			if (menuSection.getPageClass() != null && menuSection.getPageClass().equals(getMenuSectionPageClass())) {
-				menuSectionContainer.add(new ClassAttributeAppender("active"));
-			}
-		}
-	}
-	
-	private class MenuSectionWithDropDownFragment extends Fragment {
-		private static final long serialVersionUID = -7869292249062558408L;
-
-		public MenuSectionWithDropDownFragment(String id, String markupId, IModel<ConsoleMenuSection> menuSectionModel) {
-			super(id, markupId, ConsoleTemplate.this, menuSectionModel);
-			
-			ConsoleMenuSection menuSection = menuSectionModel.getObject();
-			
-			WebMarkupContainer menuSectionContainer = new WebMarkupContainer("menuSection");
-			add(menuSectionContainer);
-
-			if (menuSection.getPageClass() != null && menuSection.getPageClass().equals(getMenuSectionPageClass())) {
-				menuSectionContainer.add(new ClassAttributeAppender("active"));
-			}
-			
-			menuSectionContainer.add(new Label("menuSectionLabel", new ResourceModel(menuSection.getDisplayStringKey())));
-			menuSectionContainer.add(new ListView<ConsoleMenuItem>("subMenuListView", menuSection.getMenuItems()) {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				protected void populateItem(ListItem<ConsoleMenuItem> item) {
-					ConsoleMenuItem menuItem = item.getModelObject();
-
-					AbstractLink menuItemLink = new BookmarkablePageLink<Void>("subMenuLink", menuItem.getPageClass())
-							.setBody(new ResourceModel(menuItem.getDisplayStringKey()));
-
-					// On ajoute la page des DataUpgrade seulement si un
-					// DataUpgradeService existe
-					if (ConsoleMaintenanceDonneesPage.class.isAssignableFrom(menuItem.getPageClass())) {
-						menuItemLink.setVisible(dataUpgradeService != null);
-					}
-
-					item.add(menuItemLink);
-
-					if (menuItem.getPageClass() != null && menuItem.getPageClass().equals(getMenuItemPageClass())) {
-						item.add(new ClassAttributeAppender("active"));
-					}
-				}
-
-			});
-		}
-
 	}
 
 	@Override

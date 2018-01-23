@@ -3,17 +3,19 @@ package org.iglooproject.wicket.bootstrap4.console.maintenance.gestion.page;
 import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
 
 import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.commons.util.functional.Predicates2;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
-import org.iglooproject.wicket.bootstrap4.console.template.ConsoleTemplate;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
+import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +31,7 @@ public class ConsoleMaintenanceGestionPage extends ConsoleMaintenanceTemplate {
 	public ConsoleMaintenanceGestionPage(PageParameters parameters) {
 		super(parameters);
 		
-		addHeadPageTitleKey("console.maintenance.gestion");
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.gestion")));
 		
 		IModel<Boolean> maintenanceModel = new LoadableDetachableModel<Boolean>() {
 			private static final long serialVersionUID = 1L;
@@ -76,7 +78,7 @@ public class ConsoleMaintenanceGestionPage extends ConsoleMaintenanceTemplate {
 	}
 
 	@Override
-	protected Class<? extends ConsoleTemplate> getMenuItemPageClass() {
+	protected Class<? extends WebPage> getSecondMenuPage() {
 		return ConsoleMaintenanceGestionPage.class;
 	}
 

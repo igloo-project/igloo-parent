@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap4.console.template.style;
+package org.iglooproject.basicapp.web.application.common.template.resources.styles.console;
 
 import java.util.List;
 
@@ -6,18 +6,18 @@ import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.HeaderItem;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.select2.Select2CssResourceReference;
-import org.iglooproject.wicket.more.css.lesscss.LessCssResourceReference;
+import org.iglooproject.wicket.more.css.scss.ScssResourceReference;
 
 import com.google.common.collect.Lists;
 
-public final class ConsoleLessCssResourceReference extends LessCssResourceReference {
+public final class ConsoleScssResourceReference extends ScssResourceReference {
 
 	private static final long serialVersionUID = 7402497660522113371L;
 
-	private static final ConsoleLessCssResourceReference INSTANCE = new ConsoleLessCssResourceReference();
+	private static final ConsoleScssResourceReference INSTANCE = new ConsoleScssResourceReference();
 
-	private ConsoleLessCssResourceReference() {
-		super(ConsoleLessCssResourceReference.class, "console.less");
+	private ConsoleScssResourceReference() {
+		super(ConsoleScssResourceReference.class, "console.scss");
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public final class ConsoleLessCssResourceReference extends LessCssResourceRefere
 		return dependencies;
 	}
 
-	public static ConsoleLessCssResourceReference get() {
+	public static ConsoleScssResourceReference get() {
 		return INSTANCE;
 	}
 

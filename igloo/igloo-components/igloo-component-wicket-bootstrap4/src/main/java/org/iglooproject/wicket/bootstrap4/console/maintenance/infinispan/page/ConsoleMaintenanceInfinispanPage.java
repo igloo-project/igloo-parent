@@ -1,5 +1,6 @@
 package org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.page;
 
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.jpa.more.property.JpaMoreInfinispanPropertyIds;
 import org.iglooproject.spring.property.model.PropertyId;
@@ -10,7 +11,6 @@ import org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.compone
 import org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanRolesPanel;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanRolesRequestsPanel;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
-import org.iglooproject.wicket.bootstrap4.console.template.ConsoleTemplate;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -42,8 +42,8 @@ public class ConsoleMaintenanceInfinispanPage extends ConsoleMaintenanceTemplate
 	}
 
 	@Override
-	protected Class<? extends ConsoleTemplate> getMenuItemPageClass() {
-		return null;
+	protected Class<? extends WebPage> getSecondMenuPage() {
+		return ConsoleMaintenanceInfinispanPage.class;
 	}
 
 }

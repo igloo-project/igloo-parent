@@ -3,54 +3,43 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
 	<wicket:extend>
-		<div class="reindex">
-			<div class="row">
-				<div class="console-section col-sm-6">
+		<div>
+			<div class="row row-g-3">
+				<div class="col-sm-6">
 					<h2><wicket:message key="console.maintenance.search.reindex.title" /></h2>
 					<div class="alert alert-info">
 						<wicket:message key="console.maintenance.search.reindex.description" />
 					</div>
-					<div class="actions">
-						<button wicket:id="reindexContentLink" class="btn btn-primary">
-							<span class="fa fa-refresh" />
-							<wicket:message key="console.maintenance.search.reindex.action" />
-						</button>
-					</div>
+					<button wicket:id="reindexContentLink" class="btn btn-danger">
+						<span class="fa fa-sync" />
+						<wicket:message key="console.maintenance.search.reindex.action" />
+					</button>
 				</div>
-			</div>
-			
-			<wicket:enclosure child="reindexClassesForm">
-				<div class="row">
-					<div class="console-section col-sm-10">
+				<wicket:enclosure child="reindexClassesForm">
+					<div class="col-12">
 						<h2><wicket:message key="console.maintenance.search.reindex.partial.title" /></h2>
 						<div class="alert alert-info">
 							<wicket:message key="console.maintenance.search.reindex.partial.description" />
 						</div>
 						<form wicket:id="reindexClassesForm">
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label wicket:for="classes"><wicket:label /></label>
-										<select wicket:id="classes" class="form-control" />
-									</div>
+							<div class="row row-g-3">
+								<div class="form-group col-sm-6">
+									<label wicket:for="classes"><wicket:label /></label>
+									<select wicket:id="classes" class="form-control" />
 								</div>
-								<div class="col-sm-6">
-									<div class="form-group">
-										<label wicket:for="ids"><wicket:label /></label>
-										<textarea wicket:id="ids" class="ids form-control" />
-									</div>
+								<div class="form-group col-sm-6">
+									<label wicket:for="ids"><wicket:label /></label>
+									<textarea wicket:id="ids" class="ids form-control" />
 								</div>
 							</div>
-							<div class="actions">
-								<button wicket:id="reindexClassesLink" class="btn btn-primary">
-									<span class="fa fa-refresh" />
-									<wicket:message key="console.maintenance.search.reindex.action" />
-								</button>
-							</div>
+							<button wicket:id="reindexClassesLink" class="btn btn-warning">
+								<span class="fa fa-sync" />
+								<wicket:message key="console.maintenance.search.reindex.action" />
+							</button>
 						</form>
 					</div>
-				</div>
-			</wicket:enclosure>
+				</wicket:enclosure>
+			</div>
 		</div>
 	</wicket:extend>
 </body>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.settings.ResourceSettings;
 import org.iglooproject.wicket.bootstrap3.console.resources.CoreWicketConsoleResources;
+import org.iglooproject.wicket.bootstrap3.console.template.style.CoreConsoleCssScope;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.CoreBootstrap3CssScope;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.fontawesome.CoreFontAwesome4CssScope;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.jqueryui.JQueryUiCssResourceReference;
@@ -47,12 +48,13 @@ public class WicketModule implements IWicketModule {
 
 	@Override
 	public void registerLessImportScopes(ILessCssService lessCssService) {
+		lessCssService.registerImportScope("core-bs3", CoreBootstrap3CssScope.class);
+		lessCssService.registerImportScope("core-console", CoreConsoleCssScope.class);
+		lessCssService.registerImportScope("core-font-awesome", CoreFontAwesome4CssScope.class);
 	}
 
 	@Override
 	public void registerScssImportScopes(IScssService scssService) {
-		scssService.registerImportScope("core-bs4", CoreBootstrap3CssScope.class);
-		scssService.registerImportScope("core-fa", CoreFontAwesome4CssScope.class);
 	}
 
 }

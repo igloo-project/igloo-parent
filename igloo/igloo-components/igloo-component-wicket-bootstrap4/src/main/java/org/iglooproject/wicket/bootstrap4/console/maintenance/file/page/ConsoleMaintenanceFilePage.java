@@ -1,6 +1,7 @@
 package org.iglooproject.wicket.bootstrap4.console.maintenance.file.page;
 
 import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
@@ -10,8 +11,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.validation.validator.RangeValidator;
 import org.iglooproject.jpa.more.business.file.model.path.HashTableFileStorePathGeneratorImpl;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
-import org.iglooproject.wicket.bootstrap4.console.template.ConsoleTemplate;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ public class ConsoleMaintenanceFilePage extends ConsoleMaintenanceTemplate {
 	public ConsoleMaintenanceFilePage(PageParameters parameters) {
 		super(parameters);
 		
-		addHeadPageTitleKey("console.maintenance.file");
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.file")));
 		
 		Form<Void> form = new Form<Void>("form") {
 			private static final long serialVersionUID = 1L;
@@ -82,9 +83,9 @@ public class ConsoleMaintenanceFilePage extends ConsoleMaintenanceTemplate {
 		extensionModel.detach();
 		pathModel.detach();
 	}
-	
+
 	@Override
-	protected Class<? extends ConsoleTemplate> getMenuItemPageClass() {
+	protected Class<? extends WebPage> getSecondMenuPage() {
 		return ConsoleMaintenanceFilePage.class;
 	}
 

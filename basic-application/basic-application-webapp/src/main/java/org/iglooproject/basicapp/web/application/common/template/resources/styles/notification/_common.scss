@@ -10,16 +10,16 @@
 	width: 550px;
 	margin: 20px auto;
 	border: 1px solid #CCCCCC;
-	border-radius: @border-radius-small;
+	border-radius: $border-radius;
 }
 
 .main-title {
 	margin: 0;
 	padding: 15px;
-	background: @main-color;
+	background: $primary;
 	color: #FFFFFF;
-	border-bottom: 1px solid darken(@main-color, 5%);
-	border-radius: @border-radius-small @border-radius-small 0 0;
+	border-bottom: 1px solid darken($primary, 5%);
+	border-radius: $border-radius $border-radius 0 0;
 }
 
 .title {
@@ -43,14 +43,13 @@
 
 .footer {
 	padding: 10px 15px;
-	color: @footer-text;
-	background-color: @footer-bg;
+	background-color: $secondary;
 	border-top: 1px solid #CCCCCC;
-	border-radius: 0 0 @border-radius-small @border-radius-small;
+	border-radius: 0 0 $border-radius $border-radius;
 }
 
 .intro {
 	margin-top: 0;
-	.alert();
-	.alert-info();
+	@extend .alert;
+	@extend .alert-info;
 }

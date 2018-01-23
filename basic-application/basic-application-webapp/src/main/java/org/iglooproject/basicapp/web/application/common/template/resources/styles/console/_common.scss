@@ -1,0 +1,20 @@
+body {
+	background-color: $gray-100;
+}
+	
+.page-section {
+	> .page-container {
+		background-color: $white;
+		border-left: 1px solid rgba($black, .125);
+		border-right: 1px solid rgba($black, .125);
+	}
+}
+
+.footer-section {
+	> .footer-container {
+		background-color: $white;
+		border: 1px solid rgba($black, .125);
+		border-top: 0;
+		@include border-bottom-radius($card-border-radius)
+	}
+}

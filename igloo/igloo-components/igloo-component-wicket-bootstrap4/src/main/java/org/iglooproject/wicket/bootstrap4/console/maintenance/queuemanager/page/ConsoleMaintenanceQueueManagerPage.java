@@ -1,9 +1,9 @@
 package org.iglooproject.wicket.bootstrap4.console.maintenance.queuemanager.page;
 
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.queuemanager.component.ConsoleMaintenanceQueueManagerNodePanel;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
-import org.iglooproject.wicket.bootstrap4.console.template.ConsoleTemplate;
 
 public class ConsoleMaintenanceQueueManagerPage extends ConsoleMaintenanceTemplate {
 
@@ -18,8 +18,8 @@ public class ConsoleMaintenanceQueueManagerPage extends ConsoleMaintenanceTempla
 	}
 
 	@Override
-	protected Class<? extends ConsoleTemplate> getMenuItemPageClass() {
-		return null;
+	protected Class<? extends WebPage> getSecondMenuPage() {
+		return ConsoleMaintenanceQueueManagerPage.class;
 	}
 
 }

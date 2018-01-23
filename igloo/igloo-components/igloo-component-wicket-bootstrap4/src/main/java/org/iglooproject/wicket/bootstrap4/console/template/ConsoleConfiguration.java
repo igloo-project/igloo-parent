@@ -23,7 +23,6 @@ import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.Consol
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
-import org.iglooproject.wicket.bootstrap4.console.template.style.ConsoleLessCssResourceReference;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.markup.html.link.InvisibleLink;
 import org.springframework.util.StringUtils;
@@ -42,6 +41,8 @@ public final class ConsoleConfiguration {
 	private String consolePageTitleKey;
 	
 	private Set<ResourceReference> cssResourcesReferences = Sets.newLinkedHashSet();
+	
+	private Set<ResourceReference> consoleAccessCssResourcesReferences = Sets.newLinkedHashSet();
 	
 	public static ConsoleConfiguration get() {
 		if (!StringUtils.hasText(INSTANCE.baseUrl)) {
@@ -101,7 +102,6 @@ public final class ConsoleConfiguration {
 			}
 			
 			INSTANCE.addMenuSection(maintenanceMenuSection);
-			INSTANCE.addCssResourceReference(ConsoleLessCssResourceReference.get());
 		}
 		
 		return INSTANCE;
@@ -169,6 +169,14 @@ public final class ConsoleConfiguration {
 
 	public boolean addCssResourceReference(ResourceReference cssResourceReference) {
 		return cssResourcesReferences.add(cssResourceReference);
+	}
+
+	public Set<ResourceReference> getConsoleAccessCssResourcesReferences() {
+		return consoleAccessCssResourcesReferences;
+	}
+
+	public boolean addConsoleAccessCssResourceReference(ResourceReference consoleAccessCssResourceReference) {
+		return consoleAccessCssResourcesReferences.add(consoleAccessCssResourceReference);
 	}
 
 	private ConsoleConfiguration() {

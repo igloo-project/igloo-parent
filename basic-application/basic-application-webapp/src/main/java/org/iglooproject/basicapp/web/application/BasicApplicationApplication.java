@@ -31,7 +31,9 @@ import org.iglooproject.basicapp.web.application.common.template.favicon.Applica
 import org.iglooproject.basicapp.web.application.common.template.resources.BasicApplicationResourcesPackage;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.StylesScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.applicationaccess.ApplicationAccessScssResourceReference;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.old.notification.NotificationLessCssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.console.ConsoleScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.console.consoleaccess.ConsoleAccessScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.NotificationScssResourceReference;
 import org.iglooproject.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import org.iglooproject.basicapp.web.application.history.renderer.HistoryValueRenderer;
 import org.iglooproject.basicapp.web.application.navigation.page.HomePage;
@@ -61,7 +63,6 @@ import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleLoginFa
 import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleLoginSuccessPage;
 import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleSignInPage;
 import org.iglooproject.wicket.bootstrap4.console.template.ConsoleConfiguration;
-import org.iglooproject.wicket.bootstrap4.console.template.style.ConsoleLessCssResourceReference;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
@@ -98,8 +99,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		// si on n'est pas en développement, on précharge les feuilles de styles pour éviter la ruée et permettre le remplissage du cache
 		if (!propertyService.isConfigurationTypeDevelopment()) {
 			preloadStyleSheets(
-					ConsoleLessCssResourceReference.get(),
-					NotificationLessCssResourceReference.get(),
+					ConsoleScssResourceReference.get(),
+					NotificationScssResourceReference.get(),
 					ApplicationAccessScssResourceReference.get(),
 					StylesScssResourceReference.get()
 			);
@@ -184,6 +185,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		
 		// Console
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console", propertyService);
+		consoleConfiguration.addCssResourceReference(ConsoleScssResourceReference.get());
+		consoleConfiguration.addConsoleAccessCssResourceReference(ConsoleAccessScssResourceReference.get());
 		consoleConfiguration.mountPages(this);
 		
 		ConsoleMenuSection notificationMenuSection = new ConsoleMenuSection("notificationsMenuSection", "console.notifications",

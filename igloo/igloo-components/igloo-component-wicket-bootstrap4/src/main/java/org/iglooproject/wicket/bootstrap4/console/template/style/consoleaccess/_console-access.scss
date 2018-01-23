@@ -9,14 +9,4 @@
 @import "$(scope-core-fa)scss/fa-brands";
 @import "$(scope-core-fa)override/scss/override";
 
-@import "$(scope-core-bs4)autocomplete";
-@import "$(scope-core-bs4)select2/select2-bootstrap";
-
-@import "variables";
-@import "mixins";
-@import "common";
-@import "navbar";
-@import "card";
-@import "description";
-@import "forms";
-@import "tables";
+@import "console-access-layout";

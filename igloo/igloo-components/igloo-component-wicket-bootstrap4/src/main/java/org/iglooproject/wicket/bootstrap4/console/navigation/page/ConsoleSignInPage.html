@@ -1,54 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
-	<head>
-		<title><wicket:message key="console.signIn.pageTitle" /></title>
-		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-		<wicket:head />
-	</head>
-	
-	<body class="application-access-page">
-		<div class="page-container">
-			<div wicket:id="feedback" data-placement="bottom"></div>
-			
-			<div class="container">
-				<div class="row content">
-					<div class="application-access-header">
-						<img class="logo" src="static/common/images/logo_openwide.png" alt="Company logo" width="210" height="66" />
-					</div>
-					<h1 class="application-access-title"><wicket:message key="console.signIn.welcomeText" /></h1>
-					<div class="application-access-content">
-						<form wicket:id="signInForm">
-							<fieldset>
-								<div class="form-group">
-									<input class="form-control input-lg" wicket:id="userName" type="text" id="username" />
+	<wicket:extend>
+		<wicket:fragment wicket:id="content">
+			<div class="card-body">
+				<form wicket:id="form">
+					<fieldset>
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><span class="fa fa-user fa-fw" /></span>
 								</div>
-								<div class="form-group">
-									<input class="form-control input-lg" wicket:id="password" type="password" id="password" />
+								<input class="form-control form-control-username" wicket:id="userName" type="text" id="username" />
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><span class="fa fa-lock fa-fw" /></span>
 								</div>
-								<div class="form-actions">
-									<button class="btn btn-success btn-lg pull-right" type="submit">
-										<span class="fa fa-lock" />
-										<wicket:message key="console.signIn.button" />
-									</button>
-								</div>
-							</fieldset>
-						</form>
-					</div>
-				</div>
+								<input class="form-control form-control-password" wicket:id="password" type="password" id="password" />
+							</div>
+						</div>
+						<div class="basic-container basic-container-right">
+							<div class="basic-item">
+								<button class="btn btn-danger" type="submit">
+									<span class="fa fa-sign-in-alt" />
+									<wicket:message key="console.signIn.button" />
+								</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>
 			</div>
-		</div>
-		
-		<script type="text/javascript">
-			var usernameField = document.getElementById('username');
-			if (usernameField.value == "") {
-				usernameField.focus();
-			} else {
-				var passwordField = document.getElementById('password');
-				if (passwordField.value == "") {
-					passwordField.focus();
+			
+			<script type="text/javascript">
+				var usernameField = document.getElementById('username');
+				if (usernameField.value == "") {
+					usernameField.focus();
+				} else {
+					var passwordField = document.getElementById('password');
+					if (passwordField.value == "") {
+						passwordField.focus();
+					}
 				}
-			}
-		</script>
-	</body>
+			</script>
+		</wicket:fragment>
+	</wicket:extend>
 </html>	
