@@ -1,6 +1,5 @@
 package org.iglooproject.wicket.more.markup.html.select2.util;
 
-import org.iglooproject.wicket.more.rendering.Renderer;
 import org.wicketstuff.select2.Settings;
 
 public final class Select2Utils {
@@ -14,7 +13,7 @@ public final class Select2Utils {
 //		settings.setNoMatchesKey("common.select2.noChoice");
 //		settings.setInputTooShortKey("common.select2.inputTooShort");
 		settings.setMinimumResultsForSearch(DEFAULT_MINIMUM_RESULTS_FOR_SEARCH);
-		settings.setPlaceholder("common.select2.required.placeholder");
+		settings.setPlaceholder("");
 		settings.setAllowClear(true);
 		settings.setCloseOnSelect(true);
 		settings.setTheme("bootstrap");
@@ -22,7 +21,7 @@ public final class Select2Utils {
 	
 	public static void setRequiredSettings(Settings settings) {
 		if (settings.getPlaceholder() == null) {
-			settings.setPlaceholder(Renderer.fromResourceKey("common.select2.required.placeholder"));
+			settings.setPlaceholder("");
 		}
 		settings.setAllowClear(false);
 	}
