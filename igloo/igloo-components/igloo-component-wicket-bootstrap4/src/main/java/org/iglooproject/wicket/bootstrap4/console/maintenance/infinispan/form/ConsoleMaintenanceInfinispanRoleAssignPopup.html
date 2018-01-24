@@ -6,17 +6,17 @@
 		<wicket:message key="console.maintenance.infinispan.roles.actions.assign.title" />
 	</div>
 	<div wicket:id="body">
-		<form wicket:id="form" class="form-horizontal">
-			<div class="form-group">
-				<label wicket:for="node" class="col-sm-2 control-label"><wicket:label /></label>
-				<div class="col-sm-10">
+		<form wicket:id="form">
+			<div class="form-group row">
+				<label wicket:for="node" class="col-sm-4 col-form-label"><wicket:label /></label>
+				<div class="col-sm-8">
 					<select wicket:id="node" class="form-control" />
 				</div>
 			</div>
 		</form>
 	</div>
 	<div wicket:id="footer">
-		<button wicket:id="cancel" class="btn btn-default" type="button">
+		<button wicket:id="cancel" class="btn btn-outline-secondary" type="button">
 			<span class="fa fa-ban"></span>
 			<wicket:message key="common.cancel" />
 		</button>

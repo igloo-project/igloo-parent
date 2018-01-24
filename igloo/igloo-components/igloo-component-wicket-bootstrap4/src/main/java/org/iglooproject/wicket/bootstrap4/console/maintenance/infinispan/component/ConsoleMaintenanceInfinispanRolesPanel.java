@@ -104,7 +104,7 @@ public class ConsoleMaintenanceInfinispanRolesPanel extends Panel {
 						)
 						.addActionColumn()
 								.addAction(
-										BootstrapRenderer.constant("console.maintenance.infinispan.roles.actions.assign", "fa fa-exchange fa-fw", BootstrapColor.PRIMARY),
+										BootstrapRenderer.constant("console.maintenance.infinispan.roles.actions.assign", "fa fa-exchange-alt fa-fw", BootstrapColor.PRIMARY),
 										new OneParameterModalOpenAjaxAction<IModel<IRole>>(assignPopup) {
 											private static final long serialVersionUID = 1L;
 											@Override
@@ -148,7 +148,7 @@ public class ConsoleMaintenanceInfinispanRolesPanel extends Panel {
 										)
 										.withClassOnElements("btn-xs")
 								.end()
-						.bootstrapPanel()
+						.bootstrapCard()
 								.title("console.maintenance.infinispan.roles")
 								.responsive(Condition.alwaysTrue())
 								.build("roles")

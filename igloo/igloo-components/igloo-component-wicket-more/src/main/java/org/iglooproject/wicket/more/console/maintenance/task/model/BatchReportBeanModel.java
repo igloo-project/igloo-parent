@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap3.console.maintenance.task.model;
+package org.iglooproject.wicket.more.console.maintenance.task.model;
 
 import java.io.IOException;
 
@@ -6,15 +6,14 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.jpa.more.business.task.model.BatchReportBean;
+import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
+import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.iglooproject.jpa.more.business.task.model.BatchReportBean;
-import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
-import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
 
 public class BatchReportBeanModel<B extends BatchReportBean> extends LoadableDetachableModel<B> {
 	

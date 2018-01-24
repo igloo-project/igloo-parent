@@ -28,7 +28,7 @@ public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<E
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EhCacheCacheModificationPanel.class);
 	
-	private Form<Cache> cacheForm;
+	private Form<Cache> form;
 	
 	private TextField<Long> maxSizeField;
 	
@@ -49,12 +49,12 @@ public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<E
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, EhCacheCacheModificationPanel.class);
 		
-		cacheForm = new Form<Cache>("cacheForm");
+		form = new Form<Cache>("form");
 		maxSizeField = new TextField<Long>("maxSize", BindingModel.of(getModel(),
 				CoreWicketMoreBindings.ehCacheCacheInformation().maxElementsInMemory()));
 		maxSizeField.setLabel(new ResourceModel("console.maintenance.ehcache.portfolio.max"));
-		cacheForm.add(maxSizeField);
-		body.add(cacheForm);
+		form.add(maxSizeField);
+		body.add(form);
 		
 		return body;
 	}
@@ -64,7 +64,7 @@ public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<E
 		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, EhCacheCacheModificationPanel.class);
 		
 		// Bouton valider
-		AjaxButton valider = new AjaxButton("validerModificationCache", cacheForm) {
+		AjaxButton valider = new AjaxButton("validerModificationCache", form) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override

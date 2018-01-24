@@ -78,7 +78,7 @@ public class ConsoleMaintenanceInfinispanClusterPanel extends Panel {
 								Functions.identity(),
 								INodeRenderer.anonymous()
 						)
-						.bootstrapPanel()
+						.bootstrapCard()
 								.title("console.maintenance.infinispan.cluster")
 								.responsive(Condition.alwaysTrue())
 								.build("cluster")

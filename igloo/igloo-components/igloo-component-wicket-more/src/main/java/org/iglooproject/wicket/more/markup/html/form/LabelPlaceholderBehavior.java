@@ -10,7 +10,7 @@ public class LabelPlaceholderBehavior extends AttributeModifier {
 
 	private static final long serialVersionUID = 7392345869664046823L;
 
-	private static final String PLACEHOLDER_ATTRIBUTE = "data-placeholder";
+	private static final String PLACEHOLDER_ATTRIBUTE = "placeholder";
 
 	public LabelPlaceholderBehavior() {
 		super(PLACEHOLDER_ATTRIBUTE, new LabelPlaceholderModel());

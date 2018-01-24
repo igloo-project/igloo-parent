@@ -12,8 +12,8 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import org.iglooproject.wicket.markup.html.basic.CountLabel;
+import org.iglooproject.wicket.more.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 
 public class TaskFilterPanel extends Panel {
@@ -26,7 +26,7 @@ public class TaskFilterPanel extends Panel {
 			IPageable pageable) {
 		super(id);
 		this.pageable = pageable;
-
+		
 		final IModel<Long> rowCountModel = new LoadableDetachableModel<Long>() {
 			private static final long serialVersionUID = 1L;
 			
@@ -66,10 +66,6 @@ public class TaskFilterPanel extends Panel {
 				queuedTaskHolderDataProvider.getTaskTypesModel());
 		filterForm.add(taskTypes);
 
-		FormComponent<Collection<String>> queueIds = new TaskQueueIdListMultipleChoice("queueIds",
-				queuedTaskHolderDataProvider.getQueueIdsModel());
-		filterForm.add(queueIds);
-
 		FormComponent<Collection<TaskStatus>> statuses = new TaskStatusListMultipleChoice("statuses",
 				queuedTaskHolderDataProvider.getStatusesModel());
 		filterForm.add(statuses);
@@ -77,5 +73,9 @@ public class TaskFilterPanel extends Panel {
 		FormComponent<Collection<TaskResult>> results = new TaskResultListMultipleChoice("results",
 				queuedTaskHolderDataProvider.getResultsModel());
 		filterForm.add(results);
+		
+		FormComponent<Collection<String>> queueIds = new TaskQueueIdListMultipleChoice("queueIds",
+				queuedTaskHolderDataProvider.getQueueIdsModel());
+		filterForm.add(queueIds);
 	}
 }

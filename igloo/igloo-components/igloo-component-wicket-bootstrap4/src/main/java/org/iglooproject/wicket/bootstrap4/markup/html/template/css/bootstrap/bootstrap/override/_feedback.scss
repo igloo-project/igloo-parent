@@ -14,7 +14,7 @@
 		@include border-radius(0);
 		border: 0;
 		margin: 0;
-		padding-right: (2 * $alert-padding-x) + 1,25; // fa-fw = 1,25em;
+		padding-right: (2 * $alert-padding-x) + 1.25; // fa-fw = 1.25em;
 		
 		> ul.feedbackPanel {
 			@include list-unstyled;
@@ -26,9 +26,10 @@
 	.close {
 		float: none;
 		text-shadow: none;
-		color: $gray-500;
+		color: $gray-600;
 		z-index: $zindex-alert-global-close;
-		font-size: 1rem;
+		font-size: $font-size-base;
+		line-height: $line-height-base;
 		position: absolute;
 		padding: $alert-padding-y $alert-padding-x;
 		right: 0;

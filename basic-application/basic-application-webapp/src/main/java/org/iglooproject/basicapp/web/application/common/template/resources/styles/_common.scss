@@ -1,5 +1,6 @@
 .environment-section {
 	@extend .bg-warning;
+	@extend .text-dark;
 	padding: .5rem;
 	
 	> .environment-container {
@@ -54,6 +55,8 @@
 }
 
 .footer-section {
+	margin-bottom: 1rem;
+	
 	> .footer-container {
 		@extend .container;
 		padding-top: 1rem;

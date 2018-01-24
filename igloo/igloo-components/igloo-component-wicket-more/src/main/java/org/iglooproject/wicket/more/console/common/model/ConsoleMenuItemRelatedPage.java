@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap4.console.common.model;
+package org.iglooproject.wicket.more.console.common.model;
 
 import java.io.Serializable;
 

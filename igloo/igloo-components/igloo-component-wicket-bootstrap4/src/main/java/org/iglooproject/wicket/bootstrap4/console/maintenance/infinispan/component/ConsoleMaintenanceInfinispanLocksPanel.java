@@ -80,7 +80,7 @@ public class ConsoleMaintenanceInfinispanLocksPanel extends Panel {
 									}
 								}
 						)
-								.bootstrapPanel()
+								.bootstrapCard()
 										.title("console.maintenance.infinispan.locks")
 										.responsive(Condition.alwaysTrue())
 										.build("locks")

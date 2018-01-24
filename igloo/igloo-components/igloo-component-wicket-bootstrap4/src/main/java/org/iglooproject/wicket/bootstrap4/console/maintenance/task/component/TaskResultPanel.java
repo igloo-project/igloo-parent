@@ -35,16 +35,16 @@ public class TaskResultPanel extends Panel {
 						if (result != null) {
 							switch (result) {
 							case SUCCESS:
-								iconClass += " fa-check-circle success";
+								iconClass += " fa-check-circle text-success";
 								break;
 							case WARN:
-								iconClass += " fa-exclamation-circle warning";
+								iconClass += " fa-exclamation-triangle text-warning";
 								break;
 							case ERROR:
-								iconClass += " fa-times-circle danger";
+								iconClass += " fa-exclamation-circle text-danger";
 								break;
 							case FATAL:
-								iconClass += " fa-times-circle-o fail";
+								iconClass += " fa-times-circle text-danger";
 								break;
 							}
 							tag.append("class", iconClass, " ");

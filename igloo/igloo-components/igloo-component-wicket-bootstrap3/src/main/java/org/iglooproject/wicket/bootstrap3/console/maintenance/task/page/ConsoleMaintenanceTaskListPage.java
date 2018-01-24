@@ -4,9 +4,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.wicket.bootstrap3.console.maintenance.task.component.TaskFilterPanel;
 import org.iglooproject.wicket.bootstrap3.console.maintenance.task.component.TaskManagerInformationPanel;
 import org.iglooproject.wicket.bootstrap3.console.maintenance.task.component.TaskResultsPanel;
-import org.iglooproject.wicket.bootstrap3.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import org.iglooproject.wicket.bootstrap3.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.bootstrap3.console.template.ConsoleTemplate;
+import org.iglooproject.wicket.more.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 

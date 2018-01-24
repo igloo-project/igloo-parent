@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap4.console.maintenance.task.model;
+package org.iglooproject.wicket.more.console.maintenance.task.model;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.task.model.BatchReportBean;

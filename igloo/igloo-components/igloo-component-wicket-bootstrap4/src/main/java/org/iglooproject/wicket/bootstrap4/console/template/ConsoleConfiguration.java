@@ -3,6 +3,7 @@ package org.iglooproject.wicket.bootstrap4.console.template;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -10,9 +11,6 @@ import org.apache.wicket.request.UrlUtils;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.iglooproject.jpa.more.property.JpaMoreInfinispanPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.bootstrap4.console.common.model.ConsoleMenuItem;
-import org.iglooproject.wicket.bootstrap4.console.common.model.ConsoleMenuItemRelatedPage;
-import org.iglooproject.wicket.bootstrap4.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.authentication.page.ConsoleMaintenanceAuthenticationPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.file.page.ConsoleMaintenanceFilePage;
@@ -23,7 +21,13 @@ import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.Consol
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
+import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
+import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
+import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
+import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
+import org.iglooproject.wicket.more.markup.html.factory.AbstractComponentFactory;
+import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;
 import org.iglooproject.wicket.more.markup.html.link.InvisibleLink;
 import org.springframework.util.StringUtils;
 
@@ -43,6 +47,22 @@ public final class ConsoleConfiguration {
 	private Set<ResourceReference> cssResourcesReferences = Sets.newLinkedHashSet();
 	
 	private Set<ResourceReference> consoleAccessCssResourcesReferences = Sets.newLinkedHashSet();
+	
+	private IComponentFactory<Component> consoleAccessHeaderAdditionalContentFactory = new AbstractComponentFactory<Component>() {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public Component create(String wicketId) {
+			return new InvisiblePanel(wicketId);
+		}
+	};
+	
+	private IComponentFactory<Component> consoleHeaderAdditionalContentFactory = new AbstractComponentFactory<Component>() {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public Component create(String wicketId) {
+			return new InvisiblePanel(wicketId);
+		}
+	};
 	
 	public static ConsoleConfiguration get() {
 		if (!StringUtils.hasText(INSTANCE.baseUrl)) {
@@ -177,6 +197,22 @@ public final class ConsoleConfiguration {
 
 	public boolean addConsoleAccessCssResourceReference(ResourceReference consoleAccessCssResourceReference) {
 		return consoleAccessCssResourcesReferences.add(consoleAccessCssResourceReference);
+	}
+
+	public IComponentFactory<Component> getConsoleAccessHeaderAdditionalContentFactory() {
+		return consoleAccessHeaderAdditionalContentFactory;
+	}
+
+	public void setConsoleAccessHeaderAdditionalContentFactory(IComponentFactory<Component> consoleAccessHeaderAdditionalContentFactory) {
+		this.consoleAccessHeaderAdditionalContentFactory = consoleAccessHeaderAdditionalContentFactory;
+	}
+
+	public IComponentFactory<Component> getConsoleHeaderAdditionalContentFactory() {
+		return consoleHeaderAdditionalContentFactory;
+	}
+
+	public void setConsoleHeaderAdditionalContentFactory(IComponentFactory<Component> consoleHeaderAdditionalContentFactory) {
+		this.consoleHeaderAdditionalContentFactory = consoleHeaderAdditionalContentFactory;
 	}
 
 	private ConsoleConfiguration() {

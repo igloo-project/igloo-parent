@@ -12,8 +12,8 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
-import org.iglooproject.wicket.bootstrap3.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import org.iglooproject.wicket.markup.html.basic.CountLabel;
+import org.iglooproject.wicket.more.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 
 public class TaskFilterPanel extends Panel {

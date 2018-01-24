@@ -73,7 +73,7 @@ public class ConsoleMaintenanceInfinispanNodesPanel extends Panel {
 								Functions.identity(),
 								INodeRenderer.status()
 						)
-								.bootstrapPanel()
+								.bootstrapCard()
 										.title("console.maintenance.infinispan.nodes")
 										.responsive(Condition.alwaysTrue())
 										.build("nodes")

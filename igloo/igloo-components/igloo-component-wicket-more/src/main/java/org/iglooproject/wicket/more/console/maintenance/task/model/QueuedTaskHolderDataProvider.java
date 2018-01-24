@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap3.console.maintenance.task.model;
+package org.iglooproject.wicket.more.console.maintenance.task.model;
 
 import java.util.Collection;
 import java.util.Date;
@@ -7,7 +7,6 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.CollectionModel;
-
 import org.iglooproject.jpa.more.business.search.query.ISearchQuery;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.search.IQueuedTaskHolderSearchQuery;

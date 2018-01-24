@@ -17,10 +17,10 @@ import org.iglooproject.commons.util.report.BatchReportItem;
 import org.iglooproject.jpa.more.business.task.model.BatchReportBean;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.util.binding.CoreJpaMoreBindings;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.task.model.BatchReportBeanModel;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.console.maintenance.task.model.BatchReportBeanModel;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
 import org.iglooproject.wicket.more.markup.repeater.collection.CollectionView;
@@ -101,13 +101,13 @@ public class TaskExecutionResultPanel extends GenericPanel<QueuedTaskHolder> {
 								case DEBUG:
 								case TRACE:
 								case INFO:
-									classAttribute = "fa-check-circle success";
+									classAttribute = "fa-check-circle text-success";
 									break;
 								case WARN:
-									classAttribute = "fa-exclamation-circle warning";
+									classAttribute = "fa-exclamation-triangle text-warning";
 									break;
 								case ERROR:
-									classAttribute = "fa-times-circle danger";
+									classAttribute = "fa-times-circle text-danger";
 									break;
 								default:
 									classAttribute = null;

@@ -63,11 +63,13 @@
 			</div>
 		</nav>
 		
-		<div class="environment-section">
-			<div class="environment-container">
-				<wicket:container wicket:id="environment" />
+		<wicket:enclosure child="environment">
+			<div class="environment-section">
+				<div class="environment-container">
+					<wicket:container wicket:id="environment" />
+				</div>
 			</div>
-		</div>
+		</wicket:enclosure>
 		
 		<div class="page-section">
 			<div class="page-container">

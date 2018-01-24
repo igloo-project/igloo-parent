@@ -1,14 +1,19 @@
 package org.iglooproject.wicket.bootstrap3.console.maintenance.task.component;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.util.binding.CoreJpaMoreBindings;
-import org.iglooproject.wicket.bootstrap3.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import org.iglooproject.wicket.bootstrap3.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
+import org.iglooproject.wicket.more.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
+import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
+import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.DatePattern;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
@@ -27,9 +32,21 @@ public class TaskResultsPanel extends Panel {
 		
 		dataTable =
 				DataTableBuilder.start(dataProvider)
-						.addLabelColumn(new ResourceModel("console.maintenance.task.common.status"), CoreJpaMoreBindings.queuedTaskHolder().status())
+				.addColumn(new AbstractCoreColumn<QueuedTaskHolder, ISort<?>>(new ResourceModel("console.maintenance.task.common.status")) {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public void populateItem(Item<ICellPopulator<QueuedTaskHolder>> cellItem, String componentId, IModel<QueuedTaskHolder> rowModel) {
+						cellItem.add(new TaskStatusPanel(componentId, BindingModel.of(rowModel, CoreJpaMoreBindings.queuedTaskHolder().status())));
+					}
+				})
 						.withClass("status")
-				.addLabelColumn(new ResourceModel("console.maintenance.task.common.result"), CoreJpaMoreBindings.queuedTaskHolder().result())
+				.addColumn(new AbstractCoreColumn<QueuedTaskHolder, ISort<?>>(new ResourceModel("console.maintenance.task.common.result")) {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public void populateItem(Item<ICellPopulator<QueuedTaskHolder>> cellItem, String componentId, IModel<QueuedTaskHolder> rowModel) {
+						cellItem.add(new TaskResultPanel(componentId, BindingModel.of(rowModel, CoreJpaMoreBindings.queuedTaskHolder().result())));
+					}
+				})
 						.withClass("result")
 				.addLabelColumn(new ResourceModel("console.maintenance.task.common.name"), CoreJpaMoreBindings.queuedTaskHolder().name())
 						.withLink(ConsoleMaintenanceTaskDescriptionPage.MAPPER)

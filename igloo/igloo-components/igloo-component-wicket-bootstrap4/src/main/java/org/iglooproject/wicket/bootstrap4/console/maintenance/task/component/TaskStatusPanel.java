@@ -35,22 +35,22 @@ public class TaskStatusPanel extends GenericPanel<TaskStatus> {
 						if (status != null) {
 							switch (status) {
 								case TO_RUN:
-									iconClass.append(" fa-clock-o info");
+									iconClass.append(" fa-clock text-info");
 									break;
 								case RUNNING:
-									iconClass.append(" fa-repeat info");
+									iconClass.append(" fa-redo text-info");
 									break;
 								case COMPLETED:
-									iconClass.append(" fa-check-circle success");
+									iconClass.append(" fa-check-circle text-success");
 									break;
 								case FAILED:
-									iconClass.append(" fa-times-circle fail");
+									iconClass.append(" fa-times-circle text-danger");
 									break;
 								case INTERRUPTED:
-									iconClass.append(" fa-pause fail");
+									iconClass.append(" fa-pause-circle text-danger");
 									break;
 								case CANCELLED:
-									iconClass.append(" fa-ban fail");
+									iconClass.append(" fa-ban text-danger");
 									break;
 							}
 							tag.append("class", iconClass, " ");

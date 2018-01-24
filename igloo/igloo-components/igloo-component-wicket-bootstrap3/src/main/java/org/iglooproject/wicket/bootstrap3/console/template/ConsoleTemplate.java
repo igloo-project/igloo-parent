@@ -26,13 +26,13 @@ import org.iglooproject.jpa.more.business.upgrade.service.IAbstractDataUpgradeSe
 import org.iglooproject.jpa.security.business.person.model.GenericUser;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.bootstrap3.console.common.model.ConsoleMenuItem;
-import org.iglooproject.wicket.bootstrap3.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.bootstrap3.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstrap.dropdown.BootstrapDropDownJavaScriptResourceReference;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.AbstractCoreSession;
+import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
+import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.more.markup.html.CoreWebPage;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;

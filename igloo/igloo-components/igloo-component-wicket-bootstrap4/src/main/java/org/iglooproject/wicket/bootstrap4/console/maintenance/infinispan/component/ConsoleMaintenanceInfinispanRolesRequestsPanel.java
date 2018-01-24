@@ -133,7 +133,7 @@ public class ConsoleMaintenanceInfinispanRolesRequestsPanel extends Panel {
 										)
 										.withClassOnElements("btn-xs")
 								.end()
-						.bootstrapPanel()
+						.bootstrapCard()
 								.title("console.maintenance.infinispan.roles.requests")
 								.responsive(Condition.alwaysTrue())
 								.build("roles")
