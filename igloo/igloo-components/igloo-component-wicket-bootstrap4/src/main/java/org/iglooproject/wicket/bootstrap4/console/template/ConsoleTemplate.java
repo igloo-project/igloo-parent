@@ -111,7 +111,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 												);
 												
 												if (navItem.getPageClass() != null && navItem.getPageClass().equals(ConsoleTemplate.this.getFirstMenuPage())) {
-													item.add(new ClassAttributeAppender("active"));
+													navLink.add(new ClassAttributeAppender("active"));
 												}
 												
 												item.add(navLink);

@@ -4,16 +4,10 @@ import org.iglooproject.basicapp.web.application.common.component.EnvironmentPan
 
 public class ConsoleEnvironmentPanel extends EnvironmentPanel {
 
-	private static final long serialVersionUID = 6423741720175210102L;
+	private static final long serialVersionUID = -1099199206441256170L;
 
 	public ConsoleEnvironmentPanel(String id) {
 		super(id);
-	}
-
-	@Override
-	protected void onConfigure() {
-		super.onConfigure();
-		setVisible(true);
 	}
 
 }

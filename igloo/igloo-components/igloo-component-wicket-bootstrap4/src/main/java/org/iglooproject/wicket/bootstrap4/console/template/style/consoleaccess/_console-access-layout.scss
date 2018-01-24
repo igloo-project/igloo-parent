@@ -1,4 +1,4 @@
-.application-access-page {
+.console-access-page {
 	background-color: $gray-100;
 	padding-top: 60px;
 	padding-bottom: 60px;
@@ -17,14 +17,22 @@
 				.card-header {
 					&.card-main-title {
 						@extend .bg-dark;
+						@extend .text-white;
+						
 						border-top: $card-border-width solid $card-border-color;
 						font-size: $h4-font-size;
-						color: $white;
 					}
 					
 					&.card-environment {
-						@extend .bg-warning;
 						font-size: .75rem;
+						
+						@extend .bg-warning;
+						@extend .text-dark;
+						
+						&.production {
+							@extend .bg-danger;
+							@extend .text-white;
+						}
 					}
 				}
 				

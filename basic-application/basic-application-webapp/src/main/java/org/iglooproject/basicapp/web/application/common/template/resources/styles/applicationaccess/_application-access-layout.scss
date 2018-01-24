@@ -23,8 +23,15 @@
 					}
 					
 					&.card-environment {
-						@extend .bg-warning;
 						font-size: .75rem;
+						
+						@extend .bg-warning;
+						@extend .text-dark;
+						
+						&.production {
+							@extend .bg-danger;
+							@extend .text-white;
+						}
 					}
 				}
 				

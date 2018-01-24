@@ -1,7 +1,13 @@
 .environment-section {
+	padding: .5rem;
+	
 	@extend .bg-warning;
 	@extend .text-dark;
-	padding: .5rem;
+	
+	&.production {
+		@extend .bg-danger;
+		@extend .text-white;
+	}
 	
 	> .environment-container {
 		@extend .container;

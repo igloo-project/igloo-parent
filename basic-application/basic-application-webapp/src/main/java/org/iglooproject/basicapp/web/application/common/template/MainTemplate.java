@@ -35,7 +35,7 @@ import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
-import org.iglooproject.basicapp.web.application.common.component.EnvironmentPanel;
+import org.iglooproject.basicapp.web.application.common.component.ApplicationEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.StylesScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.AdministrationUserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
@@ -159,7 +159,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 												);
 												
 												if (navItem.isActive(MainTemplate.this.getSecondMenuPage())) {
-													item.add(new ClassAttributeAppender("active"));
+													navLink.add(new ClassAttributeAppender("active"));
 												}
 												
 												item.add(navLink);
@@ -230,7 +230,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class)
 		);
 		
-		add(new EnvironmentPanel("environment"));
+		add(new ApplicationEnvironmentPanel("environment"));
 		
 		add(
 				createBodyBreadCrumb("breadCrumb")

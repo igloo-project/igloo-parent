@@ -15,7 +15,7 @@ import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.basicapp.web.application.common.component.EnvironmentPanel;
+import org.iglooproject.basicapp.web.application.common.component.ApplicationAccessEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.applicationaccess.ApplicationAccessScssResourceReference;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -43,7 +43,7 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 			throw new RedirectToUrlException(propertyService.get(MAINTENANCE_URL));
 		}
 		
-		add(new EnvironmentPanel("environment"));
+		add(new ApplicationAccessEnvironmentPanel("environment"));
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		

@@ -9,6 +9,6 @@ public class ConsoleAccessHeaderAdditionalContentPanel extends Panel {
 	public ConsoleAccessHeaderAdditionalContentPanel(String id) {
 		super(id);
 		
-		add(new ConsoleEnvironmentPanel("environment"));
+		add(new ConsoleAccessEnvironmentPanel("environment"));
 	}
 }
