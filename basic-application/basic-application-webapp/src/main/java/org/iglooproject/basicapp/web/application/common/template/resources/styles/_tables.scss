@@ -76,3 +76,46 @@
 		margin: 0;
 	}
 }
+
+.table {
+	&.table-dark {
+		th {
+			.btn.btn-sort {
+				color: $table-dark-color;
+			}
+		}
+	}
+	
+	.thead-dark {
+		th {
+			.btn.btn-sort {
+				color: $table-dark-color;
+			}
+		}
+	}
+	
+	.thead-light {
+		th {
+			.btn.btn-sort {
+				color: $table-head-color;
+			}
+		}
+	}
+	
+	th {
+		.btn.btn-sort {
+			margin: 0;
+			padding: 0 3px;
+			float: right;
+			color: $body-color;
+			border: none;
+			background: none;
+			
+			&.active {
+				color: $link-color;
+				box-shadow: none;
+				background: none;
+			}
+		}
+	}
+}
