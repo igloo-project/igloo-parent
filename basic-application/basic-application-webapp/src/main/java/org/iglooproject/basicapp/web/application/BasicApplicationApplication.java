@@ -147,7 +147,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		converterLocator.set(PostalCode.class, PostalCodeConverter.get());
 		
 		converterLocator.set(Node.class, INodeRenderer.get());
-		https://realfavicongenerator.net/
+		
 		return new HibernateProxyAwareConverterLocator(converterLocator);
 	}
 

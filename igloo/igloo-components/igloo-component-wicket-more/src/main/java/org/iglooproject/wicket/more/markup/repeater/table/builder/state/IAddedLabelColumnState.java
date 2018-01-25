@@ -2,18 +2,16 @@ package org.iglooproject.wicket.more.markup.repeater.table.builder.state;
 
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Function;
-
 import org.iglooproject.commons.util.binding.AbstractCoreBinding;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.link.descriptor.factory.LinkGeneratorFactory;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.rendering.Renderer;
+
+import com.google.common.base.Function;
 
 public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCoreColumnState<T, S> {
 
@@ -41,30 +39,6 @@ public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCor
 	IAddedLabelColumnState<T, S> withTooltip(Renderer<? super T> tooltipRenderer);
 
 	<C> IAddedLabelColumnState<T, S> withTooltip(Function<? super T, C> function, Renderer<? super C> renderer);
-
-	/**
-	 * @deprecated Use {@link #withLink(ILinkDescriptorMapper)} instead.
-	 */
-	@Deprecated
-	IAddedLabelColumnState<T, S> withLink(LinkGeneratorFactory<T> linkGeneratorFactory);
-
-	/**
-	 * @deprecated Use {@link #withLink(AbstractCoreBinding, ILinkDescriptorMapper)} instead.
-	 */
-	@Deprecated
-	<C> IAddedLabelColumnState<T, S> withLink(AbstractCoreBinding<? super T, C> binding, LinkGeneratorFactory<C> linkGeneratorFactory);
-
-	/**
-	 * @deprecated Use {@link #withSideLink(ILinkDescriptorMapper)} instead.
-	 */
-	@Deprecated
-	IAddedLabelColumnState<T, S> withSideLink(LinkGeneratorFactory<T> linkGeneratorFactory);
-
-	/**
-	 * @deprecated Use {@link #withSideLink(AbstractCoreBinding, ILinkDescriptorMapper)} instead.
-	 */
-	@Deprecated
-	<C> IAddedLabelColumnState<T, S> withSideLink(AbstractCoreBinding<? super T, C> binding, LinkGeneratorFactory<C> linkGeneratorFactory);
 
 	IAddedLabelColumnState<T, S> withLink(ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper);
 	

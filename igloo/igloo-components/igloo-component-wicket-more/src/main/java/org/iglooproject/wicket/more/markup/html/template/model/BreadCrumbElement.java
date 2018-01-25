@@ -8,7 +8,6 @@ import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.markup.html.template.component.LinkGeneratorBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.markup.html.template.component.SimpleBreadCrumbElementPanel;
 
-@SuppressWarnings("deprecation")
 public class BreadCrumbElement implements Serializable {
 	
 	private static final long serialVersionUID = -44367801976105581L;

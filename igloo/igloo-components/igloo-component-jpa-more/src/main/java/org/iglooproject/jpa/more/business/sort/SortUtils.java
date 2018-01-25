@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.bindgen.Binding;
+import org.iglooproject.jpa.more.business.sort.ISort.NullSortValue;
+import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -16,10 +18,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.ComparableExpressionBase;
-
-import org.iglooproject.jpa.more.business.sort.ISort.NullSortValue;
-import org.iglooproject.jpa.more.business.sort.ISort.SortNull;
-import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
 
 public final class SortUtils {
 	
@@ -72,16 +70,6 @@ public final class SortUtils {
 	
 	public static SortField luceneSortField(ISort<SortField> sort, SortOrder order, SortField.Type type, String fieldName) {
 		return new SortField(fieldName, type, isReverse(sort, order));
-	}
-	
-	/**
-	 * @deprecated Use {@link #luceneStringSortField(ISort, SortOrder, String, NullSortValue)} instead.
-	 * This method sorts nulls in the same order independently from the given SortOrder, which probably is a bug.
-	 */
-	@Deprecated
-	public static SortField luceneStringSortField(ISort<SortField> sort, SortOrder order, String fieldName, SortNull sortNull) {
-		return getStringSortField(fieldName, isReverse(sort, order),
-				SortNull.NULL_LAST.equals(sortNull), SortNull.NULL_FIRST.equals(sortNull));
 	}
 	
 	public static SortField luceneStringSortField(ISort<SortField> sort, SortOrder order, String fieldName, NullSortValue sortNull) {

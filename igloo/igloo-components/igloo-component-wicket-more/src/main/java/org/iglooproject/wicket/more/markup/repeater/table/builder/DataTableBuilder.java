@@ -16,12 +16,10 @@ import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.link.descriptor.factory.LinkGeneratorFactory;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.FunctionOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
-import org.iglooproject.wicket.more.link.descriptor.mapper.LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter;
 import org.iglooproject.wicket.more.markup.html.basic.TargetBlankBehavior;
 import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractComponentFactory;
@@ -694,30 +692,6 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public <C> IAddedLabelColumnState<T, S> withTooltip(Function<? super T, C> function, Renderer<? super C> tooltipRenderer) {
 			return withTooltip(tooltipRenderer.onResultOf(function));
-		}
-		
-		@Deprecated
-		@Override
-		public IAddedLabelColumnState<T, S> withLink(LinkGeneratorFactory<T> linkGeneratorFactory) {
-			return withLink(new LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter<>(linkGeneratorFactory));
-		}
-
-		@Deprecated
-		@Override
-		public <C> IAddedLabelColumnState<T, S> withLink(AbstractCoreBinding<? super T, C> binding, LinkGeneratorFactory<C> linkGeneratorFactory) {
-			return withLink(binding, new LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter<>(linkGeneratorFactory));
-		}
-
-		@Deprecated
-		@Override
-		public IAddedLabelColumnState<T, S> withSideLink(LinkGeneratorFactory<T> sideLinkGeneratorFactory) {
-			return withSideLink(new LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter<>(sideLinkGeneratorFactory));
-		}
-
-		@Deprecated
-		@Override
-		public <C> IAddedLabelColumnState<T, S> withSideLink(AbstractCoreBinding<? super T, C> binding, LinkGeneratorFactory<C> linkGeneratorFactory) {
-			return withSideLink(binding, new LinkGeneratorFactoryToOneParameterLinkDescriptorMapperAdapter<>(linkGeneratorFactory));
 		}
 		
 		@Override

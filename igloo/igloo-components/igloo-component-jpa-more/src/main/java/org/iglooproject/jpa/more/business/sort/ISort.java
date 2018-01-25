@@ -33,16 +33,6 @@ public interface ISort<S> extends Serializable {
 	}
 	
 	/**
-	 * @deprecated Use NullSortValue instead.
-	 */
-	@Deprecated
-	public enum SortNull {
-		NONE,
-		NULL_FIRST,
-		NULL_LAST;
-	}
-	
-	/**
 	 * The relative value of <code>null</code> when sorting.
 	 */
 	public enum NullSortValue {
