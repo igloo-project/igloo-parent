@@ -164,7 +164,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 								})
 								.whenPermission(BasicApplicationPermissionConstants.DELETE)
 								.hidePlaceholder()
-						.withClassOnElements(CssClassConstants.BTN_SM)
+						.withClassOnElements(CssClassConstants.BTN_XS)
 						.end()
 						.withClass("actions actions-2x")
 						

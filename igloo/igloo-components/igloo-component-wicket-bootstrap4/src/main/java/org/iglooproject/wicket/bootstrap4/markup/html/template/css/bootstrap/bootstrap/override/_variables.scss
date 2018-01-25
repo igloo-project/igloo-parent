@@ -24,14 +24,14 @@ $zindex-alert-global:				1100 !default;
 $zindex-alert-global-close:			1101 !default;
 $zindex-scroll-to-top:				1035 !default;
 
-$font-size-xs:						($font-size-base * .875) !default;
+$font-size-xs:						($font-size-base * .75) !default;
 
-$line-height-xs:					1rem;
+$line-height-xs:					1.5;
 
 $border-radius-xs:					.2rem !default;
 
-$input-btn-padding-y-xs:			.25rem !default;
-$input-btn-padding-x-xs:			.35rem !default;
+$input-btn-padding-y-xs:			.125rem !default;
+$input-btn-padding-x-xs:			.25rem !default;
 $input-btn-line-height-xs:			$line-height-xs !default;
 
 $btn-padding-y-xs:					$input-btn-padding-y-xs !default;
