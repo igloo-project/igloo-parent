@@ -13,13 +13,10 @@ import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.TokenizerDef;
-
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.more.business.parameter.service.AbstractParameterServiceImpl;
-import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.spring.property.model.PropertyId;
 
-@SuppressWarnings("deprecation")
 @Entity
 @Bindable
 //Needed to trigger LuceneEmbeddedIndexManagerType.INSTANCE for registry
@@ -38,237 +35,27 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 	@Column(nullable = false, unique = true)
 	private String name;
 
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	@Column
-	private Boolean booleanValue;
-
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	@Column
-	private Integer integerValue;
-	
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	@Column
-	private Float floatValue;
-
 	@Column
 	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
 	private String stringValue;
 
 	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
+	 * @deprecated Use {@code stringValue} instead with {@link PropertyId}.
+	 * Previously, old field for parameter date value storage.
+	 * Now, Misuse for DataUpgrade execution by flyway.
 	 */
 	@Deprecated
 	@Column
-	private Date dateValue;
-
+	private Date dateValue; // 
+	
 	public Parameter() {
 		super();
 	}
 
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	public Parameter(String name, Boolean value) {
-		super();
-
-		setName(name);
-		setBooleanValue(value);
-	}
-
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	public Parameter(String name, Integer value) {
-		super();
-
-		setName(name);
-		setIntegerValue(value);
-	}
-
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	public Parameter(String name, Float value) {
-		super();
-
-		setName(name);
-		setFloatValue(value);
-	}
-
 	public Parameter(String name, String value) {
 		super();
-
 		setName(name);
 		setStringValue(value);
-	}
-
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	public Parameter(String name, Date value) {
-		super();
-
-		setName(name);
-		setDateValue(value);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	public Boolean getBooleanValue() {
-		return booleanValue;
-	}
-
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	public void setBooleanValue(Boolean booleanValue) {
-		this.booleanValue = booleanValue;
-	}
-
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	public Integer getIntegerValue() {
-		return integerValue;
-	}
-
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	public void setIntegerValue(Integer integerValue) {
-		this.integerValue = integerValue;
-	}
-
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	public Float getFloatValue() {
-		return floatValue;
-	}
-
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	public void setFloatValue(Float floatValue) {
-		this.floatValue = floatValue;
-	}
-
-	public String getStringValue() {
-		return stringValue;
-	}
-
-	public void setStringValue(String stringValue) {
-		this.stringValue = stringValue;
-	}
-
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	public Date getDateValue() {
-		return CloneUtils.clone(dateValue);
-	}
-
-	/**
-	 * @deprecated Only {@link AbstractParameterServiceImpl} made use of typed values. It is now deprecated in favor
-	 * of {@link IPropertyService}, which only uses the string value.
-	 * @see IPropertyService
-	 */
-	@Deprecated
-	public void setDateValue(Date dateValue) {
-		this.dateValue = CloneUtils.clone(dateValue);
-	}
-
-	public Object getValue() {
-		if (booleanValue != null) {
-			return booleanValue;
-		}
-		if (integerValue != null) {
-			return integerValue;
-		}
-		if (floatValue != null) {
-			return floatValue;
-		}
-		if (stringValue != null) {
-			return stringValue;
-		}
-		if (dateValue != null) {
-			return CloneUtils.clone(dateValue);
-		}
-		return null;
-	}
-
-	@Override
-	public String getDisplayName() {
-		StringBuilder displayName = new StringBuilder();
-		displayName.append(name);
-		displayName.append(':');
-		displayName.append(getValue());
-
-		return displayName.toString();
-	}
-
-	@Override
-	public String getNameForToString() {
-		return name;
 	}
 
 	@Override
@@ -280,4 +67,56 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getStringValue() {
+		return stringValue;
+	}
+
+	public void setStringValue(String stringValue) {
+		this.stringValue = stringValue;
+	}
+
+	/**
+	 * @deprecated Use {@code stringValue} instead with {@link PropertyId}.
+	 * Previously, old field for parameter date value storage.
+	 * Now, Misuse for DataUpgrade execution by flyway.
+	 */
+	@Deprecated
+	public Date getDateValue() {
+		return CloneUtils.clone(dateValue);
+	}
+
+	/**
+	 * @deprecated Use {@code stringValue} instead with {@link PropertyId}.
+	 * Previously, old field for parameter date value storage.
+	 * Now, Misuse for DataUpgrade execution by flyway.
+	 */
+	@Deprecated
+	public void setDateValue(Date dateValue) {
+		this.dateValue = CloneUtils.clone(dateValue);
+	}
+
+	@Override
+	public String getDisplayName() {
+		StringBuilder displayName = new StringBuilder();
+		displayName.append(name);
+		displayName.append(':');
+		displayName.append(getStringValue());
+
+		return displayName.toString();
+	}
+
+	@Override
+	public String getNameForToString() {
+		return name;
+	}
+
 }

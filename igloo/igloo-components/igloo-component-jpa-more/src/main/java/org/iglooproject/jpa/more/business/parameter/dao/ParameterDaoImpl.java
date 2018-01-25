@@ -1,5 +1,10 @@
 package org.iglooproject.jpa.more.business.parameter.dao;
 
+import org.iglooproject.jpa.business.generic.dao.GenericEntityDaoImpl;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.more.business.parameter.model.Parameter;
+import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -9,21 +14,13 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import org.iglooproject.jpa.business.generic.dao.GenericEntityDaoImpl;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.more.business.parameter.model.Parameter;
-import org.iglooproject.spring.property.dao.IMutablePropertyDao;
-
-@SuppressWarnings("deprecation")
-public class ParameterDaoImpl extends GenericEntityDaoImpl<Long, Parameter> implements IParameterDao, IMutablePropertyDao {
+public class ParameterDaoImpl extends GenericEntityDaoImpl<Long, Parameter> implements IMutablePropertyDao {
 	
 	private TransactionTemplate readOnlyTransactionTemplate;
 
 	private TransactionTemplate writeTransactionTemplate;
 	
-	@Override
-	public Parameter getByName(String name) {
+	private Parameter getByName(String name) {
 		return super.getByNaturalId(name);
 	}
 	
@@ -93,8 +90,6 @@ public class ParameterDaoImpl extends GenericEntityDaoImpl<Long, Parameter> impl
 			save(new Parameter(key, value));
 		}
 	}
-	
-	
 
 	private void clean() {
 		for (Parameter parameter : list()) {

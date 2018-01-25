@@ -5,15 +5,14 @@ import static org.iglooproject.basicapp.core.business.upgrade.util.DataUpgradeCo
 
 import java.util.List;
 
+import org.iglooproject.jpa.business.generic.dao.JpaDaoSupport;
+import org.iglooproject.jpa.more.business.parameter.model.Parameter;
+import org.iglooproject.jpa.more.business.parameter.model.QParameter;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.querydsl.jpa.impl.JPAQuery;
-
-import org.iglooproject.jpa.business.generic.dao.JpaDaoSupport;
-import org.iglooproject.jpa.more.business.parameter.model.Parameter;
-import org.iglooproject.jpa.more.business.parameter.model.QParameter;
 
 @Repository("dataUpgradeDao")
 public class DataUpgradeDaoImpl extends JpaDaoSupport implements IDataUpgradeDao {
