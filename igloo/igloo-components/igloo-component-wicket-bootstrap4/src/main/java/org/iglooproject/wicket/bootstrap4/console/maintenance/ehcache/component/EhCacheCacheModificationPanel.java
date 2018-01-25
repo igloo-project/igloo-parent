@@ -7,12 +7,12 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformation;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.BindingModel;
@@ -90,10 +90,7 @@ public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<E
 		};
 		footer.add(valider);
 		
-		// Bouton annuler
-		AbstractLink annuler = new AbstractLink("annulerModificationCache"){
-			private static final long serialVersionUID = 1L;
-		};
+		BlankLink annuler = new BlankLink("annulerModificationCache");
 		addCancelBehavior(annuler);
 		footer.add(annuler);
 		

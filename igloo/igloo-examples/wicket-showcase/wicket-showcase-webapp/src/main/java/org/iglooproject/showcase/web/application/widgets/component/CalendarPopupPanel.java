@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 
@@ -33,9 +33,7 @@ public class CalendarPopupPanel extends AbstractAjaxModalPopupPanel<Serializable
 	protected Component createFooter(String wicketId) {
 		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, CalendarPopupPanel.class);
 		
-		AbstractLink annuler = new AbstractLink("close"){
-			private static final long serialVersionUID = 1L;
-		};
+		BlankLink annuler = new BlankLink("close");
 		addCancelBehavior(annuler);
 		footer.add(annuler);
 		

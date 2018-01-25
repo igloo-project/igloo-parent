@@ -20,6 +20,7 @@ import org.iglooproject.showcase.core.business.user.model.User;
 import org.iglooproject.showcase.core.business.user.service.IUserService;
 import org.iglooproject.showcase.core.util.binding.Bindings;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.BindingModel;
@@ -100,10 +101,7 @@ public class AddUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 		};
 		footer.add(valider);
 		
-		// Bouton annuler
-		AbstractLink annuler = new AbstractLink("cancel"){
-			private static final long serialVersionUID = 1L;
-		};
+		BlankLink annuler = new BlankLink("cancel");
 		addCancelBehavior(annuler);
 		footer.add(annuler);
 		

@@ -88,7 +88,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		
 		add(
 				new EnclosureContainer("headingAddInContainer")
-						.condition(Condition.anyChildVisible(headingMainAddinWrapper).or(Condition.anyChildVisible(headingRightAddinWrapper).or(Condition.anyChildVisible(headingLeftAddinWrapper))))
+						.condition(Condition.visible(headingMainAddinWrapper).or(Condition.visible(headingRightAddinWrapper).or(Condition.visible(headingLeftAddinWrapper))))
 						.add(
 								headingMainAddinWrapper
 										.condition(Condition.anyChildVisible(headingMainAddins))
@@ -107,7 +107,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 						.condition(Condition.anyChildVisible(bodyBottomAddins))
 						.add(bodyBottomAddins),
 				new EnclosureContainer("footerAddInContainer")
-						.condition(Condition.anyChildVisible(footerRightAddinWrapper).or(Condition.anyChildVisible(footerLeftAddinWrapper)))
+						.condition(Condition.visible(footerRightAddinWrapper).or(Condition.visible(footerLeftAddinWrapper)))
 						.add(
 								footerRightAddinWrapper
 										.condition(Condition.anyChildVisible(footerRightAddins))

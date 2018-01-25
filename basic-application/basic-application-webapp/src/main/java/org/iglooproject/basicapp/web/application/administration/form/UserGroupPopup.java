@@ -10,7 +10,6 @@ import org.apache.wicket.markup.html.form.Check;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
-import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -30,6 +29,7 @@ import org.iglooproject.wicket.markup.html.form.CheckGroup;
 import org.iglooproject.wicket.more.link.model.PageModel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormPanelMode;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
@@ -162,10 +162,7 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 		validate.add(validateLabel);
 		footer.add(validate);
 		
-		// Cancel button
-		AbstractLink cancel = new AbstractLink("cancel") {
-			private static final long serialVersionUID = 1L;
-		};
+		BlankLink cancel = new BlankLink("cancel");
 		addCancelBehavior(cancel);
 		footer.add(cancel);
 		

@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
-import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -28,6 +27,7 @@ import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.slf4j.Logger;
@@ -153,10 +153,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 		};
 		footer.add(validate);
 		
-		// Cancel button
-		AbstractLink cancel = new AbstractLink("cancel") {
-			private static final long serialVersionUID = 1L;
-		};
+		BlankLink cancel = new BlankLink("cancel");
 		addCancelBehavior(cancel);
 		footer.add(cancel);
 		

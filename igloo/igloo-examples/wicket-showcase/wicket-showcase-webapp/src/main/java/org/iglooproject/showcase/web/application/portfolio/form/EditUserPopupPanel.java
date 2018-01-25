@@ -8,7 +8,6 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -18,6 +17,7 @@ import org.iglooproject.showcase.core.business.user.service.IUserService;
 import org.iglooproject.showcase.core.util.binding.Bindings;
 import org.iglooproject.showcase.web.application.portfolio.page.UserDescriptionPage;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.BindingModel;
@@ -122,10 +122,7 @@ public class EditUserPopupPanel extends AbstractAjaxModalPopupPanel<User> {
 		};
 		footer.add(valider);
 		
-		// Bouton annuler
-		AbstractLink annuler = new AbstractLink("cancel"){
-			private static final long serialVersionUID = 1L;
-		};
+		BlankLink annuler = new BlankLink("cancel");
 		addCancelBehavior(annuler);
 		footer.add(annuler);
 		

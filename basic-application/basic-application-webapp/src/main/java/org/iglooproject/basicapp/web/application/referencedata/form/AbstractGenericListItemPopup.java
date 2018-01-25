@@ -88,7 +88,6 @@ public abstract class AbstractGenericListItemPopup<T extends GenericListItem<? s
 			}
 		});
 		
-		// Cancel button
 		BlankLink cancel = new BlankLink("cancel");
 		addCancelBehavior(cancel);
 		footer.add(cancel);

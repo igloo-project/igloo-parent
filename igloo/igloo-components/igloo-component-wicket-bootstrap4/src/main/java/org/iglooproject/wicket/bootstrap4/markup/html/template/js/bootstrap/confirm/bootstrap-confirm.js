@@ -19,7 +19,10 @@
 			var noButton = $this.data("modal-confirm-no-button");
 			var noEscape = $this.data("modal-confirm-text-noescape");
 			var cssClassNames = $this.data("modal-confirm-css-class-names");
-			var $content = $("<div class='modal confirm fade'></div>");
+			var $modal = $("<div class='modal confirm'></div>");
+			var $dialog = $("<div class='modal-dialog'></div>");
+			var $content = $("<div class='modal-content'></div>");
+			
 			if (cssClassNames) {
 				$content.addClass(cssClassNames);
 			}
@@ -39,9 +42,9 @@
 			
 			$content
 				.append(
-						$("<div class='modal-header'></div>").
-							append("<a class='close' data-dismiss='modal'>&#x00d7;</a>")
-							.append($("<h3></h3>").text(title))
+						$("<div class='modal-header'></div>")
+							.append($("<h5 class='modal-title'></h5>").text(title))
+							.append("<button class='close' data-dismiss='modal' type='button'><span>&times;</span></button>")
 				);
 				
 				if (noEscape) {
@@ -53,19 +56,22 @@
 				$content.append(
 						$("<div class='modal-footer'></div>")
 							.append(
-								$("<button class='" + noButton + "' href='#' data-dismiss='modal'></a>")
+								$("<button class='" + noButton + "' data-dismiss='modal' type='button'></button>")
 									.append($("<span class='" + noIcon +"'></span>"))
 									.append(document.createTextNode(" " + noLabel))
 									.click(onCancel)
 							)
 							.append(
-								$("<button class='" + yesButton + "' href='#'></a>")
+								$("<button class='" + yesButton + "' type='button'></button>")
 									.append($("<span class='" + yesIcon + "'></span>"))
 									.append(document.createTextNode(" " + yesLabel))
 									.click(onConfirm)
 							)
 				);
-			$content.modal({ show: true, backdrop: 'static' });
+			
+			$dialog.append($content);
+			$modal.append($dialog);
+			$modal.modal({ show: true, backdrop: 'static' });
 		});
 	};
 }(window.jQuery, window, document);
