@@ -6,22 +6,20 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.javatuples.Tuple;
-import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.INoMappableParameterMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.IOneMappableParameterMainState;
 import org.iglooproject.wicket.more.markup.html.factory.ModelFactories;
+import org.javatuples.Tuple;
+import org.springframework.core.convert.TypeDescriptor;
+
+import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableList;
 
 public final class NoMappableParameterMainStateImpl
 		<
-		TEarlyTargetDefinitionLinkDescriptor,
 		TLateTargetDefinitionPageLinkDescriptor,
 		TLateTargetDefinitionResourceLinkDescriptor,
 		TLateTargetDefinitionImageResourceLinkDescriptor
@@ -30,19 +28,16 @@ public final class NoMappableParameterMainStateImpl
 				<
 				INoMappableParameterMainState
 						<
-						TEarlyTargetDefinitionLinkDescriptor,
 						TLateTargetDefinitionPageLinkDescriptor,
 						TLateTargetDefinitionResourceLinkDescriptor,
 						TLateTargetDefinitionImageResourceLinkDescriptor
 						>,
-				TEarlyTargetDefinitionLinkDescriptor,
 				TLateTargetDefinitionPageLinkDescriptor,
 				TLateTargetDefinitionResourceLinkDescriptor,
 				TLateTargetDefinitionImageResourceLinkDescriptor
 				>
 		implements INoMappableParameterMainState
 				<
-				TEarlyTargetDefinitionLinkDescriptor,
 				TLateTargetDefinitionPageLinkDescriptor,
 				TLateTargetDefinitionResourceLinkDescriptor,
 				TLateTargetDefinitionImageResourceLinkDescriptor
@@ -50,7 +45,6 @@ public final class NoMappableParameterMainStateImpl
 
 	public NoMappableParameterMainStateImpl(
 			BuilderTargetFactories<
-					TEarlyTargetDefinitionLinkDescriptor, ?,
 					TLateTargetDefinitionPageLinkDescriptor,
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor
@@ -61,7 +55,6 @@ public final class NoMappableParameterMainStateImpl
 	@Override
 	public <TParam1> IOneMappableParameterMainState<
 			TParam1,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -74,7 +67,6 @@ public final class NoMappableParameterMainStateImpl
 	@Override
 	public <TParam1 extends Collection<TElement>, TElement> IOneMappableParameterMainState<
 			TParam1,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -87,7 +79,6 @@ public final class NoMappableParameterMainStateImpl
 	@Override
 	public <TParam1 extends Collection<?>> IOneMappableParameterMainState<
 			TParam1,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -100,7 +91,6 @@ public final class NoMappableParameterMainStateImpl
 	@Override
 	public <TParam1 extends Collection<?>> IOneMappableParameterMainState<
 			TParam1,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -128,19 +118,6 @@ public final class NoMappableParameterMainStateImpl
 				});
 	}
 	
-	private <TTarget, TLinkDescriptor> TLinkDescriptor createEarlyTargetDefinitionLinkDescriptor(
-			BuilderTargetFactories<? extends TLinkDescriptor, TTarget, ?, ?, ?> targetFactories) {
-		return createLinkDescriptor(
-				targetFactories.getEarlyTargetDefinitionLinkDescriptorFactory(),
-				targetFactories.getEarlyTargetDefinitionTargetModel()
-		);
-	}
-
-	@Override
-	public TEarlyTargetDefinitionLinkDescriptor build() {
-		return createEarlyTargetDefinitionLinkDescriptor(getTargetFactories());
-	}
-
 	@Override
 	public TLateTargetDefinitionPageLinkDescriptor page(IModel<? extends Class<? extends Page>> pageClassModel) {
 		return createLinkDescriptor(

@@ -4,7 +4,7 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.main.ITwoMappa
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.choice.nonechosen.ITwoOrMoreMappableParameterNoneChosenChoiceState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.ITwoMappableParameterOneChosenParameterState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
 
 /**
  * This interface only exists so that we don't have to repeat again and again what some of the generic type parameters
@@ -15,16 +15,14 @@ public interface IGenericTwoMappableParameterMainState
 		<
 		TSelf extends IMainState<TSelf>,
 		TParam1, TParam2,
-		TEarlyTargetDefinitionResult,
 		TLateTargetDefinitionPageResult,
 		TLateTargetDefinitionResourceResult,
 		TLateTargetDefinitionImageResourceResult
 		>
 		extends IMainState<TSelf>,
 				ITwoOrMoreMappableParameterNoneChosenChoiceState,
-				IBackwardCompatibleTerminalState
+				ILateTargetDefinitionTerminalState
 						<
-						TEarlyTargetDefinitionResult,
 						TLateTargetDefinitionPageResult,
 						TLateTargetDefinitionResourceResult,
 						TLateTargetDefinitionImageResourceResult

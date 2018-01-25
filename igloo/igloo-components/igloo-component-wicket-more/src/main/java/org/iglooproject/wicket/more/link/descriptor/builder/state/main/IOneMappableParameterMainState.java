@@ -2,17 +2,16 @@ package org.iglooproject.wicket.more.link.descriptor.builder.state.main;
 
 import java.util.Collection;
 
-import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Supplier;
-
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.generic.IGenericOneMappableParameterMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import org.springframework.core.convert.TypeDescriptor;
+
+import com.google.common.base.Supplier;
 
 /**
  * A builder state with one mappable parameter from which one may:
@@ -21,13 +20,12 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.IOneParameterLinkDesc
  *  <li>call any of the {@link IChosenParameterState} and {@link IOneChosenParameterState} methods, allowing to
  *  reference the newly-added mappable parameters without it being entirely defined (no model was provided yet).
  *  <li>add another mappable parameter by calling the {@link #model(Class)} method.
- *  <li>end the build with one of the {@link IBackwardCompatibleTerminalState} methods.
+ *  <li>end the build with one of the {@link ILateTargetDefinitionTerminalState} methods.
  * </ul>
  */
 public interface IOneMappableParameterMainState
 		<
 		TParam1,
-		TEarlyTargetDefinitionLinkDescriptor,
 		TLateTargetDefinitionPageLinkDescriptor,
 		TLateTargetDefinitionResourceLinkDescriptor,
 		TLateTargetDefinitionImageResourceLinkDescriptor
@@ -37,17 +35,11 @@ public interface IOneMappableParameterMainState
 						IOneMappableParameterMainState
 								<
 								TParam1,
-								TEarlyTargetDefinitionLinkDescriptor,
 								TLateTargetDefinitionPageLinkDescriptor,
 								TLateTargetDefinitionResourceLinkDescriptor,
 								TLateTargetDefinitionImageResourceLinkDescriptor
 								>,
 						TParam1,
-						IOneParameterLinkDescriptorMapper
-								<
-								TEarlyTargetDefinitionLinkDescriptor,
-								TParam1
-								>,
 						IOneParameterLinkDescriptorMapper
 								<
 								TLateTargetDefinitionPageLinkDescriptor,
@@ -69,7 +61,6 @@ public interface IOneMappableParameterMainState
 	@Override
 	<TParam2> ITwoMappableParameterMainState<
 			TParam1, TParam2,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -78,7 +69,6 @@ public interface IOneMappableParameterMainState
 	@Override
 	<TParam2 extends Collection<TElement>, TElement> ITwoMappableParameterMainState<
 			TParam1, TParam2,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -87,7 +77,6 @@ public interface IOneMappableParameterMainState
 	@Override
 	<TParam2 extends Collection<?>> ITwoMappableParameterMainState<
 			TParam1, TParam2,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -96,7 +85,6 @@ public interface IOneMappableParameterMainState
 	@Override
 	<TParam2 extends Collection<?>> ITwoMappableParameterMainState<
 			TParam1, TParam2,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor

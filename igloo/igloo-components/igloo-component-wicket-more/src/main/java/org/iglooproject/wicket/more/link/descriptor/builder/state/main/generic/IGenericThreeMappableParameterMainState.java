@@ -4,7 +4,7 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.main.IThreeMap
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.choice.nonechosen.IThreeOrMoreMappableParameterNoneChosenChoiceState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IThreeMappableParameterOneChosenParameterState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
 
 /**
  * This interface only exists so that we don't have to repeat again and again what some of the generic type parameters
@@ -15,16 +15,14 @@ public interface IGenericThreeMappableParameterMainState
 		<
 		TSelf extends IMainState<TSelf>,
 		TParam1, TParam2, TParam3,
-		TEarlyTargetDefinitionResult,
 		TLateTargetDefinitionPageResult,
 		TLateTargetDefinitionResourceResult,
 		TLateTargetDefinitionImageResourceResult
 		>
 		extends IMainState<TSelf>,
 				IThreeOrMoreMappableParameterNoneChosenChoiceState,
-				IBackwardCompatibleTerminalState
+				ILateTargetDefinitionTerminalState
 						<
-						TEarlyTargetDefinitionResult,
 						TLateTargetDefinitionPageResult,
 						TLateTargetDefinitionResourceResult,
 						TLateTargetDefinitionImageResourceResult

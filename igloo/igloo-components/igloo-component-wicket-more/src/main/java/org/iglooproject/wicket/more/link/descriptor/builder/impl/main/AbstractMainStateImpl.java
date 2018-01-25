@@ -10,14 +10,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.bindgen.BindingRoot;
 import org.bindgen.binding.AbstractBinding;
-import org.javatuples.Pair;
-import org.javatuples.Tuple;
-import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
-
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
@@ -38,11 +30,17 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.ModelFactories;
 import org.iglooproject.wicket.more.model.BindingModel;
+import org.javatuples.Pair;
+import org.javatuples.Tuple;
+import org.springframework.core.convert.TypeDescriptor;
+
+import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 
 abstract class AbstractMainStateImpl
 		<
 		TSelf extends IMainState<TSelf>,
-		TEarlyTargetDefinitionLinkDescriptor,
 		TLateTargetDefinitionPageLinkDescriptor,
 		TLateTargetDefinitionResourceLinkDescriptor,
 		TLateTargetDefinitionImageResourceLinkDescriptor
@@ -54,7 +52,6 @@ abstract class AbstractMainStateImpl
 	}
 	
 	private final BuilderTargetFactories<
-			TEarlyTargetDefinitionLinkDescriptor, ?,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -65,7 +62,6 @@ abstract class AbstractMainStateImpl
 	
 	public AbstractMainStateImpl(
 			BuilderTargetFactories<
-					TEarlyTargetDefinitionLinkDescriptor, ?,
 					TLateTargetDefinitionPageLinkDescriptor,
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor
@@ -77,7 +73,6 @@ abstract class AbstractMainStateImpl
 	
 	public AbstractMainStateImpl(AbstractMainStateImpl<
 			?,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -244,7 +239,6 @@ abstract class AbstractMainStateImpl
 	}
 	
 	public BuilderTargetFactories<
-			TEarlyTargetDefinitionLinkDescriptor, ?,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor

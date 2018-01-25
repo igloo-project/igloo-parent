@@ -2,16 +2,14 @@ package org.iglooproject.wicket.more.link.descriptor.builder.state.main;
 
 import java.util.Collection;
 
-import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Supplier;
-
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
+import org.springframework.core.convert.TypeDescriptor;
+
+import com.google.common.base.Supplier;
 
 /**
  * An initial builder state from which one may:
@@ -24,7 +22,6 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDesc
  */
 public interface INoMappableParameterMainState
 		<
-		TEarlyTargetDefinitionLinkDescriptor,
 		TLateTargetDefinitionPageLinkDescriptor,
 		TLateTargetDefinitionResourceLinkDescriptor,
 		TLateTargetDefinitionImageResourceLinkDescriptor
@@ -33,16 +30,14 @@ public interface INoMappableParameterMainState
 						<
 						INoMappableParameterMainState
 								<
-								TEarlyTargetDefinitionLinkDescriptor,
 								TLateTargetDefinitionPageLinkDescriptor,
 								TLateTargetDefinitionResourceLinkDescriptor,
 								TLateTargetDefinitionImageResourceLinkDescriptor
 								>
 						>,
 				IMappableParameterDeclarationState,
-				IBackwardCompatibleTerminalState
+				ILateTargetDefinitionTerminalState
 						<
-						TEarlyTargetDefinitionLinkDescriptor,
 						TLateTargetDefinitionPageLinkDescriptor,
 						TLateTargetDefinitionResourceLinkDescriptor,
 						TLateTargetDefinitionImageResourceLinkDescriptor
@@ -51,7 +46,6 @@ public interface INoMappableParameterMainState
 	@Override
 	<TParam1> IOneMappableParameterMainState<
 			TParam1,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -60,7 +54,6 @@ public interface INoMappableParameterMainState
 	@Override
 	<TParam1 extends Collection<TElement>, TElement> IOneMappableParameterMainState<
 			TParam1,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -69,7 +62,6 @@ public interface INoMappableParameterMainState
 	@Override
 	<TParam1 extends Collection<?>> IOneMappableParameterMainState<
 			TParam1,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -78,7 +70,6 @@ public interface INoMappableParameterMainState
 	@Override
 	<TParam1 extends Collection<?>> IOneMappableParameterMainState<
 			TParam1,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor

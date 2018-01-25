@@ -7,13 +7,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.javatuples.Tuple;
-import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-
-import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.mapper.CoreThreeParameterLinkDescriptorMapperImpl;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
@@ -24,11 +17,14 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chos
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IThreeMappableParameterTwoChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.IThreeParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
+import org.javatuples.Tuple;
+import org.springframework.core.convert.TypeDescriptor;
+
+import com.google.common.base.Supplier;
 
 final class ThreeMappableParameterMainStateImpl
 		<
 		TParam1, TParam2, TParam3,
-		TEarlyTargetDefinitionLinkDescriptor,
 		TLateTargetDefinitionPageLinkDescriptor,
 		TLateTargetDefinitionResourceLinkDescriptor,
 		TLateTargetDefinitionImageResourceLinkDescriptor
@@ -38,12 +34,10 @@ final class ThreeMappableParameterMainStateImpl
 				IThreeMappableParameterMainState
 						<
 						TParam1, TParam2, TParam3,
-						TEarlyTargetDefinitionLinkDescriptor,
 						TLateTargetDefinitionPageLinkDescriptor,
 						TLateTargetDefinitionResourceLinkDescriptor,
 						TLateTargetDefinitionImageResourceLinkDescriptor
 						>,
-				TEarlyTargetDefinitionLinkDescriptor,
 				TLateTargetDefinitionPageLinkDescriptor,
 				TLateTargetDefinitionResourceLinkDescriptor,
 				TLateTargetDefinitionImageResourceLinkDescriptor
@@ -51,7 +45,6 @@ final class ThreeMappableParameterMainStateImpl
 		implements IThreeMappableParameterMainState
 				<
 				TParam1, TParam2, TParam3,
-				TEarlyTargetDefinitionLinkDescriptor,
 				TLateTargetDefinitionPageLinkDescriptor,
 				TLateTargetDefinitionResourceLinkDescriptor,
 				TLateTargetDefinitionImageResourceLinkDescriptor
@@ -61,7 +54,6 @@ final class ThreeMappableParameterMainStateImpl
 			AbstractOneOrMoreMappableParameterMainStateImpl
 					<
 					?,
-					TEarlyTargetDefinitionLinkDescriptor,
 					TLateTargetDefinitionPageLinkDescriptor,
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor
@@ -73,7 +65,6 @@ final class ThreeMappableParameterMainStateImpl
 	@Override
 	public <TParam4> FourMappableParameterMainStateImpl<
 			TParam1, TParam2, TParam3, TParam4,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -86,7 +77,6 @@ final class ThreeMappableParameterMainStateImpl
 	@Override
 	public <TParam4 extends Collection<TElement>, TElement> IFourMappableParameterMainState<
 			TParam1, TParam2, TParam3, TParam4,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -99,7 +89,6 @@ final class ThreeMappableParameterMainStateImpl
 	@Override
 	public <TParam4 extends Collection<?>> IFourMappableParameterMainState<
 			TParam1, TParam2, TParam3, TParam4,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -112,7 +101,6 @@ final class ThreeMappableParameterMainStateImpl
 	@Override
 	public <TParam4 extends Collection<?>> IFourMappableParameterMainState<
 			TParam1, TParam2, TParam3, TParam4,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -132,16 +120,6 @@ final class ThreeMappableParameterMainStateImpl
 						linkDescriptorFactory,
 						pageClassFactory, parameterIndices
 				)
-		);
-	}
-	
-	private <TTarget, TLinkDescriptor> IThreeParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2, TParam3>
-			createEarlyTargetDefinitionMapper(
-					BuilderTargetFactories<TLinkDescriptor, TTarget, ?, ?, ?> targetFactories) {
-		return createMapper(
-				targetFactories.getEarlyTargetDefinitionLinkDescriptorFactory(),
-				constantModelFactory(targetFactories.getEarlyTargetDefinitionTargetModel()),
-				ImmutableList.<Integer>of()
 		);
 	}
 	
@@ -208,14 +186,6 @@ final class ThreeMappableParameterMainStateImpl
 	@Override
 	public ThreeParameterChosenParameterStateImpl pickThird() {
 		return pickNone().andThird();
-	}
-
-	@Override
-	public IThreeParameterLinkDescriptorMapper<
-			TEarlyTargetDefinitionLinkDescriptor,
-			TParam1, TParam2, TParam3
-			> build() {
-		return createEarlyTargetDefinitionMapper(getTargetFactories());
 	}
 
 	@Override

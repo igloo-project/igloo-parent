@@ -2,16 +2,15 @@ package org.iglooproject.wicket.more.link.descriptor.builder.state.main;
 
 import java.util.Collection;
 
-import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Supplier;
-
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.generic.IGenericThreeMappableParameterMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.IThreeParameterLinkDescriptorMapper;
+import org.springframework.core.convert.TypeDescriptor;
+
+import com.google.common.base.Supplier;
 
 /**
  * A builder state with three mappable parameters from which one may:
@@ -21,13 +20,12 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.IThreeParameterLinkDe
  *  of the {@link IChosenParameterState} methods, allowing to reference these mappable parameters without them being
  *  entirely defined (no model was provided yet).
  *  <li>add another mappable parameter by calling the {@link #model(Class)} method.
- *  <li>end the build with one of the {@link IBackwardCompatibleTerminalState} methods.
+ *  <li>end the build with one of the {@link ILateTargetDefinitionTerminalState} methods.
  * </ul>
  */
 public interface IThreeMappableParameterMainState
 		<
 		TParam1, TParam2, TParam3,
-		TEarlyTargetDefinitionLinkDescriptor,
 		TLateTargetDefinitionPageLinkDescriptor,
 		TLateTargetDefinitionResourceLinkDescriptor,
 		TLateTargetDefinitionImageResourceLinkDescriptor
@@ -37,17 +35,11 @@ public interface IThreeMappableParameterMainState
 						IThreeMappableParameterMainState
 								<
 								TParam1, TParam2, TParam3,
-								TEarlyTargetDefinitionLinkDescriptor,
 								TLateTargetDefinitionPageLinkDescriptor,
 								TLateTargetDefinitionResourceLinkDescriptor,
 								TLateTargetDefinitionImageResourceLinkDescriptor
 								>,
 						TParam1, TParam2, TParam3,
-						IThreeParameterLinkDescriptorMapper
-								<
-								TEarlyTargetDefinitionLinkDescriptor,
-								TParam1, TParam2, TParam3
-								>,
 						IThreeParameterLinkDescriptorMapper
 								<
 								TLateTargetDefinitionPageLinkDescriptor,
@@ -69,7 +61,6 @@ public interface IThreeMappableParameterMainState
 	@Override
 	<TParam4> IFourMappableParameterMainState<
 			TParam1, TParam2, TParam3, TParam4,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -78,7 +69,6 @@ public interface IThreeMappableParameterMainState
 	@Override
 	<TParam4 extends Collection<TElement>, TElement> IFourMappableParameterMainState<
 			TParam1, TParam2, TParam3, TParam4,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -87,7 +77,6 @@ public interface IThreeMappableParameterMainState
 	@Override
 	<TParam4 extends Collection<?>> IFourMappableParameterMainState<
 			TParam1, TParam2, TParam3, TParam4,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -96,7 +85,6 @@ public interface IThreeMappableParameterMainState
 	@Override
 	<TParam4 extends Collection<?>> IFourMappableParameterMainState<
 			TParam1, TParam2, TParam3, TParam4,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor

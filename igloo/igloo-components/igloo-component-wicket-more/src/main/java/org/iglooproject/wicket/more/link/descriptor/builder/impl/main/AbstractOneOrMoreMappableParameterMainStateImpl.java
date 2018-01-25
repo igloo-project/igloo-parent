@@ -3,9 +3,6 @@ package org.iglooproject.wicket.more.link.descriptor.builder.impl.main;
 import java.util.List;
 
 import org.apache.wicket.util.lang.Args;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.AbstractChosenParameterStateImpl;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMainState;
@@ -13,10 +10,11 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.mapp
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 
+import com.google.common.collect.ImmutableList;
+
 abstract class AbstractOneOrMoreMappableParameterMainStateImpl
 		<
 		TSelf extends IMainState<TSelf>,
-		TEarlyTargetDefinitionLinkDescriptor,
 		TLateTargetDefinitionPageLinkDescriptor,
 		TLateTargetDefinitionResourceLinkDescriptor,
 		TLateTargetDefinitionImageResourceLinkDescriptor
@@ -24,7 +22,6 @@ abstract class AbstractOneOrMoreMappableParameterMainStateImpl
 		extends AbstractMainStateImpl
 						<
 						TSelf,
-						TEarlyTargetDefinitionLinkDescriptor,
 						TLateTargetDefinitionPageLinkDescriptor,
 						TLateTargetDefinitionResourceLinkDescriptor,
 						TLateTargetDefinitionImageResourceLinkDescriptor
@@ -34,7 +31,6 @@ abstract class AbstractOneOrMoreMappableParameterMainStateImpl
 	
 	public AbstractOneOrMoreMappableParameterMainStateImpl(
 			NoMappableParameterMainStateImpl<
-					TEarlyTargetDefinitionLinkDescriptor,
 					TLateTargetDefinitionPageLinkDescriptor,
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor
@@ -47,7 +43,6 @@ abstract class AbstractOneOrMoreMappableParameterMainStateImpl
 	public AbstractOneOrMoreMappableParameterMainStateImpl(
 			AbstractOneOrMoreMappableParameterMainStateImpl<
 					?,
-					TEarlyTargetDefinitionLinkDescriptor,
 					TLateTargetDefinitionPageLinkDescriptor,
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor

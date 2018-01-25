@@ -3,7 +3,7 @@ package org.iglooproject.wicket.more.link.descriptor.builder.state.main.generic;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.IOneMappableParameterMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.IBackwardCompatibleTerminalState;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
 
 /**
  * This interface only exists so that we don't have to repeat again and again what some of the generic type parameters
@@ -14,15 +14,13 @@ public interface IGenericOneMappableParameterMainState
 		<
 		TSelf extends IMainState<TSelf>,
 		TParam1,
-		TEarlyTargetDefinitionResult,
 		TLateTargetDefinitionPageResult,
 		TLateTargetDefinitionResourceResult,
 		TLateTargetDefinitionImageResourceResult
 		>
 		extends IMainState<TSelf>,
-				IBackwardCompatibleTerminalState
+				ILateTargetDefinitionTerminalState
 						<
-						TEarlyTargetDefinitionResult,
 						TLateTargetDefinitionPageResult,
 						TLateTargetDefinitionResourceResult,
 						TLateTargetDefinitionImageResourceResult

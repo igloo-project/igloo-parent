@@ -5,10 +5,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.bindgen.BindingRoot;
 import org.bindgen.binding.AbstractBinding;
-import org.javatuples.Unit;
-
-import com.google.common.base.Predicate;
-
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMainState;
@@ -18,6 +14,9 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.mapp
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
+import org.javatuples.Unit;
+
+import com.google.common.base.Predicate;
 
 /**
  * This class exists mainly to avoid having to repeatedly write down TSelf in its expanded form
@@ -30,11 +29,9 @@ abstract class AbstractGenericOneMappableParameterMainStateImpl
 		<
 		TSelf extends IMainState<TSelf>,
 		TParam1,
-		TEarlyTargetDefinitionLinkDescriptor,
 		TLateTargetDefinitionPageLinkDescriptor,
 		TLateTargetDefinitionResourceLinkDescriptor,
 		TLateTargetDefinitionImageResourceLinkDescriptor,
-		TEarlyTargetDefinitionResult,
 		TLateTargetDefinitionPageResult,
 		TLateTargetDefinitionResourceResult,
 		TLateTargetDefinitionImageResourceResult
@@ -42,7 +39,6 @@ abstract class AbstractGenericOneMappableParameterMainStateImpl
 		extends AbstractOneOrMoreMappableParameterMainStateImpl
 						<
 						TSelf,
-						TEarlyTargetDefinitionLinkDescriptor,
 						TLateTargetDefinitionPageLinkDescriptor,
 						TLateTargetDefinitionResourceLinkDescriptor,
 						TLateTargetDefinitionImageResourceLinkDescriptor
@@ -51,7 +47,6 @@ abstract class AbstractGenericOneMappableParameterMainStateImpl
 						<
 						TSelf,
 						TParam1,
-						TEarlyTargetDefinitionResult,
 						TLateTargetDefinitionPageResult,
 						TLateTargetDefinitionResourceResult,
 						TLateTargetDefinitionImageResourceResult
@@ -59,7 +54,6 @@ abstract class AbstractGenericOneMappableParameterMainStateImpl
 
 	AbstractGenericOneMappableParameterMainStateImpl(
 			NoMappableParameterMainStateImpl<
-					TEarlyTargetDefinitionLinkDescriptor,
 					TLateTargetDefinitionPageLinkDescriptor,
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor

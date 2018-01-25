@@ -5,23 +5,12 @@ import java.util.Collections;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import org.iglooproject.wicket.more.link.descriptor.builder.state.base.IBaseState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.pageinstance.IPageInstanceState;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import org.iglooproject.wicket.more.link.model.PageModel;
 
 public abstract class AbstractLinkFactory {
-	
-	/**
-	 * @deprecated Use {@link LinkDescriptorBuilder#start()} or {@link LinkDescriptorBuilder#toPageInstance(Page)} or
-	 * {@link LinkDescriptorBuilder#toPageInstance(IModel)} instead.
-	 */
-	@Deprecated
-	protected IBaseState builder() {
-		return new LinkDescriptorBuilder();
-	}
 	
 	public IPageLinkGenerator linkGenerator(Page pageInstance, Class<? extends Page> expectedClass) {
 		return linkGenerator(pageInstance, Collections.singleton(expectedClass));

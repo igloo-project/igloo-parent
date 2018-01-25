@@ -7,13 +7,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.javatuples.Tuple;
-import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-
-import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.mapper.CoreTwoParameterLinkDescriptorMapperImpl;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
@@ -23,11 +16,14 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chos
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.ITwoMappableParameterTwoChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
+import org.javatuples.Tuple;
+import org.springframework.core.convert.TypeDescriptor;
+
+import com.google.common.base.Supplier;
 
 final class TwoMappableParameterMainStateImpl
 		<
 		TParam1, TParam2,
-		TEarlyTargetDefinitionLinkDescriptor,
 		TLateTargetDefinitionPageLinkDescriptor,
 		TLateTargetDefinitionResourceLinkDescriptor,
 		TLateTargetDefinitionImageResourceLinkDescriptor
@@ -37,12 +33,10 @@ final class TwoMappableParameterMainStateImpl
 						ITwoMappableParameterMainState
 								<
 								TParam1, TParam2,
-								TEarlyTargetDefinitionLinkDescriptor,
 								TLateTargetDefinitionPageLinkDescriptor,
 								TLateTargetDefinitionResourceLinkDescriptor,
 								TLateTargetDefinitionImageResourceLinkDescriptor
 								>,
-						TEarlyTargetDefinitionLinkDescriptor,
 						TLateTargetDefinitionPageLinkDescriptor,
 						TLateTargetDefinitionResourceLinkDescriptor,
 						TLateTargetDefinitionImageResourceLinkDescriptor
@@ -50,7 +44,6 @@ final class TwoMappableParameterMainStateImpl
 		implements ITwoMappableParameterMainState
 						<
 						TParam1, TParam2,
-						TEarlyTargetDefinitionLinkDescriptor,
 						TLateTargetDefinitionPageLinkDescriptor,
 						TLateTargetDefinitionResourceLinkDescriptor,
 						TLateTargetDefinitionImageResourceLinkDescriptor
@@ -60,7 +53,6 @@ final class TwoMappableParameterMainStateImpl
 			AbstractOneOrMoreMappableParameterMainStateImpl
 					<
 					?,
-					TEarlyTargetDefinitionLinkDescriptor,
 					TLateTargetDefinitionPageLinkDescriptor,
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor
@@ -72,7 +64,6 @@ final class TwoMappableParameterMainStateImpl
 	@Override
 	public <TParam3> ThreeMappableParameterMainStateImpl<
 			TParam1, TParam2, TParam3,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -85,7 +76,6 @@ final class TwoMappableParameterMainStateImpl
 	@Override
 	public <TParam3 extends Collection<TElement>, TElement> IThreeMappableParameterMainState<
 			TParam1, TParam2, TParam3,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -98,7 +88,6 @@ final class TwoMappableParameterMainStateImpl
 	@Override
 	public <TParam3 extends Collection<?>> IThreeMappableParameterMainState<
 			TParam1, TParam2, TParam3,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -111,7 +100,6 @@ final class TwoMappableParameterMainStateImpl
 	@Override
 	public <TParam3 extends Collection<?>> IThreeMappableParameterMainState<
 			TParam1, TParam2, TParam3,
-			TEarlyTargetDefinitionLinkDescriptor,
 			TLateTargetDefinitionPageLinkDescriptor,
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
@@ -131,16 +119,6 @@ final class TwoMappableParameterMainStateImpl
 						linkDescriptorFactory,
 						pageClassFactory, parameterIndices
 				)
-		);
-	}
-	
-	private <TTarget, TLinkDescriptor> ITwoParameterLinkDescriptorMapper<TLinkDescriptor, TParam1, TParam2>
-			createEarlyTargetDefinitionMapper(
-					BuilderTargetFactories<TLinkDescriptor, TTarget, ?, ?, ?> targetFactories) {
-		return createMapper(
-				targetFactories.getEarlyTargetDefinitionLinkDescriptorFactory(),
-				constantModelFactory(targetFactories.getEarlyTargetDefinitionTargetModel()),
-				ImmutableList.<Integer>of()
 		);
 	}
 	
@@ -200,11 +178,6 @@ final class TwoMappableParameterMainStateImpl
 	@Override
 	public TwoParameterChosenParameterStateImpl pickSecond() {
 		return pickNone().andSecond();
-	}
-
-	@Override
-	public ITwoParameterLinkDescriptorMapper<TEarlyTargetDefinitionLinkDescriptor, TParam1, TParam2> build() {
-		return createEarlyTargetDefinitionMapper(getTargetFactories());
 	}
 
 	@Override

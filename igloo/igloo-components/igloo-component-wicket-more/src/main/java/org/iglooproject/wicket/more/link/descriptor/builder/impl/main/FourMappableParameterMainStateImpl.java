@@ -6,11 +6,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.javatuples.Tuple;
-
-import com.google.common.collect.ImmutableList;
-
-import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.mapper.CoreFourParameterLinkDescriptorMapperImpl;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
@@ -21,11 +16,11 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chos
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IFourMappableParameterTwoChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.IFourParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
+import org.javatuples.Tuple;
 
 final class FourMappableParameterMainStateImpl
 		<
 		TParam1, TParam2, TParam3, TParam4,
-		TEarlyTargetDefinitionLinkDescriptor,
 		TLateTargetDefinitionPageLinkDescriptor,
 		TLateTargetDefinitionResourceLinkDescriptor,
 		TLateTargetDefinitionImageResourceLinkDescriptor
@@ -35,12 +30,10 @@ final class FourMappableParameterMainStateImpl
 				IFourMappableParameterMainState
 						<
 						TParam1, TParam2, TParam3, TParam4,
-						TEarlyTargetDefinitionLinkDescriptor,
 						TLateTargetDefinitionPageLinkDescriptor,
 						TLateTargetDefinitionResourceLinkDescriptor,
 						TLateTargetDefinitionImageResourceLinkDescriptor
 						>,
-				TEarlyTargetDefinitionLinkDescriptor,
 				TLateTargetDefinitionPageLinkDescriptor,
 				TLateTargetDefinitionResourceLinkDescriptor,
 				TLateTargetDefinitionImageResourceLinkDescriptor
@@ -48,7 +41,6 @@ final class FourMappableParameterMainStateImpl
 		implements IFourMappableParameterMainState
 				<
 				TParam1, TParam2, TParam3, TParam4,
-				TEarlyTargetDefinitionLinkDescriptor,
 				TLateTargetDefinitionPageLinkDescriptor,
 				TLateTargetDefinitionResourceLinkDescriptor,
 				TLateTargetDefinitionImageResourceLinkDescriptor
@@ -58,7 +50,6 @@ final class FourMappableParameterMainStateImpl
 			AbstractOneOrMoreMappableParameterMainStateImpl
 					<
 					?,
-					TEarlyTargetDefinitionLinkDescriptor,
 					TLateTargetDefinitionPageLinkDescriptor,
 					TLateTargetDefinitionResourceLinkDescriptor,
 					TLateTargetDefinitionImageResourceLinkDescriptor
@@ -81,18 +72,6 @@ final class FourMappableParameterMainStateImpl
 		);
 	}
 	
-	private <TTarget, TLinkDescriptor> IFourParameterLinkDescriptorMapper<
-			TLinkDescriptor,
-			TParam1, TParam2, TParam3, TParam4
-			> createEarlyTargetDefinitionMapper(
-					BuilderTargetFactories<TLinkDescriptor, TTarget, ?, ?, ?> targetFactories) {
-		return createMapper(
-				targetFactories.getEarlyTargetDefinitionLinkDescriptorFactory(),
-				constantModelFactory(targetFactories.getEarlyTargetDefinitionTargetModel()),
-				ImmutableList.<Integer>of()
-		);
-	}
-
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	private class FourParameterChosenParameterStateImpl
 			extends AbstractInternalChosenParameterStateImpl<FourParameterChosenParameterStateImpl>
@@ -162,14 +141,6 @@ final class FourMappableParameterMainStateImpl
 	@Override
 	public FourParameterChosenParameterStateImpl pickFourth() {
 		return pickNone().andFourth();
-	}
-
-	@Override
-	public IFourParameterLinkDescriptorMapper<
-			TEarlyTargetDefinitionLinkDescriptor,
-			TParam1, TParam2, TParam3, TParam4
-			> build() {
-		return createEarlyTargetDefinitionMapper(getTargetFactories());
 	}
 
 	@Override
