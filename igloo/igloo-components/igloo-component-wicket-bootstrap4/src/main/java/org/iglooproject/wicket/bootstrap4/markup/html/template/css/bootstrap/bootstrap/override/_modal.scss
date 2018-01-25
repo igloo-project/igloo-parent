@@ -1,0 +1,28 @@
+.modal {
+	&.modal-headerless {
+		.modal-header {
+			@extend .d-none;
+		}
+	}
+	&.modal-closeless {
+		.modal-header {
+		.close {
+			@extend .d-none;
+		}
+	}
+	}
+	&.modal-footerless {
+		.modal-footer {
+			@extend .d-none;
+		}
+	}
+	&.modal-bodyonly {
+		@extend .modal-headerless;
+		@extend .modal-footerless;
+	}
+}
+
+.modal.modal-work-in-progress {
+	@extend .modal-closeless;
+	@extend .modal-footerless;
+}
