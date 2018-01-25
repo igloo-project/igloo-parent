@@ -4,9 +4,9 @@
 	<body>
 		<wicket:panel>
 			<div class="alert-global-panel">
-				<a wicket:id="closeTrigger" class="close" href="#">
-					<span class="fa fa-times fa-fw" />
-				</a>
+				<button wicket:id="closeTrigger" type="button" class="close">
+					<span>&times;</span>
+				</button>
 				<wicket:enclosure child="FATALfeedbackPanel">
 					<div class="alert alert-danger">
 						<wicket:container wicket:id="FATALfeedbackPanel" />

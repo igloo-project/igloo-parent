@@ -5,14 +5,18 @@
 	<div wicket:id="userMemberships" class="card" />
 	
 	<wicket:fragment wicket:id="addGroup">
-		<form wicket:id="addGroupForm" class="pull-right form-inline">
-			<div class="form-group">
-				<span wicket:id="userGroupAutocomplete" />
+		<form wicket:id="addGroupForm">
+			<div class="basic-container">
+				<div class="basic-item">
+					<span wicket:id="userGroupAutocomplete" />
+				</div>
+				<div class="basic-item">
+					<button class="btn btn-success" wicket:id="addGroupLink" type="button"> 
+						<span class="fa fa-plus" /> 
+						<wicket:message key="administration.usergroup.members.add" />
+					</button>
+				</div>
 			</div>
-			<a class="btn btn-success btn-sm" wicket:id="addGroupLink"> 
-				<i class="fa fa-plus" /> 
-				<wicket:message key="administration.usergroup.members.add" />
-			</a>
 		</form>
 	</wicket:fragment>
 </wicket:panel>
