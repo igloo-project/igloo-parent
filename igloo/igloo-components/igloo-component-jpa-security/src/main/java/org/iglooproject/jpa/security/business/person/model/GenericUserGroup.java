@@ -38,7 +38,7 @@ import org.iglooproject.jpa.security.business.person.util.AbstractUserComparator
 
 @MappedSuperclass
 @Bindable
-public abstract class GenericUserGroup<G extends GenericUserGroup<G, P>, P extends GenericUser<P, G>>
+public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PERSON extends GenericUser<PERSON, G>>
 		extends GenericEntity<Long, G>
 		implements IUserGroup {
 
@@ -69,7 +69,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, P>, P exten
 	@JsonIgnore
 	@ManyToMany(mappedBy = "groups")
 	@SortComparator(AbstractUserComparator.class)
-	private Set<P> persons = Sets.newTreeSet(AbstractUserComparator.get()); // NOSONAR
+	private Set<PERSON> persons = Sets.newTreeSet(AbstractUserComparator.get()); // NOSONAR
 	
 	@JsonIgnore
 	@ManyToMany

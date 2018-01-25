@@ -12,7 +12,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryparser.simple.SimpleQueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.Query;
-import org.bindgen.binding.AbstractBinding;
+import org.bindgen.BindingRoot;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.BooleanJunction;
@@ -31,10 +31,10 @@ import org.iglooproject.spring.util.lucene.search.LuceneUtils;
 
 public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLuceneQueryFactory {
 
-	private static final Function<AbstractBinding<?, String>, String> BINDING_TO_PATH_FUNCTION =
-			new Function<AbstractBinding<?, String>, String>() {
+	private static final Function<BindingRoot<?, String>, String> BINDING_TO_PATH_FUNCTION =
+			new Function<BindingRoot<?, String>, String>() {
 				@Override
-				public String apply(AbstractBinding<?, String> input) {
+				public String apply(BindingRoot<?, String> input) {
 					if (input == null) {
 						throw new IllegalStateException("Path may not be null.");
 					}
@@ -154,12 +154,12 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	 * You can use {@link NullEncodingGenericEntityIdFieldBridge} instead of the classical {@link GenericEntityIdFieldBridge} for example.
 	 */
 	@Override
-	public final Query matchNull(AbstractBinding<?, ?> binding) {
+	public final Query matchNull(BindingRoot<?, ?> binding) {
 		return matchNull(getDefaultQueryBuilder(), binding);
 	}
 	
 	@Override
-	public final Query matchNull(QueryBuilder builder, AbstractBinding<?, ?> binding) {
+	public final Query matchNull(QueryBuilder builder, BindingRoot<?, ?> binding) {
 		return matchNull(builder, binding.getPath());
 	}
 	
@@ -178,12 +178,12 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	
 	// 	>	Match if given
 	@Override
-	public final <P> Query matchIfGiven(AbstractBinding<?, P> binding, P value) {
+	public final <P> Query matchIfGiven(BindingRoot<?, P> binding, P value) {
 		return matchIfGiven(getDefaultQueryBuilder(), binding, value);
 	}
 	
 	@Override
-	public final <P> Query matchIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding, P value) {
+	public final <P> Query matchIfGiven(QueryBuilder builder, BindingRoot<?, P> binding, P value) {
 		return matchIfGiven(builder, binding.getPath(), value);
 	}
 	
@@ -206,12 +206,12 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	
 	// 	>	Match one term if given
 	@Override
-	public final Query matchOneTermIfGiven(AbstractBinding<?, String> binding, String terms) {
+	public final Query matchOneTermIfGiven(BindingRoot<?, String> binding, String terms) {
 		return matchOneTermIfGiven(getDefaultQueryBuilder(), binding.getPath(), terms);
 	}
 	
 	@Override
-	public final Query matchOneTermIfGiven(QueryBuilder builder, AbstractBinding<?, String> binding, String terms) {
+	public final Query matchOneTermIfGiven(QueryBuilder builder, BindingRoot<?, String> binding, String terms) {
 		return matchOneTermIfGiven(builder, binding.getPath(), terms);
 	}
 	
@@ -234,13 +234,13 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	// 	>	Match all terms if given
 	@Override
 	@SafeVarargs
-	public final Query matchAllTermsIfGiven(Analyzer analyzer, String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
+	public final Query matchAllTermsIfGiven(Analyzer analyzer, String terms, BindingRoot<?, String> binding, BindingRoot<?, String> ... otherBindings) {
 		return matchAllTermsIfGiven(analyzer, terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
 	}
 	
 	@Override
 	@SafeVarargs
-	public final Query matchAllTermsIfGiven(String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
+	public final Query matchAllTermsIfGiven(String terms, BindingRoot<?, String> binding, BindingRoot<?, String> ... otherBindings) {
 		return matchAllTermsIfGiven(getDefaultAnalyzer(), terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
 	}
 
@@ -266,13 +266,13 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	// 	>	Match autocomplete
 	@Override
 	@SafeVarargs
-	public final Query matchAutocompleteIfGiven(Analyzer analyzer, String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
+	public final Query matchAutocompleteIfGiven(Analyzer analyzer, String terms, BindingRoot<?, String> binding, BindingRoot<?, String> ... otherBindings) {
 		return matchAutocompleteIfGiven(analyzer, terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
 	}
 	
 	@Override
 	@SafeVarargs
-	public final Query matchAutocompleteIfGiven(String terms, AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
+	public final Query matchAutocompleteIfGiven(String terms, BindingRoot<?, String> binding, BindingRoot<?, String> ... otherBindings) {
 		return matchAutocompleteIfGiven(getDefaultAnalyzer(), terms, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
 	}
 
@@ -293,14 +293,14 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	@Override
 	@SafeVarargs
 	public final Query matchFuzzyIfGiven(Analyzer analyzer, String terms, Integer maxEditDistance,
-			AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
+			BindingRoot<?, String> binding, BindingRoot<?, String> ... otherBindings) {
 		return matchFuzzyIfGiven(analyzer, terms, maxEditDistance, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
 	}
 	
 	@Override
 	@SafeVarargs
 	public final Query matchFuzzyIfGiven(String terms, Integer maxEditDistance,
-			AbstractBinding<?, String> binding, AbstractBinding<?, String> ... otherBindings) {
+			BindingRoot<?, String> binding, BindingRoot<?, String> ... otherBindings) {
 		return matchFuzzyIfGiven(getDefaultAnalyzer(), terms, maxEditDistance, Lists.transform(Lists.asList(binding, otherBindings), BINDING_TO_PATH_FUNCTION));
 	}
 
@@ -319,12 +319,12 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	
 	// 	>	Be included if given
 	@Override
-	public final <P> Query beIncludedIfGiven(AbstractBinding<?, ? extends Collection<P>> binding, P value) {
+	public final <P> Query beIncludedIfGiven(BindingRoot<?, ? extends Collection<P>> binding, P value) {
 		return beIncludedIfGiven(getDefaultQueryBuilder(), binding, value);
 	}
 	
 	@Override
-	public final <P> Query beIncludedIfGiven(QueryBuilder builder, AbstractBinding<?, ? extends Collection<P>> binding, P value) {
+	public final <P> Query beIncludedIfGiven(QueryBuilder builder, BindingRoot<?, ? extends Collection<P>> binding, P value) {
 		return beIncludedIfGiven(builder, binding.getPath(), value);
 	}
 	
@@ -347,12 +347,12 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	
 	// 	>	Match one if given
 	@Override
-	public final <P> Query matchOneIfGiven(AbstractBinding<?, P> binding, Collection<? extends P> possibleValues) {
+	public final <P> Query matchOneIfGiven(BindingRoot<?, P> binding, Collection<? extends P> possibleValues) {
 		return matchOneIfGiven(getDefaultQueryBuilder(), binding, possibleValues);
 	}
 	
 	@Override
-	public final <P> Query matchOneIfGiven(QueryBuilder builder, AbstractBinding<?, P> binding, Collection<? extends P> possibleValues) {
+	public final <P> Query matchOneIfGiven(QueryBuilder builder, BindingRoot<?, P> binding, Collection<? extends P> possibleValues) {
 		return matchOneIfGiven(builder, binding.getPath(), possibleValues);
 	}
 	
@@ -378,12 +378,12 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	
 	// 	>	Match all if given
 	@Override
-	public final <P> Query matchAllIfGiven(AbstractBinding<?, ? extends Collection<P>> binding, Collection<? extends P> possibleValues) {
+	public final <P> Query matchAllIfGiven(BindingRoot<?, ? extends Collection<P>> binding, Collection<? extends P> possibleValues) {
 		return matchAllIfGiven(getDefaultQueryBuilder(), binding, possibleValues);
 	}
 
 	@Override
-	public final <P> Query matchAllIfGiven(QueryBuilder builder, AbstractBinding<?, ? extends Collection<P>> binding,
+	public final <P> Query matchAllIfGiven(QueryBuilder builder, BindingRoot<?, ? extends Collection<P>> binding,
 			Collection<? extends P> possibleValues) {
 		return matchAllIfGiven(builder, binding.getPath(), possibleValues);
 	}
@@ -410,12 +410,12 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	
 	// 	>	Match if true
 	@Override
-	public final Query matchIfTrue(AbstractBinding<?, Boolean> binding, boolean value, Boolean mustMatch) {
+	public final Query matchIfTrue(BindingRoot<?, Boolean> binding, boolean value, Boolean mustMatch) {
 		return matchIfTrue(getDefaultQueryBuilder(), binding, value, mustMatch);
 	}
 	
 	@Override
-	public final Query matchIfTrue(QueryBuilder builder, AbstractBinding<?, Boolean> binding, boolean value, Boolean mustMatch) {
+	public final Query matchIfTrue(QueryBuilder builder, BindingRoot<?, Boolean> binding, boolean value, Boolean mustMatch) {
 		return matchIfTrue(builder, binding.getPath(), value, mustMatch);
 	}
 	
@@ -437,12 +437,12 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	
 	// 	>	Match range (min, max, both)
 	@Override
-	public final <P> Query matchRangeMin(AbstractBinding<?, P> binding, P min) {
+	public final <P> Query matchRangeMin(BindingRoot<?, P> binding, P min) {
 		return matchRangeMin(getDefaultQueryBuilder(), binding, min);
 	}
 	
 	@Override
-	public final <P> Query matchRangeMin(QueryBuilder builder, AbstractBinding<?, P> binding, P min) {
+	public final <P> Query matchRangeMin(QueryBuilder builder, BindingRoot<?, P> binding, P min) {
 		return matchRangeMin(builder, binding.getPath(), min);
 	}
 	
@@ -463,12 +463,12 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	}
 	
 	@Override
-	public final <P> Query matchRangeMax(AbstractBinding<?, P> binding, P max) {
+	public final <P> Query matchRangeMax(BindingRoot<?, P> binding, P max) {
 		return matchRangeMax(getDefaultQueryBuilder(), binding, max);
 	}
 	
 	@Override
-	public final <P> Query matchRangeMax(QueryBuilder builder, AbstractBinding<?, P> binding, P max) {
+	public final <P> Query matchRangeMax(QueryBuilder builder, BindingRoot<?, P> binding, P max) {
 		return matchRangeMax(builder, binding.getPath(), max);
 	}
 	
@@ -489,12 +489,12 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	}
 	
 	@Override
-	public final <P> Query matchRange(AbstractBinding<?, P> binding, P min, P max) {
+	public final <P> Query matchRange(BindingRoot<?, P> binding, P min, P max) {
 		return matchRange(getDefaultQueryBuilder(), binding.getPath(), min, max);
 	}
 	
 	@Override
-	public final <P> Query matchRange(QueryBuilder builder, AbstractBinding<?, P> binding, P min, P max) {
+	public final <P> Query matchRange(QueryBuilder builder, BindingRoot<?, P> binding, P min, P max) {
 		return matchRange(builder, binding.getPath(), min, max);
 	}
 	

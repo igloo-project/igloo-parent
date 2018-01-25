@@ -5,7 +5,7 @@ import java.util.TreeSet;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.bindgen.binding.AbstractBinding;
+import org.bindgen.BindingRoot;
 import org.springframework.core.convert.TypeDescriptor;
 
 import com.google.common.base.Supplier;
@@ -116,6 +116,6 @@ public interface IParameterMappingState
 	 * Shorthand for <code>renderInUrl(parameterName, BindingModel.of(rootModel, binding))</code>
 	 * @see #renderInUrl(String, IModel)
 	 */
-	<R, T> IAddedParameterMappingState<TSelf> renderInUrl(String parameterName, IModel<R> rootModel, AbstractBinding<R, T> binding);
+	<R, T> IAddedParameterMappingState<TSelf> renderInUrl(String parameterName, IModel<R> rootModel, BindingRoot<R, T> binding);
 	
 }

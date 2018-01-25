@@ -5,7 +5,7 @@ import org.apache.wicket.model.IModel;
 
 import com.google.common.base.Function;
 
-import org.iglooproject.commons.util.binding.AbstractCoreBinding;
+import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
@@ -34,13 +34,13 @@ public interface IAddedBootstrapBadgeColumnState<T, S extends ISort<?>, C> exten
 	
 	<E> IAddedBootstrapBadgeColumnState<T, S, C> withLink(Function<? super T, E> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper);
 
-	<E> IAddedBootstrapBadgeColumnState<T, S, C> withLink(AbstractCoreBinding<? super T, E> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper);
+	<E> IAddedBootstrapBadgeColumnState<T, S, C> withLink(ICoreBinding<? super T, E> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper);
 
 	IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper);
 	
 	<E> IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(Function<? super T, E> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper);
 
-	<E> IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(AbstractCoreBinding<? super T, E> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper);
+	<E> IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(ICoreBinding<? super T, E> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper);
 
 	/**
 	 * @deprecated This is the default behavior, so calling this method is generally useless. The method is here for

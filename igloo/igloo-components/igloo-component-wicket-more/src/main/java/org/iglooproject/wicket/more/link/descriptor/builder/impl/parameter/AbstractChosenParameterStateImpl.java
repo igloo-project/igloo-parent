@@ -5,13 +5,6 @@ import java.util.List;
 
 import org.apache.wicket.model.IDetachable;
 import org.bindgen.BindingRoot;
-import org.bindgen.binding.AbstractBinding;
-
-import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.mapping.CollectionLinkParameterMappingEntry;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.mapping.SimpleLinkParameterMappingEntry;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.ITwoMappableParameterOneChosenParameterState;
@@ -24,6 +17,11 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.IL
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
+
+import com.google.common.base.Predicate;
+import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 /**
  * A base for implementing all interfaces that extend {@link IChosenParameterState}.
@@ -82,7 +80,7 @@ public abstract class AbstractChosenParameterStateImpl<TSelf, TInitialState>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IAddedParameterMappingState<TInitialState> renderInUrl(String parameterName, AbstractBinding binding) {
+	public IAddedParameterMappingState<TInitialState> renderInUrl(String parameterName, BindingRoot binding) {
 		return map(InjectOnlyLinkParameterMappingEntry.factory(parameterName, binding));
 	}
 

@@ -12,7 +12,7 @@ import org.apache.wicket.model.IModel;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
-import org.iglooproject.commons.util.binding.AbstractCoreBinding;
+import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
@@ -46,7 +46,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 	
 	private List<Behavior> linkBehaviors = Lists.newArrayList();
 
-	public CoreBootstrapBadgeColumn(IModel<?> headerLabelModel, final AbstractCoreBinding<? super T, C> binding,
+	public CoreBootstrapBadgeColumn(IModel<?> headerLabelModel, final ICoreBinding<? super T, C> binding,
 			final BootstrapRenderer<? super C> renderer) {
 		super(headerLabelModel);
 		this.modelFactory = BindingModel.factory(binding);

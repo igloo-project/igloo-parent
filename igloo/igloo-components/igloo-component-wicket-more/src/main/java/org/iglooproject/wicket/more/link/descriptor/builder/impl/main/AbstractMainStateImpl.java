@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.bindgen.BindingRoot;
-import org.bindgen.binding.AbstractBinding;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
@@ -178,7 +177,7 @@ abstract class AbstractMainStateImpl
 	
 	@Override
 	public <R, T> IAddedParameterMappingState<TSelf> renderInUrl(String parameterName,
-			IModel<R> rootModel, AbstractBinding<R, T> binding) {
+			IModel<R> rootModel, BindingRoot<R, T> binding) {
 		return map(new InjectOnlyLinkParameterMappingEntry<>(parameterName, BindingModel.of(rootModel, binding)));
 	}
 	

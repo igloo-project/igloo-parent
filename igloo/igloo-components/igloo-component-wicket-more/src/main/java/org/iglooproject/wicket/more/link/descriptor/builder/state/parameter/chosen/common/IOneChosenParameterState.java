@@ -2,7 +2,7 @@ package org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.cho
 
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
-import org.bindgen.binding.AbstractBinding;
+import org.bindgen.BindingRoot;
 import org.javatuples.Unit;
 
 import com.google.common.base.Predicate;
@@ -70,7 +70,7 @@ public interface IOneChosenParameterState
 	 * Similar to {@link #renderInUrl(String)}, but renders the object pointed to by the given binding on the currently
 	 * selected model's object, instead of simply rendering the currently selected model's object.
 	 */
-	IAddedParameterMappingState<TInitialState> renderInUrl(String parameterName, AbstractBinding<? super TChosenParam1, ?> binding);
+	IAddedParameterMappingState<TInitialState> renderInUrl(String parameterName, BindingRoot<? super TChosenParam1, ?> binding);
 	
 	/**
 	 * {@link #validator(ILinkParameterValidatorFactory) Add a validator to the resulting link descriptor} that will
