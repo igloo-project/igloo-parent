@@ -41,6 +41,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import com.google.common.collect.Lists;
+
 public abstract class CoreWicketApplication extends WebApplication {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CoreWicketApplication.class);
@@ -57,9 +59,12 @@ public abstract class CoreWicketApplication extends WebApplication {
 	@Autowired
 	protected IScssService scssService;
 	
-	@Autowired
-	protected List<IWicketModule> modules;
-	
+	/**
+	 * Initialized with an empty list to circumvent {@link NullPointerException} when no autowirable bean are available.
+	 */
+	@Autowired(required = false)
+	protected List<IWicketModule> modules = Lists.newArrayList();
+
 	/**
 	 * Déclaré au démarrage de l'application ; ne doit pas être modifié par la suite
 	 */

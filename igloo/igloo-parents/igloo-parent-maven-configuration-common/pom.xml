@@ -300,6 +300,8 @@
 						<suffix>.min</suffix>
 						<linebreakpos>10000</linebreakpos>
 						<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+						<!-- TODO LAL restore js/css minification -->
+						<skip>true</skip>
 					</configuration>
 				</plugin>
 				<plugin>
