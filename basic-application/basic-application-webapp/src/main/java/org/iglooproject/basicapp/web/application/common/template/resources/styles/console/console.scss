@@ -1,12 +1,6 @@
-@import "$(scope-core-console)console";
+@import "../bootstrap";
+@import "../fontawesome";
 
-@import "../variables";
-@import "../mixins";
-@import "../common";
-@import "../navbar";
-@import "../card";
-@import "../description";
-@import "../forms";
-@import "../tables";
+@import "$(scope-core-console)console";
 
 @import "common";

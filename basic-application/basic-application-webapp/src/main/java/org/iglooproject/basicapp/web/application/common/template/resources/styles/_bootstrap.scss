@@ -1,0 +1,59 @@
+@import "$(scope-core-bs4)bootstrap/functions";
+
+@import "$(scope-core-bs4)bootstrap/variables";
+@import "$(scope-core-bs4)bootstrap/override/variables";
+@import "variables";
+
+@import "$(scope-core-bs4)bootstrap/mixins";
+@import "$(scope-core-bs4)bootstrap/override/mixins";
+@import "mixins";
+
+@import "$(scope-core-bs4)bootstrap/root";
+@import "$(scope-core-bs4)bootstrap/reboot";
+@import "$(scope-core-bs4)bootstrap/type";
+@import "$(scope-core-bs4)bootstrap/images";
+@import "$(scope-core-bs4)bootstrap/code";
+
+@import "$(scope-core-bs4)bootstrap/grid";
+@import "$(scope-core-bs4)bootstrap/override/grid";
+
+@import "$(scope-core-bs4)bootstrap/tables";
+@import "$(scope-core-bs4)bootstrap/forms";
+
+@import "$(scope-core-bs4)bootstrap/buttons";
+@import "$(scope-core-bs4)bootstrap/override/buttons";
+
+@import "$(scope-core-bs4)bootstrap/transitions";
+@import "$(scope-core-bs4)bootstrap/dropdown";
+@import "$(scope-core-bs4)bootstrap/button-group";
+@import "$(scope-core-bs4)bootstrap/input-group";
+@import "$(scope-core-bs4)bootstrap/custom-forms";
+@import "$(scope-core-bs4)bootstrap/nav";
+@import "$(scope-core-bs4)bootstrap/navbar";
+
+@import "$(scope-core-bs4)bootstrap/card";
+@import "$(scope-core-bs4)bootstrap/override/card";
+
+@import "$(scope-core-bs4)bootstrap/breadcrumb";
+@import "$(scope-core-bs4)bootstrap/pagination";
+@import "$(scope-core-bs4)bootstrap/badge";
+@import "$(scope-core-bs4)bootstrap/jumbotron";
+@import "$(scope-core-bs4)bootstrap/alert";
+@import "$(scope-core-bs4)bootstrap/progress";
+@import "$(scope-core-bs4)bootstrap/media";
+@import "$(scope-core-bs4)bootstrap/list-group";
+@import "$(scope-core-bs4)bootstrap/close";
+
+@import "$(scope-core-bs4)bootstrap/modal";
+@import "$(scope-core-bs4)bootstrap/override/modal";
+
+@import "$(scope-core-bs4)bootstrap/tooltip";
+@import "$(scope-core-bs4)bootstrap/popover";
+@import "$(scope-core-bs4)bootstrap/carousel";
+@import "$(scope-core-bs4)bootstrap/utilities";
+@import "$(scope-core-bs4)bootstrap/print";
+
+@import "$(scope-core-bs4)select2/select2-bootstrap";
+
+@import "$(scope-core-bs4)feedback";
+@import "$(scope-core-bs4)autocomplete";

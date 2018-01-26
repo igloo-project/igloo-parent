@@ -37,6 +37,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.iglooproject.commons.util.functional.Joiners;
 
 import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
@@ -44,8 +45,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
-
-import org.iglooproject.commons.util.functional.Joiners;
 
 /**
  * <p>Classe abstraite permettant de construire des tableaux Excel.</p>
@@ -129,17 +128,17 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	/**
 	 * Couleur de fond du header
 	 */
-	private String headerBackgroundColor = "#007CAF";
+	private String headerBackgroundColor = "#0062CC";
 
 	/**
 	 * Couleur du texte du header
 	 */
-	private String headerFontColor = "#000000";
+	private String headerFontColor = "#FFFFFF";
 	
 	/**
 	 * Couleur des liens
 	 */
-	private String linkFontColor = "#0077CC";
+	private String linkFontColor = "#007BFF";
 	
 	/**
 	 * Couleur des lignes paires

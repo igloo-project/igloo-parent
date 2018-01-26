@@ -13,12 +13,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.lang.Classes;
-
-import com.google.common.base.Joiner;
-
 import org.iglooproject.export.excel.AbstractExcelTableExport;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.markup.html.model.CountMessageModel;
+
+import com.google.common.base.Joiner;
 
 /**
  * Apporte quelques configurations de style ainsi que le support de l'extraction de traduction via wicket.
@@ -106,7 +105,7 @@ public abstract class AbstractSimpleExcelTableExport extends AbstractExcelTableE
 
 	@Override
 	protected void initColors() {
-		setHeaderBackgroundColor("#009FE0");
+		setHeaderBackgroundColor("#0062CC");
 		setHeaderFontColor("#FFFFFF");
 		super.initColors();
 	}

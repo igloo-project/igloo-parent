@@ -6,11 +6,13 @@
 	}
 	
 	> .card-action-container {
-		@extend .basic-container;
-		@extend .basic-container-right;
+		@extend .d-flex;
+		@extend .flex-wrap;
+		@extend .flex-g-1;
+		@extend .justify-content-end;
 		
 		> .card-action-item {
-			@extend .basic-item;
+			@extend .flex-item;
 		}
 	}
 }
