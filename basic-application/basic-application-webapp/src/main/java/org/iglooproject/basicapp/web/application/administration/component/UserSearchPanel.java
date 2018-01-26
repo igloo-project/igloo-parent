@@ -36,7 +36,8 @@ public class UserSearchPanel<U extends User> extends Panel {
 										.setLabel(new ResourceModel("administration.user.search.group"))
 										.add(new LabelPlaceholderBehavior()),
 								new CheckBox("active", dataProvider.getIncludeInactivesModel())
-										.setLabel(new ResourceModel("administration.user.search.includeInactives")),
+										.setLabel(new ResourceModel("administration.user.search.includeInactives"))
+										.setOutputMarkupId(true),
 								userQuickSearch
 						)
 		);

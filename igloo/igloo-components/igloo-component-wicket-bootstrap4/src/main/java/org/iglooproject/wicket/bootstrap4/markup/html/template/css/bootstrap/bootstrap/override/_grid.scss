@@ -125,5 +125,14 @@
 	&.row-default {
 		@extend .row-g-3;
 	}
+	
+	&.row-form {
+		@extend .row-g-2;
+		
+		> .form-group {
+			margin: 0;
+			padding: 0;
+		}
+	}
 }
 

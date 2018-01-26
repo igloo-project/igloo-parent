@@ -267,6 +267,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		styleHeader.setBorderTop(BorderStyle.THIN);
 		setStyleTopBorderColor(styleHeader, colorRegistry, BORDER_COLOR_INDEX);
 		styleHeader.setDataFormat((short) 0);
+		styleHeader.setVerticalAlignment(VerticalAlignment.CENTER);
 		styleHeader.setWrapText(true);
 		registerStyle(STYLE_HEADER_NAME, styleHeader);
 

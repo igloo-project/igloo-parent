@@ -1,7 +1,8 @@
+@import "../../bootstrap";
+@import "../../fontawesome";
+
 @import "$(scope-core-console)consoleaccess/console-access";
 
-@import "../../variables";
-@import "../../mixins";
 @import "../../common";
 @import "../../navbar";
 @import "../../card";

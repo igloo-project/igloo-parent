@@ -10,40 +10,36 @@
 		</div>
 		
 		<form wicket:id="form">
-			<div class="form-row">
+			<div class="row row-form">
 				<div class="form-group col-sm-3">
 					<label wicket:for="hashTableByteSize"><wicket:label /></label>
 					<input wicket:id="hashTableByteSize" type="text" class="form-control" />
 				</div>
-			</div>
-			<div class="form-row">
+				<div class="w-100" />
 				<div class="form-group col-sm-4">
 					<label wicket:for="fileKey"><wicket:label /></label>
 					<input wicket:id="fileKey" type="text" class="form-control" />
 				</div>
-			</div>
-			<div class="form-row">
+				<div class="w-100" />
 				<div class="form-group col-sm-4">
 					<label wicket:for="extension"><wicket:label /></label>
 					<input wicket:id="extension" type="text" class="form-control" />
 				</div>
-			</div>
-			
-			<button type="submit" class="btn btn-success">
-				<span class="fa fa-paw" />
-				<wicket:message key="console.maintenance.file.generatePath" />
-			</button>
-			
-			<wicket:enclosure child="path">
-				<div class="form-group">
-					<label class="control-label col-sm-5"><wicket:message key="console.maintenance.file.path" /></label>
-					<div class="col-sm-7">
-						<div class="form-control-static">
+				<div class="col-12">
+					<button type="submit" class="btn btn-success">
+						<span class="fa fa-paw" />
+						<wicket:message key="console.maintenance.file.generatePath" />
+					</button>
+				</div>
+				<wicket:enclosure child="path">
+					<div class="form-group col-12">
+						<label><wicket:message key="console.maintenance.file.path" /></label>
+						<div>
 							<kbd wicket:id="path" />
 						</div>
 					</div>
-				</div>
-			</wicket:enclosure>
+				</wicket:enclosure>
+			</div>
 		</form>
 	</wicket:extend>
 </body>

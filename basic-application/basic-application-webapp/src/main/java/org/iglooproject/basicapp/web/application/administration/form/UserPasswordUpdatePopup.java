@@ -1,8 +1,5 @@
 package org.iglooproject.basicapp.web.application.administration.form;
 
-import static org.iglooproject.wicket.more.condition.Condition.isEqual;
-import static org.iglooproject.wicket.more.condition.Condition.role;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
@@ -15,14 +12,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -63,10 +58,11 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 		
 		this.typeDescriptor = UserTypeDescriptor.get(model.getObject());
 		
-		this.isOldPasswordRequired = Condition.or(
-				isEqual(Model.of(typeDescriptor.getEntityClass()), Model.of(TechnicalUser.class)),
-				role(CoreAuthorityConstants.ROLE_ADMIN)
-		).negate();
+//		this.isOldPasswordRequired = Condition.or(
+//				isEqual(Model.of(typeDescriptor.getEntityClass()), Model.of(TechnicalUser.class)),
+//				role(CoreAuthorityConstants.ROLE_ADMIN)
+//		).negate();
+		this.isOldPasswordRequired = Condition.alwaysTrue();
 	}
 
 	@Override

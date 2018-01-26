@@ -3,81 +3,90 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
 		<wicket:fragment wicket:id="standardFields">
-			<div class="form-group">
-				<label class="col-sm-4 control-label" wicket:for="firstName"><wicket:label /></label>
-				<div class="col-sm-8">
-					<input class="form-control" wicket:id="firstName" type="text" />
+			<div class="form-group col-12">
+				<div class="row">
+					<label class="col-sm-4 col-form-label" wicket:for="firstName"><wicket:label /></label>
+					<div class="col-sm-8">
+						<input class="form-control" wicket:id="firstName" type="text" />
+					</div>
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-4 control-label" wicket:for="lastName"><wicket:label /></label>
-				<div class="col-sm-8">
-					<input class="form-control" wicket:id="lastName" type="text" />
+			<div class="form-group col-12">
+				<div class="row">
+					<label class="col-sm-4 col-form-label" wicket:for="lastName"><wicket:label /></label>
+					<div class="col-sm-8">
+						<input class="form-control" wicket:id="lastName" type="text" />
+					</div>
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-4 control-label" wicket:for="userName"><wicket:label /></label>
-				<div class="col-sm-8">
-					<input class="form-control" wicket:id="userName" type="text"
-						autocomplete="off" />
-				</div>
-				<div class="col-sm-8 col-sm-offset-4">
-					<p class="help-block small">
-						<wicket:message key="administration.user.form.userName.help" />
-					</p>
+			<div class="form-group col-12">
+				<div class="row">
+					<label class="col-sm-4 col-form-label" wicket:for="userName"><wicket:label /></label>
+					<div class="col-sm-8">
+						<input class="form-control" wicket:id="userName" type="text" autocomplete="off" />
+						<small class="form-text text-muted">
+							<wicket:message key="administration.user.form.userName.help" />
+						</small>
+					</div>
 				</div>
 			</div>
 			<wicket:container wicket:id="addContainer">
 				<wicket:container wicket:id="passwordContainer">
-					<div class="form-group">
-						<label class="col-sm-4 control-label" wicket:for="password"><wicket:label /></label>
-						<div class="col-sm-8">
-							<div class="input-group">
-								<input class="form-control" wicket:id="password" type="password"
-										autocomplete="off" />
-								<span class="input-group-addon"><span class="fa fa-key"></span></span>
+					<div class="form-group col-12">
+						<div class="row">
+							<label class="col-sm-4 col-form-label" wicket:for="password"><wicket:label /></label>
+							<div class="col-sm-8">
+								<div class="input-group">
+									<span class="input-group-prepend"><span class="input-group-text"><span class="fa fa-key" /></span></span>
+									<input class="form-control" wicket:id="password" type="password" autocomplete="off" />
+								</div>
+								<small wicket:id="passwordHelp" class="form-text text-muted" />
 							</div>
-						</div>
-						<div class="col-sm-8 col-sm-offset-4">
-							<p class="help-block small" wicket:id="passwordHelp" />
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="col-sm-4 control-label" wicket:for="confirmPassword"><wicket:label /></label>
-						<div class="col-sm-8">
-							<div class="input-group">
-								<input class="form-control" wicket:id="confirmPassword" type="password"
-										autocomplete="off" />
-								<span class="input-group-addon"><span class="fa fa-key"></span></span>
+					<div class="form-group col-12">
+						<div class="row">
+							<label class="col-sm-4 col-form-label" wicket:for="confirmPassword"><wicket:label /></label>
+							<div class="col-sm-8">
+								<div class="input-group">
+									<span class="input-group-prepend"><span class="input-group-text"><span class="fa fa-key" /></span></span>
+									<input class="form-control" wicket:id="confirmPassword" type="password" autocomplete="off" />
+								</div>
+								<small class="form-text text-muted">
+									<wicket:message key="security.user.confirmPassword.help" />
+								</small>
 							</div>
-						</div>
-						<div class="col-sm-8 col-sm-offset-4">
-							<p class="help-block small">
-								<wicket:message key="security.user.confirmPassword.help" />
-							</p>
 						</div>
 					</div>
 				</wicket:container>
-				<div class="form-group">
-					<label class="col-sm-4 control-label" wicket:for="active"><wicket:label /></label>
-					<div class="col-sm-8">
-						<input wicket:id="active" type="checkbox" />
+				<div class="form-group col-12">
+					<div class="row">
+						<div class="col-sm-8 offset-sm-4">
+							<div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" wicket:id="active">
+								<label class="custom-control-label" wicket:for="active"><wicket:label /></label>
+							</div>
+						</div>
 					</div>
 				</div>
 			</wicket:container>
-			<div class="form-group">
-				<label class="col-sm-4 control-label" wicket:for="email"><wicket:label /></label>
-				<div class="col-sm-8">
-					<div class="input-group">
-						<input class="form-control" wicket:id="email" type="email" />
-						<span class="input-group-addon">@</span>
+			<div class="form-group col-12">
+				<div class="row">
+					<label class="col-sm-4 col-form-label" wicket:for="email"><wicket:label /></label>
+					<div class="col-sm-8">
+						<div class="input-group">
+							<span class="input-group-prepend"><span class="input-group-text">@</span></span>
+							<input class="form-control" wicket:id="email" type="email" />
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="col-sm-4 control-label" wicket:for="locale"><wicket:label /></label>
-				<div class="col-sm-8">
-					<select wicket:id="locale" />
+			<div class="form-group col-12">
+				<div class="row">
+					<label class="col-sm-4 col-form-label" wicket:for="locale"><wicket:label /></label>
+					<div class="col-sm-8">
+						<select wicket:id="locale" />
+					</div>
 				</div>
 			</div>
 		</wicket:fragment>

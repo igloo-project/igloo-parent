@@ -32,6 +32,7 @@ import org.iglooproject.wicket.more.markup.html.form.FormPanelMode;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.autosize.AutosizeBehavior;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
@@ -88,8 +89,9 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 								new RequiredTextField<String>("name", BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().name()))
 										.setLabel(new ResourceModel("administration.usergroup.field.name")),
 								new TextArea<String>("description", BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().description()))
-										.setLabel(new ResourceModel("administration.usergroup.field.description")),
-								new CheckGroup<Authority>("authoritiesGroup",
+										.setLabel(new ResourceModel("administration.usergroup.field.description"))
+										.add(new AutosizeBehavior()),
+								new CheckGroup<Authority>("authorities",
 										BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().authorities()),
 										Suppliers2.<Authority>hashSet()
 								)
@@ -99,7 +101,7 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 													@Override
 													protected void populateItem(Item<Authority> item) {
 														item.add(
-																new Check<Authority>("authorityCheck", item.getModel())
+																new Check<Authority>("authority", item.getModel())
 																		.setLabel(AuthorityRenderer.get().asModel(item.getModel()))
 														);
 													}

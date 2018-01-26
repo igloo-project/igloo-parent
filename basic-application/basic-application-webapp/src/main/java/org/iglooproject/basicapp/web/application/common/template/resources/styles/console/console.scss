@@ -3,4 +3,11 @@
 
 @import "$(scope-core-console)console";
 
+@import "../common";
+@import "../navbar";
+@import "../card";
+@import "../description";
+@import "../forms";
+@import "../tables";
+
 @import "common";
