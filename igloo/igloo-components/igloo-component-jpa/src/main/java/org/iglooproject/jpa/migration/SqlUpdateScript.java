@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.hibernate.boot.Metadata;
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.internal.SessionImpl;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -40,7 +41,9 @@ public final class SqlUpdateScript {
 			
 			@Override
 			public Map<?, ?> getConfigurationValues() {
-				return Maps.newHashMap();
+				Map<String, String> config = Maps.newHashMap();
+				config.put(AvailableSettings.HBM2DDL_DELIMITER, ";");
+				return config;
 			}
 			
 			@Override
