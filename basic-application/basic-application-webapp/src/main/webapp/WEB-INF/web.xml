@@ -6,6 +6,8 @@
 	
 	<display-name>basic-application-webapp</display-name>
 	
+	<absolute-ordering />
+	
 	<context-param>
 		<param-name>contextClass</param-name>
 		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
