@@ -1,0 +1,3 @@
+.pagination {
+	@extend .flex-wrap; // Avoid overflow pagination with wrapping on elements. Need a better responsive solution.
+}
