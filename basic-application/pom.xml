@@ -30,13 +30,13 @@
 		<profile>
 			<id>recette</id>
 			<properties>
-				<remote-deployment-url>scpexe://root@openwidesi-vm-recettejava.accelance.net/root/livraison/${maven.build.timestamp}</remote-deployment-url>
+				<remote-deployment-url>scpexe://root@example-host/root/livraison/${maven.build.timestamp}</remote-deployment-url>
 			</properties>
 		</profile>
 		<profile>
 			<id>production</id>
 			<properties>
-				<remote-deployment-url>scpexe://openwide@todo/data/home/openwide/livraison/${maven.build.timestamp}</remote-deployment-url>
+				<remote-deployment-url>scpexe://openwide@example-host/data/home/openwide/livraison/${maven.build.timestamp}</remote-deployment-url>
 			</properties>
 		</profile>
 	</profiles>
@@ -90,17 +90,17 @@
 	
 	<issueManagement>
 		<system>GitLab</system>
-		<url>https://gitlab.tools.kobalt-si.fr/kobalt/${wombatProjectName}/issues</url>
+		<url>https://gitlab.tools.kobalt-si.fr/kobalt/${projectName}/issues</url>
 	</issueManagement>
 
 	<ciManagement>
 		<system>GitLab</system>
-		<url>https://gitlab.tools.kobalt-si.fr/kobalt/${wombatProjectName}/pipelines</url>
+		<url>https://gitlab.tools.kobalt-si.fr/kobalt/${projectName}/pipelines</url>
 	</ciManagement>
 
 	<scm>
-		<developerConnection>scm:git:git@gitlab.tools.kobalt-si.fr:kobalt/${wombatProjectName}.git</developerConnection>
-		<url>https://gitlab.tools.kobalt-si.fr/kobalt/${wombatProjectName}</url>
+		<developerConnection>scm:git:git@gitlab.tools.kobalt-si.fr:kobalt/${projectName}.git</developerConnection>
+		<url>https://gitlab.tools.kobalt-si.fr/kobalt/${projectName}</url>
 		<tag>HEAD</tag>
 	</scm>
 	
