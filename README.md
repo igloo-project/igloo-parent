@@ -1,6 +1,8 @@
 Igloo toolbox
 ===================
 
+[![Documentation Status](https://readthedocs.org/projects/igloo-doc/badge/?version=latest)](http://igloo-doc.readthedocs.io/en/latest/?badge=latest)
+
 About
 -----
 
@@ -29,5 +31,4 @@ Igloo is standing on the shoulders of giants:
 Documentation
 -------------
 
-Documentation needs to be forked and maintained here.
-Before we complete it, you can find the OWSI-Core documentation [here](http://owsi-core-doc.readthedocs.io/en/latest/index.html)  (ancestor of this repository).
+You can find the Igloo documentation [here](http://igloo-doc.readthedocs.io/en/latest/index.html).
