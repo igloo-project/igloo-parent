@@ -1,7 +1,6 @@
 package org.iglooproject.wicket.bootstrap4.console.maintenance.upgrade.component;
 
-import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.dataUpgrade;
-
+import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -15,14 +14,19 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.iglooproject.jpa.more.business.upgrade.model.DataUpgradeRecord;
 import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
 import org.iglooproject.jpa.more.business.upgrade.service.IAbstractDataUpgradeService;
+import org.iglooproject.jpa.more.business.upgrade.service.IDataUpgradeRecordService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
+import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
+import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.util.DatePattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DataUpgradePanel extends Panel {
 
@@ -32,6 +36,9 @@ public class DataUpgradePanel extends Panel {
 
 	@SpringBean
 	private IPropertyService propertyService;
+
+	@SpringBean
+	private IDataUpgradeRecordService dataUpgradeRecordService;
 
 	@SpringBean
 	private IAbstractDataUpgradeService dataUpgradeService;
@@ -52,9 +59,18 @@ public class DataUpgradePanel extends Panel {
 			
 			@Override
 			protected void populateItem(ListItem<IDataUpgrade> item) {
-				final boolean executee = propertyService.get(dataUpgrade(item.getModelObject()));
+				DataUpgradeRecord record = dataUpgradeRecordService.getByDataUpgrade(item.getModelObject());
 				
-				item.add(new Label("upgradeName", new PropertyModel<String>(item.getModel(), "name")));
+				IModel<DataUpgradeRecord> recordModel = GenericEntityModel.of(record);
+				IModel<Boolean> doneModel = new PropertyModel<Boolean>(recordModel, "done");
+				
+				item.add(
+						new Label("name", new PropertyModel<String>(item.getModel(), "name")),
+						new DateLabel("executionDate", new PropertyModel<Date>(recordModel, "executionDate"), DatePattern.SHORT_DATETIME)
+								.showPlaceholder(),
+						new BooleanIcon("autoPerform", new PropertyModel<Boolean>(recordModel, "autoPerform"))
+								.hideIfNullOrFalse()
+				);
 				
 				AbstractLink executeLink = new Link<IDataUpgrade>("executeLink", item.getModel()) {
 					private static final long serialVersionUID = -2506223138809658833L;
@@ -70,27 +86,21 @@ public class DataUpgradePanel extends Panel {
 						}
 						setResponsePage(getPage());
 					}
-					
-					@Override
-					public void onConfigure() {
-						super.onConfigure();
-						setVisible(!executee);
-					}
 				};
-				executeLink.add(new AttributeModifier("title", getString("console.maintenance.dataUpgrade.execute")));
-				item.add(executeLink);
 				
-				item.add(new PlaceholderContainer("alreadyExecutedContainer").condition(Condition.componentVisible(executeLink)));
-			}
-			
-			@Override
-			protected void onConfigure() {
-				super.onConfigure();
-				setVisible(!getModelObject().isEmpty());
+				item.add(
+						executeLink
+								.add(new AttributeModifier("title", getString("console.maintenance.dataUpgrade.execute")))
+								.add(Condition.isTrue(doneModel).thenHide()),
+						new PlaceholderContainer("alreadyExecutedContainer").condition(Condition.componentVisible(executeLink))
+				);
 			}
 		};
-		add(dataUpgradeListView);
 		
-		add(new PlaceholderContainer("emptyList").condition(Condition.componentVisible(dataUpgradeListView)));
+		add(	dataUpgradeListView
+						.add(Condition.collectionModelNotEmpty(dataUpgrades).thenShow()),
+				new PlaceholderContainer("emptyList")
+						.condition(Condition.componentVisible(dataUpgradeListView))
+		);
 	}
 }

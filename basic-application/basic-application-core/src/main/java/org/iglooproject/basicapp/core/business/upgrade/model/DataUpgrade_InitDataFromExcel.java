@@ -13,9 +13,9 @@ import org.iglooproject.jpa.more.util.init.service.IImportDataService;
 import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.jpa.util.EntityManagerUtils;
 
-public class ImportExcel implements IDataUpgrade {
+public class DataUpgrade_InitDataFromExcel implements IDataUpgrade {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ImportExcel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DataUpgrade_InitDataFromExcel.class);
 	
 	@Autowired
 	private EntityManagerUtils entityManagerUtils;
@@ -28,7 +28,7 @@ public class ImportExcel implements IDataUpgrade {
 
 	@Override
 	public String getName() {
-		return ImportExcel.class.getSimpleName();
+		return DataUpgrade_InitDataFromExcel.class.getSimpleName();
 	}
 
 	@Override

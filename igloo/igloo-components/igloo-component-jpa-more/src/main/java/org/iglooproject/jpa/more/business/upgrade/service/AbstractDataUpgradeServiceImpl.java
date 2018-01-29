@@ -1,37 +1,37 @@
 package org.iglooproject.jpa.more.business.upgrade.service;
 
-import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.dataUpgrade;
-
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
-import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.SpringBeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 public abstract class AbstractDataUpgradeServiceImpl implements IAbstractDataUpgradeService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractDataUpgradeServiceImpl.class);
+
 	@Autowired
-	private IPropertyService propertyService;
+	private IDataUpgradeRecordService recordService;
 	
 	@Autowired
 	private ApplicationContext applicationContext;
 
 	@Override
 	public void executeDataUpgrade(IDataUpgrade upgrade) throws ServiceException, SecurityServiceException {
-		// On vérifie que la mise à jour n'a pas déjà été exécutée
-		boolean upgradeAlreadyDone = propertyService.get(dataUpgrade(upgrade));
+		boolean upgradeAlreadyDone = recordService.isDone(upgrade);
 		
 		if (!upgradeAlreadyDone) {
 			SpringBeanUtils.autowireBean(applicationContext, upgrade);
 			upgrade.perform();
 			
-			// On marque la mise à jour comme exécutée
-			propertyService.set(dataUpgrade(upgrade), true);
+			recordService.markAsDone(upgrade);
+		} else {
+			LOGGER.warn("Data upgrade '" + upgrade.getName() + "' has already been done.");
 		}
 	}
 
