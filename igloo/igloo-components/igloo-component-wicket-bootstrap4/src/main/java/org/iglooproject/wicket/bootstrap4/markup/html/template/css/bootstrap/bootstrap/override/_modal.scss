@@ -25,4 +25,8 @@
 .modal.modal-work-in-progress {
 	@extend .modal-closeless;
 	@extend .modal-footerless;
+	
+	.modal-dialog {
+		@extend .modal-sm;
+	}
 }
