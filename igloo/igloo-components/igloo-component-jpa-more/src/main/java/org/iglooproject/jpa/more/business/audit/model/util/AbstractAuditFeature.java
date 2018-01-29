@@ -18,7 +18,7 @@ package org.iglooproject.jpa.more.business.audit.model.util;
 
 import javax.persistence.MappedSuperclass;
 
-import org.iglooproject.jpa.more.business.generic.model.GenericListItem;
+import org.iglooproject.jpa.more.business.referencedata.model.GenericBasicReferenceData;
 
 /**
  * <p>Les fonctions référencées dans le journal.</p>
@@ -29,7 +29,7 @@ import org.iglooproject.jpa.more.business.generic.model.GenericListItem;
  * <p><strong>NOTE :</strong> cette classe n'est que rarement utilisée.</p>
  */
 @MappedSuperclass
-public abstract class AbstractAuditFeature extends GenericListItem<AbstractAuditFeature> {
+public abstract class AbstractAuditFeature extends GenericBasicReferenceData<AbstractAuditFeature> {
 	private static final long serialVersionUID = -188108294900406595L;
 	
 	protected AbstractAuditFeature() {

@@ -11,7 +11,6 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.SortableField;
-
 import org.iglooproject.basicapp.core.business.common.util.BasicApplicationLocale;
 import org.iglooproject.jpa.more.business.localization.model.AbstractLocalizedText;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
@@ -22,15 +21,17 @@ public class LocalizedText extends AbstractLocalizedText {
 
 	private static final long serialVersionUID = -1225434649910707113L;
 
+	public static final String FR = "fr";
 	public static final String FR_AUTOCOMPLETE = "frAutocomplete";
-	public static final String EN_AUTOCOMPLETE = "enAutocomplete";
-
 	public static final String FR_SORT = "frSort";
+
+	public static final String EN = "en";
+	public static final String EN_AUTOCOMPLETE = "enAutocomplete";
 	public static final String EN_SORT = "enSort";
 
 	@Column
 	@Fields({
-		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_STEMMING)),
+		@Field(name = FR, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_STEMMING)),
 		@Field(name = FR_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT)),
 		@Field(name = FR_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	})
@@ -39,7 +40,7 @@ public class LocalizedText extends AbstractLocalizedText {
 
 	@Column
 	@Fields({
-		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_STEMMING)),
+		@Field(name = EN, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_STEMMING)),
 		@Field(name = EN_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT)),
 		@Field(name = EN_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	})
@@ -87,7 +88,7 @@ public class LocalizedText extends AbstractLocalizedText {
 		} else if (BasicApplicationLocale.ENGLISH.getLanguage().equals(locale.getLanguage())) {
 			return getEn();
 		} else {
-			throw new IllegalArgumentException(String.format("Unknown locale: %s", locale));
+			return get(BasicApplicationLocale.DEFAULT);
 		}
 	}
 

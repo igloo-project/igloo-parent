@@ -30,12 +30,6 @@ public class LocalizedTextRenderer extends Renderer<AbstractLocalizedText> {
 		return INSTANCE;
 	}
 
-	/**
-	 * @deprecated Use {@link #get()} instead.
-	 */
-	@Deprecated
-	protected LocalizedTextRenderer() { }
-
 	@Override
 	public String render(AbstractLocalizedText value, Locale locale) {
 		if (value == null) {

@@ -4,13 +4,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.more.business.generic.model.GenericListItem;
+import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.test.jpa.more.business.audit.model.MockAudit;
 import org.iglooproject.test.jpa.more.business.audit.model.MockAuditAction;
 import org.iglooproject.test.jpa.more.business.audit.model.MockAuditActionEnum;
@@ -18,6 +14,9 @@ import org.iglooproject.test.jpa.more.business.audit.model.MockAuditFeature;
 import org.iglooproject.test.jpa.more.business.audit.model.MockAuditFeatureEnum;
 import org.iglooproject.test.jpa.more.business.audit.service.IMockAuditService;
 import org.iglooproject.test.jpa.more.business.entity.model.TestEntity;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestAuditService extends AbstractJpaMoreTestCase {
 
@@ -32,12 +31,12 @@ public class TestAuditService extends AbstractJpaMoreTestCase {
 	}
 	
 	private void cleanFeaturesAndActions() throws ServiceException, SecurityServiceException {
-		for (GenericListItem<?> genericListItem : genericListItemService.list(MockAuditFeature.class)) {
-			genericListItemService.delete(genericListItem);
+		for (GenericReferenceData<?, ?> genericListItem : genericReferenceDataService.list(MockAuditFeature.class)) {
+			genericReferenceDataService.delete(genericListItem);
 		}
 		
-		for (GenericListItem<?> genericListItem : genericListItemService.list(MockAuditAction.class)) {
-			genericListItemService.delete(genericListItem);
+		for (GenericReferenceData<?, ?> genericListItem : genericReferenceDataService.list(MockAuditAction.class)) {
+			genericReferenceDataService.delete(genericListItem);
 		}
 	}
 
@@ -50,12 +49,12 @@ public class TestAuditService extends AbstractJpaMoreTestCase {
 	private void initFeaturesAndActions() {
 		for (MockAuditFeatureEnum auditFeatureEnum : MockAuditFeatureEnum.values()) {
 			MockAuditFeature auditFeature = new MockAuditFeature(auditFeatureEnum.name(), auditFeatureEnum, 1);
-			genericListItemService.create(auditFeature);
+			genericReferenceDataService.create(auditFeature);
 		}
 		
 		for (MockAuditActionEnum auditActionEnum : MockAuditActionEnum.values()) {
 			MockAuditAction auditAction = new MockAuditAction(auditActionEnum.name(), auditActionEnum, 1);
-			genericListItemService.create(auditAction);
+			genericReferenceDataService.create(auditAction);
 		}
 	}
 

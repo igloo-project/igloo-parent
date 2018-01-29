@@ -15,7 +15,7 @@ create sequence basic_application.UserGroup_id_seq start 1 increment 1;
 create table basic_application.Authority (id int8 not null, name text, primary key (id));
 create table basic_application.Authority_customPermissionNames (Authority_id int8 not null, customPermissionNames text);
 create table basic_application.BasicUser (id int8 not null, primary key (id));
-create table basic_application.City (id int8 not null, deleteable boolean not null, disableable boolean not null, editable boolean not null, enabled boolean not null, label text, position int4 not null, shortLabel text, postalCode text not null, primary key (id));
+create table basic_application.City (id int8 not null, deleteable boolean not null, disableable boolean not null, editable boolean not null, enabled boolean not null, position int4 not null, label_en text, label_fr text, postalCode text not null, primary key (id));
 create table basic_application.DataUpgradeRecord (id int8 not null, autoPerform boolean not null, done boolean not null, executionDate timestamp, name text not null, primary key (id));
 create table basic_application.HistoryDifference (id int8 not null, after_label text, after_reference_id int8, after_reference_type varchar(255), after_serialized text, before_label text, before_reference_id int8, before_reference_type varchar(255), before_serialized text, eventType varchar(255) not null, path_key_label text, path_key_reference_id int8, path_key_reference_type varchar(255), path_key_serialized text, path_path text not null, parentDifference_id int8, parentLog_id int8, differences_ORDER int4, primary key (id));
 create table basic_application.HistoryLog (id int8 not null, comment text, date timestamp not null, eventType varchar(255) not null, mainObject_label text, mainObject_reference_id int8, mainObject_reference_type varchar(255), mainObject_serialized text, object1_label text, object1_reference_id int8, object1_reference_type varchar(255), object1_serialized text, object2_label text, object2_reference_id int8, object2_reference_type varchar(255), object2_serialized text, object3_label text, object3_reference_id int8, object3_reference_type varchar(255), object3_serialized text, object4_label text, object4_reference_id int8, object4_reference_type varchar(255), object4_serialized text, subject_label text, subject_reference_id int8, subject_reference_type varchar(255), subject_serialized text, primary key (id));
@@ -28,7 +28,7 @@ create table basic_application.user__passwordInformation_history (user__id int8 
 create table basic_application.user__UserGroup (persons_id int8 not null, groups_id int8 not null, primary key (persons_id, groups_id));
 create table basic_application.UserGroup (id int8 not null, description text, locked boolean not null, name text, primary key (id));
 create table basic_application.UserGroup_Authority (UserGroup_id int8 not null, authorities_id int8 not null, primary key (UserGroup_id, authorities_id));
-alter table basic_application.City add constraint UK8oh2n3fcu3rjs131dow4alm61 unique (label, postalCode);
+alter table basic_application.City add constraint UKcici6ao6snb79g0i2ebsix408 unique (label_fr, postalCode);
 alter table basic_application.DataUpgradeRecord add constraint UK_6q54k3x0axoc3n8ns55emwiev unique (name);
 create index idx_HistoryDifference_parentLog on basic_application.HistoryDifference (parentLog_id);
 create index idx_HistoryDifference_parentDifference on basic_application.HistoryDifference (parentDifference_id);

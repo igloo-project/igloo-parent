@@ -7,6 +7,16 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.lang3.mutable.MutableInt;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.migration.rowmapper.AbstractListResultRowMapper;
+import org.iglooproject.jpa.migration.rowmapper.AbstractMapResultRowMapper;
+import org.iglooproject.jpa.migration.rowmapper.AbstractResultRowMapper;
+import org.iglooproject.jpa.migration.util.ISimpleEntityMigrationInformation;
+import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
+import org.iglooproject.jpa.more.business.referencedata.service.IGenericReferenceDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +29,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.migration.rowmapper.AbstractListResultRowMapper;
-import org.iglooproject.jpa.migration.rowmapper.AbstractMapResultRowMapper;
-import org.iglooproject.jpa.migration.rowmapper.AbstractResultRowMapper;
-import org.iglooproject.jpa.migration.util.ISimpleEntityMigrationInformation;
-import org.iglooproject.jpa.more.business.generic.model.GenericListItem;
-import org.iglooproject.jpa.more.business.generic.service.IGenericListItemService;
-
 public abstract class AbstractSimpleEntityMigrationService extends AbstractMigrationService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractSimpleEntityMigrationService.class);
 
 	@Autowired
-	private IGenericListItemService genericListItemService;
+	private IGenericReferenceDataService genericReferenceDataService;
 
 	private Set<Class<? extends GenericEntity<Long, ?>>> clazzSet = Sets.newLinkedHashSet();
 
@@ -99,8 +98,8 @@ public abstract class AbstractSimpleEntityMigrationService extends AbstractMigra
 				
 				try {
 					for (T entity : entities) {
-						if (GenericListItem.class.isAssignableFrom(entityInformation.getEntityClass())) {
-							genericListItemService.create((GenericListItem<?>)entity);
+						if (GenericReferenceData.class.isAssignableFrom(entityInformation.getEntityClass())) {
+							genericReferenceDataService.create((GenericReferenceData<?, ?>)entity);
 						} else if (genericEntityService != null) {
 							genericEntityService.create(entity);
 						} else {

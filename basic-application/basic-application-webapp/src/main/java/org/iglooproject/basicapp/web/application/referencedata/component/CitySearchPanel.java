@@ -8,8 +8,8 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.City;
-import org.iglooproject.basicapp.web.application.referencedata.model.AbstractGenericListItemDataProvider;
-import org.iglooproject.jpa.more.business.generic.model.EnabledFilter;
+import org.iglooproject.basicapp.web.application.referencedata.model.AbstractLocalizedReferenceDataDataProvider;
+import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
@@ -19,7 +19,7 @@ public class CitySearchPanel extends Panel {
 	
 	private static final long serialVersionUID = -2395663840251286432L;
 
-	public CitySearchPanel(String id, final AbstractGenericListItemDataProvider<City, ?> dataProvider, final Component table) {
+	public CitySearchPanel(String id, final AbstractLocalizedReferenceDataDataProvider<City, ?> dataProvider, final Component table) {
 		super(id);
 		
 		Form<Void> form = new Form<Void>("form");
@@ -41,13 +41,13 @@ public class CitySearchPanel extends Panel {
 		
 		form.add(
 				new TextField<String>("label", dataProvider.getLabelModel(), String.class)
-						.setLabel(new ResourceModel("business.listItem.label"))
+						.setLabel(new ResourceModel("business.localizedReferenceData.label"))
 						.add(new LabelPlaceholderBehavior()),
 				new TextField<String>("postalCode", dataProvider.getCodeModel(), String.class)
-						.setLabel(new ResourceModel("business.postalCode"))
+						.setLabel(new ResourceModel("business.city.postalCode"))
 						.add(new LabelPlaceholderBehavior()),
 				new EnumDropDownSingleChoice<EnabledFilter>("enabledFilter", dataProvider.getEnabledFilterModel(), EnabledFilter.class)
-						.setLabel(new ResourceModel("business.listItem.enabledState"))
+						.setLabel(new ResourceModel("business.referenceData.enabled.state"))
 						.add(new LabelPlaceholderBehavior())
 		);
 	}

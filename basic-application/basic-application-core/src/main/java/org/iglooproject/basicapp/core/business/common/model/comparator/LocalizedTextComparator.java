@@ -11,6 +11,6 @@ public class LocalizedTextComparator extends AbstractLocalizedTextComparator<Loc
 
 	public LocalizedTextComparator(Locale locale) {
 		super(locale);
-		}
+	}
 
 }

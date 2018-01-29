@@ -4,24 +4,25 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.City;
+import org.iglooproject.basicapp.core.business.referencedata.search.LocalizedReferenceDataSort;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
-import org.iglooproject.basicapp.web.application.referencedata.form.AbstractGenericListItemPopup;
+import org.iglooproject.basicapp.web.application.referencedata.form.AbstractGenericReferenceDataPopup;
 import org.iglooproject.basicapp.web.application.referencedata.form.CityPopup;
-import org.iglooproject.basicapp.web.application.referencedata.model.SimpleGenericListItemDataProvider;
-import org.iglooproject.jpa.more.business.generic.model.search.GenericListItemSort;
+import org.iglooproject.basicapp.web.application.referencedata.model.AbstractLocalizedReferenceDataDataProvider;
+import org.iglooproject.basicapp.web.application.referencedata.model.SimpleLocalizedReferenceDataDataProvider;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
 
 public class CityListPanel
-		extends AbstractGenericListItemListPanel<City, GenericListItemSort, SimpleGenericListItemDataProvider<City, GenericListItemSort>> {
+		extends AbstractReferenceDataListPanel<City, LocalizedReferenceDataSort, AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort>> {
 	
 	public CityListPanel(String id) {
-		this(id, SimpleGenericListItemDataProvider.forItemType(City.class));
+		this(id, SimpleLocalizedReferenceDataDataProvider.forItemType(City.class));
 	}
 	
-	public CityListPanel(String id, SimpleGenericListItemDataProvider<City, GenericListItemSort> dataProvider) {
+	public CityListPanel(String id, AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort> dataProvider) {
 		super(id, dataProvider, dataProvider.getSortModel());
 	}
 
@@ -33,7 +34,7 @@ public class CityListPanel
 	}
 
 	@Override
-	protected AbstractGenericListItemPopup<City> createPopup(String wicketId) {
+	protected AbstractGenericReferenceDataPopup<City> createPopup(String wicketId) {
 		return new CityPopup(wicketId) {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -44,18 +45,21 @@ public class CityListPanel
 	}
 
 	@Override
-	protected IAddedCoreColumnState<City, GenericListItemSort> addColumns(DataTableBuilder<City, GenericListItemSort> builder) {
+	protected IAddedCoreColumnState<City, LocalizedReferenceDataSort> addColumns(DataTableBuilder<City, LocalizedReferenceDataSort> builder) {
 		return builder
-				.addLabelColumn(new ResourceModel("business.listItem.label"), Bindings.genericListItem().label())
-						.withSort(GenericListItemSort.LABEL, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+				.addLabelColumn(new ResourceModel("business.localizedReferenceData.label.fr"), Bindings.city().label().fr())
+						.withSort(LocalizedReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 						.withClass("text text-md")
-				.addLabelColumn(new ResourceModel("business.postalCode"), Bindings.city().postalCode())
-						.withSort(GenericListItemSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
+				.addLabelColumn(new ResourceModel("business.localizedReferenceData.label.en"), Bindings.city().label().en())
+						.withSort(LocalizedReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+						.withClass("text text-md")
+				.addLabelColumn(new ResourceModel("business.city.postalCode"), Bindings.city().postalCode())
+						.withSort(LocalizedReferenceDataSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
 						.withClass("code code-sm");
 	}
 
 	@Override
-	protected Component createSearchForm(String wicketId, SimpleGenericListItemDataProvider<City, GenericListItemSort> dataProvider, Component table) {
+	protected Component createSearchForm(String wicketId, AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort> dataProvider, Component table) {
 		return new CitySearchPanel(wicketId, dataProvider, table);
 	}
 }

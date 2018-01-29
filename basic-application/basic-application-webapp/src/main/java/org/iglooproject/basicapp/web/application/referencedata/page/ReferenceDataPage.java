@@ -2,6 +2,7 @@ package org.iglooproject.basicapp.web.application.referencedata.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.web.application.common.component.NavTabsPanel;
 import org.iglooproject.basicapp.web.application.referencedata.component.CityListPanel;
@@ -22,7 +23,7 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 	public ReferenceDataPage(PageParameters parameters) {
 		super(parameters);
 		
-		add(new CoreLabel("pageTitle", pageTitleModel));
+		add(new CoreLabel("pageTitle", new ResourceModel("navigation.referenceData")));
 		
 		add(new NavTabsPanel("tabs")
 				.add(

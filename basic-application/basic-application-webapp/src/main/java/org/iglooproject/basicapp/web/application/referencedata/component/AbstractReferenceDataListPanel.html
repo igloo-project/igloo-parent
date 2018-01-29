@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div wicket:id="popup" />
+		
+		<div wicket:id="resultats" class="panel panel-default" />
+		
+		<wicket:child/>
+		
+		<wicket:fragment wicket:id="itemActionsFragment">
+			<a wicket:id="edit" class="btn btn-primary btn-xs" wicket:message="title:common.action.update">
+				<span class="fa fa-pencil-alt"></span>
+			</a>
+		</wicket:fragment>
+		
+		<wicket:fragment wicket:id="globalActionsFragment">
+			<a wicket:id="add" class="btn btn-primary" wicket:message="title:common.action.create">
+				<span class="fa fa-plus" />
+			</a>
+		</wicket:fragment>
+	</wicket:panel>
+</html>

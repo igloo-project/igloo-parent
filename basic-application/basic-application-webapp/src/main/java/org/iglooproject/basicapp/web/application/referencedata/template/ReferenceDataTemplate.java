@@ -2,7 +2,6 @@ package org.iglooproject.basicapp.web.application.referencedata.template;
 
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
@@ -15,14 +14,10 @@ public abstract class ReferenceDataTemplate extends MainTemplate {
 
 	private static final long serialVersionUID = -5226976873952135450L;
 
-	protected final IModel<String> pageTitleModel;
-	
 	public ReferenceDataTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		pageTitleModel = new ResourceModel("navigation.referenceData");
-
-		addBreadCrumbElement(new BreadCrumbElement(pageTitleModel));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.referenceData")));
 	}
 
 	@Override

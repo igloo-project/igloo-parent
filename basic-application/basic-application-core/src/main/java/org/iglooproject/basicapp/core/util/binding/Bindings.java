@@ -3,9 +3,9 @@ package org.iglooproject.basicapp.core.util.binding;
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifferenceBinding;
 import org.iglooproject.basicapp.core.business.history.model.HistoryLogBinding;
 import org.iglooproject.basicapp.core.business.referencedata.model.CityBinding;
+import org.iglooproject.basicapp.core.business.referencedata.model.ILocalizedReferenceDataBindingInterfaceBinding;
 import org.iglooproject.basicapp.core.business.user.model.UserBinding;
 import org.iglooproject.basicapp.core.business.user.model.UserGroupBinding;
-import org.iglooproject.jpa.more.business.generic.model.IGenericListItemBindingInterfaceBinding;
 
 public final class Bindings {
 
@@ -17,14 +17,8 @@ public final class Bindings {
 	
 	private static final HistoryDifferenceBinding HISTORY_DIFFERENCE = new HistoryDifferenceBinding();
 	
+	private static final ILocalizedReferenceDataBindingInterfaceBinding LOCALIZED_REFERENCE_DATA = new ILocalizedReferenceDataBindingInterfaceBinding();
 	private static final CityBinding CITY = new CityBinding();
-	
-	private static final IGenericListItemBindingInterfaceBinding GENERIC_LIST_ITEM =
-			new IGenericListItemBindingInterfaceBinding();
-
-	public static IGenericListItemBindingInterfaceBinding genericListItem() {
-		return GENERIC_LIST_ITEM;
-	}
 	
 	public static UserBinding user() {
 		return USER;
@@ -40,6 +34,10 @@ public final class Bindings {
 	
 	public static HistoryDifferenceBinding historyDifference() {
 		return HISTORY_DIFFERENCE;
+	}
+	
+	public static ILocalizedReferenceDataBindingInterfaceBinding localizedReferenceData() {
+		return LOCALIZED_REFERENCE_DATA;
 	}
 	
 	public static CityBinding city() {

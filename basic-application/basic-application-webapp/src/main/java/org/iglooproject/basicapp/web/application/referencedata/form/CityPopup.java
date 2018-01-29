@@ -14,16 +14,10 @@ import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.BindingModel;
 
-public abstract class CityPopup extends AbstractGenericListItemPopup<City> {
+public abstract class CityPopup extends AbstractGenericReferenceDataPopup<City> {
 
 	private static final long serialVersionUID = -4941198698654382836L;
 
-	private TextField<String> label;
-	
-	private CheckBox enabled;
-
-	TextField<PostalCode> postalCode;
-	
 	public CityPopup(String id) {
 		super(id);
 	}
@@ -37,44 +31,41 @@ public abstract class CityPopup extends AbstractGenericListItemPopup<City> {
 		form = new Form<City>("form", model);
 		
 		Condition disableableCondition = Condition.isTrue(
-				BindingModel.of(model, Bindings.genericListItem().disableable())
+				BindingModel.of(model, Bindings.city().disableable())
 		);
 		
-		this.postalCode = new TextField<PostalCode>(
+		TextField<String> labelFr = new TextField<String>(
+				"labelFr", BindingModel.of(model, Bindings.city().label().fr())
+		);
+		
+		TextField<String> labelEn = new TextField<String>(
+				"labelEn", BindingModel.of(model, Bindings.city().label().fr())
+		);
+		
+		TextField<PostalCode> postalCode = new TextField<PostalCode>(
 				"postalCode", BindingModel.of(model, Bindings.city().postalCode()), PostalCode.class);
-		
-		this.label = new TextField<String>(
-				"label", BindingModel.of(model, Bindings.genericListItem().label())
-		);
-		
-		this.enabled = new CheckBox(
-				"enabled", BindingModel.of(model, Bindings.genericListItem().enabled())
-		);
 		
 		body.add(
 				form
 						.add(
-								label
-										.setLabel(new ResourceModel("business.listItem.label"))
+								labelFr
+										.setLabel(new ResourceModel("business.localizedReferenceData.label.fr"))
+										.setRequired(true),
+								labelEn
+										.setLabel(new ResourceModel("business.localizedReferenceData.label.en"))
 										.setRequired(true),
 								postalCode
-										.setLabel(new ResourceModel("business.postalCode"))
+										.setLabel(new ResourceModel("business.city.postalCode"))
 										.setRequired(true),
-								enabled
-										.setLabel(new ResourceModel("business.listItem.enabled"))
+								new CheckBox("enabled", BindingModel.of(model, Bindings.city().enabled()))
+										.setLabel(new ResourceModel("business.referenceData.enabled"))
 										.add(disableableCondition.thenEnable())
+										.setOutputMarkupId(true)
 						)
-						.add(new CityUnicityFormValidator(getModel(), label, postalCode))
+						.add(new CityUnicityFormValidator(getModel(), labelFr, postalCode))
 		);
 		
 		return body;
 	}
-	
-	protected final TextField<String> getLabel() {
-		return label;
-	}
-	
-	protected final CheckBox getEnabled() {
-		return enabled;
-	}
+
 }

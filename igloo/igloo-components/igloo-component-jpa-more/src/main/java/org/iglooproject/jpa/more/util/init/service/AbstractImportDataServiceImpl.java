@@ -16,6 +16,18 @@ import java.util.Set;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.iglooproject.commons.util.FileUtils;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
+import org.iglooproject.jpa.more.util.init.dao.IImportDataDao;
+import org.iglooproject.jpa.more.util.init.util.GenericEntityConverter;
+import org.iglooproject.jpa.more.util.init.util.WorkbookUtils;
+import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.spring.util.ReflectionUtils;
+import org.iglooproject.spring.util.SpringBeanUtils;
+import org.iglooproject.spring.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -31,19 +43,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 import de.schlichtherle.truezip.file.TFileInputStream;
-import org.iglooproject.commons.util.FileUtils;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.more.business.generic.model.GenericListItem;
-import org.iglooproject.jpa.more.business.generic.model.GenericLocalizedGenericListItem;
-import org.iglooproject.jpa.more.util.init.dao.IImportDataDao;
-import org.iglooproject.jpa.more.util.init.util.GenericEntityConverter;
-import org.iglooproject.jpa.more.util.init.util.WorkbookUtils;
-import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.spring.util.ReflectionUtils;
-import org.iglooproject.spring.util.SpringBeanUtils;
-import org.iglooproject.spring.util.StringUtils;
 
 public abstract class AbstractImportDataServiceImpl implements IImportDataService {
 	
@@ -131,8 +130,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	protected void importGenericListItems(Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
 		for (String packageToScan : getGenericListItemPackagesToScan()) {
 			Set<Class<? extends GenericEntity>> classes = Sets.newHashSet();
-			classes.addAll(ReflectionUtils.findAssignableClasses(packageToScan, GenericListItem.class));
-			classes.addAll(ReflectionUtils.findAssignableClasses(packageToScan, GenericLocalizedGenericListItem.class));
+			classes.addAll(ReflectionUtils.findAssignableClasses(packageToScan, GenericReferenceData.class));
 			Map<Integer, Class<? extends GenericEntity>> orderedClasses = Maps.newTreeMap();
 			
 			for (Class<? extends GenericEntity> genericListItemClass : classes) {

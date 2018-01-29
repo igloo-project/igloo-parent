@@ -18,7 +18,7 @@ package org.iglooproject.jpa.more.business.audit.model.util;
 
 import javax.persistence.MappedSuperclass;
 
-import org.iglooproject.jpa.more.business.generic.model.GenericListItem;
+import org.iglooproject.jpa.more.business.referencedata.model.GenericBasicReferenceData;
 
 /**
  * <p>Les actions référencées dans le journal.</p>
@@ -30,7 +30,7 @@ import org.iglooproject.jpa.more.business.generic.model.GenericListItem;
  * (les anciens projets utilisent toujours cette classe pour ne pas avoir à tout refactorer).</p>
  */
 @MappedSuperclass
-public abstract class AbstractAuditAction extends GenericListItem<AbstractAuditAction> {
+public abstract class AbstractAuditAction extends GenericBasicReferenceData<AbstractAuditAction> {
 	private static final long serialVersionUID = 3770925165610240322L;
 	
 	protected AbstractAuditAction() {
