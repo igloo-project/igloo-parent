@@ -1,12 +1,25 @@
 package org.iglooproject.jpa.security.config.spring;
 
-import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_SALT;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
+import org.iglooproject.jpa.security.access.expression.method.CoreMethodSecurityExpressionHandler;
+import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
+import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
+import org.iglooproject.jpa.security.hierarchy.PermissionHierarchyImpl;
+import org.iglooproject.jpa.security.model.CorePermissionConstants;
+import org.iglooproject.jpa.security.model.NamedPermission;
+import org.iglooproject.jpa.security.runas.CoreRunAsManagerImpl;
+import org.iglooproject.jpa.security.service.AuthenticationUserNameComparison;
+import org.iglooproject.jpa.security.service.CoreAuthenticationServiceImpl;
+import org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl;
+import org.iglooproject.jpa.security.service.CoreSecurityServiceImpl;
+import org.iglooproject.jpa.security.service.IAuthenticationService;
+import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
+import org.iglooproject.jpa.security.service.ISecurityService;
+import org.iglooproject.jpa.security.service.NamedPermissionFactory;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,35 +39,16 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
-import org.iglooproject.jpa.security.access.expression.method.CoreMethodSecurityExpressionHandler;
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.jpa.security.crypto.password.CoreShaPasswordEncoder;
-import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
-import org.iglooproject.jpa.security.hierarchy.PermissionHierarchyImpl;
-import org.iglooproject.jpa.security.model.CorePermissionConstants;
-import org.iglooproject.jpa.security.model.NamedPermission;
-import org.iglooproject.jpa.security.runas.CoreRunAsManagerImpl;
-import org.iglooproject.jpa.security.service.AuthenticationUserNameComparison;
-import org.iglooproject.jpa.security.service.CoreAuthenticationServiceImpl;
-import org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl;
-import org.iglooproject.jpa.security.service.CoreSecurityServiceImpl;
-import org.iglooproject.jpa.security.service.IAuthenticationService;
-import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
-import org.iglooproject.jpa.security.service.ISecurityService;
-import org.iglooproject.jpa.security.service.NamedPermissionFactory;
-import org.iglooproject.spring.property.service.IPropertyService;
-
 @Configuration
 @Import(DefaultJpaSecurityConfig.class)
 public abstract class AbstractJpaSecurityConfig {
-
-	private static final Pattern BCRYPT_PATTERN = Pattern.compile("\\A\\$2a?\\$\\d\\d\\$[./0-9A-Za-z]{53}");
 
 	@Autowired
 	private DefaultJpaSecurityConfig defaultJpaSecurityConfig;
@@ -77,18 +71,9 @@ public abstract class AbstractJpaSecurityConfig {
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder() {
-			@Override
-			public boolean matches(CharSequence rawPassword, String encodedPassword) {
-				if (BCRYPT_PATTERN.matcher(encodedPassword).matches()) {
-					return super.matches(rawPassword, encodedPassword);
-				} else {
-					CoreShaPasswordEncoder passwordEncoder = new CoreShaPasswordEncoder(256);
-					passwordEncoder.setSalt(propertyService.get(PASSWORD_SALT));
-					return passwordEncoder.matches(rawPassword, encodedPassword);
-				}
-			}
-		};
+		PasswordEncoder passwordEncoder =
+			    PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		return passwordEncoder;
 	}
 
 	@Bean
