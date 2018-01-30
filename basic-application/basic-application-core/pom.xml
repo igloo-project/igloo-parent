@@ -22,6 +22,12 @@
 			<type>pom</type>
 		</dependency>
 		
+		<!-- JDBC Driver -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		
 		<!-- Pooling -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
