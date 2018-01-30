@@ -92,7 +92,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 		add(
 				new CoreLabel("title", pageTitleModel),
 				
-				new UserSearchPanel<>("searchPanel", dataTablePanel, typeDescriptor, dataProvider),
+				new UserSearchPanel<>("search", dataTablePanel, typeDescriptor, dataProvider),
 				dataTablePanel
 		);
 		

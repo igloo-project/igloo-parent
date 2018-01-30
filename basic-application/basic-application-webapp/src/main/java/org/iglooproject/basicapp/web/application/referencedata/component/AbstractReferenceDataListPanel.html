@@ -4,20 +4,20 @@
 	<wicket:panel>
 		<div wicket:id="popup" />
 		
-		<div wicket:id="resultats" class="panel panel-default" />
+		<div wicket:id="resultats" class="card" />
 		
 		<wicket:child/>
 		
 		<wicket:fragment wicket:id="itemActionsFragment">
-			<a wicket:id="edit" class="btn btn-primary btn-xs" wicket:message="title:common.action.update">
+			<button wicket:id="edit" class="btn btn-primary btn-xs" wicket:message="title:common.action.update" type="button">
 				<span class="fa fa-pencil-alt"></span>
-			</a>
+			</button>
 		</wicket:fragment>
 		
 		<wicket:fragment wicket:id="globalActionsFragment">
-			<a wicket:id="add" class="btn btn-primary" wicket:message="title:common.action.create">
+			<button wicket:id="add" class="btn btn-primary" wicket:message="title:common.action.create" type="button">
 				<span class="fa fa-plus" />
-			</a>
+			</button>
 		</wicket:fragment>
 	</wicket:panel>
 </html>

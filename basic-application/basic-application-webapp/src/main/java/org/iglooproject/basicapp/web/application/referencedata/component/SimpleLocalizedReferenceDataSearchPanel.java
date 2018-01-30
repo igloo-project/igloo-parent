@@ -22,11 +22,11 @@ public class SimpleLocalizedReferenceDataSearchPanel<T extends LocalizedReferenc
 	public SimpleLocalizedReferenceDataSearchPanel(String id, AbstractLocalizedReferenceDataDataProvider<T, ?> dataProvider, final Component table) {
 		super(id);
 		
-		Form<Void> searchForm = new Form<Void>("searchForm");
-		add(searchForm);
+		Form<Void> form = new Form<Void>("form");
+		add(form);
 		
-		searchForm.add(
-				new AjaxFormSubmitBehavior(searchForm, StateEvent.CHANGE.getEventLabel()) {
+		form.add(
+				new AjaxFormSubmitBehavior(form, StateEvent.CHANGE.getEventLabel()) {
 					private static final long serialVersionUID = 1L;
 					@Override
 					protected void onSubmit(AjaxRequestTarget target) {
@@ -39,7 +39,7 @@ public class SimpleLocalizedReferenceDataSearchPanel<T extends LocalizedReferenc
 				}
 		);
 		
-		searchForm.add(
+		form.add(
 				new TextField<>("label", dataProvider.getLabelModel(), String.class)
 						.setLabel(new ResourceModel("business.referenceData.label"))
 						.add(new LabelPlaceholderBehavior()),
