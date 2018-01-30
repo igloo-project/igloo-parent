@@ -90,7 +90,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	@Autowired
 	private ITransactionSynchronizationTaskManagerService synchronizationManager;
 
-	@Autowired
+	@Autowired(required = false)
 	private IInfinispanClusterService infinispanClusterService;
 
 	@Resource

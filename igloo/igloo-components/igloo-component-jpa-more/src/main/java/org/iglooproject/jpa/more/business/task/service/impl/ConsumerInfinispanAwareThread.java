@@ -17,7 +17,7 @@ import org.iglooproject.infinispan.service.IInfinispanClusterService;
  */
 class ConsumerInfinispanAwareThread extends ConsumerThread {
 	
-	@Autowired
+	@Autowired(required = false)
 	private IInfinispanClusterService infinispanClusterService;
 	
 	private final ILock lock;
