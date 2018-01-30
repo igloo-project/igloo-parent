@@ -7,7 +7,7 @@
 		show: function(selector, autohideDelay) {
 			var $selector = $(selector);
 			var placement = $selector.data("placement");
-			var $panel = $(".alert-global-panel", $selector);
+			var $panel = $(".alert-global-panel, .feedback-container", $selector);
 			$panel.off("click.alert");
 			if ($(".alert-info, .alert-warning, .alert-danger, .alert-error, .alert-success, .alert-secondary" , $panel).size() > 0) {
 				$panel.show();
@@ -36,7 +36,7 @@
 		hide: function(selector) {
 			var $selector = $(selector);
 			var placement = $selector.data("placement");
-			var $panel = $(".alert-global-panel", $selector);
+			var $panel = $(".alert-global-panel, .feedback-container", $selector);
 			if ($(".alert-info, .alert-warning, .alert-danger, .alert-error, .alert-success" , $panel).size() > 0) {
 				if (placement == "bottom") {
 					$panel.css({ bottom: -$panel.outerHeight() });
@@ -51,7 +51,7 @@
 			$.fn.alert.show(selector, autohideDelay);
 		},
 		close: function(event) {
-			var $panel = $(event.target).closest(".alert-global-panel");
+			var $panel = $(event.target).closest(".alert-global-panel, .feedback-container");
 			var placement = $(event.target).closest(".animated-global-feedback").data("placement");
 			if ($(".alert-info, .alert-warning, .alert-danger, .alert-error, .alert-success" , $panel).size() > 0) {
 				if (placement == "bottom") {

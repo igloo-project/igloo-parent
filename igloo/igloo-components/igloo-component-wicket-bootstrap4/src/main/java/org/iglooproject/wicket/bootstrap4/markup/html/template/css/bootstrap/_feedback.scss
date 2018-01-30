@@ -1,36 +1,40 @@
-.alert-global-panel {
+.feedback-container {
 	position: fixed;
 	display: none;
 	overflow: hidden;
 	z-index: $zindex-alert-global;
 	width: 100%;
 	
-	@include media-breakpoint-up(md) {
-		margin: 0 40px;
-		max-width: 650px;
-	}
-
-	> .alert {
-		@include border-radius(0);
-		border: 0;
-		margin: 0;
-		padding-right: ($close-font-size + $alert-padding-x * 2);
+	.feedback-panel {
+		box-shadow: $feedback-box-shadow;
+		position: relative;
 		
-		> ul.feedbackPanel {
-			@include list-unstyled;
-			margin: 0;
+		@include media-breakpoint-up(md) {
+			margin: 0 40px 30px 40px;
+			max-width: 750px;
 		}
-	}
-	
-	
-	.close {
-		float: none;
-		text-shadow: none;
-		color: $gray-600;
-		z-index: $zindex-alert-global-close;
-		position: absolute;
-		padding: $alert-padding-y $alert-padding-x;
-		right: 0;
-		top: 0;
+		
+		> .alert {
+			@include border-radius(0);
+			border: 0;
+			margin: 0;
+			padding-right: ($close-font-size + $alert-padding-x * 2);
+			
+			> ul.feedbackPanel {
+				@include list-unstyled;
+				margin: 0;
+			}
+		}
+		
+		.close {
+			float: none;
+			text-shadow: none;
+			color: $gray-600;
+			z-index: $zindex-alert-global-close;
+			position: absolute;
+			padding: $alert-padding-y $alert-padding-x;
+			right: 0;
+			top: 0;
+		}
 	}
 }

@@ -26,6 +26,8 @@ $zindex-alert-global:				1100 !default;
 $zindex-alert-global-close:			1101 !default;
 $zindex-scroll-to-top:				1035 !default;
 
+$feedback-box-shadow:				0 2px 2px 0 rgba($black, 0.14), 0 1px 5px 0 rgba($black, 0.12), 0 3px 1px -2px rgba($black, 0.2) !default;
+
 $font-size-xs:						($font-size-base * .7) !default;
 
 $line-height-xs:					1.5;
