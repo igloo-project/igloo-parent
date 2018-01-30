@@ -1,6 +1,6 @@
-create schema owsicore_test;
+create schema igloo_test;
 
-set search_path = owsicore_test;
+set search_path = igloo_test;
 
 create table person (
 	id integer not null,

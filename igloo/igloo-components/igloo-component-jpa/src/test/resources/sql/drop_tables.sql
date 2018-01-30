@@ -1,1 +1,1 @@
-drop schema owsicore cascade;
+drop schema igloo_test cascade;
