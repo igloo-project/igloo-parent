@@ -58,8 +58,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 		
 		UserPasswordUpdatePopup<U> passwordUpdatePopup = new UserPasswordUpdatePopup<>("passwordUpdatePopup", getModel());
 		
-		IModel<String> confirmationTextModel = new StringResourceModel("administration.user.disable.confirmation.text")
-				.setParameters(userModel.getObject().getFullName());
+		IModel<String> confirmationTextModel = new StringResourceModel("administration.user.disable.confirmation.text", userModel);
 		
 		IModel<String> emailModel = BindingModel.of(userModel, Bindings.user().email());
 		
