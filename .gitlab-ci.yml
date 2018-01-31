@@ -15,12 +15,12 @@ maven-test:
   script:
     - "mvn -Ptest clean test"
 
-sonar-analyze:
-  stage: analyze
-  environment: staging
-  script:
-    - mvn -Ptest clean verify sonar:sonar
-      -DskipTests
-      -Dsonar.projectKey="$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME"
-      -Dsonar.projectName="$CI_PROJECT_NAME · $CI_COMMIT_REF_NAME"
-      -Dsonar.host.url="https://sonar.tools.kobalt-si.fr"
+#sonar-analyze:
+#  stage: analyze
+#  environment: staging
+#  script:
+#    - mvn -Ptest clean verify sonar:sonar
+#      -DskipTests
+#      -Dsonar.projectKey="$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME"
+#      -Dsonar.projectName="$CI_PROJECT_NAME · $CI_COMMIT_REF_NAME"
+#      -Dsonar.host.url="https://sonar.tools.kobalt-si.fr"
