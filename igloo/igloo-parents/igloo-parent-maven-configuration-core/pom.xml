@@ -43,8 +43,8 @@
 		<igloo.cglib.version>3.2.5</igloo.cglib.version>
 		<igloo.javassist.version>3.20.0-GA</igloo.javassist.version>
 		
-		<igloo.bindgen.version>3.2</igloo.bindgen.version>
-		<igloo.bindgen-java.version>0.3</igloo.bindgen-java.version>
+		<igloo.bindgen.version>4.0.0.lambda-SNAPSHOT</igloo.bindgen.version>
+		<igloo.bindgen-java.version>0.4.0.lambda-SNAPSHOT</igloo.bindgen-java.version>
 		<igloo.bindgen-java-jdk7.version>0.2.2.jdk7</igloo.bindgen-java-jdk7.version>
 		
 		<igloo.spring-security.version>5.0.1.RELEASE</igloo.spring-security.version>

@@ -7,7 +7,7 @@ import java.util.Set;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.commons.util.binding.AbstractCoreBinding;
+import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
@@ -56,7 +56,7 @@ public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParame
 		
 		@Override
 		public <C> IActionColumnAddedLinkState<T, I> addLink(BootstrapRenderer<? super T> renderer,
-				AbstractCoreBinding<? super T, C> binding,
+				ICoreBinding<? super T, C> binding,
 				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
 			return ActionColumnBuilder.this.addLink(renderer, binding, mapper);
 		}
@@ -69,7 +69,7 @@ public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParame
 		
 		@Override
 		public <C> IActionColumnAddedLinkState<T, I> addLabelledLink(BootstrapRenderer<? super T> renderer,
-				AbstractCoreBinding<? super T, C> binding,
+				ICoreBinding<? super T, C> binding,
 				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
 			return ActionColumnBuilder.this.addLabelledLink(renderer, binding, mapper);
 		}
@@ -372,7 +372,7 @@ public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParame
 
 	@Override
 	public <C> IActionColumnAddedLinkState<T, I> addLink(BootstrapRenderer<? super T> renderer,
-			AbstractCoreBinding<? super T, C> binding,
+			ICoreBinding<? super T, C> binding,
 			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
 		return addLink(renderer, new BindingOneParameterLinkDescriptorMapper<>(binding, mapper));
 	}
@@ -385,7 +385,7 @@ public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParame
 
 	@Override
 	public <C> IActionColumnAddedLinkState<T, I> addLabelledLink(BootstrapRenderer<? super T> renderer,
-			AbstractCoreBinding<? super T, C> binding,
+			ICoreBinding<? super T, C> binding,
 			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
 		return addLabelledLink(renderer, new BindingOneParameterLinkDescriptorMapper<>(binding, mapper));
 	}

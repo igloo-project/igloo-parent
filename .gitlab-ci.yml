@@ -2,6 +2,7 @@ stages:
   - build
   - test
   - analyze
+  - deploy
 
 maven-build:
   stage: build
@@ -14,6 +15,16 @@ maven-test:
   environment: staging
   script:
     - "mvn -Ptest clean test"
+
+maven-deploy:
+  stage: deploy
+  environment: staging
+  script:
+    - "mvn -Ptest deploy -DskipTests -DperformRelease"
+  only:
+    - /^master$/
+    - /^dev$/
+    - /^deploy-.*$/
 
 #sonar-analyze:
 #  stage: analyze

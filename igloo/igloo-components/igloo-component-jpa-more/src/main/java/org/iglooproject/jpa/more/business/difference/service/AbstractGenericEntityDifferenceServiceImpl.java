@@ -38,7 +38,7 @@ import de.danielbechler.diff.node.DiffNode;
 import de.danielbechler.diff.node.DiffNode.Visitor;
 import de.danielbechler.diff.node.Visit;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.iglooproject.commons.util.binding.AbstractCoreBinding;
+import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.commons.util.fieldpath.FieldPathComponent;
@@ -108,7 +108,7 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 		List<IProxyInitializer<? super T>> initializers = Lists.newArrayList();
 		
 		// Initialization of the simple fields
-		Iterable<? extends AbstractCoreBinding<? extends T, ?>> simpleFieldsBindingsList = getSimpleInitializationFieldsBindings();
+		Iterable<? extends ICoreBinding<? extends T, ?>> simpleFieldsBindingsList = getSimpleInitializationFieldsBindings();
 		initializers.add(new TypeSafeBindingProxyInitializer<T>(simpleFieldsBindingsList));
 		
 		// Customized initializations
@@ -129,7 +129,7 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 		return ImmutableMultimap.<IHistoryDifferenceFactory<T>, FieldPath>of();
 	}
 	
-	protected abstract Iterable<? extends AbstractCoreBinding<? extends T, ?>> getSimpleInitializationFieldsBindings();
+	protected abstract Iterable<? extends ICoreBinding<? extends T, ?>> getSimpleInitializationFieldsBindings();
 
 	protected ObjectDifferBuilder initializeDiffer(ObjectDifferBuilder builder) {
 		// Ignore Hibernate proxies fields

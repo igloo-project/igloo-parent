@@ -2,7 +2,10 @@ package org.iglooproject.wicket.more.markup.repeater.table.builder.state;
 
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.commons.util.binding.AbstractCoreBinding;
+
+import com.google.common.base.Function;
+
+import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
@@ -44,13 +47,13 @@ public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCor
 	
 	<C> IAddedLabelColumnState<T, S> withLink(Function<? super T, C> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
 
-	<C> IAddedLabelColumnState<T, S> withLink(AbstractCoreBinding<? super T, C> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
+	<C> IAddedLabelColumnState<T, S> withLink(ICoreBinding<? super T, C> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
 
 	IAddedLabelColumnState<T, S> withSideLink(ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper);
 	
 	<C> IAddedLabelColumnState<T, S> withSideLink(Function<? super T, C> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
 
-	<C> IAddedLabelColumnState<T, S> withSideLink(AbstractCoreBinding<? super T, C> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
+	<C> IAddedLabelColumnState<T, S> withSideLink(ICoreBinding<? super T, C> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
 
 	/**
 	 * @deprecated This is the default behavior, calling this method is no longer needed.

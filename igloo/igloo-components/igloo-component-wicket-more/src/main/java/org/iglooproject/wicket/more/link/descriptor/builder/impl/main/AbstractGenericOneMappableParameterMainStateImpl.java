@@ -4,7 +4,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.bindgen.BindingRoot;
-import org.bindgen.binding.AbstractBinding;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMainState;
@@ -88,7 +87,7 @@ abstract class AbstractGenericOneMappableParameterMainStateImpl
 
 	@Override
 	public IAddedParameterMappingState<TSelf> renderInUrl(String parameterName,
-			AbstractBinding<? super TParam1, ?> binding) {
+			BindingRoot<? super TParam1, ?> binding) {
 		return pickLast().renderInUrl(parameterName, binding);
 	}
 

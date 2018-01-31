@@ -3,7 +3,7 @@ package org.iglooproject.wicket.more.markup.repeater.table.builder.action.state;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 
-import org.iglooproject.commons.util.binding.AbstractCoreBinding;
+import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAction;
@@ -17,14 +17,14 @@ public interface IActionColumnBuildState<T, I> extends IActionColumnCommonBuildS
 			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper);
 
 	<C> IActionColumnAddedLinkState<T, I> addLink(BootstrapRenderer<? super T> renderer,
-			AbstractCoreBinding<? super T, C> binding,
+			ICoreBinding<? super T, C> binding,
 			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper);
 
 	IActionColumnAddedLinkState<T, I> addLabelledLink(BootstrapRenderer<? super T> renderer,
 			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper);
 
 	<C> IActionColumnAddedLinkState<T, I> addLabelledLink(BootstrapRenderer<? super T> renderer,
-			AbstractCoreBinding<? super T, C> binding,
+			ICoreBinding<? super T, C> binding,
 			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper);
 
 	IActionColumnAddedAjaxActionState<T, I> addAction(BootstrapRenderer<? super T> renderer,
