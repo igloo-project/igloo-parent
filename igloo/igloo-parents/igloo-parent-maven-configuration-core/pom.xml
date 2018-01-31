@@ -26,22 +26,22 @@
 		<igloo.hibernate-validator.version>5.4.1.Final</igloo.hibernate-validator.version>
 		<igloo.jboss-logging.version>3.3.1.Final</igloo.jboss-logging.version>
 		<igloo.tomcat-jdbc.version>8.5.24</igloo.tomcat-jdbc.version>
-		<igloo.hikaricp.version>2.7.4</igloo.hikaricp.version>
+		<igloo.hikaricp.version>2.7.6</igloo.hikaricp.version>
 		<igloo.hibernate-ehcache.version>${igloo.hibernate-core.version}</igloo.hibernate-ehcache.version>
 		<igloo.ehcache.version>2.10.4</igloo.ehcache.version>
 		<igloo.querydsl.version>4.1.4</igloo.querydsl.version>
 		
 		<igloo.guava.version>23.6-jre</igloo.guava.version>
 		
-		<igloo.joda-time.version>2.9.2</igloo.joda-time.version>
+		<igloo.joda-time.version>2.9.9</igloo.joda-time.version>
 		
-		<igloo.postgresql.version>9.4.1208.jre7</igloo.postgresql.version>
+		<igloo.postgresql.version>42.2.1</igloo.postgresql.version>
 		<igloo.pgjdbc-ng.version>0.7.1</igloo.pgjdbc-ng.version>
 		<igloo.oracle10g.version>10.2.0.5</igloo.oracle10g.version>
 		<igloo.mysql.version>5.1.14</igloo.mysql.version>
 		
-		<igloo.cglib.version>3.2.5</igloo.cglib.version>
-		<igloo.javassist.version>3.20.0-GA</igloo.javassist.version>
+		<igloo.cglib.version>3.2.6</igloo.cglib.version>
+		<igloo.javassist.version>3.22.0-GA</igloo.javassist.version>
 		
 		<igloo.bindgen.version>4.0.0.lambda-SNAPSHOT</igloo.bindgen.version>
 		<igloo.bindgen-java.version>0.4.0.lambda-SNAPSHOT</igloo.bindgen-java.version>
@@ -77,23 +77,20 @@
 		<igloo.commons-io.version>2.4</igloo.commons-io.version>
 		
 		<igloo.commons-lang.version>2.6</igloo.commons-lang.version>
-		<igloo.commons-lang3.version>3.5</igloo.commons-lang3.version>
+		<igloo.commons-lang3.version>3.7</igloo.commons-lang3.version>
 		<igloo.commons-math3.version>3.6.1</igloo.commons-math3.version>
 		<igloo.commons-cli.version>1.4</igloo.commons-cli.version>
-		<igloo.commons-codec.version>1.10</igloo.commons-codec.version>
+		<igloo.commons-codec.version>1.11</igloo.commons-codec.version>
 		<igloo.commons-exec.version>1.3</igloo.commons-exec.version>
-		<igloo.commons-compress.version>1.11</igloo.commons-compress.version>
-		<igloo.commons-validator.version>1.5.1</igloo.commons-validator.version>
+		<igloo.commons-compress.version>1.15</igloo.commons-compress.version>
+		<igloo.commons-validator.version>1.6</igloo.commons-validator.version>
 		<igloo.commons-collections.version>3.2.2</igloo.commons-collections.version>
 		<igloo.commons-collections4.version>4.1</igloo.commons-collections4.version>
-		<igloo.commons-beanutils.version>1.9.2</igloo.commons-beanutils.version>
-		<igloo.commons-fileupload.version>1.3.2</igloo.commons-fileupload.version>
+		<igloo.commons-beanutils.version>1.9.3</igloo.commons-beanutils.version>
+		<igloo.commons-fileupload.version>1.3.3</igloo.commons-fileupload.version>
 		
 		<igloo.jta.version>1.1</igloo.jta.version>
 		<igloo.javax-mail.version>1.4.7</igloo.javax-mail.version>
-		
-		<!-- Warning: versions 2.x.y seem to be an abandoned branch of development (they are older than 1.x.y) -->
-		<igloo.xml-apis.version>1.4.01</igloo.xml-apis.version>
 		
 		<igloo.slf4j.version>1.7.25</igloo.slf4j.version>
 		<igloo.log4j.version>1.2.17</igloo.log4j.version>
@@ -102,7 +99,7 @@
 		<igloo.freemarker.version>2.3.23</igloo.freemarker.version>
 		<igloo.dom4j.version>1.6.1</igloo.dom4j.version>
 		
-		<igloo.poi.version>3.16</igloo.poi.version>
+		<igloo.poi.version>3.17</igloo.poi.version>
 		
 		<!-- 
 		Version 3 does not exist.
@@ -116,7 +113,7 @@
 		
 		<igloo.json-lib.version>2.3</igloo.json-lib.version>
 		<igloo.jackson.version>1.9.13</igloo.jackson.version>
-		<igloo.jackson2-core.version>2.9.3</igloo.jackson2-core.version>
+		<igloo.jackson2-core.version>2.9.4</igloo.jackson2-core.version>
 		<igloo.jackson2-annotations.version>${igloo.jackson2-core.version}</igloo.jackson2-annotations.version>
 		<igloo.jackson2-databind.version>${igloo.jackson2-core.version}</igloo.jackson2-databind.version>
 		<igloo.jackson2-jaxrs.version>${igloo.jackson2-core.version}</igloo.jackson2-jaxrs.version>
@@ -126,13 +123,12 @@
 		<igloo.truezip.version>7.7.10</igloo.truezip.version>
 		<igloo.bouncycastle.version>2.55</igloo.bouncycastle.version>
 		
-		<igloo.flying-saucer.version>9.0.9</igloo.flying-saucer.version>
+		<igloo.flying-saucer.version>9.1.11</igloo.flying-saucer.version>
 		<igloo.jfreechart.version>1.0.19</igloo.jfreechart.version>
 		<igloo.imageinfo.version>1.9</igloo.imageinfo.version>
 		<igloo.jsoup.version>1.11.2</igloo.jsoup.version>
-		<igloo.rhino.version>1.7.7.1</igloo.rhino.version>
-		<igloo.httpclient.version>4.5.4</igloo.httpclient.version>
-		<igloo.httpcore.version>4.4.6</igloo.httpcore.version>
+		<igloo.httpclient.version>4.5.5</igloo.httpclient.version>
+		<igloo.httpcore.version>4.4.9</igloo.httpcore.version>
 		<igloo.prettytime.version>4.0.1.Final</igloo.prettytime.version>
 		<igloo.ph-css.version>4.1.3</igloo.ph-css.version>
 		<igloo.galimatias.version>0.2.1</igloo.galimatias.version>
@@ -157,20 +153,22 @@
 		<igloo.wqplot.version>7.1.0.owsi1</igloo.wqplot.version>
 		
 		<igloo.less4j.version>1.17.2</igloo.less4j.version>
-		<igloo.jsass.version>5.5.4</igloo.jsass.version>
+		<igloo.jsass.version>5.5.5</igloo.jsass.version>
 		
-		<igloo.flywaydb.version>4.0.3</igloo.flywaydb.version>
+		<igloo.flywaydb.version>5.0.7</igloo.flywaydb.version>
 		<!-- infinispan >= 8.0 requires java 8 -->
 		<igloo.infinispan.version>7.2.5.Final</igloo.infinispan.version>
 		
 		<igloo.junit.version>4.12</igloo.junit.version>
 		<igloo.mockito.version>1.10.19</igloo.mockito.version>
 		<igloo.grizzly.version>1.9.65</igloo.grizzly.version>
-		<igloo.findbugs-annotations.version>3.0.1</igloo.findbugs-annotations.version>
+		<igloo.findbugs-annotations.version>3.0.1u2</igloo.findbugs-annotations.version>
+		<igloo.findbugs-jsr305.version>3.0.2</igloo.findbugs-jsr305.version>
 		
-		<igloo.passay.version>1.1.0</igloo.passay.version>
-		<igloo.java-object-diff.version>0.92</igloo.java-object-diff.version>
+		<igloo.passay.version>1.3.0</igloo.passay.version>
+		<igloo.java-object-diff.version>0.95</igloo.java-object-diff.version>
 		<igloo.elasticsearch.version>2.4.5</igloo.elasticsearch.version>
+		<!-- both needed by less4j and hibernate-search ; we keep hibernate-search version -->
 		<igloo.gson.version>2.6.2</igloo.gson.version>
 		
 		<igloo.localization-properties-consistency-maven-plugin.version>1.0.0</igloo.localization-properties-consistency-maven-plugin.version>
@@ -765,12 +763,6 @@
 				</dependency>
 				
 				<dependency>
-					<groupId>xml-apis</groupId>
-					<artifactId>xml-apis</artifactId>
-					<version>${igloo.xml-apis.version}</version>
-				</dependency>
-				
-				<dependency>
 					<groupId>org.freemarker</groupId>
 					<artifactId>freemarker</artifactId>
 					<version>${igloo.freemarker.version}</version>
@@ -785,11 +777,6 @@
 							<groupId>commons-logging</groupId>
 							<artifactId>commons-logging</artifactId>
 						</exclusion>
-						<!-- resolve manually conflict (hibernate-search-elasticsearch) -->
-						<exclusion>
-							<groupId>com.google.code.gson</groupId>
-							<artifactId>gson</artifactId>
-						</exclusion>
 					</exclusions>
 				</dependency>
 				
@@ -797,12 +784,6 @@
 					<groupId>io.bit3</groupId>
 					<artifactId>jsass</artifactId>
 					<version>${igloo.jsass.version}</version>
-				</dependency>
-				
-				<dependency>
-					<groupId>org.mozilla</groupId>
-					<artifactId>rhino</artifactId>
-					<version>${igloo.rhino.version}</version>
 				</dependency>
 				
 				<dependency>
@@ -1198,20 +1179,9 @@
 				
 				<!-- Hibernate-search -->
 				<dependency>
-					<groupId>org.hibernate</groupId>
-					<artifactId>hibernate-search-elasticsearch</artifactId>
-					<version>${igloo.hibernate-search.version}</version>
-					<exclusions>
-						<exclusion>
-							<groupId>commons-logging</groupId>
-							<artifactId>commons-logging</artifactId>
-						</exclusion>
-						<!-- resolve manually conflict (hibernate-search-elasticsearch) -->
-						<exclusion>
-							<groupId>com.google.code.gson</groupId>
-							<artifactId>gson</artifactId>
-						</exclusion>
-					</exclusions>
+					<groupId>org.iglooproject.dependencies</groupId>
+					<artifactId>igloo-dependency-hibernate-search</artifactId>
+					<version>${project.version}</version>
 				</dependency>
 				
 				<dependency>
@@ -1303,7 +1273,7 @@
 				<dependency>
 					<groupId>com.google.code.findbugs</groupId>
 					<artifactId>jsr305</artifactId>
-					<version>${igloo.findbugs-annotations.version}</version>
+					<version>${igloo.findbugs-jsr305.version}</version>
 				</dependency>
 			
 		</dependencies>
