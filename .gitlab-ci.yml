@@ -20,7 +20,7 @@ maven-deploy:
   stage: deploy
   environment: staging
   script:
-    - "mvn -Ptest deploy -DskipTests -DperformRelease"
+    - "mvn -Ptest deploy -DskipTests -DperformRelease -Ddistribution=igloo-release"
   only:
     - /^master$/
     - /^dev$/
