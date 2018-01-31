@@ -396,26 +396,6 @@
 	
 	<profiles>
 		<profile>
-			<activation>
-				<property>
-					<name>distribution</name>
-					<value>igloo-release</value>
-				</property>
-			</activation>
-			<distributionManagement>
-				<repository>
-					<id>nexus-igloo-releases</id>
-					<name>Nexus Igloo Releases</name>
-					<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
-				</repository>
-				<snapshotRepository>
-					<id>nexus-igloo-snapshots</id>
-					<name>Nexus Igloo Snapshots</name>
-					<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
-				</snapshotRepository>
-			</distributionManagement>
-		</profile>
-		<profile>
 			<id>jdk7</id>
 			<activation>
 				<property>
@@ -476,5 +456,18 @@
 			</build>
 		</profile>
 	</profiles>
+	
+	<distributionManagement>
+		<repository>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus Igloo Releases</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus Igloo Snapshots</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 	
 </project>
