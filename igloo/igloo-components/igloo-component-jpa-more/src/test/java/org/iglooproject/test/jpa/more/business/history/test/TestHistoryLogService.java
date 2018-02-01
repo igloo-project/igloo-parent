@@ -26,8 +26,6 @@ import org.iglooproject.jpa.more.business.difference.util.IHistoryDifferenceGene
 import org.iglooproject.jpa.more.business.history.model.atomic.HistoryDifferenceEventType;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryDifferencePath;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
-import org.iglooproject.jpa.more.junit.difference.TestHistoryDifferenceCollectionMatcher;
-import org.iglooproject.jpa.more.junit.difference.TestHistoryDifferenceDescription;
 import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
 import org.iglooproject.test.jpa.more.business.AbstractJpaMoreTestCase;
 import org.iglooproject.test.jpa.more.business.entity.model.TestEntity;
@@ -36,6 +34,8 @@ import org.iglooproject.test.jpa.more.business.history.model.TestHistoryLog;
 import org.iglooproject.test.jpa.more.business.history.model.atomic.TestHistoryEventType;
 import org.iglooproject.test.jpa.more.business.history.model.bean.TestHistoryLogAdditionalInformationBean;
 import org.iglooproject.test.jpa.more.business.history.service.ITestHistoryLogService;
+import org.iglooproject.test.jpa.more.junit.difference.TestHistoryDifferenceCollectionMatcher;
+import org.iglooproject.test.jpa.more.junit.difference.TestHistoryDifferenceDescription;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

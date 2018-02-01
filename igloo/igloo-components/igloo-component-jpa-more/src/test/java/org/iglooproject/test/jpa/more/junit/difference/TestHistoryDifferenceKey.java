@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.more.junit.difference;
+package org.iglooproject.test.jpa.more.junit.difference;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

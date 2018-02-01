@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.more.junit.difference;
+package org.iglooproject.test.jpa.more.junit.difference;
 
 import java.util.Collection;
 import java.util.Map;
