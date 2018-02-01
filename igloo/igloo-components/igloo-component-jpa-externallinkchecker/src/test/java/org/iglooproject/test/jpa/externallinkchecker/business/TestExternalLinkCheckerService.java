@@ -19,12 +19,12 @@ import org.iglooproject.jpa.externallinkchecker.business.model.ExternalLinkStatu
 import org.iglooproject.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
 import org.iglooproject.jpa.externallinkchecker.business.service.IExternalLinkCheckerService;
 import org.iglooproject.jpa.externallinkchecker.business.service.IExternalLinkWrapperService;
-import org.iglooproject.jpa.junit.AbstractTestCase;
 import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.iglooproject.test.jpa.externallinkchecker.business.rest.RestServerTestResource;
 import org.iglooproject.test.jpa.externallinkchecker.business.rest.SimpleRestApplication;
 import org.iglooproject.test.jpa.externallinkchecker.business.rest.server.config.spring.RestServerTestCoreCommonConfig;
 import org.iglooproject.test.jpa.externallinkchecker.config.spring.JpaExternalLinkCheckerTestConfig;
+import org.iglooproject.test.jpa.junit.AbstractTestCase;
 
 @ContextConfiguration(classes = JpaExternalLinkCheckerTestConfig.class)
 public class TestExternalLinkCheckerService extends AbstractTestCase {

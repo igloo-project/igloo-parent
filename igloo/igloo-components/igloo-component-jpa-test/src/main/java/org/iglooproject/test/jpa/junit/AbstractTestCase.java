@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.junit;
+package org.iglooproject.test.jpa.junit;
 
 import java.beans.PropertyDescriptor;
 import java.math.BigDecimal;

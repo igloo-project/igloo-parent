@@ -102,6 +102,13 @@
 			<type>pom</type>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa-test</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		
 		<!-- Database pooling (tests) -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>

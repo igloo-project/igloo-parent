@@ -17,7 +17,7 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.junit.AbstractTestCase;
+import org.iglooproject.test.jpa.junit.AbstractTestCase;
 import org.iglooproject.test.wicket.more.business.person.service.IPersonService;
 import org.iglooproject.test.wicket.more.config.spring.SimpleWicketMoreTestWebappConfig;
 import org.iglooproject.test.wicket.more.junit.IWicketTestCase;

@@ -56,7 +56,7 @@ public class TestMetaModel extends AbstractJpaCoreTestCase {
 		((Session) entityManager.getDelegate()).doWork(new Work() {
 			@Override
 			public void execute(Connection connection) throws SQLException {
-				String expectedTableName = Person.class.getSimpleName().toLowerCase(); // person
+				String expectedTableName = Person.class.getSimpleName(); // person
 				String expectedSequenceName = expectedTableName + "_id_seq"; // person_id_seq
 				
 				JdbcRelation table = getRelation(connection, configurationProvider.getDefaultSchema(),

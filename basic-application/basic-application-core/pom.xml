@@ -38,7 +38,14 @@
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-test</artifactId>
+			<scope>test</scope>
 			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa-test</artifactId>
+			<version>${igloo.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	

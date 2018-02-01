@@ -161,6 +161,7 @@
 		<igloo.infinispan.version>7.2.5.Final</igloo.infinispan.version>
 		
 		<igloo.junit.version>4.12</igloo.junit.version>
+		<igloo.h2.version>1.4.196</igloo.h2.version>
 		<igloo.mockito.version>2.13.0</igloo.mockito.version>
 		<igloo.assertj.version>3.9.0</igloo.assertj.version>
 		<igloo.assertj-guava.version>3.1.0</igloo.assertj-guava.version>
@@ -1214,40 +1215,40 @@
 					<groupId>junit</groupId>
 					<artifactId>junit</artifactId>
 					<version>${igloo.junit.version}</version>
-					<scope>test</scope>
+				</dependency>
+
+				<dependency>
+					<groupId>com.h2database</groupId>
+					<artifactId>h2</artifactId>
+					<version>${igloo.h2.version}</version>
 				</dependency>
 
 				<dependency>
 					<groupId>org.mockito</groupId>
 					<artifactId>mockito-core</artifactId>
 					<version>${igloo.mockito.version}</version>
-					<scope>test</scope>
 				</dependency>
 
 				<dependency>
 					<groupId>org.assertj</groupId>
 					<artifactId>assertj-core</artifactId>
 					<version>${igloo.assertj.version}</version>
-					<scope>test</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.assertj</groupId>
 					<artifactId>assertj-guava</artifactId>
 					<version>${igloo.assertj-guava.version}</version>
-					<scope>test</scope>
 				</dependency>
 				<dependency>
 					<groupId>org.assertj</groupId>
 					<artifactId>assertj-joda-time</artifactId>
 					<version>${igloo.assertj-joda-time.version}</version>
-					<scope>test</scope>
 				</dependency>
 				
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-test</artifactId>
 					<version>${igloo.spring.version}</version>
-					<scope>test</scope>
 					<exclusions>
 						<exclusion>
 							<groupId>commons-logging</groupId>

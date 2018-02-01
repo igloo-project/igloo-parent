@@ -22,7 +22,6 @@ import org.springframework.test.context.ContextConfiguration;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.junit.AbstractTestCase;
 import org.iglooproject.test.business.company.model.Company;
 import org.iglooproject.test.business.company.service.ICompanyService;
 import org.iglooproject.test.business.label.service.ILabelService;
@@ -32,6 +31,7 @@ import org.iglooproject.test.business.person.service.IPersonService;
 import org.iglooproject.test.business.project.model.Project;
 import org.iglooproject.test.business.project.service.IProjectService;
 import org.iglooproject.test.config.spring.JpaTestConfig;
+import org.iglooproject.test.jpa.junit.AbstractTestCase;
 
 @ContextConfiguration(classes = JpaTestConfig.class)
 public abstract class AbstractJpaCoreTestCase extends AbstractTestCase {

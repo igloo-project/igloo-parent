@@ -22,6 +22,12 @@
 			<version>${project.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-rest-jersey2</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
 		<!-- Http Client -->
 		
 		<dependency>
@@ -46,8 +52,9 @@
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-rest-jersey2</artifactId>
-			<version>${project.version}</version>
+			<artifactId>igloo-component-jpa-test</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>test</scope>
 		</dependency>
 		
 		<dependency>

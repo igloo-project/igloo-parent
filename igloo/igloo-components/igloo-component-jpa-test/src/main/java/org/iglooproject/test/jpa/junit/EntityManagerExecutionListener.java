@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.junit;
+package org.iglooproject.test.jpa.junit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
