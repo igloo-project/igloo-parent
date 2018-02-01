@@ -117,15 +117,9 @@
 		projects.
 		-->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<scope>provided</scope>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-test</artifactId>
+			<type>pom</type>
 		</dependency>
 
 		<!-- Misc dependencies -->

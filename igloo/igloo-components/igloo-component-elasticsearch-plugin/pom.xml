@@ -29,9 +29,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-test</artifactId>
+			<type>pom</type>
 		</dependency>
 	</dependencies>
 	<build>
