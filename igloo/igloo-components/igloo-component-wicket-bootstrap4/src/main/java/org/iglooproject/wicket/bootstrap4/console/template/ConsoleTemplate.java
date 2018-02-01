@@ -110,7 +110,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 														new Label("label", new ResourceModel(navItem.getDisplayStringKey()))
 												);
 												
-												if (navItem.getPageClass() != null && navItem.getPageClass().equals(ConsoleTemplate.this.getFirstMenuPage())) {
+												if (navItem.getPageClass() != null && navItem.getPageClass().equals(ConsoleTemplate.this.getSecondMenuPage())) {
 													navLink.add(new ClassAttributeAppender("active"));
 												}
 												
