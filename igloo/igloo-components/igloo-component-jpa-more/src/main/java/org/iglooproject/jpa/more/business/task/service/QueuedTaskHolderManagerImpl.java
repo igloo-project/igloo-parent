@@ -22,27 +22,6 @@ import java.util.stream.Collectors;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
-import org.infinispan.Cache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.util.Assert;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Joiner;
-import com.google.common.base.Supplier;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
-
 import org.iglooproject.infinispan.model.IAttribution;
 import org.iglooproject.infinispan.model.SimpleLock;
 import org.iglooproject.infinispan.model.SimpleRole;
@@ -65,6 +44,26 @@ import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchroniz
 import org.iglooproject.spring.config.util.TaskQueueStartMode;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.SpringBeanUtils;
+import org.infinispan.Cache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.util.Assert;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Joiner;
+import com.google.common.base.Supplier;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 	
 public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, ApplicationListener<ContextRefreshedEvent> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(QueuedTaskHolderManagerImpl.class);
@@ -141,19 +140,21 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	}
 
 	private final void initQueues() {
-		Collection<IQueueId> queueIdsAsStrings = Lists.newArrayList();
+		Collection<IQueueId> queueIds = Lists.newArrayList();
+		Collection<String> queueIdsAsStrings = Lists.newArrayList();
 		
 		// Sanity checks
-		for (IQueueId queueId : queueIds) {
+		for (IQueueId queueId : this.queueIds) {
 			String queueIdAsString = queueId.getUniqueStringId();
-			Assert.state(!IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING.equals(queueIdAsString),
-					"Queue ID '" + IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING + "' is reserved for implementation purposes. Please choose another ID.");
+			Assert.state(!IQueueId.RESERVED_DEFAULT_QUEUE_ID.getUniqueStringId().equals(queueIdAsString),
+					"Queue ID '" + IQueueId.RESERVED_DEFAULT_QUEUE_ID.getUniqueStringId() + "' is reserved for implementation purposes. Please choose another ID.");
 			Assert.state(!queueIdsAsStrings.contains(queueIdAsString), "Queue ID '" + queueIdAsString + "' was defined more than once. Queue IDs must be unique.");
-			queueIdsAsStrings.add(queueId);
+			queueIdsAsStrings.add(queueIdAsString);
+			queueIds.add(queueId);
 		}
-
-		defaultQueue = initQueue(IQueueId.RESERVED_DEFAULT_QUEUE_ID_STRING, 1);
-		for (IQueueId queueId : queueIdsAsStrings) {
+		
+		defaultQueue = initQueue(IQueueId.RESERVED_DEFAULT_QUEUE_ID, 1);
+		for (IQueueId queueId : queueIds) {
 			int numberOfThreads = propertyService.get(queueNumberOfThreads(queueId));
 			if (numberOfThreads < 1) {
 				LOGGER.warn("Number of threads for queue '{}' is set to an invalid value ({}); defaulting to 1", queueId.getUniqueStringId(), numberOfThreads);
