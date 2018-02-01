@@ -1,4 +1,4 @@
-package org.iglooproject.test.util.jdbc.model;
+package org.iglooproject.test.jpa.util.jdbc.model;
 
 import java.sql.DatabaseMetaData;
 

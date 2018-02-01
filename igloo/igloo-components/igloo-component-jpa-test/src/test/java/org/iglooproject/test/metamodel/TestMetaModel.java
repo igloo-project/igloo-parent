@@ -2,62 +2,91 @@ package org.iglooproject.test.metamodel;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.EntityType;
 
-import org.apache.commons.beanutils.DynaBean;
-import org.apache.commons.beanutils.ResultSetDynaClass;
 import org.hibernate.Session;
+import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.jdbc.Work;
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.Lists;
-
-import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
+import org.hibernate.tool.schema.extract.spi.SequenceInformation;
+import org.hibernate.tool.schema.extract.spi.TableInformation;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.hibernate.dialect.PerTableSequenceStyleGenerator;
+import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
 import org.iglooproject.jpa.hibernate.jpa.PerTableSequenceStrategyProvider;
-import org.iglooproject.jpa.util.EntityManagerUtils;
-import org.iglooproject.test.AbstractJpaCoreTestCase;
+import org.iglooproject.jpa.util.DbTypeConstants;
+import org.iglooproject.spring.property.SpringPropertyIds;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.model.PersonSubTypeA;
 import org.iglooproject.test.business.person.model.QPerson;
-import org.iglooproject.test.util.bean.DynaBeanConverter;
-import org.iglooproject.test.util.jdbc.model.JdbcDatabaseMetaDataConstants;
-import org.iglooproject.test.util.jdbc.model.JdbcRelation;
+import org.iglooproject.test.config.spring.JpaTestConfig;
+import org.iglooproject.test.jpa.junit.AbstractMetaModelTestCase;
+import org.iglooproject.test.jpa.util.jdbc.model.JdbcDatabaseMetaDataConstants;
+import org.iglooproject.test.jpa.util.jdbc.model.JdbcRelation;
+import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 
-public class TestMetaModel extends AbstractJpaCoreTestCase {
-	
-	@Autowired
-	protected EntityManagerUtils entityManagerUtils;
+import com.google.common.collect.Lists;
+
+@ContextConfiguration(classes = JpaTestConfig.class)
+public class TestMetaModel extends AbstractMetaModelTestCase {
 
 	@Autowired
-	protected IJpaConfigurationProvider configurationProvider;
+	private IPropertyService propertyService;
 
 	/**
 	 * <p>Check table and sequence naming. Important because sequence handling is customized through
 	 * {@link PerTableSequenceStyleGenerator} and {@link PerTableSequenceStrategyProvider}.</p>
 	 * 
 	 * <p>We check that {@link Person} entity creates a {@code person} table and a {@code person_id_seq} sequence.</p>
+	 * 
+	 * <p>This method use Hibernate metadata extraction.</p>
 	 */
 	@Test
-	public void testTablesAndSequences() {
+	public void testTablesAndSequencesHibernate() {
+		String expectedTableName = Person.class.getSimpleName(); // person
+		String expectedSequenceName = expectedTableName + "_id_seq"; // person_id_seq
+		Identifier expectedTableNameIdentifier = MetadataRegistryIntegrator.METADATA.getDatabase().toIdentifier(expectedTableName);
+		Identifier expectedSequenceNameIdentifier = MetadataRegistryIntegrator.METADATA.getDatabase().toIdentifier(expectedSequenceName);
+
+		TableInformation table = getTableInformation(configurationProvider.getDefaultSchema(),
+				expectedTableName);
+		Assert.assertEquals(expectedTableNameIdentifier, table.getName().getTableName());
+
+		SequenceInformation sequence = getSequenceInformation(configurationProvider.getDefaultSchema(),
+				expectedSequenceName);
+		Assert.assertEquals(expectedSequenceNameIdentifier, sequence.getSequenceName().getSequenceName());
+	}
+	
+	/**
+	 * <p>Check table and sequence naming. Important because sequence handling is customized through
+	 * {@link PerTableSequenceStyleGenerator} and {@link PerTableSequenceStrategyProvider}.</p>
+	 * 
+	 * <p>We check that {@link Person} entity creates a {@code person} table and a {@code person_id_seq} sequence.</p>
+	 * 
+	 * <p>This method use jdbc metadata extraction. Currently work only with <b>PostgreSQL</b>.</p>
+	 */
+	@Test
+	public void testTablesAndSequencesJdbc() {
 		EntityManager entityManager = entityManagerUtils.getEntityManager();
 		((Session) entityManager.getDelegate()).doWork(new Work() {
 			@Override
 			public void execute(Connection connection) throws SQLException {
+				// table and sequence information extraction only implemented for postgresql
+				Assume.assumeTrue(DbTypeConstants.FAMILY_POSTGRESQL.contains(propertyService.getAsString(SpringPropertyIds.DB_TYPE)));
+				Assume.assumeFalse(connection.getMetaData().getDatabaseProductName().toLowerCase().equals("h2"));
+				
 				String expectedTableName = Person.class.getSimpleName(); // person
 				String expectedSequenceName = expectedTableName + "_id_seq"; // person_id_seq
+
 				
 				JdbcRelation table = getRelation(connection, configurationProvider.getDefaultSchema(),
 						expectedTableName, JdbcDatabaseMetaDataConstants.REL_TYPE_TABLE);
@@ -68,31 +97,6 @@ public class TestMetaModel extends AbstractJpaCoreTestCase {
 				Assert.assertEquals(expectedSequenceName, sequence.getTable_name());
 			}
 		});
-	}
-
-	private JdbcRelation getRelation(Connection connection, String schemaPattern, String relationPattern, String... types) {
-		return Iterables.getOnlyElement(getRelations(connection, schemaPattern, relationPattern, types));
-	}
-
-	private Collection<JdbcRelation> getRelations(Connection connection, String schemaPattern, String relationPattern, String... types) {
-		org.springframework.util.Assert.notNull(connection, "connection must be provided");
-		try {
-			Iterator<DynaBean> tablesResultSet =
-					new ResultSetDynaClass(
-						connection.getMetaData().getTables(null, schemaPattern, relationPattern, types),
-						false,
-						true
-					).iterator();
-			Iterator<JdbcRelation> tables =
-					Iterators.transform(tablesResultSet, new DynaBeanConverter<>(JdbcRelation.class));
-			return ImmutableList.copyOf(tables);
-		} catch (SQLException e) {
-			throw new IllegalStateException(
-					String.format("error retrieving relation list for <%s-%s-%s>",
-							schemaPattern, relationPattern, Joiner.on(", ").join(types)),
-					e
-			);
-		}
 	}
 
 	@Test
@@ -189,5 +193,10 @@ public class TestMetaModel extends AbstractJpaCoreTestCase {
 			super.testMetaModel(enumerationMapValueStringAttribute, classes);
 		}
 	}
+
+	@Override
+	protected void cleanAll() throws ServiceException, SecurityServiceException {
+		// NO-OP
+	} // NOSONAR
 
 }

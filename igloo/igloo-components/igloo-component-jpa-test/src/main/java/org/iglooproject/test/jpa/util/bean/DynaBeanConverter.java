@@ -1,4 +1,4 @@
-package org.iglooproject.test.util.bean;
+package org.iglooproject.test.jpa.util.bean;
 
 import java.lang.reflect.InvocationTargetException;
 
