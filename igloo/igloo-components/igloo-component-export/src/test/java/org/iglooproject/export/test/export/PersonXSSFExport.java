@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import org.iglooproject.export.excel.AbstractExcelTableExport;
 import org.iglooproject.export.test.person.Person;
 
@@ -51,7 +50,7 @@ public class PersonXSSFExport extends AbstractExcelTableExport {
 
 	private void addCell(XSSFRow currentRow, int columnIndex, Person person, String column) {
 		if ("username".equals(column)) {
-			addTextCell(currentRow, columnIndex, person.getUserName());
+			addTextCell(currentRow, columnIndex, person.getUsername());
 		} else if ("firstname".equals(column)) {
 			addTextCell(currentRow, columnIndex, person.getFirstName());
 		} else if ("lastname".equals(column)) {

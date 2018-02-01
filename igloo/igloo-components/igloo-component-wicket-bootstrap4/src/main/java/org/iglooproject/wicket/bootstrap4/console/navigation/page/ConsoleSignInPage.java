@@ -54,7 +54,7 @@ public class ConsoleSignInPage extends ConsoleAccessTemplate {
 		public ContentFragment(String id) {
 			super(id, "content", ConsoleSignInPage.this);
 			
-			FormComponent<String> userNameField = new RequiredTextField<String>("userName", Model.of(""));
+			FormComponent<String> usernameField = new RequiredTextField<String>("username", Model.of(""));
 			FormComponent<String> passwordField = new PasswordTextField("password", Model.of(""));
 			
 			Form<Void> form = new Form<Void>("form") {
@@ -65,7 +65,7 @@ public class ConsoleSignInPage extends ConsoleAccessTemplate {
 					AbstractCoreSession<?> session = AbstractCoreSession.get();
 					boolean success = false;
 					try {
-						session.signIn(userNameField.getModelObject(), passwordField.getModelObject());
+						session.signIn(usernameField.getModelObject(), passwordField.getModelObject());
 						success = true;
 					} catch (BadCredentialsException e) {
 						session.error(getString("console.signIn.error.authentication"));
@@ -87,10 +87,10 @@ public class ConsoleSignInPage extends ConsoleAccessTemplate {
 			};
 			add(form);
 			
-			userNameField.setLabel(new ResourceModel("console.signIn.userName"));
-			userNameField.add(new LabelPlaceholderBehavior());
-			userNameField.setOutputMarkupId(true);
-			form.add(userNameField);
+			usernameField.setLabel(new ResourceModel("console.signIn.username"));
+			usernameField.add(new LabelPlaceholderBehavior());
+			usernameField.setOutputMarkupId(true);
+			form.add(usernameField);
 			
 			passwordField.setRequired(true);
 			passwordField.setLabel(new ResourceModel("console.signIn.password"));

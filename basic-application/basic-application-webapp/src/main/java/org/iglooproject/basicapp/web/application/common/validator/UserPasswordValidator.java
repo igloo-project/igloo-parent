@@ -13,6 +13,12 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
+import org.iglooproject.basicapp.core.business.user.model.User;
+import org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds;
+import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
+import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.spring.util.StringUtils;
 import org.passay.LengthRule;
 import org.passay.PasswordData;
 import org.passay.PasswordValidator;
@@ -24,13 +30,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-
-import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds;
-import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
-import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.spring.util.StringUtils;
 
 public class UserPasswordValidator extends Behavior implements IValidator<String> {
 
@@ -87,8 +86,8 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 		
 		List<Rule> passwordRules = Lists.newArrayList(securityManagementService.getOptions(typeDescriptor.getEntityClass()).getPasswordRules());
 		
-		if (user != null && StringUtils.hasText(user.getUserName())) {
-			passwordData.setUsername(user.getUserName());
+		if (user != null && StringUtils.hasText(user.getUsername())) {
+			passwordData.setUsername(user.getUsername());
 		} else {
 			passwordRules.removeAll(Lists.newArrayList(Iterables.filter(passwordRules, UsernameRule.class)));
 		}

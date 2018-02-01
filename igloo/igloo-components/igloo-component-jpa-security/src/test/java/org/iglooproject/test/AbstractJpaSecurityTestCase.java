@@ -1,17 +1,5 @@
 package org.iglooproject.test;
 
-import org.junit.After;
-import org.junit.Before;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ContextConfiguration;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.junit.AbstractTestCase;
@@ -26,6 +14,17 @@ import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
 import org.iglooproject.test.jpa.security.business.person.service.IMockUserGroupService;
 import org.iglooproject.test.jpa.security.business.person.service.IMockUserService;
 import org.iglooproject.test.jpa.security.config.spring.JpaSecurityTestConfig;
+import org.junit.After;
+import org.junit.Before;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(classes = JpaSecurityTestConfig.class)
 public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
@@ -87,13 +86,13 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		cleanEntities(authorityService);
 	}
 
-	protected MockUser createMockPerson(String userName, String firstName, String lastName) throws ServiceException, SecurityServiceException {
-		return createMockPerson(userName, firstName, lastName, "test@example.com");
+	protected MockUser createMockPerson(String username, String firstName, String lastName) throws ServiceException, SecurityServiceException {
+		return createMockPerson(username, firstName, lastName, "test@example.com");
 	}
 	
-	protected MockUser createMockPerson(String userName, String firstName, String lastName, String email) throws ServiceException, SecurityServiceException {
+	protected MockUser createMockPerson(String username, String firstName, String lastName, String email) throws ServiceException, SecurityServiceException {
 		MockUser person = new MockUser();
-		person.setUserName(userName);
+		person.setUsername(username);
 		person.setFirstName(firstName);
 		person.setLastName(lastName);
 		person.setEmail(email);
@@ -125,7 +124,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 	}
 	
 	protected void authenticateAs(IUser person) {
-		authenticateAs(new UsernamePasswordAuthenticationToken(person.getUserName(), DEFAULT_PASSWORD));
+		authenticateAs(new UsernamePasswordAuthenticationToken(person.getUsername(), DEFAULT_PASSWORD));
 	}
 	
 	protected void authenticateAs(UsernamePasswordAuthenticationToken authenticationToken) {

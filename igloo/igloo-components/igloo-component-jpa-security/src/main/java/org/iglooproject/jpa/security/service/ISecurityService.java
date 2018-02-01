@@ -4,12 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.iglooproject.jpa.security.business.person.model.IUser;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
-
-import org.iglooproject.jpa.security.business.person.model.IUser;
 
 public interface ISecurityService {
 	
@@ -45,13 +44,13 @@ public interface ISecurityService {
 	
 	List<GrantedAuthority> getAuthorities(IUser person);
 	
-	SecurityContext buildSecureContext(String userName);
+	SecurityContext buildSecureContext(String username);
 	
 	void clearAuthentication();
 	
 	<T> T runAsSystem(Callable<T> task);
 
-	<T> T runAs(Callable<T> task, String userName, String... additionalAuthorities);
+	<T> T runAs(Callable<T> task, String username, String... additionalAuthorities);
 
 	Collection<? extends Permission> getPermissions(Authentication authentication);
 

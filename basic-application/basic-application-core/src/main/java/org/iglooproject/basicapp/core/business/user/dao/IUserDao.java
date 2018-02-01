@@ -9,6 +9,6 @@ public interface IUserDao extends IGenericUserDao<User> {
 
 	User getByEmailCaseInsensitive(String email);
 
-	List<User> listByUserName(String userName);
+	List<User> listByUsername(String username);
 
 }

@@ -36,7 +36,7 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> e
 				.page(ConsoleMaintenanceAuthenticationPage.class);
 	}
 	
-	private FormComponent<String> userNameField;
+	private FormComponent<String> usernameField;
 	
 	public ConsoleMaintenanceAuthenticationPage(PageParameters parameters) {
 		super(parameters);
@@ -48,13 +48,13 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> e
 			
 			@Override
 			protected void onSubmit() {
-				if (StringUtils.hasText(userNameField.getModelObject())) {
-					U genericUser = genericUserService.getByUserName(userNameField.getModelObject());
+				if (StringUtils.hasText(usernameField.getModelObject())) {
+					U genericUser = genericUserService.getByUsername(usernameField.getModelObject());
 					
 					if (genericUser != null) {
-						AbstractCoreSession.get().signInAs(userNameField.getModelObject());
+						AbstractCoreSession.get().signInAs(usernameField.getModelObject());
 						AbstractCoreSession.get().success(new StringResourceModel("console.maintenance.authentication.success")
-								.setParameters(userNameField.getModelObject()).getObject());
+								.setParameters(usernameField.getModelObject()).getObject());
 					} else {
 						AbstractCoreSession.get().error(getString("signIn.error.unknown"));
 					}
@@ -66,11 +66,11 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> e
 		};
 		add(signInForm);
 		
-		userNameField = new RequiredTextField<String>("userName", Model.of(""));
-		userNameField.setLabel(new ResourceModel("console.signIn.userName"));
-		userNameField.add(new LabelPlaceholderBehavior());
-		userNameField.setOutputMarkupId(true);
-		signInForm.add(userNameField);
+		usernameField = new RequiredTextField<String>("username", Model.of(""));
+		usernameField.setLabel(new ResourceModel("console.signIn.username"));
+		usernameField.add(new LabelPlaceholderBehavior());
+		usernameField.setOutputMarkupId(true);
+		signInForm.add(usernameField);
 	}
 	
 	@Override

@@ -161,7 +161,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 								}.thenShowInternal()
 						),
 				
-				new Label("userName", BindingModel.of(userModel, Bindings.user().userName())),
+				new Label("username", BindingModel.of(userModel, Bindings.user().username())),
 				new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())),
 				new EmailLink("email", emailModel),
 				new DefaultPlaceholderPanel("emailPlaceholder").condition(Condition.modelNotNull(emailModel)),

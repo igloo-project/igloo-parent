@@ -26,13 +26,6 @@ import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.SortableField;
-import org.springframework.security.acls.model.Permission;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.Sets;
-import com.querydsl.core.annotations.PropertyType;
-import com.querydsl.core.annotations.QueryType;
-
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
@@ -40,6 +33,12 @@ import org.iglooproject.jpa.search.bridge.GenericEntityCollectionIdFieldBridge;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.person.util.AbstractPersonGroupComparator;
+import org.springframework.security.acls.model.Permission;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Sets;
+import com.querydsl.core.annotations.PropertyType;
+import com.querydsl.core.annotations.QueryType;
 
 @Indexed
 @MappedSuperclass
@@ -51,7 +50,8 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 
 	private static final long serialVersionUID = 1803671157183603979L;
 	
-	public static final String USER_NAME_SORT_FIELD_NAME = "userNameSort";
+	public static final String USERNAME = "username";
+	public static final String USERNAME_SORT = "usernameSort";
 	
 	@Id
 	@GeneratedValue
@@ -61,11 +61,11 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@Column(nullable = false)
 	@NaturalId(mutable = true)
 	@Fields({
-		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-		@Field(name = USER_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+		@Field(name = USERNAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+		@Field(name = USERNAME_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
 	})
-	@SortableField(forField = USER_NAME_SORT_FIELD_NAME)
-	private String userName;
+	@SortableField(forField = USERNAME_SORT)
+	private String username;
 	
 	@JsonIgnore
 	private String passwordHash = "*NO PASSWORD*";
@@ -104,8 +104,8 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	public GenericUser() {
 	}
 	
-	public GenericUser(String userName, String passwordHash) {
-		this.userName = userName;
+	public GenericUser(String username, String passwordHash) {
+		this.username = username;
 		this.passwordHash = passwordHash;
 	}
 	
@@ -120,12 +120,12 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	}
 
 	@Override
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	public abstract String getFullName();
@@ -236,16 +236,16 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 		if(this.equals(user)) {
 			return 0;
 		}
-		return DEFAULT_STRING_COLLATOR.compare(this.getUserName(), user.getUserName());
+		return DEFAULT_STRING_COLLATOR.compare(this.getUsername(), user.getUsername());
 	}
 
 	@Override
 	public String getNameForToString() {
-		return getUserName();
+		return getUsername();
 	}
 
 	@Override
 	public String getDisplayName() {
-		return getUserName();
+		return getUsername();
 	}
 }

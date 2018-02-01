@@ -7,7 +7,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
@@ -39,14 +38,14 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		MarkupContainer propertiesTable = new WebMarkupContainer("propertiesTable");
 		add(propertiesTable);
 		
-		// 	>	User name
+		// 	>	Username
 		addTopProperty(propertiesTable, "username",
 				new WebMarkupContainer("usernameValue")
 				.add(
 						AdministrationUserDescriptionTemplate.mapper().ignoreParameter2().map(userModel)
 								.link("userLink")
 								.setAbsolute(true)
-								.setBody(BindingModel.of(userModel, Bindings.user().userName()))
+								.setBody(BindingModel.of(userModel, Bindings.user().username()))
 				)
 		);
 		

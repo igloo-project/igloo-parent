@@ -22,7 +22,7 @@ create table basic_application.HistoryLog (id int8 not null, comment text, date 
 create table basic_application.Parameter (id int8 not null, name text not null, stringValue text, primary key (id));
 create table basic_application.QueuedTaskHolder (id int8 not null, creationDate timestamp not null, endDate timestamp, name text not null, queueId text, report text, result varchar(255), serializedTask text not null, stackTrace text, startDate timestamp, status varchar(255) not null, taskType text not null, triggeringDate timestamp, optLock int4, primary key (id));
 create table basic_application.TechnicalUser (id int8 not null, primary key (id));
-create table basic_application.user_ (id int8 not null, active boolean not null, creationDate timestamp not null, lastLoginDate timestamp, lastUpdateDate timestamp not null, locale varchar(255), passwordHash text, userName text not null, email text, faxNumber text, firstName text not null, gsmNumber text, lastName text not null, phoneNumber text, passwordInformation_lastUpdateDate timestamp, passwordRecoveryRequest_creationDate timestamp, passwordRecoveryRequest_initiator varchar(255), passwordRecoveryRequest_token text, passwordRecoveryRequest_type varchar(255), primary key (id));
+create table basic_application.user_ (id int8 not null, active boolean not null, creationDate timestamp not null, lastLoginDate timestamp, lastUpdateDate timestamp not null, locale varchar(255), passwordHash text, username text not null, email text, faxNumber text, firstName text not null, gsmNumber text, lastName text not null, phoneNumber text, passwordInformation_lastUpdateDate timestamp, passwordRecoveryRequest_creationDate timestamp, passwordRecoveryRequest_initiator varchar(255), passwordRecoveryRequest_token text, passwordRecoveryRequest_type varchar(255), primary key (id));
 create table basic_application.user__Authority (user__id int8 not null, authorities_id int8 not null, primary key (user__id, authorities_id));
 create table basic_application.user__passwordInformation_history (user__id int8 not null, passwordInformation_history text, history_ORDER int4 not null, primary key (user__id, history_ORDER));
 create table basic_application.user__UserGroup (persons_id int8 not null, groups_id int8 not null, primary key (persons_id, groups_id));
@@ -33,7 +33,7 @@ alter table basic_application.DataUpgradeRecord add constraint UK_6q54k3x0axoc3n
 create index idx_HistoryDifference_parentLog on basic_application.HistoryDifference (parentLog_id);
 create index idx_HistoryDifference_parentDifference on basic_application.HistoryDifference (parentDifference_id);
 alter table basic_application.Parameter add constraint UK_k31gbcltpas6ux95qpk19o6q5 unique (name);
-alter table basic_application.user_ add constraint UK_q1sdxrqyk0i3sw35q3m92sx3m unique (userName);
+alter table basic_application.user_ add constraint UK_q1sdxrqyk0i3sw35q3m92sx3m unique (username);
 alter table basic_application.Authority_customPermissionNames add constraint FK6uqor94s0128ryjrrdw84f67x foreign key (Authority_id) references basic_application.Authority;
 alter table basic_application.BasicUser add constraint FKhjnq1hls89k8qbs2hpap2i09j foreign key (id) references basic_application.user_;
 alter table basic_application.HistoryDifference add constraint FKbs6nv5pjsfuj7na52g16pfbrw foreign key (parentDifference_id) references basic_application.HistoryDifference;

@@ -35,7 +35,7 @@ public class ConsoleSignInPage extends CoreWebPage {
 				.page(ConsoleSignInPage.class);
 	}
 	
-	private FormComponent<String> userNameField;
+	private FormComponent<String> usernameField;
 	
 	private FormComponent<String> passwordField;
 	
@@ -52,7 +52,7 @@ public class ConsoleSignInPage extends CoreWebPage {
 				AbstractCoreSession<?> session = AbstractCoreSession.get();
 				boolean success = false;
 				try {
-					session.signIn(userNameField.getModelObject(), passwordField.getModelObject());
+					session.signIn(usernameField.getModelObject(), passwordField.getModelObject());
 					success = true;
 				} catch (BadCredentialsException e) {
 					session.error(getString("console.signIn.error.authentication"));
@@ -74,11 +74,11 @@ public class ConsoleSignInPage extends CoreWebPage {
 		};
 		add(signInForm);
 		
-		userNameField = new RequiredTextField<String>("userName", Model.of(""));
-		userNameField.setLabel(new ResourceModel("console.signIn.userName"));
-		userNameField.add(new LabelPlaceholderBehavior());
-		userNameField.setOutputMarkupId(true);
-		signInForm.add(userNameField);
+		usernameField = new RequiredTextField<String>("username", Model.of(""));
+		usernameField.setLabel(new ResourceModel("console.signIn.username"));
+		usernameField.add(new LabelPlaceholderBehavior());
+		usernameField.setOutputMarkupId(true);
+		signInForm.add(usernameField);
 		
 		passwordField = new PasswordTextField("password", Model.of("")).setRequired(true);
 		passwordField.setLabel(new ResourceModel("console.signIn.password"));

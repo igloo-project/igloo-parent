@@ -20,10 +20,10 @@ final class AuthenticationUtil {
 	}
 
 	static boolean isLoggedIn() {
-		return (getUserName() != null);
+		return (getUsername() != null);
 	}
 
-	static String getUserName() {
+	static String getUsername() {
 		Authentication authentication = getAuthentication();
 		if (authentication != null) {
 			Object principal = authentication.getPrincipal();

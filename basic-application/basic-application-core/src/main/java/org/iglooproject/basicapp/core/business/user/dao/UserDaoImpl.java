@@ -2,14 +2,13 @@ package org.iglooproject.basicapp.core.business.user.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
-import com.querydsl.jpa.impl.JPAQuery;
-
 import org.iglooproject.basicapp.core.business.user.model.QUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.jpa.security.business.person.dao.GenericUserDaoImpl;
 import org.iglooproject.spring.util.StringUtils;
+import org.springframework.stereotype.Repository;
+
+import com.querydsl.jpa.impl.JPAQuery;
 
 @Repository("personDao")
 public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
@@ -29,8 +28,8 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 	}
 
 	@Override
-	public List<User> listByUserName(String userName) {
-		return super.listByField(QUser.user, QUser.user.userName, userName, QUser.user.id.desc());
+	public List<User> listByUsername(String username) {
+		return super.listByField(QUser.user, QUser.user.username, username, QUser.user.id.desc());
 	}
 
 }

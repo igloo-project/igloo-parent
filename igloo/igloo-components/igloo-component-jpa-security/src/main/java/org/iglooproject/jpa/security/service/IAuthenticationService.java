@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 public interface IAuthenticationService {
 
-	String getUserName();
+	String getUsername();
 	
 	boolean isLoggedIn();
 	

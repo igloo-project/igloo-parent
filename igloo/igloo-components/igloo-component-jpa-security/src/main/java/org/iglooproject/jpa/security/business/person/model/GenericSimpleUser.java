@@ -11,11 +11,10 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.SortableField;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 import org.iglooproject.spring.notification.model.INotificationRecipient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @MappedSuperclass
 @Bindable
@@ -57,8 +56,8 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 		super();
 	}
 	
-	public GenericSimpleUser(String userName, String firstName, String lastName, String passwordHash) {
-		super(userName, passwordHash);
+	public GenericSimpleUser(String username, String firstName, String lastName, String passwordHash) {
+		super(username, passwordHash);
 		setFirstName(firstName);
 		setLastName(lastName);
 	}

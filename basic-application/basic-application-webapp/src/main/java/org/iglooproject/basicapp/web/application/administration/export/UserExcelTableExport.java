@@ -24,7 +24,7 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 	private static final String SHEET_NAME_RESOURCE_KEY = "administration.export.excel.sheetName";
 	
 	private final Collection<ColumnInformation> columns = ImmutableList.of(
-			new ColumnInformation("business.user.userName"),
+			new ColumnInformation("business.user.username"),
 			new ColumnInformation("business.user.lastName"),
 			new ColumnInformation("business.user.firstName"),
 			new ColumnInformation("business.user.email"),
@@ -67,7 +67,7 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 		
 		int columnIndex = 0;
 		
-		addTextCell(row, columnIndex++, binding.userName().getSafely());
+		addTextCell(row, columnIndex++, binding.username().getSafely());
 		addTextCell(row, columnIndex++, binding.lastName().getSafely());
 		addTextCell(row, columnIndex++, binding.firstName().getSafely());
 		

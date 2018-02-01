@@ -2,14 +2,14 @@ package org.iglooproject.jpa.security.business.person.dao;
 
 import java.util.List;
 
+import org.iglooproject.jpa.business.generic.dao.GenericEntityDaoImpl;
+import org.iglooproject.jpa.security.business.person.model.GenericUser;
+import org.iglooproject.jpa.security.business.person.model.QGenericUser;
+
 import com.querydsl.core.types.dsl.BeanPath;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
-
-import org.iglooproject.jpa.business.generic.dao.GenericEntityDaoImpl;
-import org.iglooproject.jpa.security.business.person.model.GenericUser;
-import org.iglooproject.jpa.security.business.person.model.QGenericUser;
 
 public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 		extends GenericEntityDaoImpl<Long, U>
@@ -32,15 +32,15 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 	}
 	
 	@Override
-	public List<String> listActiveUserNames() {
+	public List<String> listActiveUsernames() {
 		QGenericUser qUser = new QGenericUser(getEntityPath());
 		
 		JPQLQuery<String> query = new JPAQuery<String>(getEntityManager());
 		
-		query.select(qUser.userName)
+		query.select(qUser.username)
 				.from(qUser)
 				.where(qUser.active.isTrue())
-				.orderBy(qUser.userName.asc());
+				.orderBy(qUser.username.asc());
 		
 		return query.fetch();
 	}
@@ -53,15 +53,15 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 	}
 
 	@Override
-	public U getByUserNameCaseInsensitive(String userName) {
-		if (userName == null) {
+	public U getByUsernameCaseInsensitive(String username) {
+		if (username == null) {
 			return null;
 		}
 		
 		QGenericUser qUser = new QGenericUser(getEntityPath());
 		
 		JPQLQuery<U> query = new JPAQuery<U>(getEntityManager()).from(qUser);
-		query.where(qUser.userName.lower().eq(userName.toLowerCase()));
+		query.where(qUser.username.lower().eq(username.toLowerCase()));
 		return query.fetchOne();
 	}
 

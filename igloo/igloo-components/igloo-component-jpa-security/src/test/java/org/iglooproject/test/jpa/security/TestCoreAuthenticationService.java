@@ -8,6 +8,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
+import org.iglooproject.test.AbstractJpaSecurityTestCase;
+import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,12 +21,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.test.AbstractJpaSecurityTestCase;
-import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 
 public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 
@@ -45,7 +44,7 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 		
 		assertTrue(authenticationService.isLoggedIn());
 		assertNotNull(authentication);
-		assertEquals(user.getUserName(), authentication.getName());
+		assertEquals(user.getUsername(), authentication.getName());
 		assertEquals(DEFAULT_PASSWORD, authentication.getCredentials());
 		
 		assertTrue(authentication.isAuthenticated());

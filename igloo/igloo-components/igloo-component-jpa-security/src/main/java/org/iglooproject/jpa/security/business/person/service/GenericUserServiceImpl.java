@@ -6,9 +6,6 @@ import java.util.Locale;
 
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -19,6 +16,8 @@ import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConsta
 import org.iglooproject.jpa.security.business.person.dao.IGenericUserDao;
 import org.iglooproject.jpa.security.business.person.model.GenericUser;
 import org.iglooproject.jpa.security.business.person.model.IUserBinding;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 		extends GenericEntityServiceImpl<Long, U>
@@ -26,11 +25,11 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 	
 	private static final IUserBinding BINDING = new IUserBinding();
 	
-	private static final String[] SEARCH_FIELDS = new String[] { BINDING.userName().getPath() };
+	private static final String[] SEARCH_FIELDS = new String[] { BINDING.username().getPath() };
 	
-	private static final String[] AUTOCOMPLETE_SEARCH_FIELDS = new String[] { BINDING.userName().getPath() };
+	private static final String[] AUTOCOMPLETE_SEARCH_FIELDS = new String[] { BINDING.username().getPath() };
 	
-	private static final Sort AUTOCOMPLETE_SORT = new Sort(new SortField(GenericUser.USER_NAME_SORT_FIELD_NAME, SortField.Type.STRING));
+	private static final Sort AUTOCOMPLETE_SORT = new Sort(new SortField(GenericUser.USERNAME_SORT, SortField.Type.STRING));
 
 	@Autowired
 	private IAuthorityService authorityService;
@@ -50,13 +49,13 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 	}
 	
 	@Override
-	public U getByUserName(String userName) {
-		return getByNaturalId(userName);
+	public U getByUsername(String username) {
+		return getByNaturalId(username);
 	}
 	
 	@Override
-	public U getByUserNameCaseInsensitive(String userName) {
-		return personDao.getByUserNameCaseInsensitive(userName);
+	public U getByUsernameCaseInsensitive(String username) {
+		return personDao.getByUsernameCaseInsensitive(username);
 	}
 	
 	/**

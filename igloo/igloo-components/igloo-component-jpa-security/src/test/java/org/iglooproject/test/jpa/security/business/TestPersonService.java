@@ -2,19 +2,18 @@ package org.iglooproject.test.jpa.security.business;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 public class TestPersonService extends AbstractJpaSecurityTestCase {
 
@@ -55,19 +54,19 @@ public class TestPersonService extends AbstractJpaSecurityTestCase {
 	}
 
 	@Test
-	public void testCaseInsensitiveUserNameFetch() throws ServiceException, SecurityServiceException {
+	public void testCaseInsensitiveUsernameFetch() throws ServiceException, SecurityServiceException {
 		MockUser person1 = createMockPerson("Login1", "firstName1", "lastName1");
 		MockUser person2 = createMockPerson("logIn2", "firstName2", "lastName2");
 		mockUserService.setPasswords(person1, "toto");
 		mockUserService.setPasswords(person2, "tata");
 		
-		assertEquals(person1, mockUserService.getByUserNameCaseInsensitive("login1"));
-		assertEquals(person1, mockUserService.getByUserNameCaseInsensitive("Login1"));
-		assertEquals(person1, mockUserService.getByUserNameCaseInsensitive("LogIn1"));
+		assertEquals(person1, mockUserService.getByUsernameCaseInsensitive("login1"));
+		assertEquals(person1, mockUserService.getByUsernameCaseInsensitive("Login1"));
+		assertEquals(person1, mockUserService.getByUsernameCaseInsensitive("LogIn1"));
 		
-		assertEquals(person2, mockUserService.getByUserNameCaseInsensitive("login2"));
-		assertEquals(person2, mockUserService.getByUserNameCaseInsensitive("Login2"));
-		assertEquals(person2, mockUserService.getByUserNameCaseInsensitive("LogIn2"));
+		assertEquals(person2, mockUserService.getByUsernameCaseInsensitive("login2"));
+		assertEquals(person2, mockUserService.getByUsernameCaseInsensitive("Login2"));
+		assertEquals(person2, mockUserService.getByUsernameCaseInsensitive("LogIn2"));
 		
 		assertEquals("Login1", userDetailsService.loadUserByUsername("Login1").getUsername());
 		assertEquals("Login1", userDetailsService.loadUserByUsername("login1").getUsername());

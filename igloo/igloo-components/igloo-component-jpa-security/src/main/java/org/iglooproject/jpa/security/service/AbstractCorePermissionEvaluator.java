@@ -7,16 +7,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.iglooproject.jpa.security.business.person.model.GenericUser;
+import org.iglooproject.jpa.security.business.person.service.IGenericUserService;
+import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
+import org.iglooproject.jpa.security.model.CoreUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import org.iglooproject.jpa.security.business.person.model.GenericUser;
-import org.iglooproject.jpa.security.business.person.service.IGenericUserService;
-import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
-import org.iglooproject.jpa.security.model.CoreUserDetails;
 
 public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?>> implements ICorePermissionEvaluator {
 
@@ -44,7 +43,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 		}
 
 		if (authentication.getPrincipal() instanceof UserDetails) {
-			return personService.getByUserName(((UserDetails) authentication.getPrincipal()).getUsername());
+			return personService.getByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
 		}
 
 		return null;

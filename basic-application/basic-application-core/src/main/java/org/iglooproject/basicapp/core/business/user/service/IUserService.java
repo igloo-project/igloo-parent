@@ -9,7 +9,7 @@ import org.iglooproject.jpa.security.business.person.service.IGenericUserService
 
 public interface IUserService extends IGenericUserService<User> {
 
-	List<User> listByUserName(String userName);
+	List<User> listByUsername(String username);
 
 	void onSignIn(User user) throws ServiceException, SecurityServiceException;
 

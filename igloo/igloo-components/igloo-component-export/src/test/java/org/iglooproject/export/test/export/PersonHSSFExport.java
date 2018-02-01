@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
 import org.iglooproject.export.excel.AbstractExcelTableExport;
 import org.iglooproject.export.excel.ColumnInformation;
 import org.iglooproject.export.test.person.Person;
@@ -52,7 +51,7 @@ public class PersonHSSFExport extends AbstractExcelTableExport {
 
 	private void addCell(HSSFRow currentRow, int columnIndex, Person person, String column) {
 		if ("username".equals(column)) {
-			addTextCell(currentRow, columnIndex, person.getUserName());
+			addTextCell(currentRow, columnIndex, person.getUsername());
 		} else if ("firstname".equals(column)) {
 			addTextCell(currentRow, columnIndex, person.getFirstName());
 		} else if ("lastname".equals(column)) {

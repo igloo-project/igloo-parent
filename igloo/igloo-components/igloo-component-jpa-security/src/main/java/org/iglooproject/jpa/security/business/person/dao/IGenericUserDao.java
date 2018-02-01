@@ -8,10 +8,10 @@ import org.iglooproject.jpa.security.business.person.model.GenericUser;
 public interface IGenericUserDao<U extends GenericUser<?, ?>>
 		extends IGenericEntityDao<Long, U> {
 
-	List<String> listActiveUserNames();
+	List<String> listActiveUsernames();
 	
 	Long countActive();
 
-	U getByUserNameCaseInsensitive(String userName);
+	U getByUsernameCaseInsensitive(String username);
 
 }

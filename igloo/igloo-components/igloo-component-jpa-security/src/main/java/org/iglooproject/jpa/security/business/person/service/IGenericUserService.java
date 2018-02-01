@@ -11,7 +11,7 @@ import org.iglooproject.jpa.security.business.person.model.GenericUser;
 
 public interface IGenericUserService<U extends GenericUser<U, ?>> extends IGenericEntityService<Long, U> {
 	
-	U getByUserName(String userName);
+	U getByUsername(String username);
 	
 	/**
 	 * @deprecated use the ISearchQuery pattern instead.
@@ -60,6 +60,6 @@ public interface IGenericUserService<U extends GenericUser<U, ?>> extends IGener
 
 	void updateProfileInformation(U person) throws ServiceException, SecurityServiceException;
 
-	U getByUserNameCaseInsensitive(String userName);
+	U getByUsernameCaseInsensitive(String username);
 
 }

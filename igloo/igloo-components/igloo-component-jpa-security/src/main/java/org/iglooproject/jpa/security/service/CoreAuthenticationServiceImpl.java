@@ -2,12 +2,11 @@ package org.iglooproject.jpa.security.service;
 
 import java.util.Collection;
 
+import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 
 public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	
@@ -15,8 +14,8 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 	private ISecurityService securityService;
 	
 	@Override
-	public String getUserName() {
-		return AuthenticationUtil.getUserName();
+	public String getUsername() {
+		return AuthenticationUtil.getUsername();
 	}
 	
 	@Override

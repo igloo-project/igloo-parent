@@ -11,7 +11,7 @@ import org.iglooproject.jpa.security.hierarchy.PermissionHierarchyImpl;
 import org.iglooproject.jpa.security.model.CorePermissionConstants;
 import org.iglooproject.jpa.security.model.NamedPermission;
 import org.iglooproject.jpa.security.runas.CoreRunAsManagerImpl;
-import org.iglooproject.jpa.security.service.AuthenticationUserNameComparison;
+import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
 import org.iglooproject.jpa.security.service.CoreAuthenticationServiceImpl;
 import org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl;
 import org.iglooproject.jpa.security.service.CoreSecurityServiceImpl;
@@ -62,10 +62,10 @@ public abstract class AbstractJpaSecurityConfig {
 	 * d'utilisateur si on choisit le mode CASE INSENSITIVE. Cette méthode n'a
 	 * pas besoin d'être annotée {@link Bean}
 	 * 
-	 * @see AuthenticationUserNameComparison
+	 * @see AuthenticationUsernameComparison
 	 */
-	public AuthenticationUserNameComparison authenticationUserNameComparison() {
-		return AuthenticationUserNameComparison.CASE_SENSITIVE;
+	public AuthenticationUsernameComparison authenticationUsernameComparison() {
+		return AuthenticationUsernameComparison.CASE_SENSITIVE;
 	}
 	
 	@Bean
@@ -88,7 +88,7 @@ public abstract class AbstractJpaSecurityConfig {
 	@Bean
 	public UserDetailsService userDetailsService() {
 		CoreJpaUserDetailsServiceImpl detailsService = new CoreJpaUserDetailsServiceImpl();
-		detailsService.setAuthenticationUserNameComparison(authenticationUserNameComparison());
+		detailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
 		return detailsService;
 	}
 

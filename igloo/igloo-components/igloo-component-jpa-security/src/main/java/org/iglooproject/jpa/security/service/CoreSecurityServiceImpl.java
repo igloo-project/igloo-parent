@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
+import org.iglooproject.jpa.security.business.person.model.IUser;
+import org.iglooproject.jpa.security.runas.RunAsSystemToken;
+import org.iglooproject.jpa.security.util.UserConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.intercept.RunAsImplAuthenticationProvider;
@@ -26,11 +30,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.jpa.security.business.person.model.IUser;
-import org.iglooproject.jpa.security.runas.RunAsSystemToken;
-import org.iglooproject.jpa.security.util.UserConstants;
 
 public class CoreSecurityServiceImpl implements ISecurityService {
 
@@ -118,21 +117,21 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public SecurityContext buildSecureContext(String userName) {
+	public SecurityContext buildSecureContext(String username) {
 		SecurityContext secureContext = new SecurityContextImpl();
-		secureContext.setAuthentication(getAuthentication(userName));
+		secureContext.setAuthentication(getAuthentication(username));
 
 		return secureContext;
 	}
 	
 	protected void authenticateAs(IUser user) {
-		authenticateAs(user.getUserName());
+		authenticateAs(user.getUsername());
 	}
 
-	protected void authenticateAs(String userName, String... additionalAuthorities) {
+	protected void authenticateAs(String username, String... additionalAuthorities) {
 		clearAuthentication();
 
-		UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
 		Set<GrantedAuthority> authorities = Sets.newHashSet(userDetails.getAuthorities());
 		if (additionalAuthorities != null) {
@@ -186,9 +185,9 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public <T> T runAs(Callable<T> task, String userName, String... additionalAuthorities) {
+	public <T> T runAs(Callable<T> task, String username, String... additionalAuthorities) {
 		Authentication originalAuthentication = AuthenticationUtil.getAuthentication();
-		authenticateAs(userName, additionalAuthorities);
+		authenticateAs(username, additionalAuthorities);
 		try {
 			return task.call();
 		} catch (Exception e) {
@@ -202,23 +201,23 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	protected Authentication getAuthentication(IUser person) {
-		return getAuthentication(person.getUserName());
+		return getAuthentication(person.getUsername());
 	}
 
-	protected Authentication getAuthentication(String userName) {
+	protected Authentication getAuthentication(String username) {
 		// Si on demande la personne actuellement loggée, on retourne directement l'authentication de la session
 		Authentication authentication = authenticationService.getAuthentication();
 		
 		if (authentication != null && (authentication.getPrincipal() instanceof UserDetails)) {
 			UserDetails details = (UserDetails)authentication.getPrincipal();
 			
-			if (Objects.equal(details.getUsername(), userName)) {
+			if (Objects.equal(details.getUsername(), username)) {
 				return authentication;
 			}
 		}
 		
 		try {
-			UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 			
 			authentication = new RunAsUserToken(runAsAuthenticationProvider.getKey(), userDetails,
 					"no-credentials", userDetails.getAuthorities(), UsernamePasswordAuthenticationToken.class);

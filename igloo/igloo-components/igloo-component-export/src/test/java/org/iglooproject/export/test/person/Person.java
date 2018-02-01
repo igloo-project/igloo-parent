@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Person {
 	
-	String userName;
+	String username;
 	
 	String firstName;
 	
@@ -18,10 +18,10 @@ public class Person {
 	
 	double percentage;
 
-	public Person(String userName, String firstName, String lastName,
+	public Person(String username, String firstName, String lastName,
 			Date birthDate, int age, double size, double percentage) {
 		super();
-		this.userName = userName;
+		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthDate = birthDate;
@@ -30,12 +30,12 @@ public class Person {
 		this.percentage = percentage;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getFirstName() {

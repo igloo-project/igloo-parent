@@ -31,7 +31,7 @@ public class SignInContentPanel<U extends User> extends Panel {
 	@SpringBean
 	private IUserService userService;
 
-	private FormComponent<String> userNameField;
+	private FormComponent<String> usernameField;
 
 	private FormComponent<String> passwordField;
 	
@@ -48,7 +48,7 @@ public class SignInContentPanel<U extends User> extends Panel {
 				boolean success = false;
 				boolean badCredentials = false;
 				try {
-					session.signIn(userNameField.getModelObject(), passwordField.getModelObject());
+					session.signIn(usernameField.getModelObject(), passwordField.getModelObject());
 					loggedInUser = (User) session.getUser();
 					userService.onSignIn(loggedInUser);
 					success = true;
@@ -70,7 +70,7 @@ public class SignInContentPanel<U extends User> extends Panel {
 					 */
 					throw UserTypeDescriptor.get(loggedInUser).securityTypeDescriptor().loginSuccessPageLinkDescriptor().newRestartResponseException();
 				} else if (badCredentials) {
-					User user = userService.getByUserName(userNameField.getModelObject());
+					User user = userService.getByUsername(usernameField.getModelObject());
 					if (user != null) {
 						try {
 							userService.onSignInFail(user);
@@ -85,11 +85,11 @@ public class SignInContentPanel<U extends User> extends Panel {
 		};
 		add(form);
 		
-		userNameField = new RequiredTextField<String>("userName", Model.of(""));
-		userNameField.setLabel(new ResourceModel("signIn.userName"));
-		userNameField.add(new LabelPlaceholderBehavior());
-		userNameField.setOutputMarkupId(true);
-		form.add(userNameField);
+		usernameField = new RequiredTextField<String>("username", Model.of(""));
+		usernameField.setLabel(new ResourceModel("signIn.username"));
+		usernameField.add(new LabelPlaceholderBehavior());
+		usernameField.setOutputMarkupId(true);
+		form.add(usernameField);
 		
 		passwordField = new PasswordTextField("password", Model.of("")).setRequired(true);
 		passwordField.setLabel(new ResourceModel("signIn.password"));

@@ -107,7 +107,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 		PageModel<Page> pageModel = new PageModel<Page>(this);
 		
 		return DataTableBuilder.start(dataProvider)
-				.addLabelColumn(new ResourceModel("business.user.userName"), Bindings.user().userName())
+				.addLabelColumn(new ResourceModel("business.user.username"), Bindings.user().username())
 						.withClass("text text-md")
 						.withLink(AdministrationUserDescriptionTemplate.<U>mapper().setParameter2(pageModel))
 				.addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())

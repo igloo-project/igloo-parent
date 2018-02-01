@@ -5,18 +5,17 @@ import static org.junit.Assert.assertEquals;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 
@@ -52,7 +51,7 @@ public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 		UserDetails userDetails;
 		
 		// Admin person
-		userDetails = coreJpaUserDetailsService.loadUserByUsername(personAdmin.getUserName());
+		userDetails = coreJpaUserDetailsService.loadUserByUsername(personAdmin.getUsername());
 		
 		grantedAuthorities = (Collection<GrantedAuthority>) userDetails.getAuthorities();
 		
@@ -68,7 +67,7 @@ public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 		assertEquals(ROLE_GROUP_3, iterator.next().getAuthority());
 		
 		// Group1 person
-		userDetails = coreJpaUserDetailsService.loadUserByUsername(personGroup1.getUserName());
+		userDetails = coreJpaUserDetailsService.loadUserByUsername(personGroup1.getUsername());
 		
 		grantedAuthorities = (Collection<GrantedAuthority>) userDetails.getAuthorities();
 		
@@ -82,7 +81,7 @@ public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 		assertEquals(ROLE_GROUP_3, iterator.next().getAuthority());
 		
 		// Group2 person
-		userDetails = coreJpaUserDetailsService.loadUserByUsername(personGroup2.getUserName());
+		userDetails = coreJpaUserDetailsService.loadUserByUsername(personGroup2.getUsername());
 		
 		grantedAuthorities = (Collection<GrantedAuthority>) userDetails.getAuthorities();
 		

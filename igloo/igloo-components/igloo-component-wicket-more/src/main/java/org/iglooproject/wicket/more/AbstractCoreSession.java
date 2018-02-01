@@ -12,6 +12,17 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
+import org.iglooproject.jpa.security.business.person.model.GenericUser;
+import org.iglooproject.jpa.security.business.person.service.IGenericUserService;
+import org.iglooproject.jpa.security.config.spring.DefaultJpaSecurityConfig;
+import org.iglooproject.jpa.security.model.NamedPermission;
+import org.iglooproject.jpa.security.service.IAuthenticationService;
+import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
+import org.iglooproject.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,18 +41,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.google.common.collect.Lists;
-
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.jpa.security.business.person.model.GenericUser;
-import org.iglooproject.jpa.security.business.person.service.IGenericUserService;
-import org.iglooproject.jpa.security.config.spring.DefaultJpaSecurityConfig;
-import org.iglooproject.jpa.security.model.NamedPermission;
-import org.iglooproject.jpa.security.service.IAuthenticationService;
-import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
-import org.iglooproject.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
 
 public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends AuthenticatedWebSession {
 
@@ -123,7 +122,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	 * @return <code>true</code> if authentication succeeds, throws an exception if not
 	 * 
 	 * @throws BadCredentialsException if password doesn't match with username
-	 * @throws UsernameNotFoundException if user name was not found
+	 * @throws UsernameNotFoundException if username was not found
 	 * @throws DisabledException if user was found but disabled
 	 */
 	@Override
@@ -145,7 +144,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	}
 	
 	protected void doInitializeSession() {
-		U user = userService.getByUserName(authenticationService.getUserName());
+		U user = userService.getByUsername(authenticationService.getUsername());
 		
 		if (user == null) {
 			throw new IllegalStateException("Unable to find the signed in user.");
@@ -197,12 +196,12 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	/**
 	 * @return the currently logged in user, or null when no user is logged in
 	 */
-	public String getUserName() {
-		String userName = null;
+	public String getUsername() {
+		String username = null;
 		if (isSignedIn()) {
-			userName = userModel.getObject().getUserName();
+			username = userModel.getObject().getUsername();
 		}
-		return userName;
+		return username;
 	}
 
 	public U getUser() {
@@ -435,7 +434,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 		// on charge l'utilisateur
 		// on le passe dans une méthode surchargeable -> implémentation par défaut à faire
 		// Sitra -> revoir l'implémentation par défaut
-		if (!hasSignInAsPermissions(getUser(), userService.getByUserName(username))) {
+		if (!hasSignInAsPermissions(getUser(), userService.getByUsername(username))) {
 			throw new SecurityException("L'utilisateur n'a pas les permissions nécessaires");
 		}
 		UserDetails userDetails = userDetailsService.loadUserByUsername(username);

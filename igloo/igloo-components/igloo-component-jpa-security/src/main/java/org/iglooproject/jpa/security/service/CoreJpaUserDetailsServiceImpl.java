@@ -5,6 +5,13 @@ import java.util.Set;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.iglooproject.jpa.security.business.authority.model.Authority;
+import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
+import org.iglooproject.jpa.security.business.person.model.IGroupedUser;
+import org.iglooproject.jpa.security.business.person.model.IUserGroup;
+import org.iglooproject.jpa.security.business.person.service.IGenericUserService;
+import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
+import org.iglooproject.jpa.security.model.CoreUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -19,14 +26,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Sets;
-
-import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
-import org.iglooproject.jpa.security.business.person.model.IGroupedUser;
-import org.iglooproject.jpa.security.business.person.model.IUserGroup;
-import org.iglooproject.jpa.security.business.person.service.IGenericUserService;
-import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
-import org.iglooproject.jpa.security.model.CoreUserDetails;
 
 public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	
@@ -47,18 +46,18 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private IAuthorityService authorityService;
 	
-	private AuthenticationUserNameComparison authenticationUserNameComparison = AuthenticationUserNameComparison.CASE_SENSITIVE;
+	private AuthenticationUsernameComparison authenticationUsernameComparison = AuthenticationUsernameComparison.CASE_SENSITIVE;
 
-	public void setAuthenticationUserNameComparison(AuthenticationUserNameComparison authenticationUserNameComparison) {
-		this.authenticationUserNameComparison = authenticationUserNameComparison;
+	public void setAuthenticationUsernameComparison(AuthenticationUsernameComparison authenticationUsernameComparison) {
+		this.authenticationUsernameComparison = authenticationUsernameComparison;
 	}
 	
 	@Override
-	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, DataAccessException {
-		IGroupedUser<?> user = getUserByUsername(userName);
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
+		IGroupedUser<?> user = getUserByUsername(username);
 		
 		if (user == null) {
-			throw new UsernameNotFoundException("CoreJpaUserDetailsServiceImpl: User not found: " + userName);
+			throw new UsernameNotFoundException("CoreJpaUserDetailsServiceImpl: User not found: " + username);
 		}
 		
 		if (!user.isActive()) {
@@ -73,7 +72,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		
 		// In any case, we can't pass an empty password hash to the CoreUserDetails
 		
-		CoreUserDetails userDetails = new CoreUserDetails(user.getUserName(),
+		CoreUserDetails userDetails = new CoreUserDetails(user.getUsername(),
 				StringUtils.hasText(user.getPasswordHash()) ? user.getPasswordHash() : EMPTY_PASSWORD_HASH,
 				user.isActive(), true, true, true, 
 				expandedGrantedAuthorities, expandedReachablePermissions);
@@ -81,12 +80,12 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		return userDetails;
 	}
 	
-	protected IGroupedUser<?> getUserByUsername(String userName) {
+	protected IGroupedUser<?> getUserByUsername(String username) {
 		IGroupedUser<?> user;
-		if (AuthenticationUserNameComparison.CASE_INSENSITIVE.equals(authenticationUserNameComparison)) {
-			user = userService.getByUserNameCaseInsensitive(userName);
+		if (AuthenticationUsernameComparison.CASE_INSENSITIVE.equals(authenticationUsernameComparison)) {
+			user = userService.getByUsernameCaseInsensitive(username);
 		} else {
-			user = userService.getByUserName(userName);
+			user = userService.getByUsername(username);
 		}
 		return user;
 	}

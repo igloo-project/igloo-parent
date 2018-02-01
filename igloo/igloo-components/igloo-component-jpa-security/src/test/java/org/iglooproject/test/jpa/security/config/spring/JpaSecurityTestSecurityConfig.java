@@ -1,14 +1,13 @@
 package org.iglooproject.test.jpa.security.config.spring;
 
+import org.iglooproject.jpa.security.config.spring.AbstractJpaSecuritySecuredConfig;
+import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
+import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
+import org.iglooproject.test.jpa.security.service.TestCorePermissionEvaluator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-
-import org.iglooproject.jpa.security.config.spring.AbstractJpaSecuritySecuredConfig;
-import org.iglooproject.jpa.security.service.AuthenticationUserNameComparison;
-import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
-import org.iglooproject.test.jpa.security.service.TestCorePermissionEvaluator;
 
 @Configuration
 public class JpaSecurityTestSecurityConfig extends AbstractJpaSecuritySecuredConfig {
@@ -27,8 +26,8 @@ public class JpaSecurityTestSecurityConfig extends AbstractJpaSecuritySecuredCon
 	}
 
 	@Override
-	public AuthenticationUserNameComparison authenticationUserNameComparison() {
-		return AuthenticationUserNameComparison.CASE_INSENSITIVE;
+	public AuthenticationUsernameComparison authenticationUsernameComparison() {
+		return AuthenticationUsernameComparison.CASE_INSENSITIVE;
 	}
 
 	@Override

@@ -128,8 +128,8 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 						.setLabel(new ResourceModel("business.user.firstName")),
 				new RequiredTextField<String>("lastName", BindingModel.of(getModel(), Bindings.user().lastName()))
 						.setLabel(new ResourceModel("business.user.lastName")),
-				new RequiredTextField<String>("userName", BindingModel.of(getModel(), Bindings.user().userName()))
-						.setLabel(new ResourceModel("business.user.userName"))
+				new RequiredTextField<String>("username", BindingModel.of(getModel(), Bindings.user().username()))
+						.setLabel(new ResourceModel("business.user.username"))
 						.add(USERNAME_PATTERN_VALIDATOR)
 						.add(new UsernameUnicityValidator(getModel())),
 				new EnclosureContainer("addContainer")

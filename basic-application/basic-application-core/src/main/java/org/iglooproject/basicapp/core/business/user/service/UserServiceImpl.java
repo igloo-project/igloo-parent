@@ -2,9 +2,6 @@ package org.iglooproject.basicapp.core.business.user.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
 import org.iglooproject.basicapp.core.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
@@ -16,6 +13,8 @@ import org.iglooproject.jpa.security.business.person.service.GenericSimpleUserSe
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service("personService")
 public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implements IUserService {
@@ -39,8 +38,8 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	}
 
 	@Override
-	public List<User> listByUserName(String userName) {
-		return userDao.listByUserName(userName);
+	public List<User> listByUsername(String username) {
+		return userDao.listByUsername(username);
 	}
 
 	@Override
@@ -83,12 +82,12 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 
 	@Override
 	public User getAuthenticatedUser() {
-		String userName = authenticationService.getUserName();
-		if (userName == null) {
+		String username = authenticationService.getUsername();
+		if (username == null) {
 			return null;
 		}
 		
-		return HibernateUtils.unwrap(getByUserName(userName));
+		return HibernateUtils.unwrap(getByUsername(username));
 	}
 
 }

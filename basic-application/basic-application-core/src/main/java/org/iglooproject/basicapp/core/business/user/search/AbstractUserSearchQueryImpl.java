@@ -16,7 +16,7 @@ public abstract class AbstractUserSearchQueryImpl<U extends User> extends Abstra
 	@Override
 	public IGenericUserSearchQuery<U> name(String name) {
 		must(matchFuzzyIfGiven(name, 2,
-				Bindings.user().firstName(), Bindings.user().lastName(), Bindings.user().userName()));
+				Bindings.user().firstName(), Bindings.user().lastName(), Bindings.user().username()));
 		return this;
 	}
 	
@@ -35,7 +35,7 @@ public abstract class AbstractUserSearchQueryImpl<U extends User> extends Abstra
 	@Override
 	public IGenericUserSearchQuery<U> nameAutocomplete(String terms) {
 		must(matchAutocompleteIfGiven(terms,
-				Bindings.user().firstName(), Bindings.user().lastName(), Bindings.user().userName()));
+				Bindings.user().firstName(), Bindings.user().lastName(), Bindings.user().username()));
 		return this;
 	}
 }
