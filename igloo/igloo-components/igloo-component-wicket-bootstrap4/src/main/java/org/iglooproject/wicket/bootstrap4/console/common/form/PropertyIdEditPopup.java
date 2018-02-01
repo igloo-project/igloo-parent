@@ -44,7 +44,7 @@ public class PropertyIdEditPopup extends AbstractAjaxModalPopupPanel<MutableProp
 
 	@Override
 	protected Component createHeader(String wicketId) {
-		return new CoreLabel(wicketId, new ResourceModel("common.propertyId.actions.edit.title"));
+		return new CoreLabel(wicketId, new ResourceModel("common.propertyId.action.edit.title"));
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class PropertyIdEditPopup extends AbstractAjaxModalPopupPanel<MutableProp
 					protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 						try {
 							propertyService.setAsString(PropertyIdEditPopup.this.getModelObject(), valueModel.getObject());
-							Session.get().success(getString("common.propertyId.actions.edit.success"));
+							Session.get().success(getString("common.propertyId.action.edit.success"));
 							closePopup(target);
 							target.addChildren(getPage(), PropertyIdListPanel.class);
 						} catch (Exception e) {

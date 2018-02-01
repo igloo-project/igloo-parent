@@ -68,7 +68,7 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 						.setParameters(item.getModelObject().getName());
 				
 				AjaxConfirmLink<CacheManager> purgerCache = AjaxConfirmLink.<CacheManager>build()
-						.title(new ResourceModel("common.confirmTitle")).content(purgerCacheTextModel)
+						.title(new ResourceModel("common.action.confirm.title")).content(purgerCacheTextModel)
 						.yesNo()
 						.onClick(new AbstractAjaxAction() {
 							private static final long serialVersionUID = 1L;
@@ -150,7 +150,7 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 								.setParameters(BindingModel.of(cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().name()));
 						
 						AjaxConfirmLink<Cache> viderCache = AjaxConfirmLink.<Cache>build()
-								.title(new ResourceModel("common.confirmTitle")).content(viderCacheTextModel)
+								.title(new ResourceModel("common.action.confirm.title")).content(viderCacheTextModel)
 								.yesNo()
 								.onClick(new AbstractAjaxAction() {
 									private static final long serialVersionUID = 1L;

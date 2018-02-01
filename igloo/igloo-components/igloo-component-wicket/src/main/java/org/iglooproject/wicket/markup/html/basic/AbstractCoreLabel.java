@@ -42,7 +42,7 @@ public abstract class AbstractCoreLabel<T extends AbstractCoreLabel<T>> extends 
 			currentModel = getDefaultModel();
 		} else if (showPlaceholder) {
 			if (placeholderModel == null) {
-				placeholderModel = new ResourceModel("common.emptyField");
+				placeholderModel = new ResourceModel("common.field.empty");
 			}
 			currentModel = placeholderModel;
 		} else {

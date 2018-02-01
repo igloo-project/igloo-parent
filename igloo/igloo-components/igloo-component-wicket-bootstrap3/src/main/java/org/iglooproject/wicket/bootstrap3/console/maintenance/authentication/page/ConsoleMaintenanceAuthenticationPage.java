@@ -53,7 +53,7 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> e
 					
 					if (genericUser != null) {
 						AbstractCoreSession.get().signInAs(userNameField.getModelObject());
-						AbstractCoreSession.get().success(new StringResourceModel("console.authentication.success")
+						AbstractCoreSession.get().success(new StringResourceModel("console.maintenance.authentication.success")
 								.setParameters(userNameField.getModelObject()).getObject());
 					} else {
 						AbstractCoreSession.get().error(getString("signIn.error.unknown"));

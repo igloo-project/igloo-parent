@@ -153,9 +153,9 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 									public void execute(AjaxRequestTarget target, IModel<U> parameter) {
 										try {
 											userService.delete(parameter.getObject()); 
-											Session.get().success(getString("common.delete.success"));
+											Session.get().success(getString("common.success"));
 										} catch (Exception e) {
-											Session.get().error(getString("common.delete.error"));
+											Session.get().error(getString("common.error.unexpected"));
 										}
 										target.add(getPage());
 										dataProvider.detach();

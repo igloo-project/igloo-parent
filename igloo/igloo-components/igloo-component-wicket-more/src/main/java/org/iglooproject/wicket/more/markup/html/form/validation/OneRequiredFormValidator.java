@@ -91,7 +91,7 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
 		} else if (mode == OneRequiredMode.ONE_OR_MORE) {
 			error(requiredFormComponents.iterator().next(), "common.validator.oneRequired.oneOrMore", ImmutableMap.<String, Object>of("labels", labels));
 		} else {
-			error(requiredFormComponents.iterator().next(), "common.error");
+			error(requiredFormComponents.iterator().next(), "common.error.unexpected");
 		}
 	}
 	

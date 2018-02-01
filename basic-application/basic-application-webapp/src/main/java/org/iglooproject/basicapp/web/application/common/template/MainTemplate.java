@@ -186,7 +186,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(
 				new CoreLabel(
 						"originalAuthentication",
-						new StringResourceModel("console.authentication.originalAuthentication.help")
+						new StringResourceModel("authentication.originalAuthentication.help")
 								.setParameters(BasicApplicationSession.get().getOriginalAuthentication() != null 
 											? BasicApplicationSession.get().getOriginalAuthentication().getName()
 											: null)
@@ -212,9 +212,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 					public void onClick(AjaxRequestTarget target) {
 						try {
 							BasicApplicationSession.get().signInAsMe();
-							BasicApplicationSession.get().success(getString("console.authentication.back.success"));
+							BasicApplicationSession.get().success(getString("authentication.back.success"));
 						} catch (Exception e) {
-							LOGGER.error("Erreur lors de la reconnexion de l'utilisateur", e);
+							LOGGER.error("Erreur lors de la reconnexion de l'utilisateur.", e);
 							Session.get().error(getString("signIn.error.unknown"));
 						}
 						throw LoginSuccessPage.linkDescriptor().newRestartResponseException();

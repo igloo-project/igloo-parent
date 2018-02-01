@@ -93,16 +93,16 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	@Override
 	public IConfirmLinkBuilderStepOnclick<L, O> deleteConfirmation() {
 		confirm();
-		title(new ResourceModel("common.confirmTitle"));
+		title(new ResourceModel("common.action.confirm.title"));
 		content(new AbstractDetachableFactory<IModel<O>, IModel<String>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public IModel<String> create(IModel<O> parameter) {
 				if (parameter != null && parameter.getObject() instanceof GenericEntity<?, ?>) {
 					GenericEntity<?, ?> genericEntity = (GenericEntity<?, ?>) parameter.getObject();
-					return new StringResourceModel("common.deleteConfirmation.object").setParameters(genericEntity.getDisplayName());
+					return new StringResourceModel("common.action.delete.confirm.content.object").setParameters(genericEntity.getDisplayName());
 				} else {
-					return new ResourceModel("common.deleteConfirmation");
+					return new ResourceModel("common.action.delete.confirm.content");
 				}
 			}
 		});
@@ -176,7 +176,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 
 	@Override
 	public IConfirmLinkBuilderStepOnclick<L, O> confirm() {
-		this.yesLabelModel = new ResourceModel("common.confirm");
+		this.yesLabelModel = new ResourceModel("common.action.confirm");
 		this.noLabelModel = new ResourceModel("common.cancel");
 		this.yesIconModel = new Model<String>("icon-ok icon-white fa fa-check");
 		this.noIconModel = new Model<String>("icon-ban-circle fa fa-ban");
@@ -187,7 +187,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 
 	@Override
 	public IConfirmLinkBuilderStepOnclick<L, O> validate() {
-		this.yesLabelModel = new ResourceModel("common.validate");
+		this.yesLabelModel = new ResourceModel("common.action.validate");
 		this.noLabelModel = new ResourceModel("common.cancel");
 		this.yesIconModel = new Model<String>("icon-ok icon-white fa fa-check");
 		this.noIconModel = new Model<String>("icon-ban-circle fa fa-ban");
@@ -198,7 +198,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 
 	@Override
 	public IConfirmLinkBuilderStepOnclick<L, O> save() {
-		this.yesLabelModel = new ResourceModel("common.save");
+		this.yesLabelModel = new ResourceModel("common.action.save");
 		this.noLabelModel = new ResourceModel("common.cancel");
 		this.yesIconModel = new Model<String>("icon-ok icon-white fa fa-check");
 		this.noIconModel = new Model<String>("icon-ban-circle fa fa-ban");

@@ -412,7 +412,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 			dataTable.addTopToolbar(new CoreHeadersToolbar<S>(dataTable, sortModel));
 		}
 		if (showBottomToolbar) {
-			dataTable.addBodyBottomToolbar(new CoreNoRecordsToolbar(dataTable, new ResourceModel(noRecordsResourceKey != null ? noRecordsResourceKey : "common.emptyList")));
+			dataTable.addBodyBottomToolbar(new CoreNoRecordsToolbar(dataTable, new ResourceModel(noRecordsResourceKey != null ? noRecordsResourceKey : "common.list.empty")));
 			for (CustomizableToolbarBuilder<T, S> builder : bottomToolbarBuilders) {
 				dataTable.addBottomToolbar(builder.build(dataTable));
 			}

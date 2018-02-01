@@ -75,13 +75,13 @@ public class UserGroupPortfolioPanel extends Panel {
 											public void execute(AjaxRequestTarget target, IModel<UserGroup> parameter) {
 												try {
 													userGroupService.delete(parameter.getObject());
-													Session.get().success(getString("common.delete.success"));
+													Session.get().success(getString("common.success"));
 													throw new RestartResponseException(getPage());
 												} catch (RestartResponseException e) {
 													throw e;
 												} catch (Exception e) {
 													LOGGER.error("Error on delete a user group.", e);
-													getSession().error(getString("common.delete.error"));
+													getSession().error(getString("common.error.unexpected"));
 													FeedbackUtils.refreshFeedback(target, getPage());
 												}
 											}

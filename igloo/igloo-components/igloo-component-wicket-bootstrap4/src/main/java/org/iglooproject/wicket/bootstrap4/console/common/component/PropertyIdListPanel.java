@@ -78,7 +78,7 @@ public class PropertyIdListPanel extends Panel {
 						)
 						.addActionColumn()
 								.addAction(
-										BootstrapRenderer.constant("common.propertyId.actions.edit", "fa fa-pencil-alt fa-fw", BootstrapColor.PRIMARY),
+										BootstrapRenderer.constant("common.propertyId.action.edit", "fa fa-pencil-alt fa-fw", BootstrapColor.PRIMARY),
 										new OneParameterModalOpenAjaxAction<IModel<? extends PropertyId<?>>>(modifyPopup) {
 											private static final long serialVersionUID = 1L;
 											@Override

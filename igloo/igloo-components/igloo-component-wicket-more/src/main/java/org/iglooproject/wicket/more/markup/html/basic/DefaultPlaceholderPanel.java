@@ -11,7 +11,7 @@ public class DefaultPlaceholderPanel extends PlaceholderContainer {
 	
 	public DefaultPlaceholderPanel(String id) {
 		super(id);
-		add(new Label("emptyField", new ResourceModel("common.emptyField")));
+		add(new Label("emptyField", new ResourceModel("common.field.empty")));
 	}
 	
 	@Override
