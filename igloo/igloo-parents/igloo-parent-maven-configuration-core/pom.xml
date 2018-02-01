@@ -161,7 +161,7 @@
 		<igloo.infinispan.version>7.2.5.Final</igloo.infinispan.version>
 		
 		<igloo.junit.version>4.12</igloo.junit.version>
-		<igloo.mockito.version>1.10.19</igloo.mockito.version>
+		<igloo.mockito.version>2.13.0</igloo.mockito.version>
 		<igloo.grizzly.version>1.9.65</igloo.grizzly.version>
 		<igloo.findbugs-annotations.version>3.0.1u2</igloo.findbugs-annotations.version>
 		<igloo.findbugs-jsr305.version>3.0.2</igloo.findbugs-jsr305.version>
@@ -1208,7 +1208,7 @@
 			
 				<dependency>
 					<groupId>org.mockito</groupId>
-					<artifactId>mockito-all</artifactId>
+					<artifactId>mockito-core</artifactId>
 					<version>${igloo.mockito.version}</version>
 					<scope>test</scope>
 				</dependency>
