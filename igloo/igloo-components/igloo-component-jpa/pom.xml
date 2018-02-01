@@ -53,17 +53,10 @@
 		<!-- hibernate-search -->
 		
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-search-orm</artifactId>
-			<version>${igloo.hibernate-search.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-search-elasticsearch</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-hibernate-search</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
 		</dependency>
 
 		<!-- Http Client -->

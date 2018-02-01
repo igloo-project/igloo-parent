@@ -20,6 +20,8 @@
 		<module>igloo-dependency-core-logging</module>
 		<module>igloo-dependency-core-spring-security</module>
 		<module>igloo-dependency-web-spring-security</module>
+		<module>igloo-dependency-hibernate-search</module>
+		<module>igloo-dependency-less4j</module>
 	</modules>
 	
 	<!-- Project information -->
