@@ -1,5 +1,5 @@
 variables:
-  MAVEN_OPTS: "-Denforcer.skip -Xmx2048m"
+  MAVEN_OPTS: "-Denforcer.skip=true -Xmx2048m"
 
 stages:
   - build
@@ -11,6 +11,8 @@ maven-build:
   stage: build
   environment: staging
   script:
+    - "echo $MAVEN_OPTS"
+    - "export"
     - "mvn -Ptest -DskipTests clean compile"
 
 maven-test:
