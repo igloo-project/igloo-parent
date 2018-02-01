@@ -2,9 +2,6 @@ package org.iglooproject.wicket.more.markup.repeater.table.builder.state;
 
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Function;
-
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.condition.Condition;
