@@ -9,8 +9,8 @@
 		box-shadow: $feedback-box-shadow;
 		position: relative;
 		
-		max-height: 25Opx;
-		overflow-y: scroll;
+		overflow-y: auto;
+		max-height: 250px;
 		
 		@include media-breakpoint-up(md) {
 			margin: 0 40px 30px 40px;
