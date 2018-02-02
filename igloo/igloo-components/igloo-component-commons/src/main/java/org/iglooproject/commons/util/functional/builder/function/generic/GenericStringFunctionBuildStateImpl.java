@@ -4,12 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
-
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Function;
-import com.google.common.base.Strings;
-
+import org.apache.commons.text.WordUtils;
 import org.iglooproject.commons.util.functional.builder.function.BigDecimalFunctionBuildState;
 import org.iglooproject.commons.util.functional.builder.function.BooleanFunctionBuildState;
 import org.iglooproject.commons.util.functional.builder.function.DateFunctionBuildState;
@@ -17,6 +12,10 @@ import org.iglooproject.commons.util.functional.builder.function.DoubleFunctionB
 import org.iglooproject.commons.util.functional.builder.function.IntegerFunctionBuildState;
 import org.iglooproject.commons.util.functional.builder.function.LongFunctionBuildState;
 import org.iglooproject.commons.util.functional.builder.function.StringFunctionBuildState;
+
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Function;
+import com.google.common.base.Strings;
 
 public abstract class GenericStringFunctionBuildStateImpl
 		<

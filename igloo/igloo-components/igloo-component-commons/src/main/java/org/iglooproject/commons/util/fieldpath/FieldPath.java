@@ -7,8 +7,8 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.text.StrMatcher;
-import org.apache.commons.lang3.text.StrTokenizer;
+import org.apache.commons.text.StrMatcher;
+import org.apache.commons.text.StrTokenizer;
 import org.bindgen.Bindable;
 import org.bindgen.Binding;
 
