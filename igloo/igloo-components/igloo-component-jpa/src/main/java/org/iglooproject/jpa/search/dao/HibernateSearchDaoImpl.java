@@ -4,12 +4,8 @@ import static org.iglooproject.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_REIN
 import static org.iglooproject.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -20,13 +16,6 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser.Operator;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Sort;
 import org.hibernate.CacheMode;
 import org.hibernate.search.MassIndexer;
 import org.hibernate.search.SearchFactory;
@@ -38,25 +27,20 @@ import org.hibernate.search.elasticsearch.analyzer.impl.ScopedElasticsearchAnaly
 import org.hibernate.search.engine.integration.impl.ExtendedSearchIntegrator;
 import org.hibernate.search.hcore.util.impl.HibernateHelper;
 import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.spi.SearchIntegrator;
 import org.hibernate.search.util.impl.PassThroughAnalyzer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
-
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Maps;
-
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.config.spring.provider.IJpaPropertiesProvider;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.hibernate.analyzers.CoreLuceneClientAnalyzersDefinitionProvider;
-import org.iglooproject.jpa.search.util.SortFieldUtil;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.google.common.collect.Maps;
 
 @Repository("hibernateSearchDao")
 public class HibernateSearchDaoImpl implements IHibernateSearchDao {
@@ -115,152 +99,6 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		}
 	}
 	
-	@Override
-	@Deprecated
-	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName,
-			Integer limit, Integer offset, Sort sort) throws ServiceException {
-		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
-		classes.add(clazz);
-		
-		return search(classes, fields, searchPattern, analyzerName, offset, limit, sort);
-	}
-
-	@Override
-	@Deprecated
-	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName) throws ServiceException {
-		return search(clazz, fields, searchPattern, analyzerName, (Integer) null, (Integer) null, null);
-	}
-	
-	@Override
-	@Deprecated
-	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Integer limit, Integer offset, Sort sort) throws ServiceException {
-		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
-		classes.add(clazz);
-		
-		return search(classes, fields, searchPattern,
-				getAnalyzer(clazz),
-				null, limit, offset, sort);
-	}
-
-	@Override
-	@Deprecated
-	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern)
-			throws ServiceException {
-		return search(clazz, fields, searchPattern, (Integer) null, (Integer) null, null);
-	}
-	
-	@Override
-	@Deprecated
-	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
-			Integer limit, Integer offset, Sort sort) throws ServiceException {
-		return search(classes, fields, searchPattern,
-				getAnalyzer(analyzerName),
-				null, limit, offset, sort);
-	}
-
-	@Override
-	@Deprecated
-	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern,
-			String analyzerName) throws ServiceException {
-		return search(classes, fields, searchPattern, analyzerName, (Integer) null, (Integer) null, null);
-	}
-	
-	@Override
-	@Deprecated
-	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName,
-			Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
-		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
-		classes.add(clazz);
-		
-		return search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery, limit, offset, sort);
-	}
-
-	@Override
-	@Deprecated
-	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, String analyzerName,
-			Query additionalLuceneQuery) throws ServiceException {
-		return search(clazz, fields, searchPattern, analyzerName, additionalLuceneQuery,
-				(Integer) null, (Integer) null, null);
-	}
-	
-	@Override
-	@Deprecated
-	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery,
-			Integer limit, Integer offset, Sort sort) throws ServiceException {
-		List<Class<? extends T>> classes = new ArrayList<Class<? extends T>>(1);
-		classes.add(clazz);
-		
-		return search(classes, fields, searchPattern,
-				getAnalyzer(clazz),
-				additionalLuceneQuery, limit, offset, sort);
-	}
-
-	@Override
-	@Deprecated
-	public <T> List<T> search(Class<T> clazz, String[] fields, String searchPattern, Query additionalLuceneQuery)
-			throws ServiceException {
-		return search(clazz, fields, searchPattern, additionalLuceneQuery, (Integer) null, (Integer) null, null);
-	}
-	
-	@Override
-	@Deprecated
-	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, String analyzerName,
-			Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
-		return search(classes, fields, searchPattern,
-				getAnalyzer(analyzerName),
-				additionalLuceneQuery, limit, offset, sort);
-	}
-
-	@Override
-	@Deprecated
-	public <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern,
-			String analyzerName, Query additionalLuceneQuery) throws ServiceException {
-		return search(classes, fields, searchPattern, analyzerName, additionalLuceneQuery, (Integer) null, (Integer) null, null);
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Deprecated
-	private <T> List<T> search(Collection<Class<? extends T>> classes, String[] fields, String searchPattern, Analyzer analyzer,
-			Query additionalLuceneQuery, Integer limit, Integer offset, Sort sort) throws ServiceException {
-		if (!StringUtils.hasText(searchPattern)) {
-			return Collections.emptyList();
-		}
-		
-		try {
-			FullTextEntityManager fullTextSession = Search.getFullTextEntityManager(entityManager);
-			
-			MultiFieldQueryParser parser = getMultiFieldQueryParser(fullTextSession, fields, MultiFieldQueryParser.AND_OPERATOR, analyzer);
-			
-			BooleanQuery.Builder bqBuilder = new BooleanQuery.Builder();
-			bqBuilder.add(parser.parse(searchPattern), BooleanClause.Occur.MUST);
-			
-			if (additionalLuceneQuery != null) {
-				bqBuilder.add(additionalLuceneQuery, BooleanClause.Occur.MUST);
-			}
-			
-			FullTextQuery hibernateQuery = fullTextSession.createFullTextQuery(bqBuilder.build(), Iterables.toArray(classes, Class.class));
-			if (offset != null) {
-				hibernateQuery.setFirstResult(offset);
-			}
-			if (limit != null) {
-				hibernateQuery.setMaxResults(limit);
-			}
-			if (sort != null && !classes.isEmpty()) {
-				SortFieldUtil.setSort(hibernateQuery, fullTextSession, Iterables.getFirst(classes, null), sort);
-			} else if (classes.size() == 0) {
-				throw new IllegalStateException("No class for search is no longer supported (igloo >= 0.14)");
-			} else if (offset != null || limit != null) {
-				LOGGER.warn("La requête ne spécifie pas de sort mais spécifie une limite ou un offset.");
-			}
-			
-			return (List<T>) hibernateQuery.getResultList();
-		} catch(ParseException e) {
-			throw new ServiceException(String.format("Error parsing request: %1$s", searchPattern), e);
-		} catch (RuntimeException e) {
-			throw new ServiceException(String.format("Error executing search: %1$s for classes: %2$s", searchPattern, classes), e);
-		}
-	}
-
 	@Override
 	public void reindexAll() throws ServiceException {
 		reindexClasses(Object.class);
@@ -365,16 +203,8 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			}
 		}
 		cleaned.removeAll(toRemove);
-
-		return cleaned;
-	}
-	
-	@Deprecated
-	private MultiFieldQueryParser getMultiFieldQueryParser(FullTextEntityManager fullTextEntityManager, String[] fields, Operator defaultOperator, Analyzer analyzer) {
-		MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, analyzer);
-		parser.setDefaultOperator(defaultOperator);
 		
-		return parser;
+		return cleaned;
 	}
 	
 	protected EntityManager getEntityManager() {

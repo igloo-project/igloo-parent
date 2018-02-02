@@ -1,6 +1,5 @@
 package org.iglooproject.jpa.security.business.person.service;
 
-import java.util.List;
 import java.util.Locale;
 
 import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
@@ -10,39 +9,8 @@ import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.person.model.GenericUser;
 
 public interface IGenericUserService<U extends GenericUser<U, ?>> extends IGenericEntityService<Long, U> {
-	
-	U getByUsername(String username);
-	
-	/**
-	 * @deprecated use the ISearchQuery pattern instead.
-	 */
-	@Deprecated
-	List<U> search(String searchPattern) throws ServiceException, SecurityServiceException;
-	
-	/**
-	 * @deprecated use the ISearchQuery pattern instead.
-	 */
-	@Deprecated
-	List<U> searchAutocomplete(String string) throws ServiceException, SecurityServiceException;
-	
-	/**
-	 * @deprecated use the ISearchQuery pattern instead.
-	 */
-	@Deprecated
-	<U2 extends U> List<U2> searchAutocomplete(Class<U2> clazz, String searchPattern) throws ServiceException, SecurityServiceException;
-	
-	/**
-	 * @deprecated use the ISearchQuery pattern instead.
-	 */
-	@Deprecated
-	List<U> searchAutocomplete(String string, Integer limit, Integer offset) throws ServiceException, SecurityServiceException;
 
-	/**
-	 * @deprecated use the ISearchQuery pattern instead.
-	 */
-	@Deprecated
-	<U2 extends U> List<U2> searchAutocomplete(Class<U2> clazz, String searchPattern, Integer limit, Integer offset)
-			throws ServiceException, SecurityServiceException;
+	U getByUsername(String username);
 
 	void setActive(U person, boolean active) throws ServiceException, SecurityServiceException;
 
