@@ -1,3 +1,8 @@
+
+# enforcer.skip=true due to conflict between
+# byte-buddy version of hibernate and mockito
+# waiting for hibernate dependency refactoring
+# to fix this issue
 variables:
   MAVEN_OPTS: "-Denforcer.skip=true -Xmx2048m"
 
