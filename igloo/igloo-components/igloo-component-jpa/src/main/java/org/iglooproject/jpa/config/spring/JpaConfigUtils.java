@@ -129,13 +129,13 @@ public final class JpaConfigUtils {
 		String hibernateSearchIndexBase = configuration.getHibernateSearchIndexBase();
 		
 		if (configuration.isHibernateSearchElasticSearchEnabled()) {
-			properties.setProperty(ElasticsearchEnvironment.ANALYZER_DEFINITION_PROVIDER, CoreElasticSearchAnalyzersDefinitionProvider.class.getName());
-			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYZER_DEFINITION_PROVIDER, CoreLuceneClientAnalyzersDefinitionProvider.class.getName());
+			properties.setProperty(ElasticsearchEnvironment.ANALYSIS_DEFINITION_PROVIDER, CoreElasticSearchAnalyzersDefinitionProvider.class.getName());
+			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYSIS_DEFINITION_PROVIDER, CoreLuceneClientAnalyzersDefinitionProvider.class.getName());
 			properties.setProperty("hibernate.search.default.indexmanager", "elasticsearch");
 			properties.setProperty("hibernate.search.default.elasticsearch.host", configuration.getElasticSearchHost());
 			properties.setProperty("hibernate.search.default.elasticsearch.index_schema_management_strategy", configuration.getElasticSearchIndexSchemaManagementStrategy());
 		} else if (StringUtils.hasText(hibernateSearchIndexBase)) {
-			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYZER_DEFINITION_PROVIDER, CoreLuceneAnalyzersDefinitionProvider.class.getName());
+			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYSIS_DEFINITION_PROVIDER, CoreLuceneAnalyzersDefinitionProvider.class.getName());
 			if (configuration.isHibernateSearchIndexInRam()) {
 				properties.setProperty("hibernate.search.default.directory_provider", RAMDirectoryProvider.class.getName());
 			} else {

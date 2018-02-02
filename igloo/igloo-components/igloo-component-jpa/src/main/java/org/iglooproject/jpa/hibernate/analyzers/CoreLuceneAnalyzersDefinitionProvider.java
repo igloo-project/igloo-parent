@@ -7,20 +7,19 @@ import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilterFactory;
 import org.apache.lucene.analysis.miscellaneous.TrimFilterFactory;
 import org.apache.lucene.analysis.miscellaneous.WordDelimiterFilterFactory;
 import org.apache.lucene.analysis.pattern.PatternReplaceFilterFactory;
-import org.hibernate.search.analyzer.definition.LuceneAnalyzerDefinitionRegistryBuilder;
-import org.hibernate.search.analyzer.definition.spi.LuceneAnalyzerDefinitionProvider;
-
+import org.hibernate.search.analyzer.definition.LuceneAnalysisDefinitionProvider;
+import org.hibernate.search.analyzer.definition.LuceneAnalysisDefinitionRegistryBuilder;
 import org.iglooproject.jpa.search.analysis.fr.CoreFrenchMinimalStemFilterFactory;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 
-public class CoreLuceneAnalyzersDefinitionProvider implements LuceneAnalyzerDefinitionProvider{
+public class CoreLuceneAnalyzersDefinitionProvider implements LuceneAnalysisDefinitionProvider {
 
 	@Override
-	public void register(LuceneAnalyzerDefinitionRegistryBuilder builder) {
+	public void register(LuceneAnalysisDefinitionRegistryBuilder builder) {
 		registerWithPrefix("", builder);
 	}
 
-	protected void registerWithPrefix(String prefix, LuceneAnalyzerDefinitionRegistryBuilder builder) {
+	protected void registerWithPrefix(String prefix, LuceneAnalysisDefinitionRegistryBuilder builder) {
 		builder.analyzer(prefix + HibernateSearchAnalyzer.KEYWORD).tokenizer(KeywordTokenizerFactory.class);
 		
 		builder.analyzer(prefix + HibernateSearchAnalyzer.KEYWORD_CLEAN).tokenizer(KeywordTokenizerFactory.class)

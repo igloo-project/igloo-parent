@@ -1,8 +1,7 @@
 package org.iglooproject.jpa.hibernate.analyzers;
 
+import org.hibernate.search.elasticsearch.analyzer.definition.ElasticsearchAnalysisDefinitionProvider;
 import org.hibernate.search.elasticsearch.analyzer.definition.ElasticsearchAnalysisDefinitionRegistryBuilder;
-import org.hibernate.search.elasticsearch.analyzer.definition.spi.ElasticsearchAnalysisDefinitionProvider;
-
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 
 public class CoreElasticSearchAnalyzersDefinitionProvider implements ElasticsearchAnalysisDefinitionProvider {

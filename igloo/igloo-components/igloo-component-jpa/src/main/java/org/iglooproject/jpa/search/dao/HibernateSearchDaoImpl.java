@@ -19,16 +19,24 @@ import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.CacheMode;
 import org.hibernate.search.MassIndexer;
 import org.hibernate.search.SearchFactory;
-import org.hibernate.search.analyzer.impl.ScopedLuceneAnalyzer;
+import org.hibernate.search.analyzer.impl.LuceneAnalyzerReference;
+import org.hibernate.search.analyzer.impl.ScopedLuceneAnalyzerReference;
+import org.hibernate.search.analyzer.impl.SimpleLuceneAnalyzerReference;
 import org.hibernate.search.batchindexing.MassIndexerProgressMonitor;
 import org.hibernate.search.batchindexing.impl.MassIndexerImpl;
-import org.hibernate.search.elasticsearch.analyzer.impl.ElasticsearchAnalyzer;
-import org.hibernate.search.elasticsearch.analyzer.impl.ScopedElasticsearchAnalyzer;
+import org.hibernate.search.elasticsearch.analyzer.impl.ElasticsearchAnalyzerReference;
+import org.hibernate.search.elasticsearch.analyzer.impl.ScopedElasticsearchAnalyzerReference;
 import org.hibernate.search.engine.integration.impl.ExtendedSearchIntegrator;
+import org.hibernate.search.engine.integration.impl.SearchIntegration;
 import org.hibernate.search.hcore.util.impl.HibernateHelper;
+import org.hibernate.search.indexes.spi.LuceneEmbeddedIndexManagerType;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
+import org.hibernate.search.spi.IndexedTypeIdentifier;
+import org.hibernate.search.spi.IndexedTypeSet;
 import org.hibernate.search.spi.SearchIntegrator;
+import org.hibernate.search.spi.impl.IndexedTypeSets;
+import org.hibernate.search.spi.impl.PojoIndexedTypeIdentifier;
 import org.hibernate.search.util.impl.PassThroughAnalyzer;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.config.spring.provider.IJpaPropertiesProvider;
@@ -65,40 +73,65 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			if ("default".equals(analyzerName)) {
 				return PassThroughAnalyzer.INSTANCE;
 			} else {
-				return Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(SearchIntegrator.class)
-						.getAnalyzer(CoreLuceneClientAnalyzersDefinitionProvider.ANALYZER_NAME_PREFIX + analyzerName);
+				ExtendedSearchIntegrator searchIntegrator = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(ExtendedSearchIntegrator.class);
+				SearchIntegration integration = searchIntegrator.getIntegration(LuceneEmbeddedIndexManagerType.INSTANCE);
+				return integration.getAnalyzerRegistry()
+						.getAnalyzerReference(CoreLuceneClientAnalyzersDefinitionProvider.ANALYZER_NAME_PREFIX + analyzerName)
+						.unwrap(LuceneAnalyzerReference.class).getAnalyzer();
 			}
 		} else {
-			return Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(SearchIntegrator.class).getAnalyzer(analyzerName);
+			ExtendedSearchIntegrator searchIntegrator = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(ExtendedSearchIntegrator.class);
+			SearchIntegration integration = searchIntegrator.getIntegration(LuceneEmbeddedIndexManagerType.INSTANCE);
+			return integration.getAnalyzerRegistry().getAnalyzerReference(analyzerName).unwrap(LuceneAnalyzerReference.class).getAnalyzer();
 		}
 	}
 	
 	@Override
 	public Analyzer getAnalyzer(Class<?> entityType) {
+		SearchFactory searchFactory = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory();
+		ExtendedSearchIntegrator searchIntegrator = searchFactory.unwrap(ExtendedSearchIntegrator.class);
+		IndexedTypeIdentifier indexedType = getIndexBoundType(entityType, searchIntegrator);
+		
 		if (jpaPropertiesProvider.isHibernateSearchElasticSearchEnabled()) {
-			ExtendedSearchIntegrator searchIntegrator = Search.getFullTextEntityManager(getEntityManager())
-					.getSearchFactory().unwrap(ExtendedSearchIntegrator.class);
-			ScopedElasticsearchAnalyzer scopedAnalyzer = (ScopedElasticsearchAnalyzer) searchIntegrator.getAnalyzerReference(entityType).getAnalyzer();
-			
+			ScopedElasticsearchAnalyzerReference scopedAnalyzer = (ScopedElasticsearchAnalyzerReference) searchIntegrator.getAnalyzerReference(indexedType);
 			try {
-				// these properties are package protected !
-				ElasticsearchAnalyzer globalAnalyzer = (ElasticsearchAnalyzer) FieldUtils.getField(ScopedElasticsearchAnalyzer.class, "globalAnalyzer", true).get(scopedAnalyzer);
+				// these properties are package protected ! Use a bypass !
+				ElasticsearchAnalyzerReference globalAnalyzer = (ElasticsearchAnalyzerReference) FieldUtils.getField(ScopedElasticsearchAnalyzerReference.class, "globalAnalyzerReference", true).get(scopedAnalyzer);
 				@SuppressWarnings("unchecked")
-				Map<String, ElasticsearchAnalyzer> analyzers = (Map<String, ElasticsearchAnalyzer>) FieldUtils.getField(ScopedElasticsearchAnalyzer.class, "scopedAnalyzers", true).get(scopedAnalyzer);
+				Map<String, ElasticsearchAnalyzerReference> analyzers = (Map<String, ElasticsearchAnalyzerReference>) FieldUtils.getField(ScopedElasticsearchAnalyzerReference.class, "scopedAnalyzerReferences", true).get(scopedAnalyzer);
 				
-				Map<String, Analyzer> luceneAnalyzers = Maps.newHashMap();
-				for (Entry<String, ElasticsearchAnalyzer> analyzer : analyzers.entrySet()) {
-					luceneAnalyzers.put(analyzer.getKey(), getAnalyzer(analyzer.getValue().getName(null)));
+				Map<String, LuceneAnalyzerReference> luceneAnalyzers = Maps.newHashMap();
+				for (Entry<String, ElasticsearchAnalyzerReference> analyzer : analyzers.entrySet()) {
+					luceneAnalyzers.put(analyzer.getKey(), new SimpleLuceneAnalyzerReference(getAnalyzer(analyzer.getValue().getAnalyzerName(null))));
 				}
-				return new ScopedLuceneAnalyzer(getAnalyzer(globalAnalyzer.getName(null)) /* parameter is not used */, luceneAnalyzers);
+				LuceneAnalyzerReference luceneGlobalAnalyzer = new SimpleLuceneAnalyzerReference(getAnalyzer(globalAnalyzer.getAnalyzerName(null)));
+				return new ScopedLuceneAnalyzerReference.Builder(luceneGlobalAnalyzer, luceneAnalyzers).build().getAnalyzer();
 			} catch (IllegalAccessException e) {
 				throw new RuntimeException("illegal access on scoped analyzer", e);
 			}
 		} else {
-			return Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(SearchIntegrator.class).getAnalyzer(entityType);
+			return Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(SearchIntegrator.class).getAnalyzer(indexedType);
 		}
 	}
-	
+
+	/**
+	 * Extracted from ConnectedQueryContextBuilder
+	 */
+	private IndexedTypeIdentifier getIndexBoundType(Class<?> entityType, ExtendedSearchIntegrator factory) {
+		IndexedTypeIdentifier realtype = new PojoIndexedTypeIdentifier( entityType );
+		if ( factory.getIndexBinding( realtype ) != null ) {
+			return realtype;
+		}
+
+		IndexedTypeSet indexedSubTypes = factory.getIndexedTypesPolymorphic( realtype.asTypeSet() );
+
+		if ( !indexedSubTypes.isEmpty() ) {
+			return indexedSubTypes.iterator().next();
+		}
+
+		return null;
+	}
+
 	@Override
 	public void reindexAll() throws ServiceException {
 		reindexClasses(Object.class);
@@ -175,12 +208,12 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		
 		// first build the "entities" set containing all indexed subtypes of "selection".
 		for (Class<?> entityType : selection) {
-			Set<Class<?>> targetedClasses = searchIntegrator.getIndexedTypesPolymorphic(new Class[] { entityType });
+			IndexedTypeSet targetedClasses = searchIntegrator.getIndexedTypesPolymorphic(IndexedTypeSets.fromClass(entityType));
 			if (targetedClasses.isEmpty()) {
 				String msg = entityType.getName() + " is not an indexed entity or a subclass of an indexed entity";
 				throw new IllegalArgumentException(msg);
 			}
-			entities.addAll(targetedClasses);
+			entities.addAll(targetedClasses.toPojosSet());
 		}
 		
 		Set<Class<?>> cleaned = new HashSet<Class<?>>();
