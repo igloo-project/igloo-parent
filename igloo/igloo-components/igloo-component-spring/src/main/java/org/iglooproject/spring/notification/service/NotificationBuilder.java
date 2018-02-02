@@ -25,7 +25,7 @@ import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
