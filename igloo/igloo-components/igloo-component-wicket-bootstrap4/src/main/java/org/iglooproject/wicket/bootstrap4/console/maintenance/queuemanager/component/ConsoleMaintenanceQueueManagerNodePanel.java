@@ -163,7 +163,7 @@ public class ConsoleMaintenanceQueueManagerNodePanel extends Panel {
 										}
 									}
 							)
-							.bootstrapPanel()
+							.bootstrapCard()
 									.title(new AbstractComponentFactory<Component>() {
 										private static final long serialVersionUID = 1L;
 										@Override
