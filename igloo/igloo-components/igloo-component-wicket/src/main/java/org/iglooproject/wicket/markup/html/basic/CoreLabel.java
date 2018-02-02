@@ -1,5 +1,7 @@
 package org.iglooproject.wicket.markup.html.basic;
 
+import java.io.Serializable;
+
 import org.apache.wicket.model.IModel;
 
 public class CoreLabel extends AbstractCoreLabel<CoreLabel> {
@@ -8,6 +10,10 @@ public class CoreLabel extends AbstractCoreLabel<CoreLabel> {
 	
 	public CoreLabel(String id, IModel<?> model) {
 		super(id, model);
+	}
+	
+	public CoreLabel(String id, Serializable label) {
+		super(id, label);
 	}
 	
 	@Override

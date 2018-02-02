@@ -5,12 +5,10 @@ import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.cycle.RequestCycle;
-
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
-import org.iglooproject.wicket.more.link.util.LinkDescriptors;
 
 /**
  * An object mapped to {@link IModel models}, that allows for simple link generation using these models to determine
@@ -93,11 +91,5 @@ public interface ILinkGenerator extends IDetachable {
 	 * {@link #isAccessible() accessible}.
 	 */
 	ILinkGenerator chain(ILinkGenerator other);
-	
-	/**
-	 * @deprecated Use {@link LinkDescriptors#invalid()} instead.
-	 */
-	@Deprecated
-	ILinkGenerator INVALID = LinkDescriptors.invalid();
 
 }

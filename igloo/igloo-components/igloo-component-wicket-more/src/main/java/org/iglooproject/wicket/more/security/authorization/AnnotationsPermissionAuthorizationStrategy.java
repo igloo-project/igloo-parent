@@ -6,11 +6,9 @@ import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.request.component.IRequestableComponent;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.IResource;
+import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
-
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.security.service.IAuthenticationService;
 
 public class AnnotationsPermissionAuthorizationStrategy implements IAuthorizationStrategy {
 
@@ -42,33 +40,7 @@ public class AnnotationsPermissionAuthorizationStrategy implements IAuthorizatio
 				return false;
 			}
 		}
-
-		if (Component.RENDER.equals(action)) {
-			@SuppressWarnings("deprecation")
-			final AuthorizeRenderIfPermissionOnModelObject permissionOnModelObjectAnnotation =
-					componentClass.getAnnotation(AuthorizeRenderIfPermissionOnModelObject.class);
-
-			if (permissionOnModelObjectAnnotation != null) {
-				Object modelObject = component.getDefaultModelObject();
-
-				if (modelObject != null && (modelObject instanceof GenericEntity<?, ?>)) {
-					@SuppressWarnings("unchecked")
-					GenericEntity<Long, ?> securedObject = (GenericEntity<Long, ?>) modelObject;
-
-					@SuppressWarnings("deprecation")
-					String[] permissionNames = permissionOnModelObjectAnnotation.permissions();
-					for (String permissionName : permissionNames) {
-						Permission permission = permissionFactory.buildFromName(permissionName);
-						if (authenticationService.hasPermission(securedObject, permission)) {
-							return true;
-						}
-					}
-					return false;
-				} else {
-					return false;
-				}
-			}
-		}
+		
 		return true;
 	}
 

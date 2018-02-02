@@ -55,7 +55,6 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 	public ConsoleTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		// Page title
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
 		add(createHeadPageTitle("headPageTitle"));
 		
@@ -64,7 +63,6 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 				propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT))
 		);
 		
-		// Navbar
 		add(new ListView<ConsoleMenuSection>("mainNav", ConsoleConfiguration.get().getMenuSections()) {
 			private static final long serialVersionUID = 1L;
 			
@@ -125,7 +123,6 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		
 		add(new CoreLabel("userFullName", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
-			
 			@Override
 			protected String load() {
 				String userFullName = null;
@@ -141,7 +138,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		
 		add(ConsoleConfiguration.get().getConsoleHeaderAdditionalContentFactory().create("headerAdditionalContent"));
 		
-		add(new Label("version", ApplicationPropertyModel.of(VERSION)));
+		add(new CoreLabel("version", ApplicationPropertyModel.of(VERSION)));
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		

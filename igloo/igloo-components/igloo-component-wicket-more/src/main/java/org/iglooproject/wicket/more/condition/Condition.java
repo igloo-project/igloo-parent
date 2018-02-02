@@ -18,6 +18,15 @@ import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.commons.util.functional.Predicates2;
+import org.iglooproject.jpa.security.service.IAuthenticationService;
+import org.iglooproject.wicket.more.markup.html.basic.ComponentBooleanProperty;
+import org.iglooproject.wicket.more.markup.html.basic.ComponentBooleanPropertyBehavior;
+import org.iglooproject.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyBehavior.Operator;
+import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
+import org.iglooproject.wicket.more.model.BindingModel;
+import org.iglooproject.wicket.more.util.Detach;
+import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
@@ -30,16 +39,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-
-import org.iglooproject.commons.util.functional.Predicates2;
-import org.iglooproject.jpa.security.service.IAuthenticationService;
-import org.iglooproject.wicket.more.markup.html.basic.ComponentBooleanProperty;
-import org.iglooproject.wicket.more.markup.html.basic.ComponentBooleanPropertyBehavior;
-import org.iglooproject.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyBehavior.Operator;
-import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
-import org.iglooproject.wicket.more.model.BindingModel;
-import org.iglooproject.wicket.more.util.Detach;
-import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
 
 public abstract class Condition implements IModel<Boolean>, IDetachable {
 	
@@ -158,7 +157,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 			};
 		}
 		public IModel<T> otherwise(IModel<? extends T> modelIfFalse) {
-			return condition.asValue(modelIfTrue, modelIfFalse);
+			return new ConditionalModel<>(condition, modelIfTrue, modelIfFalse);
 		}
 	}
 	
@@ -181,22 +180,6 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		public IModel<T> otherwise(T valueIfFalse) {
 			return otherwise(Model.of(valueIfFalse));
 		}
-	}
-	
-	/**
-	 * @deprecated Use .then(...).otherwise(...) instead.
-	 */
-	@Deprecated
-	public <T> IModel<T> asValue(IModel<? extends T> modelIfTrue, IModel<? extends T> modelIfFalse) {
-		return new ConditionalModel<>(this, modelIfTrue, modelIfFalse);
-	}
-
-	/**
-	 * @deprecated Use .then(...).otherwise(...) instead.
-	 */
-	@Deprecated
-	public <T extends Serializable> IModel<T> asValue(T valueIfTrue, T valueIfFalse) {
-		return new ConditionalModel<>(this, Model.of(valueIfTrue), Model.of(valueIfFalse));
 	}
 	
 	private static final class ConditionalModel<T> extends AbstractReadOnlyModel<T> {

@@ -53,14 +53,6 @@ public final class Suppliers2 {
 
 	private Suppliers2() { }
 
-	/**
-	 * @deprecated Use Suppliers.ofInstance instead
-	 */
-	@Deprecated
-	public static <T> Supplier<T> constant(T value) {
-		return Suppliers.ofInstance(value);
-	}
-	
 	@SuppressWarnings({ "unchecked", "rawtypes" }) // LinkedListSupplier works for any T
 	public static <T> Supplier<LinkedList<T>> linkedList() {
 		return (Supplier) LinkedListSupplier.INSTANCE;

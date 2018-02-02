@@ -9,10 +9,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
+import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.base.Predicate;
-
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class PredicateValidator<T> extends Behavior implements IValidator<T> {
 
@@ -26,15 +25,6 @@ public class PredicateValidator<T> extends Behavior implements IValidator<T> {
 
 	public PredicateValidator<T> of(Predicate<? super T> predicate) {
 		return new PredicateValidator<T>(predicate);
-	}
-
-	/**
-	 * @deprecated Use {@link #of(Predicate)} and {@link PredicateValidator#errorKey(String)}
-	 */
-	@Deprecated
-	public PredicateValidator(Predicate<? super T> predicate, String errorKey) {
-		this(predicate);
-		errorKey(errorKey);
 	}
 
 	public PredicateValidator(Predicate<? super T> predicate) {

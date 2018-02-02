@@ -102,6 +102,6 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 			addTextCell(row, columnIndex++, "");
 		}
 	}
-	
+
 }
 

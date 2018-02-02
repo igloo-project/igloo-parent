@@ -237,15 +237,6 @@ public final class AjaxListeners {
 		};
 	}
 	
-	/**
-	 * @deprecated Use {@link #refreshChildren(MarkupContainer, Class, Class...)} instead.
-	 */
-	@SafeVarargs
-	public static AjaxRequestTarget.AbstractListener refresh(final MarkupContainer parent,
-			Class<? extends Component> first, Class<? extends Component> ... rest) {
-		return refreshChildren(parent, first, rest);
-	}
-
 	@SafeVarargs
 	public static AjaxRequestTarget.AbstractListener refreshChildren(final MarkupContainer parent,
 			Class<? extends Component> first, Class<? extends Component> ... rest) {

@@ -6,39 +6,27 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFact
 import org.iglooproject.wicket.more.markup.repeater.table.builder.toolbar.CustomizableToolbarBuilder;
 
 public interface IBuildState<T, S extends ISort<?>> {
-	
+
 	CustomizableToolbarBuilder<T, S> addTopToolbar();
-	
+
 	CustomizableToolbarBuilder<T, S> addBottomToolbar();
-	
+
 	IBuildState<T, S> withNoRecordsResourceKey(String noRecordsResourceKey);
 
 	IBuildState<T, S> hideHeadersToolbar();
-	
-	/**
-	 * @deprecated Use {@link #hideHeadersToolbar()} instead.
-	 */
-	@Deprecated
-	IBuildState<T, S> hideTopToolbar();
-	
+
 	IBuildState<T, S> hideNoRecordsToolbar();
 
-	/**
-	 * @deprecated Use {@link #hideNoRecordsToolbar()} instead.
-	 */
-	@Deprecated
-	IBuildState<T, S> hideBottomToolbar();
-	
 	IBuildState<T, S> withFactory(IDataTableFactory<T, S> factory);
-	
+
 	CoreDataTable<T, S> build(String id);
-	
+
 	CoreDataTable<T, S> build(String id, long rowsPerPage);
-	
+
 	IDecoratedBuildState<T, S> decorate();
-	
+
 	IDecoratedBuildState<T, S> bootstrapCard();
-	
+
 	/**
 	 * @deprecated Use {@link #bootstrapCard()} instead with Bootstrap 4.
 	 */

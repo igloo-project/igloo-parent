@@ -22,7 +22,6 @@ import java.util.Locale;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.lang.Classes;
-
 import org.iglooproject.spring.util.StringUtils;
 
 public class EnumRenderer extends Renderer<Enum<?>> {
@@ -51,17 +50,11 @@ public class EnumRenderer extends Renderer<Enum<?>> {
 	
 	private String suffix = null;
 	
-	/**
-	 * @deprecated Use the static factory methods instead.
-	 */
-	@Deprecated
-	protected EnumRenderer() { }
-
-	/**
-	 * @deprecated Use the static factory methods instead.
-	 */
-	@Deprecated
-	protected EnumRenderer(String prefix, String suffix) {
+	private EnumRenderer() {
+		super();
+	}
+	
+	private EnumRenderer(String prefix, String suffix) {
 		this();
 		this.prefix = prefix;
 		this.suffix = suffix;

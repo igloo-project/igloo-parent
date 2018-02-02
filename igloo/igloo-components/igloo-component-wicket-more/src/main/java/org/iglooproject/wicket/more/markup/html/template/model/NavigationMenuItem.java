@@ -9,12 +9,11 @@ import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-
-import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
-import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 
 public class NavigationMenuItem implements IDetachable {
 
@@ -92,19 +91,6 @@ public class NavigationMenuItem implements IDetachable {
 			return pageLinkGenerator.isActive(selectedPage);
 		} else {
 			return false;
-		}
-	}
-
-	/**
-	 * @deprecated Use the {@link #linkHidingIfInvalid(String)} to create a link that will be hidden when it is invalid,
-	 * or a {@link BlankLink} when this {@link NavigationMenuItem} does not have any LinkGenerator.
-	 */
-	@Deprecated
-	public boolean isAccessible() {
-		if (pageLinkGenerator != null) {
-			return pageLinkGenerator.isAccessible();
-		} else {
-			return true;
 		}
 	}
 	

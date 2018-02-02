@@ -26,27 +26,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.javatuples.LabelValue;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
-import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.util.Assert;
-import org.springframework.util.MultiValueMap;
-import org.springframework.util.ObjectUtils;
-
-import com.google.common.base.Charsets;
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
-
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
@@ -59,6 +38,26 @@ import org.iglooproject.spring.notification.service.impl.FreemarkerTemplateNotif
 import org.iglooproject.spring.notification.util.NotificationUtils;
 import org.iglooproject.spring.util.SpringBeanUtils;
 import org.iglooproject.spring.util.StringUtils;
+import org.javatuples.LabelValue;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.util.Assert;
+import org.springframework.util.MultiValueMap;
+
+import com.google.common.base.Charsets;
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
+
 import freemarker.template.Configuration;
 
 public class NotificationBuilder implements INotificationBuilderInitState, INotificationBuilderBaseState,
@@ -203,16 +202,6 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		} else {
 			this.sender = null;
 		}
-		return this;	
-	}
-
-	
-	@Override
-	@Deprecated
-	public INotificationBuilderBuildState to(String... to) {
-		if (!ObjectUtils.isEmpty(to)) {
-			toAddress(Lists.newArrayList(to));
-		}
 		return this;
 	}
 	
@@ -245,15 +234,6 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	}
 	
 	@Override
-	@Deprecated
-	public INotificationBuilderBuildState cc(String... cc) {
-		if (!ObjectUtils.isEmpty(cc)) {
-			ccAddress(Lists.newArrayList(cc));
-		}
-		return this;
-	}
-	
-	@Override
 	public INotificationBuilderBuildState ccAddress(String ccFirst, String... ccOthers) {
 		return ccAddress(Lists.asList(ccFirst, ccOthers));
 	}
@@ -272,16 +252,6 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	@Override
 	public INotificationBuilderBuildState cc(Collection<? extends INotificationRecipient> cc) {
 		addRecipients(ccByAddress, cc);
-		return this;
-	}
-
-	
-	@Override
-	@Deprecated
-	public INotificationBuilderBuildState bcc(String... bcc) {
-		if (!ObjectUtils.isEmpty(bcc)) {
-			bccAddress(Lists.newArrayList(bcc));
-		}
 		return this;
 	}
 	
@@ -383,13 +353,6 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	@Override
 	public INotificationBuilderBuildState subjectPrefix(String prefix) {
 		this.subjectPrefix = prefix;
-		return this;
-	}
-	
-	@Override
-	public INotificationBuilderBodyState subject(String prefix, String subject) {
-		subjectPrefix(prefix);
-		subject(subject);
 		return this;
 	}
 	

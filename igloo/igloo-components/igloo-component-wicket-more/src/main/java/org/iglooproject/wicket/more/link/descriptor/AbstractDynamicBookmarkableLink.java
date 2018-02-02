@@ -1,7 +1,6 @@
 package org.iglooproject.wicket.more.link.descriptor;
 
 import org.apache.wicket.markup.html.link.Link;
-
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
@@ -61,19 +60,6 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 		super(wicketId);
 	}
 	
-	/**
-	 * @deprecated Use {@link #hideIfInvalid()} instead.
-	 */
-	@Deprecated
-	public AbstractDynamicBookmarkableLink setAutoHideIfInvalid(boolean autoHideIfInvalid) {
-		if (autoHideIfInvalid) {
-			hideIfInvalid();
-		} else {
-			this.behaviorIfInvalid = BehaviorIfInvalid.THROW_EXCEPTION;
-		}
-		return this;
-	}
-
 	/**
 	 * Sets the link up so that it will automatically hide (using {@link #setVisible(boolean)}) when its target or parameters are invalid.
 	 * <p>Default behavior is to automatically disable the link.

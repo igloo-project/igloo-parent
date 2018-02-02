@@ -888,13 +888,13 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 * @param key clé
 	 * @return message
 	 */
-	protected abstract String getLocalizedLabel(String key);
+	protected abstract String localize(String key);
 	
 	/**
 	 * Peut être surchargé pour permettre, par exemple, de considérer la "headerKey" comme le libellé déjà localisé. 
 	 */
 	protected String getColumnLabel(String headerKey) {
-		return getLocalizedLabel(headerKey);
+		return localize(headerKey);
 	}
 
 	public String getFontName() {

@@ -7,7 +7,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.lang.Args;
-
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
@@ -45,7 +44,7 @@ public class DynamicImage extends Image {
 	private final IModel<PageParameters> parametersMapping;
 	private final ILinkParameterValidator parametersValidator;
 	
-	private boolean autoHideIfInvalid = false;
+	private boolean hideIfInvalid = false;
 	
 	private final IModel<? extends ResourceReference> resourceReferenceModel;
 	
@@ -71,22 +70,12 @@ public class DynamicImage extends Image {
 	}
 
 	/**
-	 * Same as {@link AbstractDynamicBookmarkableLink#setAutoHideIfInvalid()}
-	 * @deprecated Use {@link #hideIfInvalid()} instead.
-	 */
-	@Deprecated
-	public DynamicImage setAutoHideIfInvalid(boolean autoHideIfInvalid) {
-		this.autoHideIfInvalid = autoHideIfInvalid;
-		return this;
-	}
-
-	/**
 	 * Sets the link up so that it will automatically hide (using {@link #setVisible(boolean)}) when its target or parameters are invalid.
 	 * <p>Default behavior is throwing a {@link LinkInvalidTargetRuntimeException} or a {@link LinkParameterValidationRuntimeException}
 	 * if the target or the parameters are found to be invalid when executing {@link #onComponentTag(org.apache.wicket.markup.ComponentTag)}.
 	 */
 	public DynamicImage hideIfInvalid() {
-		setAutoHideIfInvalid(true);
+		this.hideIfInvalid = true;
 		return this;
 	}
 	
@@ -98,7 +87,7 @@ public class DynamicImage extends Image {
 	protected void onConfigure() {
 		super.onConfigure();
 
-		if (autoHideIfInvalid) {
+		if (hideIfInvalid) {
 			setVisible(isValid());
 		} else {
 			setVisible(true);

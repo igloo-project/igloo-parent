@@ -70,7 +70,7 @@ public class PersonHSSFExport extends AbstractExcelTableExport {
 	}
 
 	@Override
-	protected String getLocalizedLabel(String key) {
+	protected String localize(String key) {
 		return key;
 	}
 }

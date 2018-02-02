@@ -1,7 +1,6 @@
 package org.iglooproject.wicket.more.util.binding;
 
 import org.bindgen.java.util.ListBinding;
-
 import org.iglooproject.commons.util.mime.MediaTypeBinding;
 import org.iglooproject.infinispan.model.IAttributionBinding;
 import org.iglooproject.infinispan.model.ILockAttributionBinding;
@@ -10,10 +9,14 @@ import org.iglooproject.infinispan.model.INodeBinding;
 import org.iglooproject.infinispan.model.IRoleAttributionBinding;
 import org.iglooproject.infinispan.model.IRoleBinding;
 import org.iglooproject.jpa.more.infinispan.model.TaskQueueStatusBinding;
+import org.iglooproject.jpa.security.business.person.model.GenericUserBinding;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformationBinding;
 import org.iglooproject.wicket.more.model.IBindableDataProviderBinding;
 
 public final class CoreWicketMoreBindings {
+
+	@SuppressWarnings("rawtypes")
+	public static final GenericUserBinding GENERIC_USER = new GenericUserBinding<>();
 
 	private static final EhCacheCacheInformationBinding EH_CACHE_CACHE_INFORMATION = new EhCacheCacheInformationBinding();
 

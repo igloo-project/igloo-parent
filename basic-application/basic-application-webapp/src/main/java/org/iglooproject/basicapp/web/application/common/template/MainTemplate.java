@@ -102,11 +102,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
 		
-		// Page title
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
 		add(createHeadPageTitle("headPageTitle"));
 		
-		// Navbar
 		add(new ListView<NavigationMenuItem>("mainNav", getMainNav()) {
 			private static final long serialVersionUID = 1L;
 			
@@ -238,7 +236,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		);
 		
 		add(
-				new Label("version", propertyService.get(VERSION))
+				new CoreLabel("version", propertyService.get(VERSION))
 						.add(new AttributeModifier("title", new StringResourceModel("common.version.full")
 								.setParameters(ApplicationPropertyModel.of(VERSION), ApplicationPropertyModel.of(IGLOO_VERSION))
 						))

@@ -44,20 +44,12 @@ public abstract class AbstractSimpleExcelTableExport extends AbstractExcelTableE
 		sheet.setDefaultRowHeight((short) 450);
 		return sheet;
 	}
-
-	/**
-	 * @deprecated Use {@link #localize(String)} instead.
-	 */
-	@Override
-	@Deprecated
-	protected String getLocalizedLabel(String key) {
-		return localize(key);
-	}
 	
 	protected Locale getLocale() {
 		return component.getLocale();
 	}
 	
+	@Override
 	protected String localize(String key) {
 		return component.getString(key);
 	}

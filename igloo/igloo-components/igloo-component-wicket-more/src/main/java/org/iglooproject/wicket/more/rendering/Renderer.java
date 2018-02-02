@@ -19,6 +19,15 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.IConverter;
+import org.iglooproject.commons.util.functional.Functions2;
+import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.commons.util.rendering.IRenderer;
+import org.iglooproject.wicket.markup.html.basic.AbstractCoreLabel;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.more.model.LocaleAwareReadOnlyModel;
+import org.iglooproject.wicket.more.util.IDatePattern;
+import org.iglooproject.wicket.more.util.model.Detachables;
+import org.iglooproject.wicket.more.util.model.Models;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
@@ -30,16 +39,6 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
-
-import org.iglooproject.commons.util.functional.Functions2;
-import org.iglooproject.commons.util.functional.SerializableFunction;
-import org.iglooproject.commons.util.rendering.IRenderer;
-import org.iglooproject.wicket.markup.html.basic.AbstractCoreLabel;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.more.model.LocaleAwareReadOnlyModel;
-import org.iglooproject.wicket.more.util.IDatePattern;
-import org.iglooproject.wicket.more.util.model.Detachables;
-import org.iglooproject.wicket.more.util.model.Models;
 
 /**
  * A one-way wicket converter: converts an object to a String.
@@ -343,14 +342,6 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		public String toString() {
 			return "fromResourceKey(" + resourceKey + ")";
 		}
-	}
-	
-	/**
-	 * @deprecated There is no reason to pass a WicketRenderer to {@code from()}. Use the renderer as-is.
-	 */
-	@Deprecated
-	public static <T> Renderer<T> from(Renderer<? super T> renderer) {
-		return from((IConverter<? super T>) renderer);
 	}
 	
 	public static <T> Renderer<T> from(IConverter<? super T> converter) {

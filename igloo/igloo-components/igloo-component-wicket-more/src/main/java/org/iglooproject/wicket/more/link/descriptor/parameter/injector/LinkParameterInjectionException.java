@@ -10,14 +10,6 @@ public class LinkParameterInjectionException extends LinkException {
 		super(message);
 	}
 
-	/**
-	 * @deprecated Use {@link #LinkParameterInjectionException(String, Throwable)} and provide a meaningful message.
-	 */
-	@Deprecated
-	public LinkParameterInjectionException(Throwable cause) {
-		super(null, cause);
-	}
-
 	public LinkParameterInjectionException(String message, Throwable cause) {
 		super(message, cause);
 	}

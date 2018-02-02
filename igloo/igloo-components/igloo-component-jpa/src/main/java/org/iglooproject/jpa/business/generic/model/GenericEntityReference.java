@@ -18,9 +18,8 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
-import org.springframework.util.Assert;
-
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+import org.springframework.util.Assert;
 
 @Embeddable
 @MappedSuperclass
@@ -81,22 +80,6 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 	@Override
 	public K getId() {
 		return id;
-	}
-
-	/**
-	 * @deprecated Use {@link #getType()} instead.
-	 */
-	@Deprecated
-	public Class<? extends E> getEntityClass() {
-		return getType();
-	}
-
-	/**
-	 * @deprecated Use {@link #getId()} instead.
-	 */
-	@Deprecated
-	public K getEntityId() {
-		return getId();
 	}
 
 	@SuppressWarnings("unchecked")

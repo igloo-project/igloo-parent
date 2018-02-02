@@ -3,7 +3,6 @@ package org.iglooproject.wicket.more.rendering;
 import java.util.Locale;
 
 import org.apache.wicket.model.Model;
-
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
@@ -34,17 +33,11 @@ public class BooleanRenderer extends BootstrapRenderer<Boolean> {
 	
 	private String suffix = null;
 	
-	/**
-	 * @deprecated Use the static factory methods instead.
-	 */
-	@Deprecated
-	protected BooleanRenderer() { }
-
-	/**
-	 * @deprecated Use the static factory methods instead.
-	 */
-	@Deprecated
-	protected BooleanRenderer(String prefix, String suffix) {
+	private BooleanRenderer() {
+		super();
+	}
+	
+	private BooleanRenderer(String prefix, String suffix) {
 		this();
 		this.prefix = prefix;
 		this.suffix = suffix;
