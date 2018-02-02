@@ -64,7 +64,7 @@ public class TaskResultPanel extends Panel {
 						return hideIfEmpty;
 					}
 					
-				}.model(resultModel)
+				}.condition(Condition.modelNotNull(resultModel))
 		);
 	}
 	

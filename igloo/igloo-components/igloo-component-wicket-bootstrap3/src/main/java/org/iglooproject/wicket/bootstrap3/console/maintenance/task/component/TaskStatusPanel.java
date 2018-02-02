@@ -70,7 +70,7 @@ public class TaskStatusPanel extends GenericPanel<TaskStatus> {
 						return hideIfEmpty;
 					}
 					
-				}.model(statusModel)
+				}.condition(Condition.modelNotNull(statusModel))
 		);
 	}
 	

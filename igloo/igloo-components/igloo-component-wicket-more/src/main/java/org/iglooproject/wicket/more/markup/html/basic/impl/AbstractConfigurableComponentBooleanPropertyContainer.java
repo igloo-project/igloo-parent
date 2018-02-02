@@ -1,13 +1,6 @@
 package org.iglooproject.wicket.more.markup.html.basic.impl;
 
-import java.util.Collection;
-
-import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Predicate;
-
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.AbstractComponentBooleanPropertyBehavior;
 import org.iglooproject.wicket.more.markup.html.basic.IPlaceholderEnclosureBuilder;
@@ -38,88 +31,7 @@ public abstract class AbstractConfigurableComponentBooleanPropertyContainer<T ex
 	 */
 	protected abstract T thisAsT();
 	
-	/**
-	 * @deprecated Use {@link Condition#collectionModelNotEmpty(IModel)} instead.
-	 */
-	@Deprecated
 	@Override
-	public T collectionModel(IModel<? extends Collection<?>> model) {
-		behavior.collectionModel(model);
-		return thisAsT();
-	}
-	
-	/**
-	 * @deprecated Use {@link Condition#modelNotNull(IModel)} instead.
-	 */
-	@Deprecated
-	@Override
-	public T model(IModel<?> model) {
-		behavior.model(model);
-		return thisAsT();
-	}
-	
-	/**
-	 * @deprecated Use {@link Condition#predicate(IModel, Predicate)} instead
-	 */
-	@Deprecated
-	@Override
-	public <T2> T model(Predicate<? super T2> predicate, IModel<? extends T2> model) {
-		behavior.model(predicate, model);
-		return thisAsT();
-	}
-	
-	/**
-	 * @deprecated Use {@link Condition#modelsAnyNotNull(IModel, IModel...)} instead
-	 */
-	@Deprecated
-	@Override
-	public T models(IModel<?> firstModel, IModel<?>... otherModels) {
-		behavior.models(firstModel, otherModels);
-		return thisAsT();
-	}
-	
-	/**
-	 * Use {@link Condition#predicateAnyTrue(Predicate, IModel, IModel...)}
-	 */
-	@Deprecated
-	@Override
-	@SafeVarargs
-	public final <T2> T models(Predicate<? super T2> predicate, IModel<? extends T2> firstModel,
-			IModel<? extends T2>... otherModels) {
-		behavior.models(predicate, firstModel, otherModels);
-		return thisAsT();
-	}
-	
-	/**
-	 * @deprecated Use {@link Condition#componentVisible(Component)} instead
-	 */
-	@Deprecated
-	@Override
-	public T component(Component component) {
-		behavior.component(component);
-		return thisAsT();
-	}
-	
-	/**
-	 * @deprecated Use {@link Condition#componentsAnyVisible(Component, Component...)} instead
-	 */
-	@Deprecated
-	@Override
-	public T components(Component firstComponent, Component... otherComponents) {
-		behavior.components(firstComponent, otherComponents);
-		return thisAsT();
-	}
-	
-	/**
-	 * @deprecated Use {@link Condition#componentsAnyVisible(Collection)} instead
-	 */
-	@Deprecated
-	@Override
-	public T components(Collection<? extends Component> components) {
-		behavior.components(components);
-		return thisAsT();
-	}
-	
 	public T condition(Condition condition) {
 		behavior.condition(condition);
 		return thisAsT();
