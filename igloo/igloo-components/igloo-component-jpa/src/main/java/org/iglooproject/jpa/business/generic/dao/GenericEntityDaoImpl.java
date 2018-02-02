@@ -20,11 +20,11 @@ package org.iglooproject.jpa.business.generic.dao;
 import java.io.Serializable;
 import java.util.List;
 
-import com.querydsl.core.types.dsl.PathBuilder;
-
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.IReference;
 import org.iglooproject.jpa.business.generic.util.GenericEntityUtils;
+
+import com.querydsl.core.types.dsl.PathBuilder;
 
 /**
  * <p>Implémentation de {@link IGenericEntityDao}</p>
@@ -61,11 +61,6 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	 */
 	protected final Class<E> getObjectClass() {
 		return objectClass;
-	}
-	
-	@Override
-	public E getEntity(Class<? extends E> clazz, K id) {
-		return super.getEntity(getObjectClass(), id);
 	}
 	
 	@Override

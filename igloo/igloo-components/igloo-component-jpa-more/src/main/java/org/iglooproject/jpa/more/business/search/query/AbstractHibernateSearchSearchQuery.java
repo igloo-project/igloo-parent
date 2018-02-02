@@ -21,14 +21,6 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.search.query.engine.spi.FacetManager;
 import org.hibernate.search.query.facet.Facet;
 import org.hibernate.search.query.facet.FacetingRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.primitives.Ints;
-
 import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
@@ -36,6 +28,13 @@ import org.iglooproject.jpa.search.bridge.GenericEntityIdFieldBridge;
 import org.iglooproject.jpa.search.bridge.NullEncodingGenericEntityIdFieldBridge;
 import org.iglooproject.jpa.search.util.SortFieldUtil;
 import org.iglooproject.spring.util.lucene.search.LuceneUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.common.primitives.Ints;
 
 public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<SortField>> extends AbstractSearchQuery<T, S> /* NOT Serializable */ {
 	
@@ -76,14 +75,6 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	protected Analyzer getAnalyzer(Class<?> clazz) {
 		return this.factory.getAnalyzer(clazz);
-	}
-	
-	/**
-	 * @deprecated Use {@link #getDefaultAnalyzer()} instead.
-	 */
-	@Deprecated
-	protected Analyzer getAnalyzer() {
-		return getDefaultAnalyzer();
 	}
 	
 	protected Analyzer getDefaultAnalyzer() {

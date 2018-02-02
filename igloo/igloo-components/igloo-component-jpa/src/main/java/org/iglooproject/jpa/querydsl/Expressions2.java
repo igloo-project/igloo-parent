@@ -4,19 +4,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.business.generic.model.QGenericEntity;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
-import com.google.common.collect.Table;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.MappingProjection;
 import com.querydsl.core.types.Path;
@@ -26,11 +25,6 @@ import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.core.types.dsl.SimpleExpression;
-import com.querydsl.jpa.JPQLQuery;
-
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.business.generic.model.QGenericEntity;
-import org.iglooproject.jpa.querydsl.group.GroupBy2;
 
 public final class Expressions2 {
 	
@@ -97,52 +91,6 @@ public final class Expressions2 {
 			BooleanExpression parenthesesCondition = parentheses(condition);
 			return parenthesesCondition.isNull().or(parenthesesCondition);
 		}
-	}
-
-	/**
-	 * @deprecated Use <code>query.transform(GroupBy2.transformer(GroupBy.sortedMap(key, value, keyComparator)))</code>
-	 */
-	@Deprecated
-	public static <K, V> Map<K, V> map(JPQLQuery<?> query,
-			Expression<K> key, Comparator<? super K> keyComparator,
-			Expression<V> value) {
-		return query.transform(GroupBy2.transformer(GroupBy.sortedMap(key, value, keyComparator)));
-	}
-
-	/**
-	 * @deprecated Use <code>map.putAll(query.transform(GroupBy2.transformer(GroupBy.map(key, value))))</code>
-	 */
-	@Deprecated
-	public static <K, V> Map<K, V> map(
-			Map<K, V> map, JPQLQuery<?> query,
-			Expression<? extends K> key, Expression<? extends V> value) {
-		map.putAll(query.transform(GroupBy.groupBy(key).as(value)));
-		return map;
-	}
-
-	/**
-	 * @deprecated Use <code>query.transform(GroupBy2.transformer(GroupBy2.sortedTable(row, column, value, rowComparator, columnComparator)))</code>
-	 */
-	@Deprecated
-	public static <R, C, V> Table<? extends R, ? extends C, ? extends V> mapToTable(JPQLQuery<?> query,
-			Expression<? extends R> row, Comparator<? super R> rowComparator,
-			Expression<? extends C> column, Comparator<? super C> columnComparator,
-			Expression<? extends V> value) {
-		return query.transform(GroupBy2.transformer(GroupBy2.sortedTable(row, column, value, rowComparator, columnComparator)));
-	}
-
-	/**
-	 * @deprecated Use <code>table.putAll(query.transform(GroupBy2.transformer(GroupBy2.table(row, column, value))))</code>
-	 */
-	@Deprecated
-	public static <R, C, V> Table<R, C, V> mapToTable(
-			Table<R, C, V> table, JPQLQuery<?> query,
-			Expression<? extends R> row, Expression<? extends C> column, Expression<? extends V> value) {
-		List<Tuple> list = query.select(row, column, value).fetch();
-		for (Tuple tuple : list) {
-			table.put(tuple.get(row), tuple.get(column), tuple.get(value));
-		}
-		return table;
 	}
 
 	/**

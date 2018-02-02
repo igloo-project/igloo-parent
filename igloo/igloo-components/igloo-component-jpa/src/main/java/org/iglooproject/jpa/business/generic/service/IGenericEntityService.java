@@ -37,18 +37,6 @@ public interface IGenericEntityService<K extends Serializable & Comparable<K>, E
 		extends ITransactionalAspectAwareService {
 
 	/**
-	 * @deprecated Si vous avez besoin de faire des sauvegardes sans passer dans le createEntity, implémenter une
-	 * méthode spécifique avec un nommage adapté. La création sans passer par le createEntity doit être l'exception.
-	 * 
-	 * Crée l'entité dans la base de données. Mis à part dans les tests pour faire des sauvegardes simples, utiliser
-	 * create() car il est possible qu'il y ait des listeners sur la création d'une entité.
-	 * 
-	 * @param entity entité
-	 */
-	@Deprecated
-	void save(@PermissionObject E entity) throws ServiceException, SecurityServiceException;
-	
-	/**
 	 * Met à jour l'entité dans la base de données.
 	 * 
 	 * @param entity entité
@@ -75,19 +63,6 @@ public interface IGenericEntityService<K extends Serializable & Comparable<K>, E
 	 * @param entity entité
 	 */
 	E refresh(@PermissionObject E entity);
-	
-	/**
-	 * Retourne une entité à partir de sa classe et son id.
-	 * 
-	 * @deprecated Privilégier {@link #getById(Class, Serializable)}, qui renvoie le type demandé.
-	 * 
-	 * @param clazz classe
-	 * @param id identifiant
-	 * @return entité
-	 */
-	@Deprecated
-	E getEntity(Class<? extends E> clazz, K id);
-	
 	
 	/**
 	 * Retourne une entité à partir de son id.

@@ -26,14 +26,6 @@ public class TableImportLocation implements Serializable {
 		return fileName;
 	}
 	
-	/**
-	 * @deprecated User getTableName() instead.
-	 */
-	@Deprecated
-	public final String getSheetName() {
-		return getTableName();
-	}
-	
 	public String getTableName() {
 		return tableName;
 	}

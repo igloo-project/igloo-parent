@@ -19,12 +19,6 @@ package org.iglooproject.test.generic;
 
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
@@ -35,6 +29,11 @@ import org.iglooproject.test.business.person.model.PersonReference;
 import org.iglooproject.test.business.person.model.PersonSubTypeA;
 import org.iglooproject.test.business.person.model.PersonSubTypeB;
 import org.iglooproject.test.business.person.model.QPerson;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestGenericDao extends AbstractJpaCoreTestCase {
 
@@ -119,11 +118,10 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		Assert.assertTrue(person2 instanceof PersonSubTypeA); // Chargement en session SANS proxy
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
-	public void testSaveDelete() throws ServiceException, SecurityServiceException {
+	public void testCreateDelete() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
-		personService.save(person);
+		personService.create(person);
 		personService.flush();
 		Assert.assertTrue(personService.list().contains(person));
 

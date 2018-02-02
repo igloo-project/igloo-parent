@@ -67,13 +67,7 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 	protected final Class<E> getObjectClass() {
 		return objectClass;
 	}
-
-	@Override
-	@Deprecated
-	public E getEntity(Class<? extends E> clazz, K id) {
-		return genericDao.getEntity(clazz, id);
-	}
-
+	
 	@Override
 	public E getById(K id) {
 		return genericDao.getById(id);
@@ -93,9 +87,7 @@ public abstract class GenericEntityServiceImpl<K extends Serializable & Comparab
 		return genericDao.getByNaturalId(naturalId);
 	}
 	
-	@Override
-	public void save(E entity) throws ServiceException,
-			SecurityServiceException {
+	protected void save(E entity) throws ServiceException, SecurityServiceException {
 		genericDao.save(entity);
 	}
 	

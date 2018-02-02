@@ -9,6 +9,23 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang3.Validate;
+import org.iglooproject.commons.util.functional.Predicates2;
+import org.iglooproject.imports.table.common.event.ITableImportEventHandler;
+import org.iglooproject.imports.table.common.event.TableImportEvent;
+import org.iglooproject.imports.table.common.event.TableImportEvent.ExcelImportErrorEvent;
+import org.iglooproject.imports.table.common.event.TableImportEvent.ExcelImportInfoEvent;
+import org.iglooproject.imports.table.common.event.exception.TableImportContentException;
+import org.iglooproject.imports.table.common.event.exception.TableImportMappingException;
+import org.iglooproject.imports.table.common.location.ITableImportNavigator;
+import org.iglooproject.imports.table.common.location.TableImportLocation;
+import org.iglooproject.imports.table.common.location.TableImportLocationContext;
+import org.iglooproject.imports.table.common.mapping.column.ITableImportColumnDefinition;
+import org.iglooproject.imports.table.common.mapping.column.ITableImportColumnDefinition.IMappedExcelImportColumnDefinition;
+import org.iglooproject.imports.table.common.mapping.column.MappedTableImportColumnDefinitionImpl;
+import org.iglooproject.imports.table.common.mapping.column.builder.AbstractTableImportColumnBuilder;
+import org.iglooproject.imports.table.common.mapping.column.builder.ITableImportColumnMapper;
+import org.iglooproject.imports.table.common.mapping.column.builder.MappingConstraint;
+import org.iglooproject.imports.table.common.mapping.column.builder.state.TypeState;
 
 import com.google.common.base.Equivalence;
 import com.google.common.base.Function;
@@ -17,24 +34,6 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
-
-import org.iglooproject.commons.util.functional.Predicates2;
-import org.iglooproject.imports.table.common.event.TableImportEvent;
-import org.iglooproject.imports.table.common.event.TableImportEvent.ExcelImportErrorEvent;
-import org.iglooproject.imports.table.common.event.TableImportEvent.ExcelImportInfoEvent;
-import org.iglooproject.imports.table.common.event.ITableImportEventHandler;
-import org.iglooproject.imports.table.common.event.exception.TableImportContentException;
-import org.iglooproject.imports.table.common.event.exception.TableImportMappingException;
-import org.iglooproject.imports.table.common.location.TableImportLocation;
-import org.iglooproject.imports.table.common.location.TableImportLocationContext;
-import org.iglooproject.imports.table.common.location.ITableImportNavigator;
-import org.iglooproject.imports.table.common.mapping.column.ITableImportColumnDefinition;
-import org.iglooproject.imports.table.common.mapping.column.ITableImportColumnDefinition.IMappedExcelImportColumnDefinition;
-import org.iglooproject.imports.table.common.mapping.column.MappedTableImportColumnDefinitionImpl;
-import org.iglooproject.imports.table.common.mapping.column.builder.AbstractTableImportColumnBuilder;
-import org.iglooproject.imports.table.common.mapping.column.builder.ITableImportColumnMapper;
-import org.iglooproject.imports.table.common.mapping.column.builder.MappingConstraint;
-import org.iglooproject.imports.table.common.mapping.column.builder.state.TypeState;
 
 /**
  * The central class of this Excel import framework.
@@ -324,15 +323,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		public boolean hasContent() {
 			return mappedColumn.hasContent(rowContext.row);
 		}
-		
-		/**
-		 * @deprecated Use {@link #error(String, Object...)} instead.
-		 */
-		@Deprecated
-		public void missingValue(String message) throws TableImportContentException {
-			error(message);
-		}
-		
+
 		/**
 		 * @see TableImportLocationContext The event recording methods error(), info(), etc. defined in the superclass.
 		 */

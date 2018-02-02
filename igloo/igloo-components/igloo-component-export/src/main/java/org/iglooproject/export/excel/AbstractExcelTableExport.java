@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -643,29 +642,6 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	}
 
 	/**
-	 * Ajoute les en-têtes dans la feuille de calcul et cache les colonnes qui doivent l'être, <strong>en utilisant la clé
-	 * de la map comme clé de ressource pour le header si {@code columnInformation.getHeaderKey()} est null</strong>.
-	 * 
-	 * @param sheet feuille de calcul
-	 * @param rowIndex numéro de la ligne
-	 * @param columnInfos map contenant l'en-tête et les informations d'une colonne
-	 * 
-	 * @deprecated Utiliser de préférence {@link #addHeadersToSheet(Sheet, int, Collection)}.
-	 */
-	@Deprecated
-	protected void addHeadersToSheet(Sheet sheet, int rowIndex, Map<String, ColumnInformation> columnInfos) {
-		int columnIndex = 0;
-
-		Row rowHeader = sheet.createRow(rowIndex);
-		for (Entry<String, ColumnInformation> entry : columnInfos.entrySet()) {
-			ColumnInformation columnInformation = entry.getValue();
-			sheet.setColumnHidden(columnIndex, columnInformation.isHidden());
-			addHeaderCell(rowHeader, columnIndex, getColumnLabel(columnInformation.getHeaderKey() != null ? columnInformation.getHeaderKey() : entry.getKey()));
-			columnIndex++;
-		}
-	}
-
-	/**
 	 * Ajoute les en-têtes dans la feuille de calcul et cache les colonnes qui doivent l'être.
 	 * 
 	 * @param sheet feuille de calcul
@@ -733,22 +709,6 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		}
 		
 		finalizeSheet(sheet, landscapePrintSetup);
-	}
-
-	/**
-	 * @deprecated Utiliser de préférence {@link #finalizeSheet(Sheet, Collection)}.
-	 */
-	@Deprecated
-	protected void finalizeSheet(Sheet sheet, Map<String, ColumnInformation> columnInfos) {
-		finalizeSheet(sheet, columnInfos.values());
-	}
-
-	/**
-	 * @deprecated Utiliser de préférence {@link #finalizeSheet(Sheet, Collection, boolean)}.
-	 */
-	@Deprecated
-	protected void finalizeSheet(Sheet sheet, Map<String, ColumnInformation> columnInfos, boolean landscapePrintSetup) {
-		finalizeSheet(sheet, columnInfos.values(), landscapePrintSetup);
 	}
 
 	/**
@@ -844,14 +804,6 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		sheet.getPrintSetup().setFitHeight((short) 10000);
 	}
 	
-	/**
-	 * @deprecated Utiliser de préférence {@link #resizeMergedColumns(Sheet, Collection)}.
-	 */
-	@Deprecated
-	protected void resizeMergedColumns(Sheet sheet, Map<String, ColumnInformation> columns) {
-		resizeMergedColumns(sheet, columns.values());
-	}
-
 	/**
 	 * Redimensionne les colonnes qui contiennent des régions fusionnées.
 	 * 

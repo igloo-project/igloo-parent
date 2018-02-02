@@ -21,12 +21,6 @@ import java.util.List;
 
 import javax.persistence.PersistenceException;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
@@ -34,6 +28,11 @@ import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.model.PersonSubTypeA;
 import org.iglooproject.test.business.person.model.PersonSubTypeB;
 import org.iglooproject.test.business.person.service.IPersonService;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestGenericService extends AbstractJpaCoreTestCase {
 
@@ -41,12 +40,7 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 	IPersonService personService;
 
 	@Test
-	@SuppressWarnings("deprecation")
 	public void testSaveCreate() throws ServiceException, SecurityServiceException {
-		Person person = new Person("Firstname", "Lastname");
-		personService.save(person);
-		Assert.assertNotNull(person.getId());
-
 		Person person1 = new Person("Firstname1", "Lastname1");
 		personService.create(person1);
 		Assert.assertNotNull(person1.getId());
@@ -54,14 +48,6 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		Person person2 = new Person("Firstname2", "Lastname2");
 		personService.create(person2);
 		Assert.assertNotNull(person2.getId());
-
-		/*
-		try {
-			personService.create(person2);
-			fail("Créer deux fois la même entité doit lever une exception");
-		} catch (Exception e) {
-			System.out.println(e);
-		}*/
 	}
 
 	@Test

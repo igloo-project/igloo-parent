@@ -40,18 +40,6 @@ import org.iglooproject.jpa.business.generic.model.IReference;
 public interface IGenericEntityDao<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> {
 
 	/**
-	 * Retourne une entité à partir de sa classe et son id.
-	 * 
-	 * @deprecated Privilégier {@link #getById(Class, Serializable)}, qui renvoie le type demandé.
-	 * 
-	 * @param clazz classe
-	 * @param id identifiant
-	 * @return entité
-	 */
-	@Deprecated
-	E getEntity(Class<? extends E> clazz, K id);
-	
-	/**
 	 * Retourne une entité à partir de son id.
 	 * 
 	 * @param id identifiant
