@@ -38,9 +38,9 @@ public class MultivaluedExpand implements ChainableStatement, Serializable {
 	 * Allows to override default "toggle" button.<br /><br />
 	 * 
 	 * Default button: see JS file.<br />
-	 * Override sample (glyphicon):<br />
+	 * Override sample:<br />
 	 * {@code
-	 * 	<a><span class='icon-plus-sign' /><span class='icon-minus-sign' /></a>
+	 * 	<a><span class="fa fa-plus" /><span class="fa fa-minus" /></a>
 	 * }
 	 * 
 	 * @param toggleButtonHtml HTML code that represents the toggle button
