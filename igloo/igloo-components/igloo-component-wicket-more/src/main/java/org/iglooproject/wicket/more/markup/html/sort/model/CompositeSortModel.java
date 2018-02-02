@@ -7,16 +7,15 @@ import java.util.Map;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.jpa.more.business.sort.ISort;
+import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
+import org.iglooproject.jpa.more.business.sort.SortUtils;
+import org.iglooproject.wicket.more.markup.html.sort.TableSortLink;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
-import org.iglooproject.jpa.more.business.sort.SortUtils;
-import org.iglooproject.wicket.more.markup.html.sort.TableSortLink;
 
 public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyModel<Map<T, SortOrder>> {
 	
@@ -128,16 +127,6 @@ public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyMode
 	 */
 	public Map<T, SortOrder> getSelectedSort() {
 		return map;
-	}
-	
-	/**
-	 * @deprecated Use either {@link #getActiveOrder(ISort)} or {@link #getSelectedOrder(ISort)}, depending on what you want
-	 * @param sort
-	 * @return
-	 */
-	@Deprecated
-	public SortOrder getOrder(T sort) {
-		return getActiveSort().get(sort);
 	}
 	
 	/**

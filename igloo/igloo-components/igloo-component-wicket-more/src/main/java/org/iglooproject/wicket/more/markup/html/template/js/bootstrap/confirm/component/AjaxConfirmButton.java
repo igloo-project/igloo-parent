@@ -28,58 +28,6 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 	@SpringBean
 	private List<IBootstrapConfirmModule> modules;
 
-	@Deprecated
-	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel) {
-		this(
-				id,
-				titleModel,
-				textModel,
-				yesLabelModel,
-				noLabelModel,
-				new Model<String>("icon-ok icon-white fa fa-check"),
-				new Model<String>("icon-ban-circle fa fa-ban"),
-				new Model<String>("btn btn-success"),
-				new Model<String>("btn btn-default"),
-				null,
-				false,
-				null
-		);
-	}
-	
-	@Deprecated
-	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
-			IModel<String> yesButtonModel, IModel<String> noButtonModel) {
-		this(id, titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel, null, false, null);
-	}
-
-	@Deprecated
-	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, Form<?> form) {
-		this(
-				id,
-				titleModel,
-				textModel,
-				yesLabelModel,
-				noLabelModel,
-				new Model<String>("icon-ok icon-white fa fa-check"),
-				new Model<String>("icon-ban-circle fa fa-ban"),
-				new Model<String>("btn btn-success"),
-				new Model<String>("btn btn-default"),
-				null,
-				false,
-				form
-		);
-	}
-	
-	@Deprecated
-	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
-			IModel<String> yesButtonModel, IModel<String> noButtonModel, Form<?> form) {
-		this(id, titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel, null, false, form);
-	}
-
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel,
 			IModel<String> cssClassNamesModel, boolean textNoEscape) {
