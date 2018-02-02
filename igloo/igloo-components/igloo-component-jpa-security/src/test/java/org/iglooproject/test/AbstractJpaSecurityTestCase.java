@@ -2,13 +2,13 @@ package org.iglooproject.test;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.junit.AbstractTestCase;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.person.model.IUser;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.jpa.security.service.ISecurityService;
+import org.iglooproject.test.jpa.junit.AbstractTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
 import org.iglooproject.test.jpa.security.business.person.service.IMockUserGroupService;

@@ -20,6 +20,7 @@
 		<module>igloo-component-spring</module>
 		
 		<module>igloo-component-jpa</module>
+		<module>igloo-component-jpa-test</module>
 		<module>igloo-component-jpa-more</module>
 		<module>igloo-component-jpa-security</module>
 		<module>igloo-component-jpa-externallinkchecker</module>

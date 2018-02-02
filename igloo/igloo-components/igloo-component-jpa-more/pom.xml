@@ -84,28 +84,15 @@
 		</dependency>
 		
 		<!-- Test dependencies -->
-		
-		<!--
-		Scope provided is necessary because test helpers are
-		included in artifact (TestHistoryDifferenceCollectionMatcher for instance)
-		so we need to compile them, but we don't want to pollute dependencies of dependent
-		projects.
-		-->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>provided</scope>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-test</artifactId>
+			<type>pom</type>
 		</dependency>
-		
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa-test</artifactId>
+			<version>${igloo.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

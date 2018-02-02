@@ -8,13 +8,13 @@ import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.test.config.spring.BasicApplicationCoreTestCommonConfig;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.junit.AbstractTestCase;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.spring.config.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.test.jpa.junit.AbstractTestCase;
 
 @ContextConfiguration(
 		classes = BasicApplicationCoreTestCommonConfig.class,

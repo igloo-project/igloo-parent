@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.when;
 
 import java.util.Calendar;
@@ -16,13 +15,35 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.iglooproject.commons.util.fieldpath.FieldPath;
+import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
+import org.iglooproject.jpa.business.generic.service.IEntityService;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.more.business.difference.model.Difference;
+import org.iglooproject.jpa.more.business.difference.util.IDifferenceFromReferenceGenerator;
+import org.iglooproject.jpa.more.business.difference.util.IHistoryDifferenceGenerator;
+import org.iglooproject.jpa.more.business.history.model.atomic.HistoryDifferenceEventType;
+import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryDifferencePath;
+import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
+import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
+import org.iglooproject.test.jpa.more.business.AbstractJpaMoreTestCase;
+import org.iglooproject.test.jpa.more.business.entity.model.TestEntity;
+import org.iglooproject.test.jpa.more.business.history.model.TestHistoryDifference;
+import org.iglooproject.test.jpa.more.business.history.model.TestHistoryLog;
+import org.iglooproject.test.jpa.more.business.history.model.atomic.TestHistoryEventType;
+import org.iglooproject.test.jpa.more.business.history.model.bean.TestHistoryLogAdditionalInformationBean;
+import org.iglooproject.test.jpa.more.business.history.service.ITestHistoryLogService;
+import org.iglooproject.test.jpa.more.junit.difference.TestHistoryDifferenceCollectionMatcher;
+import org.iglooproject.test.jpa.more.junit.difference.TestHistoryDifferenceDescription;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Answers;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.hamcrest.MockitoHamcrest;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -37,28 +58,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
-
-import org.iglooproject.commons.util.fieldpath.FieldPath;
-import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
-import org.iglooproject.jpa.business.generic.service.IEntityService;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.more.business.difference.model.Difference;
-import org.iglooproject.jpa.more.business.difference.util.IDifferenceFromReferenceGenerator;
-import org.iglooproject.jpa.more.business.difference.util.IHistoryDifferenceGenerator;
-import org.iglooproject.jpa.more.business.history.model.atomic.HistoryDifferenceEventType;
-import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryDifferencePath;
-import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
-import org.iglooproject.jpa.more.junit.difference.TestHistoryDifferenceCollectionMatcher;
-import org.iglooproject.jpa.more.junit.difference.TestHistoryDifferenceDescription;
-import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
-import org.iglooproject.test.jpa.more.business.AbstractJpaMoreTestCase;
-import org.iglooproject.test.jpa.more.business.entity.model.TestEntity;
-import org.iglooproject.test.jpa.more.business.history.model.TestHistoryDifference;
-import org.iglooproject.test.jpa.more.business.history.model.TestHistoryLog;
-import org.iglooproject.test.jpa.more.business.history.model.atomic.TestHistoryEventType;
-import org.iglooproject.test.jpa.more.business.history.model.bean.TestHistoryLogAdditionalInformationBean;
-import org.iglooproject.test.jpa.more.business.history.service.ITestHistoryLogService;
 
 public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 	
@@ -120,10 +119,10 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 		// Make the difference generation fail if the modified object is not attached to the session
 		AssertionError error = new AssertionError("Attempt to compute differences on an object that was not attached to the session");
 		when(differenceGeneratorMock.diff(
-				argThat(not(this.<TestEntity>isAttachedToSession())), Matchers.<TestEntity>anyObject()
+				MockitoHamcrest.argThat(not(this.<TestEntity>isAttachedToSession())), ArgumentMatchers.<TestEntity>any()
 		)).thenThrow(error);
 		when(differenceGeneratorMock.diffFromReference(
-				argThat(not(this.<TestEntity>isAttachedToSession()))
+				MockitoHamcrest.argThat(not(this.<TestEntity>isAttachedToSession()))
 		)).thenThrow(error);
 	}
 	
@@ -208,7 +207,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 		entityService.clear();
 		
 		Mockito.when(historyDifferenceGeneratorMock.toHistoryDifferences(
-						Matchers.<Supplier<TestHistoryDifference>>anyObject(), Matchers.<Difference<TestEntity>>anyObject()
+						ArgumentMatchers.<Supplier<TestHistoryDifference>>any(), ArgumentMatchers.<Difference<TestEntity>>any()
 				))
 				.then(new Answer<List<TestHistoryDifference>>() {
 					@Override
@@ -278,7 +277,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 		entityService.clear();
 		
 		Mockito.when(historyDifferenceGeneratorMock.toHistoryDifferences(
-						Matchers.<Supplier<TestHistoryDifference>>anyObject(), Matchers.<Difference<TestEntity>>anyObject()
+					ArgumentMatchers.<Supplier<TestHistoryDifference>>any(), ArgumentMatchers.<Difference<TestEntity>>any()
 				))
 				.then(new Answer<List<TestHistoryDifference>>() {
 					@Override
