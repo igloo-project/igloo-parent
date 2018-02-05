@@ -85,6 +85,9 @@ public final class JpaConfigUtils {
 		properties.setProperty(Environment.USE_REFLECTION_OPTIMIZER, Boolean.TRUE.toString());
 		properties.setProperty(Environment.CREATE_EMPTY_COMPOSITES_ENABLED,
 				Boolean.valueOf(configuration.isCreateEmptyCompositesEnabled()).toString());
+		
+		properties.setProperty(AvailableSettings.JPAQL_STRICT_COMPLIANCE, Boolean.TRUE.toString());
+		
 		Integer defaultBatchSize = configuration.getDefaultBatchSize();
 		if (defaultBatchSize != null) {
 			properties.setProperty(Environment.DEFAULT_BATCH_FETCH_SIZE, Integer.toString(defaultBatchSize));
