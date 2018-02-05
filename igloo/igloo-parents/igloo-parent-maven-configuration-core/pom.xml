@@ -173,6 +173,8 @@
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
 		<igloo.byte-buddy.version>1.6.14</igloo.byte-buddy.version>
 		
+		<igloo.embedded-elasticsearch.version>2.4.3</igloo.embedded-elasticsearch.version>
+		
 		<igloo.localization-properties-consistency-maven-plugin.version>1.0.0</igloo.localization-properties-consistency-maven-plugin.version>
 	</properties>
 	
@@ -186,6 +188,14 @@
 				<dependency>
 					<groupId>org.iglooproject.dependencies</groupId>
 					<artifactId>igloo-dependency-test</artifactId>
+					<version>1.0-SNAPSHOT</version>
+					<scope>test</scope>
+					<type>pom</type>
+				</dependency>
+			
+				<dependency>
+					<groupId>org.iglooproject.dependencies</groupId>
+					<artifactId>igloo-dependency-elasticsearch-test</artifactId>
 					<version>1.0-SNAPSHOT</version>
 					<scope>test</scope>
 					<type>pom</type>
@@ -1292,6 +1302,13 @@
 					<groupId>com.google.code.findbugs</groupId>
 					<artifactId>jsr305</artifactId>
 					<version>${igloo.findbugs-jsr305.version}</version>
+				</dependency>
+				
+				<!-- Used for testing purpose -->
+				<dependency>
+					<artifactId>embedded-elasticsearch</artifactId>
+					<groupId>pl.allegro.tech</groupId>
+					<version>${igloo.embedded-elasticsearch.version}</version>
 				</dependency>
 			
 		</dependencies>

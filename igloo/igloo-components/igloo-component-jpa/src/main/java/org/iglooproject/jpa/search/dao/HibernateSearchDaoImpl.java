@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -41,7 +42,7 @@ import org.hibernate.search.util.impl.PassThroughAnalyzer;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.config.spring.provider.IJpaPropertiesProvider;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.hibernate.analyzers.CoreLuceneClientAnalyzersDefinitionProvider;
+import org.iglooproject.jpa.hibernate.analyzers.LuceneEmbeddedAnalyzerRegistry;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +62,12 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	@Autowired
 	private IJpaPropertiesProvider jpaPropertiesProvider;
 	
+	/**
+	 * With Elasticsearch used as backend, provides client-side Lucene analyzers. 
+	 */
+	@Autowired(required = false)
+	private LuceneEmbeddedAnalyzerRegistry luceneEmbeddedAnalyzerRegistry;
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
@@ -73,11 +80,8 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			if ("default".equals(analyzerName)) {
 				return PassThroughAnalyzer.INSTANCE;
 			} else {
-				ExtendedSearchIntegrator searchIntegrator = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(ExtendedSearchIntegrator.class);
-				SearchIntegration integration = searchIntegrator.getIntegration(LuceneEmbeddedIndexManagerType.INSTANCE);
-				return integration.getAnalyzerRegistry()
-						.getAnalyzerReference(CoreLuceneClientAnalyzersDefinitionProvider.ANALYZER_NAME_PREFIX + analyzerName)
-						.unwrap(LuceneAnalyzerReference.class).getAnalyzer();
+				checkClientSideAnalyzers(true);
+				return luceneEmbeddedAnalyzerRegistry.getAnalyzer(analyzerName);
 			}
 		} else {
 			ExtendedSearchIntegrator searchIntegrator = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(ExtendedSearchIntegrator.class);
@@ -317,4 +321,22 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		Search.getFullTextEntityManager(entityManager).flushToIndexes();
 	}
 	
+	@PostConstruct
+	private void checkClientSideAnalyzers() {
+		checkClientSideAnalyzers(false);
+	}
+
+	private boolean checkClientSideAnalyzers(boolean throwException) {
+		if (luceneEmbeddedAnalyzerRegistry == null) {
+			String message = String.format("No %s available; please add a bean implementation if you want to use client-side analysis with elasticsearch", LuceneEmbeddedAnalyzerRegistry.class.getSimpleName());
+			if (throwException) {
+				throw new IllegalStateException(message);
+			} else {
+				LOGGER.warn(message);
+				return false;
+			}
+		} else {
+			return true;
+		}
+	}
 }
