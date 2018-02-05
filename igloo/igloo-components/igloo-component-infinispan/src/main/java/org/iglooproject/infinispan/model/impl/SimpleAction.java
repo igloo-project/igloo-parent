@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.jgroups.Address;
+import org.jgroups.util.ByteArrayDataInputStream;
+import org.jgroups.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +23,12 @@ public abstract class SimpleAction<V> implements Serializable, IAction<V> {
 
 	protected transient IInfinispanClusterService infinispanClusterService;
 
-	private final Address target;
+	/**
+	 * transient as jgroups address is no longer serializable.
+	 */
+	private transient Address target;
+
+	private transient byte[] address;
 
 	private final boolean broadcast;
 
@@ -45,12 +52,24 @@ public abstract class SimpleAction<V> implements Serializable, IAction<V> {
 	protected SimpleAction(Address target, boolean broadcast, boolean needsResult) {
 		super();
 		this.target = target;
+		try {
+			this.address = Util.streamableToByteBuffer(target);
+		} catch (Exception e) {
+			throw new RuntimeException("unreachable", e);
+		}
 		this.broadcast = broadcast;
 		this.needsResult = needsResult;
 	}
 
 	@Override
 	public Address getTarget() {
+		if (target == null) {
+			try {
+				this.target = Util.readStreamable(Address.class, new ByteArrayDataInputStream(this.address));
+			} catch (Exception e) {
+				throw new RuntimeException("unreachable", e);
+			}
+		}
 		return target;
 	}
 

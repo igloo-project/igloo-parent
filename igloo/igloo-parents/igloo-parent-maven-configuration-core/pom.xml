@@ -153,8 +153,7 @@
 		<igloo.jsass.version>5.5.5</igloo.jsass.version>
 		
 		<igloo.flywaydb.version>5.0.7</igloo.flywaydb.version>
-		<!-- infinispan >= 8.0 requires java 8 -->
-		<igloo.infinispan.version>7.2.5.Final</igloo.infinispan.version>
+		<igloo.infinispan.version>9.1.5.Final</igloo.infinispan.version>
 		
 		<igloo.junit.version>4.12</igloo.junit.version>
 		<igloo.h2.version>1.4.196</igloo.h2.version>
