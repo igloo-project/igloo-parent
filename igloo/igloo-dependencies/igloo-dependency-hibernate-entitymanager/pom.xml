@@ -14,6 +14,7 @@
 	<name>Igloo - Dependency - Hibernate-entitymanager</name>
 	
 	<dependencies>
+		<!-- this dependency lead otherwise ignored byte-buddy version -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
@@ -55,7 +56,7 @@
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-core-logging</artifactId>

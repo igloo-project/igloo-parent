@@ -171,6 +171,8 @@
 		<igloo.elasticsearch.version>2.4.5</igloo.elasticsearch.version>
 		<!-- both needed by less4j and hibernate-search ; we keep hibernate-search version -->
 		<igloo.gson.version>2.6.2</igloo.gson.version>
+		<!-- both needed by mockito and hibernate; we keep hibernate version -->
+		<igloo.byte-buddy.version>1.6.14</igloo.byte-buddy.version>
 		
 		<igloo.localization-properties-consistency-maven-plugin.version>1.0.0</igloo.localization-properties-consistency-maven-plugin.version>
 	</properties>
@@ -456,6 +458,12 @@
 					<groupId>org.javassist</groupId>
 					<artifactId>javassist</artifactId>
 					<version>${igloo.javassist.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>net.bytebuddy</groupId>
+					<artifactId>byte-buddy</artifactId>
+					<version>${igloo.byte-buddy.version}</version>
 				</dependency>
 			
 			<!-- Spring Security -->
