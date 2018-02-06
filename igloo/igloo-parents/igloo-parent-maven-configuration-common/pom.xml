@@ -395,35 +395,7 @@
 	</build>
 	
 	<profiles>
-		<profile>
-			<id>jdk7</id>
-			<activation>
-				<property>
-					<name>jdk7</name>
-				</property>
-			</activation>
-			<properties>
-				<jdk.signature.groupId>org.codehaus.mojo.signature</jdk.signature.groupId>
-				<jdk.signature.artifactId>java17</jdk.signature.artifactId>
-				<jdk.signature.version>1.0</jdk.signature.version>
-				<jdk.version>1.7</jdk.version>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-toolchains-plugin</artifactId>
-						<configuration>
-							<toolchains>
-								<jdk>
-									<version>1.7</version>
-								</jdk>
-							</toolchains>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+		<!-- profile example to switch toolchain and animal sniffer target version; no longer used -->
 		<profile>
 			<id>jdk8</id>
 			<activation>

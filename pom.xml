@@ -44,29 +44,7 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>jdk7</id>
-			<activation>
-				<property>
-					<name>jdk7</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-toolchains-plugin</artifactId>
-						<configuration>
-							<toolchains>
-								<jdk>
-									<version>1.7</version>
-								</jdk>
-							</toolchains>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
+			<!-- profile example for switching toolchain; no longer used -->
 			<id>jdk8</id>
 			<activation>
 				<property>
@@ -98,17 +76,6 @@
 						</configuration>
 					</plugin>
 				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>target2</id>
-			<activation>
-				<property>
-					<name>target2</name>
-				</property>
-			</activation>
-			<build>
-				<directory>${project.basedir}/target2</directory>
 			</build>
 		</profile>
 	</profiles>

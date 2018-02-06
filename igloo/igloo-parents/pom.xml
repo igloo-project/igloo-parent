@@ -17,31 +17,7 @@
 	<modules>
 		<module>igloo-parent-maven-configuration-common</module>
 		<module>igloo-parent-maven-configuration-core</module>
+                <module>igloo-parent-core-project</module>
 	</modules>
 
-	<profiles>
-		<profile>
-			<id>jdk7</id>
-			<activation>
-				<property>
-					<name>jdk7</name>
-				</property>
-			</activation>
-			<modules>
-				<module>igloo-parent-core-project-jdk7</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>jdk8</id>
-			<activation>
-				<property>
-					<name>!jdk7</name>
-				</property>
-			</activation>
-			<modules>
-				<module>igloo-parent-core-project-jdk7</module>
-				<module>igloo-parent-core-project</module>
-			</modules>
-		</profile>
-	</profiles>
 </project>

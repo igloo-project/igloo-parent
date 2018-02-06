@@ -45,7 +45,6 @@
 		
 		<igloo.bindgen.version>4.0.0.lambda-SNAPSHOT</igloo.bindgen.version>
 		<igloo.bindgen-java.version>0.4.0.lambda-SNAPSHOT</igloo.bindgen-java.version>
-		<igloo.bindgen-java-jdk7.version>0.2.2.jdk7</igloo.bindgen-java-jdk7.version>
 		
 		<igloo.spring-security.version>5.0.1.RELEASE</igloo.spring-security.version>
 		
@@ -1475,18 +1474,6 @@
 			-->
 			<properties>
 				<generated-sources-test.directory>${generated-sources.directory}</generated-sources-test.directory>
-			</properties>
-		</profile>
-		<profile>
-			<id>jdk7</id>
-			<activation>
-				<property>
-					<name>jdk7</name>
-				</property>
-			</activation>
-			<properties>
-				<!-- override bindgen-java version to handle jdk7 compatible build -->
-				<igloo.bindgen-java.version>${igloo.bindgen-java-jdk7.version}</igloo.bindgen-java.version>
 			</properties>
 		</profile>
 	</profiles>
