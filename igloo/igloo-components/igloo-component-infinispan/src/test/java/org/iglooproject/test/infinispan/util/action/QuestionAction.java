@@ -1,7 +1,6 @@
 package org.iglooproject.test.infinispan.util.action;
 
-import org.jgroups.Address;
-
+import org.iglooproject.infinispan.model.AddressWrapper;
 import org.iglooproject.infinispan.model.impl.SimpleAction;
 
 public class QuestionAction extends SimpleAction<String> {
@@ -10,7 +9,7 @@ public class QuestionAction extends SimpleAction<String> {
 
 	private final String question;
 
-	public QuestionAction(Address target, String question) {
+	public QuestionAction(AddressWrapper target, String question) {
 		super(target, false, true);
 		this.question = question;
 	}
@@ -26,7 +25,7 @@ public class QuestionAction extends SimpleAction<String> {
 		}
 	}
 
-	public static final QuestionAction ask(Address target, String question) {
+	public static final QuestionAction ask(AddressWrapper target, String question) {
 		return new QuestionAction(target, question);
 	}
 

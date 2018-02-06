@@ -10,9 +10,9 @@ import org.bindgen.Bindable;
 @Bindable
 public interface IAttribution extends Serializable {
 
-	Address getOwner();
+	AddressWrapper getOwner();
 	Date getAttributionDate();
-	boolean match(Address address);
+	boolean match(AddressWrapper address);
 	boolean match(IAttribution attribution);
 
 }

@@ -3,33 +3,29 @@ package org.iglooproject.infinispan.model.impl;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.iglooproject.infinispan.model.AddressWrapper;
+import org.iglooproject.infinispan.model.IAttribution;
+import org.iglooproject.infinispan.model.IRoleAttribution;
 import org.jgroups.Address;
 
 import com.google.common.base.Objects;
-
-import org.iglooproject.infinispan.model.IAttribution;
-import org.iglooproject.infinispan.model.IRoleAttribution;
 
 public class RoleAttribution implements IRoleAttribution, Serializable {
 
 	private static final long serialVersionUID = -3156360084124623566L;
 
-	public Address owner;
+	private final AddressWrapper owner;
 
-	public Date attributionDate;
+	private final Date attributionDate;
 
-	protected RoleAttribution(Address owner, Date attributionDate) {
+	protected RoleAttribution(AddressWrapper owner, Date attributionDate) {
 		super();
 		this.owner = owner;
 		this.attributionDate = attributionDate;
 	}
 
-	protected RoleAttribution() {
-		super();
-	}
-
 	@Override
-	public Address getOwner() {
+	public AddressWrapper getOwner() {
 		return owner;
 	}
 
@@ -38,16 +34,8 @@ public class RoleAttribution implements IRoleAttribution, Serializable {
 		return attributionDate;
 	}
 
-	public void setOwner(Address owner) {
-		this.owner = owner;
-	}
-
-	public void setAttributionDate(Date attributionDate) {
-		this.attributionDate = attributionDate;
-	}
-
 	@Override
-	public boolean match(Address address) {
+	public boolean match(AddressWrapper address) {
 		return Objects.equal(getOwner(), address);
 	}
 
@@ -61,7 +49,7 @@ public class RoleAttribution implements IRoleAttribution, Serializable {
 		return String.format("%s<%s (at %tF %<tT %<tz)>", getClass().getSimpleName(), getOwner(), getAttributionDate());
 	}
 
-	public static final RoleAttribution from(Address owner, Date attributionDate) {
+	public static final RoleAttribution from(AddressWrapper owner, Date attributionDate) {
 		return new RoleAttribution(owner, attributionDate);
 	}
 

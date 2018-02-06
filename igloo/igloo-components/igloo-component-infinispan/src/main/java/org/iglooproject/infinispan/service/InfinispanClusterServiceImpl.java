@@ -15,6 +15,30 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.infinispan.action.RebalanceAction;
+import org.iglooproject.infinispan.action.RoleCaptureAction;
+import org.iglooproject.infinispan.action.RoleReleaseAction;
+import org.iglooproject.infinispan.action.SwitchRoleResult;
+import org.iglooproject.infinispan.listener.CacheEntryCreateEventListener;
+import org.iglooproject.infinispan.listener.ViewChangedEventCoordinatorListener;
+import org.iglooproject.infinispan.model.AddressWrapper;
+import org.iglooproject.infinispan.model.DoIfRoleWithLock;
+import org.iglooproject.infinispan.model.IAction;
+import org.iglooproject.infinispan.model.IAttribution;
+import org.iglooproject.infinispan.model.ILeaveEvent;
+import org.iglooproject.infinispan.model.ILock;
+import org.iglooproject.infinispan.model.ILockAttribution;
+import org.iglooproject.infinispan.model.ILockRequest;
+import org.iglooproject.infinispan.model.INode;
+import org.iglooproject.infinispan.model.IPriorityQueue;
+import org.iglooproject.infinispan.model.IRole;
+import org.iglooproject.infinispan.model.IRoleAttribution;
+import org.iglooproject.infinispan.model.impl.Attribution;
+import org.iglooproject.infinispan.model.impl.LeaveEvent;
+import org.iglooproject.infinispan.model.impl.LockAttribution;
+import org.iglooproject.infinispan.model.impl.Node;
+import org.iglooproject.infinispan.model.impl.RoleAttribution;
 import org.infinispan.Cache;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.notifications.cachelistener.event.CacheEntryEvent;
@@ -43,30 +67,6 @@ import com.google.common.collect.MultimapBuilder;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.Range;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
-import org.iglooproject.infinispan.action.RebalanceAction;
-import org.iglooproject.infinispan.action.RoleCaptureAction;
-import org.iglooproject.infinispan.action.RoleReleaseAction;
-import org.iglooproject.infinispan.action.SwitchRoleResult;
-import org.iglooproject.infinispan.listener.CacheEntryCreateEventListener;
-import org.iglooproject.infinispan.listener.ViewChangedEventCoordinatorListener;
-import org.iglooproject.infinispan.model.DoIfRoleWithLock;
-import org.iglooproject.infinispan.model.IAction;
-import org.iglooproject.infinispan.model.IAttribution;
-import org.iglooproject.infinispan.model.ILeaveEvent;
-import org.iglooproject.infinispan.model.ILock;
-import org.iglooproject.infinispan.model.ILockAttribution;
-import org.iglooproject.infinispan.model.ILockRequest;
-import org.iglooproject.infinispan.model.INode;
-import org.iglooproject.infinispan.model.IPriorityQueue;
-import org.iglooproject.infinispan.model.IRole;
-import org.iglooproject.infinispan.model.IRoleAttribution;
-import org.iglooproject.infinispan.model.impl.Attribution;
-import org.iglooproject.infinispan.model.impl.LeaveEvent;
-import org.iglooproject.infinispan.model.impl.LockAttribution;
-import org.iglooproject.infinispan.model.impl.Node;
-import org.iglooproject.infinispan.model.impl.RoleAttribution;
 
 public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
@@ -201,16 +201,16 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	@Override
-	public List<Address> getMembers() {
+	public List<AddressWrapper> getMembers() {
 		return ImmutableList
-				.<Address> copyOf(Lists.transform(cacheManager.getMembers(), INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS));
+				.<AddressWrapper> copyOf(Lists.transform(cacheManager.getMembers(), INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS));
 	}
 
 	@Override
 	public List<INode> getNodes() {
-		return ImmutableList.copyOf(Iterables.filter(Iterables.transform(getMembers(), new Function<Address, INode>() {
+		return ImmutableList.copyOf(Iterables.filter(Iterables.transform(getMembers(), new Function<AddressWrapper, INode>() {
 			@Override
-			public INode apply(Address input) {
+			public INode apply(AddressWrapper input) {
 				return getNodesCache().get(input);
 			}
 		}), Predicates.notNull()));
@@ -351,7 +351,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public String getClusterIdentifier() {
-		List<Address> members = getMembers();
+		List<AddressWrapper> members = getMembers();
 		Collections.sort(members);
 		return Joiner.on(",").join(members);
 	}
@@ -522,11 +522,11 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	@Override
-	public Address getLocalAddress() {
+	public AddressWrapper getLocalAddress() {
 		return INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS.apply(cacheManager.getAddress());
 	}
 
-	private Address getAddress() {
+	private AddressWrapper getAddress() {
 		if (cacheManager.getAddress() != null) {
 			return INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS.apply(cacheManager.getAddress());
 		} else {
@@ -542,8 +542,8 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		return cacheManager.<IPriorityQueue, List<IAttribution>> getCache(CACHE_PRIORITY_QUEUES);
 	}
 
-	private Cache<Address, ILeaveEvent> getLeaveCache() {
-		return cacheManager.<Address, ILeaveEvent> getCache(CACHE_LEAVE);
+	private Cache<AddressWrapper, ILeaveEvent> getLeaveCache() {
+		return cacheManager.<AddressWrapper, ILeaveEvent> getCache(CACHE_LEAVE);
 	}
 
 	private Cache<IRole, IAttribution> getRolesRequestsCache() {
@@ -554,8 +554,8 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		return cacheManager.<ILock, ILockAttribution> getCache(CACHE_LOCKS);
 	}
 
-	private Cache<Address, INode> getNodesCache() {
-		return cacheManager.<Address, INode> getCache(CACHE_NODES);
+	private Cache<AddressWrapper, INode> getNodesCache() {
+		return cacheManager.<AddressWrapper, INode> getCache(CACHE_NODES);
 	}
 
 	private Cache<String, IAction<?>> getActionsCache() {
@@ -596,21 +596,21 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	@Override
 	public void onViewChangedEvent(ViewChangedEvent viewChangedEvent) {
 		// NOTE : lists cannot be null
-		List<Address> newMembers = Lists.transform(viewChangedEvent.getNewMembers(),
+		List<AddressWrapper> newMembers = Lists.transform(viewChangedEvent.getNewMembers(),
 				INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS);
-		List<Address> oldMembers = Lists.transform(viewChangedEvent.getOldMembers(),
+		List<AddressWrapper> oldMembers = Lists.transform(viewChangedEvent.getOldMembers(),
 				INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS);
 
-		List<Address> added = Lists.newArrayList(newMembers);
+		List<AddressWrapper> added = Lists.newArrayList(newMembers);
 		added.removeAll(oldMembers);
-		List<Address> removed = Lists.newArrayList(oldMembers);
+		List<AddressWrapper> removed = Lists.newArrayList(oldMembers);
 		removed.removeAll(newMembers);
 
 		// all known nodes, either currently in cluster or that leave gracefully
-		List<Address> knownNodes = Lists.newArrayList();
+		List<AddressWrapper> knownNodes = Lists.newArrayList();
 
 		LOGGER.debug("Processing view removed nodes ({}) {}", removed.size(), toStringClusterNode());
-		for (Address removedItem : removed) {
+		for (AddressWrapper removedItem : removed) {
 			LOGGER.debug("Processing view removed node {}", removedItem, toStringClusterNode());
 			ILeaveEvent leaveEvent = getLeaveCache().getOrDefault(removedItem, null);
 			INode node = getNodesCache().getOrDefault(removedItem, null);
@@ -637,7 +637,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		}
 
 		LOGGER.debug("Processing view added items ({}) {}", added.size(), toStringClusterNode());
-		for (Address addedItem : added) {
+		for (AddressWrapper addedItem : added) {
 			knownNodes.add(addedItem);
 			if (viewChangedEvent.isMergeView()) {
 				LOGGER.warn("Merge node {} {}", addedItem, toStringClusterNode());
@@ -949,12 +949,12 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	private static final class ToJgroupsAddress
-			implements SerializableFunction<org.infinispan.remoting.transport.Address, Address> {
+			implements SerializableFunction<org.infinispan.remoting.transport.Address, AddressWrapper> {
 		private static final long serialVersionUID = -6249484113042442830L;
 
 		@Override
-		public Address apply(org.infinispan.remoting.transport.Address input) {
-			return ((JGroupsAddress) input).getJGroupsAddress();
+		public AddressWrapper apply(org.infinispan.remoting.transport.Address input) {
+			return AddressWrapper.from(((JGroupsAddress) input).getJGroupsAddress());
 		}
 	}
 
@@ -1090,13 +1090,13 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			Range<Integer> range = Range.range(lowerRolesPerNode, BoundType.CLOSED, upperRolesPerNode, BoundType.CLOSED);
 			
 			Map<IRole, IRoleAttribution> roles = Maps.newHashMap(getRolesCache());
-			ListMultimap<Address, IRole> rolesByMember = roles.entrySet().stream().collect(
-					Multimaps.<Entry<IRole, IRoleAttribution>, Address, IRole, ListMultimap<Address, IRole>>toMultimap(
+			ListMultimap<AddressWrapper, IRole> rolesByMember = roles.entrySet().stream().collect(
+					Multimaps.<Entry<IRole, IRoleAttribution>, AddressWrapper, IRole, ListMultimap<AddressWrapper, IRole>>toMultimap(
 							(item) -> item.getValue().getOwner(),
 							(item) -> item.getKey(),
-							MultimapBuilder.linkedHashKeys().arrayListValues()::<Address, IRole>build
+							MultimapBuilder.linkedHashKeys().arrayListValues()::<AddressWrapper, IRole>build
 			));
-			for (Entry<Address, Collection<IRole>> rolesByMemberEntry : rolesByMember.asMap().entrySet()) {
+			for (Entry<AddressWrapper, Collection<IRole>> rolesByMemberEntry : rolesByMember.asMap().entrySet()) {
 				if ( ! range.contains(rolesByMemberEntry.getValue().size())) {
 					String status = String.format("Role balance not fair on %s; %s not in %s (roles: %s)",
 							rolesByMemberEntry.getKey(), rolesByMemberEntry.getValue().size(), range,

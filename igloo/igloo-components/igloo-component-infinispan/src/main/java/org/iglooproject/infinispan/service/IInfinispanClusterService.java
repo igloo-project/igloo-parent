@@ -7,14 +7,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.infinispan.manager.EmbeddedCacheManager;
-import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
-import org.infinispan.remoting.transport.jgroups.JGroupsAddress;
-import org.javatuples.Pair;
-import org.jgroups.Address;
-
 import org.iglooproject.infinispan.action.SwitchRoleResult;
 import org.iglooproject.infinispan.listener.ViewChangedEventCoordinatorListener;
+import org.iglooproject.infinispan.model.AddressWrapper;
 import org.iglooproject.infinispan.model.DoIfRoleWithLock;
 import org.iglooproject.infinispan.model.IAction;
 import org.iglooproject.infinispan.model.IAttribution;
@@ -24,6 +19,11 @@ import org.iglooproject.infinispan.model.ILockRequest;
 import org.iglooproject.infinispan.model.INode;
 import org.iglooproject.infinispan.model.IRole;
 import org.iglooproject.infinispan.model.IRoleAttribution;
+import org.infinispan.manager.EmbeddedCacheManager;
+import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
+import org.infinispan.remoting.transport.jgroups.JGroupsAddress;
+import org.javatuples.Pair;
+import org.jgroups.Address;
 
 public interface IInfinispanClusterService {
 
@@ -82,7 +82,7 @@ public interface IInfinispanClusterService {
 	/**
 	 * @return members list as jgroups address (that are serializable)
 	 */
-	List<Address> getMembers();
+	List<AddressWrapper> getMembers();
 
 	/**
 	 * @return nodes list ; includes only connected nodes.
@@ -153,7 +153,7 @@ public interface IInfinispanClusterService {
 	/**
 	 * @return {@link JGroupsAddress} of local node
 	 */
-	Address getLocalAddress();
+	AddressWrapper getLocalAddress();
 
 	/**
 	 * @see IInfinispanClusterService#assignRole(IRole, INode)

@@ -8,7 +8,8 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
-import org.jgroups.Address;
+import org.iglooproject.infinispan.model.AddressWrapper;
+import org.iglooproject.infinispan.service.IInfinispanClusterCheckerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import com.google.common.base.Functions;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
-
-import org.iglooproject.infinispan.service.IInfinispanClusterCheckerService;
 
 public class InfinispanClusterJdbcCheckerServiceImpl implements IInfinispanClusterCheckerService {
 
@@ -31,7 +30,7 @@ public class InfinispanClusterJdbcCheckerServiceImpl implements IInfinispanClust
 	private NamedParameterJdbcTemplate jdbcTemplate;
 
 	@Override
-	public boolean unsetCoordinator(Address oldCoordinator) {
+	public boolean unsetCoordinator(AddressWrapper oldCoordinator) {
 		MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 		parameterSource.addValue("nodeType", "master");
 		parameterSource.addValue("anonymous", "anonymous");
@@ -47,7 +46,7 @@ public class InfinispanClusterJdbcCheckerServiceImpl implements IInfinispanClust
 	}
 
 	@Override
-	public boolean updateCoordinator(Address newCoordinator, Collection<Address> knownNodes) {
+	public boolean updateCoordinator(AddressWrapper newCoordinator, Collection<AddressWrapper> knownNodes) {
 		List<String> knownNodesString = Lists.newArrayList();
 		knownNodesString.addAll(Collections2.transform(knownNodes, Functions.toStringFunction()));
 		knownNodesString.add("anonymous");
@@ -69,7 +68,7 @@ public class InfinispanClusterJdbcCheckerServiceImpl implements IInfinispanClust
 	}
 
 	@Override
-	public boolean updateCoordinatorTimestamp(Address currentCoordinator) {
+	public boolean updateCoordinatorTimestamp(AddressWrapper currentCoordinator) {
 		MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 		parameterSource.addValue("nodeType", "master");
 		parameterSource.addValue("node", currentCoordinator.toString());
@@ -79,7 +78,7 @@ public class InfinispanClusterJdbcCheckerServiceImpl implements IInfinispanClust
 	}
 
 	@Override
-	public boolean tryForceUpdate(Address currentCoordinator, int delay, TimeUnit unit) {
+	public boolean tryForceUpdate(AddressWrapper currentCoordinator, int delay, TimeUnit unit) {
 		MapSqlParameterSource parameterSource = new MapSqlParameterSource();
 		parameterSource.addValue("nodeType", "master");
 		parameterSource.addValue("node", currentCoordinator.toString());
@@ -90,7 +89,7 @@ public class InfinispanClusterJdbcCheckerServiceImpl implements IInfinispanClust
 	}
 
 	@Override
-	public boolean isClusterActive(Collection<Address> clusterNodes) {
+	public boolean isClusterActive(Collection<AddressWrapper> clusterNodes) {
 		List<String> clusterNodesString = Lists.newArrayList();
 		clusterNodesString.addAll(Collections2.transform(clusterNodes, Functions.toStringFunction()));
 		MapSqlParameterSource parameterSource = new MapSqlParameterSource();

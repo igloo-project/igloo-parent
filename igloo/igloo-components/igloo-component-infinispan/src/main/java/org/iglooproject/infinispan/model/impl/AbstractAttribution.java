@@ -2,28 +2,28 @@ package org.iglooproject.infinispan.model.impl;
 
 import java.util.Date;
 
+import org.iglooproject.infinispan.model.AddressWrapper;
+import org.iglooproject.infinispan.model.IAttribution;
 import org.jgroups.Address;
 
 import com.google.common.base.Objects;
-
-import org.iglooproject.infinispan.model.IAttribution;
 
 public class AbstractAttribution implements IAttribution {
 
 	private static final long serialVersionUID = 138189627869759402L;
 
-	private final Address owner;
+	private final AddressWrapper owner;
 
 	private final Date attributionDate;
 
-	protected AbstractAttribution(Address owner, Date attributionDate) {
+	protected AbstractAttribution(AddressWrapper owner, Date attributionDate) {
 		super();
 		this.owner = owner;
 		this.attributionDate = attributionDate;
 	}
 
 	@Override
-	public Address getOwner() {
+	public AddressWrapper getOwner() {
 		return owner;
 	}
 
@@ -33,7 +33,7 @@ public class AbstractAttribution implements IAttribution {
 	}
 
 	@Override
-	public boolean match(Address address) {
+	public boolean match(AddressWrapper address) {
 		return Objects.equal(getOwner(), address);
 	}
 

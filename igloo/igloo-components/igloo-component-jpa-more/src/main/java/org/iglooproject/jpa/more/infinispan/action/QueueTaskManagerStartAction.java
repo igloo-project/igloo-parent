@@ -1,10 +1,9 @@
 package org.iglooproject.jpa.more.infinispan.action;
 
-import org.jgroups.Address;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import org.iglooproject.infinispan.model.AddressWrapper;
 import org.iglooproject.infinispan.model.impl.SimpleAction;
 import org.iglooproject.jpa.more.infinispan.service.IInfinispanQueueTaskManagerService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class QueueTaskManagerStartAction extends SimpleAction<SwitchStatusQueueTaskManagerResult> {
 
@@ -13,7 +12,7 @@ public class QueueTaskManagerStartAction extends SimpleAction<SwitchStatusQueueT
 	@Autowired
 	private transient IInfinispanQueueTaskManagerService infinispanQueueTaskManagerService;
 
-	protected QueueTaskManagerStartAction(Address target) {
+	protected QueueTaskManagerStartAction(AddressWrapper target) {
 		super(target, false, true);
 	}
 
@@ -22,7 +21,7 @@ public class QueueTaskManagerStartAction extends SimpleAction<SwitchStatusQueueT
 		return infinispanQueueTaskManagerService.start();
 	}
 
-	public static final QueueTaskManagerStartAction get(Address address){
+	public static final QueueTaskManagerStartAction get(AddressWrapper address){
 		return new QueueTaskManagerStartAction(address);
 	}
 

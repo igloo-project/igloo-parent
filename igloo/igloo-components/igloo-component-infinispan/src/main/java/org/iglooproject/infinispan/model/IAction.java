@@ -9,7 +9,7 @@ import org.iglooproject.infinispan.service.IInfinispanClusterService;
 
 public interface IAction<V> extends Future<V>, Serializable {
 
-	Address getTarget();
+	AddressWrapper getTarget();
 
 	boolean isBroadcast();
 

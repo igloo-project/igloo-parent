@@ -3,18 +3,18 @@ package org.iglooproject.infinispan.service;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
-import org.jgroups.Address;
+import org.iglooproject.infinispan.model.AddressWrapper;
 
 public interface IInfinispanClusterCheckerService {
 
-	boolean updateCoordinator(Address newCoordinator, Collection<Address> knownNodes);
+	boolean updateCoordinator(AddressWrapper newCoordinator, Collection<AddressWrapper> knownNodes);
 
-	boolean updateCoordinatorTimestamp(Address currentCoordinator);
+	boolean updateCoordinatorTimestamp(AddressWrapper currentCoordinator);
 
-	boolean unsetCoordinator(Address oldCoordinator);
+	boolean unsetCoordinator(AddressWrapper oldCoordinator);
 
-	boolean isClusterActive(Collection<Address> clusterNodes);
+	boolean isClusterActive(Collection<AddressWrapper> clusterNodes);
 
-	boolean tryForceUpdate(Address currentCoordinator, int delay, TimeUnit unit);
+	boolean tryForceUpdate(AddressWrapper currentCoordinator, int delay, TimeUnit unit);
 
 }

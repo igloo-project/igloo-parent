@@ -1,14 +1,13 @@
 package org.iglooproject.infinispan.action;
 
-import org.jgroups.Address;
-
+import org.iglooproject.infinispan.model.AddressWrapper;
 import org.iglooproject.infinispan.model.impl.SimpleAction;
 
 public class RebalanceAction extends SimpleAction<Boolean> {
 
 	private static final long serialVersionUID = -276444744888760127L;
 
-	public RebalanceAction(Address target) {
+	public RebalanceAction(AddressWrapper target) {
 		super(target, true, false);
 	}
 
@@ -18,7 +17,7 @@ public class RebalanceAction extends SimpleAction<Boolean> {
 		return true;
 	}
 
-	public static final RebalanceAction rebalance(Address target) {
+	public static final RebalanceAction rebalance(AddressWrapper target) {
 		return new RebalanceAction(target);
 	}
 

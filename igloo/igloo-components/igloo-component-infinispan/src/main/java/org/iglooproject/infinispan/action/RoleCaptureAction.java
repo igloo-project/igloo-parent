@@ -1,10 +1,10 @@
 package org.iglooproject.infinispan.action;
 
-import org.javatuples.Pair;
-import org.jgroups.Address;
-
+import org.iglooproject.infinispan.model.AddressWrapper;
 import org.iglooproject.infinispan.model.IRole;
 import org.iglooproject.infinispan.model.impl.SimpleAction;
+import org.javatuples.Pair;
+import org.jgroups.Address;
 
 public class RoleCaptureAction extends SimpleAction<Pair<SwitchRoleResult, String>> {
 
@@ -12,7 +12,7 @@ public class RoleCaptureAction extends SimpleAction<Pair<SwitchRoleResult, Strin
 
 	private final IRole role;
 
-	public RoleCaptureAction(Address target, IRole role) {
+	public RoleCaptureAction(AddressWrapper target, IRole role) {
 		super(target, false, true);
 		this.role = role;
 	}
@@ -26,7 +26,7 @@ public class RoleCaptureAction extends SimpleAction<Pair<SwitchRoleResult, Strin
 		return infinispanClusterService.doCaptureRole(role);
 	}
 
-	public static final RoleCaptureAction capture(Address target, IRole role) {
+	public static final RoleCaptureAction capture(AddressWrapper target, IRole role) {
 		return new RoleCaptureAction(target, role);
 	}
 

@@ -3,16 +3,16 @@ package org.iglooproject.infinispan.model.impl;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.jgroups.Address;
-
 import org.iglooproject.commons.util.CloneUtils;
+import org.iglooproject.infinispan.model.AddressWrapper;
 import org.iglooproject.infinispan.model.INode;
+import org.jgroups.Address;
 
 public class Node implements Serializable, INode {
 
 	private static final long serialVersionUID = 5121676759539404734L;
 
-	private final Address address;
+	private final AddressWrapper address;
 
 	private final String name;
 
@@ -22,7 +22,7 @@ public class Node implements Serializable, INode {
 
 	private final boolean anonymous;
 
-	private Node(Address address, String name, Date creationDate, Date leaveDate, boolean anonymous) {
+	private Node(AddressWrapper address, String name, Date creationDate, Date leaveDate, boolean anonymous) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -32,7 +32,7 @@ public class Node implements Serializable, INode {
 	}
 
 	@Override
-	public Address getAddress() {
+	public AddressWrapper getAddress() {
 		return address;
 	}
 
@@ -61,11 +61,11 @@ public class Node implements Serializable, INode {
 		return String.format("%s<%s-%s>", getClass().getSimpleName(), address, name);
 	}
 
-	public static final Node from(Address address, String name) {
+	public static final Node from(AddressWrapper address, String name) {
 		return new Node(address, name, new Date(), null, false);
 	}
 
-	public static final Node from(Address address) {
+	public static final Node from(AddressWrapper address) {
 		return new Node(address, "anonymous", new Date(), null, true);
 	}
 
