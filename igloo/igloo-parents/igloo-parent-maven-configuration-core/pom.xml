@@ -20,14 +20,11 @@
 		<igloo.spring.version>5.0.3.RELEASE</igloo.spring.version>
 		<igloo.aspectj.version>1.8.13</igloo.aspectj.version>
 		
-		<igloo.hibernate-core.version>5.2.12.Final</igloo.hibernate-core.version>
-		<igloo.hibernate-jpa-2.1-api.version>1.0.0.Final</igloo.hibernate-jpa-2.1-api.version>
-		<igloo.hibernate-commons-annotations.version>5.0.1.Final</igloo.hibernate-commons-annotations.version>
+		<igloo.hibernate.version>5.2.12.Final</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
 		<igloo.jboss-logging.version>3.3.1.Final</igloo.jboss-logging.version>
 		<igloo.tomcat-jdbc.version>8.5.24</igloo.tomcat-jdbc.version>
 		<igloo.hikaricp.version>2.7.6</igloo.hikaricp.version>
-		<igloo.hibernate-ehcache.version>${igloo.hibernate-core.version}</igloo.hibernate-ehcache.version>
 		<igloo.ehcache.version>2.10.4</igloo.ehcache.version>
 		<igloo.querydsl.version>4.1.4</igloo.querydsl.version>
 		
@@ -50,7 +47,7 @@
 		
 		<igloo.spring-ldap.version>2.3.2.RELEASE</igloo.spring-ldap.version>
 		
-		<igloo.hibernate-search.version>5.7.0.Final</igloo.hibernate-search.version>
+		<igloo.hibernate-search.version>5.7.3.Final</igloo.hibernate-search.version>
 		<igloo.lucene.version>5.5.4</igloo.lucene.version>
 		
 		<igloo.javatuples.version>1.2</igloo.javatuples.version>
@@ -174,6 +171,8 @@
 		<igloo.elasticsearch.version>2.4.5</igloo.elasticsearch.version>
 		<!-- both needed by less4j and hibernate-search ; we keep hibernate-search version -->
 		<igloo.gson.version>2.6.2</igloo.gson.version>
+		<!-- both needed by mockito and hibernate; we keep hibernate version -->
+		<igloo.byte-buddy.version>1.6.14</igloo.byte-buddy.version>
 		
 		<igloo.localization-properties-consistency-maven-plugin.version>1.0.0</igloo.localization-properties-consistency-maven-plugin.version>
 	</properties>
@@ -460,6 +459,12 @@
 					<artifactId>javassist</artifactId>
 					<version>${igloo.javassist.version}</version>
 				</dependency>
+				
+				<dependency>
+					<groupId>net.bytebuddy</groupId>
+					<artifactId>byte-buddy</artifactId>
+					<version>${igloo.byte-buddy.version}</version>
+				</dependency>
 			
 			<!-- Spring Security -->
 			
@@ -554,19 +559,13 @@
 					<dependency>
 						<groupId>org.hibernate</groupId>
 						<artifactId>hibernate-entitymanager</artifactId>
-						<version>${igloo.hibernate-core.version}</version>
+						<version>${igloo.hibernate.version}</version>
 						<exclusions>
 							<exclusion>
 								<artifactId>xml-apis</artifactId>
 								<groupId>xml-apis</groupId>
 							</exclusion>
 						</exclusions>
-					</dependency>
-					
-					<dependency>
-						<groupId>org.hibernate</groupId>
-						<artifactId>hibernate-core</artifactId>
-						<version>${igloo.hibernate-core.version}</version>
 					</dependency>
 					
 					<dependency>
@@ -578,19 +577,7 @@
 					<dependency>
 						<groupId>org.hibernate</groupId>
 						<artifactId>hibernate-ehcache</artifactId>
-						<version>${igloo.hibernate-core.version}</version>
-					</dependency>
-					
-					<dependency>
-						<groupId>org.hibernate.javax.persistence</groupId>
-						<artifactId>hibernate-jpa-2.1-api</artifactId>
-						<version>${igloo.hibernate-jpa-2.1-api.version}</version>
-					</dependency>
-					
-					<dependency>
-						<groupId>org.hibernate.common</groupId>
-						<artifactId>hibernate-commons-annotations</artifactId>
-						<version>${igloo.hibernate-commons-annotations.version}</version>
+						<version>${igloo.hibernate.version}</version>
 					</dependency>
 					
 					<dependency>
@@ -631,11 +618,6 @@
 							<exclusion>
 								<groupId>cglib</groupId>
 								<artifactId>cglib</artifactId>
-							</exclusion>
-							
-							<exclusion>
-								<groupId>org.hibernate.javax.persistence</groupId>
-								<artifactId>hibernate-jpa-2.0-api</artifactId>
 							</exclusion>
 						</exclusions>
 					</dependency>
