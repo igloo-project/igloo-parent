@@ -4,18 +4,15 @@ import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWOR
 import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_HISTORY_COUNT;
 import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES;
 import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT;
-import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_SALT;
-
-import org.springframework.context.annotation.Configuration;
 
 import org.iglooproject.spring.property.service.IPropertyRegistry;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SpringSecurityApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Override
 	protected void register(IPropertyRegistry registry) {
-		registry.registerString(PASSWORD_SALT);
 		registry.registerInteger(PASSWORD_EXPIRATION_DAYS, 90);
 		registry.registerInteger(PASSWORD_HISTORY_COUNT, 4);
 		registry.registerInteger(PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT, 50);

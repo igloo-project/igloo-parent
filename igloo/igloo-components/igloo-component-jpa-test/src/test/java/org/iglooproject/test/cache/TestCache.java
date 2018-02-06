@@ -15,6 +15,8 @@ public class TestCache extends AbstractJpaCoreTestCase {
 	
 	@Test
 	public void testCache() throws ServiceException, SecurityServiceException {
+		// cf ehcache-hibernate-company.xml
+		
 		getStatistics().setStatisticsEnabled(true);
 		getStatistics().clear();
 		Company company = new Company("Company Test Persist");

@@ -16,11 +16,14 @@
 	<name>Igloo - Components</name>
 
 	<modules>
+		<module>igloo-component-config-test</module>
+		
 		<module>igloo-component-commons</module>
 		<module>igloo-component-spring</module>
 		
 		<module>igloo-component-jpa</module>
 		<module>igloo-component-jpa-test</module>
+		
 		<module>igloo-component-jpa-more</module>
 		<module>igloo-component-jpa-security</module>
 		<module>igloo-component-jpa-externallinkchecker</module>

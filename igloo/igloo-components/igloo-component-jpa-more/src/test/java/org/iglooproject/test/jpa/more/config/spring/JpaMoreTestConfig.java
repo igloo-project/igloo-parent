@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
+import org.igloo.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
@@ -18,6 +18,8 @@ import org.iglooproject.test.jpa.more.business.JpaMoreTestBusinessPackage;
 @ApplicationDescription(name = "igloo-component-jpa-more")
 @ConfigurationLocations(locations = {
 		"classpath:igloo-component-jpa.properties",
+		ConfigurationPropertiesUrlConstants.JPA_COMMON,
+		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
 		"classpath:jpa-more-test.properties",
 		"classpath:property-test.properties"
 })

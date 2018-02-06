@@ -12,13 +12,11 @@ import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
+import org.iglooproject.commons.util.logging.SLF4JLoggingListener;
 import org.junit.rules.ExternalResource;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-
-import org.iglooproject.commons.util.logging.SLF4JLoggingListener;
-import org.iglooproject.spring.config.ExtendedApplicationContextInitializer;
 
 /**
  * How to use :
@@ -89,7 +87,6 @@ public abstract class RestServerTestResource extends ExternalResource {
 
 	protected void configureContext(WebappContext context) {
 		context.setInitParameter(ContextLoader.CONTEXT_CLASS_PARAM, AnnotationConfigWebApplicationContext.class.getName());
-		context.setInitParameter(ContextLoader.CONTEXT_INITIALIZER_CLASSES_PARAM, ExtendedApplicationContextInitializer.class.getName());
 		if (javaConfigClass != null) {
 			context.setInitParameter(ContextLoader.CONFIG_LOCATION_PARAM, javaConfigClass.getName());
 		}

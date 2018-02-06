@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
+import org.igloo.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
 import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
 import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
@@ -15,8 +15,7 @@ import org.iglooproject.test.wicket.more.business.WicketMoreTestBusinessPackage;
 @ApplicationDescription(name = "wicket-more-test")
 @ConfigurationLocations(locations = {
 		"classpath:igloo-component-jpa.properties",
-		"classpath:configuration-private.properties",
-		"classpath:igloo-hibernate.properties"
+		ConfigurationPropertiesUrlConstants.JPA_COMMON
 })
 @Import({
 	WicketMoreTestJpaConfig.class,

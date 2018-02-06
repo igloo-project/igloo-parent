@@ -23,8 +23,6 @@ import com.sun.jersey.core.impl.provider.entity.MimeMultipartProvider;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 
-import org.iglooproject.spring.config.ExtendedApplicationContextInitializer;
-
 public final class RestTestUtils {
 	
 	public static SelectorThread getSelectorThread(Class<?> applicationConfigClass,
@@ -51,7 +49,6 @@ public final class RestTestUtils {
 				testContextPath, testServletPath, enableJPA);
 		
 		adapter.addContextParameter(ContextLoader.CONTEXT_CLASS_PARAM, AnnotationConfigWebApplicationContext.class.getName());
-		adapter.addContextParameter(ContextLoader.CONTEXT_INITIALIZER_CLASSES_PARAM, ExtendedApplicationContextInitializer.class.getName());
 		adapter.addContextParameter(ContextLoader.CONFIG_LOCATION_PARAM, javaConfigClass.getName());
 		
 		return GrizzlyServerFactory.create(baseUri, adapter);

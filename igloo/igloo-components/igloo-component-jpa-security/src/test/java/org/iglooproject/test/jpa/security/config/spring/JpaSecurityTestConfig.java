@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
+import org.igloo.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
@@ -16,6 +16,8 @@ import org.iglooproject.test.jpa.security.business.JpaSecurityTestBusinessPackag
 @ApplicationDescription(name = "igloo-component-security")
 @ConfigurationLocations(locations = {
 		"classpath:igloo-component-jpa.properties",
+		ConfigurationPropertiesUrlConstants.JPA_COMMON,
+		ConfigurationPropertiesUrlConstants.JPA_SECURITY_COMMON,
 		"classpath:jpa-security-test.properties"
 })
 @ComponentScan(basePackageClasses = {

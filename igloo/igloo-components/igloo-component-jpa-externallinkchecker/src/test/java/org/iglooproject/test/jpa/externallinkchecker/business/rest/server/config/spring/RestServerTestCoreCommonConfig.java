@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
+import org.igloo.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
 import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
 import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
@@ -15,6 +15,7 @@ import org.iglooproject.test.jpa.externallinkchecker.business.rest.server.RestSe
 @ApplicationDescription(name = "rest-test-server")
 @ConfigurationLocations(locations = {
 		"classpath:configuration-private.properties",
+		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		"classpath:rest-server.properties"
 })
 @Import({

@@ -1,5 +1,6 @@
 package org.iglooproject.test.search.config.spring;
 
+import org.igloo.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
 import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
 import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
@@ -15,8 +16,10 @@ import org.springframework.context.annotation.Import;
 @ConfigurationLocations(locations = {
 		"classpath:igloo-component-jpa.properties",
 		"classpath:configuration-private.properties",
-		"classpath:igloo-hibernate.properties",
-		"classpath:igloo-hibernate-search.properties"
+		ConfigurationPropertiesUrlConstants.JPA_COMMON,
+		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
+		"classpath:igloo-jpa.properties",
+		"classpath:igloo-jpa-search.properties"
 })
 @Import({
 	JpaSearchJpaTestConfig.class,

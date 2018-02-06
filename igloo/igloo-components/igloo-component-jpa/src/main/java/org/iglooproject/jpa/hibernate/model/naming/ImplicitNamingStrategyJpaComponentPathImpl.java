@@ -1,13 +1,13 @@
 package org.iglooproject.jpa.hibernate.model.naming;
 
-import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl;
+import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.model.source.spi.AttributePath;
 
-public class ImplicitNamingStrategyLegacyJpaComponentPathImpl extends ImplicitNamingStrategyLegacyJpaImpl {
+public class ImplicitNamingStrategyJpaComponentPathImpl extends ImplicitNamingStrategyJpaCompliantImpl {
 	
 	private static final long serialVersionUID = 6365899992934883501L;
 	
-	public static final ImplicitNamingStrategyLegacyJpaComponentPathImpl INSTANCE = new ImplicitNamingStrategyLegacyJpaComponentPathImpl();
+	public static final ImplicitNamingStrategyJpaComponentPathImpl INSTANCE = new ImplicitNamingStrategyJpaComponentPathImpl();
 	
 	@Override
 	protected String transformAttributePath(AttributePath attributePath) {

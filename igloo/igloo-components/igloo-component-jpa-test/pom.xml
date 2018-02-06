@@ -29,6 +29,13 @@
 			<scope>compile</scope>
 			<type>pom</type>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-config-test</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
 	</dependencies>
 	
