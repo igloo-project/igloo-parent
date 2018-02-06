@@ -30,7 +30,7 @@ public class TestInfinispanCluster extends TestBase {
 		
 		// start test instance
 		String nodeName = "node main";
-		this.cacheManager = new TestCacheManagerBuilder(nodeName, null).build();
+		this.cacheManager = new TestCacheManagerBuilder(nodeName, null, "test").build();
 		InfinispanClusterServiceImpl cluster =
 				new InfinispanClusterServiceImpl(nodeName, cacheManager, new SimpleRolesProvider(), null, null);
 		cluster.init();

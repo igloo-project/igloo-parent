@@ -24,7 +24,7 @@ public class InfinispanClusterProcess implements Runnable {
 
 	@Override
 	public void run() {
-		final EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder(nodeName, taskName).build();
+		final EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder(nodeName, taskName, "test").build();
 		InfinispanClusterServiceImpl cluster =
 				new InfinispanClusterServiceImpl(nodeName, cacheManager, new SimpleRolesProvider(), null, null);
 		cluster.init();

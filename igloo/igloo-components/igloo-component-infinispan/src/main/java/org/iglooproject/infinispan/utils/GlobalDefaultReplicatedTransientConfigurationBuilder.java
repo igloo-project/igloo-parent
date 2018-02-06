@@ -35,8 +35,10 @@ public class GlobalDefaultReplicatedTransientConfigurationBuilder extends Global
 	/**
 	 * @see GlobalJmxStatisticsConfigurationBuilder#cacheManagerName(String)
 	 */
-	public GlobalConfigurationChildBuilder cacheManagerName(String cacheManagerName) {
-		return globalJmxStatistics().enable().cacheManagerName(cacheManagerName).jmxDomain(cacheManagerName);
+	public GlobalDefaultReplicatedTransientConfigurationBuilder cacheManagerName(String cacheManagerName) {
+		super.defaultCacheName(cacheManagerName);
+		globalJmxStatistics().enable().cacheManagerName(cacheManagerName).jmxDomain(cacheManagerName);
+		return this;
 	}
 
 	/**

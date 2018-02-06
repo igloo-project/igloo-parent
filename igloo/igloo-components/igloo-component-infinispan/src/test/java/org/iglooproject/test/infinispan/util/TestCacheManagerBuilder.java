@@ -4,14 +4,13 @@ import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
 import java.util.Properties;
 
+import org.iglooproject.infinispan.utils.DefaultReplicatedTransientConfigurationBuilder;
+import org.iglooproject.infinispan.utils.GlobalDefaultReplicatedTransientConfigurationBuilder;
 import org.infinispan.configuration.cache.Configuration;
 import org.infinispan.configuration.global.GlobalConfiguration;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.slf4j.MDC;
-
-import org.iglooproject.infinispan.utils.DefaultReplicatedTransientConfigurationBuilder;
-import org.iglooproject.infinispan.utils.GlobalDefaultReplicatedTransientConfigurationBuilder;
 
 public class TestCacheManagerBuilder {
 
@@ -21,9 +20,13 @@ public class TestCacheManagerBuilder {
 
 	private final String taskName;
 
-	public TestCacheManagerBuilder(String name, String taskName) {
+	private final String cacheName;
+
+
+	public TestCacheManagerBuilder(String name, String taskName, String cacheName) {
 		this.name = name;
 		this.taskName = taskName;
+		this.cacheName = cacheName;
 	}
 
 	public EmbeddedCacheManager build() {
@@ -35,7 +38,8 @@ public class TestCacheManagerBuilder {
 		properties.put("configurationFile", "test-jgroups-tcp.xml");
 		
 		GlobalConfiguration globalConfiguration =
-				new GlobalDefaultReplicatedTransientConfigurationBuilder(properties).nodeName(name).build();
+				new GlobalDefaultReplicatedTransientConfigurationBuilder(properties)
+					.cacheManagerName(cacheName).nodeName(name).build();
 		Configuration configuration =
 				new DefaultReplicatedTransientConfigurationBuilder().build();
 		EmbeddedCacheManager cacheManager = new DefaultCacheManager(globalConfiguration, configuration, false);

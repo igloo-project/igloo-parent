@@ -22,7 +22,7 @@ public class SimpleProcess implements Runnable {
 
 	@Override
 	public void run() {
-		final EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder(nodeName, taskName).build();
+		final EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder(nodeName, taskName, "test").build();
 		cacheManager.start();
 		
 		while (!Thread.currentThread().isInterrupted()) {
