@@ -6,7 +6,6 @@ import java.util.Date;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.infinispan.model.AddressWrapper;
 import org.iglooproject.infinispan.model.INode;
-import org.jgroups.Address;
 
 public class Node implements Serializable, INode {
 

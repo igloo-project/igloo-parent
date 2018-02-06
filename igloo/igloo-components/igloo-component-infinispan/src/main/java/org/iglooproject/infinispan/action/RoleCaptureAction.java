@@ -4,7 +4,6 @@ import org.iglooproject.infinispan.model.AddressWrapper;
 import org.iglooproject.infinispan.model.IRole;
 import org.iglooproject.infinispan.model.impl.SimpleAction;
 import org.javatuples.Pair;
-import org.jgroups.Address;
 
 public class RoleCaptureAction extends SimpleAction<Pair<SwitchRoleResult, String>> {
 

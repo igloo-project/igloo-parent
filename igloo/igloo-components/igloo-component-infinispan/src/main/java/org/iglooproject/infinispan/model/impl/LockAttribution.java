@@ -3,7 +3,6 @@ package org.iglooproject.infinispan.model.impl;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.jgroups.Address;
 import org.iglooproject.infinispan.model.AddressWrapper;
 import org.iglooproject.infinispan.model.ILockAttribution;
 
