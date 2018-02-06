@@ -39,7 +39,7 @@ public class TestSimpleCluster extends TestBase {
 		
 		LOGGER.debug("waiting nodes");
 		try {
-			waitNodes(cacheManager, nodeNumber + 1, 30, TimeUnit.SECONDS);
+			waitNodes(cacheManager, nodeNumber + 1, 20, TimeUnit.SECONDS);
 		} catch (TimeoutException e) {
 			Assert.fail(String.format("Node number %d not reached before timeout", nodeNumber + 1));
 		}

@@ -95,6 +95,7 @@ public abstract class TestBase {
 
 	@After
 	public void shutdownProcesses() {
+		LOGGER.debug("Stopping infinispan test {} (teardown whole cluster)", getClass().getSimpleName());
 		shutdownProcesses(true);
 	}
 
@@ -111,32 +112,34 @@ public abstract class TestBase {
 		});
 		if (cacheManager != null) {
 			for (Process process : processesRegistry) {
-				try {
-					LOGGER.debug("process destroy asked {}", process);
-					final int numView = cacheManager.getMembers().size();
-					LOGGER.debug("process actual size {}", numView);
-					process.destroy();
-					
-					// wait for shutdown before stopping next node
-					waitForEvent(monitor, new Callable<Boolean>() {
-						@Override
-						public Boolean call() throws Exception {
-							if (LOGGER.isDebugEnabled()) {
-								LOGGER.debug("checking view size expected {} : actual {}", numView - 1,
-										cacheManager.getMembers().size());
-							}
-							
-							return cacheManager.getMembers().size() <= numView - 1;
-						}
-					}, 20, TimeUnit.SECONDS);
-					LOGGER.debug("process destroy viewed in cluster {}", process);
-				} catch (RuntimeException | InterruptedException | TimeoutException | ExecutionException e) {
-					if (e instanceof InterruptedException) {
-						Thread.currentThread().interrupt();
-					} else {
-						LOGGER.warn("Error stopping threads", e);
-					}
-				}
+				LOGGER.debug("process destroy asked {}", process);
+				final int numView = cacheManager.getMembers().size();
+				LOGGER.debug("process actual size {}", numView);
+				process.destroy();
+				
+				// enable this code to stop nodes one-by-one
+//				try {
+//					
+//					// wait for shutdown before stopping next node
+//					waitForEvent(monitor, new Callable<Boolean>() {
+//						@Override
+//						public Boolean call() throws Exception {
+//							if (LOGGER.isDebugEnabled()) {
+//								LOGGER.debug("checking view size expected {} : actual {}", numView - 1,
+//										cacheManager.getMembers().size());
+//							}
+//							
+//							return cacheManager.getMembers().size() <= numView - 1;
+//						}
+//					}, 20, TimeUnit.SECONDS);
+//					LOGGER.debug("process destroy viewed in cluster {}", process);
+//				} catch (InterruptedException | TimeoutException | ExecutionException e) {
+//					if (e instanceof InterruptedException) {
+//						Thread.currentThread().interrupt();
+//					} else {
+//						LOGGER.warn("Error stopping threads", e);
+//					}
+//				}
 			}
 			
 			for (Process process : processesRegistry) {
@@ -149,6 +152,25 @@ public abstract class TestBase {
 					} else {
 						LOGGER.warn("Error stopping threads", e);
 					}
+				}
+			}
+			
+			try {
+				waitForEvent(monitor, new Callable<Boolean>() {
+					@Override
+					public Boolean call() throws Exception {
+						if (LOGGER.isDebugEnabled()) {
+							LOGGER.debug("checking view size expected {} : actual {}", 1,
+									cacheManager.getMembers().size());
+						}
+						return cacheManager.getMembers().size() <= 1;
+					}
+				}, 20, TimeUnit.SECONDS);
+			} catch (InterruptedException | TimeoutException | ExecutionException e) {
+				if (e instanceof InterruptedException) {
+					Thread.currentThread().interrupt();
+				} else {
+					LOGGER.warn("Threads stopped but view not updated", e);
 				}
 			}
 			

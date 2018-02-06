@@ -10,6 +10,8 @@ import java.util.concurrent.TimeoutException;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.remoting.transport.Address;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
@@ -19,6 +21,8 @@ import org.iglooproject.test.infinispan.util.TestConstants;
 import org.iglooproject.test.infinispan.util.tasks.SimpleMessagingTask;
 
 public class TestMessage extends TestBase {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(TestMessage.class);
 
 	/**
 	 * Simple messaging test.
@@ -56,10 +60,13 @@ public class TestMessage extends TestBase {
 		Callable<Boolean> test = new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("checking messages expected {} : actual {}", nodeNumber, messages.keySet().size());
+				}
 				return messages.keySet().size() >= nodeNumber;
 			}
 		};
-		waitForEvent(monitor, test, 10, TimeUnit.SECONDS);
+		waitForEvent(monitor, test, 20, TimeUnit.SECONDS);
 	}
 
 }
