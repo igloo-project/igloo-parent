@@ -108,13 +108,6 @@
 			<version>1.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
-		
-		<!-- Database pooling (tests) -->
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 	
 	<build>

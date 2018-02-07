@@ -23,7 +23,6 @@
 		<igloo.hibernate.version>5.2.13.Final</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
 		<igloo.jboss-logging.version>3.3.1.Final</igloo.jboss-logging.version>
-		<igloo.tomcat-jdbc.version>8.5.24</igloo.tomcat-jdbc.version>
 		<igloo.hikaricp.version>2.7.6</igloo.hikaricp.version>
 		<igloo.ehcache.version>2.10.4</igloo.ehcache.version>
 		<igloo.querydsl.version>4.1.4</igloo.querydsl.version>
@@ -547,12 +546,6 @@
 					</dependency>
 				
 				<!-- Pooling -->
-				
-					<dependency>
-						<groupId>org.apache.tomcat</groupId>
-						<artifactId>tomcat-jdbc</artifactId>
-						<version>${igloo.tomcat-jdbc.version}</version>
-					</dependency>
 					
 					<dependency>
 						<groupId>com.zaxxer</groupId>

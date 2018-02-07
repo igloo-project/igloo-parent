@@ -86,13 +86,6 @@
 			<artifactId>igloo-dependency-test</artifactId>
 			<type>pom</type>
 		</dependency>
-		
-		<!-- Database pooling (tests) -->
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 	
 	<build>

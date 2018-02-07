@@ -28,12 +28,6 @@
 			<artifactId>postgresql</artifactId>
 		</dependency>
 		
-		<!-- Pooling -->
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
-		</dependency>
-		
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
