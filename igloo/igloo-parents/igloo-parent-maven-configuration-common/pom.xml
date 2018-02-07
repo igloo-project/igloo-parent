@@ -58,10 +58,6 @@
 		<igloo.aspectj-maven-plugin.version>1.8</igloo.aspectj-maven-plugin.version>
 	</properties>
 	
-	<prerequisites>
-		<maven>${minimal.maven.version}</maven>
-	</prerequisites>
-	
 	<build>
 		<plugins>
 			<plugin>
