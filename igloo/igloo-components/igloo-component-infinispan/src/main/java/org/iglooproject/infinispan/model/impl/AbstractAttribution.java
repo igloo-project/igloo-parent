@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.iglooproject.infinispan.model.AddressWrapper;
 import org.iglooproject.infinispan.model.IAttribution;
-import org.jgroups.Address;
 
 import com.google.common.base.Objects;
 

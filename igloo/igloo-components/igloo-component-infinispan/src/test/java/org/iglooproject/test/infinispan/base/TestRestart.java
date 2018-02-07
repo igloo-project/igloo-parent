@@ -61,7 +61,7 @@ public class TestRestart extends TestBase {
 			}
 		};
 		// wait for messages from other nodes
-		waitForEvent(monitor, testOne, 10, TimeUnit.SECONDS);
+		waitForEvent(monitor, testOne, 20, TimeUnit.SECONDS);
 		
 		// shutdown all nodes
 		shutdownProcesses(false);
@@ -94,7 +94,7 @@ public class TestRestart extends TestBase {
 				return messages.keySet().size() == 6;
 			}
 		};
-		waitForEvent(monitor, testTwo, 10, TimeUnit.SECONDS);
+		waitForEvent(monitor, testTwo, 20, TimeUnit.SECONDS);
 	}
 
 }

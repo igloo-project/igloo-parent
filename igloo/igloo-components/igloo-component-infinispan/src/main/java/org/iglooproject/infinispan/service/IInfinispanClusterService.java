@@ -23,7 +23,6 @@ import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
 import org.infinispan.remoting.transport.jgroups.JGroupsAddress;
 import org.javatuples.Pair;
-import org.jgroups.Address;
 
 public interface IInfinispanClusterService {
 

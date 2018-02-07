@@ -9,7 +9,6 @@ import java.util.concurrent.TimeoutException;
 import org.iglooproject.infinispan.model.AddressWrapper;
 import org.iglooproject.infinispan.model.IAction;
 import org.iglooproject.infinispan.service.IInfinispanClusterService;
-import org.jgroups.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

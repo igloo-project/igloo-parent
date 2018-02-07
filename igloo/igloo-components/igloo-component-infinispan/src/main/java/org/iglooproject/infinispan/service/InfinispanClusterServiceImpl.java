@@ -43,9 +43,9 @@ import org.infinispan.Cache;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.notifications.cachelistener.event.CacheEntryEvent;
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
+import org.infinispan.remoting.transport.Address;
 import org.infinispan.remoting.transport.jgroups.JGroupsAddress;
 import org.javatuples.Pair;
-import org.jgroups.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -523,7 +523,12 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public AddressWrapper getLocalAddress() {
-		return INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS.apply(cacheManager.getAddress());
+		Address address = cacheManager.getAddress();
+		if (address != null) {
+			return INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS.apply(address);
+		} else {
+			return null;
+		}
 	}
 
 	private AddressWrapper getAddress() {
@@ -871,6 +876,11 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				@Override
 				public void run() {
 					try {
+						AddressWrapper address = getLocalAddress();
+						if (address == null) {
+							LOGGER.warn("Message received but cache stopped at processing time: {}", action);
+							return;
+						}
 						LOGGER.debug("action {} on {}", action.getClass().getSimpleName(), getLocalAddress());
 						action.setInfinispanClusterService(InfinispanClusterServiceImpl.this);
 						if (actionFactory != null) {
@@ -955,16 +965,6 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		@Override
 		public AddressWrapper apply(org.infinispan.remoting.transport.Address input) {
 			return AddressWrapper.from(((JGroupsAddress) input).getJGroupsAddress());
-		}
-	}
-
-	private static final class ToInfinispanAddress
-			implements SerializableFunction<Address, org.infinispan.remoting.transport.Address> {
-		private static final long serialVersionUID = -6249484113042442830L;
-
-		@Override
-		public org.infinispan.remoting.transport.Address apply(Address input) {
-			return new JGroupsAddress(input);
 		}
 	}
 
@@ -1112,6 +1112,4 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	private static final ToJgroupsAddress INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS = new ToJgroupsAddress();
-	private static final ToInfinispanAddress JGROUPS_ADDRESS_TO_INFINISPAN_ADDRESS = new ToInfinispanAddress();
-
 }
