@@ -54,7 +54,6 @@
 		<igloo.wagon-ssh-external-plugin.version>3.0.0</igloo.wagon-ssh-external-plugin.version>
 		
 		<igloo.maven-processor-plugin.version>3.3.1</igloo.maven-processor-plugin.version>
-		<igloo.maven-yui-compressor-plugin.version>1.5.1</igloo.maven-yui-compressor-plugin.version>
 		<igloo.aspectj-maven-plugin.version>1.8</igloo.aspectj-maven-plugin.version>
 	</properties>
 	
@@ -277,30 +276,6 @@
 					<version>${igloo.maven-dependency-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>net.alchim31.maven</groupId>
-					<artifactId>yuicompressor-maven-plugin</artifactId>
-					<version>${igloo.maven-yui-compressor-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>default</id>
-							<goals>
-								<goal>compress</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<includes>
-							<include>**/*.css</include>
-							<include>**/*.js</include>
-						</includes>
-						<suffix>.min</suffix>
-						<linebreakpos>10000</linebreakpos>
-						<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-						<!-- TODO LAL restore js/css minification -->
-						<skip>true</skip>
-					</configuration>
-				</plugin>
-				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>wagon-maven-plugin</artifactId>
 					<version>${igloo.wagon-maven-plugin.version}</version>
@@ -325,19 +300,6 @@
 					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>net.alchim31.maven</groupId>
-										<artifactId>yuicompressor-maven-plugin</artifactId>
-										<versionRange>[1.2,)</versionRange>
-										<goals>
-											<goal>compress</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>org.apache.maven.plugins</groupId>
