@@ -121,8 +121,8 @@
 				See https://maven.apache.org/guides/mini/guide-building-jdk14-on-jdk15.html
 				
 				Please be aware that code generation tools may be affected by the JDK used to compile, and thus
-				may trigger a failure (because they automatically referenced newer classes or methods). In this case,
-				the only way to make things work is to use the proper JDK.
+				may trigger a failure (because they automatically reference newer classes or methods). In this case,
+				the only way to make things work is to use the proper JDK (use maven toolchains plugin).
 			-->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
