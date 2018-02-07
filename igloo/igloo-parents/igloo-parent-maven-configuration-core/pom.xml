@@ -29,8 +29,6 @@
 		
 		<igloo.guava.version>24.0-jre</igloo.guava.version>
 		
-		<igloo.joda-time.version>2.9.9</igloo.joda-time.version>
-		
 		<igloo.postgresql.version>42.2.1</igloo.postgresql.version>
 		<igloo.pgjdbc-ng.version>0.7.1</igloo.pgjdbc-ng.version>
 		<igloo.oracle10g.version>10.2.0.5</igloo.oracle10g.version>
@@ -159,7 +157,6 @@
 		<igloo.mockito.version>2.13.0</igloo.mockito.version>
 		<igloo.assertj.version>3.9.0</igloo.assertj.version>
 		<igloo.assertj-guava.version>3.1.0</igloo.assertj-guava.version>
-		<igloo.assertj-joda-time.version>2.0.0</igloo.assertj-joda-time.version>
 		<igloo.grizzly.version>1.9.65</igloo.grizzly.version>
 		<igloo.findbugs-annotations.version>3.0.1u2</igloo.findbugs-annotations.version>
 		<igloo.findbugs-jsr305.version>3.0.2</igloo.findbugs-jsr305.version>
@@ -726,12 +723,6 @@
 			<!-- Utils -->
 			
 				<dependency>
-					<groupId>joda-time</groupId>
-					<artifactId>joda-time</artifactId>
-					<version>${igloo.joda-time.version}</version>
-				</dependency>
-		
-				<dependency>
 					<groupId>org.javatuples</groupId>
 					<artifactId>javatuples</artifactId>
 					<version>${igloo.javatuples.version}</version>
@@ -1218,11 +1209,6 @@
 					<groupId>org.assertj</groupId>
 					<artifactId>assertj-guava</artifactId>
 					<version>${igloo.assertj-guava.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.assertj</groupId>
-					<artifactId>assertj-joda-time</artifactId>
-					<version>${igloo.assertj-joda-time.version}</version>
 				</dependency>
 				
 				<dependency>

@@ -1,4 +1,4 @@
-package org.iglooproject.commons.util.collections;
+package org.iglooproject.commons.util.collections.range.time;
 
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;

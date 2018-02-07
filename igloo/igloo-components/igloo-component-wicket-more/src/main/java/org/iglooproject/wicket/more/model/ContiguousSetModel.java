@@ -2,12 +2,11 @@ package org.iglooproject.wicket.more.model;
 
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.commons.util.collections.range.time.PartitionDiscreteDomain;
 
 import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
-
-import org.iglooproject.commons.util.collections.PartitionDiscreteDomain;
 
 public class ContiguousSetModel<C extends Comparable<?>> extends AbstractReadOnlyModel<ContiguousSet<C>> {
 	
