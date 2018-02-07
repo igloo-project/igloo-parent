@@ -1322,40 +1322,32 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<version>${igloo.maven-enforcer-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>enforce</id>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<DependencyConvergence />
-								<bannedDependencies>
-									<excludes>
-										<exclude>org.springframework:spring</exclude>
-										<exclude>org.springframework:spring-ldap</exclude>
-										<exclude>commons-logging:commons-logging</exclude>
-										<exclude>cglib:cglib</exclude>
-										<exclude>rhino:rhino</exclude>
-										<exclude>rhino:js</exclude>
-										<exclude>javassist:javassist</exclude>
-										<exclude>apache-xerces:xml-apis</exclude>
-										<exclude>javax.servlet:servlet-api</exclude>
-										<exclude>net.sf.ehcache:ehcache-core</exclude>
-										<exclude>postgresql:postgresql</exclude>
-									</excludes>
-								</bannedDependencies>
-								<requireMavenVersion>
-									<version>[${minimal.maven.version},)</version>
-								</requireMavenVersion>
-								<requireJavaVersion>
-									<version>${jdk.version}</version>
-								</requireJavaVersion>
-							</rules>
-						</configuration>
-					</execution>
-				</executions>
+				<configuration>
+					<rules>
+						<DependencyConvergence />
+						<bannedDependencies>
+							<excludes>
+								<exclude>org.springframework:spring</exclude>
+								<exclude>org.springframework:spring-ldap</exclude>
+								<exclude>commons-logging:commons-logging</exclude>
+								<exclude>cglib:cglib</exclude>
+								<exclude>rhino:rhino</exclude>
+								<exclude>rhino:js</exclude>
+								<exclude>javassist:javassist</exclude>
+								<exclude>apache-xerces:xml-apis</exclude>
+								<exclude>javax.servlet:servlet-api</exclude>
+								<exclude>net.sf.ehcache:ehcache-core</exclude>
+								<exclude>postgresql:postgresql</exclude>
+							</excludes>
+						</bannedDependencies>
+						<requireMavenVersion>
+							<version>[${minimal.maven.version},)</version>
+						</requireMavenVersion>
+						<requireJavaVersion>
+							<version>${jdk.version}</version>
+						</requireJavaVersion>
+					</rules>
+				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>

@@ -32,27 +32,28 @@
 		
 		<igloo.maven-toolchains-plugin.version>1.1</igloo.maven-toolchains-plugin.version>
 		<igloo.maven-jgitflow-plugin.version>1.0-m5.1</igloo.maven-jgitflow-plugin.version>
-		<igloo.maven-compiler-plugin.version>3.6.1</igloo.maven-compiler-plugin.version>
+		<igloo.maven-compiler-plugin.version>3.7.0</igloo.maven-compiler-plugin.version>
 		<igloo.maven-resources-plugin.version>3.0.2</igloo.maven-resources-plugin.version>
-		<igloo.maven-surefire-plugin.version>2.20</igloo.maven-surefire-plugin.version>
+		<igloo.maven-surefire-plugin.version>2.20.1</igloo.maven-surefire-plugin.version>
 		<igloo.maven-surefire-plugin.argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=256m</igloo.maven-surefire-plugin.argLine>
 		<igloo.maven-install-plugin.version>2.5.2</igloo.maven-install-plugin.version>
-		<igloo.maven-war-plugin.version>3.1.0</igloo.maven-war-plugin.version>
-		<igloo.maven-assembly-plugin.version>3.0.0</igloo.maven-assembly-plugin.version>
-		<!-- Jar-plugin downgraded from 3.0.0 to 2.6 due to https://issues.apache.org/jira/browse/MJAR-226 -->
-		<igloo.maven-jar-plugin.version>2.6</igloo.maven-jar-plugin.version>
+		<igloo.maven-war-plugin.version>3.2.0</igloo.maven-war-plugin.version>
+		<igloo.maven-assembly-plugin.version>3.1.0</igloo.maven-assembly-plugin.version>
+		<igloo.maven-jar-plugin.version>3.0.2</igloo.maven-jar-plugin.version>
 		<igloo.maven-deploy-plugin.version>2.8.2</igloo.maven-deploy-plugin.version>
-		<igloo.maven-source-plugin.version>3.0.0</igloo.maven-source-plugin.version>
-		<igloo.maven-javadoc-plugin.version>2.10.3</igloo.maven-javadoc-plugin.version>
-		<igloo.maven-enforcer-plugin.version>1.4.1</igloo.maven-enforcer-plugin.version>
-		<igloo.maven-dependency-plugin.version>2.10</igloo.maven-dependency-plugin.version>
+		<igloo.maven-source-plugin.version>3.0.1</igloo.maven-source-plugin.version>
+		<igloo.maven-javadoc-plugin.version>3.0.0</igloo.maven-javadoc-plugin.version>
+		<igloo.maven-enforcer-plugin.version>3.0.0-M1</igloo.maven-enforcer-plugin.version>
+		<igloo.maven-dependency-plugin.version>3.0.2</igloo.maven-dependency-plugin.version>
 		<igloo.animal-sniffer-maven-plugin.version>1.16</igloo.animal-sniffer-maven-plugin.version>
-		<igloo.exec-maven-plugin.version>1.5.0</igloo.exec-maven-plugin.version>
+		<igloo.exec-maven-plugin.version>1.6.0</igloo.exec-maven-plugin.version>
+		<igloo.maven-clean-plugin.version>3.0.0</igloo.maven-clean-plugin.version>
+		<igloo.maven-site-plugin.version>3.7</igloo.maven-site-plugin.version>
 		
 		<igloo.wagon-maven-plugin.version>1.0</igloo.wagon-maven-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.0.0</igloo.wagon-ssh-external-plugin.version>
 		
-		<igloo.maven-processor-plugin.version>3.3.1</igloo.maven-processor-plugin.version>
+		<igloo.maven-processor-plugin.version>3.3.2</igloo.maven-processor-plugin.version>
 		<igloo.aspectj-maven-plugin.version>1.8</igloo.aspectj-maven-plugin.version>
 	</properties>
 	
@@ -78,39 +79,31 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<version>${igloo.maven-enforcer-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>enforce</id>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<DependencyConvergence />
-								<bannedDependencies>
-									<excludes>
-										<exclude>org.springframework:spring</exclude>
-										<exclude>org.springframework:spring-ldap</exclude>
-										<exclude>commons-logging:commons-logging</exclude>
-										<exclude>cglib:cglib</exclude>
-										<exclude>rhino:rhino</exclude>
-										<exclude>rhino:js</exclude>
-										<exclude>javassist:javassist</exclude>
-										<exclude>xml-apis:xml-apis</exclude>
-										<exclude>apache-xerces:xml-apis</exclude>
-										<exclude>javax.servlet:servlet-api</exclude>
-									</excludes>
-								</bannedDependencies>
-								<requireMavenVersion>
-									<version>[${minimal.maven.version},)</version>
-								</requireMavenVersion>
-								<requireJavaVersion>
-									<version>${minimal.jdk.version}</version>
-								</requireJavaVersion>
-							</rules>
-						</configuration>
-					</execution>
-				</executions>
+				<configuration>
+					<rules>
+						<DependencyConvergence />
+						<bannedDependencies>
+							<excludes>
+								<exclude>org.springframework:spring</exclude>
+								<exclude>org.springframework:spring-ldap</exclude>
+								<exclude>commons-logging:commons-logging</exclude>
+								<exclude>cglib:cglib</exclude>
+								<exclude>rhino:rhino</exclude>
+								<exclude>rhino:js</exclude>
+								<exclude>javassist:javassist</exclude>
+								<exclude>xml-apis:xml-apis</exclude>
+								<exclude>apache-xerces:xml-apis</exclude>
+								<exclude>javax.servlet:servlet-api</exclude>
+							</excludes>
+						</bannedDependencies>
+						<requireMavenVersion>
+							<version>[${minimal.maven.version},)</version>
+						</requireMavenVersion>
+						<requireJavaVersion>
+							<version>${minimal.jdk.version}</version>
+						</requireJavaVersion>
+					</rules>
+				</configuration>
 			</plugin>
 
 			<!-- Enforce code compatibility with the target JRE, even when building with a newer JDK.
@@ -268,6 +261,16 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
 					<version>${igloo.maven-dependency-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>${igloo.maven-clean-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>${igloo.maven-site-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
