@@ -37,7 +37,6 @@
 		<igloo.maven-surefire-plugin.version>2.20</igloo.maven-surefire-plugin.version>
 		<igloo.maven-surefire-plugin.argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=256m</igloo.maven-surefire-plugin.argLine>
 		<igloo.maven-install-plugin.version>2.5.2</igloo.maven-install-plugin.version>
-		<igloo.maven-release-plugin.version>2.5.3</igloo.maven-release-plugin.version>
 		<igloo.maven-war-plugin.version>3.1.0</igloo.maven-war-plugin.version>
 		<igloo.maven-assembly-plugin.version>3.0.0</igloo.maven-assembly-plugin.version>
 		<!-- Jar-plugin downgraded from 3.0.0 to 2.6 due to https://issues.apache.org/jira/browse/MJAR-226 -->
@@ -235,11 +234,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-install-plugin</artifactId>
 					<version>${igloo.maven-install-plugin.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>${igloo.maven-release-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
