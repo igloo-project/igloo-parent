@@ -3,7 +3,6 @@ package org.iglooproject.basicapp.web.application.administration.component;
 import static org.iglooproject.commons.util.functional.Predicates2.isTrue;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -39,11 +38,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-public class UserProfilePanel<U extends User> extends GenericPanel<U> {
+public class UserDetailDescriptionPanel<U extends User> extends GenericPanel<U> {
 
 	private static final long serialVersionUID = 8651898170121443991L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserProfilePanel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailDescriptionPanel.class);
 
 	@SpringBean
 	private IUserService userService;
@@ -51,25 +50,25 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
 
-	public UserProfilePanel(String id, final IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
+	public UserDetailDescriptionPanel(String id, final IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
 		super(id, userModel);
 		
-		AbstractUserPopup<U> updatePopup = createUpdatePopup("updatePopup", getModel(), typeDescriptor);
+		AbstractUserPopup<U> editPopup = createEditPopup("editPopup", getModel(), typeDescriptor);
 		
-		UserPasswordUpdatePopup<U> passwordUpdatePopup = new UserPasswordUpdatePopup<>("passwordUpdatePopup", getModel());
+		UserPasswordUpdatePopup<U> passwordEditPopup = new UserPasswordUpdatePopup<>("passwordEditPopup", getModel());
 		
-		IModel<String> confirmationTextModel = new StringResourceModel("administration.user.disable.confirmation.text", userModel);
+		IModel<String> confirmationTextModel = new StringResourceModel("administration.user.action.disable.confirmation.content", userModel);
 		
 		IModel<String> emailModel = BindingModel.of(userModel, Bindings.user().email());
 		
 		add(
-				updatePopup,
-				new BlankLink("updateButton")
-						.add(new AjaxModalOpenBehavior(updatePopup, MouseEvent.CLICK)),
+				editPopup,
+				new BlankLink("edit")
+						.add(new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK)),
 				
-				passwordUpdatePopup,
-				new BlankLink("passwordUpdateButton")
-						.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK))
+				passwordEditPopup,
+				new BlankLink("passwordEdit")
+						.add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
 						.add(
 								Condition.predicate(
 										Model.of(securityManagementService.getOptions(getModelObject()).isPasswordAdminUpdateEnabled()),
@@ -78,8 +77,8 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 						),
 				
 				AjaxConfirmLink.<U>build()
-						.title(new ResourceModel("administration.user.password.recovery.reset.confirmation.title"))
-						.content(new StringResourceModel("administration.user.password.recovery.reset.confirmation.text").setModel(userModel))
+						.title(new ResourceModel("administration.user.action.password.recovery.reset.confirmation.title"))
+						.content(new StringResourceModel("administration.user.action.password.recovery.reset.confirmation.content", userModel))
 						.confirm()
 						.onClick(new AbstractAjaxAction() {
 							private static final long serialVersionUID = 1L;
@@ -91,7 +90,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 											UserPasswordRecoveryRequestInitiator.ADMIN,
 											BasicApplicationSession.get().getUser()
 									);
-									getSession().success(getString("administration.user.password.recovery.reset.success"));
+									getSession().success(getString("administration.user.action.password.recovery.reset.success"));
 									target.add(getPage());
 								} catch (Exception e) {
 									LOGGER.error("Error occured while sending a password recovery request", e);
@@ -114,7 +113,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 					public void onClick() {
 						try {
 							userService.setActive(getModelObject(), true);
-							getSession().success(getString("administration.user.enable.success"));
+							getSession().success(getString("administration.user.action.enable.success"));
 						} catch (Exception e) {
 							LOGGER.error("Error occured while enabling user", e);
 							getSession().error(getString("common.error.unexpected"));
@@ -128,7 +127,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 				},
 				
 				AjaxConfirmLink.<U>build()
-						.title(new ResourceModel("administration.user.disable.confirmation.title"))
+						.title(new ResourceModel("administration.user.action.disable.confirmation.title"))
 						.content(confirmationTextModel)
 						.confirm()
 						.onClick(
@@ -138,7 +137,7 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 									public void execute(AjaxRequestTarget target) {
 										try {
 											userService.setActive(userModel.getObject(), false);
-											getSession().success(getString("administration.user.disable.success"));
+											getSession().success(getString("administration.user.action.disable.success"));
 										} catch (Exception e) {
 											LOGGER.error("Error occured while disabling user", e);
 											getSession().error(getString("common.error.unexpected"));
@@ -161,21 +160,23 @@ public class UserProfilePanel<U extends User> extends GenericPanel<U> {
 								}.thenShowInternal()
 						),
 				
-				new Label("username", BindingModel.of(userModel, Bindings.user().username())),
+				new CoreLabel("username", BindingModel.of(userModel, Bindings.user().username()))
+						.showPlaceholder(),
 				new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())),
 				new EmailLink("email", emailModel),
 				new DefaultPlaceholderPanel("emailPlaceholder").condition(Condition.modelNotNull(emailModel)),
-				new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()),
-						DatePattern.SHORT_DATETIME).showPlaceholder(),
-				new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()),
-						DatePattern.SHORT_DATETIME).showPlaceholder(),
-				new CoreLabel("locale", BindingModel.of(userModel, Bindings.user().locale())).showPlaceholder(),
-				new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()),
-						DatePattern.SHORT_DATETIME).showPlaceholder()
+				new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()), DatePattern.SHORT_DATETIME)
+						.showPlaceholder(),
+				new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()), DatePattern.SHORT_DATETIME)
+						.showPlaceholder(),
+				new CoreLabel("locale", BindingModel.of(userModel, Bindings.user().locale()))
+						.showPlaceholder(),
+				new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()), DatePattern.SHORT_DATETIME)
+						.showPlaceholder()
 		);
 	}
 	
-	protected AbstractUserPopup<U> createUpdatePopup(String wicketId, IModel<U> model, UserTypeDescriptor<U> typeDescriptor) {
+	protected AbstractUserPopup<U> createEditPopup(String wicketId, IModel<U> model, UserTypeDescriptor<U> typeDescriptor) {
 		return new UserPopup<U>(wicketId, getModel(), typeDescriptor);
 	}
 }

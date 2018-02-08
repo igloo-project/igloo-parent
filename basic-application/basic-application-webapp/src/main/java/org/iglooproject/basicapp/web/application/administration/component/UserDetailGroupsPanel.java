@@ -18,14 +18,13 @@ import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.web.application.administration.form.UserGroupDropDownSingleChoice;
 import org.iglooproject.basicapp.web.application.administration.model.UserGroupDataProvider;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDetailPage;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -37,11 +36,11 @@ import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserMembershipsPanel extends GenericPanel<User> {
+public class UserDetailGroupsPanel extends GenericPanel<User> {
 
 	private static final long serialVersionUID = -517286662347263793L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserMembershipsPanel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailGroupsPanel.class);
 
 	@SpringBean
 	private IUserGroupService userGroupService;
@@ -53,7 +52,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 	
 	private IModel<? extends User> userModel;
 	
-	public UserMembershipsPanel(String id, final IModel<? extends User> userModel) {
+	public UserDetailGroupsPanel(String id, final IModel<? extends User> userModel) {
 		super(id, userModel);
 		
 		this.userModel = userModel;
@@ -61,18 +60,18 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 		
 		add(
 				DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
-						.addLabelColumn(new ResourceModel("administration.usergroup.field.name"))
-							.withLink(AdministrationUserGroupDescriptionPage.MAPPER)
-							.withClass("text text-md")
+						.addLabelColumn(new ResourceModel("business.userGroup.name"))
+								.withLink(AdministrationUserGroupDetailPage.MAPPER)
+								.withClass("text text-md")
 						.addActionColumn()
-								.addConfirmAction(ActionRenderers.constant("administration.usergroup.members.delete", "fa fa-fw fa-times", BootstrapColor.DANGER))
-										.title(new ResourceModel("administration.usergroup.members.delete.confirmation.title"))
+								.addConfirmAction(ActionRenderers.remove())
+										.title(new ResourceModel("administration.userGroup.detail.users.action.remove.confirmation.title"))
 										.content(new AbstractDetachableFactory<IModel<UserGroup>, IModel<String>>() {
 											private static final long serialVersionUID = 1L;
 											@Override
 											public IModel<String> create(IModel<UserGroup> parameter) {
-												return new StringResourceModel("administration.usergroup.members.delete.confirmation.text")
-														.setParameters(UserMembershipsPanel.this.getModelObject().getFullName(), parameter.getObject().getName());
+												return new StringResourceModel("administration.userGroup.detail.users.action.remove.confirmation.content")
+														.setParameters(UserDetailGroupsPanel.this.getModelObject().getFullName(), parameter.getObject().getName());
 											}
 										})
 										.confirm()
@@ -85,7 +84,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 													User user = userModel.getObject();
 													
 													userGroupService.removeUser(userGroup, user);
-													Session.get().success(getString("administration.usergroup.members.delete.success"));
+													Session.get().success(getString("common.success"));
 													throw new RestartResponseException(getPage());
 												} catch (RestartResponseException e) {
 													throw e;
@@ -99,7 +98,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 										.hideLabel()
 								.withClassOnElements(CssClassConstants.BTN_XS)
 								.end()
-								.withClass("actions")
+								.withClass("actions actions-1x")
 						.bootstrapCard()
 								.addIn(AddInPlacement.FOOTER_MAIN,  new AbstractParameterizedComponentFactory<Component, Component>() {
 									private static final long serialVersionUID = 1L;
@@ -110,8 +109,8 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 									}
 								})
 								.ajaxPager(AddInPlacement.HEADING_RIGHT)
-								.count("administration.user.groups.count")
-						.build("userMemberships", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION))
+								.count("administration.user.detail.groups.count")
+						.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION))
 		);
 	}
 	
@@ -126,7 +125,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 		private static final long serialVersionUID = 1L;
 		
 		public UserGroupAddFragment(String id) {
-			super(id, "addGroup", UserMembershipsPanel.this);
+			super(id, "addGroup", UserDetailGroupsPanel.this);
 			
 			IModel<UserGroup> userGroupModel = new GenericEntityModel<Long, UserGroup>();
 			
@@ -135,22 +134,22 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 							.add(
 									new UserGroupDropDownSingleChoice("userGroup", userGroupModel)
 											.setRequired(true)
-											.setLabel(new ResourceModel("administration.usergroup.group"))
+											.setLabel(new ResourceModel("administration.userGroup.group"))
 											.add(new LabelPlaceholderBehavior()),
 									new AjaxButton("submit") {
 										private static final long serialVersionUID = 1L;
 										@Override
 										protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 											try {
-												User user = UserMembershipsPanel.this.getModelObject();
+												User user = UserDetailGroupsPanel.this.getModelObject();
 												UserGroup userGroup = userGroupModel.getObject();
 												
 												if (!user.getGroups().contains(userGroup)) {
 													userGroupService.addUser(userGroup, user);
-													getSession().success(getString("administration.usergroup.members.add.success"));
+													getSession().success(getString("common.success"));
 												} else {
 													LOGGER.warn("User already added to this group.");
-													getSession().warn(getString("administration.usergroup.members.add.alreadyMember"));
+													getSession().warn(getString("administration.userGroup.detail.users.action.add.error.duplicate"));
 												}
 												
 												userGroupModel.setObject(null);

@@ -2,12 +2,12 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
-		<div wicket:id="updatePopup" />
-		<div wicket:id="passwordUpdatePopup" />
+		<div wicket:id="editPopup" />
+		<div wicket:id="passwordEditPopup" />
 		
 		<div class="card">
 			<div class="card-body">
-				<h5 class="card-title"><wicket:message key="administration.user.profile" /></h5>
+				<h5 class="card-title"><wicket:message key="administration.user.detail.description" /></h5>
 				
 				<div class="description-section">
 					<div class="description-group">
@@ -116,34 +116,34 @@
 				
 				<div class="card-action">
 					<div class="card-action-container">
-						<div wicket:enclosure="updateButton" class="card-action-item">
-							<button type="button" wicket:id="updateButton" class="btn btn-primary"> 
+						<div wicket:enclosure="edit" class="card-action-item">
+							<button type="button" wicket:id="edit" class="btn btn-primary"> 
 								<span class="fa fa-pencil-alt" /> 
-								<wicket:message key="common.action.update" />
+								<wicket:message key="common.action.edit" />
 							</button>
 						</div>
-						<div wicket:enclosure="passwordUpdateButton" class="card-action-item">
-							<button type="button" wicket:id="passwordUpdateButton" class="btn btn-primary">
+						<div wicket:enclosure="passwordEdit" class="card-action-item">
+							<button type="button" wicket:id="passwordEdit" class="btn btn-primary">
 								<span class="fa fa-key" /> 
-								<wicket:message key="administration.user.password.update" />
+								<wicket:message key="administration.user.action.password.edit" />
 							</button>
 						</div>
 						<div wicket:enclosure="passwordReset" class="card-action-item">
 							<button type="button" wicket:id="passwordReset" class="btn btn-primary"> 
 								<span class="fa fa-unlock-alt" />
-								<wicket:message key="administration.user.password.recovery.reset" />
+								<wicket:message key="administration.user.action.password.recovery.reset" />
 							</button>
 						</div>
 						<div wicket:enclosure="enable" class="card-action-item">
 							<button type="button" wicket:id="enable" class="btn btn-success"> 
 								<span class="fa fa-check" />
-								<wicket:message key="administration.user.enable" />
+								<wicket:message key="common.action.enable" />
 							</button>
 						</div>
 						<div wicket:enclosure="disable" class="card-action-item">
 							<button type="button" wicket:id="disable" class="btn btn-danger"> 
 								<span class="fa fa-times" />
-								<wicket:message key="administration.user.disable" />
+								<wicket:message key="common.action.disable" />
 							</button>
 						</div>
 					</div>

@@ -18,12 +18,12 @@ import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserDescriptionPage;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserPortfolioPage;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserDescriptionPage;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserPortfolioPage;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserDetailPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserListPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserDetailPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserListPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDetailPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupListPage;
 import org.iglooproject.basicapp.web.application.common.converter.PostalCodeConverter;
 import org.iglooproject.basicapp.web.application.common.renderer.AuthorityRenderer;
 import org.iglooproject.basicapp.web.application.common.renderer.UserGroupRenderer;
@@ -177,12 +177,12 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountPage("/maintenance/", MaintenancePage.class);
 		
 		// Administration
-		mountPage("/administration/basic-user/", AdministrationBasicUserPortfolioPage.class);
-		mountParameterizedPage("/administration/basic-user/${" + CommonParameters.ID + "}/", AdministrationBasicUserDescriptionPage.class);
-		mountPage("/administration/technical-user/", AdministrationTechnicalUserPortfolioPage.class);
-		mountParameterizedPage("/administration/technical-user/${" + CommonParameters.ID + "}/", AdministrationTechnicalUserDescriptionPage.class);
-		mountPage("/administration/user-group/", AdministrationUserGroupPortfolioPage.class);
-		mountParameterizedPage("/administration/user-group/${" + CommonParameters.ID + "}/", AdministrationUserGroupDescriptionPage.class);
+		mountPage("/administration/basic-user/", AdministrationBasicUserListPage.class);
+		mountParameterizedPage("/administration/basic-user/${" + CommonParameters.ID + "}/", AdministrationBasicUserDetailPage.class);
+		mountPage("/administration/technical-user/", AdministrationTechnicalUserListPage.class);
+		mountParameterizedPage("/administration/technical-user/${" + CommonParameters.ID + "}/", AdministrationTechnicalUserDetailPage.class);
+		mountPage("/administration/user-group/", AdministrationUserGroupListPage.class);
+		mountParameterizedPage("/administration/user-group/${" + CommonParameters.ID + "}/", AdministrationUserGroupDetailPage.class);
 		
 		// Reference data
 		mountPage("/reference-data/", ReferenceDataPage.class);

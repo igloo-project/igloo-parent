@@ -6,70 +6,70 @@ table {
 			> th, > td {
 				&.text {
 					&.text-xs {
-						width: 100px;
+						width: 130px;
 					}
 					&.text-sm {
-						width: 150px;
+						width: 180px;
 					}
 					&.text-md {
-						width: 200px;
+						width: 230px;
 					}
 					&.text-lg {
-						width: 250px;
+						width: 280px;
 					}
 					&.text-xl {
-						width: 300px;
+						width: 330px;
 					}
 				}
 				&.code {
 					&.code-xs {
-						width: 50px;
+						width: 70px;
 					}
 					&.code-sm {
-						width: 75px;
+						width: 95px;
 					}
 					&.code-md {
-						width: 100px;
+						width: 120px;
 					}
 					&.code-lg {
-						width: 125px;
+						width: 145px;
 					}
 					&.code-xl {
-						width: 150px;
+						width: 170px;
 					}
 				}
 				&.statut {
 					&.statut-xs {
-						width: 50px;
+						width: 70px;
 					}
 					&.statut-sm {
-						width: 75px;
+						width: 95px;
 					}
 					&.statut-md {
-						width: 100px;
+						width: 120px;
 					}
 					&.statut-lg {
-						width: 125px;
+						width: 145px;
 					}
 					&.statut-xl {
-						width: 150px;
+						width: 170px;
 					}
 				}
 				&.date {
 					&.date-xs {
-						width: 60px;
+						width: 100px;
 					}
 					&.date-sm {
-						width: 70px;
-					}
-					&.date-md {
-						width: 90px;
-					}
-					&.date-lg {
 						width: 110px;
 					}
-					&.date-xl {
+					&.date-md {
 						width: 130px;
+					}
+					&.date-lg {
+						width: 150px;
+					}
+					&.date-xl {
+						width: 170px;
 					}
 				}
 				&.numeric {

@@ -34,7 +34,7 @@ import org.iglooproject.basicapp.core.security.service.ISecurityManagementServic
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupPortfolioPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupListPage;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.StylesScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.AdministrationUserTypeDescriptor;
@@ -256,12 +256,12 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 						.setCssClassesModel(Model.of("home")),
 				ReferenceDataPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.referenceData"))
 						.setCssClassesModel(Model.of("reference-data")),
-				AdministrationUserTypeDescriptor.BASIC_USER.portfolio().navigationMenuItem(new ResourceModel("navigation.administration"))
+				AdministrationUserTypeDescriptor.BASIC_USER.list().navigationMenuItem(new ResourceModel("navigation.administration"))
 						.setCssClassesModel(Model.of("administration"))
 						.setSubMenuItems(ImmutableList.of(
-								AdministrationUserTypeDescriptor.BASIC_USER.portfolio().navigationMenuItem(new ResourceModel("navigation.administration.user.basic")),
-								AdministrationUserTypeDescriptor.TECHNICAL_USER.portfolio().navigationMenuItem(new ResourceModel("navigation.administration.user.technical")),
-								AdministrationUserGroupPortfolioPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.usergroup"))
+								AdministrationUserTypeDescriptor.BASIC_USER.list().navigationMenuItem(new ResourceModel("navigation.administration.user.basic")),
+								AdministrationUserTypeDescriptor.TECHNICAL_USER.list().navigationMenuItem(new ResourceModel("navigation.administration.user.technical")),
+								AdministrationUserGroupListPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
 						))
 		);
 	}

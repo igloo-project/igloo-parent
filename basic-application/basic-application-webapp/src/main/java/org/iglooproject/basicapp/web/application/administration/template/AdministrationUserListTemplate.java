@@ -15,7 +15,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
-import org.iglooproject.basicapp.web.application.administration.component.UserSearchPanel;
+import org.iglooproject.basicapp.web.application.administration.component.UserListSearchPanel;
 import org.iglooproject.basicapp.web.application.administration.export.UserExcelTableExport;
 import org.iglooproject.basicapp.web.application.administration.form.AbstractUserPopup;
 import org.iglooproject.basicapp.web.application.administration.model.AbstractUserDataProvider;
@@ -40,7 +40,7 @@ import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.rendering.BooleanRenderer;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-public abstract class AdministrationUserPortfolioTemplate<U extends User> extends AdministrationTemplate {
+public abstract class AdministrationUserListTemplate<U extends User> extends AdministrationTemplate {
 
 	private static final long serialVersionUID = 1824247169136460059L;
 	
@@ -52,7 +52,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 	
 	protected UserTypeDescriptor<U> typeDescriptor;
 	
-	public AdministrationUserPortfolioTemplate(PageParameters parameters, UserTypeDescriptor<U> typeDescriptor, IModel<String> pageTitleModel) {
+	public AdministrationUserListTemplate(PageParameters parameters, UserTypeDescriptor<U> typeDescriptor, IModel<String> pageTitleModel) {
 		super(parameters);
 		this.typeDescriptor = typeDescriptor;
 		
@@ -86,7 +86,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 		add(
 				new CoreLabel("title", pageTitleModel),
 				
-				new UserSearchPanel<>("search", dataTablePanel, typeDescriptor, dataProvider),
+				new UserListSearchPanel<>("search", dataTablePanel, typeDescriptor, dataProvider),
 				dataTablePanel
 		);
 		
@@ -103,7 +103,7 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 		return DataTableBuilder.start(dataProvider)
 				.addLabelColumn(new ResourceModel("business.user.username"), Bindings.user().username())
 						.withClass("text text-md")
-						.withLink(AdministrationUserDescriptionTemplate.<U>mapper().setParameter2(pageModel))
+						.withLink(AdministrationUserDetailTemplate.<U>mapper().setParameter2(pageModel))
 				.addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
 						.withClass("text text-md")
 				.addLabelColumn(new ResourceModel("business.user.firstName"), Bindings.user().firstName())
@@ -131,20 +131,21 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 				.addBootstrapBadgeColumn(new ResourceModel("business.user.active"), Bindings.user().active(), BooleanRenderer.get())
 						.withClass("icon")
 				.addActionColumn()
-						.addLink(ActionRenderers.view(), AdministrationUserDescriptionTemplate.<U>mapper().setParameter2(pageModel))
+						.addLink(ActionRenderers.view(), AdministrationUserDetailTemplate.<U>mapper().setParameter2(pageModel))
 						.withClassOnElements(CssClassConstants.BTN_XS)
 						.end()
 						.withClass("actions actions-1x")
 						
-				.withNoRecordsResourceKey("administration.user.noUsers")
+				.withNoRecordsResourceKey("administration.user.list.count.zero")
 				.decorate()
 						.ajaxPagers()
+						.count("administration.user.list.count")
 				.build(wicketId, itemsPerPage);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	protected Class<? extends AdministrationUserPortfolioTemplate> getSecondMenuPage() {
+	protected Class<? extends AdministrationUserListTemplate> getSecondMenuPage() {
 		return getClass();
 	}
 }

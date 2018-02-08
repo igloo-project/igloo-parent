@@ -21,7 +21,7 @@ import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.administration.model.RoleDataProvider;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDescriptionPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDetailPage;
 import org.iglooproject.basicapp.web.application.common.renderer.AuthorityRenderer;
 import org.iglooproject.commons.util.functional.Suppliers2;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
@@ -72,9 +72,9 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 	@Override
 	protected Component createHeader(String wicketId) {
 		if (isAddMode()) {
-			return new Label(wicketId, new ResourceModel("administration.usergroup.add.title"));
+			return new Label(wicketId, new ResourceModel("administration.userGroup.action.add.title"));
 		} else {
-			return new Label(wicketId, new StringResourceModel("administration.usergroup.update.title").setModel(getModel()));
+			return new Label(wicketId, new StringResourceModel("administration.userGroup.action.edit.title").setModel(getModel()));
 		}
 	}
 
@@ -87,9 +87,9 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 				userGroupForm
 						.add(
 								new RequiredTextField<String>("name", BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().name()))
-										.setLabel(new ResourceModel("administration.usergroup.field.name")),
+										.setLabel(new ResourceModel("business.userGroup.name")),
 								new TextArea<String>("description", BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().description()))
-										.setLabel(new ResourceModel("administration.usergroup.field.description"))
+										.setLabel(new ResourceModel("business.userGroup.description"))
 										.add(new AutosizeBehavior()),
 								new CheckGroup<Authority>("authorities",
 										BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().authorities()),
@@ -128,12 +128,12 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 				try {
 					if (isAddMode()) {
 						userGroupService.create(userGroup);
-						Session.get().success(getString("administration.usergroup.add.success"));
-						throw AdministrationUserGroupDescriptionPage.linkDescriptor(UserGroupPopup.this.getModel(), PageModel.of(getPage()))
+						Session.get().success(getString("common.success"));
+						throw AdministrationUserGroupDetailPage.linkDescriptor(UserGroupPopup.this.getModel(), PageModel.of(getPage()))
 								.newRestartResponseException();
 					} else {
 						userGroupService.update(userGroup);
-						Session.get().success(getString("administration.usergroup.update.success"));
+						Session.get().success(getString("common.success"));
 					}
 					closePopup(target);
 					target.add(getPage());

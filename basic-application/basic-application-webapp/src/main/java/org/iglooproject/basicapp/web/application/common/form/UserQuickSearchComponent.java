@@ -4,9 +4,8 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDescriptionTemplate;
+import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.wicket.more.markup.html.form.AbstractQuickSearchComponent;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
@@ -25,7 +24,7 @@ public class UserQuickSearchComponent<U extends User> extends AbstractQuickSearc
 
 	private UserQuickSearchComponent(String id, IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
 		super(id, userModel, USER_CHOICE_RENDERER,
-				AdministrationUserDescriptionTemplate.<U>mapper().ignoreParameter2().map(userModel));
+				AdministrationUserDetailTemplate.<U>mapper().ignoreParameter2().map(userModel));
 		this.typeDescriptor = typeDescriptor;
 	}
 

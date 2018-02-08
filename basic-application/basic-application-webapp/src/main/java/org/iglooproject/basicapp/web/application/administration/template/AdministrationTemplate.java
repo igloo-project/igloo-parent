@@ -4,7 +4,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserPortfolioPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserListPage;
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -22,7 +22,7 @@ public abstract class AdministrationTemplate extends MainTemplate {
 
 	@Override
 	protected Class<? extends WebPage> getFirstMenuPage() {
-		return AdministrationBasicUserPortfolioPage.class;
+		return AdministrationBasicUserListPage.class;
 	}
 
 	@Override

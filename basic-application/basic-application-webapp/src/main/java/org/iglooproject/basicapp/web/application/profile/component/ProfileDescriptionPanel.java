@@ -2,7 +2,6 @@ package org.iglooproject.basicapp.web.application.profile.component;
 
 import static org.iglooproject.commons.util.functional.Predicates2.isTrue;
 
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -24,41 +23,43 @@ import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.DatePattern;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-public class ProfileInformationPanel extends GenericPanel<User> {
+public class ProfileDescriptionPanel extends GenericPanel<User> {
 
 	private static final long serialVersionUID = -1923855993008983060L;
 
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
 
-	public ProfileInformationPanel(String id, IModel<User> userModel) {
+	public ProfileDescriptionPanel(String id, IModel<User> userModel) {
 		super(id, userModel);
 		
-		UserPasswordUpdatePopup<User> passwordUpdatePopup = new UserPasswordUpdatePopup<>("passwordUpdatePopup", userModel);
+		UserPasswordUpdatePopup<User> passwordEditPopup = new UserPasswordUpdatePopup<>("passwordEditPopup", userModel);
 		
 		IModel<String> emailModel = BindingModel.of(userModel, Bindings.user().email());
 		
 		add(
-				passwordUpdatePopup,
-				new BlankLink("passwordUpdateButton")
-						.add(new AjaxModalOpenBehavior(passwordUpdatePopup, MouseEvent.CLICK))
+				passwordEditPopup,
+				new BlankLink("passwordEdit")
+						.add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
 						.add(
 								Condition.predicate(
 										Model.of(securityManagementService.getOptions(BasicApplicationSession.get().getUser()).isPasswordUserUpdateEnabled()),
 										isTrue()
 								).thenShow()
 						),
-				new Label("username", BindingModel.of(userModel, Bindings.user().username())),
+				new CoreLabel("username", BindingModel.of(userModel, Bindings.user().username()))
+						.showPlaceholder(),
 				new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())),
 				new EmailLink("email", emailModel),
 				new DefaultPlaceholderPanel("emailPlaceholder").condition(Condition.modelNotNull(emailModel)),
-				new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()),
-						DatePattern.SHORT_DATETIME).showPlaceholder(),
-				new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()),
-						DatePattern.SHORT_DATETIME).showPlaceholder(),
-				new CoreLabel("locale", BindingModel.of(userModel, Bindings.user().locale())).showPlaceholder(),
-				new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()),
-						DatePattern.SHORT_DATETIME).showPlaceholder()
+				new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()), DatePattern.SHORT_DATETIME)
+						.showPlaceholder(),
+				new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()), DatePattern.SHORT_DATETIME)
+						.showPlaceholder(),
+				new CoreLabel("locale", BindingModel.of(userModel, Bindings.user().locale()))
+						.showPlaceholder(),
+				new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()), DatePattern.SHORT_DATETIME)
+						.showPlaceholder()
 		);
 	}
 

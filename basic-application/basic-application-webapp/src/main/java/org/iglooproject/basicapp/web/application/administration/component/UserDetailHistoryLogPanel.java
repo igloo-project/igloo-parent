@@ -19,14 +19,14 @@ import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.util.DatePattern;
 
-public class UserHistoryLogPanel extends GenericPanel<User> {
+public class UserDetailHistoryLogPanel extends GenericPanel<User> {
 	
 	private static final long serialVersionUID = 809335942700940194L;
 	
 	@SpringBean
 	private IPropertyService propertyService;
 
-	public UserHistoryLogPanel(String id, final IModel<? extends User> userModel) {
+	public UserDetailHistoryLogPanel(String id, final IModel<? extends User> userModel) {
 		super(id, userModel);
 		setOutputMarkupPlaceholderTag(true);
 		
@@ -38,11 +38,11 @@ public class UserHistoryLogPanel extends GenericPanel<User> {
 								.withSort(HistoryLogSort.DATE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
 								.withClass("date date-lg")
 						.addLabelColumn(new ResourceModel("business.history.subject"), Bindings.historyLog().subject())
-								.withClass("text text-sm")
+								.withClass("text text-lg")
 						.addColumn(new HistoryLogDetailColumn())
-								.withClass("text")
+								.withClass("text text-xl")
 						.bootstrapCard()
-								.title("administration.user.audits")
+								.title("administration.user.detail.audits")
 								.ajaxPager(AddInPlacement.FOOTER_RIGHT)
 						.build("history", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE))
 		);

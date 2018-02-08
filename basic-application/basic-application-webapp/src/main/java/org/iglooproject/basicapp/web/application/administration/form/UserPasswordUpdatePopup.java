@@ -12,12 +12,14 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
+import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -58,16 +60,15 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 		
 		this.typeDescriptor = UserTypeDescriptor.get(model.getObject());
 		
-//		this.isOldPasswordRequired = Condition.or(
-//				isEqual(Model.of(typeDescriptor.getEntityClass()), Model.of(TechnicalUser.class)),
-//				role(CoreAuthorityConstants.ROLE_ADMIN)
-//		).negate();
-		this.isOldPasswordRequired = Condition.alwaysTrue();
+		this.isOldPasswordRequired = Condition.or(
+				Condition.isEqual(Model.of(typeDescriptor.getEntityClass()), Model.of(TechnicalUser.class)),
+				Condition.role(CoreAuthorityConstants.ROLE_ADMIN)
+		).negate();
 	}
 
 	@Override
 	protected Component createHeader(String wicketId) {
-		return new Label(wicketId, new ResourceModel("administration.user.password.update.title"));
+		return new Label(wicketId, new ResourceModel("administration.user.action.password.edit.title"));
 	}
 
 	@Override
@@ -129,11 +130,11 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 					if (!isOldPasswordRequired.applies() || securityManagementService.checkPassword(oldPassword, user)) {
 						securityManagementService.updatePassword(user, newPassword, BasicApplicationSession.get().getUser());
 						
-						getSession().success(getString("administration.user.password.update.success"));
+						getSession().success(getString("common.success"));
 						closePopup(target);
 						target.add(getPage());
 					} else {
-						getSession().error(getString("administration.user.password.update.error.oldPassword"));
+						getSession().error(getString("administration.user.action.password.edit.error.oldPassword"));
 					}
 				} catch (Exception e) {
 					LOGGER.error("Error occured while changing password.", e);

@@ -3,12 +3,12 @@ package org.iglooproject.basicapp.web.application.common.typedescriptor.user;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserDescriptionPage;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserPortfolioPage;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserDescriptionPage;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserPortfolioPage;
-import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDescriptionTemplate;
-import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserPortfolioTemplate;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserDetailPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserListPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserDetailPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserListPage;
+import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
+import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserListTemplate;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.AbstractGenericEntityChildTypeDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -19,8 +19,8 @@ public abstract class AdministrationUserTypeDescriptor<U extends User> extends
 	private static final long serialVersionUID = -1128901861897146296L;
 
 	public static final AdministrationUserTypeDescriptor<TechnicalUser> TECHNICAL_USER = new AdministrationUserTypeDescriptor<TechnicalUser>(
-			UserTypeDescriptor.TECHNICAL_USER, AdministrationTechnicalUserDescriptionPage.class,
-			AdministrationTechnicalUserPortfolioPage.class) {
+			UserTypeDescriptor.TECHNICAL_USER, AdministrationTechnicalUserDetailPage.class,
+			AdministrationTechnicalUserListPage.class) {
 		private static final long serialVersionUID = 1L;
 		
 		@Override
@@ -35,8 +35,8 @@ public abstract class AdministrationUserTypeDescriptor<U extends User> extends
 	};
 
 	public static final AdministrationUserTypeDescriptor<BasicUser> BASIC_USER = new AdministrationUserTypeDescriptor<BasicUser>(
-			UserTypeDescriptor.BASIC_USER, AdministrationBasicUserDescriptionPage.class,
-			AdministrationBasicUserPortfolioPage.class) {
+			UserTypeDescriptor.BASIC_USER, AdministrationBasicUserDetailPage.class,
+			AdministrationBasicUserListPage.class) {
 		private static final long serialVersionUID = 1L;
 		
 		@Override
@@ -50,28 +50,28 @@ public abstract class AdministrationUserTypeDescriptor<U extends User> extends
 		}
 	};
 
-	private final Class<? extends AdministrationUserDescriptionTemplate<U>> descriptionPageClazz;
+	private final Class<? extends AdministrationUserDetailTemplate<U>> detailPageClazz;
 
-	private final Class<? extends AdministrationUserPortfolioTemplate<U>> portfolioPageClazz;
+	private final Class<? extends AdministrationUserListTemplate<U>> listPageClazz;
 
 	private AdministrationUserTypeDescriptor(UserTypeDescriptor<U> typeDescriptor,
-			Class<? extends AdministrationUserDescriptionTemplate<U>> descriptionPageClazz,
-			Class<? extends AdministrationUserPortfolioTemplate<U>> portfolioPageClazz) {
+			Class<? extends AdministrationUserDetailTemplate<U>> detailPageClazz,
+			Class<? extends AdministrationUserListTemplate<U>> listPageClazz) {
 		super(typeDescriptor);
-		this.descriptionPageClazz = descriptionPageClazz;
-		this.portfolioPageClazz = portfolioPageClazz;
+		this.detailPageClazz = detailPageClazz;
+		this.listPageClazz = listPageClazz;
 	}
 
-	public Class<? extends AdministrationUserDescriptionTemplate<U>> getDescriptionClass() {
-		return descriptionPageClazz;
+	public Class<? extends AdministrationUserDetailTemplate<U>> getDetailPageClass() {
+		return detailPageClazz;
 	}
 
-	public Class<? extends AdministrationUserPortfolioTemplate<U>> getPortfolioClass() {
-		return portfolioPageClazz;
+	public Class<? extends AdministrationUserListTemplate<U>> getListPageClass() {
+		return listPageClazz;
 	}
 
-	public IPageLinkDescriptor portfolio() {
-		return LinkDescriptorBuilder.start().page(portfolioPageClazz);
+	public IPageLinkDescriptor list() {
+		return LinkDescriptorBuilder.start().page(listPageClazz);
 	}
 
 	public abstract U newInstance();

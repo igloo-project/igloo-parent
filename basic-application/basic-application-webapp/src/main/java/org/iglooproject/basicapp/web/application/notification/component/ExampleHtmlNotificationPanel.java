@@ -10,7 +10,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
-import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDescriptionTemplate;
+import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
 import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.DatePattern;
@@ -42,7 +42,7 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		addTopProperty(propertiesTable, "username",
 				new WebMarkupContainer("usernameValue")
 				.add(
-						AdministrationUserDescriptionTemplate.mapper().ignoreParameter2().map(userModel)
+						AdministrationUserDetailTemplate.mapper().ignoreParameter2().map(userModel)
 								.link("userLink")
 								.setAbsolute(true)
 								.setBody(BindingModel.of(userModel, Bindings.user().username()))

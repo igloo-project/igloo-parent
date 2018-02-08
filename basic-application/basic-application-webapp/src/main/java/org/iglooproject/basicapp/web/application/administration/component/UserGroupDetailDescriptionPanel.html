@@ -2,15 +2,15 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
-		<div wicket:id="updatePopup"/>
+		<div wicket:id="editPopup"/>
 		
 		<div class="card">
 			<div class="card-body">
-				<h5 class="card-title"><wicket:message key="administration.usergroup.information" /></h5>
+				<h5 class="card-title"><wicket:message key="administration.userGroup.detail.description" /></h5>
 				
 				<div wicket:id="lockedWarningContainer" class="alert alert-warning">
 					<span class="fa fa-lock" />
-					<wicket:message key="administration.usergroup.warning.locked" />
+					<wicket:message key="administration.userGroup.detail.description.warning.locked" />
 				</div>
 				
 				<div class="description-section">
@@ -18,7 +18,7 @@
 						<div class="description-row">
 							<div class="description-label-col">
 								<div class="description-label">
-									<wicket:message key="administration.usergroup.field.description" />
+									<wicket:message key="business.userGroup.description" />
 								</div>
 							</div>
 							<div class="description-value-col">
@@ -32,7 +32,7 @@
 						<div class="description-row">
 							<div class="description-label-col">
 								<div class="description-label">
-									<wicket:message key="administration.usergroup.field.authorities" />
+									<wicket:message key="business.userGroup.authorities" />
 								</div>
 							</div>
 							<div class="description-value-col">
@@ -54,7 +54,7 @@
 				<div class="card-action">
 					<div class="card-action-container">
 						<div class="card-action-item">
-							<button type="button" wicket:id="updateButton" class="btn btn-primary">
+							<button type="button" wicket:id="edit" class="btn btn-primary">
 								<span class="fa fa-pencil-alt" />
 								<wicket:message key="common.action.update" />
 							</button>

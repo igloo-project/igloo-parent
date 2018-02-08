@@ -20,7 +20,7 @@ public final class AuthorityRenderer extends Renderer<Authority> {
 
 	@Override
 	public String render(Authority value, Locale locale) {
-		return getString("administration.usergroup.authority." + value.getName(), locale);
+		return getString("administration.userGroup.authority." + value.getName(), locale);
 	}
 
 }

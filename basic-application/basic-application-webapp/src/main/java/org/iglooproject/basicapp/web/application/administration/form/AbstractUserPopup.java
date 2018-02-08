@@ -32,7 +32,7 @@ import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDescriptionTemplate;
+import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.common.validator.EmailUnicityValidator;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
@@ -108,9 +108,9 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 	@Override
 	protected Component createHeader(String wicketId) {
 		if (isAddMode()) {
-			return new Label(wicketId, new ResourceModel("administration.user.add.title"));
+			return new CoreLabel(wicketId, new ResourceModel("administration.user.action.add.title"));
 		} else {
-			return new Label(wicketId, new StringResourceModel("administration.user.update.title").setModel(getModel()));
+			return new CoreLabel(wicketId, new StringResourceModel("administration.user.action.edit.title", getModel()));
 		}
 	}
 
@@ -200,12 +200,12 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 									BasicApplicationSession.get().getUser()
 							);
 							
-							getSession().success(getString("administration.user.add.success.notification"));
+							getSession().success(getString("administration.user.action.add.success.notification"));
 						}
 						
-						getSession().success(getString("administration.user.add.success"));
+						getSession().success(getString("common.success"));
 						
-						throw AdministrationUserDescriptionTemplate.<U>mapper()
+						throw AdministrationUserDetailTemplate.<U>mapper()
 								.ignoreParameter2()
 								.map(AbstractUserPopup.this.getModel())
 								.newRestartResponseException();
@@ -215,7 +215,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 							BasicApplicationSession.get().setLocale(user.getLocale());
 						}
 						userService.update(user);
-						getSession().success(getString("administration.user.update.success"));
+						getSession().success(getString("common.success"));
 						closePopup(target);
 						target.add(getPage());
 					}

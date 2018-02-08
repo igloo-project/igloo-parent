@@ -7,15 +7,15 @@ import org.iglooproject.basicapp.web.application.administration.form.AbstractUse
 import org.iglooproject.basicapp.web.application.administration.form.UserPopup;
 import org.iglooproject.basicapp.web.application.administration.model.AbstractUserDataProvider;
 import org.iglooproject.basicapp.web.application.administration.model.BasicUserDataProvider;
-import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserPortfolioTemplate;
+import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserListTemplate;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-public class AdministrationBasicUserPortfolioPage extends AdministrationUserPortfolioTemplate<BasicUser> {
+public class AdministrationBasicUserListPage extends AdministrationUserListTemplate<BasicUser> {
 
 	private static final long serialVersionUID = 2645014338149595776L;
 
-	public AdministrationBasicUserPortfolioPage(PageParameters parameters) {
+	public AdministrationBasicUserListPage(PageParameters parameters) {
 		super(parameters, UserTypeDescriptor.BASIC_USER, new ResourceModel("administration.user.basic.title"));
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.basic")));

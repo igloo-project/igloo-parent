@@ -2,18 +2,18 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
-	<div wicket:id="groupMemberships" class="card" />
+	<div wicket:id="results" class="card" />
 
 	<wicket:fragment wicket:id="addUser">
-		<form wicket:id="addMemberForm">
+		<form wicket:id="form">
 			<div class="basic-container">
 				<div class="basic-item">
 					<span wicket:id="userAutocomplete" />
 				</div>
 				<div class="basic-item">
-					<button class="btn btn-success" wicket:id="addMemberLink" type="button">
+					<button class="btn btn-success" wicket:id="add" type="button">
 						<span class="fa fa-plus" />
-						<wicket:message key="administration.usergroup.members.add" />
+						<wicket:message key="common.action.add" />
 					</button>
 				</div>
 			</div>

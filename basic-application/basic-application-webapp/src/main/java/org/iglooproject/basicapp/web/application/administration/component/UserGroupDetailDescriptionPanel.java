@@ -20,17 +20,17 @@ import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
+public class UserGroupDetailDescriptionPanel extends GenericPanel<UserGroup> {
 
 	private static final long serialVersionUID = 4372823586880908316L;
 	
 	@SpringBean
 	private BasicApplicationAuthorityUtils authorityUtils;
 
-	public UserGroupDescriptionPanel(String id, final IModel<UserGroup> userGroupModel) {
+	public UserGroupDetailDescriptionPanel(String id, final IModel<UserGroup> userGroupModel) {
 		super(id, userGroupModel);
 		
-		UserGroupPopup updatePopup = new UserGroupPopup("updatePopup", getModel());
+		UserGroupPopup editPopup = new UserGroupPopup("editPopup", getModel());
 		
 		add(
 				new EnclosureContainer("lockedWarningContainer")
@@ -57,9 +57,9 @@ public class UserGroupDescriptionPanel extends GenericPanel<UserGroup> {
 					}
 				},
 				
-				updatePopup,
-				new BlankLink("updateButton")
-						.add(new AjaxModalOpenBehavior(updatePopup, MouseEvent.CLICK))
+				editPopup,
+				new BlankLink("edit")
+						.add(new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK))
 		);
 	}
 }

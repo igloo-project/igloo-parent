@@ -5,7 +5,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.basicapp.web.application.profile.component.ProfileInformationPanel;
+import org.iglooproject.basicapp.web.application.profile.component.ProfileDescriptionPanel;
 import org.iglooproject.basicapp.web.application.profile.template.ProfileTemplate;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -35,7 +35,7 @@ public class ProfilePage extends ProfileTemplate {
 		);
 		
 		add(
-				new ProfileInformationPanel("description", userModel)
+				new ProfileDescriptionPanel("description", userModel)
 		);
 	}
 

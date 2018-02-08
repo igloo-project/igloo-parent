@@ -24,7 +24,7 @@ import org.iglooproject.wicket.more.model.ReadOnlyModel;
 
 import com.google.common.base.Function;
 
-public class AdministrationUserDescriptionTemplate<U extends User> extends AdministrationTemplate {
+public class AdministrationUserDetailTemplate<U extends User> extends AdministrationTemplate {
 
 	private static final long serialVersionUID = -550100874222819991L;
 
@@ -35,7 +35,7 @@ public class AdministrationUserDescriptionTemplate<U extends User> extends Admin
 				public Class<? extends Page> apply(User input) {
 					return input == null
 							? null
-							: UserTypeDescriptor.get(input).administrationTypeDescriptor().getDescriptionClass();
+							: UserTypeDescriptor.get(input).administrationTypeDescriptor().getDetailPageClass();
 				}
 			};
 			
@@ -60,7 +60,7 @@ public class AdministrationUserDescriptionTemplate<U extends User> extends Admin
 	
 	protected final IModel<Page> sourcePageModel = new PageModel<Page>();
 	
-	public AdministrationUserDescriptionTemplate(PageParameters parameters, UserTypeDescriptor<U> typeDescriptor) {
+	public AdministrationUserDetailTemplate(PageParameters parameters, UserTypeDescriptor<U> typeDescriptor) {
 		super(parameters);
 		this.typeDescriptor = typeDescriptor;
 		
@@ -68,14 +68,14 @@ public class AdministrationUserDescriptionTemplate<U extends User> extends Admin
 				.map(userModel, sourcePageModel)
 				.extractSafely(
 						parameters,
-						typeDescriptor.administrationTypeDescriptor().portfolio(),
+						typeDescriptor.administrationTypeDescriptor().list(),
 						getString("common.error.unexpected")
 				);
 		
 		Component backToSourcePage =
 				LinkFactory.get().linkGenerator(
 						sourcePageModel,
-						typeDescriptor.administrationTypeDescriptor().getPortfolioClass()
+						typeDescriptor.administrationTypeDescriptor().getListPageClass()
 				)
 				.link("backToSourcePage").hideIfInvalid();
 		
@@ -83,7 +83,7 @@ public class AdministrationUserDescriptionTemplate<U extends User> extends Admin
 				new CoreLabel("pageTitle", BindingModel.of(userModel, Bindings.user().fullName())),
 				
 				backToSourcePage,
-				typeDescriptor.administrationTypeDescriptor().portfolio().link("backToList")
+				typeDescriptor.administrationTypeDescriptor().list().link("backToList")
 						.add(Condition.componentVisible(backToSourcePage).thenHide())
 		);
 	}
@@ -97,6 +97,6 @@ public class AdministrationUserDescriptionTemplate<U extends User> extends Admin
 
 	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
-		return typeDescriptor.administrationTypeDescriptor().getPortfolioClass();
+		return typeDescriptor.administrationTypeDescriptor().getListPageClass();
 	}
 }
