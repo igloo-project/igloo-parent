@@ -1,10 +1,10 @@
 package org.iglooproject.test.rest.jersey2.client.config.spring;
 
 import org.glassfish.jersey.server.ResourceConfig;
-import org.igloo.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
 import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
 import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
+import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.test.rest.jersey2.SimpleRestApplication;
 import org.iglooproject.test.rest.jersey2.business.RestTestBusinessPackage;
 import org.iglooproject.test.rest.jersey2.client.RestClientPackage;

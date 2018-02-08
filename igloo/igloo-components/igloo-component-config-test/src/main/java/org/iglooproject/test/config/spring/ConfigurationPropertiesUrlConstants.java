@@ -1,4 +1,4 @@
-package org.igloo.test.config.spring;
+package org.iglooproject.test.config.spring;
 
 public class ConfigurationPropertiesUrlConstants {
 
