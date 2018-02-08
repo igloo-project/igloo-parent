@@ -1059,32 +1059,6 @@
 						<version>${igloo.wicketstuff-select2.version}</version>
 					</dependency>
 			
-			<!-- Jersey -->
-			
-				<dependency>
-					<groupId>com.sun.jersey</groupId>
-					<artifactId>jersey-server</artifactId>
-					<version>${igloo.jersey.version}</version>
-				</dependency>
-				
-				<dependency>
-					<groupId>com.sun.jersey</groupId>
-					<artifactId>jersey-client</artifactId>
-					<version>${igloo.jersey.version}</version>
-				</dependency>
-				
-				<dependency>
-					<groupId>com.sun.jersey.contribs</groupId>
-					<artifactId>jersey-multipart</artifactId>
-					<version>${igloo.jersey.version}</version>
-				</dependency>
-				
-				<dependency>
-					<groupId>com.sun.jersey.contribs</groupId>
-					<artifactId>jersey-spring</artifactId>
-					<version>${igloo.jersey.version}</version>
-				</dependency>
-			
 			<!-- Jersey 2 -->
 			
 				<dependency>
