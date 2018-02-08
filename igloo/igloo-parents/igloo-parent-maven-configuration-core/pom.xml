@@ -963,7 +963,11 @@
 					<version>${igloo.truezip.version}</version>
 					<exclusions>
 						<exclusion>
-							<groupId>bouncycastle</groupId>
+							<groupId>de.schlichtherle.truezip</groupId>
+							<artifactId>truezip-swing</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.bouncycastle</groupId>
 							<artifactId>bcprov-jdk15on</artifactId>
 						</exclusion>
 					</exclusions>

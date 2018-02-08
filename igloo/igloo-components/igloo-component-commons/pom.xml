@@ -94,13 +94,6 @@
 		<dependency>
 			<groupId>de.schlichtherle.truezip</groupId>
 			<artifactId>truezip-driver-zip</artifactId>
-			<exclusions>
-				<!-- il peut du coup être nécessaire de les ajouter en version jdk15 si on veut charger des zip cryptés -->
-				<exclusion>
-					<groupId>org.bouncycastle</groupId>
-					<artifactId>bcprov-jdk16</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		
 		<!-- Bindgen -->
