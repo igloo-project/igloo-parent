@@ -46,6 +46,7 @@ public class UserGroupPortfolioPanel extends Panel {
 						.addLabelColumn(new ResourceModel("administration.usergroup.field.name"), Bindings.userGroup().name())
 								.withLink(AdministrationUserGroupDescriptionPage.MAPPER_SOURCE.setParameter2(new ComponentPageModel(this)))
 						.addLabelColumn(new ResourceModel("administration.usergroup.field.description"), Bindings.userGroup().description())
+								.withClass(CssClassConstants.CELL_HIDDEN_SM_AND_LESS)
 						.addActionColumn()
 								.addConfirmAction(ActionRenderers.delete())
 										.title(new AbstractDetachableFactory<IModel<UserGroup>, IModel<String>>() {

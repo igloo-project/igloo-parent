@@ -118,7 +118,7 @@ public abstract class AbstractReferenceDataListPanel<
 						cellItem.add(new ItemActionsFragment(componentId, rowModel));
 					}
 				})
-						.withClass("actions actions-2x");
+						.withClass("actions actions-1x");
 	}
 	
 	protected IDecoratedBuildState<T, S> addIn(IDecoratedBuildState<T, S> builder) {

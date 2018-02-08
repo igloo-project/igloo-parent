@@ -6,6 +6,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.City;
 import org.iglooproject.basicapp.core.business.referencedata.search.LocalizedReferenceDataSort;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
+import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.basicapp.web.application.referencedata.form.AbstractGenericReferenceDataPopup;
 import org.iglooproject.basicapp.web.application.referencedata.form.CityPopup;
 import org.iglooproject.basicapp.web.application.referencedata.model.AbstractLocalizedReferenceDataDataProvider;
@@ -53,6 +54,7 @@ public class CityListPanel
 				.addLabelColumn(new ResourceModel("business.localizedReferenceData.label.en"), Bindings.city().label().en())
 						.withSort(LocalizedReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 						.withClass("text text-md")
+						.withClass(CssClassConstants.CELL_HIDDEN_MD_AND_LESS)
 				.addLabelColumn(new ResourceModel("business.city.postalCode"), Bindings.city().postalCode())
 						.withSort(LocalizedReferenceDataSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
 						.withClass("code code-sm");

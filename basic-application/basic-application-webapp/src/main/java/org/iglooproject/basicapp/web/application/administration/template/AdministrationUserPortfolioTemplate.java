@@ -4,8 +4,6 @@ import static org.iglooproject.basicapp.web.application.property.BasicApplicatio
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.wicket.Page;
-import org.apache.wicket.Session;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.repeater.Item;
@@ -16,7 +14,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
-import org.iglooproject.basicapp.core.security.model.BasicApplicationPermissionConstants;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.administration.component.UserSearchPanel;
 import org.iglooproject.basicapp.web.application.administration.export.UserExcelTableExport;
@@ -34,9 +31,6 @@ import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.export.excel.component.AbstractExcelExportAjaxLink;
 import org.iglooproject.wicket.more.export.excel.component.ExcelExportWorkInProgressModalPopupPanel;
 import org.iglooproject.wicket.more.link.model.PageModel;
-import org.iglooproject.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
-import org.iglooproject.wicket.more.markup.html.factory.ModelFactories;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
@@ -133,45 +127,19 @@ public abstract class AdministrationUserPortfolioTemplate<U extends User> extend
 					}
 				})
 						.withClass("text text-md")
+						.withClass(CssClassConstants.CELL_HIDDEN_MD_AND_LESS)
 				.addBootstrapBadgeColumn(new ResourceModel("business.user.active"), Bindings.user().active(), BooleanRenderer.get())
 						.withClass("icon")
 				.addActionColumn()
 						.addLink(ActionRenderers.view(), AdministrationUserDescriptionTemplate.<U>mapper().setParameter2(pageModel))
-						.addConfirmAction(ActionRenderers.delete())
-								.title(ModelFactories.stringResourceModel(
-										"administration.user.delete.confirmation.title",
-										Bindings.user().fullName()
-								))
-								.content(ModelFactories.stringResourceModel(
-										"administration.user.delete.confirmation.text",
-										Bindings.user().fullName()
-								))
-								.confirm()
-								.onClick(new AbstractOneParameterAjaxAction<IModel<U>>() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public void execute(AjaxRequestTarget target, IModel<U> parameter) {
-										try {
-											userService.delete(parameter.getObject()); 
-											Session.get().success(getString("common.success"));
-										} catch (Exception e) {
-											Session.get().error(getString("common.error.unexpected"));
-										}
-										target.add(getPage());
-										dataProvider.detach();
-										FeedbackUtils.refreshFeedback(target, getPage());
-									}
-								})
-								.whenPermission(BasicApplicationPermissionConstants.DELETE)
-								.hidePlaceholder()
 						.withClassOnElements(CssClassConstants.BTN_XS)
 						.end()
-						.withClass("actions actions-2x")
+						.withClass("actions actions-1x")
 						
 				.withNoRecordsResourceKey("administration.user.noUsers")
 				.decorate()
 						.ajaxPagers()
-				.build(wicketId, 1);
+				.build(wicketId, itemsPerPage);
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -1,3 +1,134 @@
+table {
+	table-layout: fixed;
+	
+	> thead, > tbody, > tfoot {
+		> tr {
+			> th, > td {
+				&.text {
+					&.text-xs {
+						width: 100px;
+					}
+					&.text-sm {
+						width: 150px;
+					}
+					&.text-md {
+						width: 200px;
+					}
+					&.text-lg {
+						width: 250px;
+					}
+					&.text-xl {
+						width: 300px;
+					}
+				}
+				&.code {
+					&.code-xs {
+						width: 50px;
+					}
+					&.code-sm {
+						width: 75px;
+					}
+					&.code-md {
+						width: 100px;
+					}
+					&.code-lg {
+						width: 125px;
+					}
+					&.code-xl {
+						width: 150px;
+					}
+				}
+				&.statut {
+					&.statut-xs {
+						width: 50px;
+					}
+					&.statut-sm {
+						width: 75px;
+					}
+					&.statut-md {
+						width: 100px;
+					}
+					&.statut-lg {
+						width: 125px;
+					}
+					&.statut-xl {
+						width: 150px;
+					}
+				}
+				&.date {
+					&.date-xs {
+						width: 60px;
+					}
+					&.date-sm {
+						width: 70px;
+					}
+					&.date-md {
+						width: 90px;
+					}
+					&.date-lg {
+						width: 110px;
+					}
+					&.date-xl {
+						width: 130px;
+					}
+				}
+				&.numeric {
+					&.numeric-xs {
+						width: 40px;
+					}
+					&.numeric-sm {
+						width: 80px;
+					}
+					&.numeric-md {
+						width: 100px;
+					}
+					&.numeric-lg {
+						width: 130px;
+					}
+					&.numeric-xl {
+						width: 160px;
+					}
+				}
+				&.actions {
+					text-align: center;
+					padding: calc(#{$table-cell-padding} - 2px);
+					
+					.btn {
+						margin: 2px;
+					}
+					
+					&.actions-1x {
+						width: 50px;
+						min-width: 50px;
+						max-width: 50px;
+					}
+					
+					&.actions-2x {
+						width: 80px;
+						min-width: 80px;
+						max-width: 80px;
+					}
+					&.actions-3x {
+						width: 110px;
+						min-width: 110px;
+						max-width: 110px;
+					}
+					&.actions-4x {
+						width: 140px;
+						min-width: 140px;
+						max-width: 140px;
+					}
+					&.actions-5x {
+						width: 170px;
+						min-width: 170px;
+						max-width: 170px;
+					}
+				}
+			}
+		}
+	}
+}
+
 .add-in-container {
 	@extend .basic-container;
 	
