@@ -1,4 +1,4 @@
-package org.iglooproject.rest.jersey2.test;
+package org.iglooproject.test.rest.jersey2.context;
 
 import java.io.IOException;
 import java.net.URI;
@@ -13,7 +13,6 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.iglooproject.commons.util.logging.SLF4JLoggingListener;
-import org.junit.rules.ExternalResource;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.ContextLoaderListener;
@@ -22,12 +21,11 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 /**
  * How to use :
  * <ul>
- * <li>Add a public field of this type to your test
- * <li>Annotate this field with @Rule
- * <li>Make sure this field is initialized when your test is constructed
+ * <li>Annotate your test with {@link RestServerTestExecutionListener}
+ * <li>Add a bean of type {@link RestServerTestResource}
  * </ul>
  */
-public abstract class RestServerTestResource extends ExternalResource {
+public abstract class RestServerTestResource {
 
 	private final String schemeAndHost;
 	private final int port;
@@ -46,11 +44,7 @@ public abstract class RestServerTestResource extends ExternalResource {
 		this.javaConfigClass = javaConfigClass;
 	}
 	
-	/**
-	 * Start the REST server
-	 */
-	@Override
-	protected void before() throws Throwable {
+	public void prepare() {
 		ResourceConfig resource = createApplication();
 		try {
 			server = createServer(resource);
@@ -60,11 +54,7 @@ public abstract class RestServerTestResource extends ExternalResource {
 		}
 	}
 
-	/**
-	 * Stop the REST server
-	 */
-	@Override
-	public final void after() {
+	public void tearDown() {
 		if (server != null) {
 			server.shutdownNow();
 		}

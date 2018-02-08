@@ -4,6 +4,11 @@ import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
 import java.util.Properties;
 
+import org.apache.commons.configuration2.FileBasedConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.iglooproject.infinispan.utils.DefaultReplicatedTransientConfigurationBuilder;
 import org.iglooproject.infinispan.utils.GlobalDefaultReplicatedTransientConfigurationBuilder;
 import org.infinispan.configuration.cache.Configuration;
@@ -33,10 +38,26 @@ public class TestCacheManagerBuilder {
 		PROCESS_ID = ManagementFactory.getRuntimeMXBean().getName().replaceAll("@.*", "");
 		MDC.put("PID", PROCESS_ID);
 		
-		// udp + multicast is difficult to obtain in test environment
-		Properties properties = new Properties();
-		properties.put("configurationFile", "test-jgroups-tcp.xml");
-		
+		Parameters params = new Parameters();
+		FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
+				new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class);
+		builder.configure(params.properties().setFileName("infinispan-test.properties"));
+		try {
+			// load configuration
+			FileBasedConfiguration configuration = builder.getConfiguration();
+			Properties properties = new Properties();
+			// iterator to iterable trick
+			for (String key : (Iterable<String>)() -> configuration.getKeys()) {
+				properties.put(key, configuration.getString(key));
+			}
+			
+			return buildFromConfiguration(properties);
+		} catch (ConfigurationException e) {
+			throw new RuntimeException("Configuration loading failed", e);
+		}
+	}
+	
+	public EmbeddedCacheManager buildFromConfiguration(Properties properties) {
 		GlobalConfiguration globalConfiguration =
 				new GlobalDefaultReplicatedTransientConfigurationBuilder(properties)
 					.cacheManagerName(cacheName).nodeName(name).build();

@@ -49,6 +49,14 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
+		<!-- used to load configuration with environment variable fallback without spring -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-configuration2</artifactId>
+			<version>2.2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	
 	<build>
