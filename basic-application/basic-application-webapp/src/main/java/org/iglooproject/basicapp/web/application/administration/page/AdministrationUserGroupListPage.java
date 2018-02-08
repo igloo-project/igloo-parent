@@ -133,6 +133,7 @@ public class AdministrationUserGroupListPage extends AdministrationTemplate {
 										})
 										.withClassOnElements(CssClassConstants.BTN_XS)
 								.end()
+								.withClass("actions actions-1x")
 						.decorate()
 								.count("administration.userGroup.list.count")
 						.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE))
