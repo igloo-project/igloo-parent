@@ -101,7 +101,7 @@ public class UserMembershipsPanel extends GenericPanel<User> {
 								.end()
 								.withClass("actions")
 						.bootstrapCard()
-								.addIn(AddInPlacement.FOOTER_RIGHT,  new AbstractParameterizedComponentFactory<Component, Component>() {
+								.addIn(AddInPlacement.FOOTER_MAIN,  new AbstractParameterizedComponentFactory<Component, Component>() {
 									private static final long serialVersionUID = 1L;
 									@Override
 									public Component create(String wicketId, final Component table ) {

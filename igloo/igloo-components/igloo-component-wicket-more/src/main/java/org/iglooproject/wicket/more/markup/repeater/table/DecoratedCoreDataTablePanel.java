@@ -43,6 +43,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		HEADING_RIGHT,
 		BODY_TOP,
 		BODY_BOTTOM,
+		FOOTER_MAIN,
 		FOOTER_LEFT,
 		FOOTER_RIGHT
 	}
@@ -80,9 +81,11 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		FactoryRepeatingView bodyTopAddins = new FactoryRepeatingView("bodyTopAddIn");
 		FactoryRepeatingView bodyBottomAddins = new FactoryRepeatingView("bodyBottomAddIn");
 		
+		EnclosureContainer footerMainAddinWrapper = new EnclosureContainer("mainAddInWrapper");
 		EnclosureContainer footerRightAddinWrapper = new EnclosureContainer("rightAddInWrapper");
 		EnclosureContainer footerLeftAddinWrapper = new EnclosureContainer("leftAddInWrapper");
 		
+		FactoryRepeatingView footerMainAddins = new FactoryRepeatingView("mainAddIn");
 		FactoryRepeatingView footerRightAddins = new FactoryRepeatingView("rightAddIn");
 		FactoryRepeatingView footerLeftAddins = new FactoryRepeatingView("leftAddIn");
 		
@@ -107,8 +110,11 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 						.condition(Condition.anyChildVisible(bodyBottomAddins))
 						.add(bodyBottomAddins),
 				new EnclosureContainer("footerAddInContainer")
-						.condition(Condition.visible(footerRightAddinWrapper).or(Condition.visible(footerLeftAddinWrapper)))
+						.condition(Condition.visible(footerMainAddinWrapper).or(Condition.visible(footerRightAddinWrapper).or(Condition.visible(footerLeftAddinWrapper))))
 						.add(
+								footerMainAddinWrapper
+										.condition(Condition.anyChildVisible(footerMainAddins))
+										.add(footerMainAddins),
 								footerRightAddinWrapper
 										.condition(Condition.anyChildVisible(footerRightAddins))
 										.add(footerRightAddins),
@@ -123,6 +129,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		headingLeftAddins.addAll(addInComponentFactories.get(AddInPlacement.HEADING_LEFT), this);
 		bodyTopAddins.addAll(addInComponentFactories.get(AddInPlacement.BODY_TOP), this);
 		bodyBottomAddins.addAll(addInComponentFactories.get(AddInPlacement.BODY_BOTTOM), this);
+		footerMainAddins.addAll(addInComponentFactories.get(AddInPlacement.FOOTER_MAIN), this);
 		footerRightAddins.addAll(addInComponentFactories.get(AddInPlacement.FOOTER_RIGHT), this);
 		footerLeftAddins.addAll(addInComponentFactories.get(AddInPlacement.FOOTER_LEFT), this);
 	}
