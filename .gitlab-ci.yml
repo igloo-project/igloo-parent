@@ -11,7 +11,7 @@ stages:
 .maven-prepare:
   stage: prepare
   script:
-    - "./config-test.sh"
+    - "./config-test.py"
   artifacts:
     paths:
       - gitlab-ci.build.conf
@@ -20,8 +20,6 @@ stages:
   stage: build
   environment: staging
   script:
-    - "echo $MAVEN_OPTS"
-    - "export"
     - "mvn -Ptest -DskipTests clean compile"
 
 .maven-test:
@@ -45,6 +43,8 @@ sonar-analyze:
   stage: analyze
   environment: staging
   script:
+    - "source gitlab-ci.build.conf"
     - mvn -Ptest clean verify sonar:sonar
+      "${SONAR_OPTS[@]}"
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt-si.fr"
