@@ -1219,7 +1219,6 @@
 					<groupId>com.sun.grizzly</groupId>
 					<artifactId>grizzly-webserver</artifactId>
 					<version>${igloo.grizzly.version}</version>
-					<scope>test</scope>
 					<exclusions>
 						<exclusion>
 							<groupId>javax.servlet</groupId>
@@ -1232,21 +1231,18 @@
 					<groupId>com.sun.jersey</groupId>
 					<artifactId>jersey-grizzly</artifactId>
 					<version>${igloo.jersey.version}</version>
-					<scope>test</scope>
 				</dependency>
 				
 				<dependency>
 					<groupId>org.glassfish.jersey.test-framework.providers</groupId>
 					<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
 					<version>${igloo.jersey2.version}</version>
-					<scope>test</scope>
 				</dependency>
 				
 				<dependency>
 					<groupId>org.glassfish.jersey.containers</groupId>
 					<artifactId>jersey-container-grizzly2-servlet</artifactId>
 					<version>${igloo.jersey2.version}</version>
-					<scope>test</scope>
 					<exclusions>
 						<exclusion>
 							<groupId>javax.servlet</groupId>

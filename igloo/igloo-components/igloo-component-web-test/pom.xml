@@ -38,12 +38,12 @@
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-test</artifactId>
 			<type>pom</type>
+			<scope>compile</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-grizzly2-servlet</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		
 		<!-- Servlet API (tests) -->
