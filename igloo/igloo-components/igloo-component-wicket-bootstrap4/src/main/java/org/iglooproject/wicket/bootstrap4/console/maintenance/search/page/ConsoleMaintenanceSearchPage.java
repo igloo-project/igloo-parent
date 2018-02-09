@@ -21,6 +21,8 @@ import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.bootstrap4.console.common.component.JavaClassesListMultipleChoice;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
+import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
+import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.autosize.AutosizeBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.slf4j.Logger;
@@ -31,9 +33,14 @@ import com.google.common.collect.Sets;
 public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 
 	private static final long serialVersionUID = 2718354274888156322L;
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceSearchPage.class);
-	
+
+	public static final IPageLinkDescriptor linkDescriptor() {
+		return LinkDescriptorBuilder.start()
+				.page(ConsoleMaintenanceSearchPage.class);
+	}
+
 	@SpringBean(name="hibernateSearchService")
 	protected IHibernateSearchService hibernateSearchService;
 	

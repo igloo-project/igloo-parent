@@ -12,12 +12,16 @@
 							@include fa-mixin-content($fa-var-home);
 						}
 						
-						&.administration:before {
-							@include fa-mixin-content($fa-var-cog);
-						}
-						
 						&.reference-data:before {
 							@include fa-mixin-content($fa-var-list);
+						}
+						
+						&.administration:before {
+							@include fa-mixin-content($fa-var-cogs);
+						}
+						
+						&.console:before {
+							@include fa-mixin-content($fa-var-wrench);
 						}
 					}
 				}

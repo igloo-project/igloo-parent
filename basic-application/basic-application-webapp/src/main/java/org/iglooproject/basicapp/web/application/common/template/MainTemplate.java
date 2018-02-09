@@ -44,6 +44,7 @@ import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDat
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -262,7 +263,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 								AdministrationUserTypeDescriptor.BASIC_USER.list().navigationMenuItem(new ResourceModel("navigation.administration.user.basic")),
 								AdministrationUserTypeDescriptor.TECHNICAL_USER.list().navigationMenuItem(new ResourceModel("navigation.administration.user.technical")),
 								AdministrationUserGroupListPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
-						))
+						)),
+				ConsoleMaintenanceSearchPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.console"))
+						.setCssClassesModel(Model.of("console"))
 		);
 	}
 
