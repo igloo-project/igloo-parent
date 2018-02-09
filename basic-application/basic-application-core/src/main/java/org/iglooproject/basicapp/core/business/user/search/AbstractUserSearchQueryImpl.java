@@ -8,8 +8,7 @@ import org.iglooproject.jpa.more.business.search.query.AbstractHibernateSearchSe
 public abstract class AbstractUserSearchQueryImpl<U extends User> extends AbstractHibernateSearchSearchQuery<U, UserSort>
 		implements IGenericUserSearchQuery<U> /* NOT Serializable */ {
 
-	
-	protected AbstractUserSearchQueryImpl(Class<U> clazz) {
+	protected AbstractUserSearchQueryImpl(Class<? extends U> clazz) {
 		super(clazz);
 	}
 

@@ -1,44 +1,44 @@
 package org.iglooproject.basicapp.web.application.console.notification.demo.page;
 
-import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.basicapp.web.application.common.form.UserAutocompleteAjaxComponent;
+import org.iglooproject.basicapp.web.application.administration.form.UserAjaxDropDownSingleChoice;
+import org.iglooproject.basicapp.web.application.console.notification.demo.template.ConsoleNotificationDemoTemplate;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
-import org.iglooproject.wicket.more.AbstractCoreSession;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.more.ajax.AjaxListeners;
+import org.iglooproject.wicket.more.common.behavior.UpdateOnChangeAjaxEventBehavior;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Throwables;
 
-public class NotificationDemoPage extends WebPage {
+public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate {
 	
 	private static final long serialVersionUID = -1929048481327622623L;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(NotificationDemoPage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleNotificationDemoPage.class);
 	
-	public NotificationDemoPage(final IModel<INotificationContentDescriptor> descriptorModel) throws NotificationContentRenderingException {
-		super();
+	private final IModel<User> recipientModel;
+	private final IModel<INotificationContentDescriptor> descriptorWithContextModel;
+	private final IModel<String> subjectModel;
+	private final IModel<String> bodyModel;
+	
+	public ConsoleNotificationDemoPage(PageParameters parameters, final IModel<INotificationContentDescriptor> descriptorModel) throws NotificationContentRenderingException {
+		super(parameters);
 		
-		MarkupContainer htmlRootElement = new TransparentWebMarkupContainer("htmlRootElement");
-		htmlRootElement.add(AttributeAppender.append("lang", AbstractCoreSession.get().getLocale().getLanguage()));
-		add(htmlRootElement);
+		recipientModel = new GenericEntityModel<>(BasicApplicationSession.get().getUser());
 		
-		add(new Label("headPageTitle", new ResourceModel("console.notifications")));
-		
-		final IModel<User> recipientModel = new GenericEntityModel<>(BasicApplicationSession.get().getUser());
-		final IModel<INotificationContentDescriptor> descriptorWithContextModel =
+		descriptorWithContextModel =
 				new AbstractReadOnlyModel<INotificationContentDescriptor>() {
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -53,22 +53,7 @@ public class NotificationDemoPage extends WebPage {
 					}
 				};
 		
-		Form<?> form = new Form<>("form");
-		add(form);
-		UserAutocompleteAjaxComponent userSelector = new UserAutocompleteAjaxComponent("recipient", recipientModel) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected void onUpdate(AjaxRequestTarget target) {
-				target.add(getPage());
-			}
-		};
-		userSelector.setAutoUpdate(true);
-		userSelector.setRequired(true);
-		form.add(
-				userSelector
-		);
-
-		IModel<String> subjectModel = new AbstractReadOnlyModel<String>() {
+		subjectModel = new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String getObject() {
@@ -86,9 +71,7 @@ public class NotificationDemoPage extends WebPage {
 			}
 		};
 		
-		add(new Label("subject", subjectModel));
-		
-		IModel<String> bodyModel = new AbstractReadOnlyModel<String>() {
+		bodyModel = new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String getObject() {
@@ -105,9 +88,35 @@ public class NotificationDemoPage extends WebPage {
 				descriptorWithContextModel.detach();
 			}
 		};
-		add(
-				new Label("htmlPanel", bodyModel)
+		
+		Form<?> form = new Form<>("form");
+		add(form);
+		
+		form.add(
+				new UserAjaxDropDownSingleChoice<>("recipient", recipientModel, User.class)
+						.setLabel(new ResourceModel("console.notifications.demo.recipient"))
+						.setRequired(true)
+						.add(
+								new UpdateOnChangeAjaxEventBehavior()
+										.onChange(AjaxListeners.refreshPage())
+						),
+				
+				new CoreLabel("subject", subjectModel),
+				
+				new CoreLabel("body", bodyModel)
 						.setEscapeModelStrings(false)
 		);
 	}
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		Detachables.detach(recipientModel, descriptorWithContextModel, subjectModel, bodyBreadCrumbPrependedElementsModel);
+	}
+
+	@Override
+	protected Class<? extends WebPage> getSecondMenuPage() {
+		return ConsoleNotificationDemoPage.class;
+	}
+
 }

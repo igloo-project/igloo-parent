@@ -5,7 +5,7 @@ import java.io.File;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.commons.util.mime.MediaType;
-import org.iglooproject.wicket.more.common.WorkInProgressPopup;
+import org.iglooproject.wicket.more.common.component.WorkInProgressPopup;
 import org.iglooproject.wicket.more.export.util.ExportFileUtils;
 import org.javatuples.LabelValue;
 

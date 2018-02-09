@@ -5,26 +5,23 @@ import java.util.Locale;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.wicket.more.rendering.Renderer;
 
-public final class UserGroupRenderer extends Renderer<UserGroup> {
+public abstract class UserGroupRenderer extends Renderer<UserGroup> {
 
 	private static final long serialVersionUID = 5707691630314666729L;
 
-	private static final UserGroupRenderer INSTANCE = new UserGroupRenderer();
+	private static final Renderer<UserGroup> INSTANCE = new UserGroupRenderer() {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public String render(UserGroup value, Locale locale) {
+			return value.getName();
+		}
+	}.nullsAsNull();
 
-	public static UserGroupRenderer get() {
+	public static Renderer<UserGroup> get() {
 		return INSTANCE;
 	}
 
 	private UserGroupRenderer() {
-	}
-
-	@Override
-	public String render(UserGroup value, Locale locale) {
-		if (value == null) {
-			return null;
-		} else {
-			return value.getName();
-		}
 	}
 
 }

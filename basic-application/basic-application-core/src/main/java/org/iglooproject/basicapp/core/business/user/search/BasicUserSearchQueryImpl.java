@@ -1,9 +1,8 @@
 package org.iglooproject.basicapp.core.business.user.search;
 
+import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 
 @Component
 @Scope("prototype")
@@ -12,4 +11,5 @@ public class BasicUserSearchQueryImpl extends AbstractUserSearchQueryImpl<BasicU
 	protected BasicUserSearchQueryImpl() {
 		super(BasicUser.class);
 	}
+
 }

@@ -25,6 +25,7 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.basicapp.web.application.common.renderer.AuthorityRenderer;
 import org.iglooproject.commons.util.functional.Suppliers2;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.form.CheckGroup;
 import org.iglooproject.wicket.more.link.model.PageModel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -117,7 +118,6 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 	protected Component createFooter(String wicketId) {
 		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserGroupPopup.class);
 		
-		// Validate button
 		AjaxButton validate = new AjaxButton("save", userGroupForm) {
 			private static final long serialVersionUID = 1L;
 			
@@ -157,9 +157,9 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 		};
 		Label validateLabel;
 		if (isAddMode()) {
-			validateLabel = new Label("validateLabel", new ResourceModel("common.action.create"));
+			validateLabel = new CoreLabel("validateLabel", new ResourceModel("common.action.create"));
 		} else {
-			validateLabel = new Label("validateLabel", new ResourceModel("common.action.save"));
+			validateLabel = new CoreLabel("validateLabel", new ResourceModel("common.action.save"));
 		}
 		validate.add(validateLabel);
 		footer.add(validate);

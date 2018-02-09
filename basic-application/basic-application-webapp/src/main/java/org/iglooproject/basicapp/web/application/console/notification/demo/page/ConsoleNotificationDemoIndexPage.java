@@ -79,7 +79,7 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 							@Override
 							public void onClick() {
 								try {
-									setResponsePage(new NotificationDemoPage(entry));
+									setResponsePage(new ConsoleNotificationDemoPage(new PageParameters(), entry));
 								} catch (NotificationContentRenderingException e) {
 									LOGGER.error("Error while instanciating notification demo page", e);
 									Session.get().error(getString("common.error.unexpected"));

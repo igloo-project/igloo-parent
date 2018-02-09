@@ -35,4 +35,7 @@ public abstract class LocalizedReferenceDataRenderer extends Renderer<LocalizedR
 		return CODE_LABEL;
 	}
 
+	private LocalizedReferenceDataRenderer() {
+	}
+
 }

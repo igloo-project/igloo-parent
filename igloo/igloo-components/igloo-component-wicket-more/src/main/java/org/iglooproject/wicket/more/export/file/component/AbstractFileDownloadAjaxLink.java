@@ -7,7 +7,7 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.iglooproject.wicket.more.common.WorkInProgressPopup;
+import org.iglooproject.wicket.more.common.component.WorkInProgressPopup;
 import org.iglooproject.wicket.more.export.file.behavior.FileDeferredDownloadBehavior;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.util.model.Detachables;

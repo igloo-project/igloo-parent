@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.common;
+package org.iglooproject.wicket.more.common.component;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;

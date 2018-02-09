@@ -239,9 +239,9 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 		};
 		Label validateLabel;
 		if (isAddMode()) {
-			validateLabel = new Label("validateLabel", new ResourceModel("common.action.create"));
+			validateLabel = new CoreLabel("validateLabel", new ResourceModel("common.action.create"));
 		} else {
-			validateLabel = new Label("validateLabel", new ResourceModel("common.action.save"));
+			validateLabel = new CoreLabel("validateLabel", new ResourceModel("common.action.save"));
 		}
 		validate.add(validateLabel);
 		footer.add(validate);

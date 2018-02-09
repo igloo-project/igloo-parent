@@ -3,7 +3,7 @@ package org.iglooproject.wicket.more.export.file.component;
 import java.io.File;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.more.common.WorkInProgressPopup;
+import org.iglooproject.wicket.more.common.component.WorkInProgressPopup;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.javatuples.LabelValue;
 
