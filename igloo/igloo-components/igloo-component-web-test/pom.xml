@@ -43,14 +43,13 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-grizzly2-servlet</artifactId>
-			<scope>test</scope>
+			<scope>compile</scope>
 		</dependency>
 		
 		<!-- Servlet API (tests) -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<scope>test</scope>
 		</dependency>
 		
 	</dependencies>

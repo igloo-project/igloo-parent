@@ -6,11 +6,11 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-public abstract class MockSpringServlet extends MockServlet {
+public abstract class AbstractMockSpringServlet extends AbstractMockServlet {
 
 	private final Class<?> javaConfigClass;
 
-	public MockSpringServlet(String schemeAndHost, int port, String contextPath, Class<?> javaConfigClass) {
+	public AbstractMockSpringServlet(String schemeAndHost, int port, String contextPath, Class<?> javaConfigClass) {
 		super(schemeAndHost, port, contextPath);
 		this.javaConfigClass = javaConfigClass;
 	}

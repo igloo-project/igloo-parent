@@ -1,38 +1,29 @@
-package org.iglooproject.test.rest.jersey2.context;
+package org.iglooproject.test.web.context;
 
 import java.net.URI;
 
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.UriBuilder;
 
 import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
-import org.iglooproject.test.rest.jersey2.SimpleRestApplication;
-import org.iglooproject.test.rest.jersey2.server.config.spring.RestServerTestCoreCommonConfig;
-import org.iglooproject.test.web.context.MockSpringServlet;
-import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 
-public class MockJpaRestServlet extends MockSpringServlet {
+/**
+ * This servlet configuration enable an {@link Application} (described by {@link #createApplication()}).
+ */
+public abstract class AbstractMockRestServlet extends AbstractMockSpringServlet {
 
 	private final String servletPath;
 
-	public MockJpaRestServlet(String schemeAndHost, int port, String contextPath, String servletPath) {
-		super(schemeAndHost, port, contextPath, RestServerTestCoreCommonConfig.class);
+	public AbstractMockRestServlet(String schemeAndHost, int port, String contextPath, String servletPath,
+			Class<?> javaConfigClass) {
+		super(schemeAndHost, port, contextPath, javaConfigClass);
 		this.servletPath = servletPath;
 	}
 
-	protected ResourceConfig createApplication() {
-		return new SimpleRestApplication();
-	}
-
-	@Override
-	protected void configureContext(WebappContext context) {
-		super.configureContext(context);
-		
-		context.addFilter("openEntityManagerInViewFilter", new OpenEntityManagerInViewFilter())
-				.addMappingForUrlPatterns(null, "/*");
-	}
+	protected abstract ResourceConfig createApplication();
 	
 	@Override
 	protected void addServlets(WebappContext context) {

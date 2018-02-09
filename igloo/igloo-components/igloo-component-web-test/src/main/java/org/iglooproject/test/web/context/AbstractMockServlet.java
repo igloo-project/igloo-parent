@@ -14,10 +14,10 @@ import org.iglooproject.commons.util.logging.SLF4JLoggingListener;
  * How to use :
  * <ul>
  * <li>Annotate your test with {@link MockServletTestExecutionListener}
- * <li>Add a bean of type {@link MockServlet}
+ * <li>Add a bean of type {@link AbstractMockServlet}
  * </ul>
  */
-public abstract class MockServlet {
+public abstract class AbstractMockServlet {
 	
 	private final String schemeAndHost;
 	private final int port;
@@ -25,7 +25,7 @@ public abstract class MockServlet {
 	
 	private HttpServer server;
 	
-	public MockServlet(String schemeAndHost, int port, String contextPath) {
+	public AbstractMockServlet(String schemeAndHost, int port, String contextPath) {
 		super();
 		this.schemeAndHost = schemeAndHost;
 		this.port = port;

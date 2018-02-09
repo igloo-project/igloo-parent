@@ -22,12 +22,6 @@
 			<version>${project.version}</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-rest-jersey2</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		
 		<!-- Http Client -->
 		
 		<dependency>
@@ -58,14 +52,23 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-grizzly2-servlet</artifactId>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
 			<scope>test</scope>
 		</dependency>
 		
 		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-client</artifactId>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-web-test</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- jersey2 used to simulate http behaviors -->
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-rest-jersey2</artifactId>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		

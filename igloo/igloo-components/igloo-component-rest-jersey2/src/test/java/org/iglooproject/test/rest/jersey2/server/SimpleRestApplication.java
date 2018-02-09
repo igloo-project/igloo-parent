@@ -1,4 +1,4 @@
-package org.iglooproject.test.rest.jersey2;
+package org.iglooproject.test.rest.jersey2.server;
 
 import org.iglooproject.rest.jersey2.AbstractRestApplication;
 

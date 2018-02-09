@@ -32,21 +32,21 @@ public class MockServletTestExecutionListener extends AbstractTestExecutionListe
 		
 		ApplicationContext applicationContext = testContext.getApplicationContext();
 		
-		MockServlet server = applicationContext.getBean(MockServlet.class);
+		AbstractMockServlet server = applicationContext.getBean(AbstractMockServlet.class);
 		testContext.setAttribute(SERVER_ATTRIBUTE, server);
 	}
 	
 	@Override
 	public void beforeTestMethod(TestContext testContext) throws Exception {
 		if (testContext.hasAttribute(SERVER_ATTRIBUTE)) {
-			((MockServlet) testContext.getAttribute(SERVER_ATTRIBUTE)).prepare();
+			((AbstractMockServlet) testContext.getAttribute(SERVER_ATTRIBUTE)).prepare();
 		}
 	}
 	
 	@Override
 	public void afterTestMethod(TestContext testContext) throws Exception {
 		if (testContext.hasAttribute(SERVER_ATTRIBUTE)) {
-			((MockServlet) testContext.getAttribute(SERVER_ATTRIBUTE)).tearDown();
+			((AbstractMockServlet) testContext.getAttribute(SERVER_ATTRIBUTE)).tearDown();
 		}
 	}
 

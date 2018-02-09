@@ -6,8 +6,8 @@ import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.test.rest.jersey2.business.RestTestBusinessPackage;
 import org.iglooproject.test.rest.jersey2.client.RestClientPackage;
-import org.iglooproject.test.rest.jersey2.context.MockJpaRestServlet;
-import org.iglooproject.test.web.context.MockServlet;
+import org.iglooproject.test.rest.jersey2.server.MockServlet;
+import org.iglooproject.test.web.context.AbstractMockServlet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -36,8 +36,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class RestClientTestCoreCommonConfig extends AbstractApplicationConfig {
 	
 	@Bean
-	public MockServlet restServerTestResource(@Value("${jersey.mock.http.port}") Integer httpPort) {
-		return new MockJpaRestServlet(
-				"http://localhost/", httpPort, "/api", "/rest");
+	public AbstractMockServlet restServerTestResource(@Value("${jersey.mock.http.port}") Integer httpPort) {
+		return new MockServlet("http://localhost/", httpPort, "/api", "/rest");
 	}
 }

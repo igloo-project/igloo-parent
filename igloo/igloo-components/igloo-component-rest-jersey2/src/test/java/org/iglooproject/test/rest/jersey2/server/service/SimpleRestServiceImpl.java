@@ -1,4 +1,4 @@
-package org.iglooproject.test.rest.jersey2.server;
+package org.iglooproject.test.rest.jersey2.server.service;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
