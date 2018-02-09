@@ -124,7 +124,7 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 							.add(
 									new UserAjaxDropDownSingleChoice<>("user", userModel, User.class)
 											.setRequired(true)
-											.setLabel(new ResourceModel("administration.user.user"))
+											.setLabel(new ResourceModel("business.user"))
 											.add(new LabelPlaceholderBehavior()),
 									
 									new AjaxButton("add") {

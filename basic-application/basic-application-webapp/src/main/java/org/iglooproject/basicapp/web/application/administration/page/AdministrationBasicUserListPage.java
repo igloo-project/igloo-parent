@@ -16,7 +16,7 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 	private static final long serialVersionUID = 2645014338149595776L;
 
 	public AdministrationBasicUserListPage(PageParameters parameters) {
-		super(parameters, UserTypeDescriptor.BASIC_USER, new ResourceModel("administration.user.basic.title"));
+		super(parameters, UserTypeDescriptor.BASIC_USER, new ResourceModel("administration.user.basic.list.title"));
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.basic")));
 	}

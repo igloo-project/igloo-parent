@@ -134,7 +134,7 @@ public class UserDetailGroupsPanel extends GenericPanel<User> {
 							.add(
 									new UserGroupDropDownSingleChoice("userGroup", userGroupModel)
 											.setRequired(true)
-											.setLabel(new ResourceModel("administration.userGroup.group"))
+											.setLabel(new ResourceModel("business.userGroup"))
 											.add(new LabelPlaceholderBehavior()),
 									new AjaxButton("submit") {
 										private static final long serialVersionUID = 1L;
