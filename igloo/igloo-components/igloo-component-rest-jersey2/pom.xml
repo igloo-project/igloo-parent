@@ -82,6 +82,12 @@
 		<!-- Test -->
 		
 		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-web-test</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-test</artifactId>
 			<type>pom</type>

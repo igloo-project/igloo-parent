@@ -1,4 +1,4 @@
-package org.iglooproject.test.rest.jersey2.context;
+package org.iglooproject.test.web.context;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
