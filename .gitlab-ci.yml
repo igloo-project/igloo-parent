@@ -8,7 +8,7 @@ stages:
   - analyze
   - deploy
 
-maven-prepare:
+.maven-prepare:
   stage: prepare
   script:
     - "./config-test.sh"
@@ -16,7 +16,7 @@ maven-prepare:
     paths:
       - gitlab-ci.build.conf
 
-maven-build:
+.maven-build:
   stage: build
   environment: staging
   script:
@@ -24,14 +24,14 @@ maven-build:
     - "export"
     - "mvn -Ptest -DskipTests clean compile"
 
-maven-test:
+.maven-test:
   stage: test
   environment: staging
   script:
     - "source gitlab-ci.build.conf"
     - "mvn -Ptest clean test"
 
-maven-deploy:
+.maven-deploy:
   stage: deploy
   environment: staging
   script:
@@ -47,6 +47,4 @@ sonar-analyze:
   script:
     - mvn -Ptest clean verify sonar:sonar
       -DskipTests
-      -Dsonar.projectKey="$CI_PROJECT_NAME-$CI_COMMIT_REF_NAME"
-      -Dsonar.projectName="$CI_PROJECT_NAME · $CI_COMMIT_REF_NAME"
       -Dsonar.host.url="https://sonar.tools.kobalt-si.fr"

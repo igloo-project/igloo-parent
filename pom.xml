@@ -15,6 +15,8 @@
 		
 		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
 		<maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
+
+		<sonar.projectKey>${project.groupId}:${project.artifactId}:sonar</sonar.projectKey>
 	</properties>
 	
 	<profiles>

@@ -10,6 +10,8 @@
 	<name>Igloo - Parent - Maven configuration - Common</name>
 	
 	<properties>
+		<sonar.projectKey>${project.groupId}:${project.artifactId}:sonar</sonar.projectKey>
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
