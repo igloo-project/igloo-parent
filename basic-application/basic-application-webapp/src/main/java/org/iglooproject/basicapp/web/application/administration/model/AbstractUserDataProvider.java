@@ -3,18 +3,17 @@ package org.iglooproject.basicapp.web.application.administration.model;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
-import com.google.common.collect.ImmutableMap;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
-import org.iglooproject.basicapp.core.business.user.search.IGenericUserSearchQuery;
+import org.iglooproject.basicapp.core.business.user.search.IAbstractUserSearchQuery;
 import org.iglooproject.basicapp.core.business.user.search.UserSort;
 import org.iglooproject.jpa.more.business.search.query.ISearchQuery;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+
+import com.google.common.collect.ImmutableMap;
 
 public abstract class AbstractUserDataProvider<U extends User> extends AbstractSearchQueryDataProvider<U, UserSort> {
 	
@@ -71,7 +70,7 @@ public abstract class AbstractUserDataProvider<U extends User> extends AbstractS
 		return sortModel;
 	}
 	
-	protected abstract IGenericUserSearchQuery<U> createSearchQuery();
+	protected abstract IAbstractUserSearchQuery<U> createSearchQuery();
 	
 	@Override
 	protected ISearchQuery<U, UserSort> getSearchQuery() {

@@ -3,8 +3,8 @@ package org.iglooproject.basicapp.web.application.common.typedescriptor.user;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
+import org.iglooproject.basicapp.core.business.user.search.IAbstractUserSearchQuery;
 import org.iglooproject.basicapp.core.business.user.search.IBasicUserSearchQuery;
-import org.iglooproject.basicapp.core.business.user.search.IGenericUserSearchQuery;
 import org.iglooproject.basicapp.core.business.user.search.ITechnicalUserSearchQuery;
 import org.iglooproject.basicapp.core.business.user.search.IUserSearchQuery;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.AbstractGenericEntityTypeDescriptor;
@@ -40,7 +40,7 @@ public abstract class UserTypeDescriptor<U extends User> extends AbstractGeneric
 		}
 		
 		@Override
-		public IGenericUserSearchQuery<TechnicalUser> newSearchQuery() {
+		public IAbstractUserSearchQuery<TechnicalUser> newSearchQuery() {
 			return CoreWicketApplication.get().getApplicationContext().getBean(ITechnicalUserSearchQuery.class);
 		}
 	};
@@ -71,7 +71,7 @@ public abstract class UserTypeDescriptor<U extends User> extends AbstractGeneric
 		}
 		
 		@Override
-		public IGenericUserSearchQuery<BasicUser> newSearchQuery() {
+		public IAbstractUserSearchQuery<BasicUser> newSearchQuery() {
 			return CoreWicketApplication.get().getApplicationContext().getBean(IBasicUserSearchQuery.class);
 		}
 	};
@@ -101,9 +101,10 @@ public abstract class UserTypeDescriptor<U extends User> extends AbstractGeneric
 			return (NotificationUserTypeDescriptor<User>) NotificationUserTypeDescriptor.USER;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
-		public IGenericUserSearchQuery<User> newSearchQuery() {
-			return CoreWicketApplication.get().getApplicationContext().getBean(IUserSearchQuery.class);
+		public IAbstractUserSearchQuery<User> newSearchQuery() {
+			return (IUserSearchQuery<User>) CoreWicketApplication.get().getApplicationContext().getBean(IUserSearchQuery.class, User.class);
 		}
 	};
 
@@ -121,6 +122,6 @@ public abstract class UserTypeDescriptor<U extends User> extends AbstractGeneric
 
 	public abstract NotificationUserTypeDescriptor<U> notificationTypeDescriptor();
 	
-	public abstract IGenericUserSearchQuery<U> newSearchQuery();
+	public abstract IAbstractUserSearchQuery<U> newSearchQuery();
 
 }

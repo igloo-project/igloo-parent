@@ -35,6 +35,7 @@ public class UserAjaxDropDownSingleChoice<U extends User> extends GenericSelect2
 			this.searchTypeClass = searchTypeClass;
 		}
 		
+		@SuppressWarnings("unchecked")
 		@Override
 		public void query(String term, int page, Response<U> response) {
 			response.addAll(
