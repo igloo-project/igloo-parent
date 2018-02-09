@@ -3,13 +3,19 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
 		<div class="page-content">
-			<div class="page-header">
-				<h2 class="page-header-title">
-					<wicket:container wicket:id="pageTitle" />
-				</h2>
-			</div>
 			<div class="page-body">
-				
+				<div class="jumbotron my-5">
+					<h1 class="display-4"><span class="text-primary fa fa-home" /> <wicket:container wicket:id="pageTitle" /></h1>
+					
+					<p class="lead"><wicket:message key="common.featureNotYetAvailable" /></p>
+					
+					<hr class="my-4">
+					
+					<a wicket:id="administration" class="btn btn-outline-primary btn-lg">
+						<span class="fa fa-cogs" />
+						<wicket:message key="navigation.administration" />
+					</a>
+				</div>
 			</div>
 		</div>
 	</wicket:extend>
