@@ -4,3 +4,4 @@ target2
 .project
 .settings
 .factorypath
+gitlab-ci.build.conf
