@@ -4,16 +4,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.stereotype.Service;
-
-import com.google.common.collect.Lists;
-
 import org.iglooproject.basicapp.core.business.BasicApplicationCoreCommonBusinessPackage;
+import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.util.init.service.AbstractImportDataServiceImpl;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
 
 @Service("importDataService")
 public class ImportDataServiceImpl extends AbstractImportDataServiceImpl {
@@ -28,6 +28,7 @@ public class ImportDataServiceImpl extends AbstractImportDataServiceImpl {
 		doImportItem(idsMapping, workbook, Authority.class);
 		doImportItem(idsMapping, workbook, UserGroup.class);
 		doImportItem(idsMapping, workbook, TechnicalUser.class);
+		doImportItem(idsMapping, workbook, BasicUser.class);
 	}
 
 }
