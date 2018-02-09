@@ -25,6 +25,16 @@ import org.hibernate.loader.BatchFetchStyle;
 import org.hibernate.search.elasticsearch.cfg.ElasticsearchEnvironment;
 import org.hibernate.search.store.impl.FSDirectoryProvider;
 import org.hibernate.search.store.impl.RAMDirectoryProvider;
+import org.iglooproject.jpa.business.generic.service.ITransactionalAspectAwareService;
+import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionPoolConfigurationProvider;
+import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
+import org.iglooproject.jpa.config.spring.provider.IJpaPropertiesProvider;
+import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.hibernate.analyzers.CoreElasticSearchAnalyzersDefinitionProvider;
+import org.iglooproject.jpa.hibernate.analyzers.CoreLuceneAnalyzersDefinitionProvider;
+import org.iglooproject.jpa.hibernate.jpa.PerTableSequenceStrategyProvider;
+import org.iglooproject.jpa.hibernate.model.naming.PostgreSQLPhysicalNamingStrategyImpl;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -39,18 +49,6 @@ import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;
 import com.zaxxer.hikari.HikariDataSource;
-
-import org.iglooproject.jpa.business.generic.service.ITransactionalAspectAwareService;
-import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionPoolConfigurationProvider;
-import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
-import org.iglooproject.jpa.config.spring.provider.IJpaPropertiesProvider;
-import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.hibernate.analyzers.CoreElasticSearchAnalyzersDefinitionProvider;
-import org.iglooproject.jpa.hibernate.analyzers.CoreLuceneAnalyzersDefinitionProvider;
-import org.iglooproject.jpa.hibernate.analyzers.CoreLuceneClientAnalyzersDefinitionProvider;
-import org.iglooproject.jpa.hibernate.jpa.PerTableSequenceStrategyProvider;
-import org.iglooproject.jpa.hibernate.model.naming.PostgreSQLPhysicalNamingStrategyImpl;
 
 public final class JpaConfigUtils {
 
@@ -129,13 +127,12 @@ public final class JpaConfigUtils {
 		String hibernateSearchIndexBase = configuration.getHibernateSearchIndexBase();
 		
 		if (configuration.isHibernateSearchElasticSearchEnabled()) {
-			properties.setProperty(ElasticsearchEnvironment.ANALYZER_DEFINITION_PROVIDER, CoreElasticSearchAnalyzersDefinitionProvider.class.getName());
-			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYZER_DEFINITION_PROVIDER, CoreLuceneClientAnalyzersDefinitionProvider.class.getName());
+			properties.setProperty(ElasticsearchEnvironment.ANALYSIS_DEFINITION_PROVIDER, CoreElasticSearchAnalyzersDefinitionProvider.class.getName());
 			properties.setProperty("hibernate.search.default.indexmanager", "elasticsearch");
 			properties.setProperty("hibernate.search.default.elasticsearch.host", configuration.getElasticSearchHost());
 			properties.setProperty("hibernate.search.default.elasticsearch.index_schema_management_strategy", configuration.getElasticSearchIndexSchemaManagementStrategy());
 		} else if (StringUtils.hasText(hibernateSearchIndexBase)) {
-			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYZER_DEFINITION_PROVIDER, CoreLuceneAnalyzersDefinitionProvider.class.getName());
+			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYSIS_DEFINITION_PROVIDER, CoreLuceneAnalyzersDefinitionProvider.class.getName());
 			if (configuration.isHibernateSearchIndexInRam()) {
 				properties.setProperty("hibernate.search.default.directory_provider", RAMDirectoryProvider.class.getName());
 			} else {

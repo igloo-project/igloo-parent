@@ -21,8 +21,14 @@
 			<artifactId>igloo-component-jpa</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-elasticsearch-test</artifactId>
+			<scope>compile</scope>
+			<type>pom</type>
+		</dependency>
 		
-		<!-- Test dependencies -->
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-test</artifactId>

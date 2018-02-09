@@ -5,9 +5,8 @@ import java.util.Map;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.assertj.core.api.Assertions;
+import org.hibernate.search.analyzer.impl.LuceneAnalyzerReference;
 import org.hibernate.search.analyzer.impl.ScopedLuceneAnalyzer;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.search.dao.IHibernateSearchDao;
 import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.iglooproject.test.search.model.Searchable;
@@ -68,18 +67,9 @@ public class TestSearchBase extends AbstractJpaSearchTestCase {
 	
 	private Analyzer getFieldAnalyzer(Analyzer analyzer, String fieldName) throws IllegalArgumentException, IllegalAccessException {
 		@SuppressWarnings("unchecked")
-		Map<String, Analyzer> analyzers = (Map<String, Analyzer>) FieldUtils.getField(ScopedLuceneAnalyzer.class, "scopedAnalyzers", true).get(analyzer);
-		Analyzer globalAnalyzer = (Analyzer) FieldUtils.getField(ScopedLuceneAnalyzer.class, "globalAnalyzer", true).get(analyzer);
-		return analyzers.getOrDefault(fieldName, globalAnalyzer);
-	}
-	
-	public void analyzeKeyword() {
-		
-	}
-
-	@Override
-	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		// no-op
+		Map<String, LuceneAnalyzerReference> analyzers = (Map<String, LuceneAnalyzerReference>) FieldUtils.getField(ScopedLuceneAnalyzer.class, "scopedAnalyzerReferences", true).get(analyzer);
+		LuceneAnalyzerReference globalAnalyzer = (LuceneAnalyzerReference) FieldUtils.getField(ScopedLuceneAnalyzer.class, "globalAnalyzerReference", true).get(analyzer);
+		return analyzers.getOrDefault(fieldName, globalAnalyzer).getAnalyzer();
 	}
 
 }

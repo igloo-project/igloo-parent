@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -34,13 +35,13 @@ public abstract class AbstractJpaMoreJpaConfig extends AbstractJpaConfig {
 	}
 
 	@Bean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	@Scope(proxyMode = ScopedProxyMode.INTERFACES, value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public IHibernateSearchLuceneQueryFactory hibernateSearchLuceneQueryFactory() {
 		return new HibernateSearchLuceneQueryFactoryImpl();
 	}
 	
 	@Bean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	@Scope(proxyMode = ScopedProxyMode.INTERFACES, value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public IQueuedTaskHolderSearchQuery queuedTaskHolderSearchQuery() {
 		return new QueuedTaskHolderSearchQueryImpl();
 	}
