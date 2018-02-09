@@ -3,6 +3,7 @@
         xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/JGroups-3.6.xsd">
    <TCP bind_addr="${jgroups.tcp.address:127.0.0.1}"
         bind_port="${jgroups.tcp.port}"
+        port_range="5"
         enable_diagnostics="false"
         thread_naming_pattern="pl"
         send_buf_size="640k"
@@ -14,7 +15,7 @@
    />
    <BPING dest="${jgroups.tcp.address:127.0.0.1}"
           bind_port="${jgroups.ping.port}"
-          port_range="10" 
+          port_range="5" 
    />
    <MERGE3 min_interval="500" 
            max_interval="2000" 
