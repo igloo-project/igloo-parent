@@ -73,18 +73,20 @@ public class NavTabsPanel extends Panel {
 		boolean first = tabsContentsRepeatingView.size() == 0;
 		
 		MarkupContainer tab = new WebMarkupContainer(tabsRepeatingView.newChildId());
+		BlankLink link = new BlankLink("link");
+		
 		Component content = factory.createContent(tabsContentsRepeatingView.newChildId());
 		
 		if (first) {
 			Behavior activeBehavior = new ClassAttributeAppender("active show");
-			tab.add(activeBehavior);
+			link.add(activeBehavior);
 			content.add(activeBehavior);
 		}
 		
 		tabsRepeatingView.add(
 				tab
 						.add(
-								new BlankLink("link")
+								link
 										.add(factory.createLabel("label"))
 										.add(new AttributeModifier("href", "#" + content.getMarkupId()))
 						)
