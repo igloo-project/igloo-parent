@@ -5,18 +5,6 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Matchers;
-import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.mockito.stubbing.Answer;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.transaction.PlatformTransactionManager;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.config.spring.event.PropertyRegistryInitEvent;
@@ -30,6 +18,17 @@ import org.iglooproject.spring.property.model.ImmutablePropertyId;
 import org.iglooproject.spring.property.model.MutablePropertyId;
 import org.iglooproject.spring.property.model.MutablePropertyValueMap;
 import org.iglooproject.spring.property.service.PropertyServiceImpl;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.mockito.stubbing.Answer;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.transaction.PlatformTransactionManager;
 
 public class TestPropertyService {
 
@@ -65,7 +64,7 @@ public class TestPropertyService {
 	private void initPropertyService(Answer<Void> registrationCallback) {
 		propertyService.setApplicationEventPublisher(publisher);
 		propertyService.setPlatformTransactionManager(platformTransactionManager);
-		doAnswer(registrationCallback).when(publisher).publishEvent(Matchers.any(PropertyRegistryInitEvent.class));
+		doAnswer(registrationCallback).when(publisher).publishEvent(ArgumentMatchers.any(PropertyRegistryInitEvent.class));
 		propertyService.init();
 	}
 	
