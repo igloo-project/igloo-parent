@@ -30,12 +30,6 @@
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
-
-		<!-- Http Client -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-		</dependency>
 		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -83,12 +77,6 @@
 		</dependency>
 
 		<!-- Database pooling -->
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>

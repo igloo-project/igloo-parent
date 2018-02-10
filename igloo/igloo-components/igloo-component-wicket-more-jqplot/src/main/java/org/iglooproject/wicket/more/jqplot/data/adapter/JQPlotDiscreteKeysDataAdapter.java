@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
-import org.iglooproject.commons.util.collections.DateDiscreteDomain;
-import org.iglooproject.commons.util.collections.PartitionDiscreteDomain;
+import org.iglooproject.commons.util.collections.range.time.DateDiscreteDomain;
+import org.iglooproject.commons.util.collections.range.time.PartitionDiscreteDomain;
 import org.iglooproject.commons.util.rendering.IRenderer;
 import org.iglooproject.wicket.more.jqplot.config.JQPlotConfigurers;
 import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;

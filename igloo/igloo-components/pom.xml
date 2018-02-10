@@ -21,6 +21,9 @@
 		<module>igloo-component-commons</module>
 		<module>igloo-component-spring</module>
 		
+		<module>igloo-component-web-test</module>
+		<module>igloo-component-web-jpa-test</module>
+		
 		<module>igloo-component-jpa</module>
 		<module>igloo-component-jpa-test</module>
 		
@@ -37,7 +40,6 @@
 		<module>igloo-component-wicket-bootstrap4</module>
 		<module>igloo-component-wicket-more-jqplot</module>
 		
-		<module>igloo-component-rest-jersey</module>
 		<module>igloo-component-web-security</module>
 		<module>igloo-component-rest-jersey2</module>
 		<module>igloo-component-jpa-migration</module>

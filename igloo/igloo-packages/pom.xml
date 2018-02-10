@@ -22,7 +22,6 @@
 
 		<module>igloo-package-web-wicket</module>
 		<module>igloo-package-web-wicket-app</module>
-		<module>igloo-package-web-jersey</module>
 		<module>igloo-package-web-spring-security</module>
 		<module>igloo-package-web-jersey2</module>
 	</modules>

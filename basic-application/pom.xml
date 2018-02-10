@@ -22,8 +22,6 @@
 	</modules>
 	
 	<properties>
-		<!-- il est préférable de bien surcharger la version du pool jdbc Tomcat au niveau du projet en fonction de la version de Tomcat -->
-		<tomcat-jdbc.version>${igloo.tomcat-jdbc.version}</tomcat-jdbc.version>
 	</properties>
 	
 	<profiles>
@@ -40,16 +38,6 @@
 			</properties>
 		</profile>
 	</profiles>
-	
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.apache.tomcat</groupId>
-				<artifactId>tomcat-jdbc</artifactId>
-				<version>${tomcat-jdbc.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	
 	<build>
 		<pluginManagement>

@@ -29,14 +29,6 @@
 			<type>pom</type>
 		</dependency>
 		
-		<!-- Database pooling -->
-		
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>

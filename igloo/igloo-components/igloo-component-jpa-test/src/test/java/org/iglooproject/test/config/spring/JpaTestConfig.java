@@ -4,11 +4,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.igloo.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
 import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
 import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
 import org.iglooproject.test.business.JpaTestBusinessPackage;
+import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 
 @Configuration
 @ApplicationDescription(name = "jpa-test")

@@ -86,13 +86,6 @@
 			<artifactId>igloo-dependency-test</artifactId>
 			<type>pom</type>
 		</dependency>
-		
-		<!-- Database pooling (tests) -->
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 	
 	<build>
@@ -123,10 +116,6 @@
 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>net.alchim31.maven</groupId>
-				<artifactId>yuicompressor-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

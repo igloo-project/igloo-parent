@@ -23,14 +23,11 @@
 		<igloo.hibernate.version>5.2.13.Final</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
 		<igloo.jboss-logging.version>3.3.1.Final</igloo.jboss-logging.version>
-		<igloo.tomcat-jdbc.version>8.5.24</igloo.tomcat-jdbc.version>
 		<igloo.hikaricp.version>2.7.6</igloo.hikaricp.version>
 		<igloo.ehcache.version>2.10.4</igloo.ehcache.version>
 		<igloo.querydsl.version>4.1.4</igloo.querydsl.version>
 		
 		<igloo.guava.version>24.0-jre</igloo.guava.version>
-		
-		<igloo.joda-time.version>2.9.9</igloo.joda-time.version>
 		
 		<igloo.postgresql.version>42.2.1</igloo.postgresql.version>
 		<igloo.pgjdbc-ng.version>0.7.1</igloo.pgjdbc-ng.version>
@@ -85,6 +82,7 @@
 		<igloo.commons-collections4.version>4.1</igloo.commons-collections4.version>
 		<igloo.commons-beanutils.version>1.9.3</igloo.commons-beanutils.version>
 		<igloo.commons-fileupload.version>1.3.3</igloo.commons-fileupload.version>
+		<igloo.commons-configuration.version>2.2</igloo.commons-configuration.version>
 		
 		<igloo.jta.version>1.1</igloo.jta.version>
 		<igloo.javax-mail.version>1.4.7</igloo.javax-mail.version>
@@ -160,7 +158,6 @@
 		<igloo.mockito.version>2.13.0</igloo.mockito.version>
 		<igloo.assertj.version>3.9.0</igloo.assertj.version>
 		<igloo.assertj-guava.version>3.1.0</igloo.assertj-guava.version>
-		<igloo.assertj-joda-time.version>2.0.0</igloo.assertj-joda-time.version>
 		<igloo.grizzly.version>1.9.65</igloo.grizzly.version>
 		<igloo.findbugs-annotations.version>3.0.1u2</igloo.findbugs-annotations.version>
 		<igloo.findbugs-jsr305.version>3.0.2</igloo.findbugs-jsr305.version>
@@ -172,10 +169,7 @@
 		<igloo.gson.version>2.6.2</igloo.gson.version>
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
 		<igloo.byte-buddy.version>1.6.14</igloo.byte-buddy.version>
-		
 		<igloo.embedded-elasticsearch.version>2.4.3</igloo.embedded-elasticsearch.version>
-		
-		<igloo.localization-properties-consistency-maven-plugin.version>1.0.0</igloo.localization-properties-consistency-maven-plugin.version>
 	</properties>
 	
 	<prerequisites>
@@ -299,6 +293,19 @@
 					<groupId>commons-validator</groupId>
 					<artifactId>commons-validator</artifactId>
 					<version>${igloo.commons-validator.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<!-- used for tests for spring-less environments -->
+				<dependency>
+					<groupId>org.apache.commons</groupId>
+					<artifactId>commons-configuration2</artifactId>
+					<version>${igloo.commons-configuration.version}</version>
 					<exclusions>
 						<exclusion>
 							<groupId>commons-logging</groupId>
@@ -550,12 +557,6 @@
 					</dependency>
 				
 				<!-- Pooling -->
-				
-					<dependency>
-						<groupId>org.apache.tomcat</groupId>
-						<artifactId>tomcat-jdbc</artifactId>
-						<version>${igloo.tomcat-jdbc.version}</version>
-					</dependency>
 					
 					<dependency>
 						<groupId>com.zaxxer</groupId>
@@ -735,12 +736,6 @@
 			
 			<!-- Utils -->
 			
-				<dependency>
-					<groupId>joda-time</groupId>
-					<artifactId>joda-time</artifactId>
-					<version>${igloo.joda-time.version}</version>
-				</dependency>
-		
 				<dependency>
 					<groupId>org.javatuples</groupId>
 					<artifactId>javatuples</artifactId>
@@ -982,7 +977,11 @@
 					<version>${igloo.truezip.version}</version>
 					<exclusions>
 						<exclusion>
-							<groupId>bouncycastle</groupId>
+							<groupId>de.schlichtherle.truezip</groupId>
+							<artifactId>truezip-swing</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.bouncycastle</groupId>
 							<artifactId>bcprov-jdk15on</artifactId>
 						</exclusion>
 					</exclusions>
@@ -1073,32 +1072,6 @@
 						<artifactId>wicketstuff-select2</artifactId>
 						<version>${igloo.wicketstuff-select2.version}</version>
 					</dependency>
-			
-			<!-- Jersey -->
-			
-				<dependency>
-					<groupId>com.sun.jersey</groupId>
-					<artifactId>jersey-server</artifactId>
-					<version>${igloo.jersey.version}</version>
-				</dependency>
-				
-				<dependency>
-					<groupId>com.sun.jersey</groupId>
-					<artifactId>jersey-client</artifactId>
-					<version>${igloo.jersey.version}</version>
-				</dependency>
-				
-				<dependency>
-					<groupId>com.sun.jersey.contribs</groupId>
-					<artifactId>jersey-multipart</artifactId>
-					<version>${igloo.jersey.version}</version>
-				</dependency>
-				
-				<dependency>
-					<groupId>com.sun.jersey.contribs</groupId>
-					<artifactId>jersey-spring</artifactId>
-					<version>${igloo.jersey.version}</version>
-				</dependency>
 			
 			<!-- Jersey 2 -->
 			
@@ -1229,11 +1202,6 @@
 					<artifactId>assertj-guava</artifactId>
 					<version>${igloo.assertj-guava.version}</version>
 				</dependency>
-				<dependency>
-					<groupId>org.assertj</groupId>
-					<artifactId>assertj-joda-time</artifactId>
-					<version>${igloo.assertj-joda-time.version}</version>
-				</dependency>
 				
 				<dependency>
 					<groupId>org.springframework</groupId>
@@ -1251,7 +1219,6 @@
 					<groupId>com.sun.grizzly</groupId>
 					<artifactId>grizzly-webserver</artifactId>
 					<version>${igloo.grizzly.version}</version>
-					<scope>test</scope>
 					<exclusions>
 						<exclusion>
 							<groupId>javax.servlet</groupId>
@@ -1264,21 +1231,18 @@
 					<groupId>com.sun.jersey</groupId>
 					<artifactId>jersey-grizzly</artifactId>
 					<version>${igloo.jersey.version}</version>
-					<scope>test</scope>
 				</dependency>
 				
 				<dependency>
 					<groupId>org.glassfish.jersey.test-framework.providers</groupId>
 					<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
 					<version>${igloo.jersey2.version}</version>
-					<scope>test</scope>
 				</dependency>
 				
 				<dependency>
 					<groupId>org.glassfish.jersey.containers</groupId>
 					<artifactId>jersey-container-grizzly2-servlet</artifactId>
 					<version>${igloo.jersey2.version}</version>
-					<scope>test</scope>
 					<exclusions>
 						<exclusion>
 							<groupId>javax.servlet</groupId>
@@ -1363,19 +1327,6 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>fr.openwide.maven.plugins</groupId>
-					<artifactId>localization-properties-consistency-maven-plugin</artifactId>
-					<version>${igloo.localization-properties-consistency-maven-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>scan</id>
-							<goals>
-								<goal>scan</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
 				<plugin>
 					<groupId>org.bsc.maven</groupId>
 					<artifactId>maven-processor-plugin</artifactId>
