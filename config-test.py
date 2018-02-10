@@ -57,7 +57,8 @@ export TEST_INFINISPAN_JGROUPS_PORT_PORT={infinispan_ping_port}
   temp_dir=temp_dir,
   http_port=base_port,
   infinispan_tcp_port=base_port + 1,
-  infinispan_ping_port=base_port + 2
+  # + 1 + 5 as we use port_range = 5 for jgroups
+  infinispan_ping_port=base_port + 6
 ).strip()
 
 # write and display config
