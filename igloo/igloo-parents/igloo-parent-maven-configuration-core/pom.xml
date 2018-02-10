@@ -1372,6 +1372,18 @@
 	
 	<profiles>
 		<profile>
+			<id>sonar-branch</id>
+			<activation>
+				<property>
+					<name>sonar.projectBranch</name>
+				</property>
+			</activation>
+			<properties>
+				<sonar.projectKey>${project.groupId}:${project.artifactId}:${sonar.projectBranch}</sonar.projectKey>
+				<sonar.projectName>${project.name} (${sonar.projectBranch})</sonar.projectName>
+			</properties>
+		</profile>
+		<profile>
 			<id>eclipse-build</id>
 			<!--
 			An automatically-set profile that disables proccessors' sources generation.
