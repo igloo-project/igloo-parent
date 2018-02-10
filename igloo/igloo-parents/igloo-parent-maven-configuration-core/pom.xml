@@ -15,8 +15,6 @@
 	<name>Igloo - Parent - Maven configuration - Core</name>
 	
 	<properties>
-		<sonar.projectKey>${project.groupId}:${project.artifactId}:sonar</sonar.projectKey>
-
 		<igloo.version>${project.version}</igloo.version>
 		
 		<igloo.spring.version>5.0.3.RELEASE</igloo.spring.version>
@@ -1373,6 +1371,18 @@
 	</build>
 	
 	<profiles>
+		<profile>
+			<id>sonar-branch</id>
+			<activation>
+				<property>
+					<name>sonar.projectBranch</name>
+				</property>
+			</activation>
+			<properties>
+				<sonar.projectKey>${project.groupId}:${project.artifactId}:${sonar.projectBranch}</sonar.projectKey>
+				<sonar.projectName>${project.name} (${sonar.projectBranch})</sonar.projectName>
+			</properties>
+		</profile>
 		<profile>
 			<id>eclipse-build</id>
 			<!--

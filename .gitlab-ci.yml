@@ -8,7 +8,7 @@ stages:
   - analyze
   - deploy
 
-.maven-prepare:
+maven-prepare:
   stage: prepare
   script:
     - "./config-test.py"
@@ -45,6 +45,5 @@ sonar-analyze:
   script:
     - "source gitlab-ci.build.conf"
     - mvn -Ptest clean verify sonar:sonar
-      "${SONAR_OPTS[@]}"
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt-si.fr"

@@ -15,11 +15,21 @@
 		
 		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
 		<maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
-
-		<sonar.projectKey>${project.groupId}:${project.artifactId}:sonar</sonar.projectKey>
 	</properties>
 	
 	<profiles>
+		<profile>
+			<id>sonar-branch</id>
+			<activation>
+				<property>
+					<name>sonar.projectBranch</name>
+				</property>
+			</activation>
+			<properties>
+				<sonar.projectKey>${project.groupId}:${project.artifactId}:${sonar.projectBranch}</sonar.projectKey>
+				<sonar.projectName>${project.name} (${sonar.projectBranch})</sonar.projectName>
+			</properties>
+		</profile>
 		<profile>
 			<id>igloo-release</id>
 			<activation>

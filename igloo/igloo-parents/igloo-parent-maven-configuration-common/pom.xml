@@ -10,8 +10,6 @@
 	<name>Igloo - Parent - Maven configuration - Common</name>
 	
 	<properties>
-		<sonar.projectKey>${project.groupId}:${project.artifactId}:sonar</sonar.projectKey>
-
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
@@ -347,6 +345,18 @@
 	</build>
 	
 	<profiles>
+		<profile>
+			<id>sonar-branch</id>
+			<activation>
+				<property>
+					<name>sonar.projectBranch</name>
+				</property>
+			</activation>
+			<properties>
+				<sonar.projectKey>${project.groupId}:${project.artifactId}:${sonar.projectBranch}</sonar.projectKey>
+				<sonar.projectName>${project.name} (${sonar.projectBranch})</sonar.projectName>
+			</properties>
+		</profile>
 		<!-- profile example to switch toolchain and animal sniffer target version; no longer used -->
 		<profile>
 			<id>jdk8</id>

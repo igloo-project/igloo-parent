@@ -26,6 +26,7 @@ base_port = random.randrange(30000, 40000)
 temp_dir = tempfile.mkdtemp(dir=os.getcwd(), suffix="-igloo")
 # built branch
 branch = os.environ.get("CI_COMMIT_REF_NAME", None)
+maven_opts = shlex.split(os.environ.get("MAVEN_OPTS", ""))
 
 # check if branch is available
 if not branch:
@@ -34,15 +35,13 @@ if not branch:
 
 # check if branch needs a sonar custom setting
 main_branches = ["dev", "master", "mt-.*"]
-sonar_opts=[]
 if len([ i for i in main_branches if re.match(i, branch) ]) == 0:
-  sonar_opts.append("-Dsonar.projectKey=${{project.groupId}}:${{project.artifactId}}:{branch}".format(branch=branch))
-  sonar_opts.append("-Dsonar.projectName=${{project.name}} ({branch})".format(branch=branch))
+  maven_opts.append("-Dsonar.projectBranch={branch}".format(branch=branch))
 
 conf = """
 # generated on {date}
 
-declare -a SONAR_OPTS=({sonar_opts})
+export MAVEN_OPTS={maven_opts}
 export TEST_DB_TYPE=h2
 export TEST_DB_NAME=igloo_test
 export TEST_DB_USER=igloo_test
@@ -54,7 +53,7 @@ export TEST_INFINISPAN_JGROUPS_PORT_PORT={infinispan_ping_port}
 
 """.format(
   date=datetime.now().isoformat(),
-  sonar_opts=' '.join([quote(i) for i in sonar_opts]),
+  maven_opts=quote(' '.join([i for i in maven_opts])),
   temp_dir=temp_dir,
   http_port=base_port,
   infinispan_tcp_port=base_port + 1,
