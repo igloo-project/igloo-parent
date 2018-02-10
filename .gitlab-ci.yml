@@ -16,20 +16,20 @@ maven-prepare:
     paths:
       - gitlab-ci.build.conf
 
-.maven-build:
+maven-build:
   stage: build
   environment: staging
   script:
     - "mvn -Ptest -DskipTests clean compile"
 
-.maven-test:
+maven-test:
   stage: test
   environment: staging
   script:
     - "source gitlab-ci.build.conf"
     - "mvn -Ptest clean test"
 
-.maven-deploy:
+maven-deploy:
   stage: deploy
   environment: staging
   script:
