@@ -434,7 +434,7 @@
 			<build>
 				<!-- override junit behavior with allure-junit4 + aspectj -->
 				<!-- configure allure-junit4 output -->
-				<!-- add allure-maven plugin (not really used as we aggregate results at project root) -->
+				<!-- add allure-maven plugin as executor.json file generated during report phase is needed for aggregation -->
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -476,6 +476,23 @@
 					</plugin>
 				</plugins>
 			</build>
+			<reporting>
+				<excludeDefaults>true</excludeDefaults>
+				<plugins>
+					<plugin>
+						<groupId>io.qameta.allure</groupId>
+						<artifactId>allure-maven</artifactId>
+						<version>${igloo.allure-maven.version}</version>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>report</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
 		</profile>
 	</profiles>
 	
