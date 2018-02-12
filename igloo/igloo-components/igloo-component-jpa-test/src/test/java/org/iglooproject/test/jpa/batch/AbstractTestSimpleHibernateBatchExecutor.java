@@ -8,6 +8,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import org.iglooproject.commons.util.functional.Joiners;
+import org.iglooproject.jpa.batch.executor.SimpleHibernateBatchExecutor;
+import org.iglooproject.jpa.batch.runnable.ReadOnlyBatchRunnable;
+import org.iglooproject.jpa.batch.runnable.ReadWriteBatchRunnable;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.query.IQuery;
+import org.iglooproject.jpa.query.Queries;
+import org.iglooproject.test.business.person.model.Person;
+import org.iglooproject.test.business.person.model.QPerson;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -19,17 +29,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.querydsl.jpa.impl.JPAQuery;
-
-import org.iglooproject.commons.util.functional.Joiners;
-import org.iglooproject.jpa.batch.executor.SimpleHibernateBatchExecutor;
-import org.iglooproject.jpa.batch.runnable.ReadOnlyBatchRunnable;
-import org.iglooproject.jpa.batch.runnable.ReadWriteBatchRunnable;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.query.IQuery;
-import org.iglooproject.jpa.query.Queries;
-import org.iglooproject.test.business.person.model.Person;
-import org.iglooproject.test.business.person.model.QPerson;
 
 public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractTestHibernateBatchExecutor {
 
