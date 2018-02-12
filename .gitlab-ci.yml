@@ -31,6 +31,13 @@ maven-test:
     - "mvn -Ptest -Dallure.enabled=true -fae clean test site:site"
     - "TEST_RESULT=$?"
     - "mvn -Dallure.enabled=true site:site"
+    - "eval $(ssh-agent -s)"
+    - echo "$SYNC_TEST_REPORTS_SSH_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SYNC_TEST_REPORTS_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - rsync -az --chmod=g=rX,o= target/site/ "${SYNC_TEST_REPORTS_USER}@${SYNC_TEST_REPORTS_HOST}:${SYNC_TEST_REPORTS_DOCUMENT_ROOT}"
     - "exit $TEST_RESULT"
   artifacts:
     paths:
