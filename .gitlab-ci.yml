@@ -27,7 +27,11 @@ maven-test:
   environment: staging
   script:
     - "source gitlab-ci.build.conf"
-    - "mvn -Ptest clean test"
+    - "mvn -Ptest -Dallure.enabled=true clean verify"
+    - "mvn -Dallure.enabled=true site:site"
+  artifacts:
+    paths:
+      - target/site/
 
 maven-deploy:
   stage: deploy
