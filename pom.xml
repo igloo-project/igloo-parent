@@ -18,6 +18,7 @@
 		
 		<!-- version needed here as we use allure to aggregate child reports -->
 		<igloo.allure-maven.version>2.9</igloo.allure-maven.version>
+		<igloo.allure.version>2.5.0</igloo.allure.version>
 	</properties>
 	
 	<profiles>
@@ -107,6 +108,9 @@
 						<groupId>io.qameta.allure</groupId>
 						<artifactId>allure-maven</artifactId>
 						<version>${igloo.allure-maven.version}</version>
+						<configuration>
+							<reportVersion>${igloo.allure.version}</reportVersion>
+						</configuration>
 						<reportSets>
 							<reportSet>
 								<reports>

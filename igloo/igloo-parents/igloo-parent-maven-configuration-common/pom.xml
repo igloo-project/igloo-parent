@@ -59,6 +59,7 @@
 		<!-- aspectj is used by allure -->
 		<igloo.allure-aspectj.version>1.8.13</igloo.allure-aspectj.version>
 		<igloo.allure-maven.version>2.9</igloo.allure-maven.version>
+		<igloo.allure.version>2.5.0</igloo.allure.version>
 		<igloo.allure-junit4.version>2.0-BETA22</igloo.allure-junit4.version>
 		<igloo.junit-dataprovider.version>1.13.1</igloo.junit-dataprovider.version>
 	</properties>
@@ -373,6 +374,9 @@
 					<groupId>io.qameta.allure</groupId>
 					<artifactId>allure-maven</artifactId>
 					<version>${igloo.allure-maven.version}</version>
+					<configuration>
+						<reportVersion>${igloo.allure.version}</reportVersion>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
