@@ -718,6 +718,12 @@
 					</dependency>
 					
 					<dependency>
+						<groupId>com.fasterxml.jackson.module</groupId>
+						<artifactId>jackson-module-jaxb-annotations</artifactId>
+						<version>${igloo.jackson2-jaxrs.version}</version>
+					</dependency>
+					
+					<dependency>
 						<groupId>com.fasterxml.jackson.jaxrs</groupId>
 						<artifactId>jackson-jaxrs-xml-provider</artifactId>
 						<version>${igloo.jackson2-jaxrs.version}</version>

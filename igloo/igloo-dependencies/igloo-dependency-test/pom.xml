@@ -49,4 +49,35 @@
 			<artifactId>h2</artifactId>
 		</dependency>
 	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>allure</id>
+			<activation>
+				<property>
+					<name>allure.enabled</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>io.qameta.allure</groupId>
+					<artifactId>allure-junit4</artifactId>
+					<version>${igloo.allure-junit4.version}</version>
+					<scope>compile</scope>
+				</dependency>
+				<dependency>
+					<groupId>com.tngtech.java</groupId>
+					<artifactId>junit-dataprovider</artifactId>
+					<version>${igloo.junit-dataprovider.version}</version>
+					<scope>compile</scope>
+				</dependency>
+				<!-- re-added as ignored in allure-junit for dependency convergence -->
+				<dependency>
+					<groupId>com.fasterxml.jackson.module</groupId>
+					<artifactId>jackson-module-jaxb-annotations</artifactId>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 </project>
