@@ -28,23 +28,30 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PhlocCssHtmlNotificationCssServiceImpl.class);
 	
+	private static final String DEFAULT_VARIATION = "##DEFAULT##";
+	
 	private final Map<ICssResourceReference, Pair<IHtmlNotificationCssRegistry, Time>> registryCache = Maps.newHashMap();
 	
 	private final Map<String, ICssResourceReference> registrySpecs = Maps.newHashMap();
-
-	@Override
-	public synchronized boolean hasRegistry(String componentVariation) {
-		return registrySpecs.containsKey(componentVariation);
-	}
 	
+	/**
+	 * Return queried styles or default ones. Return null if no defaults are registered.
+	 */
 	@Override
 	public synchronized IHtmlNotificationCssRegistry getRegistry(String componentVariation) throws ServiceException {
-		ICssResourceReference cssResourceReference = registrySpecs.get(componentVariation);
+		final ICssResourceReference cssResourceReference;
+		if (componentVariation != null && registrySpecs.containsKey(componentVariation)) {
+			cssResourceReference = registrySpecs.get(componentVariation);
+		} else if (registrySpecs.containsKey(DEFAULT_VARIATION)) {
+			cssResourceReference = registrySpecs.get(DEFAULT_VARIATION);
+		} else {
+			cssResourceReference = null;
+		}
 		if (cssResourceReference == null) {
 			return null;
+		} else {
+			return getRegistry(cssResourceReference);
 		}
-		
-		return getRegistry(cssResourceReference);
 	}
 
 	private synchronized IHtmlNotificationCssRegistry getRegistry(ICssResourceReference cssResourceReference) throws ServiceException {
@@ -64,8 +71,16 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 		}
 	}
 	
+	/**
+	 * Register default styles; this style will be used if queried variation does not exist.
+	 */
 	@Override
-	public synchronized void registerStyles(String componentVariation, ICssResourceReference cssResourceReference) throws ServiceException {
+	public synchronized void registerDefaultStyles(ICssResourceReference cssResourceReference) {
+		registerStyles(DEFAULT_VARIATION, cssResourceReference);
+	}
+	
+	@Override
+	public synchronized void registerStyles(String componentVariation, ICssResourceReference cssResourceReference) {
 		if (registrySpecs.containsKey(componentVariation)) {
 			LOGGER.warn("Overrding Html notification style registry for component variation " + componentVariation);
 		}

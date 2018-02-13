@@ -2,7 +2,6 @@ package org.iglooproject.wicket.more.rendering.service;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
@@ -12,10 +11,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.bindgen.BindingRoot;
-import org.javatuples.Triplet;
-
-import com.google.common.collect.Maps;
-
 import org.iglooproject.commons.util.context.IExecutionContext;
 import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
@@ -23,9 +18,11 @@ import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;
 import org.iglooproject.wicket.more.rendering.Renderer;
+import org.javatuples.Triplet;
 
-public class RendererServiceImpl
-		implements IRendererService, IRendererRegistry {
+import com.google.common.collect.Maps;
+
+public class RendererServiceImpl implements IRendererService, IRendererRegistry {
 	
 	private Map<Triplet<Class<?>, FieldPath, Class<?>>, Renderer<?>> cache = Maps.newHashMap();
 
@@ -36,12 +33,6 @@ public class RendererServiceImpl
 	public RendererServiceImpl(IWicketContextProvider wicketContextProvider) {
 		super();
 		this.wicketContextProvider = wicketContextProvider;
-	}
-
-	@Override
-	@Deprecated
-	public <T> T runWithContext(Callable<T> callable) throws Exception {
-		return context().run(callable);
 	}
 	
 	@Override

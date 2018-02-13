@@ -1,7 +1,6 @@
 package org.iglooproject.jpa.more.rendering.service;
 
 import java.util.Locale;
-import java.util.concurrent.Callable;
 
 import org.iglooproject.commons.util.context.ExecutionContexts;
 import org.iglooproject.commons.util.context.IExecutionContext;
@@ -30,11 +29,6 @@ public class EmptyRendererServiceImpl implements IRendererService {
 	@Override
 	public IExecutionContext context(Locale locale) {
 		return ExecutionContexts.noOp();
-	}
-	
-	@Override
-	public <T> T runWithContext(Callable<T> callable) throws Exception {
-		return callable.call();
 	}
 
 	@Override

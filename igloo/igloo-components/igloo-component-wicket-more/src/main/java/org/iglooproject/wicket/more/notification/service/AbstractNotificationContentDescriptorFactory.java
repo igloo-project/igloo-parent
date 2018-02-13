@@ -5,6 +5,16 @@ import java.util.Locale;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.util.lang.Args;
+import org.iglooproject.commons.util.context.IExecutionContext;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
+import org.iglooproject.spring.notification.model.AbstractExecutionContextNotificationContentDescriptorWrapper;
+import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
+import org.iglooproject.spring.notification.model.INotificationRecipient;
+import org.iglooproject.spring.property.SpringPropertyIds;
+import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.spring.util.StringUtils;
+import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssService.IHtmlNotificationCssRegistry;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
@@ -16,18 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-
-import org.iglooproject.commons.util.context.IExecutionContext;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
-import org.iglooproject.spring.notification.model.AbstractExecutionContextNotificationContentDescriptorWrapper;
-import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
-import org.iglooproject.spring.notification.model.INotificationRecipient;
-import org.iglooproject.spring.property.SpringPropertyIds;
-import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.more.notification.model.IWicketNotificationDescriptor;
-import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssService.IHtmlNotificationCssRegistry;
 
 public abstract class AbstractNotificationContentDescriptorFactory extends AbstractWicketRendererServiceImpl {
 	
@@ -50,7 +48,6 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		super(wicketContextProvider);
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	protected IWicketContextProvider getWicketContextProvider() {
 		return super.getWicketContextProvider();
@@ -64,7 +61,7 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		}
 	}
 	
-	protected abstract class AbstractWicketNotificationDescriptor implements IWicketNotificationDescriptor {
+	protected abstract class AbstractWicketNotificationDescriptor implements INotificationContentDescriptor {
 
 		@Override
 		public final String renderSubject() {
@@ -76,10 +73,6 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		@Override
 		public final String renderTextBody() throws NotificationContentRenderingException {
 			return null;
-		}
-		
-		public String getVariation() {
-			return IWicketNotificationDescriptor.DEFAULT_NOTIFICATION_VARIATION;
 		}
 
 		@Override
@@ -95,12 +88,10 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 							return createComponent("htmlComponent");
 						}
 					},
-					locale,
-					getVariation()
+					locale
 			);
 		}
 		
-		@Override
 		public abstract Component createComponent(String wicketId);
 		
 		@Override
@@ -136,7 +127,7 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 
 		@Override
 		public final String renderSubject(Locale locale) {
-			return AbstractNotificationContentDescriptorFactory.this.renderString(
+			return AbstractNotificationContentDescriptorFactory.this.getRendererService().localize(
 					getSubjectMessageKey(), locale,
 					getSubjectParameter(locale),
 					(Object[]) Iterables.toArray(getSubjectPositionalParameters(locale), Object.class)
@@ -168,16 +159,15 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 	 * Replace CSS classes by the corresponding style and add a target="_blank" attribute to links.
 	 */
 	@Override
-	@SuppressWarnings("deprecation")
 	protected String postProcessHtml(Component component, Locale locale, String variation, String htmlBodyToProcess) {
-		htmlBodyToProcess = super.postProcessHtml(component, locale, variation, htmlBodyToProcess);
 		IHtmlNotificationCssRegistry cssRegistry = null;
-		if (cssService.hasRegistry(variation)) {
-			try {
-				cssRegistry = cssService.getRegistry(variation);
-			} catch (ServiceException e) {
-				LOGGER.error("Unable to load the CSS file", e);
-			}
+		try {
+			cssRegistry = cssService.getRegistry(variation);
+		} catch (ServiceException e) {
+			LOGGER.error("Unable to load the CSS file", e);
+		}
+		if (cssRegistry == null) {
+			LOGGER.error("No style linked to variation '{}'", variation);
 		}
 		
 		Document doc = Jsoup.parse(htmlBodyToProcess);

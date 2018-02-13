@@ -7,19 +7,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.Response;
-
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.iglooproject.rest.jersey2.util.exception.CoreRemoteApiError;
+import org.iglooproject.rest.jersey2.util.exception.IRemoteApiError;
+import org.iglooproject.rest.jersey2.util.exception.RemoteApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.iglooproject.rest.jersey2.util.exception.CoreRemoteApiError;
-import org.iglooproject.rest.jersey2.util.exception.IRemoteApiError;
-import org.iglooproject.rest.jersey2.util.exception.RemoteApiException;
 
 public abstract class AbstractRestServiceImpl {
 	

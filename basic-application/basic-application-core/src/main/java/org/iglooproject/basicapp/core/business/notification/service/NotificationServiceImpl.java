@@ -3,19 +3,18 @@ package org.iglooproject.basicapp.core.business.notification.service;
 import java.util.Date;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.model.SimpleRecipient;
 import org.iglooproject.spring.notification.service.AbstractNotificationServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service("notificationService")
 public class NotificationServiceImpl extends AbstractNotificationServiceImpl implements INotificationService {
 
 	@Autowired
-	private INotificationUrlBuilderService notificationUrlBuilderService;
+	private INotificationUserProfileUrlBuilderService notificationUrlBuilderService;
 	
 	@Autowired
 	private IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory;

@@ -10,13 +10,12 @@ import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
-
 import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
-import org.iglooproject.context.IContextualService;
+import org.iglooproject.spring.notification.service.INotificationUrlBuilderService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
-public abstract class AbstractNotificationUrlBuilderServiceImpl implements IContextualService {
+public abstract class AbstractNotificationUrlBuilderServiceImpl implements INotificationUrlBuilderService {
 	
 	private static final String ANCHOR_ROOT = "#";
 	
@@ -24,11 +23,6 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl implements ICont
 	
 	public AbstractNotificationUrlBuilderServiceImpl(IWicketContextProvider wicketContextProvider) {
 		this.wicketContextProvider = wicketContextProvider;
-	}
-	
-	@Override
-	public <T> T runWithContext(Callable<T> callable) throws Exception {
-		return wicketContextProvider.context().run(callable);
 	}
 	
 	protected String buildUrl(Callable<IPageLinkGenerator> pageLinkGeneratorTask) {
@@ -58,16 +52,25 @@ public abstract class AbstractNotificationUrlBuilderServiceImpl implements ICont
 		}
 	}
 	
+	/**
+	 * @deprecated use {@link #buildUrl(Callable)}
+	 */
 	@Deprecated
 	protected String buildUrl(Class<? extends Page> pageClass, PageParameters parameters) {
 		return buildUrl(pageClass, parameters, null);
 	}
 	
+	/**
+	 * @deprecated use {@link #buildUrl(Callable, String)}
+	 */
 	@Deprecated
 	protected String buildUrl(Class<? extends Page> pageClass, PageParameters parameters, String anchor) {
 		return buildUrl(new BookmarkablePageRequestHandler(new PageProvider(pageClass, parameters)), anchor);
 	}
 	
+	/**
+	 * @deprecated use {@link #buildUrl(Callable, String)}
+	 */
 	@Deprecated
 	protected String buildUrl(final IRequestHandler requestHandler, final String anchor) {
 		Args.notNull(requestHandler, "requestHandler");

@@ -12,7 +12,6 @@ import org.iglooproject.basicapp.web.application.common.template.resources.style
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.wicket.bootstrap4.config.spring.AbstractBootstrapWebappConfig;
-import org.iglooproject.wicket.more.notification.model.IWicketNotificationDescriptor;
 import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssService;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.iglooproject.wicket.more.rendering.BooleanRenderer;
@@ -64,11 +63,14 @@ public class BasicApplicationWebappConfig extends AbstractBootstrapWebappConfig 
 		return rendererService;
 	}
 
+	/**
+	 * Override parent bean declaration so that we add our custom styles.
+	 */
 	@Override
 	@Bean
 	public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
 		IHtmlNotificationCssService service = super.htmlNotificationCssService();
-		service.registerStyles(IWicketNotificationDescriptor.DEFAULT_NOTIFICATION_VARIATION, NotificationScssResourceReference.get());
+		service.registerDefaultStyles(NotificationScssResourceReference.get());
 		return service;
 	}
 
