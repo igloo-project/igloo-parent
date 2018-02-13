@@ -17,7 +17,7 @@
 	<modules>
 		<module>igloo-parent-maven-configuration-common</module>
 		<module>igloo-parent-maven-configuration-core</module>
-                <module>igloo-parent-core-project</module>
+		<module>igloo-parent-core-project</module>
 	</modules>
 
 </project>

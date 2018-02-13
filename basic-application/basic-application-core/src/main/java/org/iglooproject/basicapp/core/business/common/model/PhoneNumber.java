@@ -50,14 +50,6 @@ public final class PhoneNumber extends AbstractMaterializedPrimitiveValue<String
 		}
 	}
 	
-	/**
-	 * @deprecated Ne pas utiliser, présent uniquement pour la récupération depuis la BDD (type hibernate).
-	 */
-	@Deprecated
-	public static PhoneNumber buildNoCleaning(String value) {
-		return new PhoneNumber(value);
-	}
-	
 	private PhoneNumber(String value) {
 		super(value);
 	}

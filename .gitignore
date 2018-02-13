@@ -5,3 +5,4 @@ target2
 .settings
 .factorypath
 gitlab-ci.build.conf
+.allure

@@ -1,17 +1,16 @@
 package org.iglooproject.commons.util.validator;
 
+import java.io.Serializable;
+
 import org.apache.commons.validator.routines.DomainValidator;
 import org.apache.commons.validator.routines.RegexValidator;
-
-import com.google.common.base.Predicate;
-
 import org.iglooproject.commons.util.functional.SerializablePredicate;
 
 /**
  * A fixed "authority" validator that allows <em>any</em> TLD, and not only some hard-coded list, since allowed TLDs may vary over time.
  * <p>Regular expressions were taken from {@link DomainValidator}
  */
-public final class AnyTldDomainAndPortValidator extends RegexValidator implements SerializablePredicate<String> {
+public final class AnyTldDomainAndPortValidator extends RegexValidator implements Serializable {
 
 	private static final long serialVersionUID = -8166436754268661547L;
 	
@@ -28,14 +27,8 @@ public final class AnyTldDomainAndPortValidator extends RegexValidator implement
 		super(DOMAIN_NAME_AND_PORT_REGEX);
 	}
 
-	/**
-	 * @deprecated Provided only to satisfy the {@link Predicate} interface; use
-	 *             {@link #isValid(String)} instead.
-	 */
-	@Deprecated
-	@Override
-	public boolean apply(String input) {
-		return isValid(input);
+	public SerializablePredicate<String> predicate() {
+		return this::isValid;
 	}
 
 }

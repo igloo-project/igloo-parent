@@ -15,6 +15,10 @@
 		
 		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
 		<maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
+		
+		<!-- version needed here as we use allure to aggregate child reports -->
+		<igloo.allure-maven.version>2.9</igloo.allure-maven.version>
+		<igloo.allure.version>2.5.0</igloo.allure.version>
 	</properties>
 	
 	<profiles>
@@ -88,6 +92,35 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		<profile>
+			<id>allure</id>
+			<activation>
+				<property>
+					<name>allure.enabled</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<reporting>
+				<excludeDefaults>true</excludeDefaults>
+				<plugins>
+					<plugin>
+						<groupId>io.qameta.allure</groupId>
+						<artifactId>allure-maven</artifactId>
+						<version>${igloo.allure-maven.version}</version>
+						<configuration>
+							<reportVersion>${igloo.allure.version}</reportVersion>
+						</configuration>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>aggregate</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
 		</profile>
 	</profiles>
 	

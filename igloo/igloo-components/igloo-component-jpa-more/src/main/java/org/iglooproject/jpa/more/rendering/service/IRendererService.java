@@ -5,11 +5,8 @@ import java.util.Locale;
 import org.iglooproject.commons.util.context.IExecutionContext;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.commons.util.rendering.IRenderer;
-import org.iglooproject.context.IContextualService;
 
-
-@SuppressWarnings("deprecation")
-public interface IRendererService extends IContextualService {
+public interface IRendererService {
 	
 	IExecutionContext context();
 	

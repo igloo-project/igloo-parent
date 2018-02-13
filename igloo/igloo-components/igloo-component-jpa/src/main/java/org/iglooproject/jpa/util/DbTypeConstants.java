@@ -5,8 +5,14 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 public final class DbTypeConstants {
+	/**
+	 * <p>postgresql mainstream driver (https://jdbc.postgresql.org/)</p>
+	 * <p>This is the preferred postgresql driver</p>
+	 */
 	public static final String DB_TYPE_POSTGRESQL = "postgresql";
-	@Deprecated
+	/**
+	 * <p>pgjdbc-ng driver (http://impossibl.github.io/pgjdbc-ng/)</p>
+	 */
 	public static final String DB_TYPE_PGSQL = "pgsql";
 	public static final String DB_TYPE_MYSQL5 = "mysql5";
 	public static final String DB_TYPE_MYSQL = "mysql";

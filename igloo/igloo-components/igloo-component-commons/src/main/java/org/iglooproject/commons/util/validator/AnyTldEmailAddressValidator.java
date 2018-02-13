@@ -1,15 +1,14 @@
 package org.iglooproject.commons.util.validator;
 
+import java.io.Serializable;
+
 import org.apache.commons.validator.routines.EmailValidator;
-
-import com.google.common.base.Predicate;
-
 import org.iglooproject.commons.util.functional.SerializablePredicate;
 
 /**
  * An {@link EmailValidator} relying on {@link AnyTldDomainValidator} for domain validation.
  */
-public class AnyTldEmailAddressValidator extends EmailValidator implements SerializablePredicate<String> {
+public class AnyTldEmailAddressValidator extends EmailValidator implements Serializable {
 
 	private static final long serialVersionUID = 3764517887042593145L;
 	
@@ -37,15 +36,9 @@ public class AnyTldEmailAddressValidator extends EmailValidator implements Seria
 	protected boolean isValidDomain(String domain) {
 		return AnyTldDomainValidator.getInstance().isValid(domain);
 	}
-	
-	/**
-	 * @deprecated Provided only to satisfy the {@link Predicate} interface; use
-	 *             {@link #isValid(String)} instead.
-	 */
-	@Deprecated
-	@Override
-	public boolean apply(String input) {
-		return isValid(input);
+
+	public SerializablePredicate<String> predicate() {
+		return this::isValid;
 	}
 
 }

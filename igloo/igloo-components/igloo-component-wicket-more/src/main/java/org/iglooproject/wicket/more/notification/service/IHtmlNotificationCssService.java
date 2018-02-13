@@ -9,8 +9,6 @@ public interface IHtmlNotificationCssService {
 	
 	void registerStyles(String componentVariation, ICssResourceReference cssResourceReference) throws ServiceException;
 	
-	boolean hasRegistry(String componentVariation);
-	
 	IHtmlNotificationCssRegistry getRegistry(String componentVariation) throws ServiceException;
 	
 	interface IHtmlNotificationCssRegistry {
@@ -20,4 +18,6 @@ public interface IHtmlNotificationCssService {
 		String getStyle(Node node);
 	
 	}
+
+	void registerDefaultStyles(ICssResourceReference cssResourceReference);
 }

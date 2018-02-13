@@ -55,7 +55,37 @@
 		
 		<igloo.maven-processor-plugin.version>3.3.2</igloo.maven-processor-plugin.version>
 		<igloo.aspectj-maven-plugin.version>1.8</igloo.aspectj-maven-plugin.version>
+		
+		<!-- aspectj is used by allure -->
+		<igloo.allure-aspectj.version>1.8.13</igloo.allure-aspectj.version>
+		<igloo.allure-maven.version>2.9</igloo.allure-maven.version>
+		<igloo.allure.version>2.5.0</igloo.allure.version>
+		<igloo.allure-junit4.version>2.0-BETA22</igloo.allure-junit4.version>
+		<igloo.junit-dataprovider.version>1.13.1</igloo.junit-dataprovider.version>
 	</properties>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.qameta.allure</groupId>
+				<artifactId>allure-junit4</artifactId>
+				<version>${igloo.allure-junit4.version}</version>
+				<scope>test</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>com.fasterxml.jackson.module</groupId>
+						<artifactId>jackson-module-jaxb-annotations</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.tngtech.java</groupId>
+				<artifactId>junit-dataprovider</artifactId>
+				<version>${igloo.junit-dataprovider.version}</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	
 	<build>
 		<plugins>
@@ -340,6 +370,14 @@
 					<artifactId>exec-maven-plugin</artifactId>
 					<version>${igloo.exec-maven-plugin.version}</version>
 				</plugin>
+				<plugin>
+					<groupId>io.qameta.allure</groupId>
+					<artifactId>allure-maven</artifactId>
+					<version>${igloo.allure-maven.version}</version>
+					<configuration>
+						<reportVersion>${igloo.allure.version}</reportVersion>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -388,6 +426,77 @@
 					</plugin>
 				</plugins>
 			</build>
+		</profile>
+		<profile>
+			<id>allure</id>
+			<activation>
+				<property>
+					<name>allure.enabled</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<!-- override junit behavior with allure-junit4 + aspectj -->
+				<!-- configure allure-junit4 output -->
+				<!-- add allure-maven plugin as executor.json file generated during report phase is needed for aggregation -->
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${igloo.maven-surefire-plugin.version}</version>
+						<configuration>
+							<argLine>
+								-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${igloo.allure-aspectj.version}/aspectjweaver-${igloo.allure-aspectj.version}.jar"
+							</argLine>
+							<properties>
+								<property>
+									<name>listener</name>
+									<value>io.qameta.allure.junit4.AllureJunit4</value>
+								</property>
+							</properties>
+							<systemProperties>
+								<property>
+									<name>allure.results.directory</name>
+									<value>${project.build.directory}/allure-results</value>
+								</property>
+								<property>
+									<!-- TODO: configure issue URL -->
+									<name>allure.link.issue.pattern</name>
+									<value>https://example.org/issue/{}</value>
+								</property>
+							</systemProperties>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>org.aspectj</groupId>
+								<artifactId>aspectjweaver</artifactId>
+								<version>${igloo.allure-aspectj.version}</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+					<plugin>
+						<groupId>io.qameta.allure</groupId>
+						<artifactId>allure-maven</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+			<reporting>
+				<excludeDefaults>true</excludeDefaults>
+				<plugins>
+					<plugin>
+						<groupId>io.qameta.allure</groupId>
+						<artifactId>allure-maven</artifactId>
+						<version>${igloo.allure-maven.version}</version>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>report</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
 		</profile>
 	</profiles>
 	
