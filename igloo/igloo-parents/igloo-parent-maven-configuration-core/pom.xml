@@ -23,7 +23,8 @@
 		<igloo.hibernate.version>5.2.13.Final</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
 		<igloo.jboss-logging.version>3.3.1.Final</igloo.jboss-logging.version>
-		<igloo.hikaricp.version>2.7.6</igloo.hikaricp.version>
+		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
+		<igloo.hikaricp.version>2.7.7</igloo.hikaricp.version>
 		<igloo.ehcache.version>2.10.4</igloo.ehcache.version>
 		<igloo.querydsl.version>4.1.4</igloo.querydsl.version>
 		
@@ -76,7 +77,8 @@
 		<igloo.commons-cli.version>1.4</igloo.commons-cli.version>
 		<igloo.commons-codec.version>1.11</igloo.commons-codec.version>
 		<igloo.commons-exec.version>1.3</igloo.commons-exec.version>
-		<igloo.commons-compress.version>1.15</igloo.commons-compress.version>
+		<!-- https://commons.apache.org/proper/commons-compress/ -->
+		<igloo.commons-compress.version>1.16.1</igloo.commons-compress.version>
 		<igloo.commons-validator.version>1.6</igloo.commons-validator.version>
 		<igloo.commons-collections.version>3.2.2</igloo.commons-collections.version>
 		<igloo.commons-collections4.version>4.1</igloo.commons-collections4.version>
@@ -148,7 +150,8 @@
 		<igloo.wqplot.version>7.1.0.owsi1</igloo.wqplot.version>
 		
 		<igloo.less4j.version>1.17.2</igloo.less4j.version>
-		<igloo.jsass.version>5.5.5</igloo.jsass.version>
+		<!-- http://jsass.readthedocs.io/en/latest/changelog.html -->
+		<igloo.jsass.version>5.5.6</igloo.jsass.version>
 		
 		<igloo.flywaydb.version>5.0.7</igloo.flywaydb.version>
 		<igloo.infinispan.version>9.1.5.Final</igloo.infinispan.version>
