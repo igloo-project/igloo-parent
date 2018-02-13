@@ -13,7 +13,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.AjaxRequestTarget.AbstractListener;
+import org.apache.wicket.ajax.AjaxRequestTarget.IListener;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.RefreshingView;
@@ -43,18 +43,18 @@ public final class AjaxListeners {
 	private AjaxListeners() {
 	}
 	
-	public static void add(AjaxRequestTarget target, AjaxRequestTarget.AbstractListener ... listeners) {
+	public static void add(AjaxRequestTarget target, AjaxRequestTarget.IListener ... listeners) {
 		add(target, Arrays.asList(listeners));
 	}
 	
-	public static void add(AjaxRequestTarget target, Iterable<? extends AjaxRequestTarget.AbstractListener> listeners) {
-		for (AjaxRequestTarget.AbstractListener listener : listeners) {
+	public static void add(AjaxRequestTarget target, Iterable<? extends AjaxRequestTarget.IListener> listeners) {
+		for (AjaxRequestTarget.IListener listener : listeners) {
 			target.addListener(listener);
 		}
 	}
 	
-	public static void add(AjaxRequestTarget target, Map<Collection<AbstractListener>, Condition> listeners) {
-		for (Entry<Collection<AbstractListener>, Condition> listener : listeners.entrySet()) {
+	public static void add(AjaxRequestTarget target, Map<Collection<IListener>, Condition> listeners) {
+		for (Entry<Collection<IListener>, Condition> listener : listeners.entrySet()) {
 			if (listener.getValue().applies()) {
 				add(target, listener.getKey());
 			}
@@ -72,7 +72,7 @@ public final class AjaxListeners {
 		);
 	}
 	
-	public static AjaxRequestTarget.AbstractListener refreshPage() {
+	public static AjaxRequestTarget.IListener refreshPage() {
 		return new SerializableListener() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -101,7 +101,7 @@ public final class AjaxListeners {
 	 * not what you want, you may simply wrap the repeater in a {@link WebMarkupContainer} whose single child is
 	 * the repeater.
 	 */
-	public static AjaxRequestTarget.AbstractListener refreshNewAndRemovedItems(final IRefreshableOnDemandRepeater repeater) {
+	public static AjaxRequestTarget.IListener refreshNewAndRemovedItems(final IRefreshableOnDemandRepeater repeater) {
 		if (!repeater.getParent().getOutputMarkupId()) {
 			LOGGER.warn("Trying to update new and removed items on a repeater whose parent does not"
 					+ " output its markup id. This is likely to fail on the client side. Repeater: {}", repeater);
@@ -201,7 +201,7 @@ public final class AjaxListeners {
 	/**
 	 * @return A listener that will trigger the refresh of every given component.
 	 */
-	public static AjaxRequestTarget.AbstractListener refresh(Component first, Component ... rest) {
+	public static AjaxRequestTarget.IListener refresh(Component first, Component ... rest) {
 		final List<Component> list = Lists.asList(first, rest);
 		return new SerializableListener() {
 			private static final long serialVersionUID = 1L;
@@ -218,12 +218,12 @@ public final class AjaxListeners {
 	 * @return A listener that will trigger the refresh of every component in the page of the given class(es).
 	 */
 	@SafeVarargs
-	public static AjaxRequestTarget.AbstractListener refresh(Class<? extends Component> first,
+	public static AjaxRequestTarget.IListener refresh(Class<? extends Component> first,
 			Class<? extends Component> ... rest) {
 		return refresh(VisitFilters.including(first, rest));
 	}
 	
-	public static AjaxRequestTarget.AbstractListener refresh(final IVisitFilter ... additiveFilters) {
+	public static AjaxRequestTarget.IListener refresh(final IVisitFilter ... additiveFilters) {
 		return new SerializableListener() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -238,12 +238,12 @@ public final class AjaxListeners {
 	}
 	
 	@SafeVarargs
-	public static AjaxRequestTarget.AbstractListener refreshChildren(final MarkupContainer parent,
+	public static AjaxRequestTarget.IListener refreshChildren(final MarkupContainer parent,
 			Class<? extends Component> first, Class<? extends Component> ... rest) {
 		return refreshChildren(parent, VisitFilters.including(first, rest));
 	}
 	
-	public static AjaxRequestTarget.AbstractListener refreshChildren(final MarkupContainer parent,
+	public static AjaxRequestTarget.IListener refreshChildren(final MarkupContainer parent,
 			IVisitFilter ... additiveFilters) {
 		final IVisitFilter filter = VisitFilters.every(additiveFilters);
 		return new SerializableListener() {
@@ -264,7 +264,7 @@ public final class AjaxListeners {
 	 * of the given class(es), <strong>except <code>self</code> and components in {@link IAjaxModalPopupPanel modals}</strong>.
 	 */
 	@SafeVarargs
-	public static <T extends Component> AjaxRequestTarget.AbstractListener refreshOthersNotInAjaxModals(final T self,
+	public static <T extends Component> AjaxRequestTarget.IListener refreshOthersNotInAjaxModals(final T self,
 			Class<? extends T> first, Class<? extends T> ... rest) {
 		Args.notNull(self, "self");
 		return refresh(
@@ -277,11 +277,11 @@ public final class AjaxListeners {
 		);
 	}
 	
-	public static ImmutableSet.Builder<AjaxRequestTarget.AbstractListener> chain() {
+	public static ImmutableSet.Builder<AjaxRequestTarget.IListener> chain() {
 		return ImmutableSet.builder();
 	}
 
-	public static ImmutableMap.Builder<Collection<AjaxRequestTarget.AbstractListener>, Condition> chainCondition() {
+	public static ImmutableMap.Builder<Collection<AjaxRequestTarget.IListener>, Condition> chainCondition() {
 		return ImmutableMap.builder();
 	}
 	

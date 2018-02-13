@@ -114,7 +114,7 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 					private static final long serialVersionUID = 1L;
 					
 					@Override
-					protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					protected void onSubmit(AjaxRequestTarget target) {
 						UserGroup userGroup = UserGroupPopup.this.getModelObject();
 						
 						try {
@@ -143,7 +143,7 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 					}
 					
 					@Override
-					protected void onError(AjaxRequestTarget target, Form<?> form) {
+					protected void onError(AjaxRequestTarget target) {
 						FeedbackUtils.refreshFeedback(target, getPage());
 					}
 				}

@@ -3,14 +3,12 @@ package org.iglooproject.wicket.more.markup.html.template.component;
 import java.util.List;
 
 import org.apache.wicket.markup.html.panel.GenericPanel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbMarkupTagRenderingBehavior;
+
+import com.google.common.collect.ImmutableList;
 
 public class HeadPageTitleBreadCrumbPanel extends GenericPanel<List<BreadCrumbElement>> {
 
@@ -41,7 +39,7 @@ public class HeadPageTitleBreadCrumbPanel extends GenericPanel<List<BreadCrumbEl
 		);
 	}
 
-	private static class DividerReversedIfNecessaryModel extends AbstractReadOnlyModel<String> {
+	private static class DividerReversedIfNecessaryModel implements IModel<String> {
 		
 		private static final long serialVersionUID = 4497702163006031509L;
 		
@@ -64,14 +62,14 @@ public class HeadPageTitleBreadCrumbPanel extends GenericPanel<List<BreadCrumbEl
 		
 		@Override
 		public void detach() {
-			super.detach();
+			IModel.super.detach();
 			reverseModel.detach();
 			dividerModel.detach();
 			dividerReversedModel.detach();
 		}
 	}
 	
-	private static class HtmlHeadPageTitleElementsModel extends AbstractReadOnlyModel<List<BreadCrumbElement>> {
+	private static class HtmlHeadPageTitleElementsModel implements IModel<List<BreadCrumbElement>> {
 		
 		private static final long serialVersionUID = -1809848796763995233L;
 
@@ -108,7 +106,7 @@ public class HeadPageTitleBreadCrumbPanel extends GenericPanel<List<BreadCrumbEl
 		
 		@Override
 		public void detach() {
-			super.detach();
+			IModel.super.detach();
 			prependedElementsModel.detach();
 			headPageTitleElementsModel.detach();
 			breadCrumbElementsModel.detach();

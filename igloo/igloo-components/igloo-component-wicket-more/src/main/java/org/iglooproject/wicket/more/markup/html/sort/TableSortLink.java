@@ -9,18 +9,16 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.IMarkupSourcingStrategy;
 import org.apache.wicket.markup.html.panel.PanelMarkupSourcingStrategy;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Maps;
-
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Maps;
 
 /**
  * CAUTION when extending : this "link" uses a PANEL markup sourcing strategy, for implementation purposes.
@@ -126,7 +124,7 @@ public class TableSortLink<T extends ISort<?>> extends AjaxLink<Void> {
 				setVisible(SortOrder.ASC.equals(displayedSort));
 			}
 		};
-		iconAscContainer.add(new ClassAttributeAppender(new AbstractReadOnlyModel<String>() {
+		iconAscContainer.add(new ClassAttributeAppender(new IModel<String>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String getObject() {
@@ -145,7 +143,7 @@ public class TableSortLink<T extends ISort<?>> extends AjaxLink<Void> {
 				setVisible(SortOrder.DESC.equals(displayedSort));
 			}
 		};
-		iconDescContainer.add(new ClassAttributeAppender(new AbstractReadOnlyModel<String>() {
+		iconDescContainer.add(new ClassAttributeAppender(new IModel<String>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String getObject() {

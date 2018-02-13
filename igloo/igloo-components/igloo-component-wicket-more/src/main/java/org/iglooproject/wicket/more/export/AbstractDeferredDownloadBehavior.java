@@ -6,10 +6,10 @@ import static com.google.common.base.Preconditions.checkState;
 import java.io.File;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.IRequestListener;
 import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.behavior.IBehaviorListener;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.model.IModel;
@@ -21,10 +21,9 @@ import org.apache.wicket.request.resource.ContentDisposition;
 import org.apache.wicket.util.lang.Classes;
 import org.apache.wicket.util.resource.FileResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
-
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 /**
  * @author Sven Meier
@@ -59,7 +58,7 @@ public abstract class AbstractDeferredDownloadBehavior extends Behavior {
 	}
 	
 	
-	private class ResourceDownloadBehavior extends Behavior implements IBehaviorListener {
+	private class ResourceDownloadBehavior extends Behavior implements IRequestListener {
 		private static final long serialVersionUID = -7831306343846345227L;
 		
 		@Override
@@ -105,7 +104,7 @@ public abstract class AbstractDeferredDownloadBehavior extends Behavior {
 	}
 	
 	private String getUrl(boolean fullUrl) {
-		String url = getComponent().getPage().urlFor(resourceDownloadBehavior, IBehaviorListener.INTERFACE, new PageParameters()).toString();
+		String url = getComponent().getPage().urlForListener(resourceDownloadBehavior, new PageParameters()).toString();
 		if (fullUrl) {
 			url = RequestCycle.get().getUrlRenderer()
 					.renderFullUrl(

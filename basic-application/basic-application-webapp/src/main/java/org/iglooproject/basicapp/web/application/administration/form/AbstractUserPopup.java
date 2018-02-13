@@ -176,7 +176,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 					private static final long serialVersionUID = 1L;
 					
 					@Override
-					protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
+					protected void onAfterSubmit(AjaxRequestTarget target) {
 						User user = AbstractUserPopup.this.getModelObject();
 						
 						try {
@@ -229,7 +229,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 					}
 					
 					@Override
-					protected void onError(AjaxRequestTarget target, Form<?> form) {
+					protected void onError(AjaxRequestTarget target) {
 						FeedbackUtils.refreshFeedback(target, getPage());
 					}
 				}

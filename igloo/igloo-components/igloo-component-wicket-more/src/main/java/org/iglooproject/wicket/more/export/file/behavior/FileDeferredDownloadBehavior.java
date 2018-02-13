@@ -4,14 +4,12 @@ import java.io.File;
 import java.util.Objects;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.javatuples.LabelValue;
-
 import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.wicket.more.export.AbstractDeferredDownloadBehavior;
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
+import org.javatuples.LabelValue;
 
 public class FileDeferredDownloadBehavior extends AbstractDeferredDownloadBehavior {
 
@@ -25,7 +23,7 @@ public class FileDeferredDownloadBehavior extends AbstractDeferredDownloadBehavi
 
 	public FileDeferredDownloadBehavior(final IModel<File> fileModel, final IModel<String> fileNameModel, boolean addAntiCache) {
 		this(
-				new AbstractReadOnlyModel<LabelValue<String, File>>() {
+				new IModel<LabelValue<String, File>>() {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public LabelValue<String, File> getObject() {
@@ -33,7 +31,7 @@ public class FileDeferredDownloadBehavior extends AbstractDeferredDownloadBehavi
 					}
 					@Override
 					public void detach() {
-						super.detach();
+						IModel.super.detach();
 						Detachables.detach(fileModel, fileNameModel);
 					}
 				},

@@ -139,7 +139,7 @@ public class UserDetailGroupsPanel extends GenericPanel<User> {
 									new AjaxButton("submit") {
 										private static final long serialVersionUID = 1L;
 										@Override
-										protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+										protected void onSubmit(AjaxRequestTarget target) {
 											try {
 												User user = UserDetailGroupsPanel.this.getModelObject();
 												UserGroup userGroup = userGroupModel.getObject();
@@ -162,7 +162,7 @@ public class UserDetailGroupsPanel extends GenericPanel<User> {
 											FeedbackUtils.refreshFeedback(target, getPage());
 										}
 										@Override
-										protected void onError(AjaxRequestTarget target,Form<?> form) {
+										protected void onError(AjaxRequestTarget target) {
 											FeedbackUtils.refreshFeedback(target, getPage());
 										}
 									}

@@ -1,6 +1,5 @@
 package org.iglooproject.wicket.more.markup.html.bootstrap.common.behavior;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.IBootstrapColor;
@@ -32,7 +31,7 @@ public class BootstrapColorBehavior extends ClassAttributeAppender {
 	}
 
 	public BootstrapColorBehavior(final String cssClassPrefix, final IModel<IBootstrapColor> colorModel) {
-		super(new AbstractReadOnlyModel<String>() {
+		super(new IModel<String>() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
@@ -47,7 +46,7 @@ public class BootstrapColorBehavior extends ClassAttributeAppender {
 			
 			@Override
 			public void detach() {
-				super.detach();
+				IModel.super.detach();
 				Detachables.detach(colorModel);
 			}
 		});

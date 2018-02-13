@@ -19,15 +19,14 @@ import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.protocol.http.servlet.ServletWebResponse;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.base.MoreObjects;
-
 import org.iglooproject.commons.util.context.AbstractExecutionContext;
 import org.iglooproject.commons.util.context.ExecutionContexts;
 import org.iglooproject.commons.util.context.IExecutionContext;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.property.WicketMorePropertyIds;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.base.MoreObjects;
 
 public class WicketContextProviderImpl implements IWicketContextProvider {
 
@@ -35,8 +34,6 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 	private IPropertyService propertyService;
 
 	private final WebApplication defaultApplication;
-	
-	private final RequestCycleExecutionContext requestCycleExecutionContext = new RequestCycleExecutionContext();
 
 	/**
 	 * @param defaultApplication
@@ -66,7 +63,7 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 		Locale actualLocale = locale == null ? null : propertyService.toAvailableLocale(locale);
 		return ExecutionContexts.composite()
 				.add(new ApplicationExecutionContext(application))
-				.add(requestCycleExecutionContext)
+				.add(new RequestCycleExecutionContext(actualLocale))
 				.add(new SessionExecutionContext(actualLocale))
 				.build();
 	}
@@ -142,6 +139,13 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 	}
 
 	private final class RequestCycleExecutionContext extends AbstractExecutionContext {
+		
+		private final Locale locale;
+		
+		public RequestCycleExecutionContext(Locale locale) {
+			this.locale = locale;
+		}
+		
 		@Override
 		public ITearDownHandle open() {
 			if (RequestCycle.get() != null) {
@@ -156,7 +160,7 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 			final MockHttpServletRequest servletRequest = new ContextConfiguredMockHttpServletRequest(application,
 					newHttpSession, context);
 			final MockHttpServletResponse servletResponse = new MockHttpServletResponse(servletRequest);
-			servletRequest.initialize();
+			servletRequest.initialize(locale);
 			servletResponse.initialize();
 
 			final ServletWebRequest webRequest = new ServletWebRequest(servletRequest, servletRequest.getFilterPrefix());

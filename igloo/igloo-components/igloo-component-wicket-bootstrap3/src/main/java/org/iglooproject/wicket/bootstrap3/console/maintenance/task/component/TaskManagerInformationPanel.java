@@ -7,7 +7,6 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
@@ -46,7 +45,7 @@ public class TaskManagerInformationPanel extends Panel {
 			}
 		}));
 
-		IModel<String> queueStatusStringModel = new AbstractReadOnlyModel<String>() {
+		IModel<String> queueStatusStringModel = new IModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override

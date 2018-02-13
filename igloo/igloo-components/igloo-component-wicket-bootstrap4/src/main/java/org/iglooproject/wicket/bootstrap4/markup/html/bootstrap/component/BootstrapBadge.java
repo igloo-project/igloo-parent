@@ -3,7 +3,6 @@ package org.iglooproject.wicket.bootstrap4.markup.html.bootstrap.component;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
@@ -67,7 +66,7 @@ public class BootstrapBadge<T> extends GenericPanel<T> implements IBootstrapBadg
 		
 		add(
 				BootstrapColorBehavior.badge(labelModel.getColorModel()),
-				new ClassAttributeAppender(new AbstractReadOnlyModel<String>() {
+				new ClassAttributeAppender(new IModel<String>() {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public String getObject() {
@@ -77,7 +76,7 @@ public class BootstrapBadge<T> extends GenericPanel<T> implements IBootstrapBadg
 						return null;
 					}
 				}),
-				new AttributeAppender("title", new AbstractReadOnlyModel<String>() {
+				new AttributeAppender("title", new IModel<String>() {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public String getObject() {

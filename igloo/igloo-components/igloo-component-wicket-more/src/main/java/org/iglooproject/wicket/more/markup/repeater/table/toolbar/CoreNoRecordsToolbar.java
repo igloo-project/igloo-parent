@@ -2,9 +2,7 @@ package org.iglooproject.wicket.more.markup.repeater.table.toolbar;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.markup.repeater.table.AbstractCoreToolbar;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
@@ -19,7 +17,7 @@ public class CoreNoRecordsToolbar extends AbstractCoreToolbar {
 		WebMarkupContainer td = new WebMarkupContainer("td");
 		add(td);
 
-		td.add(AttributeModifier.replace("colspan", new AbstractReadOnlyModel<String>() {
+		td.add(AttributeModifier.replace("colspan", new IModel<String>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String getObject() {

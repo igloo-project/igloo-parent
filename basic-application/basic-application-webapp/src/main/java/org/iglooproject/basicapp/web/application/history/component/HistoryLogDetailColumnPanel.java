@@ -3,19 +3,17 @@ package org.iglooproject.basicapp.web.application.history.component;
 import java.util.List;
 
 import org.apache.wicket.markup.html.panel.GenericPanel;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
 import org.iglooproject.basicapp.core.business.history.model.HistoryLog;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.history.component.factory.IHistoryComponentFactory;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.model.BindingModel;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 public class HistoryLogDetailColumnPanel extends GenericPanel<HistoryLog> {
 
@@ -25,7 +23,7 @@ public class HistoryLogDetailColumnPanel extends GenericPanel<HistoryLog> {
 			IHistoryComponentFactory historyComponentFactory, final Predicate<? super HistoryDifference> filter) {
 		super(id, model);
 		
-		IModel<List<HistoryDifference>> historyDifferenceListModel = new AbstractReadOnlyModel<List<HistoryDifference>>() {
+		IModel<List<HistoryDifference>> historyDifferenceListModel = new IModel<List<HistoryDifference>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public List<HistoryDifference> getObject() {

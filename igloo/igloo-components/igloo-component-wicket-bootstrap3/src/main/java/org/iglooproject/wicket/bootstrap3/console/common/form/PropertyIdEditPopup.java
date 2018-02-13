@@ -68,9 +68,8 @@ public class PropertyIdEditPopup extends AbstractAjaxModalPopupPanel<MutableProp
 		footer.add(
 				new AjaxButton("save", form) {
 					private static final long serialVersionUID = 1L;
-					
 					@Override
-					protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					protected void onSubmit(AjaxRequestTarget target) {
 						try {
 							propertyService.setAsString(PropertyIdEditPopup.this.getModelObject(), valueModel.getObject());
 							Session.get().success(getString("common.propertyId.action.edit.success"));
@@ -80,6 +79,10 @@ public class PropertyIdEditPopup extends AbstractAjaxModalPopupPanel<MutableProp
 							LOGGER.error("Erreur lors la modification de la valeur d'une propriété.");
 							Session.get().error(getString("common.error.unexpected"));
 						}
+						FeedbackUtils.refreshFeedback(target, getPage());
+					}
+					@Override
+					protected void onError(AjaxRequestTarget target) {
 						FeedbackUtils.refreshFeedback(target, getPage());
 					}
 				}

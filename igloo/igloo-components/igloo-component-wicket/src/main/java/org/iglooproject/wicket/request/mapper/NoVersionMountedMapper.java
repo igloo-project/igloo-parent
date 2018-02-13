@@ -14,14 +14,15 @@
 
 package org.iglooproject.wicket.request.mapper;
 
-import org.apache.wicket.core.request.handler.ListenerInterfaceRequestHandler;
+import java.util.function.Supplier;
+
+import org.apache.wicket.core.request.handler.ListenerRequestHandler;
 import org.apache.wicket.core.request.mapper.MountedMapper;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.mapper.info.PageComponentInfo;
 import org.apache.wicket.request.mapper.parameter.IPageParametersEncoder;
-import org.apache.wicket.util.IProvider;
 
 /**
  * Provides a mount strategy that drops the version number from stateful page
@@ -38,12 +39,12 @@ public class NoVersionMountedMapper extends MountedMapper {
 		super(mountPath, pageClass);
 	}
 
-	public NoVersionMountedMapper(String mountPath, IProvider<Class<? extends IRequestablePage>> pageClassProvider,
+	public NoVersionMountedMapper(String mountPath, Supplier<Class<? extends IRequestablePage>> pageClassProvider,
 			IPageParametersEncoder pageParametersEncoder) {
 		super(mountPath, pageClassProvider, pageParametersEncoder);
 	}
 
-	public NoVersionMountedMapper(String mountPath, IProvider<Class<? extends IRequestablePage>> pageClassProvider) {
+	public NoVersionMountedMapper(String mountPath, Supplier<Class<? extends IRequestablePage>> pageClassProvider) {
 		super(mountPath, pageClassProvider);
 	}
 
@@ -54,7 +55,7 @@ public class NoVersionMountedMapper extends MountedMapper {
 
 	@Override
 	public Url mapHandler(IRequestHandler requestHandler) {
-		if (requestHandler instanceof ListenerInterfaceRequestHandler) {
+		if (requestHandler instanceof ListenerRequestHandler) {
 			return null;
 		} else {
 			return super.mapHandler(requestHandler);

@@ -2,10 +2,10 @@ package org.iglooproject.wicket.more.link.model;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
-import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
 import org.springframework.util.Assert;
 
-public class ComponentPageModel extends AbstractReadOnlyModel<Page> {
+public class ComponentPageModel implements IModel<Page> {
 	
 	private static final long serialVersionUID = 6402816198383449645L;
 	

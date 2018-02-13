@@ -131,7 +131,7 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 										private static final long serialVersionUID = 1L;
 										
 										@Override
-										protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+										protected void onSubmit(AjaxRequestTarget target) {
 											UserGroup userGroup = UserGroupDetailUsersPanel.this.getModelObject();
 											User user = userModel.getObject();
 											
@@ -158,7 +158,7 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 										}
 										
 										@Override
-										protected void onError(AjaxRequestTarget target, Form<?> form) {
+										protected void onError(AjaxRequestTarget target) {
 											FeedbackUtils.refreshFeedback(target, getPage());
 										}
 									}

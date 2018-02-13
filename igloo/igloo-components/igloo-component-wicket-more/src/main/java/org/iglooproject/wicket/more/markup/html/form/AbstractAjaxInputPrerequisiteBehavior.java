@@ -7,7 +7,7 @@ import java.util.Collections;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.AjaxRequestTarget.AbstractListener;
+import org.apache.wicket.ajax.AjaxRequestTarget.IListener;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.model.IModel;
@@ -17,18 +17,17 @@ import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitFilter;
 import org.apache.wicket.util.visit.IVisitor;
 import org.apache.wicket.util.visit.Visits;
-import org.wicketstuff.wiquery.core.events.StateEvent;
-
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Lists;
-
 import org.iglooproject.commons.util.functional.SerializablePredicate;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.form.observer.IFormComponentChangeObserver;
 import org.iglooproject.wicket.more.markup.html.form.observer.impl.FormComponentChangeAjaxEventBehavior;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.visit.VisitFilters;
+import org.wicketstuff.wiquery.core.events.StateEvent;
+
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Lists;
 
 /**
  * Performs abstract actions on the attached component according to the actual, client-side content of a given {@link FormComponent}.<br>
@@ -91,7 +90,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	private boolean refreshParent = false;
 	
-	private final Collection<AbstractListener> onChangeListeners = Lists.newArrayList();
+	private final Collection<IListener> onChangeListeners = Lists.newArrayList();
 	
 	private Predicate<? super T> objectValidPredicate = Predicates.notNull();
 	
@@ -292,13 +291,13 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 		return this;
 	}
 	
-	public AbstractAjaxInputPrerequisiteBehavior<T> onChange(AbstractListener listener) {
+	public AbstractAjaxInputPrerequisiteBehavior<T> onChange(IListener listener) {
 		this.onChangeListeners.add(listener);
 		return this;
 	}
 	
 	
-	public AbstractAjaxInputPrerequisiteBehavior<T> onChange(Collection<AbstractListener> listeners) {
+	public AbstractAjaxInputPrerequisiteBehavior<T> onChange(Collection<IListener> listeners) {
 		this.onChangeListeners.addAll(listeners);
 		return this;
 	}
@@ -349,7 +348,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 			}
 		}
 		
-		for (AbstractListener onChangeListener : onChangeListeners) {
+		for (IListener onChangeListener : onChangeListeners) {
 			target.addListener(onChangeListener);
 		}
 		
@@ -396,7 +395,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	/**
 	 * Ajax call triggered by a change on the prerequisite field.
 	 * Called after adding the attached components to the target, and before generating the response.
-	 * @deprecated Use {@link #onChange(AbstractListener)} instead.
+	 * @deprecated Use {@link #onChange(IListener)} instead.
 	 */
 	@Deprecated
 	protected void onPrerequisiteFieldChange(AjaxRequestTarget target, FormComponent<T> prerequisiteField, Collection<Component> attachedComponents) {

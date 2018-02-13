@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
 import com.google.common.base.Function;
@@ -12,7 +11,7 @@ import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
-public abstract class StreamModel<T> extends AbstractReadOnlyModel<Iterable<T>> {
+public abstract class StreamModel<T> implements IModel<Iterable<T>> {
 
 	private static final long serialVersionUID = -1713424773189633187L;
 
@@ -113,7 +112,7 @@ public abstract class StreamModel<T> extends AbstractReadOnlyModel<Iterable<T>> 
 		return new CollectModel<>(supplier);
 	}
 
-	private class CollectModel<C extends Collection<T>> extends AbstractReadOnlyModel<C> {
+	private class CollectModel<C extends Collection<T>> implements IModel<C> {
 		
 		private static final long serialVersionUID = 1L;
 		
@@ -134,7 +133,7 @@ public abstract class StreamModel<T> extends AbstractReadOnlyModel<Iterable<T>> 
 		
 		@Override
 		public void detach() {
-			super.detach();
+			IModel.super.detach();
 			Detachables.detach(StreamModel.this);
 		}
 	}
@@ -143,7 +142,7 @@ public abstract class StreamModel<T> extends AbstractReadOnlyModel<Iterable<T>> 
 		return new FirstModel();
 	}
 
-	private class FirstModel extends AbstractReadOnlyModel<T> {
+	private class FirstModel implements IModel<T> {
 		
 		private static final long serialVersionUID = 1L;
 		
@@ -154,7 +153,7 @@ public abstract class StreamModel<T> extends AbstractReadOnlyModel<Iterable<T>> 
 		
 		@Override
 		public void detach() {
-			super.detach();
+			IModel.super.detach();
 			Detachables.detach(StreamModel.this);
 		}
 	}

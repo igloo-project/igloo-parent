@@ -19,7 +19,6 @@ import java.io.Serializable;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Component;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
@@ -57,7 +56,7 @@ import org.apache.wicket.util.lang.Args;
  * 
  * @since 2.0
  */
-public class CountMessageModel extends AbstractReadOnlyModel<String> implements IComponentAssignedModel<String> {
+public class CountMessageModel implements IComponentAssignedModel<String> {
 	private static final long serialVersionUID = 3717960938783720989L;
 
 	private String messageKey;
@@ -96,8 +95,8 @@ public class CountMessageModel extends AbstractReadOnlyModel<String> implements 
 
 	@Override
 	public void detach() {
+		IComponentAssignedModel.super.detach();
 		this.countModel.detach();
-		super.detach();
 	}
 
 	@Override

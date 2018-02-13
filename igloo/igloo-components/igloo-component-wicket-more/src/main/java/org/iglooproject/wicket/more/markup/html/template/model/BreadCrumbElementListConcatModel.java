@@ -2,12 +2,11 @@ package org.iglooproject.wicket.more.markup.html.template.model;
 
 import java.util.List;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
 import com.google.common.collect.ImmutableList;
 
-public class BreadCrumbElementListConcatModel extends AbstractReadOnlyModel<List<BreadCrumbElement>> {
+public class BreadCrumbElementListConcatModel implements IModel<List<BreadCrumbElement>> {
 	
 	private static final long serialVersionUID = -4163053491976956557L;
 	

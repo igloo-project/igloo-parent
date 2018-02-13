@@ -1,14 +1,12 @@
 package org.iglooproject.wicket.more.link.descriptor.mapper;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.wicket.more.model.ReadOnlyModel;
+import org.iglooproject.wicket.more.util.model.Models;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
 
 import com.google.common.base.Function;
-
-import org.iglooproject.wicket.more.model.ReadOnlyModel;
-import org.iglooproject.wicket.more.util.model.Models;
 
 public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		implements IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> {
@@ -25,7 +23,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		return map(Triplet.with(model1, model2, model3));
 	}
 	
-	private static final class DerivingModel<U1, U2, U> extends AbstractReadOnlyModel<U> {
+	private static final class DerivingModel<U1, U2, U> implements IModel<U> {
 		private static final long serialVersionUID = 1L;
 		private final Pair<? extends IModel<U1>, ? extends IModel<U2>> models;
 		private final Function<Pair<U1, U2>, U> function;

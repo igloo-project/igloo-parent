@@ -6,14 +6,12 @@ import java.util.Locale;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
-
 import org.iglooproject.wicket.more.util.model.Detachables;
 
-public abstract class LocaleAwareReadOnlyModel<T> extends AbstractReadOnlyModel<T> implements IComponentAssignedModel<T> {
+public abstract class LocaleAwareReadOnlyModel<T> implements IComponentAssignedModel<T> {
 
 	private static final long serialVersionUID = 5634025837567024511L;
 
@@ -29,7 +27,7 @@ public abstract class LocaleAwareReadOnlyModel<T> extends AbstractReadOnlyModel<
 		return new WrapModel(component);
 	}
 
-	private class WrapModel extends AbstractReadOnlyModel<T> implements IWrapModel<T> {
+	private class WrapModel implements IWrapModel<T> {
 		private static final long serialVersionUID = -1080017215611311157L;
 		
 		private final Component component;
@@ -51,7 +49,7 @@ public abstract class LocaleAwareReadOnlyModel<T> extends AbstractReadOnlyModel<
 		
 		@Override
 		public void detach() {
-			super.detach();
+			IWrapModel.super.detach();
 			Detachables.detach(getWrappedModel());
 		}
 	}

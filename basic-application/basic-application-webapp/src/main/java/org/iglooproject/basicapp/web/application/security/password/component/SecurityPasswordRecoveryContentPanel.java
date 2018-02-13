@@ -11,9 +11,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
@@ -23,6 +20,8 @@ import org.iglooproject.basicapp.web.application.common.typedescriptor.user.Secu
 import org.iglooproject.basicapp.web.application.common.validator.EmailExistsValidator;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SecurityPasswordRecoveryContentPanel extends Panel {
 
@@ -55,7 +54,7 @@ public class SecurityPasswordRecoveryContentPanel extends Panel {
 					private static final long serialVersionUID = 1L;
 					
 					@Override
-					protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					protected void onSubmit(AjaxRequestTarget target) {
 						try {
 							User user = userService.getByEmailCaseInsensitive(emailModel.getObject());
 							securityManagementService.initiatePasswordRecoveryRequest(
@@ -79,7 +78,7 @@ public class SecurityPasswordRecoveryContentPanel extends Panel {
 					}
 					
 					@Override
-					protected void onError(AjaxRequestTarget target, Form<?> form) {
+					protected void onError(AjaxRequestTarget target) {
 						FeedbackUtils.refreshFeedback(target, getPage());
 					}
 				}

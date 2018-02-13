@@ -13,7 +13,6 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -182,7 +181,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		}
 	}
 	
-	private static final class ConditionalModel<T> extends AbstractReadOnlyModel<T> {
+	private static final class ConditionalModel<T> implements IModel<T> {
 		private static final long serialVersionUID = 4696234484508240728L;
 		
 		private final Condition condition;
@@ -209,7 +208,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		
 		@Override
 		public void detach() {
-			super.detach();
+			IModel.super.detach();
 			condition.detach();
 			modelIfTrue.detach();
 			modelIfFalse.detach();
@@ -414,7 +413,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	
 	public static <T> Condition convertedInputPredicate(final FormComponent<? extends T> formComponent, Detach detachModel, Predicate<? super T> predicate) {
 		return predicate(
-				new AbstractReadOnlyModel<T>() {
+				new IModel<T>() {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public T getObject() {

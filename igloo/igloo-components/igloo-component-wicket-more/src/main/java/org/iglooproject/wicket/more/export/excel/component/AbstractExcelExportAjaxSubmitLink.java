@@ -17,9 +17,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.commons.util.mime.MediaType;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -27,6 +24,8 @@ import org.iglooproject.wicket.more.export.file.behavior.FileDeferredDownloadBeh
 import org.iglooproject.wicket.more.export.util.ExportFileUtils;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.util.model.Detachables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	
@@ -77,7 +76,7 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	}
 	
 	@Override
-	public void onSubmit(AjaxRequestTarget target, Form<?> form) {
+	public void onSubmit(AjaxRequestTarget target) {
 		boolean hasError = false;
 		File tmp = null;
 		try {
@@ -115,7 +114,7 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	}
 	
 	@Override
-	protected void onError(AjaxRequestTarget target, Form<?> form) {
+	protected void onError(AjaxRequestTarget target) {
 		FeedbackUtils.refreshFeedback(target, getPage());
 		target.appendJavaScript(loadingPopup.closeStatement().render());
 	}

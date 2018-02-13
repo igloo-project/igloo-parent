@@ -13,9 +13,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
@@ -25,6 +22,8 @@ import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
 
@@ -78,7 +77,7 @@ public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
 					private static final long serialVersionUID = 1L;
 					
 					@Override
-					protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					protected void onSubmit(AjaxRequestTarget target) {
 						try {
 							User user = SecurityPasswordResetContentPanel.this.getModelObject();
 							securityManagementService.updatePassword(user, newPasswordModel.getObject());
@@ -98,7 +97,7 @@ public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
 					}
 					
 					@Override
-					protected void onError(AjaxRequestTarget target, Form<?> form) {
+					protected void onError(AjaxRequestTarget target) {
 						FeedbackUtils.refreshFeedback(target, getPage());
 					}
 				}
