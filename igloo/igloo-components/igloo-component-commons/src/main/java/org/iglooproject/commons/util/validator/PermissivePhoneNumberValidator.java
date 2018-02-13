@@ -1,15 +1,14 @@
 package org.iglooproject.commons.util.validator;
 
+import java.io.Serializable;
+
 import org.apache.commons.validator.routines.RegexValidator;
-
-import com.google.common.base.Predicate;
-
 import org.iglooproject.commons.util.functional.SerializablePredicate;
 
 /**
  * An {@link RegexValidator} for phone number validation: it's very permissive but should avoid most of the errors.
  */
-public class PermissivePhoneNumberValidator extends RegexValidator implements SerializablePredicate<String> {
+public class PermissivePhoneNumberValidator extends RegexValidator implements Serializable {
 
 	private static final long serialVersionUID = 5254830905190414225L;
 	
@@ -24,15 +23,9 @@ public class PermissivePhoneNumberValidator extends RegexValidator implements Se
 	public PermissivePhoneNumberValidator() {
 		super(PHONE_NUMBER_REGEX, false);
 	}
-	
-	/**
-	 * @deprecated Provided only to satisfy the {@link Predicate} interface; use
-	 *             {@link #isValid(String)} instead.
-	 */
-	@Deprecated
-	@Override
-	public boolean apply(String input) {
-		return isValid(input);
+
+	public SerializablePredicate<String> predicate() {
+		return this::isValid;
 	}
 
 }

@@ -26,14 +26,6 @@ public abstract class AbstractRestServiceImpl {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRestServiceImpl.class);
 	
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-	/**
-	 * @deprecated Return the object directly, which is semantically equivalent.
-	 */
-	@Deprecated
-	protected <E> Response ok(E entity) {
-		return Response.ok().entity(entity == null ? null : new GenericEntity<E>(entity, entity.getClass())).build();
-	}
 	
 	protected RemoteApiException getException(IRemoteApiError error) {
 		return new RemoteApiException(error);

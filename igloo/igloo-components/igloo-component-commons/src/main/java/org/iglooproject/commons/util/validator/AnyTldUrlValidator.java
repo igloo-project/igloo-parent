@@ -1,18 +1,16 @@
 package org.iglooproject.commons.util.validator;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.validator.routines.UrlValidator;
-
-import com.google.common.base.Predicate;
-
 import org.iglooproject.commons.util.functional.SerializablePredicate;
 
 /**
  * An {@link UrlValidator} relying on {@link AnyTldDomainAndPortValidator} for domain and port validation.
  */
-public class AnyTldUrlValidator extends UrlValidator implements SerializablePredicate<String> {
+public class AnyTldUrlValidator extends UrlValidator implements Serializable {
 
 	private static final long serialVersionUID = 5254830905190414225L;
 	
@@ -63,15 +61,9 @@ public class AnyTldUrlValidator extends UrlValidator implements SerializablePred
 	public AnyTldUrlValidator(String[] schemes) {
 		super(schemes, AnyTldDomainAndPortValidator.getInstance(), 0L);
 	}
-	
-	/**
-	 * @deprecated Provided only to satisfy the {@link Predicate} interface; use
-	 *             {@link #isValid(String)} instead.
-	 */
-	@Deprecated
-	@Override
-	public boolean apply(String input) {
-		return isValid(input);
+
+	public SerializablePredicate<String> predicate() {
+		return this::isValid;
 	}
 	
 	/**
