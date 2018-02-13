@@ -14,7 +14,7 @@ public final class BootstrapTooltipJavaScriptResourceReference extends AbstractC
 	private static final BootstrapTooltipJavaScriptResourceReference INSTANCE = new BootstrapTooltipJavaScriptResourceReference();
 
 	private BootstrapTooltipJavaScriptResourceReference() {
-		super(BootstrapTooltipJavaScriptResourceReference.class, "tooltip.js");
+		super(BootstrapTooltipJavaScriptResourceReference.class, "tooltip-patch.js");
 	}
 
 	@Override
