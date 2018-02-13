@@ -13,10 +13,12 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.model.QPerson;
+import org.iglooproject.test.jpa.config.spring.JpaBatchTestConfig;
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
@@ -25,6 +27,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.google.common.collect.Lists;
 import com.querydsl.jpa.impl.JPAQuery;
 
+@ContextConfiguration(classes = JpaBatchTestConfig.class, inheritInitializers = true)
 public abstract class AbstractTestHibernateBatchExecutor extends AbstractJpaCoreTestCase {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTestHibernateBatchExecutor.class);
