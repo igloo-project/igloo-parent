@@ -1,5 +1,5 @@
 variables:
-  MAVEN_OPTS: "-Xmx1536m"
+  MAVEN_OPTS: "-Xmx1536m -Dallure.install.directory=$PWD/.allure"
 
 stages:
   - prepare
@@ -39,10 +39,6 @@ maven-test:
     - chmod 644 ~/.ssh/known_hosts
     - rsync -az --chmod=g=rX,o= target/site/ "${SYNC_TEST_REPORTS_USER}@${SYNC_TEST_REPORTS_HOST}:${SYNC_TEST_REPORTS_DOCUMENT_ROOT}"
     - "exit $TEST_RESULT"
-  artifacts:
-    paths:
-      - target/site/
-    when: always
 
 maven-deploy:
   stage: deploy
