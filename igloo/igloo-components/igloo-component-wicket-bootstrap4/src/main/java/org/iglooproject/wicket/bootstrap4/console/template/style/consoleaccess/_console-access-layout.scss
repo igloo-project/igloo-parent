@@ -10,6 +10,9 @@
 			margin-right: auto;
 			
 			.card {
+				@extend .border-0;
+				@extend .shadow-5;
+				
 				.card-img-top {
 					padding: $card-spacer-y $card-spacer-x;
 				}
