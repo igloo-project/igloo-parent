@@ -8,7 +8,7 @@ html {
 	@extend .bg-warning;
 	@extend .text-dark;
 	
-	&.production {
+	.production & {
 		@extend .bg-danger;
 		@extend .text-white;
 	}

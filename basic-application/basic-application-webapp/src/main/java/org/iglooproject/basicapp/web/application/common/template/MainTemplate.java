@@ -101,6 +101,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(new TransparentWebMarkupContainer("htmlRootElement")
 				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage())));
 		
+		add(new TransparentWebMarkupContainer("bodyContainer")
+				.add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel())));
+		
 		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));

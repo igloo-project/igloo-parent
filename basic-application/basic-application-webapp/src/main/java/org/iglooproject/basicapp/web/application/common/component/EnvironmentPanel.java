@@ -1,7 +1,5 @@
 package org.iglooproject.basicapp.web.application.common.component;
 
-import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.ENVIRONMENT;
-
 import java.util.List;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -13,7 +11,6 @@ import org.iglooproject.basicapp.core.config.util.Environment;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.Lists;
@@ -27,7 +24,7 @@ public class EnvironmentPanel extends Panel {
 	private final IModel<Environment> environmentModel;
 
 	public EnvironmentPanel(String id) {
-		this(id, ApplicationPropertyModel.of(ENVIRONMENT));
+		this(id, BasicApplicationSession.get().getEnvironmentModel());
 	}
 
 	public EnvironmentPanel(String id, IModel<Environment> environmentModel) {
