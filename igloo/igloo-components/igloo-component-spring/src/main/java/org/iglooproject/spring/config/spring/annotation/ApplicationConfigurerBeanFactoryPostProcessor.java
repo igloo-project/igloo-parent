@@ -1,8 +1,14 @@
 package org.iglooproject.spring.config.spring.annotation;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
@@ -16,18 +22,20 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.core.io.Resource;
-import org.springframework.util.ClassUtils;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.MoreCollectors;
+import com.google.common.collect.Multimap;
 
 /**
- * <p>Ce {@link BeanFactoryPostProcessor} permet d'extraire des métadonnées sur l'application et de les utiliser pour
- * constituer la liste des fichiers de configuration à utiliser pour sa configuration.</p>
+ * <p>This {@link BeanFactoryPostProcessor} extracts {@link ApplicationDescription} and {@link ConfigurationLocations}
+ * informations to prepare configuration loading.</p>
  * 
- * <p>L'application doit initialiser un {@link PropertySourcesPlaceholderConfigurer} sans indiquer de valeur pour le
- * champ {@link PropertySourcesPlaceholderConfigurer#setLocations(Resource[])}.</p>
+ * <p>If used, Spring context must declare an empty {@link PropertySourcesPlaceholderConfigurer} bean without
+ * locations.</p>
  */
 public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactoryPostProcessor, ApplicationContextAware,
 		PriorityOrdered {
@@ -35,78 +43,46 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	private ApplicationContext applicationContext;
 
 	/**
-	 * Parcourt les beans du contexte pour extraire les informations sur l'application et les emplacements de
-	 * configuration par la prise en compte des annotations {@link ApplicationDescription} et
-	 * {@link ConfigurationLocations}
+	 * Extract {@literal @}{@link ApplicationDescription} and {@literal @}{@link ConfigurationLocations} from
+	 * {@literal @}{@link Configuration} beans.
 	 */
 	@Override
-	public void postProcessBeanFactory(
-			ConfigurableListableBeanFactory beanFactory) throws BeansException {
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		PropertySourcesPlaceholderConfigurer configurer = beanFactory.getBean(PropertySourcesPlaceholderConfigurer.class);
-
+		
 		Map<Integer, List<Resource>> locationGroups = Maps.newHashMap();
-		String applicationName = null;
 		
-		// parcours des définitions de bean
-		for (String beanName : beanFactory.getBeanDefinitionNames()) {
-			// les beans @Configuration sont généralement wrappés par cglib ; on doit donc utiliser ClassUtils
-			// pour récupérer le type du bean
-			Class<?> beanType = ClassUtils.getUserClass(beanFactory.getType(beanName));
-			
-			// récupération des informations sur l'application
-			// on récupère le bean annoté à la fois @ApplicationDescription et @Configuration dans le contexte
-			// si plusieurs beans respectant ces conditions sont trouvés, cela provoque une erreur
-			if (beanType != null && beanType.isAnnotationPresent(Configuration.class) &&
-					beanType.isAnnotationPresent(ApplicationDescription.class)) {
-				if (applicationName != null) {
-					throw new ApplicationContextException("@" + ApplicationDescription.class + " ne doit être utilisé qu'une seule fois");
-				}
-				applicationName = beanType.getAnnotation(ApplicationDescription.class).name();
-			}
+		// go through all bean definitions to find application name
+		Stream<String> applicationNames = Arrays.stream(beanFactory.getBeanDefinitionNames())
+			.map(beanFactory::getType)		// get unwrapped bean type (for cglib wrapped beans)
+			.filter(Objects::nonNull)		// ignore null values
+			// find ApplicationDescription
+			.filter(ApplicationConfigurerBeanFactoryPostProcessor::isApplicationDescriptionBeanType)
+			// map to ApplicationDescription.name()
+			.map(ApplicationConfigurerBeanFactoryPostProcessor::applicationDescriptionBeanTypeToName);
+		
+		final String applicationName;
+		try {
+			applicationName = applicationNames.collect(MoreCollectors.onlyElement());
+		} catch (NoSuchElementException e) {
+			throw new ApplicationContextException(String.format("No @%s bean annotated with @%s.name()",
+					Configuration.class, ApplicationDescription.class));
+		} catch (IllegalArgumentException e) {
+			throw new ApplicationContextException(String.format("@%s must be unique; %d definitions found",
+					ApplicationDescription.class.getSimpleName(), applicationNames.collect(Collectors.counting())));
 		}
 		
-		// vérification qu'un nom a bien été déterminé pour l'application
-		if (applicationName == null) {
-			throw new ApplicationContextException("Au moins un bean doit fournir l'annotation @"
-				+ ApplicationDescription.class.getSimpleName() + " avec un nom pour l'application.");
-		}
+		Multimap<Integer, Resource> locationsByOrder = LinkedListMultimap.create();
+		// go through all bean definitions to find application name
+		Arrays.stream(beanFactory.getBeanDefinitionNames())
+			.map(beanFactory::getType)		// get unwrapped bean type (for cglib wrapped beans)
+			.filter(Objects::nonNull)		// ignore null values
+			// find ConfigurationLocation
+			.filter(ApplicationConfigurerBeanFactoryPostProcessor::isConfigurationLocationsBeanType)
+			// store configured resources in locationsByOrder
+			.forEachOrdered(this.configurationLocationsBeanTypeToLocations(locationsByOrder, applicationName));
 		
-		// parcours des définitions de bean
-		for (String beanName : beanFactory.getBeanDefinitionNames()) {
-			// les beans @Configuration sont généralement wrappés par cglib ; on doit donc utiliser ClassUtils
-			// pour récupérer le type du bean
-			Class<?> beanType = ClassUtils.getUserClass(beanFactory.getType(beanName));
-			
-			// récupération des locations pour la configuration de l'application ; tous les beans annotés
-			// @Configuration et @ConfigurationLocations sont pris en compte.
-			if (beanType != null && beanType.isAnnotationPresent(Configuration.class) &&
-					beanType.isAnnotationPresent(ConfigurationLocations.class)) {
-				ConfigurationLocations annotation = beanType.getAnnotation(ConfigurationLocations.class);
-				
-				// récupération du provider et instanciation
-				Class<? extends IConfigurationLocationProvider> configurationLocationProviderClass =
-						annotation.configurationLocationProvider();
-				IConfigurationLocationProvider provider = BeanUtils.instantiateClass(configurationLocationProviderClass,
-						IConfigurationLocationProvider.class);
-				
-				// récupération des locations et répartition par numéro d'ordre
-				for (String location : provider.getLocations(
-						applicationName,
-						applicationContext.getEnvironment().getProperty("environment", "default"),
-						annotation.locations())) {
-					List<Resource> locationGroup;
-					if (locationGroups.containsKey(annotation.order())) {
-						locationGroup = locationGroups.get(annotation.order());
-					} else {
-						locationGroup = Lists.newArrayList();
-						locationGroups.put(annotation.order(), locationGroup);
-					}
-					locationGroup.add(applicationContext.getResource(location));
-				}
-			}
-		}
-		
-		// constitution de la liste ordonnée des locations et insertion dans le configurer
+		// order provided configurations
 		List<Resource> locations = Lists.newArrayList();
 		List<Integer> orders = Lists.newArrayList(locationGroups.keySet());
 		Collections.sort(orders);
@@ -114,15 +90,71 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 			locations.addAll(locationGroups.get(order));
 		}
 		
-		// ce sont les fichiers qui doivent être pris en compte avant l'environnement
+		// convention: we use UTF-8
 		configurer.setFileEncoding(Charsets.UTF_8.name());
-		configurer.setLocalOverride(true);
+		// this files override XML defined properties
+		configurer.setLocalOverride(false);
 		configurer.setIgnoreResourceNotFound(true);
 		configurer.setLocations(locations.toArray(new Resource[locations.size()]));
 	}
 
 	/**
-	 * Nécessaire pour la récupération des {@link Resource}
+	 * Check if beanType is an {@link ApplicationDescription} annotated one. Used to filter streams.
+	 */
+	private static boolean isApplicationDescriptionBeanType(Class<?> beanType) {
+		return isConfigurationBeanType(beanType) && beanType.isAnnotationPresent(ApplicationDescription.class);
+	}
+
+	/**
+	 * Check if beanType is an {@link ConfigurationLocations} annotated one. Used to filter streams.
+	 */
+	private static boolean isConfigurationLocationsBeanType(Class<?> beanType) {
+		return isConfigurationBeanType(beanType) && beanType.isAnnotationPresent(ConfigurationLocations.class);
+	}
+
+	/**
+	 * Map a stream of {@link ApplicationDescription} aware beans to {@link ApplicationDescription#name()}
+	 */
+	private static String applicationDescriptionBeanTypeToName(Class<?> beanType) {
+		return beanType.getAnnotation(ApplicationDescription.class).name();
+	}
+
+	/**
+	 * Check if beanType is an {@link Configuration} annotated one. Used to filter streams.
+	 */
+	private static boolean isConfigurationBeanType(Class<?> beanType) {
+		return beanType.isAnnotationPresent(Configuration.class);
+	}
+
+	/**
+	 * This method return a consumer that inspect beanType annotated with {@link ConfigurationLocations}
+	 * and store targetted configuration resources in the provided multimap.
+	 */
+	private Consumer<Class<?>> configurationLocationsBeanTypeToLocations(
+			Multimap<Integer, Resource> locations, String applicationName) {
+		return (Class<?> beanType) -> {
+			ConfigurationLocations annotation = beanType.getAnnotation(ConfigurationLocations.class);
+			
+			// load configuration with provided IConfigurationLocationProvider
+			Class<? extends IConfigurationLocationProvider> configurationLocationProviderClass =
+					annotation.configurationLocationProvider();
+			IConfigurationLocationProvider provider = BeanUtils.instantiateClass(configurationLocationProviderClass,
+					IConfigurationLocationProvider.class);
+			
+			List<Resource> typeLocations = Lists.newArrayList();
+			// récupération des locations et répartition par numéro d'ordre
+			for (String location : provider.getLocations(
+					applicationName,
+					applicationContext.getEnvironment().getProperty("environment", "default"),
+					annotation.locations())) {
+				typeLocations.add(applicationContext.getResource(location));
+			}
+			locations.putAll(annotation.order(), typeLocations);
+		};
+	}
+
+	/**
+	 * {@link ApplicationContext} used to load {@link Resource} with Spring API.
 	 */
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -130,7 +162,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	}
 
 	/**
-	 * Ce {@link BeanFactoryPostProcessor} doit être exécuté avant celui du {@link PropertySourcesPlaceholderConfigurer}
+	 * We need this {@link BeanFactoryPostProcessor} to be processed before {@link PropertySourcesPlaceholderConfigurer}
 	 */
 	@Override
 	public int getOrder() {
