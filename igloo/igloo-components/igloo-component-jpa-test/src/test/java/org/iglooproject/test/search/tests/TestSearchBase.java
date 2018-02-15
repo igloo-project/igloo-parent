@@ -52,7 +52,7 @@ public class TestSearchBase extends AbstractJpaSearchTestCase {
 		Assertions.assertThat(analyzer).isInstanceOf(ScopedLuceneAnalyzer.class);
 		ScopedLuceneAnalyzer scopedAnalyzer = (ScopedLuceneAnalyzer) analyzer;
 		Analyzer multipleIndexesAnalyzer = getFieldAnalyzer(scopedAnalyzer, searchableBinding.multipleIndexes().getPath());
-		Analyzer multipleIndexesSortAnalyzer = getFieldAnalyzer(scopedAnalyzer, Searchable.MULTIPLE_INDEXES_SORT_FIELD_NAME);
+		Analyzer multipleIndexesSortAnalyzer = getFieldAnalyzer(scopedAnalyzer, Searchable.MULTIPLE_INDEXES_AUTOCOMPLETE);
 		Analyzer notIndexedAnalyzer = getFieldAnalyzer(scopedAnalyzer, searchableBinding.notIndexed().getPath());
 		Analyzer defaultAnalyzer = getFieldAnalyzer(scopedAnalyzer, "any");
 		Analyzer anyOtherAnalyzer = getFieldAnalyzer(scopedAnalyzer, "anyOther");

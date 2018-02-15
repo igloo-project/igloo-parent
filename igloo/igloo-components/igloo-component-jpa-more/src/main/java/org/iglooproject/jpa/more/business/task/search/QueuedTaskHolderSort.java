@@ -3,14 +3,13 @@ package org.iglooproject.jpa.more.business.task.search;
 import java.util.List;
 
 import org.apache.lucene.search.SortField;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.util.binding.CoreJpaMoreBindings;
+
+import com.google.common.collect.ImmutableList;
 
 public enum QueuedTaskHolderSort implements ISort<SortField> {
 	
@@ -33,7 +32,7 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, QueuedTaskHolder.NAME_SORT_FIELD_NAME)
+					SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, QueuedTaskHolder.NAME_SORT)
 			);
 		}
 		

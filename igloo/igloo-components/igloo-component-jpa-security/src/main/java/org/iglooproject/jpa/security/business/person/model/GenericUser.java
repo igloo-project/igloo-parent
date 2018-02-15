@@ -25,12 +25,14 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.search.bridge.GenericEntityCollectionIdFieldBridge;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.person.util.AbstractPersonGroupComparator;
 import org.springframework.security.acls.model.Permission;
@@ -53,6 +55,10 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	public static final String USERNAME = "username";
 	public static final String USERNAME_SORT = "usernameSort";
 	
+	public static final String ACTIVE = "active";
+	
+	public static final String GROUPS = "groups";
+	
 	@Id
 	@GeneratedValue
 	@DocumentId
@@ -62,7 +68,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@NaturalId(mutable = true)
 	@Fields({
 		@Field(name = USERNAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-		@Field(name = USERNAME_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+		@Field(name = USERNAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	})
 	@SortableField(forField = USERNAME_SORT)
 	private String username;
@@ -70,7 +76,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@JsonIgnore
 	private String passwordHash = "*NO PASSWORD*";
 	
-	@Field
+	@Field(name = ACTIVE)
 	private boolean active = true;
 	
 	@JsonIgnore
@@ -98,7 +104,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@ManyToMany
 	@JoinTable(uniqueConstraints = { @UniqueConstraint(columnNames = { "persons_id", "groups_id" }) })
 	@SortComparator(AbstractPersonGroupComparator.class)
-	@Field(bridge = @FieldBridge(impl = GenericEntityCollectionIdFieldBridge.class), analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field(name = GROUPS, bridge = @FieldBridge(impl = GenericEntityCollectionIdFieldBridge.class), analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private Set<G> groups = Sets.newTreeSet(AbstractPersonGroupComparator.get());
 	
 	public GenericUser() {

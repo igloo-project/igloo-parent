@@ -3,6 +3,7 @@ package org.iglooproject.jpa.hibernate.analyzers;
 import org.hibernate.search.elasticsearch.analyzer.definition.ElasticsearchAnalysisDefinitionProvider;
 import org.hibernate.search.elasticsearch.analyzer.definition.ElasticsearchAnalysisDefinitionRegistryBuilder;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 
 public class CoreElasticSearchAnalyzersDefinitionProvider implements ElasticsearchAnalysisDefinitionProvider {
 
@@ -59,6 +60,8 @@ public class CoreElasticSearchAnalyzersDefinitionProvider implements Elasticsear
 		builder.analyzer(HibernateSearchAnalyzer.TEXT_SORT).withTokenizer(KEYWORDTOKENIZER)
 				.withTokenFilters(ASCIIFOLDINGFILTER, LOWERCASEFILTER, PATTERNREPLACEFILTERPUNCTUATION, PATTERNREPLACEFILTERNUMBER, TRIMFILTER);
 		
+		builder.normalizer(HibernateSearchNormalizer.TEXT)
+				.withTokenFilters(ASCIIFOLDINGFILTER, LOWERCASEFILTER, PATTERNREPLACEFILTERPUNCTUATION, PATTERNREPLACEFILTERNUMBER, TRIMFILTER);
 	}
 
 }

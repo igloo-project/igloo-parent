@@ -10,8 +10,10 @@ import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
+import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 import org.iglooproject.spring.notification.model.INotificationRecipient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,26 +26,31 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 	
 	private static final long serialVersionUID = 4869548461178261021L;
 	
-	public static final String FIRST_NAME_SORT_FIELD_NAME = "firstNameSort";
-	public static final String LAST_NAME_SORT_FIELD_NAME = "lastNameSort";
+	public static final String FIRST_NAME = "firstName";
+	public static final String FIRST_NAME_SORT = "firstNameSort";
+	
+	public static final String LAST_NAME = "lastName";
+	public static final String LAST_NAME_SORT = "lastNameSort";
+	
+	public static final String EMAIL = "email";
 	
 	@Column(nullable = false)
 	@Fields({
-			@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-			@Field(name = FIRST_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+			@Field(name = FIRST_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+			@Field(name = FIRST_NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	})
-	@SortableField(forField = FIRST_NAME_SORT_FIELD_NAME)
+	@SortableField(forField = FIRST_NAME_SORT)
 	private String firstName;
 	
 	@Column(nullable = false)
 	@Fields({
-			@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-			@Field(name = LAST_NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+			@Field(name = LAST_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+			@Field(name = LAST_NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	})
-	@SortableField(forField = LAST_NAME_SORT_FIELD_NAME)
+	@SortableField(forField = LAST_NAME_SORT)
 	private String lastName;
 	
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Field(name = EMAIL, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	private String email;
 	
 	private String phoneNumber;

@@ -7,10 +7,12 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.basicapp.core.business.common.model.embeddable.LocalizedText;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericLocalizedReferenceData;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 
 import com.querydsl.core.annotations.QueryInit;
 
@@ -58,7 +60,7 @@ public class LocalizedReferenceData<E extends LocalizedReferenceData<?>> extends
 	@Override
 	@Fields({
 		@Field(name = CODE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
-		@Field(name = CODE_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+		@Field(name = CODE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	})
 	@SortableField(forField = CODE_SORT)
 	public String getCode() {

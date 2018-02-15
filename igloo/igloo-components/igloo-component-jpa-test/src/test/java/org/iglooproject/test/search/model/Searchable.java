@@ -16,8 +16,9 @@ import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 @Indexed
 @Bindable
 public class Searchable {
-	public static final String MULTIPLE_INDEXES_FIELD_NAME = "multipleIndexes";
-	public static final String MULTIPLE_INDEXES_SORT_FIELD_NAME = MULTIPLE_INDEXES_FIELD_NAME + "Sort";
+	
+	public static final String MULTIPLE_INDEXES = "multipleIndexes";
+	public static final String MULTIPLE_INDEXES_AUTOCOMPLETE = MULTIPLE_INDEXES + "Autocomplete";
 	
 	@Id
 	@GeneratedValue
@@ -31,8 +32,8 @@ public class Searchable {
 	public String keyword;
 	
 	@Fields({
-		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-		@Field(name = MULTIPLE_INDEXES_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+		@Field(name = MULTIPLE_INDEXES, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+		@Field(name = MULTIPLE_INDEXES_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_STEMMING))
 	})
 	public String multipleIndexes;
 	

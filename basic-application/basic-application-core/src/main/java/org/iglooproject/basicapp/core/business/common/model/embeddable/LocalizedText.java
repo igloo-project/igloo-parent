@@ -10,10 +10,12 @@ import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
+import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.basicapp.core.business.common.util.BasicApplicationLocale;
 import org.iglooproject.jpa.more.business.localization.model.AbstractLocalizedText;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 
 @MappedSuperclass
 @Bindable
@@ -32,7 +34,7 @@ public class LocalizedText extends AbstractLocalizedText {
 	@Column
 	@Fields({
 		@Field(name = FR, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_STEMMING)),
-		@Field(name = FR_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT)),
+		@Field(name = FR_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT)),
 		@Field(name = FR_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	})
 	@SortableField(forField = FR_SORT)
@@ -41,7 +43,7 @@ public class LocalizedText extends AbstractLocalizedText {
 	@Column
 	@Fields({
 		@Field(name = EN, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_STEMMING)),
-		@Field(name = EN_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT)),
+		@Field(name = EN_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT)),
 		@Field(name = EN_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	})
 	@SortableField(forField = EN_SORT)

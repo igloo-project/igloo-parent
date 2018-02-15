@@ -22,19 +22,20 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
+import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
+import org.iglooproject.commons.util.collections.CollectionUtils;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
+import org.iglooproject.jpa.security.business.authority.model.Authority;
+import org.iglooproject.jpa.security.business.person.util.AbstractUserComparator;
 import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryType;
-
-import org.iglooproject.commons.util.collections.CollectionUtils;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
-import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.jpa.security.business.person.util.AbstractUserComparator;
 
 @MappedSuperclass
 @Bindable
@@ -44,6 +45,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 
 	private static final long serialVersionUID = 2156717229285615454L;
 	
+	public static final String NAME = "name";
 	public static final String NAME_SORT = "nameSort";
 	
 	@Id
@@ -52,8 +54,8 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 	private Long id;
 
 	@Fields({
-		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-		@Field(name = NAME_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+		@Field(name = NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+		@Field(name = NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	})
 	@SortableField(forField = NAME_SORT)
 	private String name;

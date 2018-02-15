@@ -29,12 +29,13 @@ import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
+import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
-
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.audit.model.util.AbstractAuditFeature;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 
 /**
  * <p>
@@ -46,7 +47,8 @@ import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 public abstract class AbstractAudit<Action> extends GenericEntity<Long, AbstractAudit<?>> {
 	private static final long serialVersionUID = 8453330231866625186L;
 
-	public static final String DATE_SORT_FIELD_NAME = "date_sort";
+	public static final String DATE = "date";
+	public static final String DATE_SORT = "dateSort";
 
 	/**
 	 * Identifiant technique.
@@ -147,10 +149,10 @@ public abstract class AbstractAudit<Action> extends GenericEntity<Long, Abstract
 	 */
 	@Basic(optional = false)
 	@Fields({
-		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-		@Field(name = DATE_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+		@Field(name = DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+		@Field(name = DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	})
-	@SortableField(forField = DATE_SORT_FIELD_NAME)
+	@SortableField(forField = DATE_SORT)
 	private Date date;
 
 	public AbstractAudit() {

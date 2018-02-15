@@ -18,18 +18,19 @@ import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
-import org.springframework.core.style.ToStringCreator;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
+import org.springframework.core.style.ToStringCreator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Entity
 @Bindable
@@ -37,7 +38,8 @@ import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private static final long serialVersionUID = 3926959721176678607L;
 
-	public static final String NAME_SORT_FIELD_NAME = "nameSort";
+	public static final String NAME = "name";
+	public static final String NAME_SORT = "nameSort";
 
 	@Id
 	@GeneratedValue
@@ -46,10 +48,10 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
 	@Column(nullable = false)
 	@Fields({ 
-		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-		@Field(name = NAME_SORT_FIELD_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+		@Field(name = NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
+		@Field(name = NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	})
-	@SortableField(forField = NAME_SORT_FIELD_NAME)
+	@SortableField(forField = NAME_SORT)
 	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
 	private String name;
 

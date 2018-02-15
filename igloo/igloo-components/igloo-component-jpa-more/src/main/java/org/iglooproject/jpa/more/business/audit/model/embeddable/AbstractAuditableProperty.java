@@ -13,26 +13,28 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
+import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.SortableField;
-
-import com.google.common.base.Objects;
-
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
+
+import com.google.common.base.Objects;
 
 @MappedSuperclass
 public abstract class AbstractAuditableProperty<T> implements Serializable {
 
 	private static final long serialVersionUID = -5707236459217540376L;
 
+	public static final String LAST_EDIT_DATE = "lastEditDate";
 	public static final String LAST_EDIT_DATE_SORT = "lastEditDateSort";
 
 	@DateBridge(resolution = Resolution.MILLISECOND)
 	@Temporal(TemporalType.TIMESTAMP)
 	@Fields({
-		@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
-		@Field(name = LAST_EDIT_DATE_SORT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_SORT))
+		@Field(name = LAST_EDIT_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
+		@Field(name = LAST_EDIT_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	})
 	@SortableField(forField = LAST_EDIT_DATE_SORT)
 	private Date lastEditDate;

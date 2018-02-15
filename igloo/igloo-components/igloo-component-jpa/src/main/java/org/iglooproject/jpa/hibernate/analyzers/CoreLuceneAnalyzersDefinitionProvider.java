@@ -11,6 +11,7 @@ import org.hibernate.search.analyzer.definition.LuceneAnalysisDefinitionProvider
 import org.hibernate.search.analyzer.definition.LuceneAnalysisDefinitionRegistryBuilder;
 import org.iglooproject.jpa.search.analysis.fr.CoreFrenchMinimalStemFilterFactory;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 
 public class CoreLuceneAnalyzersDefinitionProvider implements LuceneAnalysisDefinitionProvider {
 
@@ -54,6 +55,19 @@ public class CoreLuceneAnalyzersDefinitionProvider implements LuceneAnalysisDefi
 				.tokenFilter(CoreFrenchMinimalStemFilterFactory.class);
 		
 		builder.analyzer(prefix + HibernateSearchAnalyzer.TEXT_SORT).tokenizer(KeywordTokenizerFactory.class)
+				.tokenFilter(ASCIIFoldingFilterFactory.class)
+				.tokenFilter(LowerCaseFilterFactory.class)
+				.tokenFilter(PatternReplaceFilterFactory.class)
+						.param("pattern", "('-&\\.,\\(\\))")
+						.param("replacement", " ")
+						.param("replace", "all")
+				.tokenFilter(PatternReplaceFilterFactory.class)
+						.param("pattern", "([^0-9\\p{L} ])")
+						.param("replacement", "")
+						.param("replace", "all")
+				.tokenFilter(TrimFilterFactory.class);
+		
+		builder.normalizer(HibernateSearchNormalizer.TEXT)
 				.tokenFilter(ASCIIFoldingFilterFactory.class)
 				.tokenFilter(LowerCaseFilterFactory.class)
 				.tokenFilter(PatternReplaceFilterFactory.class)
