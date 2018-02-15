@@ -16,7 +16,7 @@ public class CoreConfigurationLocationsAnnotationConfig {
 
 	@Bean
 	public static ApplicationConfigurerBeanFactoryPostProcessor applicationConfigurer() {
-		return new ApplicationConfigurerBeanFactoryPostProcessor();
+		return new ApplicationConfigurerBeanFactoryPostProcessor(false);
 	}
 
 }

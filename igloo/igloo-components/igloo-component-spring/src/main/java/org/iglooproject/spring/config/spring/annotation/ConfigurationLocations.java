@@ -15,19 +15,8 @@ public @interface ConfigurationLocations {
 	String[] locations() default {
 		"classpath:igloo-component-spring.properties",
 		"classpath:igloo-component-jpa.properties",
-		"classpath:configuration-private.properties",
 		"classpath:configuration.properties",
-		"file:/etc/${applicationName}/configuration.properties",
-		"classpath:configuration-${environment}.properties",
-		"classpath:configuration-${user}.properties"
 	};
-
-	/**
-	 * Permet d'indiquer une implémentation alternative chargée de transformer les valeurs du champ
-	 * {@link ConfigurationLocations#locations()}.
-	 */
-	Class<? extends IConfigurationLocationProvider> configurationLocationProvider()
-		default DefaultConfigurationLocationProvider.class;
 
 	/**
 	 * Permet d'indiquer un ordre de chargement. Les groupes de « locations » chargés en premier sont ceux dont le

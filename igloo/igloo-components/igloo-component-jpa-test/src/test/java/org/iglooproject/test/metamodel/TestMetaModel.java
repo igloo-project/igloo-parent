@@ -19,6 +19,7 @@ import org.iglooproject.jpa.hibernate.dialect.PerTableSequenceStyleGenerator;
 import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
 import org.iglooproject.jpa.hibernate.jpa.PerTableSequenceStrategyProvider;
 import org.iglooproject.jpa.util.DbTypeConstants;
+import org.iglooproject.spring.config.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.test.business.person.model.Person;
@@ -36,7 +37,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import com.google.common.collect.Lists;
 
-@ContextConfiguration(classes = JpaTestConfig.class)
+@ContextConfiguration(classes = JpaTestConfig.class, initializers = ExtendedTestApplicationContextInitializer.class)
 public class TestMetaModel extends AbstractMetaModelTestCase {
 
 	@Autowired

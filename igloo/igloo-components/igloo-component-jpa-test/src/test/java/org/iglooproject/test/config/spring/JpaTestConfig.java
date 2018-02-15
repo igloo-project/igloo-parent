@@ -14,7 +14,6 @@ import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 @ApplicationDescription(name = "jpa-test")
 @ConfigurationLocations(locations = {
 		"classpath:igloo-component-jpa.properties",
-		"classpath:configuration-private.properties",
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
 		"classpath:igloo-jpa.properties"

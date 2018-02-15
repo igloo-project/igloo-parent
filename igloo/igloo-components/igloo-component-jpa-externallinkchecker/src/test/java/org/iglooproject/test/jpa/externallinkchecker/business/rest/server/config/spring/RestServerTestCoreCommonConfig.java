@@ -14,7 +14,6 @@ import org.iglooproject.test.jpa.externallinkchecker.business.rest.server.RestSe
 @Configuration
 @ApplicationDescription(name = "rest-test-server")
 @ConfigurationLocations(locations = {
-		"classpath:configuration-private.properties",
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		"classpath:rest-server.properties"
 })

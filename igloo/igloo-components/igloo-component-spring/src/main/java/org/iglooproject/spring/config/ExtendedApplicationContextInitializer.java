@@ -1,22 +1,19 @@
 package org.iglooproject.spring.config;
 
+import java.util.Collection;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * @see AbstractExtendedApplicationContextInitializer
- * 
- * La configuration chargée est classpath:configuration.properties et classpath:configuration-{user.name}.properties.
- * La configuration log4j est chargée à partir de la propriété log4j.configurationLocations.
  */
 public class ExtendedApplicationContextInitializer extends AbstractExtendedApplicationContextInitializer {
 
 	@Override
-	public String getMainConfigurationLocation() {
-		return "classpath:configuration.properties";
-	}
-
-	@Override
-	public String getCustomConfigurationLocation() {
-		return "classpath:configuration-" + System.getProperty("user.name") + ".properties";
+	protected Collection<String> getDefaultBootstrapConfigurationLocations() {
+		return ImmutableList.<String>builder()
+				.add("classpath:configuration-bootstrap.properties")
+				.add("classpath:configuration-bootstrap-" + System.getProperty("user.name") + ".properties").build();
 	}
 
 }

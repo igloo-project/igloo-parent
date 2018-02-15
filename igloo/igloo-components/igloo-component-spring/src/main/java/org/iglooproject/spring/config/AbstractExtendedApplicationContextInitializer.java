@@ -3,10 +3,13 @@ package org.iglooproject.spring.config;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.PropertyConfigurator;
+import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContextInitializer;
@@ -15,88 +18,206 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.core.io.support.ResourcePropertySource;
 
-import org.iglooproject.spring.util.StringUtils;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 /**
- * Cet initializer traite les deux sujets suivants :
- *  - prise en compte des fichiers classpath:configuration.properties et classpath:configuration-${user.name}.properties
- *  pour l'initialisation de l'environnement (permet entre autres de prendre en compte les profils spring à la volée)
- *  - initialisation log4j à l'aide de la propriété log4j.configurationLocations de l'environnement
- * 
- * Note mise à jour le 5 juillet 2013 : avant, on avait un type générique, mais ce n'était pas compatible avec la mise
- * en place du ContextConfiguration#initializers(). Transformation en type non générique.
+ * <p>
+ * This initializer handles:
+ * <ul>
+ * <li>Load bootstrap configuration (list determined from environment or system property).</li>
+ * <li>Build a custom log4j configuration.</li>
+ * </ul>
+ * </p>
  */
 public abstract class AbstractExtendedApplicationContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
+	public static final String IGLOO_CONFIGURATION_LOGGER_NAME = "igloo.config";
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractExtendedApplicationContextInitializer.class);
+	private static final Logger LOGGER_SYNTHETIC = LoggerFactory.getLogger(IGLOO_CONFIGURATION_LOGGER_NAME);
 
-	private static final String SPRING_LOG4J_CONFIGURATION = "log4j.configurationLocations";
+	/**
+	 * Log4j configurations to aggregate. This must be defined in bootstrap configuration.
+	 */
+	public static final String LOG4J_CONFIGURATIONS_PROPERTY = "igloo.log4j.configurationLocations";
+
+	/**
+	 * Igloo profile to load. This must be defined in bootstrap configuration.
+	 */
+	public static final String IGLOO_PROFILE_PROPERTY = "igloo.profile";
+
+	/**
+	 * Spring configurations to load. This must be defined in bootstrap configuration.
+	 */
+	public static final String IGLOO_PROFILES_LOCATIONS_PROPERTY = "igloo.configurationLocations";
+
+	/**
+	 * Igloo application name; used to resolve some placeholders, especially in configuration locations. This must be
+	 * configured by an {@link ApplicationDescription} annotation.
+	 */
+	public static final String IGLOO_APPLICATION_NAME_PROPERTY = "igloo.applicationName";
+
+	/**
+	 * System property to use to specify replacing or added bootstrap configurations.
+	 * 
+	 * @see #BOOTSTRAP_OVERRIDE_DEFAULT_SYSTEM_PROPERTY
+	 */
+	private static final String BOOTSTRAP_LOCATIONS_SYSTEM_PROPERTY = "igloo.bootstrapLocations";
+
+	/**
+	 * Environment variable to use to specify replacing or added bootstrap configurations.
+	 * 
+	 * @see #BOOTSTRAP_OVERRIDE_DEFAULT_ENVIRONMENT
+	 */
+	private static final String BOOTSTRAP_LOCATIONS_ENVIRONMENT = "IGLOO_BOOTSTRAP_LOCATIONS";
+
+	/**
+	 * System property to set to true if you want that alternative bootstrap locations replace default bootstrap
+	 * locations. If not set, or false, alternative bootstrap locations are added to the default ones.
+	 */
+	private static final String BOOTSTRAP_OVERRIDE_DEFAULT_SYSTEM_PROPERTY = "igloo.bootstrapOverrideDefault";
+
+	/**
+	 * Environment variable to set to true if you want that alternative bootstrap locations replace default bootstrap
+	 * locations. If not set, or false, alternative bootstrap locations are added to the default ones.
+	 */
+	private static final String BOOTSTRAP_OVERRIDE_DEFAULT_ENVIRONMENT = "IGLOO_BOOTSTRAP_OVERRIDE_DEFAULT";
 
 	@Override
 	public void initialize(ConfigurableApplicationContext applicationContext) {
 		try {
-			// définition d'un environnement par défaut (permet de configurer l'application avant le chargement
-			// des beans) ; sert entre autres pour la définiton des profils spring à charger.
-			ResourcePropertySource resourcePropertySource = new ResourcePropertySource(getMainConfigurationLocation());
-			
-			applicationContext.getEnvironment().getPropertySources().addFirst(resourcePropertySource);
-			String customLocation = getCustomConfigurationLocation();
-			if (applicationContext.getResource(customLocation).exists()) {
-				applicationContext.getEnvironment().getPropertySources().addFirst(new ResourcePropertySource(customLocation));
-			}
-			
-			// configuration de log4j ; permet de spécifier plusieurs fichiers de propriétés qui seront combinés entre
-			// eux pour faire le fichier global de configuration.
-			if (applicationContext.getEnvironment().getProperty(SPRING_LOG4J_CONFIGURATION) != null) {
-				String locationsString = applicationContext.getEnvironment().getProperty(SPRING_LOG4J_CONFIGURATION);
-				List<String> locations = StringUtils.splitAsList(locationsString, ",");
-				MutablePropertySources sources = new MutablePropertySources();
-				boolean hasSource = false;
-				List<String> propertyNames = new ArrayList<String>();
-				for (String location : locations) {
-					if (applicationContext.getResource(location).exists()) {
-						LOGGER.info(String.format("Log4j : %1$s added", location));
-						hasSource = true;
-						ResourcePropertySource source = new ResourcePropertySource(applicationContext.getResource(location));
-						sources.addFirst(source);
-						propertyNames.addAll(Arrays.asList(source.getPropertyNames()));
-					} else {
-						LOGGER.warn(String.format("Log4j : %1$s not found", location));
-					}
-				}
-				
-				if (hasSource) {
-					PropertySourcesPropertyResolver resolver = new PropertySourcesPropertyResolver(sources);
-					resolver.setPlaceholderPrefix("#{");
-					resolver.setPlaceholderSuffix("}");
-					Properties properties = new Properties();
-					for (String propertyName : propertyNames) {
-						if (resolver.containsProperty(propertyName)) {
-							LOGGER.debug(String.format("Log4j : property resolved %1$s -> %2$s", propertyName, resolver.getProperty(propertyName)));
-							properties.put(propertyName, resolver.getProperty(propertyName));
-						} else {
-							LOGGER.warn(String.format("Log4j : property %1$s cannot be resolved", propertyName));
-						}
-					}
-					properties.setProperty("log4j.reset", "true");
-					PropertyConfigurator.configure(properties);
-				} else {
-					LOGGER.warn("Log4j : no additional files configured in %1$s", locationsString);
-				}
-			}
+			// add configurations from bootstrap configuration to spring environment
+			loadBootstrapConfiguration(applicationContext);
+			// merge configured log4j configurations and reconfigure log4j
+			loadLog4jConfiguration(applicationContext);
 		} catch (IOException e) {
 			throw new IllegalStateException("Error loading configuration files", e);
 		}
 	}
 
-	/**
-	 * Emplacement de la configuration principale.
-	 */
-	public abstract String getMainConfigurationLocation();
+	private void loadBootstrapConfiguration(ConfigurableApplicationContext applicationContext) throws IOException {
+		Collection<String> locations = getBootstrapConfigurationLocations(applicationContext);
+		// preserve order !
+		LinkedHashMap<String, ResourcePropertySource> resources = Maps.newLinkedHashMap();
+		
+		for (String location : locations) {
+			if (resources.containsKey(location)) {
+				LOGGER.debug("Bootstrap configuration: ignore duplicate {}", location);
+			} else if (applicationContext.getResource(location).exists()) {
+				LOGGER.debug("Bootstrap configuration: queuing {}", location);
+				resources.put(location, new ResourcePropertySource(location));
+			} else {
+				LOGGER.debug("Bootstrap configuration: ignore not existing {}", location);
+			}
+		}
+		
+		if (resources.isEmpty()) {
+			throw new IllegalStateException(String.format("Bootstrap configuration: no configuration found from %s",
+					Joiner.on(", ").join(locations)));
+		}
+		
+		List<String> loadedLocations = Lists.newArrayList();
+		loadedLocations.addAll(resources.keySet());
+		// this is a reversed view
+		List<String> reverseLoadedLocations = Lists.reverse(loadedLocations);
+		
+		if (LOGGER_SYNTHETIC.isInfoEnabled()) {
+			LOGGER_SYNTHETIC.info("Bootstrap configurations (ordered): {}", Joiner.on(", ").join(loadedLocations));
+			List<String> ignoredLocations = Lists.newArrayList(locations);
+			ignoredLocations.removeAll(loadedLocations);
+			LOGGER_SYNTHETIC.warn("Bootstrap configurations **ignored**: {}", Joiner.on(",").join(ignoredLocations));
+		}
+		
+		for (String location : reverseLoadedLocations) {
+			applicationContext.getEnvironment().getPropertySources().addFirst(resources.get(location));
+		}
+	}
+
+	private void loadLog4jConfiguration(ConfigurableApplicationContext applicationContext) throws IOException {
+		// Customized log4j configuration. We combine multiple log4j files to build a new configuration.
+		if (applicationContext.getEnvironment().getProperty(LOG4J_CONFIGURATIONS_PROPERTY) != null) {
+			@SuppressWarnings("unchecked")
+			List<String> log4jLocations =
+					applicationContext.getEnvironment().getProperty(LOG4J_CONFIGURATIONS_PROPERTY, List.class);
+			MutablePropertySources sources = new MutablePropertySources();
+			boolean hasSource = false;
+			List<String> propertyNames = new ArrayList<String>();
+			for (String location : log4jLocations) {
+				if (applicationContext.getResource(location).exists()) {
+					LOGGER.info(String.format("Log4j : %1$s added", location));
+					hasSource = true;
+					ResourcePropertySource source = new ResourcePropertySource(applicationContext.getResource(location));
+					sources.addFirst(source);
+					propertyNames.addAll(Arrays.asList(source.getPropertyNames()));
+				} else {
+					LOGGER.warn(String.format("Log4j : %1$s not found", location));
+				}
+			}
+			
+			if (hasSource) {
+				PropertySourcesPropertyResolver resolver = new PropertySourcesPropertyResolver(sources);
+				resolver.setPlaceholderPrefix("#{");
+				resolver.setPlaceholderSuffix("}");
+				Properties properties = new Properties();
+				for (String propertyName : propertyNames) {
+					if (resolver.containsProperty(propertyName)) {
+						LOGGER.debug(String.format("Log4j : property resolved %1$s -> %2$s", propertyName, resolver.getProperty(propertyName)));
+						properties.put(propertyName, resolver.getProperty(propertyName));
+					} else {
+						LOGGER.warn(String.format("Log4j : property %1$s cannot be resolved", propertyName));
+					}
+				}
+				properties.setProperty("log4j.reset", "true");
+				PropertyConfigurator.configure(properties);
+			} else {
+				LOGGER.warn("Log4j : no additional files configured in %1$s", Joiner.on(",").join(log4jLocations));
+			}
+		}
+	}
 
 	/**
-	 * Emplacement de la configuration spécifique (prise en compte en priorité).
+	 * Bootstrap configuration locations either from environment, system property or default locations;
+	 * first available win.
+	 * 
+	 * @see AbstractExtendedApplicationContextInitializer#getDefaultBootstrapConfigurationLocations()
 	 */
-	public abstract String getCustomConfigurationLocation();
+	private Collection<String> getBootstrapConfigurationLocations(ConfigurableApplicationContext applicationContext) {
+		Collection<String> locations = Lists.newArrayList(getDefaultBootstrapConfigurationLocations());
+		
+		// check if we ignore default locations
+		if (applicationContext.getEnvironment().getProperty(BOOTSTRAP_OVERRIDE_DEFAULT_ENVIRONMENT, Boolean.class, false)) {
+			locations.clear();
+			LOGGER.debug("Ignoring default bootstrap configuration locations as {} is set", BOOTSTRAP_OVERRIDE_DEFAULT_ENVIRONMENT);
+		}
+		if (applicationContext.getEnvironment().getProperty(BOOTSTRAP_OVERRIDE_DEFAULT_SYSTEM_PROPERTY, Boolean.class, false)) {
+			locations.clear();
+			LOGGER.debug("Ignoring default bootstrap configuration locations as {} is set", BOOTSTRAP_OVERRIDE_DEFAULT_SYSTEM_PROPERTY);
+		}
+		
+		// load first found configuration from environment variable ou system property
+		@SuppressWarnings("unchecked")
+		List<String> env = applicationContext.getEnvironment().getProperty(BOOTSTRAP_LOCATIONS_ENVIRONMENT, List.class);
+		if (env != null) {
+			LOGGER.debug("Using environment {}: {}", BOOTSTRAP_LOCATIONS_ENVIRONMENT,
+					applicationContext.getEnvironment().getProperty(BOOTSTRAP_LOCATIONS_ENVIRONMENT));
+			locations.addAll(env);
+		}
+		@SuppressWarnings("unchecked")
+		List<String> system = applicationContext.getEnvironment().getProperty(BOOTSTRAP_LOCATIONS_SYSTEM_PROPERTY, List.class);
+		if (system != null) {
+			LOGGER.debug("Using environment {}: {}", BOOTSTRAP_LOCATIONS_SYSTEM_PROPERTY,
+					applicationContext.getEnvironment().getProperty(BOOTSTRAP_LOCATIONS_SYSTEM_PROPERTY));
+			locations.addAll(system);
+		}
+		
+		return locations;
+	}
+
+	/**
+	 * Return default bootstrap configuration to use (if no environment or system property available). Implement this
+	 * method to customize used bootstrap locations.
+	 */
+	protected abstract Collection<String> getDefaultBootstrapConfigurationLocations();
 
 }

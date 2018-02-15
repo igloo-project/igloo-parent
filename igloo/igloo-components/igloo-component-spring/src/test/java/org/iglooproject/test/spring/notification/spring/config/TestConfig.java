@@ -18,7 +18,7 @@ import org.iglooproject.spring.property.service.PropertyServiceImpl;
 
 @Configuration
 @ApplicationDescription(name = "TestNotification")
-@ConfigurationLocations(locations = {"classpath:notification-test.properties", "classpath:notification-test-${user}.properties"})
+@ConfigurationLocations(locations = {"classpath:notification-test.properties"})
 @Import({ NotificationTestConfig.class })
 public class TestConfig {
 
@@ -44,7 +44,7 @@ public class TestConfig {
 
 	@Bean
 	public static ApplicationConfigurerBeanFactoryPostProcessor applicationConfigurer() {
-		return new ApplicationConfigurerBeanFactoryPostProcessor();
+		return new ApplicationConfigurerBeanFactoryPostProcessor(false);
 	}
 	
 }

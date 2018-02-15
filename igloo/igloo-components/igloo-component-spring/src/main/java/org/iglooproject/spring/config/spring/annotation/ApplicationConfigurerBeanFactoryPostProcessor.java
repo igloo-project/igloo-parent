@@ -1,32 +1,44 @@
 package org.iglooproject.spring.config.spring.annotation;
 
+import static org.iglooproject.spring.config.AbstractExtendedApplicationContextInitializer.IGLOO_APPLICATION_NAME_PROPERTY;
+import static org.iglooproject.spring.config.AbstractExtendedApplicationContextInitializer.IGLOO_CONFIGURATION_LOGGER_NAME;
+import static org.iglooproject.spring.config.AbstractExtendedApplicationContextInitializer.IGLOO_PROFILES_LOCATIONS_PROPERTY;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.springframework.beans.BeanUtils;
+import org.iglooproject.spring.config.AbstractExtendedApplicationContextInitializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanNotOfRequiredTypeException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationContextException;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.Ordered;
 import org.springframework.core.PriorityOrdered;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.io.Resource;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.MoreCollectors;
 import com.google.common.collect.Multimap;
 
@@ -40,7 +52,20 @@ import com.google.common.collect.Multimap;
 public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactoryPostProcessor, ApplicationContextAware,
 		PriorityOrdered {
 
-	private ApplicationContext applicationContext;
+	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationConfigurerBeanFactoryPostProcessor.class);
+	private static final Logger LOGGER_SYNTHETIC = LoggerFactory.getLogger(IGLOO_CONFIGURATION_LOGGER_NAME);
+
+	private final boolean notFoundLocationThrowError;
+
+	private ConfigurableApplicationContext applicationContext;
+
+	public ApplicationConfigurerBeanFactoryPostProcessor() {
+		this(true);
+	}
+
+	public ApplicationConfigurerBeanFactoryPostProcessor(boolean notFoundLocationThrowError) {
+		this.notFoundLocationThrowError = notFoundLocationThrowError;
+	}
 
 	/**
 	 * Extract {@literal @}{@link ApplicationDescription} and {@literal @}{@link ConfigurationLocations} from
@@ -50,8 +75,47 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		PropertySourcesPlaceholderConfigurer configurer = beanFactory.getBean(PropertySourcesPlaceholderConfigurer.class);
 		
-		Map<Integer, List<Resource>> locationGroups = Maps.newHashMap();
+		configureApplicationDescription(beanFactory);
 		
+		List<Resource> bootstrapedConfigurations = getLocationsFromBootstrapConfiguration();
+		if (bootstrapedConfigurations.isEmpty()) {
+			LOGGER.info("Bootstraped-configured configurations is empty (overriding configurations missing)");
+		}
+		
+		List<Resource> defaultLocations = loadLocationsFromApplicationConfigurations(beanFactory);
+		if (defaultLocations.isEmpty()) {
+			LOGGER.info("Default configurations is empty (overridable configurations missing)");
+		}
+		
+		List<Resource> locations = Lists.newArrayList();
+		// added so that bootstraped configurations override default ones
+		locations.addAll(defaultLocations);
+		locations.addAll(bootstrapedConfigurations);
+		
+		if (LOGGER_SYNTHETIC.isInfoEnabled()) {
+			LOGGER_SYNTHETIC.info("Spring configurations (ordered): {}",
+					Joiner.on(", ").join(locations.stream()
+							.map(ApplicationConfigurerBeanFactoryPostProcessor::toURL)
+							.collect(Collectors.toList())));
+		}
+		
+		// convention: we use UTF-8
+		configurer.setFileEncoding(Charsets.UTF_8.name());
+		// this files override XML defined properties
+		configurer.setLocalOverride(true);
+		configurer.setIgnoreResourceNotFound(false);
+		configurer.setLocations(locations.toArray(new Resource[locations.size()]));
+	}
+
+	/**
+	 * <p>Stateful behavior related to {@link #applicationContext}.</p>
+	 * 
+	 * <p>Inject in Spring environment configurations from {@link ApplicationDescription} (currently, only
+	 * {@link AbstractExtendedApplicationContextInitializer#IGLOO_APPLICATION_NAME_PROPERTY}.</p>
+	 * 
+	 * <p>Fatal error if {@link ApplicationDescription} is not found or inconsistent (multiple configurations).</p>
+	 */
+	private void configureApplicationDescription(ConfigurableListableBeanFactory beanFactory) {
 		// go through all bean definitions to find application name
 		Stream<String> applicationNames = Arrays.stream(beanFactory.getBeanDefinitionNames())
 			.map(beanFactory::getType)		// get unwrapped bean type (for cglib wrapped beans)
@@ -61,9 +125,16 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 			// map to ApplicationDescription.name()
 			.map(ApplicationConfigurerBeanFactoryPostProcessor::applicationDescriptionBeanTypeToName);
 		
-		final String applicationName;
 		try {
-			applicationName = applicationNames.collect(MoreCollectors.onlyElement());
+			final String applicationName = applicationNames.collect(MoreCollectors.onlyElement());
+			// this allows to use ${igloo.applicationName} placeholder in file locations
+			LOGGER.info("Bootstrap configuration: setting {} to {}", IGLOO_APPLICATION_NAME_PROPERTY, applicationName);
+			applicationContext.getEnvironment().getPropertySources()
+				.addFirst(new MapPropertySource(
+						"applicationName",
+						ImmutableMap.<String, Object>builder().put(IGLOO_APPLICATION_NAME_PROPERTY, applicationName).build()
+				)
+		);
 		} catch (NoSuchElementException e) {
 			throw new ApplicationContextException(String.format("No @%s bean annotated with @%s.name()",
 					Configuration.class, ApplicationDescription.class));
@@ -71,7 +142,20 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 			throw new ApplicationContextException(String.format("@%s must be unique; %d definitions found",
 					ApplicationDescription.class.getSimpleName(), applicationNames.collect(Collectors.counting())));
 		}
-		
+	}
+
+	/**
+	 * <p>Stateless. Extract configuration locations from {@link ConfigurationLocations} annotations. Placeholders
+	 * available in Spring environment (loaded from system properties, environment variables and bootstraped
+	 * configuration) are allowed.</p>
+	 * 
+	 * <p>Non existing or non readable locations are either ignored or throw an exception.</p>.
+	 * 
+	 * <p>Returned list is not null and can be empty.</p>
+	 * 
+	 * @see #notFoundLocationThrowError
+	 */
+	private List<Resource> loadLocationsFromApplicationConfigurations(ConfigurableListableBeanFactory beanFactory) {
 		Multimap<Integer, Resource> locationsByOrder = LinkedListMultimap.create();
 		// go through all bean definitions to find application name
 		Arrays.stream(beanFactory.getBeanDefinitionNames())
@@ -80,22 +164,60 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 			// find ConfigurationLocation
 			.filter(ApplicationConfigurerBeanFactoryPostProcessor::isConfigurationLocationsBeanType)
 			// store configured resources in locationsByOrder
-			.forEachOrdered(this.configurationLocationsBeanTypeToLocations(locationsByOrder, applicationName));
+			.forEachOrdered(this.configurationLocationsBeanTypeToLocations(locationsByOrder));
+		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Aggregated configuration before merging: {}",
+					Joiner.on(",").withKeyValueSeparator(":").join(locationsByOrder.asMap()));
+		}
 		
 		// order provided configurations
 		List<Resource> locations = Lists.newArrayList();
-		List<Integer> orders = Lists.newArrayList(locationGroups.keySet());
+		List<Integer> orders = Lists.newArrayList(locationsByOrder.keySet());
 		Collections.sort(orders);
 		for (Integer order : orders) {
-			locations.addAll(locationGroups.get(order));
+			locations.addAll(locationsByOrder.get(order));
 		}
+		LOGGER.info("Aggregated configuration after merging: {}");
 		
-		// convention: we use UTF-8
-		configurer.setFileEncoding(Charsets.UTF_8.name());
-		// this files override XML defined properties
-		configurer.setLocalOverride(false);
-		configurer.setIgnoreResourceNotFound(true);
-		configurer.setLocations(locations.toArray(new Resource[locations.size()]));
+		return locations;
+	}
+
+	/**
+	 * <p>Return list of overriding configurations resources computed from bootstraped configuration.</p>
+	 * 
+	 * <p>Non existing or non readable locations are either ignored or throw an exception.</p>.
+	 * 
+	 * <p>Returned list is not null and can be empty.</p>
+	 * 
+	 * @see #notFoundLocationThrowError
+	 */
+	private List<Resource> getLocationsFromBootstrapConfiguration() {
+		List<Resource> locations = Lists.newArrayList();
+		Environment environment = applicationContext.getEnvironment();
+		if (environment.containsProperty(IGLOO_PROFILES_LOCATIONS_PROPERTY)) {
+			@SuppressWarnings("unchecked")
+			final List<String> profileLocations =
+					(List<String>) environment.getProperty(IGLOO_PROFILES_LOCATIONS_PROPERTY, List.class);
+			List<Resource> profileResources = profileLocations.stream()
+					.map(this.resourceFromLocation(notFoundLocationThrowError)).filter(Objects::nonNull)
+					.collect(Collectors.toList());
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Loaded locations from {} value ({}): {}",
+						// annotated type
+						IGLOO_PROFILES_LOCATIONS_PROPERTY,
+						environment.getProperty(IGLOO_PROFILES_LOCATIONS_PROPERTY),
+						// list of loaded files
+						Joiner.on(", ").join(profileResources.stream()
+								.map(ApplicationConfigurerBeanFactoryPostProcessor::toURL)
+								.collect(Collectors.toList())));
+			}
+			
+			locations.addAll(profileResources);
+		} else {
+			LOGGER.warn("No bootstrap configuration found for {}", IGLOO_PROFILES_LOCATIONS_PROPERTY);
+		}
+		return locations;
 	}
 
 	/**
@@ -130,26 +252,57 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	 * This method return a consumer that inspect beanType annotated with {@link ConfigurationLocations}
 	 * and store targetted configuration resources in the provided multimap.
 	 */
-	private Consumer<Class<?>> configurationLocationsBeanTypeToLocations(
-			Multimap<Integer, Resource> locations, String applicationName) {
+	private Consumer<Class<?>> configurationLocationsBeanTypeToLocations(Multimap<Integer, Resource> locations) {
 		return (Class<?> beanType) -> {
 			ConfigurationLocations annotation = beanType.getAnnotation(ConfigurationLocations.class);
 			
-			// load configuration with provided IConfigurationLocationProvider
-			Class<? extends IConfigurationLocationProvider> configurationLocationProviderClass =
-					annotation.configurationLocationProvider();
-			IConfigurationLocationProvider provider = BeanUtils.instantiateClass(configurationLocationProviderClass,
-					IConfigurationLocationProvider.class);
-			
-			List<Resource> typeLocations = Lists.newArrayList();
-			// récupération des locations et répartition par numéro d'ordre
-			for (String location : provider.getLocations(
-					applicationName,
-					applicationContext.getEnvironment().getProperty("environment", "default"),
-					annotation.locations())) {
-				typeLocations.add(applicationContext.getResource(location));
+			List<Resource> resources = Arrays.stream(annotation.locations())
+					.map(resourceFromLocation(notFoundLocationThrowError)).filter(Objects::nonNull)
+					.collect(Collectors.toList());
+			locations.putAll(annotation.order(), resources);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Loaded locations from {} with order {}: {}",
+						// annotated type
+						beanType.getSimpleName(),
+						annotation.order(),
+						// list of loaded files
+						Joiner.on(", ").join(resources.stream()
+								.map(ApplicationConfigurerBeanFactoryPostProcessor::toURL)
+								.collect(Collectors.toList())));
 			}
-			locations.putAll(annotation.order(), typeLocations);
+		};
+	}
+
+	/**
+	 * Resource to a printable name.
+	 */
+	private static final String toURL(Resource resource) {
+		try {
+			return resource.getURL().toString();
+		} catch (IOException e) {
+			// not reachable code as we filter location before constructing resources
+			return String.format("%s", resource.getFilename());
+		}
+	}
+
+	/**
+	 * <p>Map a location to the corresponding resource. If resource is not readable, either throw an exception or
+	 * ignore the location. Ignored locations map to null.</p>
+	 * 
+	 * <p>If you map a collection, you need to filter null values after mapping.</p>
+	 */
+	private Function<String, Resource> resourceFromLocation(boolean throwErrorIfNotReadable) {
+		return (String location) -> {
+			String resolvedLocation = applicationContext.getEnvironment().resolveRequiredPlaceholders(location);
+			if (applicationContext.getResource(resolvedLocation).isReadable()) {
+				LOGGER.debug("Configuration {} detected and added", location);
+				return applicationContext.getResource(resolvedLocation);
+			} else if (throwErrorIfNotReadable) {
+				throw new IllegalStateException(String.format("Configuration %s does not exist or is not readable", location));
+			} else {
+				LOGGER.warn("Configuration {} not readable; ignored", location);
+				return null;
+			}
 		};
 	}
 
@@ -158,7 +311,12 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	 */
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
+		if (applicationContext instanceof ConfigurableApplicationContext) {
+			this.applicationContext = (ConfigurableApplicationContext) applicationContext;
+		} else {
+			throw new BeanNotOfRequiredTypeException("applicationContext", ConfigurableApplicationContext.class,
+					applicationContext.getClass());
+		}
 	}
 
 	/**
