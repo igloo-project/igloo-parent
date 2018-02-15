@@ -1,8 +1,10 @@
 package org.iglooproject.wicket.bootstrap4.console.template;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -13,6 +15,7 @@ import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
+import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -29,6 +32,9 @@ public abstract class ConsoleAccessTemplate extends AbstractWebPageTemplate {
 
 	public ConsoleAccessTemplate(PageParameters parameters) {
 		super(parameters);
+		
+		add(new TransparentWebMarkupContainer("htmlRootElement")
+				.add(AttributeAppender.append("lang", AbstractCoreSession.get().getLocale().getLanguage())));
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		

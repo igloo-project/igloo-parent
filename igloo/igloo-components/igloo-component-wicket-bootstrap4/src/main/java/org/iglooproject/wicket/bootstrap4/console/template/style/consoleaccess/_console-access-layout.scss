@@ -26,15 +26,63 @@
 						font-size: $h4-font-size;
 					}
 					
-					&.card-environment {
-						font-size: .75rem;
-						
-						@extend .bg-warning;
+					&.card-header-alert-section {
+						@extend .bg-light;
 						@extend .text-dark;
 						
-						&.production {
-							@extend .bg-danger;
-							@extend .text-white;
+						padding: 0;
+						
+						> .card-header-alert-main {
+							height: 100%;
+							
+							> .card-header-alert-container {
+								> .card-header-alert-content {
+									position: relative;
+									padding: $card-spacer-y $card-spacer-x;
+								}
+							}
+						}
+						
+						&.card-header-alert-dismissible {
+							cursor: pointer;
+							
+							> .card-header-alert-main {
+								> .card-header-alert-container {
+									> .card-header-alert-content {
+										padding-right: ($close-font-size + $alert-padding-x * 2);
+										
+										.close {
+											position: absolute;
+											top: 0;
+											right: 0;
+											padding: $alert-padding-y $alert-padding-x;
+											color: inherit;
+										}
+									}
+								}
+							}
+							
+							&:hover {
+								.close {
+									color: $close-color;
+									text-decoration: none;
+									opacity: .75;
+								}
+							}
+						}
+						
+						&.environment-section {
+							@extend .bg-warning;
+							@extend .text-dark;
+							
+							&.environment-section-dismissed {
+								height: 8px;
+							}
+							
+							&.production {
+								@extend .bg-danger;
+								@extend .text-white;
+							}
 						}
 					}
 				}

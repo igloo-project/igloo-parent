@@ -19,6 +19,7 @@ import org.iglooproject.basicapp.web.application.common.component.ApplicationAcc
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.applicationaccess.ApplicationAccessScssResourceReference;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
@@ -43,15 +44,18 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 			throw new RedirectToUrlException(propertyService.get(MAINTENANCE_URL));
 		}
 		
-		add(new ApplicationAccessEnvironmentPanel("environment"));
-		
-		add(new AnimatedGlobalFeedbackPanel("feedback"));
-		
 		add(new TransparentWebMarkupContainer("htmlRootElement")
 				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage())));
 		
+		add(new TransparentWebMarkupContainer("bodyContainer")
+				.add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel())));
+		
+		add(new AnimatedGlobalFeedbackPanel("feedback"));
+		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
 		add(createHeadPageTitle("headPageTitle"));
+		
+		add(new ApplicationAccessEnvironmentPanel("environment"));
 		
 		add(new CoreLabel("title", getTitleModel()));
 	}

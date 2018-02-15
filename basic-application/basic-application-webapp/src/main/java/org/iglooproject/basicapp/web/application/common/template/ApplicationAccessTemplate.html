@@ -11,7 +11,7 @@
 		<wicket:header-items/>
 	</head>
 	
-	<body class="application-access-page">
+	<body wicket:id="bodyContainer" class="application-access-page">
 		<div class="page-container">
 			<div wicket:id="feedback" data-placement="bottom"></div>
 			
@@ -21,7 +21,7 @@
 						<img src="static/application/images/logo.png" alt="Basic Application" width="114" height="55" />
 					</div>
 					<div class="card-header card-main-title" wicket:id="title" />
-					<wicket:container wicket:id="environment" />
+					<div wicket:id="environment" class="card-header card-header-alert-section card-header-alert-dismissible environment-section" />
 					<div wicket:id="content" />
 					<wicket:child/>
 					<div class="card-footer" wicket:id="footer" />
