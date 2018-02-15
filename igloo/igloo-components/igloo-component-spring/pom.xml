@@ -24,6 +24,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-spring-bootstrap-config</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-core-spring</artifactId>
 			<version>${project.version}</version>

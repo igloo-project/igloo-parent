@@ -9,7 +9,7 @@ import org.iglooproject.basicapp.core.config.spring.BasicApplicationCoreCommonCo
 import org.iglooproject.basicapp.init.BasicApplicationInitPackage;
 import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
-import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 
 @Configuration
 @Import({

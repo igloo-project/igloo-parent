@@ -17,9 +17,9 @@
 
 package org.iglooproject.test;
 
+import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.spring.config.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.test.business.company.model.Company;
 import org.iglooproject.test.business.company.service.ICompanyService;
 import org.iglooproject.test.business.label.service.ILabelService;

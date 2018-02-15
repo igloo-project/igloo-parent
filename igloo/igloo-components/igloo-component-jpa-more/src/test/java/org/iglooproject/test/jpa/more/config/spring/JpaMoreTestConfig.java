@@ -1,18 +1,18 @@
 package org.iglooproject.test.jpa.more.config.spring;
 
+import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
+import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
+import org.iglooproject.jpa.more.rendering.service.IRendererService;
+import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
+import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
+import org.iglooproject.test.jpa.more.business.JpaMoreTestBusinessPackage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
-import org.iglooproject.jpa.more.rendering.service.IRendererService;
-import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
-import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
-import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
-import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
-import org.iglooproject.test.jpa.more.business.JpaMoreTestBusinessPackage;
 
 @Configuration
 @ApplicationDescription(name = "igloo-component-jpa-more")

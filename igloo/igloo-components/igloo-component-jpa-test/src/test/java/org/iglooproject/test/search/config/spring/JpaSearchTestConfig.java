@@ -1,10 +1,10 @@
 package org.iglooproject.test.search.config.spring;
 
+import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.jpa.hibernate.analyzers.LuceneEmbeddedAnalyzerRegistry;
 import org.iglooproject.jpa.hibernate.analyzers.LuceneEmbeddedFromElasticsearchAnalyzerRegistry;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
-import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
-import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.test.config.spring.JpaTestApplicationPropertyConfig;
 import org.iglooproject.test.search.JpaTestSearchPackage;

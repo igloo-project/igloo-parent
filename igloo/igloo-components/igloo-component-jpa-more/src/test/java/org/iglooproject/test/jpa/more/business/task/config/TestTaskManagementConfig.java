@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 import org.iglooproject.jpa.more.business.task.model.IQueueId;
 import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
-import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.test.jpa.more.business.task.model.TestQueueId;
 
 @Configuration

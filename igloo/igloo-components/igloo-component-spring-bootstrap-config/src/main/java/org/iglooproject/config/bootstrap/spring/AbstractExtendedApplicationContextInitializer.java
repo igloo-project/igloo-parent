@@ -1,4 +1,4 @@
-package org.iglooproject.spring.config;
+package org.iglooproject.config.bootstrap.spring;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.PropertyConfigurator;
-import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
+import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContextInitializer;

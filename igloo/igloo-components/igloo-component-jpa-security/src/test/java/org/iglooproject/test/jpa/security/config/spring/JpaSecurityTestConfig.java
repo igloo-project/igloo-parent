@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Import;
 import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
-import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
-import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.test.jpa.security.business.JpaSecurityTestBusinessPackage;
 

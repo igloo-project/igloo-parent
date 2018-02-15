@@ -1,4 +1,4 @@
-package org.iglooproject.spring.config;
+package org.iglooproject.config.bootstrap.spring;
 
 import java.util.Collection;
 

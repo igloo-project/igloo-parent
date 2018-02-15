@@ -5,8 +5,8 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
-import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
-import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.test.business.JpaTestBusinessPackage;
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 

@@ -1,8 +1,8 @@
-package org.iglooproject.spring.config.spring.annotation;
+package org.iglooproject.config.bootstrap.spring;
 
-import static org.iglooproject.spring.config.AbstractExtendedApplicationContextInitializer.IGLOO_APPLICATION_NAME_PROPERTY;
-import static org.iglooproject.spring.config.AbstractExtendedApplicationContextInitializer.IGLOO_CONFIGURATION_LOGGER_NAME;
-import static org.iglooproject.spring.config.AbstractExtendedApplicationContextInitializer.IGLOO_PROFILES_LOCATIONS_PROPERTY;
+import static org.iglooproject.config.bootstrap.spring.AbstractExtendedApplicationContextInitializer.IGLOO_APPLICATION_NAME_PROPERTY;
+import static org.iglooproject.config.bootstrap.spring.AbstractExtendedApplicationContextInitializer.IGLOO_CONFIGURATION_LOGGER_NAME;
+import static org.iglooproject.config.bootstrap.spring.AbstractExtendedApplicationContextInitializer.IGLOO_PROFILES_LOCATIONS_PROPERTY;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -15,7 +15,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.iglooproject.spring.config.AbstractExtendedApplicationContextInitializer;
+import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
