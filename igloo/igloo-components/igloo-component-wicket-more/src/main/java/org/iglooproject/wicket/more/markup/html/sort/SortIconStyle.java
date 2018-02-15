@@ -5,34 +5,34 @@ public enum SortIconStyle implements ISortIconStyle {
 	DEFAULT {
 		@Override
 		public String getAscIconCssClasses() {
-			return "fa fa-sort-amount-asc fa-sort-amount-up";
+			return "fa fa-sort-amount-asc fa-sort-amount-down";
 		}
 
 		@Override
 		public String getDescIconCssClasses() {
-			return "fa fa-sort-amount-desc fa-sort-amount-down";
+			return "fa fa-sort-amount-desc fa-sort-amount-up";
 		}
 	},
 	ALPHABET {
 		@Override
 		public String getAscIconCssClasses() {
-			return "fa fa-sort-alpha-asc fa-sort-alpha-up";
+			return "fa fa-sort-alpha-asc fa-sort-alpha-down";
 		}
 		
 		@Override
 		public String getDescIconCssClasses() {
-			return "fa fa-sort-alpha-desc fa-sort-alpha-down";
+			return "fa fa-sort-alpha-desc fa-sort-alpha-up";
 		}
 	},
 	NUMERIC {
 		@Override
 		public String getAscIconCssClasses() {
-			return "fa fa-sort-numeric-asc fa-sort-numeric-up";
+			return "fa fa-sort-numeric-asc fa-sort-numeric-down";
 		}
 		
 		@Override
 		public String getDescIconCssClasses() {
-			return "fa fa-sort-numeric-desc fa-sort-numeric-down";
+			return "fa fa-sort-numeric-desc fa-sort-numeric-up";
 		}
 	};
 
