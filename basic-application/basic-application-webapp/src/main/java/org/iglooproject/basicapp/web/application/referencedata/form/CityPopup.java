@@ -39,7 +39,7 @@ public abstract class CityPopup extends AbstractGenericReferenceDataPopup<City> 
 		);
 		
 		TextField<String> labelEn = new TextField<String>(
-				"labelEn", BindingModel.of(model, Bindings.city().label().fr())
+				"labelEn", BindingModel.of(model, Bindings.city().label().en())
 		);
 		
 		TextField<PostalCode> postalCode = new TextField<PostalCode>(
