@@ -67,6 +67,12 @@ public class CoreLuceneAnalyzersDefinitionProvider implements LuceneAnalysisDefi
 						.param("replace", "all")
 				.tokenFilter(TrimFilterFactory.class);
 		
+		builder.normalizer(prefix + HibernateSearchNormalizer.KEYWORD);
+		
+		builder.normalizer(prefix + HibernateSearchNormalizer.KEYWORD_CLEAN)
+				.tokenFilter(ASCIIFoldingFilterFactory.class)
+				.tokenFilter(LowerCaseFilterFactory.class);
+		
 		builder.normalizer(HibernateSearchNormalizer.TEXT)
 				.tokenFilter(ASCIIFoldingFilterFactory.class)
 				.tokenFilter(LowerCaseFilterFactory.class)

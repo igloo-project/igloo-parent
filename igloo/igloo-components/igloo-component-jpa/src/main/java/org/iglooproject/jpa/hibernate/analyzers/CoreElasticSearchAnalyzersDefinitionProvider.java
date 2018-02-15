@@ -49,16 +49,21 @@ public class CoreElasticSearchAnalyzersDefinitionProvider implements Elasticsear
 		builder.analyzer(HibernateSearchAnalyzer.KEYWORD).withTokenizer(KEYWORDTOKENIZER);
 		
 		builder.analyzer(HibernateSearchAnalyzer.KEYWORD_CLEAN).withTokenizer(KEYWORDTOKENIZER)
-				.withTokenFilters(ASCIIFOLDINGFILTER,LOWERCASEFILTER);
+				.withTokenFilters(ASCIIFOLDINGFILTER, LOWERCASEFILTER);
 		
 		builder.analyzer(HibernateSearchAnalyzer.TEXT).withTokenizer(WHITESPACETOKENIZER)
-				.withTokenFilters(ASCIIFOLDINGFILTER,WORDDELIMITERFILTER,LOWERCASEFILTER);
+				.withTokenFilters(ASCIIFOLDINGFILTER, WORDDELIMITERFILTER, LOWERCASEFILTER);
 		
 		builder.analyzer(HibernateSearchAnalyzer.TEXT_STEMMING).withTokenizer(WHITESPACETOKENIZER)
 				.withTokenFilters(ASCIIFOLDINGFILTER, WORDDELIMITERFILTER, LOWERCASEFILTER, ELASTICSEARCHTOKENFILTER);
 		
 		builder.analyzer(HibernateSearchAnalyzer.TEXT_SORT).withTokenizer(KEYWORDTOKENIZER)
 				.withTokenFilters(ASCIIFOLDINGFILTER, LOWERCASEFILTER, PATTERNREPLACEFILTERPUNCTUATION, PATTERNREPLACEFILTERNUMBER, TRIMFILTER);
+		
+		builder.normalizer(HibernateSearchNormalizer.KEYWORD);
+		
+		builder.normalizer(HibernateSearchNormalizer.KEYWORD_CLEAN)
+				.withTokenFilters(ASCIIFOLDINGFILTER, LOWERCASEFILTER);
 		
 		builder.normalizer(HibernateSearchNormalizer.TEXT)
 				.withTokenFilters(ASCIIFOLDINGFILTER, LOWERCASEFILTER, PATTERNREPLACEFILTERPUNCTUATION, PATTERNREPLACEFILTERNUMBER, TRIMFILTER);
