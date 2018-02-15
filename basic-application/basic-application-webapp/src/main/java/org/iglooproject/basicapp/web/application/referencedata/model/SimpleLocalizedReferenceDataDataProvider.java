@@ -53,7 +53,9 @@ public abstract class SimpleLocalizedReferenceDataDataProvider<T extends Localiz
 		return new CompositeSortModel<LocalizedReferenceDataSort>(
 						CompositingStrategy.LAST_ONLY,
 						ImmutableMap.of(
-								LocalizedReferenceDataSort.POSITION, LocalizedReferenceDataSort.POSITION.getDefaultOrder()
+								LocalizedReferenceDataSort.POSITION, LocalizedReferenceDataSort.POSITION.getDefaultOrder(),
+								LocalizedReferenceDataSort.LABEL_FR, LocalizedReferenceDataSort.LABEL_FR.getDefaultOrder(),
+								LocalizedReferenceDataSort.LABEL_EN, LocalizedReferenceDataSort.LABEL_EN.getDefaultOrder()
 						),
 						ImmutableMap.of(
 								LocalizedReferenceDataSort.ID, LocalizedReferenceDataSort.ID.getDefaultOrder()

@@ -7,7 +7,6 @@ import org.iglooproject.jpa.more.business.search.query.AbstractHibernateSearchSe
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
-import org.iglooproject.jpa.more.util.binding.CoreJpaMoreBindings;
 
 public class QueuedTaskHolderSearchQueryImpl extends AbstractHibernateSearchSearchQuery<QueuedTaskHolder, QueuedTaskHolderSort>
 		implements IQueuedTaskHolderSearchQuery {
@@ -18,49 +17,49 @@ public class QueuedTaskHolderSearchQueryImpl extends AbstractHibernateSearchSear
 
 	@Override
 	public IQueuedTaskHolderSearchQuery name(String name) {
-		must(matchAllTermsIfGiven(name, CoreJpaMoreBindings.queuedTaskHolder().name()));
+		must(matchAllTermsIfGiven(name, QueuedTaskHolder.NAME));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery statuses(Collection<TaskStatus> statuses) {
-		must(matchOneIfGiven(CoreJpaMoreBindings.queuedTaskHolder().status(), statuses));
+		must(matchOneIfGiven(QueuedTaskHolder.STATUS, statuses));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery results(Collection<TaskResult> results) {
-		must(matchOneIfGiven(CoreJpaMoreBindings.queuedTaskHolder().result(), results));
+		must(matchOneIfGiven(QueuedTaskHolder.RESULT, results));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery types(Collection<String> types) {
-		must(matchOneIfGiven(CoreJpaMoreBindings.queuedTaskHolder().taskType(), types));
+		must(matchOneIfGiven(QueuedTaskHolder.TASK_TYPE, types));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery queueIds(Collection<String> queueIds) {
-		must(matchOneIfGiven(CoreJpaMoreBindings.queuedTaskHolder().queueId(), queueIds));
+		must(matchOneIfGiven(QueuedTaskHolder.QUEUE_ID, queueIds));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery creationDate(Date creationDate) {
-		must(matchRangeMax(CoreJpaMoreBindings.queuedTaskHolder().creationDate(), creationDate));
+		must(matchRangeMax(QueuedTaskHolder.CREATION_DATE, creationDate));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery startDate(Date startDate) {
-		must(matchRangeMax(CoreJpaMoreBindings.queuedTaskHolder().startDate(), startDate));
+		must(matchRangeMax(QueuedTaskHolder.START_DATE, startDate));
 		return this;
 	}
 
 	@Override
 	public IQueuedTaskHolderSearchQuery endDate(Date endDate) {
-		must(matchRangeMax(CoreJpaMoreBindings.queuedTaskHolder().endDate(), endDate));
+		must(matchRangeMax(QueuedTaskHolder.END_DATE, endDate));
 		return this;
 	}
 

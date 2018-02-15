@@ -294,7 +294,15 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	protected final Query matchAllTermsIfGiven(String terms, BindingRoot<?, String> binding, BindingRoot<?, String> ... otherBindings) {
 		return getFactory().matchAllTermsIfGiven(terms, binding, otherBindings);
 	}
-
+	
+	protected Query matchAllTermsIfGiven(String terms, String fieldPath, String ... otherFieldPaths) {
+		return matchAllTermsIfGiven(terms, Lists.asList(fieldPath, otherFieldPaths));
+	}
+	
+	protected Query matchAllTermsIfGiven(Analyzer analyzer, String terms, String fieldPath, String ... otherFieldPaths) {
+		return matchAllTermsIfGiven(analyzer, terms, Lists.asList(fieldPath, otherFieldPaths));
+	}
+	
 	protected Query matchAllTermsIfGiven(String terms, Iterable<String> fieldPaths) {
 		return getFactory().matchAllTermsIfGiven(terms, fieldPaths);
 	}

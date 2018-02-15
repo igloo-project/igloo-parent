@@ -7,7 +7,6 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
-import org.iglooproject.jpa.more.util.binding.CoreJpaMoreBindings;
 
 import com.google.common.collect.ImmutableList;
 
@@ -17,9 +16,9 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.luceneLongSortField(this, sortOrder, CoreJpaMoreBindings.queuedTaskHolder().endDate().getPath(), NullSortValue.GREATEST),
-					SortUtils.luceneLongSortField(this, sortOrder, CoreJpaMoreBindings.queuedTaskHolder().startDate().getPath(), NullSortValue.GREATEST),
-					SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, CoreJpaMoreBindings.queuedTaskHolder().creationDate().getPath())
+					SortUtils.luceneLongSortField(this, sortOrder, QueuedTaskHolder.END_DATE_SORT, NullSortValue.GREATEST),
+					SortUtils.luceneLongSortField(this, sortOrder, QueuedTaskHolder.START_DATE_SORT, NullSortValue.GREATEST),
+					SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, QueuedTaskHolder.CREATION_DATE_SORT)
 			);
 		}
 		

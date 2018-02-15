@@ -41,6 +41,26 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	public static final String NAME = "name";
 	public static final String NAME_SORT = "nameSort";
 
+	public static final String QUEUE_ID = "queueId";
+
+	public static final String TASK_TYPE = "taskType";
+
+	public static final String CREATION_DATE = "creationDate";
+	public static final String CREATION_DATE_SORT = "creationDateSort";
+
+	public static final String TRIGGERING_DATE = "triggeringDate";
+	public static final String TRIGGERING_DATE_SORT = "triggeringDateSort";
+
+	public static final String START_DATE = "startDate";
+	public static final String START_DATE_SORT = "startDateSort";
+
+	public static final String END_DATE = "endDate";
+	public static final String END_DATE_SORT = "endDateSort";
+
+	public static final String STATUS = "status";
+
+	public static final String RESULT = "result";
+
 	@Id
 	@GeneratedValue
 	@DocumentId
@@ -56,24 +76,40 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private String name;
 
 	@Column(nullable = true)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD), indexNullAs = Field.DEFAULT_NULL_TOKEN)
+	@Field(name = QUEUE_ID, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD), indexNullAs = Field.DEFAULT_NULL_TOKEN)
 	private String queueId;
 
 	@Column(nullable = false)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field(name = TASK_TYPE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private String taskType;
 
 	@Column(nullable = false)
-	@Field
+	@Fields({
+		@Field(name = CREATION_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
+		@Field(name = CREATION_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
+	})
+	@SortableField(forField = CREATION_DATE_SORT)
 	private Date creationDate;
 
-	@Field
+	@Fields({
+		@Field(name = TRIGGERING_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
+		@Field(name = TRIGGERING_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
+	})
+	@SortableField(forField = TRIGGERING_DATE_SORT)
 	private Date triggeringDate = null;
 
-	@Field
+	@Fields({
+		@Field(name = START_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
+		@Field(name = START_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
+	})
+	@SortableField(forField = START_DATE_SORT)
 	private Date startDate = null;
 
-	@Field
+	@Fields({
+		@Field(name = END_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
+		@Field(name = END_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
+	})
+	@SortableField(forField = END_DATE_SORT)
 	private Date endDate = null;
 
 	@Version
@@ -86,12 +122,12 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field(name = STATUS, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private TaskStatus status;
 	
 	@Column
 	@Enumerated(EnumType.STRING)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field(name = RESULT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private TaskResult result;
 
 	@Column
