@@ -131,7 +131,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 			// this allows to use ${igloo.applicationName} placeholder in file locations
 			LOGGER.info("Bootstrap configuration: setting {} to {}", IGLOO_APPLICATION_NAME_PROPERTY, applicationName);
 			applicationContext.getEnvironment().getPropertySources()
-				.addFirst(new MapPropertySource(
+				.addLast(new MapPropertySource(
 						"applicationName",
 						ImmutableMap.<String, Object>builder().put(IGLOO_APPLICATION_NAME_PROPERTY, applicationName).build()
 				)

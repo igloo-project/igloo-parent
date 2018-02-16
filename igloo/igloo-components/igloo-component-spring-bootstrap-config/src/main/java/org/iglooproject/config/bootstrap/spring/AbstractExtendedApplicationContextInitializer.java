@@ -19,6 +19,7 @@ import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.core.io.support.ResourcePropertySource;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -119,8 +120,6 @@ public abstract class AbstractExtendedApplicationContextInitializer implements A
 		
 		List<String> loadedLocations = Lists.newArrayList();
 		loadedLocations.addAll(resources.keySet());
-		// this is a reversed view
-		List<String> reverseLoadedLocations = Lists.reverse(loadedLocations);
 		
 		if (LOGGER_SYNTHETIC.isInfoEnabled()) {
 			LOGGER_SYNTHETIC.info("Bootstrap configurations (ordered): {}", Joiner.on(", ").join(loadedLocations));
@@ -129,8 +128,8 @@ public abstract class AbstractExtendedApplicationContextInitializer implements A
 			LOGGER_SYNTHETIC.warn("Bootstrap configurations **ignored**: {}", Joiner.on(",").join(ignoredLocations));
 		}
 		
-		for (String location : reverseLoadedLocations) {
-			applicationContext.getEnvironment().getPropertySources().addFirst(resources.get(location));
+		for (String location : loadedLocations) {
+			applicationContext.getEnvironment().getPropertySources().addLast(resources.get(location));
 		}
 	}
 
@@ -225,10 +224,11 @@ public abstract class AbstractExtendedApplicationContextInitializer implements A
 		return locations;
 	}
 
-	/**
-	 * Return default bootstrap configuration to use (if no environment or system property available). Implement this
-	 * method to customize used bootstrap locations.
-	 */
-	protected abstract Collection<String> getDefaultBootstrapConfigurationLocations();
+	private Collection<String> getDefaultBootstrapConfigurationLocations() {
+		return ImmutableList.<String>builder()
+				.add("classpath:configuration-bootstrap-default.properties")
+				.add("classpath:configuration-bootstrap.properties")
+				.add("classpath:configuration-bootstrap-" + System.getProperty("user.name") + ".properties").build();
+	}
 
 }

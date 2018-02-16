@@ -41,6 +41,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
@@ -51,6 +52,7 @@ import com.google.common.collect.Lists;
 	DependencyInjectionTestExecutionListener.class,
 	EntityManagerExecutionListener.class
 })
+@TestPropertySource(properties = "igloo.profile=test")
 public abstract class AbstractTestCase {
 
 	/**
