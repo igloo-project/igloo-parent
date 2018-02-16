@@ -15,7 +15,7 @@
 	
 	<context-param>
 		<param-name>contextInitializerClasses</param-name>
-		<param-value>org.iglooproject.spring.config.ExtendedApplicationContextInitializer</param-value>
+		<param-value>org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer</param-value>
 	</context-param>
 	
 	<context-param>
