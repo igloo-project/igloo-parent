@@ -25,7 +25,7 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 public class JpaMoreInfinispanPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 	
 	@Override
-	protected void register(IPropertyRegistry registry) {
+	public void register(IPropertyRegistry registry) {
 		registry.registerBoolean(INFINISPAN_ENABLED, false);
 		registry.registerString(INFINISPAN_NODE_NAME, "node");
 		registry.registerString(INFINISPAN_CLUSTER_NAME, "cluster");

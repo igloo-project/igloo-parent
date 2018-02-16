@@ -14,7 +14,7 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 public class JpaMoreTaskApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Override
-	protected void register(IPropertyRegistry registry) {
+	public void register(IPropertyRegistry registry) {
 		registry.registerInteger(STOP_TIMEOUT, 70000);
 		registry.registerEnum(START_MODE, TaskQueueStartMode.class, TaskQueueStartMode.manual);
 		registry.registerInteger(QUEUE_NUMBER_OF_THREADS_TEMPLATE, 1);

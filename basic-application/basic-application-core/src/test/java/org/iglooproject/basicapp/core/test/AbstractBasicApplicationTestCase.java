@@ -6,6 +6,7 @@ import org.iglooproject.basicapp.core.test.config.spring.BasicApplicationCoreTes
 import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.more.business.upgrade.service.IDataUpgradeRecordService;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
@@ -34,6 +35,9 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 	protected IPropertyService propertyService;
 	
 	@Autowired
+	protected IDataUpgradeRecordService dataUpgradeRecordService;
+	
+	@Autowired
 	private IMutablePropertyDao mutablePropertyDao;
 	
 	@Override
@@ -47,6 +51,7 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 		cleanEntities(userService);
 		cleanEntities(userGroupService);
 		cleanEntities(authorityService);
+		cleanEntities(dataUpgradeRecordService);
 		mutablePropertyDao.cleanInTransaction();
 	}
 

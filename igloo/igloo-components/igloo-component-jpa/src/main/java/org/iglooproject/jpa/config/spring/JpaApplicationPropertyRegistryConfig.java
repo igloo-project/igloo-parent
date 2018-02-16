@@ -19,7 +19,7 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 public class JpaApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Override
-	protected void register(IPropertyRegistry registry) {
+	public void register(IPropertyRegistry registry) {
 		registry.register(
 				LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT,
 				Ints.stringConverter(),

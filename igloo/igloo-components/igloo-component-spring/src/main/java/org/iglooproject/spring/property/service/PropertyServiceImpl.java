@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -14,14 +15,36 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-
+import org.iglooproject.commons.util.functional.converter.StringBigDecimalConverter;
+import org.iglooproject.commons.util.functional.converter.StringBooleanConverter;
+import org.iglooproject.commons.util.functional.converter.StringDateConverter;
+import org.iglooproject.commons.util.functional.converter.StringDateTimeConverter;
+import org.iglooproject.commons.util.functional.converter.StringDirectoryFileCreatingConverter;
+import org.iglooproject.commons.util.functional.converter.StringFileConverter;
+import org.iglooproject.commons.util.functional.converter.StringLocaleConverter;
+import org.iglooproject.commons.util.functional.converter.StringTimeConverter;
+import org.iglooproject.commons.util.functional.converter.StringURIConverter;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.property.SpringPropertyIds;
+import org.iglooproject.spring.property.dao.IImmutablePropertyDao;
+import org.iglooproject.spring.property.dao.IMutablePropertyDao;
+import org.iglooproject.spring.property.exception.PropertyServiceDuplicateRegistrationException;
+import org.iglooproject.spring.property.exception.PropertyServiceIncompleteRegistrationException;
+import org.iglooproject.spring.property.model.IImmutablePropertyRegistryKey;
+import org.iglooproject.spring.property.model.IMutablePropertyRegistryKey;
+import org.iglooproject.spring.property.model.IMutablePropertyValueMap;
+import org.iglooproject.spring.property.model.IPropertyRegistryKey;
+import org.iglooproject.spring.property.model.IPropertyRegistryKeyDeclaration;
+import org.iglooproject.spring.property.model.ImmutablePropertyId;
+import org.iglooproject.spring.property.model.MutablePropertyId;
+import org.iglooproject.spring.property.model.PropertyId;
+import org.iglooproject.spring.property.model.PropertyIdTemplate;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -47,40 +70,13 @@ import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 
-import org.iglooproject.commons.util.functional.converter.StringBigDecimalConverter;
-import org.iglooproject.commons.util.functional.converter.StringBooleanConverter;
-import org.iglooproject.commons.util.functional.converter.StringDateConverter;
-import org.iglooproject.commons.util.functional.converter.StringDateTimeConverter;
-import org.iglooproject.commons.util.functional.converter.StringDirectoryFileCreatingConverter;
-import org.iglooproject.commons.util.functional.converter.StringFileConverter;
-import org.iglooproject.commons.util.functional.converter.StringLocaleConverter;
-import org.iglooproject.commons.util.functional.converter.StringTimeConverter;
-import org.iglooproject.commons.util.functional.converter.StringURIConverter;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.spring.config.spring.event.PropertyRegistryInitEvent;
-import org.iglooproject.spring.property.SpringPropertyIds;
-import org.iglooproject.spring.property.dao.IImmutablePropertyDao;
-import org.iglooproject.spring.property.dao.IMutablePropertyDao;
-import org.iglooproject.spring.property.exception.PropertyServiceDuplicateRegistrationException;
-import org.iglooproject.spring.property.exception.PropertyServiceIncompleteRegistrationException;
-import org.iglooproject.spring.property.model.IImmutablePropertyRegistryKey;
-import org.iglooproject.spring.property.model.IMutablePropertyRegistryKey;
-import org.iglooproject.spring.property.model.IMutablePropertyValueMap;
-import org.iglooproject.spring.property.model.IPropertyRegistryKey;
-import org.iglooproject.spring.property.model.IPropertyRegistryKeyDeclaration;
-import org.iglooproject.spring.property.model.ImmutablePropertyId;
-import org.iglooproject.spring.property.model.MutablePropertyId;
-import org.iglooproject.spring.property.model.PropertyId;
-import org.iglooproject.spring.property.model.PropertyIdTemplate;
-
 /**
  * Use this service to retrieve registered application properties.
  * It handles both mutable and immutable properties ; immutable properties are retrieved from properties resources files
  * ({@link IImmutablePropertyDao}) and mutable properties are stored in database ({@link IMutablePropertyDao}).
  * @see {@link IPropertyRegistry} to register application properties.
  */
-public class PropertyServiceImpl implements IConfigurablePropertyService, ApplicationEventPublisherAware {
+public class PropertyServiceImpl implements IConfigurablePropertyService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PropertyServiceImpl.class);
 
@@ -94,8 +90,6 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 	@Autowired
 	private IImmutablePropertyDao immutablePropertyDao;
 
-	private ApplicationEventPublisher applicationEventPublisher;
-
 	private TransactionTemplate writeTransactionTemplate;
 
 	@Autowired
@@ -107,9 +101,11 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 		writeTransactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute);
 	}
 
-	@PostConstruct
-	public void init() throws PropertyServiceIncompleteRegistrationException {
-		applicationEventPublisher.publishEvent(new PropertyRegistryInitEvent(this));
+	@Autowired
+	public void init(Collection<IPropertyRegistryConfig> registryConfigs) throws PropertyServiceIncompleteRegistrationException {
+		for (IPropertyRegistryConfig registryConfig : registryConfigs) {
+			registryConfig.register(this);
+		}
 		checkNoIncompleteRegistration();
 	}
 	
@@ -139,11 +135,6 @@ public class PropertyServiceImpl implements IConfigurablePropertyService, Applic
 					)
 			);
 		}
-	}
-
-	@Override
-	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-		this.applicationEventPublisher = applicationEventPublisher;
 	}
 
 	@Override

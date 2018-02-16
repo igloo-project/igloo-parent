@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 public class BasicApplicationCoreApplicationPropertyConfig extends AbstractApplicationPropertyConfig {
 
 	@Override
-	protected void register(IPropertyRegistry registry) {
+	public void register(IPropertyRegistry registry) {
 		registry.registerEnum(ENVIRONMENT, Environment.class, Environment.production);
 		
 		registry.registerBoolean(SECURITY_PASSWORD_VALIDATOR_ENABLED, true);

@@ -21,7 +21,7 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 public class JpaExternalLinkCheckerApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Override
-	protected void register(IPropertyRegistry registry) {
+	public void register(IPropertyRegistry registry) {
 		registry.registerString(USER_AGENT, "Core External Link Checker");
 		registry.registerInteger(MAX_REDIRECTS, 5);
 		registry.registerInteger(TIMEOUT, 10000);

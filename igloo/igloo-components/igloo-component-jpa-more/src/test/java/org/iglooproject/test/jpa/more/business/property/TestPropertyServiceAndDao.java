@@ -26,7 +26,7 @@ public class TestPropertyServiceAndDao extends AbstractJpaMoreTestCase {
 	public static class TestPropertyServiceAndDaoConfig extends AbstractApplicationPropertyRegistryConfig {
 
 		@Override
-		protected void register(IPropertyRegistry registry) {
+		public void register(IPropertyRegistry registry) {
 			registry.registerString(PropertyIds.MUTABLE_STRING, "MyDefaultValue");
 			registry.registerString(PropertyIds.IMMUTABLE_STRING);
 			registry.registerString(PropertyIds.IMMUTABLE_STRING_TEMPLATE);
