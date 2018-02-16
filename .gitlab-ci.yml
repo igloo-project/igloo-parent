@@ -1,5 +1,5 @@
 variables:
-  MAVEN_OPTS: "-Xmx1536m -Dallure.install.directory=$PWD/.allure"
+  MAVEN_OPTS: "-Xmx1536m"
 
 stages:
   - prepare
@@ -28,6 +28,7 @@ maven-test:
   script:
     - "source gitlab-ci.build.conf"
     - "set +e"
+    - MAVEN_OPTS="$MAVEN_OPTS -Dallure.install.directory=$( pwd )/.allure"
     - "mvn -Ptest -Dallure.enabled=true -fae clean test site:site"
     - "TEST_RESULT=$?"
     - "mvn -Dallure.enabled=true site:site"
