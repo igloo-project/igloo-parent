@@ -12,6 +12,7 @@ public class ExtendedApplicationContextInitializer extends AbstractExtendedAppli
 	@Override
 	protected Collection<String> getDefaultBootstrapConfigurationLocations() {
 		return ImmutableList.<String>builder()
+				.add("classpath:configuration-bootstrap-default.properties")
 				.add("classpath:configuration-bootstrap.properties")
 				.add("classpath:configuration-bootstrap-" + System.getProperty("user.name") + ".properties").build();
 	}

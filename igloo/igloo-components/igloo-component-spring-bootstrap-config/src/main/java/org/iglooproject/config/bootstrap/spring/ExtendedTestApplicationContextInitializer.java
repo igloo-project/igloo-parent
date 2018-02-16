@@ -12,6 +12,7 @@ public class ExtendedTestApplicationContextInitializer extends AbstractExtendedA
 	@Override
 	protected Collection<String> getDefaultBootstrapConfigurationLocations() {
 		return ImmutableList.<String>builder()
+				.add("classpath:configuration-bootstrap-default.properties")
 				.add("classpath:configuration-bootstrap-test.properties")
 				.add("classpath:configuration-bootstrap-test-" + System.getProperty("user.name") + ".properties").build();
 	}

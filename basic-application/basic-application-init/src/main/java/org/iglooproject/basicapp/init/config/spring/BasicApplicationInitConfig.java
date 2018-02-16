@@ -18,7 +18,6 @@ import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocatio
 @ConfigurationLocations(
 		locations = {
 				"classpath:configuration-init.properties",
-				"classpath:configuration-init-${user}.properties"
 		},
 		order = 1 // Permet de surcharger la configuration du core
 )
