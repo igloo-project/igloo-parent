@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.core.test;
 
+import org.iglooproject.basicapp.core.business.referencedata.service.ICityService;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.test.config.spring.BasicApplicationCoreTestCommonConfig;
@@ -24,6 +25,9 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 
 	@Autowired
 	protected IUserService userService;
+
+	@Autowired
+	protected ICityService cityService;
 	
 	@Autowired
 	protected IUserGroupService userGroupService;

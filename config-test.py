@@ -48,6 +48,7 @@ export TEST_DB_USER=igloo_test
 export TEST_DB_PASSWORD=igloo_test
 export TEST_JERSEY_MOCK_HTTP_PORT={http_port}
 export TEST_INDEX_PATH={temp_dir}
+export TEST_DATA_PATH={temp_dir}
 export TEST_INFINISPAN_JGROUPS_PING_PORT={infinispan_tcp_port}
 export TEST_INFINISPAN_JGROUPS_PORT_PORT={infinispan_ping_port}
 
