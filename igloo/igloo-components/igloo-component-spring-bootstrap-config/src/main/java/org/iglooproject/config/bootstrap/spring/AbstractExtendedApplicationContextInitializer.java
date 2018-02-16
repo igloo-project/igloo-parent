@@ -33,7 +33,7 @@ import com.google.common.collect.Maps;
  */
 public abstract class AbstractExtendedApplicationContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-	public static final String IGLOO_CONFIGURATION_LOGGER_NAME = "igloo.config";
+	public static final String IGLOO_CONFIGURATION_LOGGER_NAME = "igloo@config";
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractExtendedApplicationContextInitializer.class);
 	private static final Logger LOGGER_SYNTHETIC = LoggerFactory.getLogger(IGLOO_CONFIGURATION_LOGGER_NAME);
 
@@ -140,18 +140,22 @@ public abstract class AbstractExtendedApplicationContextInitializer implements A
 			@SuppressWarnings("unchecked")
 			List<String> log4jLocations =
 					applicationContext.getEnvironment().getProperty(LOG4J_CONFIGURATIONS_PROPERTY, List.class);
+			List<String> loadedConfigurations = Lists.newArrayList();
+			List<String> ignoredConfigurations = Lists.newArrayList();
 			MutablePropertySources sources = new MutablePropertySources();
 			boolean hasSource = false;
 			List<String> propertyNames = new ArrayList<String>();
 			for (String location : log4jLocations) {
 				if (applicationContext.getResource(location).exists()) {
+					loadedConfigurations.add(location);
 					LOGGER.info(String.format("Log4j : %1$s added", location));
 					hasSource = true;
 					ResourcePropertySource source = new ResourcePropertySource(applicationContext.getResource(location));
 					sources.addFirst(source);
 					propertyNames.addAll(Arrays.asList(source.getPropertyNames()));
 				} else {
-					LOGGER.warn(String.format("Log4j : %1$s not found", location));
+					ignoredConfigurations.add(location);
+					LOGGER.info(String.format("Log4j : %1$s not found", location));
 				}
 			}
 			
@@ -173,6 +177,13 @@ public abstract class AbstractExtendedApplicationContextInitializer implements A
 			} else {
 				LOGGER.warn("Log4j : no additional files configured in %1$s", Joiner.on(",").join(log4jLocations));
 			}
+			
+			if (LOGGER_SYNTHETIC.isInfoEnabled()) {
+				LOGGER_SYNTHETIC.info("Log4j configurations (ordered): {}", Joiner.on(", ").join(loadedConfigurations));
+				LOGGER_SYNTHETIC.warn("Log4j configurations **ignored**: {}", Joiner.on(",").join(ignoredConfigurations));
+			}
+		} else {
+			LOGGER_SYNTHETIC.warn("Log4j: no {} configuration found; keeping default configuration", LOG4J_CONFIGURATIONS_PROPERTY);
 		}
 	}
 
