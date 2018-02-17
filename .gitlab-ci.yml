@@ -30,9 +30,9 @@ maven-test:
     - "set +e"
     - MAVEN_OPTS="$MAVEN_OPTS -Dallure.install.directory=$( pwd )/.allure"
     - "mvn -Ptest -Dallure.enabled=true -fae clean test site:site"
-    - "TEST_RESULT=$?"
     - "echo $TEST_RESULT"
-    - "mvn -Dallure.enabled=true site:site"
+    # compile step needed to ensure local artifacts are used
+    - "mvn -Dallure.enabled=true compile site:site"
     - "eval $(ssh-agent -s)"
     - echo "$SYNC_TEST_REPORTS_SSH_KEY" | tr -d '\r' | ssh-add - > /dev/null
     - mkdir -p ~/.ssh
