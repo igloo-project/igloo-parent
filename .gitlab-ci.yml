@@ -20,7 +20,7 @@ maven-build:
   stage: build
   environment: staging
   script:
-    - "mvn -Ptest -DskipTests clean compile"
+    - "mvn -DskipTests clean compile"
 
 maven-test:
   stage: test
@@ -29,7 +29,7 @@ maven-test:
     - "source gitlab-ci.build.conf"
     - "set +e"
     - MAVEN_OPTS="$MAVEN_OPTS -Dallure.install.directory=$( pwd )/.allure"
-    - "mvn -Ptest -Dallure.enabled=true -fae clean test site:site"
+    - "mvn -Dallure.enabled=true -fae clean test site:site"
     - "echo $TEST_RESULT"
     # compile step needed to ensure local artifacts are used
     - "mvn -Dallure.enabled=true compile site:site"
@@ -46,7 +46,7 @@ maven-deploy:
   stage: deploy
   environment: staging
   script:
-    - "mvn -Ptest deploy -DskipTests -DperformRelease -Ddistribution=igloo-release"
+    - "mvn deploy -DskipTests -DperformRelease -Ddistribution=igloo-release"
   only:
     - /^master$/
     - /^dev$/
@@ -57,6 +57,6 @@ sonar-analyze:
   environment: staging
   script:
     - "source gitlab-ci.build.conf"
-    - mvn -Ptest clean verify sonar:sonar
+    - mvn clean verify sonar:sonar
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt-si.fr"
