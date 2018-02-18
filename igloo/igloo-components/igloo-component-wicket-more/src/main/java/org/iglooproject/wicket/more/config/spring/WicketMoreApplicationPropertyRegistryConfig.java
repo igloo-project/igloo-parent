@@ -39,7 +39,7 @@ public class WicketMoreApplicationPropertyRegistryConfig extends AbstractApplica
 	private IPropertyService propertyService;
 
 	@Override
-	protected void register(IPropertyRegistry registry) {
+	public void register(IPropertyRegistry registry) {
 		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME, "http");
 		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME, "localhost");
 		registry.registerInteger(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT, 8080);

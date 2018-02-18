@@ -16,7 +16,7 @@ public class JpaTestApplicationPropertyConfig extends AbstractApplicationPropert
 	}
 
 	@Override
-	protected void register(IPropertyRegistry registry) {
+	public void register(IPropertyRegistry registry) {
 	}
 
 }

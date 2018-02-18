@@ -1,20 +1,21 @@
 package org.iglooproject.basicapp.core.test;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-
+import org.iglooproject.basicapp.core.business.referencedata.service.ICityService;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.test.config.spring.BasicApplicationCoreTestCommonConfig;
+import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.more.business.upgrade.service.IDataUpgradeRecordService;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.spring.config.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(
 		classes = BasicApplicationCoreTestCommonConfig.class,
@@ -24,6 +25,9 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 
 	@Autowired
 	protected IUserService userService;
+
+	@Autowired
+	protected ICityService cityService;
 	
 	@Autowired
 	protected IUserGroupService userGroupService;
@@ -33,6 +37,9 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 	
 	@Autowired
 	protected IPropertyService propertyService;
+	
+	@Autowired
+	protected IDataUpgradeRecordService dataUpgradeRecordService;
 	
 	@Autowired
 	private IMutablePropertyDao mutablePropertyDao;
@@ -48,6 +55,7 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 		cleanEntities(userService);
 		cleanEntities(userGroupService);
 		cleanEntities(authorityService);
+		cleanEntities(dataUpgradeRecordService);
 		mutablePropertyDao.cleanInTransaction();
 	}
 

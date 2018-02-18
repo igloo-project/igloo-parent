@@ -13,7 +13,7 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 public class BasicApplicationWebappApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Override
-	protected void register(IPropertyRegistry registry) {
+	public void register(IPropertyRegistry registry) {
 		registry.registerInteger(PORTFOLIO_ITEMS_PER_PAGE, 20);
 		registry.registerInteger(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION, 20);
 		

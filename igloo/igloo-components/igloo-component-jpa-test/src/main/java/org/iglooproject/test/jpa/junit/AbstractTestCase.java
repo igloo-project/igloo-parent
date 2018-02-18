@@ -27,6 +27,11 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hibernate.metamodel.internal.EmbeddableTypeImpl;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,22 +41,18 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.google.common.collect.Lists;
 
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.util.EntityManagerUtils;
-
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	EntityManagerExecutionListener.class
 })
+@TestPropertySource(properties = "igloo.profile=test")
 public abstract class AbstractTestCase {
 
 	/**

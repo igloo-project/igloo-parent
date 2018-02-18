@@ -21,24 +21,6 @@
 		<module>basic-application-webapp</module>
 	</modules>
 	
-	<properties>
-	</properties>
-	
-	<profiles>
-		<profile>
-			<id>recette</id>
-			<properties>
-				<remote-deployment-url>scpexe://root@example-host/root/livraison/${maven.build.timestamp}</remote-deployment-url>
-			</properties>
-		</profile>
-		<profile>
-			<id>production</id>
-			<properties>
-				<remote-deployment-url>scpexe://openwide@example-host/data/home/openwide/livraison/${maven.build.timestamp}</remote-deployment-url>
-			</properties>
-		</profile>
-	</profiles>
-	
 	<build>
 		<pluginManagement>
 			<plugins>

@@ -2,6 +2,8 @@ package org.iglooproject.jpa.config.spring;
 
 import static org.iglooproject.jpa.property.JpaPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
 
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -9,30 +11,34 @@ import javax.sql.DataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.BooleanQuery;
 import org.flywaydb.core.Flyway;
-import org.springframework.aop.Advisor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.PropertiesFactoryBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.core.io.Resource;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.transaction.PlatformTransactionManager;
-
 import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
 import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
+import org.iglooproject.jpa.more.config.util.FlywaySpring;
+import org.iglooproject.jpa.property.FlywayPropertyIds;
 import org.iglooproject.jpa.search.CoreJpaSearchPackage;
 import org.iglooproject.jpa.util.CoreJpaUtilPackage;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.springframework.aop.Advisor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.Resource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
+
+import com.google.common.collect.Maps;
 
 /**
  * L'implémentation de cette classe doit être annotée {@link EnableAspectJAutoProxy}
@@ -46,13 +52,13 @@ import org.iglooproject.spring.property.service.IPropertyService;
 	},
 	excludeFilters = @Filter(Configuration.class)
 )
+@Import(FlywayPropertyRegistryConfig.class)
 public abstract class AbstractJpaConfig {
 
 	@Autowired
 	protected DefaultJpaConfig defaultJpaConfig;
 	
 	@Autowired
-	@Lazy
 	private IPropertyService propertyService;
 	
 	@PostConstruct
@@ -62,8 +68,10 @@ public abstract class AbstractJpaConfig {
 
 	@Bean(initMethod = "migrate", value = { "flyway", "databaseInitialization" })
 	@Profile("flyway")
-	public Flyway flyway(DataSource dataSource, FlywayConfiguration flywayConfiguration) {
-		Flyway flyway = new Flyway();
+	public Flyway flyway(DataSource dataSource, FlywayConfiguration flywayConfiguration,
+			IPropertyService propertyService, ConfigurableApplicationContext applicationContext) {
+		FlywaySpring flyway = new FlywaySpring();
+		flyway.setApplicationContext(applicationContext);
 		flyway.setDataSource(dataSource);
 		flyway.setSchemas(flywayConfiguration.getSchemas()); 
 		flyway.setTable(flywayConfiguration.getTable());
@@ -72,6 +80,14 @@ public abstract class AbstractJpaConfig {
 		// difficult to handle this case for the moment; we ignore mismatching checksums
 		// TODO allow developers to handle mismatches during their tests.
 		flyway.setValidateOnMigrate(false);
+		
+		Map<String, String> placeholders = Maps.newHashMap();
+		for (String property : propertyService.get(FlywayPropertyIds.FLYWAY_PLACEHOLDERS_PROPERTIES)) {
+			placeholders.put(property, propertyService.get(FlywayPropertyIds.property(property)));
+		}
+		flyway.setPlaceholderReplacement(true);
+		flyway.setPlaceholders(placeholders);
+		
 		return flyway;
 	}
 

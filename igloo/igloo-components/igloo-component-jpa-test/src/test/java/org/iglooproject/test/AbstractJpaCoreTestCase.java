@@ -17,9 +17,7 @@
 
 package org.iglooproject.test;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-
+import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.business.company.model.Company;
@@ -32,8 +30,10 @@ import org.iglooproject.test.business.project.model.Project;
 import org.iglooproject.test.business.project.service.IProjectService;
 import org.iglooproject.test.config.spring.JpaTestConfig;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 
-@ContextConfiguration(classes = JpaTestConfig.class)
+@ContextConfiguration(classes = JpaTestConfig.class, initializers = ExtendedTestApplicationContextInitializer.class)
 public abstract class AbstractJpaCoreTestCase extends AbstractTestCase {
 	
 	@Autowired

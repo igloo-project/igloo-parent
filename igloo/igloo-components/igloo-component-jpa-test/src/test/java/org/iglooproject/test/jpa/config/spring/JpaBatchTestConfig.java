@@ -1,6 +1,6 @@
 package org.iglooproject.test.jpa.config.spring;
 
-import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.springframework.context.annotation.Configuration;
 
 /**

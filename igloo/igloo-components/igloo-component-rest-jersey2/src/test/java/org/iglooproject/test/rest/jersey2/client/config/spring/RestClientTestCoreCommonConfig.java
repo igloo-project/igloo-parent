@@ -1,8 +1,8 @@
 package org.iglooproject.test.rest.jersey2.client.config.spring;
 
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
-import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
-import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.test.rest.jersey2.business.RestTestBusinessPackage;
 import org.iglooproject.test.rest.jersey2.client.RestClientPackage;

@@ -19,7 +19,7 @@ import com.google.common.base.Function;
 public class JpaMoreApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Override
-	protected void register(IPropertyRegistry registry) {
+	public void register(IPropertyRegistry registry) {
 		registry.registerBoolean(DATABASE_INITIALIZED, false);
 		registry.registerBoolean(MAINTENANCE, false);
 		

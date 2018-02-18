@@ -16,7 +16,7 @@ public class RestServerTestApplicationPropertyConfig extends AbstractApplication
 	}
 
 	@Override
-	protected void register(IPropertyRegistry registry) {
+	public void register(IPropertyRegistry registry) {
 	}
 
 }

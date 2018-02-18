@@ -1,5 +1,8 @@
 package org.iglooproject.spring.config.spring.annotation;
 
+import org.iglooproject.config.bootstrap.spring.ApplicationConfigurerBeanFactoryPostProcessor;
+import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,7 +19,7 @@ public class CoreConfigurationLocationsAnnotationConfig {
 
 	@Bean
 	public static ApplicationConfigurerBeanFactoryPostProcessor applicationConfigurer() {
-		return new ApplicationConfigurerBeanFactoryPostProcessor();
+		return new ApplicationConfigurerBeanFactoryPostProcessor(false);
 	}
 
 }

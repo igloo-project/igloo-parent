@@ -1,4 +1,4 @@
-package org.iglooproject.basicapp.core.config.migration.common;
+package org.iglooproject.basicapp.core.config.migration.init;
 
 import org.iglooproject.basicapp.core.business.upgrade.model.AbstractDataUpgradeMigration;
 import org.iglooproject.basicapp.core.business.upgrade.model.DataUpgrade_InitDataFromExcel;

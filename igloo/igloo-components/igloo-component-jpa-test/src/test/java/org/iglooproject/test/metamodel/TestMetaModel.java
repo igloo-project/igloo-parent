@@ -13,6 +13,7 @@ import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.jdbc.Work;
 import org.hibernate.tool.schema.extract.spi.SequenceInformation;
 import org.hibernate.tool.schema.extract.spi.TableInformation;
+import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.hibernate.dialect.PerTableSequenceStyleGenerator;
@@ -36,7 +37,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import com.google.common.collect.Lists;
 
-@ContextConfiguration(classes = JpaTestConfig.class)
+@ContextConfiguration(classes = JpaTestConfig.class, initializers = ExtendedTestApplicationContextInitializer.class)
 public class TestMetaModel extends AbstractMetaModelTestCase {
 
 	@Autowired

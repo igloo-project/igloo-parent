@@ -6,15 +6,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
-import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
-import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.test.jpa.externallinkchecker.business.rest.server.RestServerPackage;
 
 @Configuration
 @ApplicationDescription(name = "rest-test-server")
 @ConfigurationLocations(locations = {
-		"classpath:configuration-private.properties",
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		"classpath:rest-server.properties"
 })

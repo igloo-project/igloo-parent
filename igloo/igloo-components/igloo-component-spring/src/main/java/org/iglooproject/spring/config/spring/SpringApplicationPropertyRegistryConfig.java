@@ -44,7 +44,7 @@ public class SpringApplicationPropertyRegistryConfig extends AbstractApplication
 	private static final Logger LOGGER = LoggerFactory.getLogger(SpringApplicationPropertyRegistryConfig.class);
 
 	@Override
-	protected void register(IPropertyRegistry registry) {
+	public void register(IPropertyRegistry registry) {
 		registry.registerString(DB_JDBC_URL);
 		registry.registerString(DB_TYPE);
 		registry.registerString(DB_USER);

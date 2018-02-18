@@ -12,7 +12,7 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 public class JpaExternalLinkCheckerTestApplicationPropertyConfig extends AbstractApplicationPropertyConfig {
 
 	@Override
-	protected void register(IPropertyRegistry registry) {
+	public void register(IPropertyRegistry registry) {
 	}
 
 	@Override

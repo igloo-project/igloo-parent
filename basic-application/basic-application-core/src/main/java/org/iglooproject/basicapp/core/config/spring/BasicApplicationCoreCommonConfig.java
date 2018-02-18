@@ -1,15 +1,14 @@
 package org.iglooproject.basicapp.core.config.spring;
 
+import org.iglooproject.basicapp.core.BasicApplicationCorePackage;
+import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
+import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import org.iglooproject.basicapp.core.BasicApplicationCorePackage;
-import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
-import org.iglooproject.spring.config.spring.annotation.ApplicationDescription;
-import org.iglooproject.spring.config.spring.annotation.ConfigurationLocations;
 
 @Configuration
 @ApplicationDescription(name = BasicApplicationCoreCommonConfig.APPLICATION_NAME)
