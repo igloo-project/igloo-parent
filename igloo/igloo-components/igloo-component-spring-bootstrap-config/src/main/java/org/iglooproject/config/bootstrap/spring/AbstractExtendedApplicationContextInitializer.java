@@ -119,6 +119,7 @@ public abstract class AbstractExtendedApplicationContextInitializer implements A
 		}
 		
 		List<String> loadedLocations = Lists.newArrayList();
+		List<String> reversedLocations = Lists.reverse(loadedLocations);
 		loadedLocations.addAll(resources.keySet());
 		
 		if (LOGGER_SYNTHETIC.isInfoEnabled()) {
@@ -128,7 +129,7 @@ public abstract class AbstractExtendedApplicationContextInitializer implements A
 			LOGGER_SYNTHETIC.warn("Bootstrap configurations **ignored**: {}", Joiner.on(",").join(ignoredLocations));
 		}
 		
-		for (String location : loadedLocations) {
+		for (String location : reversedLocations) {
 			applicationContext.getEnvironment().getPropertySources().addLast(resources.get(location));
 		}
 	}
