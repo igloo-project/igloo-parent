@@ -38,6 +38,8 @@ maven-deploy:
     - /^master$/
     - /^dev$/
     - /^ft-.*-deploy$/
+    - /^rl-.*$/
+    - /^hf-.*$/
 
 sonar-analyze:
   stage: analyze
