@@ -9,13 +9,12 @@ import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
+import org.iglooproject.commons.util.mime.MediaType;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-
-import org.iglooproject.commons.util.mime.MediaType;
 
 public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>> {
 
@@ -23,16 +22,8 @@ public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>
 
 	private final List<MediaType> mediaTypes;
 
-	private String errorResourceKey = null;
-
 	public FileUploadMediaTypeValidator(Collection<MediaType> mediaTypes) {
 		this.mediaTypes = ImmutableList.copyOf(Args.notNull(mediaTypes, "mediaTypes"));
-	}
-	
-	@Deprecated
-	public FileUploadMediaTypeValidator(String errorResourceKey, Collection<MediaType> mediaTypes) {
-		this(mediaTypes);
-		this.errorResourceKey = errorResourceKey;
 	}
 	
 	@Override
@@ -43,9 +34,6 @@ public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>
 			
 			if (fileUploadMediaType == null || !mediaTypes.contains(fileUploadMediaType)) {
 				ValidationError error = new ValidationError();
-				if (errorResourceKey != null) {
-					error.addKey(errorResourceKey);
-				}
 				error.addKey(this);
 				error.setVariable("extensions", Joiner.on(", ").skipNulls().join(Lists.transform(mediaTypes, new Function<MediaType, String>() {
 					@Override
@@ -57,11 +45,6 @@ public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>
 				validatable.error(error);
 			}
 		}
-	}
-
-	public FileUploadMediaTypeValidator setErrorResourceKey(String errorResourceKey) {
-		this.errorResourceKey = errorResourceKey;
-		return this;
 	}
 
 }
