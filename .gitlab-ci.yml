@@ -11,7 +11,7 @@ stages:
 maven-prepare:
   stage: prepare
   script:
-    - "./config-test.py"
+    - "./ci/config-test.py"
   artifacts:
     paths:
       - gitlab-ci.build.conf
@@ -27,20 +27,7 @@ maven-test:
   environment: staging
   script:
     - "source gitlab-ci.build.conf"
-    - "set +e"
-    - MAVEN_OPTS="$MAVEN_OPTS -Dallure.install.directory=$( pwd )/.allure"
-    - "mvn -Dallure.enabled=true -fae clean test site:site"
-    - "echo $TEST_RESULT"
-    # compile step needed to ensure local artifacts are used
-    - "mvn -Dallure.enabled=true compile site:site"
-    - "eval $(ssh-agent -s)"
-    - echo "$SYNC_TEST_REPORTS_SSH_KEY" | tr -d '\r' | ssh-add - > /dev/null
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - echo "$SYNC_TEST_REPORTS_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - rsync -az --chmod=g=rX,o= target/site/ "${SYNC_TEST_REPORTS_USER}@${SYNC_TEST_REPORTS_HOST}:${SYNC_TEST_REPORTS_DOCUMENT_ROOT}"
-    - "exit $TEST_RESULT"
+    - "./ci/maven-allure.sh"
 
 maven-deploy:
   stage: deploy
