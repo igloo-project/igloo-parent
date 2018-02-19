@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.markup.html.template.js.respond;
+package org.iglooproject.wicket.bootstrap3.markup.html.template.js.respond;
 
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
