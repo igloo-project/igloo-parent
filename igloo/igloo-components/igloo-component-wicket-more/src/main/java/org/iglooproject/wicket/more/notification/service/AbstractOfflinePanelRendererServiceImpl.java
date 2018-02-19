@@ -56,7 +56,7 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 			
 			String htmlBody = ComponentRenderer.renderComponent(component).toString();
 			
-			return htmlBody;
+			return postProcessHtml(component, locale, variation, htmlBody);
 		}
 	}
 	
