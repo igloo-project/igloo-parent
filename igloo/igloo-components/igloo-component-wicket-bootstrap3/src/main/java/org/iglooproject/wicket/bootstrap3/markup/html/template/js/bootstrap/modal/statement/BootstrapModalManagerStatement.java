@@ -1,6 +1,7 @@
-package org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement;
+package org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstrap.modal.statement;
 
 import org.apache.wicket.Component;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModal;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 /**

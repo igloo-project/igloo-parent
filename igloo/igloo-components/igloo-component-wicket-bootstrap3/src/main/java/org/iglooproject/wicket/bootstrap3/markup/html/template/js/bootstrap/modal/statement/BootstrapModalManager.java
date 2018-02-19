@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement;
+package org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstrap.modal.statement;
 
 import javax.annotation.Nonnull;
 
