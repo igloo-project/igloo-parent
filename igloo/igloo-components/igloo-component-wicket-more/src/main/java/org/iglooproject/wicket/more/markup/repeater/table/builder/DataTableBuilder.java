@@ -21,7 +21,7 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.BindingOneParameterLi
 import org.iglooproject.wicket.more.link.descriptor.mapper.FunctionOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.basic.TargetBlankBehavior;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.ComponentFactories;
@@ -277,18 +277,6 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
-	public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-			final ICoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
-		return addColumn(new CoreBootstrapLabelColumn<T, S, C>(headerModel, binding, renderer));
-	}
-	
-	@Override
-	public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-			Function<? super T, C> function, BootstrapRenderer<? super C> renderer) {
-		return addColumn(new CoreBootstrapLabelColumn<T, S, C>(headerModel, function, renderer));
-	}
-	
-	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
 			final ICoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
 		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<T, S, C>(headerModel, binding, renderer);
@@ -302,6 +290,26 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<T, S, C>(headerModel, function, renderer);
 		columns.put(column, null);
 		return new AddedBootstrapBadgeColumnState<C>(column);
+	}
+	
+	/**
+	 * @deprecated Bootstrap Labels no longer exist in Bootstrap 4 and are replaced by Bootstrap Badge instead.
+	 */
+	@Deprecated
+	@Override
+	public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
+			final ICoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
+		return addColumn(new CoreBootstrapLabelColumn<T, S, C>(headerModel, binding, renderer));
+	}
+	
+	/**
+	 * @deprecated Bootstrap Labels no longer exist in Bootstrap 4 and are replaced by Bootstrap Badge instead.
+	 */
+	@Deprecated
+	@Override
+	public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
+			Function<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+		return addColumn(new CoreBootstrapLabelColumn<T, S, C>(headerModel, function, renderer));
 	}
 	
 	@Override
@@ -476,12 +484,16 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 			return DataTableBuilder.this.addLabelColumn(headerModel, binding, datePattern);
 		}
 
+		/**
+		 * @deprecated Bootstrap Labels no longer exist in Bootstrap 4. Use Bootstrap 4 Badges instead.
+		 */
+		@Deprecated
 		@Override
 		public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel, ICoreBinding<? super T, C> binding,
 				BootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapLabelColumn(headerModel, binding, renderer);
 		}
-		
+
 		@Override
 		public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
 				Function<? super T, C> function, BootstrapRenderer<? super C> renderer) {
@@ -749,6 +761,54 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public IAddedBootstrapBadgeColumnState<T, S, C> getNextState() {
+			return this;
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> hideIcon() {
+			return showIcon(Condition.alwaysFalse());
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> showIcon() {
+			return showIcon(Condition.alwaysTrue());
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> showIcon(Condition showIcon) {
+			getColumn().showIcon(showIcon);
+			return this;
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> hideLabel() {
+			return showLabel(Condition.alwaysFalse());
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> showLabel() {
+			return showLabel(Condition.alwaysTrue());
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> showLabel(Condition showLabel) {
+			getColumn().showLabel(showLabel);
+			return this;
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> hideTooltip() {
+			return showTooltip(Condition.alwaysFalse());
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> showTooltip() {
+			return showTooltip(Condition.alwaysTrue());
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> showTooltip(Condition showTooltip) {
+			getColumn().showTooltip(showTooltip);
 			return this;
 		}
 		

@@ -3,15 +3,15 @@ package org.iglooproject.wicket.bootstrap4.console.maintenance.queuemanager.rend
 import java.util.Locale;
 
 import org.iglooproject.jpa.more.infinispan.model.TaskQueueStatus;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.BootstrapColor;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
 
 public class QueueTaskRenderer {
 
 	private static final IQueueIdStatusRenderer STATUS = new IQueueIdStatusRenderer();
 
-	public static IQueueIdStatusRenderer status() {
+	public static final IQueueIdStatusRenderer status() {
 		return STATUS;
 	}
 

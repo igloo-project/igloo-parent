@@ -87,6 +87,10 @@ table {
 						width: 160px;
 					}
 				}
+				&.narrow {
+					width: 1px;
+					text-align: center;
+				}
 				&.actions {
 					text-align: center;
 					padding: calc(#{$table-cell-padding} - 2px);

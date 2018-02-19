@@ -21,22 +21,27 @@ import java.util.Locale;
 
 import org.iglooproject.jpa.more.business.localization.model.AbstractLocalizedText;
 
-public class LocalizedTextRenderer extends Renderer<AbstractLocalizedText> {
+public abstract class LocalizedTextRenderer extends Renderer<AbstractLocalizedText> {
 	
 	private static final long serialVersionUID = -6397339082088737503L;
 	
-	private static final LocalizedTextRenderer INSTANCE = new LocalizedTextRenderer();
-	public static LocalizedTextRenderer get() {
+	private static final Renderer<AbstractLocalizedText> INSTANCE = new LocalizedTextRenderer() {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public String render(AbstractLocalizedText value, Locale locale) {
+			if (value == null) {
+				return null;
+			} else {
+				return value.getOrDefault(locale);
+			}
+		}
+	}.nullsAsNull();
+
+	public static Renderer<AbstractLocalizedText> get() {
 		return INSTANCE;
 	}
 
-	@Override
-	public String render(AbstractLocalizedText value, Locale locale) {
-		if (value == null) {
-			return null;
-		} else {
-			return value.getOrDefault(locale);
-		}
+	private LocalizedTextRenderer() {
 	}
 
 }

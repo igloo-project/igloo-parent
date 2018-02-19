@@ -809,6 +809,10 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		}
 	}
 	
+	public static Condition hasText(IModel<String> model) {
+		return predicate(model, Predicates2.hasText());
+	}
+	
 	public static Condition modelNotNull(IModel<?> model) {
 		return predicate(model, Predicates.notNull());
 	}

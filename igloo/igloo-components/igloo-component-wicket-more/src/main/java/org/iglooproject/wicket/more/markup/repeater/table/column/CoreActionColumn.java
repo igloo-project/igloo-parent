@@ -5,11 +5,10 @@ import java.util.List;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.collect.Lists;
-
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
+
+import com.google.common.collect.Lists;
 
 public class CoreActionColumn<T, S extends ISort<?>> extends AbstractCoreColumn<T, S> {
 

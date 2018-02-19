@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.markup.html.bootstrap.label.model;
+package org.iglooproject.wicket.more.markup.html.bootstrap.common.model;
 
 
 public interface IBootstrapColor {

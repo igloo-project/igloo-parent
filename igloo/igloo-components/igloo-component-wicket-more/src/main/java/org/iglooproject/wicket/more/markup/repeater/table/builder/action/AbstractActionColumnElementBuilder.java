@@ -11,23 +11,22 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 import org.iglooproject.commons.util.functional.Predicates2;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.behavior.BootstrapColorBehavior;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.IBootstrapRendererModel;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.behavior.BootstrapColorBehavior;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.IBootstrapRendererModel;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreActionColumnElementPanel;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.model.Models;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 
 public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLink, F extends AbstractActionColumnElementBuilder<T, L, F>>

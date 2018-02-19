@@ -1,7 +1,6 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.state;
 
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;

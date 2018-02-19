@@ -3,9 +3,9 @@ package org.iglooproject.wicket.bootstrap3.console.maintenance.queuemanager.rend
 import java.util.Locale;
 
 import org.iglooproject.jpa.more.infinispan.model.TaskQueueStatus;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.BootstrapColor;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
 
 public class QueueTaskRenderer {
 

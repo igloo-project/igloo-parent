@@ -9,9 +9,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.commons.util.functional.Joiners;
 import org.iglooproject.infinispan.model.INode;
 import org.iglooproject.infinispan.service.IInfinispanClusterService;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.BootstrapColor;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
 import org.iglooproject.wicket.more.rendering.Renderer;
 
 public class INodeRenderer {

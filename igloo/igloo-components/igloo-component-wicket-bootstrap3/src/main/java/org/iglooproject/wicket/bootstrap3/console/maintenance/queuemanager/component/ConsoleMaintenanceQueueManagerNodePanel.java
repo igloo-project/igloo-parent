@@ -26,10 +26,10 @@ import org.iglooproject.jpa.more.infinispan.service.IInfinispanQueueTaskManagerS
 import org.iglooproject.wicket.bootstrap3.console.maintenance.infinispan.renderer.INodeRenderer;
 import org.iglooproject.wicket.bootstrap3.console.maintenance.queuemanager.renderer.QueueManagerRenderer;
 import org.iglooproject.wicket.bootstrap3.console.maintenance.queuemanager.renderer.QueueTaskRenderer;
+import org.iglooproject.wicket.bootstrap3.markup.html.bootstrap.component.BootstrapBadge;
+import org.iglooproject.wicket.bootstrap3.markup.html.bootstrap.component.BootstrapLabel;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.component.BootstrapBadge;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.component.BootstrapLabel;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractComponentFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.repeater.collection.CollectionView;

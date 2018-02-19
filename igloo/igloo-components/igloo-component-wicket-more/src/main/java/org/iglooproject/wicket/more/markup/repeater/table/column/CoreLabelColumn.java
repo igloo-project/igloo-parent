@@ -9,9 +9,6 @@ import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulato
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.collect.Lists;
-
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
@@ -20,6 +17,8 @@ import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableL
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.rendering.Renderer;
+
+import com.google.common.collect.Lists;
 
 public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCoreColumn<T, S> {
 
@@ -79,7 +78,7 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 					public MarkupContainer getSideLink(String wicketId, IModel<T> rowModel) {
 						if (sideLinkGeneratorMapper != null) {
 							return decorate(sideLinkGeneratorMapper.map(rowModel).link(wicketId))
-									.add(new WebMarkupContainer("sideLinkIcon").add(new ClassAttributeAppender("fa fa-share-square-o")));
+									.add(new WebMarkupContainer("sideLinkIcon").add(new ClassAttributeAppender("fa fa-share-square fa-share-square-o")));
 						}
 						return new InvisiblePanel(wicketId);
 					}

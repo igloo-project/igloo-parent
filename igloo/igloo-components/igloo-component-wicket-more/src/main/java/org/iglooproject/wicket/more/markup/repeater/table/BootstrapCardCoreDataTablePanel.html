@@ -3,7 +3,7 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
 		<wicket:enclosure child="headingAddInContainer">
-			<div class="card-body">
+			<div class="card-header">
 				<div wicket:id="headingAddInContainer" class="add-in-container add-in-container-top">
 					<wicket:enclosure child="mainAddInWrapper">
 						<div class="add-in-section add-in-section-main">
@@ -41,7 +41,7 @@
 		</wicket:enclosure>
 		
 		<div wicket:id="dataTableContainer" class="table-responsive">
-			<table wicket:id="dataTable" class="table table-hover table-bordered" />
+			<table wicket:id="dataTable" class="table table-hover table-striped table-bordered" />
 		</div>
 		
 		<wicket:enclosure child="bodyBottomAddInContainer">
@@ -53,7 +53,7 @@
 		</wicket:enclosure>
 		
 		<wicket:enclosure child="footerAddInContainer">
-			<div class="card-body">
+			<div class="card-footer">
 				<div wicket:id="footerAddInContainer" class="add-in-container add-in-container-bottom">
 					<wicket:enclosure child="leftAddInWrapper">
 						<div class="add-in-section add-in-section-left">

@@ -10,6 +10,11 @@
 	margin-right: auto;
 }
 
+.application-access-page .page-container .container .card {
+	border: 0;
+	box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+}
+
 .application-access-page .page-container .container .card .card-img-top, .application-access-page .page-container .environment-section > .environment-container .card .card-img-top, .application-access-page .page-container .page-section > .page-container .card .card-img-top, .application-access-page .page-container .footer-section > .footer-container .card .card-img-top {
 	padding: 0.75rem 1.25rem;
 }

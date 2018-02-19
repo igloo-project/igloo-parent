@@ -30,6 +30,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.basicapp.core.security.model.BasicApplicationAuthorityConstants;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
@@ -48,6 +49,7 @@ import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.Consol
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
@@ -256,18 +258,24 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 
 	protected List<NavigationMenuItem> getMainNav() {
 		return ImmutableList.of(
-				BasicApplicationApplication.get().getHomePageLinkDescriptor().navigationMenuItem(new ResourceModel("navigation.home"))
+				BasicApplicationApplication.get().getHomePageLinkDescriptor()
+						.navigationMenuItem(new ResourceModel("navigation.home"))
 						.setCssClassesModel(Model.of("home")),
-				ReferenceDataPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.referenceData"))
+				ReferenceDataPage.linkDescriptor()
+						.navigationMenuItem(new ResourceModel("navigation.referenceData"))
 						.setCssClassesModel(Model.of("reference-data")),
-				AdministrationUserTypeDescriptor.BASIC_USER.list().navigationMenuItem(new ResourceModel("navigation.administration"))
+				AdministrationUserTypeDescriptor.BASIC_USER.list()
+						.navigationMenuItem(new ResourceModel("navigation.administration"))
 						.setCssClassesModel(Model.of("administration"))
 						.setSubMenuItems(ImmutableList.of(
 								AdministrationUserTypeDescriptor.BASIC_USER.list().navigationMenuItem(new ResourceModel("navigation.administration.user.basic")),
 								AdministrationUserTypeDescriptor.TECHNICAL_USER.list().navigationMenuItem(new ResourceModel("navigation.administration.user.technical")),
 								AdministrationUserGroupListPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
 						)),
-				ConsoleMaintenanceSearchPage.linkDescriptor().navigationMenuItem(new ResourceModel("navigation.console"))
+				LinkDescriptorBuilder.start()
+						.validator(Condition.role(BasicApplicationAuthorityConstants.ROLE_ADMIN))
+						.page(ConsoleMaintenanceSearchPage.class)
+						.navigationMenuItem(new ResourceModel("navigation.console"))
 						.setCssClassesModel(Model.of("console"))
 		);
 	}

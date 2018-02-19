@@ -1,22 +1,30 @@
 package org.iglooproject.wicket.more.markup.repeater.table.column;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Function;
-
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.component.BootstrapLabel;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import org.iglooproject.wicket.more.application.IWicketBootstrapComponentsModule;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
 
+import com.google.common.base.Function;
+
+/**
+ * @deprecated Bootstrap Labels no longer exist in Bootstrap 4 and are replaced by Bootstrap Badge instead.
+ */
+@Deprecated
 public class CoreBootstrapLabelColumn<T, S extends ISort<?>, C> extends AbstractCoreColumn<T, S> {
 
 	private static final long serialVersionUID = -5344972073351010752L;
+
+	@SpringBean
+	private IWicketBootstrapComponentsModule bootstrapComponentsModule;
 
 	private final IDetachableFactory<IModel<T>, ? extends IModel<C>> modelFactory;
 
@@ -25,6 +33,8 @@ public class CoreBootstrapLabelColumn<T, S extends ISort<?>, C> extends Abstract
 	public CoreBootstrapLabelColumn(IModel<?> headerLabelModel, ICoreBinding<? super T, C> binding,
 			final BootstrapRenderer<? super C> renderer) {
 		super(headerLabelModel);
+		Injector.get().inject(this);
+		
 		this.modelFactory = BindingModel.factory(binding);
 		this.renderer = renderer;
 	}
@@ -38,7 +48,7 @@ public class CoreBootstrapLabelColumn<T, S extends ISort<?>, C> extends Abstract
 
 	@Override
 	public void populateItem(Item<ICellPopulator<T>> cellItem, String componentId, IModel<T> rowModel) {
-		cellItem.add(new BootstrapLabel<>(componentId, modelFactory.create(rowModel), renderer));
+		cellItem.add(bootstrapComponentsModule.labelSupplier(componentId, modelFactory.create(rowModel), renderer).get().asComponent());
 	}
 
 }

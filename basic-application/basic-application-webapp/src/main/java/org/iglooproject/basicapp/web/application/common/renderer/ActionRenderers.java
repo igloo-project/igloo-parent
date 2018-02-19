@@ -1,8 +1,8 @@
 package org.iglooproject.basicapp.web.application.common.renderer;
 
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.model.BootstrapColor;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.model.IBootstrapColor;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.BootstrapColor;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.IBootstrapColor;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 
 public final class ActionRenderers {
 

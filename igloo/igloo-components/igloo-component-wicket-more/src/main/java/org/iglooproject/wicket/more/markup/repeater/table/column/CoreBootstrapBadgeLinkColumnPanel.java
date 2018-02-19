@@ -1,12 +1,11 @@
 package org.iglooproject.wicket.more.markup.repeater.table.column;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.component.BootstrapBadge;
 
 public abstract class CoreBootstrapBadgeLinkColumnPanel<T, S extends ISort<?>, C> extends GenericPanel<T> {
 
@@ -23,7 +22,7 @@ public abstract class CoreBootstrapBadgeLinkColumnPanel<T, S extends ISort<?>, C
 		);
 	}
 
-	public abstract BootstrapBadge<C> getBootstrapBadge(String wicketId, IModel<T> rowModel);
+	public abstract Component getBootstrapBadge(String wicketId, IModel<T> rowModel);
 
 	public abstract MarkupContainer getLink(String wicketId, IModel<T> rowModel);
 	

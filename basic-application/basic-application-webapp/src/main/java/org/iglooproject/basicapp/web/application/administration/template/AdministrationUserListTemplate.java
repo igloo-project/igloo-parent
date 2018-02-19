@@ -6,8 +6,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.wicket.Page;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -20,6 +22,7 @@ import org.iglooproject.basicapp.web.application.administration.export.UserExcel
 import org.iglooproject.basicapp.web.application.administration.form.AbstractUserPopup;
 import org.iglooproject.basicapp.web.application.administration.model.AbstractUserDataProvider;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
+import org.iglooproject.basicapp.web.application.common.renderer.UserActiveRenderer;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.commons.util.functional.Predicates2;
@@ -38,7 +41,6 @@ import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 import org.iglooproject.wicket.more.model.BindingModel;
-import org.iglooproject.wicket.more.rendering.BooleanRenderer;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public abstract class AdministrationUserListTemplate<U extends User> extends AdministrationTemplate {
@@ -102,10 +104,22 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 		PageModel<Page> pageModel = new PageModel<Page>(this);
 		
 		return DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
-				.addLabelColumn(new ResourceModel("business.user.username"), Bindings.user().username())
+				.addBootstrapBadgeColumn(Model.of(), Bindings.user(), UserActiveRenderer.get())
+						.hideLabel()
+						.withClass("narrow")
+				.addColumn(new AbstractCoreColumn<U, UserSort>(new ResourceModel("business.user.username")) {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public void populateItem(Item<ICellPopulator<U>> cellItem, String componentId, IModel<U> rowModel) {
+						cellItem.add(
+								new UsernameFragment(componentId, rowModel, pageModel)
+						);
+					}
+				})
 						.withClass("text text-md")
-						.withLink(AdministrationUserDetailTemplate.<U>mapper().setParameter2(pageModel))
 				.addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
+						.withSideLink(AdministrationUserDetailTemplate.<U>mapper()
+							.setParameter2(pageModel))
 						.withSort(UserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 						.withClass("text text-md")
 				.addLabelColumn(new ResourceModel("business.user.firstName"), Bindings.user().firstName())
@@ -131,8 +145,6 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 				})
 						.withClass("text text-md")
 						.withClass(CssClassConstants.CELL_HIDDEN_MD_AND_LESS)
-				.addBootstrapBadgeColumn(new ResourceModel("business.user.active"), Bindings.user().active(), BooleanRenderer.get())
-						.withClass("icon")
 				.addActionColumn()
 						.addLink(ActionRenderers.view(), AdministrationUserDetailTemplate.<U>mapper().setParameter2(pageModel))
 						.withClassOnElements(CssClassConstants.BTN_XS)
@@ -144,6 +156,28 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 						.ajaxPagers()
 						.count("administration.user.list.count")
 				.build(wicketId, itemsPerPage);
+	}
+
+	private class UsernameFragment extends Fragment {
+		
+		private static final long serialVersionUID = 1L;
+		
+		public UsernameFragment(String id, IModel<U> model, IModel<Page> pageModel) {
+			super(id, "username", AdministrationUserListTemplate.this, model);
+			
+			add(
+//					new BootstrapBadge<>("active", model, UserActiveRenderer.get())
+//							.hideLabel(),
+					AdministrationUserDetailTemplate.<U>mapper()
+							.setParameter2(pageModel)
+							.map(model)
+							.link("link")
+							.add(
+									new CoreLabel("value", BindingModel.of(model, Bindings.user().username()))
+											.showPlaceholder()
+							)
+			);
+		}
 	}
 
 	@SuppressWarnings("rawtypes")

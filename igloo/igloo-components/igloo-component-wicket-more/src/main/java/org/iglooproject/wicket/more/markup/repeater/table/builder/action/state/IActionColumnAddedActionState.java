@@ -1,10 +1,9 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action.state;
 
+import org.iglooproject.wicket.more.condition.Condition;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Predicate;
-
-import org.iglooproject.wicket.more.condition.Condition;
 
 public interface IActionColumnAddedActionState<T, I> extends IActionColumnAddedElementState<T, I> {
 

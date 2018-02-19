@@ -1,3 +1,11 @@
+.card-header {
+	.card-header-title {
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
 .card-action {
 	@extend .mt-3;
 	

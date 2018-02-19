@@ -4,17 +4,27 @@ import java.util.Locale;
 
 import org.apache.wicket.model.Model;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer.BootstrapRendererInformation;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
 
 public class BooleanRenderer extends BootstrapRenderer<Boolean> {
 
 	private static final long serialVersionUID = -6934415690685574154L;
 	
-	private static final BooleanRenderer INSTANCE = BooleanRenderer.withPrefix("common.boolean");
+	private static final BooleanRenderer TRUE_FALSE = BooleanRenderer.withPrefix("common.boolean");
+	
+	private static final BooleanRenderer YES_NO = BooleanRenderer.withPrefix("common.boolean.yesNo");
 	
 	public static BooleanRenderer get() {
-		return INSTANCE;
+		return YES_NO;
+	}
+	
+	public static BooleanRenderer yesNo() {
+		return YES_NO;
+	}
+	
+	public static BooleanRenderer trueFalse() {
+		return TRUE_FALSE;
 	}
 	
 	public static BooleanRenderer withPrefix(String prefix) {
@@ -51,13 +61,13 @@ public class BooleanRenderer extends BootstrapRenderer<Boolean> {
 		if (value) {
 			return BootstrapRendererInformation.builder()
 					.label(renderLabel(value, locale))
-					.icon("fa fa-check")
+					.icon("fa fa-check fa-fw")
 					// No color
 					.build();
 		} else {
 			return BootstrapRendererInformation.builder()
 					.label(renderLabel(value, locale))
-					.icon("fa fa-times")
+					.icon("fa fa-times fa-fw")
 					// No color
 					.build();
 		}

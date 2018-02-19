@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.markup.html.bootstrap.label.renderer;
+package org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -6,8 +6,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import org.apache.wicket.model.IModel;
-
-import org.iglooproject.wicket.more.markup.html.bootstrap.label.model.IBootstrapColor;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.IBootstrapColor;
 import org.iglooproject.wicket.more.model.LocaleAwareReadOnlyModel;
 import org.iglooproject.wicket.more.rendering.Renderer;
 import org.iglooproject.wicket.more.util.model.Detachables;

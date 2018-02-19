@@ -2,7 +2,6 @@ package org.iglooproject.wicket.more.markup.repeater.table.column;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;

@@ -1,11 +1,10 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action.state;
 
 import org.apache.wicket.behavior.Behavior;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Predicate;
-
-import org.iglooproject.wicket.more.condition.Condition;
 
 public interface IActionColumnAddedElementState<T, I> extends IActionColumnNoParameterBuildState<T, I>, IActionColumnBuildState<T, I> {
 

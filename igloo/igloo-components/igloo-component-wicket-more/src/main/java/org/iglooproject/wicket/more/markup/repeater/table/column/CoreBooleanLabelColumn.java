@@ -4,7 +4,6 @@ import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulato
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
-
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 import org.iglooproject.wicket.more.model.BindingModel;
