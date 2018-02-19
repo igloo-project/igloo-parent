@@ -3,8 +3,6 @@ package org.iglooproject.wicket.more;
 import java.util.Collection;
 import java.util.Locale;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.Session;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
@@ -21,11 +19,9 @@ import org.iglooproject.jpa.security.config.spring.DefaultJpaSecurityConfig;
 import org.iglooproject.jpa.security.model.NamedPermission;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.intercept.RunAsUserToken;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -47,10 +43,6 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	private static final long serialVersionUID = 2591467597835056981L;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCoreSession.class);
-	
-	private static final String REDIRECT_URL_ATTRIBUTE_NAME = "redirectUrl";
-	
-	private static final String REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME = "redirectPageLinkDescriptor";
 	
 	@SpringBean(name="personService")
 	protected IGenericUserService<U> userService;
@@ -281,18 +273,6 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	 */
 	@Override
 	public void signOut() {
-		signOutWithoutCleaningUpRedirectUrl();
-		
-		removeAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
-	}
-	
-	/**
-	 * @deprecated Only useful when using Igloo's redirection mechanism, which is deprecated.
-	 * 
-	 * @see {@link #registerRedirectUrl(String)} for information about alternative mechanisms.
-	 */
-	@Deprecated
-	public void signOutWithoutCleaningUpRedirectUrl() {
 		userModel.setObject(null);
 		roles = new Roles();
 		rolesInitialized = false;
@@ -302,81 +282,6 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 		authenticationService.signOut();
 		
 		super.signOut();
-	}
-	
-	/**
-	 * @deprecated This was Igloo's own redirection mechanism, which is now deprecated in favor of more standard
-	 * mechanisms.
-	 * You may use instead:
-	 * <ul>
-	 *  <li>Wicket's
-	 *  {@link RestartResponseAtInterceptPageException} mechanism
-	 *  ({@link Component#redirectToInterceptPage(org.apache.wicket.Page)},
-	 *  {@link Component#continueToOriginalDestination()}), if redirecting within the same session (without login/logout
-	 *  during the redirection process).
-	 *  <li>Spring Security's saved requests mechanisms, triggered by an {@link AccessDeniedException}, if redirecting
-	 *  after an authentication/authorization error. Beware that most cases are already handled in Igloo through the
-	 *  {@link CoreDefaultExceptionMapper}, so you normally shouldn't have to do this.
-	 *  <li>Or you own implementation with an URL as a page parameter, for the most specific needs.
-	 * </ul>
-	 */
-	@Deprecated
-	public void registerRedirectUrl(String url) {
-		// le bind() est obligatoire pour demander à wicket de persister la session
-		// si on ne le fait pas, la session possède comme durée de vie le temps de
-		// la requête.
-		if (isTemporary()) {
-			bind();
-		}
-		
-		setAttribute(REDIRECT_URL_ATTRIBUTE_NAME, url);
-	}
-	
-	/**
-	 * @deprecated This was Igloo's own redirection mechanism, which is now deprecated in favor of more standard
-	 * mechanisms.
-	 * @see {@link #registerRedirectUrl(String)} for information about alternative mechanisms.
-	 */
-	public String getRedirectUrl() {
-		return (String) getAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
-	}
-	
-	/**
-	 * @deprecated This was Igloo's own redirection mechanism, which is now deprecated in favor of more standard
-	 * mechanisms.
-	 * @see {@link #registerRedirectUrl(String)} for information about alternative mechanisms.
-	 */
-	public String consumeRedirectUrl() {
-		String redirectUrl = getRedirectUrl();
-		removeAttribute(REDIRECT_URL_ATTRIBUTE_NAME);
-		return redirectUrl;
-	}
-	
-	/**
-	 * @deprecated This was Igloo's own redirection mechanism, which is now deprecated in favor of more standard
-	 * mechanisms.
-	 * @see {@link #registerRedirectUrl(String)} for information about alternative mechanisms.
-	 */
-	public void registerRedirectPageLinkDescriptor(IPageLinkDescriptor pageLinkDescriptor) {
-		// le bind() est obligatoire pour demander à wicket de persister la session
-		// si on ne le fait pas, la session possède comme durée de vie le temps de
-		// la requête.
-		if (isTemporary()) {
-			bind();
-		}
-		
-		setAttribute(REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME, pageLinkDescriptor);
-	}
-	
-	/**
-	 * @deprecated This was Igloo's own redirection mechanism, which is now deprecated in favor of more standard
-	 * mechanisms.
-	 * @see {@link #registerRedirectUrl(String)} for information about alternative mechanisms.
-	 */
-	public IPageLinkDescriptor getRedirectPageLinkDescriptor() {
-		IPageLinkDescriptor pageLinkDescriptor = (IPageLinkDescriptor) getAttribute(REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME);
-		removeAttribute(REDIRECT_PAGE_LINK_DESCRIPTOR_ATTRIBUTE_NAME);
-		return pageLinkDescriptor;
 	}
 	
 	/**

@@ -4,7 +4,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.CoreWebPage;
@@ -31,19 +30,7 @@ public class LoginSuccessPage extends CoreWebPage {
 	}
 	
 	protected void redirectToSavedPage() {
-		AbstractCoreSession<?> session = AbstractCoreSession.get();
-
-		@SuppressWarnings("deprecation")
-		IPageLinkDescriptor pageLinkDescriptor = session.getRedirectPageLinkDescriptor();
-		if (pageLinkDescriptor != null) {
-			throw pageLinkDescriptor.newRestartResponseException();
-		}
-		
-		@SuppressWarnings("deprecation")
-		String redirectUrl = session.consumeRedirectUrl();
-		if (!StringUtils.hasText(redirectUrl)) {
-			redirectUrl = RequestCycleUtils.getSpringSecuritySavedRequest();
-		}
+		String redirectUrl = RequestCycleUtils.getSpringSecuritySavedRequest();
 		if (isUrlValid(redirectUrl)) {
 			throw new RedirectToUrlException(redirectUrl);
 		} else {
@@ -57,7 +44,6 @@ public class LoginSuccessPage extends CoreWebPage {
 	
 	protected boolean isUrlValid(String url) {
 		return StringUtils.hasText(url);
-		//  && !StringUtils.contains(url, WICKET_BEHAVIOR_LISTENER_URL_FRAGMENT) : Wicket a l'air de s'en sortir et on a vite des problèmes sur Sitra si on vire ces éléments
 	}
 
 }
