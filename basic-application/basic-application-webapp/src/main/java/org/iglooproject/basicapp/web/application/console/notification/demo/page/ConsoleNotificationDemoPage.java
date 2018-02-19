@@ -28,6 +28,8 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleNotificationDemoPage.class);
 	
+	private final IModel<INotificationContentDescriptor> descriptorModel;
+	
 	private final IModel<User> recipientModel;
 	private final IModel<INotificationContentDescriptor> descriptorWithContextModel;
 	private final IModel<String> subjectModel;
@@ -35,6 +37,8 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 	
 	public ConsoleNotificationDemoPage(PageParameters parameters, final IModel<INotificationContentDescriptor> descriptorModel) throws NotificationContentRenderingException {
 		super(parameters);
+		
+		this.descriptorModel = descriptorModel;
 		
 		recipientModel = new GenericEntityModel<>(BasicApplicationSession.get().getUser());
 		
@@ -44,12 +48,6 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 					@Override
 					public INotificationContentDescriptor getObject() {
 						return descriptorModel.getObject().withContext(recipientModel.getObject());
-					}
-					@Override
-					public void detach() {
-						super.detach();
-						descriptorModel.detach();
-						recipientModel.detach();
 					}
 				};
 		
@@ -64,11 +62,6 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 					return Throwables.getStackTraceAsString(e);
 				}
 			}
-			@Override
-			public void detach() {
-				super.detach();
-				descriptorWithContextModel.detach();
-			}
 		};
 		
 		bodyModel = new AbstractReadOnlyModel<String>() {
@@ -82,15 +75,10 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 					return "<pre>" + Throwables.getStackTraceAsString(e) + "</pre>";
 				}
 			}
-			@Override
-			public void detach() {
-				super.detach();
-				descriptorWithContextModel.detach();
-			}
 		};
 		
 		Form<?> form = new Form<>("form");
-		add(form);
+		add(form.setOutputMarkupId(true));
 		
 		form.add(
 				new UserAjaxDropDownSingleChoice<>("recipient", recipientModel, User.class)
@@ -111,7 +99,7 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		Detachables.detach(recipientModel, descriptorWithContextModel, subjectModel, bodyBreadCrumbPrependedElementsModel);
+		Detachables.detach(descriptorModel, recipientModel, descriptorWithContextModel, subjectModel, bodyModel);
 	}
 
 	@Override
