@@ -4,70 +4,101 @@
 <wicket:extend>
 	<div class="row row-default">
 		<div class="col-md-6">
-			<h2><wicket:message key="console.maintenance.task.description.mainInformation" /></h2>
-			
-			<div wicket:id="statusContainer" class="alert">
-				<strong><wicket:container wicket:id="status" /></strong>
-				<div>
-					<button wicket:id="reload" class="btn btn-danger" type="button">
-						<span class="fa fa-redo" />
-						<wicket:message key="console.maintenance.task.description.mainInformation.reload" />
-					</button>
-					<button wicket:id="cancel" class="btn btn-danger" type="button">
-						<span class="fa fa-ban" />
-						<wicket:message key="console.maintenance.task.description.mainInformation.cancel" />
-					</button>
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-header-title">
+						<wicket:message key="console.maintenance.task.description.mainInformation" />
+					</h5>
 				</div>
-			</div>
-			
-			<div>
-				<strong><wicket:message key="console.maintenance.task.common.name" /></strong>
-				<wicket:container wicket:id="name" />
-			</div>
-			<div>
-				<strong><wicket:message key="console.maintenance.task.common.queue" /></strong>
-				<wicket:container wicket:id="queue" />
-				<wicket:container wicket:id="defaultQueue"><wicket:message key="console.maintenance.task.common.queue.default" /></wicket:container>
-			</div>
-			<div>
-				<strong><wicket:message key="console.maintenance.task.common.creationDate" /></strong>
-				<wicket:container wicket:id="creationDate" />
-			</div>
-			<div>
-				<strong><wicket:message key="console.maintenance.task.common.startDate" /></strong>
-				<wicket:container wicket:id="startDate" />
-			</div>
-			<div>
-				<strong><wicket:message key="console.maintenance.task.common.endDate" /></strong>
-				<wicket:container wicket:id="endDate" />
-			</div>
-			<div>
-				<strong><wicket:message key="console.maintenance.task.common.status" /></strong>
-				<wicket:container wicket:id="status" />
-				<wicket:container wicket:id="statusIcon" />
-			</div>
-			<div>
-				<strong><wicket:message key="console.maintenance.task.common.result" /></strong>
-				<wicket:container wicket:id="result" />
-				<wicket:container wicket:id="resultIcon" />
+				<div class="card-body">
+					<div wicket:id="statusContainer" class="alert">
+						<strong><wicket:container wicket:id="status" /></strong>
+						<div>
+							<button wicket:id="reload" class="btn btn-danger" type="button">
+								<span class="fa fa-redo" />
+								<wicket:message key="console.maintenance.task.description.mainInformation.reload" />
+							</button>
+							<button wicket:id="cancel" class="btn btn-danger" type="button">
+								<span class="fa fa-ban" />
+								<wicket:message key="console.maintenance.task.description.mainInformation.cancel" />
+							</button>
+						</div>
+					</div>
+					
+					<div>
+						<strong><wicket:message key="console.maintenance.task.common.name" /></strong>
+						<wicket:container wicket:id="name" />
+					</div>
+					<div>
+						<strong><wicket:message key="console.maintenance.task.common.queue" /></strong>
+						<wicket:container wicket:id="queue" />
+						<wicket:container wicket:id="defaultQueue"><wicket:message key="console.maintenance.task.common.queue.default" /></wicket:container>
+					</div>
+					<div>
+						<strong><wicket:message key="console.maintenance.task.common.creationDate" /></strong>
+						<wicket:container wicket:id="creationDate" />
+					</div>
+					<div>
+						<strong><wicket:message key="console.maintenance.task.common.startDate" /></strong>
+						<wicket:container wicket:id="startDate" />
+					</div>
+					<div>
+						<strong><wicket:message key="console.maintenance.task.common.endDate" /></strong>
+						<wicket:container wicket:id="endDate" />
+					</div>
+					<div>
+						<strong><wicket:message key="console.maintenance.task.common.status" /></strong>
+						<wicket:container wicket:id="status" />
+						<wicket:container wicket:id="statusIcon" />
+					</div>
+					<div>
+						<strong><wicket:message key="console.maintenance.task.common.result" /></strong>
+						<wicket:container wicket:id="result" />
+						<wicket:container wicket:id="resultIcon" />
+					</div>
+				</div>
 			</div>
 		</div>
 		
 		<div class="col-md-6">
-			<h2><wicket:message key="console.maintenance.task.description.serializedTask" /></h2>
-			<div class="bg-light"><pre class="pre-scrollable"><wicket:container wicket:id="serializedTask" /></pre></div>
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-header-title">
+						<wicket:message key="console.maintenance.task.description.serializedTask" />
+					</h5>
+				</div>
+				<div class="card-body">
+					<div class="bg-light"><pre class="pre-scrollable mb-0"><wicket:container wicket:id="serializedTask" /></pre></div>
+				</div>
+			</div>
 		</div>
 		
 		<wicket:enclosure child="stackTrace">
 			<div class="col-12">
-				<h2><wicket:message key="console.maintenance.task.description.mainInformation.stackTrace" /></h2>
-				<pre wicket:id="stackTrace" class="stack-trace pre-scrollable" />
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-header-title">
+							<wicket:message key="console.maintenance.task.description.mainInformation.stackTrace" />
+						</h5>
+					</div>
+					<div class="card-body">
+						<pre wicket:id="stackTrace" class="stack-trace pre-scrollable" />
+					</div>
+				</div>
 			</div>
 		</wicket:enclosure>
 		
 		<div class="col-12">
-			<h2><wicket:message key="console.maintenance.task.description.executionResult" /></h2>
-			<div wicket:id="executionResult" class="execution-result" />
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-header-title">
+						<wicket:message key="console.maintenance.task.description.executionResult" />
+					</h5>
+				</div>
+				<div class="card-body">
+					<div wicket:id="executionResult" class="execution-result" />
+				</div>
+			</div>
 		</div>
 	</div>
 </wicket:extend>

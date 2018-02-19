@@ -1,3 +1,9 @@
+.modal-content {
+	border: none;
+	border-radius: 0;
+	@extend .shadow-3;
+}
+
 .modal {
 	&.modal-headerless {
 		.modal-header {

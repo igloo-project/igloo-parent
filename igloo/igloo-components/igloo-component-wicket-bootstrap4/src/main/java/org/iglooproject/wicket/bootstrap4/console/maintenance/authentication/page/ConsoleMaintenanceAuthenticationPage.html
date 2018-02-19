@@ -3,21 +3,29 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
 	<wicket:extend>
-		<h2><wicket:message key="console.maintenance.authentication.description" /></h2>
-		
-		<form wicket:id="signInForm">
-			<div class="form-row">
-				<div class="form-group col-sm-3">
-					<label wicket:for="username"><wicket:label /></label>
-					<input class="form-control" wicket:id="username" type="text" />
+		<div class="row row-default">
+			<div class="col-md-10 col-lg-6">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-header-title">
+							<wicket:message key="console.maintenance.authentication.description" />
+						</h5>
+					</div>
+					<div class="card-body">
+						<form wicket:id="signInForm">
+							<div class="form-group">
+								<input class="form-control" wicket:id="username" type="text" />
+							</div>
+							
+							<button class="btn btn-success" type="submit">
+								<span class="fa fa-lock" />
+								<wicket:message key="console.signIn.action.signIn" />
+							</button>
+						</form>
+					</div>
 				</div>
 			</div>
-			
-			<button class="btn btn-success" type="submit">
-				<span class="fa fa-lock" />
-				<wicket:message key="console.signIn.action.signIn" />
-			</button>
-		</form>
+		</div>
 	</wicket:extend>
 </body>
 </html>

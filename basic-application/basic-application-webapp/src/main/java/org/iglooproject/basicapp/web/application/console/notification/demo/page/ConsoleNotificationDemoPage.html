@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" wicket:id="htmlRootElement">
 	<wicket:extend>
-		<h2><wicket:message key="console.notifications" /></h2>
-		
-		<form wicket:id="form">
-			<div class="row row-form">
-				<div class="form-group col-12">
-					<label wicket:for="recipient"><wicket:label /></label>
-					<select wicket:id="recipient" class="form-control"></select>
-				</div>
-				<div class="form-group col-12">
-					<label><wicket:message key="console.notifications.demo.subject" /></label>
-					<div class="form-control-plaintext">
-						<pre class="mb-0"><wicket:container wicket:id="subject" /></pre>
-					</div>
-				</div>
-				<div class="form-group col-12">
-					<label><wicket:message key="console.notifications.demo.body" /></label>
-					<div id="body-container" wicket:id="body"></div>
-				</div>
+		<div class="card">
+			<div class="card-header">
+				<h5 class="card-header-title">
+					<wicket:message key="console.notifications" />
+				</h5>
 			</div>
-		</form>
-		
+			<div class="card-body">
+				<form wicket:id="form">
+					<div class="row row-form">
+						<div class="form-group col-12">
+							<label wicket:for="recipient"><wicket:label /></label>
+							<select wicket:id="recipient" class="form-control"></select>
+						</div>
+						<div class="form-group col-12">
+							<label><wicket:message key="console.notifications.demo.subject" /></label>
+							<div class="form-control-plaintext">
+								<pre class="mb-0"><wicket:container wicket:id="subject" /></pre>
+							</div>
+						</div>
+						<div class="form-group col-12">
+							<label><wicket:message key="console.notifications.demo.body" /></label>
+							<div id="body-container" wicket:id="body"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 		<script>
 			$('#body-container *').removeAttr('class');
 		</script>

@@ -5,19 +5,24 @@
 		<wicket:panel>
 			<div class="row row-default">
 				<div class="col-12" wicket:id="cacheManagerList">
-					<h2><wicket:container wicket:id="cacheManagerName" /></h2>
-					
-					<button wicket:id="cacheManagerPurgeLink" class="btn btn-danger mb-3" type="button">
-						<i class="fa fa-trash"></i>
-						<wicket:message key="console.maintenance.ehcache.cacheManager.purge.title" />
-					</button>
-					
-					<div class="form-group">
-						<input type="text" id="filtre" class="form-control" autocomplete="off"
-							wicket:message="placeholder:console.maintenance.ehcache.portfolio.filtre" />
-					</div>
-					
-					<table class="table table-bordered">
+					<div class="card">
+						<div class="card-header">
+							<h5 class="card-header-title">
+								<wicket:container wicket:id="cacheManagerName" />
+							</h5>
+						</div>
+						<div class="card-body">
+							<button wicket:id="cacheManagerPurgeLink" class="btn btn-danger mb-3" type="button">
+								<i class="fa fa-trash"></i>
+								<wicket:message key="console.maintenance.ehcache.cacheManager.purge.title" />
+							</button>
+							
+							<div class="form-group mb-0">
+								<input type="text" id="filtre" class="form-control" autocomplete="off"
+									wicket:message="placeholder:console.maintenance.ehcache.portfolio.filtre" />
+							</div>
+						</div>
+						<table class="table table-bordered">
 						<thead>
 							<tr>
 								<th width="650px"><wicket:message key="console.maintenance.ehcache.portfolio.nom" /></th>
@@ -82,6 +87,7 @@
 							</tr>
 						</tfoot>
 					</table>
+					</div>
 				</div>
 			</div>
 		</wicket:panel>
