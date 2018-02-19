@@ -52,10 +52,12 @@ export TEST_DATA_PATH={temp_dir}
 export TEST_INFINISPAN_JGROUPS_PING_PORT={infinispan_tcp_port}
 export TEST_INFINISPAN_JGROUPS_PORT_PORT={infinispan_ping_port}
 
+mkdir -p {temp_dir}
+
 """.format(
   date=datetime.now().isoformat(),
   maven_opts=quote(' '.join([i for i in maven_opts])),
-  temp_dir=temp_dir,
+  temp_dir=quote(temp_dir),
   http_port=base_port,
   infinispan_tcp_port=base_port + 1,
   # + 1 + 5 as we use port_range = 5 for jgroups
