@@ -8,7 +8,8 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.lang.Args;
+import org.iglooproject.commons.util.CloneUtils;
+import org.iglooproject.wicket.more.markup.html.form.DatePicker;
 import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.options.Options;
@@ -16,9 +17,6 @@ import org.wicketstuff.wiquery.ui.datepicker.DateOption;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
-
-import org.iglooproject.commons.util.CloneUtils;
-import org.iglooproject.wicket.more.markup.html.form.DatePicker;
 
 public class DatePickerSync implements ChainableStatement, IDetachable, Serializable {
 
@@ -29,9 +27,6 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 	private static final String JS_ARRAY_START = "[";
 	private static final String JS_ARRAY_CLOSE = "]";
 	
-	@Deprecated
-	private final DatePicker courant;
-	
 	private final List<DatePicker> precedents = Lists.newArrayList();
 	private final List<IModel<? extends Date>> precedentsModels = Lists.newArrayList();
 	
@@ -41,21 +36,10 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 	private final DatePickerSyncActionOnUpdate actionOnUpdate;
 
 	public DatePickerSync() {
-		this.courant = null;
 		this.actionOnUpdate = DatePickerSyncActionOnUpdate.NOTHING;
 	}
 
-	/**
-	 * @deprecated Use {@link #DatePickerSync(DatePicker, DatePicker, DatePickerSyncActionOnUpdate)} instead with
-	 * {@link DatePickerSyncActionOnUpdate#NOTHING}
-	 * @param courant
-	 */
-	public DatePickerSync(DatePicker precedent, DatePicker suivant) {
-		this(precedent, suivant, DatePickerSyncActionOnUpdate.NOTHING);
-	}
-
 	public DatePickerSync(DatePicker precedent, DatePicker suivant, DatePickerSyncActionOnUpdate actionOnUpdate) {
-		this.courant = null;
 		if (precedent != null) {
 			addPrecedents(precedent);
 		}
@@ -63,35 +47,6 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 			addSuivants(suivant);
 		}
 		this.actionOnUpdate = actionOnUpdate;
-	}
-	
-	/**
-	 * @deprecated Use {@link #DatePickerSync()} instead.
-	 * @param courant
-	 */
-	@Deprecated
-	public DatePickerSync(DatePicker courant) {
-		this(courant, (DatePicker) null, (DatePicker) null);
-	}
-
-	/**
-	 * @deprecated Use {@link #DatePickerSync(DatePicker, DatePicker, DatePickerSyncActionOnUpdateS)} instead with
-	 * {@link DatePickerSyncActionOnUpdate#NOTHING}
-	 * @param courant
-	 */
-	public DatePickerSync(DatePicker courant, DatePicker precedent, DatePicker suivant) {
-		super();
-		
-		Args.notNull(courant, "courant");
-		this.courant = courant;
-		
-		if (precedent != null) {
-			addPrecedents(precedent);
-		}
-		if (suivant != null) {
-			addSuivants(suivant);
-		}
-		this.actionOnUpdate = DatePickerSyncActionOnUpdate.NOTHING;
 	}
 	
 	@Override
@@ -137,9 +92,6 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 	public DatePickerSync addPrecedents(DatePicker first, DatePicker ... rest) {
 		for (DatePicker precedent : Lists.asList(first, rest)) {
 			if (precedent != null) {
-				if (precedent.equals(courant)) {
-					throw new IllegalArgumentException("Le date picker courant ne peut pas être ajouté en tant que précédent.");
-				}
 				if (!this.precedents.contains(precedent)) {
 					this.precedents.add(precedent);
 				}
@@ -171,9 +123,6 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 	public DatePickerSync addSuivants(DatePicker first, DatePicker ... rest) {
 		for (DatePicker suivant : Lists.asList(first, rest)) {
 			if (suivant != null) {
-				if (suivant.equals(courant)) {
-					throw new IllegalArgumentException("Le date picker courant ne peut pas être ajouté en tant que suivant.");
-				}
 				if (!this.suivants.contains(suivant)) {
 					this.suivants.add(suivant);
 				}
