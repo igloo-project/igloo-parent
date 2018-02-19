@@ -78,7 +78,7 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 		};
 		
 		Form<?> form = new Form<>("form");
-		add(form.setOutputMarkupId(true));
+		add(form);
 		
 		form.add(
 				new UserAjaxDropDownSingleChoice<>("recipient", recipientModel, User.class)
