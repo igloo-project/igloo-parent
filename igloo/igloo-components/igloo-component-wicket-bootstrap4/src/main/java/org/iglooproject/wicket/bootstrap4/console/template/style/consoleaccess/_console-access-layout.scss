@@ -90,6 +90,18 @@
 				.card-footer {
 					@extend .text-right;
 				}
+				
+				&.card-main-title-cascade {
+					margin: 0 10px;
+					
+					.card-header {
+						&.card-main-title {
+							margin: 0 -10px;
+							border-radius: 0.15rem;
+							@extend .shadow-8;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -112,6 +124,18 @@
 					
 					[class*="card-"] {
 						@include border-radius(0);
+					}
+					
+					&.card-main-title-cascade {
+						margin: 0;
+						
+						.card-header {
+							&.card-main-title {
+								margin: 0 !important;
+								box-shadow: none !important;
+								border-radius: 0 !important;
+							}
+						}
 					}
 				}
 			}
