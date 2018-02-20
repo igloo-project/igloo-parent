@@ -255,6 +255,13 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>${igloo.maven-jar-plugin.version}</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+						</archive>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -512,5 +519,10 @@
 			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
+	
+	<organization>
+		<name>Kobalt</name>
+		<url>http://www.kobalt-si.fr/</url>
+	</organization>
 	
 </project>
