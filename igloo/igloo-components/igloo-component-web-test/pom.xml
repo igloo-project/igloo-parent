@@ -28,6 +28,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jul-to-slf4j</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 		</dependency>
