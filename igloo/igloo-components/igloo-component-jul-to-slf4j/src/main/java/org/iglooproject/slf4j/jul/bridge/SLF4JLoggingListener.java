@@ -1,6 +1,6 @@
 package org.iglooproject.slf4j.jul.bridge;
 
-import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 
 import javax.servlet.ServletContextEvent;
@@ -26,13 +26,15 @@ public class SLF4JLoggingListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
+		// from https://stackoverflow.com/questions/9117030/jul-to-slf4j-bridge
 		// Jersey uses java.util.logging - bridge to slf4
-		java.util.logging.Logger rootLogger = LogManager.getLogManager().getLogger("");
-		Handler[] handlers = rootLogger.getHandlers();
-		for (int i = 0; i < handlers.length; i++) {
-			rootLogger.removeHandler(handlers[i]);
-		}
+		LogManager.getLogManager().reset();
+		SLF4JBridgeHandler.removeHandlersForRootLogger();
 		SLF4JBridgeHandler.install();
+		
+		// Note that you need to override global logging level
+		// if you want to log finer logs (slf4j setting is not enough).
+		java.util.logging.Logger.getGlobal().setLevel(Level.INFO);
 		
 		LOGGER.info("jul-to-slf4j installed");
 	}
