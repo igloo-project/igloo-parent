@@ -1,6 +1,7 @@
 package org.iglooproject.test.web.context;
 
 import java.net.URI;
+import java.util.Collection;
 
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.UriBuilder;
@@ -18,8 +19,8 @@ public abstract class AbstractMockRestServlet extends AbstractMockSpringServlet 
 	private final String servletPath;
 
 	public AbstractMockRestServlet(String schemeAndHost, int port, String contextPath, String servletPath,
-			Class<?> javaConfigClass) {
-		super(schemeAndHost, port, contextPath, javaConfigClass);
+			Class<?> javaConfigClass, Collection<Class<?>> initializers) {
+		super(schemeAndHost, port, contextPath, javaConfigClass, initializers);
 		this.servletPath = servletPath;
 	}
 

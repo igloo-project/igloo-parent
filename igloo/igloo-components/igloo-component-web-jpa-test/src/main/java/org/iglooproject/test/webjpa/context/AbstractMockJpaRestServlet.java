@@ -1,5 +1,7 @@
 package org.iglooproject.test.webjpa.context;
 
+import java.util.Collection;
+
 import javax.ws.rs.core.Application;
 
 import org.glassfish.grizzly.servlet.WebappContext;
@@ -13,8 +15,8 @@ import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 public abstract class AbstractMockJpaRestServlet extends AbstractMockRestServlet {
 
 	public AbstractMockJpaRestServlet(String schemeAndHost, int port, String contextPath, String servletPath,
-			Class<?> javaConfigClass) {
-		super(schemeAndHost, port, contextPath, servletPath, javaConfigClass);
+			Class<?> javaConfigClass, Collection<Class<?>> initializers) {
+		super(schemeAndHost, port, contextPath, servletPath, javaConfigClass, initializers);
 	}
 
 	@Override

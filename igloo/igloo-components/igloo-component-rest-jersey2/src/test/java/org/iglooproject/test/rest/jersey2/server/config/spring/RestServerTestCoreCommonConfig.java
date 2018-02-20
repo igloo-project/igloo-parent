@@ -12,6 +12,9 @@ import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.test.rest.jersey2.business.RestTestBusinessPackage;
 import org.iglooproject.test.rest.jersey2.server.RestServerPackage;
 
+/**
+ * This configuration relies on bootstrap-configuration.properties enforcing igloo.profile=test
+ */
 @Configuration
 @ApplicationDescription(name = "rest-test-server")
 @ConfigurationLocations(locations = {
@@ -30,4 +33,5 @@ import org.iglooproject.test.rest.jersey2.server.RestServerPackage;
 // fonctionnement de l'annotation @Transactional
 @EnableTransactionManagement
 public class RestServerTestCoreCommonConfig extends AbstractApplicationConfig {
+
 }

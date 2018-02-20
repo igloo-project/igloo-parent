@@ -11,6 +11,9 @@ import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocatio
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.test.jpa.externallinkchecker.business.rest.server.RestServerPackage;
 
+/**
+ * This configuration relies on bootstrap-configuration.properties enforcing igloo.profile=test
+ */
 @Configuration
 @ApplicationDescription(name = "rest-test-server")
 @ConfigurationLocations(locations = {
