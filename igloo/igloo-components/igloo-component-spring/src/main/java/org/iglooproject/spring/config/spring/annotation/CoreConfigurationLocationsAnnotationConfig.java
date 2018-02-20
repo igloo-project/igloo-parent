@@ -4,6 +4,7 @@ import org.iglooproject.config.bootstrap.spring.ApplicationConfigurerBeanFactory
 import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.config.bootstrap.spring.config.BootstrapSpringConfiguration;
+import org.iglooproject.config.bootstrap.spring.config.ManifestPropertySourceConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -13,10 +14,12 @@ import org.springframework.context.annotation.Import;
  * @see ApplicationConfigurerBeanFactoryPostProcessor
  */
 @Configuration
-@ConfigurationLocations(locations = {
-		"classpath:igloo-component-spring.properties"
+@Import({
+	// cleanly separate bootstrap and configuration overrides
+	BootstrapSpringConfiguration.class,
+	// transform MANIFEST.MF files in properties
+	ManifestPropertySourceConfiguration.class
 })
-@Import(BootstrapSpringConfiguration.class)
 public class CoreConfigurationLocationsAnnotationConfig {
 
 }

@@ -21,6 +21,8 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
  */
 @Import({
 	CoreConfigurationLocationsAnnotationConfig.class,
+	// load informations about igloo version and builder
+	IglooVersionInfoConfig.class,
 	SpringApplicationPropertyRegistryConfig.class
 })
 public abstract class AbstractApplicationConfig {
