@@ -1,4 +1,4 @@
-package org.iglooproject.commons.util.logging;
+package org.iglooproject.slf4j.jul.bridge;
 
 import java.util.logging.Handler;
 import java.util.logging.LogManager;

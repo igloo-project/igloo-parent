@@ -8,7 +8,7 @@ import javax.ws.rs.core.UriBuilder;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.iglooproject.commons.util.logging.SLF4JLoggingListener;
+import org.iglooproject.slf4j.jul.bridge.SLF4JLoggingListener;
 
 /**
  * How to use :

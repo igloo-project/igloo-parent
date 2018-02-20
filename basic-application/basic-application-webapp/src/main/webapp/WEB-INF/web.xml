@@ -30,7 +30,7 @@
 	
 	<listener>
 		<!-- branchement de java.util.logging sur slf4j (permet de gérer les logs de jersey)  -->
-		<listener-class>org.iglooproject.commons.util.logging.SLF4JLoggingListener</listener-class>
+		<listener-class>org.iglooproject.slf4j.jul.bridge.SLF4JLoggingListener</listener-class>
 	</listener>
 	
 	<listener>

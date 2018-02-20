@@ -1,7 +1,7 @@
 package org.iglooproject.test.web.context;
 
 import org.glassfish.grizzly.servlet.WebappContext;
-import org.iglooproject.commons.util.logging.SLF4JLoggingListener;
+import org.iglooproject.slf4j.jul.bridge.SLF4JLoggingListener;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
