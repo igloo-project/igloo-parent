@@ -34,6 +34,7 @@ import org.springframework.core.PriorityOrdered;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.io.Resource;
+import org.springframework.util.ClassUtils;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
@@ -65,6 +66,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	}
 
 	public ApplicationConfigurerBeanFactoryPostProcessor(boolean notFoundLocationThrowError) {
+		super();
 		this.notFoundLocationThrowError = notFoundLocationThrowError;
 	}
 
@@ -119,7 +121,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	private void configureApplicationDescription(ConfigurableListableBeanFactory beanFactory) {
 		// go through all bean definitions to find application name
 		Stream<String> applicationNames = Arrays.stream(beanFactory.getBeanDefinitionNames())
-			.map(beanFactory::getType)		// get unwrapped bean type (for cglib wrapped beans)
+			.map(this.getBeanType(beanFactory))		// get unwrapped bean type (for cglib wrapped beans)
 			.filter(Objects::nonNull)		// ignore null values
 			// find ApplicationDescription
 			.filter(ApplicationConfigurerBeanFactoryPostProcessor::isApplicationDescriptionBeanType)
@@ -145,6 +147,10 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 		}
 	}
 
+	private Function<String, Class<?>> getBeanType(ConfigurableListableBeanFactory beanFactory) {
+		return (beanName) -> ClassUtils.getUserClass(beanFactory.getType(beanName));
+	}
+
 	/**
 	 * <p>Stateless. Extract configuration locations from {@link ConfigurationLocations} annotations. Placeholders
 	 * available in Spring environment (loaded from system properties, environment variables and bootstraped
@@ -160,7 +166,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 		Multimap<Integer, Resource> locationsByOrder = LinkedListMultimap.create();
 		// go through all bean definitions to find application name
 		Arrays.stream(beanFactory.getBeanDefinitionNames())
-			.map(beanFactory::getType)		// get unwrapped bean type (for cglib wrapped beans)
+			.map(this.getBeanType(beanFactory))		// get unwrapped bean type (for cglib wrapped beans)
 			.filter(Objects::nonNull)		// ignore null values
 			// find ConfigurationLocation
 			.filter(ApplicationConfigurerBeanFactoryPostProcessor::isConfigurationLocationsBeanType)
