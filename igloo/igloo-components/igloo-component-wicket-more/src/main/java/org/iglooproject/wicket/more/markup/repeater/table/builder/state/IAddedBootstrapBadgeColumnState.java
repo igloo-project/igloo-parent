@@ -29,6 +29,10 @@ public interface IAddedBootstrapBadgeColumnState<T, S extends ISort<?>, C> exten
 	@Override
 	IAddedBootstrapBadgeColumnState<T, S, C> withSort(S sort, ISortIconStyle sortIconStyle, CycleMode cycleMode);
 
+	IAddedBootstrapBadgeColumnState<T, S, C> badgePill();
+
+	IAddedBootstrapBadgeColumnState<T, S, C> badgePill(Condition badgePill);
+
 	IAddedBootstrapBadgeColumnState<T, S, C> hideIcon();
 
 	IAddedBootstrapBadgeColumnState<T, S, C> showIcon();

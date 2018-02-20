@@ -36,6 +36,18 @@ public class BootstrapBadge<T> extends GenericPanel<T> implements IBootstrapBadg
 
 	@Deprecated
 	@Override
+	public BootstrapBadge<T> badgePill() {
+		return this;
+	}
+
+	@Deprecated
+	@Override
+	public BootstrapBadge<T> badgePill(Condition badgePill) {
+		return this;
+	}
+
+	@Deprecated
+	@Override
 	public BootstrapBadge<T> hideIcon() {
 		return this;
 	}

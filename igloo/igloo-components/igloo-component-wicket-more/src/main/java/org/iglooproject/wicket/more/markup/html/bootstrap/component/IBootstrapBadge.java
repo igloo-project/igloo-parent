@@ -5,6 +5,10 @@ import org.iglooproject.wicket.more.condition.Condition;
 
 public interface IBootstrapBadge<T, C extends Component & IBootstrapBadge<T, C>> {
 
+	C badgePill();
+
+	C badgePill(Condition badgePill);
+
 	C hideIcon();
 
 	C showIcon();

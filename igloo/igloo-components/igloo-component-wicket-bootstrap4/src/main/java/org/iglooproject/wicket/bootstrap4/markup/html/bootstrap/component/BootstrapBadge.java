@@ -21,10 +21,12 @@ public class BootstrapBadge<T> extends GenericPanel<T> implements IBootstrapBadg
 
 	private static final long serialVersionUID = -7040646675697285281L;
 
+	private Condition badgePill = Condition.alwaysFalse();
+
 	private Condition showIcon = Condition.alwaysTrue();
 	private Condition showLabel = Condition.alwaysTrue();
 	private Condition showTooltip = Condition.alwaysTrue();
-	
+
 	public BootstrapBadge(String id, IModel<T> model, final BootstrapRenderer<? super T> renderer) {
 		super(id, model);
 		
@@ -65,6 +67,16 @@ public class BootstrapBadge<T> extends GenericPanel<T> implements IBootstrapBadg
 		
 		add(
 				BootstrapColorBehavior.badge(labelModel.getColorModel()),
+				new ClassAttributeAppender(new AbstractReadOnlyModel<String>() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public String getObject() {
+						if (badgePill.applies()) {
+							return "badge-pill";
+						}
+						return null;
+					}
+				}),
 				new AttributeAppender("title", new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -92,6 +104,17 @@ public class BootstrapBadge<T> extends GenericPanel<T> implements IBootstrapBadg
 						Condition.visible(label)
 				).thenShowInternal()
 		);
+	}
+
+	@Override
+	public BootstrapBadge<T> badgePill() {
+		return badgePill(Condition.alwaysTrue());
+	}
+
+	@Override
+	public BootstrapBadge<T> badgePill(Condition badgePill) {
+		this.badgePill = badgePill;
+		return this;
 	}
 
 	@Override

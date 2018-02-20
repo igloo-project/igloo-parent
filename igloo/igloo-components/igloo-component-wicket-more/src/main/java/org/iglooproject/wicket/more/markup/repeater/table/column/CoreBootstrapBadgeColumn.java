@@ -37,6 +37,8 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 
 	private final BootstrapRenderer<? super C> renderer;
 	
+	private Condition badgePill = Condition.alwaysFalse();
+	
 	private Condition showIcon = Condition.alwaysTrue();
 	
 	private Condition showLabel = Condition.alwaysTrue();
@@ -85,6 +87,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 					@Override
 					public Component getBootstrapBadge(String wicketId, IModel<T> rowModel) {
 						return bootstrapComponentsModule.badgeSupplier(wicketId, modelFactory.create(rowModel), renderer).get()
+								.badgePill(badgePill)
 								.showIcon(showIcon)
 								.showLabel(showLabel)
 								.showTooltip(showTooltip);
@@ -125,6 +128,10 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 			link.add(linkBehavior);
 		}
 		return link;
+	}
+
+	public void badgePill(Condition badgePill) {
+		this.badgePill = badgePill;
 	}
 
 	public void showIcon(Condition showIcon) {

@@ -765,6 +765,17 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 		
 		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> badgePill() {
+			return badgePill(Condition.alwaysTrue());
+		}
+		
+		@Override
+		public IAddedBootstrapBadgeColumnState<T, S, C> badgePill(Condition badgePill) {
+			getColumn().badgePill(badgePill);
+			return this;
+		}
+		
+		@Override
 		public IAddedBootstrapBadgeColumnState<T, S, C> hideIcon() {
 			return showIcon(Condition.alwaysFalse());
 		}
