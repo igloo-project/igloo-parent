@@ -18,7 +18,7 @@ import org.springframework.test.context.TestPropertySource;
 	"testPropertySourceAndBootstrapProperty1=@TestPropertySource",
 	"testPropertySourceAndBootstrapProperty2=@TestPropertySource"
 })
-public abstract class AbstractSpringBoostrapSimpleTest extends AbstractTestCase {
+public abstract class AbstractSpringBoostrapSimpleTest extends AbstractBootstrapTestCase {
 
 	/**
 	 * Test override precedence. TestPropertySource -&gt; bootstrap file 1 -&gt; bootstrap file 2

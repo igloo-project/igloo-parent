@@ -1,6 +1,5 @@
 package org.iglooproject.config.bootstrap.spring.config;
 
-import org.iglooproject.config.bootstrap.spring.AbstractExtendedApplicationContextInitializer;
 import org.iglooproject.config.bootstrap.spring.ApplicationConfigurerBeanFactoryPostProcessor;
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
@@ -10,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * <p>This configuration must be combined with a custom {@link AbstractExtendedApplicationContextInitializer} to
+ * <p>This configuration must be combined with a custom {@link IExtendedApplicationContextInitializer} to
  * use bootstrap igloo override profiles, {@link ApplicationDescription}, {@link ConfigurationLocations}
  * and log4j merged configuration.</p>
  * 

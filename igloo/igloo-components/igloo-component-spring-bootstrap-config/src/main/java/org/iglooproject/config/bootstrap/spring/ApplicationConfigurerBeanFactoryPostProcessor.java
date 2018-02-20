@@ -337,7 +337,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	 */
 	@Override
 	public int getOrder() {
-		return Ordered.LOWEST_PRECEDENCE - 1;
+		return Ordered.LOWEST_PRECEDENCE - 500;
 	}
 
 }

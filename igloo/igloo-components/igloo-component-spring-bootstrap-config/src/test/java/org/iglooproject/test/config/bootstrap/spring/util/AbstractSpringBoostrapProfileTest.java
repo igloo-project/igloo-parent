@@ -11,13 +11,13 @@ import org.springframework.test.context.TestPropertySource;
  * 
  * <p>i.e., igloo.configurationLocations=${igloo.${igloo.profile}.configurationLocations}</p>
  * 
- * @see AbstractTestCase
+ * @see AbstractBootstrapTestCase
  */
 @TestPropertySource(inheritProperties = true, properties = {
 	"igloo.profile=OVERRIDE",
 	"user.name=username"
 })
-public abstract class AbstractSpringBoostrapProfileTest extends AbstractTestCase {
+public abstract class AbstractSpringBoostrapProfileTest extends AbstractBootstrapTestCase {
 
 	@Value("${property.default:}")
 	protected String default_;

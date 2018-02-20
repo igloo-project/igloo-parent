@@ -2,7 +2,7 @@ package org.iglooproject.test.config.bootstrap.spring.locations;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.iglooproject.test.config.bootstrap.spring.util.AbstractTestCase;
+import org.iglooproject.test.config.bootstrap.spring.util.AbstractBootstrapTestCase;
 import org.iglooproject.test.config.bootstrap.spring.util.SpringWithConfigurationLocationsConfig;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 		inheritLocations = true,
 		classes = SpringWithConfigurationLocationsConfig.class
 )
-public class SpringBootstrapConfigurationLocations extends AbstractTestCase {
+public class SpringBootstrapConfigurationLocations extends AbstractBootstrapTestCase {
 
 	@Value("${default:}")
 	private String default_;
