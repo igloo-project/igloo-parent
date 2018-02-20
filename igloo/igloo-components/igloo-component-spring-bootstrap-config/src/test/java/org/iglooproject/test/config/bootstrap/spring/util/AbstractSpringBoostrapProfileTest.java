@@ -31,6 +31,9 @@ public abstract class AbstractSpringBoostrapProfileTest extends AbstractTestCase
 	@Value("${property.development:}")
 	protected String development;
 
+	@Value("${property.qualification:}")
+	protected String qualification;
+
 	@Value("${property.preproduction:}")
 	protected String preproduction;
 

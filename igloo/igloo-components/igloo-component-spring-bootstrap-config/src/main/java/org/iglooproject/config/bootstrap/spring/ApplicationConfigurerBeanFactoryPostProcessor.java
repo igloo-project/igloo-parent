@@ -13,7 +13,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
@@ -35,6 +34,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
@@ -120,16 +120,19 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	 */
 	private void configureApplicationDescription(ConfigurableListableBeanFactory beanFactory) {
 		// go through all bean definitions to find application name
-		Stream<String> applicationNames = Arrays.stream(beanFactory.getBeanDefinitionNames())
+		List<String> applicationNames = Arrays.stream(beanFactory.getBeanDefinitionNames())
 			.map(this.getBeanType(beanFactory))		// get unwrapped bean type (for cglib wrapped beans)
 			.filter(Objects::nonNull)		// ignore null values
 			// find ApplicationDescription
 			.filter(ApplicationConfigurerBeanFactoryPostProcessor::isApplicationDescriptionBeanType)
 			// map to ApplicationDescription.name()
-			.map(ApplicationConfigurerBeanFactoryPostProcessor::applicationDescriptionBeanTypeToName);
+			.map(ApplicationConfigurerBeanFactoryPostProcessor::applicationDescriptionBeanTypeToName)
+			.filter(StringUtils::hasLength)
+			.collect(Collectors.toList());
+		// we need to collect result, as if anything fails, stream (as based on beanFactory) will be broken
 		
 		try {
-			final String applicationName = applicationNames.collect(MoreCollectors.onlyElement());
+			final String applicationName = applicationNames.stream().collect(MoreCollectors.onlyElement());
 			// this allows to use ${igloo.applicationName} placeholder in file locations
 			LOGGER.info("Bootstrap configuration: setting {} to {}", IGLOO_APPLICATION_NAME_PROPERTY, applicationName);
 			applicationContext.getEnvironment().getPropertySources()
@@ -143,7 +146,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 					Configuration.class, ApplicationDescription.class));
 		} catch (IllegalArgumentException e) {
 			throw new ApplicationContextException(String.format("@%s must be unique; %d definitions found",
-					ApplicationDescription.class.getSimpleName(), applicationNames.collect(Collectors.counting())));
+					ApplicationDescription.class.getSimpleName(), applicationNames.stream().collect(Collectors.counting())));
 		}
 	}
 
@@ -222,7 +225,10 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 			
 			locations.addAll(profileResources);
 		} else {
-			LOGGER.warn("No bootstrap configuration found for {}", IGLOO_PROFILES_LOCATIONS_PROPERTY);
+			throw new IllegalStateException(String.format("No bootstrap configuration found for %s. " +
+					"Configure %s as a spring context initializer.",
+					IGLOO_PROFILES_LOCATIONS_PROPERTY,
+					AbstractExtendedApplicationContextInitializer.class));
 		}
 		return locations;
 	}
