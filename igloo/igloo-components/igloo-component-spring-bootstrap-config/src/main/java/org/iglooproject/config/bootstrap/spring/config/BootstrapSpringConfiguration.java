@@ -10,9 +10,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * This configuration must be combined with a custom {@link AbstractExtendedApplicationContextInitializer} to
+ * <p>This configuration must be combined with a custom {@link AbstractExtendedApplicationContextInitializer} to
  * use bootstrap igloo override profiles, {@link ApplicationDescription}, {@link ConfigurationLocations}
- * and log4j merged configuration.
+ * and log4j merged configuration.</p>
+ * 
+ * <p>Context initializer can be configured {@link org.springframework.test.context.ContextConfiguration}</p>
  * 
  * @see ExtendedTestApplicationContextInitializer
  * @see ExtendedApplicationContextInitializer
