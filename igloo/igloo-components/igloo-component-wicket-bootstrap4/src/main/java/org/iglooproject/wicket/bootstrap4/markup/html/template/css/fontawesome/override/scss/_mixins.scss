@@ -8,6 +8,6 @@
 }
 
 @mixin fa-mixin-icon($fa-var-icon) {
-	@include fa-font();
-	@include fa-content($fa-var-icon);
+	@include fa-mixin-font();
+	content: fa-content($fa-var-icon);
 }

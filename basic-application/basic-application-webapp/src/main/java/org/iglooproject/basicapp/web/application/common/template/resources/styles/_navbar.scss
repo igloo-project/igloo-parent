@@ -1,4 +1,6 @@
 .navbar {
+	@extend .shadow-1;
+	
 	.navbar-nav {
 		> li {
 			&.nav-item {
