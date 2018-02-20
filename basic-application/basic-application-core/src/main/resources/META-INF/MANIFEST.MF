@@ -1,0 +1,4 @@
+Comment: File needed as MANIFEST.MF is available only in jar; this content is ignored and overwritten by maven
+Implementation-Title: placeholder
+Implementation-Version: placeholder
+Built-By: placeholder
