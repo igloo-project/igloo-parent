@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
@@ -22,7 +21,6 @@ import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
 
 import com.google.common.base.Function;
@@ -58,18 +56,11 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 	
 	private List<Behavior> linkBehaviors = Lists.newArrayList();
 
-	public CoreBootstrapBadgeColumn(IModel<?> headerLabelModel, final ICoreBinding<? super T, C> binding,
+	public CoreBootstrapBadgeColumn(IModel<?> headerLabelModel, final Function<? super T, C> function,
 			final BootstrapRenderer<? super C> renderer) {
 		super(headerLabelModel);
 		Injector.get().inject(this);
 		
-		this.modelFactory = BindingModel.factory(binding);
-		this.renderer = renderer;
-	}
-
-	public CoreBootstrapBadgeColumn(IModel<?> headerLabelModel, final Function<? super T, C> function,
-			final BootstrapRenderer<? super C> renderer) {
-		super(headerLabelModel);
 		this.modelFactory = ReadOnlyModel.factory(function);
 		this.renderer = renderer;
 	}
