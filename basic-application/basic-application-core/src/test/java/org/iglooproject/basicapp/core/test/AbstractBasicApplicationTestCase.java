@@ -4,7 +4,6 @@ import org.iglooproject.basicapp.core.business.referencedata.service.ICityServic
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.test.config.spring.BasicApplicationCoreTestCommonConfig;
-import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.upgrade.service.IDataUpgradeRecordService;
@@ -19,7 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(
 		classes = BasicApplicationCoreTestCommonConfig.class,
-		initializers = ExtendedTestApplicationContextInitializer.class
+		inheritInitializers = true
 )
 public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase {
 

@@ -5,6 +5,7 @@ import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocatio
 import org.iglooproject.jpa.hibernate.analyzers.LuceneEmbeddedAnalyzerRegistry;
 import org.iglooproject.jpa.hibernate.analyzers.LuceneEmbeddedFromElasticsearchAnalyzerRegistry;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
+import org.iglooproject.spring.config.spring.annotation.CoreConfigurationLocationsAnnotationConfig;
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.test.config.spring.JpaTestApplicationPropertyConfig;
 import org.iglooproject.test.search.JpaTestSearchPackage;
@@ -24,6 +25,7 @@ import org.springframework.context.annotation.Import;
 		"classpath:igloo-jpa-search.properties"
 })
 @Import({
+	CoreConfigurationLocationsAnnotationConfig.class,
 	JpaSearchJpaTestConfig.class,
 	JpaTestApplicationPropertyConfig.class
 })

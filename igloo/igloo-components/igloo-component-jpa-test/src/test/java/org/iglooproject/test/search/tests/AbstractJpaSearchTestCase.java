@@ -6,7 +6,7 @@ import org.iglooproject.test.jpa.junit.AbstractTestCase;
 import org.iglooproject.test.search.config.spring.JpaSearchTestConfig;
 import org.springframework.test.context.ContextConfiguration;
 
-@ContextConfiguration(classes = JpaSearchTestConfig.class)
+@ContextConfiguration(classes = JpaSearchTestConfig.class, inheritInitializers = true)
 public abstract class AbstractJpaSearchTestCase extends AbstractTestCase {
 
 	@Override

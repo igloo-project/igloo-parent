@@ -3,8 +3,9 @@ package org.iglooproject.spring.config.spring.annotation;
 import org.iglooproject.config.bootstrap.spring.ApplicationConfigurerBeanFactoryPostProcessor;
 import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
-import org.springframework.context.annotation.Bean;
+import org.iglooproject.config.bootstrap.spring.config.BootstrapSpringConfiguration;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * Active la prise en compte des annotations {@link ApplicationDescription} et {@link ConfigurationLocations}.
@@ -15,11 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationLocations(locations = {
 		"classpath:igloo-component-spring.properties"
 })
+@Import(BootstrapSpringConfiguration.class)
 public class CoreConfigurationLocationsAnnotationConfig {
-
-	@Bean
-	public static ApplicationConfigurerBeanFactoryPostProcessor applicationConfigurer() {
-		return new ApplicationConfigurerBeanFactoryPostProcessor(false);
-	}
 
 }
