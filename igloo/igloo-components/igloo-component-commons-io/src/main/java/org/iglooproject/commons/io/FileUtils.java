@@ -1,4 +1,4 @@
-package org.iglooproject.commons.util;
+package org.iglooproject.commons.io;
 
 import java.io.File;
 import java.io.FileFilter;

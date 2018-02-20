@@ -19,6 +19,8 @@
 		<module>igloo-component-config-test</module>
 		
 		<module>igloo-component-jul-to-slf4j</module>
+		<module>igloo-component-truezip</module>
+		<module>igloo-component-commons-io</module>
 		
 		<module>igloo-component-commons</module>
 		<module>igloo-component-spring</module>

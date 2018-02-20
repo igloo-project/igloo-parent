@@ -1,17 +1,16 @@
-package org.iglooproject.commons.util.registry;
+package org.iglooproject.truezip.registry;
 
 import java.io.Closeable;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Sets;
 
 import de.schlichtherle.truezip.file.TFile;
 import de.schlichtherle.truezip.file.TVFS;
@@ -119,7 +118,7 @@ public final class TFileRegistry {
 	}
 	
 	private static final class TFileRegistryImpl implements Closeable {
-		private final Set<TFile> registeredFiles = Sets.newHashSet();
+		private final Set<TFile> registeredFiles = new HashSet<>();
 		
 		private TFileRegistryImpl() { }
 	

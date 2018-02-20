@@ -18,6 +18,11 @@
 			<artifactId>igloo-component-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-commons-io</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		
 		<!-- Export Excel -->
 		<dependency>

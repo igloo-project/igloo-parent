@@ -1,4 +1,4 @@
-package org.iglooproject.test.commons.util;
+package org.iglooproject.test.commons.io;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +11,7 @@ import org.apache.commons.io.filefilter.NameFileFilter;
 import org.junit.Test;
 
 import de.schlichtherle.truezip.file.TFile;
-import org.iglooproject.commons.util.FileUtils;
+import org.iglooproject.commons.io.FileUtils;
 
 public class TestFileUtils {
 

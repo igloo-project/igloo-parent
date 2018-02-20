@@ -19,7 +19,7 @@ import de.schlichtherle.truezip.file.TArchiveDetector;
 import de.schlichtherle.truezip.file.TConfig;
 import de.schlichtherle.truezip.util.SuffixSet;
 import org.iglooproject.commons.util.mime.MediaType;
-import org.iglooproject.commons.util.registry.TFileRegistry;
+import org.iglooproject.truezip.registry.TFileRegistry;
 
 public class OpenTFileRegistryFilter implements Filter {
 	
