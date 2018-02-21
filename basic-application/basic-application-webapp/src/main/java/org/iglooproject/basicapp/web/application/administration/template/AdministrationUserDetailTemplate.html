@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
+		<div wicket:id="passwordEditPopup" />
+		
 		<div class="page-content">
 			<div class="page-header">
 				<h2 class="page-header-title">
@@ -13,6 +15,36 @@
 					</a>
 					<wicket:container wicket:id="pageTitle" />
 				</h2>
+				
+				<div class="page-header-action">
+					<div class="page-header-action-container">
+						<div wicket:enclosure="passwordEdit" class="page-header-action-item">
+							<button type="button" wicket:id="passwordEdit" class="btn btn-primary">
+								<span class="fa fa-key" /> 
+								<wicket:message key="administration.user.action.password.edit" />
+							</button>
+						</div>
+						<div wicket:enclosure="passwordReset" class="page-header-action-item">
+							<button type="button" wicket:id="passwordReset" class="btn btn-primary"> 
+								<span class="fa fa-unlock-alt" />
+								<wicket:message key="administration.user.action.password.recovery.reset" />
+							</button>
+						</div>
+						<div wicket:enclosure="enable" class="page-header-action-item">
+							<button type="button" wicket:id="enable" class="btn btn-success"> 
+								<span class="fa fa-check" />
+								<wicket:message key="common.action.enable" />
+							</button>
+						</div>
+						<div wicket:enclosure="disable" class="page-header-action-item">
+							<button type="button" wicket:id="disable" class="btn btn-danger"> 
+								<span class="fa fa-times" />
+								<wicket:message key="common.action.disable" />
+							</button>
+						</div>
+						
+					</div>
+				</div>
 			</div>
 			<div class="page-body">
 				<wicket:child />
