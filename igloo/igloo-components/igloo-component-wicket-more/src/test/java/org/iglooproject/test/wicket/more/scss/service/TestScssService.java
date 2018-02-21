@@ -1,5 +1,7 @@
 package org.iglooproject.test.wicket.more.scss.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.InputStream;
 
 import org.iglooproject.test.wicket.more.AbstractWicketMoreTestCase;
@@ -50,6 +52,19 @@ public class TestScssService extends AbstractWicketMoreTestCase {
 				is.close();
 			}
 		}
+	}
+
+	/**
+	 * Test webjars://[webjar]/[version]/path urls. Version is optional.
+	 */
+	@Test
+	public void testWebjarImport() throws Exception {
+		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"style-webjars.scss",
+				false
+		);
+		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
 	}
 
 }

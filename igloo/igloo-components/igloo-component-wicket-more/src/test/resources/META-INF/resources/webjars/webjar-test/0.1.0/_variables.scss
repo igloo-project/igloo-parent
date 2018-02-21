@@ -1,0 +1,6 @@
+// test relative import
+@import "_variables2";
+// reimport from other webjar and version-less
+@import "webjars://webjar-test2/_variables.scss";
+
+$font-stack:    sans-serif;

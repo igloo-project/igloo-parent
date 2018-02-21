@@ -55,7 +55,7 @@ public class ScssServiceImpl implements IScssService {
 		String scssPath = getFullPath(scope, path);
 		
 		try {
-			JSassScopeAwareImporter importer = new JSassScopeAwareImporter(SCOPES);
+			JSassClassPathImporter importer = new JSassClassPathImporter(SCOPES);
 			importer.addSourceUri(scssPath);
 			
 			Compiler compiler = new Compiler();

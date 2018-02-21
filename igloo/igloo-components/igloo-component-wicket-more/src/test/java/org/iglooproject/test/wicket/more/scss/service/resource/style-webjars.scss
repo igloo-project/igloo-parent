@@ -1,0 +1,8 @@
+// test import in a webjar
+@import 'webjars://webjar-test/0.1.0/_variables.scss';
+
+body {
+	font-family: $font-stack;
+	font-size: $font-size;
+	font-weight: $font-weight;
+}
