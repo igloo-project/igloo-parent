@@ -72,11 +72,11 @@ public class AdministrationUserGroupDetailPage extends AdministrationTemplate {
 				.link("backToSourcePage").hideIfInvalid();
 		
 		add(
-				new CoreLabel("pageTitle", BindingModel.of(userGroupModel, Bindings.userGroup().name())),
-				
 				backToSourcePage,
 				AdministrationUserGroupListPage.linkDescriptor().link("backToList")
-						.add(Condition.componentVisible(backToSourcePage).thenHide())
+						.add(Condition.componentVisible(backToSourcePage).thenHide()),
+				
+				new CoreLabel("pageTitle", BindingModel.of(userGroupModel, Bindings.userGroup().name()))
 		);
 		
 		add(

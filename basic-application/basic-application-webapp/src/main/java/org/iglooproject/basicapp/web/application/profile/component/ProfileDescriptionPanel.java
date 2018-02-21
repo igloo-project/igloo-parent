@@ -1,7 +1,5 @@
 package org.iglooproject.basicapp.web.application.profile.component;
 
-import static org.iglooproject.commons.util.functional.Predicates2.isTrue;
-
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -42,11 +40,10 @@ public class ProfileDescriptionPanel extends GenericPanel<User> {
 				new BlankLink("passwordEdit")
 						.add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
 						.add(
-								Condition.predicate(
-										Model.of(securityManagementService.getOptions(BasicApplicationSession.get().getUser()).isPasswordUserUpdateEnabled()),
-										isTrue()
-								).thenShow()
+								Condition.isTrue(Model.of(securityManagementService.getOptions(BasicApplicationSession.get().getUser()).isPasswordUserUpdateEnabled()))
+										.thenShow()
 						),
+				
 				new CoreLabel("username", BindingModel.of(userModel, Bindings.user().username()))
 						.showPlaceholder(),
 				new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())),

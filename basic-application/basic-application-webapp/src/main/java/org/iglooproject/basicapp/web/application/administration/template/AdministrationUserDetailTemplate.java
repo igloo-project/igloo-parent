@@ -38,6 +38,7 @@ import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.beha
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
@@ -110,15 +111,20 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 		UserPasswordUpdatePopup<U> passwordEditPopup = new UserPasswordUpdatePopup<>("passwordEditPopup", userModel);
 		
 		add(
-				new CoreLabel("pageTitle", BindingModel.of(userModel, Bindings.user().fullName())),
+				backToSourcePage,
+				typeDescriptor.administrationTypeDescriptor().list().link("backToList")
+						.add(Condition.componentVisible(backToSourcePage).thenHide()),
 				
+				new CoreLabel("pageTitle", BindingModel.of(userModel, Bindings.user().fullName()))
+		);
+		
+		add(
 				passwordEditPopup,
 				new BlankLink("passwordEdit")
 						.add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
 						.add(
-								Condition.isTrue(
-										Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminUpdateEnabled())
-								).thenShow()
+								Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminUpdateEnabled()))
+										.thenShow()
 						),
 				
 				AjaxConfirmLink.<U>build()
@@ -146,9 +152,8 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 						})
 						.create("passwordReset", userModel)
 						.add(
-								Condition.isTrue(
-										Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminRecoveryEnabled())
-								).thenShow()
+								Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminRecoveryEnabled()))
+										.thenShow()
 						),
 				
 				new AjaxLink<U>("enable", userModel) {
@@ -200,19 +205,14 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 										return !user.equals(currentUser) && user.isActive();
 									}
 								}.thenShow()
-						),
-						
-				backToSourcePage,
-				typeDescriptor.administrationTypeDescriptor().list().link("backToList")
-						.add(Condition.componentVisible(backToSourcePage).thenHide())
+						)
 		);
 	}
 	
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		userModel.detach();
-		sourcePageModel.detach();
+		Detachables.detach(userModel, sourcePageModel);
 	}
 
 	@Override
