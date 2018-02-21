@@ -16,7 +16,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
-			<artifactId>igloo-dependency-hibernate-entitymanager</artifactId>
+			<artifactId>igloo-dependency-hibernate-core</artifactId>
 			<type>pom</type>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
