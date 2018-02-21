@@ -9,6 +9,7 @@
 	
 	<security:http pattern="/static/**" security="none" />
 	<security:http pattern="/monitoring/**" security="none" />
+	<security:http pattern="/webjars/**" security="none" />
 	
 	<!-- 
 		See favicon generator https://realfavicongenerator.net/

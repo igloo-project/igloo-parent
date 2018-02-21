@@ -41,7 +41,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
+
+import de.agilecoders.wicket.webjars.WicketWebjars;
+import de.agilecoders.wicket.webjars.settings.WebjarsSettings;
 
 public abstract class CoreWicketApplication extends WebApplication {
 	
@@ -88,6 +92,13 @@ public abstract class CoreWicketApplication extends WebApplication {
 	@Override
 	public void init() {
 		super.init();
+		
+		// handle webjars
+		Stopwatch watch = Stopwatch.createStarted();
+		WebjarsSettings settings = new WebjarsSettings();
+		WicketWebjars.install(this, settings);
+		watch.stop();
+		LOGGER.info("Webjars installed in {} ms.", watch.elapsed().toMillis());
 		
 		// injection Spring
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));

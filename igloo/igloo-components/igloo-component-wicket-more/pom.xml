@@ -89,6 +89,12 @@
 			<artifactId>ph-css</artifactId>
 		</dependency>
 		
+		<!-- webjars -->
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>popper.js</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>

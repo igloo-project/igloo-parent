@@ -146,6 +146,9 @@
 		<igloo.wicket.version>7.9.0</igloo.wicket.version>
 		<igloo.wiquery.version>7.0</igloo.wiquery.version>
 		<igloo.wicketstuff-select2.version>7.9.0</igloo.wicketstuff-select2.version>
+		<!-- https://github.com/l0rdn1kk0n/wicket-webjars (0.5.x -> wicket 7, 2.0.x -> wicket 8) -->
+		<igloo.wicket-webjars.version>0.5.6</igloo.wicket-webjars.version>
+		<igloo.webjars-locator-core.version>0.35</igloo.webjars-locator-core.version>
 		<igloo.wqplot.version>7.1.0.owsi1</igloo.wqplot.version>
 		
 		<igloo.less4j.version>1.17.2</igloo.less4j.version>
@@ -172,6 +175,8 @@
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
 		<igloo.byte-buddy.version>1.6.14</igloo.byte-buddy.version>
 		<igloo.embedded-elasticsearch.version>2.4.3</igloo.embedded-elasticsearch.version>
+		
+		<igloo.webjars.popper.version>1.13.0</igloo.webjars.popper.version>
 	</properties>
 	
 	<prerequisites>
@@ -1002,6 +1007,27 @@
 				</dependency>
 				
 				<dependency>
+					<groupId>de.agilecoders.wicket.webjars</groupId>
+					<artifactId>wicket-webjars</artifactId>
+					<version>${igloo.wicket-webjars.version}</version>
+				</dependency>
+				
+				<dependency>
+					<groupId>org.webjars</groupId>
+					<artifactId>webjars-locator-core</artifactId>
+					<version>${igloo.webjars-locator-core.version}</version>
+					<exclusions>
+						<!-- used only by extractor -->
+						<exclusion>
+							<artifactId>commons-compress</artifactId>
+						</exclusion>
+						<exclusion>
+							<artifactId>jackson-core</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				
+				<dependency>
 					<groupId>org.apache.wicket</groupId>
 					<artifactId>wicket-ioc</artifactId>
 					<version>${igloo.wicket.version}</version>
@@ -1266,6 +1292,12 @@
 					<groupId>pl.allegro.tech</groupId>
 					<version>${igloo.embedded-elasticsearch.version}</version>
 				</dependency>
+			
+			<dependency>
+				<groupId>org.webjars.npm</groupId>
+				<artifactId>popper.js</artifactId>
+				<version>${igloo.webjars.popper.version}</version>
+			</dependency>
 			
 		</dependencies>
 	</dependencyManagement>

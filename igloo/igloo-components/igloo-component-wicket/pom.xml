@@ -24,6 +24,13 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-wicket</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-commons</artifactId>
 			<version>${project.version}</version>
@@ -40,34 +47,6 @@
 			<artifactId>igloo-dependency-core-logging</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
-		</dependency>
-	
-		<!-- Wicket -->
-	
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket</artifactId>
-			<type>pom</type>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-ioc</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-spring</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-auth-roles</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-extensions</artifactId>
 		</dependency>
 		
 		<!-- Dependencies -->

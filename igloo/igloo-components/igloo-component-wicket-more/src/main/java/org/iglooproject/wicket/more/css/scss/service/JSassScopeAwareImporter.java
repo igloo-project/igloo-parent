@@ -7,11 +7,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.iglooproject.wicket.more.css.scss.util.JSassWebjarUrlMatcher;
+import org.iglooproject.wicket.more.css.scss.util.JSassWebjarUrlMatcher.WebjarUrl;
 import org.springframework.core.io.ClassPathResource;
+import org.webjars.WebJarAssetLocator;
 
 import com.google.common.collect.Lists;
 
@@ -19,12 +23,16 @@ import io.bit3.jsass.importer.Import;
 import io.bit3.jsass.importer.Importer;
 
 public class JSassScopeAwareImporter implements Importer {
-	
+
 	private static final Pattern SCSS_IMPORT_SCOPE_PATTERN = Pattern.compile("^\\$\\(scope-([a-zA-Z0-9_-]*)\\)(.*)$");
-	
+
+	private static final JSassWebjarUrlMatcher MATCHER = JSassWebjarUrlMatcher.INSTANCE;
+
 	private final Map<String, Class<?>> scopes;
 	
 	private List<String> sourceUris = Lists.newArrayList();
+
+	private WebJarAssetLocator webjarLocator = new WebJarAssetLocator();
 
 	public JSassScopeAwareImporter(Map<String, Class<?>> scopes) {
 		this.scopes = scopes;
@@ -44,6 +52,12 @@ public class JSassScopeAwareImporter implements Importer {
 					throw new IllegalStateException(String.format("Scope %1$s is not supported", scopeMatcher.group(1)));
 				}
 				url = "classpath:/" + referencedScope.getPackage().getName().replace(".", "/") + "/" + scopeMatcher.group(2);
+			} else if (MATCHER.test(url)) {
+				WebjarUrl webjarUrl = MATCHER.match(url);
+				url = webjarLocator.getFullPath(webjarUrl.getProtocol(), String.format("%s%s",
+						Optional.<String>of(webjarUrl.getVersion()).map("/"::concat).orElse(""),
+						webjarUrl.getResourcePath()
+				));
 			}
 			
 			url = url.replaceFirst(".scss$", "");

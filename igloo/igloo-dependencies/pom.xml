@@ -23,6 +23,7 @@
 		<module>igloo-dependency-hibernate-core</module>
 		<module>igloo-dependency-hibernate-search</module>
 		<module>igloo-dependency-less4j</module>
+		<module>igloo-dependency-wicket</module>
 		
 		<module>igloo-dependency-test</module>
 		<module>igloo-dependency-elasticsearch-test</module>
