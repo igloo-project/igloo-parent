@@ -10,4 +10,10 @@ public class ConsoleEnvironmentPanel extends EnvironmentPanel {
 		super(id);
 	}
 
+	@Override
+	protected void onConfigure() {
+		super.onConfigure();
+		setVisible(true);
+	}
+
 }

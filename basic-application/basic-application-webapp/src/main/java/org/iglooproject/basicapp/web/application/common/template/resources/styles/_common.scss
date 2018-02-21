@@ -50,11 +50,26 @@ html {
 	}
 	
 	&.environment-section {
-		@extend .bg-warning;
-		@extend .text-dark;
+		@extend .bg-secondary;
+		@extend .text-white;
 		
 		&.environment-section-dismissed {
 			height: 8px;
+		}
+		
+		&.development {
+			@extend .bg-success;
+			@extend .text-white;
+		}
+		
+		&.testing {
+			@extend .bg-info;
+			@extend .text-white;
+		}
+		
+		&.staging {
+			@extend .bg-warning;
+			@extend .text-dark;
 		}
 		
 		&.production {
