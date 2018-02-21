@@ -1,6 +1,5 @@
 package org.iglooproject.basicapp.web.application.administration.form;
 
-import static com.google.common.base.Predicates.equalTo;
 import static org.iglooproject.commons.util.functional.Predicates2.isTrue;
 
 import java.util.Collections;
@@ -10,7 +9,6 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
@@ -43,13 +41,14 @@ import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
-import org.iglooproject.wicket.more.markup.html.form.FormPanelMode;
+import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +74,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
 
-	private final FormPanelMode mode;
+	private final IModel<FormMode> formModeModel = new Model<>(FormMode.ADD);
 
 	private final UserTypeDescriptor<U> typeDescriptor;
 
@@ -89,29 +88,20 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	private final IModel<String> confirmPasswordModel = Model.of();
 
-	public AbstractUserPopup(String id, IModel<U> userModel, UserTypeDescriptor<U> typeDescriptor) {
-		this(id, userModel, FormPanelMode.EDIT, typeDescriptor);
-	}
-
-	public AbstractUserPopup(String id, UserTypeDescriptor<U> typeDescriptor) {
-		this(id, new GenericEntityModel<Long, U>(), FormPanelMode.ADD, typeDescriptor);
-	}
-
-	private AbstractUserPopup(String id, IModel<U> userModel, FormPanelMode mode, UserTypeDescriptor<U> typeDescriptor) {
-		super(id, userModel);
-		setStatic();
+	protected AbstractUserPopup(String id, UserTypeDescriptor<U> typeDescriptor) {
+		super(id, new GenericEntityModel<Long, U>());
 		
-		this.mode = mode;
 		this.typeDescriptor = typeDescriptor;
 	}
 
 	@Override
 	protected Component createHeader(String wicketId) {
-		if (isAddMode()) {
-			return new CoreLabel(wicketId, new ResourceModel("administration.user.action.add.title"));
-		} else {
-			return new CoreLabel(wicketId, new StringResourceModel("administration.user.action.edit.title", getModel()));
-		}
+		return new CoreLabel(
+				wicketId,
+				addModeCondition()
+						.then(new ResourceModel("administration.user.action.add.title"))
+						.otherwise(new StringResourceModel("administration.user.action.edit.title", getModel()))
+		);
 	}
 
 	protected final Component createStandardUserFields(String wicketId) {
@@ -133,7 +123,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 						.add(USERNAME_PATTERN_VALIDATOR)
 						.add(new UsernameUnicityValidator(getModel())),
 				new EnclosureContainer("addContainer")
-						.condition(Condition.predicate(Model.of(mode), equalTo(FormPanelMode.ADD)))
+						.condition(addModeCondition())
 						.add(
 								new EnclosureContainer("passwordContainer")
 										.condition(Condition.predicate(Model.of(securityManagementService.getOptions(typeDescriptor.getEntityClass()).isPasswordAdminUpdateEnabled()), isTrue()))
@@ -175,76 +165,75 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 	protected Component createFooter(String wicketId) {
 		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, AbstractUserPopup.class);
 		
-		// Validate button
-		AjaxButton validate = new AjaxButton("save", userForm) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
-				User user = AbstractUserPopup.this.getModelObject();
-				
-				try {
-					if (isAddMode()) {
-						String password = passwordModel.getObject();
+		footer.add(
+				new AjaxButton("save", userForm) {
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					protected void onAfterSubmit(AjaxRequestTarget target, Form<?> form) {
+						User user = AbstractUserPopup.this.getModelObject();
 						
-						userService.create(user);
-						userService.onCreate(user, BasicApplicationSession.get().getUser());
-						
-						if (StringUtils.hasText(password)) {
-							securityManagementService.updatePassword(user, password, BasicApplicationSession.get().getUser());
-						} else {
-							securityManagementService.initiatePasswordRecoveryRequest(
-									user,
-									UserPasswordRecoveryRequestType.CREATION,
-									UserPasswordRecoveryRequestInitiator.ADMIN,
-									BasicApplicationSession.get().getUser()
-							);
-							
-							getSession().success(getString("administration.user.action.add.success.notification"));
+						try {
+							if (addModeCondition().applies()) {
+								String password = passwordModel.getObject();
+								
+								userService.create(user);
+								userService.onCreate(user, BasicApplicationSession.get().getUser());
+								
+								if (StringUtils.hasText(password)) {
+									securityManagementService.updatePassword(user, password, BasicApplicationSession.get().getUser());
+								} else {
+									securityManagementService.initiatePasswordRecoveryRequest(
+											user,
+											UserPasswordRecoveryRequestType.CREATION,
+											UserPasswordRecoveryRequestInitiator.ADMIN,
+											BasicApplicationSession.get().getUser()
+									);
+									
+									getSession().success(getString("administration.user.action.add.success.notification"));
+								}
+								
+								getSession().success(getString("common.success"));
+								
+								throw AdministrationUserDetailTemplate.<U>mapper()
+										.ignoreParameter2()
+										.map(AbstractUserPopup.this.getModel())
+										.newRestartResponseException();
+							} else {
+								User authenticatedUser = BasicApplicationSession.get().getUser();
+								if (authenticatedUser != null && authenticatedUser.equals(user) && user.getLocale() != null) {
+									BasicApplicationSession.get().setLocale(user.getLocale());
+								}
+								userService.update(user);
+								getSession().success(getString("common.success"));
+								closePopup(target);
+								target.add(getPage());
+							}
+						} catch (RestartResponseException e) { // NOSONAR
+							throw e;
+						} catch (Exception e) {
+							if (addModeCondition().applies()) {
+								LOGGER.error("Error occured while creating user", e);
+							} else {
+								LOGGER.error("Error occured while updating user", e);
+							}
+							Session.get().error(getString("common.error.unexpected"));
 						}
-						
-						getSession().success(getString("common.success"));
-						
-						throw AdministrationUserDetailTemplate.<U>mapper()
-								.ignoreParameter2()
-								.map(AbstractUserPopup.this.getModel())
-								.newRestartResponseException();
-					} else {
-						User authenticatedUser = BasicApplicationSession.get().getUser();
-						if (authenticatedUser != null && authenticatedUser.equals(user) && user.getLocale() != null) {
-							BasicApplicationSession.get().setLocale(user.getLocale());
-						}
-						userService.update(user);
-						getSession().success(getString("common.success"));
-						closePopup(target);
-						target.add(getPage());
+						FeedbackUtils.refreshFeedback(target, getPage());
 					}
-				} catch (RestartResponseException e) { // NOSONAR
-					throw e;
-				} catch (Exception e) {
-					if (isAddMode()) {
-						LOGGER.error("Error occured while creating user", e);
-					} else {
-						LOGGER.error("Error occured while updating user", e);
+					
+					@Override
+					protected void onError(AjaxRequestTarget target, Form<?> form) {
+						FeedbackUtils.refreshFeedback(target, getPage());
 					}
-					Session.get().error(getString("common.error.unexpected"));
 				}
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-			
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-		};
-		Label validateLabel;
-		if (isAddMode()) {
-			validateLabel = new CoreLabel("validateLabel", new ResourceModel("common.action.create"));
-		} else {
-			validateLabel = new CoreLabel("validateLabel", new ResourceModel("common.action.save"));
-		}
-		validate.add(validateLabel);
-		footer.add(validate);
+						.add(new CoreLabel(
+								"label",
+								addModeCondition()
+										.then(new ResourceModel("common.action.create"))
+										.otherwise(new ResourceModel("common.action.save"))
+						))
+		);
 		
 		BlankLink cancel = new BlankLink("cancel");
 		addCancelBehavior(cancel);
@@ -253,12 +242,22 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 		return footer;
 	}
 
-	protected boolean isEditMode() {
-		return FormPanelMode.EDIT.equals(mode);
+	public void setUpAdd(U user) {
+		getModel().setObject(user);
+		formModeModel.setObject(FormMode.ADD);
 	}
 
-	protected boolean isAddMode() {
-		return FormPanelMode.ADD.equals(mode);
+	public void setUpEdit(U user) {
+		getModel().setObject(user);
+		formModeModel.setObject(FormMode.EDIT);
+	}
+
+	protected Condition addModeCondition() {
+		return FormMode.ADD.condition(formModeModel);
+	}
+
+	protected Condition editModeCondition() {
+		return FormMode.EDIT.condition(formModeModel);
 	}
 
 	@Override
@@ -267,17 +266,9 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 	}
 
 	@Override
-	protected void onShow(AjaxRequestTarget target) {
-		super.onShow(target);
-		if (isAddMode()) {
-			getModel().setObject(typeDescriptor.administrationTypeDescriptor().newInstance());
-		}
-	}
-	
-	@Override
 	protected void onDetach() {
 		super.onDetach();
-		passwordModel.detach();
-		confirmPasswordModel.detach();
+		Detachables.detach(passwordModel, confirmPasswordModel);
 	}
+
 }

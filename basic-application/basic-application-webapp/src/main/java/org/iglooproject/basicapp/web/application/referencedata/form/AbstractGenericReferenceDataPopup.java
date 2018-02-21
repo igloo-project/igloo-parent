@@ -13,8 +13,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.referencedata.service.IGenericReferenceDataService;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
-import org.iglooproject.wicket.more.markup.html.form.FormPanelMode;
+import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
@@ -33,7 +34,7 @@ public abstract class AbstractGenericReferenceDataPopup<T extends GenericReferen
 
 	protected Form<T> form;
 
-	protected final IModel<FormPanelMode> modeModel = new Model<>(FormPanelMode.ADD);
+	protected final IModel<FormMode> formModeModel = new Model<>(FormMode.ADD);
 
 	public AbstractGenericReferenceDataPopup(String id) {
 		super(id, new GenericEntityModel<Long, T>());
@@ -41,7 +42,7 @@ public abstract class AbstractGenericReferenceDataPopup<T extends GenericReferen
 
 	@Override
 	protected Component createHeader(String wicketId) {
-		return new CoreLabel(wicketId, new StringResourceModel("referenceData.${}.title", modeModel));
+		return new CoreLabel(wicketId, new StringResourceModel("referenceData.${}.title", formModeModel));
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public abstract class AbstractGenericReferenceDataPopup<T extends GenericReferen
 				T referenceData = AbstractGenericReferenceDataPopup.this.getModelObject();
 				
 				try {
-					if (isAddMode()) {
+					if (addModeCondition().applies()) {
 						onSubmitAddMode(referenceData);
 						Session.get().success(getString("referenceData.ADD.success"));
 					} else {
@@ -71,7 +72,7 @@ public abstract class AbstractGenericReferenceDataPopup<T extends GenericReferen
 				} catch (RestartResponseException e) { // NOSONAR
 					throw e;
 				} catch (Exception e) {
-					if (isAddMode()) {
+					if (addModeCondition().applies()) {
 						LOGGER.error("Error adding a reference data.", e);
 					} else {
 						LOGGER.error("Error updating a reference data.", e);
@@ -96,12 +97,12 @@ public abstract class AbstractGenericReferenceDataPopup<T extends GenericReferen
 	
 	public void setUpAdd(T referenceData) {
 		getModel().setObject(referenceData);
-		modeModel.setObject(FormPanelMode.ADD);
+		formModeModel.setObject(FormMode.ADD);
 	}
 	
 	public void setUpEdit(T referenceData) {
 		getModel().setObject(referenceData);
-		modeModel.setObject(FormPanelMode.EDIT);
+		formModeModel.setObject(FormMode.EDIT);
 	}
 	
 	protected void onSubmitAddMode(T referenceData) {
@@ -112,8 +113,12 @@ public abstract class AbstractGenericReferenceDataPopup<T extends GenericReferen
 		genericReferenceDataService.update(referenceData);
 	}
 	
-	protected boolean isAddMode() {
-		return FormPanelMode.ADD.equals(modeModel.getObject());
+	protected Condition addModeCondition() {
+		return FormMode.ADD.condition(formModeModel);
+	}
+	
+	protected Condition editModeCondition() {
+		return FormMode.EDIT.condition(formModeModel);
 	}
 	
 	protected abstract void refresh(AjaxRequestTarget target);

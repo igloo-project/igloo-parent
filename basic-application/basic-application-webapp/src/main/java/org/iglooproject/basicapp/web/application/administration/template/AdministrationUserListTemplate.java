@@ -4,6 +4,7 @@ import static org.iglooproject.basicapp.web.application.property.BasicApplicatio
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.wicket.Page;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.panel.Fragment;
@@ -68,7 +69,13 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 				addPopup,
 				new BlankLink("add")
 						.add(
-								new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK)
+								new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
+									private static final long serialVersionUID = 1L;
+									@Override
+									protected void onShow(AjaxRequestTarget target) {
+										addPopup.setUpAdd(typeDescriptor.administrationTypeDescriptor().newInstance());
+									}
+								}
 						)
 		);
 		
@@ -99,8 +106,7 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 	
 	protected abstract AbstractUserPopup<U> createAddPopup(String wicketId);
 	
-	protected DecoratedCoreDataTablePanel<U, ?> createDataTable(String wicketId, final AbstractUserDataProvider<U> dataProvider,
-			int itemsPerPage) {
+	protected DecoratedCoreDataTablePanel<U, ?> createDataTable(String wicketId, final AbstractUserDataProvider<U> dataProvider, int itemsPerPage) {
 		PageModel<Page> pageModel = new PageModel<Page>(this);
 		
 		return DataTableBuilder.start(dataProvider, dataProvider.getSortModel())

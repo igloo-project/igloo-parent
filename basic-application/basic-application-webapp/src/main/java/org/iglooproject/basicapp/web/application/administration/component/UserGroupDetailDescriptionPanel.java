@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.component;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -30,7 +31,7 @@ public class UserGroupDetailDescriptionPanel extends GenericPanel<UserGroup> {
 	public UserGroupDetailDescriptionPanel(String id, final IModel<UserGroup> userGroupModel) {
 		super(id, userGroupModel);
 		
-		UserGroupPopup editPopup = new UserGroupPopup("editPopup", getModel());
+		UserGroupPopup editPopup = new UserGroupPopup("editPopup");
 		
 		add(
 				new EnclosureContainer("lockedWarningContainer")
@@ -59,7 +60,13 @@ public class UserGroupDetailDescriptionPanel extends GenericPanel<UserGroup> {
 				
 				editPopup,
 				new BlankLink("edit")
-						.add(new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK))
+						.add(new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK) {
+							private static final long serialVersionUID = 1L;
+							@Override
+							protected void onShow(AjaxRequestTarget target) {
+								editPopup.setUpEdit(getModelObject());
+							}
+						})
 		);
 	}
 }

@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.component;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -38,7 +39,13 @@ public class UserDetailDescriptionPanel<U extends User> extends GenericPanel<U> 
 		add(
 				editPopup,
 				new BlankLink("edit")
-						.add(new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK)),
+						.add(new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK) {
+							private static final long serialVersionUID = 1L;
+							@Override
+							protected void onShow(AjaxRequestTarget target) {
+								editPopup.setUpEdit(getModelObject());
+							}
+						}),
 				
 				new CoreLabel("username", BindingModel.of(userModel, Bindings.user().username()))
 						.showPlaceholder(),
@@ -57,6 +64,6 @@ public class UserDetailDescriptionPanel<U extends User> extends GenericPanel<U> 
 	}
 	
 	protected AbstractUserPopup<U> createEditPopup(String wicketId, IModel<U> model, UserTypeDescriptor<U> typeDescriptor) {
-		return new UserPopup<U>(wicketId, getModel(), typeDescriptor);
+		return new UserPopup<U>(wicketId, typeDescriptor);
 	}
 }

@@ -5,7 +5,6 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Check;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -27,9 +26,10 @@ import org.iglooproject.commons.util.functional.Suppliers2;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.form.CheckGroup;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.model.PageModel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
-import org.iglooproject.wicket.more.markup.html.form.FormPanelMode;
+import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
@@ -52,31 +52,22 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 	@SpringBean
 	private BasicApplicationAuthorityUtils authorityUtils;
 
+	private final IModel<FormMode> formModeModel = new Model<>(FormMode.ADD);
+
 	private Form<UserGroup> userGroupForm;
 
-	private FormPanelMode mode;
-
-	public UserGroupPopup(String id, IModel<UserGroup> userGroupModel) {
-		this(id, userGroupModel, FormPanelMode.EDIT);
-	}
-
 	public UserGroupPopup(String id) {
-		this(id, new GenericEntityModel<Long, UserGroup>(new UserGroup()), FormPanelMode.ADD);
-	}
-
-	protected UserGroupPopup(String id, IModel<UserGroup> userGroupModel, FormPanelMode mode) {
-		super(id, userGroupModel);
-		
-		this.mode = mode;
+		super(id, new GenericEntityModel<Long, UserGroup>(new UserGroup()));
 	}
 
 	@Override
 	protected Component createHeader(String wicketId) {
-		if (isAddMode()) {
-			return new Label(wicketId, new ResourceModel("administration.userGroup.action.add.title"));
-		} else {
-			return new Label(wicketId, new StringResourceModel("administration.userGroup.action.edit.title").setModel(getModel()));
-		}
+		return new CoreLabel(
+				wicketId,
+				addModeCondition()
+						.then(new ResourceModel("administration.userGroup.action.add.title"))
+						.otherwise(new StringResourceModel("administration.userGroup.action.edit.title", getModel()))
+		);
 	}
 
 	@Override
@@ -118,51 +109,51 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 	protected Component createFooter(String wicketId) {
 		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserGroupPopup.class);
 		
-		AjaxButton validate = new AjaxButton("save", userGroupForm) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				UserGroup userGroup = UserGroupPopup.this.getModelObject();
-				
-				try {
-					if (isAddMode()) {
-						userGroupService.create(userGroup);
-						Session.get().success(getString("common.success"));
-						throw AdministrationUserGroupDetailPage.linkDescriptor(UserGroupPopup.this.getModel(), PageModel.of(getPage()))
-								.newRestartResponseException();
-					} else {
-						userGroupService.update(userGroup);
-						Session.get().success(getString("common.success"));
+		footer.add(
+				new AjaxButton("save", userGroupForm) {
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+						UserGroup userGroup = UserGroupPopup.this.getModelObject();
+						
+						try {
+							if (addModeCondition().applies()) {
+								userGroupService.create(userGroup);
+								Session.get().success(getString("common.success"));
+								throw AdministrationUserGroupDetailPage.linkDescriptor(UserGroupPopup.this.getModel(), PageModel.of(getPage()))
+										.newRestartResponseException();
+							} else {
+								userGroupService.update(userGroup);
+								Session.get().success(getString("common.success"));
+							}
+							closePopup(target);
+							target.add(getPage());
+						} catch (RestartResponseException e) { // NOSONAR
+							throw e;
+						} catch (Exception e) {
+							if (addModeCondition().applies()) {
+								LOGGER.error("Error occured while creating user group", e);
+							} else {
+								LOGGER.error("Error occured while updating user group", e);
+							}
+							Session.get().error(getString("common.error.unexpected"));
+						}
+						FeedbackUtils.refreshFeedback(target, getPage());
 					}
-					closePopup(target);
-					target.add(getPage());
-				} catch (RestartResponseException e) { // NOSONAR
-					throw e;
-				} catch (Exception e) {
-					if (isAddMode()) {
-						LOGGER.error("Error occured while creating user group", e);
-					} else {
-						LOGGER.error("Error occured while updating user group", e);
+					
+					@Override
+					protected void onError(AjaxRequestTarget target, Form<?> form) {
+						FeedbackUtils.refreshFeedback(target, getPage());
 					}
-					Session.get().error(getString("common.error.unexpected"));
 				}
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-			
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-		};
-		Label validateLabel;
-		if (isAddMode()) {
-			validateLabel = new CoreLabel("validateLabel", new ResourceModel("common.action.create"));
-		} else {
-			validateLabel = new CoreLabel("validateLabel", new ResourceModel("common.action.save"));
-		}
-		validate.add(validateLabel);
-		footer.add(validate);
+				.add(new CoreLabel(
+						"label",
+						addModeCondition()
+								.then(new ResourceModel("common.action.create"))
+								.otherwise(new ResourceModel("common.action.save"))
+				))
+		);
 		
 		BlankLink cancel = new BlankLink("cancel");
 		addCancelBehavior(cancel);
@@ -171,12 +162,22 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 		return footer;
 	}
 
-	protected boolean isEditMode() {
-		return FormPanelMode.EDIT.equals(mode);
+	public void setUpAdd(UserGroup userGroup) {
+		getModel().setObject(userGroup);
+		formModeModel.setObject(FormMode.ADD);
 	}
 
-	protected boolean isAddMode() {
-		return FormPanelMode.ADD.equals(mode);
+	public void setUpEdit(UserGroup userGroup) {
+		getModel().setObject(userGroup);
+		formModeModel.setObject(FormMode.EDIT);
+	}
+
+	protected Condition addModeCondition() {
+		return FormMode.ADD.condition(formModeModel);
+	}
+
+	protected Condition editModeCondition() {
+		return FormMode.EDIT.condition(formModeModel);
 	}
 
 	@Override
@@ -184,11 +185,4 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 		return Model.of("modal-usergroup");
 	}
 
-	@Override
-	protected void onShow(AjaxRequestTarget target) {
-		super.onShow(target);
-		if (isAddMode()) {
-			getModel().setObject(new UserGroup());
-		}
-	}
 }

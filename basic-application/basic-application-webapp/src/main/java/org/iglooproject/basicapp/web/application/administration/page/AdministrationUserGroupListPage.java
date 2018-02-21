@@ -77,7 +77,13 @@ public class AdministrationUserGroupListPage extends AdministrationTemplate {
 		add(
 				addPopup,
 				new BlankLink("add")
-						.add(new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK)),
+						.add(new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
+							private static final long serialVersionUID = 1L;
+							@Override
+							protected void onShow(AjaxRequestTarget target) {
+								addPopup.setUpAdd(new UserGroup());
+							}
+						}),
 				
 				DataTableBuilder.start(ReadOnlyCollectionModel.of(userGroupListModel, GenericEntityModel.factory()))
 						.addLabelColumn(new ResourceModel("business.userGroup.name"), Bindings.userGroup().name())

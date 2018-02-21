@@ -158,7 +158,6 @@ public abstract class AbstractReferenceDataListPanel<
 				new WebMarkupContainer("edit")
 						.add(new AjaxModalOpenBehavior(getPopup(), MouseEvent.CLICK) {
 							private static final long serialVersionUID = 1L;
-							
 							@Override
 							protected void onShow(AjaxRequestTarget target) {
 								getPopup().setUpEdit(itemModel.getObject());
@@ -179,7 +178,6 @@ public abstract class AbstractReferenceDataListPanel<
 				new WebMarkupContainer("add")
 						.add(new AjaxModalOpenBehavior(getPopup(), MouseEvent.CLICK) {
 							private static final long serialVersionUID = 1L;
-							
 							@Override
 							protected void onShow(AjaxRequestTarget target) {
 								getPopup().setUpAdd(getNewInstance());
