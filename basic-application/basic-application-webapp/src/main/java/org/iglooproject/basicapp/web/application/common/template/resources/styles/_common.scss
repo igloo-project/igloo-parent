@@ -164,15 +164,28 @@ html {
 	opacity: 0;
 	display: none;
 	position: fixed;
-	left: 10px;
-	bottom: 10px;
-	color: $white;
-	background-color: $primary;
-	border-radius: .2rem;
+	left: 35px;
+	bottom: 35px;
 	z-index: $zindex-scroll-to-top;
-	cursor: pointer;
-	padding: .5rem;
 	
+	> .scroll-to-top-btn {
+		@extend .btn;
+		@extend .btn-primary;
+		
+		@extend .d-flex;
+		@extend .justify-content-center;
+		@extend .align-items-center;
+		
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		padding: .5rem;
+		
+		.scroll-to-top-icon {
+			font-size: 30px;
+		}
+	}
+
 	@include media-breakpoint-down(xs) {
 		display: none !important;
 	}
