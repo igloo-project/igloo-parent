@@ -1,5 +1,6 @@
 package org.iglooproject.wicket.bootstrap4.console.template;
 
+import static org.iglooproject.spring.property.SpringPropertyIds.IGLOO_VERSION;
 import static org.iglooproject.spring.property.SpringPropertyIds.VERSION;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
@@ -18,6 +19,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -138,7 +140,12 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		
 		add(ConsoleConfiguration.get().getConsoleHeaderAdditionalContentFactory().create("headerAdditionalContent"));
 		
-		add(new CoreLabel("version", ApplicationPropertyModel.of(VERSION)));
+		add(
+				new CoreLabel("version", propertyService.get(VERSION))
+						.add(new AttributeModifier("title", new StringResourceModel("common.version.full")
+								.setParameters(ApplicationPropertyModel.of(VERSION), ApplicationPropertyModel.of(IGLOO_VERSION))
+						))
+		);
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		
