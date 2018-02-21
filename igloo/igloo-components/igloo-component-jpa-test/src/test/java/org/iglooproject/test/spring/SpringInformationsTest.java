@@ -1,7 +1,11 @@
 package org.iglooproject.test.spring;
 
+import static org.assertj.core.api.Assertions.anyOf;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.regex.Pattern;
+
+import org.assertj.core.api.Condition;
 import org.iglooproject.config.bootstrap.spring.annotations.ManifestPropertySource;
 import org.iglooproject.spring.config.spring.IglooVersionInfoConfig;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
@@ -22,7 +26,12 @@ public class SpringInformationsTest extends AbstractJpaCoreTestCase {
 	@Test
 	public void iglooInformations() {
 		// test that igloo version is correctly read from MANIFEST files
-		assertThat(version).matches("[0-9]\\.[0-9].*");
+		// deployed jar provides version number
+		Condition<String> real = new Condition<>((s) -> Pattern.matches("[0-9]\\.[0-9].*", s), "A normal version pattern");
+		// maven test provides only a fake MANIFEST.MF
+		Condition<String> workaround = new Condition<>("placeholder"::equals, "A placeholder pattern");
+		Condition<String> versionCondition = anyOf(real, workaround);
+		assertThat(version).is(versionCondition);
 		assertThat(buildUserName).isNotBlank();
 	}
 }

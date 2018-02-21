@@ -5,7 +5,7 @@ set +e
 
 MAVEN_OPTS="$MAVEN_OPTS -Dallure.install.directory=$( pwd )/.allure"
 echo mvn -Dallure.enabled=true -fae clean test site:site
-mvn -Dallure.enabled=true -fae clean package site:site
+mvn -Dallure.enabled=true -fae clean test site:site
 TEST_RESULT=$?
 
 # interrupt on error
