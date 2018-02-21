@@ -41,7 +41,7 @@
 		<igloo.bindgen.version>4.0.0</igloo.bindgen.version>
 		<igloo.bindgen-java.version>1.0.0</igloo.bindgen-java.version>
 		
-		<igloo.spring-security.version>5.0.1.RELEASE</igloo.spring-security.version>
+		<igloo.spring-security.version>5.0.2.RELEASE</igloo.spring-security.version>
 		
 		<igloo.spring-ldap.version>2.3.2.RELEASE</igloo.spring-ldap.version>
 		
