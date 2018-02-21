@@ -109,7 +109,6 @@
 		<igloo.itext.version>2.1.7</igloo.itext.version>
 		
 		<igloo.json-lib.version>2.3</igloo.json-lib.version>
-		<igloo.jackson.version>1.9.13</igloo.jackson.version>
 		<igloo.jackson2-core.version>2.9.4</igloo.jackson2-core.version>
 		<igloo.jackson2-annotations.version>${igloo.jackson2-core.version}</igloo.jackson2-annotations.version>
 		<igloo.jackson2-databind.version>${igloo.jackson2-core.version}</igloo.jackson2-databind.version>
@@ -676,22 +675,6 @@
 				</dependency>
 			
 			<!-- Jackson -->
-			
-				<!-- Jackson 1 -->
-				
-					<dependency>
-						<groupId>org.codehaus.jackson</groupId>
-						<artifactId>jackson-core-asl</artifactId>
-						<version>${igloo.jackson.version}</version>
-					</dependency>
-					
-					<dependency>
-						<groupId>org.codehaus.jackson</groupId>
-						<artifactId>jackson-mapper-asl</artifactId>
-						<version>${igloo.jackson.version}</version>
-					</dependency>
-				
-				<!-- Jackson 2 -->
 				
 					<dependency>
 						<groupId>com.fasterxml.jackson.core</groupId>
