@@ -1,28 +1,33 @@
 package org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.apache.wicket.markup.head.HeaderItem;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.util.BootstrapUtilJavaScriptResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.popper.PopperJavaScriptResourceReference;
+import org.iglooproject.wicket.more.webjars.WebjarUtil;
 
-public final class BootstrapTooltipJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
+import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
+
+public final class BootstrapTooltipJavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
 
 	private static final long serialVersionUID = 1302122786281225341L;
+
+	private static final Supplier<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
+			PopperJavaScriptResourceReference.get(),
+			BootstrapUtilJavaScriptResourceReference.get()
+	);
 
 	private static final BootstrapTooltipJavaScriptResourceReference INSTANCE = new BootstrapTooltipJavaScriptResourceReference();
 
 	private BootstrapTooltipJavaScriptResourceReference() {
-		super(BootstrapTooltipJavaScriptResourceReference.class, "tooltip-patch.js");
+		super("bootstrap-override/current/js/dist/tooltip.js");
 	}
 
 	@Override
-	protected List<HeaderItem> getPluginDependencies() {
-		return forReferences(
-				PopperJavaScriptResourceReference.get(),
-				BootstrapUtilJavaScriptResourceReference.get()
-		);
+	public List<HeaderItem> getDependencies() {
+		return DEPENDENCIES.get();
 	}
 
 	public static BootstrapTooltipJavaScriptResourceReference get() {

@@ -251,6 +251,8 @@ const Tooltip = (($) => {
           return
         }
 
+        const that = this
+
         const tip   = this.getTipElement()
         const tipId = Util.getUID(this.constructor.NAME)
 
@@ -330,6 +332,13 @@ const Tooltip = (($) => {
           }
         }
 
+        const disposeTooltip = () => {
+          if (!$(that.element).is(":visible")) {
+            that.dispose()
+          }
+        };
+        this.disposeTooltipIntervalId = setInterval(disposeTooltip, 500);
+
         if (Util.supportsTransitionEnd() && $(this.tip).hasClass(ClassName.FADE)) {
           $(this.tip)
             .one(Util.TRANSITION_END, complete)
@@ -385,6 +394,10 @@ const Tooltip = (($) => {
           .emulateTransitionEnd(TRANSITION_DURATION)
       } else {
         complete()
+      }
+
+      if (this.disposeTooltipIntervalId) {
+        clearInterval(this.disposeTooltipIntervalId);
       }
 
       this._hoverState = ''
