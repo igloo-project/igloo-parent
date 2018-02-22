@@ -155,10 +155,6 @@ const Modal = (($) => {
         event.preventDefault()
       }
 
-      if (this._isTransitioning || !this._isShown) {
-        return
-      }
-
       const hideEvent = $.Event(Event.HIDE)
 
       $(this._element).trigger(hideEvent)
