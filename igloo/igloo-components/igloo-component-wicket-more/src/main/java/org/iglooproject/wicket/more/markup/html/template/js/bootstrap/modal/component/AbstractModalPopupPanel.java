@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.Markup;
 import org.apache.wicket.markup.MarkupFactory;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -58,6 +59,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 										.add(new ClassAttributeAppender(dialogCssClassModel))
 						)
 						.add(new ClassAttributeAppender(getCssClassNamesModel()))
+						.add(new AttributeAppender("tabindex", Model.of("-1")))
 						.setOutputMarkupId(true)
 		);
 	}
