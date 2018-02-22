@@ -11,6 +11,8 @@ public final class CssClassConstants {
 	public static final String BTN_SM = "btn-sm";
 	public static final String BTN_LG = "btn-lg";
 
+	public static final String ROW_DISABLED = "disabled-table-row";
+
 	private CssClassConstants() {
 	}
 

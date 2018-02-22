@@ -12,6 +12,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
+import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
@@ -89,6 +90,8 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 	private final List<CustomizableToolbarBuilder<T, S>> bottomToolbarBuilders = Lists.newArrayList();
 
+	private final List<Function<T, String>> rowCssClassProviders = Lists.newArrayList();
+
 	private boolean showTopToolbar = true;
 	
 	private boolean showBottomToolbar = true;
@@ -96,8 +99,10 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	private IDataTableFactory<T, S> factory = new IDataTableFactory<T, S>() {
 		private static final long serialVersionUID = 1L;
 		@Override
-		public CoreDataTable<T, S> create(String id, Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider, long rowsPerPage) {
-			return new CoreDataTable<T, S>(id, columns, sequenceProvider, rowsPerPage);
+		public CoreDataTable<T, S> create(String id, Map<IColumn<T, S>, Condition> columns,
+				ISequenceProvider<T> sequenceProvider, List<Function<T, String>> rowCssClassProviders,
+				long rowsPerPage) {
+			return new CoreDataTable<T, S>(id, columns, sequenceProvider, rowCssClassProviders, rowsPerPage);
 		}
 	};
 
@@ -364,6 +369,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
+	public DataTableBuilder<T, S> addRowCssClass(SerializableFunction<T, String> cssClassProvider) {
+		rowCssClassProviders.add(cssClassProvider);
+		return this;
+	}
+	
+	@Override
 	public DataTableBuilder<T, S> withNoRecordsResourceKey(String noRecordsResourceKey) {
 		this.noRecordsResourceKey = noRecordsResourceKey;
 		return this;
@@ -395,7 +406,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 	@Override
 	public CoreDataTable<T, S> build(String id, long rowsPerPage) {
-		CoreDataTable<T, S> dataTable = factory.create(id, columns, sequenceProvider, rowsPerPage);
+		CoreDataTable<T, S> dataTable = factory.create(id, columns, sequenceProvider, rowCssClassProviders, rowsPerPage);
 		finalizeBuild(dataTable);
 		return dataTable;
 	}
@@ -536,6 +547,11 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public ActionColumnBuilder<T, IAddedCoreColumnState<T, S>> addActionColumn(IModel<String> headerLabelModel) {
 			return DataTableBuilder.this.addActionColumn(headerLabelModel);
+		}
+
+		@Override
+		public IBuildState<T, S> addRowCssClass(SerializableFunction<T, String> cssClassProvider) {
+			return DataTableBuilder.this.addRowCssClass(cssClassProvider);
 		}
 
 		@Override
@@ -1087,6 +1103,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 					factory,
 					columns,
 					sequenceProvider,
+					rowCssClassProviders,
 					rowsPerPage,
 					addInComponentFactories,
 					responsiveCondition
@@ -1117,7 +1134,8 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
 			BootstrapCardCoreDataTablePanel<T, S> panel = new BootstrapCardCoreDataTablePanel<T, S>(id, factory,
-					columns, sequenceProvider, rowsPerPage, addInComponentFactories, responsiveCondition);
+					columns, sequenceProvider, rowCssClassProviders, rowsPerPage, addInComponentFactories,
+					responsiveCondition);
 			if (noRecordsResourceKey == null && countResourceKey != null) {
 				withNoRecordsResourceKey(countResourceKey + ".zero");
 			}
@@ -1145,7 +1163,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
 			BootstrapPanelCoreDataTablePanel<T, S> panel = new BootstrapPanelCoreDataTablePanel<T, S>(id, factory,
-					columns, sequenceProvider, rowsPerPage, addInComponentFactories, responsiveCondition);
+					columns, sequenceProvider, rowCssClassProviders, rowsPerPage, addInComponentFactories, responsiveCondition);
 			if (noRecordsResourceKey == null && countResourceKey != null) {
 				withNoRecordsResourceKey(countResourceKey + ".zero");
 			}

@@ -16,9 +16,6 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
-
-import com.google.common.collect.Lists;
-
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -27,6 +24,9 @@ import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceGridView;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.model.SequenceProviders;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
 /**
  * A re-implementation of DataTable that accepts ISequenceProvider instead of IDataProvider.
  * <p>Also, it allows dynamic hiding of columns based on {@link Condition}s.
@@ -34,17 +34,19 @@ import org.iglooproject.wicket.more.util.model.SequenceProviders;
 public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPageableItems {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private final Map<IColumn<T, S>, Condition> columnToConditionMap;
-	
+
 	private final List<IColumn<T, S>> displayedColumns;
+
+	private final List<Function<T, String>> rowCssClassProviders;
 
 	private final SequenceGridView<T> gridView;
 
 	private final WebMarkupContainer body;
 
 	private final CoreToolbarsContainer topToolbars;
-	
+
 	private final CoreToolbarsContainer bodyBottomToolbars;
 
 	private final CoreToolbarsContainer bottomToolbars;
@@ -53,14 +55,17 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 
 	private MarkupContainer componentToRefresh;
 	
-	public CoreDataTable(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider, long rowsPerPage) {
-		this(id, columns, SequenceProviders.forDataProvider(dataProvider), rowsPerPage);
+	public CoreDataTable(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider,
+			List<Function<T, String>> rowCssClassProviders, long rowsPerPage) {
+		this(id, columns, SequenceProviders.forDataProvider(dataProvider), rowCssClassProviders, rowsPerPage);
 	}
 	
-	public CoreDataTable(String id, Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider, long rowsPerPage) {
+	public CoreDataTable(String id, Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider, 
+			List<Function<T, String>> rowCssClassProviders, long rowsPerPage) {
 		super(id);
 		this.columnToConditionMap = columns;
 		this.displayedColumns = Lists.newArrayList();
+		this.rowCssClassProviders = rowCssClassProviders;
 		
 		body = newBodyContainer("body");
 		add(body);
@@ -245,7 +250,18 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 
 		@Override
 		protected Item<T> newRowItem(final String id, final int index, final IModel<T> model) {
-			return CoreDataTable.this.newRowItem(id, index, model);
+			Item<T> item = CoreDataTable.this.newRowItem(id, index, model);
+			for (final Function<T, String> rowCssClassProvider : rowCssClassProviders) {
+				item.add(new ClassAttributeAppender(new AbstractReadOnlyModel<String>() {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public String getObject() {
+						return rowCssClassProvider.apply(model.getObject());
+					}
+				}));
+			}
+			return item;
 		}
 	}
 }

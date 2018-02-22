@@ -1,5 +1,7 @@
 package org.iglooproject.basicapp.web.application.referencedata.component;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.ROW_DISABLED;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
@@ -8,16 +10,15 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds;
 import org.iglooproject.basicapp.web.application.referencedata.form.AbstractGenericReferenceDataPopup;
+import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.security.model.CorePermissionConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
@@ -28,7 +29,6 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuild
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IDecoratedBuildState;
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
-import org.iglooproject.wicket.more.markup.repeater.table.util.DataTableUtil;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
@@ -64,6 +64,13 @@ public abstract class AbstractReferenceDataListPanel<
 									addActionColumn(
 											addColumns(builder)
 									)
+											.addRowCssClass(new SerializableFunction<T, String>() {
+												private static final long serialVersionUID = 1L;
+												@Override
+												public String apply(T referenceData) {
+													return (referenceData != null && !referenceData.isEnabled()) ? ROW_DISABLED : null;
+												}
+											})
 											.bootstrapCard()
 											.count("referenceData.count")
 											.ajaxPagers()
@@ -106,15 +113,6 @@ public abstract class AbstractReferenceDataListPanel<
 					
 					@Override
 					public void populateItem(Item<ICellPopulator<T>> cellItem, String componentId, final IModel<T> rowModel) {
-						Component rowItem = DataTableUtil.getRowItem(cellItem);
-						rowItem.add(new ClassAttributeAppender(new LoadableDetachableModel<String>() {
-							private static final long serialVersionUID = 1L;
-							
-							@Override
-							protected String load() {
-								return rowModel.getObject().isEnabled() ? "enabled" : "disabled";
-							}
-						}));
 						cellItem.add(new ItemActionsFragment(componentId, rowModel));
 					}
 				})

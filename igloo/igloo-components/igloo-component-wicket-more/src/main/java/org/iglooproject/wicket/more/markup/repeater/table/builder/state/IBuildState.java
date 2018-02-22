@@ -1,5 +1,6 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.state;
 
+import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFactory;
@@ -10,6 +11,8 @@ public interface IBuildState<T, S extends ISort<?>> {
 	CustomizableToolbarBuilder<T, S> addTopToolbar();
 
 	CustomizableToolbarBuilder<T, S> addBottomToolbar();
+
+	IBuildState<T, S> addRowCssClass(SerializableFunction<T, String> cssClassProvider);
 
 	IBuildState<T, S> withNoRecordsResourceKey(String noRecordsResourceKey);
 

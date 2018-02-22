@@ -127,6 +127,20 @@ table {
 					}
 				}
 			}
+			
+			&.disabled-table-row {
+				background: repeating-linear-gradient(
+					135deg,
+					#FFFFFF,
+					#FFFFFF 10px,
+					#E6E7E8 10px,
+					#E6E7E8 20px
+				);
+				
+				> td {
+					background-color: transparent;
+				}
+			}
 		}
 	}
 }

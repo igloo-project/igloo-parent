@@ -1,5 +1,6 @@
 package org.iglooproject.wicket.more.markup.repeater.table;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
@@ -27,6 +28,7 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFact
 import org.iglooproject.wicket.more.model.IErrorAwareDataProvider;
 import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Multimap;
 
 public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel implements IPageableItems {
@@ -53,6 +55,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 			IDataTableFactory<T, S> factory,
 			Map<IColumn<T, S>, Condition> columns,
 			ISequenceProvider<T> sequenceProvider,
+			List<Function<T, String>> rowCssClassProviders,
 			long rowsPerPage,
 			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories,
 			Condition responsiveCondition) {
@@ -60,7 +63,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		
 		this.sequenceProvider = sequenceProvider;
 		
-		dataTable = newDataTable("dataTable", factory, columns, sequenceProvider, rowsPerPage);
+		dataTable = newDataTable("dataTable", factory, columns, sequenceProvider, rowCssClassProviders, rowsPerPage);
 		
 		add(
 				new WebMarkupContainer("dataTableContainer")
@@ -135,8 +138,9 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	}
 	
 	protected CoreDataTable<T, S> newDataTable(String id, IDataTableFactory<T, S> factory,
-			Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider, long rowsPerPage) {
-		return factory.create(id, columns, sequenceProvider, rowsPerPage);
+			Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider, 
+			List<Function<T, String>> rowCssClassProviders, long rowsPerPage) {
+		return factory.create(id, columns, sequenceProvider, rowCssClassProviders, rowsPerPage);
 	}
 	
 	public CoreDataTable<T, S> getDataTable() {

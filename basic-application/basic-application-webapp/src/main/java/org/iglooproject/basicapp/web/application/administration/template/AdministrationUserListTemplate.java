@@ -1,5 +1,8 @@
 package org.iglooproject.basicapp.web.application.administration.template;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.BTN_XS;
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_HIDDEN_MD_AND_LESS;
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.ROW_DISABLED;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import org.apache.poi.ss.usermodel.Workbook;
@@ -24,8 +27,8 @@ import org.iglooproject.basicapp.web.application.administration.model.AbstractUs
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.renderer.UserActiveRenderer;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
-import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.commons.util.functional.Predicates2;
+import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.link.EmailLink;
@@ -141,12 +144,19 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 					}
 				})
 						.withClass("text text-md")
-						.withClass(CssClassConstants.CELL_HIDDEN_MD_AND_LESS)
+						.withClass(CELL_HIDDEN_MD_AND_LESS)
 				.addActionColumn()
 						.addLink(ActionRenderers.view(), AdministrationUserDetailTemplate.<U>mapper().setParameter2(pageModel))
-						.withClassOnElements(CssClassConstants.BTN_XS)
+						.withClassOnElements(BTN_XS)
 						.end()
 						.withClass("actions actions-1x")
+				.addRowCssClass(new SerializableFunction<U, String>() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public String apply(U user) {
+						return (user != null && !user.isActive()) ? ROW_DISABLED : null;
+					}
+				})
 				.withNoRecordsResourceKey("administration.user.list.count.zero")
 				.decorate()
 						.ajaxPagers()

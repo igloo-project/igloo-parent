@@ -1,5 +1,6 @@
 package org.iglooproject.wicket.more.markup.repeater.table;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -9,6 +10,7 @@ import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFa
 import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFactory;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Multimap;
 
 /**
@@ -24,10 +26,12 @@ public class BootstrapPanelCoreDataTablePanel<T, S extends ISort<?>> extends Dec
 			IDataTableFactory<T, S> factory,
 			Map<IColumn<T, S>, Condition> columns,
 			ISequenceProvider<T> sequenceProvider,
+			List<Function<T, String>> rowCssClassProviders,
 			long rowsPerPage,
 			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories,
 			Condition responsiveCondition) {
-		super(id, factory, columns, sequenceProvider, rowsPerPage, addInComponentFactories, responsiveCondition);
+		super(id, factory, columns, sequenceProvider, rowCssClassProviders, rowsPerPage, addInComponentFactories,
+				responsiveCondition);
 	}
 	
 }
