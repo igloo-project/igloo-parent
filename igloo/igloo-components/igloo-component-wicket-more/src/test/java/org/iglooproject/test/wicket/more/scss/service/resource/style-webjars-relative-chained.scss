@@ -1,3 +1,3 @@
 // test relative import from webjars import
-@import 'webjars://webjar-test:0.1.0/_variables-relative-chained.scss';
-@import '_webjars';
+@import 'webjars://webjar-test:0.1.0/variables-relative-chained';
+@import 'webjars';

@@ -10,13 +10,19 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.iglooproject.wicket.more.css.scss.util.JSassWebjarUrlMatcher;
 import org.iglooproject.wicket.more.css.scss.util.JSassWebjarUrlMatcher.WebjarUrl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.webjars.WebJarAssetLocator;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
 import io.bit3.jsass.importer.Import;
@@ -25,6 +31,8 @@ import io.bit3.jsass.importer.Importer;
 public class JSassClassPathImporter implements Importer {
 
 	private static final Pattern SCSS_IMPORT_SCOPE_PATTERN = Pattern.compile("^\\$\\(scope-([a-zA-Z0-9_-]*)\\)(.*)$");
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(JSassClassPathImporter.class);
 
 	private static final JSassWebjarUrlMatcher MATCHER = JSassWebjarUrlMatcher.INSTANCE;
 
@@ -44,81 +52,179 @@ public class JSassClassPathImporter implements Importer {
 	}
 	
 	public Import getInputSource(String url, final URI previousBase) {
+		url = resolveScope(url);
+		
 		try {
-			Matcher scopeMatcher = SCSS_IMPORT_SCOPE_PATTERN.matcher(url);
-			if (scopeMatcher.matches()) {
-				// translate scope to a classpath url
-				Class<?> referencedScope = scopes.get(scopeMatcher.group(1));
-				if (referencedScope == null) {
-					throw new IllegalStateException(String.format("Scope %1$s is not supported", scopeMatcher.group(1)));
-				}
-				url = "classpath:/" + referencedScope.getPackage().getName().replace(".", "/") + "/" + scopeMatcher.group(2);
-			} else if (MATCHER.test(url)) {
-				WebjarUrl webjarUrl = MATCHER.match(url);
-				// "/<version>" or ""
-				// "current" magic version is stripped out (for compatibility with wicket-webjars) 
-				String slashVersionOrEmpty = Optional.<String>ofNullable(webjarUrl.getVersion())
-						.filter((s) -> ! "current".equals(s)) // filter out magic "current" version
-						.map("/"::concat) // prepend '/'
-						.orElse("");
-				// "/<version>/path"
-				String resourcePathWithVersion = new StringBuilder()
-						.append(slashVersionOrEmpty)
-						.append(webjarUrl.getResourcePath()).toString();
-				url = new StringBuilder()
-						.append("classpath:/")
-						// META-INF/resources/webjars/<webjar>/<version>/path
-						.append(webjarLocator.getFullPath(webjarUrl.getWebjar(), resourcePathWithVersion))
-						.toString();
-			} else if (url.startsWith("/")) {
-				// we try to circumvent any forbidden resource loading
+			final String basePath = FilenameUtils.getPath(url);
+			final List<String> filenameCandidates = listCandidateFilenames(url);
+			final List<String> paths = listCandidatePaths(basePath, filenameCandidates);
+			
+			// we try to circumvent any forbidden resource loading
+			if (url.startsWith("/")) {
 				throw new IllegalArgumentException(String.format("Absolute url %s is not allowed for @import", url));
 			} else if (url.startsWith("../../../")) {
 				throw new IllegalArgumentException(String.format("More than 3 level relative loading of %s is not allowed for @import", url));
 			} else if (!url.startsWith("../") && url.contains("../")) {
 				throw new IllegalArgumentException(String.format("More than 3 level relative loading of %s is not allowed for @import", url));
 			}
-			// if scope or webjar-handled, url is now classpath:/...
-			// else, it is a relative path
 			
-			url = url.replaceFirst(".scss$", "");
-			URI base = previousBase;
-			if (url.contains("/")) {
-				// if url is absolute: classpath:/path/file/
-				// base=classpath:/path
-				// url=file
-				
-				// if url is relative: ../file
-				// previousBase=path1/path2
-				// base=path1/
-				// url=file
-				base = base.resolve(url.substring(0, url.lastIndexOf("/") + 1));
-				url = url.substring(url.lastIndexOf("/") + 1);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Trying paths {} for resource {} (base: {})", Joiner.on(",").join(paths), previousBase);
 			}
-			
-			// try with and without _ prefix
-			List<URI> potentialIdentifiers = Lists.newArrayList(
-					new URI("_" + url + ".scss"),
-					new URI(url + ".scss")
-			);
-			
-			for (URI potentialIdentifier : potentialIdentifiers) {
-				URI potentialUri = base.resolve(potentialIdentifier);
-				
-				String classpathUri = potentialUri.toString().replaceFirst("^classpath:/", "");
-				ClassPathResource cpr = new ClassPathResource(classpathUri);
-				try {
-					String source = IOUtils.toString(cpr.getInputStream());
-					addSourceUri(classpathUri);
-					return new Import(potentialIdentifier, potentialUri, source);
-				} catch (IOException e) {
+			for (String path : paths) {
+				Import resource = resolveCandidate(path, previousBase);
+				if (resource != null) {
+					LOGGER.info("Resource {} resolved as {} (base: {})", url, path, previousBase.toString());
+					return resource;
+				}
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.info("Candidate resource {} from {} url not found (base: {})", path, url, previousBase.toString());
 				}
 			}
 			
-			throw new IllegalArgumentException(String.format("File \"%1$s\" not imported because it could not be found", base.resolve(url)));
+			throw new IllegalArgumentException(
+					String.format("File '%s' not imported because it could not be found (candidates: %s)",
+							url, Joiner.on(",").join(paths))
+			);
 		} catch (URISyntaxException e) {
-			throw new IllegalArgumentException(String.format("Invalid URI syntax for \"%1$s\" from path \"%2$s\"", url, previousBase));
+			throw new IllegalArgumentException(String.format("Invalid URI syntax for '%s' from path '%s'", url, previousBase));
 		}
+	}
+
+	/**
+	 * Resolve $(scope-*) in url.
+	 * 
+	 * @throws IllegalArgumentException if a scope is present but not found
+	 */
+	private String resolveScope(String url) {
+		Matcher scopeMatcher = SCSS_IMPORT_SCOPE_PATTERN.matcher(url);
+		if (scopeMatcher.matches()) {
+			// translate scope to a classpath:/ path
+			Class<?> referencedScope = scopes.get(scopeMatcher.group(1));
+			if (referencedScope == null) {
+				throw new IllegalStateException(String.format("Scope %1$s is not supported", scopeMatcher.group(1)));
+			}
+			url = "classpath:/" + referencedScope.getPackage().getName().replace(".", "/") + "/" + scopeMatcher.group(2);
+		}
+		return url;
+	}
+
+	/**
+	 * Try to load a candidate. Return null if provided path cannot be loaded.
+	 * 
+	 * @throws URISyntaxException if path segment cannot be transformed in {@link URI}
+	 */
+	private Import resolveCandidate(String path, final URI previousBase) throws URISyntaxException {
+		// translate potentiel webjars:// path in a classpath path
+		if (MATCHER.test(path)) {
+			WebjarUrl webjarUrl = MATCHER.match(path);
+			// "/<version>" or ""
+			// "current" magic version is stripped out (for compatibility with wicket-webjars) 
+			String slashVersionOrEmpty = Optional.<String>ofNullable(webjarUrl.getVersion())
+					.filter((s) -> ! "current".equals(s)) // filter out magic "current" version
+					.map("/"::concat) // prepend '/'
+					.orElse("");
+			// "/<version>/path"
+			String resourcePathWithVersion = new StringBuilder()
+					.append(slashVersionOrEmpty)
+					.append(webjarUrl.getResourcePath()).toString();
+			try {
+				path = new StringBuilder()
+						.append("classpath:/")
+						// META-INF/resources/webjars/<webjar>/<version>/path
+						.append(webjarLocator.getFullPath(webjarUrl.getWebjar(), resourcePathWithVersion))
+						.toString();
+			} catch (IllegalArgumentException e) {
+				// resource not resolved in webjars
+				return null;
+			}
+		}
+		// if webjar-handled, path is now classpath:/...
+		// else, it is a relative path
+		
+		// note that with webjars, resource availability is already tested, but for other case, path may be a non
+		// existing resource
+		
+		// split path:
+		// 1. absolute path part
+		URI base = previousBase;
+		// 2. filename part
+		String filename;
+		if (path.contains("/")) {
+			// if path is absolute (i.e. classpath:/path/file/)
+			// base=classpath:/path
+			// path=file
+			
+			// if path is relative (i.e. ../file)
+			// previousBase=path1/path2
+			// base=path1/
+			// path=file
+			base = previousBase.resolve(path.substring(0, path.lastIndexOf("/") + 1));
+			filename = path.substring(path.lastIndexOf("/") + 1);
+		} else {
+			// if url is just a filename, only determine absolute base from previous base
+			base = previousBase;
+			filename = path;
+		}
+		
+		URI potentialIdendifier = new URI(filename);
+		URI potentialUri = base.resolve(potentialIdendifier);
+		
+		String classpathUri = potentialUri.toString().replaceFirst("^classpath:/", "");
+		ClassPathResource cpr = new ClassPathResource(classpathUri);
+		try {
+			String source = IOUtils.toString(cpr.getInputStream());
+			addSourceUri(classpathUri);
+			return new Import(potentialIdendifier, potentialUri, source);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * From <url>/filename
+	 * 
+	 * <ul>
+	 *   <li>filename: [_filename.scss, _filename.sass, filename.scss, filename.sass]</li>
+	 *   <li>filename.scss: [_filename.scss, filename.scss]</li>
+	 *   <li>filename.css: {@link IllegalArgumentException}</li>
+	 * </ul>
+	 */
+	private List<String> listCandidateFilenames(String url) {
+		List<String> filenameCandidates = Lists.newArrayList();
+		String filename = FilenameUtils.getBaseName(url);
+		String extension = FilenameUtils.getExtension(filename);
+		
+		if (StringUtils.isNotBlank(extension) && !"sass".equals(extension) && !"scss".equals(extension)) {
+			throw new IllegalArgumentException(String.format("Explicit extension %s in %s is not allowed", extension, url));
+		}
+		
+		// first try partial file
+		if (StringUtils.isNotBlank(extension)) {
+			filenameCandidates.add("_" + filename);
+		} else {
+			filenameCandidates.add("_" + filename + ".scss");
+			filenameCandidates.add("_" + filename + ".sass");
+		}
+		if (StringUtils.isNotBlank(extension)) {
+			filenameCandidates.add(filename);
+		} else {
+			filenameCandidates.add(filename + ".scss");
+			filenameCandidates.add("_" + filename + ".sass");
+		}
+		
+		return filenameCandidates;
+	}
+
+	/**
+	 * Combine a base path with a list of filenames.
+	 * 
+	 * @param path base path to apply to all filenames
+	 * @param candidateFilenames filenames to combine with path; order is preserved
+	 * @return list of combined base path with candidate filenames
+	 */
+	private List<String> listCandidatePaths(String path, List<String> candidateFilenames) {
+		return candidateFilenames.stream().map(path::concat).collect(Collectors.toList());
 	}
 
 	public List<String> getSourceUris() {
