@@ -1,14 +1,31 @@
 package org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.confirm;
 
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
+import java.util.List;
+import java.util.function.Supplier;
 
-public final class BootstrapConfirmJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
-	private static final long serialVersionUID = -8799742276479282371L;
+import org.apache.wicket.markup.head.HeaderItem;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
+import org.iglooproject.wicket.more.webjars.WebjarUtil;
+
+import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
+
+public final class BootstrapConfirmJavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
+
+	private static final long serialVersionUID = -1442288640907214154L;
+
+	private static final Supplier<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
+			BootstrapModalJavaScriptResourceReference.get()
+	);
 	
 	private static final BootstrapConfirmJavaScriptResourceReference INSTANCE = new BootstrapConfirmJavaScriptResourceReference();
 
 	private BootstrapConfirmJavaScriptResourceReference() {
-		super(BootstrapConfirmJavaScriptResourceReference.class, "bootstrap-confirm.js");
+		super("bootstrap/current/js/dist/confirm.js");
+	}
+
+	@Override
+	public List<HeaderItem> getDependencies() {
+		return DEPENDENCIES.get();
 	}
 
 	public static BootstrapConfirmJavaScriptResourceReference get() {

@@ -1,29 +1,33 @@
 package org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.dropdown;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.apache.wicket.markup.head.HeaderItem;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.util.BootstrapUtilJavaScriptResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.popper.PopperJavaScriptResourceReference;
+import org.iglooproject.wicket.more.webjars.WebjarUtil;
 
+import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
 
-public final class BootstrapDropDownJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
+public final class BootstrapDropDownJavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
 
-	private static final long serialVersionUID = -5388425553542523759L;
+	private static final long serialVersionUID = -1442288640907214154L;
 
+	private static final Supplier<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
+			PopperJavaScriptResourceReference.get(),
+			BootstrapUtilJavaScriptResourceReference.get()
+	);
+	
 	private static final BootstrapDropDownJavaScriptResourceReference INSTANCE = new BootstrapDropDownJavaScriptResourceReference();
 
 	private BootstrapDropDownJavaScriptResourceReference() {
-		super(BootstrapDropDownJavaScriptResourceReference.class, "dropdown.js");
+		super("bootstrap/current/js/dist/dropdown.js");
 	}
 
 	@Override
-	protected List<HeaderItem> getPluginDependencies() {
-		return forReferences(
-				PopperJavaScriptResourceReference.get(),
-				BootstrapUtilJavaScriptResourceReference.get()
-		);
+	public List<HeaderItem> getDependencies() {
+		return DEPENDENCIES.get();
 	}
 
 	public static BootstrapDropDownJavaScriptResourceReference get() {
