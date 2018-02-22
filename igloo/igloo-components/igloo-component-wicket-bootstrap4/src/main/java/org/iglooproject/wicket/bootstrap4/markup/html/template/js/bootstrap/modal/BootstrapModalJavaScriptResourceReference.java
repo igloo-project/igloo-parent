@@ -1,15 +1,15 @@
 package org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal;
 
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
+import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
 
-public final class BootstrapModalJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
+public final class BootstrapModalJavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
 
 	private static final long serialVersionUID = -8799742276479282371L;
 
 	private static final BootstrapModalJavaScriptResourceReference INSTANCE = new BootstrapModalJavaScriptResourceReference();
 
 	private BootstrapModalJavaScriptResourceReference() {
-		super(BootstrapModalJavaScriptResourceReference.class, "modal-patch.js");
+		super("bootstrap-override/current/js/dist/modal.js");
 	}
 
 	public static BootstrapModalJavaScriptResourceReference get() {
