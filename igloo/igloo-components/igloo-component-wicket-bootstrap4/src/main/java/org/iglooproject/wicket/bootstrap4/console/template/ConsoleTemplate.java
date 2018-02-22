@@ -38,7 +38,6 @@ import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstraphoverdropdown.BootstrapHoverDropdownBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
@@ -150,7 +149,6 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		
 		add(new BootstrapDropdownBehavior());
-		add(new BootstrapHoverDropdownBehavior());
 		
 		add(new WebMarkupContainer("scrollToTop").add(new ScrollToTopBehavior()));
 	}

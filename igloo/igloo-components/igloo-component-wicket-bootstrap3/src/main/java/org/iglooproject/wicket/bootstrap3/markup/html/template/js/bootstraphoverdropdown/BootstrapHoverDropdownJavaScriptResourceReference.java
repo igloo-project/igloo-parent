@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.bootstraphoverdropdown;
+package org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstraphoverdropdown;
 
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
