@@ -21,8 +21,6 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.AbstractPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
-
-import org.iglooproject.wicket.more.markup.html.factory.AbstractDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 
 /**
@@ -53,7 +51,7 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 
 	public static final <T, U> IDetachableFactory<IModel<T>, BindingModel<T, U>> factory(BindingRoot<? super T, ? extends U> binding) {
 		final String propertyExpression = binding.getPath();
-		return new AbstractDetachableFactory<IModel<T>, BindingModel<T, U>>() {
+		return new IDetachableFactory<IModel<T>, BindingModel<T, U>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public BindingModel<T, U> create(IModel<T> parameter) {

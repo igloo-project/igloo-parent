@@ -2,12 +2,22 @@ package org.iglooproject.wicket.more.markup.html.factory;
 
 import org.apache.wicket.model.IDetachable;
 
-/**
- * TODO YRO make this extend Java's Function and Guava's Function with default implementations
- * in Java 8. Also, deprecate these overrides so that no one tries to use them explicitly.
- */
-public interface IDetachableFactory<T, R> extends IDetachable {
+public interface IDetachableFactory<T, R> extends java.util.function.Function<T, R>, com.google.common.base.Function<T, R>, IDetachable {
 
 	R create(T parameter);
+
+	/**
+	 * @deprecated Use {@link #create(T)} instead.
+	 */
+	@Deprecated
+	@Override
+	default R apply(T parameter) {
+		return create(parameter);
+	}
+
+	@Override
+	default void detach() {
+		// nothing to do
+	}
 
 }

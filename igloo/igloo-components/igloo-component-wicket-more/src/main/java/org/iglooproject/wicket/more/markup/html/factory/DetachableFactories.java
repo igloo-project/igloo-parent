@@ -1,11 +1,10 @@
 package org.iglooproject.wicket.more.markup.html.factory;
 
+import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.javatuples.Unit;
 
 import com.google.common.base.Function;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public final class DetachableFactories {
 
@@ -13,7 +12,7 @@ public final class DetachableFactories {
 	}
 
 	public static final <T, R> IDetachableFactory<Unit<? extends T>, R> forUnit(final IDetachableFactory<T, R> factory) {
-		return new AbstractDetachableFactory<Unit<? extends T>, R>() {
+		return new IDetachableFactory<Unit<? extends T>, R>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public R create(Unit<? extends T> parameter) {
@@ -21,7 +20,7 @@ public final class DetachableFactories {
 			}
 			@Override
 			public void detach() {
-				super.detach();
+				IDetachableFactory.super.detach();
 				Detachables.detach(factory);
 			}
 		};
@@ -29,7 +28,7 @@ public final class DetachableFactories {
 
 	public static final <A, B, R> IDetachableFactory<A, R> compose(final IDetachableFactory<B, R> factory,
 			final Function<A, ? extends B> function) {
-		return new AbstractDetachableFactory<A, R>() {
+		return new IDetachableFactory<A, R>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public R create(A parameter) {
@@ -37,7 +36,7 @@ public final class DetachableFactories {
 			}
 			@Override
 			public void detach() {
-				super.detach();
+				IDetachableFactory.super.detach();
 				Detachables.detach(factory);
 			}
 		};
@@ -45,7 +44,7 @@ public final class DetachableFactories {
 
 	public static final <A, B, R> IDetachableFactory<A, R> compose(final IDetachableFactory<B, R> first,
 			final IDetachableFactory<A, ? extends B> second) {
-		return new AbstractDetachableFactory<A, R>() {
+		return new IDetachableFactory<A, R>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public R create(A parameter) {
@@ -53,7 +52,7 @@ public final class DetachableFactories {
 			}
 			@Override
 			public void detach() {
-				super.detach();
+				IDetachableFactory.super.detach();
 				Detachables.detach(first, second);
 			}
 		};

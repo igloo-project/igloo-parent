@@ -10,13 +10,11 @@ import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.Model;
+import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
+import org.iglooproject.wicket.more.util.model.Models;
 
 import com.google.common.base.Function;
 import com.google.common.base.Functions;
-
-import org.iglooproject.wicket.more.markup.html.factory.AbstractDetachableFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.util.model.Models;
 
 public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements IComponentAssignedModel<T> {
 
@@ -27,7 +25,7 @@ public class ReadOnlyModel<F, T> extends AbstractReadOnlyModel<T> implements ICo
 	private final Function<? super F, ? extends T> function;
 
 	public static final <F, T> IDetachableFactory<IModel<F>, IModel<T>> factory(final Function<? super F, T> function) {
-		return new AbstractDetachableFactory<IModel<F>, IModel<T>>() {
+		return new IDetachableFactory<IModel<F>, IModel<T>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public IModel<T> create(IModel<F> parameter) {

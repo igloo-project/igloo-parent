@@ -1,15 +1,14 @@
 package org.iglooproject.wicket.more.markup.html.factory;
 
 import org.apache.wicket.model.IModel;
+import org.iglooproject.wicket.more.condition.BooleanOperator;
+import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-
-import org.iglooproject.wicket.more.condition.BooleanOperator;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public final class ConditionFactories {
 
@@ -17,7 +16,7 @@ public final class ConditionFactories {
 	}
 
 	public static final <T> IDetachableFactory<T, Condition> constant(final Condition condition) {
-		return new AbstractDetachableFactory<T, Condition>() {
+		return new IDetachableFactory<T, Condition>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Condition create(T parameter) {
@@ -25,14 +24,14 @@ public final class ConditionFactories {
 			}
 			@Override
 			public void detach() {
-				super.detach();
+				IDetachableFactory.super.detach();
 				Detachables.detach(condition);
 			}
 		};
 	}
 	
 	public static final <T> IDetachableFactory<T, Condition> negate(final IDetachableFactory<T, Condition> factory) {
-		return new AbstractDetachableFactory<T, Condition>() {
+		return new IDetachableFactory<T, Condition>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Condition create(T parameter) {
@@ -40,7 +39,7 @@ public final class ConditionFactories {
 			}
 			@Override
 			public void detach() {
-				super.detach();
+				IDetachableFactory.super.detach();
 				Detachables.detach(factory);
 			}
 		};
@@ -52,7 +51,7 @@ public final class ConditionFactories {
 			final IDetachableFactory<T, Condition> firstFactory,
 			final IDetachableFactory<T, Condition> ... otherFactories
 	) {
-		return new AbstractDetachableFactory<T, Condition>() {
+		return new IDetachableFactory<T, Condition>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Condition create(final T parameter) {
@@ -66,7 +65,7 @@ public final class ConditionFactories {
 			}
 			@Override
 			public void detach() {
-				super.detach();
+				IDetachableFactory.super.detach();
 				Detachables.detach(firstFactory, otherFactories);
 			}
 		};
@@ -89,7 +88,7 @@ public final class ConditionFactories {
 	}
 
 	public static final <T> IDetachableFactory<IModel<? extends T>, Condition> predicate(final Predicate<? super T> predicate) {
-		return new AbstractDetachableFactory<IModel<? extends T>, Condition>() {
+		return new IDetachableFactory<IModel<? extends T>, Condition>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Condition create(IModel<? extends T> parameter) {
@@ -99,7 +98,7 @@ public final class ConditionFactories {
 	}
 
 	public static final <T> IDetachableFactory<IModel<? extends T>, Condition> permission(final String permission) {
-		return new AbstractDetachableFactory<IModel<? extends T>, Condition>() {
+		return new IDetachableFactory<IModel<? extends T>, Condition>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Condition create(IModel<? extends T> parameter) {
@@ -109,7 +108,7 @@ public final class ConditionFactories {
 	}
 
 	public static final <T> IDetachableFactory<IModel<? extends T>, Condition> permission(final Permission permission) {
-		return new AbstractDetachableFactory<IModel<? extends T>, Condition>() {
+		return new IDetachableFactory<IModel<? extends T>, Condition>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Condition create(IModel<? extends T> parameter) {

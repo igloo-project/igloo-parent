@@ -2,11 +2,10 @@ package org.iglooproject.wicket.more.markup.html.factory;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
-
-import com.google.common.base.Function;
-
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
+
+import com.google.common.base.Function;
 
 public final class ModelFactories {
 
@@ -15,7 +14,7 @@ public final class ModelFactories {
 
 	public static final <T> IDetachableFactory<IModel<? extends T>, StringResourceModel> stringResourceModel(
 			final String resourceKey) {
-		return new AbstractDetachableFactory<IModel<? extends T>, StringResourceModel>() {
+		return new IDetachableFactory<IModel<? extends T>, StringResourceModel>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public StringResourceModel create(IModel<? extends T> parameter) {
@@ -27,7 +26,7 @@ public final class ModelFactories {
 
 	public static final <T> IDetachableFactory<IModel<? extends T>, StringResourceModel> stringResourceModel(
 			final String resourceKey, final Function<? super T, ?> positionalParameterFunction) {
-		return new AbstractDetachableFactory<IModel<? extends T>, StringResourceModel>() {
+		return new IDetachableFactory<IModel<? extends T>, StringResourceModel>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public StringResourceModel create(IModel<? extends T> parameter) {
@@ -38,7 +37,7 @@ public final class ModelFactories {
 	}
 
 	public static final <R extends IModel<?>, T> IDetachableFactory<T, R> constant(final R model) {
-		return new AbstractDetachableFactory<T, R>() {
+		return new IDetachableFactory<T, R>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public R create(T parameter) {
@@ -46,6 +45,7 @@ public final class ModelFactories {
 			}
 			@Override
 			public void detach() {
+				IDetachableFactory.super.detach();
 				Detachables.detach(model);
 			}
 		};

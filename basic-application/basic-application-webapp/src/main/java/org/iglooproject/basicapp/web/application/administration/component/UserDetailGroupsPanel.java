@@ -25,8 +25,8 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
+import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
@@ -66,7 +66,7 @@ public class UserDetailGroupsPanel extends GenericPanel<User> {
 						.addActionColumn()
 								.addConfirmAction(ActionRenderers.remove())
 										.title(new ResourceModel("administration.userGroup.detail.users.action.remove.confirmation.title"))
-										.content(new AbstractDetachableFactory<IModel<UserGroup>, IModel<String>>() {
+										.content(new IDetachableFactory<IModel<UserGroup>, IModel<String>>() {
 											private static final long serialVersionUID = 1L;
 											@Override
 											public IModel<String> create(IModel<UserGroup> parameter) {

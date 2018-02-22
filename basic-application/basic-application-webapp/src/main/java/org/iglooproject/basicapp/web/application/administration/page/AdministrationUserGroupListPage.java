@@ -28,7 +28,7 @@ import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.model.ComponentPageModel;
 import org.iglooproject.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractDetachableFactory;
+import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
@@ -92,7 +92,7 @@ public class AdministrationUserGroupListPage extends AdministrationTemplate {
 								.withClass(CssClassConstants.CELL_HIDDEN_SM_AND_LESS)
 						.addActionColumn()
 								.addConfirmAction(ActionRenderers.delete())
-										.title(new AbstractDetachableFactory<IModel<UserGroup>, IModel<String>>() {
+										.title(new IDetachableFactory<IModel<UserGroup>, IModel<String>>() {
 											private static final long serialVersionUID = 1L;
 											@Override
 											public IModel<String> create(IModel<UserGroup> parameter) {
@@ -102,7 +102,7 @@ public class AdministrationUserGroupListPage extends AdministrationTemplate {
 												);
 											}
 										})
-										.content(new AbstractDetachableFactory<IModel<UserGroup>, IModel<String>>() {
+										.content(new IDetachableFactory<IModel<UserGroup>, IModel<String>>() {
 											private static final long serialVersionUID = 1L;
 											@Override
 											public IModel<String> create(IModel<UserGroup> parameter) {

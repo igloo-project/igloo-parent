@@ -15,7 +15,6 @@ import org.iglooproject.wicket.more.markup.html.action.IAction;
 import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAction;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.ModelFactories;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.fluid.IConfirmLinkBuilderStepContent;
@@ -94,7 +93,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	public IConfirmLinkBuilderStepOnclick<L, O> deleteConfirmation() {
 		confirm();
 		title(new ResourceModel("common.action.confirm.title"));
-		content(new AbstractDetachableFactory<IModel<O>, IModel<String>>() {
+		content(new IDetachableFactory<IModel<O>, IModel<String>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public IModel<String> create(IModel<O> parameter) {
