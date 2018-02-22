@@ -55,6 +55,7 @@
 		
 		<igloo.maven-processor-plugin.version>3.3.2</igloo.maven-processor-plugin.version>
 		<igloo.aspectj-maven-plugin.version>1.8</igloo.aspectj-maven-plugin.version>
+		<igloo.build-helper-maven-plugin.version>3.0.0</igloo.build-helper-maven-plugin.version>
 		
 		<!-- aspectj is used by allure -->
 		<igloo.allure-aspectj.version>1.8.13</igloo.allure-aspectj.version>

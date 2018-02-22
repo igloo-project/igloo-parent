@@ -1,64 +1,64 @@
-@import "$(scope-core-bs4)bootstrap/functions";
+@import "webjars://bootstrap:current/scss/functions";
 
-@import "$(scope-core-bs4)bootstrap/variables";
-@import "$(scope-core-bs4)bootstrap/override/variables";
+@import "webjars://bootstrap:current/scss/variables";
+@import "webjars://bootstrap-override:current/scss/variables";
 @import "variables";
 
-@import "$(scope-core-bs4)bootstrap/mixins";
-@import "$(scope-core-bs4)bootstrap/override/mixins";
+@import "webjars://bootstrap:current/scss/mixins";
+@import "webjars://bootstrap-override:current/scss/mixins";
 @import "mixins";
 
-@import "$(scope-core-bs4)bootstrap/root";
-@import "$(scope-core-bs4)bootstrap/reboot";
-@import "$(scope-core-bs4)bootstrap/type";
-@import "$(scope-core-bs4)bootstrap/images";
-@import "$(scope-core-bs4)bootstrap/code";
+@import "webjars://bootstrap:current/scss/root";
+@import "webjars://bootstrap:current/scss/reboot";
+@import "webjars://bootstrap:current/scss/type";
+@import "webjars://bootstrap:current/scss/images";
+@import "webjars://bootstrap:current/scss/code";
 
-@import "$(scope-core-bs4)bootstrap/grid";
-@import "$(scope-core-bs4)bootstrap/override/grid";
+@import "webjars://bootstrap:current/scss/grid";
+@import "webjars://bootstrap-override:current/scss/grid";
 
-@import "$(scope-core-bs4)bootstrap/tables";
-@import "$(scope-core-bs4)bootstrap/override/tables";
+@import "webjars://bootstrap:current/scss/tables";
+@import "webjars://bootstrap-override:current/scss/tables";
 
-@import "$(scope-core-bs4)bootstrap/forms";
-@import "$(scope-core-bs4)bootstrap/override/forms";
+@import "webjars://bootstrap:current/scss/forms";
+@import "webjars://bootstrap-override:current/scss/forms";
 
-@import "$(scope-core-bs4)bootstrap/buttons";
-@import "$(scope-core-bs4)bootstrap/override/buttons";
+@import "webjars://bootstrap:current/scss/buttons";
+@import "webjars://bootstrap-override:current/scss/buttons";
 
-@import "$(scope-core-bs4)bootstrap/transitions";
-@import "$(scope-core-bs4)bootstrap/dropdown";
-@import "$(scope-core-bs4)bootstrap/button-group";
-@import "$(scope-core-bs4)bootstrap/input-group";
-@import "$(scope-core-bs4)bootstrap/custom-forms";
-@import "$(scope-core-bs4)bootstrap/nav";
-@import "$(scope-core-bs4)bootstrap/navbar";
+@import "webjars://bootstrap:current/scss/transitions";
+@import "webjars://bootstrap:current/scss/dropdown";
+@import "webjars://bootstrap:current/scss/button-group";
+@import "webjars://bootstrap:current/scss/input-group";
+@import "webjars://bootstrap:current/scss/custom-forms";
+@import "webjars://bootstrap:current/scss/nav";
+@import "webjars://bootstrap:current/scss/navbar";
 
-@import "$(scope-core-bs4)bootstrap/card";
-@import "$(scope-core-bs4)bootstrap/override/card";
+@import "webjars://bootstrap:current/scss/card";
+@import "webjars://bootstrap-override:current/scss/card";
 
-@import "$(scope-core-bs4)bootstrap/breadcrumb";
-@import "$(scope-core-bs4)bootstrap/override/breadcrumb";
+@import "webjars://bootstrap:current/scss/breadcrumb";
+@import "webjars://bootstrap-override:current/scss/breadcrumb";
 
-@import "$(scope-core-bs4)bootstrap/pagination";
-@import "$(scope-core-bs4)bootstrap/override/pagination";
+@import "webjars://bootstrap:current/scss/pagination";
+@import "webjars://bootstrap-override:current/scss/pagination";
 
-@import "$(scope-core-bs4)bootstrap/badge";
-@import "$(scope-core-bs4)bootstrap/jumbotron";
-@import "$(scope-core-bs4)bootstrap/alert";
-@import "$(scope-core-bs4)bootstrap/progress";
-@import "$(scope-core-bs4)bootstrap/media";
-@import "$(scope-core-bs4)bootstrap/list-group";
-@import "$(scope-core-bs4)bootstrap/close";
+@import "webjars://bootstrap:current/scss/badge";
+@import "webjars://bootstrap:current/scss/jumbotron";
+@import "webjars://bootstrap:current/scss/alert";
+@import "webjars://bootstrap:current/scss/progress";
+@import "webjars://bootstrap:current/scss/media";
+@import "webjars://bootstrap:current/scss/list-group";
+@import "webjars://bootstrap:current/scss/close";
 
-@import "$(scope-core-bs4)bootstrap/modal";
-@import "$(scope-core-bs4)bootstrap/override/modal";
+@import "webjars://bootstrap:current/scss/modal";
+@import "webjars://bootstrap-override:current/scss/modal";
 
-@import "$(scope-core-bs4)bootstrap/tooltip";
-@import "$(scope-core-bs4)bootstrap/popover";
-@import "$(scope-core-bs4)bootstrap/carousel";
-@import "$(scope-core-bs4)bootstrap/utilities";
-@import "$(scope-core-bs4)bootstrap/print";
+@import "webjars://bootstrap:current/scss/tooltip";
+@import "webjars://bootstrap:current/scss/popover";
+@import "webjars://bootstrap:current/scss/carousel";
+@import "webjars://bootstrap:current/scss/utilities";
+@import "webjars://bootstrap:current/scss/print";
 
 @import "$(scope-core-bs4)select2/select2-bootstrap";
 

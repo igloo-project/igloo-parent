@@ -32,6 +32,7 @@
 				<module>igloo-parents</module>
 				<module>igloo-components</module>
 				<module>igloo-packages</module>
+				<module>igloo-webjars</module>
 			</modules>
 		</profile>
 		<profile>

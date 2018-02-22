@@ -177,6 +177,7 @@
 		<igloo.embedded-elasticsearch.version>2.4.3</igloo.embedded-elasticsearch.version>
 		
 		<igloo.webjars.popper.version>1.13.0</igloo.webjars.popper.version>
+		<igloo.webjars.bootstrap.version>4.0.0</igloo.webjars.bootstrap.version>
 	</properties>
 	
 	<prerequisites>
@@ -1297,6 +1298,12 @@
 				<groupId>org.webjars.npm</groupId>
 				<artifactId>popper.js</artifactId>
 				<version>${igloo.webjars.popper.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.webjars.npm</groupId>
+				<artifactId>bootstrap</artifactId>
+				<version>${igloo.webjars.bootstrap.version}</version>
 			</dependency>
 			
 		</dependencies>
