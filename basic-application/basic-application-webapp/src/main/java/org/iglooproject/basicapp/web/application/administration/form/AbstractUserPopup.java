@@ -148,6 +148,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 								
 								new CheckBox("active", BindingModel.of(getModel(), Bindings.user().active()))
 										.setLabel(new ResourceModel("business.user.active"))
+										.setOutputMarkupId(true)
 						),
 				new EmailTextField("email", BindingModel.of(getModel(), Bindings.user().email()))
 						.setLabel(new ResourceModel("business.user.email"))
