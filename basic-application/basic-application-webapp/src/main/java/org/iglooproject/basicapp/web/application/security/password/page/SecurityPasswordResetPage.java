@@ -30,7 +30,7 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 					.model(String.class)
 					.pickFirst().map(CommonParameters.ID).mandatory()
 					.pickSecond().map(CommonParameters.TOKEN).mandatory()
-					.page(SecurityPasswordCreationPage.class);
+					.page(SecurityPasswordResetPage.class);
 
 	private final IModel<User> userModel = new GenericEntityModel<Long, User>();
 
