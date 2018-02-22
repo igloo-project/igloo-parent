@@ -11,7 +11,7 @@
 			
 			.card {
 				@extend .border-0;
-				@extend .shadow-5;
+				@extend .shadow-md;
 				
 				.card-img-top {
 					padding: $card-spacer-y $card-spacer-x;
@@ -113,7 +113,7 @@
 						&.card-main-title {
 							margin: 0 -10px;
 							border-radius: 0.15rem;
-							@extend .shadow-8;
+							@extend .shadow-md;
 						}
 					}
 				}
