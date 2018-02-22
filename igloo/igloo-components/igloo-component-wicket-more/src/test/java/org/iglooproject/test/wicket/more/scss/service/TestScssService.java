@@ -55,13 +55,78 @@ public class TestScssService extends AbstractWicketMoreTestCase {
 	}
 
 	/**
-	 * Test webjars://[webjar]/[version]/path urls. Version is optional.
+	 * Test webjars://[webjar]/[version]/path urls
 	 */
 	@Test
 	public void testWebjarImport() throws Exception {
 		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
 				"style-webjars.scss",
+				false
+		);
+		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
+	}
+
+	/**
+	 * Test webjars://[webjar]/[version]/path from webjars imported file
+	 */
+	@Test
+	public void testWebjarImportChained() throws Exception {
+		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"style-webjars-chained.scss",
+				false
+		);
+		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
+	}
+
+	/**
+	 * Test webjars://[webjar]/path urls (versionless)
+	 */
+	@Test
+	public void testWebjarImportVersionLess() throws Exception {
+		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"style-webjars-versionless.scss",
+				false
+		);
+		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
+	}
+
+	/**
+	 * Test relative import from webjar import
+	 */
+	@Test
+	public void testWebjarImportRelativeChained() throws Exception {
+		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"style-webjars-relative-chained.scss",
+				false
+		);
+		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
+	}
+
+	/**
+	 * Test webjars://[webjar]/current/path urls. current is a magic version.
+	 */
+	@Test
+	public void testWebjarImportCurrent() throws Exception {
+		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"style-webjars-current.scss",
+				false
+		);
+		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
+	}
+
+	/**
+	 * Test webjars://[webjar]/current/path urls in a chain (@import done in imported file)
+	 */
+	@Test
+	public void testWebjarImportCurrentChained() throws Exception {
+		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"style-webjars-current-chained.scss",
 				false
 		);
 		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");

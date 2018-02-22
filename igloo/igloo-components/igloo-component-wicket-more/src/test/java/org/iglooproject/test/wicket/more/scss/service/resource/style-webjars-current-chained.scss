@@ -1,0 +1,3 @@
+// test import webjars://...:current in imported current webjars
+@import 'webjars://webjar-test:current/_variables-current-chained.scss';
+@import '_webjars';
