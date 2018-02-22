@@ -7,7 +7,6 @@ import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -113,19 +112,11 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 				.addBootstrapBadgeColumn(Model.of(), Bindings.user(), UserActiveRenderer.get())
 						.hideLabel()
 						.withClass("narrow")
-				.addColumn(new AbstractCoreColumn<U, UserSort>(new ResourceModel("business.user.username")) {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public void populateItem(Item<ICellPopulator<U>> cellItem, String componentId, IModel<U> rowModel) {
-						cellItem.add(
-								new UsernameFragment(componentId, rowModel, pageModel)
-						);
-					}
-				})
+				.addLabelColumn(new ResourceModel("business.user.username"), Bindings.user().username())
+						.withLink(AdministrationUserDetailTemplate.<U>mapper().setParameter2(pageModel))
 						.withClass("text text-md")
 				.addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
-						.withSideLink(AdministrationUserDetailTemplate.<U>mapper()
-							.setParameter2(pageModel))
+						.withSideLink(AdministrationUserDetailTemplate.<U>mapper().setParameter2(pageModel))
 						.withSort(UserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 						.withClass("text text-md")
 				.addLabelColumn(new ResourceModel("business.user.firstName"), Bindings.user().firstName())
@@ -156,34 +147,11 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 						.withClassOnElements(CssClassConstants.BTN_XS)
 						.end()
 						.withClass("actions actions-1x")
-						
 				.withNoRecordsResourceKey("administration.user.list.count.zero")
 				.decorate()
 						.ajaxPagers()
 						.count("administration.user.list.count")
 				.build(wicketId, itemsPerPage);
-	}
-
-	private class UsernameFragment extends Fragment {
-		
-		private static final long serialVersionUID = 1L;
-		
-		public UsernameFragment(String id, IModel<U> model, IModel<Page> pageModel) {
-			super(id, "username", AdministrationUserListTemplate.this, model);
-			
-			add(
-//					new BootstrapBadge<>("active", model, UserActiveRenderer.get())
-//							.hideLabel(),
-					AdministrationUserDetailTemplate.<U>mapper()
-							.setParameter2(pageModel)
-							.map(model)
-							.link("link")
-							.add(
-									new CoreLabel("value", BindingModel.of(model, Bindings.user().username()))
-											.showPlaceholder()
-							)
-			);
-		}
 	}
 
 	@SuppressWarnings("rawtypes")
