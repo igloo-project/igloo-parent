@@ -6,26 +6,22 @@
 			&.nav-item {
 				a {
 					&.nav-link {
-						&:before {
-							@include fa-mixin-font();
+						&.home {
 						}
 						
-						&.home:before {
-							@include fa-mixin-content($fa-var-home);
+						&.reference-data {
 						}
 						
-						&.reference-data:before {
-							@include fa-mixin-content($fa-var-list);
+						&.administration {
 						}
 						
-						&.administration:before {
-							@include fa-mixin-content($fa-var-cogs);
-						}
-						
-						&.console:before {
-							@include fa-mixin-content($fa-var-wrench);
+						&.console {
 						}
 					}
+				}
+				
+				.nav-link-icon {
+					display: inline;
 				}
 			}
 		}

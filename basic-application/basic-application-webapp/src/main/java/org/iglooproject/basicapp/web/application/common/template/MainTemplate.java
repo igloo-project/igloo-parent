@@ -128,7 +128,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 						navLink
 								.add(
 										new EnclosureContainer("icon")
-												.condition(Condition.modelNotNull(navItem.getIconClassesModel()))
+												.condition(Condition.hasText(navItem.getIconClassesModel()))
 												.add(new ClassAttributeAppender(navItem.getIconClassesModel())),
 										new CoreLabel("label", navItem.getLabelModel())
 								)
@@ -158,7 +158,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 												navLink.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
 												navLink.add(
 														new Label("label", navItem.getLabelModel()),
-														new EnclosureContainer("icon").condition(Condition.modelNotNull(navItem.getIconClassesModel()))
+														new EnclosureContainer("icon")
+																.condition(Condition.hasText(navItem.getIconClassesModel()))
 																.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
 												);
 												
@@ -260,13 +261,16 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		return ImmutableList.of(
 				BasicApplicationApplication.get().getHomePageLinkDescriptor()
 						.navigationMenuItem(new ResourceModel("navigation.home"))
-						.setCssClassesModel(Model.of("home")),
+						.setCssClassesModel(Model.of("home"))
+						.setIconClassesModel(Model.of("fa fa-home")),
 				ReferenceDataPage.linkDescriptor()
 						.navigationMenuItem(new ResourceModel("navigation.referenceData"))
-						.setCssClassesModel(Model.of("reference-data")),
+						.setCssClassesModel(Model.of("reference-data"))
+						.setIconClassesModel(Model.of("fa fa-list")),
 				AdministrationUserTypeDescriptor.BASIC_USER.list()
 						.navigationMenuItem(new ResourceModel("navigation.administration"))
 						.setCssClassesModel(Model.of("administration"))
+						.setIconClassesModel(Model.of("fa fa-cogs"))
 						.setSubMenuItems(ImmutableList.of(
 								AdministrationUserTypeDescriptor.BASIC_USER.list().navigationMenuItem(new ResourceModel("navigation.administration.user.basic")),
 								AdministrationUserTypeDescriptor.TECHNICAL_USER.list().navigationMenuItem(new ResourceModel("navigation.administration.user.technical")),
@@ -277,6 +281,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 						.page(ConsoleMaintenanceSearchPage.class)
 						.navigationMenuItem(new ResourceModel("navigation.console"))
 						.setCssClassesModel(Model.of("console"))
+						.setIconClassesModel(Model.of("fa fa-wrench"))
 		);
 	}
 
