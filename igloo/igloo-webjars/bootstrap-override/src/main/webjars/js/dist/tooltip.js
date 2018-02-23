@@ -173,9 +173,12 @@ var Tooltip = function ($) {
 
     _proto.dispose = function dispose() {
       clearTimeout(this._timeout);
-      $.removeData(this.element, this.constructor.DATA_KEY);
-      $(this.element).off(this.constructor.EVENT_KEY);
-      $(this.element).closest('.modal').off('hide.bs.modal');
+
+      if (this.element) {
+        $.removeData(this.element, this.constructor.DATA_KEY);
+        $(this.element).off(this.constructor.EVENT_KEY);
+        $(this.element).closest('.modal').off('hide.bs.modal');
+      }
 
       if (this.tip) {
         $(this.tip).remove();
@@ -270,6 +273,13 @@ var Tooltip = function ($) {
           $('body').children().on('mouseover', null, $.noop);
         }
 
+        var disposeTooltip = () => {
+          if (!$(_this.element).is(":visible")) {
+            _this.dispose();
+          }
+        };
+        this.disposeTooltipIntervalId = setInterval(disposeTooltip, 200);
+
         var complete = function complete() {
           if (_this.config.animation) {
             _this._fixTransition();
@@ -334,6 +344,10 @@ var Tooltip = function ($) {
       this._activeTrigger[Trigger.CLICK] = false;
       this._activeTrigger[Trigger.FOCUS] = false;
       this._activeTrigger[Trigger.HOVER] = false;
+
+      if (this.disposeTooltipIntervalId) {
+        clearInterval(this.disposeTooltipIntervalId);
+      }
 
       if (Util.supportsTransitionEnd() && $(this.tip).hasClass(ClassName.FADE)) {
         $(tip).one(Util.TRANSITION_END, complete).emulateTransitionEnd(TRANSITION_DURATION);
