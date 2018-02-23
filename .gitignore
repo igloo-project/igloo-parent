@@ -6,3 +6,4 @@ target2
 .factorypath
 gitlab-ci.build.conf
 .allure
+.*.swp
