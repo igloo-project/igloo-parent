@@ -31,12 +31,12 @@
 			
 			var onConfirm = function(event) {
 				$this.trigger('confirm');
-				$content.modal('hide');
+				$modal.modal('hide');
 				event.preventDefault();
 			};
 			var onCancel = function(event) {
 				$this.trigger('cancel');
-				$content.modal('hide');
+				$modal.modal('hide');
 				event.preventDefault();
 			};
 			
