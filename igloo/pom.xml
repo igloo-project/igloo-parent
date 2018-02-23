@@ -18,43 +18,12 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 	
-	<profiles>
-		<profile>
-			<id>igloo-release</id>
-			<activation>
-				<property>
-					<name>distribution</name>
-					<value>igloo-release</value>
-				</property>
-			</activation>
-			<modules>
-				<module>igloo-dependencies</module>
-				<module>igloo-parents</module>
-				<module>igloo-components</module>
-				<module>igloo-packages</module>
-				<module>igloo-webjars</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>all</id>
-			<activation>
-				<property>
-					<name>!distribution</name>
-				</property>
-			</activation>
-			<modules>
-				<module>igloo-dependencies</module>
-				<module>igloo-parents</module>
-				<module>igloo-components</module>
-				<module>igloo-packages</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>cli</id>
-			<build>
-				<directory>${project.basedir}/target-cli</directory>
-			</build>
-		</profile>
-	</profiles>
-		
+	<modules>
+		<module>igloo-dependencies</module>
+		<module>igloo-parents</module>
+		<module>igloo-components</module>
+		<module>igloo-packages</module>
+		<module>igloo-webjars</module>
+	</modules>
+	
 </project>
