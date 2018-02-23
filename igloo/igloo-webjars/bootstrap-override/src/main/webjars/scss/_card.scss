@@ -92,3 +92,12 @@
 		}
 	}
 }
+
+@each $color, $value in $theme-colors {
+	.card-#{$color} {
+		@include card-variant($value);
+	}
+	.card-#{$color}-full {
+		@include card-variant-full($value);
+	}
+}
