@@ -72,12 +72,12 @@ public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<E
 				try {
 					Long maxSize = maxSizeField.getModelObject();
 					EhCacheCacheModificationPanel.this.getModelObject().setMaxElementsInMemory(maxSize);
-					Session.get().success(getString("console.maintenance.ehcache.cacheManager.cache.message.ok"));
+					Session.get().success(getString("console.maintenance.ehcache.cacheManager.cache.message.success"));
 					closePopup(target);
 					target.add(parent);
 				} catch (Exception e) {
 					LOGGER.error("Erreur lors de la modification d'un cache.", e);
-					Session.get().error(getString("console.maintenance.ehcache.cacheManager.cache.message.erreur"));
+					Session.get().error(getString("console.maintenance.ehcache.cacheManager.cache.message.error"));
 				}
 				
 				FeedbackUtils.refreshFeedback(target, getPage());

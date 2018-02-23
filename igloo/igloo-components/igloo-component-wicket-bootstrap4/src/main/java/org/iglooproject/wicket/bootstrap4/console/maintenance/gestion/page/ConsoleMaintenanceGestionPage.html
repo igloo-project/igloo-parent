@@ -3,7 +3,7 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
 	<wicket:extend>
-		<div class="card">
+		<div wicket:id="container" class="card">
 			<div class="card-header">
 				<h5 class="card-header-title">
 					<wicket:message key="console.maintenance.gestion.title" />
@@ -14,7 +14,7 @@
 					<wicket:message key="console.maintenance.gestion.maintenance.intro.activee" />
 				</div>
 				
-				<div wicket:id="introMaintenanceDesactivee" class="alert alert-info">
+				<div wicket:id="introMaintenanceDesactivee" class="alert alert-success">
 					<wicket:message key="console.maintenance.gestion.maintenance.intro.desactivee" />
 				</div>
 				

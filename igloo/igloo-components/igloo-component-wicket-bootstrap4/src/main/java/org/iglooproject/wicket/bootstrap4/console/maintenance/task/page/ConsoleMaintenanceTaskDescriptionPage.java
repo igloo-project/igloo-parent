@@ -74,7 +74,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		
 		final IModel<QueuedTaskHolder> queuedTaskHolderModel = new GenericEntityModel<Long, QueuedTaskHolder>(null);
 		MAPPER.map(queuedTaskHolderModel).extractSafely(parameters, ConsoleMaintenanceTaskListPage.linkDescriptor(),
-				getString("common.notExists"));
+				getString("common.error.unexpected"));
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.tasks")));
 		
