@@ -153,7 +153,7 @@ var Modal = function ($) {
         event.preventDefault();
       }
 
-      if (this._isTransitioning || !this._isShown) {
+      if (!this._isShown) {
         return;
       }
 
