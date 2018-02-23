@@ -9,11 +9,11 @@ import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 public class EhCacheProgressBarComponent extends GenericPanel<Float> {
 	private static final long serialVersionUID = 3992803188589160149L;
 	
-	private static final String CLASS_PROGRESS_SUCCESS = "progress-bar-success";
+	private static final String CLASS_PROGRESS_SUCCESS = "bg-success";
 	
-	private static final String CLASS_PROGRESS_WARNING = "progress-bar-warning";
+	private static final String CLASS_PROGRESS_WARNING = "bg-warning";
 	
-	private static final String CLASS_PROGRESS_DANGER = "progress-bar-danger";
+	private static final String CLASS_PROGRESS_DANGER = "bg-danger";
 	
 	public EhCacheProgressBarComponent(String id, IModel<Float> value, boolean sign, float low, float high) {
 		super(id, value);
