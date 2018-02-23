@@ -37,6 +37,7 @@ import org.iglooproject.basicapp.web.application.common.template.resources.style
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.NotificationScssResourceReference;
 import org.iglooproject.basicapp.web.application.console.common.component.ConsoleAccessHeaderAdditionalContentPanel;
 import org.iglooproject.basicapp.web.application.console.common.component.ConsoleHeaderAdditionalContentPanel;
+import org.iglooproject.basicapp.web.application.console.common.component.ConsoleHeaderEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
 import org.iglooproject.basicapp.web.application.history.renderer.HistoryValueRenderer;
 import org.iglooproject.basicapp.web.application.navigation.page.HomePage;
@@ -191,7 +192,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console", propertyService);
 		consoleConfiguration.addCssResourceReference(ConsoleScssResourceReference.get());
 		consoleConfiguration.addConsoleAccessCssResourceReference(ConsoleAccessScssResourceReference.get());
-		consoleConfiguration.setConsoleAccessHeaderAdditionalContentFactory(
+		consoleConfiguration.setConsoleAccessHeaderAdditionalContentComponentFactory(
 				new AbstractComponentFactory<Component>() {
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -200,7 +201,16 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 					}
 				}
 		);
-		consoleConfiguration.setConsoleHeaderAdditionalContentFactory(
+		consoleConfiguration.setConsoleHeaderEnvironmentComponentFactory(
+				new AbstractComponentFactory<Component>() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Component create(String wicketId) {
+						return new ConsoleHeaderEnvironmentPanel(wicketId);
+					}
+				}
+		);
+		consoleConfiguration.setConsoleHeaderAdditionalContentComponentFactory(
 				new AbstractComponentFactory<Component>() {
 					private static final long serialVersionUID = 1L;
 					@Override

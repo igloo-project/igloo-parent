@@ -48,7 +48,7 @@ public final class ConsoleConfiguration {
 	
 	private Set<ResourceReference> consoleAccessCssResourcesReferences = Sets.newLinkedHashSet();
 	
-	private IComponentFactory<Component> consoleAccessHeaderAdditionalContentFactory = new AbstractComponentFactory<Component>() {
+	private IComponentFactory<Component> consoleAccessHeaderAdditionalContentComponentFactory = new AbstractComponentFactory<Component>() {
 		private static final long serialVersionUID = 1L;
 		@Override
 		public Component create(String wicketId) {
@@ -56,7 +56,15 @@ public final class ConsoleConfiguration {
 		}
 	};
 	
-	private IComponentFactory<Component> consoleHeaderAdditionalContentFactory = new AbstractComponentFactory<Component>() {
+	private IComponentFactory<Component> consoleHeaderEnvironmentComponentFactory = new AbstractComponentFactory<Component>() {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public Component create(String wicketId) {
+			return new InvisiblePanel(wicketId);
+		}
+	};
+	
+	private IComponentFactory<Component> consoleHeaderAdditionalContentComponentFactory = new AbstractComponentFactory<Component>() {
 		private static final long serialVersionUID = 1L;
 		@Override
 		public Component create(String wicketId) {
@@ -199,20 +207,28 @@ public final class ConsoleConfiguration {
 		return consoleAccessCssResourcesReferences.add(consoleAccessCssResourceReference);
 	}
 
-	public IComponentFactory<Component> getConsoleAccessHeaderAdditionalContentFactory() {
-		return consoleAccessHeaderAdditionalContentFactory;
+	public IComponentFactory<Component> getConsoleAccessHeaderAdditionalContentComponentFactory() {
+		return consoleAccessHeaderAdditionalContentComponentFactory;
 	}
 
-	public void setConsoleAccessHeaderAdditionalContentFactory(IComponentFactory<Component> consoleAccessHeaderAdditionalContentFactory) {
-		this.consoleAccessHeaderAdditionalContentFactory = consoleAccessHeaderAdditionalContentFactory;
+	public void setConsoleAccessHeaderAdditionalContentComponentFactory(IComponentFactory<Component> consoleAccessHeaderAdditionalContentComponentFactory) {
+		this.consoleAccessHeaderAdditionalContentComponentFactory = consoleAccessHeaderAdditionalContentComponentFactory;
 	}
 
-	public IComponentFactory<Component> getConsoleHeaderAdditionalContentFactory() {
-		return consoleHeaderAdditionalContentFactory;
+	public IComponentFactory<Component> getConsoleHeaderEnvironmentComponentFactory() {
+		return consoleHeaderEnvironmentComponentFactory;
 	}
 
-	public void setConsoleHeaderAdditionalContentFactory(IComponentFactory<Component> consoleHeaderAdditionalContentFactory) {
-		this.consoleHeaderAdditionalContentFactory = consoleHeaderAdditionalContentFactory;
+	public void setConsoleHeaderEnvironmentComponentFactory(IComponentFactory<Component> consoleHeaderEnvironmentComponentFactory) {
+		this.consoleHeaderEnvironmentComponentFactory = consoleHeaderEnvironmentComponentFactory;
+	}
+
+	public IComponentFactory<Component> getConsoleHeaderAdditionalContentComponentFactory() {
+		return consoleHeaderAdditionalContentComponentFactory;
+	}
+
+	public void setConsoleHeaderAdditionalContentComponentFactory(IComponentFactory<Component> consoleHeaderAdditionalContentComponentFactory) {
+		this.consoleHeaderAdditionalContentComponentFactory = consoleHeaderAdditionalContentComponentFactory;
 	}
 
 	private ConsoleConfiguration() {

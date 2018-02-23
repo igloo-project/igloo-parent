@@ -15,38 +15,42 @@
 	<body>
 		<div wicket:id="animatedGlobalFeedbackPanel" data-placement="bottom"></div>
 		
-		<nav class="navbar navbar-dark bg-dark navbar-expand-md sticky-top">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-				<span class="navbar-toggler-icon" />
-			</button>
-			
-			<a class="navbar-brand" href="#"><wicket:message key="console.pageTitle" /></a>
-			
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li wicket:id="mainNav" class="nav-item">
-						<a wicket:id="navLink" class="nav-link">
-							<span wicket:id="label" />
-						</a>
-						<div wicket:id="subNavContainer" class="dropdown-menu">
-							<wicket:container wicket:id="subNav">
-								<a wicket:id="navLink" class="dropdown-item">
-									<span wicket:id="label" />
-								</a>
-							</wicket:container>
-						</div>
-					</li>
-				</ul>
+		<div class="sticky-top">
+			<nav class="navbar navbar-dark bg-dark navbar-expand-md">
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+					<span class="navbar-toggler-icon" />
+				</button>
 				
-				<span class="navbar-text">
-					<wicket:container wicket:id="userFullName" />
+				<a class="navbar-brand" href="#"><wicket:message key="console.pageTitle" /></a>
+				
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li wicket:id="mainNav" class="nav-item">
+							<a wicket:id="navLink" class="nav-link">
+								<span wicket:id="label" />
+							</a>
+							<div wicket:id="subNavContainer" class="dropdown-menu">
+								<wicket:container wicket:id="subNav">
+									<a wicket:id="navLink" class="dropdown-item">
+										<span wicket:id="label" />
+									</a>
+								</wicket:container>
+							</div>
+						</li>
+					</ul>
 					
-					<a wicket:id="logoutLink" class="ml-2" wicket:message="title:common.logout" data-placement="left">
-						<span class="fa fa-power-off" />
-					</a>
-				</span>
-			</div>
-		</nav>
+					<span class="navbar-text">
+						<wicket:container wicket:id="userFullName" />
+						
+						<a wicket:id="logoutLink" class="ml-2" wicket:message="title:common.logout" data-placement="left">
+							<span class="fa fa-power-off" />
+						</a>
+					</span>
+				</div>
+			</nav>
+			
+			<wicket:container wicket:id="headerEnvironment" />
+		</div>
 		
 		<wicket:container wicket:id="headerAdditionalContent" />
 		

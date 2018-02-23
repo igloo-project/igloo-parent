@@ -137,7 +137,9 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		
 		add(new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class));
 		
-		add(ConsoleConfiguration.get().getConsoleHeaderAdditionalContentFactory().create("headerAdditionalContent"));
+		add(ConsoleConfiguration.get().getConsoleHeaderEnvironmentComponentFactory().create("headerEnvironment"));
+		
+		add(ConsoleConfiguration.get().getConsoleHeaderAdditionalContentComponentFactory().create("headerAdditionalContent"));
 		
 		add(
 				new CoreLabel("version", propertyService.get(VERSION))

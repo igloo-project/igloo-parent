@@ -43,7 +43,7 @@ public abstract class ConsoleAccessTemplate extends AbstractWebPageTemplate {
 		
 		add(new CoreLabel("title", getTitleModel()));
 		
-		add(ConsoleConfiguration.get().getConsoleAccessHeaderAdditionalContentFactory().create("headerAdditionalContent"));
+		add(ConsoleConfiguration.get().getConsoleAccessHeaderAdditionalContentComponentFactory().create("headerAdditionalContent"));
 	}
 	
 	@Override
