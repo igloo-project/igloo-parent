@@ -1,6 +1,6 @@
 package org.iglooproject.imports.excel.test.poi;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.InputStream;
 import java.util.Calendar;
@@ -8,21 +8,24 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.iglooproject.imports.table.common.event.exception.TableImportException;
 import org.javatuples.Quartet;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.google.common.collect.ImmutableList;
-
-import org.iglooproject.imports.table.common.event.exception.TableImportException;
 
 public class ApachePoiExcelImportTest {
 	
 	@Test
 	public void testSuccess() throws TableImportException {
 		InputStream stream = ApachePoiExcelImportTest.class.getResourceAsStream("/wellFormattedFile.xlsx");
+		stream = Mockito.spy(stream);
 		TestApachePoiExcelImporter importer = new TestApachePoiExcelImporter();
 		
 		List<Quartet<Date, Boolean, String, Integer>> results = importer.doImport(stream, "wellFormattedFile.xlsx");
+		// check that our stream is not closed by import process
+		Mockito.verify(stream, Mockito.never());
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(2014, Calendar.FEBRUARY, 14);

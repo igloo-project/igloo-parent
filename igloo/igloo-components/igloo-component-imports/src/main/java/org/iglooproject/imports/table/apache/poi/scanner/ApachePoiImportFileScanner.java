@@ -89,9 +89,7 @@ public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workb
 		
 		ApachePoiImportNavigator navigator = new ApachePoiImportNavigator(filename);
 		
-		try (InputStream stream = new TFileInputStream(file)) {
-			Workbook workbook = WorkbookFactory.create(stream);
-			
+		try (InputStream stream = new TFileInputStream(file); Workbook workbook = WorkbookFactory.create(stream)) {
 			for (int index = 0 ; index < workbook.getNumberOfSheets() ; ++index) {
 				Sheet sheet = workbook.getSheetAt(index);
 				if (navigator.tableHasContent(sheet) && SELECTIONS_PREDICATES.get(selection).apply(sheet)) {
@@ -109,9 +107,7 @@ public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workb
 		Validate.notNull(visitor, "visitor must not be null");
 		
 		ApachePoiImportNavigator navigator = new ApachePoiImportNavigator(filename);
-		try {
-			Workbook workbook = WorkbookFactory.create(stream);
-			
+		try (Workbook workbook = WorkbookFactory.create(stream)) {
 			for (int index = 0 ; index < workbook.getNumberOfSheets() ; ++index) {
 				Sheet sheet = workbook.getSheetAt(index);
 				if (navigator.tableHasContent(sheet) && SELECTIONS_PREDICATES.get(selection).apply(sheet)) {
