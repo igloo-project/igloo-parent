@@ -16,8 +16,7 @@ import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
 
-public class CityListPanel
-		extends AbstractReferenceDataListPanel<City, LocalizedReferenceDataSort, AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort>> {
+public class CityListPanel extends AbstractReferenceDataListPanel<City, LocalizedReferenceDataSort, AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort>> {
 	
 	public CityListPanel(String id) {
 		this(id, SimpleLocalizedReferenceDataDataProvider.forItemType(City.class));
