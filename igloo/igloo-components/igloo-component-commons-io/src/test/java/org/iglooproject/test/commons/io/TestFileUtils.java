@@ -8,10 +8,11 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.commons.io.filefilter.NameFileFilter;
+import org.assertj.core.api.Assertions;
+import org.iglooproject.commons.io.FileUtils;
 import org.junit.Test;
 
 import de.schlichtherle.truezip.file.TFile;
-import org.iglooproject.commons.io.FileUtils;
 
 public class TestFileUtils {
 
@@ -112,5 +113,10 @@ public class TestFileUtils {
 			fail("Si l'archive ne peut être lue une exception est levée");
 		} catch (IllegalStateException e) {
 		}
+	}
+
+	@Test
+	public void nullDirectory() {
+		Assertions.assertThatCode(() -> FileUtils.getFile(null, "test")).isInstanceOf(IllegalArgumentException.class);
 	}
 }

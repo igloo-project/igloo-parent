@@ -22,6 +22,9 @@ import de.schlichtherle.truezip.file.TFile;
 public final class FileUtils {
 	
 	public static File getFile(File directory, String name) {
+		if (directory == null) {
+			throw new IllegalArgumentException(String.format("Null directory is not allowed (name: %s)", name));
+		}
 		List<File> files = list(directory, new NameFileFilter(name));
 		
 		if (files.size() == 1) {
@@ -32,6 +35,9 @@ public final class FileUtils {
 	}
 	
 	public static List<File> list(File directory, FilenameFilter filter) {
+		if (directory == null) {
+			throw new IllegalArgumentException(String.format("Null directory is not allowed (filter: %s)", filter));
+		}
 		List<File> files = new ArrayList<File>();
 		
 		if (directory != null) {
@@ -54,6 +60,9 @@ public final class FileUtils {
 	}
 	
 	public static List<File> listFiles(File directory, FileFilter filter) {
+		if (directory == null) {
+			throw new IllegalArgumentException(String.format("Null directory is not allowed (filter: %s)", filter));
+		}
 		List<File> files = new ArrayList<File>();
 		
 		if (directory != null) {
@@ -89,6 +98,10 @@ public final class FileUtils {
 	 *            directory only} before use.
 	 */
 	public static Collection<File> listRecursively(File directory, IOFileFilter resultsFilter, IOFileFilter recurseFilter) {
+		if (directory == null) {
+			throw new IllegalArgumentException(String.format("Null directory is not allowed (filter: %s, recurseFilter: %s)",
+					resultsFilter, recurseFilter));
+		}
 		Collection<File> results = Lists.newLinkedList();
 		
 		IOFileFilter effectiveRecurseFilter = FileFilterUtils.makeDirectoryOnly(recurseFilter);
@@ -106,6 +119,10 @@ public final class FileUtils {
 	 * @throws IOException
 	 */
 	public static void cleanDirectory(File directory, Date onlyCleanFilesOlderThanThisDate) throws IOException {
+		if (directory == null) {
+			throw new IllegalArgumentException(String.format("Null directory is not allowed (olderThanDate: %s)",
+					onlyCleanFilesOlderThanThisDate));
+		}
 		if (!directory.exists()) {
 			String message = directory + " does not exist";
 			throw new IllegalArgumentException(message);
