@@ -1,5 +1,6 @@
 package org.iglooproject.sass.jsass;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.iglooproject.sass.internal.ClasspathUtil;
+import org.iglooproject.commons.io.ClassPathResourceUtil;
 import org.iglooproject.sass.util.JSassWebjarUrlMatcher;
 import org.iglooproject.sass.util.JSassWebjarUrlMatcher.WebjarUrl;
 import org.slf4j.Logger;
@@ -34,9 +35,11 @@ public class JSassClassPathImporter implements Importer {
 
 	private final Map<String, Class<?>> scopes;
 	
-	private List<String> sourceUris = new ArrayList<>();
+	private final List<String> sourceUris = new ArrayList<>();
 
-	private WebJarAssetLocator webjarLocator = new WebJarAssetLocator();
+	private final WebJarAssetLocator webjarLocator = new WebJarAssetLocator();
+
+	private final ClassPathResourceUtil classPathResourceUtil = new ClassPathResourceUtil();
 
 	public JSassClassPathImporter(Map<String, Class<?>> scopes) {
 		this.scopes = scopes;
@@ -168,10 +171,10 @@ public class JSassClassPathImporter implements Importer {
 		URI potentialUri = base.resolve(potentialIdendifier);
 		
 		try {
-			String source = ClasspathUtil.toString(getClass().getClassLoader(), potentialUri.toString());
+			String source = classPathResourceUtil.toStringAsUtf8(potentialUri.toString());
 			addSourceUri(potentialUri.toString());
 			return new Import(potentialIdendifier, potentialUri, source);
-		} catch (RuntimeException e) {
+		} catch (IOException e) {
 			LOGGER.debug("error reading {}", potentialUri);
 			return null;
 		}

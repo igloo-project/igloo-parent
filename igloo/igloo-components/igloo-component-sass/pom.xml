@@ -15,6 +15,12 @@
 
 	<dependencies>
 		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-commons-io</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
 		<!-- SCSS -->
 		<dependency>
 			<groupId>io.bit3</groupId>

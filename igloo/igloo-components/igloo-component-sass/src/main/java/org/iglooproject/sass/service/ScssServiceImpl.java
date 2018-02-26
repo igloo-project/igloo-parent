@@ -1,5 +1,6 @@
 package org.iglooproject.sass.service;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -8,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.ClassPathUtils;
-import org.iglooproject.sass.internal.ClasspathUtil;
+import org.iglooproject.commons.io.ClassPathResourceUtil;
 import org.iglooproject.sass.jsass.JSassClassPathImporter;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ public class ScssServiceImpl implements IScssService {
 	
 	private static final Map<String, Class<?>> SCOPES = new HashMap<>();
 	
+	private final ClassPathResourceUtil classPathResourceUtil = new ClassPathResourceUtil();
+	
 	@Override
 	public ScssStylesheetInformation getCompiledStylesheet(Class<?> scope, String path) {
 		String scssPath = getFullPath(scope, path);
@@ -44,19 +47,19 @@ public class ScssServiceImpl implements IScssService {
 			options.setIndent("\t");
 			options.getImporters().add(importer);
 			
-			final String scss = ClasspathUtil.toString(scope.getClassLoader(), scssPath);
+			final String scss = classPathResourceUtil.toStringAsUtf8(scssPath);
 			Context fileContext = new StringContext(scss, new URI(scssPath), null, options);
 			Output output = compiler.compile(fileContext);
 			// Write result
 			ScssStylesheetInformation compiledStylesheet = new ScssStylesheetInformation(scssPath, output.getCss());
 			
 			for (String sourceUri : importer.getSourceUris()) {
-				long lastModified = ClasspathUtil.lastModified(scope.getClassLoader(), sourceUri);
+				long lastModified = classPathResourceUtil.lastModified(sourceUri);
 				compiledStylesheet.addImportedStylesheet(new ScssStylesheetInformation(sourceUri, lastModified));
 			}
 			
 			return compiledStylesheet;
-		} catch (RuntimeException | URISyntaxException | CompilationException e) {
+		} catch (IOException | URISyntaxException | CompilationException e) {
 			throw new RuntimeException(String.format("Error compiling %1$s", scssPath), e);
 		}
 	}

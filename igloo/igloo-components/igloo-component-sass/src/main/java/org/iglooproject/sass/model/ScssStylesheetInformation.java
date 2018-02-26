@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.iglooproject.sass.internal.ClasspathUtil;
-
 public class ScssStylesheetInformation implements Serializable {
 	
 	private static final long serialVersionUID = 5751644157529838224L;
@@ -52,17 +50,8 @@ public class ScssStylesheetInformation implements Serializable {
 		return lastModifiedTime;
 	}
 	
-	public boolean isUpToDate() {
-		for (String referencedResource : referencedResources) {
-			if (!isUpToDate(referencedResource)) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	private boolean isUpToDate(String path) {
-		return ClasspathUtil.lastModified(getClass().getClassLoader(), path) <= lastModifiedTime;
+	public Collection<String> getReferencedResources() {
+		return referencedResources;
 	}
 
 }
