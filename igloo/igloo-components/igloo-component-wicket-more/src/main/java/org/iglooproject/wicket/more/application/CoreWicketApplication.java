@@ -30,7 +30,7 @@ import org.apache.wicket.util.time.Duration;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.css.lesscss.service.ILessCssService;
-import org.iglooproject.wicket.more.css.scss.service.IScssService;
+import org.iglooproject.wicket.more.css.scss.service.ICachedScssService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.request.mapper.NoVersionMountedMapper;
@@ -61,7 +61,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 	protected ILessCssService lessCssService;
 	
 	@Autowired
-	protected IScssService scssService;
+	protected ICachedScssService scssService;
 	
 	/**
 	 * Initialized with an empty list to circumvent {@link NullPointerException} when no autowirable bean are available.
@@ -151,8 +151,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 		mountApplicationResources();
 		mountApplicationPages();
 		
-		registerLessImportScopes();
-		registerScssImportScopes();
+		registerImportScopes();
 		
 		updateResourceSettings();
 	}
@@ -174,15 +173,9 @@ public abstract class CoreWicketApplication extends WebApplication {
 	protected void mountCommonPages() {
 	}
 	
-	protected void registerLessImportScopes() {
+	protected void registerImportScopes() {
 		for (IWicketModule module : modules) {
-			module.registerLessImportScopes(lessCssService);
-		}
-	}
-	
-	protected void registerScssImportScopes() {
-		for (IWicketModule module : modules) {
-			module.registerScssImportScopes(scssService);
+			module.registerImportScopes();
 		}
 	}
 	

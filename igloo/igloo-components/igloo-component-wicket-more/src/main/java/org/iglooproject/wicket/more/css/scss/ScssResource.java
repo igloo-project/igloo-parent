@@ -11,15 +11,16 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.StringResourceStream;
 import org.apache.wicket.util.time.Time;
+import org.iglooproject.sass.model.ScssStylesheetInformation;
+import org.iglooproject.wicket.more.css.WicketCssPrecompilationException;
+import org.iglooproject.wicket.more.css.scss.service.ICachedScssService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.wicket.more.css.WicketCssPrecompilationException;
-import org.iglooproject.wicket.more.css.scss.model.ScssStylesheetInformation;
-import org.iglooproject.wicket.more.css.scss.service.IScssService;
-
-public class ScssResource extends PackageResource {
+/**
+ * Exclusive usage by {@link ScssResourceReference}.
+ */
+class ScssResource extends PackageResource {
 
 	private static final long serialVersionUID = 9067443522105165705L;
 
@@ -32,7 +33,7 @@ public class ScssResource extends PackageResource {
 	private String variation;
 	
 	@SpringBean
-	private IScssService scssService;
+	private ICachedScssService scssService;
 
 	public ScssResource(Class<?> scope, String name) {
 		this(scope, name, null, null, null);
@@ -66,7 +67,7 @@ public class ScssResource extends PackageResource {
 		try {
 			resourceStream = super.getResourceStream();
 			
-			ScssStylesheetInformation cssInformation = scssService.getCompiledStylesheet(
+			ScssStylesheetInformation cssInformation = scssService.getCachedCompiledStylesheet(
 					getScope(), getName(),
 					Application.get().usesDevelopmentConfig()
 			);
@@ -76,7 +77,7 @@ public class ScssResource extends PackageResource {
 			scssResourceStream.setLastModified(Time.millis(cssInformation.getLastModifiedTime()));
 			
 			return scssResourceStream;
-		} catch (RuntimeException | ServiceException e) {
+		} catch (RuntimeException e) {
 			throw new WicketCssPrecompilationException(String.format("Error reading SCSS source for %1$s (%2$s, %3$s, %4$s)",
 					getName(), getLocale(), getStyle(), getVariation()), e);
 		} finally {

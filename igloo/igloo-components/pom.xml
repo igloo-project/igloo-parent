@@ -39,6 +39,8 @@
 		<module>igloo-component-export</module>
 		<module>igloo-component-imports</module>
 		
+		<module>igloo-component-sass</module>
+		
 		<module>igloo-component-wicket</module>
 		<module>igloo-component-wicket-more</module>
 		<module>igloo-component-wicket-bootstrap3</module>

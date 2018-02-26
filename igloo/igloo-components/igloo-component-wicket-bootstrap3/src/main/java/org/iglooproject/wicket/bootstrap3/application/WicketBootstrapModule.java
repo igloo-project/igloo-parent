@@ -12,9 +12,9 @@ import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.jqu
 import org.iglooproject.wicket.more.application.CoreWicketApplication;
 import org.iglooproject.wicket.more.application.IWicketModule;
 import org.iglooproject.wicket.more.css.lesscss.service.ILessCssService;
-import org.iglooproject.wicket.more.css.scss.service.IScssService;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.request.mapper.StaticResourceMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 
@@ -22,6 +22,9 @@ import com.google.common.collect.ImmutableList;
 
 @Service
 public class WicketBootstrapModule implements IWicketModule {
+
+	@Autowired
+	private ILessCssService lessCssService;
 
 	@Override
 	public void addResourceReplacements(CoreWicketApplication application) {
@@ -47,14 +50,10 @@ public class WicketBootstrapModule implements IWicketModule {
 	}
 
 	@Override
-	public void registerLessImportScopes(ILessCssService lessCssService) {
+	public void registerImportScopes() {
 		lessCssService.registerImportScope("core-bs3", CoreBootstrap3CssScope.class);
 		lessCssService.registerImportScope("core-console", CoreConsoleCssScope.class);
 		lessCssService.registerImportScope("core-font-awesome", CoreFontAwesome4CssScope.class);
-	}
-
-	@Override
-	public void registerScssImportScopes(IScssService scssService) {
 	}
 
 }

@@ -1,30 +1,28 @@
-package org.iglooproject.test.wicket.more.scss.service;
+package org.iglooproject.test.sass;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.InputStream;
 
-import org.iglooproject.test.wicket.more.AbstractWicketMoreTestCase;
-import org.iglooproject.test.wicket.more.scss.service.resource.TestScssServiceResourceScope;
-import org.iglooproject.test.wicket.more.scss.service.resource.other.scope.TestScssServiceOtherResourceScope;
-import org.iglooproject.wicket.more.css.scss.model.ScssStylesheetInformation;
-import org.iglooproject.wicket.more.css.scss.service.IScssService;
+import org.assertj.core.api.Assertions;
+import org.iglooproject.sass.model.ScssStylesheetInformation;
+import org.iglooproject.sass.service.IScssService;
+import org.iglooproject.sass.service.ScssServiceImpl;
+import org.iglooproject.test.sass.resources.TestScssServiceResourceScope;
+import org.iglooproject.test.sass.resources.other.scope.TestScssServiceOtherResourceScope;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestScssService extends AbstractWicketMoreTestCase {
+public class TestScssService {
 	
-	@Autowired
-	private IScssService scssService;
+	private IScssService scssService = new ScssServiceImpl();
 	
 	@Test
 	public void testGetCompiledStylesheet() throws Exception {
 		try {
 			ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
 					TestScssServiceResourceScope.class,
-					"style.scss",
-					false
+					"style.scss"
 			);
 			
 			Assert.assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n", compiledStylesheet.getSource());
@@ -41,8 +39,7 @@ public class TestScssService extends AbstractWicketMoreTestCase {
 			
 			ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
 					TestScssServiceResourceScope.class,
-					"style-scope.scss",
-					false
+					"style-scope.scss"
 			);
 			
 			Assert.assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n\n.test4 {\n\tcolor: #cccccc;\n}\n\n.test5 {\n\tcolor: #cccccc;\n}\n\ntest3 {\n\tcolor: #eeeeee;\n}\n", compiledStylesheet.getSource());
@@ -61,8 +58,19 @@ public class TestScssService extends AbstractWicketMoreTestCase {
 	public void testWebjarImport() throws Exception {
 		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
-				"style-webjars.scss",
-				false
+				"style-webjars.scss"
+		);
+		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
+	}
+
+	/**
+	 * Test webjars://[webjar]/[version]/path with extension
+	 */
+	@Test
+	public void testWebjarImportWithExtension() throws Exception {
+		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"style-webjars-with-extension.scss"
 		);
 		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
 	}
@@ -74,8 +82,7 @@ public class TestScssService extends AbstractWicketMoreTestCase {
 	public void testWebjarImportChained() throws Exception {
 		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
-				"style-webjars-chained.scss",
-				false
+				"style-webjars-chained.scss"
 		);
 		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
 	}
@@ -87,8 +94,7 @@ public class TestScssService extends AbstractWicketMoreTestCase {
 	public void testWebjarImportVersionLess() throws Exception {
 		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
-				"style-webjars-versionless.scss",
-				false
+				"style-webjars-versionless.scss"
 		);
 		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
 	}
@@ -100,8 +106,7 @@ public class TestScssService extends AbstractWicketMoreTestCase {
 	public void testWebjarImportRelativeChained() throws Exception {
 		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
-				"style-webjars-relative-chained.scss",
-				false
+				"style-webjars-relative-chained.scss"
 		);
 		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
 	}
@@ -113,8 +118,7 @@ public class TestScssService extends AbstractWicketMoreTestCase {
 	public void testWebjarImportCurrent() throws Exception {
 		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
-				"style-webjars-current.scss",
-				false
+				"style-webjars-current.scss"
 		);
 		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
 	}
@@ -126,10 +130,86 @@ public class TestScssService extends AbstractWicketMoreTestCase {
 	public void testWebjarImportCurrentChained() throws Exception {
 		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
-				"style-webjars-current-chained.scss",
-				false
+				"style-webjars-current-chained.scss"
 		);
 		assertThat(compiledStylesheet.getSource()).isEqualToNormalizingWhitespace("body { font-family: sans-serif; font-size: 15px; font-weight: 200; }");
+	}
+
+	/**
+	 * Forbidden protocol
+	 */
+	@Test
+	public void forbiddenProtocol() throws Exception {
+		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"forbidden-protocol.scss"
+		)).isInstanceOf(RuntimeException.class);
+	}
+
+	/**
+	 * Forbidden absolute
+	 */
+	@Test
+	public void forbiddenAbsolute() throws Exception {
+		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"forbidden-absolute.scss"
+		)).isInstanceOf(RuntimeException.class);
+	}
+
+	/**
+	 * Forbidden relative
+	 */
+	@Test
+	public void forbiddenRelative() throws Exception {
+		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"forbidden-relative.scss"
+		)).isInstanceOf(RuntimeException.class);
+	}
+
+	/**
+	 * Forbidden relative (do not start by ../, but contains ../)
+	 */
+	@Test
+	public void forbiddenRelative2() throws Exception {
+		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"forbidden-relative-2.scss"
+		)).isInstanceOf(RuntimeException.class);
+	}
+
+	/**
+	 * Not found
+	 */
+	@Test
+	public void notFound() throws Exception {
+		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"not-found.scss"
+		)).isInstanceOf(RuntimeException.class);
+	}
+
+	/**
+	 * unknown-scope
+	 */
+	@Test
+	public void unknownScope() throws Exception {
+		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"unknown-scope.scss"
+		)).isInstanceOf(RuntimeException.class);
+	}
+
+	/**
+	 * forbidden extension
+	 */
+	@Test
+	public void forbiddenExtension() throws Exception {
+		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"forbidden-extension.scss"
+		)).isInstanceOf(RuntimeException.class);
 	}
 
 }

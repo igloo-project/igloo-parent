@@ -1,9 +1,9 @@
-package org.iglooproject.test.wicket.more.scss;
+package org.iglooproject.test.sass;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.iglooproject.wicket.more.css.scss.util.JSassWebjarUrlMatcher;
-import org.iglooproject.wicket.more.css.scss.util.JSassWebjarUrlMatcher.WebjarUrl;
+import org.iglooproject.sass.util.JSassWebjarUrlMatcher;
+import org.iglooproject.sass.util.JSassWebjarUrlMatcher.WebjarUrl;
 import org.junit.Test;
 
 public class WebjarUrlTest {

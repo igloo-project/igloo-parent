@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.css.scss.service;
+package org.iglooproject.sass.jsass;
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.iglooproject.wicket.more.css.scss.util.JSassWebjarUrlMatcher;
-import org.iglooproject.wicket.more.css.scss.util.JSassWebjarUrlMatcher.WebjarUrl;
+import org.iglooproject.sass.util.JSassWebjarUrlMatcher;
+import org.iglooproject.sass.util.JSassWebjarUrlMatcher.WebjarUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -192,7 +192,7 @@ public class JSassClassPathImporter implements Importer {
 	 */
 	private List<String> listCandidateFilenames(String url) {
 		List<String> filenameCandidates = Lists.newArrayList();
-		String filename = FilenameUtils.getBaseName(url);
+		String filename = FilenameUtils.getName(url);
 		String extension = FilenameUtils.getExtension(filename);
 		
 		if (StringUtils.isNotBlank(extension) && !"sass".equals(extension) && !"scss".equals(extension)) {

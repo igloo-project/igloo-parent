@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.css.scss.model;
+package org.iglooproject.sass.model;
 
 import java.io.IOException;
 import java.io.Serializable;

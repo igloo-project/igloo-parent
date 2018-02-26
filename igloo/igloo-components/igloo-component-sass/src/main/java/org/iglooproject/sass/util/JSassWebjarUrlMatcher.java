@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.css.scss.util;
+package org.iglooproject.sass.util;
 
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -6,10 +6,12 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.text.StrSubstitutor;
-
 import com.google.common.collect.Maps;
 
+/**
+ * Handle webjars://... url handling and parsing.
+ *
+ */
 public class JSassWebjarUrlMatcher implements Predicate<String> {
 
 	public static final JSassWebjarUrlMatcher INSTANCE = new JSassWebjarUrlMatcher();
@@ -29,10 +31,9 @@ public class JSassWebjarUrlMatcher implements Predicate<String> {
 		patterns.put(WEBJAR_GROUP, capture.apply("[^:/]+", WEBJAR_GROUP));
 		patterns.put(VERSION_GROUP,capture.apply("[^/]+", VERSION_GROUP));
 		patterns.put(RESOURCE_PATH_GROUP, capture.apply("/.+", RESOURCE_PATH_GROUP));
-		StrSubstitutor substitutor = new StrSubstitutor(patterns, "<", ">");
-		substitutor.setEnableSubstitutionInVariables(false);
-		substitutor.setDisableSubstitutionInValues(true);
-		String regexp = substitutor.replace("^<protocol>://<webjar>:?<version>?<path>$");
+		String regexp = String.format("^%s://%s:?%s?%s$",
+				patterns.get(PROTOCOL_GROUP), patterns.get(WEBJAR_GROUP),
+				patterns.get(VERSION_GROUP), patterns.get(RESOURCE_PATH_GROUP));
 		pattern = Pattern.compile(regexp);
 	}
 

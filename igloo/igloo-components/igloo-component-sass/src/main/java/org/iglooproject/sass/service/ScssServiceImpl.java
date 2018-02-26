@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.css.scss.service;
+package org.iglooproject.sass.service;
 
 import java.io.IOException;
 import java.net.URI;
@@ -7,16 +7,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.wicket.util.io.IOUtils;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.wicket.more.config.spring.WicketMoreServiceConfig;
-import org.iglooproject.wicket.more.css.scss.model.ScssStylesheetInformation;
+import org.apache.commons.io.IOUtils;
+import org.iglooproject.sass.jsass.JSassClassPathImporter;
+import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Maps;
 
@@ -28,10 +24,6 @@ import io.bit3.jsass.OutputStyle;
 import io.bit3.jsass.context.Context;
 import io.bit3.jsass.context.StringContext;
 
-/**
- * @see WicketMoreServiceConfig
- */
-@Service("scssService")
 public class ScssServiceImpl implements IScssService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScssServiceImpl.class);
@@ -41,17 +33,7 @@ public class ScssServiceImpl implements IScssService {
 	private static final Map<String, Class<?>> SCOPES = Maps.newHashMapWithExpectedSize(3);
 	
 	@Override
-	// If checkCacheInvalidation is true and, before invocation, a cached value exists and is not up to date, we evict the cache entry. 
-	@CacheEvict(value = "scssService.compiledStylesheets", 
-			key = "T(org.iglooproject.wicket.more.css.scss.service.ScssServiceImpl).getCacheKey(#scope, #path)",
-			beforeInvocation = true,
-			condition= "#checkCacheEntryUpToDate && !(caches.?[name=='scssService.compiledStylesheets'][0]?.get(T(org.iglooproject.wicket.more.css.scss.service.ScssServiceImpl).getCacheKey(#scope, #path))?.get()?.isUpToDate() ?: false)"
-			)
-	// THEN, we check if a cached value exists. If it does, it is returned ; if not, the method is called. 
-	@Cacheable(value = "scssService.compiledStylesheets",
-			key = "T(org.iglooproject.wicket.more.css.scss.service.ScssServiceImpl).getCacheKey(#scope, #path)")
-	public ScssStylesheetInformation getCompiledStylesheet(Class<?> scope, String path, boolean checkCacheEntryUpToDate)
-			throws ServiceException {
+	public ScssStylesheetInformation getCompiledStylesheet(Class<?> scope, String path) {
 		String scssPath = getFullPath(scope, path);
 		
 		try {
@@ -77,8 +59,8 @@ public class ScssServiceImpl implements IScssService {
 			}
 			
 			return compiledStylesheet;
-		} catch (RuntimeException | IOException | URISyntaxException | CompilationException e) {
-			throw new ServiceException(String.format("Error compiling %1$s", scssPath), e);
+		} catch (IOException | URISyntaxException | CompilationException e) {
+			throw new RuntimeException(String.format("Error compiling %1$s", scssPath), e);
 		}
 	}
 	
@@ -96,15 +78,8 @@ public class ScssServiceImpl implements IScssService {
 		
 		SCOPES.put(scopeName, scope);
 	}
-	
-	public static String getCacheKey(Class<?> scope, String path) {
-		StringBuilder cacheKeyBuilder = new StringBuilder();
-		cacheKeyBuilder.append(getFullPath(scope, path));
-		
-		return cacheKeyBuilder.toString();
-	}
-	
-	public static String getFullPath(Class<?> scope, String path) {
+
+	protected String getFullPath(Class<?> scope, String path) {
 		StringBuilder fullPath = new StringBuilder();
 		if (scope != null) {
 			fullPath.append(scope.getPackage().getName().replace(".", "/")).append("/");
