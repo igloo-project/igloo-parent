@@ -1,6 +1,5 @@
 package org.iglooproject.sass.jsass;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
@@ -13,13 +12,12 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.iglooproject.sass.internal.ClasspathUtil;
 import org.iglooproject.sass.util.JSassWebjarUrlMatcher;
 import org.iglooproject.sass.util.JSassWebjarUrlMatcher.WebjarUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
 import org.webjars.WebJarAssetLocator;
 
 import com.google.common.base.Joiner;
@@ -170,13 +168,12 @@ public class JSassClassPathImporter implements Importer {
 		URI potentialIdendifier = new URI(filename);
 		URI potentialUri = base.resolve(potentialIdendifier);
 		
-		String classpathUri = potentialUri.toString().replaceFirst("^classpath:/", "");
-		ClassPathResource cpr = new ClassPathResource(classpathUri);
 		try {
-			String source = IOUtils.toString(cpr.getInputStream());
-			addSourceUri(classpathUri);
+			String source = ClasspathUtil.toString(getClass().getClassLoader(), potentialUri.toString());
+			addSourceUri(potentialUri.toString());
 			return new Import(potentialIdendifier, potentialUri, source);
-		} catch (IOException e) {
+		} catch (RuntimeException e) {
+			LOGGER.debug("error reading {}", potentialUri);
 			return null;
 		}
 	}

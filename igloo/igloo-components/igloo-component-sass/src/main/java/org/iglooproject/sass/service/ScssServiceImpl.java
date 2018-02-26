@@ -1,18 +1,17 @@
 package org.iglooproject.sass.service;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ClassPathUtils;
+import org.iglooproject.sass.internal.ClasspathUtil;
 import org.iglooproject.sass.jsass.JSassClassPathImporter;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
 
 import com.google.common.collect.Maps;
 
@@ -46,20 +45,19 @@ public class ScssServiceImpl implements IScssService {
 			options.setIndent("\t");
 			options.getImporters().add(importer);
 			
-			ClassPathResource scssCpr = new ClassPathResource(scssPath);
-			
-			Context fileContext = new StringContext(IOUtils.toString(scssCpr.getInputStream()), new URI("classpath", "/" + scssPath, null), null, options);
+			final String scss = ClasspathUtil.toString(scope.getClassLoader(), scssPath);
+			Context fileContext = new StringContext(scss, new URI(scssPath), null, options);
 			Output output = compiler.compile(fileContext);
 			// Write result
 			ScssStylesheetInformation compiledStylesheet = new ScssStylesheetInformation(scssPath, output.getCss());
 			
 			for (String sourceUri : importer.getSourceUris()) {
-				ClassPathResource cpr = new ClassPathResource(sourceUri);
-				compiledStylesheet.addImportedStylesheet(new ScssStylesheetInformation(sourceUri, cpr.lastModified()));
+				long lastModified = ClasspathUtil.lastModified(scope.getClassLoader(), sourceUri);
+				compiledStylesheet.addImportedStylesheet(new ScssStylesheetInformation(sourceUri, lastModified));
 			}
 			
 			return compiledStylesheet;
-		} catch (IOException | URISyntaxException | CompilationException e) {
+		} catch (RuntimeException | URISyntaxException | CompilationException e) {
 			throw new RuntimeException(String.format("Error compiling %1$s", scssPath), e);
 		}
 	}
@@ -80,12 +78,7 @@ public class ScssServiceImpl implements IScssService {
 	}
 
 	protected String getFullPath(Class<?> scope, String path) {
-		StringBuilder fullPath = new StringBuilder();
-		if (scope != null) {
-			fullPath.append(scope.getPackage().getName().replace(".", "/")).append("/");
-		}
-		fullPath.append(path);
-		return fullPath.toString();
+		return "classpath:/" + ClassPathUtils.toFullyQualifiedPath(scope, path);
 	}
 
 }

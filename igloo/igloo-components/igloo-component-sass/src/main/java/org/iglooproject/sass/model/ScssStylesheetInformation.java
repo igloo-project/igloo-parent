@@ -1,20 +1,15 @@
 package org.iglooproject.sass.model;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
+import org.iglooproject.sass.internal.ClasspathUtil;
 
 import com.google.common.collect.Lists;
 
 public class ScssStylesheetInformation implements Serializable {
 	
 	private static final long serialVersionUID = 5751644157529838224L;
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(ScssStylesheetInformation.class);
 	
 	private final String path;
 	
@@ -68,13 +63,7 @@ public class ScssStylesheetInformation implements Serializable {
 	}
 	
 	private boolean isUpToDate(String path) {
-		ClassPathResource resource = new ClassPathResource(path);
-		try {
-			return resource.lastModified() <= lastModifiedTime;
-		} catch (IOException e) {
-			LOGGER.error("Error while trying to determine if resource " + path + " is up to date. Assuming it is outdated.", e);
-			return false;
-		}
+		return ClasspathUtil.lastModified(getClass().getClassLoader(), path) <= lastModifiedTime;
 	}
 
 }
