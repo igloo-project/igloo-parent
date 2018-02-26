@@ -43,7 +43,6 @@ import org.infinispan.Cache;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.notifications.cachelistener.event.CacheEntryEvent;
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
-import org.infinispan.remoting.transport.Address;
 import org.infinispan.remoting.transport.jgroups.JGroupsAddress;
 import org.javatuples.Pair;
 import org.slf4j.Logger;
@@ -334,10 +333,15 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	private void stopExecutor(ScheduledThreadPoolExecutor executor, String executorName) {
 		// stop accepting new tasks
 		executor.shutdown();
-		try {
-			executor.awaitTermination(3, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-		} // NOSONAR
+		Stopwatch watch = Stopwatch.createStarted();
+		while (watch.elapsed(TimeUnit.MILLISECONDS) < TimeUnit.SECONDS.toMillis(3)) {
+			try {
+				executor.awaitTermination(3, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+				LOGGER.warn("Interrupted waiting for stop. Mark interrupted and continue to wait termination.");
+				Thread.currentThread().isInterrupted();
+			}
+		}
 		List<Runnable> runnables = executor.shutdownNow();
 		if (!runnables.isEmpty()) {
 			LOGGER.warn("{} tasks dropped by {}.{}", runnables.size(),
@@ -509,7 +513,6 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			// get lock values
 			if (!cache.getAdvancedCache().lock(priorityQueue)) {
 				LOGGER.error("Lock attempt on {} failed", priorityQueue);
-				commit = false;
 				return;
 			}
 			List<IAttribution> values = cache.getOrDefault(priorityQueue, Lists.<IAttribution> newArrayList());
@@ -523,12 +526,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public AddressWrapper getLocalAddress() {
-		Address address = cacheManager.getAddress();
-		if (address != null) {
-			return INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS.apply(address);
-		} else {
-			return null;
-		}
+		return getAddress();
 	}
 
 	private AddressWrapper getAddress() {
@@ -871,7 +869,11 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	protected void onAction(CacheEntryEvent<String, IAction<?>> value) {
 		final String key = value.getKey();
 		final IAction<?> action = value.getValue();
-		if (value.getValue().isBroadcast() || getAddress().equals(value.getValue().getTarget())) {
+		final AddressWrapper address = getLocalAddress();
+		if (address == null) {
+			LOGGER.info("Ignored event {} as we do not have a valid address", value);
+		}
+		if (value.getValue().isBroadcast() || address.equals(value.getValue().getTarget())) {
 			executor.submit(new Runnable() {
 				@Override
 				public void run() {
@@ -948,7 +950,9 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 					try {
 						unit.timedWait(monitor, timeout);
 					} catch (InterruptedException e) {
-					} // NOSONAR
+						LOGGER.warn("Interrupted waiting for a synced action result");
+						Thread.currentThread().interrupt();
+					}
 				}
 			}
 		} else {

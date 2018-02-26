@@ -23,7 +23,7 @@ public class LeaveEvent implements Serializable, ILeaveEvent {
 
 	@Override
 	public String toString() {
-		return String.format("%s<%tF %tT %tz>", leaveDate);
+		return String.format("%s<%tF %<tT %<tz>", getClass().getSimpleName(), leaveDate);
 	}
 
 	public static final LeaveEvent from(Date leaveDate) {
