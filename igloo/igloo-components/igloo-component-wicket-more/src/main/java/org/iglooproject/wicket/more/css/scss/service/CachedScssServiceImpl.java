@@ -27,7 +27,10 @@ public class CachedScssServiceImpl extends ScssServiceImpl implements ICachedScs
 
 	private final ClassPathResourceUtil classpathResourceUtil = new ClassPathResourceUtil();
 
-	@Autowired
+	/**
+	 * Fallback is no cache manager is defined.
+	 */
+	@Autowired(required = false)
 	private CacheManager cacheManager;
 
 	@Override
@@ -58,6 +61,9 @@ public class CachedScssServiceImpl extends ScssServiceImpl implements ICachedScs
 	}
 
 	public boolean isUpToDate(Class<?> scope, String path) {
+		if (cacheManager == null) {
+			return false;
+		}
 		String cacheKey = getCacheKey(scope, path);
 		ScssStylesheetInformation stylesheet = cacheManager.getCache(SCSS_COMPILED_STYLESHEETS_CACHE_NAME)
 				.get(cacheKey, ScssStylesheetInformation.class);
