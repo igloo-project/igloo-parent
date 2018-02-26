@@ -67,7 +67,7 @@ public class ClassPathResourceUtil {
 	}
 
 	/**
-	 * Extract content of a classpatht resource as String.
+	 * Extract content of a classpath resource as String.
 	 */
 	public String toString(String classpathUrl, String encoding) throws IOException {
 		try (InputStream is = toInputStream(classpathUrl)) {
