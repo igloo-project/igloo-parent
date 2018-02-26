@@ -60,7 +60,7 @@ public class ScssServiceImpl implements IScssService {
 			
 			return compiledStylesheet;
 		} catch (IOException | URISyntaxException | CompilationException e) {
-			throw new RuntimeException(String.format("Error compiling %1$s", scssPath), e);
+			throw new RuntimeException(String.format("Error compiling %s", scssPath), e);
 		}
 	}
 	

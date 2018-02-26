@@ -68,6 +68,18 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
+		<!-- needed to access scss stored in sources -->
+		<testResources>
+			<testResource>
+				<directory>src/test/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+			</testResource>
+		</testResources>
 	</build>
 	
 </project>

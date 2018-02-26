@@ -81,7 +81,11 @@ public class ClassPathResourceUtil {
 	 * You need to close returned {@link InputStream} after usage.
 	 */
 	public InputStream toInputStream(String classpathUrl) throws IOException {
-		return classLoader.getResourceAsStream(cleanClasspathUrl(classpathUrl));
+		InputStream is = classLoader.getResourceAsStream(cleanClasspathUrl(classpathUrl));
+		if (is == null) {
+			throw new FileNotFoundException(String.format("Content not found for %s", classpathUrl));
+		}
+		return is;
 	}
 
 	private static URL toUrl(ClassLoader classLoader, String classpathUrl) throws IOException {
@@ -89,8 +93,8 @@ public class ClassPathResourceUtil {
 	}
 
 	private static String cleanClasspathUrl(String classpathUrl) throws IOException {
-		if (!classpathUrl.startsWith("classpath:")) {
-			throw new IOException(String.format("URL format exception: %s does not start with 'classpath:'", classpathUrl));
+		if (!classpathUrl.startsWith("classpath:/")) {
+			throw new IOException(String.format("URL format exception: %s does not start with 'classpath:/'", classpathUrl));
 		}
 		return classpathUrl.replaceAll("^classpath:/+", "");
 	}
