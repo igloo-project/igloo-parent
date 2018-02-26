@@ -2,6 +2,7 @@ package org.iglooproject.sass.jsass;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -20,9 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.webjars.WebJarAssetLocator;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-
 import io.bit3.jsass.importer.Import;
 import io.bit3.jsass.importer.Importer;
 
@@ -36,7 +34,7 @@ public class JSassClassPathImporter implements Importer {
 
 	private final Map<String, Class<?>> scopes;
 	
-	private List<String> sourceUris = Lists.newArrayList();
+	private List<String> sourceUris = new ArrayList<>();
 
 	private WebJarAssetLocator webjarLocator = new WebJarAssetLocator();
 
@@ -67,7 +65,8 @@ public class JSassClassPathImporter implements Importer {
 			}
 			
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Trying paths {} for resource {} (base: {})", Joiner.on(",").join(paths), previousBase);
+				LOGGER.debug("Trying paths {} for resource {} (base: {})",
+						paths.stream().collect(Collectors.joining(",")), previousBase);
 			}
 			for (String path : paths) {
 				Import resource = resolveCandidate(path, previousBase);
@@ -82,7 +81,7 @@ public class JSassClassPathImporter implements Importer {
 			
 			throw new IllegalArgumentException(
 					String.format("File '%s' not imported because it could not be found (candidates: %s)",
-							url, Joiner.on(",").join(paths))
+							url, paths.stream().collect(Collectors.joining(",")))
 			);
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException(String.format("Invalid URI syntax for '%s' from path '%s'", url, previousBase));
@@ -188,7 +187,7 @@ public class JSassClassPathImporter implements Importer {
 	 * </ul>
 	 */
 	private List<String> listCandidateFilenames(String url) {
-		List<String> filenameCandidates = Lists.newArrayList();
+		List<String> filenameCandidates = new ArrayList<>();
 		String filename = FilenameUtils.getName(url);
 		String extension = FilenameUtils.getExtension(filename);
 		

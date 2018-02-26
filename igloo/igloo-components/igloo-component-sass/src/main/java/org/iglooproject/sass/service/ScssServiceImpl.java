@@ -2,6 +2,7 @@ package org.iglooproject.sass.service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,8 +13,6 @@ import org.iglooproject.sass.jsass.JSassClassPathImporter;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Maps;
 
 import io.bit3.jsass.CompilationException;
 import io.bit3.jsass.Compiler;
@@ -29,7 +28,7 @@ public class ScssServiceImpl implements IScssService {
 	
 	private static final Pattern SCOPE_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
 	
-	private static final Map<String, Class<?>> SCOPES = Maps.newHashMapWithExpectedSize(3);
+	private static final Map<String, Class<?>> SCOPES = new HashMap<>();
 	
 	@Override
 	public ScssStylesheetInformation getCompiledStylesheet(Class<?> scope, String path) {

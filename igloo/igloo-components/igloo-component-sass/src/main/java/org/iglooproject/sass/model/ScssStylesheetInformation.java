@@ -2,10 +2,9 @@ package org.iglooproject.sass.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.iglooproject.sass.internal.ClasspathUtil;
-
-import com.google.common.collect.Lists;
 
 public class ScssStylesheetInformation implements Serializable {
 	
@@ -17,7 +16,7 @@ public class ScssStylesheetInformation implements Serializable {
 	
 	private long lastModifiedTime;
 	
-	private Collection<String> referencedResources = Lists.newArrayList();
+	private Collection<String> referencedResources = new HashSet<>();
 	
 	public ScssStylesheetInformation(String path, String newSource) {
 		this.path = path;

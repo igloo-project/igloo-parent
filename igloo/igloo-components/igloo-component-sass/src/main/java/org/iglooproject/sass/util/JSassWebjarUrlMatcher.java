@@ -1,12 +1,11 @@
 package org.iglooproject.sass.util;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.google.common.collect.Maps;
 
 /**
  * Handle webjars://... url handling and parsing.
@@ -26,7 +25,7 @@ public class JSassWebjarUrlMatcher implements Predicate<String> {
 	private JSassWebjarUrlMatcher() {
 		super();
 		BiFunction<String, String, String> capture = (pattern, name) -> String.format("(?<%s>%s)", name, pattern);
-		Map<String, String> patterns = Maps.newHashMap();
+		Map<String, String> patterns = new HashMap<>();
 		patterns.put(PROTOCOL_GROUP, capture.apply("webjars", PROTOCOL_GROUP));
 		patterns.put(WEBJAR_GROUP, capture.apply("[^:/]+", WEBJAR_GROUP));
 		patterns.put(VERSION_GROUP,capture.apply("[^/]+", VERSION_GROUP));

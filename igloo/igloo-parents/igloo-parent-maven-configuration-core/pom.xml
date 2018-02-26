@@ -1020,9 +1020,11 @@
 					<exclusions>
 						<!-- used only by extractor -->
 						<exclusion>
+							<groupId>*</groupId>
 							<artifactId>commons-compress</artifactId>
 						</exclusion>
 						<exclusion>
+							<groupId>*</groupId>
 							<artifactId>jackson-core</artifactId>
 						</exclusion>
 					</exclusions>
