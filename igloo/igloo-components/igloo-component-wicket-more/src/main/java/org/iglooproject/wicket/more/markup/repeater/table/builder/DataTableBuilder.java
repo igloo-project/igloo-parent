@@ -936,7 +936,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 
 	private class DecoratedBuildState implements IDecoratedBuildState<T, S> {
-		private static final int DEFAULT_PAGER_VIEW_SIZE = 11;
+		private static final int DEFAULT_PAGER_VIEW_SIZE = 7;
 		
 		protected String countResourceKey = null;
 		
