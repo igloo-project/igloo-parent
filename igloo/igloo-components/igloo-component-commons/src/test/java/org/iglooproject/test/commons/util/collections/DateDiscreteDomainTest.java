@@ -1,5 +1,10 @@
 package org.iglooproject.test.commons.util.collections;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -106,5 +111,22 @@ public class DateDiscreteDomainTest {
 		Assertions.assertThat(domain.alignPrevious(endDate)).isEqualTo(endDate);
 		Assertions.assertThat(domain.next(endDate)).isEqualTo(nextDate);
 		Assertions.assertThat(domain.alignNext(endDate)).isEqualTo(endDate);
+	}
+
+	/**
+	 * Check {@link DateDiscreteDomain} is serializable.
+	 */
+	@Test
+	public void serialize() throws IOException, ClassNotFoundException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		new ObjectOutputStream(baos).writeObject(DateDiscreteDomain.weeks());
+		DateDiscreteDomain domain = (DateDiscreteDomain) new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray())).readObject();
+		this.<LocalDateTime>range(domain, LocalDateTime::parse,
+				DATE,
+				WEEK_PREVIOUS,
+				WEEK_START,
+				WEEK_END,
+				WEEK_NEXT
+		);
 	}
 }

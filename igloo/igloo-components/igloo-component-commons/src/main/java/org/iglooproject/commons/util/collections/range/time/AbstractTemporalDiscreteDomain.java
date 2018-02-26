@@ -1,5 +1,6 @@
 package org.iglooproject.commons.util.collections.range.time;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -24,11 +25,15 @@ import java.time.temporal.TemporalUnit;
  * @see InstantDiscreteDomain
  * @see Instant
  */
-abstract class AbstractTemporalDiscreteDomain <T extends Temporal & Comparable<? super T>> extends PartitionDiscreteDomain<T> {
+abstract class AbstractTemporalDiscreteDomain<T extends Temporal & Comparable<? super T>> extends PartitionDiscreteDomain<T>
+		implements Serializable {
 
-	private final TemporalUnit normalizationUnit;
-	private final TemporalUnit periodUnit;
-	private final TemporalField startOfPeriodField;
+	private static final long serialVersionUID = -4325301510023825071L;
+
+	// this fields are transient; all instances of these objects are built as a readResolve-aware object
+	private final transient TemporalUnit normalizationUnit;
+	private final transient TemporalUnit periodUnit;
+	private final transient TemporalField startOfPeriodField;
 
 	protected AbstractTemporalDiscreteDomain(ChronoUnit periodUnit, TemporalField startOfPeriodField, TemporalUnit normalizationUnit) {
 		this.periodUnit = periodUnit;

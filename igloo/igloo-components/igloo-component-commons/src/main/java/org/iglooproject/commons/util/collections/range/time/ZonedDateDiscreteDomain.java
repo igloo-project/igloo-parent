@@ -66,8 +66,11 @@ public class ZonedDateDiscreteDomain extends AbstractTemporalDiscreteDomain<Zone
 			return "DateDiscreteDomain.weeks()";
 		}
 	};
-	
-	public ZonedDateDiscreteDomain(ChronoUnit periodUnit, TemporalField startOfPeriodField, TemporalUnit normalizationUnit) {
+
+	/**
+	 * Keep constructor private, as instances of theses objects must implement readResolve for custom deserialization.
+	 */
+	private ZonedDateDiscreteDomain(ChronoUnit periodUnit, TemporalField startOfPeriodField, TemporalUnit normalizationUnit) {
 		super(periodUnit, startOfPeriodField, normalizationUnit);
 	}
 
