@@ -1,5 +1,15 @@
+html {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
 .application-access-page {
-	background-color: $gray-100;
 	padding-top: 60px;
 	padding-bottom: 60px;
 	
