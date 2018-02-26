@@ -64,7 +64,7 @@ public abstract class GenericNumberFunctionBuildStateImpl
 		return toBigDecimal(new Function<TNumber, BigDecimal>() {
 			@Override
 			public BigDecimal apply(TNumber input) {
-				return input == null ? null : new BigDecimal(input.doubleValue());
+				return input == null ? null : BigDecimal.valueOf(input.doubleValue());
 			}
 		});
 	}
