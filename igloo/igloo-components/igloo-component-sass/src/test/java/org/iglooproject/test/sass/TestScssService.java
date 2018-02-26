@@ -1,10 +1,8 @@
 package org.iglooproject.test.sass;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
-import java.io.InputStream;
-
-import org.assertj.core.api.Assertions;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.iglooproject.sass.service.IScssService;
 import org.iglooproject.sass.service.ScssServiceImpl;
@@ -19,36 +17,26 @@ public class TestScssService {
 	
 	@Test
 	public void testGetCompiledStylesheet() throws Exception {
-		try {
-			ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
-					TestScssServiceResourceScope.class,
-					"style.scss"
-			);
-			
-			Assert.assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n", compiledStylesheet.getSource());
-			Assert.assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
-		} finally {
-		}
+		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"style.scss"
+		);
+		
+		Assert.assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n", compiledStylesheet.getSource());
+		Assert.assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
 	}
 	
 	@Test
 	public void testGetCompiledStylesheetWithScope() throws Exception {
-		InputStream is = null;
-		try {
-			scssService.registerImportScope("test", TestScssServiceOtherResourceScope.class);
-			
-			ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
-					TestScssServiceResourceScope.class,
-					"style-scope.scss"
-			);
-			
-			Assert.assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n\n.test4 {\n\tcolor: #cccccc;\n}\n\n.test5 {\n\tcolor: #cccccc;\n}\n\ntest3 {\n\tcolor: #eeeeee;\n}\n", compiledStylesheet.getSource());
-			Assert.assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
-		} finally {
-			if (is != null) {
-				is.close();
-			}
-		}
+		scssService.registerImportScope("test", TestScssServiceOtherResourceScope.class);
+		
+		ScssStylesheetInformation compiledStylesheet = scssService.getCompiledStylesheet(
+				TestScssServiceResourceScope.class,
+				"style-scope.scss"
+		);
+		
+		Assert.assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n\n.test4 {\n\tcolor: #cccccc;\n}\n\n.test5 {\n\tcolor: #cccccc;\n}\n\ntest3 {\n\tcolor: #eeeeee;\n}\n", compiledStylesheet.getSource());
+		Assert.assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
 	}
 
 	/**
@@ -140,7 +128,7 @@ public class TestScssService {
 	 */
 	@Test
 	public void forbiddenProtocol() throws Exception {
-		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+		assertThatCode(() -> scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
 				"forbidden-protocol.scss"
 		)).isInstanceOf(RuntimeException.class);
@@ -151,7 +139,7 @@ public class TestScssService {
 	 */
 	@Test
 	public void forbiddenAbsolute() throws Exception {
-		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+		assertThatCode(() -> scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
 				"forbidden-absolute.scss"
 		)).isInstanceOf(RuntimeException.class);
@@ -162,7 +150,7 @@ public class TestScssService {
 	 */
 	@Test
 	public void forbiddenRelative() throws Exception {
-		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+		assertThatCode(() -> scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
 				"forbidden-relative.scss"
 		)).isInstanceOf(RuntimeException.class);
@@ -173,7 +161,7 @@ public class TestScssService {
 	 */
 	@Test
 	public void forbiddenRelative2() throws Exception {
-		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+		assertThatCode(() -> scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
 				"forbidden-relative-2.scss"
 		)).isInstanceOf(RuntimeException.class);
@@ -184,7 +172,7 @@ public class TestScssService {
 	 */
 	@Test
 	public void notFound() throws Exception {
-		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+		assertThatCode(() -> scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
 				"not-found.scss"
 		)).isInstanceOf(RuntimeException.class);
@@ -195,7 +183,7 @@ public class TestScssService {
 	 */
 	@Test
 	public void unknownScope() throws Exception {
-		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+		assertThatCode(() -> scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
 				"unknown-scope.scss"
 		)).isInstanceOf(RuntimeException.class);
@@ -206,7 +194,7 @@ public class TestScssService {
 	 */
 	@Test
 	public void forbiddenExtension() throws Exception {
-		Assertions.assertThatCode(() -> scssService.getCompiledStylesheet(
+		assertThatCode(() -> scssService.getCompiledStylesheet(
 				TestScssServiceResourceScope.class,
 				"forbidden-extension.scss"
 		)).isInstanceOf(RuntimeException.class);
