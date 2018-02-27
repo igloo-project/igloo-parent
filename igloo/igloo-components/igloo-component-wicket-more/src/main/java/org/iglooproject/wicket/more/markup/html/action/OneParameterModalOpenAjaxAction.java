@@ -8,7 +8,7 @@ import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalStatement;
 
-public class OneParameterModalOpenAjaxAction<T> extends AbstractOneParameterAjaxAction<T> {
+public class OneParameterModalOpenAjaxAction<T> implements IOneParameterAjaxAction<T> {
 
 	private static final long serialVersionUID = 511391011732361800L;
 
@@ -28,7 +28,7 @@ public class OneParameterModalOpenAjaxAction<T> extends AbstractOneParameterAjax
 	@Override
 	public void updateAjaxAttributes(AjaxRequestAttributes attributes, T parameter) {
 		attributes.getAjaxCallListeners().add(getOpenModalCallListener());
-		super.updateAjaxAttributes(attributes, parameter);
+		IOneParameterAjaxAction.super.updateAjaxAttributes(attributes, parameter);
 	}
 
 	protected IAjaxCallListener getOpenModalCallListener() {

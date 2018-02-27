@@ -31,7 +31,7 @@ import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
-import org.iglooproject.wicket.more.markup.html.action.AbstractAjaxAction;
+import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
 import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -140,7 +140,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 						.content(new ResourceModel("console.maintenance.task.description.mainInformation.reload.confirmation"))
 						.keepMarkup()
 						.yesNo()
-						.onClick(new AbstractAjaxAction() {
+						.onClick(new IAjaxAction() {
 							private static final long serialVersionUID = 1L;
 							@Override
 							public void execute(AjaxRequestTarget target) {
@@ -175,7 +175,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 						.content(new ResourceModel("console.maintenance.task.description.mainInformation.cancel.confirmation"))
 						.keepMarkup()
 						.yesNo()
-						.onClick(new AbstractAjaxAction() {
+						.onClick(new IAjaxAction() {
 							private static final long serialVersionUID = 1L;
 							@Override
 							public void execute(AjaxRequestTarget target) {

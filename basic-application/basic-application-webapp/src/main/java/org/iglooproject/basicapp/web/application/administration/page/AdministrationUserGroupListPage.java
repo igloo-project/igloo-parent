@@ -27,7 +27,7 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.model.ComponentPageModel;
-import org.iglooproject.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
+import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
@@ -113,7 +113,7 @@ public class AdministrationUserGroupListPage extends AdministrationTemplate {
 											}
 										})
 										.confirm()
-										.onClick(new AbstractOneParameterAjaxAction<IModel<UserGroup>>() {
+										.onClick(new IOneParameterAjaxAction<IModel<UserGroup>>() {
 											private static final long serialVersionUID = 1L;
 											@Override
 											public void execute(AjaxRequestTarget target, IModel<UserGroup> parameter) {

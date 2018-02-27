@@ -6,4 +6,9 @@ public interface IOneParameterAction<T> extends IDetachable {
 
 	public void execute(T parameter);
 
+	@Override
+	default void detach() {
+		// nothing to do
+	}
+
 }

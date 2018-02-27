@@ -21,7 +21,7 @@ import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.form.ConsoleMaintenanceInfinispanRoleAssignPopup;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
+import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.action.OneParameterModalOpenAjaxAction;
 import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.BootstrapColor;
@@ -120,7 +120,7 @@ public class ConsoleMaintenanceInfinispanRolesPanel extends Panel {
 										.content(new ResourceModel("console.maintenance.infinispan.roles.actions.delete.confirm.content"))
 										.yesNo()
 										.onClick(
-												new AbstractOneParameterAjaxAction<IModel<IRole>>() {
+												new IOneParameterAjaxAction<IModel<IRole>>() {
 													private static final long serialVersionUID = 1L;
 													@Override
 													public void execute(AjaxRequestTarget target, IModel<IRole> model) {

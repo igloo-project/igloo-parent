@@ -29,7 +29,7 @@ import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.link.model.PageModel;
-import org.iglooproject.wicket.more.markup.html.action.AbstractAjaxAction;
+import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
@@ -131,7 +131,7 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 						.title(new ResourceModel("administration.user.action.password.recovery.reset.confirmation.title"))
 						.content(new StringResourceModel("administration.user.action.password.recovery.reset.confirmation.content", userModel))
 						.confirm()
-						.onClick(new AbstractAjaxAction() {
+						.onClick(new IAjaxAction() {
 							private static final long serialVersionUID = 1L;
 							@Override
 							public void execute(AjaxRequestTarget target) {
@@ -178,7 +178,7 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 						.content(new StringResourceModel("administration.user.action.disable.confirmation.content", userModel))
 						.confirm()
 						.onClick(
-								new AbstractAjaxAction() {
+								new IAjaxAction() {
 									private static final long serialVersionUID = 1L;
 									@Override
 									public void execute(AjaxRequestTarget target) {

@@ -24,7 +24,7 @@ import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
-import org.iglooproject.wicket.more.markup.html.action.AbstractOneParameterAjaxAction;
+import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -75,7 +75,7 @@ public class UserDetailGroupsPanel extends GenericPanel<User> {
 											}
 										})
 										.confirm()
-										.onClick(new AbstractOneParameterAjaxAction<IModel<UserGroup>>() {
+										.onClick(new IOneParameterAjaxAction<IModel<UserGroup>>() {
 											private static final long serialVersionUID = 1L;
 											@Override
 											public void execute(AjaxRequestTarget target, IModel<UserGroup> parameter) {

@@ -18,7 +18,7 @@ import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformation;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformationModel;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheListModel;
-import org.iglooproject.wicket.more.markup.html.action.AbstractAjaxAction;
+import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.model.PercentageFloatToBigDecimalModel;
 import org.iglooproject.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardBehavior;
@@ -70,7 +70,7 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 				AjaxConfirmLink<CacheManager> purgerCache = AjaxConfirmLink.<CacheManager>build()
 						.title(new ResourceModel("common.action.confirm.title")).content(purgerCacheTextModel)
 						.yesNo()
-						.onClick(new AbstractAjaxAction() {
+						.onClick(new IAjaxAction() {
 							private static final long serialVersionUID = 1L;
 							@Override
 							public void execute(AjaxRequestTarget target) {
@@ -152,7 +152,7 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 						AjaxConfirmLink<Cache> viderCache = AjaxConfirmLink.<Cache>build()
 								.title(new ResourceModel("common.action.confirm.title")).content(viderCacheTextModel)
 								.yesNo()
-								.onClick(new AbstractAjaxAction() {
+								.onClick(new IAjaxAction() {
 									private static final long serialVersionUID = 1L;
 									@Override
 									public void execute(AjaxRequestTarget target) {

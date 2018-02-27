@@ -6,4 +6,9 @@ public interface IAction extends IDetachable {
 
 	void execute();
 
+	@Override
+	default void detach() {
+		// nothing to do
+	}
+
 }
