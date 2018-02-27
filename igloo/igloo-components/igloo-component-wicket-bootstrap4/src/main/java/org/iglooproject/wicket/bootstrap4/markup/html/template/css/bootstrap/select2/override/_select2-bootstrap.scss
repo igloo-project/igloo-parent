@@ -1,10 +1,12 @@
 .select2-container--bootstrap {
 	&.select2-container--focus {
-		.select2-selection {
-			@if $enable-shadows {
-				box-shadow: $input-box-shadow, $s2bs-form-control-focus-box-shadow;
-			} @else {
-				box-shadow: $s2bs-form-control-focus-box-shadow;
+		&:not(.select2-container--open) {
+			.select2-selection {
+				@if $enable-shadows {
+					box-shadow: $input-box-shadow, $input-btn-focus-box-shadow;
+				} @else {
+					box-shadow: $input-btn-focus-box-shadow;
+				}
 			}
 		}
 	}
