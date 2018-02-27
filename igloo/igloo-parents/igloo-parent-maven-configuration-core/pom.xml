@@ -24,7 +24,7 @@
 		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
 		<igloo.jboss-logging.version>3.3.1.Final</igloo.jboss-logging.version>
 		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
-		<igloo.hikaricp.version>2.7.7</igloo.hikaricp.version>
+		<igloo.hikaricp.version>2.7.8</igloo.hikaricp.version>
 		<igloo.ehcache.version>2.10.4</igloo.ehcache.version>
 		<igloo.querydsl.version>4.1.4</igloo.querydsl.version>
 		
@@ -143,9 +143,9 @@
 		<igloo.javax-activation.version>1.1.1</igloo.javax-activation.version>
 		<igloo.javax-validation-api.version>1.1.0.Final</igloo.javax-validation-api.version>
 		
-		<igloo.wicket.version>7.9.0</igloo.wicket.version>
+		<igloo.wicket.version>7.10.0</igloo.wicket.version>
 		<igloo.wiquery.version>7.0</igloo.wiquery.version>
-		<igloo.wicketstuff-select2.version>7.9.0</igloo.wicketstuff-select2.version>
+		<igloo.wicketstuff-select2.version>7.10.0</igloo.wicketstuff-select2.version>
 		<!-- https://github.com/l0rdn1kk0n/wicket-webjars (0.5.x -> wicket 7, 2.0.x -> wicket 8) -->
 		<igloo.wicket-webjars.version>0.5.6</igloo.wicket-webjars.version>
 		<igloo.webjars-locator-core.version>0.35</igloo.webjars-locator-core.version>
