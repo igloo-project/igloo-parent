@@ -14,6 +14,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
 		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
+		<igloo.jsch.version>0.1.54</igloo.jsch.version>
 		<maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
 		
 		<!-- version needed here as we use allure to aggregate child reports -->
@@ -141,6 +142,13 @@
 						<versionTagPrefix>v</versionTagPrefix>
 					</flowInitContext>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.jcraft</groupId>
+						<artifactId>jsch</artifactId>
+						<version>${igloo.jsch.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 		<pluginManagement>
