@@ -80,6 +80,14 @@
 	}
 }
 
+.custom-control-input {
+	@include transition($input-transition);
+	
+	&:focus ~ .custom-control-label::before {
+		border: $input-border-width solid $input-focus-border-color;
+	}
+}
+
 .page-link {
 	&:hover {
 		box-shadow: $pagination-hover-box-shadow;
