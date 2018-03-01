@@ -7,10 +7,10 @@ body {
 	margin: 0;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
+	background-color: $gray-100;
 }
 
 .console-access-page {
-	background-color: $gray-100;
 	padding-top: 60px;
 	padding-bottom: 60px;
 	
@@ -31,7 +31,6 @@ body {
 				.card-header {
 					&.card-main-title {
 						@extend .bg-dark;
-						@extend .text-white;
 						
 						border-top: $card-border-width solid $card-border-color;
 						font-size: $h4-font-size;
@@ -39,7 +38,6 @@ body {
 					
 					&.card-header-alert-section {
 						@extend .bg-light;
-						@extend .text-dark;
 						
 						padding: 0;
 						
@@ -84,7 +82,6 @@ body {
 						
 						&.environment-section {
 							@extend .bg-secondary;
-							@extend .text-white;
 							
 							&.environment-section-dismissed {
 								height: 8px;
@@ -92,22 +89,18 @@ body {
 							
 							&.development {
 								@extend .bg-success;
-								@extend .text-white;
 							}
 							
 							&.testing {
 								@extend .bg-info;
-								@extend .text-white;
 							}
 							
 							&.staging {
 								@extend .bg-warning;
-								@extend .text-dark;
 							}
 							
 							&.production {
 								@extend .bg-danger;
-								@extend .text-white;
 							}
 						}
 					}
