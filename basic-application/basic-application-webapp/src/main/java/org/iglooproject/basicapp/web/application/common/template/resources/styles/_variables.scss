@@ -20,7 +20,9 @@ $fa-font-family:								'Font Awesome 5 Free';
 $fa-font-weight:								900;
 
 // OVERRIDE shadows hover / focus
-$custom-control-indicator-focus-box-shadow:		$input-btn-focus-box-shadow;
+$input-focus-box-shadow:						$input-btn-focus-box-shadow;
+
+$custom-control-indicator-focus-box-shadow:		$input-focus-box-shadow;
 
 $btn-hover-box-shadow:							$input-btn-focus-box-shadow;
 $btn-focus-box-shadow:							$btn-hover-box-shadow;

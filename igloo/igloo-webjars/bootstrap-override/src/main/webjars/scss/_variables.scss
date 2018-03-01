@@ -17,25 +17,28 @@
 	$modal-backdrop-opacity:			1 !default !global;
 }
 
-$font-size-root:					16px !default; // 14px looks better
+$font-size-root:					16px !default;
 
-$colors: (
+$colors: () !default;
+$colors: map-merge((
 	"brand":		$brand-color,
 	"brand-text":	$brand-text-color
-) !default;
+), $colors);
 
-$theme-colors: (
+$theme-colors: () !default;
+$theme-colors: map-merge((
 	"brand":		$brand-color
-) !default;
+), $theme-colors);
 
-$grid-gutter-widths: (
+$grid-gutter-widths: () !default;
+$grid-gutter-widths: map-merge((
 	0: 0,
 	1: 8px,
 	2: 15px,
 	3: 30px,
 	4: 40px,
 	5: 50px
-) !default;
+), $grid-gutter-widths);
 
 // Font Awesome
 $fa-font-family:					'Font Awesome 5 Free' !default;
