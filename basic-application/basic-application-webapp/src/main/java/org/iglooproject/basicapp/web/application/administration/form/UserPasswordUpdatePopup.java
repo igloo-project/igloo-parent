@@ -56,7 +56,6 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 	
 	public UserPasswordUpdatePopup(String id, IModel<U> model) {
 		super(id, model);
-		setStatic();
 		
 		this.typeDescriptor = UserTypeDescriptor.get(model.getObject());
 		
