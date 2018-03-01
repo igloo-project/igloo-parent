@@ -1,8 +1,8 @@
 @import "webjars://bootstrap:current/scss/functions";
 
-@import "webjars://bootstrap:current/scss/variables";
-@import "webjars://bootstrap-override:current/scss/variables";
 @import "variables";
+@import "webjars://bootstrap-override:current/scss/variables";
+@import "webjars://bootstrap:current/scss/variables";
 
 @import "webjars://bootstrap:current/scss/mixins";
 @import "webjars://bootstrap-override:current/scss/mixins";
@@ -32,7 +32,9 @@
 @import "webjars://bootstrap:current/scss/input-group";
 @import "webjars://bootstrap:current/scss/custom-forms";
 @import "webjars://bootstrap:current/scss/nav";
+
 @import "webjars://bootstrap:current/scss/navbar";
+@import "webjars://bootstrap-override:current/scss/navbar";
 
 @import "webjars://bootstrap:current/scss/card";
 @import "webjars://bootstrap-override:current/scss/card";
@@ -57,7 +59,25 @@
 @import "webjars://bootstrap:current/scss/tooltip";
 @import "webjars://bootstrap:current/scss/popover";
 @import "webjars://bootstrap:current/scss/carousel";
-@import "webjars://bootstrap:current/scss/utilities";
+
+@import "webjars://bootstrap:current/scss/utilities/align";
+
+@import "webjars://bootstrap:current/scss/utilities/background";
+@import "webjars://bootstrap-override:current/scss/utilities/background";
+
+@import "webjars://bootstrap:current/scss/utilities/borders";
+@import "webjars://bootstrap:current/scss/utilities/clearfix";
+@import "webjars://bootstrap:current/scss/utilities/display";
+@import "webjars://bootstrap:current/scss/utilities/embed";
+@import "webjars://bootstrap:current/scss/utilities/flex";
+@import "webjars://bootstrap:current/scss/utilities/float";
+@import "webjars://bootstrap:current/scss/utilities/position";
+@import "webjars://bootstrap:current/scss/utilities/screenreaders";
+@import "webjars://bootstrap:current/scss/utilities/sizing";
+@import "webjars://bootstrap:current/scss/utilities/spacing";
+@import "webjars://bootstrap:current/scss/utilities/text";
+@import "webjars://bootstrap:current/scss/utilities/visibility";
+
 @import "webjars://bootstrap:current/scss/print";
 
 @import "$(scope-core-bs4)select2/select2-bootstrap";

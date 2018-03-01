@@ -1,17 +1,45 @@
-$font-size-root:					16px; // 14px looks better
+%scope {
+	@import "webjars://bootstrap:current/scss/functions";
+	@import "webjars://bootstrap:current/scss/variables";
+	
+	$brand-color:						$primary !default !global;
+	$brand-text-color:					$white !default !global;
+	
+	$font-size-xs:						($font-size-base * .7) !default !global;
+	$line-height-xs:					1.5 !default !global;
+	$border-radius-xs:					.2rem !default !global;
+	
+	$feedback-box-shadow:				0 2px 2px 0 rgba($black, 0.14), 0 1px 5px 0 rgba($black, 0.12), 0 3px 1px -2px rgba($black, 0.2) !default !global;
+	
+	$table-accent-bg:					rgba($black, .025) !default !global;
+	
+	$modal-backdrop-bg:					rgba($black, .2) !default !global;
+	$modal-backdrop-opacity:			1 !default !global;
+}
+
+$font-size-root:					16px !default; // 14px looks better
+
+$colors: (
+	"brand":		$brand-color,
+	"brand-text":	$brand-text-color
+) !default;
+
+$theme-colors: (
+	"brand":		$brand-color
+) !default;
 
 $grid-gutter-widths: (
-  0: 0,
-  1: 8px,
-  2: 15px,
-  3: 30px,
-  4: 40px,
-  5: 50px
+	0: 0,
+	1: 8px,
+	2: 15px,
+	3: 30px,
+	4: 40px,
+	5: 50px
 ) !default;
 
 // Font Awesome
-$fa-font-family:					'Font Awesome 5 Free';
-$fa-font-weight:					900;
+$fa-font-family:					'Font Awesome 5 Free' !default;
+$fa-font-weight:					900 !default;
 
 // Z-index master list
 $zindex-dropdown:					1000 !default;
@@ -26,14 +54,6 @@ $zindex-alert-global:				1100 !default;
 $zindex-alert-global-close:			1101 !default;
 $zindex-scroll-to-top:				1035 !default;
 
-$feedback-box-shadow:				0 2px 2px 0 rgba($black, 0.14), 0 1px 5px 0 rgba($black, 0.12), 0 3px 1px -2px rgba($black, 0.2) !default;
-
-$font-size-xs:						($font-size-base * .7) !default;
-
-$line-height-xs:					1.5;
-
-$border-radius-xs:					.2rem !default;
-
 $input-btn-padding-y-xs:			.125rem !default;
 $input-btn-padding-x-xs:			.25rem !default;
 $input-btn-line-height-xs:			$line-height-xs !default;
@@ -44,11 +64,13 @@ $btn-line-height-xs:				$input-btn-line-height-xs !default;
 
 $btn-border-radius-xs:				$border-radius-xs !default;
 
-$modal-lg:							900px;
-$modal-md:							700px;
-$modal-sm:							500px;
+$modal-lg:							900px !default;
+$modal-md:							700px !default;
+$modal-sm:							500px !default;
 
-$table-accent-bg:					rgba($black, .025);
-
-$modal-backdrop-bg:					rgba($black, .2);
-$modal-backdrop-opacity:			1;
+$navbar-main-color:					rgba(color("brand-text"), .75) !default;
+$navbar-main-hover-color:			rgba(color("brand-text"), 1) !default;
+$navbar-main-active-color:			color("brand-text") !default;
+$navbar-main-disabled-color:		rgba(color("brand-text"), .25) !default;
+$navbar-main-toggler-icon-bg:		str-replace(url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$navbar-main-color}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"), "#", "%23") !default;
+$navbar-main-toggler-border-color:	rgba(color("brand-text"), .1) !default;

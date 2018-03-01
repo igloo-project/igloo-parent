@@ -12,7 +12,6 @@ body {
 
 .header-alert-section {
 	@extend .bg-light;
-	@extend .text-dark;
 	
 	border-bottom: 1px solid rgba($black, .125);
 	
@@ -59,7 +58,6 @@ body {
 	
 	&.environment-section {
 		@extend .bg-secondary;
-		@extend .text-white;
 		
 		&.environment-section-dismissed {
 			height: 8px;
@@ -67,22 +65,18 @@ body {
 		
 		&.development {
 			@extend .bg-success;
-			@extend .text-white;
 		}
 		
 		&.testing {
 			@extend .bg-info;
-			@extend .text-white;
 		}
 		
 		&.staging {
 			@extend .bg-warning;
-			@extend .text-dark;
 		}
 		
 		&.production {
 			@extend .bg-danger;
-			@extend .text-white;
 		}
 	}
 }

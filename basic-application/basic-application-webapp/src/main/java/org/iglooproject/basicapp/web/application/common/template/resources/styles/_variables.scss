@@ -1,20 +1,30 @@
+%scope {
+	@import "webjars://bootstrap:current/scss/functions";
+	@import "webjars://bootstrap-override:current/scss/variables";
+	@import "webjars://bootstrap:current/scss/variables";
+	
+	$brand-color:						#1B0FA4 !global;
+	$brand-text-color:					$white !global;
+	
+	// OVERRIDE shadows hover / focus
+	$input-btn-focus-box-shadow:					0px 1px 8px 0px rgba($black, 0.2), 0px 3px 4px 0px rgba($black, 0.14), 0px 3px 3px -2px rgba($black, 0.12) !default !global;
+	
+	$pagination-hover-color:						$link-hover-color !default !global;
+	$pagination-hover-bg:							$pagination-bg !default !global;
+	$pagination-hover-border-color:					$pagination-border-color !default !global;
+	// OVERRIDE shadows hover / focus
+}
+
 // Font Awesome
 $fa-font-family:								'Font Awesome 5 Free';
 $fa-font-weight:								900;
 
 // OVERRIDE shadows hover / focus
-$input-btn-focus-box-shadow:					0px 1px 8px 0px rgba($black, 0.2), 0px 3px 4px 0px rgba($black, 0.14), 0px 3px 3px -2px rgba($black, 0.12);
-
-$input-focus-box-shadow:						$input-btn-focus-box-shadow;
-
-$custom-control-indicator-focus-box-shadow:		$input-focus-box-shadow;
+$custom-control-indicator-focus-box-shadow:		$input-btn-focus-box-shadow;
 
 $btn-hover-box-shadow:							$input-btn-focus-box-shadow;
 $btn-focus-box-shadow:							$btn-hover-box-shadow;
 
 $pagination-hover-box-shadow:					$btn-hover-box-shadow;
-$pagination-hover-color:						$link-hover-color;
-$pagination-hover-bg:							$pagination-bg;
-$pagination-hover-border-color:					$pagination-border-color;
 $pagination-focus-box-shadow:					$pagination-hover-box-shadow;
 // OVERRIDE shadows hover / focus
