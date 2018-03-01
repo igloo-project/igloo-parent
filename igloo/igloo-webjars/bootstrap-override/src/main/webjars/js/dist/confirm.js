@@ -19,7 +19,7 @@
 			var noButton = $this.data("modal-confirm-no-button");
 			var noEscape = $this.data("modal-confirm-text-noescape");
 			var cssClassNames = $this.data("modal-confirm-css-class-names");
-			var $modal = $("<div class='modal confirm'></div>");
+			var $modal = $("<div class='modal fade confirm' tabindex='-1'></div>");
 			var $dialog = $("<div class='modal-dialog'></div>");
 			var $content = $("<div class='modal-content'></div>");
 			
@@ -71,7 +71,7 @@
 			
 			$dialog.append($content);
 			$modal.append($dialog);
-			$modal.modal({ show: true, backdrop: 'static' });
+			$modal.modal({ show: true });
 		});
 	};
 }(window.jQuery, window, document);
