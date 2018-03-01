@@ -2,33 +2,66 @@
 	@extend .shadow-xs;
 	
 	.navbar-nav {
-		> li {
-			&.nav-item {
-				a {
-					&.nav-link {
-						&.home {
-						}
-						
-						&.reference-data {
-						}
-						
-						&.administration {
-						}
-						
-						&.console {
-						}
-					}
+		.nav-item {
+			margin: 2px 0;
+			
+			&.active, &.dropdown.show {
+				.nav-link {
+					@extend .rounded;
+					background-color: rgba($white, .1);
+				}
+			}
+			
+			.nav-link {
+				padding-right: $navbar-nav-link-padding-x;
+				padding-left: $navbar-nav-link-padding-x;
+				
+				&:not(.disabled):hover {
+					@extend .rounded;
+					background-color: rgba($white, .1);
 				}
 				
-				.nav-link-icon {
-					display: inline;
+				&.home {
 				}
+				
+				&.reference-data {
+				}
+				
+				&.administration {
+				}
+				
+				&.console {
+				}
+			}
+			
+			.nav-link-icon {
+				display: inline;
 			}
 		}
 	}
+	
 	.navbar-text {
 		a {
 			text-decoration: none;
+		}
+	}
+}
+
+.navbar-expand {
+	@each $breakpoint in map-keys($grid-breakpoints) {
+		$next: breakpoint-next($breakpoint, $grid-breakpoints);
+		$infix: breakpoint-infix($next, $grid-breakpoints);
+		
+		&#{$infix} {
+			@include media-breakpoint-up($next) {
+				.navbar-nav {
+					> li {
+						&.nav-item {
+							margin: 0 2px;
+						}
+					}
+				}
+			}
 		}
 	}
 }

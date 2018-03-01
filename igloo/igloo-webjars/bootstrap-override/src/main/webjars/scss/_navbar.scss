@@ -3,7 +3,7 @@
 	
 	.navbar-brand {
 		color: $navbar-main-active-color;
-
+		
 		@include hover-focus {
 			color: $navbar-main-active-color;
 		}
