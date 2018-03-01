@@ -1,3 +1,13 @@
+@mixin navbar-nav-link-hover() {
+	@extend .rounded;
+	background-color: rgba($white, .1);
+	@include transition(all .3s ease 0s);
+}
+
+@mixin navbar-nav-link-focus() {
+	@include navbar-nav-link-hover();
+}
+
 .navbar {
 	@extend .shadow-xs;
 	
@@ -7,8 +17,7 @@
 			
 			&.active, &.dropdown.show {
 				.nav-link {
-					@extend .rounded;
-					background-color: rgba($white, .1);
+					@include navbar-nav-link-focus();
 				}
 			}
 			
@@ -17,8 +26,7 @@
 				padding-left: $navbar-nav-link-padding-x;
 				
 				&:not(.disabled):hover {
-					@extend .rounded;
-					background-color: rgba($white, .1);
+					@include navbar-nav-link-hover();
 				}
 				
 				&.home {
