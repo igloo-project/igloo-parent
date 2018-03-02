@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 import org.wicketstuff.wiquery.ui.datepicker.DatePickerJavaScriptResourceReference;
 
 import com.google.common.collect.Lists;
 
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
-
+/**
+ * Override jQuery UI Datepicker JS: override "Today" button behavior to select the current date and close the datepicker on click.
+ */
 public final class DatePickerOverrideJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 	
 	private static final long serialVersionUID = -1451228678288396852L;
