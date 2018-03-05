@@ -338,7 +338,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			try {
 				executor.awaitTermination(3, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
-				LOGGER.warn("Interrupted waiting for stop. Mark interrupted and continue to wait termination.");
+				LOGGER.warn("Interrupted waiting for stop. Mark interrupted and continue to wait termination.", e);
 				Thread.currentThread().isInterrupted();
 			}
 		}
@@ -871,7 +871,8 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		final IAction<?> action = value.getValue();
 		final AddressWrapper address = getLocalAddress();
 		if (address == null) {
-			LOGGER.info("Ignored event {} as we do not have a valid address", value);
+			LOGGER.warn("Ignored event {} as we do not have a valid address", value.getValue());
+			return;
 		}
 		if (value.getValue().isBroadcast() || address.equals(value.getValue().getTarget())) {
 			executor.submit(new Runnable() {
@@ -880,7 +881,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 					try {
 						AddressWrapper address = getLocalAddress();
 						if (address == null) {
-							LOGGER.warn("Message received but cache stopped at processing time: {}", action);
+							LOGGER.warn("Message received but ignored as cache stopped at processing time: {}", action);
 							return;
 						}
 						LOGGER.debug("action {} on {}", action.getClass().getSimpleName(), getLocalAddress());
