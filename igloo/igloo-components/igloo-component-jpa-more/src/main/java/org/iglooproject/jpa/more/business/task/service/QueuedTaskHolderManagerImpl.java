@@ -533,8 +533,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	 */
 	private boolean queueOffer(TaskQueue queue, Long taskId) {
 		// check if task is already in a queue
-		if (getCache() != null) {
-			IAttribution previous = getCache().putIfAbsent(taskId, Attribution.from(infinispanClusterService.getLocalAddress(), new Date()));
+		Cache<Long, IAttribution> cache = getCache();
+		if (cache != null) {
+			IAttribution previous = cache.putIfAbsent(taskId, Attribution.from(infinispanClusterService.getLocalAddress(), new Date()));
 			if (previous != null) {
 				// if already loaded, stop processing
 				LOGGER.warn("Task {} already loaded in cluster and ignored", taskId);
@@ -602,8 +603,9 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 
 	@Override
 	public void onTaskFinish(Long taskId) {
-		if (getCache() != null) {
-			IAttribution previous = getCache().remove(taskId);
+		Cache<Long, IAttribution> cache = getCache();
+		if (cache != null) {
+			IAttribution previous = cache.remove(taskId);
 			if (previous == null) {
 				// if already loaded, stop processing
 				LOGGER.warn("Task {} finished but not in cache map", taskId);
