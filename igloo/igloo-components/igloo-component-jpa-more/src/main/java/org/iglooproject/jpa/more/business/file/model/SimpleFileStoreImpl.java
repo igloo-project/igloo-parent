@@ -2,7 +2,6 @@ package org.iglooproject.jpa.more.business.file.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,15 +11,15 @@ import java.util.Locale;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.more.business.file.model.path.IFileStorePathGenerator;
+import org.iglooproject.jpa.more.business.file.model.path.SimpleFileStorePathGeneratorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import de.schlichtherle.truezip.file.TFileInputStream;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.more.business.file.model.path.IFileStorePathGenerator;
-import org.iglooproject.jpa.more.business.file.model.path.SimpleFileStorePathGeneratorImpl;
 
 
 public class SimpleFileStoreImpl implements IFileStore {
@@ -59,29 +58,18 @@ public class SimpleFileStoreImpl implements IFileStore {
 	
 	@Override
 	public FileInformation addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException {
-		TFileInputStream fileInputStream = null;
-		try {
-			// Attention le fichier peut être contenu dans un zip d'où cette
-			// manipulation spécifique.
-			fileInputStream = new TFileInputStream(file);
+		// Attention le fichier peut être contenu dans un zip d'où cette
+		// manipulation spécifique.
+		try (TFileInputStream fileInputStream = new TFileInputStream(file)) {
 			return addFile(fileInputStream, fileKey, extension);
-		} catch (RuntimeException | FileNotFoundException e) {
+		} catch (RuntimeException | IOException e) {
 			throw new ServiceException(e);
-		} finally {
-			if (fileInputStream != null) {
-				try {
-					fileInputStream.close();
-				} catch (IOException e) {
-					throw new ServiceException(e);
-				}
-			}
 		}
 	}
 	
 	@Override
 	public FileInformation addFile(InputStream inputStream, String fileKey, String extension)
 			throws ServiceException, SecurityServiceException {
-		OutputStream outputStream = null;
 		File outputFile = null;
 		
 		try {
@@ -95,26 +83,12 @@ public class SimpleFileStoreImpl implements IFileStore {
 			}
 			
 			outputFile = new File(filePath);
-			outputStream = createOutputStream(outputFile);
-			IOUtils.copy(inputStream, outputStream);
+			
+			try (InputStream myInputStream = inputStream; OutputStream outputStream = createOutputStream(outputFile)) {
+				IOUtils.copy(myInputStream, outputStream);
+			}
 		} catch (RuntimeException | IOException e) {
 			throw new ServiceException(e);
-		} finally {
-			if (inputStream != null) {
-				try {
-					inputStream.close();
-				} catch (IOException e) {
-					throw new ServiceException(e);
-				}
-			}
-			
-			if (outputStream != null) {
-				try {
-					outputStream.close();
-				} catch (IOException e) {
-					throw new ServiceException(e);
-				}
-			}
 		}
 		
 		String cleanExtension = extension == null ? null : extension.toLowerCase(Locale.ROOT);
