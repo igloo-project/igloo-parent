@@ -28,6 +28,12 @@
 			color: color-yiq($value);
 			@include gradient-bg($value);
 			border-color: $value;
+			
+			@if $enable-shadows {
+				box-shadow: $btn-box-shadow, $btn-hover-box-shadow;
+			} @else {
+				box-shadow: $btn-focus-box-shadow;
+			}
 		}
 		
 		&:focus,
@@ -59,11 +65,21 @@
 			color: $value;
 			background-color: transparent;
 			border-color: $value;
+			
+			@if $enable-shadows {
+				box-shadow: $btn-box-shadow, $btn-hover-box-shadow;
+			} @else {
+				box-shadow: $btn-focus-box-shadow;
+			}
 		}
 		
 		&:focus,
 		&.focus {
-			box-shadow: $btn-focus-box-shadow;
+			@if $enable-shadows {
+				box-shadow: $btn-box-shadow, $btn-focus-box-shadow;
+			} @else {
+				box-shadow: $btn-focus-box-shadow;
+			}
 		}
 		
 		&:not(:disabled):not(.disabled):active,
@@ -86,6 +102,10 @@
 	&:focus ~ .custom-control-label::before {
 		border: $input-border-width solid $input-focus-border-color;
 	}
+}
+
+.dropdown-menu {
+	box-shadow: $dropdown-box-shadow;
 }
 
 .page-link {
