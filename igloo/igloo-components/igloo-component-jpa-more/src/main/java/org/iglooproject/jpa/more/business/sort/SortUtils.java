@@ -145,9 +145,7 @@ public final class SortUtils {
 		// missingLast / forward: set sortMissingLast
 		// missingLast / reverse: default lucene behavior
 
-		if (nullFirst && reverse) {
-			sortField.setMissingValue(SortField.STRING_LAST);
-		} else if (nullLast && !reverse) {
+		if ((nullFirst && reverse) || (nullLast && !reverse)) {
 			sortField.setMissingValue(SortField.STRING_LAST);
 		}
 
@@ -167,10 +165,10 @@ public final class SortUtils {
 		// missingLast / forward: set sortMissingLast
 		// missingLast / reverse: default lucene behavior
 
-		if (nullFirst && reverse) {
+		if ((nullFirst && reverse) || (nullLast && !reverse)) {
 			sortField.setMissingValue(Long.MAX_VALUE);
-		} else if (nullLast && !reverse) {
-			sortField.setMissingValue(Long.MAX_VALUE);
+		} else {
+			sortField.setMissingValue(Long.MIN_VALUE);
 		}
 
 		return sortField;

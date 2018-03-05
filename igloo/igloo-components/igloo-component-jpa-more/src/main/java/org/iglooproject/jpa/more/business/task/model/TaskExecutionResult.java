@@ -96,10 +96,18 @@ public class TaskExecutionResult implements Serializable {
 		return result;
 	}
 
+	/**
+	 * Update task result. Beware that actual result is updated only if result is not set
+	 * or if argument is worst than current result (ERROR replaces SUCCESS, but SUCCESS after
+	 * ERROR is ignored).
+	 */
 	public void setResult(TaskResult result) {
-		if (this.result == null) {
-			this.result = result;
-		} else if (result != null && result.ordinal() > this.result.ordinal()) {
+		if (
+				// no current result
+				this.result == null
+				// or result is worst than current result
+				|| (result != null && result.ordinal() > this.result.ordinal())
+			) {
 			this.result = result;
 		}
 	}
