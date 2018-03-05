@@ -34,4 +34,7 @@ ssh "${SYNC_TEST_REPORTS_USER}@${SYNC_TEST_REPORTS_HOST}" mkdir -p '"'${SYNC_FOL
 # -s preserve space in remote folder name
 rsync -s -az --chmod=g=rX,o= target/site/ "${SYNC_TEST_REPORTS_USER}@${SYNC_TEST_REPORTS_HOST}:${SYNC_FOLDER}"
 
+if [ $TEST_RESULT -ne 0 ]; then
+  echo "Test job ends with some test failures"
+fi
 exit $TEST_RESULT
