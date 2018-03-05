@@ -143,11 +143,11 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 		
 		StringBuilder sb = new StringBuilder(String.format("%1$s - Migrated items ", context));
 		if (duration < 1000) {
-			sb.append(String.format("in %1$s ms", duration));
+			sb.append(String.format("in %1$d ms", duration));
 		} else if (duration < 60000){
-			sb.append(String.format("in %1$s s", new BigDecimal(duration / 1000f).setScale(3, BigDecimal.ROUND_HALF_UP).toString()));
+			sb.append(String.format("in %1$d s", BigDecimal.valueOf(duration / 1000f).setScale(3, BigDecimal.ROUND_HALF_UP).toString()));
 		} else {
-			sb.append(String.format("in %1$s mn", new BigDecimal(duration / 60000f).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
+			sb.append(String.format("in %1$d mn", BigDecimal.valueOf(duration / 60000f).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
 		}
 		if (e != null) {
 			// Log this as info anyway, since error handling is done elsewhere
