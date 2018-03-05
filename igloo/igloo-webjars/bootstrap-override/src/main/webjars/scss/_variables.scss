@@ -1,7 +1,12 @@
 %scope {
-	@import "webjars://bootstrap:current/scss/functions";
-	@import "webjars://bootstrap:current/scss/variables";
+	@import "scope/variables-dependencies";
 	
+	$spacer-xs:							($spacer * 0.25) !default !global;
+	$spacer-sm:							($spacer * 0.5) !default !global;
+	$spacer-md:							($spacer * 1) !default !global;
+	$spacer-lg:							($spacer * 1.5) !default !global;
+	$spacer-xl:							($spacer * 3) !default !global;
+
 	$brand-color:						$primary !default !global;
 	$brand-text-color:					$white !default !global;
 	
@@ -15,9 +20,32 @@
 	
 	$modal-backdrop-bg:					rgba($black, .2) !default !global;
 	$modal-backdrop-opacity:			1 !default !global;
+	
+	$pagination-padding-y:				.5rem !default !global;
+	$pagination-padding-x:				.75rem !default !global;
+	$pagination-padding-y-sm:			.25rem !default !global;
+	$pagination-padding-x-sm:			.5rem !default !global;
+	$pagination-padding-y-lg:			.75rem !default !global;
+	$pagination-padding-x-lg:			1.5rem !default !global;
+	$pagination-line-height:			$input-btn-line-height !default !global;
+	$pagination-color:					$body-color !default !global;
+	$pagination-bg:						transparent !default !global;
+	$pagination-border-width:			0px !default !global;
+	$pagination-border-color:			transparent !default !global;
+	$pagination-focus-box-shadow:		$input-btn-focus-box-shadow !default !global;
+	$pagination-hover-color:			rgba($black, .87) !default !global;
+	$pagination-hover-bg:				hsla(0,0%, 60%, .4) !default !global;
+	$pagination-hover-border-color:		transparent !default !global;
+	$pagination-active-color:			$component-active-color !default !global;
+	$pagination-active-bg:				$component-active-bg !default !global;
+	$pagination-active-border-color:	transparent !default !global;
+	$pagination-disabled-color:			rgba($black, .38) !default !global;
+	$pagination-disabled-bg:			transparent !default !global;
+	$pagination-disabled-border-color:	transparent !default !global;
 }
 
 $font-size-root:					14px !default;
+
 
 $colors: () !default;
 $colors: map-merge((
@@ -25,10 +53,25 @@ $colors: map-merge((
 	"brand-text":	$brand-text-color
 ), $colors);
 
+
 $theme-colors: () !default;
 $theme-colors: map-merge((
 	"brand":		$brand-color
 ), $theme-colors);
+
+
+$spacers: () !default;
+$spacers: map-merge(
+	(
+		0: 0,
+		1: $spacer-xs,
+		2: $spacer-sm,
+		3: $spacer-md,
+		4: $spacer-lg,
+		5: $spacer-xl
+	),
+	$spacers
+);
 
 $grid-gutter-widths: () !default;
 $grid-gutter-widths: map-merge((

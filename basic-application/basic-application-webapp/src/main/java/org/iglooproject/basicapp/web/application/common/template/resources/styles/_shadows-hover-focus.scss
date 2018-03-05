@@ -108,23 +108,3 @@
 	box-shadow: $dropdown-box-shadow;
 }
 
-.page-link {
-	&:hover {
-		box-shadow: $pagination-hover-box-shadow;
-		z-index: 2;
-	}
-	
-	&:focus {
-		box-shadow: $pagination-focus-box-shadow;
-		z-index: 2;
-	}
-}
-
-.page-item {
-	&.disabled .page-link {
-		@include hover-focus {
-			box-shadow: none;
-		}
-	}
-}
-

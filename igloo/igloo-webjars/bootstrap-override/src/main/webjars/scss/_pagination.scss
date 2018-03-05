@@ -1,3 +1,11 @@
 .pagination {
 	@extend .flex-wrap; // Avoid overflow pagination with wrapping on elements. Need a better responsive solution.
+	
+	.page-item + .page-item {
+		margin-left: 1px;
+	}
+}
+
+.page-link {
+	@include border-radius($border-radius);
 }
