@@ -36,6 +36,8 @@ import org.iglooproject.basicapp.web.application.common.validator.EmailUnicityVa
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
 import org.iglooproject.basicapp.web.application.common.validator.UsernamePatternValidator;
 import org.iglooproject.basicapp.web.application.common.validator.UsernameUnicityValidator;
+import org.iglooproject.spring.property.SpringPropertyIds;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -73,6 +75,9 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
+
+	@SpringBean
+	private IPropertyService propertyService;
 
 	private final IModel<FormMode> formModeModel = new Model<>(FormMode.ADD);
 
@@ -155,8 +160,8 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 						.add(EmailAddressValidator.getInstance())
 						.add(new EmailUnicityValidator(getModel())),
 				new LocaleDropDownChoice("locale", BindingModel.of(getModel(), Bindings.user().locale()))
-						.setNullValid(true)
 						.setLabel(new ResourceModel("business.user.locale"))
+						.setRequired(true)
 		);
 		
 		return standardFields;
@@ -244,11 +249,19 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 	}
 
 	public void setUpAdd(U user) {
+		if (user.getLocale() == null) {
+			user.setLocale(propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
+		}
+		
 		getModel().setObject(user);
 		formModeModel.setObject(FormMode.ADD);
 	}
 
 	public void setUpEdit(U user) {
+		if (user.getLocale() == null) {
+			user.setLocale(propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
+		}
+		
 		getModel().setObject(user);
 		formModeModel.setObject(FormMode.EDIT);
 	}

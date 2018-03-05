@@ -12,6 +12,8 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.jpa.util.HibernateUtils;
+import org.iglooproject.spring.property.SpringPropertyIds;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,10 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 
 	@Autowired
 	private IHistoryLogService historyLogService;
-	
+
+	@Autowired
+	private IPropertyService propertyService;
+
 //	@Autowired
 //	private IUserDifferenceService userDifferenceService;
 
@@ -35,6 +40,28 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	public UserServiceImpl(IUserDao userDao) {
 		super(userDao);
 		this.userDao = userDao;
+	}
+
+	@Override
+	protected void createEntity(User user) throws ServiceException, SecurityServiceException {
+		if (user.getLocale() == null) {
+			user.setLocale(propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
+		}
+		
+		super.createEntity(user);
+	}
+
+	@Override
+	protected void updateEntity(User user) throws ServiceException, SecurityServiceException {
+		if (user.getLocale() == null) {
+			user.setLocale(propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
+		}
+		
+		super.updateEntity(user);
+		
+//		historyLogService.logWithDifferences(HistoryEventType.UPDATE, user, HistoryLogObjectsBean.of(user),
+//				userDifferenceService.getMinimalDifferenceGenerator(),
+//				userDifferenceService);
 	}
 
 	@Override
@@ -56,20 +83,11 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	public void onCreate(User user, User author) throws ServiceException, SecurityServiceException {
 		historyLogService.log(HistoryEventType.CREATE, user, HistoryLogAdditionalInformationBean.empty());
 	}
-	
+
 	@Override
 	public void setActive(User person, boolean active) throws ServiceException, SecurityServiceException {
 		super.setActive(person, active);
 		historyLogService.log(active ? HistoryEventType.ENABLE : HistoryEventType.DISABLE, person, HistoryLogAdditionalInformationBean.empty());
-	}
-	
-	@Override
-	protected void updateEntity(User person) throws ServiceException, SecurityServiceException { // NOSONAR
-		super.updateEntity(person);
-		
-//		historyLogService.logWithDifferences(HistoryEventType.UPDATE, person, HistoryLogObjectsBean.of(person),
-//				userDifferenceService.getMinimalDifferenceGenerator(),
-//				userDifferenceService);
 	}
 
 	@Override
