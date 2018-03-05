@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.EnumUtils;
@@ -58,7 +59,8 @@ public final class WorkbookUtils {
 		for (Row row : sheet) {
 			if (row.getRowNum() == 0) {
 				for (Cell cell : row) {
-					header.put(cell.getColumnIndex(), getCellValue(formulaEvaluator, cell).toString());
+					// null-safe way to call toString on cell value
+					header.put(cell.getColumnIndex(), String.format("%s", getCellValue(formulaEvaluator, cell)));
 				}
 			} else {
 				Map<String, Object> line = new HashMap<String, Object>();
