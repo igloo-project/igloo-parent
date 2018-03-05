@@ -47,6 +47,7 @@ public class UserListSearchPanel<U extends User> extends Panel {
 										.setOutputMarkupId(true),
 								new UserAjaxDropDownSingleChoice<>("quickAccess", quickAccessModel, typeDescriptor.getEntityClass())
 										.setLabel(new ResourceModel("common.quickAccess"))
+										.add(new LabelPlaceholderBehavior())
 										.add(
 												new UpdateOnChangeAjaxEventBehavior()
 														.onChange(new SerializableListener() {
