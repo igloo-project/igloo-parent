@@ -139,8 +139,12 @@
 			}
 
 			if (type == 'inline') {
-				obj	= href.substr(href.indexOf("#"));
-				type = $(obj).length > 0 ? 'inline' : 'ajax';
+				if (href) {
+					obj	= href.substr(href.indexOf("#"));
+					type = $(obj).length > 0 ? 'inline' : 'ajax';
+				} else {
+					throw 'Missing href for a fancybox type=inline !'
+				}
 			}
 
 			selectedOpts.type = type;
