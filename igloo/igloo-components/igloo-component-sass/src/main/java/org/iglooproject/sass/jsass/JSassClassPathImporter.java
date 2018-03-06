@@ -147,7 +147,7 @@ public class JSassClassPathImporter implements Importer {
 		
 		// split path:
 		// 1. absolute path part
-		URI base = previousBase;
+		URI base;
 		// 2. filename part
 		String filename;
 		if (path.contains("/")) {
