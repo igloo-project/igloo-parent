@@ -8,14 +8,12 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.google.common.base.Supplier;
-import com.google.common.collect.Lists;
-
-import org.iglooproject.commons.util.clone.ICloneable;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.service.IEntityService;
 import org.iglooproject.jpa.util.HibernateUtils;
+
+import com.google.common.base.Supplier;
+import com.google.common.collect.Lists;
 
 public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 		<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>, C extends Collection<E>>
@@ -107,7 +105,7 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 	/**
 	 * Immutable, serializable state for detached models.
 	 */
-	protected final class SerializableState implements Serializable, ICloneable<SerializableState> {
+	protected final class SerializableState implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		private final List<K> idList = Lists.newArrayList();
@@ -146,7 +144,7 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 		}
 		
 		private SerializableState doNormalize() {
-			SerializableState normalized = clone();
+			SerializableState normalized = copy();
 			for (int i = 0, unsavedEntityIndex = 0 ; i < normalized.idList.size() ; ++i) {
 				K id = normalized.idList.get(i);
 				
@@ -195,8 +193,7 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 					.toHashCode();
 		}
 		
-		@Override
-		public SerializableState clone() {
+		public SerializableState copy() {
 			// Can't use super.clone() since idList and co. are final.
 			SerializableState clone = new SerializableState();
 			clone.idList.addAll(idList);
