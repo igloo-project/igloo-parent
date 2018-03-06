@@ -21,7 +21,7 @@ public class CoreFrenchMinimalStemmer {
 	
 	private static final int MIN_LENGTH_PLURAL_LIMIT = 4;
 
-	public int stem(char s[], int len) {
+	public int stem(char[] s, int len) {
 		if (len < MIN_LENGTH_HARD_LIMIT) {
 			if (len >= MIN_LENGTH_PLURAL_LIMIT) {
 				return stemLetter(s, len, 's', MIN_LENGTH_PLURAL_LIMIT);
@@ -31,6 +31,7 @@ public class CoreFrenchMinimalStemmer {
 
 		if (s[len - 1] == 'x') {
 			if (s[len - 3] == 'a' && s[len - 2] == 'u' && s[len -4] != 'e') {
+				// rewrite eaux -> al
 				s[len - 2] = 'l';
 			}
 			return len - 1;
@@ -41,7 +42,7 @@ public class CoreFrenchMinimalStemmer {
 		len = stemLetter(s, len, 's');
 		if (len == refLen) {
 			// on ne s'attaque au r que s'il n'y a pas eu remplacement avant
-			len = stemLetterIfPreviousLetterIs(s, len, 'r', 'e');
+			len = stemLetter(s, len, 'r');
 		}
 		len = stemLetter(s, len, 'e');
 		len = stemLetter(s, len, 'é');
@@ -49,19 +50,12 @@ public class CoreFrenchMinimalStemmer {
 		return len;
 	}
 
-	private int stemLetter(char s[], int len, char letter) {
+	private int stemLetter(char[] s, int len, char letter) {
 		return stemLetter(s, len, letter, MIN_LENGTH_HARD_LIMIT);
 	}
 	
-	private int stemLetter(char s[], int len, char letter, int limit) {
+	private int stemLetter(char[] s, int len, char letter, int limit) {
 		if (len >= limit && s[len - 1] == letter) {
-			return len - 1;
-		}
-		return len;
-	}
-	
-	private int stemLetterIfPreviousLetterIs(char s[], int len, char letter, char previousLetter) {
-		if (len >= MIN_LENGTH_HARD_LIMIT && s[len - 1] == letter) {
 			return len - 1;
 		}
 		return len;
