@@ -26,14 +26,13 @@ $fa-font-weight:								900;
 
 // OVERRIDE shadows hover / focus
 $input-focus-box-shadow:						$input-btn-focus-box-shadow;
+$input-transition:								border-color .25s ease-in-out, box-shadow .25s ease-in-out;
 
 $custom-control-indicator-focus-box-shadow:		$input-focus-box-shadow;
 
 $btn-hover-box-shadow:							$input-btn-focus-box-shadow;
 $btn-focus-box-shadow:							$btn-hover-box-shadow;
+$btn-transition:								color .25s ease-in-out, background-color .25s ease-in-out, border-color .25s ease-in-out, box-shadow .25s ease-in-out;
 
 $dropdown-box-shadow:							$btn-focus-box-shadow;
-
-$pagination-hover-box-shadow:					$btn-hover-box-shadow;
-$pagination-focus-box-shadow:					$pagination-hover-box-shadow;
 // OVERRIDE shadows hover / focus
