@@ -3,6 +3,7 @@ package org.iglooproject.wicket.more.markup.html.collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.repeater.AbstractPageableView;
@@ -55,6 +56,9 @@ public abstract class IndexedItemListView<T>
 			
 			@Override
 			public IModel<T> next() {
+				if (!hasNext()) {
+					throw new NoSuchElementException(String.format("No item for index %d", index));
+				}
 				return newItemModel(index++);
 			}
 		};
