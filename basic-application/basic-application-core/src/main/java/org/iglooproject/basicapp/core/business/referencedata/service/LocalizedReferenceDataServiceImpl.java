@@ -3,8 +3,6 @@ package org.iglooproject.basicapp.core.business.referencedata.service;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.persistence.NonUniqueResultException;
-
 import org.iglooproject.basicapp.core.business.referencedata.dao.ILocalizedReferenceDataDao;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
@@ -83,12 +81,12 @@ public class LocalizedReferenceDataServiceImpl implements ILocalizedReferenceDat
 	}
 
 	@Override
-	public <E extends GenericReferenceData<?, ?>, V extends Comparable<?>> E getByField(EntityPath<E> entityPath, SimpleExpression<V> field, V fieldValue) throws NonUniqueResultException {
+	public <E extends GenericReferenceData<?, ?>, V extends Comparable<?>> E getByField(EntityPath<E> entityPath, SimpleExpression<V> field, V fieldValue) {
 		return genericLocalizedReferenceDataService.getByField(entityPath, field, fieldValue);
 	}
 
 	@Override
-	public <E extends GenericReferenceData<?, ?>> E getByFieldIgnoreCase(EntityPath<E> entityPath, StringExpression field, String fieldValue) throws NonUniqueResultException {
+	public <E extends GenericReferenceData<?, ?>> E getByFieldIgnoreCase(EntityPath<E> entityPath, StringExpression field, String fieldValue) {
 		return genericLocalizedReferenceDataService.getByFieldIgnoreCase(entityPath, field, fieldValue);
 	}
 

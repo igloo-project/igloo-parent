@@ -34,6 +34,7 @@ public class LocalizedReferenceData<E extends LocalizedReferenceData<?>> extends
 	@Embedded
 	@IndexedEmbedded(prefix = LABEL_PREFIX)
 	@QueryInit("*")
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private LocalizedText label;
 
 	public LocalizedReferenceData() {

@@ -3,8 +3,6 @@ package org.iglooproject.jpa.more.business.referencedata.service;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.persistence.NonUniqueResultException;
-
 import org.iglooproject.jpa.business.generic.service.ITransactionalAspectAwareService;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
@@ -40,11 +38,11 @@ public interface IGenericReferenceDataSubService extends ITransactionalAspectAwa
 	/**
 	 * WARNING: only use this if unique constraints were set on the field of {@code source}.
 	 */
-	<E extends GenericReferenceData<?, ?>, V extends Comparable<?>> E getByField(EntityPath<E> entityPath, SimpleExpression<V> field, V fieldValue) throws NonUniqueResultException;
+	<E extends GenericReferenceData<?, ?>, V extends Comparable<?>> E getByField(EntityPath<E> entityPath, SimpleExpression<V> field, V fieldValue);
 
 	/**
 	 * WARNING: only use this if unique constraints were set on {@code lower(field)} in the {@code source} table.
 	 */
-	<E extends GenericReferenceData<?, ?>> E getByFieldIgnoreCase(EntityPath<E> entityPath, StringExpression field, String fieldValue) throws NonUniqueResultException;
+	<E extends GenericReferenceData<?, ?>> E getByFieldIgnoreCase(EntityPath<E> entityPath, StringExpression field, String fieldValue);
 
 }

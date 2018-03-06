@@ -3,8 +3,6 @@ package org.iglooproject.jpa.more.business.referencedata.service;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.persistence.NonUniqueResultException;
-
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.referencedata.dao.IGenericReferenceDataDao;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
@@ -86,12 +84,12 @@ public class GenericReferenceDataServiceImpl implements IGenericReferenceDataSer
 	}
 
 	@Override
-	public <E extends GenericReferenceData<?, ?>, V extends Comparable<?>> E getByField(EntityPath<E> entityPath, SimpleExpression<V> field, V fieldValue) throws NonUniqueResultException {
+	public <E extends GenericReferenceData<?, ?>, V extends Comparable<?>> E getByField(EntityPath<E> entityPath, SimpleExpression<V> field, V fieldValue) {
 		return dao.getByField(entityPath, field, fieldValue);
 	}
 
 	@Override
-	public <E extends GenericReferenceData<?, ?>> E getByFieldIgnoreCase(EntityPath<E> entityPath, StringExpression field, String fieldValue) throws NonUniqueResultException {
+	public <E extends GenericReferenceData<?, ?>> E getByFieldIgnoreCase(EntityPath<E> entityPath, StringExpression field, String fieldValue) {
 		return dao.getByFieldIgnoreCase(entityPath, field, fieldValue);
 	}
 
