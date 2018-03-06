@@ -1,3 +1,5 @@
+@import "webjars://bootstrap-override:current/scss/colors";
+
 @import "webjars://bootstrap:current/scss/functions";
 
 @import "variables";
@@ -30,7 +32,10 @@
 @import "webjars://bootstrap:current/scss/dropdown";
 @import "webjars://bootstrap:current/scss/button-group";
 @import "webjars://bootstrap:current/scss/input-group";
+
 @import "webjars://bootstrap:current/scss/custom-forms";
+@import "webjars://bootstrap-override:current/scss/custom-forms";
+
 @import "webjars://bootstrap:current/scss/nav";
 
 @import "webjars://bootstrap:current/scss/navbar";

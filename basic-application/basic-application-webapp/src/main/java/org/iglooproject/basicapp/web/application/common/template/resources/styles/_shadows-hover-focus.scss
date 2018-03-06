@@ -98,10 +98,6 @@
 
 .custom-control-input {
 	@include transition($input-transition);
-	
-	&:focus ~ .custom-control-label::before {
-		border: $input-border-width solid $input-focus-border-color;
-	}
 }
 
 .dropdown-menu {
