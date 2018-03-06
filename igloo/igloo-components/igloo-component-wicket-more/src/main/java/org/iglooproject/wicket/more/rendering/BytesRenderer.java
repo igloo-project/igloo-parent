@@ -46,7 +46,7 @@ public class BytesRenderer extends Renderer<Bytes> {
 
 	@Override
 	public String render(Bytes value, Locale locale) {
-		double humanReadableSize = Long.valueOf(value.bytes()).doubleValue();
+		double humanReadableSize = (double) value.bytes();
 		int unitKeyIndex = 0;
 		
 		while (humanReadableSize > DISPLAY_LIMIT && unitKeyIndex < unitKeys.size() - 1) {
