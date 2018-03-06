@@ -112,8 +112,8 @@ public final class JQPlotDataAdapters {
 					if ((max - min) <= 5.0) {
 						options.getAxes().getYaxis()
 								.setMin(0.0 <= min && max <= 5.0 || fillToZero != null && fillToZero
-										? 0 : Double.valueOf(min).intValue() - 2)
-								.setMax(Double.valueOf(max).intValue() + 2)
+										? 0 : (int) min - 2)
+								.setMax((int) max + 2)
 								.setNumberTicks(5);
 					} else {
 						options.getAxes().getYaxis()
