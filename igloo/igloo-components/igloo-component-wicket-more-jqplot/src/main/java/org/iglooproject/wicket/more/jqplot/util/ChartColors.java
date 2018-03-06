@@ -36,23 +36,28 @@ public final class ChartColors {
 	
 	public static final Color NEGATIVE = toColor(0xd95152);
 	
+	@SuppressWarnings("squid:S2386")
 	public static final Set<Color> BLUE_PALETTE = toColors(
 			0x254061, 0x376091, 0x95B3D7, 0xB8CCE4,
 			0x3F3151, 0x60497B, 0xB3A1C7, 0xCCC0DA
 	);
-	
+
+	@SuppressWarnings("squid:S2386")
 	public static final Set<Color> RED_PALETTE = toColors(
 			0x632527, 0x953735, 0xD99795, 0xE6B9B8
 	);
-	
+
+	@SuppressWarnings("squid:S2386")
 	public static final Set<Color> ORANGE_PALETTE = toColors(
 			0x974807, 0xE46D0A, 0xFAC090, 0xFCD5B4
 	);
-	
+
+	@SuppressWarnings("squid:S2386")
 	public static final Set<Color> GREEN_PALETTE = toColors(
 			0x4F6228, 0x75923C, 0xC2D69A, 0xD7E4BC
 	);
-	
+
+	@SuppressWarnings("squid:S2386")
 	public static final Set<Color> SCATTERED_PALETTE = toColors(
 			0x4bb2c5, 0xEAA228, 0xc5b47f, 0x579575, 0x839557,
 			0x958c12, 0x953579, 0x4b5de4, 0xd8b83f, 0xff5800,
