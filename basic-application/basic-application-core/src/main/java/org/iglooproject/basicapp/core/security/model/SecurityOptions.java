@@ -1,21 +1,17 @@
 package org.iglooproject.basicapp.core.security.model;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Set;
-
-import org.passay.Rule;
-
-import com.google.common.collect.Sets;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.security.password.rule.SecurityPasswordRulesBuilder;
+import org.passay.Rule;
+
+import com.google.common.collect.Sets;
 
 
-public class SecurityOptions implements Serializable {
-
-	private static final long serialVersionUID = -1091828713116815464L;
+public class SecurityOptions {
 
 	private SecurityOptionsMode passwordExpiration = SecurityOptionsMode.DISABLED;
 

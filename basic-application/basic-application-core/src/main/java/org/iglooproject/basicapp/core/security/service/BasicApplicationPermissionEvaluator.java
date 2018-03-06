@@ -11,9 +11,6 @@ public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionE
 
 	@Autowired
 	private ILocalizedReferenceDataPermissionEvaluator localizedReferenceDataPermissionEvaluator;
-	
-	public BasicApplicationPermissionEvaluator() {
-	}
 
 	@Override
 	protected boolean hasPermission(User user, Object targetDomainObject, Permission permission) {

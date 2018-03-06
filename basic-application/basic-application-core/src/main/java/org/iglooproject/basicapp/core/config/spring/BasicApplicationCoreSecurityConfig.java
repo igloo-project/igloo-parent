@@ -15,8 +15,6 @@ import org.iglooproject.jpa.security.password.rule.SecurityPasswordRulesBuilder;
 import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
 import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
 import org.iglooproject.jpa.security.service.NamedPermissionFactory;
-import org.iglooproject.spring.property.service.IPropertyService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -25,9 +23,6 @@ import org.springframework.security.acls.domain.PermissionFactory;
 
 @Configuration
 public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecuredConfig {
-	
-	@Autowired
-	private IPropertyService propertyService;
 	
 	@Override
 	@Bean

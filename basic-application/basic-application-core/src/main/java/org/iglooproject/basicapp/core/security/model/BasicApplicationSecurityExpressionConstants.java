@@ -2,6 +2,7 @@ package org.iglooproject.basicapp.core.security.model;
 
 import static org.iglooproject.commons.util.security.PermissionObject.DEFAULT_PERMISSION_OBJECT_NAME;
 
+@SuppressWarnings("squid:S1192") // we won't use constants for string definition
 public final class BasicApplicationSecurityExpressionConstants {
 	
 	public static final String READ = "hasPermission(#" + DEFAULT_PERMISSION_OBJECT_NAME + ", '" + BasicApplicationPermissionConstants.READ + "')";
