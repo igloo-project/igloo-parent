@@ -476,7 +476,8 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 								LOGGER.info("{} stopped", consumer.getName());
 								break;
 							} catch (InterruptedException e) {
-								LOGGER.warn("Ignored interrupt waiting for {} stop", consumer.getName(), e);
+								LOGGER.warn("Ignored interrupt waiting for {} stop", consumer.getName());
+								Thread.currentThread().interrupt();
 							}
 						}
 					}
@@ -489,7 +490,8 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 							LOGGER.info("{} stopped", INIT_QUEUES_EXECUTOR_NAME);
 							break;
 						} catch (InterruptedException e) {
-							LOGGER.warn("Ignored interrupt waiting for {} stop", INIT_QUEUES_EXECUTOR_NAME, e);
+							LOGGER.warn("Ignored interrupt waiting for {} stop", INIT_QUEUES_EXECUTOR_NAME);
+							Thread.currentThread().interrupt();
 						}
 					}
 				}
