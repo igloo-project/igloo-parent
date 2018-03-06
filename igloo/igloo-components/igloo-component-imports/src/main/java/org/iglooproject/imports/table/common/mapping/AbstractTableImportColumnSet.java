@@ -131,7 +131,6 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		
 		private final TTable table;
 		private final ITableImportNavigator<TTable, TRow, TCell, TCellReference> navigator;
-		private final ITableImportEventHandler eventHandler;
 		
 		private final Map<Column<?>, IMappedExcelImportColumnDefinition<TTable, TRow, TCell, TCellReference, ?>> mappings;
 		
@@ -142,7 +141,6 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 			
 			this.table = table;
 			this.navigator = navigator;
-			this.eventHandler = eventHandler;
 
 			Map<Column<?>, IMappedExcelImportColumnDefinition<TTable, TRow, TCell, TCellReference, ?>> mutableMappings = Maps.newHashMap();
 			for (Column<?> columnDefinition : columns) {
@@ -193,7 +191,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		}
 		
 		public RowContext row(TRow row) {
-			return new RowContext(this, row);
+			return new RowContext(this, this.eventHandler, row);
 		}
 		
 		public <TValue> ColumnContext<TValue> column(Column<TValue> columnDefinition) {
@@ -234,8 +232,8 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		private final TableContext tableContext;
 		private final TRow row;
 
-		private RowContext(TableContext sheetContext, TRow row) {
-			super(sheetContext.eventHandler);
+		private RowContext(TableContext sheetContext, ITableImportEventHandler eventHandler, TRow row) {
+			super(eventHandler);
 			this.tableContext = sheetContext;
 			this.row = row;
 		}
@@ -245,7 +243,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		}
 
 		public <TValue> CellContext<TValue> cell(Column<TValue> columnDefinition) {
-			return new CellContext<>(this, tableContext.getMappedColumn(columnDefinition));
+			return new CellContext<>(this, this.eventHandler, tableContext.getMappedColumn(columnDefinition));
 		}
 		
 		/**
@@ -290,8 +288,9 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		private final RowContext rowContext;
 		private final IMappedExcelImportColumnDefinition<TTable, TRow, TCell, TCellReference, T> mappedColumn;
 
-		private CellContext(RowContext rowContext, IMappedExcelImportColumnDefinition<TTable, TRow, TCell, TCellReference, T> mappedColumn) {
-			super(rowContext.tableContext.eventHandler);
+		private CellContext(RowContext rowContext, ITableImportEventHandler eventHandler,
+				IMappedExcelImportColumnDefinition<TTable, TRow, TCell, TCellReference, T> mappedColumn) {
+			super(eventHandler);
 			this.rowContext = rowContext;
 			this.mappedColumn = mappedColumn;
 		}
