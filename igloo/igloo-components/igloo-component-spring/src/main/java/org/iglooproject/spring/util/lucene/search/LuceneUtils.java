@@ -222,7 +222,7 @@ public final class LuceneUtils {
 	
 	public static RawLuceneQuery toFilterRangeQuery(String field, Number min, Number max, boolean minInclusive, boolean maxInclusive) {
 		if (min == null && max == null) {
-			throw new IllegalArgumentException(String.format("Either min (%d) or max (%d) is needed", min, max));
+			throw new IllegalArgumentException(String.format("Either min (%f) or max (%f) is needed", min, max));
 		}
 		StringBuilder sb = new StringBuilder();
 		if (StringUtils.hasText(field)) {
