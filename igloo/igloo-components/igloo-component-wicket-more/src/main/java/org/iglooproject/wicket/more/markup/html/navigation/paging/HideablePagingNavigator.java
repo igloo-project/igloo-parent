@@ -1,12 +1,10 @@
 package org.iglooproject.wicket.more.markup.html.navigation.paging;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.navigation.paging.IPagingLabelProvider;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigationLink;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.ResourceModel;
 
 public class HideablePagingNavigator extends Panel {
 
@@ -59,10 +57,8 @@ public class HideablePagingNavigator extends Panel {
 		
 		// Add additional page links
 		first = newPagingNavigationLink("first", pageable, 0);
-		first.add(new AttributeModifier("title", new ResourceModel("PagingNavigator.first")));
 		add(first);
 		last = newPagingNavigationLink("last", pageable, -1);
-		last.add(new AttributeModifier("title", new ResourceModel("PagingNavigator.last")));
 		add(last);
 	}
 	
