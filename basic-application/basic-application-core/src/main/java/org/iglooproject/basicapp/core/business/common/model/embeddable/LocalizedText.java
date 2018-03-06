@@ -38,6 +38,7 @@ public class LocalizedText extends AbstractLocalizedText {
 		@Field(name = FR_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	})
 	@SortableField(forField = FR_SORT)
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String fr;
 
 	@Column
@@ -47,6 +48,7 @@ public class LocalizedText extends AbstractLocalizedText {
 		@Field(name = EN_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	})
 	@SortableField(forField = EN_SORT)
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String en;
 
 	public LocalizedText() {
