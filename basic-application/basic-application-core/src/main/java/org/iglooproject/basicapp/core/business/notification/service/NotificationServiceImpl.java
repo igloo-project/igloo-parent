@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 @Service("notificationService")
 public class NotificationServiceImpl extends AbstractNotificationServiceImpl implements INotificationService {
 
+	private static final String ERROR_EXCEPTION_MESSAGE = "Error during send mail process (to: %s, subject: %s)";
+
 	@Autowired
 	private INotificationUserProfileUrlBuilderService notificationUrlBuilderService;
 	
@@ -33,7 +35,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 					.variable("url", url)
 					.send();
 		} catch (RuntimeException | ServiceException e) {
-			throw new ServiceException("Error during send mail process", e);
+			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
 		}
 	}
 	
@@ -45,7 +47,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 					.content(contentDescriptorFactory.userPasswordRecoveryRequest(user))
 					.send();
 		} catch (RuntimeException | ServiceException e) {
-			throw new ServiceException("Error during send mail process", e);
+			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
 		}
 	}
 
@@ -60,7 +62,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 			.content(contentDescriptorFactory.example(userTo, date))
 			.send();
 		} catch (RuntimeException | ServiceException e) {
-			throw new ServiceException("Error during send mail process", e);
+			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
 		}
 		
 	}
