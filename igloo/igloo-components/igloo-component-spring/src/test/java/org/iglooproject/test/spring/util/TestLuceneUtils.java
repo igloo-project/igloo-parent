@@ -1,7 +1,6 @@
 package org.iglooproject.test.spring.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.Term;
@@ -16,10 +15,10 @@ import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.WildcardQuery;
-import org.junit.Test;
-
+import org.assertj.core.api.Assertions;
 import org.iglooproject.spring.util.lucene.search.LuceneUtils;
 import org.iglooproject.spring.util.lucene.search.RawLuceneQuery;
+import org.junit.Test;
 
 public class TestLuceneUtils {
 
@@ -71,7 +70,8 @@ public class TestLuceneUtils {
 	
 	@Test
 	public void testToFilterRangeQuery() {
-		assertNull(LuceneUtils.toFilterRangeQuery("number", null, null));
+		// LAL - changed on 2018.03.06 - throw an exception for min and max == null
+		Assertions.assertThatCode(() -> LuceneUtils.toFilterRangeQuery("number", null, null)).isInstanceOf(IllegalArgumentException.class);
 		assertEquals("number:[* TO 5]", LuceneUtils.toFilterRangeQuery("number", null, 5).toString());
 		assertEquals("number:[5 TO *]", LuceneUtils.toFilterRangeQuery("number", 5, null).toString());
 		assertEquals("number:[1 TO 5]", LuceneUtils.toFilterRangeQuery("number", 1, 5).toString());
