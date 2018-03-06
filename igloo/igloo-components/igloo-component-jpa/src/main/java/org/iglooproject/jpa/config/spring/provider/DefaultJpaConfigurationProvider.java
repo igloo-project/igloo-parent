@@ -1,5 +1,6 @@
 package org.iglooproject.jpa.config.spring.provider;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -12,6 +13,8 @@ import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.cache.spi.RegionFactory;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.integrator.spi.Integrator;
+import org.hibernate.jpa.boot.spi.IntegratorProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -94,6 +97,9 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 
 	@Resource(name = "hibernateExtraProperties")
 	private Properties extraProperties;
+
+	@Autowired(required = false)
+	private List<Integrator> integrators;
 
 	@Override
 	public List<JpaPackageScanProvider> getJpaPackageScanProviders() {
@@ -248,6 +254,16 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Override
 	public void setExtraProperties(Properties extraProperties) {
 		this.extraProperties = extraProperties;
+	}
+
+	@Override
+	public IntegratorProvider getIntegratorProvider() {
+		// do a snapshot; this method is called once during context startup.
+		final List<Integrator> integratorsSnapshot = new ArrayList<>();
+		if (integrators != null) {
+			integratorsSnapshot.addAll(integrators);
+		}
+		return () -> integratorsSnapshot;
 	}
 
 }

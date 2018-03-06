@@ -21,6 +21,7 @@ import org.hibernate.cache.ehcache.EhCacheRegionFactory;
 import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
+import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.loader.BatchFetchStyle;
 import org.hibernate.search.elasticsearch.cfg.ElasticsearchEnvironment;
 import org.hibernate.search.store.impl.FSDirectoryProvider;
@@ -189,6 +190,8 @@ public final class JpaConfigUtils {
 		if (isNewGeneratorMappingsEnabled != null) {
 			properties.setProperty(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, isNewGeneratorMappingsEnabled.toString());
 		}
+		
+		properties.put(EntityManagerFactoryBuilderImpl.INTEGRATOR_PROVIDER, configuration.getIntegratorProvider());
 		
 		// Override properties
 		properties.putAll(configuration.getDefaultExtraProperties());

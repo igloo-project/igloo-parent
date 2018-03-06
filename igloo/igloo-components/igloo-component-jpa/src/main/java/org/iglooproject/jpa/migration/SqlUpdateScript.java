@@ -20,11 +20,10 @@ import org.hibernate.tool.schema.spi.SchemaManagementTool;
 import org.hibernate.tool.schema.spi.ScriptSourceInput;
 import org.hibernate.tool.schema.spi.SourceDescriptor;
 import org.hibernate.tool.schema.spi.TargetDescriptor;
+import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import com.google.common.collect.Maps;
-
-import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
 
 public final class SqlUpdateScript {
 
@@ -54,7 +53,7 @@ public final class SqlUpdateScript {
 		};
 		
 		ServiceRegistry serviceRegistry = ((SessionImpl) entityManager.getDelegate()).getSessionFactory().getServiceRegistry();
-		Metadata metadata = MetadataRegistryIntegrator.METADATA;
+		Metadata metadata = context.getBean(MetadataRegistryIntegrator.class).getMetadata();
 		
 		EnumSet<TargetType> targetTypes = EnumSet.of(TargetType.SCRIPT);
 		TargetDescriptor targetDescriptor = SchemaExport.buildTargetDescriptor(targetTypes, fileName, serviceRegistry);

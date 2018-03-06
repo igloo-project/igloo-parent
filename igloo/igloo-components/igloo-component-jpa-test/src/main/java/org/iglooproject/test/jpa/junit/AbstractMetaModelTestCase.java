@@ -42,6 +42,9 @@ public abstract class AbstractMetaModelTestCase extends AbstractTestCase {
 	@Autowired
 	protected IJpaConfigurationProvider configurationProvider;
 
+	@Autowired
+	protected MetadataRegistryIntegrator metadataRegistryIntegrator;
+
 	public AbstractMetaModelTestCase() {
 		super();
 	}
@@ -72,22 +75,22 @@ public abstract class AbstractMetaModelTestCase extends AbstractTestCase {
 	}
 	
 	protected TableInformation getTableInformation(String schema, String relation) {
-		Identifier catalog = MetadataRegistryIntegrator.METADATA.getDatabase().getDefaultNamespace().getName().getCatalog();
-		Identifier schemaIdentifier = MetadataRegistryIntegrator.METADATA.getDatabase().toIdentifier(schema);
-		Identifier relationIdentifier = MetadataRegistryIntegrator.METADATA.getDatabase().toIdentifier(relation);
+		Identifier catalog = metadataRegistryIntegrator.getMetadata().getDatabase().getDefaultNamespace().getName().getCatalog();
+		Identifier schemaIdentifier = metadataRegistryIntegrator.getMetadata().getDatabase().toIdentifier(schema);
+		Identifier relationIdentifier = metadataRegistryIntegrator.getMetadata().getDatabase().toIdentifier(relation);
 		return getDatabaseInformation().getTableInformation(new Namespace.Name(catalog, schemaIdentifier), relationIdentifier);
 	}
 	
 	protected SequenceInformation getSequenceInformation(String schema, String relation) {
-		Identifier catalog = MetadataRegistryIntegrator.METADATA.getDatabase().getDefaultNamespace().getName().getCatalog();
-		Identifier schemaIdentifier = MetadataRegistryIntegrator.METADATA.getDatabase().toIdentifier(schema);
-		Identifier relationIdentifier = MetadataRegistryIntegrator.METADATA.getDatabase().toIdentifier(relation);
+		Identifier catalog = metadataRegistryIntegrator.getMetadata().getDatabase().getDefaultNamespace().getName().getCatalog();
+		Identifier schemaIdentifier = metadataRegistryIntegrator.getMetadata().getDatabase().toIdentifier(schema);
+		Identifier relationIdentifier = metadataRegistryIntegrator.getMetadata().getDatabase().toIdentifier(relation);
 		return getDatabaseInformation().getSequenceInformation(new Namespace.Name(catalog, schemaIdentifier), relationIdentifier);
 	}
 	
 	protected DatabaseInformation getDatabaseInformation() {
 		ServiceRegistry serviceRegistry = ((SessionImpl) entityManagerUtils.getEntityManager().getDelegate()).getSessionFactory().getServiceRegistry();
-		Name defaultNamespace = MetadataRegistryIntegrator.METADATA.getDatabase().getDefaultNamespace().getName();
+		Name defaultNamespace = metadataRegistryIntegrator.getMetadata().getDatabase().getDefaultNamespace().getName();
 		HibernateSchemaManagementTool schemaManagementTool = ((HibernateSchemaManagementTool) serviceRegistry.getService(SchemaManagementTool.class));
 		@SuppressWarnings("rawtypes")
 		JdbcContext jdbcContext = schemaManagementTool.resolveJdbcContext((Map) Maps.newHashMap());

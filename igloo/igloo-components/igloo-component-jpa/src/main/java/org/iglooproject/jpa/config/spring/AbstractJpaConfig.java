@@ -14,6 +14,7 @@ import org.flywaydb.core.Flyway;
 import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
 import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
+import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.iglooproject.jpa.more.config.util.FlywaySpring;
 import org.iglooproject.jpa.property.FlywayPropertyIds;
@@ -64,6 +65,11 @@ public abstract class AbstractJpaConfig {
 	@PostConstruct
 	public void init() {
 		BooleanQuery.setMaxClauseCount(propertyService.get(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT));
+	}
+
+	@Bean
+	public MetadataRegistryIntegrator metdataRegistryIntegrator() {
+		return new MetadataRegistryIntegrator();
 	}
 
 	@Bean(initMethod = "migrate", value = { "flyway", "databaseInitialization" })

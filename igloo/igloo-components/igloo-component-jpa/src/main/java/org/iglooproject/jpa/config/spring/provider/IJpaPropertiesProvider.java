@@ -7,6 +7,7 @@ import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.cache.spi.RegionFactory;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.jpa.boot.spi.IntegratorProvider;
 
 public interface IJpaPropertiesProvider {
 
@@ -65,5 +66,7 @@ public interface IJpaPropertiesProvider {
 	Properties getExtraProperties();
 
 	void setExtraProperties(Properties extraProperties);
+
+	public IntegratorProvider getIntegratorProvider();
 
 }

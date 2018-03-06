@@ -17,7 +17,6 @@ import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextIn
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.hibernate.dialect.PerTableSequenceStyleGenerator;
-import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
 import org.iglooproject.jpa.hibernate.jpa.PerTableSequenceStrategyProvider;
 import org.iglooproject.jpa.util.DbTypeConstants;
 import org.iglooproject.spring.property.SpringPropertyIds;
@@ -55,8 +54,8 @@ public class TestMetaModel extends AbstractMetaModelTestCase {
 	public void testTablesAndSequencesHibernate() {
 		String expectedTableName = Person.class.getSimpleName(); // person
 		String expectedSequenceName = expectedTableName + "_id_seq"; // person_id_seq
-		Identifier expectedTableNameIdentifier = MetadataRegistryIntegrator.METADATA.getDatabase().toIdentifier(expectedTableName);
-		Identifier expectedSequenceNameIdentifier = MetadataRegistryIntegrator.METADATA.getDatabase().toIdentifier(expectedSequenceName);
+		Identifier expectedTableNameIdentifier = metadataRegistryIntegrator.getMetadata().getDatabase().toIdentifier(expectedTableName);
+		Identifier expectedSequenceNameIdentifier = metadataRegistryIntegrator.getMetadata().getDatabase().toIdentifier(expectedSequenceName);
 
 		TableInformation table = getTableInformation(configurationProvider.getDefaultSchema(),
 				expectedTableName);
