@@ -7,9 +7,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.commons.util.functional.Predicates2;
-import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.bootstrap3.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.bootstrap3.console.template.ConsoleTemplate;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -23,9 +21,6 @@ public class ConsoleMaintenanceGestionPage extends ConsoleMaintenanceTemplate {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceGestionPage.class);
 
-	@SpringBean
-	private IPropertyService propertyService;
-	
 	public ConsoleMaintenanceGestionPage(PageParameters parameters) {
 		super(parameters);
 		
