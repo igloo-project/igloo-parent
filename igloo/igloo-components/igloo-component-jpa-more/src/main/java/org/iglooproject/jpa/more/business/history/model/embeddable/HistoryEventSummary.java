@@ -42,6 +42,7 @@ public class HistoryEventSummary implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Field(name = DATE)
 	@SortableField(forField = DATE)
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private Date date;
 
 	@Embedded
@@ -51,6 +52,7 @@ public class HistoryEventSummary implements Serializable {
 					HistoryValue.REFERENCE
 			}
 	)
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue subject;
 
 	public Date getDate() {

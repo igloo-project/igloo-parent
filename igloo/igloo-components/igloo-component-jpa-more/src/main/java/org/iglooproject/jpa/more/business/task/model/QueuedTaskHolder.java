@@ -73,6 +73,7 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	})
 	@SortableField(forField = NAME_SORT)
 	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String name;
 
 	@Column(nullable = true)
@@ -123,11 +124,13 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	@Field(name = STATUS, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private TaskStatus status;
 	
 	@Column
 	@Enumerated(EnumType.STRING)
 	@Field(name = RESULT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private TaskResult result;
 
 	@Column

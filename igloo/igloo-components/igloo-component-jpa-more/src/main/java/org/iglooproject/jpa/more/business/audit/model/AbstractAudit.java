@@ -153,6 +153,7 @@ public abstract class AbstractAudit<Action> extends GenericEntity<Long, Abstract
 		@Field(name = DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	})
 	@SortableField(forField = DATE_SORT)
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private Date date;
 
 	public AbstractAudit() {

@@ -51,6 +51,7 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 	private String lastName;
 	
 	@Field(name = EMAIL, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String email;
 	
 	private String phoneNumber;

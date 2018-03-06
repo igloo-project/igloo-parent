@@ -71,12 +71,14 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 		@Field(name = USERNAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	})
 	@SortableField(forField = USERNAME_SORT)
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String username;
 	
 	@JsonIgnore
 	private String passwordHash = "*NO PASSWORD*";
 	
 	@Field(name = ACTIVE)
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private boolean active = true;
 	
 	@JsonIgnore
@@ -105,6 +107,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@JoinTable(uniqueConstraints = { @UniqueConstraint(columnNames = { "persons_id", "groups_id" }) })
 	@SortComparator(AbstractPersonGroupComparator.class)
 	@Field(name = GROUPS, bridge = @FieldBridge(impl = GenericEntityCollectionIdFieldBridge.class), analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private Set<G> groups = Sets.newTreeSet(AbstractPersonGroupComparator.get());
 	
 	public GenericUser() {
