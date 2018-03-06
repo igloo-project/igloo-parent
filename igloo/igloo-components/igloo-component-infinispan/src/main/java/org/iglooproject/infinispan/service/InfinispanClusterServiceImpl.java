@@ -338,8 +338,8 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			try {
 				executor.awaitTermination(3, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
-				LOGGER.warn("Interrupted waiting for stop. Mark interrupted and continue to wait termination.", e);
-				Thread.currentThread().isInterrupted();
+				LOGGER.warn("Interrupted waiting for stop. Mark interrupted and continue to wait termination.");
+				Thread.currentThread().interrupt();
 			}
 		}
 		List<Runnable> runnables = executor.shutdownNow();
@@ -931,22 +931,28 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		getActionsCache().put(uniqueID, action);
 		
 		if (action.needsResult()) {
+			// start a timeout timer
 			Stopwatch stopwatch = Stopwatch.createUnstarted();
 			while (timeout == -1 || stopwatch.elapsed(TimeUnit.MILLISECONDS) < unit.toMillis(timeout)) {
 				if (!stopwatch.isRunning()) {
 					stopwatch.start();
 				}
+				
+				// check if result is available
 				@SuppressWarnings("unchecked")
 				A result = (A) getActionsResultsCache().remove(uniqueID);
 				if (result != null && result.isDone()) {
 					try {
 						return result.get();
 					} catch (InterruptedException e) {
+						LOGGER.warn("Interrupted waiting for a synced action result");
 						Thread.currentThread().interrupt();
 					}
 				} else if (result != null && result.isCancelled()) {
 					throw new CancellationException();
 				}
+				
+				// else, use a monitor to wait for result
 				synchronized (monitor) {
 					try {
 						unit.timedWait(monitor, timeout);
@@ -956,11 +962,12 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 					}
 				}
 			}
+			
+			// if timeout is exhausted, go out with a TimeoutException
+			throw new TimeoutException();
 		} else {
 			return null;
 		}
-		
-		throw new TimeoutException();
 	}
 
 	private static final class ToJgroupsAddress
