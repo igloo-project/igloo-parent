@@ -7,20 +7,16 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>elasticsearch</outputDirectory>
 			<useProjectArtifact>true</useProjectArtifact>
 			<useTransitiveFiltering>true</useTransitiveFiltering>
 			<useTransitiveDependencies>true</useTransitiveDependencies>
-			<excludes>
-				<exclude>org.elasticsearch</exclude>
-				<exclude>org.apache.lucene</exclude>
-			</excludes>
 		</dependencySet>
 	</dependencySets>
 	<files>
 		<file>
 			<source>${basedir}/src/main/resources/plugin-descriptor.properties</source>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>elasticsearch</outputDirectory>
 			<filtered>true</filtered>
 		</file>
 	</files>

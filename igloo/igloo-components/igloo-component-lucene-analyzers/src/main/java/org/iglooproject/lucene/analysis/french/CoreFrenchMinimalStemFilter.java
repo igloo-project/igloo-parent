@@ -1,4 +1,4 @@
-package index;
+package org.iglooproject.lucene.analysis.french;
 
 import java.io.IOException;
 
@@ -7,6 +7,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.KeywordAttribute;
 
+@SuppressWarnings("squid:S2160") // equals automatically handle custom attributes with addAttribute() method
 public final class CoreFrenchMinimalStemFilter extends TokenFilter {
 	private static final CoreFrenchMinimalStemmer STEMMER = new CoreFrenchMinimalStemmer();
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);

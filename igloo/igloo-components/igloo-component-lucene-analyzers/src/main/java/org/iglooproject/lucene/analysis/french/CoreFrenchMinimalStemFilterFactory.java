@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.search.analysis.fr;
+package org.iglooproject.lucene.analysis.french;
 
 import java.util.Map;
 

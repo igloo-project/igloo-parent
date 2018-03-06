@@ -26,6 +26,12 @@
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-lucene-analyzers</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
@@ -59,16 +65,9 @@
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>*.properties</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>false</filtering>
 				<excludes>
-					<exclude>*.properties</exclude>
+					<!-- this file is managed by assembly -->
+					<exclude>plugin-descriptor.properties</exclude>
 				</excludes>
 			</resource>
 		</resources>

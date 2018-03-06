@@ -1,9 +1,8 @@
-package org.iglooproject.test.jpa.util.search.analysis.fr;
+package org.iglooproject.test;
 
+import org.iglooproject.lucene.analysis.french.CoreFrenchMinimalStemmer;
 import org.junit.Assert;
 import org.junit.Test;
-
-import org.iglooproject.jpa.search.analysis.fr.CoreFrenchMinimalStemmer;
 
 public class TestCoreFrenchMinimalStemmer {
 	

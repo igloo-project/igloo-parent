@@ -9,7 +9,7 @@ import org.apache.lucene.analysis.miscellaneous.WordDelimiterFilterFactory;
 import org.apache.lucene.analysis.pattern.PatternReplaceFilterFactory;
 import org.hibernate.search.analyzer.definition.LuceneAnalysisDefinitionProvider;
 import org.hibernate.search.analyzer.definition.LuceneAnalysisDefinitionRegistryBuilder;
-import org.iglooproject.jpa.search.analysis.fr.CoreFrenchMinimalStemFilterFactory;
+import org.iglooproject.lucene.analysis.french.CoreFrenchMinimalStemFilterFactory;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 

@@ -1,4 +1,4 @@
-package index;
+package org.iglooproject.lucene.analysis.french;
 
 /**
  * Stemmer adapté depuis le FrenchMinimalStemmer qui a les particularités
