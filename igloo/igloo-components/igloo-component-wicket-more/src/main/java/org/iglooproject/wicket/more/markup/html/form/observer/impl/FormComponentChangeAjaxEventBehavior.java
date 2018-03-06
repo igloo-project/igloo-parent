@@ -15,23 +15,22 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes.Method;
 import org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.json.JSONException;
-import org.apache.wicket.ajax.json.JSONObject;
 import org.apache.wicket.markup.html.form.CheckBoxMultipleChoice;
 import org.apache.wicket.markup.html.form.CheckGroup;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.RadioChoice;
 import org.apache.wicket.markup.html.form.RadioGroup;
+import org.iglooproject.wicket.more.markup.html.form.observer.IFormComponentChangeObservable;
+import org.iglooproject.wicket.more.markup.html.form.observer.IFormComponentChangeObserver;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 import org.wicketstuff.wiquery.core.events.StateEvent;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
+import com.github.openjson.JSONException;
+import com.github.openjson.JSONObject;
 import com.google.common.collect.Sets;
-
-import org.iglooproject.wicket.more.markup.html.form.observer.IFormComponentChangeObservable;
-import org.iglooproject.wicket.more.markup.html.form.observer.IFormComponentChangeObserver;
 
 /**
  * A behavior for notifying observers when changes occur on a given {@link FormComponent}.

@@ -2,7 +2,6 @@ package org.iglooproject.basicapp.web.application.console.notification.demo.page
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -43,7 +42,7 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 		recipientModel = new GenericEntityModel<>(BasicApplicationSession.get().getUser());
 		
 		descriptorWithContextModel =
-				new AbstractReadOnlyModel<INotificationContentDescriptor>() {
+				new IModel<INotificationContentDescriptor>() {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public INotificationContentDescriptor getObject() {
@@ -51,7 +50,7 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 					}
 				};
 		
-		subjectModel = new AbstractReadOnlyModel<String>() {
+		subjectModel = new IModel<String>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String getObject() {
@@ -64,7 +63,7 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 			}
 		};
 		
-		bodyModel = new AbstractReadOnlyModel<String>() {
+		bodyModel = new IModel<String>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String getObject() {

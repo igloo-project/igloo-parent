@@ -72,7 +72,7 @@ public class ConsoleMaintenanceInfinispanRoleAssignPopup extends AbstractAjaxMod
 					private static final long serialVersionUID = 1L;
 					
 					@Override
-					protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					protected void onSubmit(AjaxRequestTarget target) {
 						try {
 							Pair<SwitchRoleResult, String> result = infinispanClusterService.assignRole(ConsoleMaintenanceInfinispanRoleAssignPopup.this.getModelObject(), nodeModel.getObject());
 							if (SwitchRoleResult.SWITCH_SUCCESS.equals(result.getValue0())) {

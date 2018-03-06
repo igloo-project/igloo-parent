@@ -56,7 +56,7 @@ public abstract class AbstractGenericReferenceDataPopup<T extends GenericReferen
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+			protected void onSubmit(AjaxRequestTarget target) {
 				T referenceData = AbstractGenericReferenceDataPopup.this.getModelObject();
 				
 				try {
@@ -83,7 +83,7 @@ public abstract class AbstractGenericReferenceDataPopup<T extends GenericReferen
 			}
 			
 			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
+			protected void onError(AjaxRequestTarget target) {
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 		});

@@ -13,7 +13,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.IItemReuseStrategy;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.iglooproject.jpa.more.business.sort.ISort;
@@ -236,9 +235,8 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 			Item item = CoreDataTable.this.newCellItem(id, index, model);
 			final ICellPopulator<T> column = internalGetPopulators().get(index);
 			if (column instanceof IStyledColumn) {
-				item.add(new ClassAttributeAppender(new AbstractReadOnlyModel<String>() {
+				item.add(new ClassAttributeAppender(new IModel<String>() {
 					private static final long serialVersionUID = 1L;
-
 					@Override
 					public String getObject() {
 						return ((IStyledColumn<T, S>) column).getCssClass();
@@ -252,9 +250,8 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 		protected Item<T> newRowItem(final String id, final int index, final IModel<T> model) {
 			Item<T> item = CoreDataTable.this.newRowItem(id, index, model);
 			for (final Function<T, String> rowCssClassProvider : rowCssClassProviders) {
-				item.add(new ClassAttributeAppender(new AbstractReadOnlyModel<String>() {
+				item.add(new ClassAttributeAppender(new IModel<String>() {
 					private static final long serialVersionUID = 1L;
-
 					@Override
 					public String getObject() {
 						return rowCssClassProvider.apply(model.getObject());

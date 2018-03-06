@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.Session;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.convert.IConverter;
@@ -191,7 +190,7 @@ public class RendererServiceImpl implements IRendererService, IRendererRegistry 
 			if (namedParameters instanceof IModel) {
 				modelParameter = (IModel<?>) namedParameters;
 			} else {
-				modelParameter = new AbstractReadOnlyModel<Object>() {
+				modelParameter = new IModel<Object>() {
 					private static final long serialVersionUID = 1L;
 					@Override
 					public Object getObject() {

@@ -15,7 +15,6 @@ import java.util.MissingResourceException;
 
 import org.apache.commons.text.WordUtils;
 import org.apache.wicket.Localizer;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.IConverter;
@@ -328,7 +327,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 
 		@Override
 		public String render(final T value, Locale locale) {
-			IModel<?> model = parameterRenderer.asModel(new AbstractReadOnlyModel<T>() {
+			IModel<?> model = parameterRenderer.asModel(new IModel<T>() {
 				private static final long serialVersionUID = 1L;
 				@Override
 				public T getObject() {

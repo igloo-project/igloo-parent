@@ -70,7 +70,7 @@ public class PropertyIdEditPopup extends AbstractAjaxModalPopupPanel<MutableProp
 					private static final long serialVersionUID = 1L;
 					
 					@Override
-					protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					protected void onSubmit(AjaxRequestTarget target) {
 						try {
 							propertyService.setAsString(PropertyIdEditPopup.this.getModelObject(), valueModel.getObject());
 							Session.get().success(getString("common.propertyId.action.edit.success"));

@@ -3,13 +3,12 @@ package org.iglooproject.wicket.more.markup.html.model;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 
 import com.google.common.collect.Lists;
 
-public class MultipleChoicesWrapperModel<T> extends AbstractReadOnlyModel<List<T>> {
+public class MultipleChoicesWrapperModel<T> implements IModel<List<T>> {
 	
 	private static final long serialVersionUID = -8579290778036203349L;
 	
@@ -59,7 +58,7 @@ public class MultipleChoicesWrapperModel<T> extends AbstractReadOnlyModel<List<T
 	
 	@Override
 	public void detach() {
-		super.detach();
+		IModel.super.detach();
 		selectedObjectCollectionModel.detach();
 		baseChoicesModel.detach();
 	}

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.SortedSet;
 
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
@@ -25,7 +24,7 @@ import com.google.common.collect.Lists;
  * collection, it may expose performance issues if used extensively or on very large
  * collections.
  */
-public class CollectionToListWrapperModel<T> extends AbstractReadOnlyModel<List<T>> {
+public class CollectionToListWrapperModel<T> implements IModel<List<T>> {
 
 	private static final long serialVersionUID = -6272545665317639093L;
 	
@@ -58,7 +57,7 @@ public class CollectionToListWrapperModel<T> extends AbstractReadOnlyModel<List<
 	
 	@Override
 	public void detach() {
-		super.detach();
+		IModel.super.detach();
 		wrappedModel.detach();
 	}
 

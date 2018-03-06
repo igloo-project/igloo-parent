@@ -6,11 +6,15 @@ import java.util.Collection;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.Session;
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Classes;
+import org.iglooproject.basicapp.core.business.notification.service.IBasicApplicationNotificationContentDescriptorFactory;
+import org.iglooproject.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.business.generic.service.IEntityService;
+import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,13 +24,7 @@ import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
 
-import org.iglooproject.basicapp.core.business.notification.service.IBasicApplicationNotificationContentDescriptorFactory;
-import org.iglooproject.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.business.generic.service.IEntityService;
-import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
-
-public abstract class NotificationDemoEntry extends AbstractReadOnlyModel<INotificationContentDescriptor> {
+public abstract class NotificationDemoEntry implements IModel<INotificationContentDescriptor> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(NotificationDemoEntry.class);
 

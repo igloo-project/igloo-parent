@@ -2,23 +2,21 @@ package org.iglooproject.wicket.more.model;
 
 import java.util.List;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.iglooproject.commons.util.functional.SerializableSupplier;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.javatuples.Pair;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 
-import org.iglooproject.commons.util.functional.SerializableSupplier;
-import org.iglooproject.wicket.more.condition.Condition;
-
 public class JoinerModel extends LoadableDetachableModel<String> {
 
 	private static final long serialVersionUID = -1202031311993202356L;
 
-	private static final IModel<?> NULL_MODEL = new AbstractReadOnlyModel<Object>() {
+	private static final IModel<?> NULL_MODEL = new IModel<Object>() {
 		private static final long serialVersionUID = 1L;
 		@Override
 		public Object getObject() {

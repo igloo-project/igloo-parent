@@ -1,11 +1,9 @@
 package org.iglooproject.wicket.more.model;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.jpa.util.HibernateUtils;
 
-public class SafeCastModel<T> extends AbstractReadOnlyModel<T> {
+public class SafeCastModel<T> implements IModel<T> {
 	
 	private static final long serialVersionUID = 4014147784926275050L;
 
@@ -38,6 +36,7 @@ public class SafeCastModel<T> extends AbstractReadOnlyModel<T> {
 	
 	@Override
 	public void detach() {
+		IModel.super.detach();
 		wrappedModel.detach();
 	}
 }

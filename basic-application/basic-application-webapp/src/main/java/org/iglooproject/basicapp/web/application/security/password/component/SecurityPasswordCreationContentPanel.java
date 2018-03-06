@@ -78,7 +78,7 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 					private static final long serialVersionUID = 1L;
 					
 					@Override
-					protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+					protected void onSubmit(AjaxRequestTarget target) {
 						try {
 							User user = SecurityPasswordCreationContentPanel.this.getModelObject();
 							securityManagementService.updatePassword(user, passwordModel.getObject());
@@ -98,7 +98,7 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 					}
 					
 					@Override
-					protected void onError(AjaxRequestTarget target, Form<?> form) {
+					protected void onError(AjaxRequestTarget target) {
 						FeedbackUtils.refreshFeedback(target, getPage());
 					}
 				}

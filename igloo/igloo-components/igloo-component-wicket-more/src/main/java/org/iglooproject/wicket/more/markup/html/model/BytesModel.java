@@ -1,10 +1,9 @@
 package org.iglooproject.wicket.more.markup.html.model;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Bytes;
 
-public class BytesModel extends AbstractReadOnlyModel<Bytes> {
+public class BytesModel implements IModel<Bytes> {
 	
 	private static final long serialVersionUID = -4537289783663569276L;
 	
@@ -32,7 +31,7 @@ public class BytesModel extends AbstractReadOnlyModel<Bytes> {
 
 	@Override
 	public void detach() {
-		super.detach();
+		IModel.super.detach();
 		wrappedModel.detach();
 	}
 }

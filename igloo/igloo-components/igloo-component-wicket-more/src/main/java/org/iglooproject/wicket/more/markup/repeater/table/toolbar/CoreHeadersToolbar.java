@@ -9,10 +9,8 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IStyledColum
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RefreshingView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
@@ -59,7 +57,7 @@ public class CoreHeadersToolbar<S extends ISort<?>> extends AbstractCoreToolbar 
 				}
 
 				if (column instanceof IStyledColumn) {
-					header.add(new ClassAttributeAppender(new AbstractReadOnlyModel<String>() {
+					header.add(new ClassAttributeAppender(new IModel<String>() {
 						private static final long serialVersionUID = 1L;
 						@Override
 						public String getObject() {
@@ -67,6 +65,7 @@ public class CoreHeadersToolbar<S extends ISort<?>> extends AbstractCoreToolbar 
 						}
 						@Override
 						public void detach() {
+							IModel.super.detach();
 							column.detach();
 						}
 					}));

@@ -4,9 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.wicket.Application;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.commons.util.mime.MediaType;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
@@ -20,7 +18,7 @@ public class ExportFileUtils {
 	}
 
 	public static IModel<String> getFileNameExtensionModel(final IModel<String> fileNamePrefixModel, final IModel<String> extensionModel) {
-		return new AbstractReadOnlyModel<String>() {
+		return new IModel<String>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String getObject() {

@@ -117,17 +117,17 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target) {
-				AjaxConfirmButton.this.onSubmit(target, AjaxConfirmButton.this.getForm());
+				AjaxConfirmButton.this.onSubmit(target);
 			}
 
 			@Override
 			protected void onAfterSubmit(AjaxRequestTarget target) {
-				AjaxConfirmButton.this.onAfterSubmit(target, AjaxConfirmButton.this.getForm());
+				AjaxConfirmButton.this.onAfterSubmit(target);
 			}
 
 			@Override
 			protected void onError(AjaxRequestTarget target) {
-				AjaxConfirmButton.this.onError(target, AjaxConfirmButton.this.getForm());
+				AjaxConfirmButton.this.onError(target);
 			}
 
 			// TODO 0.10 : checker avec LAL ou YRO

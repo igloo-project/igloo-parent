@@ -1,16 +1,14 @@
 package org.iglooproject.wicket.more.model;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.Range;
-
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 /**
  * A range model representing an interval between two values.
  */
-public class RangeModel<C extends Comparable<?>> extends AbstractReadOnlyModel<Range<C>> {
+public class RangeModel<C extends Comparable<?>> implements IModel<Range<C>> {
 
 	private static final long serialVersionUID = 2798667461907515108L;
 	
@@ -81,7 +79,7 @@ public class RangeModel<C extends Comparable<?>> extends AbstractReadOnlyModel<R
 	
 	@Override
 	public void detach() {
-		super.detach();
+		IModel.super.detach();
 		Detachables.detach(lowerBoundModel, upperBoundModel);
 	}
 }

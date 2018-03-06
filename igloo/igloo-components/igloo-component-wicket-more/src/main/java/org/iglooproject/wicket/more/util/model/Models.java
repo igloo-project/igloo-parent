@@ -8,13 +8,16 @@ import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.Component;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
+import org.iglooproject.commons.util.collections.Iterators2;
+import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
+import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
+import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -24,11 +27,6 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Ints;
-
-import org.iglooproject.commons.util.collections.Iterators2;
-import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
-import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
-import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
 
 public final class Models {
 
@@ -150,7 +148,7 @@ public final class Models {
 		return new TransientModel<>(value);
 	}
 	
-	private static class TransientModel<T> extends AbstractReadOnlyModel<T> {
+	private static class TransientModel<T> implements IModel<T> {
 		
 		private static final long serialVersionUID = -2160512073899616819L;
 		

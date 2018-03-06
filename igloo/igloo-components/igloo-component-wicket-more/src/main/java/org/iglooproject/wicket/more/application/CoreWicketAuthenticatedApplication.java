@@ -2,6 +2,7 @@ package org.iglooproject.wicket.more.application;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
+import java.util.function.Supplier;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Session;
@@ -15,10 +16,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.IExceptionMapper;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
-import org.apache.wicket.util.IProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.acls.domain.PermissionFactory;
-
+import org.danekja.java.util.function.serializable.SerializableSupplier;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.wicket.more.CoreDefaultExceptionMapper;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -27,10 +25,12 @@ import org.iglooproject.wicket.more.security.authorization.CoreAuthorizationStra
 import org.iglooproject.wicket.more.security.authorization.StandardUnauthorizedComponentInstantiationListener;
 import org.iglooproject.wicket.more.security.page.AccessDeniedPage;
 import org.iglooproject.wicket.more.security.page.LogoutPage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.acls.domain.PermissionFactory;
 
 public abstract class CoreWicketAuthenticatedApplication extends CoreWicketApplication implements IRoleCheckingStrategy {
 	
-	private IProvider<IExceptionMapper> coreExceptionMapperProvider;
+	private Supplier<IExceptionMapper> coreExceptionMapperProvider;
 	
 	/**
 	 * Subclass of authenticated web session to instantiate
@@ -112,11 +112,12 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
 	}
 	
 	@Override
-	public IProvider<IExceptionMapper> getExceptionMapperProvider() {
+	public Supplier<IExceptionMapper> getExceptionMapperProvider() {
 		return coreExceptionMapperProvider;
 	}
 	
-	private static class CoreDefaultExceptionMapperProvider implements IProvider<IExceptionMapper> {
+	private static class CoreDefaultExceptionMapperProvider implements SerializableSupplier<IExceptionMapper> {
+		private static final long serialVersionUID = 1L;
 		@Override
 		public IExceptionMapper get() {
 			return new CoreDefaultExceptionMapper();

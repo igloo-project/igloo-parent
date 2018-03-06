@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
@@ -17,7 +16,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-public class CompositeSortModel<T extends ISort<?>> extends AbstractReadOnlyModel<Map<T, SortOrder>> {
+public class CompositeSortModel<T extends ISort<?>> implements IModel<Map<T, SortOrder>> {
 	
 	private static final long serialVersionUID = -3881057053212320743L;
 	

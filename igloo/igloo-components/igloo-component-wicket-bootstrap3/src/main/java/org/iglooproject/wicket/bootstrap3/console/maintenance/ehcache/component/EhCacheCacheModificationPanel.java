@@ -68,7 +68,7 @@ public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<E
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+			protected void onSubmit(AjaxRequestTarget target) {
 				try {
 					Long maxSize = maxSizeField.getModelObject();
 					EhCacheCacheModificationPanel.this.getModelObject().setMaxElementsInMemory(maxSize);
@@ -84,7 +84,7 @@ public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<E
 			}
 			
 			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
+			protected void onError(AjaxRequestTarget target) {
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 		};

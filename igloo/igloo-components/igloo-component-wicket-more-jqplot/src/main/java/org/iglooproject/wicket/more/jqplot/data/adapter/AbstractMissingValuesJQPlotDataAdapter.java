@@ -5,7 +5,6 @@ import java.util.Collections;
 
 import javax.annotation.Nullable;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
 import org.iglooproject.wicket.more.util.model.Models;
@@ -25,7 +24,7 @@ public abstract class AbstractMissingValuesJQPlotDataAdapter<S, K, V, TK> extend
 			@Nullable IModel<? extends Collection<? extends K>> keysModel,
 			@Nullable IModel<? extends V> missingValueReplacementModel) {
 		super(dataProvider);
-		this.seriesModel = seriesModel != null ? seriesModel : new AbstractReadOnlyModel<Collection<? extends S>>() {
+		this.seriesModel = seriesModel != null ? seriesModel : new IModel<Collection<? extends S>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<? extends S> getObject() {
@@ -33,10 +32,11 @@ public abstract class AbstractMissingValuesJQPlotDataAdapter<S, K, V, TK> extend
 			}
 			@Override
 			public void detach() {
+				IModel.super.detach();
 				dataProvider.detach();
 			}
 		};
-		this.keysModel = keysModel != null ? keysModel : new AbstractReadOnlyModel<Collection<? extends K>>() {
+		this.keysModel = keysModel != null ? keysModel : new IModel<Collection<? extends K>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public Collection<? extends K> getObject() {
@@ -44,6 +44,7 @@ public abstract class AbstractMissingValuesJQPlotDataAdapter<S, K, V, TK> extend
 			}
 			@Override
 			public void detach() {
+				IModel.super.detach();
 				dataProvider.detach();
 			}
 		};

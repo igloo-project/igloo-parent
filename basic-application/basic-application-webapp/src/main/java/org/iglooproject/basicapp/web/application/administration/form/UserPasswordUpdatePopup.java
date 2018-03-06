@@ -120,7 +120,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+			protected void onSubmit(AjaxRequestTarget target) {
 				try {
 					User user = UserPasswordUpdatePopup.this.getModelObject();
 					String oldPassword = oldPasswordModel.getObject();
@@ -143,12 +143,12 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 			}
 			
 			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
+			protected void onError(AjaxRequestTarget target) {
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}
 		};
 		footer.add(validate);
-		
+				
 		BlankLink cancel = new BlankLink("cancel");
 		addCancelBehavior(cancel);
 		footer.add(cancel);
