@@ -18,7 +18,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.google.common.collect.ImmutableList;
@@ -47,47 +46,64 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl imple
 		if (!records.isEmpty()) {
 			LOGGER.info("Executing automatically data upgrades (starting)");
 			
+			// TODO: allow a failed data upgrade to stop application startup and subsequent upgrades
+			int missed = 0;
 			for (DataUpgradeRecord record : records) {
-				String dataUpdateClassName = DataUpgradePackage.class.getPackage().getName() + "." + record.getName();
-				
-				final IDataUpgrade upgrade;
-				try {
-					upgrade = (IDataUpgrade) Class.forName(dataUpdateClassName).newInstance();
-				} catch (ClassNotFoundException e) {
-					throw new ServiceException("La classe d'upgrade '" + dataUpdateClassName + "' n'a pas été trouvée", e);
-				} catch (InstantiationException e) {
-					throw new ServiceException("Erreur lors de l'instantiation de la class d'upgrade '" + dataUpdateClassName + "'", e);
-				} catch (IllegalAccessException e) {
-					throw new ServiceException("L'instantiation de la class d'upgrade '" + dataUpdateClassName + " n'est pas autorisée", e);
-				}
-				
-				Throwable result = null;
-				try {
-					result = transactionTemplate.execute(new TransactionCallback<Throwable>() {
-						@Override
-						public Throwable doInTransaction(TransactionStatus transactionStatus) {
-							try {
-								executeDataUpgrade(upgrade);
-							} catch (ServiceException | SecurityServiceException e) {
-								transactionStatus.setRollbackOnly();
-								return e;
-							}
-							return null;
-						}
-					});
-				} catch (Exception e) {
-					LOGGER.error("Erreur lors de l'exécution automatique d'un data upgrade", e);
-				}
-				
-				if (upgrade != null && result != null) {
-					LOGGER.error("Erreur lors de l'exécution automatique d'un data upgrade", result);
-					dataUpgradeRecordService.markAsToDo(upgrade);
-					dataUpgradeRecordService.disableAutoPerform(upgrade);
+				boolean success = performDataUpgradeRecord(record);
+				if(!success) {
+					missed++;
 				}
 			}
 			
-			LOGGER.info("Executing automatically data upgrades (success)");
+			if (missed == 0) {
+				LOGGER.info("Executing automatically data upgrades (success)");
+			} else {
+				LOGGER.warn("Executing automatically data upgrades (done): %d errors", missed);
+			}
 		}
+	}
+
+	private boolean performDataUpgradeRecord(DataUpgradeRecord record) throws ServiceException, SecurityServiceException {
+		String dataUpdateClassName = DataUpgradePackage.class.getPackage().getName() + "." + record.getName();
+		
+		final IDataUpgrade upgrade;
+		try {
+			upgrade = (IDataUpgrade) Class.forName(dataUpdateClassName).newInstance();
+		} catch (ClassNotFoundException e) {
+			throw new ServiceException(String.format("Upgrade class %s not found", dataUpdateClassName), e);
+		} catch (InstantiationException | IllegalAccessException e) {
+			throw new ServiceException(String.format("Upgrade class %s cannot be instantiated", dataUpdateClassName), e);
+		}
+		
+		Throwable result = null;
+		try {
+			transactionTemplate.execute((TransactionStatus transactionStatus) -> performUpgrade(upgrade, transactionStatus));
+		} catch (Exception e) {
+			result = e;
+		}
+		
+		if (result != null) {
+			LOGGER.error("Erreur lors de l'exécution automatique d'un data upgrade", result);
+			dataUpgradeRecordService.markAsToDo(upgrade);
+			dataUpgradeRecordService.disableAutoPerform(upgrade);
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
+	 * Perform an upgrade, any thrown {@link RuntimeException}, {@link ServiceException}
+	 * and {@link SecurityServiceException} mark current transaction as rollbacked.
+	 */
+	private Throwable performUpgrade(IDataUpgrade upgrade, TransactionStatus transactionStatus) {
+		try {
+			executeDataUpgrade(upgrade);
+		} catch (RuntimeException | ServiceException | SecurityServiceException e) {
+			transactionStatus.setRollbackOnly();
+			return e;
+		}
+		return null;
 	}
 
 	@Autowired

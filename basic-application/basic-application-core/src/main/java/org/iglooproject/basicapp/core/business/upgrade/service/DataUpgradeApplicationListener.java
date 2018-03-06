@@ -31,7 +31,7 @@ public class DataUpgradeApplicationListener implements ApplicationListener<Conte
 	private void init() {
 		try {
 			dataUpgradeManager.autoPerformDataUpgrades();
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			LOGGER.error("Error executing data upgrades", e);
 		}
 	}

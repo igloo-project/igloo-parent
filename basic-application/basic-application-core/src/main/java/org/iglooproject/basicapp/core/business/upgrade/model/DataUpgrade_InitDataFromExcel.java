@@ -13,6 +13,7 @@ import org.iglooproject.jpa.more.util.init.service.IImportDataService;
 import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.jpa.util.EntityManagerUtils;
 
+@SuppressWarnings("squid:S00101") // class named on purpose, skip class name rule
 public class DataUpgrade_InitDataFromExcel implements IDataUpgrade {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataUpgrade_InitDataFromExcel.class);
