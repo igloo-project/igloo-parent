@@ -2414,7 +2414,7 @@
 					var wP = (opts.prev.wipe) ? function() { $cfs.trigger(cf_e('prev', conf)) } : null,
 						wN = (opts.next.wipe) ? function() { $cfs.trigger(cf_e('next', conf)) } : null;
 
-					if (wN || wN)
+					if (wP || wN)
 					{
 						if (!crsl.touchwipe)
 						{
