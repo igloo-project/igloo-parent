@@ -28,6 +28,14 @@
 		.nav-link.active {
 			color: $navbar-main-active-color;
 		}
+		
+		.dropdown-menu {
+			.dropdown-item {
+				&.active {
+					background-color: $brand-color;
+				}
+			}
+		}
 	}
 	
 	.navbar-toggler {
