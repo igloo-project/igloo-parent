@@ -13,9 +13,6 @@ import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.apache.wicket.util.resource.StringResourceStream;
 import org.apache.wicket.util.time.Time;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.css.WicketCssPrecompilationException;
 import org.iglooproject.wicket.more.css.lesscss.model.LessCssStylesheetInformation;
@@ -25,8 +22,6 @@ public class LessCssResource extends PackageResource {
 
 	private static final long serialVersionUID = 9067443522105165705L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(LessCssResource.class);
-	
 	private String name;
 
 	private Locale locale;
@@ -64,10 +59,7 @@ public class LessCssResource extends PackageResource {
 
 	@Override
 	public IResourceStream getResourceStream() {
-		IResourceStream resourceStream = null;
-		try {
-			resourceStream = super.getResourceStream();
-			
+		try (IResourceStream resourceStream = super.getResourceStream()) {
 			String lessSource = IOUtils.toString(resourceStream.getInputStream(), "UTF-8");
 			long lastModifiedTime = resourceStream.lastModifiedTime().getMilliseconds();
 			
@@ -76,22 +68,15 @@ public class LessCssResource extends PackageResource {
 					Application.get().usesDevelopmentConfig()
 			);
 			
-			StringResourceStream lessCssResourceStream = new StringResourceStream(cssInformation.getSource(), "text/css");
-			lessCssResourceStream.setCharset(Charset.forName("UTF-8"));
-			lessCssResourceStream.setLastModified(Time.millis(cssInformation.getLastModifiedTime()));
-			
-			return lessCssResourceStream;
+			try (StringResourceStream lessCssResourceStream = new StringResourceStream(cssInformation.getSource(), "text/css")) {
+				lessCssResourceStream.setCharset(Charset.forName("UTF-8"));
+				lessCssResourceStream.setLastModified(Time.millis(cssInformation.getLastModifiedTime()));
+				
+				return lessCssResourceStream;
+			}
 		} catch (RuntimeException | ServiceException | IOException | ResourceStreamNotFoundException e) {
 			throw new WicketCssPrecompilationException(String.format("Error reading lesscss source for %1$s (%2$s, %3$s, %4$s)",
 					getName(), getLocale(), getStyle(), getVariation()), e);
-		} finally {
-			if (resourceStream != null) {
-				try {
-					resourceStream.close();
-				} catch (IOException e) {
-					LOGGER.error(String.format("Error closing the original resource stream"));
-				}
-			}
 		}
 	}
 

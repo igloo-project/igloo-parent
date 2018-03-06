@@ -14,8 +14,6 @@ import org.apache.wicket.util.time.Time;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.iglooproject.wicket.more.css.WicketCssPrecompilationException;
 import org.iglooproject.wicket.more.css.scss.service.ICachedScssService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Exclusive usage by {@link ScssResourceReference}.
@@ -24,14 +22,12 @@ class ScssResource extends PackageResource {
 
 	private static final long serialVersionUID = 9067443522105165705L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ScssResource.class);
-	
 	private String name;
 
 	private Locale locale;
 
 	private String variation;
-	
+
 	@SpringBean
 	private ICachedScssService scssService;
 
@@ -63,31 +59,20 @@ class ScssResource extends PackageResource {
 
 	@Override
 	public IResourceStream getResourceStream() {
-		IResourceStream resourceStream = null;
-		try {
-			resourceStream = super.getResourceStream();
-			
+		try (IResourceStream resourceStream = super.getResourceStream()) {
 			ScssStylesheetInformation cssInformation = scssService.getCachedCompiledStylesheet(
 					getScope(), getName(),
 					Application.get().usesDevelopmentConfig()
 			);
 			
-			StringResourceStream scssResourceStream = new StringResourceStream(cssInformation.getSource(), "text/css");
-			scssResourceStream.setCharset(Charset.forName("UTF-8"));
-			scssResourceStream.setLastModified(Time.millis(cssInformation.getLastModifiedTime()));
-			
-			return scssResourceStream;
-		} catch (RuntimeException e) {
+			try (StringResourceStream scssResourceStream = new StringResourceStream(cssInformation.getSource(), "text/css")) {
+				scssResourceStream.setCharset(Charset.forName("UTF-8"));
+				scssResourceStream.setLastModified(Time.millis(cssInformation.getLastModifiedTime()));
+				return scssResourceStream;
+			}
+		} catch (RuntimeException | IOException e) {
 			throw new WicketCssPrecompilationException(String.format("Error reading SCSS source for %1$s (%2$s, %3$s, %4$s)",
 					getName(), getLocale(), getStyle(), getVariation()), e);
-		} finally {
-			if (resourceStream != null) {
-				try {
-					resourceStream.close();
-				} catch (IOException e) {
-					LOGGER.error(String.format("Error closing the original resource stream"));
-				}
-			}
 		}
 	}
 
