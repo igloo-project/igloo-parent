@@ -528,8 +528,12 @@ $.widget( "ui.itemautocomplete", {
 				break;
 			}
 		}
-		menu.next( new $.Event("mouseover") );
-		this.currentMenu = menu;
+		if (menu) {
+			menu.next( new $.Event("mouseover") );
+			this.currentMenu = menu;
+		} else {
+			throw "no menu found; _focusFirst failed";
+		}
 	},
 
 	_resizeMenu: function() {
