@@ -17,6 +17,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.iglooproject.jpa.batch.monitor.ProcessorMonitorContext;
+import org.iglooproject.jpa.batch.monitor.ThreadLocalInitializingCallable;
+import org.iglooproject.jpa.batch.util.TransactionWrapperCallable;
+import org.iglooproject.spring.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.support.TransactionOperations;
@@ -29,11 +33,6 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
-
-import org.iglooproject.jpa.batch.monitor.ProcessorMonitorContext;
-import org.iglooproject.jpa.batch.monitor.ThreadLocalInitializingCallable;
-import org.iglooproject.jpa.batch.util.TransactionWrapperCallable;
-import org.iglooproject.spring.util.StringUtils;
 
 public class ThreadedProcessor {
 
@@ -165,7 +164,7 @@ public class ThreadedProcessor {
 					ListenableFuture<T> future = executor.submit(wrappedCallable);
 					
 					for (FutureCallback<? super T> callback : callbacks) {
-						Futures.addCallback(future, callback);
+						Futures.addCallback(future, callback, MoreExecutors.directExecutor());
 					}
 					
 					futures.add(future);
