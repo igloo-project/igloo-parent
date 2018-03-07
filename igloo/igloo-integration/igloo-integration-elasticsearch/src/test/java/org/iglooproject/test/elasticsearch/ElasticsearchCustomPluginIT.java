@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,8 +27,6 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import pl.allegro.tech.embeddedelasticsearch.EmbeddedElastic;
-
 public class ElasticsearchCustomPluginIT {
 
 	private static final String GET_METHOD = "GET";
@@ -50,19 +47,16 @@ public class ElasticsearchCustomPluginIT {
 			configuration = builder.getConfiguration();
 		}
 		
-		URI baseURI = URI.create(String.format("http://localhost:%d", httpPort));
 		HttpHost host = new HttpHost("localhost", httpPort);
 		
 		// populated by maven
 		String pluginPath = String.format("file://%s", configuration.getString("elasticsearch.plugin"));
 		String version = configuration.getString("elasticsearch.version");
-		System.out.println(pluginPath);
-		EmbeddedElastic embedded =
-				ElasticsearchBootstrapHelper.initializeEmbeddedElastic(
-						version,
-						httpPort, tcpPort,
-						"default", 120, TimeUnit.SECONDS,
-						Collections.singletonList(pluginPath));
+		ElasticsearchBootstrapHelper.initializeEmbeddedElastic(
+				version,
+				httpPort, tcpPort,
+				"default", 120, TimeUnit.SECONDS,
+				Collections.singletonList(pluginPath));
 		
 		try (RestClient client = RestClient.builder(host).build()) {
 			Map<String, String> params = new HashMap<>();
