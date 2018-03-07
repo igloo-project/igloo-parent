@@ -31,7 +31,8 @@
 		
 		.dropdown-menu {
 			.dropdown-item {
-				&.active {
+				&.active,
+				&:active {
 					background-color: $brand-color;
 				}
 			}
