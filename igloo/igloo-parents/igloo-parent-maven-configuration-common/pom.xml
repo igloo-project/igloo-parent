@@ -519,7 +519,7 @@
 							<systemProperties>
 								<property>
 									<name>allure.results.directory</name>
-									<value>${project.build.directory}/allure-it-results</value>
+									<value>${project.build.directory}/allure-results</value>
 								</property>
 								<property>
 									<!-- TODO: configure issue URL -->
@@ -556,9 +556,6 @@
 								</reports>
 							</reportSet>
 						</reportSets>
-						<configuration>
-							<inputDirectories>${project.build.directory}/allure-results,${project.build.directory}/allure-it-results</inputDirectories>
-						</configuration>
 					</plugin>
 				</plugins>
 			</reporting>
