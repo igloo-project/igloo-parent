@@ -1179,6 +1179,17 @@
 					<artifactId>elasticsearch</artifactId>
 					<version>${igloo.elasticsearch.version}</version>
 				</dependency>
+				<dependency>
+					<groupId>org.elasticsearch.client</groupId>
+					<artifactId>elasticsearch-rest-client</artifactId>
+					<version>${igloo.elasticsearch.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
 				
 				<!-- Hibernate-search -->
 				<dependency>
@@ -1344,6 +1355,8 @@
 										<exclude>javax.servlet:servlet-api</exclude>
 										<exclude>net.sf.ehcache:ehcache-core</exclude>
 										<exclude>postgresql:postgresql</exclude>
+										<!-- this dependency is intended for testing -->
+										<exclude>*:embedded-elasticsearch:*:jar:compile</exclude>
 									</excludes>
 								</bannedDependencies>
 								<requireMavenVersion>

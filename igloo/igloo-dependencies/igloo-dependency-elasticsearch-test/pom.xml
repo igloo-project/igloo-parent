@@ -15,8 +15,27 @@
 	
 	<dependencies>
 		<dependency>
-			<artifactId>embedded-elasticsearch</artifactId>
 			<groupId>pl.allegro.tech</groupId>
+			<artifactId>embedded-elasticsearch</artifactId>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<!-- exception to allow embedded-elasticsearch -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<configuration>
+					<rules>
+						<bannedDependencies>
+							<includes>
+								<include>*:embedded-elasticsearch</include>
+							</includes>
+						</bannedDependencies>
+					</rules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

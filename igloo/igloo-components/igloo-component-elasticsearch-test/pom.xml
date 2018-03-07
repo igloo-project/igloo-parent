@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.iglooproject.components</groupId>
+		<artifactId>igloo-components</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>igloo-component-elasticsearch-test</artifactId>
+	
+	<name>Igloo - Component - Elasticsearch test</name>
+	<description>Helpers for embedded elasticsearch tests</description>
+
+	<dependencies>
+		
+		<dependency>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-elasticsearch-test</artifactId>
+			<scope>compile</scope>
+			<type>pom</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-core-logging</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+		
+	</dependencies>
+	
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+	
+		<plugins>
+			<plugin>
+				<!-- exception to allow embedded-elasticsearch -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<configuration>
+					<rules>
+						<bannedDependencies>
+							<includes>
+								<include>*:embedded-elasticsearch</include>
+							</includes>
+						</bannedDependencies>
+					</rules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>
