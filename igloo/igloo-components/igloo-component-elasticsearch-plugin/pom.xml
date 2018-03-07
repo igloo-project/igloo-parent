@@ -18,6 +18,9 @@
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
 
 		<package.name>igloo-elasticsearch</package.name>
+
+		<!-- elasticsearch do not use same lucene version than hibernate-search -->
+		<igloo.lucene.version>6.6.1</igloo.lucene.version>
 	</properties>
 
 	<dependencies>
@@ -60,6 +63,10 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
 			</plugin>
 		</plugins>
 		<resources>

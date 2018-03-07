@@ -9,7 +9,10 @@ import org.apache.lucene.analysis.tokenattributes.KeywordAttribute;
 
 @SuppressWarnings("squid:S2160") // equals automatically handle custom attributes with addAttribute() method
 public final class CoreFrenchMinimalStemFilter extends TokenFilter {
+
+	public static final String STEMMER_NAME = "corefrenchminimalstem";
 	private static final CoreFrenchMinimalStemmer STEMMER = new CoreFrenchMinimalStemmer();
+
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 	private final KeywordAttribute keywordAttr = addAttribute(KeywordAttribute.class);
 

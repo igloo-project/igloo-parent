@@ -31,7 +31,7 @@ public class CoreFrenchMinimalStemmer {
 
 		if (s[len - 1] == 'x') {
 			if (s[len - 3] == 'a' && s[len - 2] == 'u' && s[len -4] != 'e') {
-				// rewrite eaux -> al
+				// rewrite aux -> al (and NOT eaux -> al)
 				s[len - 2] = 'l';
 			}
 			return len - 1;

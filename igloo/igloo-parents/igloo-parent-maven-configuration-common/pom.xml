@@ -50,6 +50,7 @@
 		<igloo.exec-maven-plugin.version>1.6.0</igloo.exec-maven-plugin.version>
 		<igloo.maven-clean-plugin.version>3.0.0</igloo.maven-clean-plugin.version>
 		<igloo.maven-site-plugin.version>3.7</igloo.maven-site-plugin.version>
+		<igloo.maven-failsafe-plugin.version>2.21.0</igloo.maven-failsafe-plugin.version>
 		
 		<igloo.wagon-maven-plugin.version>1.0</igloo.wagon-maven-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.0.0</igloo.wagon-ssh-external-plugin.version>
@@ -139,6 +140,9 @@
 										<exclude>xml-apis:xml-apis</exclude>
 										<exclude>apache-xerces:xml-apis</exclude>
 										<exclude>javax.servlet:servlet-api</exclude>
+										<!-- this dependency is intended for testing -->
+										<exclude>*:elasticsearch-cluster-runner:*:jar:compile</exclude>
+										<exclude>*:embedded-elasticsearch:*:jar:test</exclude>
 									</excludes>
 								</bannedDependencies>
 								<requireMavenVersion>
@@ -258,6 +262,14 @@
 					<version>${igloo.maven-surefire-plugin.version}</version>
 					<configuration>
 						<argLine>${igloo.maven-surefire-plugin.argLine}</argLine>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>${igloo.maven-failsafe-plugin.version}</version>
+					<configuration>
+						<argLine>${igloo.maven-failsafe-plugin.argLine}</argLine>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -460,6 +472,40 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
 						<version>${igloo.maven-surefire-plugin.version}</version>
+						<configuration>
+							<argLine>
+								-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${igloo.allure-aspectj.version}/aspectjweaver-${igloo.allure-aspectj.version}.jar"
+							</argLine>
+							<properties>
+								<property>
+									<name>listener</name>
+									<value>io.qameta.allure.junit4.AllureJunit4</value>
+								</property>
+							</properties>
+							<systemProperties>
+								<property>
+									<name>allure.results.directory</name>
+									<value>${project.build.directory}/allure-results</value>
+								</property>
+								<property>
+									<!-- TODO: configure issue URL -->
+									<name>allure.link.issue.pattern</name>
+									<value>https://example.org/issue/{}</value>
+								</property>
+							</systemProperties>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>org.aspectj</groupId>
+								<artifactId>aspectjweaver</artifactId>
+								<version>${igloo.allure-aspectj.version}</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<version>${igloo.maven-failsafe-plugin.version}</version>
 						<configuration>
 							<argLine>
 								-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${igloo.allure-aspectj.version}/aspectjweaver-${igloo.allure-aspectj.version}.jar"

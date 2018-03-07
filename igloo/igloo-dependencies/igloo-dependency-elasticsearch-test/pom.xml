@@ -12,11 +12,90 @@
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Dependency - Test</name>
+
+	<properties>
+		<!-- elasticsearch do not use same lucene version than hibernate-search -->
+		<igloo.lucene.version>6.6.1</igloo.lucene.version>
+	</properties>
 	
 	<dependencies>
 		<dependency>
-			<artifactId>embedded-elasticsearch</artifactId>
+			<groupId>org.codelibs</groupId>
+			<artifactId>elasticsearch-cluster-runner</artifactId>
+			<exclusions>
+				<exclusion>
+					<!-- conflict with embedded-elasticsearch -->
+					<groupId>com.fasterxml.jackson.dataformat</groupId>
+					<artifactId>jackson-dataformat-yaml</artifactId>
+				</exclusion>
+				<exclusion>
+					<!-- internal conflict from jackson and elasticsearch -->
+					<groupId>org.yaml</groupId>
+					<artifactId>snakeyaml</artifactId>
+				</exclusion>
+				
+				<exclusion>
+					<!--
+					Internal conflict by:
+					* org.codelibs.elasticsearch.module:lang-expression
+					* lucene-expressions
+					-->
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>asm</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>asm-commons</artifactId>
+				</exclusion>
+				
+			</exclusions>
+		</dependency>
+		<dependency>
 			<groupId>pl.allegro.tech</groupId>
+			<artifactId>embedded-elasticsearch</artifactId>
+			<exclusions>
+				<exclusion>
+					<!-- conflict with embedded-elasticsearch -->
+					<groupId>com.fasterxml.jackson.dataformat</groupId>
+					<artifactId>jackson-dataformat-yaml</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- solve dependency divergences -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-yaml</artifactId>
+			<version>${igloo.jackson2-core.version}</version> <!-- from igloo -->
+		</dependency>
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>1.18</version> <!-- version from jackson-dataformat-yaml -->
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>5.1</version> <!-- newest, from lucene-expressions -->
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<!-- exception to allow elasticsearch -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<configuration>
+					<rules>
+						<bannedDependencies>
+							<includes>
+								<include>*:elasticsearch-cluster-runner</include>
+							</includes>
+						</bannedDependencies>
+					</rules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

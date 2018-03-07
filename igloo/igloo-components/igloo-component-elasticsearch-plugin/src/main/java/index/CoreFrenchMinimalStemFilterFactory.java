@@ -10,8 +10,6 @@ import org.iglooproject.lucene.analysis.french.CoreFrenchMinimalStemFilter;
 
 public class CoreFrenchMinimalStemFilterFactory extends AbstractTokenFilterFactory {
 
-	public static final String STEMMER_NAME = "corefrenchminimalstem";
-
 	@Inject
 	public CoreFrenchMinimalStemFilterFactory(IndexSettings indexSettings, @Assisted String name, @Assisted Settings settings) {
 		super(indexSettings, name, settings);
