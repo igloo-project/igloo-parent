@@ -12,6 +12,11 @@
 	
 	<name>Igloo - Integration - Elasticsearch integration</name>
 
+	<properties>
+		<!-- elasticsearch do not use same lucene version than hibernate-search -->
+		<igloo.lucene.version>6.6.1</igloo.lucene.version>
+	</properties>
+
 	<dependencies>
 		
 		<dependency>
@@ -26,6 +31,12 @@
 			<artifactId>igloo-component-elasticsearch-plugin</artifactId>
 			<version>${project.version}</version>
 			<type>zip</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-elasticsearch-plugin</artifactId>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		

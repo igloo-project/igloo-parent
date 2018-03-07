@@ -19,6 +19,7 @@ import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.common.settings.Settings;
 import org.iglooproject.lucene.analysis.french.CoreFrenchMinimalStemFilter;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,7 +42,7 @@ public class ElasticsearchRunnerCustomPluginIT {
 	private int tcpPort = 9001;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUpElastic() throws Exception {
 		clusterName = "es-minhash-" + System.currentTimeMillis();
 		// create runner instance
 		runner = new ElasticsearchClusterRunner();
@@ -62,6 +63,11 @@ public class ElasticsearchRunnerCustomPluginIT {
 
 		// wait for yellow status
 		runner.ensureYellow();
+	}
+
+	@After
+	public void stopElastic() throws IOException {
+		runner.close();
 	}
 
 	@Test

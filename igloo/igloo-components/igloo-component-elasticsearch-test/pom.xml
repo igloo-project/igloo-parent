@@ -13,6 +13,11 @@
 	<name>Igloo - Component - Elasticsearch test</name>
 	<description>Helpers for embedded elasticsearch tests</description>
 
+	<properties>
+		<!-- elasticsearch do not use same lucene version than hibernate-search -->
+		<igloo.lucene.version>6.6.1</igloo.lucene.version>
+	</properties>
+
 	<dependencies>
 		
 		<dependency>
@@ -40,13 +45,14 @@
 	
 		<plugins>
 			<plugin>
-				<!-- exception to allow embedded-elasticsearch -->
+				<!-- exception to allow elasticsearch -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<configuration>
 					<rules>
 						<bannedDependencies>
 							<includes>
+								<include>*:elasticsearch-cluster-runner</include>
 								<include>*:embedded-elasticsearch</include>
 							</includes>
 						</bannedDependencies>

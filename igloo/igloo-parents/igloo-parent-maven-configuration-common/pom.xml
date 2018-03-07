@@ -141,6 +141,7 @@
 										<exclude>apache-xerces:xml-apis</exclude>
 										<exclude>javax.servlet:servlet-api</exclude>
 										<!-- this dependency is intended for testing -->
+										<exclude>*:elasticsearch-cluster-runner:*:jar:compile</exclude>
 										<exclude>*:embedded-elasticsearch:*:jar:test</exclude>
 									</excludes>
 								</bannedDependencies>

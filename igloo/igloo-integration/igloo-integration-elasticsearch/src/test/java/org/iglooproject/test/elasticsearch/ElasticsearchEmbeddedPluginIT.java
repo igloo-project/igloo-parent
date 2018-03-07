@@ -1,6 +1,7 @@
 package org.iglooproject.test.elasticsearch;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,28 +20,33 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.entity.StringEntity;
-import org.assertj.core.api.Assumptions;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.iglooproject.lucene.analysis.french.CoreFrenchMinimalStemFilter;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import pl.allegro.tech.embeddedelasticsearch.EmbeddedElastic;
 
 public class ElasticsearchEmbeddedPluginIT {
 
 	private static final String GET_METHOD = "GET";
 
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	
+	private int httpPort = 9000;
+	private int tcpPort = 9001;
 
-	@Test
-	public void plugin() throws ConfigurationException, IOException, URISyntaxException {
-		Assumptions.assumeThat(System.getProperties().getProperty("m2e.version", Boolean.FALSE.toString()))
-			.isNotEqualTo(Boolean.FALSE.toString());
-		int httpPort = 9000;
-		int tcpPort = 9001;
-		
+	private EmbeddedElastic runner;
+
+	private boolean inhibited;
+
+	@Before
+	public void setUpElastic() throws Exception {
 		FileBasedConfiguration configuration;
 		{
 			Parameters params = new Parameters();
@@ -50,17 +56,39 @@ public class ElasticsearchEmbeddedPluginIT {
 			configuration = builder.getConfiguration();
 		}
 		
-		HttpHost host = new HttpHost("localhost", httpPort);
-		
 		// populated by maven
-		String pluginPath = String.format("file://%s", configuration.getString("elasticsearch.plugin"));
+		String pluginPath = configuration.getString("elasticsearch.plugin");
+		
+		// ignore test in eclipse (resources cannot be filtered with artifact path)
+		if (pluginPath.startsWith("$")) {
+			inhibited = true;
+			return;
+		} else {
+			inhibited = false;
+		}
+		
+		String pluginUrl = String.format("file://%s", configuration.getString("elasticsearch.plugin"));
 		String version = configuration.getString("elasticsearch.version");
 		
-		ElasticsearchBootstrapHelper.initializeEmbeddedElastic(
+		runner = ElasticsearchBootstrapHelper.initializeEmbeddedElastic(
 				version,
 				httpPort, tcpPort,
 				"default", 120, TimeUnit.SECONDS,
-				Collections.singletonList(pluginPath));
+				Collections.singletonList(pluginUrl));
+	}
+
+	@After
+	public void stopElastic() throws IOException {
+		if (runner != null) {
+			runner.stop();
+		}
+	}
+
+	@Test
+	public void plugin() throws ConfigurationException, IOException, URISyntaxException {
+		assumeThat(inhibited).isFalse().as("No plugin artifact available; ignoring test.");
+		
+		HttpHost host = new HttpHost("localhost", httpPort);
 		
 		try (RestClient client = RestClient.builder(host).build()) {
 			Map<String, String> params = new HashMap<>();

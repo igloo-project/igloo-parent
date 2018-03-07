@@ -46,6 +46,8 @@
 		<igloo.spring-ldap.version>2.3.2.RELEASE</igloo.spring-ldap.version>
 		
 		<igloo.hibernate-search.version>5.9.0.CR1</igloo.hibernate-search.version>
+		
+		<!-- overriden in some modules, when we are in a elasticsearch context -->
 		<igloo.lucene.version>5.5.4</igloo.lucene.version>
 		
 		<igloo.javatuples.version>1.2</igloo.javatuples.version>
@@ -174,6 +176,7 @@
 		<igloo.gson.version>2.6.2</igloo.gson.version>
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
 		<igloo.byte-buddy.version>1.6.14</igloo.byte-buddy.version>
+		<igloo.elasticsearch-cluster-runner.version>${igloo.elasticsearch.version}.0</igloo.elasticsearch-cluster-runner.version>
 		<igloo.embedded-elasticsearch.version>2.4.3</igloo.embedded-elasticsearch.version>
 		
 		<igloo.webjars.popper.version>1.13.0</igloo.webjars.popper.version>
@@ -1302,6 +1305,17 @@
 				
 				<!-- Used for testing purpose -->
 				<dependency>
+					<groupId>org.codelibs</groupId>
+					<artifactId>elasticsearch-cluster-runner</artifactId>
+					<version>${igloo.elasticsearch-cluster-runner.version}</version>
+					<exclusions>
+						<exclusion>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				<dependency>
 					<artifactId>embedded-elasticsearch</artifactId>
 					<groupId>pl.allegro.tech</groupId>
 					<version>${igloo.embedded-elasticsearch.version}</version>
@@ -1356,7 +1370,7 @@
 										<exclude>net.sf.ehcache:ehcache-core</exclude>
 										<exclude>postgresql:postgresql</exclude>
 										<!-- this dependency is intended for testing -->
-										<exclude>*:embedded-elasticsearch:*:jar:compile</exclude>
+										<exclude>*:elasticsearch-cluster-runner:*:jar:compile</exclude>
 									</excludes>
 								</bannedDependencies>
 								<requireMavenVersion>
