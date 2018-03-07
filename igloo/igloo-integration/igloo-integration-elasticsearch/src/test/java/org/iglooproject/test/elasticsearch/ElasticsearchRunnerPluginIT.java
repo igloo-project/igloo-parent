@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import plugin.CoreFrenchMinimalStemPlugin;
 
-public class ElasticsearchRunnerCustomPluginIT {
+public class ElasticsearchRunnerPluginIT {
 
 	private static final String GET_METHOD = "GET";
 
