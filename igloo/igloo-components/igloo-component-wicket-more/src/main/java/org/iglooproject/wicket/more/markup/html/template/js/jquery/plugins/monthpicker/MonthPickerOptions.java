@@ -54,4 +54,12 @@ public class MonthPickerOptions extends Options {
 		put("maxDate", maxDate);
 	}
 
+	public void setPrevText(String prevText) {
+		putLiteral("prevText", prevText);
+	}
+
+	public void setNextText(String nextText) {
+		putLiteral("nextText", nextText);
+	}
+
 }

@@ -244,7 +244,7 @@ $ui-datepicker-footer-padding:					.5em .75em !default;
 	}
 	
 	table {
-		margin: 0 3px 3px 3px;
+		margin: 3px;
 		font-size: 1rem;
 		width: calc(100% - 6px);
 		
@@ -373,6 +373,35 @@ $ui-datepicker-footer-padding:					.5em .75em !default;
 			table {
 				margin: 0 3px 3px 3px;
 				width: calc(100% - 6px);
+			}
+		}
+	}
+}
+
+.ui-monthpicker {
+	table {
+		&.ui-datepicker-calendar {
+			> tbody {
+				> tr {
+					> td {
+						.ui-state-default {
+							&.ui-state-highlight {
+								background-color: $ui-datepicker-calendar-day-today-bg;
+								color: $ui-datepicker-calendar-day-today-color;
+							}
+							
+							&.ui-state-hover {
+								background-color: $ui-datepicker-calendar-day-hover-bg;
+								color: $ui-datepicker-calendar-day-hover-color;
+							}
+							
+							&.ui-state-active {
+								background-color: $ui-datepicker-calendar-day-current-day-bg;
+								color: $ui-datepicker-calendar-day-current-day-color;
+							}
+						}
+					}
+				}
 			}
 		}
 	}

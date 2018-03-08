@@ -4,11 +4,10 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 import org.wicketstuff.wiquery.ui.datepicker.DatePickerJavaScriptResourceReference;
 
 import com.google.common.collect.Lists;
-
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
 public final class MonthPickerJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 	

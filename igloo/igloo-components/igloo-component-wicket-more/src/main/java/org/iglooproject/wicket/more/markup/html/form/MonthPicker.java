@@ -8,15 +8,14 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
-import org.wicketstuff.wiquery.core.javascript.JsQuery;
-import org.wicketstuff.wiquery.ui.datepicker.DateOption;
-import org.wicketstuff.wiquery.ui.widget.WidgetJavaScriptResourceReference;
-
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.monthpicker.MonthPickerJavaScriptResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.monthpicker.MonthPickerLanguageResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.monthpicker.MonthPickerOptions;
 import org.iglooproject.wicket.more.util.DatePattern;
 import org.iglooproject.wicket.more.util.convert.converters.PatternDateConverter;
+import org.wicketstuff.wiquery.core.javascript.JsQuery;
+import org.wicketstuff.wiquery.ui.datepicker.DateOption;
+import org.wicketstuff.wiquery.ui.widget.WidgetJavaScriptResourceReference;
 
 public class MonthPicker extends TextField<Date> {
 
@@ -33,6 +32,9 @@ public class MonthPicker extends TextField<Date> {
 		
 		this.monthPattern = monthPattern;
 		this.options = new MonthPickerOptions(this);
+		
+		setPrevText("");
+		setNextText("");
 	}
 
 	@Override
@@ -71,6 +73,16 @@ public class MonthPicker extends TextField<Date> {
 	
 	public MonthPicker setMaxDate(DateOption maxDate) {
 		options.setMaxDate(maxDate);
+		return this;
+	}
+
+	public MonthPicker setPrevText(String prevText) {
+		options.setPrevText(prevText);
+		return this;
+	}
+
+	public MonthPicker setNextText(String nextText) {
+		options.setNextText(nextText);
 		return this;
 	}
 
