@@ -20,11 +20,11 @@ import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCac
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheListModel;
 import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.model.PercentageFloatToBigDecimalModel;
-import org.iglooproject.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardBehavior;
-import org.iglooproject.wicket.more.markup.html.template.flash.zeroclipboard.ZeroClipboardDataAttributeModifier;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.clipboard.ClipboardBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
 import org.iglooproject.wicket.more.model.BindingModel;
@@ -50,12 +50,12 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 	public EhCacheCachePortfolioPanel(String id, IModel<List<CacheManager>> model) {
 		super(id, model);
 		setOutputMarkupId(true);
-
-		add(new ZeroClipboardBehavior());
-
+		
+		add(new ClipboardBehavior());
+		
 		ListView<CacheManager> cacheManagerList = new ListView<CacheManager>("cacheManagerList", getModel()) {
 			private static final long serialVersionUID = -6252990816594161742L;
-
+			
 			@Override
 			protected void populateItem(final ListItem<CacheManager> item) {
 				item.setOutputMarkupId(true);
@@ -109,9 +109,13 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 						item.add(ShortenedJavaNameRenderer.get().asLabel("cacheName", cacheNameModel));
 						item.add(new TextField<String>("cacheNameInput", cacheNameModel));
 						
-						WebMarkupContainer copyToClipboard = new WebMarkupContainer("copyToClipboard");
-						copyToClipboard.add(new ZeroClipboardDataAttributeModifier(cacheNameModel));
-						item.add(copyToClipboard);
+						item.add(
+								new BlankLink("copy")
+										.add(
+												new ClipboardBehavior()
+														.text(cacheNameModel)
+										)
+						);
 						
 						item.add(new Label("cacheMaxElements", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBindings.ehCacheCacheInformation().maxElementsInMemory())));

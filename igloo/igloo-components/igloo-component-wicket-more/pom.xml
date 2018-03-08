@@ -88,6 +88,10 @@
 			<artifactId>popper.js</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>clipboard</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>bootstrap-override</artifactId>
 			<version>${project.version}</version>
