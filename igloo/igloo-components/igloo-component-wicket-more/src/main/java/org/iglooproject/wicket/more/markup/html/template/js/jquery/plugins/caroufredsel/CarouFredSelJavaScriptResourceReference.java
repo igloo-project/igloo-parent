@@ -9,6 +9,11 @@ import org.iglooproject.wicket.more.webjars.WebjarUtil;
 
 import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
 
+/**
+ * CarouFredSel is no longer maintained; this component needs to be replaced. Backward compatibility will not be
+ * enforced.
+ */
+@Deprecated
 public final class CarouFredSelJavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
 	private static final long serialVersionUID = 4911695054626514694L;
 

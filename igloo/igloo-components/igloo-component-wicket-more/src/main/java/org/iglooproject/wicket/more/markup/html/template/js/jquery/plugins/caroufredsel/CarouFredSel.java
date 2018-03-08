@@ -7,6 +7,10 @@ import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 import org.wicketstuff.wiquery.core.options.Options;
 
+/**
+ * @see CarouFredSelJavaScriptResourceReference
+ */
+@Deprecated
 public class CarouFredSel implements ChainableStatement, Serializable {
 	private static final long serialVersionUID = 5448191289229125305L;
 	
