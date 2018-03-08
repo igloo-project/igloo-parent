@@ -26,6 +26,7 @@
 		<module>bootstrap-override</module>
 		<module>jquery.json</module>
 		<module>jquery.carouFredSel</module>
+		<module>jquery.fancybox</module>
 	</modules>
 	
 	<build>

@@ -2,6 +2,10 @@ package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.moda
 
 import org.wicketstuff.wiquery.core.options.Options;
 
+/**
+ * @see ModalJavaScriptResourceReference
+ */
+@Deprecated
 public class ModalImage implements IModal {
 
 	private static final long serialVersionUID = -3129899251673064005L;

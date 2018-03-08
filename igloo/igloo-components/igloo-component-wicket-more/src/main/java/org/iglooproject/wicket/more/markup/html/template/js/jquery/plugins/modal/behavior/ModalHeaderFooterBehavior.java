@@ -4,7 +4,12 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.util.value.IValueMap;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
 
+/**
+ * @see ModalJavaScriptResourceReference
+ */
+@Deprecated
 public class ModalHeaderFooterBehavior extends Behavior {
 
 	private static final long serialVersionUID = -5202496937402360163L;
