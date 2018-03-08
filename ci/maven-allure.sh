@@ -3,9 +3,9 @@
 # do not interrupt on error
 set +e
 
-MAVEN_OPTS="$MAVEN_OPTS -Dallure.install.directory=$( pwd )/.allure"
-echo mvn -Dallure.enabled=true -fae clean test site:site
-mvn -Dallure.enabled=true -fae clean integration-test site:site
+MAVEN_OPTS="$MAVEN_OPTS -Dallure.enabled -Djacoco.enabled -Dallure.install.directory=$( pwd )/.allure"
+echo mvn -fae clean integration-test site:site
+mvn -fae clean integration-test site:site
 TEST_RESULT=$?
 
 # interrupt on error
@@ -13,8 +13,8 @@ set -e
 
 # second site:site call to generate aggregated report
 # compile step needed to ensure local artifacts are used
-echo mvn -Dallure.enabled=true compile site:site
-mvn -Dallure.enabled=true compile site:site
+echo mvn compile site:site
+mvn compile site:site
 
 # prepare ssh communication
 echo Load ssh key

@@ -17,6 +17,14 @@
 		<jdk.version>1.8</jdk.version>
 		<minimal.jdk.version>1.8</minimal.jdk.version>
 		
+		<!-- ipv6 local network not available on travis - https://github.com/travis-ci/travis-ci/issues/4964 -->
+		<test.argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true</test.argLine>
+		<!-- note: this can be modified by jacoco plugin that appends its own java-agent if profile is activated -->
+		<argLine>${test.argLine} ${allure.argLine}</argLine>
+		
+		<!-- conditionally overridden by allure profile -->
+		<allure.argLine></allure.argLine>
+		
 		<!--
 			Should be a valid artifact of type "signature"
 			See http://search.maven.org/#search|ga|1|g%3A%22org.codehaus.mojo.signature%22
@@ -36,7 +44,6 @@
 		<igloo.maven-compiler-plugin.version>3.7.0</igloo.maven-compiler-plugin.version>
 		<igloo.maven-resources-plugin.version>3.0.2</igloo.maven-resources-plugin.version>
 		<igloo.maven-surefire-plugin.version>2.20.1</igloo.maven-surefire-plugin.version>
-		<igloo.maven-surefire-plugin.argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=256m</igloo.maven-surefire-plugin.argLine>
 		<igloo.maven-install-plugin.version>2.5.2</igloo.maven-install-plugin.version>
 		<igloo.maven-war-plugin.version>3.2.0</igloo.maven-war-plugin.version>
 		<igloo.maven-assembly-plugin.version>3.1.0</igloo.maven-assembly-plugin.version>
@@ -51,6 +58,7 @@
 		<igloo.maven-clean-plugin.version>3.0.0</igloo.maven-clean-plugin.version>
 		<igloo.maven-site-plugin.version>3.7</igloo.maven-site-plugin.version>
 		<igloo.maven-failsafe-plugin.version>2.21.0</igloo.maven-failsafe-plugin.version>
+		<igloo.jacoco-maven-plugin.version>0.8.0</igloo.jacoco-maven-plugin.version>
 		
 		<igloo.wagon-maven-plugin.version>1.0</igloo.wagon-maven-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.0.0</igloo.wagon-ssh-external-plugin.version>
@@ -260,17 +268,11 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${igloo.maven-surefire-plugin.version}</version>
-					<configuration>
-						<argLine>${igloo.maven-surefire-plugin.argLine}</argLine>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-failsafe-plugin</artifactId>
 					<version>${igloo.maven-failsafe-plugin.version}</version>
-					<configuration>
-						<argLine>${igloo.maven-failsafe-plugin.argLine}</argLine>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -406,6 +408,38 @@
 						<reportVersion>${igloo.allure.version}</reportVersion>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${igloo.jacoco-maven-plugin.version}</version>
+					<configuration>
+						<destfile>${project.build.directory}/coverage-reports/jacoco-unit.exec</destfile>
+						<datafile>${project.build.directory}/coverage-reports/jacoco-unit.exec</datafile>
+					</configuration>
+					<executions>
+						<execution>
+							<!-- this goal modify argLine system property to append jacoco java-agent -->
+							<id>jacoco-initialize</id>
+							<goals>
+								<goal>prepare-agent</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>jacoco-site</id>
+							<phase>package</phase>
+							<goals>
+								<goal>report</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>jacoco-integration-site</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>report-integration</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -463,6 +497,9 @@
 					<value>true</value>
 				</property>
 			</activation>
+			<properties>
+				<allure.argLine>"-javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${igloo.allure-aspectj.version}/aspectjweaver-${igloo.allure-aspectj.version}.jar"</allure.argLine>
+			</properties>
 			<build>
 				<!-- override junit behavior with allure-junit4 + aspectj -->
 				<!-- configure allure-junit4 output -->
@@ -473,9 +510,6 @@
 						<artifactId>maven-surefire-plugin</artifactId>
 						<version>${igloo.maven-surefire-plugin.version}</version>
 						<configuration>
-							<argLine>
-								-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${igloo.allure-aspectj.version}/aspectjweaver-${igloo.allure-aspectj.version}.jar"
-							</argLine>
 							<properties>
 								<property>
 									<name>listener</name>
@@ -507,9 +541,6 @@
 						<artifactId>maven-failsafe-plugin</artifactId>
 						<version>${igloo.maven-failsafe-plugin.version}</version>
 						<configuration>
-							<argLine>
-								-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${igloo.allure-aspectj.version}/aspectjweaver-${igloo.allure-aspectj.version}.jar"
-							</argLine>
 							<properties>
 								<property>
 									<name>listener</name>
@@ -559,6 +590,26 @@
 					</plugin>
 				</plugins>
 			</reporting>
+		</profile>
+		<profile>
+			<id>jacoco</id>
+			<activation>
+				<property>
+					<name>jacoco.enabled</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<!-- override junit behavior with allure-junit4 + aspectj -->
+				<!-- configure allure-junit4 output -->
+				<!-- add allure-maven plugin as executor.json file generated during report phase is needed for aggregation -->
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 	
