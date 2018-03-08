@@ -25,6 +25,7 @@
 	<modules>
 		<module>bootstrap-override</module>
 		<module>jquery.json</module>
+		<module>jquery.carouFredSel</module>
 	</modules>
 	
 	<build>
