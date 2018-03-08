@@ -13,6 +13,7 @@ maven-prepare:
   script:
     - "./ci/config-test.py"
   artifacts:
+    expire_in: 1 day
     paths:
       - gitlab-ci.build.conf
 
