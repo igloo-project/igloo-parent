@@ -97,6 +97,12 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.iglooproject.webjars</groupId>
+			<artifactId>jquery.json</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-sass</artifactId>
 			<version>${project.version}</version>
