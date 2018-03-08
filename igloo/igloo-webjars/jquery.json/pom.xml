@@ -14,6 +14,12 @@
 	<name>jquery.json</name>
 	<description>jquery.json for Igloo</description>
 	
+	<properties>
+		<sonar.issue.ignore.multicriteria>eval</sonar.issue.ignore.multicriteria>
+		<sonar.issue.ignore.multicriteria.eval.ruleKey>javascript:Eval</sonar.issue.ignore.multicriteria.eval.ruleKey>
+		<sonar.issue.ignore.multicriteria.eval.resourceKey>**/jquery.json-2.3.js</sonar.issue.ignore.multicriteria.eval.resourceKey>
+	</properties>
+	
 	<dependencies>
 	</dependencies>
 </project>
