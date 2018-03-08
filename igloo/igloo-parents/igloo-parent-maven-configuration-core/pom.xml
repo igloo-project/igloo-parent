@@ -183,10 +183,6 @@
 		<igloo.webjars.bootstrap.version>4.0.0</igloo.webjars.bootstrap.version>
 	</properties>
 	
-	<prerequisites>
-		<maven>${minimal.maven.version}</maven>
-	</prerequisites>
-	
 	<dependencyManagement>
 		<dependencies>
 			
