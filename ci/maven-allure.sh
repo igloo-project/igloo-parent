@@ -3,7 +3,7 @@
 # do not interrupt on error
 set +e
 
-MAVEN_OPTS="$MAVEN_OPTS -Dallure.enabled -Djacoco.enabled -Dallure.install.directory=$( pwd )/.allure"
+MAVEN_OPTS="$MAVEN_OPTS -Dallure.enabled=true -Djacoco.enabled=true -Dallure.install.directory=$( pwd )/.allure"
 echo mvn -fae clean integration-test site:site
 mvn -fae clean integration-test site:site
 TEST_RESULT=$?
@@ -37,4 +37,7 @@ rsync -s -az --chmod=g=rX,o= target/site/ "${SYNC_TEST_REPORTS_USER}@${SYNC_TEST
 if [ $TEST_RESULT -ne 0 ]; then
   echo "Test job ends with some test failures"
 fi
+
+./ci/artifacts-push.sh
+
 exit $TEST_RESULT
