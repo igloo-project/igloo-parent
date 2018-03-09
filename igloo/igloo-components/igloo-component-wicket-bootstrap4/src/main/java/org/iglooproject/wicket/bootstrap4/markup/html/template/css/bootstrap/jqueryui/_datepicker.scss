@@ -263,6 +263,10 @@ $ui-datepicker-footer-padding:					.5em .75em !default;
 			> tbody {
 				> tr {
 					> td {
+						a.ui-state-default {
+							cursor: pointer;
+						}
+						
 						a.ui-state-default,
 						.ui-state-default {
 							text-align: center;
