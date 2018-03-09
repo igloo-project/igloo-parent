@@ -26,6 +26,15 @@
 		@extend .modal-headerless;
 		@extend .modal-footerless;
 	}
+	
+	input.hasDatepicker,
+	input.hasMonthpicker {
+		z-index: $zindex-modal-date-picker;
+		
+		&:focus {
+			z-index: $zindex-modal-date-picker;
+		}
+	}
 }
 
 .modal.modal-work-in-progress {
