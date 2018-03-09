@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
 
+/**
+ * @see ModalJavaScriptResourceReference
+ */
+@Deprecated
 public interface IModal extends ChainableStatement, Serializable {
 
 }

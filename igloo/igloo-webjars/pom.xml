@@ -11,7 +11,6 @@
 
 	<groupId>org.iglooproject.webjars</groupId>
 	<artifactId>igloo-webjars</artifactId>
-	<version>1.0-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 	<name>webjars parent module</name>
@@ -25,6 +24,9 @@
 	
 	<modules>
 		<module>bootstrap-override</module>
+		<module>jquery.json</module>
+		<module>jquery.carouFredSel</module>
+		<module>jquery.fancybox</module>
 	</modules>
 	
 	<build>

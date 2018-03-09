@@ -10,6 +10,10 @@ import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
 
+/**
+ * @see ModalJavaScriptResourceReference
+ */
+@Deprecated
 public class ModalDiaporamaBehavior extends Behavior {
 
 	private static final long serialVersionUID = 7556130610172681270L;

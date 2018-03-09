@@ -8,6 +8,10 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
+/**
+ * @see CarouFredSelJavaScriptResourceReference
+ */
+@Deprecated
 public class CarouFredSelBehavior extends Behavior {
 
 	private static final long serialVersionUID = 6155882407495564466L;

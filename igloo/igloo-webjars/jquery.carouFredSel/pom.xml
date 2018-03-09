@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.iglooproject.webjars</groupId>
+		<artifactId>igloo-webjars</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>jquery.carouFredSel</artifactId>
+	<packaging>jar</packaging>
+
+	<name>jquery.carouFredSel</name>
+	<description>jquery.carouFredSel for Igloo</description>
+	
+	<properties>
+		<sonar.issue.ignore.multicriteria>eval</sonar.issue.ignore.multicriteria>
+		<sonar.issue.ignore.multicriteria.eval.ruleKey>javascript:Eval</sonar.issue.ignore.multicriteria.eval.ruleKey>
+		<sonar.issue.ignore.multicriteria.eval.resourceKey>**/jquery.carouFredSel-6.1.0.js</sonar.issue.ignore.multicriteria.eval.resourceKey>
+	</properties>
+	
+	<dependencies>
+	</dependencies>
+</project>
