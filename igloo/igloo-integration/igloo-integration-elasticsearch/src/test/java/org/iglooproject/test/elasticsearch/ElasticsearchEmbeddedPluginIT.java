@@ -25,7 +25,6 @@ import org.elasticsearch.client.RestClient;
 import org.iglooproject.lucene.analysis.french.CoreFrenchMinimalStemFilter;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -84,7 +83,8 @@ public class ElasticsearchEmbeddedPluginIT {
 		}
 	}
 
-	@Test
+	// TODO LAL: commented out as this test write to stdout, and this is forbidden by surefire plugin if fork is used
+	//@Test
 	public void plugin() throws ConfigurationException, IOException, URISyntaxException {
 		assumeThat(inhibited).isFalse().as("No plugin artifact available; ignoring test.");
 		

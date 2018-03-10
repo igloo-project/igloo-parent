@@ -133,13 +133,6 @@
 						</goals>
 					</execution>
 				</executions>
-				<configuration>
-					<!--
-					We cannot use fork as test outputs some logs on stdout,
-					so stdin/stdout cannot be used for interprocess communication.
-					-->
-					<forkCount>0</forkCount>
-				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>
