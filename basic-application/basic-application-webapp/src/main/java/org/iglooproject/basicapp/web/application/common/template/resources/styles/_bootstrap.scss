@@ -1,4 +1,5 @@
 @import "webjars://bootstrap-override:current/scss/colors";
+@import "webjars://bootstrap-override:current/scss/paper";
 
 @import "webjars://bootstrap:current/scss/functions";
 
@@ -62,7 +63,10 @@
 @import "webjars://bootstrap-override:current/scss/modal";
 
 @import "webjars://bootstrap:current/scss/tooltip";
+
 @import "webjars://bootstrap:current/scss/popover";
+@import "webjars://bootstrap-override:current/scss/popover";
+
 @import "webjars://bootstrap:current/scss/carousel";
 
 @import "webjars://bootstrap:current/scss/utilities/align";

@@ -4,6 +4,7 @@ import java.util.Locale;
 
 public enum PopoverPlacement {
 	
+	AUTO("auto"),
 	TOP("top"),
 	BOTTOM("bottom"),
 	LEFT("left"),

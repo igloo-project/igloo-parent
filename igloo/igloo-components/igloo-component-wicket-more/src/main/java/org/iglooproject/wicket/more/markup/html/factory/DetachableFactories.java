@@ -11,6 +11,16 @@ public final class DetachableFactories {
 	private DetachableFactories() {
 	}
 
+	public static final <T, R> IDetachableFactory<T, R> constant(final R value) {
+		return new IDetachableFactory<T, R>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public R create(T parameter) {
+				return value;
+			}
+		};
+	}
+
 	public static final <T, R> IDetachableFactory<Unit<? extends T>, R> forUnit(final IDetachableFactory<T, R> factory) {
 		return new IDetachableFactory<Unit<? extends T>, R>() {
 			private static final long serialVersionUID = 1L;

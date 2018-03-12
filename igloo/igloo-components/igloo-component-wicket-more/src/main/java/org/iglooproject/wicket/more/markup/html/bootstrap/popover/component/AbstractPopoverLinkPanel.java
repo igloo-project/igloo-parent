@@ -44,14 +44,9 @@ public abstract class AbstractPopoverLinkPanel<T> extends GenericPanel<T> {
 		Component titleComponent = getTitleComponent("titleComponent");
 		Component contentComponent = getContentComponent("contentComponent");
 		
-		options = new BootstrapPopoverOptions();
-		options.setTitleComponent(titleComponent);
-		options.setAddCloseButton(true);
-		options.setContentComponent(contentComponent);
-		options.setPlacement(PopoverPlacement.RIGHT);
-		options.setTrigger(PopoverTrigger.CLICK);
-		options.setContainer("body");
-		options.setHtml(true);
+		options = BootstrapPopoverOptions.get()
+				.title(titleComponent)
+				.content(contentComponent);
 		
 		// Ne PAS utiliser BlankLink ici, on ne veut pas de href qui entraînerait un retour en haut de page
 		WebMarkupContainer link = new WebMarkupContainer("link");
@@ -99,13 +94,17 @@ public abstract class AbstractPopoverLinkPanel<T> extends GenericPanel<T> {
 	}
 	
 	public AbstractPopoverLinkPanel<T> popoverTrigger(PopoverTrigger trigger) {
-		options.setTrigger(trigger);
+		options.trigger(trigger);
 		return this;
 	}
 	
 	public AbstractPopoverLinkPanel<T> popoverPlacement(PopoverPlacement placement) {
-		options.setPlacement(placement);
+		options.placement(placement);
 		return this;
 	}
 	
+	public AbstractPopoverLinkPanel<T> container(Component container) {
+		options.container(container);
+		return this;
+	}
 }

@@ -4,6 +4,16 @@
 	@extend .shadow-lg;
 }
 
+.modal-header {
+	font-size: $modal-header-font-size;
+	line-height: $modal-header-line-height;
+	
+	.close {
+		font-size: $modal-header-close-font-size;
+		line-height: $modal-header-close-line-height;
+	}
+}
+
 .modal {
 	&.modal-headerless {
 		.modal-header {

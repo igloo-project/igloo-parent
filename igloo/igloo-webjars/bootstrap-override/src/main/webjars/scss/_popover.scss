@@ -1,0 +1,27 @@
+.popover {
+	border-radius: 0;
+	@extend .shadow-lg;
+	
+	&.popover-modal {
+		z-index: $zindex-modal-popover;
+	}
+}
+
+.popover-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	
+	font-size: $modal-header-font-size;
+	line-height: $modal-header-line-height;
+	
+	border-bottom: $popover-header-border-width solid $popover-header-border-color;
+	
+	.close {
+		padding: $popover-header-padding-y $popover-header-padding-x;
+		margin: (-$popover-header-padding-y) (-$popover-header-padding-x) (-$popover-header-padding-y) auto;
+		
+		font-size: $popover-header-close-font-size;
+		line-height: $popover-header-close-line-height;
+	}
+}

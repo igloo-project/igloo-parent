@@ -7,6 +7,7 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 public class BootstrapPopoverBehavior extends Behavior {
@@ -34,14 +35,11 @@ public class BootstrapPopoverBehavior extends Behavior {
 		modules.forEach(module -> module.renderHead(component, response));
 		response.render(OnDomReadyHeaderItem.forScript(statement(component).render()));
 	}
-	
+
 	@Override
 	public void detach(Component component) {
 		super.detach(component);
-		
-		if (options != null) {
-			options.detach();
-		}
+		Detachables.detach(options);
 	}
 
 }
