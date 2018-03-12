@@ -1,3 +1,5 @@
+$s2bs-dropdown-zindex:									$zindex-select2;
+
 .select2-container--bootstrap {
 	&.select2-container--focus {
 		&:not(.select2-container--open) {
@@ -9,6 +11,10 @@
 				}
 			}
 		}
+	}
+	
+	.select2-dropdown {
+		z-index: $s2bs-dropdown-zindex;
 	}
 	
 	.select2-search--dropdown {
