@@ -415,6 +415,10 @@
 					<configuration>
 						<destfile>${project.build.directory}/coverage-reports/jacoco-unit.exec</destfile>
 						<datafile>${project.build.directory}/coverage-reports/jacoco-unit.exec</datafile>
+						<includes>
+							<!-- this allows better performance and memory usage for coverage computation -->
+							<include>org.iglooproject.*</include>
+						</includes>
 					</configuration>
 					<executions>
 						<execution>
