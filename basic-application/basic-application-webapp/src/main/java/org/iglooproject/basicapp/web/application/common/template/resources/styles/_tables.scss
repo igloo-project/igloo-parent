@@ -93,11 +93,6 @@ table {
 				}
 				&.actions {
 					text-align: center;
-					padding: calc(#{$table-cell-padding} - 2px);
-					
-					.btn {
-						margin: 2px;
-					}
 					
 					&.actions-1x {
 						width: 50px;
