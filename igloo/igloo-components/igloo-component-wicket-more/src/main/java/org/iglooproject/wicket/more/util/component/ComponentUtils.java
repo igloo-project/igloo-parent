@@ -1,6 +1,7 @@
 package org.iglooproject.wicket.more.util.component;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -37,11 +38,14 @@ public final class ComponentUtils {
 		
 		@Override
 		public boolean hasNext() {
-			return component.getParent() != null;
+			return component != null && component.getParent() != null;
 		}
 		
 		@Override
 		public Component next() {
+			if (!hasNext()) {
+				throw new NoSuchElementException();
+			}
 			component = component.getParent();
 			return component;
 		}
