@@ -35,16 +35,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 /**
- * @deprecated Use Bootstrap 4 and {@link FormInvalidDecoratorListener} instead.
+ * <p>Decorate fields by adding CSS class '.is-invalid' and traced it back to the related form-group, using Javascript.</p>
  * 
- * <p>Decorate fields by adding CSS class '.has-error' and traced it back to the related form-group, using Javascript.</p>
- * 
- * <p>The listener must be initialized in the Wicket application configuration: {@code FormErrorDecoratorListener.init(this);}</p>
+ * <p>The listener must be initialized in the Wicket application configuration: {@code FormInvalidDecoratorListener.init(this);}</p>
  */
-@Deprecated
-public final class FormErrorDecoratorListener {
+public final class FormInvalidDecoratorListener {
 	
-	private FormErrorDecoratorListener() { }
+	private FormInvalidDecoratorListener() { }
 	
 	public static void init(WebApplication application) {
 		application.getComponentPreOnBeforeRenderListeners().add(PRE_ON_BEFORE_RENDER_LISTENER);
@@ -54,10 +51,10 @@ public final class FormErrorDecoratorListener {
 		FormProcessedListener.init(application);
 	}
 	
-	private static final String HAS_ERROR_CSS_CLASS = "has-error";
-	private static final String HAS_ERROR_REMINDER_CSS_CLASS = "has-error-reminder";
+	private static final String IS_INVALID_CSS_CLASS = "is-invalid";
+	private static final String IS_INVALID_REMINDER_CSS_CLASS = "is-invalid-reminder";
 
-	private static final Behavior HAS_ERROR_BEHAVIOR = new ClassAttributeAppender(HAS_ERROR_CSS_CLASS) {
+	private static final Behavior IS_INVALID_BEHAVIOR = new ClassAttributeAppender(IS_INVALID_CSS_CLASS) {
 		private static final long serialVersionUID = 1L;
 		@Override
 		public boolean isTemporary(Component component) {
@@ -72,16 +69,16 @@ public final class FormErrorDecoratorListener {
 			return true;
 		}
 		private Object readResolve() {
-			return HAS_ERROR_BEHAVIOR;
+			return IS_INVALID_BEHAVIOR;
 		}
 	};
 	
-	private static final Behavior PROPAGATE_HAS_ERROR_BEHAVIOR = new Behavior() {
-		private static final long serialVersionUID = -7997289335427913596L;
+	private static final Behavior PROPAGATE_IS_INVALID_BEHAVIOR = new Behavior() {
+		private static final long serialVersionUID = 1L;
 		@Override
 		public boolean isTemporary(Component component) {
 			/*
-			 * See HAS_ERROR_BEHAVIOR.isTemporary.
+			 * See IS_INVALID_BEHAVIOR.isTemporary.
 			 */
 			return true;
 		}
@@ -91,34 +88,39 @@ public final class FormErrorDecoratorListener {
 			
 			StringBuilder sb = new StringBuilder();
 			sb
-					.append(new JsStatement().$(component, ".form-group, .form-decorator-error-group")
-							.removeClass(HAS_ERROR_CSS_CLASS)
+					.append(new JsStatement().$(component, ".form-group, .form-decorator-invalid-group, .select2")
+							.removeClass(IS_INVALID_CSS_CLASS)
 							.render()
 					)
-					.append(new JsStatement().$(component, ".has-error")
-							.chain("parentsUntil", JsUtils.quotes("#" + component.getMarkupId()), JsUtils.quotes(".form-group, .form-decorator-error-group"))
-							.addClass(HAS_ERROR_CSS_CLASS)
+					.append(new JsStatement().$(component,  "." + IS_INVALID_CSS_CLASS)
+							.chain("parentsUntil", JsUtils.quotes("#" + component.getMarkupId()), JsUtils.quotes(".form-group, .form-decorator-invalid-group"))
+							.addClass(IS_INVALID_CSS_CLASS)
 							.render()
 					)
-					// Les .form-decorator-error-reminder doivent prendre une apparence particulière en cas d'erreur,
-					// mais sans impacter l'apparence des sous-éléments comme le ferait un .has-error
-					.append(new JsStatement().$(component, ".form-decorator-error-reminder")
-							.removeClass(HAS_ERROR_REMINDER_CSS_CLASS)
+					.append(new JsStatement().$(component,  "." + IS_INVALID_CSS_CLASS)
+							.chain("next", JsUtils.quotes(".select2"))
+							.addClass(IS_INVALID_CSS_CLASS)
 							.render()
 					)
-					.append(new JsStatement().$(component, "." + HAS_ERROR_CSS_CLASS)
-							.chain("parentsUntil", JsUtils.quotes("#" + component.getMarkupId()), JsUtils.quotes(".form-decorator-error-reminder"))
-							.addClass(HAS_ERROR_REMINDER_CSS_CLASS)
+					// Les .form-decorator-invalid-reminder doivent prendre une apparence particulière en cas d'erreur,
+					// mais sans impacter l'apparence des sous-éléments comme le ferait un .is-invalid
+					.append(new JsStatement().$(component, ".form-decorator-invalid-reminder")
+							.removeClass(IS_INVALID_REMINDER_CSS_CLASS)
+							.render()
+					)
+					.append(new JsStatement().$(component, "." + IS_INVALID_CSS_CLASS)
+							.chain("parentsUntil", JsUtils.quotes("#" + component.getMarkupId()), JsUtils.quotes(".form-decorator-invalid-reminder"))
+							.addClass(IS_INVALID_REMINDER_CSS_CLASS)
 							.render()
 					);
 			response.render(OnDomReadyHeaderItem.forScript(sb.toString()));
 		}
 	};
 	
-	private static final MetaDataKey<Serializable> HAS_ERROR = new MetaDataKey<Serializable>() {
+	private static final MetaDataKey<Serializable> IS_INVALID = new MetaDataKey<Serializable>() {
 		private static final long serialVersionUID = 1L;
 		private Object readResolve() {
-			return HAS_ERROR;
+			return IS_INVALID;
 		}
 	};
 
@@ -135,7 +137,7 @@ public final class FormErrorDecoratorListener {
 	 * RefreshingView triggers a detach on its children (and grandchildren and so on) when it
 	 * executes onBeforeRender (because it calls onPopulate, which removes all children, which detaches
 	 * each child).
-	 * Since detaching a child very likely will remove temporary behaviors (such as HAS_ERROR_BEHAVIOR)
+	 * Since detaching a child very likely will remove temporary behaviors (such as IS_INVALID_BEHAVIOR)
 	 * and will reset error messages (which will make FormComponents valid again), we have to intervene
 	 * before these detaches and save the information that some components are errored. 
 	 */
@@ -148,8 +150,8 @@ public final class FormErrorDecoratorListener {
 						form.visitChildren(FormComponent.class, new IVisitor<FormComponent<?>, Void>() {
 							@Override
 							public void component(FormComponent<?> formComponent, IVisit<Void> visit) {
-								if (hasError(formComponent)) {
-									formComponent.setMetaData(HAS_ERROR, HAS_ERROR);
+								if (isInvalid(formComponent)) {
+									formComponent.setMetaData(IS_INVALID, IS_INVALID);
 								}
 							}
 						});
@@ -158,7 +160,7 @@ public final class FormErrorDecoratorListener {
 			};
 
 		/*
-		 * Second pass: add the HAS_ERROR_BEHAVIOR.
+		 * Second pass: add the IS_INVALID_BEHAVIOR.
 		 * 
 		 * Here we are sure that, even if the components to decorate are nested deep in the current component's
 		 * child hierarchy, and even if these components to decorate have a parent RefreshingView (see above),
@@ -171,11 +173,11 @@ public final class FormErrorDecoratorListener {
 				public void onBeforeRender(Component component) {
 					if (component instanceof FormComponent) {
 						FormComponent<?> formComponent = (FormComponent<?>)component;
-						if (hasError(formComponent)) {
-							formComponent.setMetaData(HAS_ERROR, null);
-							for (Component componentToMarkWithError : getComponentsToDecorateWithCSS(formComponent)) {
-								if (!componentToMarkWithError.getBehaviors().contains(HAS_ERROR_BEHAVIOR)) {
-									componentToMarkWithError.add(HAS_ERROR_BEHAVIOR);
+						if (isInvalid(formComponent)) {
+							formComponent.setMetaData(IS_INVALID, null);
+							for (Component componentToMarkInvalid: getComponentsToDecorateWithCSS(formComponent)) {
+								if (!componentToMarkInvalid.getBehaviors().contains(IS_INVALID_BEHAVIOR)) {
+									componentToMarkInvalid.add(IS_INVALID_BEHAVIOR);
 								}
 							}
 						}
@@ -193,7 +195,7 @@ public final class FormErrorDecoratorListener {
 						form.visitChildren(FormComponent.class, new IVisitor<FormComponent<?>, Void>() {
 							@Override
 							public void component(FormComponent<?> formComponent, IVisit<Void> visit) {
-								formComponent.setMetaData(HAS_ERROR, null);
+								formComponent.setMetaData(IS_INVALID, null);
 							}
 						});
 					}
@@ -227,26 +229,26 @@ public final class FormErrorDecoratorListener {
 		
 		@Override
 		public void component(FormComponent<?> formComponent, IVisit<Void> visit) {
-			if (hasError(formComponent)) {
+			if (isInvalid(formComponent)) {
 				Form<?> formToRefresh = FormProcessedListener.findProcessedForm(formComponent);
 				// If the form has not been processed, isValid() always returns false, but
 				// in our case we'd like to consider the formComponent as valid.
 				if (formToRefresh != null) {
 					target.add(formToRefresh);
-					if (!formToRefresh.getBehaviors().contains(PROPAGATE_HAS_ERROR_BEHAVIOR)) {
-						formToRefresh.add(PROPAGATE_HAS_ERROR_BEHAVIOR);
+					if (!formToRefresh.getBehaviors().contains(PROPAGATE_IS_INVALID_BEHAVIOR)) {
+						formToRefresh.add(PROPAGATE_IS_INVALID_BEHAVIOR);
 					}
 				}
 			}
 		}
 	}
 
-	private static boolean hasError(FormComponent<?> formComponent) {
-		return formComponent.getMetaData(HAS_ERROR) != null || !formComponent.isValid();
+	private static boolean isInvalid(FormComponent<?> formComponent) {
+		return formComponent.getMetaData(IS_INVALID) != null || !formComponent.isValid();
 	}
 
-	public static void markWithError(FormComponent<?> formComponent) {
-		formComponent.setMetaData(HAS_ERROR, HAS_ERROR);
+	public static void markIsInvalid(FormComponent<?> formComponent) {
+		formComponent.setMetaData(IS_INVALID, IS_INVALID);
 	}
 
 	private static List<? extends Component> getComponentsToDecorateWithCSS(FormComponent<?> formComponent) {
@@ -286,8 +288,8 @@ public final class FormErrorDecoratorListener {
 		return formGroup;
 	}
 	
-	public static void propagateHasError(Form<?> form) {
-		form.add(PROPAGATE_HAS_ERROR_BEHAVIOR);
+	public static void propagateIsInvalid(Form<?> form) {
+		form.add(PROPAGATE_IS_INVALID_BEHAVIOR);
 	}
 
 }

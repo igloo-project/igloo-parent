@@ -77,6 +77,7 @@ import org.iglooproject.wicket.more.rendering.LocaleRenderer;
 import org.iglooproject.wicket.more.security.page.LoginFailurePage;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.iglooproject.wicket.more.util.convert.HibernateProxyAwareConverterLocator;
+import org.iglooproject.wicket.more.util.listener.FormInvalidDecoratorListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.ImmutableList;
@@ -123,6 +124,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 						new ClassStringResourceLoader(BasicApplicationNotificationResources.class)
 				)
 		);
+		
+		FormInvalidDecoratorListener.init(this);
 		
 		// Don't include css files from wicketstuff-select2.
 		// We take care of Select2 css file and Select2 Bootstrap scss files on our side.

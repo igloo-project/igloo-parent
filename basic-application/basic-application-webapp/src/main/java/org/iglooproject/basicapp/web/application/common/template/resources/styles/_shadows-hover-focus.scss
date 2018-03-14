@@ -104,3 +104,41 @@
 	box-shadow: $dropdown-box-shadow;
 }
 
+.form-control,
+.custom-select {
+	.was-validated &:valid,
+	.was-validated &:invalid,
+	&.is-valid,
+	&.is-invalid {
+		&:focus {
+			box-shadow: $input-focus-box-shadow;
+		}
+	}
+}
+
+.custom-control-input {
+	.was-validated &:valid,
+	.was-validated &:invalid,
+	&.is-valid,
+	&.is-invalid {
+		&:focus {
+			~ .custom-control-label::before {
+				box-shadow: $input-focus-box-shadow;
+			}
+		}
+	}
+}
+
+.custom-file-input {
+	.was-validated &:valid,
+	.was-validated &:invalid,
+	&.is-valid,
+	&.is-invalid {
+		&:focus {
+			~ .custom-file-label {
+				box-shadow: $input-focus-box-shadow;
+			}
+		}
+	}
+}
+
