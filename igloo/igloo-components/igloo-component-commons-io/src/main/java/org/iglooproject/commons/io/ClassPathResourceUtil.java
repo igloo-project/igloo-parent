@@ -1,76 +1,90 @@
 package org.iglooproject.commons.io;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.JarURLConnection;
 import java.net.URL;
+import java.util.Optional;
 
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
+import org.iglooproject.commons.io.internal.ClassPathResourceHelper;
 
 /**
- * Some utilities to handle classpath:/ urls without Spring
+ * Some utilities to handle classpath:/ urls without Spring. Prefix may be <em>classpath:/</em> or <em>classpath:</em>.
  */
 public class ClassPathResourceUtil {
 
 	private final ClassLoader classLoader;
 
+	/**
+	 * Internal behavior splitted in an helper class.
+	 */
+	private final ClassPathResourceHelper helper;
+
+	/**
+	 * This default implementation uses {@link ClassPathResourceUtil} {@link ClassLoader} for resource lookup.
+	 */
 	public ClassPathResourceUtil() {
-		this(ClassPathResourceUtil.class.getClassLoader());
+		this(null);
 	}
 
+	/**
+	 * Use a custom {@link ClassLoader} for resource lookup. If you don't know if you need it, just use no-arg
+	 * {@link ClassPathResourceUtil#ClassPathResourceUtil()} constructor.
+	 */
 	public ClassPathResourceUtil(ClassLoader classLoader) {
+		this(classLoader, null);
+	}
+
+	/**
+	 * This package-protected constructor allow to provide a custom-implementation {@link ClassPathResourceHelper}
+	 * (internal API).
+	 */
+	ClassPathResourceUtil(ClassLoader classLoader, ClassPathResourceHelper helper) {
 		super();
-		this.classLoader = classLoader;
+		this.classLoader = Optional.ofNullable(classLoader).orElse(ClassPathResourceUtil.class.getClassLoader());
+		this.helper = Optional.ofNullable(helper).orElse(new ClassPathResourceHelper());
 	}
 
 	/**
 	 * Extract last modified date (as epoch) from a <em>classpath:/</em> url. For jar resources, returned date is
 	 * computed from jar file.
 	 * 
-	 * @throws IOException if file cannot be read.
+	 * @throws IOException if file cannot be found or modified time read.
 	 * @throws IllegalArgumentException if url is not well-formed.
 	 */
 	public long lastModified(String classpathUrl) throws IOException {
 		try {
-			URL url = toUrl(classLoader, classpathUrl);
-			if (url.getProtocol().equals("jar")) {
-				// if jar:file:/...
-				JarURLConnection conn = (JarURLConnection) url.openConnection();
-				// prevent inputStream leak from getLastModified() call
-				// https://www.mail-archive.com/wicket-user@lists.sourceforge.net/msg20937.html
-				try (InputStream is = conn.getInputStream()) {
-					return conn.getLastModified();
-				}
-			} else if (url.getProtocol().equals("file")) {
-				// if file:/...
-				File file = new File(url.getPath());
-				if (!file.exists()) {
-					throw new FileNotFoundException(String.format("file not found for %s (original url: %s)",
-							url.getPath(), classpathUrl));
-				}
-				return file.lastModified();
-			} else {
-				// other resources are not handled
-				throw new IllegalArgumentException(String.format("protocol for %s not supported (original url: %s)",
-						url, classpathUrl));
-			}
+			URL url = helper.toUrl(classLoader, classpathUrl);
+			return lastModified(classpathUrl, url);
 		} catch (IOException e) {
 			throw new IOException(String.format("%s resource cannot be read", classpathUrl), e);
 		}
 	}
 
-	public String toStringAsUtf8(String classpathUrl) throws IOException {
-		return toString(classpathUrl, Charsets.UTF_8.name());
+	/**
+	 * Extract text content from a resource. Content must be an utf-8 encoded text.
+	 * 
+	 * @see ClassPathResourceUtil
+	 * @param classpathUrl <em>classpath:...</em> resource url.
+	 * @return file content as a string
+	 * @throws IOException if file cannot be found or read, or content cannot be read as a string.
+	 */
+	public String asUtf8String(String classpathUrl) throws IOException {
+		return asString(classpathUrl, Charsets.UTF_8.name());
 	}
 
 	/**
-	 * Extract content of a classpath resource as String.
+	 * Extract text content from a resource. Content must be an text encoded with the provided encoding.
+	 * 
+	 * @see ClassPathResourceUtil
+	 * @param classpathUrl <em>classpath:...</em> resource url
+	 * @param encoding encoding of the targetted resource
+	 * @return file content as a string
+	 * @throws IOException if file cannot be found or read, or content cannot be read as a string.
 	 */
-	public String toString(String classpathUrl, String encoding) throws IOException {
-		try (InputStream is = toInputStream(classpathUrl)) {
+	public String asString(String classpathUrl, String encoding) throws IOException {
+		try (InputStream is = openStream(classpathUrl)) {
 			return IOUtils.toString(is, encoding);
 		} catch (IOException e) {
 			throw new IOException(String.format("%s resource cannot be read", classpathUrl), e);
@@ -78,25 +92,34 @@ public class ClassPathResourceUtil {
 	}
 
 	/**
-	 * You need to close returned {@link InputStream} after usage.
+	 * Provide an {@link InputStream} for the provided <em>classpath:...</em> url. Closing the provided
+	 * {@link InputStream} after usage is needed.
+	 * 
+	 * @see ClassPathResourceUtil
+	 * @param classpathUrl <em>classpath:...</em> resource url
+	 * @return an opened {@link InputStream}
+	 * @throws IOException if file cannot be found or read, or content cannot be read as a string.
 	 */
-	public InputStream toInputStream(String classpathUrl) throws IOException {
-		InputStream is = classLoader.getResourceAsStream(cleanClasspathUrl(classpathUrl));
-		if (is == null) {
-			throw new FileNotFoundException(String.format("Content not found for %s", classpathUrl));
-		}
-		return is;
+	public InputStream openStream(String classpathUrl) throws IOException {
+		return helper.openStream(helper.toUrl(classLoader, classpathUrl));
 	}
 
-	private static URL toUrl(ClassLoader classLoader, String classpathUrl) throws IOException {
-		return classLoader.getResource(cleanClasspathUrl(classpathUrl));
+	private long lastModified(String classPathUrl, URL url) throws IOException {
+		if (protocol(url).equals("jar")) {
+			// if jar:/...
+			return helper.lastModifiedJarResource(url);
+		} else if (protocol(url).equals("file")) {
+			// if file:/...
+			return helper.lastModifiedFileResource(url);
+		} else {
+			// other resources are not handled
+			throw new IllegalArgumentException(String.format("protocol for %s not supported (original url: %s)",
+					url, classPathUrl));
+		}
 	}
 
-	private static String cleanClasspathUrl(String classpathUrl) throws IOException {
-		if (!classpathUrl.startsWith("classpath:/")) {
-			throw new IOException(String.format("URL format exception: %s does not start with 'classpath:/'", classpathUrl));
-		}
-		return classpathUrl.replaceAll("^classpath:/+", "");
+	private String protocol(URL url) {
+		return url.getProtocol();
 	}
 
 }

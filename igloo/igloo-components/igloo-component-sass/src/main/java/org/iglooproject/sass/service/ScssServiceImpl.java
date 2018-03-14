@@ -47,7 +47,7 @@ public class ScssServiceImpl implements IScssService {
 			options.setIndent("\t");
 			options.getImporters().add(importer);
 			
-			final String scss = classPathResourceUtil.toStringAsUtf8(scssPath);
+			final String scss = classPathResourceUtil.asUtf8String(scssPath);
 			Context fileContext = new StringContext(scss, new URI(scssPath), null, options);
 			Output output = compiler.compile(fileContext);
 			// Write result

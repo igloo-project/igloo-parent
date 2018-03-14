@@ -171,7 +171,7 @@ public class JSassClassPathImporter implements Importer {
 		URI potentialUri = base.resolve(potentialIdendifier);
 		
 		try {
-			String source = classPathResourceUtil.toStringAsUtf8(potentialUri.toString());
+			String source = classPathResourceUtil.asUtf8String(potentialUri.toString());
 			addSourceUri(potentialUri.toString());
 			return new Import(potentialIdendifier, potentialUri, source);
 		} catch (IOException e) {
