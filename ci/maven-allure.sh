@@ -30,7 +30,7 @@ set -e
 
 # second site:site call to generate aggregated report
 # compile step needed to ensure local artifacts are used
-find igloo/ -name '*-trend.json' -exec rm {} ';'
+find basic-application/ igloo/ -name '*-trend.json' -exec rm {} ';'
 echo mvn compile site:site
 mvn compile site:site
 
