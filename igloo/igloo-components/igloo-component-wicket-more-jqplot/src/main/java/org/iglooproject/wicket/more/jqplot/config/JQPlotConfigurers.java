@@ -8,11 +8,11 @@ import java.util.Map;
 
 import org.apache.wicket.Localizer;
 import org.apache.wicket.util.convert.IConverter;
+import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.wicket.more.jqplot.util.ChartColors;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
-import org.iglooproject.wicket.more.jqplot.util.ChartColors;
 import nl.topicus.wqplot.options.PlotAxisRendererOptions;
 import nl.topicus.wqplot.options.PlotBarRendererOptions;
 import nl.topicus.wqplot.options.PlotOptions;
@@ -43,22 +43,22 @@ public final class JQPlotConfigurers {
 		}
 	}
 	
-	public static <K> IJQPlotConfigurer<Object, K> keysColors(Function<? super K, ? extends Color> seriesColorFunction) {
+	public static <K> IJQPlotConfigurer<Object, K> keysColors(SerializableFunction2<? super K, ? extends Color> seriesColorFunction) {
 		return keysColors(seriesColorFunction, seriesColorFunction);
 	}
 	
-	public static <K> IJQPlotConfigurer<Object, K> keysColors(Function<? super K, ? extends Color> seriesColorFunction, Function<? super K, ? extends Color> negativeSeriesColorFunction) {
+	public static <K> IJQPlotConfigurer<Object, K> keysColors(SerializableFunction2<? super K, ? extends Color> seriesColorFunction, SerializableFunction2<? super K, ? extends Color> negativeSeriesColorFunction) {
 		return new KeysColorsFunctionJQPlotConfigurer<K>(seriesColorFunction, negativeSeriesColorFunction);
 	}
 	private static class KeysColorsFunctionJQPlotConfigurer<K> extends AbstractJQPlotConfigurer<Object, K> {
 		private static final long serialVersionUID = -7455227724829756556L;
 		
-		private final Function<? super K, ? extends Color> seriesColorFunction;
+		private final SerializableFunction2<? super K, ? extends Color> seriesColorFunction;
 		
-		private final Function<? super K, ? extends Color> negativeSeriesColorFunction;
+		private final SerializableFunction2<? super K, ? extends Color> negativeSeriesColorFunction;
 		
-		public KeysColorsFunctionJQPlotConfigurer(Function<? super K, ? extends Color> keysColorFunction,
-				Function<? super K, ? extends Color> negativeSeriesColorFunction) {
+		public KeysColorsFunctionJQPlotConfigurer(SerializableFunction2<? super K, ? extends Color> keysColorFunction,
+				SerializableFunction2<? super K, ? extends Color> negativeSeriesColorFunction) {
 			super();
 			this.seriesColorFunction = keysColorFunction;
 			this.negativeSeriesColorFunction = negativeSeriesColorFunction;
@@ -77,23 +77,23 @@ public final class JQPlotConfigurers {
 		}
 	}
 	
-	public static <S> IJQPlotConfigurer<S, Object> seriesColors(Function<? super S, ? extends Color> seriesColorFunction) {
+	public static <S> IJQPlotConfigurer<S, Object> seriesColors(SerializableFunction2<? super S, ? extends Color> seriesColorFunction) {
 		return seriesColors(seriesColorFunction, seriesColorFunction);
 	}
 	
-	public static <S> IJQPlotConfigurer<S, Object> seriesColors(Function<? super S, ? extends Color> seriesColorFunction,
-			Function<? super S, ? extends Color> negativeSeriesColorFunction) {
+	public static <S> IJQPlotConfigurer<S, Object> seriesColors(SerializableFunction2<? super S, ? extends Color> seriesColorFunction,
+			SerializableFunction2<? super S, ? extends Color> negativeSeriesColorFunction) {
 		return new SeriesColorsFunctionJQPlotConfigurer<S>(seriesColorFunction, negativeSeriesColorFunction);
 	}
 	private static class SeriesColorsFunctionJQPlotConfigurer<S> extends AbstractJQPlotConfigurer<S, Object> {
 		private static final long serialVersionUID = -7455227724829756556L;
 		
-		private final Function<? super S, ? extends Color> seriesColorFunction;
+		private final SerializableFunction2<? super S, ? extends Color> seriesColorFunction;
 		
-		private final Function<? super S, ? extends Color> negativeSeriesColorFunction;
+		private final SerializableFunction2<? super S, ? extends Color> negativeSeriesColorFunction;
 		
-		public SeriesColorsFunctionJQPlotConfigurer(Function<? super S, ? extends Color> seriesColorFunction,
-				Function<? super S, ? extends Color> negativeSeriesColorFunction) {
+		public SeriesColorsFunctionJQPlotConfigurer(SerializableFunction2<? super S, ? extends Color> seriesColorFunction,
+				SerializableFunction2<? super S, ? extends Color> negativeSeriesColorFunction) {
 			super();
 			this.seriesColorFunction = seriesColorFunction;
 			this.negativeSeriesColorFunction = negativeSeriesColorFunction;

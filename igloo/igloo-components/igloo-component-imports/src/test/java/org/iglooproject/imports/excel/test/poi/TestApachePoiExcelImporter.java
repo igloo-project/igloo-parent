@@ -12,14 +12,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellReference;
-import org.javatuples.Quartet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-
 import org.iglooproject.imports.table.apache.poi.mapping.ApachePoiImportColumnSet;
 import org.iglooproject.imports.table.apache.poi.scanner.ApachePoiImportFileScanner;
 import org.iglooproject.imports.table.common.event.ITableImportEventHandler;
@@ -30,6 +22,12 @@ import org.iglooproject.imports.table.common.excel.scanner.IExcelImportFileScann
 import org.iglooproject.imports.table.common.excel.scanner.IExcelImportFileScanner.SheetSelection;
 import org.iglooproject.imports.table.common.location.ITableImportNavigator;
 import org.iglooproject.imports.table.common.mapping.column.builder.MappingConstraint;
+import org.javatuples.Quartet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 public class TestApachePoiExcelImporter {
 	
@@ -37,12 +35,7 @@ public class TestApachePoiExcelImporter {
 
 	private static class Columns extends ApachePoiImportColumnSet {
 		final Column<Date> dateColumn = withIndex(0).asDate().build();
-		final Column<Boolean> booleanColumn = withIndex(1).asString().toBoolean(new Function<String, Boolean>() {
-					@Override
-					public Boolean apply(String input) {
-						return "true".equals(input) ? true : false;
-					}
-				}).build();
+		final Column<Boolean> booleanColumn = withIndex(1).asString().toBoolean((input) -> "true".equals(input) ? true : false).build();
 		final Column<String> stringColumn = withHeader("StringColumn", 2, MappingConstraint.REQUIRED).asString().clean().build();
 		final Column<Integer> integerColumn = withHeader("IntegerColumn").asInteger().build();
 		final Column<Integer> missingColumn = withHeader("MissingColumn", MappingConstraint.OPTIONAL).asInteger().build();

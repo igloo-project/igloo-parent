@@ -5,12 +5,9 @@ import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
-import org.iglooproject.commons.util.functional.Suppliers2;
+import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
 import org.iglooproject.wicket.more.util.model.Models;
 
@@ -34,9 +31,9 @@ public final class CollectionCopyModel<T, C extends Collection<T>, M extends IMo
 
 	private static final long serialVersionUID = -1768835911782930879L;
 	
-	private final Supplier<? extends C> newCollectionSupplier;
+	private final SerializableSupplier2<? extends C> newCollectionSupplier;
 	
-	private final Function<? super T, ? extends M> itemModelFunction;
+	private final SerializableFunction2<? super T, ? extends M> itemModelFunction;
 	
 	/**
 	 * Creates a collection copy model suitable for elements that may be safely serialized as is, such as enums.
@@ -45,7 +42,7 @@ public final class CollectionCopyModel<T, C extends Collection<T>, M extends IMo
 	 * as {@link Suppliers2} provides a wide range of collection suppliers.
 	 */
 	public static <T extends Serializable, C extends Collection<T>, M extends IModel<T>> CollectionCopyModel<T, C, Model<T>>
-			serializable(Supplier<? extends C> newCollectionSupplier) {
+			serializable(SerializableSupplier2<? extends C> newCollectionSupplier) {
 		return new CollectionCopyModel<>(newCollectionSupplier, Models.<T>serializableModelFactory());
 	}
 
@@ -56,28 +53,24 @@ public final class CollectionCopyModel<T, C extends Collection<T>, M extends IMo
 	 * factory functions ({@link GenericEntityModel#factory()} or {@link Models#serializableModelFactory()}, most notably).
 	 */
 	public static <T, C extends Collection<T>, M extends IModel<T>> CollectionCopyModel<T, C, M>
-			custom(Supplier<? extends C> newCollectionSupplier, Function<? super T, ? extends M> itemModelFunction) {
+			custom(SerializableSupplier2<? extends C> newCollectionSupplier, SerializableFunction2<? super T, ? extends M> itemModelFunction) {
 		return new CollectionCopyModel<>(newCollectionSupplier, itemModelFunction);
 	}
 	
 	/**
-	 * @return A factory that will call {@link #custom(Supplier, Function) and put the input object in it.
+	 * @return A factory that will call {@link #custom(SerializableSupplier2, SerializableFunction2) and put the input object in it.
 	 */
-	public static <T, C extends Collection<T>, M extends IModel<T>> Function<C, CollectionCopyModel<T, C, M>>
-			factory(final Supplier<? extends C> newCollectionSupplier,
-					final Function<? super T, ? extends M> itemModelFunction) {
-		return new SerializableFunction<C, CollectionCopyModel<T, C, M>>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public CollectionCopyModel<T, C, M> apply(C input) {
-				CollectionCopyModel<T, C, M> result = custom(newCollectionSupplier, itemModelFunction);
-				result.setObject(input);
-				return result;
-			}
+	public static <T, C extends Collection<T>, M extends IModel<T>> SerializableFunction2<C, CollectionCopyModel<T, C, M>>
+			factory(final SerializableSupplier2<? extends C> newCollectionSupplier,
+					final SerializableFunction2<? super T, ? extends M> itemModelFunction) {
+		return (input) -> {
+			CollectionCopyModel<T, C, M> result = custom(newCollectionSupplier, itemModelFunction);
+			result.setObject(input);
+			return result;
 		};
 	}
 	
-	private CollectionCopyModel(Supplier<? extends C> newCollectionSupplier, Function<? super T, ? extends M> itemModelFunction) {
+	private CollectionCopyModel(SerializableSupplier2<? extends C> newCollectionSupplier, SerializableFunction2<? super T, ? extends M> itemModelFunction) {
 		super();
 		this.newCollectionSupplier = newCollectionSupplier;
 		this.itemModelFunction = itemModelFunction;

@@ -1,7 +1,5 @@
 package org.iglooproject.wicket.more.markup.html.bootstrap.popover.component;
 
-import static org.iglooproject.commons.util.functional.Predicates2.hasText;
-import static org.iglooproject.commons.util.functional.Predicates2.isTrue;
 import static org.iglooproject.wicket.more.condition.Condition.anyChildVisible;
 
 import org.apache.wicket.AttributeModifier;
@@ -9,6 +7,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.iglooproject.functional.Predicates2;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -56,11 +55,11 @@ public abstract class AbstractPopoverLinkPanel<T> extends GenericPanel<T> {
 				contentComponent,
 				link
 						.add(
-								new EnclosureContainer("icon").condition(Condition.predicate(iconCssClassModel, hasText()))
+								new EnclosureContainer("icon").condition(Condition.predicate(iconCssClassModel, Predicates2.hasText()))
 										.add(new AttributeModifier("class", iconCssClassModel)),
 								new CoreLabel("label", getModel())
 										.hideIfEmpty()
-										.add(Condition.predicate(showLabelModel, isTrue()).thenShow())
+										.add(Condition.predicate(showLabelModel, Predicates2.isTrue()).thenShow())
 						)
 						.add(
 								anyChildVisible(link).thenShowInternal(),

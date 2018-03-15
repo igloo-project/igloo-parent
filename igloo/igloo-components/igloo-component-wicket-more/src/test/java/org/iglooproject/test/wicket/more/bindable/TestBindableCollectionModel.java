@@ -8,14 +8,13 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Collection;
 
-import org.junit.Test;
-
-import com.google.common.collect.ImmutableList;
-
-import org.iglooproject.commons.util.functional.Suppliers2;
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.wicket.more.bindable.model.BindableModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableCollectionModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableModel;
+import org.junit.Test;
+
+import com.google.common.collect.ImmutableList;
 
 public class TestBindableCollectionModel extends AbstractTestBindableModel {
 	

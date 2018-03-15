@@ -2,6 +2,7 @@ package org.iglooproject.wicket.more.link.descriptor.builder.state.main;
 
 import java.util.Collection;
 
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.generic.IGenericTwoMappableParameterMainState;
@@ -9,8 +10,6 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chos
 import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Supplier;
 
 /**
  * A builder state with two mappable parameters from which one may:
@@ -89,6 +88,6 @@ public interface ITwoMappableParameterMainState
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
 			> model(Class<? super TParam3> clazz, TypeDescriptor elementTypeDescriptor,
-						Supplier<? extends TParam3> emptyCollectionSupplier);
+						SerializableSupplier2<? extends TParam3> emptyCollectionSupplier);
 
 }

@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNotEquals;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.iglooproject.commons.util.functional.Joiners;
+import org.iglooproject.functional.Joiners;
 import org.iglooproject.jpa.batch.runnable.ReadWriteBatchRunnable;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;

@@ -22,7 +22,6 @@ import org.iglooproject.basicapp.web.application.administration.form.UserGroupPo
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationTemplate;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
-import org.iglooproject.commons.util.functional.SerializablePredicate;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -130,13 +129,7 @@ public class AdministrationUserGroupListPage extends AdministrationTemplate {
 												}
 											}
 										})
-										.when(new SerializablePredicate<UserGroup>() {
-											private static final long serialVersionUID = 1L;
-											@Override
-											public boolean apply(UserGroup userGroup) {
-												return BasicApplicationSession.get().hasRoleAdmin() && !userGroup.isLocked();
-											}
-										})
+										.when((userGroup) -> BasicApplicationSession.get().hasRoleAdmin() && !userGroup.isLocked())
 										.withClassOnElements(CssClassConstants.BTN_XS)
 								.end()
 								.withClass("actions actions-1x")

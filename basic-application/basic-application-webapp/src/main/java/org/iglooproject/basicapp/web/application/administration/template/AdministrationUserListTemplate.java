@@ -27,8 +27,7 @@ import org.iglooproject.basicapp.web.application.administration.model.AbstractUs
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.renderer.UserActiveRenderer;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
-import org.iglooproject.commons.util.functional.Predicates2;
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.Predicates2;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.link.EmailLink;
@@ -150,13 +149,7 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 						.withClassOnElements(BTN_XS)
 						.end()
 						.withClass("actions actions-1x")
-				.addRowCssClass(new SerializableFunction<U, String>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public String apply(U user) {
-						return (user != null && !user.isActive()) ? ROW_DISABLED : null;
-					}
-				})
+				.addRowCssClass((user) -> (user != null && !user.isActive()) ? ROW_DISABLED : null)
 				.withNoRecordsResourceKey("administration.user.list.count.zero")
 				.decorate()
 						.ajaxPagers()

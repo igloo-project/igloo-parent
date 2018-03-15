@@ -4,15 +4,14 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.DynaBean;
-
-import com.google.common.base.Function;
+import org.iglooproject.functional.Function2;
 
 /**
  * <p>Convert from a {@link DynaBean} to a POJO</p>.
  * 
  * @author Laurent Almeras
  */
-public class DynaBeanConverter<T> implements Function<DynaBean, T> {
+public class DynaBeanConverter<T> implements Function2<DynaBean, T> {
 
 	private final Class<T> targetType;
 

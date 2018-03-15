@@ -4,9 +4,7 @@ import java.util.Collection;
 
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Function;
-
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
 import org.iglooproject.wicket.more.model.ReadOnlyCollectionModel;
 
@@ -25,7 +23,7 @@ public abstract class CollectionView<T> extends SequenceView<T> {
 	 */
 	@SuppressWarnings("unchecked")
 	public CollectionView(String id, IModel<? extends Collection<T>> collectionModel,
-			Function<? super T, ? extends IModel<T>> itemModelFactory) {
+			SerializableFunction2<? super T, ? extends IModel<T>> itemModelFactory) {
 		this(id, collectionModel instanceof ICollectionModel ?
 				(ICollectionModel<T, ?>) collectionModel : ReadOnlyCollectionModel.of(collectionModel, itemModelFactory));
 	}

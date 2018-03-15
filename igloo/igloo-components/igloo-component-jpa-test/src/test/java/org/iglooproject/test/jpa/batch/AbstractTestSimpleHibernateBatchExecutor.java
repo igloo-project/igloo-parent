@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import org.iglooproject.commons.util.functional.Joiners;
+import org.iglooproject.functional.Joiners;
 import org.iglooproject.jpa.batch.executor.SimpleHibernateBatchExecutor;
 import org.iglooproject.jpa.batch.runnable.ReadOnlyBatchRunnable;
 import org.iglooproject.jpa.batch.runnable.ReadWriteBatchRunnable;

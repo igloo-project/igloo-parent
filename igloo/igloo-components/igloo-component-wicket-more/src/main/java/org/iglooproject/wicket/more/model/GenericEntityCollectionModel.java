@@ -3,9 +3,8 @@ package org.iglooproject.wicket.more.model;
 import java.io.Serializable;
 import java.util.Collection;
 
-import com.google.common.base.Supplier;
-
-import org.iglooproject.commons.util.functional.Suppliers2;
+import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 public class GenericEntityCollectionModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
@@ -19,11 +18,11 @@ public class GenericEntityCollectionModel<K extends Serializable & Comparable<K>
 	}
 
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> GenericEntityCollectionModel<K, E> of(
-			Class<E> clazz, Supplier<? extends Collection<E>> collectionSupplier) {
+			Class<E> clazz, SerializableSupplier2<? extends Collection<E>> collectionSupplier) {
 		return new GenericEntityCollectionModel<K, E>(clazz, collectionSupplier);
 	}
 
-	protected GenericEntityCollectionModel(Class<E> clazz, Supplier<? extends Collection<E>> collectionSupplier) {
+	protected GenericEntityCollectionModel(Class<E> clazz, SerializableSupplier2<? extends Collection<E>> collectionSupplier) {
 		super(clazz, collectionSupplier);
 	}
 

@@ -1,20 +1,20 @@
 package org.iglooproject.jpa.more.business.difference.util;
 
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-
+import org.iglooproject.functional.Function2;
 import org.iglooproject.jpa.util.HibernateUtils;
 
+import com.google.common.collect.ImmutableList;
+
 public class FunctionProxyInitializer<T> implements IProxyInitializer<T> {
-	private final Iterable<? extends Function<? super T, ?>> functions;
+	private final Iterable<? extends Function2<? super T, ?>> functions;
 
 	@SafeVarargs
-	public FunctionProxyInitializer(Function<? super T, ?> ... functions) {
+	public FunctionProxyInitializer(Function2<? super T, ?> ... functions) {
 		super();
 		this.functions = ImmutableList.copyOf(functions);
 	}
 
-	public FunctionProxyInitializer(Iterable<? extends Function<? super T, ?>> functions) {
+	public FunctionProxyInitializer(Iterable<? extends Function2<? super T, ?>> functions) {
 		super();
 		this.functions = ImmutableList.copyOf(functions);
 	}
@@ -22,7 +22,7 @@ public class FunctionProxyInitializer<T> implements IProxyInitializer<T> {
 	@Override
 	public void initialize(T value) {
 		HibernateUtils.initialize(value);
-		for (Function<? super T, ?> function : functions) {
+		for (Function2<? super T, ?> function : functions) {
 			HibernateUtils.initialize(function.apply(value));
 		}
 	}

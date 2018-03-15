@@ -8,11 +8,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellReference;
-
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.Predicate2;
 import org.iglooproject.imports.table.common.event.ITableImportEventHandler;
 import org.iglooproject.imports.table.common.event.exception.TableImportHeaderLabelMappingException;
 import org.iglooproject.imports.table.common.location.ITableImportNavigator;
@@ -23,7 +20,7 @@ import org.iglooproject.imports.table.common.mapping.column.builder.MappingConst
 	
 	private final String expectedHeaderLabel;
 	
-	private final Predicate<? super String> predicate;
+	private final Predicate2<? super String> predicate;
 
 	private final int indexAmongMatchedColumns;
 	
@@ -32,7 +29,7 @@ import org.iglooproject.imports.table.common.mapping.column.builder.MappingConst
 	/**
 	 * @param indexAmongMatchedColumns The 0-based index of this column among the columns matching the given <code>predicate</code>.
 	 */
-	public HeaderLabelApachePoiImportColumnMapper(String expectedHeaderLabel, Predicate<? super String> predicate,
+	public HeaderLabelApachePoiImportColumnMapper(String expectedHeaderLabel, Predicate2<? super String> predicate,
 			int indexAmongMatchedColumns, MappingConstraint mappingConstraint) {
 		super();
 		Validate.notNull(predicate, "predicate must not be null");
@@ -44,7 +41,7 @@ import org.iglooproject.imports.table.common.mapping.column.builder.MappingConst
 	}
 	
 	@Override
-	public Function<? super Row, CellReference> tryMap(Sheet sheet, ITableImportNavigator<Sheet, Row, Cell, CellReference> navigator, ITableImportEventHandler eventHandler) throws TableImportHeaderLabelMappingException {
+	public Function2<? super Row, CellReference> tryMap(Sheet sheet, ITableImportNavigator<Sheet, Row, Cell, CellReference> navigator, ITableImportEventHandler eventHandler) throws TableImportHeaderLabelMappingException {
 		int matchedColumnsCount = 0;
 		Row headersRow = sheet.getRow(sheet.getFirstRowNum());
 		
@@ -54,16 +51,9 @@ import org.iglooproject.imports.table.common.mapping.column.builder.MappingConst
 			while (iterator.hasNext()) {
 				Cell cell = iterator.next();
 				String cellValue = StringUtils.trimToNull(cell.getStringCellValue());
-				if (predicate.apply(cellValue)) {
+				if (predicate.test(cellValue)) {
 					if (matchedColumnsCount == indexAmongMatchedColumns) {
-						final int index = cell.getColumnIndex();
-						return new SerializableFunction<Row, CellReference>() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public CellReference apply(Row row) {
-								return row == null ? null : new CellReference(row.getRowNum(), index);
-							}
-						};
+						return (row) -> row == null ? null : new CellReference(row.getRowNum(), cell.getColumnIndex());
 					} else {
 						++matchedColumnsCount;
 					}

@@ -7,7 +7,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.iglooproject.commons.util.functional.Predicates2;
+import org.iglooproject.functional.Predicates2;
 import org.iglooproject.wicket.bootstrap3.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.bootstrap3.console.template.ConsoleTemplate;
 import org.iglooproject.wicket.more.condition.Condition;

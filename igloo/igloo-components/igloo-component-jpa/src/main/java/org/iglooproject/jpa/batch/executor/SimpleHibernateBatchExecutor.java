@@ -22,7 +22,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
-import org.iglooproject.commons.util.functional.Joiners;
+import org.iglooproject.functional.Joiners;
 import org.iglooproject.jpa.batch.runnable.IBatchRunnable;
 import org.iglooproject.jpa.batch.runnable.Writeability;
 import org.iglooproject.jpa.batch.util.IBeforeClearListener;

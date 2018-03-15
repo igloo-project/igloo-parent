@@ -1,9 +1,9 @@
 package org.iglooproject.imports.table.common.mapping.column.builder.state;
 
-import com.google.common.base.Function;
+import org.iglooproject.functional.Function2;
 
 public interface ColumnFunctionBuildState<TTable, TRow, TCell, TCellReference, TCurrentType> {
 	
-	<TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function<? super TCurrentType, TValue> function);
+	<TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function2<? super TCurrentType, TValue> function);
 
 }

@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.util.visit.IVisitFilter;
+import org.iglooproject.functional.Predicates2;
+import org.iglooproject.functional.SerializablePredicate2;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
 public class VisitFilters {
@@ -16,13 +16,13 @@ public class VisitFilters {
 	private VisitFilters() {
 	}
 	
-	private static final class TypeSafePredicate<T> implements Predicate<Object>, Serializable {
+	private static final class TypeSafePredicate<T> implements SerializablePredicate2<Object> {
 		private static final long serialVersionUID = 1L;
 		
 		private final Class<T> clazz;
-		private final Predicate<? super T> delegate;
+		private final SerializablePredicate2<? super T> delegate;
 		
-		public TypeSafePredicate(Class<T> clazz, Predicate<? super T> delegate) {
+		public TypeSafePredicate(Class<T> clazz, SerializablePredicate2<? super T> delegate) {
 			super();
 			this.clazz = clazz;
 			this.delegate = delegate;
@@ -30,18 +30,18 @@ public class VisitFilters {
 		
 		@Override
 		@SuppressWarnings("unchecked")
-		public boolean apply(Object input) {
-			return clazz.isInstance(input) && delegate.apply((T)input);
+		public boolean test(Object input) {
+			return clazz.isInstance(input) && delegate.test((T)input);
 		}
 	}
 	
 	private static final class PredicateVisitFilter implements IVisitFilter, Serializable {
 		private static final long serialVersionUID = 1L;
 		
-		private final Predicate<Object> objectVisitPredicate;
-		private final Predicate<Object> compositeVisitPredicate;
+		private final SerializablePredicate2<Object> objectVisitPredicate;
+		private final SerializablePredicate2<Object> compositeVisitPredicate;
 		
-		public PredicateVisitFilter(Predicate<Object> objectVisitPredicate, Predicate<Object> compositeVisitPredicate) {
+		public PredicateVisitFilter(SerializablePredicate2<Object> objectVisitPredicate, SerializablePredicate2<Object> compositeVisitPredicate) {
 			super();
 			this.objectVisitPredicate = objectVisitPredicate;
 			this.compositeVisitPredicate = compositeVisitPredicate;
@@ -49,49 +49,49 @@ public class VisitFilters {
 
 		@Override
 		public final boolean visitObject(Object object) {
-			return objectVisitPredicate.apply(object);
+			return objectVisitPredicate.test(object);
 		}
 
 		@Override
 		public final boolean visitChildren(Object object) {
-			return compositeVisitPredicate.apply(object);
+			return compositeVisitPredicate.test(object);
 		}
 	}
 
-	public static <T> IVisitFilter downToExcluding(Class<T> clazz, Predicate<? super T> predicate) {
-		Predicate<Object> objectPredicate = Predicates.not(new TypeSafePredicate<>(clazz, predicate));
+	public static <T> IVisitFilter downToExcluding(Class<T> clazz, SerializablePredicate2<? super T> predicate) {
+		SerializablePredicate2<Object> objectPredicate = Predicates2.not(new TypeSafePredicate<>(clazz, predicate));
 		return new PredicateVisitFilter(objectPredicate, objectPredicate);
 	}
 	
-	public static <T> IVisitFilter including(Class<T> clazz, Predicate<? super T> predicate) {
-		Predicate<Object> objectPredicate = new TypeSafePredicate<>(clazz, predicate);
-		return new PredicateVisitFilter(objectPredicate, Predicates.alwaysTrue());
+	public static <T> IVisitFilter including(Class<T> clazz, SerializablePredicate2<? super T> predicate) {
+		SerializablePredicate2<Object> objectPredicate = new TypeSafePredicate<>(clazz, predicate);
+		return new PredicateVisitFilter(objectPredicate, Predicates2.alwaysTrue());
 	}
 	
-	public static <T> IVisitFilter excluding(Class<T> clazz, Predicate<? super T> predicate) {
-		Predicate<Object> objectPredicate = Predicates.not(new TypeSafePredicate<>(clazz, predicate));
-		return new PredicateVisitFilter(objectPredicate, Predicates.alwaysTrue());
+	public static <T> IVisitFilter excluding(Class<T> clazz, SerializablePredicate2<? super T> predicate) {
+		SerializablePredicate2<Object> objectPredicate = Predicates2.not(new TypeSafePredicate<>(clazz, predicate));
+		return new PredicateVisitFilter(objectPredicate, Predicates2.alwaysTrue());
 	}
 
-	public static <T> IVisitFilter downToIncluding(Class<T> clazz, Predicate<? super T> predicate) {
-		Predicate<Object> objectPredicate = Predicates.not(new TypeSafePredicate<>(clazz, predicate));
-		return new PredicateVisitFilter(Predicates.alwaysTrue(), objectPredicate);
+	public static <T> IVisitFilter downToIncluding(Class<T> clazz, SerializablePredicate2<? super T> predicate) {
+		SerializablePredicate2<Object> objectPredicate = Predicates2.not(new TypeSafePredicate<>(clazz, predicate));
+		return new PredicateVisitFilter(Predicates2.alwaysTrue(), objectPredicate);
 	}
 
 	public static IVisitFilter downToExcluding(Class<?> clazz) {
-		return downToExcluding(clazz, Predicates.alwaysTrue());
+		return downToExcluding(clazz, Predicates2.alwaysTrue());
 	}
 	
 	public static IVisitFilter including(Class<?> clazz) {
-		return including(clazz, Predicates.alwaysTrue());
+		return including(clazz, Predicates2.alwaysTrue());
 	}
 	
 	public static <T> IVisitFilter excluding(Class<?> clazz) {
-		return excluding(clazz, Predicates.alwaysTrue());
+		return excluding(clazz, Predicates2.alwaysTrue());
 	}
 
 	public static IVisitFilter downToIncluding(Class<?> clazz) {
-		return downToIncluding(clazz, Predicates.alwaysTrue());
+		return downToIncluding(clazz, Predicates2.alwaysTrue());
 	}
 	
 	public static IVisitFilter including(Class<?> first, Class<?> ... others) {
@@ -103,15 +103,15 @@ public class VisitFilters {
 	}
 
 	public static IVisitFilter downToExcluding(Object object) {
-		return downToExcluding(Object.class, Predicates.equalTo(object));
+		return downToExcluding(Object.class, Predicates2.equalTo(object));
 	}
 	
 	public static IVisitFilter excluding(Object object) {
-		return excluding(Object.class, Predicates.equalTo(object));
+		return excluding(Object.class, Predicates2.equalTo(object));
 	}
 
 	public static IVisitFilter downToIncluding(Object object) {
-		return downToIncluding(Object.class, Predicates.equalTo(object));
+		return downToIncluding(Object.class, Predicates2.equalTo(object));
 	}
 	
 	public static IVisitFilter every(IVisitFilter ... operands) {

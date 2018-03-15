@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.commons.util.functional.Joiners;
+import org.iglooproject.functional.Joiners;
 import org.iglooproject.infinispan.model.INode;
 import org.iglooproject.infinispan.service.IInfinispanClusterService;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.BootstrapColor;

@@ -4,24 +4,16 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Iterators;
-
 public class MutablePropertyValueMap implements IMutablePropertyValueMap {
 	
 	private Map<MutablePropertyId<?>, Object> delegate = new LinkedHashMap<>();
 
 	@Override
 	public Iterator<Entry<?>> iterator() {
-		return Iterators.transform(
-				delegate.entrySet().iterator(),
-				new Function<Map.Entry<MutablePropertyId<?>, Object>, IMutablePropertyValueMap.Entry<?>>() {
-					@Override
-					public Entry<?> apply(Map.Entry<MutablePropertyId<?>, Object> input) {
-						return new EntryImpl<>(input);
-					}
-				}
-		);
+		return delegate.entrySet()
+				.stream()
+				.<Entry<?>>map((input) -> new EntryImpl<>(input))
+				.iterator();
 	}
 
 	@SuppressWarnings("unchecked")

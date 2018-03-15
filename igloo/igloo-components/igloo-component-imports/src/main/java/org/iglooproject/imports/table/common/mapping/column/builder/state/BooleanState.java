@@ -1,8 +1,7 @@
 package org.iglooproject.imports.table.common.mapping.column.builder.state;
 
-import com.google.common.base.Function;
-
-import org.iglooproject.commons.util.functional.builder.function.generic.GenericBooleanFunctionBuildStateImpl;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.builder.function.generic.GenericBooleanFunctionBuildStateImpl;
 import org.iglooproject.imports.table.common.mapping.AbstractTableImportColumnSet;
 
 public abstract class BooleanState<TTable, TRow, TCell, TCellReference> extends GenericBooleanFunctionBuildStateImpl
@@ -20,7 +19,7 @@ public abstract class BooleanState<TTable, TRow, TCell, TCellReference> extends 
 		implements ColumnFunctionBuildState<TTable, TRow, TCell, TCellReference, Boolean> {
 	
 	@Override
-	public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function<? super Boolean, TValue> function) {
+	public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function2<? super Boolean, TValue> function) {
 		return getStateSwitcher().toGeneric(function);
 	}
 

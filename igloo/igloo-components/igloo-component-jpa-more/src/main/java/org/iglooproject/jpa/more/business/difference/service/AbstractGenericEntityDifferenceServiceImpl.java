@@ -13,9 +13,31 @@ import javax.annotation.PostConstruct;
 
 import org.bindgen.BindingRoot;
 import org.hibernate.proxy.HibernateProxy;
+import org.iglooproject.commons.util.binding.ICoreBinding;
+import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
+import org.iglooproject.commons.util.fieldpath.FieldPath;
+import org.iglooproject.commons.util.fieldpath.FieldPathComponent;
+import org.iglooproject.functional.Supplier2;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
+import org.iglooproject.jpa.business.generic.service.IEntityService;
+import org.iglooproject.jpa.business.generic.service.ITransactionScopeIndependantRunnerService;
+import org.iglooproject.jpa.more.business.difference.differ.ExtendedCollectionDiffer;
+import org.iglooproject.jpa.more.business.difference.differ.MultimapDiffer;
+import org.iglooproject.jpa.more.business.difference.factory.DefaultHistoryDifferenceFactory;
+import org.iglooproject.jpa.more.business.difference.factory.IHistoryDifferenceFactory;
+import org.iglooproject.jpa.more.business.difference.inclusion.NonInheritingNodePathInclusionResolver;
+import org.iglooproject.jpa.more.business.difference.model.Difference;
+import org.iglooproject.jpa.more.business.difference.util.CompositeProxyInitializer;
+import org.iglooproject.jpa.more.business.difference.util.DiffUtils;
+import org.iglooproject.jpa.more.business.difference.util.IDifferenceFromReferenceGenerator;
+import org.iglooproject.jpa.more.business.difference.util.IProxyInitializer;
+import org.iglooproject.jpa.more.business.difference.util.TypeSafeBindingProxyInitializer;
+import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
+import org.iglooproject.jpa.more.rendering.service.IRendererService;
+import org.iglooproject.jpa.util.HibernateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
@@ -38,28 +60,6 @@ import de.danielbechler.diff.node.DiffNode;
 import de.danielbechler.diff.node.DiffNode.Visitor;
 import de.danielbechler.diff.node.Visit;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.iglooproject.commons.util.binding.ICoreBinding;
-import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
-import org.iglooproject.commons.util.fieldpath.FieldPath;
-import org.iglooproject.commons.util.fieldpath.FieldPathComponent;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
-import org.iglooproject.jpa.business.generic.service.IEntityService;
-import org.iglooproject.jpa.business.generic.service.ITransactionScopeIndependantRunnerService;
-import org.iglooproject.jpa.more.business.difference.differ.ExtendedCollectionDiffer;
-import org.iglooproject.jpa.more.business.difference.differ.MultimapDiffer;
-import org.iglooproject.jpa.more.business.difference.factory.DefaultHistoryDifferenceFactory;
-import org.iglooproject.jpa.more.business.difference.factory.IHistoryDifferenceFactory;
-import org.iglooproject.jpa.more.business.difference.inclusion.NonInheritingNodePathInclusionResolver;
-import org.iglooproject.jpa.more.business.difference.model.Difference;
-import org.iglooproject.jpa.more.business.difference.util.CompositeProxyInitializer;
-import org.iglooproject.jpa.more.business.difference.util.DiffUtils;
-import org.iglooproject.jpa.more.business.difference.util.IDifferenceFromReferenceGenerator;
-import org.iglooproject.jpa.more.business.difference.util.IProxyInitializer;
-import org.iglooproject.jpa.more.business.difference.util.TypeSafeBindingProxyInitializer;
-import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
-import org.iglooproject.jpa.more.rendering.service.IRendererService;
-import org.iglooproject.jpa.util.HibernateUtils;
 
 @SuppressFBWarnings("squid:S1226")
 public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends GenericEntity<?, ?>> implements IDifferenceService<T> {
@@ -232,7 +232,7 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 	
 	@Override
 	public <HD extends AbstractHistoryDifference<HD, ?>> List<HD> toHistoryDifferences(
-			final Supplier<HD> historyDifferenceSupplier, final Difference<T> rootDifference) {
+			final Supplier2<HD> historyDifferenceSupplier, final Difference<T> rootDifference) {
 		final Multimap<IHistoryDifferenceFactory<T>, DiffNode> factoriesToNodes = LinkedHashMultimap.create();
 		
 		// Lists the leaf nodes and attributes the nodes to specific factories if needed.

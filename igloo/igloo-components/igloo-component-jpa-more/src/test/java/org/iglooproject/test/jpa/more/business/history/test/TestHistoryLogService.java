@@ -16,6 +16,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
+import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.business.generic.service.IEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -56,7 +57,6 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 
 public class TestHistoryLogService extends AbstractJpaMoreTestCase {
@@ -207,7 +207,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 		entityService.clear();
 		
 		Mockito.when(historyDifferenceGeneratorMock.toHistoryDifferences(
-						ArgumentMatchers.<Supplier<TestHistoryDifference>>any(), ArgumentMatchers.<Difference<TestEntity>>any()
+						ArgumentMatchers.<Supplier2<TestHistoryDifference>>any(), ArgumentMatchers.<Difference<TestEntity>>any()
 				))
 				.then(new Answer<List<TestHistoryDifference>>() {
 					@Override
@@ -277,7 +277,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 		entityService.clear();
 		
 		Mockito.when(historyDifferenceGeneratorMock.toHistoryDifferences(
-					ArgumentMatchers.<Supplier<TestHistoryDifference>>any(), ArgumentMatchers.<Difference<TestEntity>>any()
+					ArgumentMatchers.<Supplier2<TestHistoryDifference>>any(), ArgumentMatchers.<Difference<TestEntity>>any()
 				))
 				.then(new Answer<List<TestHistoryDifference>>() {
 					@Override

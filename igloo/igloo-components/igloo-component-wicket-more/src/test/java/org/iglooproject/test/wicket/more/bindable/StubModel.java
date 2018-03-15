@@ -1,19 +1,18 @@
 package org.iglooproject.test.wicket.more.bindable;
 
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Function;
+import org.iglooproject.functional.SerializableFunction2;
 
 class StubModel<T> implements IModel<T> {
 	private static final long serialVersionUID = 1L;
 
 	@SuppressWarnings("unchecked")
-	public static <T> Function<T, StubModel<T>> factory() {
-		return (Function<T, StubModel<T>>) (Object) Factory.INSTANCE;
+	public static <T> SerializableFunction2<T, StubModel<T>> factory() {
+		return (SerializableFunction2<T, StubModel<T>>) (Object) Factory.INSTANCE;
 	}
 	
 	@SuppressWarnings({"rawtypes", "unchecked"}) // SerializableModelFactory works for any T extending Serializable
-	private enum Factory implements Function<Object, StubModel> {
+	private enum Factory implements SerializableFunction2<Object, StubModel> {
 		INSTANCE;
 		
 		@Override

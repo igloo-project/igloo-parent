@@ -6,47 +6,35 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import javax.annotation.Nonnull;
-
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.Functions2;
+import org.iglooproject.functional.SerializableFunction2;
 
 public final class CoreRenderers {
 
-	private static Function<Locale, DecimalFormat> percentDecimalFormatFunction(final String pattern, final RoundingMode roundingMode) {
-		return new SerializableFunction<Locale, DecimalFormat>() {
-				private static final long serialVersionUID = 1L;
-				@Override
-				public DecimalFormat apply(@Nonnull Locale input) {
-					DecimalFormat df = new DecimalFormat(pattern, new DecimalFormatSymbols(input));
-					df.setRoundingMode(roundingMode);
-					df.setMultiplier(100);
-					return df;
-				}
+	private static SerializableFunction2<Locale, DecimalFormat> percentDecimalFormatFunction(final String pattern, final RoundingMode roundingMode) {
+		return (input) -> {
+			DecimalFormat df = new DecimalFormat(pattern, new DecimalFormatSymbols(input));
+			df.setRoundingMode(roundingMode);
+			df.setMultiplier(100);
+			return df;
 		};
 	}
 
-	private static final Function<Locale, DecimalFormat> PERCENT_FORMAT_FUNCTION = percentDecimalFormatFunction("#0.00\u00A0'%'", RoundingMode.HALF_UP);
+	private static final SerializableFunction2<Locale, DecimalFormat> PERCENT_FORMAT_FUNCTION = percentDecimalFormatFunction("#0.00\u00A0'%'", RoundingMode.HALF_UP);
 
-	private static final Function<Locale, DecimalFormat> PERCENT_NO_SIGN_FORMAT_FUNCTION = percentDecimalFormatFunction("#0.00\u00A0", RoundingMode.HALF_UP);
+	private static final SerializableFunction2<Locale, DecimalFormat> PERCENT_NO_SIGN_FORMAT_FUNCTION = percentDecimalFormatFunction("#0.00\u00A0", RoundingMode.HALF_UP);
 
 	private static final Renderer<BigDecimal> PERCENT = Renderer.<BigDecimal>fromNumberFormat(PERCENT_FORMAT_FUNCTION);
 
 	private static final Renderer<BigDecimal> PERCENT_NO_SIGN = Renderer.<BigDecimal>fromNumberFormat(PERCENT_NO_SIGN_FORMAT_FUNCTION);
 
-	private static final Function<DecimalFormat, DecimalFormat> TO_RELATIVE_FORMAT_FUNCTION = new SerializableFunction<DecimalFormat, DecimalFormat>() {
-		private static final long serialVersionUID = 1L;
-		@Override
-		public DecimalFormat apply(@Nonnull DecimalFormat input) {
-			input.setPositivePrefix("+");
-			input.setNegativePrefix("-");
-			return input;
-		}
+	private static final SerializableFunction2<DecimalFormat, DecimalFormat> TO_RELATIVE_FORMAT_FUNCTION = (input) -> {
+		input.setPositivePrefix("+");
+		input.setNegativePrefix("-");
+		return input;
 	};
 
-	private static final Renderer<BigDecimal> PERCENT_RELATIVE = Renderer.<BigDecimal>fromNumberFormat(Functions.compose(TO_RELATIVE_FORMAT_FUNCTION, PERCENT_FORMAT_FUNCTION));
+	private static final Renderer<BigDecimal> PERCENT_RELATIVE = Renderer.<BigDecimal>fromNumberFormat(Functions2.compose(TO_RELATIVE_FORMAT_FUNCTION, PERCENT_FORMAT_FUNCTION));
 
 	private CoreRenderers() {
 	}

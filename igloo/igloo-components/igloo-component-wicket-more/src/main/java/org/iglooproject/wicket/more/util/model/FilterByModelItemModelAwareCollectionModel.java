@@ -2,16 +2,16 @@ package org.iglooproject.wicket.more.util.model;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
-import com.google.common.collect.Iterables;
-
+import org.iglooproject.functional.SerializablePredicate2;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
+
+import com.google.common.collect.Streams;
 
 class FilterByModelItemModelAwareCollectionModel<T, C extends Collection<T>, M extends IModel<T>>
 		implements IItemModelAwareCollectionModel<T, C, M> {
@@ -20,14 +20,15 @@ class FilterByModelItemModelAwareCollectionModel<T, C extends Collection<T>, M e
 
 	private final IItemModelAwareCollectionModel<T, ? extends Collection<T>, M> unfiltered;
 	
-	private final Predicate<M> modelPredicate;
+	private final SerializablePredicate2<M> modelPredicate;
 	
-	private final Supplier<? extends C> collectionSupplier;
+	private final SerializableSupplier2<? extends C> collectionSupplier;
 	
 	public FilterByModelItemModelAwareCollectionModel(
-			IItemModelAwareCollectionModel<T, ? extends Collection<T>, M> delegate, Predicate<M> modelPredicate,
-			Supplier<? extends C> collectionSupplier
-			) {
+			IItemModelAwareCollectionModel<T, ? extends Collection<T>, M> delegate,
+			SerializablePredicate2<M> modelPredicate,
+			SerializableSupplier2<? extends C> collectionSupplier
+	) {
 		super();
 		this.unfiltered = delegate;
 		this.modelPredicate = modelPredicate;
@@ -94,7 +95,8 @@ class FilterByModelItemModelAwareCollectionModel<T, C extends Collection<T>, M e
 	}
 
 	private Iterable<M> getFilteredIterable() {
-		return Iterables.filter(unfiltered, modelPredicate);
+		Objects.requireNonNull(unfiltered);
+		return Streams.stream(unfiltered).filter(modelPredicate)::iterator;
 	}
 
 	@Override

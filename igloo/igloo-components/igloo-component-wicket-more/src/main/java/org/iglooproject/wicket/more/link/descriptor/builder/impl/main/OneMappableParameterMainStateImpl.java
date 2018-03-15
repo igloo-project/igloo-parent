@@ -7,6 +7,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.mapper.CoreOneParameterLinkDescriptorMapperImpl;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
@@ -17,8 +18,6 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.IOneParameterLinkDesc
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.javatuples.Tuple;
 import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Supplier;
 
 final class OneMappableParameterMainStateImpl
 		<
@@ -117,7 +116,7 @@ final class OneMappableParameterMainStateImpl
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
 			> model(Class<? super TParam2> clazz, TypeDescriptor elementTypeDescriptor,
-						Supplier<? extends TParam2> emptyCollectionSupplier) {
+						SerializableSupplier2<? extends TParam2> emptyCollectionSupplier) {
 		return new TwoMappableParameterMainStateImpl<>(
 				this, LinkParameterTypeInformation.collection(clazz, elementTypeDescriptor, emptyCollectionSupplier)
 		);

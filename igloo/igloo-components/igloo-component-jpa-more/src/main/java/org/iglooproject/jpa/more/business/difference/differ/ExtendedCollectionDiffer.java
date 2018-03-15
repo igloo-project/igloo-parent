@@ -2,18 +2,19 @@ package org.iglooproject.jpa.more.business.difference.differ;
 
 import java.util.Collection;
 
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.Functions2;
+import org.iglooproject.functional.Predicate2;
+import org.iglooproject.jpa.more.business.difference.differ.strategy.CollectionDifferIndexStrategy;
+import org.iglooproject.jpa.more.business.difference.differ.strategy.CollectionDifferKeyStrategy;
+import org.iglooproject.jpa.more.business.difference.differ.strategy.ItemContentComparisonStrategy;
+
 import com.google.common.base.Equivalence;
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
-import com.google.common.base.Predicate;
 
 import de.danielbechler.diff.comparison.ComparisonStrategyResolver;
 import de.danielbechler.diff.differ.DifferDispatcher;
 import de.danielbechler.diff.filtering.IsReturnableResolver;
 import de.danielbechler.diff.node.DiffNode;
-import org.iglooproject.jpa.more.business.difference.differ.strategy.CollectionDifferIndexStrategy;
-import org.iglooproject.jpa.more.business.difference.differ.strategy.CollectionDifferKeyStrategy;
-import org.iglooproject.jpa.more.business.difference.differ.strategy.ItemContentComparisonStrategy;
 
 /**
  * An enhanced collection differ that supports fine-tuned settings.
@@ -34,51 +35,51 @@ public class ExtendedCollectionDiffer extends AbstractContainerDiffer {
 				differDispatcher, comparisonStrategyResolver, isReturnableResolver,
 				new CollectionDifferKeyStrategy<>(
 						ItemContentComparisonStrategy.deep(),
-						Functions.identity(), Equivalence.equals(), Functions.toStringFunction()
+						Functions2.identity(), Equivalence.equals(), Functions2.toStringFunction()
 				)
 		);
 	}
 	
 	public <T> ExtendedCollectionDiffer addIndexStrategy(
-			Predicate<? super DiffNode> predicate) {
+			Predicate2<? super DiffNode> predicate) {
 		addIndexStrategy(predicate, ItemContentComparisonStrategy.deep());
 		return this;
 	}
 	
 	public <T> ExtendedCollectionDiffer addIndexStrategy(
-			Predicate<? super DiffNode> predicate, ItemContentComparisonStrategy itemContentComparisonStrategy) {
+			Predicate2<? super DiffNode> predicate, ItemContentComparisonStrategy itemContentComparisonStrategy) {
 		addStrategy(predicate, new CollectionDifferIndexStrategy<>(itemContentComparisonStrategy));
 		return this;
 	}
 	
 	public <T> ExtendedCollectionDiffer addStrategy(
-			Predicate<? super DiffNode> predicate, Equivalence<? super T> equivalence) {
-		return addKeyStrategy(predicate, Functions.<T>identity(), equivalence);
+			Predicate2<? super DiffNode> predicate, Equivalence<? super T> equivalence) {
+		return addKeyStrategy(predicate, Functions2.<T>identity(), equivalence);
 	}
 	
 	public <T> ExtendedCollectionDiffer addStrategy(
-			Predicate<? super DiffNode> predicate, Equivalence<? super T> equivalence, ItemContentComparisonStrategy itemContentComparisonStrategy) {
-		return addKeyStrategy(predicate, Functions.<T>identity(), equivalence, itemContentComparisonStrategy);
+			Predicate2<? super DiffNode> predicate, Equivalence<? super T> equivalence, ItemContentComparisonStrategy itemContentComparisonStrategy) {
+		return addKeyStrategy(predicate, Functions2.<T>identity(), equivalence, itemContentComparisonStrategy);
 	}
 	
 	public <T, K> ExtendedCollectionDiffer addKeyStrategy(
-			Predicate<? super DiffNode> predicate, 
-			Function<? super T, ? extends K> keyFunction, Equivalence<? super K> keyEquivalence) {
+			Predicate2<? super DiffNode> predicate, 
+			Function2<? super T, ? extends K> keyFunction, Equivalence<? super K> keyEquivalence) {
 		return addKeyStrategy(predicate, keyFunction, keyEquivalence, ItemContentComparisonStrategy.deep());
 	}
 	
 	public <T, K> ExtendedCollectionDiffer addKeyStrategy(
-			Predicate<? super DiffNode> predicate, 
-			Function<? super T, ? extends K> keyFunction, Equivalence<? super K> keyEquivalence,
+			Predicate2<? super DiffNode> predicate, 
+			Function2<? super T, ? extends K> keyFunction, Equivalence<? super K> keyEquivalence,
 			ItemContentComparisonStrategy itemContentComparisonStrategy) {
-		return addKeyStrategy(predicate, keyFunction, keyEquivalence, itemContentComparisonStrategy, Functions.toStringFunction());
+		return addKeyStrategy(predicate, keyFunction, keyEquivalence, itemContentComparisonStrategy, Functions2.toStringFunction());
 	}
 	
 	public <T, K> ExtendedCollectionDiffer addKeyStrategy(
-			Predicate<? super DiffNode> predicate, 
-			Function<? super T, ? extends K> keyFunction, Equivalence<? super K> keyEquivalence,
+			Predicate2<? super DiffNode> predicate, 
+			Function2<? super T, ? extends K> keyFunction, Equivalence<? super K> keyEquivalence,
 			ItemContentComparisonStrategy itemContentComparisonStrategy,
-			Function<? super K, String> toStringFunction) {
+			Function2<? super K, String> toStringFunction) {
 		addStrategy(predicate, new CollectionDifferKeyStrategy<>(itemContentComparisonStrategy, keyFunction, keyEquivalence, toStringFunction));
 		return this;
 	}

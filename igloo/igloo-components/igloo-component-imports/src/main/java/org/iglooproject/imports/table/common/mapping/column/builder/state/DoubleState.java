@@ -1,8 +1,7 @@
 package org.iglooproject.imports.table.common.mapping.column.builder.state;
 
-import com.google.common.base.Function;
-
-import org.iglooproject.commons.util.functional.builder.function.generic.GenericDoubleFunctionBuildStateImpl;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.builder.function.generic.GenericDoubleFunctionBuildStateImpl;
 import org.iglooproject.imports.table.common.mapping.AbstractTableImportColumnSet;
 
 public abstract class DoubleState<TTable, TRow, TCell, TCellReference> extends GenericDoubleFunctionBuildStateImpl
@@ -20,7 +19,7 @@ public abstract class DoubleState<TTable, TRow, TCell, TCellReference> extends G
 		implements ColumnFunctionBuildState<TTable, TRow, TCell, TCellReference, Double> {
 		
 	@Override
-	public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function<? super Double, TValue> function) {
+	public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function2<? super Double, TValue> function) {
 		return getStateSwitcher().toGeneric(function);
 	}
 

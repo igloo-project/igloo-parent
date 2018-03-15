@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.markup.html.form.ListMultipleChoice;
 import org.iglooproject.wicket.markup.html.model.ConcreteCollectionToCollectionWrapperModel;
 import org.iglooproject.wicket.more.markup.html.model.MultipleChoicesWrapperModel;
@@ -13,8 +14,6 @@ import org.iglooproject.wicket.more.markup.html.select2.util.Select2Utils;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.wicketstuff.select2.Select2Behavior;
 import org.wicketstuff.select2.Settings;
-
-import com.google.common.base.Supplier;
 
 public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultipleChoice<T> {
 
@@ -32,7 +31,7 @@ public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultip
 	 * @param renderer The choice renderer.
 	 */
 	protected <C extends Collection<T>> GenericSelect2DropDownMultipleChoice(
-			String id, IModel<C> collectionModel, Supplier<? extends C> collectionSupplier,
+			String id, IModel<C> collectionModel, SerializableSupplier2<? extends C> collectionSupplier,
 			IModel<? extends Collection<? extends T>> choicesModel, IChoiceRenderer<? super T> renderer) {
 		super(id);
 		

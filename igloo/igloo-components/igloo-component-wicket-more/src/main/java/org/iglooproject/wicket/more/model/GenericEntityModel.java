@@ -27,16 +27,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Function;
-
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.business.generic.service.IEntityService;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.wicket.more.util.model.LoadableDetachableModelExtendedDebugInformation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GenericEntityModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 		extends LoadableDetachableModel<E> {
@@ -55,13 +53,12 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	}
 
 	@SuppressWarnings("unchecked") // SerializableModelFactory works for any T extending GenericEntity<?, ?>
-	public static <E extends GenericEntity<?, ?>>
-			Function<E, GenericEntityModel<?, E>> factory() {
-		return (Function<E, GenericEntityModel<?, E>>) (Object) Factory.INSTANCE;
+	public static <E extends GenericEntity<?, ?>> SerializableFunction2<E, GenericEntityModel<?, E>> factory() {
+		return (SerializableFunction2<E, GenericEntityModel<?, E>>) (Object) Factory.INSTANCE;
 	}
 	
 	@SuppressWarnings({"rawtypes", "unchecked"}) // SerializableModelFactory works for any T extending Serializable
-	private enum Factory implements Function<GenericEntity, GenericEntityModel> {
+	private enum Factory implements SerializableFunction2<GenericEntity, GenericEntityModel> {
 		INSTANCE;
 		
 		@Override

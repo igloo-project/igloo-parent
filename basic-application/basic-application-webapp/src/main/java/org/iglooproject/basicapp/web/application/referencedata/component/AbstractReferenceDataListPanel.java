@@ -14,7 +14,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds;
 import org.iglooproject.basicapp.web.application.referencedata.form.AbstractGenericReferenceDataPopup;
-import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.security.model.CorePermissionConstants;
@@ -64,13 +63,7 @@ public abstract class AbstractReferenceDataListPanel<
 									addActionColumn(
 											addColumns(builder)
 									)
-											.addRowCssClass(new SerializableFunction<T, String>() {
-												private static final long serialVersionUID = 1L;
-												@Override
-												public String apply(T referenceData) {
-													return (referenceData != null && !referenceData.isEnabled()) ? ROW_DISABLED : null;
-												}
-											})
+											.addRowCssClass((referenceData) -> (referenceData != null && !referenceData.isEnabled()) ? ROW_DISABLED : null)
 											.bootstrapCard()
 											.count("referenceData.count")
 											.ajaxPagers()

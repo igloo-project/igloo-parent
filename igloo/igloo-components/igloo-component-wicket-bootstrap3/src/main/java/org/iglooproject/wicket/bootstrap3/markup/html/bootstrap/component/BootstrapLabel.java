@@ -3,7 +3,7 @@ package org.iglooproject.wicket.bootstrap3.markup.html.bootstrap.component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.commons.util.functional.Predicates2;
+import org.iglooproject.functional.Predicates2;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;

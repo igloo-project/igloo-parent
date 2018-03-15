@@ -5,8 +5,8 @@ import java.util.Locale;
 import org.iglooproject.commons.util.context.ExecutionContexts;
 import org.iglooproject.commons.util.context.IExecutionContext;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
-import org.iglooproject.commons.util.functional.Joiners;
 import org.iglooproject.commons.util.rendering.IRenderer;
+import org.iglooproject.functional.Joiners;
 
 /**
  * Mock implementation, only used to fill the dependency.

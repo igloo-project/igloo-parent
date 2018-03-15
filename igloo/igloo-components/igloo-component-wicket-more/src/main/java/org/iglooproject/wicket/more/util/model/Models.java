@@ -15,13 +15,13 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.commons.util.collections.Iterators2;
+import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.functional.SerializablePredicate2;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
 import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
@@ -34,12 +34,12 @@ public final class Models {
 	}
 
 	@SuppressWarnings("unchecked") // SerializableModelFactory works for any T extending Serializable
-	public static <T extends Serializable> Function<T, Model<T>> serializableModelFactory() {
-		return (Function<T, Model<T>>) (Object) SerializableModelFactory.INSTANCE;
+	public static <T extends Serializable> SerializableFunction2<T, Model<T>> serializableModelFactory() {
+		return (SerializableFunction2<T, Model<T>>) (Object) SerializableModelFactory.INSTANCE;
 	}
 	
 	@SuppressWarnings({"rawtypes", "unchecked"}) // SerializableModelFactory works for any T extending Serializable
-	private enum SerializableModelFactory implements Function<Serializable, Model> {
+	private enum SerializableModelFactory implements SerializableFunction2<Serializable, Model> {
 		INSTANCE;
 		
 		@Override
@@ -49,12 +49,12 @@ public final class Models {
 	}
 
 	@SuppressWarnings("unchecked") // ModelGetObjectFunction works for any T
-	public static <T> Function<? super IModel<? extends T>, T> getObject() {
-		return (Function<? super IModel<? extends T>, T>) ModelGetObjectFunction.INSTANCE;
+	public static <T> SerializableFunction2<? super IModel<? extends T>, T> getObject() {
+		return (SerializableFunction2<? super IModel<? extends T>, T>) ModelGetObjectFunction.INSTANCE;
 	}
 	
 	@SuppressWarnings("rawtypes") // ModelGetObjectFunction works for any T
-	private enum ModelGetObjectFunction implements Function<IModel, Object> {
+	private enum ModelGetObjectFunction implements SerializableFunction2<IModel, Object> {
 		INSTANCE;
 		
 		@Override
@@ -181,8 +181,9 @@ public final class Models {
 	
 	public static <T, C extends Collection<T>, M extends IModel<T>>
 			IItemModelAwareCollectionModel<T, C, M> filterByModel(
-			IItemModelAwareCollectionModel<T, ? extends Collection<T>, M> unfiltered, Predicate<M> modelPredicate,
-			Supplier<? extends C> collectionSupplier) {
+			IItemModelAwareCollectionModel<T, ? extends Collection<T>, M> unfiltered,
+			SerializablePredicate2<M> modelPredicate,
+			SerializableSupplier2<? extends C> collectionSupplier) {
 		return new FilterByModelItemModelAwareCollectionModel<T, C, M>(
 				unfiltered, modelPredicate, collectionSupplier
 		);

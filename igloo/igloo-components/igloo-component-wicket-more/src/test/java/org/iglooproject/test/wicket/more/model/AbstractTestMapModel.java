@@ -5,9 +5,9 @@ import java.util.Map;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.iglooproject.functional.SerializableSupplier2;
 
 import com.google.common.base.Equivalence;
-import com.google.common.base.Supplier;
 
 public abstract class AbstractTestMapModel<M extends Map<?, ?>>
 		extends AbstractTestModel<M> {
@@ -29,9 +29,9 @@ public abstract class AbstractTestMapModel<M extends Map<?, ?>>
 			}
 		};
 
-	protected final Supplier<? extends M> mapSupplier;
+	protected final SerializableSupplier2<? extends M> mapSupplier;
 
-	public AbstractTestMapModel(Supplier<? extends M> mapSupplier, Equivalence<? super M> equivalence) {
+	public AbstractTestMapModel(SerializableSupplier2<? extends M> mapSupplier, Equivalence<? super M> equivalence) {
 		super(equivalence);
 		this.mapSupplier = mapSupplier;
 	}

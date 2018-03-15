@@ -13,6 +13,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.iglooproject.functional.Function2;
+import org.iglooproject.test.infinispan.util.listener.MonitorNotifyListener;
+import org.iglooproject.test.infinispan.util.process.SimpleProcess;
+import org.iglooproject.test.infinispan.util.tasks.AbstractTask;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.notifications.cachemanagerlistener.annotation.ViewChanged;
 import org.infinispan.notifications.cachemanagerlistener.event.ViewChangedEvent;
@@ -21,14 +25,9 @@ import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
-
-import org.iglooproject.test.infinispan.util.listener.MonitorNotifyListener;
-import org.iglooproject.test.infinispan.util.process.SimpleProcess;
-import org.iglooproject.test.infinispan.util.tasks.AbstractTask;
 
 public abstract class TestBase {
 
@@ -57,19 +56,14 @@ public abstract class TestBase {
 	}
 
 	protected final Process runInfinispan(String nodeName, String... customArguments) throws IOException {
-		Function<URL, String> urlToFile = new Function<URL, String>() {
-			@Override
-			public String apply(URL input) {
-				return input.getFile();
-			}
-		};
+		Function2<URL, String> urlToFile = (input) -> input.getFile();
 		String classpath = Joiner.on(File.pathSeparator)
-				.join(Lists.transform(
-						// url collection
-						Lists.newArrayList(((URLClassLoader) Thread.currentThread().getContextClassLoader()).getURLs()),
-						// to files
-						urlToFile) // to string with pathSeparator
-		);
+				.join(
+						Lists.newArrayList(((URLClassLoader) Thread.currentThread().getContextClassLoader()).getURLs())
+								.stream()
+								.map(urlToFile)
+								.iterator()
+				);
 		List<String> arguments = Lists.newArrayList();
 		arguments.add(System.getProperty("java.home") + "/bin/java");
 		arguments.add("-classpath");

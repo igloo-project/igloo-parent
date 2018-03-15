@@ -4,18 +4,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterators;
-
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 import org.iglooproject.wicket.more.util.model.Models;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Streams;
 
 public class ReadOnlyCollectionModel<T, C extends Collection<T>>
 		implements IItemModelAwareCollectionModel<T, C, IModel<T>>, IComponentAssignedModel<C> {
@@ -24,14 +24,14 @@ public class ReadOnlyCollectionModel<T, C extends Collection<T>>
 	
 	private final IModel<? extends C> readModel;
 	
-	private final Function<? super T, ? extends IModel<T>> itemModelFactory;
+	private final SerializableFunction2<? super T, ? extends IModel<T>> itemModelFactory;
 	
 	public static <T, C extends Collection<T>> ReadOnlyCollectionModel<T, C> of(
-			IModel<? extends C> model, Function<? super T, ? extends IModel<T>> keyFactory) {
+			IModel<? extends C> model, SerializableFunction2<? super T, ? extends IModel<T>> keyFactory) {
 		return new ReadOnlyCollectionModel<T, C>(model, keyFactory);
 	}
 
-	protected ReadOnlyCollectionModel(IModel<? extends C> readModel, Function<? super T, ? extends IModel<T>> keyFactory) {
+	protected ReadOnlyCollectionModel(IModel<? extends C> readModel, SerializableFunction2<? super T, ? extends IModel<T>> keyFactory) {
 		super();
 		this.readModel = checkNotNull(readModel);
 		this.itemModelFactory = checkNotNull(keyFactory);
@@ -67,19 +67,19 @@ public class ReadOnlyCollectionModel<T, C extends Collection<T>>
 	
 	@Override
 	public Iterator<IModel<T>> iterator() {
-		return Iterators.transform(
-				Models.collectionModelIterator(internalCollection()),
-				itemModelFactory
-		);
+		return Streams.stream(Models.collectionModelIterator(internalCollection()))
+				.map(itemModelFactory)
+				.collect(Collectors.<IModel<T>>toList())
+				.iterator();
 	}
 
 	@Override
 	public final Iterator<IModel<T>> iterator(long offset, long limit) {
 		// Transform must be the last operation, in order to let collectionModelIterator() optimize stuff
-		return Iterators.transform(
-				Models.collectionModelIterator(internalCollection(), offset, limit),
-				itemModelFactory
-		);
+		return Streams.stream(Models.collectionModelIterator(internalCollection(), offset, limit))
+				.map(itemModelFactory)
+				.collect(Collectors.<IModel<T>>toList())
+				.iterator();
 	}
 	
 	@Override

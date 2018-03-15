@@ -1,19 +1,15 @@
 package org.iglooproject.imports.table.apache.poi.mapping.column.builder;
 
 import java.text.NumberFormat;
-import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellReference;
-
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
-import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
-
+import org.iglooproject.functional.Functions2;
+import org.iglooproject.functional.Predicate2;
+import org.iglooproject.functional.Supplier2;
 import org.iglooproject.imports.table.apache.poi.util.ApachePoiImportUtils;
 import org.iglooproject.imports.table.common.mapping.AbstractTableImportColumnSet;
 import org.iglooproject.imports.table.common.mapping.column.builder.AbstractTableImportColumnBuilder;
@@ -31,7 +27,7 @@ public class ApachePoiImportColumnBuilder extends AbstractTableImportColumnBuild
 	
 	@Override
 	public ApachePoiTypeState withHeader(AbstractTableImportColumnSet<Sheet, Row, Cell, CellReference> columnSet, String headerLabel,
-			Predicate<? super String> predicate, int indexAmongMatchedColumns, MappingConstraint mappingConstraint) {
+			Predicate2<? super String> predicate, int indexAmongMatchedColumns, MappingConstraint mappingConstraint) {
 		return new ApachePoiTypeState(columnSet, new HeaderLabelApachePoiImportColumnMapper(headerLabel, predicate, indexAmongMatchedColumns, mappingConstraint));
 	}
 
@@ -63,19 +59,16 @@ public class ApachePoiImportColumnBuilder extends AbstractTableImportColumnBuild
 		
 		@Override
 		public DoubleState<Sheet, Row, Cell, CellReference> asDouble() {
-			return new TypeStateSwitcher<Cell>(Functions.<Cell>identity()).toDouble(new Function<Cell, Double>() {
-				@Override
-				public Double apply(Cell cell) {
-					if (cell == null) {
+			return new TypeStateSwitcher<Cell>(Functions2.<Cell>identity()).toDouble((cell) -> {
+				if (cell == null) {
+					return null;
+				}
+				
+				switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
+					case NUMERIC:
+						return cell.getNumericCellValue();
+					default:
 						return null;
-					}
-					
-					switch(ApachePoiImportUtils.getCellActualValueType(cell)) {
-						case NUMERIC:
-							return cell.getNumericCellValue();
-						default:
-							return null;
-					}
 				}
 			});
 		}
@@ -86,41 +79,35 @@ public class ApachePoiImportColumnBuilder extends AbstractTableImportColumnBuild
 		}
 
 		@Override
-		public StringState<Sheet, Row, Cell, CellReference> asString(final Supplier<? extends NumberFormat> formatIfNumeric) {
-			return new TypeStateSwitcher<Cell>(Functions.<Cell>identity()).toString(new Function<Cell, String>() {
-				@Override
-				public String apply(Cell cell) {
-					if (cell == null) {
+		public StringState<Sheet, Row, Cell, CellReference> asString(final Supplier2<? extends NumberFormat> formatIfNumeric) {
+			return new TypeStateSwitcher<Cell>(Functions2.<Cell>identity()).toString((cell) -> {
+				if (cell == null) {
+					return null;
+				}
+				
+				switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
+					case NUMERIC:
+						return formatIfNumeric.get().format(cell.getNumericCellValue());
+					case STRING:
+						return StringUtils.trimToNull(cell.getStringCellValue());
+					default:
 						return null;
-					}
-					
-					switch(ApachePoiImportUtils.getCellActualValueType(cell)) {
-						case NUMERIC:
-							return formatIfNumeric.get().format(cell.getNumericCellValue());
-						case STRING:
-							return StringUtils.trimToNull(cell.getStringCellValue());
-						default:
-							return null;
-					}
 				}
 			});
 		}
 
 		@Override
 		public DateState<Sheet, Row, Cell, CellReference> asDate() {
-			return new TypeStateSwitcher<Cell>(Functions.<Cell>identity()).toDate(new Function<Cell, Date>() {
-				@Override
-				public Date apply(Cell cell) {
-					if (cell == null) {
+			return new TypeStateSwitcher<Cell>(Functions2.<Cell>identity()).toDate((cell) -> {
+				if (cell == null) {
+					return null;
+				}
+				
+				switch (ApachePoiImportUtils.getCellActualValueType(cell)) {
+					case STRING:
 						return null;
-					}
-					
-					switch(ApachePoiImportUtils.getCellActualValueType(cell)) {
-						case STRING:
-							return null;
-						default:
-							return cell.getDateCellValue();
-					}
+					default:
+						return cell.getDateCellValue();
 				}
 			});
 		}

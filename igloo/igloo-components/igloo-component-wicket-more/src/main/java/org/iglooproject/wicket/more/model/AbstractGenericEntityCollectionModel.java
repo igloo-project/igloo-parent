@@ -8,12 +8,11 @@ import java.util.List;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import com.google.common.base.Supplier;
-import com.google.common.collect.Lists;
-
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.service.IEntityService;
+
+import com.google.common.collect.Lists;
 
 public abstract class AbstractGenericEntityCollectionModel
 		<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>, C extends Collection<E>>
@@ -32,11 +31,11 @@ public abstract class AbstractGenericEntityCollectionModel
 	
 	private final Class<E> clazz;
 	
-	private final Supplier<? extends C> newCollectionSupplier;
+	private final SerializableSupplier2<? extends C> newCollectionSupplier;
 	
 	private transient C entityCollection = null;
 	
-	protected AbstractGenericEntityCollectionModel(Class<E> clazz, Supplier<? extends C> newCollectionSupplier) {
+	protected AbstractGenericEntityCollectionModel(Class<E> clazz, SerializableSupplier2<? extends C> newCollectionSupplier) {
 		super();
 		Injector.get().inject(this);
 		

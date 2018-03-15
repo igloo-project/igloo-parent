@@ -1,7 +1,5 @@
 package org.iglooproject.wicket.request.mapper;
 
-import java.util.function.Supplier;
-
 import org.apache.wicket.Application;
 import org.apache.wicket.core.request.handler.PageProvider;
 import org.apache.wicket.core.request.handler.RenderPageRequestHandler;
@@ -11,6 +9,7 @@ import org.apache.wicket.request.component.IRequestablePage;
 import org.apache.wicket.request.mapper.info.PageInfo;
 import org.apache.wicket.request.mapper.parameter.IPageParametersEncoder;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.iglooproject.functional.Supplier2;
 
 /**
  * This class comes from: https://github.com/unterstein/wicket-tales/
@@ -71,12 +70,12 @@ public class PageParameterAwareMountedMapper extends MountedMapper {
 	}
 
 	public PageParameterAwareMountedMapper(String mountPath,
-			Supplier<Class<? extends IRequestablePage>> pageClassProvider, IPageParametersEncoder pageParametersEncoder) {
+			Supplier2<Class<? extends IRequestablePage>> pageClassProvider, IPageParametersEncoder pageParametersEncoder) {
 		super(mountPath, pageClassProvider, pageParametersEncoder);
 	}
 
 	public PageParameterAwareMountedMapper(String mountPath,
-			Supplier<Class<? extends IRequestablePage>> pageClassProvider) {
+			Supplier2<Class<? extends IRequestablePage>> pageClassProvider) {
 		super(mountPath, pageClassProvider);
 	}
 

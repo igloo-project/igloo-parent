@@ -2,17 +2,10 @@ package org.iglooproject.jpa.more.business.difference.factory;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.base.Supplier;
-
-import de.danielbechler.diff.node.DiffNode;
-import de.danielbechler.diff.selector.CollectionItemElementSelector;
-import de.danielbechler.diff.selector.ElementSelector;
-import de.danielbechler.diff.selector.MapKeyElementSelector;
 import org.iglooproject.commons.util.exception.IllegalSwitchValueException;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.commons.util.rendering.IRenderer;
+import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.more.business.difference.model.Difference;
 import org.iglooproject.jpa.more.business.difference.selector.IKeyAwareSelector;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
@@ -21,6 +14,12 @@ import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryDiffer
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.more.business.history.service.IHistoryValueService;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import de.danielbechler.diff.node.DiffNode;
+import de.danielbechler.diff.selector.CollectionItemElementSelector;
+import de.danielbechler.diff.selector.ElementSelector;
+import de.danielbechler.diff.selector.MapKeyElementSelector;
 
 public abstract class AbstractHistoryDifferenceFactory<T> implements IHistoryDifferenceFactory<T> {
 	
@@ -74,7 +73,7 @@ public abstract class AbstractHistoryDifferenceFactory<T> implements IHistoryDif
 	}
 
 	@SuppressWarnings({ "rawtypes" })
-	protected final <HD extends AbstractHistoryDifference<HD, ?>> HD newHistoryDifference(Supplier<HD> historyDifferenceSupplier,
+	protected final <HD extends AbstractHistoryDifference<HD, ?>> HD newHistoryDifference(Supplier2<HD> historyDifferenceSupplier,
 			Difference<T> rootDifference, DiffNode parentNode,
 			DiffNode currentNode, FieldPath currentNodeRelativePath, HistoryDifferenceEventType action) {
 		final T before = rootDifference.getBefore();

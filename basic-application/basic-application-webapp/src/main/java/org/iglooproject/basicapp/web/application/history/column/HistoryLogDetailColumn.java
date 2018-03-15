@@ -7,13 +7,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.bindgen.BindingRoot;
-
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Sets;
-
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
 import org.iglooproject.basicapp.core.business.history.model.HistoryLog;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
@@ -22,9 +15,15 @@ import org.iglooproject.basicapp.web.application.history.component.HistoryLogDet
 import org.iglooproject.basicapp.web.application.history.component.factory.CustomizableHistoryComponentFactory;
 import org.iglooproject.basicapp.web.application.history.component.factory.IHistoryComponentFactory;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
+import org.iglooproject.functional.Predicates2;
+import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 
 /**
  * A customizable column that displays the detail (event type, differences) of an {@link HistoryLog}.
@@ -74,14 +73,14 @@ public class HistoryLogDetailColumn extends AbstractCoreColumn<HistoryLog, Histo
 
 	@Override
 	public void populateItem(Item<ICellPopulator<HistoryLog>> cellItem, String componentId, IModel<HistoryLog> rowModel) {
-		Predicate<HistoryDifference> filter = null;
+		SerializablePredicate2<HistoryDifference> filter = null;
 		if (!fieldsWhiteList.isEmpty()) {
 			GenericEntityReference<?, ?> mainObjectEntityReference = rowModel.getObject().getMainObject().getReference();
 			if (mainObjectEntityReference != null) {
 				Collection<FieldPath> whiteList = fieldsWhiteList.get(mainObjectEntityReference.getType());
 				// com.google.common.collect.AbstractMapBasedMultimap$WrappedSet is not serializable...
 				whiteList = Sets.newHashSet(fieldsWhiteList.get(mainObjectEntityReference.getType()));
-				filter = Predicates.compose(Predicates.in(whiteList), Bindings.historyDifference().path().path());
+				filter = Predicates2.compose(Predicates2.in(whiteList), Bindings.historyDifference().path().path());
 			}
 		}
 		cellItem.add(new HistoryLogDetailColumnPanel(componentId, rowModel, historyComponentFactory, filter));

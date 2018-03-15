@@ -19,16 +19,16 @@ package org.iglooproject.wicket.more.markup.html.form;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.functional.SerializableSupplier2;
 
-import com.google.common.base.Supplier;
 
 public class CollectionResetter<C> implements Resetter {
 
 	private static final long serialVersionUID = 8258908044311296337L;
 
-	private final Supplier<C> newCollectionSupplier;
+	private final SerializableSupplier2<C> newCollectionSupplier;
 
-	public CollectionResetter(Supplier<C> newCollectionSupplier) {
+	public CollectionResetter(SerializableSupplier2<C> newCollectionSupplier) {
 		this.newCollectionSupplier = newCollectionSupplier;
 	}
 

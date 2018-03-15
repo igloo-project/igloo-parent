@@ -13,7 +13,8 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.commons.util.functional.Predicates2;
+import org.iglooproject.functional.Predicates2;
+import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.jqplot.config.DefaultJQPlotRendererOptionsFactory;
@@ -22,7 +23,6 @@ import org.iglooproject.wicket.more.jqplot.data.adapter.IJQPlotDataAdapter;
 import org.iglooproject.wicket.more.jqplot.plugin.autoresize.JQPlotAutoresizeJavascriptReference;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -36,7 +36,7 @@ import nl.topicus.wqplot.options.PlotTick;
  * <ul>
  * <li>It uses a {@link IJQPlotDataAdapter} to generate JQPlot's data on each rendering
  * <li>It uses {@link IJQPlotConfigurer}s to refresh JQPlot's options on each rendering
- * <li>It includes a built-in placeholder for cases when there's no data to be shown (see {@link #setNonEmptyDataPredicate(Predicate)})
+ * <li>It includes a built-in placeholder for cases when there's no data to be shown (see {@link #setNonEmptyDataPredicate(SerializablePredicate2)})
  * </ul>
  * 
  * <strong>Note:</strong> don't use this class directly; use one of its subclasses instead.
@@ -66,7 +66,7 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>, TK> ex
 	
 	private JQPlot jqPlot;
 	
-	private Predicate<Collection<V>> nonEmptyDataPredicate = Predicates2.notEmpty();
+	private SerializablePredicate2<Collection<V>> nonEmptyDataPredicate = Predicates2.notEmpty();
 	
 	protected JQPlotPanel(String id, IJQPlotDataAdapter<S, K, V, TK> dataAdapter) {
 		super(id, dataAdapter);
@@ -126,7 +126,7 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>, TK> ex
 						 * might change later (and thus a call to EnclosureBehavior.model(nonEmptyDataPredicate, model)
 						 * would be incorrect).
 						 */
-						return nonEmptyDataPredicate.apply(Collections.unmodifiableCollection(dataAdapter.getValues()));
+						return nonEmptyDataPredicate.test(Collections.unmodifiableCollection(dataAdapter.getValues()));
 					}
 				}
 						.thenShow()
@@ -164,7 +164,7 @@ public abstract class JQPlotPanel<S, K, V extends Number & Comparable<V>, TK> ex
 		}
 	}
 	
-	public JQPlotPanel<S, K, V, TK> setNonEmptyDataPredicate(Predicate<Collection<V>> nonEmptyDataPredicate) {
+	public JQPlotPanel<S, K, V, TK> setNonEmptyDataPredicate(SerializablePredicate2<Collection<V>> nonEmptyDataPredicate) {
 		this.nonEmptyDataPredicate = checkNotNull(nonEmptyDataPredicate);
 		return this;
 	}

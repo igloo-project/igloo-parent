@@ -6,20 +6,19 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
 import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
 import org.iglooproject.wicket.more.util.model.Models;
+
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Streams;
 
 public class ReadOnlyMapModel<K, V, M extends Map<K, V>>
 		implements IMapModel<K, V, M>, IComponentAssignedModel<M> {
@@ -28,14 +27,14 @@ public class ReadOnlyMapModel<K, V, M extends Map<K, V>>
 	
 	private final IModel<? extends M> readModel;
 	
-	private final Function<? super K, ? extends IModel<K>> keyModelFactory;
+	private final SerializableFunction2<? super K, ? extends IModel<K>> keyModelFactory;
 	
 	public static <K, V, M extends Map<K, V>> ReadOnlyMapModel<K, V, M> of(
-			IModel<? extends M> model, Function<? super K, ? extends IModel<K>> keyFactory) {
+			IModel<? extends M> model, SerializableFunction2<? super K, ? extends IModel<K>> keyFactory) {
 		return new ReadOnlyMapModel<K, V, M>(model, keyFactory);
 	}
 
-	protected ReadOnlyMapModel(IModel<? extends M> readModel, Function<? super K, ? extends IModel<K>> keyModelFactory) {
+	protected ReadOnlyMapModel(IModel<? extends M> readModel, SerializableFunction2<? super K, ? extends IModel<K>> keyModelFactory) {
 		super();
 		this.readModel = checkNotNull(readModel);
 		this.keyModelFactory = checkNotNull(keyModelFactory);
@@ -89,7 +88,7 @@ public class ReadOnlyMapModel<K, V, M extends Map<K, V>>
 		if (map == null) {
 			return ImmutableSet.<IModel<K>>of();
 		} else {
-			return Iterables.transform(map.keySet(), keyModelFactory);
+			return map.keySet().stream().map(keyModelFactory).collect(Collectors.toList());
 		}
 	}
 	
@@ -117,16 +116,9 @@ public class ReadOnlyMapModel<K, V, M extends Map<K, V>>
 			if (map == null) {
 				return ImmutableSet.<IModel<V>>of();
 			} else {
-				return Iterables.transform(
-						keyModelIterable(),
-						new SerializableFunction<IModel<K>, IModel<V>>() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public IModel<V> apply(IModel<K> input) {
-								return valueModel(input);
-							}
-						}
-				);
+				return Streams.stream(keyModelIterable())
+						.map((input) -> valueModel(input))
+						::iterator;
 			}
 		}
 	}

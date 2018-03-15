@@ -12,14 +12,13 @@ import static org.iglooproject.jpa.more.property.JpaMoreInfinispanPropertyIds.IN
 import java.util.Collections;
 import java.util.Set;
 
+import org.iglooproject.functional.Suppliers2;
+import org.iglooproject.functional.converter.StringCollectionConverter;
+import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
+import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.springframework.context.annotation.Configuration;
 
 import com.google.common.base.Converter;
-
-import org.iglooproject.commons.util.functional.Suppliers2;
-import org.iglooproject.commons.util.functional.converter.StringCollectionConverter;
-import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
-import org.iglooproject.spring.property.service.IPropertyRegistry;
 
 @Configuration
 public class JpaMoreInfinispanPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {

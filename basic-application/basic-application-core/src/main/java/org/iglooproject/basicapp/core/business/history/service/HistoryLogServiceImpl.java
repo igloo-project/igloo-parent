@@ -3,11 +3,6 @@ package org.iglooproject.basicapp.core.business.history.service;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.google.common.base.Supplier;
-
 import org.iglooproject.basicapp.core.business.history.dao.IHistoryLogDao;
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
 import org.iglooproject.basicapp.core.business.history.model.HistoryLog;
@@ -15,19 +10,17 @@ import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEvent
 import org.iglooproject.basicapp.core.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
+import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.more.business.history.service.AbstractHistoryLogServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class HistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<HistoryLog, HistoryEventType,
 		HistoryDifference, HistoryLogAdditionalInformationBean>
 		implements IHistoryLogService {
 
-	private static final Supplier<HistoryDifference> HISTORY_DIFFERENCE_SUPPLIER = new Supplier<HistoryDifference>() {
-		@Override
-		public HistoryDifference get() {
-			return new HistoryDifference();
-		}
-	};
+	private static final Supplier2<HistoryDifference> HISTORY_DIFFERENCE_SUPPLIER = () -> new HistoryDifference();
 	
 	@Autowired
 	private IUserService userService;
@@ -53,7 +46,7 @@ public class HistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<History
 	}
 
 	@Override
-	protected Supplier<HistoryDifference> newHistoryDifferenceSupplier() {
+	protected Supplier2<HistoryDifference> newHistoryDifferenceSupplier() {
 		return HISTORY_DIFFERENCE_SUPPLIER;
 	}
 

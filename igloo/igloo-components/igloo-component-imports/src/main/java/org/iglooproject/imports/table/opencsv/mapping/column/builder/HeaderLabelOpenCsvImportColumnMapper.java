@@ -2,11 +2,8 @@ package org.iglooproject.imports.table.opencsv.mapping.column.builder;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.Predicate2;
 import org.iglooproject.imports.table.common.event.ITableImportEventHandler;
 import org.iglooproject.imports.table.common.event.exception.TableImportHeaderLabelMappingException;
 import org.iglooproject.imports.table.common.location.ITableImportNavigator;
@@ -21,7 +18,7 @@ import org.iglooproject.imports.table.opencsv.model.CsvTable;
 	
 	private final String expectedHeaderLabel;
 	
-	private final Predicate<? super String> predicate;
+	private final Predicate2<? super String> predicate;
 
 	private final int indexAmongMatchedColumns;
 	
@@ -30,7 +27,7 @@ import org.iglooproject.imports.table.opencsv.model.CsvTable;
 	/**
 	 * @param indexAmongMatchedColumns The 0-based index of this column among the columns matching the given <code>predicate</code>.
 	 */
-	public HeaderLabelOpenCsvImportColumnMapper(String expectedHeaderLabel, Predicate<? super String> predicate,
+	public HeaderLabelOpenCsvImportColumnMapper(String expectedHeaderLabel, Predicate2<? super String> predicate,
 			int indexAmongMatchedColumns, MappingConstraint mappingConstraint) {
 		super();
 		Validate.notNull(predicate, "predicate must not be null");
@@ -42,7 +39,7 @@ import org.iglooproject.imports.table.opencsv.model.CsvTable;
 	}
 	
 	@Override
-	public Function<? super CsvRow, CsvCellReference> tryMap(CsvTable sheet, ITableImportNavigator<CsvTable, CsvRow, CsvCell, CsvCellReference> navigator,
+	public Function2<? super CsvRow, CsvCellReference> tryMap(CsvTable sheet, ITableImportNavigator<CsvTable, CsvRow, CsvCell, CsvCellReference> navigator,
 			ITableImportEventHandler eventHandler) throws TableImportHeaderLabelMappingException {
 		int matchedColumnsCount = 0;
 		CsvRow headersRow = sheet.getRow(0);
@@ -50,16 +47,9 @@ import org.iglooproject.imports.table.opencsv.model.CsvTable;
 		if (headersRow != null) {
 			for (CsvCell cell : headersRow) {
 				String cellValue = StringUtils.trimToNull(cell.getContent());
-				if (predicate.apply(cellValue)) {
+				if (predicate.test(cellValue)) {
 					if (matchedColumnsCount == indexAmongMatchedColumns) {
-						final int index = cell.getIndex();
-						return new SerializableFunction<CsvRow, CsvCellReference>() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public CsvCellReference apply(CsvRow row) {
-								return row == null ? null : new CsvCellReference(row.getIndex(), index);
-							}
-						};
+						return (row) -> row == null ? null : new CsvCellReference(row.getIndex(), cell.getIndex());
 					} else {
 						++matchedColumnsCount;
 					}

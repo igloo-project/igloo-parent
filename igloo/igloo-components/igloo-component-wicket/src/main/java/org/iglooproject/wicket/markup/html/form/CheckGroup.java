@@ -4,10 +4,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Supplier;
-
-import org.iglooproject.commons.util.functional.Suppliers2;
+import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.wicket.markup.html.model.ConcreteCollectionToCollectionWrapperModel;
 
 public class CheckGroup<T> extends org.apache.wicket.markup.html.form.CheckGroup<T> {
@@ -33,7 +31,7 @@ public class CheckGroup<T> extends org.apache.wicket.markup.html.form.CheckGroup
 	 * 
 	 * @see InlineOverridableCheckGroup
 	 */
-	public <C extends Collection<T>> CheckGroup(String id, IModel<C> model, Supplier<? extends C> collectionSupplier) {
+	public <C extends Collection<T>> CheckGroup(String id, IModel<C> model, SerializableSupplier2<? extends C> collectionSupplier) {
 		super(id, new ConcreteCollectionToCollectionWrapperModel<T, C>(model, collectionSupplier));
 	}
 

@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.iglooproject.commons.util.functional.SerializableSupplier;
+import org.iglooproject.functional.SerializablePredicate2;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.javatuples.Pair;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 
 public class JoinerModel extends LoadableDetachableModel<String> {
@@ -24,45 +24,25 @@ public class JoinerModel extends LoadableDetachableModel<String> {
 		}
 	};
 
-	private SerializableSupplier<Joiner> joinerSupplier;
+	private SerializableSupplier2<Joiner> joinerSupplier;
 
 	private final List<Pair<IModel<?>, Condition>> conditionnalModels = Lists.newLinkedList();
 
-	private JoinerModel(SerializableSupplier<Joiner> joinerSupplier) {
+	private JoinerModel(SerializableSupplier2<Joiner> joinerSupplier) {
 		this.joinerSupplier = joinerSupplier;
 	}
 
 	public static JoinerModel on(final String separator) {
-		return new JoinerModel(new SerializableSupplier<Joiner>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Joiner get() {
-				return Joiner.on(separator);
-			}
-		});
+		return new JoinerModel(() -> Joiner.on(separator));
 	}
 
 	public JoinerModel skipNulls() {
-		final SerializableSupplier<Joiner> joinerSupplier = this.joinerSupplier;
-		this.joinerSupplier = new SerializableSupplier<Joiner>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Joiner get() {
-				return joinerSupplier.get().skipNulls();
-			}
-		};
+		this.joinerSupplier = () -> this.joinerSupplier.get().skipNulls();
 		return this;
 	}
 
 	public JoinerModel useForNull(final String nullText) {
-		final SerializableSupplier<Joiner> joinerSupplier = this.joinerSupplier;
-		this.joinerSupplier = new SerializableSupplier<Joiner>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Joiner get() {
-				return joinerSupplier.get().useForNull(nullText);
-			}
-		};
+		this.joinerSupplier = () -> this.joinerSupplier.get().useForNull(nullText);
 		return this;
 	}
 
@@ -80,7 +60,7 @@ public class JoinerModel extends LoadableDetachableModel<String> {
 	}
 
 	@SafeVarargs
-	public final <T> JoinerModel join(Predicate<? super T> predicate, IModel<? extends T> firstModel, IModel<? extends T>... otherModels) {
+	public final <T> JoinerModel join(SerializablePredicate2<? super T> predicate, IModel<? extends T> firstModel, IModel<? extends T>... otherModels) {
 		for (IModel<? extends T> model : Lists.asList(firstModel, otherModels)) {
 			join(Condition.predicate(model, predicate), model);
 		}

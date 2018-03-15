@@ -3,8 +3,7 @@ package org.iglooproject.wicket.markup.html.model;
 import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Supplier;
+import org.iglooproject.functional.SerializableSupplier2;
 
 /**
  * A wrapper allowing to handle an IModel<? extends Collection<T>> as if it were an IModel<Collection<T>>, both when reading it and writing to it.
@@ -18,9 +17,9 @@ public class ConcreteCollectionToCollectionWrapperModel<T, C extends Collection<
 	
 	private final IModel<C> concreteCollectionModel;
 	
-	private final Supplier<? extends C> concreteCollectionSupplier;
+	private final SerializableSupplier2<? extends C> concreteCollectionSupplier;
 
-	public ConcreteCollectionToCollectionWrapperModel(IModel<C> concreteCollectionModel, Supplier<? extends C> concreteCollectionSupplier) {
+	public ConcreteCollectionToCollectionWrapperModel(IModel<C> concreteCollectionModel, SerializableSupplier2<? extends C> concreteCollectionSupplier) {
 		this.concreteCollectionModel = concreteCollectionModel;
 		this.concreteCollectionSupplier = concreteCollectionSupplier;
 	}

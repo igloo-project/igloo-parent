@@ -1,8 +1,7 @@
 package org.iglooproject.imports.table.common.mapping.column.builder.state;
 
-import com.google.common.base.Function;
-
-import org.iglooproject.commons.util.functional.builder.function.generic.FunctionBuildStateSwitcher;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.builder.function.generic.FunctionBuildStateSwitcher;
 import org.iglooproject.imports.table.common.mapping.AbstractTableImportColumnSet;
 
 public interface ColumnFunctionBuildStateSwitcher<TTable, TRow, TCell, TCellReference, T>
@@ -19,6 +18,6 @@ public interface ColumnFunctionBuildStateSwitcher<TTable, TRow, TCell, TCellRefe
 		StringState<TTable, TRow, TCell, TCellReference>
 		> {
 	
-	<TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> toGeneric(Function<? super T, TValue> function);
+	<TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> toGeneric(Function2<? super T, TValue> function);
 
 }

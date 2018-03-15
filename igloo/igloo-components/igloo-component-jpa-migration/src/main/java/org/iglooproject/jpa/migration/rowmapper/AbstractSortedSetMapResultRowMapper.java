@@ -5,12 +5,11 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.SortedSet;
 
-import com.google.common.base.Supplier;
+import org.iglooproject.functional.Suppliers2;
+
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.SortedSetMultimap;
-
-import org.iglooproject.commons.util.functional.Suppliers2;
 
 public abstract class AbstractSortedSetMapResultRowMapper<K,V> extends AbstractResultRowMapper<Map<K, SortedSet<V>>> {
 	
@@ -18,8 +17,7 @@ public abstract class AbstractSortedSetMapResultRowMapper<K,V> extends AbstractR
 	
 	protected static <K, V> SortedSetMultimap<K, V> newTreeSetHashMultimap(int expectedKeys, int expectedValuesPerKey, Comparator<? super V> comparator) {
 		Map<K, Collection<V>> map = Maps.newHashMapWithExpectedSize(expectedKeys);
-		Supplier<? extends SortedSet<V>> factory = Suppliers2.treeSet(comparator);
-		return Multimaps.newSortedSetMultimap(map, factory);
+		return Multimaps.newSortedSetMultimap(map, Suppliers2.treeSet(comparator));
 	}
 	
 	protected AbstractSortedSetMapResultRowMapper(SortedSetMultimap<K, V> results) {

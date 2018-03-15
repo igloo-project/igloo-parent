@@ -12,7 +12,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
@@ -70,7 +70,6 @@ import org.iglooproject.wicket.more.rendering.Renderer;
 import org.iglooproject.wicket.more.util.IDatePattern;
 import org.iglooproject.wicket.more.util.model.SequenceProviders;
 
-import com.google.common.base.Function;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -90,7 +89,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 	private final List<CustomizableToolbarBuilder<T, S>> bottomToolbarBuilders = Lists.newArrayList();
 
-	private final List<Function<T, String>> rowCssClassProviders = Lists.newArrayList();
+	private final List<SerializableFunction2<T, String>> rowCssClassProviders = Lists.newArrayList();
 
 	private boolean showTopToolbar = true;
 	
@@ -100,7 +99,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		private static final long serialVersionUID = 1L;
 		@Override
 		public CoreDataTable<T, S> create(String id, Map<IColumn<T, S>, Condition> columns,
-				ISequenceProvider<T> sequenceProvider, List<Function<T, String>> rowCssClassProviders,
+				ISequenceProvider<T> sequenceProvider, List<SerializableFunction2<T, String>> rowCssClassProviders,
 				long rowsPerPage) {
 			return new CoreDataTable<T, S>(id, columns, sequenceProvider, rowCssClassProviders, rowsPerPage);
 		}
@@ -198,14 +197,14 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 
 	@Override
-	public <C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, final Function<? super T, C> function) {
+	public <C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, final SerializableFunction2<? super T, C> function) {
 		return addLabelColumn(new FunctionLabelColumn<T, S, C>(headerModel, function));
 	}
 	
 	private static class FunctionLabelColumn<T, S extends ISort<?>, C> extends CoreLabelColumn<T, S> {
 		private static final long serialVersionUID = 1L;
-		private final Function<? super T, C> function;
-		public FunctionLabelColumn(IModel<String> displayModel, Function<? super T, C> function) {
+		private final SerializableFunction2<? super T, C> function;
+		public FunctionLabelColumn(IModel<String> displayModel, SerializableFunction2<? super T, C> function) {
 			super(displayModel);
 			this.function = function;
 		}
@@ -217,15 +216,15 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 	@Override
 	public <C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
-			final Function<? super T, C> function, final Renderer<? super C> renderer) {
+			final SerializableFunction2<? super T, C> function, final Renderer<? super C> renderer) {
 		return addLabelColumn(new FunctionRendererLabelColumn<T, S, C>(headerModel, function, renderer));
 	}
 	
 	private static class FunctionRendererLabelColumn<T, S extends ISort<?>, C> extends CoreLabelColumn<T, S> {
 		private static final long serialVersionUID = 1L;
-		private final Function<? super T, C> function;
+		private final SerializableFunction2<? super T, C> function;
 		private final Renderer<? super C> renderer;
-		public FunctionRendererLabelColumn(IModel<String> displayModel, Function<? super T, C> function, Renderer<? super C> renderer) {
+		public FunctionRendererLabelColumn(IModel<String> displayModel, SerializableFunction2<? super T, C> function, Renderer<? super C> renderer) {
 			super(displayModel);
 			this.function = function;
 			this.renderer = renderer;
@@ -291,7 +290,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	
 	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-			Function<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
 		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<T, S, C>(headerModel, function, renderer);
 		columns.put(column, null);
 		return new AddedBootstrapBadgeColumnState<C>(column);
@@ -313,7 +312,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	@Deprecated
 	@Override
 	public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-			Function<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
 		return addColumn(new CoreBootstrapLabelColumn<T, S, C>(headerModel, function, renderer));
 	}
 	
@@ -369,7 +368,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
-	public DataTableBuilder<T, S> addRowCssClass(SerializableFunction<T, String> cssClassProvider) {
+	public DataTableBuilder<T, S> addRowCssClass(SerializableFunction2<T, String> cssClassProvider) {
 		rowCssClassProviders.add(cssClassProvider);
 		return this;
 	}
@@ -479,12 +478,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 
 		@Override
-		public <C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, Function<? super T, C> function) {
+		public <C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, SerializableFunction2<? super T, C> function) {
 			return DataTableBuilder.this.addLabelColumn(headerModel, function);
 		}
 
 		@Override
-		public <C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, Function<? super T, C> function,
+		public <C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, SerializableFunction2<? super T, C> function,
 				Renderer<? super C> renderer) {
 			return DataTableBuilder.this.addLabelColumn(headerModel, function, renderer);
 		}
@@ -507,7 +506,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 		@Override
 		public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-				Function<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+				SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapLabelColumn(headerModel, function, renderer);
 		}
 
@@ -519,7 +518,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-				Function<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+				SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapBadgeColumn(headerModel, function, renderer);
 		}
 		
@@ -550,10 +549,10 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 
 		@Override
-		public IBuildState<T, S> addRowCssClass(SerializableFunction<T, String> cssClassProvider) {
+		public IBuildState<T, S> addRowCssClass(SerializableFunction2<T, String> cssClassProvider) {
 			return DataTableBuilder.this.addRowCssClass(cssClassProvider);
 		}
-
+		
 		@Override
 		public IBuildState<T, S> withNoRecordsResourceKey(String noRecordsResourceKey) {
 			return DataTableBuilder.this.withNoRecordsResourceKey(noRecordsResourceKey);
@@ -694,7 +693,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 		
 		@Override
-		public <C> IAddedLabelColumnState<T, S> withTooltip(Function<? super T, C> function, Renderer<? super C> tooltipRenderer) {
+		public <C> IAddedLabelColumnState<T, S> withTooltip(SerializableFunction2<? super T, C> function, Renderer<? super C> tooltipRenderer) {
 			return withTooltip(tooltipRenderer.onResultOf(function));
 		}
 		
@@ -706,7 +705,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 		
 		@Override
-		public <C> IAddedLabelColumnState<T, S> withLink(Function<? super T, C> function,
+		public <C> IAddedLabelColumnState<T, S> withLink(SerializableFunction2<? super T, C> function,
 				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper) {
 			return withLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
 		}
@@ -725,7 +724,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 		
 		@Override
-		public <C> IAddedLabelColumnState<T, S> withSideLink(Function<? super T, C> function,
+		public <C> IAddedLabelColumnState<T, S> withSideLink(SerializableFunction2<? super T, C> function,
 				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper) {
 			return withSideLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
 		}
@@ -847,7 +846,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 		
 		@Override
-		public <E> IAddedBootstrapBadgeColumnState<T, S, C> withLink(Function<? super T, E> function,
+		public <E> IAddedBootstrapBadgeColumnState<T, S, C> withLink(SerializableFunction2<? super T, E> function,
 				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper) {
 			return withLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
 		}
@@ -866,7 +865,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 		
 		@Override
-		public <E> IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(Function<? super T, E> function,
+		public <E> IAddedBootstrapBadgeColumnState<T, S, C> withSideLink(SerializableFunction2<? super T, E> function,
 				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<E>> linkGeneratorMapper) {
 			return withSideLink(new FunctionOneParameterLinkDescriptorMapper<>(function, linkGeneratorMapper));
 		}

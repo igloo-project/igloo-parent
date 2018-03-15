@@ -1,17 +1,14 @@
 package org.iglooproject.basicapp.web.application.history.component;
 
-import static com.google.common.base.Predicates.equalTo;
 import static org.iglooproject.wicket.more.condition.Condition.predicate;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Predicates;
-
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.history.component.factory.IHistoryComponentFactory;
+import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.more.business.history.model.atomic.HistoryDifferenceEventType;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
@@ -68,12 +65,12 @@ public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDiffere
 		IModel<HistoryDifferenceEventType> eventTypeModel = BindingModel.of(model, Bindings.historyDifference().eventType());
 		
 		add(
-				new EnclosureContainer("updated").condition(predicate(eventTypeModel, equalTo(HistoryDifferenceEventType.UPDATED)))
+				new EnclosureContainer("updated").condition(predicate(eventTypeModel, Predicates2.equalTo(HistoryDifferenceEventType.UPDATED)))
 						.add(newHistoryDifferenceListPanel("differences", cssClass, historyComponentFactory)),
-				new EnclosureContainer("untouched").condition(predicate(eventTypeModel, equalTo(HistoryDifferenceEventType.UNTOUCHED))),
-				new EnclosureContainer("added").condition(predicate(eventTypeModel, equalTo(HistoryDifferenceEventType.ADDED)))
+				new EnclosureContainer("untouched").condition(predicate(eventTypeModel, Predicates2.equalTo(HistoryDifferenceEventType.UNTOUCHED))),
+				new EnclosureContainer("added").condition(predicate(eventTypeModel, Predicates2.equalTo(HistoryDifferenceEventType.ADDED)))
 						.add(newHistoryDifferenceListPanel("differences", cssClass, historyComponentFactory)),
-				new EnclosureContainer("removed").condition(predicate(eventTypeModel, Predicates.equalTo(HistoryDifferenceEventType.REMOVED)))
+				new EnclosureContainer("removed").condition(predicate(eventTypeModel, Predicates2.equalTo(HistoryDifferenceEventType.REMOVED)))
 						.add(newHistoryDifferenceListPanel("differences", cssClass, historyComponentFactory))
 		);
 	}

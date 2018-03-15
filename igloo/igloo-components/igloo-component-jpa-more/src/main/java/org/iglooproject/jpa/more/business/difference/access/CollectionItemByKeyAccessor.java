@@ -3,31 +3,32 @@ package org.iglooproject.jpa.more.business.difference.access;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.Predicate2;
+import org.iglooproject.functional.Predicates2;
+import org.iglooproject.jpa.more.business.difference.selector.CollectionItemByKeySelector;
+
 import com.google.common.base.Equivalence;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 
 import de.danielbechler.diff.access.Accessor;
 import de.danielbechler.diff.selector.ElementSelector;
-import org.iglooproject.jpa.more.business.difference.selector.CollectionItemByKeySelector;
 
 public class CollectionItemByKeyAccessor<T, K> implements Accessor, IKeyAwareAccessor<K> {
 	
 	private final K reference;
-	private final Function<? super T, ? extends K> keyFunction;
+	private final Function2<? super T, ? extends K> keyFunction;
 	private final Equivalence<? super K> equivalence;
-	private final Predicate<? super T> predicate;
+	private final Predicate2<? super T> predicate;
 	
 	private final String humanReadableString;
 
 	public CollectionItemByKeyAccessor(
-			K reference, Function<? super T, ? extends K> keyFunction, Equivalence<? super K> equivalence,
+			K reference, Function2<? super T, ? extends K> keyFunction, Equivalence<? super K> equivalence,
 			String humanReadableString) {
 		this.reference = reference;
 		this.keyFunction = keyFunction;
 		this.equivalence = equivalence;
-		this.predicate = Predicates.compose(equivalence.equivalentTo(reference), keyFunction);
+		this.predicate = Predicates2.compose(equivalence.equivalentTo(reference), keyFunction);
 		this.humanReadableString = "[" + humanReadableString + "]";
 	}
 	
@@ -65,7 +66,7 @@ public class CollectionItemByKeyAccessor<T, K> implements Accessor, IKeyAwareAcc
 			return null;
 		}
 		for (final T item : targetCollection) {
-			if (item != null && predicate.apply(item)) {
+			if (item != null && predicate.test(item)) {
 				return item;
 			}
 		}

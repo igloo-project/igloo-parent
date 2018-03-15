@@ -10,21 +10,20 @@ import org.iglooproject.basicapp.web.application.referencedata.form.AbstractGene
 import org.iglooproject.basicapp.web.application.referencedata.form.SimpleLocalizedReferenceDataPopup;
 import org.iglooproject.basicapp.web.application.referencedata.model.AbstractLocalizedReferenceDataDataProvider;
 import org.iglooproject.basicapp.web.application.referencedata.model.SimpleLocalizedReferenceDataDataProvider;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
-
-import com.google.common.base.Supplier;
 
 public class SimpleLocalizedReferenceDataListPanel<T extends LocalizedReferenceData<? super T>> 
 		extends AbstractReferenceDataListPanel<T, LocalizedReferenceDataSort, AbstractLocalizedReferenceDataDataProvider<T, LocalizedReferenceDataSort>> {
 
 	private static final long serialVersionUID = -4026683202098875499L;
 
-	protected Supplier<T> supplier;
+	protected SerializableSupplier2<T> supplier;
 
-	public SimpleLocalizedReferenceDataListPanel(String id, Supplier<T> supplier, SimpleLocalizedReferenceDataDataProvider<T, LocalizedReferenceDataSort> dataProvider) {
+	public SimpleLocalizedReferenceDataListPanel(String id, SerializableSupplier2<T> supplier, SimpleLocalizedReferenceDataDataProvider<T, LocalizedReferenceDataSort> dataProvider) {
 		super(id, dataProvider, dataProvider.getSortModel());
 		this.supplier = supplier;
 		setOutputMarkupId(true);

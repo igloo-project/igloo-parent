@@ -9,14 +9,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
-import org.iglooproject.commons.util.functional.Suppliers2;
+import org.iglooproject.functional.Predicates2;
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.test.wicket.more.business.person.model.Person;
 import org.iglooproject.test.wicket.more.business.person.service.IPersonService;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -37,6 +31,11 @@ import org.iglooproject.wicket.more.markup.html.factory.ConditionFactories;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
 import org.iglooproject.wicket.more.model.CollectionCopyModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 public abstract class AbstractAnyTargetTestLinkDescriptorMapper extends AbstractTestLinkDescriptor {
 	
@@ -233,7 +232,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptorMapper extends Abstract
 				buildWithOneParameterTarget(
 						LinkDescriptorBuilder.start()
 						.model(Long.class).map(CommonParameters.ID).optional()
-						.validator(DetachableFactories.forUnit(ConditionFactories.predicate(Predicates.notNull())))
+						.validator(DetachableFactories.forUnit(ConditionFactories.predicate(Predicates2.notNull())))
 				);
 		mapper.map(model).url();
 	}
@@ -245,7 +244,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptorMapper extends Abstract
 				buildWithOneParameterTarget(
 						LinkDescriptorBuilder.start()
 						.model(Long.class).map(CommonParameters.ID).optional()
-						.validator(DetachableFactories.forUnit(ConditionFactories.predicate(Predicates.notNull())))
+						.validator(DetachableFactories.forUnit(ConditionFactories.predicate(Predicates2.notNull())))
 				);
 		mapper.map(model).extract(new PageParameters());
 	}
@@ -257,7 +256,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptorMapper extends Abstract
 				buildWithOneParameterTarget(
 						LinkDescriptorBuilder.start()
 						.model(Long.class).map(CommonParameters.ID).optional()
-						.validator(DetachableFactories.forUnit(ConditionFactories.predicate(Predicates.notNull())))
+						.validator(DetachableFactories.forUnit(ConditionFactories.predicate(Predicates2.notNull())))
 				);
 		assertThat(mapper.map(model).url(),
 				hasPathAndQuery(getOneParameterTargetPathPrefix() + "1"));
@@ -270,7 +269,7 @@ public abstract class AbstractAnyTargetTestLinkDescriptorMapper extends Abstract
 				buildWithOneParameterTarget(
 						LinkDescriptorBuilder.start()
 						.model(Long.class).map(CommonParameters.ID).optional()
-						.validator(DetachableFactories.forUnit(ConditionFactories.predicate(Predicates.notNull())))
+						.validator(DetachableFactories.forUnit(ConditionFactories.predicate(Predicates2.notNull())))
 				);
 		mapper.map(model).extract(new PageParameters().add(CommonParameters.ID, 1L));
 		assertEquals(Long.valueOf(1L), model.getObject());

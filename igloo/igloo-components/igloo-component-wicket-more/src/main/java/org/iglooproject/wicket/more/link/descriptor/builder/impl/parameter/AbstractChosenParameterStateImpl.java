@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.wicket.model.IDetachable;
 import org.bindgen.BindingRoot;
+import org.iglooproject.functional.SerializablePredicate2;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.mapping.CollectionLinkParameterMappingEntry;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.mapping.SimpleLinkParameterMappingEntry;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.ITwoMappableParameterOneChosenParameterState;
@@ -18,8 +20,6 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.Conditio
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
@@ -61,7 +61,7 @@ public abstract class AbstractChosenParameterStateImpl<TSelf, TInitialState>
 		LinkParameterTypeInformation<?> typeInfo = getParameterTypeInformation(getFirstIndex());
 		if (typeInfo.getTypeDescriptorSupplier().get().isCollection()) {
 			return map(CollectionLinkParameterMappingEntry.factory(
-					parameterName, typeInfo.getTypeDescriptorSupplier(), (Supplier) typeInfo.getEmptyValueSupplier()
+					parameterName, typeInfo.getTypeDescriptorSupplier(), (SerializableSupplier2) typeInfo.getEmptyValueSupplier()
 			));
 		} else {
 			return map(SimpleLinkParameterMappingEntry.factory(
@@ -86,7 +86,7 @@ public abstract class AbstractChosenParameterStateImpl<TSelf, TInitialState>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public TInitialState validator(Predicate predicate) {
+	public TInitialState validator(SerializablePredicate2 predicate) {
 		// (ILinkParameterValidatorFactory) cast to raw-type needed in java 8
 		return validator((ILinkParameterValidatorFactory) ConditionLinkParameterValidator.predicateFactory(predicate));
 	}

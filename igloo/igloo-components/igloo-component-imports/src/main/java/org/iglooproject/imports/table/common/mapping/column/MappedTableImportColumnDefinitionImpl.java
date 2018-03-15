@@ -1,9 +1,8 @@
 package org.iglooproject.imports.table.common.mapping.column;
 
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
-import com.google.common.base.Predicate;
-
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.Functions2;
+import org.iglooproject.functional.Predicate2;
 import org.iglooproject.imports.table.common.location.ITableImportNavigator;
 import org.iglooproject.imports.table.common.mapping.column.ITableImportColumnDefinition.IMappedExcelImportColumnDefinition;
 
@@ -11,17 +10,17 @@ public class MappedTableImportColumnDefinitionImpl<TTable, TRow, TCell, TCellRef
 		implements IMappedExcelImportColumnDefinition<TTable, TRow, TCell, TCellReference, TValue> {
 	private final TTable table;
 	private final boolean bound;
-	private final Function<? super TRow, ? extends TCellReference> rowToCellReferenceFunction;
+	private final Function2<? super TRow, ? extends TCellReference> rowToCellReferenceFunction;
 	private final ITableImportNavigator<TTable, TRow, TCell, TCellReference> navigator;
-	private final Function<? super TCell, ? extends TValue> cellToValueFunction;
-	private final Predicate<? super TValue> mandatoryValuePredicate;
+	private final Function2<? super TCell, ? extends TValue> cellToValueFunction;
+	private final Predicate2<? super TValue> mandatoryValuePredicate;
 
 	public MappedTableImportColumnDefinitionImpl(
 			TTable table,
-			Function<? super TRow, ? extends TCellReference> rowToCellReferenceFunction,
+			Function2<? super TRow, ? extends TCellReference> rowToCellReferenceFunction,
 			ITableImportNavigator<TTable, TRow, TCell, TCellReference> navigator,
-			Function<? super TCell, ? extends TValue> cellToValueFunction,
-			Predicate<? super TValue> mandatoryValuePredicate) {
+			Function2<? super TCell, ? extends TValue> cellToValueFunction,
+			Predicate2<? super TValue> mandatoryValuePredicate) {
 		super();
 		this.table = table;
 		if (rowToCellReferenceFunction != null) {
@@ -29,7 +28,7 @@ public class MappedTableImportColumnDefinitionImpl<TTable, TRow, TCell, TCellRef
 			this.rowToCellReferenceFunction = rowToCellReferenceFunction;
 		} else {
 			this.bound = false;
-			this.rowToCellReferenceFunction = Functions.constant(null);
+			this.rowToCellReferenceFunction = Functions2.constant(null);
 		}
 		this.navigator = navigator;
 		this.cellToValueFunction = cellToValueFunction;
@@ -56,7 +55,7 @@ public class MappedTableImportColumnDefinitionImpl<TTable, TRow, TCell, TCellRef
 	@Override
 	public TValue getMandatoryValue(TRow row) {
 		TValue value = getValue(row);
-		if (!mandatoryValuePredicate.apply(value)) {
+		if (!mandatoryValuePredicate.test(value)) {
 			return null;
 		}
 		return value;
@@ -65,6 +64,6 @@ public class MappedTableImportColumnDefinitionImpl<TTable, TRow, TCell, TCellRef
 	@Override
 	public boolean hasContent(TRow row) {
 		TValue value = getValue(row);
-		return mandatoryValuePredicate.apply(value);
+		return mandatoryValuePredicate.test(value);
 	}
 }

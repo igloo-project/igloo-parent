@@ -11,10 +11,8 @@ import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 import org.iglooproject.commons.util.mime.MediaType;
 
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>> {
 
@@ -35,12 +33,7 @@ public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>
 			if (fileUploadMediaType == null || !mediaTypes.contains(fileUploadMediaType)) {
 				ValidationError error = new ValidationError();
 				error.addKey(this);
-				error.setVariable("extensions", Joiner.on(", ").skipNulls().join(Lists.transform(mediaTypes, new Function<MediaType, String>() {
-					@Override
-					public String apply(MediaType input) {
-						return input.extension();
-					}
-				})));
+				error.setVariable("extensions", Joiner.on(", ").skipNulls().join(mediaTypes.stream().map((input) -> input.extension()).iterator()));
 				error.setVariable("clientFileName", fileUpload.getClientFileName());
 				validatable.error(error);
 			}

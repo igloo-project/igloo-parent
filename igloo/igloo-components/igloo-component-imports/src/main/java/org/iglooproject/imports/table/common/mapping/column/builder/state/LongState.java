@@ -1,8 +1,7 @@
 package org.iglooproject.imports.table.common.mapping.column.builder.state;
 
-import com.google.common.base.Function;
-
-import org.iglooproject.commons.util.functional.builder.function.generic.GenericLongFunctionBuildStateImpl;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.builder.function.generic.GenericLongFunctionBuildStateImpl;
 import org.iglooproject.imports.table.common.mapping.AbstractTableImportColumnSet;
 
 public abstract class LongState<TTable, TRow, TCell, TCellReference> extends GenericLongFunctionBuildStateImpl
@@ -20,7 +19,7 @@ public abstract class LongState<TTable, TRow, TCell, TCellReference> extends Gen
 		implements ColumnFunctionBuildState<TTable, TRow, TCell, TCellReference, Long> {
 	
 	@Override
-	public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function<? super Long, TValue> function) {
+	public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function2<? super Long, TValue> function) {
 		return getStateSwitcher().toGeneric(function);
 	}
 

@@ -12,8 +12,6 @@ import org.iglooproject.spring.util.StringUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import com.google.common.base.Function;
-
 @Import(JpaMoreTaskApplicationPropertyRegistryConfig.class)
 @Configuration
 public class JpaMoreApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
@@ -25,14 +23,11 @@ public class JpaMoreApplicationPropertyRegistryConfig extends AbstractApplicatio
 		
 		registry.register( // NOSONAR findbugs:DMI_HARDCODED_ABSOLUTE_FILENAME
 				IMAGE_MAGICK_CONVERT_BINARY_PATH,
-				new Function<String, File>() {
-					@Override
-					public File apply(String input) {
-						if (!StringUtils.hasText(input)) {
-							return null;
-						}
-						return new File(input);
+				(input) -> {
+					if (!StringUtils.hasText(input)) {
+						return null;
 					}
+					return new File(input);
 				},
 				new File("/usr/bin/convert")
 		);

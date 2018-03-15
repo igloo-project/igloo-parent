@@ -8,6 +8,7 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
+import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
@@ -33,7 +34,6 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.I
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -242,7 +242,7 @@ public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParame
 		}
 		
 		@Override
-		public NextState when(final Predicate<? super T> predicate) {
+		public NextState when(final SerializablePredicate2<? super T> predicate) {
 			getElementBuilder().addConditionFactory(ConditionFactories.predicate(predicate));
 			return getNextState();
 		}

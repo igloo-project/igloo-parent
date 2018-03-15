@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.functional.Function2;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
@@ -89,14 +89,14 @@ public class CacheDataProvider<T> implements IDataProvider<T>, IBindableDataProv
 		return reference;
 	}
 
-	private class ObjectToModelFunction implements Function<T, IModel<T>> {
+	private class ObjectToModelFunction implements Function2<T, IModel<T>> {
 		@Override
 		public IModel<T> apply(T input) {
 			return input != null ? model(input) : null;
 		}
 	}
 
-	private class ModelToObjectFunction implements Function<IModel<T>, T> {
+	private class ModelToObjectFunction implements Function2<IModel<T>, T> {
 		@Override
 		public T apply(IModel<T> input) {
 			return input != null ? input.getObject() : null;

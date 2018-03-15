@@ -4,12 +4,10 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Date;
 
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
-import com.google.common.base.Predicate;
-import com.google.common.base.Supplier;
-import com.google.common.primitives.Doubles;
-
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.Functions2;
+import org.iglooproject.functional.Predicate2;
+import org.iglooproject.functional.Supplier2;
 import org.iglooproject.imports.table.common.mapping.AbstractTableImportColumnSet;
 import org.iglooproject.imports.table.common.mapping.column.builder.AbstractTableImportColumnBuilder;
 import org.iglooproject.imports.table.common.mapping.column.builder.ITableImportColumnMapper;
@@ -28,25 +26,20 @@ import org.iglooproject.imports.table.opencsv.model.CsvTable;
 
 public class OpenCsvImportColumnBuilder extends AbstractTableImportColumnBuilder<CsvTable, CsvRow, CsvCell, CsvCellReference> {
 	
-	private static final Function<String, Double> DOUBLE_FORMAT_FUNCTION = Doubles.stringConverter();
+	private static final Function2<String, Double> DOUBLE_FORMAT_FUNCTION = (input) -> Double.valueOf(input);
 	
-	private static final Function<String, BigDecimal> BIG_DECIMAL_FORMAT_FUNCTION = new Function<String, BigDecimal>() {
-		@Override
-		public BigDecimal apply(String input) {
-			return input == null ? null : new BigDecimal(input);
-		}
-	};
+	private static final Function2<String, BigDecimal> BIG_DECIMAL_FORMAT_FUNCTION = (input) -> input == null ? null : new BigDecimal(input);
 	
-	private final Function<? super String, ? extends Date> dateFormatFunction;
+	private final Function2<? super String, ? extends Date> dateFormatFunction;
 	
-	public OpenCsvImportColumnBuilder(Function<? super String, ? extends Date> dateFormatFunction) {
+	public OpenCsvImportColumnBuilder(Function2<? super String, ? extends Date> dateFormatFunction) {
 		super();
 		this.dateFormatFunction = dateFormatFunction;
 	}
 
 	@Override
 	public OpenCsvTypeState withHeader(AbstractTableImportColumnSet<CsvTable, CsvRow, CsvCell, CsvCellReference> columnSet, String headerLabel,
-			Predicate<? super String> predicate, int indexAmongMatchedColumns, MappingConstraint mappingConstraint) {
+			Predicate2<? super String> predicate, int indexAmongMatchedColumns, MappingConstraint mappingConstraint) {
 		return new OpenCsvTypeState(columnSet, new HeaderLabelOpenCsvImportColumnMapper(headerLabel, predicate, indexAmongMatchedColumns, mappingConstraint));
 	}
 
@@ -88,17 +81,10 @@ public class OpenCsvImportColumnBuilder extends AbstractTableImportColumnBuilder
 		}
 
 		@Override
-		public StringState<CsvTable, CsvRow, CsvCell, CsvCellReference> asString(final Supplier<? extends NumberFormat> formatIfNumeric) {
-			return new TypeStateSwitcher<CsvCell>(Functions.<CsvCell>identity()).toString(new Function<CsvCell, String>() {
-				@Override
-				public String apply(CsvCell cell) {
-					if (cell == null) {
-						return null;
-					}
-					
-					return cell.getContent();
-				}
-			});
+		public StringState<CsvTable, CsvRow, CsvCell, CsvCellReference> asString(final Supplier2<? extends NumberFormat> formatIfNumeric) {
+			return new TypeStateSwitcher<CsvCell>(Functions2.<CsvCell>identity()).toString(
+					(cell) -> cell != null ? cell.getContent() : null
+			);
 		}
 
 		@Override

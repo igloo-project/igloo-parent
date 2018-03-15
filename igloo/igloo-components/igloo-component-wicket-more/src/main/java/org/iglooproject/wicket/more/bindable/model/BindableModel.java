@@ -9,27 +9,26 @@ import org.apache.wicket.model.AbstractPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.bindgen.BindingRoot;
-
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
-import com.google.common.base.Supplier;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.commons.util.fieldpath.FieldPathPropertyComponent;
+import org.iglooproject.functional.Functions2;
+import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.bindable.exception.NoSuchModelException;
 import org.iglooproject.wicket.more.model.WorkingCopyModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
+
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 
 public class BindableModel<E> implements IBindableModel<E> {
 	
 	private static final long serialVersionUID = -1361726182147235268L;
 
 	@SuppressWarnings("rawtypes") // Works for any T
-	private static enum BindableModelWrappingFunction implements Function<IModel, IBindableModel> {
+	private static enum BindableModelWrappingFunction implements SerializableFunction2<IModel, IBindableModel> {
 		INSTANCE;
 		@Override
 		@SuppressWarnings("unchecked")
@@ -37,16 +36,16 @@ public class BindableModel<E> implements IBindableModel<E> {
 			return input instanceof IBindableModel ? (IBindableModel) input : new BindableModel(input);
 		}
 		@SuppressWarnings("unchecked")
-		private static <T> Function<? super IModel<T>, ? extends IBindableModel<T>> get() {
+		private static <T> SerializableFunction2<? super IModel<T>, ? extends IBindableModel<T>> get() {
 			// We are absolutely sure that the returned IBindableModel will be a IBindableModel<T>
 			// We do two casts here to prevent the javac compiler to raise an error (it's a hack)
-			return (Function<? super IModel<T>, ? extends IBindableModel<T>>)
+			return (SerializableFunction2<? super IModel<T>, ? extends IBindableModel<T>>)
 					(Object) BindableModelWrappingFunction.INSTANCE;
 		}
 	}
 	
-	public static <T> Function<? super T, ? extends IBindableModel<T>> factory(Function<? super T, ? extends IModel<T>> function) {
-		return Functions.compose(BindableModelWrappingFunction.<T>get(), function);
+	public static <T> SerializableFunction2<? super T, ? extends IBindableModel<T>> factory(SerializableFunction2<? super T, ? extends IModel<T>> function) {
+		return Functions2.compose(BindableModelWrappingFunction.<T>get(), function);
 	}
 	
 	private IModel<E> mainModel;
@@ -140,6 +139,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 		return propertyModels;
 	}
 	
+	
 	private Multimap<FieldPath, BindableModel<?>> getPropertyModelsByImpactingPaths() {
 		if (propertyModelsByImpactingPaths == null) {
 			propertyModelsByImpactingPaths = LinkedHashMultimap.create();
@@ -196,8 +196,9 @@ public class BindableModel<E> implements IBindableModel<E> {
 	@Override
 	public <T, C extends Collection<T>> IBindableCollectionModel<T, C> bindCollectionWithCache(
 			BindingRoot<? super E, C> binding,
-			Supplier<? extends C> newCollectionSupplier,
-			Function<? super T, ? extends IModel<T>> itemModelFunction) {
+			SerializableSupplier2<? extends C> newCollectionSupplier,
+			SerializableFunction2<? super T, ? extends IModel<T>> itemModelFunction
+	) {
 		FieldPath path = FieldPath.fromBinding(binding);
 		return bindCollectionWithCache(this, path, path, newCollectionSupplier, itemModelFunction);
 	}
@@ -206,8 +207,9 @@ public class BindableModel<E> implements IBindableModel<E> {
 			BindableModel<?> rootBindableModel,
 			FieldPath originalPath,
 			FieldPath path,
-			Supplier<? extends C> newCollectionSupplier,
-			Function<? super T, ? extends IModel<T>> itemModelFunction) {
+			SerializableSupplier2<? extends C> newCollectionSupplier,
+			SerializableFunction2<? super T, ? extends IModel<T>> itemModelFunction
+	) {
 		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
 		if (owner != this) {
 			return owner.bindCollectionWithCache(
@@ -273,16 +275,23 @@ public class BindableModel<E> implements IBindableModel<E> {
 	}
 	
 	@Override
-	public <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapWithCache(BindingRoot<? super E, M> binding,
-			Supplier<? extends M> newMapSupplier, Function<? super K, ? extends IModel<K>> keyModelFunction,
-			Function<? super V, ? extends IModel<V>> valueModelFunction) {
+	public <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapWithCache(
+			BindingRoot<? super E, M> binding,
+			SerializableSupplier2<? extends M> newMapSupplier,
+			SerializableFunction2<? super K, ? extends IModel<K>> keyModelFunction,
+			SerializableFunction2<? super V, ? extends IModel<V>> valueModelFunction
+	) {
 		FieldPath path = FieldPath.fromBinding(binding);
 		return bindMapWithCache(this, path, path, newMapSupplier, keyModelFunction, valueModelFunction);
 	}
 	
-	private <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapWithCache(BindableModel<?> rootBindableModel,
-			FieldPath originalPath, FieldPath path, Supplier<? extends M> newMapSupplier, Function<? super K, ? extends IModel<K>> keyModelFunction,
-			Function<? super V, ? extends IModel<V>> valueModelFunction) {
+	private <K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapWithCache(
+			BindableModel<?> rootBindableModel,
+			FieldPath originalPath, FieldPath path,
+			SerializableSupplier2<? extends M> newMapSupplier,
+			SerializableFunction2<? super K, ? extends IModel<K>> keyModelFunction,
+			SerializableFunction2<? super V, ? extends IModel<V>> valueModelFunction
+	) {
 		BindableModel<?> owner = getOrCreateSimpleModel(path.parent().get());
 		if (owner != this) {
 			return owner.bindMapWithCache(

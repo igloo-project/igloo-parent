@@ -6,14 +6,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.wicket.markup.ComponentTag;
+import org.iglooproject.commons.util.ordering.SerializableCollator;
+import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssService.IHtmlNotificationCssRegistry;
 import org.jsoup.nodes.Node;
 import org.springframework.util.Assert;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -27,9 +28,6 @@ import com.helger.css.decl.CSSStyleRule;
 import com.helger.css.decl.CascadingStyleSheet;
 import com.helger.css.decl.ICSSSelectorMember;
 import com.helger.css.writer.CSSWriterSettings;
-
-import org.iglooproject.commons.util.ordering.SerializableCollator;
-import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssService.IHtmlNotificationCssRegistry;
 
 /**
  * A simple IHtmlNotificationCssRegistry using Phloc CSS.
@@ -79,12 +77,10 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
 		Map<CSSStyleRule, CssSelectorSpecificity> matchedRules = Maps.newHashMap();
 		for (CSSStyleRule rule : styleSheet.getAllStyleRules()) {
 			Collection<CSSSelector> matchedSelectors = getMatchedSelectors(matchableTag, rule);
-			Collection<CssSelectorSpecificity> matchedSelectorsSpecificities = Collections2.transform(matchedSelectors, new Function<CSSSelector, CssSelectorSpecificity>() {
-				@Override
-				public CssSelectorSpecificity apply(CSSSelector input) {
-					return computeSpecificity(input);
-				}
-			});
+			Collection<CssSelectorSpecificity> matchedSelectorsSpecificities = matchedSelectors
+					.stream()
+					.map((input) -> computeSpecificity(input))
+					.collect(Collectors.toList());
 			if (!matchedSelectorsSpecificities.isEmpty()) {
 				matchedRules.put(rule, Ordering.natural().max(matchedSelectorsSpecificities));
 			}
@@ -122,12 +118,10 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
 			}
 		}
 		
-		return Collections2.transform(mergedDeclarations.values(), new Function<Pair<CSSDeclaration, CssDeclarationPrecedence>, CSSDeclaration>() {
-			@Override
-			public CSSDeclaration apply(Pair<CSSDeclaration, CssDeclarationPrecedence> input) {
-				return input.getLeft();
-			}
-		});
+		return mergedDeclarations.values()
+				.stream()
+				.map((input) -> input.getLeft())
+				.collect(Collectors.toList());
 	}
 	
 	private CssSelectorSpecificity computeSpecificity(CSSSelector selector) {

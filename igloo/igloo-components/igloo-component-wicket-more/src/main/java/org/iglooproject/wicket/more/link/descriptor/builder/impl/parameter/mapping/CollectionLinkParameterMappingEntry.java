@@ -9,14 +9,9 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
-import org.javatuples.Unit;
-import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
-import com.google.common.base.Supplier;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.Functions2;
+import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.AbstractLinkParameterMappingEntry;
@@ -26,6 +21,8 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.IL
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.SimpleMandatoryCollectionLinkParameterValidator;
 import org.iglooproject.wicket.more.link.service.ILinkParameterConversionService;
+import org.javatuples.Unit;
+import org.springframework.core.convert.TypeDescriptor;
 
 @SuppressWarnings("rawtypes")
 public class CollectionLinkParameterMappingEntry<C extends Collection>
@@ -34,8 +31,8 @@ public class CollectionLinkParameterMappingEntry<C extends Collection>
 	private static final long serialVersionUID = 2126702467532153474L;
 	
 	public static <C extends Collection> ILinkParameterMappingEntryFactory<Unit<IModel<C>>>
-			factory(final String parameterName, final Supplier<? extends TypeDescriptor> typeDescriptorSupplier,
-					final Supplier<C> emptyCollectionSupplier) {
+			factory(final String parameterName, final SerializableSupplier2<? extends TypeDescriptor> typeDescriptorSupplier,
+					final SerializableSupplier2<C> emptyCollectionSupplier) {
 		Args.notNull(parameterName, "parameterName");
 		
 		return new AbstractLinkParameterMappingEntryFactory<Unit<IModel<C>>>() {
@@ -51,12 +48,12 @@ public class CollectionLinkParameterMappingEntry<C extends Collection>
 	
 	protected final String parameterName;
 	protected final IModel<C> mappedModel;
-	protected final Supplier<? extends TypeDescriptor> typeDescriptorSupplier;
-	protected final Function<? super C, ? extends C> collectionCustomizerFunction;
+	protected final SerializableSupplier2<? extends TypeDescriptor> typeDescriptorSupplier;
+	protected final SerializableFunction2<? super C, ? extends C> collectionCustomizerFunction;
 
 	public CollectionLinkParameterMappingEntry(String parameterName, IModel<C> mappedModel,
-			Supplier<? extends TypeDescriptor> typeDescriptorSupplier) {
-		this(parameterName, mappedModel, typeDescriptorSupplier, Functions.<C>identity());
+			SerializableSupplier2<? extends TypeDescriptor> typeDescriptorSupplier) {
+		this(parameterName, mappedModel, typeDescriptorSupplier, Functions2.<C>identity());
 	}
 	
 	/**
@@ -64,12 +61,12 @@ public class CollectionLinkParameterMappingEntry<C extends Collection>
 	 *                                the conversionService itself (for example, instantiation of TreeSet with a specific comparator)
 	 */
 	public CollectionLinkParameterMappingEntry(String parameterName, IModel<C> mappedModel,
-			Supplier<? extends TypeDescriptor> typeDescriptorSupplier,
-			final Supplier<? extends C> emptyCollectionSupplier) {
+			SerializableSupplier2<? extends TypeDescriptor> typeDescriptorSupplier,
+			final SerializableSupplier2<? extends C> emptyCollectionSupplier) {
 		this(parameterName, mappedModel, typeDescriptorSupplier,
 				emptyCollectionSupplier == null
-				? Functions.<C>identity()
-				: new SerializableFunction<C, C>() {
+				? Functions2.<C>identity()
+				: new SerializableFunction2<C, C>() {
 					private static final long serialVersionUID = 1L;
 					@Override
 					@SuppressWarnings("unchecked")
@@ -82,8 +79,8 @@ public class CollectionLinkParameterMappingEntry<C extends Collection>
 	}
 	
 	public CollectionLinkParameterMappingEntry(String parameterName, IModel<C> mappedModel,
-			Supplier<? extends TypeDescriptor> typeDescriptorSupplier,
-			Function<? super C, ? extends C> collectionCustomizerFunction) {
+			SerializableSupplier2<? extends TypeDescriptor> typeDescriptorSupplier,
+			SerializableFunction2<? super C, ? extends C> collectionCustomizerFunction) {
 		checkNotNull(parameterName);
 		checkNotNull(mappedModel);
 		checkNotNull(typeDescriptorSupplier);

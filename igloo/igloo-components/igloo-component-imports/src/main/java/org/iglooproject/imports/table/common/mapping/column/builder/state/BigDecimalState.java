@@ -2,9 +2,8 @@ package org.iglooproject.imports.table.common.mapping.column.builder.state;
 
 import java.math.BigDecimal;
 
-import com.google.common.base.Function;
-
-import org.iglooproject.commons.util.functional.builder.function.generic.GenericBigDecimalFunctionBuildStateImpl;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.builder.function.generic.GenericBigDecimalFunctionBuildStateImpl;
 import org.iglooproject.imports.table.common.mapping.AbstractTableImportColumnSet;
 
 public abstract class BigDecimalState<TTable, TRow, TCell, TCellReference> extends GenericBigDecimalFunctionBuildStateImpl
@@ -22,7 +21,7 @@ public abstract class BigDecimalState<TTable, TRow, TCell, TCellReference> exten
 		implements ColumnFunctionBuildState<TTable, TRow, TCell, TCellReference, BigDecimal> {
 		
 	@Override
-	public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function<? super BigDecimal, TValue> function) {
+	public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function2<? super BigDecimal, TValue> function) {
 		return getStateSwitcher().toGeneric(function);
 	}
 

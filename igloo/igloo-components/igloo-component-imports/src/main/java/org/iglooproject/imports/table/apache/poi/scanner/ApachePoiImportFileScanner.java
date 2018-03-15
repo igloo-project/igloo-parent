@@ -21,17 +21,16 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellReference;
-
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableMap;
-
-import de.schlichtherle.truezip.file.TFileInputStream;
-import org.iglooproject.commons.util.functional.SerializablePredicate;
+import org.iglooproject.functional.Predicate2;
+import org.iglooproject.functional.Predicates2;
 import org.iglooproject.imports.table.apache.poi.location.ApachePoiImportNavigator;
 import org.iglooproject.imports.table.common.event.exception.TableImportException;
 import org.iglooproject.imports.table.common.event.exception.TableImportFileException;
 import org.iglooproject.imports.table.common.excel.scanner.IExcelImportFileScanner;
+
+import com.google.common.collect.ImmutableMap;
+
+import de.schlichtherle.truezip.file.TFileInputStream;
 
 public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workbook, Sheet, Row, Cell, CellReference> {
 	
@@ -51,18 +50,14 @@ public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workb
 		return DEFAULT_DIRECTORY_CHILD_FILTER;
 	}
 	
-	protected static final Map<SheetSelection, ? extends Predicate<? super Sheet>> SELECTIONS_PREDICATES = ImmutableMap.of(
-			SheetSelection.ALL, Predicates.<Sheet>alwaysTrue(),
-			SheetSelection.NON_HIDDEN_ONLY, new SerializablePredicate<Sheet>() {
-				private static final long serialVersionUID = 1L;
-				@Override
-				public boolean apply(Sheet sheet) {
-					if (sheet == null) {
-						return false;
-					}
-					Workbook workbook = sheet.getWorkbook();
-					return !workbook.isSheetHidden(workbook.getSheetIndex(sheet));
+	protected static final Map<SheetSelection, ? extends Predicate2<? super Sheet>> SELECTIONS_PREDICATES = ImmutableMap.of(
+			SheetSelection.ALL, Predicates2.<Sheet>alwaysTrue(),
+			SheetSelection.NON_HIDDEN_ONLY, (sheet) -> {
+				if (sheet == null) {
+					return false;
 				}
+				Workbook workbook = sheet.getWorkbook();
+				return !workbook.isSheetHidden(workbook.getSheetIndex(sheet));
 			}
 	);
 
@@ -92,7 +87,7 @@ public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workb
 		try (InputStream stream = new TFileInputStream(file); Workbook workbook = WorkbookFactory.create(stream)) {
 			for (int index = 0 ; index < workbook.getNumberOfSheets() ; ++index) {
 				Sheet sheet = workbook.getSheetAt(index);
-				if (navigator.tableHasContent(sheet) && SELECTIONS_PREDICATES.get(selection).apply(sheet)) {
+				if (navigator.tableHasContent(sheet) && SELECTIONS_PREDICATES.get(selection).test(sheet)) {
 					visitor.visitSheet(navigator, workbook, sheet);
 				}
 			}
@@ -110,7 +105,7 @@ public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workb
 		try (Workbook workbook = WorkbookFactory.create(stream)) {
 			for (int index = 0 ; index < workbook.getNumberOfSheets() ; ++index) {
 				Sheet sheet = workbook.getSheetAt(index);
-				if (navigator.tableHasContent(sheet) && SELECTIONS_PREDICATES.get(selection).apply(sheet)) {
+				if (navigator.tableHasContent(sheet) && SELECTIONS_PREDICATES.get(selection).test(sheet)) {
 					visitor.visitSheet(navigator, workbook, sheet);
 				}
 			}

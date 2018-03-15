@@ -1,10 +1,9 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action.state;
 
 import org.apache.wicket.behavior.Behavior;
+import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.springframework.security.acls.model.Permission;
-
-import com.google.common.base.Predicate;
 
 public interface IActionColumnAddedLinkState<T, I> extends IActionColumnAddedElementState<T, I> {
 
@@ -60,7 +59,7 @@ public interface IActionColumnAddedLinkState<T, I> extends IActionColumnAddedEle
 	IActionColumnAddedLinkState<T, I> when(Condition condition);
 
 	@Override
-	IActionColumnAddedLinkState<T, I> when(Predicate<? super T> predicate);
+	IActionColumnAddedLinkState<T, I> when(SerializablePredicate2<? super T> predicate);
 
 	@Override
 	IActionColumnAddedLinkState<T, I> whenPermission(String permission);

@@ -6,10 +6,8 @@ import java.util.Iterator;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
-
+import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 import org.iglooproject.wicket.more.model.CollectionCopyModel;
 import org.iglooproject.wicket.more.model.WorkingCopyCollectionModel;
@@ -20,8 +18,8 @@ public class BindableCollectionModel<T, C extends Collection<T>> extends Bindabl
 	
 	private final IItemModelAwareCollectionModel<T, C, IBindableModel<T>> mainModel;
 
-	public BindableCollectionModel(IModel<C> referenceModel, Supplier<? extends C> newCollectionSupplier,
-			Function<? super T, ? extends IModel<T>> itemModelFunction) {
+	public BindableCollectionModel(IModel<C> referenceModel, SerializableSupplier2<? extends C> newCollectionSupplier,
+			SerializableFunction2<? super T, ? extends IModel<T>> itemModelFunction) {
 		this(
 				new WorkingCopyCollectionModel<>(
 						referenceModel,

@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.infinispan.model.IAttribution;
 import org.iglooproject.infinispan.model.SimpleLock;
 import org.iglooproject.infinispan.model.SimpleRole;
@@ -58,7 +59,6 @@ import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
-import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
@@ -100,12 +100,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	private ScheduledThreadPoolExecutor initQueuesFromDatabaseExecutor;
 
 	private final Multimap<TaskQueue, TaskConsumer> consumersByQueue
-			= Multimaps.newListMultimap(new HashMap<TaskQueue, Collection<TaskConsumer>>(), new Supplier<List<TaskConsumer>>() {
-				@Override
-				public List<TaskConsumer> get() {
-					return Lists.newArrayList();
-				}
-			});
+			= Multimaps.newListMultimap(new HashMap<TaskQueue, Collection<TaskConsumer>>(), Suppliers2.arrayList());
 	
 	private final Map<String, TaskQueue> queuesById = Maps.newHashMap();
 	

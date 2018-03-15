@@ -3,17 +3,15 @@ package org.iglooproject.wicket.more.link.descriptor.mapper;
 import java.util.Iterator;
 
 import org.apache.wicket.model.IModel;
-import org.javatuples.Pair;
-
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.link.descriptor.generator.IImageResourceLinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import org.iglooproject.wicket.more.link.util.LinkDescriptors;
 import org.iglooproject.wicket.more.model.SafeCastModel;
+import org.javatuples.Pair;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * A {@link IOneParameterLinkDescriptorMapper} that will delegate to other link descriptor mappers.
@@ -35,15 +33,7 @@ public class ChainedLinkGeneratorMapper<L extends ILinkGenerator, T>
 	 * {@link IPageLinkGenerator page link generators}.
 	 */
 	public static <T> Builder<IPageLinkGenerator, T> forPage() {
-		return new Builder<>(
-				new SerializableFunction<Pair<IPageLinkGenerator, IPageLinkGenerator>, IPageLinkGenerator>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public IPageLinkGenerator apply(Pair<IPageLinkGenerator, IPageLinkGenerator> input) {
-						return input.getValue0().chain(input.getValue1());
-					}
-				}
-		);
+		return new Builder<>((input) -> input.getValue0().chain(input.getValue1()));
 	}
 
 	/**
@@ -51,15 +41,7 @@ public class ChainedLinkGeneratorMapper<L extends ILinkGenerator, T>
 	 * {@link ILinkGenerator resource link generators}.
 	 */
 	public static <T> Builder<ILinkGenerator, T> forResource() {
-		return new Builder<>(
-				new SerializableFunction<Pair<ILinkGenerator, ILinkGenerator>, ILinkGenerator>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public ILinkGenerator apply(Pair<ILinkGenerator, ILinkGenerator> input) {
-						return input.getValue0().chain(input.getValue1());
-					}
-				}
-		);
+		return new Builder<>((input) -> input.getValue0().chain(input.getValue1()));
 	}
 
 	/**
@@ -67,24 +49,16 @@ public class ChainedLinkGeneratorMapper<L extends ILinkGenerator, T>
 	 * {@link IImageResourceLinkGenerator image resource link generators}.
 	 */
 	public static <T> Builder<IImageResourceLinkGenerator, T> forImage() {
-		return new Builder<>(
-				new SerializableFunction<Pair<IImageResourceLinkGenerator, IImageResourceLinkGenerator>, IImageResourceLinkGenerator>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public IImageResourceLinkGenerator apply(Pair<IImageResourceLinkGenerator, IImageResourceLinkGenerator> input) {
-						return input.getValue0().chain(input.getValue1());
-					}
-				}
-		);
+		return new Builder<>((input) -> input.getValue0().chain(input.getValue1()));
 	}
 	
 	public static class Builder<L extends ILinkGenerator, T> {
 		
 		private final ImmutableList.Builder<ILinkDescriptorMapper<? extends L, IModel<T>>> chain = ImmutableList.builder();
 		
-		private final Function<? super Pair<L, L>, ? extends L> generatorChainFunction;
+		private final SerializableFunction2<? super Pair<L, L>, ? extends L> generatorChainFunction;
 		
-		private Builder(Function<? super Pair<L, L>, ? extends L> generatorChainFunction) {
+		private Builder(SerializableFunction2<? super Pair<L, L>, ? extends L> generatorChainFunction) {
 			this.generatorChainFunction = generatorChainFunction;
 		}
 		
@@ -129,10 +103,10 @@ public class ChainedLinkGeneratorMapper<L extends ILinkGenerator, T>
 	
 	private final Iterable<ILinkDescriptorMapper<? extends L, IModel<T>>> chain;
 	
-	private final Function<? super Pair<L, L>, ? extends L> generatorChainFunction;
+	private final SerializableFunction2<? super Pair<L, L>, ? extends L> generatorChainFunction;
 	
 	public ChainedLinkGeneratorMapper(Iterable<ILinkDescriptorMapper<? extends L, IModel<T>>> chain,
-			Function<? super Pair<L, L>, ? extends L> generatorChainFunction) {
+			SerializableFunction2<? super Pair<L, L>, ? extends L> generatorChainFunction) {
 		this.chain = chain;
 		this.generatorChainFunction = generatorChainFunction;
 	}

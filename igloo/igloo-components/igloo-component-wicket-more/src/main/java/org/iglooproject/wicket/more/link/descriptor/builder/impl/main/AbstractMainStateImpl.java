@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.bindgen.BindingRoot;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
@@ -33,7 +34,6 @@ import org.javatuples.Pair;
 import org.javatuples.Tuple;
 import org.springframework.core.convert.TypeDescriptor;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 
@@ -121,7 +121,7 @@ abstract class AbstractMainStateImpl
 	@SuppressWarnings("rawtypes")
 	public <RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<TSelf>
 			mapCollection(String parameterName, IModel<C> valueModel, Class<RawC> rawCollectionType,
-					TypeDescriptor elementTypeDescriptor, Supplier<C> emptyCollectionSupplier) {
+					TypeDescriptor elementTypeDescriptor, SerializableSupplier2<C> emptyCollectionSupplier) {
 		return map(new CollectionLinkParameterMappingEntry<>(
 				parameterName, valueModel,
 				LinkParameterTypeInformation.collection(rawCollectionType, elementTypeDescriptor)

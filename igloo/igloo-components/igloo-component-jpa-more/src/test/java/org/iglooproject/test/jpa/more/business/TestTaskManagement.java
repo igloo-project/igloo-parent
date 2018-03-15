@@ -10,19 +10,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.common.base.Supplier;
-import com.google.common.collect.Maps;
-import com.google.common.util.concurrent.RateLimiter;
-
+import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.business.generic.service.IEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -34,6 +22,17 @@ import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
 import org.iglooproject.test.jpa.more.business.task.config.TestTaskManagementConfig;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.RateLimiter;
 
 @ContextConfiguration(classes = TestTaskManagementConfig.class)
 public class TestTaskManagement extends AbstractJpaMoreTestCase {
@@ -53,7 +52,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 	 * A utility used to check that a given task has been correctly executed.
 	 * <p>Designed to always reference the same value, even having been serialized with Jackson.
 	 */
-	protected static class StaticValueAccessor<T> implements Supplier<T>, Serializable {
+	protected static class StaticValueAccessor<T> implements Supplier2<T>, Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		protected static final ConcurrentMap<Integer, Object> values = Maps.newConcurrentMap();

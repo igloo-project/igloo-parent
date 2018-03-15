@@ -18,7 +18,14 @@
 		<!-- Igloo -->
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>bindgen-java</artifactId>
+			<artifactId>bindgen-functional</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-functional</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<!-- Apache Commons -->
@@ -55,11 +62,6 @@
 		<dependency>
 			<groupId>org.javatuples</groupId>
 			<artifactId>javatuples</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.danekja</groupId>
-			<artifactId>jdk-serializable-functional</artifactId>
 		</dependency>
 		
 		<!-- Bindgen -->

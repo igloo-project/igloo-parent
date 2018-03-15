@@ -9,7 +9,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang3.Validate;
-import org.iglooproject.commons.util.functional.Predicates2;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.Predicate2;
+import org.iglooproject.functional.Predicates2;
 import org.iglooproject.imports.table.common.event.ITableImportEventHandler;
 import org.iglooproject.imports.table.common.event.TableImportEvent;
 import org.iglooproject.imports.table.common.event.TableImportEvent.ExcelImportErrorEvent;
@@ -28,12 +30,10 @@ import org.iglooproject.imports.table.common.mapping.column.builder.MappingConst
 import org.iglooproject.imports.table.common.mapping.column.builder.state.TypeState;
 
 import com.google.common.base.Equivalence;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
+import com.google.common.collect.Streams;
 
 /**
  * The central class of this Excel import framework.
@@ -81,7 +81,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 	}
 	
 	public final TypeState<TTable, TRow, TCell, TCellReference>  withHeader(String headerLabel, Equivalence<? super String> headerEquivalence, int indexAmongMatchedColumns, MappingConstraint mappingConstraint) {
-		return builder.withHeader(this, headerLabel, headerEquivalence.equivalentTo(headerLabel), indexAmongMatchedColumns, mappingConstraint);
+		return builder.withHeader(this, headerLabel, Predicates2.from(headerEquivalence.equivalentTo(headerLabel)), indexAmongMatchedColumns, mappingConstraint);
 	}
 	
 	public final TypeState<TTable, TRow, TCell, TCellReference>  withHeader(String headerLabel, Comparator<? super String> collator, int indexAmongMatchedColumns, MappingConstraint mappingConstraint) {
@@ -100,12 +100,12 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 	public class Column<TValue> implements ITableImportColumnDefinition<TTable, TRow, TCell, TCellReference, TValue> {
 		private final ITableImportColumnMapper<TTable, TRow, TCell, TCellReference> mapper;
 		
-		private final Function<? super TCell, ? extends TValue> cellToValueFunction;
+		private final Function2<? super TCell, ? extends TValue> cellToValueFunction;
 		
-		private final Predicate<? super TValue> mandatoryValuePredicate;
+		private final Predicate2<? super TValue> mandatoryValuePredicate;
 
 		public Column(ITableImportColumnMapper<TTable, TRow, TCell, TCellReference> mapper,
-				Function<? super TCell, ? extends TValue> cellToValueFunction, Predicate<? super TValue> mandatoryValuePredicate) {
+				Function2<? super TCell, ? extends TValue> cellToValueFunction, Predicate2<? super TValue> mandatoryValuePredicate) {
 			super();
 			this.mapper = mapper;
 			this.cellToValueFunction = cellToValueFunction;
@@ -118,7 +118,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		@Override
 		public IMappedExcelImportColumnDefinition<TTable, TRow, TCell, TCellReference, TValue> map(TTable sheet, ITableImportNavigator<TTable, TRow, TCell, TCellReference> navigator,
 				ITableImportEventHandler eventHandler) throws TableImportMappingException {
-			Function<? super TRow, ? extends TCellReference> rowToCellReferenceFunction = mapper.tryMap(sheet, navigator, eventHandler);
+			Function2<? super TRow, ? extends TCellReference> rowToCellReferenceFunction = mapper.tryMap(sheet, navigator, eventHandler);
 			return new MappedTableImportColumnDefinitionImpl<TTable, TRow, TCell, TCellReference, TValue>(sheet, rowToCellReferenceFunction, navigator, cellToValueFunction, mandatoryValuePredicate);
 		}
 	}
@@ -161,12 +161,9 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		}
 		
 		protected Iterator<RowContext> toRowContexts(Iterator<TRow> rows) {
-			return Iterators.transform(rows, new Function<TRow, RowContext>() {
-				@Override
-				public RowContext apply(TRow input) {
-					return row(input);
-				}
-			});
+			return Streams.stream(rows)
+					.map((input) -> row(input))
+					.iterator();
 		}
 		
 		public Iterable<RowContext> nonEmptyRows() {

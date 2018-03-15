@@ -5,11 +5,8 @@ import java.util.Map;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
 import org.iglooproject.wicket.more.util.model.Models;
 
@@ -33,11 +30,11 @@ public final class MapCopyModel<K, V, M extends Map<K, V>, MK extends IModel<K>,
 
 	private static final long serialVersionUID = 5159538764516521470L;
 
-	private final Supplier<? extends M> newMapSupplier;
+	private final SerializableSupplier2<? extends M> newMapSupplier;
 
-	private final Function<? super K, ? extends MK> keyModelFunction;
+	private final SerializableFunction2<? super K, ? extends MK> keyModelFunction;
 
-	private final Function<? super V, ? extends MV> valueModelFunction;
+	private final SerializableFunction2<? super V, ? extends MV> valueModelFunction;
 
 	/**
 	 * Creates a map copy model suitable for keys and values that may be safely serialized as is, such as enums.
@@ -45,7 +42,7 @@ public final class MapCopyModel<K, V, M extends Map<K, V>, MK extends IModel<K>,
 	 */
 	public static <K extends Serializable, V extends Serializable, M extends Map<K, V>>
 			MapCopyModel<K, V, M, Model<K>, Model<V>>
-			serializable(Supplier<? extends M> newMapSupplier) {
+			serializable(SerializableSupplier2<? extends M> newMapSupplier) {
 		return new MapCopyModel<>(newMapSupplier, Models.<K>serializableModelFactory(), Models.<V>serializableModelFactory());
 	}
 
@@ -54,32 +51,28 @@ public final class MapCopyModel<K, V, M extends Map<K, V>, MK extends IModel<K>,
 	 */
 	public static <K, V, M extends Map<K, V>, MK extends IModel<K>, MV extends IModel<V>>
 			MapCopyModel<K, V, M, MK, MV>
-			custom(Supplier<? extends M> newMapSupplier, Function<? super K, ? extends MK> keyModelFunction,
-					Function<? super V, ? extends MV> valueModelFunction) {
+			custom(SerializableSupplier2<? extends M> newMapSupplier, SerializableFunction2<? super K, ? extends MK> keyModelFunction,
+					SerializableFunction2<? super V, ? extends MV> valueModelFunction) {
 		return new MapCopyModel<>(newMapSupplier, keyModelFunction, valueModelFunction);
 	}
 
 	/**
-	 * @return A factory that will call {@link #custom(Supplier, Function, Function)} and put the input object in it.
+	 * @return A factory that will call {@link #custom(SerializableSupplier2, SerializableFunction2, SerializableFunction2)} and put the input object in it.
 	 */
 	public static <K, V, M extends Map<K, V>, MK extends IModel<K>, MV extends IModel<V>>
-			Function<M, MapCopyModel<K, V, M, MK, MV>>
-			factory(final Supplier<? extends M> newMapSupplier,
-					final Function<? super K, ? extends MK> keyModelFunction,
-					final Function<? super V, ? extends MV> valueModelFunction) {
-		return new SerializableFunction<M, MapCopyModel<K, V, M, MK, MV>>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public MapCopyModel<K, V, M, MK, MV> apply(M input) {
-				MapCopyModel<K, V, M, MK, MV> result = custom(newMapSupplier, keyModelFunction, valueModelFunction);
-				result.setObject(input);
-				return result;
-			}
+			SerializableFunction2<M, MapCopyModel<K, V, M, MK, MV>>
+			factory(final SerializableSupplier2<? extends M> newMapSupplier,
+					final SerializableFunction2<? super K, ? extends MK> keyModelFunction,
+					final SerializableFunction2<? super V, ? extends MV> valueModelFunction) {
+		return (input) -> {
+			MapCopyModel<K, V, M, MK, MV> result = custom(newMapSupplier, keyModelFunction, valueModelFunction);
+			result.setObject(input);
+			return result;
 		};
 	}
 	
-	private MapCopyModel(Supplier<? extends M> newMapSupplier, Function<? super K, ? extends MK> keyModelFunction,
-			Function<? super V, ? extends MV> valueModelFunction) {
+	private MapCopyModel(SerializableSupplier2<? extends M> newMapSupplier, SerializableFunction2<? super K, ? extends MK> keyModelFunction,
+			SerializableFunction2<? super V, ? extends MV> valueModelFunction) {
 		super();
 		this.newMapSupplier = newMapSupplier;
 		this.keyModelFunction = keyModelFunction;

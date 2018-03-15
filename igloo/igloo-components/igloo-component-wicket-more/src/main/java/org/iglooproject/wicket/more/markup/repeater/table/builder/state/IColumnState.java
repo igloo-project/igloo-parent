@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.ActionColumnBuilder;
@@ -12,7 +13,6 @@ import org.iglooproject.wicket.more.markup.repeater.table.column.ICoreColumn;
 import org.iglooproject.wicket.more.rendering.Renderer;
 import org.iglooproject.wicket.more.util.IDatePattern;
 
-import com.google.common.base.Function;
 
 public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 
@@ -30,9 +30,9 @@ public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 	<C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
 			ICoreBinding<? super T, C> binding, Renderer<? super C> renderer);
 
-	<C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, Function<? super T, C> function);
+	<C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, SerializableFunction2<? super T, C> function);
 
-	<C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, Function<? super T, C> function,
+	<C> IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, SerializableFunction2<? super T, C> function,
 			Renderer<? super C> renderer);
 
 	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
@@ -42,7 +42,7 @@ public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 			ICoreBinding<? super T, C> binding, BootstrapRenderer<? super C> renderer);
 
 	<C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-			Function<? super T, C> function, BootstrapRenderer<? super C> renderer);
+			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer);
 
 	/**
 	 * @deprecated Bootstrap Labels no longer exist in Bootstrap 4 and are replaced by Bootstrap Badge instead.
@@ -56,7 +56,7 @@ public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 	 */
 	@Deprecated
 	<C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-			Function<? super T, C> function, BootstrapRenderer<? super C> renderer);
+			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer);
 
 	<C> IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
 			ICoreBinding<? super T, Boolean> binding);

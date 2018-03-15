@@ -21,7 +21,6 @@ import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.administration.form.UserPasswordUpdatePopup;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.navigation.link.LinkFactory;
-import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -43,25 +42,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-import com.google.common.base.Function;
-
 public class AdministrationUserDetailTemplate<U extends User> extends AdministrationTemplate {
 
 	private static final long serialVersionUID = -550100874222819991L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdministrationUserDetailTemplate.class);
 
-	private static final Function<User, Class<? extends Page>> USER_TO_FICHE_CLASS_FUNCTION =
-			new SerializableFunction<User, Class<? extends Page>>() {
-				private static final long serialVersionUID = 1L;
-				@Override
-				public Class<? extends Page> apply(User input) {
-					return input == null
-							? null
-							: UserTypeDescriptor.get(input).administrationTypeDescriptor().getDetailPageClass();
-				}
-			};
-			
 	public static final <U extends User> ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, U, Page> mapper() {
 		return mapper(User.class).<U>castParameter1();
 	}
@@ -73,7 +59,9 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 				.pickFirst().map(CommonParameters.ID).mandatory()
 				.pickSecond().map(CommonParameters.SOURCE_PAGE_ID).optional()
 				.pickFirst().page(DetachableFactories.forUnit(
-						ReadOnlyModel.<U, Class<? extends Page>>factory(USER_TO_FICHE_CLASS_FUNCTION)
+						ReadOnlyModel.factory(
+								(u) -> u == null ? null : UserTypeDescriptor.get(u).administrationTypeDescriptor().getDetailPageClass()
+						)
 				));
 	}
 	

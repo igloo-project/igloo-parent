@@ -9,12 +9,11 @@ import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.Model;
+import org.iglooproject.functional.Functions2;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.model.Models;
-
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
 
 public class ReadOnlyModel<F, T> implements IComponentAssignedModel<T> {
 
@@ -22,9 +21,9 @@ public class ReadOnlyModel<F, T> implements IComponentAssignedModel<T> {
 
 	private final IModel<? extends F> readModel;
 
-	private final Function<? super F, ? extends T> function;
+	private final SerializableFunction2<? super F, ? extends T> function;
 
-	public static final <F, T> IDetachableFactory<IModel<F>, IModel<T>> factory(final Function<? super F, T> function) {
+	public static final <F, T> IDetachableFactory<IModel<F>, IModel<T>> factory(final SerializableFunction2<? super F, T> function) {
 		return new IDetachableFactory<IModel<F>, IModel<T>>() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -39,22 +38,22 @@ public class ReadOnlyModel<F, T> implements IComponentAssignedModel<T> {
 	}
 
 	public static <T> ReadOnlyModel<T, T> of(IModel<? extends T> model) {
-		return new ReadOnlyModel<T, T>(model, Functions.<T>identity());
+		return new ReadOnlyModel<T, T>(model, Functions2.<T>identity());
 	}
 
 	public static <T extends Serializable> ReadOnlyModel<T, T> of(T object) {
-		return new ReadOnlyModel<T, T>(Model.of(object), Functions.<T>identity());
+		return new ReadOnlyModel<T, T>(Model.of(object), Functions2.<T>identity());
 	}
 
-	public static <F, T> ReadOnlyModel<F, T> of(IModel<F> model, Function<? super F, ? extends T> function) {
+	public static <F, T> ReadOnlyModel<F, T> of(IModel<F> model, SerializableFunction2<? super F, ? extends T> function) {
 		return new ReadOnlyModel<F, T>(model, function);
 	}
 
-	public static <F extends Serializable, T> ReadOnlyModel<F, T> of(F object, Function<? super F, ? extends T> function) {
+	public static <F extends Serializable, T> ReadOnlyModel<F, T> of(F object, SerializableFunction2<? super F, ? extends T> function) {
 		return new ReadOnlyModel<F, T>(Model.of(object), function);
 	}
 
-	protected ReadOnlyModel(IModel<? extends F> readModel, Function<? super F, ? extends T> function) {
+	protected ReadOnlyModel(IModel<? extends F> readModel, SerializableFunction2<? super F, ? extends T> function) {
 		super();
 		checkNotNull(readModel);
 		checkNotNull(function);

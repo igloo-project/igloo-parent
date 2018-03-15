@@ -10,17 +10,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.MissingResourceException;
 
-import org.apache.commons.text.WordUtils;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.IConverter;
-import org.iglooproject.commons.util.functional.Functions2;
-import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.commons.util.rendering.IRenderer;
+import org.iglooproject.functional.Functions2;
+import org.iglooproject.functional.Predicates2;
+import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.markup.html.basic.AbstractCoreLabel;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.model.LocaleAwareReadOnlyModel;
@@ -28,16 +28,12 @@ import org.iglooproject.wicket.more.util.IDatePattern;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.model.Models;
 
-import com.google.common.base.Function;
-import com.google.common.base.Functions;
 import com.google.common.base.Joiner;
 import com.google.common.base.Joiner.MapJoiner;
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
+import com.google.common.collect.Streams;
 
 /**
  * A one-way wicket converter: converts an object to a String.
@@ -106,7 +102,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	}
 
 	public Renderer<T> nullsAsNull() {
-		return withDefault(Predicates.notNull(), NULL_RENDERER);
+		return withDefault(Predicates2.notNull(), NULL_RENDERER);
 	}
 	
 	private static final Renderer<Object> NULL_RENDERER = new ConstantRenderer<Object>(null) {
@@ -117,7 +113,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	};
 
 	public Renderer<T> nullsAsBlank() {
-		return withDefault(Predicates.notNull(), BLANK_RENDERER);
+		return withDefault(Predicates2.notNull(), BLANK_RENDERER);
 	}
 	
 	private static final Renderer<Object> BLANK_RENDERER = new ConstantRenderer<Object>("") {
@@ -128,37 +124,37 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	};
 	
 	public Renderer<T> nullsAs(T defaultValue) {
-		return withDefault(Predicates.notNull(), defaultValue);
+		return withDefault(Predicates2.notNull(), defaultValue);
 	}
 	
 	public Renderer<T> nullsAs(IRenderer<? super T> defaultRenderer) {
-		return withDefault(Predicates.notNull(), defaultRenderer);
+		return withDefault(Predicates2.notNull(), defaultRenderer);
 	}
 	
 	public Renderer<T> nullsAsResourceKey(String resourceKey) {
-		return withDefault(Predicates.notNull(), withResourceKey(resourceKey));
+		return withDefault(Predicates2.notNull(), withResourceKey(resourceKey));
 	}
 	
 	public Renderer<T> nullsAsConstant(String defaultRendering) {
-		return withDefault(Predicates.notNull(), constant(defaultRendering));
+		return withDefault(Predicates2.notNull(), constant(defaultRendering));
 	}
 	
-	public Renderer<T> withDefault(Predicate<? super T> validValuePredicate, T defaultValue) {
-		return onResultOf(Functions2.defaultValue(validValuePredicate, Functions.constant(defaultValue)));
+	public Renderer<T> withDefault(SerializablePredicate2<? super T> validValuePredicate, T defaultValue) {
+		return onResultOf(Functions2.defaultValue(validValuePredicate, Functions2.constant(defaultValue)));
 	}
 	
-	public Renderer<T> withDefault(Predicate<? super T> validValuePredicate, IRenderer<? super T> defaultRenderer) {
+	public Renderer<T> withDefault(SerializablePredicate2<? super T> validValuePredicate, IRenderer<? super T> defaultRenderer) {
 		return new DefaultingRenderer<>(validValuePredicate, this, defaultRenderer);
 	}
 	
 	private static class DefaultingRenderer<T> extends Renderer<T> {
 		private static final long serialVersionUID = 3566036942853574753L;
 		
-		private final Predicate<? super T> validValuePredicate;
+		private final SerializablePredicate2<? super T> validValuePredicate;
 		private final IRenderer<? super T> validValueDelegate;
 		private final IRenderer<? super T> invalidValueDelegate;
 		
-		public DefaultingRenderer(Predicate<? super T> validValuePredicate, IRenderer<? super T> validValueDelegate,
+		public DefaultingRenderer(SerializablePredicate2<? super T> validValuePredicate, IRenderer<? super T> validValueDelegate,
 				IRenderer<? super T> invalidValueDelegate) {
 			super();
 			this.validValuePredicate = checkNotNull(validValuePredicate);
@@ -168,7 +164,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 
 		@Override
 		public String render(T value, Locale locale) {
-			if (validValuePredicate.apply(value)) {
+			if (validValuePredicate.test(value)) {
 				return validValueDelegate.render(value, locale);
 			} else {
 				return invalidValueDelegate.render(value, locale);
@@ -177,17 +173,17 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	}
 	
 	@SafeVarargs
-	public final Renderer<T> append(Function<? super Locale, ? extends Joiner> joinerFunction, Renderer<? super T> ... appendedRenderers) {
+	public final Renderer<T> append(SerializableFunction2<? super Locale, ? extends Joiner> joinerFunction, Renderer<? super T> ... appendedRenderers) {
 		return new JoiningRenderer<>(joinerFunction, Lists.asList(this, appendedRenderers));
 	}
 	
 	private static class JoiningRenderer<T> extends Renderer<T> {
 		private static final long serialVersionUID = 3566036942853574753L;
 		
-		private final Function<? super Locale, ? extends Joiner> joinerFunction;
+		private final SerializableFunction2<? super Locale, ? extends Joiner> joinerFunction;
 		private final Iterable<? extends Renderer<? super T>> renderers;
 
-		public JoiningRenderer(Function<? super Locale, ? extends Joiner> joinerFunction, Iterable<? extends Renderer<? super T>> renderers) {
+		public JoiningRenderer(SerializableFunction2<? super Locale, ? extends Joiner> joinerFunction, Iterable<? extends Renderer<? super T>> renderers) {
 			super();
 			this.joinerFunction = joinerFunction;
 			this.renderers = renderers;
@@ -196,28 +192,26 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		@Override
 		public String render(final T value, final Locale locale) {
 			checkNotNull(locale);
-			Joiner joiner = joinerFunction.apply(locale);
-			Iterable<String> renderedItems = Iterables.transform(renderers, new Function<Renderer<? super T>, String>() {
-				@Override
-				public String apply(Renderer<? super T> input) {
-					return input.render(value, locale);
-				}
-			});
-			return joiner.join(renderedItems);
+			checkNotNull(renderers);
+			return joinerFunction.apply(locale).join(
+					Streams.stream(renderers)
+							.map((input) -> input.render(value, locale))
+							.iterator()
+			);
 		}
 	}
 
-	public <F> Renderer<F> onResultOf(Function<? super F, ? extends T> function) {
+	public <F> Renderer<F> onResultOf(SerializableFunction2<? super F, ? extends T> function) {
 		return new ByFunctionRenderer<F, T>(function, this);
 	}
 	
 	private static class ByFunctionRenderer<F, T> extends Renderer<F> {
 		private static final long serialVersionUID = 3566036942853574753L;
 		
-		private final Function<? super F, ? extends T> function;
+		private final SerializableFunction2<? super F, ? extends T> function;
 		private final Renderer<T> delegate;
 		
-		public ByFunctionRenderer(Function<? super F, ? extends T> function, Renderer<T> delegate) {
+		public ByFunctionRenderer(SerializableFunction2<? super F, ? extends T> function, Renderer<T> delegate) {
 			super();
 			this.function = function;
 			this.delegate = delegate;
@@ -236,17 +230,17 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		return compose(Functions2.defaultValue(""));
 	}
 
-	public Renderer<T> compose(Function<? super String, ? extends String> function) {
+	public Renderer<T> compose(SerializableFunction2<? super String, ? extends String> function) {
 		return new ComposeRenderer<T>(function, this);
 	}
 	
 	private static class ComposeRenderer<T> extends Renderer<T> {
 		private static final long serialVersionUID = 3566036942853574753L;
 		
-		private final Function<? super String, ? extends String> function;
+		private final SerializableFunction2<? super String, ? extends String> function;
 		private final Renderer<T> delegate;
 		
-		public ComposeRenderer(Function<? super String, ? extends String> function, Renderer<T> delegate) {
+		public ComposeRenderer(SerializableFunction2<? super String, ? extends String> function, Renderer<T> delegate) {
 			super();
 			this.function = function;
 			this.delegate = delegate;
@@ -258,11 +252,11 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		}
 	}
 
-	public Function<T, String> asFunction(Locale locale) {
+	public SerializableFunction2<T, String> asFunction(Locale locale) {
 		return new RendererFunction(locale);
 	}
 	
-	private class RendererFunction implements Function<T, String>, Serializable {
+	private class RendererFunction implements SerializableFunction2<T, String>, Serializable {
 		private static final long serialVersionUID = -1080017215611311157L;
 		
 		private final Locale locale;
@@ -438,7 +432,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		return fromFormat(format);
 	}
 	
-	public static <T extends Number> Renderer<T> fromNumberFormat(Function<? super Locale, ? extends NumberFormat> formatFunction) {
+	public static <T extends Number> Renderer<T> fromNumberFormat(SerializableFunction2<? super Locale, ? extends NumberFormat> formatFunction) {
 		return fromFormat(formatFunction);
 	}
 	
@@ -446,36 +440,26 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		return fromFormat(format);
 	}
 	
-	public static <T extends Date> Renderer<T> fromDateFormat(Function<? super Locale, ? extends DateFormat> formatFunction) {
+	public static <T extends Date> Renderer<T> fromDateFormat(SerializableFunction2<? super Locale, ? extends DateFormat> formatFunction) {
 		return fromFormat(formatFunction);
 	}
 	
 	protected static <T> Renderer<T> fromFormat(Format format) {
 		checkNotNull(format);
 		final Format copiedFormat = (Format) format.clone(); // Ignore changes on 'format'
-		return new FormatRenderer<T>(new SerializableFunction<Locale, Format>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Format apply(Locale input) {
-				return (Format) copiedFormat.clone();
-			}
-			@Override
-			public String toString() {
-				return copiedFormat.toString();
-			}
-		});
+		return new FormatRenderer<T>((locale) -> (Format) copiedFormat.clone());
 	}
 	
-	protected static <T> Renderer<T> fromFormat(Function<? super Locale, ? extends Format> formatFunction) {
+	protected static <T> Renderer<T> fromFormat(SerializableFunction2<? super Locale, ? extends Format> formatFunction) {
 		return new FormatRenderer<T>(formatFunction).nullsAsBlank();
 	}
 	
 	private static class FormatRenderer<T> extends Renderer<T> {
 		private static final long serialVersionUID = -2023856554950929671L;
 		
-		private final Function<? super Locale, ? extends Format> formatFunction;
+		private final SerializableFunction2<? super Locale, ? extends Format> formatFunction;
 
-		public FormatRenderer(Function<? super Locale, ? extends Format> formatFunction) {
+		public FormatRenderer(SerializableFunction2<? super Locale, ? extends Format> formatFunction) {
 			super();
 			this.formatFunction = checkNotNull(formatFunction);
 		}
@@ -488,21 +472,21 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		}
 	}
 	
-	public static Renderer<Iterable<?>> fromJoiner(Function<? super Locale, ? extends Joiner> joinerFunction) {
+	public static Renderer<Iterable<?>> fromJoiner(SerializableFunction2<? super Locale, ? extends Joiner> joinerFunction) {
 		return fromJoiner(joinerFunction, stringValue());
 	}
 	
-	public static <T> Renderer<Iterable<? extends T>> fromJoiner(Function<? super Locale, ? extends Joiner> joinerFunction, Renderer<T> itemRenderer) {
+	public static <T> Renderer<Iterable<? extends T>> fromJoiner(SerializableFunction2<? super Locale, ? extends Joiner> joinerFunction, Renderer<T> itemRenderer) {
 		return new IterableJoinerRenderer<T>(joinerFunction, itemRenderer);
 	}
 	
 	private static class IterableJoinerRenderer<T> extends Renderer<Iterable<? extends T>> {
 		private static final long serialVersionUID = -3594965870562973846L;
 		
-		private final Function<? super Locale, ? extends Joiner> joinerFunction;
+		private final SerializableFunction2<? super Locale, ? extends Joiner> joinerFunction;
 		private final Renderer<T> itemRenderer;
 
-		public IterableJoinerRenderer(Function<? super Locale, ? extends Joiner> joinerFunction, Renderer<T> itemRenderer) {
+		public IterableJoinerRenderer(SerializableFunction2<? super Locale, ? extends Joiner> joinerFunction, Renderer<T> itemRenderer) {
 			super();
 			this.joinerFunction = checkNotNull(joinerFunction);
 			this.itemRenderer = itemRenderer;
@@ -511,22 +495,25 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 		@Override
 		public String render(Iterable<? extends T> value, Locale locale) {
 			checkNotNull(locale);
-			Joiner joiner = joinerFunction.apply(locale);
-			Iterable<String> renderedItems = Iterables.transform(value, itemRenderer.asFunction(locale));
-			return joiner.join(renderedItems);
+			checkNotNull(value);
+			return joinerFunction.apply(locale).join(
+					Streams.stream(value)
+							.map(itemRenderer.asFunction(locale))
+							.iterator()
+			);
 		}
 	}
 	
-	public static Renderer<Map<?, ?>> fromMapJoiner(Function<? super Locale, ? extends MapJoiner> joinerFunction) {
+	public static Renderer<Map<?, ?>> fromMapJoiner(SerializableFunction2<? super Locale, ? extends MapJoiner> joinerFunction) {
 		return new MapJoinerRenderer(joinerFunction);
 	}
 	
 	private static class MapJoinerRenderer extends Renderer<Map<?, ?>> {
 		private static final long serialVersionUID = 200989454412696381L;
 		
-		private final Function<? super Locale, ? extends MapJoiner> joinerFunction;
+		private final SerializableFunction2<? super Locale, ? extends MapJoiner> joinerFunction;
 
-		public MapJoinerRenderer(Function<? super Locale, ? extends MapJoiner> joinerFunction) {
+		public MapJoinerRenderer(SerializableFunction2<? super Locale, ? extends MapJoiner> joinerFunction) {
 			super();
 			this.joinerFunction = checkNotNull(joinerFunction);
 		}
@@ -540,8 +527,8 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	}
 	
 	public static <K, V> Renderer<Map<? extends K, ? extends V>> mapRenderer(
-			Function<? super Locale, ? extends Joiner> joinerFunction,
-			Function<? super Locale, ? extends Joiner> joinerKeyValueFunction,
+			SerializableFunction2<? super Locale, ? extends Joiner> joinerFunction,
+			SerializableFunction2<? super Locale, ? extends Joiner> joinerKeyValueFunction,
 			Renderer<K> keyRenderer,
 			Renderer<V> valueRenderer
 	) {
@@ -551,14 +538,14 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	private static class MapRenderer<K, V> extends Renderer<Map<? extends K, ? extends V>> {
 		private static final long serialVersionUID = 200989454412696381L;
 
-		private final Function<? super Locale, ? extends Joiner> joinerFunction;
-		private final Function<? super Locale, ? extends Joiner> joinerKeyValueFunction;
+		private final SerializableFunction2<? super Locale, ? extends Joiner> joinerFunction;
+		private final SerializableFunction2<? super Locale, ? extends Joiner> joinerKeyValueFunction;
 		private final Renderer<K> keyRenderer;
 		private final Renderer<V> valueRenderer;
 
 		public MapRenderer(
-				Function<? super Locale, ? extends Joiner> joinerFunction,
-				Function<? super Locale, ? extends Joiner> joinerKeyValueFunction,
+				SerializableFunction2<? super Locale, ? extends Joiner> joinerFunction,
+				SerializableFunction2<? super Locale, ? extends Joiner> joinerKeyValueFunction,
 				Renderer<K> keyRenderer,
 				Renderer<V> valueRenderer
 		) {
@@ -574,19 +561,16 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 			checkNotNull(locale);
 			Joiner joiner = joinerFunction.apply(locale);
 			final Joiner joinerKeyValue = joinerKeyValueFunction.apply(locale);
-
-			Iterable<String> renderedEntries = Iterables.transform(value.entrySet(), new SerializableFunction<Entry<? extends K, ? extends V>, String>() {
-				private static final long serialVersionUID = 1L;
-				@Override
-				public String apply(Entry<? extends K, ? extends V> input) {
-					return joinerKeyValue.join(
-							keyRenderer.render(input.getKey(), locale),
-							valueRenderer.render(input.getValue(), locale)
-					);
-				}
-			});
-
-			return joiner.join(renderedEntries);
+			
+			return joiner.join(
+					value.entrySet()
+							.stream()
+							.map((input) -> joinerKeyValue.join(
+									keyRenderer.render(input.getKey(), locale),
+									valueRenderer.render(input.getValue(), locale)
+							))
+							.iterator()
+			);
 		}
 	}
 
@@ -642,21 +626,11 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	}
 	
 	public static <T extends Date> Renderer<T> fromDatePattern(final IDatePattern datePattern) {
-		Renderer<T> renderer = fromFormat(new SerializableFunction<Locale, DateFormat>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public DateFormat apply(Locale locale) {
-				return new SimpleDateFormat(Localizer.get().getString(datePattern.getJavaPatternKey(), null, null, locale, null, (IModel<String>) null), locale);
-			}
-		});
+		Renderer<T> renderer = fromFormat(
+				(locale) -> new SimpleDateFormat(Localizer.get().getString(datePattern.getJavaPatternKey(), null, null, locale, null, (IModel<String>) null), locale)
+		);
 		if (datePattern.capitalize()) {
-			renderer = renderer.compose(new SerializableFunction<String, String>() {
-				private static final long serialVersionUID = 1L;
-				@Override
-				public String apply(String input) {
-					return WordUtils.capitalize(input);
-				}
-			});
+			renderer = renderer.compose(Functions2.capitalize());
 		}
 		return renderer;
 	}

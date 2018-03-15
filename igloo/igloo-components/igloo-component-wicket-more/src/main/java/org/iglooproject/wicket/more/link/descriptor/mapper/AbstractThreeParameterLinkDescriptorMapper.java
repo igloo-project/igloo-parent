@@ -1,12 +1,11 @@
 package org.iglooproject.wicket.more.link.descriptor.mapper;
 
 import org.apache.wicket.model.IModel;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.util.model.Models;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
-
-import com.google.common.base.Function;
 
 public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		implements IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> {
@@ -26,8 +25,8 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 	private static final class DerivingModel<U1, U2, U> implements IModel<U> {
 		private static final long serialVersionUID = 1L;
 		private final Pair<? extends IModel<U1>, ? extends IModel<U2>> models;
-		private final Function<Pair<U1, U2>, U> function;
-		public DerivingModel(Pair<? extends IModel<U1>, ? extends IModel<U2>> models, Function<Pair<U1, U2>, U> function) {
+		private final SerializableFunction2<Pair<U1, U2>, U> function;
+		public DerivingModel(Pair<? extends IModel<U1>, ? extends IModel<U2>> models, SerializableFunction2<Pair<U1, U2>, U> function) {
 			super();
 			this.models = models;
 			this.function = function;
@@ -56,7 +55,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 	}
 
 	@Override
-	public ITwoParameterLinkDescriptorMapper<L, T2, T3> setParameter1(final Function<Pair<T2, T3>, T1> function) {
+	public ITwoParameterLinkDescriptorMapper<L, T2, T3> setParameter1(final SerializableFunction2<Pair<T2, T3>, T1> function) {
 		return new AbstractTwoParameterLinkDescriptorMapper<L, T2, T3>() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -110,7 +109,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 	}
 
 	@Override
-	public ITwoParameterLinkDescriptorMapper<L, T1, T3> setParameter2(final Function<Pair<T1, T3>, T2> function) {
+	public ITwoParameterLinkDescriptorMapper<L, T1, T3> setParameter2(final SerializableFunction2<Pair<T1, T3>, T2> function) {
 		return new AbstractTwoParameterLinkDescriptorMapper<L, T1, T3>() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -164,7 +163,7 @@ public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 	}
 
 	@Override
-	public ITwoParameterLinkDescriptorMapper<L, T1, T2> setParameter3(final Function<Pair<T1, T2>, T3> function) {
+	public ITwoParameterLinkDescriptorMapper<L, T1, T2> setParameter3(final SerializableFunction2<Pair<T1, T2>, T3> function) {
 		return new AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>() {
 			private static final long serialVersionUID = 1L;
 			@Override

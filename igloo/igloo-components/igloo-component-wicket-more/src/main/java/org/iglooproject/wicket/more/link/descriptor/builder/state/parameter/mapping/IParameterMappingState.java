@@ -6,10 +6,7 @@ import java.util.TreeSet;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.bindgen.BindingRoot;
-import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Supplier;
-
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;
@@ -17,6 +14,7 @@ import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
+import org.springframework.core.convert.TypeDescriptor;
 
 /**
  * A state where one may map model parameters ({@link IModel}) to link parameters ({@link PageParameters}).
@@ -86,7 +84,7 @@ public interface IParameterMappingState
 	@SuppressWarnings("rawtypes")
 	<RawC extends Collection, C extends RawC, T> IAddedParameterMappingState<TSelf> mapCollection(
 			String parameterName, IModel<C> valueModel,
-			Class<RawC> rawCollectionType, TypeDescriptor elementTypeDescriptor, Supplier<C> emptyCollectionSupplier);
+			Class<RawC> rawCollectionType, TypeDescriptor elementTypeDescriptor, SerializableSupplier2<C> emptyCollectionSupplier);
 	
 	/**
 	 * Register a {@link ILinkParameterMappingEntry} that will handle the process of mapping HTTP query parameters

@@ -3,9 +3,7 @@ package org.iglooproject.jpa.more.business.history.util;
 import java.util.Date;
 import java.util.List;
 
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-
+import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.difference.model.Difference;
@@ -15,6 +13,8 @@ import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifferenc
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.more.business.history.model.bean.AbstractHistoryLogAdditionalInformationBean;
 
+import com.google.common.collect.ImmutableList;
+
 public class HistoryLogBeforeCommitWithDifferencesTask<T,
 				HLAIB extends AbstractHistoryLogAdditionalInformationBean,
 				HL extends AbstractHistoryLog<HL, HET, HD>,
@@ -22,7 +22,7 @@ public class HistoryLogBeforeCommitWithDifferencesTask<T,
 				HD extends AbstractHistoryDifference<HD, HL>>
 		extends HistoryLogBeforeCommitTask<T, HLAIB, HL, HET, HD> {
 
-	private Supplier<HD> historyDifferenceSupplier;
+	private Supplier2<HD> historyDifferenceSupplier;
 	private IDifferenceFromReferenceGenerator<T> differenceGenerator;
 	private IHistoryDifferenceGenerator<T> historyDifferenceGenerator;
 	private List<IHistoryDifferenceHandler<? super T, ? super HL>> differenceHandlers;
@@ -31,7 +31,7 @@ public class HistoryLogBeforeCommitWithDifferencesTask<T,
 	public HistoryLogBeforeCommitWithDifferencesTask(
 			Date date, HET eventType,
 			T mainObject, HLAIB additionalInformation,
-			Supplier<HD> historyDifferenceSupplier,
+			Supplier2<HD> historyDifferenceSupplier,
 			IDifferenceFromReferenceGenerator<T> differenceGenerator,
 			IHistoryDifferenceGenerator<T> historyDifferenceGenerator,
 			IHistoryDifferenceHandler<? super T, ? super HL> ... differenceHandlers) {

@@ -2,6 +2,7 @@ package org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.cho
 
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
+import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
@@ -9,8 +10,6 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.Conditio
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 import org.javatuples.Unit;
-
-import com.google.common.base.Predicate;
 
 /**
  * A specialization of {@link IChosenParameterState} where only one mappable parameter has been chosen.
@@ -78,7 +77,7 @@ public interface IOneChosenParameterState
 	 * @return The original state (without any chosen parameter) for chaining calls.
 	 * @see ConditionLinkParameterValidator
 	 */
-	TInitialState validator(Predicate<? super TChosenParam1> predicate);
+	TInitialState validator(SerializablePredicate2<? super TChosenParam1> predicate);
 
 	/**
 	 * {@link #validator(ILinkParameterValidator) Add a validator to the resulting link descriptor} that will pass

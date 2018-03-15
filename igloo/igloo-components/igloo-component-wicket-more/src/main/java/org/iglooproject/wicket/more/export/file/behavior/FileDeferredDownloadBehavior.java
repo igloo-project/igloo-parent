@@ -5,7 +5,6 @@ import java.util.Objects;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.wicket.more.export.AbstractDeferredDownloadBehavior;
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
@@ -47,15 +46,9 @@ public class FileDeferredDownloadBehavior extends AbstractDeferredDownloadBehavi
 
 	public FileDeferredDownloadBehavior(IModel<LabelValue<String, File>> fileInformationModel, boolean addAntiCache) {
 		super(
-				ReadOnlyModel.of(
+				ReadOnlyModel.<LabelValue<String, File>, File>of(
 						fileInformationModel,
-						new SerializableFunction<LabelValue<String, File>, File>() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public File apply(LabelValue<String, File> input) {
-								return input != null ? input.getValue() : null;
-							}
-						}
+						(input) -> input != null ? input.getValue() : null
 				),
 				addAntiCache
 		);

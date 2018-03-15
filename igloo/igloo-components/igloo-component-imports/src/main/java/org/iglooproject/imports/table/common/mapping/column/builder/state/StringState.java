@@ -1,8 +1,7 @@
 package org.iglooproject.imports.table.common.mapping.column.builder.state;
 
-import com.google.common.base.Function;
-
-import org.iglooproject.commons.util.functional.builder.function.generic.GenericStringFunctionBuildStateImpl;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.builder.function.generic.GenericStringFunctionBuildStateImpl;
 import org.iglooproject.imports.table.common.mapping.AbstractTableImportColumnSet;
 
 public abstract class StringState<TTable, TRow, TCell, TCellReference> extends GenericStringFunctionBuildStateImpl
@@ -20,7 +19,7 @@ public abstract class StringState<TTable, TRow, TCell, TCellReference> extends G
 		implements ColumnFunctionBuildState<TTable, TRow, TCell, TCellReference, String> {
 		
 	@Override
-	public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function<? super String, TValue> function) {
+	public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function2<? super String, TValue> function) {
 		return getStateSwitcher().toGeneric(function);
 	}
 

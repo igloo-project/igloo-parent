@@ -1,16 +1,16 @@
 package org.iglooproject.jpa.more.business.difference.selector;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.iglooproject.functional.Function2;
 
 import com.google.common.base.Equivalence;
-import com.google.common.base.Function;
 
 import de.danielbechler.diff.selector.ElementSelector;
 import de.danielbechler.util.Strings;
 
 public class CollectionItemByKeySelector<T, K> extends ElementSelector implements IKeyAwareSelector<K> {
 	
-	private final Function<? super T, ? extends K> keyFunction;
+	private final Function2<? super T, ? extends K> keyFunction;
 	
 	private final Equivalence<? super K> equivalence;
 	
@@ -18,7 +18,7 @@ public class CollectionItemByKeySelector<T, K> extends ElementSelector implement
 	
 	private final String humanReadableString;
 
-	public CollectionItemByKeySelector(Function<? super T, ? extends K> keyFunction, Equivalence<? super K> equivalence,
+	public CollectionItemByKeySelector(Function2<? super T, ? extends K> keyFunction, Equivalence<? super K> equivalence,
 			K key, String humanReadableString) {
 		this.keyFunction = keyFunction;
 		this.equivalence = equivalence;

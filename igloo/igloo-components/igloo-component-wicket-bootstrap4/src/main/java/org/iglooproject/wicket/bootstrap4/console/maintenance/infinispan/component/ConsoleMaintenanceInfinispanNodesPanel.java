@@ -7,6 +7,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.functional.Functions2;
 import org.iglooproject.infinispan.model.INode;
 import org.iglooproject.infinispan.service.IInfinispanClusterService;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.renderer.INodeRenderer;
@@ -17,8 +18,6 @@ import org.iglooproject.wicket.more.util.DatePattern;
 import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.model.Models;
-
-import com.google.common.base.Functions;
 
 public class ConsoleMaintenanceInfinispanNodesPanel extends Panel {
 
@@ -60,7 +59,7 @@ public class ConsoleMaintenanceInfinispanNodesPanel extends Panel {
 						)
 						.addBootstrapBadgeColumn(
 								new ResourceModel("business.infinispan.node.anonymous"),
-								Functions.identity(),
+								Functions2.identity(),
 								INodeRenderer.anonymous()
 						)
 						.addLabelColumn(
@@ -70,7 +69,7 @@ public class ConsoleMaintenanceInfinispanNodesPanel extends Panel {
 						)
 						.addBootstrapBadgeColumn(
 								new ResourceModel("business.infinispan.node.status"),
-								Functions.identity(),
+								Functions2.identity(),
 								INodeRenderer.status()
 						)
 								.bootstrapCard()

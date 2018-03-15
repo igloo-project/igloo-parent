@@ -8,25 +8,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.Supplier2;
+import org.iglooproject.functional.converter.StringBigDecimalConverter;
+import org.iglooproject.functional.converter.StringBooleanConverter;
+import org.iglooproject.functional.converter.StringDateConverter;
+import org.iglooproject.functional.converter.StringDateTimeConverter;
+import org.iglooproject.functional.converter.StringDirectoryFileCreatingConverter;
+import org.iglooproject.functional.converter.StringLocaleConverter;
+import org.iglooproject.functional.converter.StringTimeConverter;
+import org.iglooproject.functional.converter.StringURIConverter;
+import org.iglooproject.spring.property.model.IImmutablePropertyRegistryKey;
+import org.iglooproject.spring.property.model.IMutablePropertyRegistryKey;
+import org.iglooproject.spring.property.model.IPropertyRegistryKey;
+
 import com.google.common.base.Converter;
 import com.google.common.base.Enums;
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Floats;
 import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
-
-import org.iglooproject.commons.util.functional.converter.StringBigDecimalConverter;
-import org.iglooproject.commons.util.functional.converter.StringBooleanConverter;
-import org.iglooproject.commons.util.functional.converter.StringDateConverter;
-import org.iglooproject.commons.util.functional.converter.StringDateTimeConverter;
-import org.iglooproject.commons.util.functional.converter.StringDirectoryFileCreatingConverter;
-import org.iglooproject.commons.util.functional.converter.StringLocaleConverter;
-import org.iglooproject.commons.util.functional.converter.StringURIConverter;
-import org.iglooproject.spring.property.model.IImmutablePropertyRegistryKey;
-import org.iglooproject.spring.property.model.IMutablePropertyRegistryKey;
-import org.iglooproject.spring.property.model.IPropertyRegistryKey;
 
 public interface IPropertyRegistry {
 
@@ -34,13 +35,13 @@ public interface IPropertyRegistry {
 
 	<T> void register(IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, T defaultValue);
 
-	<T> void register(IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, Supplier<? extends T> defaultValueSupplier);
+	<T> void register(IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, Supplier2<? extends T> defaultValueSupplier);
 
-	<T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function);
+	<T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function2<String, ? extends T> function);
 
-	<T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function, T defaultValue);
+	<T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function2<String, ? extends T> function, T defaultValue);
 
-	<T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function, Supplier<? extends T> defaultValueSupplier);
+	<T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function2<String, ? extends T> function, Supplier2<? extends T> defaultValueSupplier);
 
 	void registerString(IPropertyRegistryKey<String> propertyId);
 

@@ -14,13 +14,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
-
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
@@ -29,6 +23,10 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParam
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 import org.iglooproject.wicket.more.util.model.Models;
+
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 	
@@ -85,7 +83,7 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 		if (validPageClass == null) {
 			throw new LinkInvalidTargetRuntimeException("The target page instance '" + pageInstance + "' had unexpected type :"
 					+ " got " + pageInstance.getClass().getName() + ", "
-					+ "expected one of " + Joiner.on(", ").join(Collections2.transform(expectedPageClassModels, GET_NAME_FROM_CLASS_MODEL_FUNCTION)));
+					+ "expected one of " + Joiner.on(", ").join(expectedPageClassModels.stream().map(GET_NAME_FROM_CLASS_MODEL_FUNCTION).iterator()));
 		}
 		
 		if (! bypassPermissions) {
@@ -210,7 +208,8 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 		}
 	}
 	
-	private static class GetNameFromClassModelFunction implements Function<IModel<? extends Class<?>>, String> {
+	private static class GetNameFromClassModelFunction implements SerializableFunction2<IModel<? extends Class<?>>, String> {
+		private static final long serialVersionUID = 1L;
 		@Override
 		public String apply(IModel<? extends Class<?>> input) {
 			if (input.getObject() != null) {

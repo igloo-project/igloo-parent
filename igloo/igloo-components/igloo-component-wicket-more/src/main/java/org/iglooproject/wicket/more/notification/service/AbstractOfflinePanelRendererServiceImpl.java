@@ -6,10 +6,9 @@ import org.apache.wicket.Component;
 import org.apache.wicket.core.util.string.ComponentRenderer;
 import org.apache.wicket.util.lang.Args;
 import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.base.Supplier;
 
 /**
  * <p>This is a common utility for "offline" page generation, for notifications or queued pdf rendering
@@ -38,7 +37,7 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 		return wicketContextProvider;
 	}
 	
-	protected final String renderComponent(final Supplier<Component> componentSupplier, Locale locale) {
+	protected final String renderComponent(final SerializableSupplier2<Component> componentSupplier, Locale locale) {
 		return renderComponent(componentSupplier, locale, null);
 	}
 	
@@ -48,7 +47,7 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 	 * @param variation A string identifier that will be passed to {@link #postProcessHtml(Component, Locale, String, String)}.
 	 * @return The component returned by <code>componenentSupplier</code>, rendered in HTML with the given <code>locale</code>
 	 */
-	protected String renderComponent(final Supplier<Component> componentSupplier, final Locale locale, final String variation) {
+	protected String renderComponent(final SerializableSupplier2<Component> componentSupplier, final Locale locale, final String variation) {
 		Args.notNull(componentSupplier, "componentTask");
 		try (ITearDownHandle handle = wicketContextProvider.context(locale).open()) {
 			Component component = componentSupplier.get();

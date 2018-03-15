@@ -3,6 +3,7 @@ package org.iglooproject.wicket.more.markup.repeater.table.builder.state;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
@@ -10,8 +11,6 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.rendering.Renderer;
-
-import com.google.common.base.Function;
 
 public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCoreColumnState<T, S> {
 
@@ -38,17 +37,17 @@ public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCor
 
 	IAddedLabelColumnState<T, S> withTooltip(Renderer<? super T> tooltipRenderer);
 
-	<C> IAddedLabelColumnState<T, S> withTooltip(Function<? super T, C> function, Renderer<? super C> renderer);
+	<C> IAddedLabelColumnState<T, S> withTooltip(SerializableFunction2<? super T, C> function, Renderer<? super C> renderer);
 
 	IAddedLabelColumnState<T, S> withLink(ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper);
 	
-	<C> IAddedLabelColumnState<T, S> withLink(Function<? super T, C> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
+	<C> IAddedLabelColumnState<T, S> withLink(SerializableFunction2<? super T, C> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
 
 	<C> IAddedLabelColumnState<T, S> withLink(ICoreBinding<? super T, C> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
 
 	IAddedLabelColumnState<T, S> withSideLink(ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> linkGeneratorMapper);
 	
-	<C> IAddedLabelColumnState<T, S> withSideLink(Function<? super T, C> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
+	<C> IAddedLabelColumnState<T, S> withSideLink(SerializableFunction2<? super T, C> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
 
 	<C> IAddedLabelColumnState<T, S> withSideLink(ICoreBinding<? super T, C> binding, ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> linkGeneratorMapper);
 

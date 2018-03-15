@@ -23,7 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
@@ -82,12 +81,7 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		
 		private String renderHtmlBody(Locale locale) {
 			return AbstractNotificationContentDescriptorFactory.this.renderComponent(
-					new Supplier<Component>() {
-						@Override
-						public Component get() {
-							return createComponent("htmlComponent");
-						}
-					},
+					() -> createComponent("htmlComponent"),
 					locale
 			);
 		}

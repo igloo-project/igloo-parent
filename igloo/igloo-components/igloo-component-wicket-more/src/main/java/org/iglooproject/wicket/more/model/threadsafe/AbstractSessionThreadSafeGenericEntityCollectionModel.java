@@ -8,11 +8,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.service.IEntityService;
 import org.iglooproject.jpa.util.HibernateUtils;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 
 public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
@@ -26,9 +26,9 @@ public abstract class AbstractSessionThreadSafeGenericEntityCollectionModel
 	
 	private final Class<E> clazz;
 	
-	private final Supplier<? extends C> newCollectionSupplier;
+	private final SerializableSupplier2<? extends C> newCollectionSupplier;
 	
-	protected AbstractSessionThreadSafeGenericEntityCollectionModel(Class<E> clazz, Supplier<? extends C> newCollectionSupplier) {
+	protected AbstractSessionThreadSafeGenericEntityCollectionModel(Class<E> clazz, SerializableSupplier2<? extends C> newCollectionSupplier) {
 		super();
 		Injector.get().inject(this);
 		

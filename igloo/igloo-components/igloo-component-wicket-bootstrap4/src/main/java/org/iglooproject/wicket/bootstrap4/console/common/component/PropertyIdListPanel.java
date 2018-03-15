@@ -8,7 +8,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.Predicates2;
 import org.iglooproject.spring.property.model.MutablePropertyId;
 import org.iglooproject.spring.property.model.PropertyId;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -20,8 +20,6 @@ import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.Bootst
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.model.ReadOnlyCollectionModel;
 import org.iglooproject.wicket.more.util.model.Models;
-
-import com.google.common.base.Predicates;
 
 public class PropertyIdListPanel extends Panel {
 
@@ -56,25 +54,11 @@ public class PropertyIdListPanel extends Panel {
 				)
 						.addLabelColumn(
 								new ResourceModel("common.propertyId.key"),
-								new SerializableFunction<PropertyId<?>, String>() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public String apply(PropertyId<?> input) {
-										return input.getKey();
-									}
-									
-								}
+								(p) -> p.getKey()
 						)
 						.addLabelColumn(
 								new ResourceModel("common.propertyId.value"),
-								new SerializableFunction<PropertyId<?>, String>() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public String apply(PropertyId<?> input) {
-										return propertyService.getAsString(input);
-									}
-									
-								}
+								(p) -> propertyService.getAsString(p)
 						)
 						.addActionColumn()
 								.addAction(
@@ -87,7 +71,7 @@ public class PropertyIdListPanel extends Panel {
 											}
 										}
 								)
-										.when(Predicates.instanceOf(MutablePropertyId.class))
+										.when(Predicates2.instanceOf(MutablePropertyId.class))
 										.withClassOnElements("btn-xs")
 								.end()
 						.bootstrapCard()

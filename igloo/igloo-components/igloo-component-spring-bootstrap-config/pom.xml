@@ -22,6 +22,12 @@
 			<type>pom</type>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-functional</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
 		<!-- Guava -->
 		
 		<dependency>

@@ -4,18 +4,17 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bindgen.BindingRoot;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-
-import de.danielbechler.diff.path.NodePath;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.more.business.difference.model.Difference;
 import org.iglooproject.jpa.more.business.difference.util.DiffUtils;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventSummary;
 import org.iglooproject.jpa.more.business.history.service.IGenericHistoryEventSummaryService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.collect.ImmutableList;
+
+import de.danielbechler.diff.path.NodePath;
 
 /**
  * A {@link IHistoryDifferenceHandler} that will
@@ -33,7 +32,13 @@ public class HistoryEventDifferenceHandler<T, HL extends AbstractHistoryLog<?, ?
 	private final List<NodePath> pathsToCheck;
 
 	public HistoryEventDifferenceHandler(BindingRoot<T, HistoryEventSummary> bindingToEventToRefresh, FieldPath ... pathsToCheck) {
-		this(bindingToEventToRefresh, Iterables.transform(Arrays.asList(pathsToCheck), DiffUtils.toNodePathFunction()));
+		this(
+				bindingToEventToRefresh,
+				Arrays.asList(pathsToCheck)
+						.stream()
+						.map(DiffUtils.toNodePathFunction())
+						::iterator
+		);
 	}
 
 	public HistoryEventDifferenceHandler(BindingRoot<T, HistoryEventSummary> bindingToEventToRefresh, Iterable<NodePath> pathsToCheck) {

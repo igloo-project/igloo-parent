@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Objects;
 
 import org.apache.wicket.model.IModel;
+import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.functional.SerializableSupplier2;
 
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Streams;
 
 public abstract class StreamModel<T> implements IModel<Iterable<T>> {
 
@@ -78,7 +79,7 @@ public abstract class StreamModel<T> implements IModel<Iterable<T>> {
 		}
 	}
 
-	public <S> StreamModel<S> map(Function<? super T, S> function) {
+	public <S> StreamModel<S> map(SerializableFunction2<? super T, S> function) {
 		return new MapStreamModel<>(function);
 	}
 
@@ -86,19 +87,18 @@ public abstract class StreamModel<T> implements IModel<Iterable<T>> {
 		
 		private static final long serialVersionUID = 1L;
 		
-		private final Function<? super T, S> function;
+		private final SerializableFunction2<? super T, S> function;
 		
-		public MapStreamModel(Function<? super T, S> function) {
+		public MapStreamModel(SerializableFunction2<? super T, S> function) {
 			super();
 			this.function = Objects.requireNonNull(function);
 		}
 		
 		@Override
 		public Iterable<S> getObject() {
-			return Iterables.transform(
-					StreamModel.this.getObject(),
-					function
-			);
+			Iterable<T> iterable = StreamModel.this.getObject();
+			Objects.requireNonNull(iterable);
+			return Streams.stream(iterable).map(function)::iterator;
 		}
 		
 		@Override
@@ -108,7 +108,7 @@ public abstract class StreamModel<T> implements IModel<Iterable<T>> {
 		}
 	}
 
-	public <C extends Collection<T>> IModel<C> collect(Supplier<? extends C> supplier) {
+	public <C extends Collection<T>> IModel<C> collect(SerializableSupplier2<? extends C> supplier) {
 		return new CollectModel<>(supplier);
 	}
 
@@ -116,10 +116,9 @@ public abstract class StreamModel<T> implements IModel<Iterable<T>> {
 		
 		private static final long serialVersionUID = 1L;
 		
+		private final SerializableSupplier2<? extends C> supplier;
 		
-		private final Supplier<? extends C> supplier;
-		
-		public CollectModel(Supplier<? extends C> supplier) {
+		public CollectModel(SerializableSupplier2<? extends C> supplier) {
 			super();
 			this.supplier = Objects.requireNonNull(supplier);
 		}

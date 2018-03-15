@@ -8,10 +8,8 @@ import java.util.Set;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
-
+import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 import org.iglooproject.wicket.more.markup.repeater.map.IItemModelAwareMapModel;
 import org.iglooproject.wicket.more.model.MapCopyModel;
@@ -23,9 +21,9 @@ public class BindableMapModel<K, V, M extends Map<K, V>> extends BindableModel<M
 	
 	private final IItemModelAwareMapModel<K, V, M, IBindableModel<K>, IBindableModel<V>> mainModel;
 
-	public BindableMapModel(IModel<M> referenceModel, Supplier<? extends M> newMapSupplier,
-			Function<? super K, ? extends IModel<K>> keyModelFunction,
-			Function<? super V, ? extends IModel<V>> valueModelFunction) {
+	public BindableMapModel(IModel<M> referenceModel, SerializableSupplier2<? extends M> newMapSupplier,
+			SerializableFunction2<? super K, ? extends IModel<K>> keyModelFunction,
+			SerializableFunction2<? super V, ? extends IModel<V>> valueModelFunction) {
 		this(
 				new WorkingCopyMapModel<>(
 						referenceModel,

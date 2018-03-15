@@ -10,22 +10,21 @@ import java.util.Map;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.wicket.model.IModel;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
-
-import com.google.common.base.Equivalence;
-import com.google.common.base.Supplier;
-import com.google.common.collect.Ordering;
-
-import org.iglooproject.commons.util.functional.Suppliers2;
+import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.test.wicket.more.business.person.model.Person;
 import org.iglooproject.test.wicket.more.model.TestGenericEntityValueMapCopyModel.KeyEnum;
 import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.model.MapCopyModel;
 import org.iglooproject.wicket.more.util.model.Models;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+
+import com.google.common.base.Equivalence;
+import com.google.common.collect.Ordering;
 
 @RunWith(Parameterized.class)
 public class TestGenericEntityValueMapCopyModel<M extends Map<KeyEnum, Person>>
@@ -47,7 +46,7 @@ public class TestGenericEntityValueMapCopyModel<M extends Map<KeyEnum, Person>>
 		KEY3;
 	}
 	
-	public TestGenericEntityValueMapCopyModel(Supplier<? extends M> mapSupplier, Equivalence<? super M> equivalence) {
+	public TestGenericEntityValueMapCopyModel(SerializableSupplier2<? extends M> mapSupplier, Equivalence<? super M> equivalence) {
 		super(mapSupplier, equivalence);
 	}
 

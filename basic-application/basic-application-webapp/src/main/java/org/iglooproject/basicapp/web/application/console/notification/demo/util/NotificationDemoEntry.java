@@ -12,14 +12,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Classes;
 import org.iglooproject.basicapp.core.business.notification.service.IBasicApplicationNotificationContentDescriptorFactory;
 import org.iglooproject.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
+import org.iglooproject.functional.Predicates2;
+import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.service.IEntityService;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
@@ -60,10 +60,10 @@ public abstract class NotificationDemoEntry implements IModel<INotificationConte
 	}
 
 	protected final <E extends GenericEntity<Long, ?>> E getFirstInRange(Class<E> clazz, Range<Long> range) {
-		return getFirstInRange(clazz, range, Predicates.<E>alwaysTrue());
+		return getFirstInRange(clazz, range, Predicates2.<E>alwaysTrue());
 	}
 	
-	protected final <E extends GenericEntity<Long, ?>> E getFirstInRange(Class<E> clazz, Range<Long> range, Predicate<E> predicate) {
+	protected final <E extends GenericEntity<Long, ?>> E getFirstInRange(Class<E> clazz, Range<Long> range, SerializablePredicate2<E> predicate) {
 		E entity = getFirstWithId(clazz, ContiguousSet.create(range, DiscreteDomain.longs()), predicate);
 		
 		if (entity != null) {
@@ -76,10 +76,10 @@ public abstract class NotificationDemoEntry implements IModel<INotificationConte
 		}
 	}
 	
-	protected final <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> E getFirstWithId(Class<E> clazz, Collection<K> ids, Predicate<E> predicate) {
+	protected final <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> E getFirstWithId(Class<E> clazz, Collection<K> ids, SerializablePredicate2<E> predicate) {
 		for (K id : ids) {
 			E entity = entityService.getEntity(clazz, id);
-			if (entity != null && predicate.apply(entity)) {
+			if (entity != null && predicate.test(entity)) {
 				return entity;
 			}
 		}

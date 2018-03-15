@@ -2,10 +2,9 @@ package org.iglooproject.wicket.more.markup.html.factory;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
-
-import com.google.common.base.Function;
 
 public final class ModelFactories {
 
@@ -25,7 +24,7 @@ public final class ModelFactories {
 	}
 
 	public static final <T> IDetachableFactory<IModel<? extends T>, StringResourceModel> stringResourceModel(
-			final String resourceKey, final Function<? super T, ?> positionalParameterFunction) {
+			final String resourceKey, final SerializableFunction2<? super T, ?> positionalParameterFunction) {
 		return new IDetachableFactory<IModel<? extends T>, StringResourceModel>() {
 			private static final long serialVersionUID = 1L;
 			@Override

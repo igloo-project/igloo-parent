@@ -2,7 +2,9 @@ package org.iglooproject.jpa.more.business.difference.differ;
 
 import java.util.Map;
 
-import com.google.common.base.Predicate;
+import org.iglooproject.functional.Predicate2;
+import org.iglooproject.jpa.more.business.difference.differ.strategy.AbstractContainerDifferStrategy;
+
 import com.google.common.collect.Maps;
 
 import de.danielbechler.diff.access.Accessor;
@@ -13,14 +15,13 @@ import de.danielbechler.diff.differ.Differ;
 import de.danielbechler.diff.differ.DifferDispatcher;
 import de.danielbechler.diff.filtering.IsReturnableResolver;
 import de.danielbechler.diff.node.DiffNode;
-import org.iglooproject.jpa.more.business.difference.differ.strategy.AbstractContainerDifferStrategy;
 
 public abstract class AbstractContainerDiffer implements Differ {
 
 	private final DifferDispatcher differDispatcher;
 	private final ComparisonStrategyResolver comparisonStrategyResolver;
 	private final IsReturnableResolver isReturnableResolver;
-	private final Map<Predicate<? super DiffNode>, AbstractContainerDifferStrategy<?, ?>> strategies = Maps.newLinkedHashMap();
+	private final Map<Predicate2<? super DiffNode>, AbstractContainerDifferStrategy<?, ?>> strategies = Maps.newLinkedHashMap();
 	private final AbstractContainerDifferStrategy<?, ?> defaultStrategy;
 	
 	public AbstractContainerDiffer(DifferDispatcher differDispatcher,
@@ -32,7 +33,7 @@ public abstract class AbstractContainerDiffer implements Differ {
 		this.defaultStrategy = defaultStrategy;
 	}
 	
-	protected void addStrategy(Predicate<? super DiffNode> predicate, AbstractContainerDifferStrategy<?, ?> strategy) {
+	protected void addStrategy(Predicate2<? super DiffNode> predicate, AbstractContainerDifferStrategy<?, ?> strategy) {
 		strategies.put(predicate, strategy);
 	}
 
@@ -45,8 +46,8 @@ public abstract class AbstractContainerDiffer implements Differ {
 	@Override
 	public DiffNode compare(DiffNode parentNode, Instances instances) {
 		final DiffNode containerNode = newNode(parentNode, instances);
-		for (Map.Entry<Predicate<? super DiffNode>, AbstractContainerDifferStrategy<?, ?>> entry : strategies.entrySet()) {
-			if (entry.getKey().apply(containerNode)) {
+		for (Map.Entry<Predicate2<? super DiffNode>, AbstractContainerDifferStrategy<?, ?>> entry : strategies.entrySet()) {
+			if (entry.getKey().test(containerNode)) {
 				return compare(instances, entry.getValue(), containerNode);
 			}
 		}

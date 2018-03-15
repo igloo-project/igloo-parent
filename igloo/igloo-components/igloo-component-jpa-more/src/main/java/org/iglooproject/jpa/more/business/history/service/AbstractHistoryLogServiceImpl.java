@@ -3,10 +3,7 @@ package org.iglooproject.jpa.more.business.history.service;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.base.Supplier;
-
+import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -21,6 +18,7 @@ import org.iglooproject.jpa.more.business.history.util.HistoryLogBeforeCommitTas
 import org.iglooproject.jpa.more.business.history.util.HistoryLogBeforeCommitWithDifferencesTask;
 import org.iglooproject.jpa.more.business.history.util.IHistoryDifferenceHandler;
 import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLog<HL, HET, HD>,
 				HET extends Enum<HET>,
@@ -56,7 +54,7 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 	
 	protected abstract <T> HL newHistoryLog(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation);
 
-	protected abstract Supplier<HD> newHistoryDifferenceSupplier();
+	protected abstract Supplier2<HD> newHistoryDifferenceSupplier();
 
 	protected void setAdditionalInformation(HL log, HLAIB additionalInformation) {
 		if (additionalInformation != null) {

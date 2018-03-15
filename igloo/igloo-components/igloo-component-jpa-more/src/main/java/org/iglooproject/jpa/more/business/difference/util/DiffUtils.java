@@ -1,16 +1,20 @@
 package org.iglooproject.jpa.more.business.difference.util;
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import org.bindgen.Binding;
+import org.iglooproject.commons.util.fieldpath.FieldPath;
+import org.iglooproject.commons.util.fieldpath.FieldPathComponent;
+import org.iglooproject.commons.util.fieldpath.FieldPathPropertyComponent;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.Predicates2;
+import org.iglooproject.functional.SerializablePredicate2;
+import org.iglooproject.jpa.more.business.difference.model.Difference;
+import org.iglooproject.jpa.more.business.difference.selector.IKeyAwareSelector;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
 import de.danielbechler.diff.ObjectDiffer;
@@ -22,11 +26,6 @@ import de.danielbechler.diff.selector.CollectionItemElementSelector;
 import de.danielbechler.diff.selector.ElementSelector;
 import de.danielbechler.diff.selector.MapKeyElementSelector;
 import de.danielbechler.diff.selector.RootElementSelector;
-import org.iglooproject.commons.util.fieldpath.FieldPath;
-import org.iglooproject.commons.util.fieldpath.FieldPathComponent;
-import org.iglooproject.commons.util.fieldpath.FieldPathPropertyComponent;
-import org.iglooproject.jpa.more.business.difference.model.Difference;
-import org.iglooproject.jpa.more.business.difference.selector.IKeyAwareSelector;
 
 public final class DiffUtils {
 	
@@ -44,11 +43,11 @@ public final class DiffUtils {
 		);
 	}
 	
-	public static Predicate<DiffNode> hasPropertyName(String propertyName) {
+	public static SerializablePredicate2<DiffNode> hasPropertyName(String propertyName) {
 		return new PropertyNamePredicate(propertyName);
 	}
 	
-	private static class PropertyNamePredicate implements Predicate<DiffNode>, Serializable {
+	private static class PropertyNamePredicate implements SerializablePredicate2<DiffNode> {
 		private static final long serialVersionUID = -3331762514876209810L;
 		
 		private final String propertyName;
@@ -59,16 +58,16 @@ public final class DiffUtils {
 		}
 		
 		@Override
-		public boolean apply(DiffNode input) {
+		public boolean test(DiffNode input) {
 			return input != null && propertyName.equals(input.getPropertyName());
 		}
 	}
 	
-	public static Predicate<DiffNode> hasPath(FieldPath path) {
+	public static SerializablePredicate2<DiffNode> hasPath(FieldPath path) {
 		return new FieldPathPredicate(path);
 	}
 	
-	private static class FieldPathPredicate implements Predicate<DiffNode>, Serializable {
+	private static class FieldPathPredicate implements SerializablePredicate2<DiffNode> {
 		private static final long serialVersionUID = -3331762514876209810L;
 		
 		private final FieldPath fieldPath;
@@ -79,19 +78,19 @@ public final class DiffUtils {
 		}
 		
 		@Override
-		public boolean apply(DiffNode input) {
+		public boolean test(DiffNode input) {
 			return input != null && fieldPath.equals(DiffUtils.toFieldPath(input.getPath()));
 		}
 	}
 	
-	public static Predicate<DiffNode> isField(Binding<?> binding) {
-		return Predicates.and(
+	public static SerializablePredicate2<DiffNode> isField(Binding<?> binding) {
+		return Predicates2.and(
 				new RootTypePredicate(binding.getRootBinding().getType()),
 				new FieldPathPredicate(FieldPath.fromBinding(binding))
 		);
 	}
 	
-	private static class RootTypePredicate implements Predicate<DiffNode>, Serializable {
+	private static class RootTypePredicate implements SerializablePredicate2<DiffNode> {
 		private static final long serialVersionUID = -3331762514876209810L;
 		
 		private final Class<?> expectedType;
@@ -102,7 +101,7 @@ public final class DiffUtils {
 		}
 		
 		@Override
-		public boolean apply(DiffNode input) {
+		public boolean test(DiffNode input) {
 			if (input == null) {
 				return false;
 			}
@@ -173,11 +172,11 @@ public final class DiffUtils {
 		return builder.build();
 	}
 	
-	public static Function<FieldPath, NodePath> toNodePathFunction() {
+	public static Function2<FieldPath, NodePath> toNodePathFunction() {
 		return ToNodePath.INSTANCE;
 	}
 	
-	private static enum ToNodePath implements Function<FieldPath, NodePath> {
+	private static enum ToNodePath implements Function2<FieldPath, NodePath> {
 		INSTANCE;
 		
 		@Override

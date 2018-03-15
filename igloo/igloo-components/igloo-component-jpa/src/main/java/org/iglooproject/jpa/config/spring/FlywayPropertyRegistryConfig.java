@@ -6,9 +6,9 @@ import static org.iglooproject.jpa.property.FlywayPropertyIds.FLYWAY_PLACEHOLDER
 import java.util.Collections;
 import java.util.Set;
 
-import org.iglooproject.commons.util.functional.Suppliers2;
-import org.iglooproject.commons.util.functional.converter.StringCollectionConverter;
 import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
+import org.iglooproject.functional.Suppliers2;
+import org.iglooproject.functional.converter.StringCollectionConverter;
 import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.springframework.context.annotation.Configuration;

@@ -3,13 +3,12 @@ package org.iglooproject.wicket.more.markup.html.form;
 import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericLocalizedReferenceData;
 import org.iglooproject.wicket.more.markup.html.model.GenericReferenceDataModel;
 import org.iglooproject.wicket.more.markup.html.select2.GenericSelect2DropDownMultipleChoice;
 import org.iglooproject.wicket.more.rendering.GenericLocalizedReferenceDataRenderer;
-
-import com.google.common.base.Supplier;
 
 public class GenericLocalizedReferenceDataDropDownMultipleChoice<T extends GenericLocalizedReferenceData<? super T, ?>> extends GenericSelect2DropDownMultipleChoice<T> {
 
@@ -18,7 +17,7 @@ public class GenericLocalizedReferenceDataDropDownMultipleChoice<T extends Gener
 	public <C extends Collection<T>> GenericLocalizedReferenceDataDropDownMultipleChoice(
 			String id,
 			IModel<C> model,
-			Supplier<? extends C> collectionSupplier,
+			SerializableSupplier2<? extends C> collectionSupplier,
 			Class<T> clazz
 	) {
 		this(
@@ -32,7 +31,7 @@ public class GenericLocalizedReferenceDataDropDownMultipleChoice<T extends Gener
 	public <C extends Collection<T>> GenericLocalizedReferenceDataDropDownMultipleChoice(
 			String id,
 			IModel<C> model,
-			Supplier<? extends C> collectionSupplier,
+			SerializableSupplier2<? extends C> collectionSupplier,
 			IModel<? extends Collection<? extends T>> choicesModel
 	) {
 		super(

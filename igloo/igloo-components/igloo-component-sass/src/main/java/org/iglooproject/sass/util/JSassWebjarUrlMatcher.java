@@ -3,15 +3,16 @@ package org.iglooproject.sass.util;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.iglooproject.functional.Predicate2;
 
 /**
  * Handle webjars://... url handling and parsing.
  *
  */
-public class JSassWebjarUrlMatcher implements Predicate<String> {
+public class JSassWebjarUrlMatcher implements Predicate2<String> {
 
 	public static final JSassWebjarUrlMatcher INSTANCE = new JSassWebjarUrlMatcher();
 

@@ -31,8 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Streams;
 
 public abstract class AbstractMetaModelTestCase extends AbstractTestCase {
 	
@@ -62,9 +62,10 @@ public abstract class AbstractMetaModelTestCase extends AbstractTestCase {
 						false,
 						true
 					).iterator();
-			Iterator<JdbcRelation> tables =
-					Iterators.transform(tablesResultSet, new DynaBeanConverter<>(JdbcRelation.class));
-			return ImmutableList.copyOf(tables);
+			
+			return Streams.stream(tablesResultSet)
+							.map(new DynaBeanConverter<>(JdbcRelation.class))
+							.collect(ImmutableList.toImmutableList());
 		} catch (SQLException e) {
 			throw new IllegalStateException(
 					String.format("error retrieving relation list for <%s-%s-%s>",

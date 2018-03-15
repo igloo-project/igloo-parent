@@ -11,6 +11,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
@@ -23,7 +24,6 @@ import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.Bootst
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 
 public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends AbstractCoreColumn<T, S> {
@@ -58,7 +58,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 	
 	private List<Behavior> linkBehaviors = Lists.newArrayList();
 
-	public CoreBootstrapBadgeColumn(IModel<?> headerLabelModel, final Function<? super T, C> function,
+	public CoreBootstrapBadgeColumn(IModel<?> headerLabelModel, final SerializableFunction2<? super T, C> function,
 			final BootstrapRenderer<? super C> renderer) {
 		super(headerLabelModel);
 		Injector.get().inject(this);

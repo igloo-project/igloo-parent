@@ -2,8 +2,6 @@ package org.iglooproject.test.wicket.more.link.descriptor;
 
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.test.wicket.more.link.descriptor.application.WicketMoreTestLinkDescriptorApplication;
 import org.iglooproject.test.wicket.more.link.descriptor.resource.TestLinkDescriptorNoParameterResource;
 import org.iglooproject.test.wicket.more.link.descriptor.resource.TestLinkDescriptorOneParameterResource;
@@ -62,15 +60,10 @@ public class TestResourceLinkDescriptorMapper extends AbstractAnyTargetTestLinkD
 					IOneParameterLinkDescriptorMapper<IImageResourceLinkDescriptor, T>
 					> builder) {
 		return builder.resource(DetachableFactories.forUnit(ReadOnlyModel.factory(
-				new SerializableFunction<T, ResourceReference>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public ResourceReference apply(T input) {
-						return input == null
-								? TestLinkDescriptorNoParameterResource.REFERENCE
-								: TestLinkDescriptorOneParameterResource.REFERENCE;
-					}
-				}
+				(input) ->
+					input == null
+						? TestLinkDescriptorNoParameterResource.REFERENCE
+						: TestLinkDescriptorOneParameterResource.REFERENCE
 		)));
 	}
 

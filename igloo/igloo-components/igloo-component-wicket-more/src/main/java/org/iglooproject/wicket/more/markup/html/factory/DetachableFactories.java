@@ -1,10 +1,8 @@
 package org.iglooproject.wicket.more.markup.html.factory;
 
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.javatuples.Unit;
-
-import com.google.common.base.Function;
 
 public final class DetachableFactories {
 
@@ -37,7 +35,7 @@ public final class DetachableFactories {
 	}
 
 	public static final <A, B, R> IDetachableFactory<A, R> compose(final IDetachableFactory<B, R> factory,
-			final Function<A, ? extends B> function) {
+			final SerializableFunction2<A, ? extends B> function) {
 		return new IDetachableFactory<A, R>() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -68,14 +66,8 @@ public final class DetachableFactories {
 		};
 	}
 
-	public static final <T, R> Function<IDetachableFactory<T, R>, R> toApplyFunction(final T parameter) {
-		return new SerializableFunction<IDetachableFactory<T, R>, R>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public R apply(IDetachableFactory<T, R> input) {
-				return input.create(parameter);
-			}
-		};
+	public static final <T, R> SerializableFunction2<IDetachableFactory<T, R>, R> toApplyFunction(final T parameter) {
+		return (input) -> input.create(parameter);
 	}
 
 }

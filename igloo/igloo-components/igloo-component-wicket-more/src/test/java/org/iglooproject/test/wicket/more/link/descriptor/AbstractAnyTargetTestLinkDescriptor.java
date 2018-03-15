@@ -10,14 +10,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.javatuples.Pair;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
-import org.iglooproject.commons.util.functional.Suppliers2;
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.test.wicket.more.business.person.model.Person;
 import org.iglooproject.test.wicket.more.business.person.service.IPersonService;
 import org.iglooproject.test.wicket.more.link.descriptor.page.TestLinkDescriptorNoParameterPage;
@@ -35,6 +28,12 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkPara
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import org.iglooproject.wicket.more.model.CollectionCopyModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.javatuples.Pair;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLinkDescriptor {
 	

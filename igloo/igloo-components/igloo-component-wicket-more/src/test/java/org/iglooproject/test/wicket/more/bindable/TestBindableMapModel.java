@@ -8,14 +8,13 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Map;
 
-import org.junit.Test;
-
-import com.google.common.collect.ImmutableMap;
-
-import org.iglooproject.commons.util.functional.Suppliers2;
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.wicket.more.bindable.model.BindableModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableMapModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableModel;
+import org.junit.Test;
+
+import com.google.common.collect.ImmutableMap;
 
 public class TestBindableMapModel extends AbstractTestBindableModel {
 	

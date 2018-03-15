@@ -8,20 +8,19 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
+import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.functional.Suppliers2;
+import org.iglooproject.test.wicket.more.model.TestSerializableCollectionCopyModel.ValueEnum;
+import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
+import org.iglooproject.wicket.more.model.CollectionCopyModel;
+import org.iglooproject.wicket.more.util.model.Models;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Equivalence;
-import com.google.common.base.Supplier;
 import com.google.common.collect.Ordering;
-
-import org.iglooproject.commons.util.functional.Suppliers2;
-import org.iglooproject.test.wicket.more.model.TestSerializableCollectionCopyModel.ValueEnum;
-import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
-import org.iglooproject.wicket.more.model.CollectionCopyModel;
-import org.iglooproject.wicket.more.util.model.Models;
 
 @RunWith(Parameterized.class)
 public class TestSerializableCollectionCopyModel<C extends Collection<ValueEnum>>
@@ -45,9 +44,9 @@ public class TestSerializableCollectionCopyModel<C extends Collection<ValueEnum>
 		});
 	}
 
-	private final Supplier<? extends C> collectionSupplier;
+	private final SerializableSupplier2<? extends C> collectionSupplier;
 	
-	public TestSerializableCollectionCopyModel(Supplier<? extends C> collectionSupplier, Equivalence<? super C> equivalence) {
+	public TestSerializableCollectionCopyModel(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) {
 		super(equivalence);
 		this.collectionSupplier = collectionSupplier;
 	}

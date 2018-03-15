@@ -3,14 +3,13 @@ package org.iglooproject.wicket.more.link.descriptor.builder.state.main.common;
 import java.util.Collection;
 import java.util.TreeSet;
 
-import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Supplier;
-
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.INoMappableParameterMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
+import org.iglooproject.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
+import org.springframework.core.convert.TypeDescriptor;
 
 /**
  * A state from which one can declare a mappable parameter.
@@ -64,6 +63,6 @@ public interface IMappableParameterDeclarationState {
 	 * @see #model(Class, TypeDescriptor)
 	 */
 	<TParam extends Collection<?>> IMainState<?> model(Class<? super TParam> clazz,
-			TypeDescriptor elementTypeDescriptor, Supplier<? extends TParam> emptyCollectionSupplier);
+			TypeDescriptor elementTypeDescriptor, SerializableSupplier2<? extends TParam> emptyCollectionSupplier);
 	
 }

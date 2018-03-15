@@ -13,7 +13,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.commons.util.functional.SerializablePredicate;
 import org.iglooproject.infinispan.model.IAttribution;
 import org.iglooproject.infinispan.model.IRole;
 import org.iglooproject.infinispan.service.IInfinispanClusterService;
@@ -121,16 +120,10 @@ public class ConsoleMaintenanceInfinispanRolesRequestsPanel extends Panel {
 													}
 												}
 										)
-										.when(
-												new SerializablePredicate<IRole>() {
-													private static final long serialVersionUID = 1L;
-													@Override
-													public boolean apply(IRole input) {
-														IAttribution roleAttribution = infinispanClusterService.getRoleRequestAttribution(input);
-														return roleAttribution != null && roleAttribution.getAttributionDate() != null && roleAttribution.getOwner() != null;
-													}
-												}
-										)
+										.when((input) -> {
+											IAttribution roleAttribution = infinispanClusterService.getRoleRequestAttribution(input);
+											return roleAttribution != null && roleAttribution.getAttributionDate() != null && roleAttribution.getOwner() != null;
+										})
 										.withClassOnElements("btn-xs")
 								.end()
 						.bootstrapCard()

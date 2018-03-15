@@ -1,13 +1,12 @@
 package org.iglooproject.wicket.more.markup.html.factory;
 
 import org.apache.wicket.model.IModel;
+import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.more.condition.BooleanOperator;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.springframework.security.acls.model.Permission;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 public final class ConditionFactories {
@@ -57,10 +56,10 @@ public final class ConditionFactories {
 			public Condition create(final T parameter) {
 				return Condition.composite(
 						operator,
-						Iterables.transform(
-								Lists.asList(firstFactory, otherFactories),
-								DetachableFactories.<T, Condition>toApplyFunction(parameter)
-						)
+						Lists.asList(firstFactory, otherFactories)
+								.stream()
+								.map(DetachableFactories.<T, Condition>toApplyFunction(parameter))
+								::iterator
 				);
 			}
 			@Override
@@ -87,7 +86,7 @@ public final class ConditionFactories {
 		return compose(BooleanOperator.AND, firstFactory, otherFactories);
 	}
 
-	public static final <T> IDetachableFactory<IModel<? extends T>, Condition> predicate(final Predicate<? super T> predicate) {
+	public static final <T> IDetachableFactory<IModel<? extends T>, Condition> predicate(final SerializablePredicate2<? super T> predicate) {
 		return new IDetachableFactory<IModel<? extends T>, Condition>() {
 			private static final long serialVersionUID = 1L;
 			@Override

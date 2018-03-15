@@ -8,31 +8,24 @@ import javax.annotation.Nonnull;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
 
-import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.MapDifference.ValueDifference;
-
-import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
-
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 
 public class TestHistoryDifferenceCollectionMatcher<D extends AbstractHistoryDifference<?, ?>> extends TypeSafeMatcher<Collection<D>> {
 	
-	private static final Function<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceKey> HISTORY_DIFFERENCE_TO_DIFFERENCE_KEY =
-			new Function<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceKey>() {
-				@Override
-				public TestHistoryDifferenceKey apply(@Nonnull AbstractHistoryDifference<?, ?> input) {
-					return new TestHistoryDifferenceKey(input);
-				}
-			};
+	private static final Function2<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceKey> HISTORY_DIFFERENCE_TO_DIFFERENCE_KEY =
+			(input) -> new TestHistoryDifferenceKey(input);
 	
-	private static final Function<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceDescription> HISTORY_DIFFERENCE_TO_DESCRIPTION =
-			new Function<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceDescription>() {
+	private static final Function2<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceDescription> HISTORY_DIFFERENCE_TO_DESCRIPTION =
+			new Function2<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceDescription>() {
 				@Override
 				public TestHistoryDifferenceDescription apply(@Nonnull AbstractHistoryDifference<?, ?> input) {
 					return new TestHistoryDifferenceDescription(

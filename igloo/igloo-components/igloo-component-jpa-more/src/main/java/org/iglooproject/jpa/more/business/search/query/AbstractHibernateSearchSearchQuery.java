@@ -1,9 +1,11 @@
 package org.iglooproject.jpa.more.business.search.query;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -21,7 +23,6 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.search.query.engine.spi.FacetManager;
 import org.hibernate.search.query.facet.Facet;
 import org.hibernate.search.query.facet.FacetingRequest;
-import org.iglooproject.commons.util.functional.SerializableFunction;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
 import org.iglooproject.jpa.search.bridge.GenericEntityIdFieldBridge;
@@ -31,8 +32,6 @@ import org.iglooproject.spring.util.lucene.search.LuceneUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 
@@ -209,17 +208,10 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	 * @param limit
 	 * @param field The field path
 	 */
+	@SuppressWarnings("unchecked")
 	protected <Q> List<Q> listProjection(Long offset, Long limit, String field) {
-		@SuppressWarnings("unchecked")
 		List<Object[]> projections = getFullTextQueryList(offset, limit).setProjection(field).getResultList();
-		
-		return Lists.transform(projections, new Function<Object[], Q>() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public Q apply(Object[] input) {
-				return (Q) input[0];
-			}
-		});
+		return Lists.transform(projections, (input) -> (Q) input[0]);
 	}
 	
 	@Override
@@ -500,17 +492,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 
 	@Override
 	public final List<String> listFacetValues(String facetName) {
-		return Lists.newArrayList(
-				Iterables.transform(
-						getFacets(facetName),
-						new SerializableFunction<Facet, String>() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public String apply(Facet facet) {
-								return facet.getValue();
-							}
-						}
-				)
-		);
+		return getFacets(facetName)
+				.stream()
+				.map((facet) -> facet.getValue())
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 }

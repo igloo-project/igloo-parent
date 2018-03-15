@@ -1,5 +1,6 @@
 package org.iglooproject.infinispan.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -14,8 +15,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.Predicate2;
+import org.iglooproject.functional.Predicates2;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.infinispan.action.RebalanceAction;
 import org.iglooproject.infinispan.action.RoleCaptureAction;
 import org.iglooproject.infinispan.action.RoleReleaseAction;
@@ -48,17 +52,13 @@ import org.javatuples.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.BoundType;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -207,12 +207,10 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 
 	@Override
 	public List<INode> getNodes() {
-		return ImmutableList.copyOf(Iterables.filter(Iterables.transform(getMembers(), new Function<AddressWrapper, INode>() {
-			@Override
-			public INode apply(AddressWrapper input) {
-				return getNodesCache().get(input);
-			}
-		}), Predicates.notNull()));
+		return getMembers().stream()
+				.map((input) -> getNodesCache().get(input))
+				.filter(Predicates2.notNull())
+				.collect(ImmutableList.toImmutableList());
 	}
 
 	@Override
@@ -488,22 +486,17 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				return doWithLock(lockRequest.getLock(), runnable);
 			} finally {
 				// get rid of this node slot
-				filterPriorityQueue(lockRequest.getPriorityQueue(),
-						new Predicate<IAttribution>() {
-							@Override
-							public boolean apply(IAttribution input) {
-								// keep all attribution of other nodes
-								return !input.match(getAddress());
-							}
-					
-				});
+				filterPriorityQueue(
+						lockRequest.getPriorityQueue(),
+						(input) -> !input.match(getAddress())
+				);
 			}
 		} else {
 			return false;
 		}
 	}
 
-	private void filterPriorityQueue(IPriorityQueue priorityQueue, Predicate<IAttribution> attributionPredicate) {
+	private void filterPriorityQueue(IPriorityQueue priorityQueue, Predicate2<IAttribution> attributionPredicate) {
 		Cache<IPriorityQueue, List<IAttribution>> cache = getPriorityQueuesCache();
 		boolean commit = false;
 		if (!cache.getAdvancedCache().startBatch()) {
@@ -516,7 +509,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				return;
 			}
 			List<IAttribution> values = cache.getOrDefault(priorityQueue, Lists.<IAttribution> newArrayList());
-			List<IAttribution> newValues = Lists.newArrayList(Collections2.filter(values, attributionPredicate));
+			List<IAttribution> newValues = values.stream().filter(attributionPredicate).collect(Collectors.toCollection(ArrayList::new));
 			cache.put(priorityQueue, newValues);
 			commit = true;
 		} finally {
@@ -970,16 +963,6 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		}
 	}
 
-	private static final class ToJgroupsAddress
-			implements SerializableFunction<org.infinispan.remoting.transport.Address, AddressWrapper> {
-		private static final long serialVersionUID = -6249484113042442830L;
-
-		@Override
-		public AddressWrapper apply(org.infinispan.remoting.transport.Address input) {
-			return AddressWrapper.from(((JGroupsAddress) input).getJGroupsAddress());
-		}
-	}
-
 	private void updateCoordinator() {
 		try {
 			if (infinispanClusterCheckerService != null && cacheManager.isCoordinator()) {
@@ -1065,12 +1048,10 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 					if (foundToDelete) {
 						LOGGER.warn("Cleaning priority queue for {}", priorityQueueEntry.getKey());
 						// found orphan items, we lock and securely remove orphans
-						filterPriorityQueue(priorityQueueEntry.getKey(), new Predicate<IAttribution>() {
-							@Override
-							public boolean apply(IAttribution input) {
-								return getMembers().contains(input.getOwner());
-							}
-						});
+						filterPriorityQueue(
+								priorityQueueEntry.getKey(),
+								(input) -> getMembers().contains(input.getOwner())
+						);
 					}
 				}
 			}
@@ -1123,5 +1104,6 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 		return Pair.with(fair, comments);
 	}
 
-	private static final ToJgroupsAddress INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS = new ToJgroupsAddress();
+	private static final SerializableFunction2<org.infinispan.remoting.transport.Address, AddressWrapper> INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS =
+			(input) -> AddressWrapper.from(((JGroupsAddress) input).getJGroupsAddress());
 }

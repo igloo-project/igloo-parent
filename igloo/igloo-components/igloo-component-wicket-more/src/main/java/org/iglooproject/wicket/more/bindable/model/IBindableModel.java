@@ -5,10 +5,8 @@ import java.util.Map;
 
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
-
-import com.google.common.base.Function;
-import com.google.common.base.Supplier;
-
+import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.bindable.exception.NoSuchModelException;
 import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
 import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
@@ -54,8 +52,9 @@ public interface IBindableModel<T> extends IModel<T> {
 	 */
 	<T2, C extends Collection<T2>> IBindableCollectionModel<T2, C> bindCollectionWithCache(
 			BindingRoot<? super T, C> binding,
-			Supplier<? extends C> newCollectionSupplier,
-			Function<? super T2, ? extends IModel<T2>> itemModelFunction);
+			SerializableSupplier2<? extends C> newCollectionSupplier,
+			SerializableFunction2<? super T2, ? extends IModel<T2>> itemModelFunction
+	);
 	
 	/**
 	 * @return A previously created model collection tied to the given binding.
@@ -73,9 +72,10 @@ public interface IBindableModel<T> extends IModel<T> {
 	 */
 	<K, V, M extends Map<K, V>> IBindableMapModel<K, V, M> bindMapWithCache(
 			BindingRoot<? super T, M> binding,
-			Supplier<? extends M> newMapSupplier,
-			Function<? super K, ? extends IModel<K>> keyModelFunction,
-			Function<? super V, ? extends IModel<V>> valueModelFunction);
+			SerializableSupplier2<? extends M> newMapSupplier,
+			SerializableFunction2<? super K, ? extends IModel<K>> keyModelFunction,
+			SerializableFunction2<? super V, ? extends IModel<V>> valueModelFunction
+	);
 	
 	/**
 	 * @return A previously created model collection tied to the given binding.
@@ -91,30 +91,30 @@ public interface IBindableModel<T> extends IModel<T> {
 	/**
 	 * If this model is cached (i.e. if the underlying model is a WorkingCopyModel), writes the cache to the reference model.
 	 * <p>Also calls {@link #writeAll()} on all the models previously returned by {@link #bindWithCache(BindingRoot, IModel)},
-	 * {@link #bindCollectionWithCache(BindingRoot, Supplier, Function)} or
-	 * {@link #bindMapWithCache(BindingRoot, Supplier, Function, Function)}.
+	 * {@link #bindCollectionWithCache(BindingRoot, SerializableSupplier2, SerializableFunction2)} or
+	 * {@link #bindMapWithCache(BindingRoot, SerializableSupplier2, SerializableFunction2, SerializableFunction2)}.
 	 */
 	void writeAll();
 
 	/**
 	 * If this model is cached (i.e. if the underlying model is a WorkingCopyModel), reads from the reference model to the cache.
 	 * <p>Also calls {@link #readAll()} on all the models previously returned by {@link #bindWithCache(BindingRoot, IModel)},
-	 * {@link #bindCollectionWithCache(BindingRoot, Supplier, Function)} or
-	 * {@link #bindMapWithCache(BindingRoot, Supplier, Function, Function)}.
+	 * {@link #bindCollectionWithCache(BindingRoot, SerializableSupplier2, SerializableFunction2)} or
+	 * {@link #bindMapWithCache(BindingRoot, SerializableSupplier2, SerializableFunction2, SerializableFunction2)}.
 	 */
 	void readAll();
 	
 	/**
 	 * <p>Calls {@link #readAll()} on all the models previously returned by {@link #bindWithCache(BindingRoot, IModel)},
-	 * {@link #bindCollectionWithCache(BindingRoot, Supplier, Function)} or
-	 * {@link #bindMapWithCache(BindingRoot, Supplier, Function, Function)}.
+	 * {@link #bindCollectionWithCache(BindingRoot, SerializableSupplier2, SerializableFunction2)} or
+	 * {@link #bindMapWithCache(BindingRoot, SerializableSupplier2, SerializableFunction2, SerializableFunction2)}.
 	 */
 	void readAllExceptMainModel();
 	
 	/**
 	 * <p>Calls {@link #readAll()} on all the models previously returned by {@link #bindWithCache(BindingRoot, IModel)},
-	 * {@link #bindCollectionWithCache(BindingRoot, Supplier, Function)} or
-	 * {@link #bindMapWithCache(BindingRoot, Supplier, Function, Function)}.
+	 * {@link #bindCollectionWithCache(BindingRoot, SerializableSupplier2, SerializableFunction2)} or
+	 * {@link #bindMapWithCache(BindingRoot, SerializableSupplier2, SerializableFunction2, SerializableFunction2)}.
 	 */
 	<T2> void readAllUnder(BindingRoot<? super T, T2> binding);
 

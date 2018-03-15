@@ -7,13 +7,11 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellReference;
-
-import com.google.common.collect.Iterators;
-
-import org.iglooproject.commons.util.functional.SerializablePredicate;
 import org.iglooproject.imports.table.apache.poi.util.ApachePoiImportUtils;
-import org.iglooproject.imports.table.common.location.TableImportLocation;
 import org.iglooproject.imports.table.common.location.ITableImportNavigator;
+import org.iglooproject.imports.table.common.location.TableImportLocation;
+
+import com.google.common.collect.Streams;
 
 public class ApachePoiImportNavigator implements ITableImportNavigator<Sheet, Row, Cell, CellReference> {
 	
@@ -68,13 +66,9 @@ public class ApachePoiImportNavigator implements ITableImportNavigator<Sheet, Ro
 	
 	@Override
 	public Iterator<Row> nonEmptyRows(Sheet sheet) {
-		return Iterators.filter(sheet.iterator(), new SerializablePredicate<Row>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public boolean apply(Row row) {
-				return rowHasContent(row);
-			}
-		});
+		return Streams.stream(sheet.iterator())
+				.filter((row) -> rowHasContent(row))
+				.iterator();
 	}
 
 	@Override

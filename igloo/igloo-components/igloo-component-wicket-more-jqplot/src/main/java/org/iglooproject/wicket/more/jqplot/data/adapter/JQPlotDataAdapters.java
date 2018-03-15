@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.jqplot.util.LabelledSeries;
 import org.iglooproject.wicket.more.jqplot.util.LabelledSeriesEntry;
 import org.iglooproject.wicket.more.rendering.Renderer;
@@ -65,18 +63,17 @@ public final class JQPlotDataAdapters {
 			}
 		}
 		
-		Renderer<SeriesEntry<TK, V>> entryRenderer = percentRenderer.onResultOf(new SerializableFunction<SeriesEntry<TK, V>, Double>() {
-			private static final long serialVersionUID = 595417526944754574L;
-			@Override
-			public Double apply(@Nonnull SeriesEntry<TK, V> entry) {
-				V absoluteValue = entry.getValue();
-				if (absoluteValue == null) {
-					return null;
-				} else {
-					return absoluteValue.doubleValue() / sums.get(entry.getKey());
+		Renderer<SeriesEntry<TK, V>> entryRenderer = percentRenderer.onResultOf(
+			(SerializableFunction2<SeriesEntry<TK, V>, Double>)
+				(entry) -> {
+					V absoluteValue = entry.getValue();
+					if (absoluteValue == null) {
+						return null;
+					} else {
+						return absoluteValue.doubleValue() / sums.get(entry.getKey());
+					}
 				}
-			}
-		});
+		);
 		
 		return addLabels(delegateObject, entryRenderer, locale);
 	}

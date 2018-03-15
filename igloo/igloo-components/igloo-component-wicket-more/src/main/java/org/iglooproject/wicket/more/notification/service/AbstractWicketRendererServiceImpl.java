@@ -1,13 +1,11 @@
 package org.iglooproject.wicket.more.notification.service;
 
 import java.util.Locale;
-import java.util.concurrent.Callable;
 
 import org.apache.wicket.Component;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.jpa.security.service.ISecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.base.Supplier;
 
 public abstract class AbstractWicketRendererServiceImpl extends AbstractOfflinePanelRendererServiceImpl {
 	
@@ -19,14 +17,9 @@ public abstract class AbstractWicketRendererServiceImpl extends AbstractOfflineP
 	}
 	
 	@Override
-	protected String renderComponent(final Supplier<Component> componentSupplier, final Locale locale, final String variation) {
+	protected String renderComponent(final SerializableSupplier2<Component> componentSupplier, final Locale locale, final String variation) {
 		return securityService.runAsSystem(
-			new Callable<String>() {
-				@Override
-				public String call() throws Exception {
-					return AbstractWicketRendererServiceImpl.super.renderComponent(componentSupplier, locale, variation);
-				}
-			}
+			() -> AbstractWicketRendererServiceImpl.super.renderComponent(componentSupplier, locale, variation)
 		);
 	}
 }

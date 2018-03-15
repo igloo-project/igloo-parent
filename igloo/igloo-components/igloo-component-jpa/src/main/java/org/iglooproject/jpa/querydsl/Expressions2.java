@@ -9,10 +9,10 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.iglooproject.functional.Function2;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.QGenericEntity;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
 import com.querydsl.core.Tuple;
@@ -117,7 +117,7 @@ public final class Expressions2 {
 	}
 	
 	public static <T, F> MappingProjection<F> fromFunction(final Class<T> inputClazz, Expression<T> inputExpression, Class<F> outputClazz,
-			final Function<? super T, ? extends F> function) {
+			final Function2<? super T, ? extends F> function) {
 		return new MappingProjection<F>(outputClazz, inputExpression) {
 			private static final long serialVersionUID = 1L;
 			@Override

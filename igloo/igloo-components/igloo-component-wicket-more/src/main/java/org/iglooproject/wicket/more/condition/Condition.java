@@ -17,7 +17,9 @@ import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.commons.util.functional.Predicates2;
+import org.iglooproject.functional.Predicates2;
+import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.wicket.more.markup.html.basic.ComponentBooleanProperty;
 import org.iglooproject.wicket.more.markup.html.basic.ComponentBooleanPropertyBehavior;
@@ -26,18 +28,16 @@ import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.Detach;
 import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
+import org.iglooproject.wicket.more.util.model.Models;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.base.Equivalence;
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Streams;
 
 public abstract class Condition implements IModel<Boolean>, IDetachable {
 	
@@ -391,27 +391,27 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		}
 	}
 	
-	public static <T> Condition predicate(IModel<? extends T> model, Predicate<? super T> predicate) {
+	public static <T> Condition predicate(IModel<? extends T> model, SerializablePredicate2<? super T> predicate) {
 		return predicate(model, Detach.YES, predicate);
 	}
 	
-	public static <T1, T2> Condition predicate(IModel<? extends T2> model, Function<? super T2, ? extends T1> function, Predicate<? super T1> predicate) {
+	public static <T1, T2> Condition predicate(IModel<? extends T2> model, SerializableFunction2<? super T2, ? extends T1> function, SerializablePredicate2<? super T1> predicate) {
 		return predicate(model, Detach.YES, function, predicate);
 	}
 	
-	public static <T> Condition predicate(IModel<? extends T> model, Detach detachModel, Predicate<? super T> predicate) {
+	public static <T> Condition predicate(IModel<? extends T> model, Detach detachModel, SerializablePredicate2<? super T> predicate) {
 		return new PredicateCondition<>(model, detachModel, predicate);
 	}
 	
-	public static <T> Condition convertedInputPredicate(final FormComponent<? extends T> formComponent, Predicate<? super T> predicate) {
+	public static <T> Condition convertedInputPredicate(final FormComponent<? extends T> formComponent, SerializablePredicate2<? super T> predicate) {
 		return convertedInputPredicate(formComponent, Detach.YES, predicate);
 	}
 	
-	public static <T1, T2> Condition predicate(IModel<? extends T2> model, Detach detachModel, Function<? super T2, ? extends T1> function, Predicate<? super T1> predicate) {
-		return predicate(model, detachModel, Predicates.compose(predicate, function));
+	public static <T1, T2> Condition predicate(IModel<? extends T2> model, Detach detachModel, SerializableFunction2<? super T2, ? extends T1> function, SerializablePredicate2<? super T1> predicate) {
+		return predicate(model, detachModel, Predicates2.compose(predicate, function));
 	}
 	
-	public static <T> Condition convertedInputPredicate(final FormComponent<? extends T> formComponent, Detach detachModel, Predicate<? super T> predicate) {
+	public static <T> Condition convertedInputPredicate(final FormComponent<? extends T> formComponent, Detach detachModel, SerializablePredicate2<? super T> predicate) {
 		return predicate(
 				new IModel<T>() {
 					private static final long serialVersionUID = 1L;
@@ -434,9 +434,9 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 
 		private final IModel<? extends T> model;
 		private final Detach detachModel;
-		private final Predicate<? super T> predicate;
+		private final SerializablePredicate2<? super T> predicate;
 		
-		public PredicateCondition(IModel<? extends T> model, Detach detachModel, Predicate<? super T> predicate) {
+		public PredicateCondition(IModel<? extends T> model, Detach detachModel, SerializablePredicate2<? super T> predicate) {
 			super();
 			this.model = model;
 			this.detachModel = detachModel;
@@ -445,14 +445,14 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		
 		@Override
 		public boolean applies() {
-			return predicate.apply(model.getObject());
+			return predicate.test(model.getObject());
 		}
 		
 		@Override
 		public void detach() {
 			super.detach();
 			if (predicate instanceof IDetachable) {
-				((IDetachable)predicate).detach();
+				((IDetachable) predicate).detach();
 			}
 			if (Detach.YES.equals(detachModel)) {
 				model.detach();
@@ -467,40 +467,28 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		}
 	}
 	
-	/**
-	 * @see Predicates2#isTrue()
-	 */
 	public static Condition isTrue(IModel<Boolean> model) {
 		return predicate(model, Predicates2.isTrue());
 	}
 
-	/**
-	 * @see Predicates2#isTrueOrNull()
-	 */
 	public static Condition isTrueOrNull(IModel<Boolean> model) {
 		return predicate(model, Predicates2.isTrueOrNull());
 	}
 
-	/**
-	 * @see Predicates2#isFalse()
-	 */
 	public static Condition isFalse(IModel<Boolean> model) {
 		return predicate(model, Predicates2.isFalse());
 	}
 
-	/**
-	 * @see Predicates2#isFalseOrNull()
-	 */
 	public static Condition isFalseOrNull(IModel<Boolean> model) {
 		return predicate(model, Predicates2.isFalseOrNull());
 	}
 	
 	public static Condition isEmpty(IDataProvider<?> dataProvider) {
-		return predicate(BindingModel.of(dataProvider, CoreWicketMoreBindings.iBindableDataProvider().size()), Predicates.equalTo(0L));
+		return predicate(BindingModel.of(dataProvider, CoreWicketMoreBindings.iBindableDataProvider().size()), Predicates2.equalTo(0L));
 	}
 	
 	public static Condition isNotEmpty(IDataProvider<?> dataProvider) {
-		return predicate(BindingModel.of(dataProvider, CoreWicketMoreBindings.iBindableDataProvider().size()), Predicates.equalTo(0L)).negate();
+		return predicate(BindingModel.of(dataProvider, CoreWicketMoreBindings.iBindableDataProvider().size()), Predicates2.equalTo(0L)).negate();
 	}
 	
 	public static Condition isEmpty(final ISequenceProvider<?> sequenceProvider) {
@@ -645,12 +633,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 		private final Iterable<? extends IModel<String>> roleModels;
 		
 		public static AnyRoleCondition fromStrings(Iterable<String> roles) {
-			return new AnyRoleCondition(Iterables.transform(roles, new Function<String, IModel<String>>() {
-				@Override
-				public IModel<String> apply(String input) {
-					return Model.of(input);
-				}
-			}));
+			return new AnyRoleCondition(Streams.stream(roles).<IModel<String>>map(Models.serializableModelFactory())::iterator);
 		}
 		
 		public static AnyRoleCondition fromModels(Iterable<? extends IModel<String>> roleModels) {
@@ -813,7 +796,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	}
 	
 	public static Condition modelNotNull(IModel<?> model) {
-		return predicate(model, Predicates.notNull());
+		return predicate(model, Predicates2.notNull());
 	}
 	
 	public static <C extends Collection<?>> Condition collectionModelNotEmpty(IModel<C> collectionModel) {
@@ -834,7 +817,7 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	}
 
 	@SafeVarargs
-	public final <T> Condition predicateAnyTrue(Predicate<? super T> predicate, IModel<? extends T> firstModel,
+	public final <T> Condition predicateAnyTrue(SerializablePredicate2<? super T> predicate, IModel<? extends T> firstModel,
 			IModel<? extends T>... otherModels) {
 		Condition condition = Condition.alwaysFalse();
 		

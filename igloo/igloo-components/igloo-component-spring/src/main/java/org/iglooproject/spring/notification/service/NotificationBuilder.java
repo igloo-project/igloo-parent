@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.mail.Address;
 import javax.mail.Message.RecipientType;
@@ -26,6 +27,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.text.StringEscapeUtils;
+import org.iglooproject.functional.Function2;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
@@ -49,9 +51,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 
 import com.google.common.base.Charsets;
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -71,25 +71,11 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	private static final String DEV_SUBJECT_PREFIX = "[Dev]";
 	
-	private static final Function<String, NotificationTarget> ADDRESS_TO_TARGET_FUNCTION = new Function<String, NotificationTarget>() {
-		@Override
-		public NotificationTarget apply(String address) {
-			if (address == null) {
-				return null;
-			}
-				return NotificationTarget.of(address);
-		}
-	};
+	private static final Function2<String, NotificationTarget> ADDRESS_TO_TARGET_FUNCTION =
+			(address) -> address != null ? NotificationTarget.of(address) : null;
 	
-	private static final Function<INotificationRecipient, NotificationTarget> I_NOTIFICATION_RECIPIENT_TO_TARGET_FUNCTION = new Function<INotificationRecipient, NotificationTarget>() {
-		@Override
-		public NotificationTarget apply(INotificationRecipient recipient) {
-			if (recipient == null) {
-				return null;
-			}
-			return NotificationTarget.of(recipient.getEmail());
-		}
-	};
+	private static final Function2<INotificationRecipient, NotificationTarget> I_NOTIFICATION_RECIPIENT_TO_TARGET_FUNCTION =
+			(recipient) -> recipient != null ? NotificationTarget.of(recipient.getEmail()) : null;
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -279,7 +265,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	@Override
 	public INotificationBuilderBuildState exceptAddress(Collection<String> except) {
-		recipientsToIgnore.addAll(Collections2.transform(except, ADDRESS_TO_TARGET_FUNCTION));
+		recipientsToIgnore.addAll(except.stream().map(ADDRESS_TO_TARGET_FUNCTION).collect(Collectors.toList()));
 		return this;
 	}
 	
@@ -295,7 +281,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	@Override
 	public INotificationBuilderBuildState except(Collection<? extends INotificationRecipient> except) {
-		recipientsToIgnore.addAll(Collections2.transform(except, I_NOTIFICATION_RECIPIENT_TO_TARGET_FUNCTION));
+		recipientsToIgnore.addAll(except.stream().map(I_NOTIFICATION_RECIPIENT_TO_TARGET_FUNCTION).collect(Collectors.toList()));
 		return this;
 	}
 	
@@ -761,7 +747,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	}
 	
 	protected Collection<NotificationTarget> getNotificationTestEmails() {
-		return Collections2.transform(propertyService.get(NOTIFICATION_TEST_EMAILS), ADDRESS_TO_TARGET_FUNCTION);
+		return propertyService.get(NOTIFICATION_TEST_EMAILS).stream().map(ADDRESS_TO_TARGET_FUNCTION).collect(Collectors.toList());
 	}
 	
 	private Collection<NotificationTarget> filterCcBcc(Collection<NotificationTarget> emails) {

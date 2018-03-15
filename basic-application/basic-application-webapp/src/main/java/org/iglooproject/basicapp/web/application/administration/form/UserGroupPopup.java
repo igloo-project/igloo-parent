@@ -22,7 +22,7 @@ import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.administration.model.RoleDataProvider;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDetailPage;
 import org.iglooproject.basicapp.web.application.common.renderer.AuthorityRenderer;
-import org.iglooproject.commons.util.functional.Suppliers2;
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.form.CheckGroup;

@@ -17,29 +17,25 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
+import org.iglooproject.functional.Function2;
 import org.iglooproject.jpa.search.bridge.GenericEntityIdFieldBridge;
 import org.iglooproject.jpa.search.bridge.NullEncodingGenericEntityIdFieldBridge;
 import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.spring.util.lucene.search.LuceneUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLuceneQueryFactory {
 
-	private static final Function<BindingRoot<?, String>, String> BINDING_TO_PATH_FUNCTION =
-			new Function<BindingRoot<?, String>, String>() {
-				@Override
-				public String apply(BindingRoot<?, String> input) {
-					if (input == null) {
-						throw new IllegalStateException("Path may not be null.");
-					}
-					return input.getPath();
+	private static final Function2<BindingRoot<?, String>, String> BINDING_TO_PATH_FUNCTION =
+			(input) -> {
+				if (input == null) {
+					throw new IllegalStateException("Path may not be null.");
 				}
+				return input.getPath();
 			};
 	
 	@PersistenceContext

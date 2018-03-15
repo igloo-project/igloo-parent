@@ -1,9 +1,9 @@
 package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.caroufredsel;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.apache.wicket.markup.head.HeaderItem;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
 import org.iglooproject.wicket.more.webjars.WebjarUtil;
 
@@ -17,7 +17,7 @@ import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceR
 public final class CarouFredSelJavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
 	private static final long serialVersionUID = 4911695054626514694L;
 
-	private static final Supplier<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
+	private static final SerializableSupplier2<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
 			EasingJavaScriptResourceReference.get());
 
 	private static final CarouFredSelJavaScriptResourceReference INSTANCE = new CarouFredSelJavaScriptResourceReference();

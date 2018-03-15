@@ -4,12 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
-import org.javatuples.Unit;
-import org.springframework.core.convert.TypeDescriptor;
-
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
-
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.AbstractLinkParameterMappingEntry;
@@ -19,13 +14,17 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.IL
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.SimpleMandatoryLinkParameterValidator;
 import org.iglooproject.wicket.more.link.service.ILinkParameterConversionService;
+import org.javatuples.Unit;
+import org.springframework.core.convert.TypeDescriptor;
+
+import com.google.common.collect.ImmutableList;
 
 public class SimpleLinkParameterMappingEntry<T> extends AbstractLinkParameterMappingEntry {
 	
 	private static final long serialVersionUID = -8490340879965229874L;
 	
 	public static <T> ILinkParameterMappingEntryFactory<Unit<IModel<T>>> factory(final String parameterName,
-			final Supplier<? extends TypeDescriptor> typeDescriptorSupplier) {
+			final SerializableSupplier2<? extends TypeDescriptor> typeDescriptorSupplier) {
 		Args.notNull(parameterName, "parameterName");
 		Args.notNull(typeDescriptorSupplier, "typeDescriptorSupplier");
 		
@@ -42,10 +41,10 @@ public class SimpleLinkParameterMappingEntry<T> extends AbstractLinkParameterMap
 	
 	protected final String parameterName;
 	protected final IModel<T> mappedModel;
-	protected final Supplier<? extends TypeDescriptor> typeDescriptorSupplier;
+	protected final SerializableSupplier2<? extends TypeDescriptor> typeDescriptorSupplier;
 	
 	public SimpleLinkParameterMappingEntry(String parameterName, IModel<T> mappedModel,
-			Supplier<? extends TypeDescriptor> typeDescriptorSupplier) {
+			SerializableSupplier2<? extends TypeDescriptor> typeDescriptorSupplier) {
 		this.parameterName = parameterName;
 		this.mappedModel = mappedModel;
 		this.typeDescriptorSupplier = typeDescriptorSupplier;

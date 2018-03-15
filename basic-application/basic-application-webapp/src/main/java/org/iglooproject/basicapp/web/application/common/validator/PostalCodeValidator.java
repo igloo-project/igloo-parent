@@ -1,7 +1,7 @@
 package org.iglooproject.basicapp.web.application.common.validator;
 
 import org.apache.commons.validator.routines.RegexValidator;
-import org.iglooproject.commons.util.functional.SerializablePredicate;
+import org.iglooproject.functional.SerializablePredicate2;
 
 public class PostalCodeValidator extends RegexValidator {
 
@@ -19,7 +19,7 @@ public class PostalCodeValidator extends RegexValidator {
 		super(POSTAL_CODE_REGEX, false);
 	}
 
-	public SerializablePredicate<String> predicate() {
+	public SerializablePredicate2<String> predicate() {
 		return this::isValid;
 	}
 

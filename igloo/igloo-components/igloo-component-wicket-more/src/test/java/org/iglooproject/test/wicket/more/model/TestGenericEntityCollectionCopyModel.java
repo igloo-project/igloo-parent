@@ -3,19 +3,18 @@ package org.iglooproject.test.wicket.more.model;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
-
-import com.google.common.base.Equivalence;
-import com.google.common.base.Supplier;
-
-import org.iglooproject.commons.util.functional.Suppliers2;
+import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.test.wicket.more.business.person.model.Person;
 import org.iglooproject.test.wicket.more.business.person.model.PersonComparator;
 import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
 import org.iglooproject.wicket.more.model.CollectionCopyModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+
+import com.google.common.base.Equivalence;
 
 @RunWith(Parameterized.class)
 public class TestGenericEntityCollectionCopyModel<C extends Collection<Person>>
@@ -33,9 +32,9 @@ public class TestGenericEntityCollectionCopyModel<C extends Collection<Person>>
 		});
 	}
 
-	private final Supplier<? extends C> collectionSupplier;
+	private final SerializableSupplier2<? extends C> collectionSupplier;
 	
-	public TestGenericEntityCollectionCopyModel(Supplier<? extends C> collectionSupplier, Equivalence<? super C> equivalence) {
+	public TestGenericEntityCollectionCopyModel(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) {
 		super(equivalence);
 		this.collectionSupplier = collectionSupplier;
 	}

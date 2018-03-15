@@ -5,31 +5,31 @@ import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOL
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
-import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME;
-import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME;
-import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT;
-import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVLET_PATH;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME_TEMPLATE;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME_TEMPLATE;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT_TEMPLATE;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVLET_PATH_TEMPLATE;
+import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME;
+import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME;
+import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT;
+import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVLET_PATH;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_PATH;
 
 import java.util.concurrent.TimeUnit;
 
+import org.iglooproject.functional.Functions2;
+import org.iglooproject.functional.Supplier2;
+import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
+import org.iglooproject.spring.property.service.IPropertyRegistry;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
 import com.google.common.base.Converter;
-import com.google.common.base.Supplier;
 import com.google.common.primitives.Ints;
-
-import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
-import org.iglooproject.spring.property.service.IPropertyRegistry;
-import org.iglooproject.spring.property.service.IPropertyService;
 
 @Configuration
 public class WicketMoreApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
@@ -47,40 +47,24 @@ public class WicketMoreApplicationPropertyRegistryConfig extends AbstractApplica
 		
 		registry.register(
 				WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME_TEMPLATE,
-				Converter.<String>identity(),
-				new Supplier<String>() {
-					@Override
-					public String get() {
-						return propertyService.get(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME);
-					}
-				});
+				Functions2.from(Converter.<String>identity()),
+				(Supplier2<? extends String>) () -> propertyService.get(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME)
+		);
 		registry.register(
 				WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME_TEMPLATE,
-				Converter.<String>identity(),
-				new Supplier<String>() {
-					@Override
-					public String get() {
-						return propertyService.get(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME);
-					}
-				});
+				Functions2.from(Converter.<String>identity()),
+				(Supplier2<? extends String>) () -> propertyService.get(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME)
+		);
 		registry.register(
 				WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT_TEMPLATE,
-				Ints.stringConverter(),
-				new Supplier<Integer>() {
-					@Override
-					public Integer get() {
-						return propertyService.get(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT);
-					}
-				});
+				Functions2.from(Ints.stringConverter()),
+				(Supplier2<? extends Integer>) () -> propertyService.get(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT)
+		);
 		registry.register(
 				WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVLET_PATH_TEMPLATE,
-				Converter.<String>identity(),
-				new Supplier<String>() {
-					@Override
-					public String get() {
-						return propertyService.get(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVLET_PATH);
-					}
-				});
+				Functions2.from(Converter.<String>identity()),
+				(Supplier2<? extends String>) () -> propertyService.get(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVLET_PATH)
+		);
 		
 		registry.registerString(WICKET_DISK_DATA_STORE_PATH, "");
 		

@@ -2,9 +2,8 @@ package org.iglooproject.imports.table.common.mapping.column.builder.state;
 
 import java.util.Date;
 
-import com.google.common.base.Function;
-
-import org.iglooproject.commons.util.functional.builder.function.generic.GenericDateBuildStateImpl;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.builder.function.generic.GenericDateBuildStateImpl;
 import org.iglooproject.imports.table.common.mapping.AbstractTableImportColumnSet;
 
 public abstract class DateState<TTable, TRow, TCell, TCellReference> extends GenericDateBuildStateImpl
@@ -22,7 +21,7 @@ public abstract class DateState<TTable, TRow, TCell, TCellReference> extends Gen
 		implements ColumnFunctionBuildState<TTable, TRow, TCell, TCellReference, Date> {
 		
 	@Override
-	public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function<? super Date, TValue> function) {
+	public <TValue> GenericState<TTable, TRow, TCell, TCellReference, TValue> transform(Function2<? super Date, TValue> function) {
 		return getStateSwitcher().toGeneric(function);
 	}
 

@@ -2,7 +2,7 @@ package org.iglooproject.basicapp.web.application.common.util;
 
 import java.io.Serializable;
 
-import org.iglooproject.commons.util.functional.Joiners;
+import org.iglooproject.functional.Joiners;
 
 
 public final class ResourceKeyGenerator implements Serializable {

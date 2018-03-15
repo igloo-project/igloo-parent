@@ -4,9 +4,7 @@ import java.util.Map;
 
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.base.Function;
-
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
 import org.iglooproject.wicket.more.model.ReadOnlyMapModel;
 
@@ -25,7 +23,7 @@ public abstract class MapView<K, V> extends SequenceView<K> {
 	 */
 	@SuppressWarnings("unchecked")
 	public MapView(String id, IModel<? extends Map<K, V>> mapModel,
-			Function<? super K, ? extends IModel<K>> keyModelFactory) {
+			SerializableFunction2<? super K, ? extends IModel<K>> keyModelFactory) {
 		this(id, mapModel instanceof IMapModel ?
 				(IMapModel<K, V, ?>) mapModel : ReadOnlyMapModel.of(mapModel, keyModelFactory));
 	}

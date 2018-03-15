@@ -3,16 +3,14 @@ package org.iglooproject.imports.table.opencsv.location;
 import java.util.Iterator;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.collect.Iterators;
-
-import org.iglooproject.commons.util.functional.SerializablePredicate;
-import org.iglooproject.imports.table.common.location.TableImportLocation;
 import org.iglooproject.imports.table.common.location.ITableImportNavigator;
+import org.iglooproject.imports.table.common.location.TableImportLocation;
 import org.iglooproject.imports.table.opencsv.model.CsvCell;
 import org.iglooproject.imports.table.opencsv.model.CsvCellReference;
 import org.iglooproject.imports.table.opencsv.model.CsvRow;
 import org.iglooproject.imports.table.opencsv.model.CsvTable;
+
+import com.google.common.collect.Streams;
 
 public class OpenCsvImportNavigator implements ITableImportNavigator<CsvTable, CsvRow, CsvCell, CsvCellReference> {
 	
@@ -54,13 +52,9 @@ public class OpenCsvImportNavigator implements ITableImportNavigator<CsvTable, C
 	
 	@Override
 	public Iterator<CsvRow> nonEmptyRows(CsvTable sheet) {
-		return Iterators.filter(rows(sheet), new SerializablePredicate<CsvRow>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public boolean apply(CsvRow row) {
-				return rowHasContent(row);
-			}
-		});
+		return Streams.stream(rows(sheet))
+				.filter((row) -> rowHasContent(row))
+				.iterator();
 	}
 
 	@Override

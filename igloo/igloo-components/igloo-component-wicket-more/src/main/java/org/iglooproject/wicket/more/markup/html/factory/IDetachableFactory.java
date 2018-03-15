@@ -1,8 +1,9 @@
 package org.iglooproject.wicket.more.markup.html.factory;
 
 import org.apache.wicket.model.IDetachable;
+import org.iglooproject.functional.SerializableFunction2;
 
-public interface IDetachableFactory<T, R> extends java.util.function.Function<T, R>, com.google.common.base.Function<T, R>, IDetachable {
+public interface IDetachableFactory<T, R> extends SerializableFunction2<T, R>, IDetachable {
 
 	R create(T parameter);
 

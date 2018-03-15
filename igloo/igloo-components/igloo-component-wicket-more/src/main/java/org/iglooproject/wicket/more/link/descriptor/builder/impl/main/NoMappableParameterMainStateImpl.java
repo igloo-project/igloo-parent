@@ -6,6 +6,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
@@ -15,7 +16,6 @@ import org.iglooproject.wicket.more.markup.html.factory.ModelFactories;
 import org.javatuples.Tuple;
 import org.springframework.core.convert.TypeDescriptor;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 
 public final class NoMappableParameterMainStateImpl
@@ -95,7 +95,7 @@ public final class NoMappableParameterMainStateImpl
 			TLateTargetDefinitionResourceLinkDescriptor,
 			TLateTargetDefinitionImageResourceLinkDescriptor
 			> model(Class<? super TParam1> clazz, TypeDescriptor elementTypeDescriptor,
-						Supplier<? extends TParam1> emptyCollectionSupplier) {
+						SerializableSupplier2<? extends TParam1> emptyCollectionSupplier) {
 		return new OneMappableParameterMainStateImpl<>(
 				this, LinkParameterTypeInformation.collection(clazz, elementTypeDescriptor, emptyCollectionSupplier)
 		);

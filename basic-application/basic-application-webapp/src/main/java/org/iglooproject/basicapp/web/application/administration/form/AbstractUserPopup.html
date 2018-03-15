@@ -3,6 +3,11 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
 		<wicket:fragment wicket:id="standardFields">
+			<button type="button" wicket:id="disable" class="btn btn-danger"> 
+				<span class="fa fa-times" />
+				<wicket:message key="common.action.disable" />
+			</button>
+			
 			<div class="form-group col-12">
 				<div class="row">
 					<label class="col-sm-4 col-form-label" wicket:for="firstName"><wicket:label /></label>

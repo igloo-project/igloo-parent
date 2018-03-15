@@ -6,16 +6,14 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 import org.bindgen.BindingRoot;
-import org.javatuples.Tuple;
-import org.javatuples.Unit;
-
-import com.google.common.base.Predicate;
-
+import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.AbstractLinkParameterValidatorFactory;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.model.BindingModel;
+import org.javatuples.Tuple;
+import org.javatuples.Unit;
 
 public class ConditionLinkParameterValidator implements ILinkParameterValidator {
 	
@@ -40,7 +38,7 @@ public class ConditionLinkParameterValidator implements ILinkParameterValidator 
 		};
 	}
 	
-	public static <R> ILinkParameterValidatorFactory<Unit<IModel<? extends R>>> predicateFactory(final Predicate<? super R> predicate) {
+	public static <R> ILinkParameterValidatorFactory<Unit<IModel<? extends R>>> predicateFactory(final SerializablePredicate2<? super R> predicate) {
 		Args.notNull(predicate, "predicate");
 		return new AbstractLinkParameterValidatorFactory<Unit<IModel<? extends R>>>() {
 			private static final long serialVersionUID = 1L;

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import java.util.regex.Pattern;
@@ -18,6 +17,7 @@ import java.util.stream.Collectors;
 
 import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.ManifestPropertySource;
+import org.iglooproject.functional.Function2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -156,7 +156,7 @@ public class ManifestPropertySourceBeanFactoryPostProcessor implements Applicati
 		}
 	}
 
-	private Function<String, Class<?>> getBeanType(ConfigurableListableBeanFactory beanFactory) {
+	private Function2<String, Class<?>> getBeanType(ConfigurableListableBeanFactory beanFactory) {
 		return (beanName) -> ClassUtils.getUserClass(beanFactory.getType(beanName));
 	}
 

@@ -3,13 +3,15 @@ package org.iglooproject.jpa.more.business.difference.factory;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.common.base.Supplier;
-
-import de.danielbechler.diff.node.DiffNode;
+import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.more.business.difference.model.Difference;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
 
+import de.danielbechler.diff.node.DiffNode;
+
 public interface IHistoryDifferenceFactory<T> {
-	<HD extends AbstractHistoryDifference<HD, ?>> List<HD> create(Supplier<HD> historyDifferenceSupplier,
+
+	<HD extends AbstractHistoryDifference<HD, ?>> List<HD> create(Supplier2<HD> historyDifferenceSupplier,
 			Difference<T> rootDifference, Collection<DiffNode> nodes);
+
 }

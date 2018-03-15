@@ -5,13 +5,12 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.application.IWicketBootstrapComponentsModule;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
-
-import com.google.common.base.Function;
 
 /**
  * @deprecated Bootstrap Labels no longer exist in Bootstrap 4 and are replaced by Bootstrap Badge instead.
@@ -28,7 +27,7 @@ public class CoreBootstrapLabelColumn<T, S extends ISort<?>, C> extends Abstract
 
 	private final BootstrapRenderer<? super C> renderer;
 
-	public CoreBootstrapLabelColumn(IModel<?> headerLabelModel, Function<? super T, C> function,
+	public CoreBootstrapLabelColumn(IModel<?> headerLabelModel, SerializableFunction2<? super T, C> function,
 			final BootstrapRenderer<? super C> renderer) {
 		super(headerLabelModel);
 		Injector.get().inject(this);

@@ -1,8 +1,8 @@
 package org.iglooproject.config.bootstrap.spring;
 
-import static org.iglooproject.config.bootstrap.spring.AbstractExtendedApplicationContextInitializer.IGLOO_APPLICATION_NAME_PROPERTY;
-import static org.iglooproject.config.bootstrap.spring.AbstractExtendedApplicationContextInitializer.IGLOO_CONFIGURATION_LOGGER_NAME;
-import static org.iglooproject.config.bootstrap.spring.AbstractExtendedApplicationContextInitializer.IGLOO_PROFILES_LOCATIONS_PROPERTY;
+import static org.iglooproject.config.bootstrap.spring.IApplicationContextInitializer.IGLOO_APPLICATION_NAME_PROPERTY;
+import static org.iglooproject.config.bootstrap.spring.IApplicationContextInitializer.IGLOO_CONFIGURATION_LOGGER_NAME;
+import static org.iglooproject.config.bootstrap.spring.IApplicationContextInitializer.IGLOO_PROFILES_LOCATIONS_PROPERTY;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
+import org.iglooproject.functional.Function2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -150,7 +150,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 		}
 	}
 
-	private Function<String, Class<?>> getBeanType(ConfigurableListableBeanFactory beanFactory) {
+	private Function2<String, Class<?>> getBeanType(ConfigurableListableBeanFactory beanFactory) {
 		return (beanName) -> ClassUtils.getUserClass(beanFactory.getType(beanName));
 	}
 
@@ -304,8 +304,8 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	 * 
 	 * <p>If you map a collection, you need to filter null values after mapping.</p>
 	 */
-	private Function<String, Resource> resourceFromLocation(boolean throwErrorIfNotReadable) {
-		return (String location) -> {
+	private Function2<String, Resource> resourceFromLocation(boolean throwErrorIfNotReadable) {
+		return (location) -> {
 			String resolvedLocation = applicationContext.getEnvironment().resolveRequiredPlaceholders(location);
 			if (applicationContext.getResource(resolvedLocation).isReadable()) {
 				LOGGER.debug("Configuration {} detected and added", location);

@@ -1,9 +1,9 @@
 package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.modal;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.apache.wicket.markup.head.HeaderItem;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopJavaScriptResourceReference;
 import org.iglooproject.wicket.more.webjars.WebjarUtil;
@@ -19,7 +19,7 @@ import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceR
 public final class ModalJavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
 	private static final long serialVersionUID = -8799742276479282371L;
 
-	private static final Supplier<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
+	private static final SerializableSupplier2<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
 			EasingJavaScriptResourceReference.get(),
 			MouseJavaScriptResourceReference.get(),
 			ScrollToTopJavaScriptResourceReference.get(),

@@ -4,11 +4,10 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.AbstractSequentialIterator;
-import com.google.common.collect.Lists;
-
-import org.iglooproject.commons.util.functional.SerializableFunction;
 
 public class CsvTable implements Serializable, Iterable<CsvRow> {
 	
@@ -18,13 +17,11 @@ public class CsvTable implements Serializable, Iterable<CsvRow> {
 
 	public CsvTable(List<String[]> rows) {
 		super();
-		this.rows = Lists.transform(rows, new SerializableFunction<String[], List<String>>() {
-			private static final long serialVersionUID = 4706021485040817605L;
-			@Override
-			public List<String> apply(String[] input) {
-				return Arrays.asList(input);
-			}
-		});
+		Objects.requireNonNull(rows);
+		
+		this.rows = rows.stream()
+				.map((input) -> Arrays.asList(input))
+				.collect(Collectors.toList());
 	}
 	
 	@Override

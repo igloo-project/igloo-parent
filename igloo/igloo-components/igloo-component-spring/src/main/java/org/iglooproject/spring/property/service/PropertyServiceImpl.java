@@ -15,15 +15,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.iglooproject.commons.util.functional.converter.StringBigDecimalConverter;
-import org.iglooproject.commons.util.functional.converter.StringBooleanConverter;
-import org.iglooproject.commons.util.functional.converter.StringDateConverter;
-import org.iglooproject.commons.util.functional.converter.StringDateTimeConverter;
-import org.iglooproject.commons.util.functional.converter.StringDirectoryFileCreatingConverter;
-import org.iglooproject.commons.util.functional.converter.StringFileConverter;
-import org.iglooproject.commons.util.functional.converter.StringLocaleConverter;
-import org.iglooproject.commons.util.functional.converter.StringTimeConverter;
-import org.iglooproject.commons.util.functional.converter.StringURIConverter;
+import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.Supplier2;
+import org.iglooproject.functional.Suppliers2;
+import org.iglooproject.functional.converter.StringBigDecimalConverter;
+import org.iglooproject.functional.converter.StringBooleanConverter;
+import org.iglooproject.functional.converter.StringDateConverter;
+import org.iglooproject.functional.converter.StringDateTimeConverter;
+import org.iglooproject.functional.converter.StringDirectoryFileCreatingConverter;
+import org.iglooproject.functional.converter.StringFileConverter;
+import org.iglooproject.functional.converter.StringLocaleConverter;
+import org.iglooproject.functional.converter.StringTimeConverter;
+import org.iglooproject.functional.converter.StringURIConverter;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
@@ -55,10 +58,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.google.common.base.Converter;
 import com.google.common.base.Enums;
-import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -80,7 +80,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PropertyServiceImpl.class);
 
-	private final Map<IPropertyRegistryKey<?>, Pair<? extends Converter<String, ?>, ? extends Supplier<?>>> propertyInformationMap =
+	private final Map<IPropertyRegistryKey<?>, Pair<? extends Converter<String, ?>, ? extends Supplier2<?>>> propertyInformationMap =
 			Maps.newLinkedHashMap();
 
 	@Autowired
@@ -144,26 +144,26 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
 	@Override
 	public <T> void register(IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, T defaultValue) {
-		register(propertyId, converter, Suppliers.ofInstance(defaultValue));
+		register(propertyId, converter, Suppliers2.ofInstance(defaultValue));
 	}
 
 	@Override
-	public <T> void register(IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, Supplier<? extends T> defaultValueSupplier) {
+	public <T> void register(IMutablePropertyRegistryKey<T> propertyId, Converter<String, T> converter, Supplier2<? extends T> defaultValueSupplier) {
 		registerProperty(propertyId, converter, defaultValueSupplier);
 	}
 
 	@Override
-	public <T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function) {
+	public <T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function2<String, ? extends T> function) {
 		register(propertyId, function, (T) null);
 	}
 
 	@Override
-	public <T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function<String, ? extends T> function, T defaultValue) {
-		register(propertyId, function, Suppliers.ofInstance(defaultValue));
+	public <T> void register(IImmutablePropertyRegistryKey<T> propertyId, Function2<String, ? extends T> function, T defaultValue) {
+		register(propertyId, function, Suppliers2.ofInstance(defaultValue));
 	}
 
 	@Override
-	public <T> void register(IImmutablePropertyRegistryKey<T> propertyId, final Function<String, ? extends T> function, Supplier<? extends T> defaultValueSupplier) {
+	public <T> void register(IImmutablePropertyRegistryKey<T> propertyId, final Function2<String, ? extends T> function, Supplier2<? extends T> defaultValueSupplier) {
 		registerProperty(propertyId, new Converter<String, T>() {
 			@Override
 			protected T doForward(String a) {
@@ -199,10 +199,10 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 	}
 
 	protected <T> void registerProperty(IPropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, T defaultValue) {
-		registerProperty(propertyId, converter, Suppliers.ofInstance(defaultValue));
+		registerProperty(propertyId, converter, Suppliers2.ofInstance(defaultValue));
 	}
 
-	protected <T> void registerProperty(IPropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, Supplier<? extends T> defaultValueSupplier) {
+	protected <T> void registerProperty(IPropertyRegistryKey<T> propertyId, Converter<String, ? extends T> converter, Supplier2<? extends T> defaultValueSupplier) {
 		Preconditions.checkNotNull(propertyId);
 		Preconditions.checkNotNull(converter);
 		Preconditions.checkNotNull(defaultValueSupplier);
@@ -356,16 +356,13 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 	@Override
 	public void registerFile(IPropertyRegistryKey<File> propertyId, final FileFilter filter, final File defaultValue) {
 		Preconditions.checkNotNull(filter);
-		registerProperty(propertyId, new StringFileConverter(filter), new Supplier<File>() {
-			@Override
-			public File get() {
-				// Make this check *only* if we actually use the default value.
-				Preconditions.checkState(
-						defaultValue == null || filter.accept(defaultValue),
-						"The default value " + defaultValue + " does not match the given file filter " + filter
-				);
-				return defaultValue;
-			}
+		registerProperty(propertyId, new StringFileConverter(filter), (Supplier2<? extends File>) () -> {
+			// Make this check *only* if we actually use the default value.
+			Preconditions.checkState(
+					defaultValue == null || filter.accept(defaultValue),
+					"The default value " + defaultValue + " does not match the given file filter " + filter
+			);
+			return defaultValue;
 		});
 	}
 
@@ -393,7 +390,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 	public <T> T get(final PropertyId<T> propertyId) {
 		Preconditions.checkNotNull(propertyId);
 		
-		Pair<Converter<String, T>, Supplier<T>> information = getRegistrationInformation(propertyId);
+		Pair<Converter<String, T>, Supplier2<T>> information = getRegistrationInformation(propertyId);
 		
 		T value = information.getValue0().convert(getAsStringUnsafe(propertyId));
 		if (value == null) {
@@ -412,7 +409,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 
 	@Override
 	public <T> String getAsString(final PropertyId<T> propertyId) {
-		Pair<Converter<String, T>, Supplier<T>> information = getRegistrationInformation(propertyId);
+		Pair<Converter<String, T>, Supplier2<T>> information = getRegistrationInformation(propertyId);
 		
 		String valueAsString = getAsStringUnsafe(propertyId);
 		
@@ -446,7 +443,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 	public <T> void set(final MutablePropertyId<T> propertyId, final T value) throws ServiceException, SecurityServiceException {
 		Preconditions.checkNotNull(propertyId);
 		
-		Pair<Converter<String, T>, Supplier<T>> information = getRegistrationInformation(propertyId);
+		Pair<Converter<String, T>, Supplier2<T>> information = getRegistrationInformation(propertyId);
 		
 		mutablePropertyDao.setInTransaction(propertyId.getKey(), information.getValue0().reverse().convert(value));
 	}
@@ -481,10 +478,10 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 		mutablePropertyDao.setInTransaction(propertyId.getKey(), valueAsString);
 	}
 
-	private <T> Pair<Converter<String, T>, Supplier<T>> getRegistrationInformation(PropertyId<T> propertyId) {
+	private <T> Pair<Converter<String, T>, Supplier2<T>> getRegistrationInformation(PropertyId<T> propertyId) {
 		PropertyIdTemplate<T, ?> template = propertyId.getTemplate();
 		@SuppressWarnings("unchecked")
-		Pair<Converter<String, T>, Supplier<T>> information = (Pair<Converter<String, T>, Supplier<T>>)
+		Pair<Converter<String, T>, Supplier2<T>> information = (Pair<Converter<String, T>, Supplier2<T>>)
 				propertyInformationMap.get(template != null ? template : propertyId);
 		
 		if (information == null || information.getValue0() == null) {

@@ -11,16 +11,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.wicket.model.IModel;
+import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.test.wicket.more.business.person.model.Person;
+import org.iglooproject.test.wicket.more.business.person.service.IPersonService;
+import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Equivalence;
-import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
-
-import org.iglooproject.test.wicket.more.business.person.model.Person;
-import org.iglooproject.test.wicket.more.business.person.service.IPersonService;
-import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
 
 public abstract class AbstractTestGenericEntityMapCopyModel<K, V, M extends Map<K, V>>
 		extends AbstractTestMapModel<M> {
@@ -48,7 +47,7 @@ public abstract class AbstractTestGenericEntityMapCopyModel<K, V, M extends Map<
 	@PersistenceContext
 	protected EntityManager entityManager;
 	
-	public AbstractTestGenericEntityMapCopyModel(Supplier<? extends M> mapSupplier, Equivalence<? super M> equivalence) {
+	public AbstractTestGenericEntityMapCopyModel(SerializableSupplier2<? extends M> mapSupplier, Equivalence<? super M> equivalence) {
 		super(mapSupplier, equivalence);
 	}
 

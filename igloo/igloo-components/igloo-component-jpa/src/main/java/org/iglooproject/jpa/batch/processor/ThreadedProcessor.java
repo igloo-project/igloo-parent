@@ -16,7 +16,9 @@ import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
+import org.iglooproject.functional.Function2;
 import org.iglooproject.jpa.batch.monitor.ProcessorMonitorContext;
 import org.iglooproject.jpa.batch.monitor.ThreadLocalInitializingCallable;
 import org.iglooproject.jpa.batch.util.TransactionWrapperCallable;
@@ -25,8 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.support.TransactionOperations;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -40,12 +40,7 @@ public class ThreadedProcessor {
 
 	private static final RejectedExecutionHandler THROW_EXCEPTION_ON_REJECTED_EXECUTION = new ThreadPoolExecutor.AbortPolicy();
 
-	private static final Function<Runnable, Callable<Object>> RUNNABLE_TO_CALLABLE = new Function<Runnable, Callable<Object>>() {
-		@Override
-		public java.util.concurrent.Callable<Object> apply(Runnable input) {
-			return input == null ? null : Executors.callable(input);
-		}
-	};
+	private static final Function2<Runnable, Callable<Object>> RUNNABLE_TO_CALLABLE = (input) -> input == null ? null : Executors.callable(input);
 
 	private final int threadPoolSize;
 	private final int keepAliveTime;
@@ -107,7 +102,7 @@ public class ThreadedProcessor {
 
 	public <T> void runWithTransaction(final String loggerContext, Collection<? extends Runnable> runnables,
 			TransactionOperations TransactionOperations, Integer totalItems) throws ExecutionException {
-		callWithTransaction(loggerContext, Collections2.transform(runnables, RUNNABLE_TO_CALLABLE),
+		callWithTransaction(loggerContext, runnables.stream().map(RUNNABLE_TO_CALLABLE).collect(Collectors.toList()),
 				TransactionOperations, totalItems);
 	}
 

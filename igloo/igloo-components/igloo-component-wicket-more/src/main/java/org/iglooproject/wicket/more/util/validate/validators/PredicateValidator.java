@@ -9,30 +9,29 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
+import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.more.util.model.Detachables;
-
-import com.google.common.base.Predicate;
 
 public class PredicateValidator<T> extends Behavior implements IValidator<T> {
 
 	private static final long serialVersionUID = 2351404391379818307L;
 
-	private final Predicate<? super T> predicate;
+	private final SerializablePredicate2<? super T> predicate;
 
 	private IModel<String> errorKeyModel;
 
 	private IModel<String> errorMessageModel;
 
-	public PredicateValidator<T> of(Predicate<? super T> predicate) {
+	public PredicateValidator<T> of(SerializablePredicate2<? super T> predicate) {
 		return new PredicateValidator<T>(predicate);
 	}
 
-	public PredicateValidator(Predicate<? super T> predicate) {
+	public PredicateValidator(SerializablePredicate2<? super T> predicate) {
 		super();
 		this.predicate = Objects.requireNonNull(predicate);
 	}
 
-	public Predicate<? super T> getPredicate() {
+	public SerializablePredicate2<? super T> getPredicate() {
 		return predicate;
 	}
 
@@ -52,7 +51,7 @@ public class PredicateValidator<T> extends Behavior implements IValidator<T> {
 
 	@Override
 	public void validate(IValidatable<T> validatable) {
-		if (!predicate.apply(validatable.getValue())) {
+		if (!predicate.test(validatable.getValue())) {
 			validatable.error(decorate(new ValidationError(this)));
 		}
 	}

@@ -17,7 +17,8 @@ import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitFilter;
 import org.apache.wicket.util.visit.IVisitor;
 import org.apache.wicket.util.visit.Visits;
-import org.iglooproject.commons.util.functional.SerializablePredicate;
+import org.iglooproject.functional.Predicates2;
+import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.form.observer.IFormComponentChangeObserver;
 import org.iglooproject.wicket.more.markup.html.form.observer.impl.FormComponentChangeAjaxEventBehavior;
@@ -25,8 +26,6 @@ import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.visit.VisitFilters;
 import org.wicketstuff.wiquery.core.events.StateEvent;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
 /**
@@ -78,9 +77,9 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	private boolean updatePrerequisiteModel = false;
 	
-	private Predicate<? super T> resetAttachedModelPredicate = Predicates.alwaysFalse();
+	private SerializablePredicate2<? super T> resetAttachedModelPredicate = Predicates2.alwaysFalse();
 	
-	private Predicate<? super T> resetAttachedFormComponentsPredicate = Predicates.alwaysFalse();
+	private SerializablePredicate2<? super T> resetAttachedFormComponentsPredicate = Predicates2.alwaysFalse();
 	
 	/**
 	 * @deprecated This should disappear soon, along with the {@link #cleanDefaultModelObject(Component)} method.
@@ -92,7 +91,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	
 	private final Collection<IListener> onChangeListeners = Lists.newArrayList();
 	
-	private Predicate<? super T> objectValidPredicate = Predicates.notNull();
+	private SerializablePredicate2<? super T> objectValidPredicate = Predicates2.notNull();
 	
 	private Condition forceSetUpConditon = null;
 	private Condition forceTakeDownConditon = null;
@@ -164,7 +163,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 */
 	@Deprecated
 	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModel(boolean resetAttachedModel) {
-		this.resetAttachedModelPredicate = resetAttachedModel ? Predicates.alwaysTrue() : Predicates.alwaysFalse();
+		this.resetAttachedModelPredicate = resetAttachedModel ? Predicates2.alwaysTrue() : Predicates2.alwaysFalse();
 		return this;
 	}
 	
@@ -175,13 +174,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 */
 	@Deprecated
 	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModelIfInvalid(boolean resetAttachedModel) {
-		this.resetAttachedModelPredicate = new SerializablePredicate<T>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public boolean apply(T input) {
-				return !objectValidPredicate.apply(input);
-			}
-		};
+		this.resetAttachedModelPredicate = (input) -> !objectValidPredicate.test(input);
 		return this;
 	}
 
@@ -194,7 +187,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 * this method, the other also applies to descendants of the attached component and clears FormComponent inputs.
 	 */
 	@Deprecated
-	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModelPredicate(Predicate<? super T> resetAttachedModelPredicate) {
+	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModelPredicate(SerializablePredicate2<? super T> resetAttachedModelPredicate) {
 		this.resetAttachedModelPredicate = resetAttachedModelPredicate;
 		return this;
 	}
@@ -206,7 +199,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 * handle input clearing of their children themselves).
 	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedFormComponents() {
-		this.resetAttachedFormComponentsPredicate = Predicates.alwaysTrue();
+		this.resetAttachedFormComponentsPredicate = Predicates2.alwaysTrue();
 		return this;
 	}
 	
@@ -218,13 +211,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 * handle input clearing of their children themselves).
 	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedFormComponentsIfInvalid() {
-		this.resetAttachedFormComponentsPredicate = new SerializablePredicate<T>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public boolean apply(T input) {
-				return !objectValidPredicate.apply(input);
-			}
-		};
+		this.resetAttachedFormComponentsPredicate = (input) -> !objectValidPredicate.test(input);
 		return this;
 	}
 
@@ -233,7 +220,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 * model are to be set to null and their convertedInput are to be cleared, when the prerequisite model changes and
 	 * the given predicate does not apply to the prerequisite model value anymore.
 	 */
-	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedFormComponentsPredicate(Predicate<? super T> resetAttachedFormComponentsPredicate) {
+	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedFormComponentsPredicate(SerializablePredicate2<? super T> resetAttachedFormComponentsPredicate) {
 		this.resetAttachedFormComponentsPredicate = resetAttachedModelPredicate;
 		return this;
 	}
@@ -251,7 +238,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 * Sets the predicate used to determine whether the prerequisite field value is valid.
 	 * <strong>Note:</strong> the predicate must be {@link Serializable}.
 	 */
-	public AbstractAjaxInputPrerequisiteBehavior<T> setObjectValidPredicate(Predicate<? super T> objectValidPredicate) {
+	public AbstractAjaxInputPrerequisiteBehavior<T> setObjectValidPredicate(SerializablePredicate2<? super T> objectValidPredicate) {
 		this.objectValidPredicate = objectValidPredicate;
 		return this;
 	}
@@ -331,11 +318,11 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 			}
 			
 			boolean hasReset = false;
-			if (resetAttachedModelPredicate.apply(convertedInput)) {
+			if (resetAttachedModelPredicate.test(convertedInput)) {
 				attachedComponent.setDefaultModelObject(null);
 				hasReset = true;
 			}
-			if (resetAttachedFormComponentsPredicate.apply(convertedInput)) {
+			if (resetAttachedFormComponentsPredicate.test(convertedInput)) {
 				resetFormComponents(attachedComponent);
 				hasReset = true;
 			}
@@ -494,7 +481,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	}
 	
 	protected final boolean isObjectValid(T object) {
-		return objectValidPredicate.apply(object);
+		return objectValidPredicate.test(object);
 	}
 
 	/**

@@ -10,21 +10,20 @@ import java.util.Map;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.functional.Suppliers2;
+import org.iglooproject.test.wicket.more.model.TestSerializableMapCopyModel.KeyEnum;
+import org.iglooproject.test.wicket.more.model.TestSerializableMapCopyModel.ValueEnum;
+import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
+import org.iglooproject.wicket.more.model.MapCopyModel;
+import org.iglooproject.wicket.more.util.model.Models;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Equivalence;
-import com.google.common.base.Supplier;
 import com.google.common.collect.Ordering;
-
-import org.iglooproject.commons.util.functional.Suppliers2;
-import org.iglooproject.test.wicket.more.model.TestSerializableMapCopyModel.KeyEnum;
-import org.iglooproject.test.wicket.more.model.TestSerializableMapCopyModel.ValueEnum;
-import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
-import org.iglooproject.wicket.more.model.MapCopyModel;
-import org.iglooproject.wicket.more.util.model.Models;
 
 @RunWith(Parameterized.class)
 public class TestSerializableMapCopyModel<M extends Map<KeyEnum, ValueEnum>>
@@ -52,7 +51,7 @@ public class TestSerializableMapCopyModel<M extends Map<KeyEnum, ValueEnum>>
 		VALUE3;
 	}
 	
-	public TestSerializableMapCopyModel(Supplier<? extends M> supplier, Equivalence<? super M> equivalence) {
+	public TestSerializableMapCopyModel(SerializableSupplier2<? extends M> supplier, Equivalence<? super M> equivalence) {
 		super(supplier, equivalence);
 	}
 

@@ -1,12 +1,10 @@
 package org.iglooproject.wicket.more.link.descriptor.mapper;
 
 import org.apache.wicket.model.IModel;
-import org.javatuples.Pair;
-
-import com.google.common.base.Function;
-
+import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.util.model.Models;
+import org.javatuples.Pair;
 
 public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
 		implements ITwoParameterLinkDescriptorMapper<L, T1, T2> {
@@ -41,7 +39,7 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
 	}
 	
 	@Override
-	public IOneParameterLinkDescriptorMapper<L, T2> setParameter1(final Function<T2, T1> function) {
+	public IOneParameterLinkDescriptorMapper<L, T2> setParameter1(final SerializableFunction2<T2, T1> function) {
 		return new AbstractOneParameterLinkDescriptorMapper<L, T2>() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -95,7 +93,7 @@ public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>
 	}
 	
 	@Override
-	public IOneParameterLinkDescriptorMapper<L, T1> setParameter2(final Function<T1, T2> function) {
+	public IOneParameterLinkDescriptorMapper<L, T1> setParameter2(final SerializableFunction2<T1, T2> function) {
 		return new AbstractOneParameterLinkDescriptorMapper<L, T1>() {
 			private static final long serialVersionUID = 1L;
 			@Override

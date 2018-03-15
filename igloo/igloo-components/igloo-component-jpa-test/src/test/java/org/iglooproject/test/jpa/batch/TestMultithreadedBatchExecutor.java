@@ -23,7 +23,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
 import com.google.common.collect.Lists;
 
-import org.iglooproject.commons.util.functional.Joiners;
+import org.iglooproject.functional.Joiners;
 import org.iglooproject.jpa.batch.executor.BatchExecutorCreator;
 import org.iglooproject.jpa.batch.executor.MultithreadedBatchExecutor;
 import org.iglooproject.jpa.batch.runnable.ReadOnlyBatchRunnable;

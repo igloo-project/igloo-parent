@@ -7,7 +7,6 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.validation.AbstractFormValidator;
 import org.apache.wicket.util.string.Strings;
 
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -79,12 +78,7 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
 	
 	protected void onError(Form<?> form) {
 		Joiner labelJoiner = Joiner.on(form.getString("common.validator.oneRequired.labels.separator"));
-		String labels = labelJoiner.join(Iterables.transform(requiredFormComponents, new Function<FormComponent<?>, String>() {
-			@Override
-			public String apply(FormComponent<?> input) {
-				return input.getLabel().getObject();
-			}
-		}));
+		String labels = labelJoiner.join(Iterables.transform(requiredFormComponents, (input) -> input.getLabel().getObject()));
 		
 		if (mode == OneRequiredMode.ONE_ONLY) {
 			error(requiredFormComponents.iterator().next(), "common.validator.oneRequired.oneOnly", ImmutableMap.<String, Object>of("labels", labels));

@@ -11,17 +11,17 @@ import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-
-import com.google.common.base.Joiner;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Range;
-import com.google.common.collect.Sets;
-
+import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 import org.iglooproject.wicket.more.util.model.Detachables;
+
+import com.google.common.base.Joiner;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Range;
+import com.google.common.collect.Sets;
 
 public class CustomizableToolbarElementBuilder<T, S extends ISort<?>>
 		implements IOneParameterComponentFactory<Component, CoreDataTable<T, S>> {
@@ -88,7 +88,7 @@ public class CustomizableToolbarElementBuilder<T, S extends ISort<?>>
 		return factory.create(wicketId, dataTable)
 				.add(
 						new AttributeModifier("colspan", computedColspanModel),
-						condition.and(Condition.predicate(computedColspanModel, Range.atLeast(1))).thenShow(),
+						condition.and(Condition.predicate(computedColspanModel, Predicates2.from(Range.atLeast(1)))).thenShow(),
 						new AttributeModifier("class", Joiner.on(" ").join(cssClasses))
 				);
 	}

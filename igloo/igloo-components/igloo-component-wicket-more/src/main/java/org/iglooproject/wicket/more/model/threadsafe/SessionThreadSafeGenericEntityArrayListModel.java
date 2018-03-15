@@ -3,7 +3,7 @@ package org.iglooproject.wicket.more.model.threadsafe;
 import java.io.Serializable;
 import java.util.List;
 
-import org.iglooproject.commons.util.functional.Suppliers2;
+import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 public class SessionThreadSafeGenericEntityArrayListModel<K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
