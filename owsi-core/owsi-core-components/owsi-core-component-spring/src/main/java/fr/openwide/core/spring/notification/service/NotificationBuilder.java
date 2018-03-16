@@ -487,6 +487,9 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 			try {
 				// Step 1 : Build message. Effective recipients could be different than expected ones, we store.
 				message = buildMessage(contentDescriptor, targets, charset.name());
+				if (message == null) {
+					continue;
+				}
 				effectiveTo = message.getRecipients(RecipientType.TO);
 				effectiveCc = message.getRecipients(RecipientType.CC);
 				effectiveBcc = message.getRecipients(RecipientType.BCC);
