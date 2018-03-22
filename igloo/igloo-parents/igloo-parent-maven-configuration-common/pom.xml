@@ -43,7 +43,7 @@
 		<igloo.jsch.version>0.1.54</igloo.jsch.version>
 		<igloo.maven-compiler-plugin.version>3.7.0</igloo.maven-compiler-plugin.version>
 		<igloo.maven-resources-plugin.version>3.0.2</igloo.maven-resources-plugin.version>
-		<igloo.maven-surefire-plugin.version>2.20.1</igloo.maven-surefire-plugin.version>
+		<igloo.maven-surefire-plugin.version>2.21.0</igloo.maven-surefire-plugin.version>
 		<igloo.maven-install-plugin.version>2.5.2</igloo.maven-install-plugin.version>
 		<igloo.maven-war-plugin.version>3.2.0</igloo.maven-war-plugin.version>
 		<igloo.maven-assembly-plugin.version>3.1.0</igloo.maven-assembly-plugin.version>
