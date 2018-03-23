@@ -20,7 +20,7 @@
 		<igloo.spring.version>5.0.4.RELEASE</igloo.spring.version>
 		<igloo.aspectj.version>1.8.13</igloo.aspectj.version>
 		
-		<igloo.hibernate.version>5.2.14.Final</igloo.hibernate.version>
+		<igloo.hibernate.version>5.2.16.Final</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
 		<igloo.jboss-logging.version>3.3.1.Final</igloo.jboss-logging.version>
 		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
