@@ -7,12 +7,12 @@ import static org.iglooproject.spring.property.SpringPropertyIds.DB_TYPE;
 import static org.iglooproject.spring.property.SpringPropertyIds.DB_USER;
 import static org.iglooproject.spring.property.SpringPropertyIds.IGLOO_VERSION;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK;
+import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_FILTER_EMAILS;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_FROM;
-import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_RECIPIENTS_FILTERED;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SENDER;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SENDER_BEHAVIOR;
+import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SEND_MODE;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SUBJECT_PREFIX;
-import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_TEST_EMAILS;
 import static org.iglooproject.spring.property.SpringPropertyIds.TMP_EXPORT_EXCEL_PATH;
 import static org.iglooproject.spring.property.SpringPropertyIds.TMP_PATH;
 import static org.iglooproject.spring.property.SpringPropertyIds.VERSION;
@@ -23,8 +23,10 @@ import java.util.Set;
 
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.functional.converter.StringCollectionConverter;
+import org.iglooproject.functional.converter.StringEnumConverter;
 import org.iglooproject.functional.converter.StringLocaleConverter;
 import org.iglooproject.spring.config.util.MailSenderBehavior;
+import org.iglooproject.spring.notification.util.NotificationSendMode;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.slf4j.Logger;
@@ -88,8 +90,8 @@ public class SpringApplicationPropertyRegistryConfig extends AbstractApplication
 		registry.registerString(NOTIFICATION_MAIL_SUBJECT_PREFIX);
 		registry.registerString(NOTIFICATION_MAIL_SENDER);
 		registry.registerEnum(NOTIFICATION_MAIL_SENDER_BEHAVIOR, MailSenderBehavior.class, MailSenderBehavior.EXPLICIT);
-		registry.registerBoolean(NOTIFICATION_MAIL_RECIPIENTS_FILTERED);
-		registry.register(NOTIFICATION_TEST_EMAILS, new StringCollectionConverter<String, List<String>>(Converter.<String>identity(), Suppliers2.<String>arrayList()), Lists.<String>newArrayList());
+		registry.register(NOTIFICATION_MAIL_SEND_MODE, StringEnumConverter.forType(NotificationSendMode.class));
+		registry.register(NOTIFICATION_MAIL_FILTER_EMAILS, new StringCollectionConverter<String, List<String>>(Converter.<String>identity(), Suppliers2.<String>arrayList()), Lists.<String>newArrayList());
 		registry.register(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK, new StringCollectionConverter<String, List<String>>(Converter.<String>identity(), Suppliers2.<String>arrayList()), Lists.<String>newArrayList());
 	}
 }

@@ -1,14 +1,16 @@
 package org.iglooproject.spring.notification.service;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.iglooproject.spring.notification.util.NotificationSendMode.FILTER_RECIPIENTS;
+import static org.iglooproject.spring.notification.util.NotificationSendMode.NO_EMAIL;
 import static org.iglooproject.spring.property.SpringPropertyIds.DEFAULT_LOCALE;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK;
+import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_FILTER_EMAILS;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_FROM;
-import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_RECIPIENTS_FILTERED;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SENDER;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SENDER_BEHAVIOR;
+import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SEND_MODE;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SUBJECT_PREFIX;
-import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_TEST_EMAILS;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -442,7 +444,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 
 	@Override
 	public void send() throws ServiceException {
-		if (!NotificationUtils.isNotificationsEnabled()) {
+		if (isNotificationsDisabled()) {
 			return;
 		}
 		
@@ -465,6 +467,9 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 			try {
 				// Step 1 : Build message. Effective recipients could be different than expected ones, we store.
 				message = buildMessage(contentDescriptor, targets, charset.name());
+				if (message == null) {
+					continue;
+				}
 				effectiveTo = message.getRecipients(RecipientType.TO);
 				effectiveCc = message.getRecipients(RecipientType.CC);
 				effectiveBcc = message.getRecipients(RecipientType.BCC);
@@ -663,7 +668,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 			message.setSender(sender.getAddress());
 		} else {
 			String defaultEmailSender = getDefaultSender(from);
-			if(defaultEmailSender != null && !defaultEmailSender.isEmpty()) {
+			if (defaultEmailSender != null && !defaultEmailSender.isEmpty()) {
 				message.setSender(NotificationTarget.ofInternetAddress(defaultEmailSender).getAddress());
 			}
 		}
@@ -765,18 +770,24 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	}
 	
 	protected boolean isMailRecipientsFiltered() {
-		return propertyService.isConfigurationTypeDevelopment() || propertyService.get(NOTIFICATION_MAIL_RECIPIENTS_FILTERED);
+		return propertyService.isConfigurationTypeDevelopment() || 
+				FILTER_RECIPIENTS.equals(propertyService.get(NOTIFICATION_MAIL_SEND_MODE));
+	}
+	
+	protected boolean isNotificationsDisabled() {
+		return !NotificationUtils.isNotificationsEnabled() ||
+				NO_EMAIL.equals(propertyService.get(NOTIFICATION_MAIL_SEND_MODE));
 	}
 	
 	private Collection<NotificationTarget> filterTo(Collection<NotificationTarget> emails) {
 		if (isMailRecipientsFiltered()) {
-			return getNotificationTestEmails();
+			return getNotificationFilterEmails();
 		}
 		return emails;
 	}
 	
-	protected Collection<NotificationTarget> getNotificationTestEmails() {
-		return propertyService.get(NOTIFICATION_TEST_EMAILS).stream().map(ADDRESS_TO_TARGET_FUNCTION).collect(Collectors.toList());
+	protected Collection<NotificationTarget> getNotificationFilterEmails() {
+		return propertyService.get(NOTIFICATION_MAIL_FILTER_EMAILS).stream().map(ADDRESS_TO_TARGET_FUNCTION).collect(Collectors.toList());
 	}
 	
 	private Collection<NotificationTarget> filterCcBcc(Collection<NotificationTarget> emails) {

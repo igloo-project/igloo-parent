@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import org.iglooproject.spring.config.util.MailSenderBehavior;
+import org.iglooproject.spring.notification.util.NotificationSendMode;
 import org.iglooproject.spring.property.model.AbstractPropertyIds;
 import org.iglooproject.spring.property.model.ImmutablePropertyId;
 
@@ -47,8 +48,8 @@ public final class SpringPropertyIds extends AbstractPropertyIds {
 	public static final ImmutablePropertyId<MailSenderBehavior> NOTIFICATION_MAIL_SENDER_BEHAVIOR = immutable("notification.mail.sender.behavior");
 	public static final ImmutablePropertyId<String> NOTIFICATION_MAIL_FROM = immutable("notification.mail.from");
 	public static final ImmutablePropertyId<String> NOTIFICATION_MAIL_SUBJECT_PREFIX = immutable("notification.mail.subjectPrefix");
-	public static final ImmutablePropertyId<Boolean> NOTIFICATION_MAIL_RECIPIENTS_FILTERED = immutable("notification.mail.recipientsFiltered");
-	public static final ImmutablePropertyId<List<String>> NOTIFICATION_TEST_EMAILS = immutable("notification.test.emails");
+	public static final ImmutablePropertyId<NotificationSendMode> NOTIFICATION_MAIL_SEND_MODE = immutable("notification.mail.send.mode");
+	public static final ImmutablePropertyId<List<String>> NOTIFICATION_MAIL_FILTER_EMAILS = immutable("notification.mail.filter.emails");
 	public static final ImmutablePropertyId<List<String>> NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK = immutable("notification.mail.disabledRecipientFallback");
 	
 }
