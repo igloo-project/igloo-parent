@@ -16,16 +16,16 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.commons.util.mime.MediaType;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.more.common.component.WorkInProgressPopup;
 import org.iglooproject.wicket.more.export.file.behavior.FileDeferredDownloadBehavior;
 import org.iglooproject.wicket.more.export.util.ExportFileUtils;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.util.model.Detachables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractExcelExportAjaxLink extends AjaxLink<Void> {
 	
@@ -36,7 +36,7 @@ public abstract class AbstractExcelExportAjaxLink extends AjaxLink<Void> {
 	@SpringBean
 	private IPropertyService propertyService;
 	
-	private final ExcelExportWorkInProgressModalPopupPanel loadingPopup;
+	private final WorkInProgressPopup loadingPopup;
 	
 	private final FileDeferredDownloadBehavior ajaxDownload;
 	
@@ -44,11 +44,11 @@ public abstract class AbstractExcelExportAjaxLink extends AjaxLink<Void> {
 	
 	private final IModel<MediaType> mediaTypeModel = new Model<MediaType>();
 	
-	public AbstractExcelExportAjaxLink(String id, ExcelExportWorkInProgressModalPopupPanel loadingPopup, String fileNamePrefix) {
+	public AbstractExcelExportAjaxLink(String id, WorkInProgressPopup loadingPopup, String fileNamePrefix) {
 		this(id, loadingPopup, Model.of(fileNamePrefix));
 	}
 	
-	public AbstractExcelExportAjaxLink(String id, ExcelExportWorkInProgressModalPopupPanel loadingPopup, IModel<String> fileNamePrefixModel) {
+	public AbstractExcelExportAjaxLink(String id, WorkInProgressPopup loadingPopup, IModel<String> fileNamePrefixModel) {
 		super(id);
 		this.loadingPopup = loadingPopup;
 		this.ajaxDownload = new FileDeferredDownloadBehavior(tempFileModel, ExportFileUtils.getFileNameMediaTypeModel(fileNamePrefixModel, mediaTypeModel));

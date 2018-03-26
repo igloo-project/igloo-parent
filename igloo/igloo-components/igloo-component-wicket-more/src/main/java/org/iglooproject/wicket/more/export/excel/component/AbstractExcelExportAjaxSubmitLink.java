@@ -20,6 +20,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.commons.util.mime.MediaType;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.more.common.component.WorkInProgressPopup;
 import org.iglooproject.wicket.more.export.file.behavior.FileDeferredDownloadBehavior;
 import org.iglooproject.wicket.more.export.util.ExportFileUtils;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -36,7 +37,7 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	@SpringBean
 	private IPropertyService propertyService;
 	
-	private final ExcelExportWorkInProgressModalPopupPanel loadingPopup;
+	private final WorkInProgressPopup loadingPopup;
 	
 	private final FileDeferredDownloadBehavior ajaxDownload;
 	
@@ -44,11 +45,11 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	
 	private final IModel<MediaType> mediaTypeModel = new Model<MediaType>();
 	
-	public AbstractExcelExportAjaxSubmitLink(String id, Form<?> form, ExcelExportWorkInProgressModalPopupPanel loadingPopup, String fileNamePrefix) {
+	public AbstractExcelExportAjaxSubmitLink(String id, Form<?> form, WorkInProgressPopup loadingPopup, String fileNamePrefix) {
 		this(id, form, loadingPopup, Model.of(fileNamePrefix));
 	}
 
-	public AbstractExcelExportAjaxSubmitLink(String id, Form<?> form, ExcelExportWorkInProgressModalPopupPanel loadingPopup, IModel<String> fileNamePrefixModel) {
+	public AbstractExcelExportAjaxSubmitLink(String id, Form<?> form, WorkInProgressPopup loadingPopup, IModel<String> fileNamePrefixModel) {
 		super(id, form);
 		this.loadingPopup = loadingPopup;
 		this.ajaxDownload = new FileDeferredDownloadBehavior(tempFileModel, ExportFileUtils.getFileNameMediaTypeModel(fileNamePrefixModel, mediaTypeModel));
