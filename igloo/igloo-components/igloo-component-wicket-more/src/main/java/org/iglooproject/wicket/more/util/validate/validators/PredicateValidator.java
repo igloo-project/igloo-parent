@@ -22,11 +22,11 @@ public class PredicateValidator<T> extends Behavior implements IValidator<T> {
 
 	private IModel<String> errorMessageModel;
 
-	public PredicateValidator<T> of(SerializablePredicate2<? super T> predicate) {
+	public static <T> PredicateValidator<T> of(SerializablePredicate2<? super T> predicate) {
 		return new PredicateValidator<T>(predicate);
 	}
 
-	public PredicateValidator(SerializablePredicate2<? super T> predicate) {
+	protected PredicateValidator(SerializablePredicate2<? super T> predicate) {
 		super();
 		this.predicate = Objects.requireNonNull(predicate);
 	}
