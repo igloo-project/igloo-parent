@@ -1,6 +1,5 @@
 package org.iglooproject.basicapp.web.application.navigation.page;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -24,8 +23,6 @@ public class HomePage extends MainTemplate {
 
 	public HomePage(PageParameters parameters) {
 		super(parameters);
-		
-		new AttributeModifier("css", () -> "test");
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("home.pageTitle")));
 		
