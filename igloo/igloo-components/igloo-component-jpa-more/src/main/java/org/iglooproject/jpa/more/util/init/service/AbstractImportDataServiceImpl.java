@@ -82,8 +82,8 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		importBeforeReferenceData(directory, idsMapping);
 		
 		LOGGER.info("Importing {}", REFERENCE_DATA_FILE);
-		Workbook genericListItemWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, REFERENCE_DATA_FILE)));
-		importGenericListItems(idsMapping, genericListItemWorkbook);
+		Workbook referenceDataWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, REFERENCE_DATA_FILE)));
+		importReferenceData(idsMapping, referenceDataWorkbook);
 		LOGGER.info("Import of {} complete", REFERENCE_DATA_FILE);
 		
 		importAfterReferenceData(directory, idsMapping);
@@ -124,11 +124,11 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		// nothing, override if necessary
 	}
 	
-	protected abstract List<String> getGenericListItemPackagesToScan();
+	protected abstract List<String> getReferenceDataPackagesToScan();
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected void importGenericListItems(Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
-		for (String packageToScan : getGenericListItemPackagesToScan()) {
+	protected void importReferenceData(Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
+		for (String packageToScan : getReferenceDataPackagesToScan()) {
 			Set<Class<? extends GenericEntity>> classes = Sets.newHashSet();
 			classes.addAll(ReflectionUtils.findAssignableClasses(packageToScan, GenericReferenceData.class));
 			Map<Integer, Class<? extends GenericEntity>> orderedClasses = Maps.newTreeMap();

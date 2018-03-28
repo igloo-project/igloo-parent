@@ -19,7 +19,7 @@ import com.google.common.collect.Lists;
 public class ImportDataServiceImpl extends AbstractImportDataServiceImpl {
 
 	@Override
-	protected List<String> getGenericListItemPackagesToScan() {
+	protected List<String> getReferenceDataPackagesToScan() {
 		return Lists.newArrayList(BasicApplicationCoreCommonBusinessPackage.class.getPackage().getName());
 	}
 
