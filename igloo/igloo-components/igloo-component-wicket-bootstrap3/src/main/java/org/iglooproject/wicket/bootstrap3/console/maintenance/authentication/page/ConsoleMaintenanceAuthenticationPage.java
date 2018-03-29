@@ -23,6 +23,7 @@ import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
+import org.springframework.security.authentication.DisabledException;
 
 public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> extends ConsoleMaintenanceTemplate {
 
@@ -52,16 +53,22 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> e
 					U genericUser = genericUserService.getByUsername(usernameField.getModelObject());
 					
 					if (genericUser != null) {
-						AbstractCoreSession.get().signInAs(usernameField.getModelObject());
-						AbstractCoreSession.get().success(new StringResourceModel("console.maintenance.authentication.success")
-								.setParameters(usernameField.getModelObject()).getObject());
+						try {
+							AbstractCoreSession.get().signInAs(usernameField.getModelObject());
+							AbstractCoreSession.get().success(new StringResourceModel("console.maintenance.authentication.success")
+									.setParameters(usernameField.getModelObject()).getObject());
+							
+							throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
+						} catch (DisabledException e) {
+							AbstractCoreSession.get().error(getString("console.maintenance.authentication.userDisabled"));
+						}
 					} else {
-						AbstractCoreSession.get().error(getString("signIn.error.unknown"));
+						AbstractCoreSession.get().error(getString("console.maintenance.authentication.userUnknown"));
 					}
 				} else {
-					AbstractCoreSession.get().error(getString("signIn.error.unknown"));
+					AbstractCoreSession.get().error(getString("console.maintenance.authentication.userUnknown"));
 				}
-				throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
+				throw linkDescriptor().newRestartResponseException();
 			}
 		};
 		add(signInForm);
