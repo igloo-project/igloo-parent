@@ -40,13 +40,11 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.BindingModel;
@@ -163,25 +161,6 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 				new LocaleDropDownChoice("locale", BindingModel.of(getModel(), Bindings.user().locale()))
 						.setLabel(new ResourceModel("business.user.locale"))
 						.setRequired(true)
-		);
-		
-		standardFields.add(
-				AjaxConfirmLink.<U>build()
-				.title(new ResourceModel("administration.user.action.disable.confirmation.title"))
-				.content(new StringResourceModel("administration.user.action.disable.confirmation.content", getModel()))
-				.confirm()
-				.onClick(
-						new IAjaxAction() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public void execute(AjaxRequestTarget target) {
-								getSession().success(getString("administration.user.action.disable.success"));
-								target.add(getPage());
-								FeedbackUtils.refreshFeedback(target, getPage());
-							}
-						}
-				)
-				.create("disable", getModel())
 		);
 		
 		return standardFields;
