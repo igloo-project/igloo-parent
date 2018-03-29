@@ -41,7 +41,9 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 		super(parameters);
 
 		// Being connected here doesn't make any sense
-		BasicApplicationSession.get().signOut();
+		if (BasicApplicationSession.get().isSignedIn()) {
+			BasicApplicationSession.get().invalidate();
+		}
 		
 		final IModel<String> tokenModel = Model.of("");
 		

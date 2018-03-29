@@ -22,9 +22,11 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 
 	public SecurityPasswordRecoveryPage(PageParameters parameters) {
 		super(parameters);
-
+		
 		// Being connected here doesn't make any sense
-		BasicApplicationSession.get().signOut();
+		if (BasicApplicationSession.get().isSignedIn()) {
+			BasicApplicationSession.get().invalidate();
+		}
 		
 		addHeadPageTitlePrependedElement(
 				new BreadCrumbElement(new ResourceModel("security.password.recovery.pageTitle"))

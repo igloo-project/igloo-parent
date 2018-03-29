@@ -16,7 +16,7 @@ public class LogoutPage extends CoreWebPage {
 	}
 
 	protected LogoutPage(IPageLinkDescriptor signInPageLinkDescriptor) {
-		if(AuthenticatedWebSession.exists()) {
+		if (AuthenticatedWebSession.exists()) {
 			AuthenticatedWebSession.get().invalidate();
 		}
 		
