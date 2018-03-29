@@ -268,11 +268,25 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	}
 
 	/**
-	 * Sign out the user. If you want to completely invalidate the session, call invalidate() instead.
-	 * After a signout, you should redirect the browser to the home or sign in page.
+	 * @deprecated since Wicket 8, this method is an alias for invalidate().
+	 * Use directly {@link Session#invalidate()} instead.
 	 */
+	@Deprecated
 	@Override
 	public void signOut() {
+		invalidate();
+	}
+
+	/**
+	 * Sign out the user and triggers a redirection to the current page.
+	 */
+	@Override
+	public void invalidate() {
+		clearUserAuthentication();
+		super.invalidate();
+	}
+
+	protected void clearUserAuthentication() {
 		userModel.setObject(null);
 		roles = new Roles();
 		rolesInitialized = false;
@@ -280,8 +294,6 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 		permissionsInitialized = false;
 		
 		authenticationService.signOut();
-		
-		super.signOut();
 	}
 	
 	/**
@@ -352,7 +364,8 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 			originalAuthentication = previousAuthentication;
 		}
 		
-		signOut();
+		clearUserAuthentication();
+		signIn(false);
 		
 		Authentication authentication = authenticationManager.authenticate(token);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
