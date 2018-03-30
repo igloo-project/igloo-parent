@@ -66,6 +66,7 @@ import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleLoginFa
 import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleLoginSuccessPage;
 import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleSignInPage;
 import org.iglooproject.wicket.bootstrap4.console.template.ConsoleConfiguration;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.select2.Select2JavaScriptResourceReference;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
@@ -129,7 +130,10 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		
 		// Don't include css files from wicketstuff-select2.
 		// We take care of Select2 css file and Select2 Bootstrap scss files on our side.
-		org.wicketstuff.select2.ApplicationSettings.get().setIncludeCss(false);
+		// We also override select2 js file to deal with BS tooltip on change/update.
+		org.wicketstuff.select2.ApplicationSettings.get()
+				.setIncludeCss(false)
+				.setJavascriptReferenceFull(Select2JavaScriptResourceReference.get());
 	}
 	
 	@Override
