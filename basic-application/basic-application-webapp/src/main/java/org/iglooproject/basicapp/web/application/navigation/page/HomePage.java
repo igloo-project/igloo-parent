@@ -6,6 +6,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.AdministrationUserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
+import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDataPage;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -30,7 +31,10 @@ public class HomePage extends MainTemplate {
 		
 		add(
 				AdministrationUserTypeDescriptor.BASIC_USER.list()
-						.link("administration")
+						.link("users")
+						.hideIfInvalid(),
+				ReferenceDataPage.linkDescriptor()
+						.link("referenceData")
 						.hideIfInvalid(),
 				ProfilePage.linkDescriptor()
 						.link("profile")
