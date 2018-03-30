@@ -140,6 +140,7 @@ body {
 					border-left: 0;
 					border-right: 0;
 					@include border-radius(0);
+					box-shadow: none !important;
 					
 					[class*="card-"] {
 						@include border-radius(0);
