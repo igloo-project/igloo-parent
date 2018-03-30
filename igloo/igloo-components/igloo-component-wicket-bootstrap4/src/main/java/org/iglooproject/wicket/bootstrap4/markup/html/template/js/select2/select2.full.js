@@ -5207,6 +5207,8 @@ S2.define('select2/core',[
           data: data
         });
       });
+      $(this).next('.select2.select2-container').find('[title],[data-original-title]').tooltip('dispose');
+      $(this).next('.select2.select2-container').find('[data-original-title]').attr('data-original-title', '');
     });
 
     this.$element.on('focus.select2', function (evt) {
