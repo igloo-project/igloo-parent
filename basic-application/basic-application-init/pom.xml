@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>fr.openwide.core.archetype</groupId>
-		<version>0.14-SNAPSHOT</version>
+		<version>0.14.2</version>
 	</parent>
 	
 	<packaging>jar</packaging>
