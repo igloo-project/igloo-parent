@@ -26,7 +26,7 @@
 		<!-- https://www.eclipse.org/aspectj/doc/released/README-191.html -->
 		<igloo.aspectj.version>1.9.1</igloo.aspectj.version>
 		
-		<igloo.hibernate.version>5.3.0.Beta2</igloo.hibernate.version>
+		<igloo.hibernate.version>5.3.0.CR2</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
 		<igloo.jboss-logging.version>3.3.2.Final</igloo.jboss-logging.version>
 		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
