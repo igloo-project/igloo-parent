@@ -5,11 +5,10 @@ import java.util.List;
 import org.apache.wicket.markup.head.HeaderItem;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipJavaScriptResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.WebjarsJQueryPluginResourceReference;
 import org.iglooproject.wicket.more.webjars.WebjarUtil;
 
-import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
-
-public final class BootstrapPopoverJavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
+public final class BootstrapPopoverJavaScriptResourceReference extends WebjarsJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = -1442288640907214154L;
 

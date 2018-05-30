@@ -186,7 +186,7 @@
 		
 		<igloo.webjars.popper.version>1.13.0</igloo.webjars.popper.version>
 		<igloo.webjars.clipboard.version>2.0.0</igloo.webjars.clipboard.version>
-		<igloo.webjars.bootstrap.version>4.0.0</igloo.webjars.bootstrap.version>
+		<igloo.webjars.bootstrap.version>4.1.1</igloo.webjars.bootstrap.version>
 	</properties>
 	
 	<dependencyManagement>

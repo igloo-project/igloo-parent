@@ -1,8 +1,8 @@
 package org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal;
 
-import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.WebjarsJQueryPluginResourceReference;
 
-public final class BootstrapModalJavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
+public final class BootstrapModalJavaScriptResourceReference extends WebjarsJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = -8799742276479282371L;
 
