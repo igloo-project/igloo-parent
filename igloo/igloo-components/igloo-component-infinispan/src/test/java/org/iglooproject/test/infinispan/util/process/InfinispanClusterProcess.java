@@ -1,12 +1,11 @@
 package org.iglooproject.test.infinispan.util.process;
 
-import org.infinispan.manager.EmbeddedCacheManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.infinispan.service.InfinispanClusterServiceImpl;
 import org.iglooproject.test.infinispan.util.TestCacheManagerBuilder;
 import org.iglooproject.test.infinispan.util.roles.SimpleRolesProvider;
+import org.infinispan.manager.EmbeddedCacheManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InfinispanClusterProcess implements Runnable {
 
@@ -14,17 +13,20 @@ public class InfinispanClusterProcess implements Runnable {
 
 	private final String nodeName;
 
+	private Integer expectedViewSize;
+
 	private final String taskName;
 
-	public InfinispanClusterProcess(String nodeName, String taskName) {
+	public InfinispanClusterProcess(String nodeName, Integer expectedViewSize, String taskName) {
 		super();
 		this.nodeName = nodeName;
 		this.taskName = taskName;
+		this.expectedViewSize = expectedViewSize;
 	}
 
 	@Override
 	public void run() {
-		final EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder(nodeName, taskName, "test").build();
+		final EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder(nodeName, expectedViewSize, taskName, "test").build();
 		InfinispanClusterServiceImpl cluster =
 				new InfinispanClusterServiceImpl(nodeName, cacheManager, new SimpleRolesProvider(), null, null);
 		cluster.init();
@@ -45,15 +47,17 @@ public class InfinispanClusterProcess implements Runnable {
 	}
 
 	public static void main(String[] parameters) {
-		if (parameters.length != 1 && parameters.length != 2) {
-			System.err.println("Usage: <node name> [task.class.name]");
+		if (parameters.length != 1 && parameters.length != 3) {
+			System.err.println("Usage: <node name> [<expected-view-size> <task.class.name>]");
 			System.exit(1);
 		} else {
 			String taskName = null;
-			if (parameters.length == 2) {
-				taskName = parameters[1];
+			Integer expectedViewSize = null;
+			if (parameters.length == 3) {
+				expectedViewSize = Integer.parseInt(parameters[1]);
+				taskName = parameters[2];
 			}
-			new InfinispanClusterProcess(parameters[0], taskName).run();
+			new InfinispanClusterProcess(parameters[0], expectedViewSize, taskName).run();
 		}
 	}
 

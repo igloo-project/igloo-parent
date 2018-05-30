@@ -39,7 +39,7 @@ public class TestTransaction extends TestBase {
 		final int nodeNumber = 1;
 		
 		// start test instance
-		final EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder("node main", null, "test").build();
+		final EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder("node main", "test").build();
 		this.cacheManager = cacheManager;
 		
 		final Object monitor = new Object();

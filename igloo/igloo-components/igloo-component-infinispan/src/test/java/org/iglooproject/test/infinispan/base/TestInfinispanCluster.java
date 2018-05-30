@@ -30,7 +30,7 @@ public class TestInfinispanCluster extends TestBase {
 		
 		// start test instance
 		String nodeName = "node main";
-		this.cacheManager = new TestCacheManagerBuilder(nodeName, null, "test").build();
+		this.cacheManager = new TestCacheManagerBuilder(nodeName, "test").build();
 		InfinispanClusterServiceImpl cluster =
 				new InfinispanClusterServiceImpl(nodeName, cacheManager, new SimpleRolesProvider(), null, null);
 		cluster.init();
@@ -42,7 +42,7 @@ public class TestInfinispanCluster extends TestBase {
 		try {
 			waitNodes(cacheManager, nodeNumber + 1, 20, TimeUnit.SECONDS);
 		} catch (TimeoutException e) {
-			Assert.fail(String.format("Node number %d not reached before timeout", nodeNumber + 1));
+			Assert.fail(String.format("View size %d not reached before timeout", nodeNumber + 1));
 		}
 	}
 

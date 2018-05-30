@@ -33,7 +33,7 @@ public class TestSimpleCluster extends TestBase {
 		prepareCluster(nodeNumber, null);
 		
 		// start test instance
-		EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder("node main", null, "test").build();
+		EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder("node main", "test").build();
 		this.cacheManager = cacheManager;
 		cacheManager.start();
 		

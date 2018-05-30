@@ -33,7 +33,7 @@ public class TestRestart extends TestBase {
 		final int nodeNumber = 3;
 		
 		// start test instance
-		final EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder("node main", null, "test").build();
+		final EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder("node main", "test").build();
 		this.cacheManager = cacheManager;
 		
 		final Object monitor = new Object();

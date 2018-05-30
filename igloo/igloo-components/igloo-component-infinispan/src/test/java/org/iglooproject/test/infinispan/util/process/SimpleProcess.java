@@ -14,15 +14,19 @@ public class SimpleProcess implements Runnable {
 
 	private final String taskName;
 
-	public SimpleProcess(String nodeName, String taskName) {
+	private final Integer expectedViewSize;
+
+	public SimpleProcess(String nodeName, Integer expectedViewSize, String taskName) {
 		super();
 		this.nodeName = nodeName;
 		this.taskName = taskName;
+		this.expectedViewSize = expectedViewSize;
 	}
 
 	@Override
 	public void run() {
-		final EmbeddedCacheManager cacheManager = new TestCacheManagerBuilder(nodeName, taskName, "test").build();
+		final EmbeddedCacheManager cacheManager =
+				new TestCacheManagerBuilder(nodeName, expectedViewSize, taskName, "test").build();
 		cacheManager.start();
 		
 		while (!Thread.currentThread().isInterrupted()) {
@@ -41,15 +45,17 @@ public class SimpleProcess implements Runnable {
 	}
 
 	public static void main(String[] parameters) {
-		if (parameters.length != 1 && parameters.length != 2) {
-			System.err.println("Usage: <node name> [task.class.name]");
+		if (parameters.length != 1 && parameters.length != 3) {
+			System.err.println("Usage: <node name> [<expected-view-size> <task.class.name>]");
 			System.exit(1);
 		} else {
 			String taskName = null;
-			if (parameters.length == 2) {
-				taskName = parameters[1];
+			Integer expectedViewSize = null;
+			if (parameters.length == 3) {
+				expectedViewSize = Integer.parseInt(parameters[1]);
+				taskName = parameters[2];
 			}
-			new SimpleProcess(parameters[0], taskName).run();
+			new SimpleProcess(parameters[0], expectedViewSize, taskName).run();
 		}
 	}
 

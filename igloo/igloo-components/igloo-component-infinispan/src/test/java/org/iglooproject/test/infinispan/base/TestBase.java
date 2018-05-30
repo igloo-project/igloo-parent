@@ -39,12 +39,14 @@ public abstract class TestBase {
 	protected Collection<Process> prepareCluster(int nodeNumber, Class<? extends AbstractTask> taskName)
 			throws IOException {
 		Collection<Process> processes = Lists.newArrayListWithExpectedSize(nodeNumber);
+		int expectedViewSize = nodeNumber + 1;
 
 		// start other instances
 		for (int i = 0; i < nodeNumber; i++) {
 			Process process;
 			if (taskName != null) {
-				process = runInfinispan("node " + Integer.toString(i), taskName.getName());
+				process = runInfinispan("node " + Integer.toString(i),
+						Integer.toString(expectedViewSize), taskName.getName());
 			} else {
 				process = runInfinispan("node " + Integer.toString(i));
 			}
