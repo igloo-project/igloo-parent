@@ -13,6 +13,7 @@ import org.iglooproject.basicapp.web.application.referencedata.model.AbstractLoc
 import org.iglooproject.basicapp.web.application.referencedata.model.SimpleLocalizedReferenceDataDataProvider;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
+import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
 
@@ -22,7 +23,10 @@ public class CityListPanel extends AbstractReferenceDataListPanel<City, Localize
 		this(id, SimpleLocalizedReferenceDataDataProvider.forItemType(City.class));
 	}
 	
-	public CityListPanel(String id, AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort> dataProvider) {
+	public CityListPanel(
+			String id,
+			AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort> dataProvider
+	) {
 		super(id, dataProvider, dataProvider.getSortModel());
 	}
 
@@ -45,7 +49,9 @@ public class CityListPanel extends AbstractReferenceDataListPanel<City, Localize
 	}
 
 	@Override
-	protected IAddedCoreColumnState<City, LocalizedReferenceDataSort> addColumns(DataTableBuilder<City, LocalizedReferenceDataSort> builder) {
+	protected IAddedCoreColumnState<City, LocalizedReferenceDataSort> addColumns(
+			DataTableBuilder<City, LocalizedReferenceDataSort> builder
+	) {
 		return builder
 				.addLabelColumn(new ResourceModel("business.localizedReferenceData.label.fr"), Bindings.city().label().fr())
 						.withSort(LocalizedReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
@@ -60,7 +66,11 @@ public class CityListPanel extends AbstractReferenceDataListPanel<City, Localize
 	}
 
 	@Override
-	protected Component createSearchForm(String wicketId, AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort> dataProvider, Component table) {
+	protected Component createSearchForm(
+			String wicketId,
+			AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort> dataProvider,
+			DecoratedCoreDataTablePanel<City, LocalizedReferenceDataSort> table
+	) {
 		return new CitySearchPanel(wicketId, dataProvider, table);
 	}
 }

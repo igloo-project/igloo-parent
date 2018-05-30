@@ -114,16 +114,16 @@ public abstract class AbstractReferenceDataListPanel<
 	
 	protected IDecoratedBuildState<T, S> addIn(IDecoratedBuildState<T, S> builder) {
 		return builder
-				.addIn(AddInPlacement.HEADING_MAIN, new AbstractParameterizedComponentFactory<Component, Component>() {
+				.addIn(AddInPlacement.HEADING_MAIN, new AbstractParameterizedComponentFactory<Component, DecoratedCoreDataTablePanel<T, S>>() {
 					private static final long serialVersionUID = 1L;
 					@Override
-					public Component create(String wicketId, final Component table ) {
+					public Component create(String wicketId, final DecoratedCoreDataTablePanel<T, S> table) {
 						return createSearchForm(wicketId, getDataProvider(), table);
 					}
 				});
 	}
 	
-	protected abstract Component createSearchForm(String wicketId, D dataProvider, Component table);
+	protected abstract Component createSearchForm(String wicketId, D dataProvider, DecoratedCoreDataTablePanel<T, S> table);
 	
 	protected IDecoratedBuildState<T, S> addInHeadingRight(IDecoratedBuildState<T, S> builder) {
 		return builder
