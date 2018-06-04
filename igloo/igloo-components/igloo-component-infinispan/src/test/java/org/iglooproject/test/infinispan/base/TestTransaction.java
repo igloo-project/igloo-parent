@@ -81,7 +81,7 @@ public class TestTransaction extends TestBase {
 			// send message -> second node cannot lock -> message TimeoutException
 			cacheManager.getCache(TestConstants.CACHE_MESSAGE).put(TestConstants.CACHE_KEY_MESSAGE_BUS, Message.from(address, LockTask.TRY_LOCK));
 			// must be set accordingly with lockAcquisitionTimeout
-			waitForEvent(monitor, test, 25, TimeUnit.SECONDS);
+			waitForEvent(monitor, test, 50, TimeUnit.SECONDS);
 			Assert.assertEquals(LockTask.TIMEOUT_EXCEPTION, cacheManager.<String, Message<String>>getCache(TestConstants.CACHE_MESSAGE).get(TestConstants.CACHE_KEY_MESSAGE_BUS).getMessage());
 			successful = true;
 		} finally {
