@@ -129,7 +129,7 @@
 		<igloo.flying-saucer.version>9.1.11</igloo.flying-saucer.version>
 		<igloo.jfreechart.version>1.0.19</igloo.jfreechart.version>
 		<igloo.imageinfo.version>1.9</igloo.imageinfo.version>
-		<igloo.jsoup.version>1.11.2</igloo.jsoup.version>
+		<igloo.jsoup.version>1.11.3</igloo.jsoup.version>
 		<igloo.httpclient.version>4.5.5</igloo.httpclient.version>
 		<igloo.httpcore.version>4.4.9</igloo.httpcore.version>
 		<igloo.prettytime.version>4.0.1.Final</igloo.prettytime.version>
