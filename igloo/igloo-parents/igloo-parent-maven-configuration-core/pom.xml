@@ -47,7 +47,7 @@
 		
 		<igloo.spring-ldap.version>2.3.2.RELEASE</igloo.spring-ldap.version>
 		
-		<igloo.hibernate-search.version>5.9.1.Final</igloo.hibernate-search.version>
+		<igloo.hibernate-search.version>5.9.2.Final</igloo.hibernate-search.version>
 		
 		<!-- overriden in some modules, when we are in a elasticsearch context -->
 		<igloo.lucene.version>5.5.4</igloo.lucene.version>
