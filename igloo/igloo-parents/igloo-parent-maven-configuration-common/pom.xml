@@ -50,7 +50,7 @@
 		<igloo.maven-jar-plugin.version>3.0.2</igloo.maven-jar-plugin.version>
 		<igloo.maven-deploy-plugin.version>2.8.2</igloo.maven-deploy-plugin.version>
 		<igloo.maven-source-plugin.version>3.0.1</igloo.maven-source-plugin.version>
-		<igloo.maven-javadoc-plugin.version>3.0.0</igloo.maven-javadoc-plugin.version>
+		<igloo.maven-javadoc-plugin.version>3.0.1</igloo.maven-javadoc-plugin.version>
 		<igloo.maven-enforcer-plugin.version>3.0.0-M1</igloo.maven-enforcer-plugin.version>
 		<igloo.maven-dependency-plugin.version>3.0.2</igloo.maven-dependency-plugin.version>
 		<igloo.animal-sniffer-maven-plugin.version>1.16</igloo.animal-sniffer-maven-plugin.version>
