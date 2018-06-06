@@ -160,7 +160,7 @@
 		
 		<igloo.less4j.version>1.17.2</igloo.less4j.version>
 		<!-- http://jsass.readthedocs.io/en/latest/changelog.html -->
-		<igloo.jsass.version>5.6.0</igloo.jsass.version>
+		<igloo.jsass.version>5.7.1</igloo.jsass.version>
 		
 		<igloo.flywaydb.version>5.0.7</igloo.flywaydb.version>
 		<igloo.infinispan.version>9.2.4.Final</igloo.infinispan.version>
