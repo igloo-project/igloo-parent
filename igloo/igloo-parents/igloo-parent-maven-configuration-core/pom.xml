@@ -24,7 +24,7 @@
 		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
 		<igloo.jboss-logging.version>3.3.1.Final</igloo.jboss-logging.version>
 		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
-		<igloo.hikaricp.version>2.7.8</igloo.hikaricp.version>
+		<igloo.hikaricp.version>3.2.0</igloo.hikaricp.version>
 		<igloo.ehcache.version>2.10.4</igloo.ehcache.version>
 		<igloo.querydsl.version>4.1.4</igloo.querydsl.version>
 		
