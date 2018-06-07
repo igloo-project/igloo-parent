@@ -76,6 +76,7 @@
 		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
 		<igloo.allure-junit4.version>2.8.1</igloo.allure-junit4.version>
 		<igloo.junit-dataprovider.version>1.13.1</igloo.junit-dataprovider.version>
+		<igloo.owasp-maven-plugin.version>3.2.1</igloo.owasp-maven-plugin.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -642,6 +643,48 @@
 			</reporting>
 		</profile>
 		<profile>
+			<id>owasp</id>
+			<activation>
+				<property>
+					<name>owasp.enabled</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.owasp</groupId>
+						<artifactId>dependency-check-maven</artifactId>
+						<version>${igloo.owasp-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>check</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<reporting>
+				<excludeDefaults>true</excludeDefaults>
+				<plugins>
+					<plugin>
+						<groupId>org.owasp</groupId>
+						<artifactId>dependency-check-maven</artifactId>
+						<version>${igloo.owasp-maven-plugin.version}</version>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>aggregate</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
+		</profile>
+		<profile>
 			<id>jacoco</id>
 			<activation>
 				<property>
@@ -662,6 +705,52 @@
 			</build>
 		</profile>
 	</profiles>
+	
+	<repositories>
+		<repository>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus Igloo Releases</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		
+		<repository>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus Igloo Snapshots</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus Igloo Releases</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		
+		<pluginRepository>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus Igloo Snapshots</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
 	
 	<distributionManagement>
 		<site>

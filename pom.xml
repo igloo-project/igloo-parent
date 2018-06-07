@@ -19,8 +19,10 @@
 		
 		<!-- version needed here as we use allure to aggregate child reports -->
 		<igloo.allure-maven.version>2.9</igloo.allure-maven.version>
+
 		<igloo.allure.version>2.8.1</igloo.allure.version>
 		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
+		<igloo.owasp-maven-plugin.version>3.2.1</igloo.owasp-maven-plugin.version>
 	</properties>
 	
 	<profiles>
@@ -132,6 +134,32 @@
 									<report>dependency-updates-report</report>
 									<report>plugin-updates-report</report>
 									<report>property-updates-report</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
+		</profile>
+		<profile>
+			<id>owasp</id>
+			<activation>
+				<property>
+					<name>owasp.enabled</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<reporting>
+				<excludeDefaults>true</excludeDefaults>
+				<plugins>
+					<plugin>
+						<groupId>org.owasp</groupId>
+						<artifactId>dependency-check-maven</artifactId>
+						<version>${igloo.owasp-maven-plugin.version}</version>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>aggregate</report>
 								</reports>
 							</reportSet>
 						</reportSets>
