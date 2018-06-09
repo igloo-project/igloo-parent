@@ -178,7 +178,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 		
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Aggregated configuration before merging: {}",
-					Joiner.on(",").withKeyValueSeparator(":").join(locationsByOrder.asMap()));
+					Joiner.on(", ").withKeyValueSeparator(":").join(locationsByOrder.asMap()));
 		}
 		
 		// order provided configurations
@@ -188,7 +188,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 		for (Integer order : orders) {
 			locations.addAll(locationsByOrder.get(order));
 		}
-		LOGGER.info("Aggregated configuration after merging: {}");
+		LOGGER.info("Aggregated configuration after merging: {}", Joiner.on(", ").join(locations));
 		
 		return locations;
 	}
