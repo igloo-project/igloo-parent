@@ -181,8 +181,8 @@ public class ThreadedProcessor {
 			try {
 				boolean terminated = executor.awaitTermination(maxTotalDuration, maxTotalDurationTimeUnit);
 				if (!terminated) {
-					LOGGER.error("{} - Tasks haven't terminated before the timeout of {} {}", maxTotalDuration,
-							maxTotalDurationTimeUnit.name());
+					LOGGER.error("{} - Tasks haven't terminated before the timeout of {} {}",
+							loggerContext, maxTotalDuration, maxTotalDurationTimeUnit.name());
 				}
 				LOGGER.info("{} - {} elements treated", loggerContext, this.monitorContext.getDoneItems());
 				if (this.monitorContext.getFailedItems().get() > 0) {
@@ -190,7 +190,8 @@ public class ThreadedProcessor {
 							this.monitorContext.getFailedItems().get());
 				}
 				if (this.monitorContext.getIgnoredItems().get() > 0) {
-					LOGGER.info("{} - {} elements ignored", loggerContext, this.monitorContext.getIgnoredItems().get());
+					LOGGER.info("{} - {} elements ignored",
+							loggerContext, this.monitorContext.getIgnoredItems().get());
 				}
 
 				for (Future<T> future : futures) {
