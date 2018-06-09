@@ -69,16 +69,16 @@ public class JSassClassPathImporter implements Importer {
 			
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Trying paths {} for resource {} (base: {})",
-						paths.stream().collect(Collectors.joining(",")), previousBase);
+						paths.stream().collect(Collectors.joining(", ")), url, previousBase);
 			}
 			for (String path : paths) {
 				Import resource = resolveCandidate(path, previousBase);
 				if (resource != null) {
-					LOGGER.info("Resource {} resolved as {} (base: {})", url, path, previousBase.toString());
+					LOGGER.info("Resource {} resolved as {} (base: {})", url, path, previousBase);
 					return resource;
 				}
 				if (LOGGER.isInfoEnabled()) {
-					LOGGER.info("Candidate resource {} from {} url not found (base: {})", path, url, previousBase.toString());
+					LOGGER.info("Candidate resource {} from {} url not found (base: {})", path, url, previousBase);
 				}
 			}
 			
