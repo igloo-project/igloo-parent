@@ -22,6 +22,7 @@ import org.apache.wicket.request.http.WebResponse;
 import org.iglooproject.commons.util.context.AbstractExecutionContext;
 import org.iglooproject.commons.util.context.ExecutionContexts;
 import org.iglooproject.commons.util.context.IExecutionContext;
+import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.property.WicketMorePropertyIds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,28 +87,12 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 				return ExecutionContexts.noOp().open();
 			}
 
-			ITearDownHandle handle = new ITearDownHandle() {
-				@Override
-				public void close() {
-					ThreadContext.restore(initialContext);
-				}
-			};
-			
 			WebApplication targetApplication = getTargetApplication();
-			
-			try {
-				ThreadContext.detach();
-				ThreadContext.setApplication(targetApplication);
-				ThreadContext.setRequestCycle(null);
-				return handle;
-			} catch (RuntimeException e) {
-				try {
-					handle.close();
-				} catch (RuntimeException e2) {
-					e.addSuppressed(e2);
-				}
-				throw e;
-			}
+
+			ThreadContext.detach();
+			ThreadContext.setApplication(targetApplication);
+			ThreadContext.setRequestCycle(null);
+			return new ThreadDownHandle(initialContext);
 		}
 		
 		protected WebApplication getTargetApplication() {
@@ -137,6 +122,20 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 					.build();
 		}
 	}
+
+	private final class ThreadDownHandle implements ITearDownHandle {
+		private final ThreadContext initialContext;
+		
+		private ThreadDownHandle(ThreadContext initialContext) {
+			super();
+			this.initialContext = initialContext;
+		}
+		
+		@Override
+		public void close() {
+			ThreadContext.restore(initialContext);
+		}
+	};
 
 	private final class RequestCycleExecutionContext extends AbstractExecutionContext {
 		
