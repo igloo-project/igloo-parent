@@ -182,7 +182,7 @@
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
 		<igloo.byte-buddy.version>1.6.14</igloo.byte-buddy.version>
 		<igloo.elasticsearch-cluster-runner.version>${igloo.elasticsearch.version}.0</igloo.elasticsearch-cluster-runner.version>
-		<igloo.embedded-elasticsearch.version>2.4.3</igloo.embedded-elasticsearch.version>
+		<igloo.embedded-elasticsearch.version>2.5.1</igloo.embedded-elasticsearch.version>
 		
 		<igloo.webjars.popper.version>1.13.0</igloo.webjars.popper.version>
 		<igloo.webjars.clipboard.version>2.0.0</igloo.webjars.clipboard.version>
