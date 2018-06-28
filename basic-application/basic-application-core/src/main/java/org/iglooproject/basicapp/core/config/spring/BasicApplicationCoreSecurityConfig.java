@@ -61,8 +61,6 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecur
 						new SecurityOptions()
 								.passwordAdminRecovery()
 								.passwordAdminUpdate()
-								.passwordExpiration()
-								.passwordHistory()
 								.passwordUserRecovery()
 								.passwordUserUpdate()
 								.passwordRules(
@@ -76,7 +74,6 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecur
 				.setOptions(
 						BasicUser.class,
 						new SecurityOptions()
-								.passwordAdminRecovery()
 								.passwordExpiration()
 								.passwordHistory()
 								.passwordUserRecovery()

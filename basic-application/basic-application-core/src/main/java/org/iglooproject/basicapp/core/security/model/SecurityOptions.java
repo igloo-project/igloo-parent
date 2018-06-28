@@ -28,9 +28,7 @@ public class SecurityOptions {
 	private Set<Rule> passwordRules = Sets.newHashSet();
 
 	public static final SecurityOptions DEFAULT = new SecurityOptions()
-				.passwordAdminRecovery()
 				.passwordUserRecovery()
-				.passwordAdminUpdate()
 				.passwordUserUpdate()
 				.passwordRules(
 						SecurityPasswordRulesBuilder.start()
