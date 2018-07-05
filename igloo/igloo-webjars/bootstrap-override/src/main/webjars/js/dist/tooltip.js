@@ -274,12 +274,12 @@ var Tooltip = function ($) {
           $(document.body).children().on('mouseover', null, $.noop);
         }
 
-        var disposeTooltip = () => {
-            if (!$(_this.element).is(":visible")) {
-              _this.dispose();
-            }
-          };
-          this.disposeTooltipIntervalId = setInterval(disposeTooltip, 200);
+        var disposeTooltip = function() {
+          if (!$(_this.element).is(":visible")) {
+            _this.dispose();
+          }
+        };
+        this.disposeTooltipIntervalId = setInterval(disposeTooltip, 200);
 
         var complete = function complete() {
           if (_this.config.animation) {
