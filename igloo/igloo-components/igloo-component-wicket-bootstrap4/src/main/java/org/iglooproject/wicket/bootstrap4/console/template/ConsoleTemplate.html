@@ -15,65 +15,79 @@
 	<body>
 		<div wicket:id="animatedGlobalFeedbackPanel" data-placement="bottom"></div>
 		
-		<div class="sticky-top">
-			<nav class="navbar">
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-					<span class="navbar-toggler-icon" />
-				</button>
-				
-				<span class="navbar-brand"><wicket:message key="console.pageTitle" /></span>
-				
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav mr-auto">
-						<li wicket:id="mainNav" class="nav-item">
-							<a wicket:id="navLink" class="nav-link">
-								<span wicket:id="label" />
-							</a>
-							<div wicket:id="subNavContainer" class="dropdown-menu">
-								<wicket:container wicket:id="subNav">
-									<a wicket:id="navLink" class="dropdown-item">
+		<div class="main-wrapper">
+			<header class="header-section">
+				<div class="sticky-top">
+					<wicket:container wicket:id="headerEnvironment" />
+					
+					<nav class="navbar">
+						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+							<span class="navbar-toggler-icon" />
+						</button>
+						
+						<span class="navbar-brand"><wicket:message key="common.console" /></span>
+						
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="navbar-nav mr-auto">
+								<li wicket:id="mainNav" class="nav-item">
+									<a wicket:id="navLink" class="nav-link">
 										<span wicket:id="label" />
 									</a>
-								</wicket:container>
-							</div>
-						</li>
-					</ul>
-					
-					<span class="navbar-text">
-						<wicket:container wicket:id="userFullName" />
-						
-						<a wicket:id="logoutLink" class="ml-2" wicket:message="title:common.logout" data-placement="left">
-							<span class="fa fa-power-off" />
-						</a>
-					</span>
+									<div wicket:id="subNavContainer" class="dropdown-menu">
+										<wicket:container wicket:id="subNav">
+											<a wicket:id="navLink" class="dropdown-item">
+												<span wicket:id="label" />
+											</a>
+										</wicket:container>
+									</div>
+								</li>
+							</ul>
+							
+							<ul class="navbar-nav ml-auto">
+								<li class="nav-item">
+									<a class="nav-link">
+										<span class="fa fa-user-circle fa-fw" />
+										<wicket:container wicket:id="userFullName" />
+									</a>
+								</li>
+								<li class="nav-item">
+									<a wicket:id="logoutLink" class="nav-link">
+										<span class="fa fa-power-off fa-fw" />
+										<span><wicket:message key="common.logout" /></span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</nav>
 				</div>
-			</nav>
-			
-			<wicket:container wicket:id="headerEnvironment" />
-		</div>
-		
-		<wicket:container wicket:id="headerAdditionalContent" />
-		
-		<div class="page-section">
-			<div class="page-container">
-				<wicket:child />
 				
-				<div wicket:id="scrollToTop" class="scroll-to-top">
-					<button class="scroll-to-top-btn" type="button">
-						<span class="fa fa-arrow-up scroll-to-top-icon" />
-					</button>
-				</div>
+				<wicket:container wicket:id="headerAdditionalContent" />
+			</header>
+			
+			<div class="body-section">
+				<wicket:child />
 			</div>
-		</div>
-		
-		<div class="footer-section">
-			<div class="footer-container">
-				<div class="footer">
-					<div class="footer-info">
-						<wicket:message key="console.footer" />&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span wicket:id="version" />
+			
+			<footer class="footer-section">
+				<div class="footer-container">
+					<div class="media align-items-center">
+						<a href="https://github.com/igloo-project/igloo-parent">
+							<img class="mr-3" src="static/application/images/logo-igloo.png" height="50" width="50" alt="Logo Igloo">
+						</a>
+						<div class="footer-info media-body">
+							<h6 class="footer-info-title"><wicket:message key="console.footer" /></h6>
+							<div wicket:id="applicationVersion" class="footer-info-version" />
+							<div wicket:id="iglooVersion" class="footer-info-version" />
+						</div>
 					</div>
 				</div>
-			</div>
+			</footer>
+		</div>
+		
+		<div wicket:id="scrollToTop" class="scroll-to-top">
+			<button class="scroll-to-top-btn" type="button">
+				<span class="fa fa-arrow-up scroll-to-top-icon" />
+			</button>
 		</div>
 	</body>
 </html>

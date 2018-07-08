@@ -42,7 +42,7 @@ public final class ConsoleConfiguration {
 	
 	private String baseUrl = null;
 	
-	private String consolePageTitleKey;
+	private String consoleTitleKey;
 	
 	private Set<ResourceReference> cssResourcesReferences = Sets.newLinkedHashSet();
 	
@@ -80,17 +80,17 @@ public final class ConsoleConfiguration {
 	}
 	
 	public static ConsoleConfiguration build(String baseUrl, IPropertyService propertyService) {
-		return build(baseUrl, "console.pageTitle", true, propertyService);
+		return build(baseUrl, "common.console", true, propertyService);
 	}
 	
 	public static ConsoleConfiguration build(
 			String baseUrl,
-			String consolePageTitleKey,
+			String consoleTitleKey,
 			boolean buildDefault,
 			IPropertyService propertyService
 	) {
 		INSTANCE.setBaseUrl(UrlUtils.normalizePath(baseUrl));
-		INSTANCE.setConsolePageTitleKey(consolePageTitleKey);
+		INSTANCE.setConsoleTitleKey(consoleTitleKey);
 		
 		if (buildDefault) {
 			ConsoleMenuSection maintenanceMenuSection = new ConsoleMenuSection("maintenanceMenuSection",
@@ -183,12 +183,12 @@ public final class ConsoleConfiguration {
 		this.baseUrl = baseUrl;
 	}
 
-	public String getConsolePageTitleKey() {
-		return consolePageTitleKey;
+	public String getConsoleTitleKey() {
+		return consoleTitleKey;
 	}
 
-	public void setConsolePageTitleKey(String consolePageTitleKey) {
-		this.consolePageTitleKey = consolePageTitleKey;
+	public void setConsoleTitleKey(String consoleTitleKey) {
+		this.consoleTitleKey = consoleTitleKey;
 	}
 
 	public Set<ResourceReference> getCssResourcesReferences() {

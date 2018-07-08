@@ -4,14 +4,18 @@
 	<wicket:panel>
 		<div wicket:id="popup" />
 		
-		<div wicket:id="resultats" class="card" />
+		<div wicket:id="resultats" class="card card-page" />
 		
 		<wicket:child/>
 		
 		<wicket:fragment wicket:id="itemActionsFragment">
-			<button wicket:id="edit" class="btn btn-primary btn-xs" wicket:message="title:common.action.update" type="button">
-				<span class="fa fa-pencil-alt"></span>
-			</button>
+			<div wicket:enclosure-container class="table-row-actions">
+				<div wicket:enclosure-component="edit" class="table-row-action">
+					<button wicket:id="edit" class="btn btn-table-row-action btn-primary" wicket:message="title:common.action.update" type="button">
+						<span class="fa fa-pencil-alt"></span>
+					</button>
+				</div>
+			</div>
 		</wicket:fragment>
 		
 		<wicket:fragment wicket:id="globalActionsFragment">

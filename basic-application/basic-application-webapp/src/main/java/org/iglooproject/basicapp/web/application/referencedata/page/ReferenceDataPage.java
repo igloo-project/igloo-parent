@@ -2,8 +2,10 @@ package org.iglooproject.basicapp.web.application.referencedata.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.iglooproject.basicapp.web.application.common.component.FeatureNotYetAvailablePanel;
 import org.iglooproject.basicapp.web.application.common.component.NavTabsPanel;
 import org.iglooproject.basicapp.web.application.referencedata.component.CityListPanel;
 import org.iglooproject.basicapp.web.application.referencedata.template.ReferenceDataTemplate;
@@ -32,6 +34,38 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 							public Component createContent(String wicketId) {
 								// Here, you can also use the SimpleGenericListItemListPanel<City>(wicketId, CITY_SUPPLIER, ICitySearchQuery.class);
 								return new CityListPanel(wicketId);
+							}
+						}
+				)
+				.add(
+						new NavTabsPanel.SimpleTabFactory(Model.of("Reference data #2")) {
+							@Override
+							public Component createContent(String wicketId) {
+								return new FeatureNotYetAvailablePanel(wicketId);
+							}
+						}
+				)
+				.add(
+						new NavTabsPanel.SimpleTabFactory(Model.of("Reference data #3")) {
+							@Override
+							public Component createContent(String wicketId) {
+								return new FeatureNotYetAvailablePanel(wicketId);
+							}
+						}
+				)
+				.add(
+						new NavTabsPanel.SimpleTabFactory(Model.of("Reference data #4")) {
+							@Override
+							public Component createContent(String wicketId) {
+								return new FeatureNotYetAvailablePanel(wicketId);
+							}
+						}
+				)
+				.add(
+						new NavTabsPanel.SimpleTabFactory(Model.of("Reference data #5")) {
+							@Override
+							public Component createContent(String wicketId) {
+								return new FeatureNotYetAvailablePanel(wicketId);
 							}
 						}
 				)

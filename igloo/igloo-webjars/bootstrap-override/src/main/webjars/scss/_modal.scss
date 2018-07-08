@@ -1,7 +1,7 @@
 .modal-content {
 	border: none;
 	border-radius: 0;
-	@extend .shadow-lg;
+	box-shadow: $shadow-lg;
 }
 
 .modal-header {
@@ -14,27 +14,39 @@
 	}
 }
 
+@mixin modal-headerless() {
+	.modal-header {
+		display: none;
+	}
+}
+
+@mixin modal-closeless() {
+	.modal-header {
+		.close {
+			display: none;
+		}
+	}
+}
+
+@mixin modal-footerless() {
+	.modal-footer {
+		display: none;
+	}
+}
+
 .modal {
 	&.modal-headerless {
-		.modal-header {
-			@extend .d-none;
-		}
+		@include modal-headerless();
 	}
 	&.modal-closeless {
-		.modal-header {
-		.close {
-			@extend .d-none;
-		}
-	}
+		@include modal-closeless();
 	}
 	&.modal-footerless {
-		.modal-footer {
-			@extend .d-none;
-		}
+		@include modal-footerless();
 	}
 	&.modal-bodyonly {
-		@extend .modal-headerless;
-		@extend .modal-footerless;
+		@include modal-headerless();
+		@include modal-footerless();
 	}
 	
 	input.hasDatepicker,
@@ -48,10 +60,10 @@
 }
 
 .modal.modal-work-in-progress {
-	@extend .modal-closeless;
-	@extend .modal-footerless;
+	@include modal-closeless();
+	@include modal-footerless();
 	
 	.modal-dialog {
-		@extend .modal-sm;
+		max-width: $modal-sm;
 	}
 }

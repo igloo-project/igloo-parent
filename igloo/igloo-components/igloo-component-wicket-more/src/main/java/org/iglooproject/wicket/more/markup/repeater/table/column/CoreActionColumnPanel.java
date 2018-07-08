@@ -2,8 +2,10 @@ package org.iglooproject.wicket.more.markup.repeater.table.column;
 
 import java.util.List;
 
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.FactoryRepeatingView;
 
@@ -14,10 +16,15 @@ public class CoreActionColumnPanel<T> extends Panel {
 	public CoreActionColumnPanel(String id, final IModel<T> rowModel,
 			List<? extends IOneParameterComponentFactory<?, IModel<T>>> factories) {
 		super(id);
-
+		
 		FactoryRepeatingView actions = new FactoryRepeatingView("actions");
 		actions.addAll(factories, rowModel);
-		add(actions);
+		
+		add(
+				new WebMarkupContainer("actionsContainer")
+					.add(actions)
+					.add(Condition.anyChildVisible(actions).thenShow())
+		);
 	}
 
 }

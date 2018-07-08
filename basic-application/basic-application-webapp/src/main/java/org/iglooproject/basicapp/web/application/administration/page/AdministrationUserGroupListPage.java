@@ -130,10 +130,11 @@ public class AdministrationUserGroupListPage extends AdministrationTemplate {
 											}
 										})
 										.when((userGroup) -> BasicApplicationSession.get().hasRoleAdmin() && !userGroup.isLocked())
-										.withClassOnElements(CssClassConstants.BTN_XS)
+										.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
 								.end()
 								.withClass("actions actions-1x")
-						.decorate()
+						.bootstrapCard()
+								.ajaxPagers()
 								.count("administration.userGroup.list.count")
 						.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE))
 		);

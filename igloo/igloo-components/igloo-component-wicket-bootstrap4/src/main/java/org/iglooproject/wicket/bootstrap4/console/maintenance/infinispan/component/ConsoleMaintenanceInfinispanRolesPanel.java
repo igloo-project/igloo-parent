@@ -139,7 +139,7 @@ public class ConsoleMaintenanceInfinispanRolesPanel extends Panel {
 											IRoleAttribution roleAttribution = infinispanClusterService.getRoleAttribution(input);
 											return roleAttribution != null && roleAttribution.getAttributionDate() != null && roleAttribution.getOwner() != null;
 										})
-										.withClassOnElements("btn-xs")
+										.withClassOnElements("btn-table-row-action")
 								.end()
 						.bootstrapCard()
 								.title("console.maintenance.infinispan.roles")

@@ -201,6 +201,7 @@
 		<igloo.embedded-elasticsearch.version>2.5.1</igloo.embedded-elasticsearch.version>
 		
 		<igloo.webjars.popper.version>1.13.0</igloo.webjars.popper.version>
+		<igloo.webjars.perfect-scrollbar.version>1.4.0</igloo.webjars.perfect-scrollbar.version>
 		<igloo.webjars.clipboard.version>2.0.0</igloo.webjars.clipboard.version>
 		<igloo.webjars.bootstrap.version>4.1.2</igloo.webjars.bootstrap.version>
 	</properties>
@@ -1338,6 +1339,12 @@
 				<groupId>org.webjars.npm</groupId>
 				<artifactId>popper.js</artifactId>
 				<version>${igloo.webjars.popper.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.webjars.npm</groupId>
+				<artifactId>perfect-scrollbar</artifactId>
+				<version>${igloo.webjars.perfect-scrollbar.version}</version>
 			</dependency>
 			
 			<dependency>

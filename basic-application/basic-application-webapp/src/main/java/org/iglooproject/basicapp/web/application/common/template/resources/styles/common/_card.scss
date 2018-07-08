@@ -1,0 +1,18 @@
+.card {
+	&.card-with-icon {
+		.card-img-top {
+			text-align: center;
+			padding: 1.5rem;
+		}
+	}
+}
+
+.card-page {
+	.card-header {
+		background-color: $white;
+	}
+	
+	.card-footer {
+		background-color: $white;
+	}
+}

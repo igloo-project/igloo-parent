@@ -7,20 +7,14 @@
 }
 
 .card-action {
-	@extend .mt-3;
-	
-	&:first-child {
-		margin-top: 0;
-	}
+	margin-top: 1rem;
 	
 	> .card-action-container {
-		@extend .d-flex;
-		@extend .flex-wrap;
-		@extend .flex-g-1;
-		@extend .justify-content-end;
+		@include basic-container();
+		justify-content: flex-end;
 		
 		> .card-action-item {
-			@extend .flex-item;
+			@include basic-item();
 		}
 	}
 }
@@ -94,10 +88,12 @@
 }
 
 @each $color, $value in $theme-colors {
-	.card-#{$color} {
-		@include card-variant($value);
-	}
-	.card-#{$color}-full {
-		@include card-variant-full($value);
+	.card {
+		&.card-#{$color} {
+			@include card-variant($value);
+		}
+		&.card-#{$color}-full {
+			@include card-variant-full($value);
+		}
 	}
 }

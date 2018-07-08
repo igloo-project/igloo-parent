@@ -1,5 +1,5 @@
 .navbar-main {
-	@extend .bg-brand;
+	@include bg($brand-color);
 	
 	.navbar-brand {
 		color: $navbar-main-active-color;

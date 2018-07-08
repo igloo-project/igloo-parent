@@ -178,6 +178,7 @@ $ui-datepicker-footer-padding:					.5em .75em !default;
 			.ui-datepicker-year {
 				flex-grow: 0;
 				width: auto;
+				color: $ui-datepicker-header-color;
 			}
 			
 			.ui-datepicker-month {
@@ -200,6 +201,8 @@ $ui-datepicker-footer-padding:					.5em .75em !default;
 					
 					font-size: 1.15rem;
 					line-height: 2.5rem;
+					
+					color: $ui-datepicker-header-color;
 				}
 			}
 			

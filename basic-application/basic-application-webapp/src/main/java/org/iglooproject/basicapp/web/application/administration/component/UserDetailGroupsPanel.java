@@ -96,7 +96,7 @@ public class UserDetailGroupsPanel extends GenericPanel<User> {
 											}
 										})
 										.hideLabel()
-								.withClassOnElements(CssClassConstants.BTN_XS)
+								.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
 								.end()
 								.withClass("actions actions-1x")
 						.bootstrapCard()

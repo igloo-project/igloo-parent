@@ -89,6 +89,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
+			<artifactId>perfect-scrollbar</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
 			<artifactId>clipboard</artifactId>
 		</dependency>
 		<dependency>

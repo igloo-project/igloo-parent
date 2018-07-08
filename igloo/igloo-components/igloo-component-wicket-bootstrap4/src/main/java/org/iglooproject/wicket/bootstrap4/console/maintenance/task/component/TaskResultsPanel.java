@@ -61,7 +61,7 @@ public class TaskResultsPanel extends Panel {
 				.addLabelColumn(new ResourceModel("console.maintenance.task.common.endDate"), CoreJpaMoreBindings.queuedTaskHolder().endDate(), DatePattern.SHORT_DATETIME)
 						.withClass("date")
 				.withNoRecordsResourceKey("console.maintenance.task.list.empty")
-				.decorate()
+				.bootstrapCard()
 						.ajaxPagers()
 				.build("results", itemsPerPage);
 		
