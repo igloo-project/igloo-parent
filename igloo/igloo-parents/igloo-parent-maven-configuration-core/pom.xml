@@ -60,7 +60,7 @@
 		
 		<igloo.javatuples.version>1.2</igloo.javatuples.version>
 		
-		<igloo.jdk-serializable-functional.version>1.8.3</igloo.jdk-serializable-functional.version>
+		<igloo.jdk-serializable-functional.version>1.8.5</igloo.jdk-serializable-functional.version>
 		
 		<!--
 			We're stuck at version 2.4 because of an incompatibility with TrueZip from commons-io 2.5 on.
