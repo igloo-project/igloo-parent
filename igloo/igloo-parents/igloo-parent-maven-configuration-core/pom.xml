@@ -173,8 +173,8 @@
 		<igloo.junit.version>4.12</igloo.junit.version>
 		<igloo.h2.version>1.4.197</igloo.h2.version>
 		<igloo.mockito.version>2.13.0</igloo.mockito.version>
-		<igloo.assertj.version>3.9.0</igloo.assertj.version>
-		<igloo.assertj-guava.version>3.1.0</igloo.assertj-guava.version>
+		<igloo.assertj.version>3.10.0</igloo.assertj.version>
+		<igloo.assertj-guava.version>3.2.0</igloo.assertj-guava.version>
 		<igloo.grizzly.version>1.9.65</igloo.grizzly.version>
 		<igloo.findbugs-annotations.version>3.0.1u2</igloo.findbugs-annotations.version>
 		<igloo.findbugs-jsr305.version>3.0.2</igloo.findbugs-jsr305.version>
