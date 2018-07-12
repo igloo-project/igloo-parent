@@ -29,7 +29,8 @@
 		<igloo.jboss-logging.version>3.3.2.Final</igloo.jboss-logging.version>
 		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
 		<igloo.hikaricp.version>3.2.0</igloo.hikaricp.version>
-		<igloo.ehcache.version>2.10.4</igloo.ehcache.version>
+		<!-- https://jira.terracotta.org/jira/browse/EHC/fixforversion/13000/?selectedTab=com.atlassian.jira.jira-projects-plugin:version-summary-panel -->
+		<igloo.ehcache.version>2.10.5</igloo.ehcache.version>
 		<igloo.querydsl.version>4.1.4</igloo.querydsl.version>
 		
 		<!--https://github.com/google/guava/releases/ -->
