@@ -153,7 +153,7 @@
 		
 		<igloo.jersey.version>1.19.4</igloo.jersey.version>
 		<igloo.jersey2.version>2.25.1</igloo.jersey2.version>
-		<igloo.glassfish-asm-all-repackaged.version>2.5.0-b05</igloo.glassfish-asm-all-repackaged.version>
+		<igloo.glassfish-asm-all-repackaged.version>2.5.0-b60</igloo.glassfish-asm-all-repackaged.version>
 		
 		<igloo.jstl.version>1.2</igloo.jstl.version>
 		<igloo.jsp-api.version>2.2</igloo.jsp-api.version>
@@ -1141,10 +1141,6 @@
 					<version>${igloo.jersey2.version}</version>
 					<exclusions>
 						<exclusion>
-							<!-- from version >= 2.5.0-b06, asm-all is packaged with
-							     a module-info.class that cannot be handled by
-							     animal-sniffer ; switch to 2.5.0-b05 (same lib,
-							     different packaging)-->
 							<groupId>org.glassfish.hk2.external</groupId>
 							<artifactId>asm-all-repackaged</artifactId>
 						</exclusion>
