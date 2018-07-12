@@ -133,7 +133,6 @@
 		<igloo.bouncycastle.version>2.55</igloo.bouncycastle.version>
 		
 		<igloo.flying-saucer.version>9.1.11</igloo.flying-saucer.version>
-		<igloo.jfreechart.version>1.0.19</igloo.jfreechart.version>
 		<igloo.imageinfo.version>1.9</igloo.imageinfo.version>
 		<igloo.jsoup.version>1.11.3</igloo.jsoup.version>
 		<igloo.httpclient.version>4.5.5</igloo.httpclient.version>
@@ -814,18 +813,6 @@
 					<groupId>org.jsoup</groupId>
 					<artifactId>jsoup</artifactId>
 					<version>${igloo.jsoup.version}</version>
-				</dependency>
-				
-				<dependency>
-					<groupId>org.jfree</groupId>
-					<artifactId>jfreechart</artifactId>
-					<version>${igloo.jfreechart.version}</version>
-					<exclusions>
-						<exclusion>
-							<groupId>xml-apis</groupId>
-							<artifactId>xml-apis</artifactId>
-						</exclusion>
-					</exclusions>
 				</dependency>
 				
 				<dependency>
