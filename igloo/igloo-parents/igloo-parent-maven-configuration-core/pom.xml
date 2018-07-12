@@ -124,7 +124,7 @@
 		
 		<igloo.json-lib.version>2.3</igloo.json-lib.version>
 		<!-- https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.9 -->
-		<igloo.jackson2-core.version>2.9.5</igloo.jackson2-core.version>
+		<igloo.jackson2-core.version>2.9.6</igloo.jackson2-core.version>
 		<igloo.jackson2-annotations.version>${igloo.jackson2-core.version}</igloo.jackson2-annotations.version>
 		<igloo.jackson2-databind.version>${igloo.jackson2-core.version}</igloo.jackson2-databind.version>
 		<igloo.jackson2-jaxrs.version>${igloo.jackson2-core.version}</igloo.jackson2-jaxrs.version>
