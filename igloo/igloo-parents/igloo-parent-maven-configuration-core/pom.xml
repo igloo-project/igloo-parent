@@ -84,7 +84,8 @@
 		
 		<igloo.commons-lang.version>2.6</igloo.commons-lang.version>
 		<igloo.commons-lang3.version>3.7</igloo.commons-lang3.version>
-		<igloo.commons-text.version>1.2</igloo.commons-text.version>
+		<!-- https://commons.apache.org/proper/commons-text/release-notes/RELEASE-NOTES-1.4.txt -->
+		<igloo.commons-text.version>1.4</igloo.commons-text.version>
 		<igloo.commons-math3.version>3.6.1</igloo.commons-math3.version>
 		<igloo.commons-cli.version>1.4</igloo.commons-cli.version>
 		<igloo.commons-codec.version>1.11</igloo.commons-codec.version>
