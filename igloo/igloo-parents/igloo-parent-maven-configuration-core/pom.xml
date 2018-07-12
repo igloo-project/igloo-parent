@@ -172,7 +172,8 @@
 		<!-- http://jsass.readthedocs.io/en/latest/changelog.html -->
 		<igloo.jsass.version>5.7.3</igloo.jsass.version>
 		
-		<igloo.flywaydb.version>5.0.7</igloo.flywaydb.version>
+		<!-- https://flywaydb.org/blog/flyway-5.1.0 -->
+		<igloo.flywaydb.version>5.1.4</igloo.flywaydb.version>
 		<igloo.infinispan.version>9.2.4.Final</igloo.infinispan.version>
 		
 		<igloo.junit.version>4.12</igloo.junit.version>
