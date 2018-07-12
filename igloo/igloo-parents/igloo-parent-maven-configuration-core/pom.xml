@@ -36,7 +36,8 @@
 		<!--https://github.com/google/guava/releases/ -->
 		<igloo.guava.version>25.1-jre</igloo.guava.version>
 		
-		<igloo.postgresql.version>42.2.2</igloo.postgresql.version>
+		<!-- https://jdbc.postgresql.org/documentation/changelog.html -->
+		<igloo.postgresql.version>42.2.3</igloo.postgresql.version>
 		<igloo.pgjdbc-ng.version>0.7.1</igloo.pgjdbc-ng.version>
 		<igloo.oracle10g.version>10.2.0.5</igloo.oracle10g.version>
 		<igloo.mysql.version>5.1.14</igloo.mysql.version>
