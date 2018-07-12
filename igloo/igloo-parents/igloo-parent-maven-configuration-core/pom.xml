@@ -90,7 +90,7 @@
 		<igloo.commons-codec.version>1.11</igloo.commons-codec.version>
 		<igloo.commons-exec.version>1.3</igloo.commons-exec.version>
 		<!-- https://commons.apache.org/proper/commons-compress/ -->
-		<igloo.commons-compress.version>1.16.1</igloo.commons-compress.version>
+		<igloo.commons-compress.version>1.17</igloo.commons-compress.version>
 		<igloo.commons-validator.version>1.6</igloo.commons-validator.version>
 		<igloo.commons-collections.version>3.2.2</igloo.commons-collections.version>
 		<igloo.commons-collections4.version>4.1</igloo.commons-collections4.version>
