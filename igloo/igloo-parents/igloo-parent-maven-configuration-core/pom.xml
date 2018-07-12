@@ -136,8 +136,9 @@
 		<igloo.flying-saucer.version>9.1.11</igloo.flying-saucer.version>
 		<igloo.imageinfo.version>1.9</igloo.imageinfo.version>
 		<igloo.jsoup.version>1.11.3</igloo.jsoup.version>
-		<igloo.httpclient.version>4.5.5</igloo.httpclient.version>
-		<igloo.httpcore.version>4.4.9</igloo.httpcore.version>
+		<!-- https://hc.apache.org/news.html -->
+		<igloo.httpclient.version>4.5.6</igloo.httpclient.version>
+		<igloo.httpcore.version>4.4.10</igloo.httpcore.version>
 		<igloo.prettytime.version>4.0.1.Final</igloo.prettytime.version>
 		<igloo.ph-css.version>4.1.3</igloo.ph-css.version>
 		<igloo.galimatias.version>0.2.1</igloo.galimatias.version>
