@@ -43,7 +43,8 @@
 		<igloo.oracle10g.version>10.2.0.5</igloo.oracle10g.version>
 		<igloo.mysql.version>5.1.14</igloo.mysql.version>
 		
-		<igloo.cglib.version>3.2.6</igloo.cglib.version>
+		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_7 -->
+		<igloo.cglib.version>3.2.7</igloo.cglib.version>
 		<igloo.javassist.version>3.22.0-GA</igloo.javassist.version>
 		
 		<igloo.bindgen.version>4.0.0</igloo.bindgen.version>
