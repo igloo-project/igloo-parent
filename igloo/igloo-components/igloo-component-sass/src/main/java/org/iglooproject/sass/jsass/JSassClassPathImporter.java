@@ -184,9 +184,9 @@ public class JSassClassPathImporter implements Importer {
 	 * From <url>/filename
 	 * 
 	 * <ul>
-	 *   <li>filename: [_filename.scss, _filename.sass, filename.scss, filename.sass]</li>
+	 *   <li>filename: [_filename.scss, _filename.sass, _filename.css, filename.scss, filename.sass, filename.css]</li>
 	 *   <li>filename.scss: [_filename.scss, filename.scss]</li>
-	 *   <li>filename.css: {@link IllegalArgumentException}</li>
+	 *   <li>filename.css: [_filename.css, filename.css]</li>
 	 * </ul>
 	 */
 	private List<String> listCandidateFilenames(String url) {
@@ -194,22 +194,22 @@ public class JSassClassPathImporter implements Importer {
 		String filename = FilenameUtils.getName(url);
 		String extension = FilenameUtils.getExtension(filename);
 		
-		if (StringUtils.isNotBlank(extension) && !"sass".equals(extension) && !"scss".equals(extension)) {
+		if (StringUtils.isNotBlank(extension) && !"sass".equals(extension) && !"scss".equals(extension) && !"css".equals(extension)) {
 			throw new IllegalArgumentException(String.format("Explicit extension %s in %s is not allowed", extension, url));
 		}
 		
-		// first try partial file
 		if (StringUtils.isNotBlank(extension)) {
+			// first try partial file
 			filenameCandidates.add("_" + filename);
-		} else {
-			filenameCandidates.add("_" + filename + ".scss");
-			filenameCandidates.add("_" + filename + ".sass");
-		}
-		if (StringUtils.isNotBlank(extension)) {
 			filenameCandidates.add(filename);
 		} else {
-			filenameCandidates.add(filename + ".scss");
+			// first try partial file
+			filenameCandidates.add("_" + filename + ".scss");
 			filenameCandidates.add("_" + filename + ".sass");
+			filenameCandidates.add("_" + filename + ".css");
+			filenameCandidates.add(filename + ".scss");
+			filenameCandidates.add(filename + ".sass");
+			filenameCandidates.add(filename + ".css");
 		}
 		
 		return filenameCandidates;
