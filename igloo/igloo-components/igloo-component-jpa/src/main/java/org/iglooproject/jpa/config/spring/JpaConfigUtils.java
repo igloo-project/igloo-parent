@@ -17,8 +17,9 @@ import org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
-import org.hibernate.cache.ehcache.EhCacheRegionFactory;
-import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
+import org.hibernate.cache.ehcache.ConfigSettings;
+import org.hibernate.cache.ehcache.internal.EhcacheRegionFactory;
+import org.hibernate.cache.ehcache.internal.SingletonEhcacheRegionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
@@ -107,13 +108,13 @@ public final class JpaConfigUtils {
 				properties.setProperty(Environment.CACHE_REGION_FACTORY, configuration.getEhCacheRegionFactory().getName());
 			} else {
 				if (singletonCache) {
-					properties.setProperty(Environment.CACHE_REGION_FACTORY, SingletonEhCacheRegionFactory.class.getName());
+					properties.setProperty(Environment.CACHE_REGION_FACTORY, SingletonEhcacheRegionFactory.class.getName());
 				} else {
-					properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
+					properties.setProperty(Environment.CACHE_REGION_FACTORY, EhcacheRegionFactory.class.getName());
 				}
 			}
 			properties.setProperty(AvailableSettings.JPA_SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
-			properties.setProperty(EhCacheRegionFactory.NET_SF_EHCACHE_CONFIGURATION_RESOURCE_NAME, ehCacheConfiguration);
+			properties.setProperty(ConfigSettings.EHCACHE_CONFIGURATION_RESOURCE_NAME, ehCacheConfiguration);
 			properties.setProperty(Environment.USE_SECOND_LEVEL_CACHE, Boolean.TRUE.toString());
 			if (queryCacheEnabled) {
 				properties.setProperty(Environment.USE_QUERY_CACHE, Boolean.TRUE.toString());
