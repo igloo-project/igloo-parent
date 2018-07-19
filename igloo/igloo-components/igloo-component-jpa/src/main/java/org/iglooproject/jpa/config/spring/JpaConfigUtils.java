@@ -18,8 +18,6 @@ import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
 import org.hibernate.cache.ehcache.ConfigSettings;
-import org.hibernate.cache.ehcache.internal.EhcacheRegionFactory;
-import org.hibernate.cache.ehcache.internal.SingletonEhcacheRegionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
@@ -107,10 +105,13 @@ public final class JpaConfigUtils {
 			if (configuration.getEhCacheRegionFactory() != null) {
 				properties.setProperty(Environment.CACHE_REGION_FACTORY, configuration.getEhCacheRegionFactory().getName());
 			} else {
+				// from 5.3.x, hibernate use alias names for hibernate-provided factory
+				// classes still supported
+				// https://github.com/hibernate/hibernate-orm/commit/f8964847dd40f64e1f478eba47c767be98742125
 				if (singletonCache) {
-					properties.setProperty(Environment.CACHE_REGION_FACTORY, SingletonEhcacheRegionFactory.class.getName());
+					properties.setProperty(Environment.CACHE_REGION_FACTORY, "ehcache-singleton");
 				} else {
-					properties.setProperty(Environment.CACHE_REGION_FACTORY, EhcacheRegionFactory.class.getName());
+					properties.setProperty(Environment.CACHE_REGION_FACTORY, "ehcache");
 				}
 			}
 			properties.setProperty(AvailableSettings.JPA_SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
