@@ -13,7 +13,7 @@ import org.iglooproject.wicket.more.util.model.Detachables;
 import org.wicketstuff.select2.Select2Behavior;
 import org.wicketstuff.select2.Settings;
 
-public abstract class GenericSelect2DropDownSingleChoice<T> extends DropDownChoice<T> {
+public class GenericSelect2DropDownSingleChoice<T> extends DropDownChoice<T> {
 
 	private static final long serialVersionUID = -3776700270762640109L;
 

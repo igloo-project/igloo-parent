@@ -15,7 +15,7 @@ import org.iglooproject.wicket.more.util.model.Detachables;
 import org.wicketstuff.select2.Select2Behavior;
 import org.wicketstuff.select2.Settings;
 
-public abstract class GenericSelect2DropDownMultipleChoice<T> extends ListMultipleChoice<T> {
+public class GenericSelect2DropDownMultipleChoice<T> extends ListMultipleChoice<T> {
 
 	private static final long serialVersionUID = -6179538711780820058L;
 
