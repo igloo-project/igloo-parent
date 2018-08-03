@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -146,7 +146,7 @@ public class BootstrapPopoverOptions extends SimpleOptions {
 				.collect(Collectors.joining(" "));
 		
 		options.put("template", JsUtils.quotes(
-				new StrSubstitutor(
+				new StringSubstitutor(
 						ImmutableMap.<String, String>builder()
 								.put(TEMPLATE_POPOVER_CSS_CLASS, cssClass)
 								.build()

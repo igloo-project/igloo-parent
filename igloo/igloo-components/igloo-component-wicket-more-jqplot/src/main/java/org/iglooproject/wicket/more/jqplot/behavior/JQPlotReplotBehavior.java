@@ -5,14 +5,13 @@ import java.io.Serializable;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.iglooproject.wicket.more.jqplot.plugin.adddomreference.JQPlotAddDomReferenceResourceReference;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.events.EventLabel;
 import org.wicketstuff.wiquery.core.events.WiQueryEventBehavior;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
-
-import org.iglooproject.wicket.more.jqplot.plugin.adddomreference.JQPlotAddDomReferenceResourceReference;
 
 /**
  * A behavior that will replot JQPlot's plots whenever a JS event occurs.
@@ -65,7 +64,6 @@ public class JQPlotReplotBehavior extends WiQueryEventBehavior {
 	}
 	
 	@Override
-	@SuppressWarnings("deprecation")
 	public void renderHead(Component component, IHeaderResponse response) {
 		super.renderHead(component, response);
 		response.render(JavaScriptHeaderItem.forReference(JQPlotAddDomReferenceResourceReference.get()));

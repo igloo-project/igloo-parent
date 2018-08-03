@@ -12,6 +12,7 @@ public interface SerializablePredicate2<T> extends Predicate2<T>, SerializablePr
 		return (t) -> test(t) && other.test(t);
 	}
 
+	@Override
 	default SerializablePredicate2<T> negate() {
 		return (t) -> !test(t);
 	}

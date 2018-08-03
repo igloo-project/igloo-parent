@@ -3,10 +3,8 @@ package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.item
 import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
-import org.wicketstuff.wiquery.ui.position.PositionJavaScriptResourceReference;
-import org.wicketstuff.wiquery.ui.widget.WidgetJavaScriptResourceReference;
-
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
+import org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference;
 
 public final class ItemAutocompleteJavascriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 
@@ -21,8 +19,7 @@ public final class ItemAutocompleteJavascriptResourceReference extends AbstractC
 	@Override
 	protected List<HeaderItem> getPluginDependencies() {
 		return forReferences(
-				WidgetJavaScriptResourceReference.get(),
-				PositionJavaScriptResourceReference.get()
+				JQueryUIJavaScriptResourceReference.get()
 		);
 	}
 

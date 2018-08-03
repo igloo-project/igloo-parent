@@ -123,7 +123,9 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 											for (Class<?> clazz : classesModel.getObject()) {
 												for (Long entityId : entityIds) {
 													try {
-														hibernateSearchService.reindexEntity((Class<GenericEntity<Long, ?>>) clazz, entityId);
+														@SuppressWarnings("unchecked")
+														Class<GenericEntity<Long, ?>> genericEntityClazz = (Class<GenericEntity<Long, ?>>) clazz;
+														hibernateSearchService.reindexEntity(genericEntityClazz, entityId);
 													} catch (IllegalArgumentException e) {
 														// On ignore les classes qui ne sont pas des GenericEntity.
 													}

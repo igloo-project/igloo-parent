@@ -19,6 +19,7 @@ public interface Predicate2<T> extends Predicate<T>, com.google.common.base.Pred
 		return (t) -> test(t) && other.test(t);
 	}
 
+	@Override
 	default Predicate2<T> negate() {
 		return (t) -> !test(t);
 	}

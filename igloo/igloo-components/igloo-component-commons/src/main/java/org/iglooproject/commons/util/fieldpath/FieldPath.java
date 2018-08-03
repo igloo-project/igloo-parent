@@ -7,8 +7,9 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.text.StrMatcher;
-import org.apache.commons.text.StrTokenizer;
+import org.apache.commons.text.StringTokenizer;
+import org.apache.commons.text.matcher.StringMatcher;
+import org.apache.commons.text.matcher.StringMatcherFactory;
 import org.bindgen.Bindable;
 import org.bindgen.Binding;
 
@@ -44,7 +45,7 @@ public class FieldPath implements Iterable<FieldPathComponent>, Serializable { /
 
 	private final List<FieldPathComponent> components;
 	
-	private static final StrMatcher DELIMITER_MATCHER = StrMatcher.charSetMatcher('.', '[', ']');
+	private static final StringMatcher DELIMITER_MATCHER = StringMatcherFactory.INSTANCE.charSetMatcher('.', '[', ']');
 	private static final String ITEM_TOKEN = "*";
 	
 	public static final FieldPath fromString(String string) {
@@ -52,7 +53,7 @@ public class FieldPath implements Iterable<FieldPathComponent>, Serializable { /
 			return null;
 		} else {
 			List<FieldPathComponent> components = Lists.newLinkedList();
-			StrTokenizer tokenizer = new StrTokenizer(string, DELIMITER_MATCHER);
+			StringTokenizer tokenizer = new StringTokenizer(string, DELIMITER_MATCHER);
 			for (String token : tokenizer.getTokenList()) {
 				if (ITEM_TOKEN.equals(token)) {
 					components.add(FieldPathComponent.ITEM);

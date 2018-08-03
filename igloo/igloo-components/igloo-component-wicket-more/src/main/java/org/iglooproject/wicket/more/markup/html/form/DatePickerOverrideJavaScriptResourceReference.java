@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
-import org.wicketstuff.wiquery.ui.datepicker.DatePickerJavaScriptResourceReference;
+import org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference;
 
 import com.google.common.collect.Lists;
 
@@ -25,7 +25,7 @@ public final class DatePickerOverrideJavaScriptResourceReference extends Abstrac
 	@Override
 	protected List<HeaderItem> getPluginDependencies() {
 		List<HeaderItem> dependencies = Lists.newArrayList();
-		dependencies.add(JavaScriptHeaderItem.forReference(DatePickerJavaScriptResourceReference.get()));
+		dependencies.add(JavaScriptHeaderItem.forReference(JQueryUIJavaScriptResourceReference.get()));
 		return dependencies;
 	}
 
