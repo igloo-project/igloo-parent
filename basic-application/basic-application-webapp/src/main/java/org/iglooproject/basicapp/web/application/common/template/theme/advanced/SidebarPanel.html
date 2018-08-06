@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<div class="sidebar-body-wrapper">
+		<div class="sidebar-body-scrollable" id="sidebar-body-scrollable">
+			<div class="sidebar-body">
+				<div class="sidebar-body-content">
+					<div wicket:id="quickSearchContainer" class="sidebar-section">
+						<div class="sidebar-section-title"><wicket:message key="sidebar.quicksearch.title" /></div>
+						
+						<div class="sidebar-section-content">
+							<form class="navbar-user-search d-none d-lg-block mr-2">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><span class="fa fa-search fa-fw" /></span>
+									</div>
+									<select wicket:id="user" class="form-control" />
+								</div>
+							</form>
+						</div>
+						
+						<div class="sidebar-divider" />
+					</div>
+					<div class="sidebar-section">
+						<div class="sidebar-section-title"><wicket:message key="sidebar.menu.title" /></div>
+						
+						<nav class="sidenav-container">
+							<ul class="sidenav">
+								<li wicket:id="sidenavItems" class="sidenav-item">
+									<a wicket:id="navLink" class="sidenav-link">
+										<span class="sidenav-icon" wicket:id="icon" />
+										<span class="sidenav-label break-word-container" wicket:id="label" />
+									</a>
+									<ul wicket:id="sidenavSubContainer" class="sidenav-sub">
+										<li wicket:id="sidenavSubItems" class="sidenav-item">
+											<a wicket:id="navLink" class="sidenav-link">
+												<span class="sidenav-icon" wicket:id="icon" />
+												<span class="sidenav-label break-word-container" wicket:id="label" />
+											</a>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</nav>
+					</div>
+					<div class="sidebar-section">
+						<div class="sidebar-divider" />
+						
+						<div class="sidebar-section-title">Lorem ipsum</div>
+						<div style="padding: 0 20px;">
+							<p>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi porta vestibulum elit consectetur ullamcorper. In efficitur dignissim turpis, in porta justo varius a. Phasellus sit amet blandit felis, sed tempor nibh. Nunc suscipit dapibus turpis, viverra tempus neque fermentum vel. Donec placerat nisl justo, a ultrices mi vehicula id. Sed in ornare mauris. Maecenas nisi nibh, porta eu placerat a, pellentesque sit amet tellus. Nullam bibendum, nisi eu rutrum ultrices, est libero elementum neque, a gravida elit enim mattis velit. Donec porta eu libero eu ullamcorper.
+							</p>
+							<p>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi porta vestibulum elit consectetur ullamcorper. In efficitur dignissim turpis, in porta justo varius a. Phasellus sit amet blandit felis, sed tempor nibh. Nunc suscipit dapibus turpis, viverra tempus neque fermentum vel. Donec placerat nisl justo, a ultrices mi vehicula id. Sed in ornare mauris. Maecenas nisi nibh, porta eu placerat a, pellentesque sit amet tellus. Nullam bibendum, nisi eu rutrum ultrices, est libero elementum neque, a gravida elit enim mattis velit. Donec porta eu libero eu ullamcorper.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="sidebar-footer">
+		<div class="sidebar-footer-info media align-items-center">
+			<a href="https://github.com/igloo-project/igloo-parent">
+				<img class="mr-3" src="static/application/images/logo-igloo.png" height="40" width="40" alt="Logo Igloo">
+			</a>
+			<div class="media-body">
+				<h5 class="sidebar-footer-info-title"><wicket:message key="common.rootPageTitle" /></h5>
+				<span wicket:id="version" class="sidebar-footer-info-version" />
+			</div>
+		</div>
+	</div>
+</wicket:panel>
+</html>

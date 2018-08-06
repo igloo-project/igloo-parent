@@ -124,7 +124,7 @@ public class ConsoleMaintenanceInfinispanRolesRequestsPanel extends Panel {
 											IAttribution roleAttribution = infinispanClusterService.getRoleRequestAttribution(input);
 											return roleAttribution != null && roleAttribution.getAttributionDate() != null && roleAttribution.getOwner() != null;
 										})
-										.withClassOnElements("btn-xs")
+										.withClassOnElements("btn-table-row-action")
 								.end()
 						.bootstrapCard()
 								.title("console.maintenance.infinispan.roles.requests")

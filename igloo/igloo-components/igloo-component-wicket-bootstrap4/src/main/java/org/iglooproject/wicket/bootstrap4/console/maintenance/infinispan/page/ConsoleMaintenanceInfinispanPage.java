@@ -1,6 +1,7 @@
 package org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.page;
 
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.jpa.more.property.JpaMoreInfinispanPropertyIds;
 import org.iglooproject.jpa.more.property.JpaMorePropertyIds;
@@ -12,6 +13,7 @@ import org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.compone
 import org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanRolesPanel;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.component.ConsoleMaintenanceInfinispanRolesRequestsPanel;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
+import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -21,6 +23,8 @@ public class ConsoleMaintenanceInfinispanPage extends ConsoleMaintenanceTemplate
 
 	public ConsoleMaintenanceInfinispanPage(PageParameters parameters) {
 		super(parameters);
+		
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.infinispan")));
 		
 		add(
 				new ConsoleMaintenanceInfinispanClusterPanel("cluster"),

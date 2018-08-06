@@ -1,5 +1,6 @@
 html {
 	height: 100%;
+	font-size: $font-size-root;
 }
 
 body {
@@ -21,8 +22,8 @@ body {
 			margin-right: auto;
 			
 			.card {
-				@extend .border-0;
-				@extend .shadow-md;
+				border: 0;
+				box-shadow: $shadow-md;
 				
 				.card-img-top {
 					padding: $card-spacer-y $card-spacer-x;
@@ -30,14 +31,14 @@ body {
 				
 				.card-header {
 					&.card-main-title {
-						@extend .bg-dark;
+						@include bg($dark);
 						
 						border-top: $card-border-width solid $card-border-color;
 						font-size: $h4-font-size;
 					}
 					
 					&.card-header-alert-section {
-						@extend .bg-light;
+						@include bg($light);
 						
 						padding: 0;
 						
@@ -81,33 +82,33 @@ body {
 						}
 						
 						&.environment-section {
-							@extend .bg-secondary;
+							@include bg($secondary);
 							
 							&.environment-section-dismissed {
 								height: 8px;
 							}
 							
 							&.development {
-								@extend .bg-success;
+								@include bg($success);
 							}
 							
 							&.testing {
-								@extend .bg-info;
+								@include bg($info);
 							}
 							
 							&.staging {
-								@extend .bg-warning;
+								@include bg($warning);
 							}
 							
 							&.production {
-								@extend .bg-danger;
+								@include bg($danger);
 							}
 						}
 					}
 				}
 				
 				.card-footer {
-					@extend .text-right;
+					text-align: right;
 				}
 				
 				&.card-main-title-cascade {
@@ -117,7 +118,7 @@ body {
 						&.card-main-title {
 							margin: 0 -10px;
 							border-radius: 0.15rem;
-							@extend .shadow-md;
+							box-shadow: $shadow-md;
 						}
 					}
 				}

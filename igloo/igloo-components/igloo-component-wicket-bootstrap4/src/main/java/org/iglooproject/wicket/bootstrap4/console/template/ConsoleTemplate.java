@@ -1,23 +1,22 @@
 package org.iglooproject.wicket.bootstrap4.console.template;
 
-import static org.iglooproject.spring.property.SpringPropertyIds.IGLOO_VERSION;
-import static org.iglooproject.spring.property.SpringPropertyIds.VERSION;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -25,16 +24,21 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.more.business.upgrade.service.IAbstractDataUpgradeService;
 import org.iglooproject.jpa.security.business.person.model.GenericUser;
+import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.dropdown.BootstrapDropDownJavaScriptResourceReference;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.AbstractCoreSession;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
+import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
+import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
@@ -106,7 +110,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 												AbstractLink navLink = new BookmarkablePageLink<Void>("navLink", navItem.getPageClass());
 												
 												navLink.add(
-														new Label("label", new ResourceModel(navItem.getDisplayStringKey()))
+														new CoreLabel("label", new ResourceModel(navItem.getDisplayStringKey()))
 												);
 												
 												if (navItem.getPageClass() != null && navItem.getPageClass().equals(ConsoleTemplate.this.getSecondMenuPage())) {
@@ -141,11 +145,17 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		
 		add(ConsoleConfiguration.get().getConsoleHeaderAdditionalContentComponentFactory().create("headerAdditionalContent"));
 		
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle"), LinkDescriptorBuilder.start().page(getApplication().getHomePage())));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("common.console"), ConsoleMaintenanceSearchPage.linkDescriptor()));
+		
 		add(
-				new CoreLabel("version", propertyService.get(VERSION))
-						.add(new AttributeModifier("title", new StringResourceModel("common.version.full")
-								.setParameters(ApplicationPropertyModel.of(VERSION), ApplicationPropertyModel.of(IGLOO_VERSION))
-						))
+				createBodyBreadCrumb("breadCrumb")
+						.add(displayBreadcrumb().thenShow())
+		);
+		
+		add(
+				new CoreLabel("applicationVersion", new StringResourceModel("common.version.application", ApplicationPropertyModel.of(SpringPropertyIds.VERSION))),
+				new CoreLabel("iglooVersion", new StringResourceModel("common.version.igloo", ApplicationPropertyModel.of(SpringPropertyIds.IGLOO_VERSION)))
 		);
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
@@ -171,6 +181,19 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		}
 		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
 		response.render(JavaScriptHeaderItem.forReference(BootstrapDropDownJavaScriptResourceReference.get()));
+	}
+
+	@Override
+	protected Component createBodyBreadCrumb(String wicketId) {
+		// By default, we remove one element from the breadcrumb as it is usually also used to generate the page title.
+		// The last element is usually the title of the current page and shouldn't be displayed in the breadcrumb.
+		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel, 1)
+				.setDividerModel(Model.of(""))
+				.setTrailingSeparator(true);
+	}
+
+	protected Condition displayBreadcrumb() {
+		return Condition.alwaysTrue();
 	}
 
 	@Override

@@ -1,0 +1,26 @@
+.nav-pills {
+	&.nav-page {
+		margin: -3px;
+		
+		.nav-item {
+			padding: 3px;
+			
+			.nav-link {
+				color: $nav-pills-link-color;
+				background-color: $nav-pills-link-bg;
+			}
+			
+			&:nth-of-type(#{$nav-pills-striped-order}) {
+				.nav-link {
+					background-color: $nav-pills-link-accent-bg;
+				}
+			}
+			
+			.nav-link.active,
+			.show > .nav-link {
+				color: $nav-pills-link-active-color;
+				background-color: $nav-pills-link-active-bg;
+			}
+		}
+	}
+}

@@ -5,29 +5,52 @@
 		<div wicket:id="loadingPopup" />
 		<div wicket:id="addPopup" />
 		
-		<div class="page-content">
-			<div class="page-header">
-				<h2 class="page-header-title"><wicket:container wicket:id="title" /></h2>
-				
-				<div class="page-header-action">
-					<div class="page-header-action-container">
-						<div wicket:enclosure="add" class="page-header-action-item">
-							<button wicket:id="add" class="btn btn-primary" type="button">
-								<span class="fa fa-plus"></span>
-								<wicket:message key="common.action.create" />
-							</button>
-						</div>
-						<div wicket:enclosure="exportExcel" class="page-header-action-item">
-							<button wicket:id="exportExcel" class="btn btn-default" type="button" wicket:message="title:common.action.export.excel">
-								<span class="fa fa-download"></span>
-							</button>
+		<div class="content-container">
+			<div class="content-header-section">
+				<div class="content-header-container">
+					<div class="content-header">
+						<div wicket:id="breadCrumb" />
+						
+						<h5 class="content-header-title">
+							<wicket:container wicket:id="title" />
+						</h5>
+						
+						<div wicket:enclosure-container class="content-header-action">
+							<div class="content-header-action-container">
+								<div wicket:enclosure-component="add" class="content-header-action-item">
+									<button wicket:id="add" class="btn btn-primary" type="button">
+										<span class="fa fa-plus"></span>
+										<wicket:message key="common.action.create" />
+									</button>
+								</div>
+								<div wicket:enclosure-component="exportExcel" class="content-header-action-item">
+									<button wicket:id="exportExcel" class="btn btn-default" type="button" wicket:message="title:common.action.export.excel">
+										<span class="fa fa-download"></span>
+									</button>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="page-body">
-				<div wicket:id="search" class="page-search" />
-				<div wicket:id="dataTable" />
+			
+			<div class="content-body-section">
+				<div class="content-body-container">
+					<div class="content-body">
+						<div class="row row-default">
+							<div class="col-12">
+								<div class="card card-page">
+									<div class="card-body">
+										<div wicket:id="search" />
+									</div>
+								</div>
+							</div>
+							<div class="col-12">
+								<div class="card card-page" wicket:id="dataTable" />
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</wicket:extend>

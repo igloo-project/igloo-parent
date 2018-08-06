@@ -16,7 +16,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationAccessEnvironmentPanel;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.applicationaccess.ApplicationAccessScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.applicationaccess.ApplicationAccessScssResourceReference;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;

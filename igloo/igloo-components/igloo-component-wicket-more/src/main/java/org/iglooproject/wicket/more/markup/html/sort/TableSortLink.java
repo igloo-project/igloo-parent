@@ -29,7 +29,7 @@ public class TableSortLink<T extends ISort<?>> extends AjaxLink<Void> {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TableSortLink.class);
 
-	private static final String SORT_BUTTON_CSS_CLASS = "btn btn-sort";
+	private static final String SORT_BUTTON_CSS_CLASS = "btn btn-tab-sort";
 	
 	private final IPageable pageable;
 	

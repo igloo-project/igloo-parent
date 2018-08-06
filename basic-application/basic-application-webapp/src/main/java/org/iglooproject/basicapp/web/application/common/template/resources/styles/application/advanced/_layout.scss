@@ -1,0 +1,195 @@
+html {
+	height: 100%;
+	font-size: $font-size-root;
+	color: rgba(0, 0, 0, 0.87);
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	height: 100vh;
+	margin: 0;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-color: #EDEDED; //#F1F1F1;
+	word-wrap: break-word;
+}
+
+.main-container {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	
+	.sidebar-wrapper {
+		display: none;
+	}
+	
+	.main-content-wrapper {
+		.main-content-container {
+			flex: 1;
+			
+			.content-container {
+				@include make-container();
+				padding: 0;
+				
+				> .content-header-section {
+					> .content-header-container {
+						> .content-header {
+							padding: $content-main-header-padding-y $content-main-header-padding-x;
+							border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+							background-color: $white;
+							
+							> .content-header-title {
+								margin: 0;
+							}
+							
+							> .content-header-action {
+								margin-top: 0.5rem;
+								
+								&:first-child {
+									margin-top: 0;
+								}
+								
+								> .content-header-action-container {
+									@include basic-container();
+									justify-content: flex-end;
+									
+									> .content-header-action-item {
+										@include basic-item();
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				> .content-body-section {
+					> .content-body-container {
+						> .content-body {
+							padding: $content-main-body-padding-y $content-main-body-padding-x;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.navigation-expand {
+	@each $breakpoint in map-keys($grid-breakpoints) {
+		$next: breakpoint-next($breakpoint, $grid-breakpoints);
+		$infix: breakpoint-infix($next, $grid-breakpoints);
+		
+		&#{$infix} {
+			@include media-breakpoint-down($breakpoint) {
+				.navigation-expand-visible {
+					display: none;
+				}
+			}
+			
+			@include media-breakpoint-up($next) {
+				.navigation-expand-hidden {
+					display: none;
+				}
+				
+				.header-container {
+					z-index: 3;
+					overflow: hidden;
+				}
+				
+				.main-container {
+					flex-direction: row;
+					min-height: 0;
+					overflow: hidden;
+					
+					.sidebar-wrapper {
+						display: flex;
+						flex: 0 0 $sidebar-expand-width;
+						flex-direction: column;
+						width: $sidebar-expand-width;
+						max-width: $sidebar-expand-width;
+						min-width: $sidebar-expand-width;
+						background-color: $sidebar-bg;
+						color: $sidebar-color;
+						border-right: $sidebar-border-width solid $sidebar-border-color;
+						box-shadow: $sidebar-expand-box-shadow;
+						z-index: 2;
+						
+						.sidebar-body-wrapper { // needed for firefox css hack (clean)
+							display: flex;
+							flex: 1;
+							min-height: 0px;
+							min-width: 0px;
+							
+							.sidebar-body-scrollable {
+								position: relative; // needed for perfect scrollbar js plugin
+								overflow-x: hidden;
+								overflow-y: auto;
+								
+								.sidebar-body {
+									display: flex;
+									flex: 1;
+									padding: $sidebar-body-padding-y 0;
+									
+									.sidebar-body-content {
+										.sidebar-section {
+											.sidebar-section-title {
+												color: #B0B0B0;
+												font-weight: 600;
+												font-size: .8rem;
+												text-transform: uppercase;
+												padding: 10px 20px;
+											}
+											
+											.sidebar-section-content {
+												padding: 7px 20px;
+											}
+										}
+									}
+								}
+							}
+						}
+						
+						.sidebar-footer {
+							padding: $sidebar-footer-padding-y $sidebar-footer-padding-x;
+							background-color: $sidebar-footer-bg;
+							border-top: 1px solid $sidebar-footer-border-color;
+							color: $sidebar-footer-color;
+							
+							.sidebar-footer-info {
+								.sidebar-footer-info-title {
+									color: #03FFB0;
+									font-weight: bold;
+									font-size: 1rem;
+									margin-bottom: 0;
+								}
+								
+								.sidebar-footer-info-version {
+									font-size: .85rem;
+								}
+							}
+						}
+						
+						.sidebar-divider {
+							border-top: 1px solid rgba(0, 0, 0, 0.1);
+							margin: 1rem 45px;
+						}
+					}
+					
+					.main-content-wrapper {
+						flex: 1 1 100%;
+						display: flex;
+						max-width: 100%;
+						min-height: 0px;
+						overflow: hidden;
+						
+						.main-content-container {
+							overflow: auto;
+						}
+					}
+				}
+			}
+		}
+	}
+}

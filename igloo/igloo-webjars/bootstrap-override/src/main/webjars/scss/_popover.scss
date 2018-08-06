@@ -1,6 +1,6 @@
 .popover {
 	border-radius: 0;
-	@extend .shadow-lg;
+	box-shadow: $shadow-lg;
 	
 	&.popover-modal {
 		z-index: $zindex-modal-popover;

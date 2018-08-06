@@ -3,7 +3,26 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
 	<wicket:extend>
-		<div wicket:id="nodes" />
+		<div class="content-container">
+			<div class="content-header-section">
+				<div class="content-header-container">
+					<div class="content-header">
+						<div wicket:id="breadCrumb" />
+						
+						<h5 class="content-header-title">
+							<wicket:message key="console.maintenance.queuemanager" />
+						</h5>
+					</div>
+				</div>
+			</div>
+			<div class="content-body-section">
+				<div class="content-body-container">
+					<div class="content-body">
+						<div wicket:id="nodes" />
+					</div>
+				</div>
+			</div>
+		</div>
 	</wicket:extend>
 </body>
 </html>

@@ -72,7 +72,7 @@ public class PropertyIdListPanel extends Panel {
 										}
 								)
 										.when(Predicates2.instanceOf(MutablePropertyId.class))
-										.withClassOnElements("btn-xs")
+										.withClassOnElements("btn-table-row-action")
 								.end()
 						.bootstrapCard()
 								.title("common.propertyIds")

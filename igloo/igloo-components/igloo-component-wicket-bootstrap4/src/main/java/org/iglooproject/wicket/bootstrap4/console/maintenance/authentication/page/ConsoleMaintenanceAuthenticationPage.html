@@ -3,25 +3,44 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
 	<wicket:extend>
-		<div class="row row-default">
-			<div class="col-md-10 col-lg-6">
-				<div class="card">
-					<div class="card-header">
-						<h5 class="card-header-title">
-							<wicket:message key="console.maintenance.authentication.description" />
+		<div class="content-container">
+			<div class="content-header-section">
+				<div class="content-header-container">
+					<div class="content-header">
+						<div wicket:id="breadCrumb" />
+						
+						<h5 class="content-header-title">
+							<wicket:message key="console.maintenance.authentication" />
 						</h5>
 					</div>
-					<div class="card-body">
-						<form wicket:id="signInForm">
-							<div class="form-group">
-								<input class="form-control" wicket:id="username" type="text" />
+				</div>
+			</div>
+			<div class="content-body-section">
+				<div class="content-body-container">
+					<div class="content-body">
+						<div class="row row-default">
+							<div class="col-md-10 col-lg-6">
+								<div class="card card-page">
+									<div class="card-header">
+										<h5 class="card-header-title">
+											<wicket:message key="console.maintenance.authentication.description" />
+										</h5>
+									</div>
+									<div class="card-body">
+										<form wicket:id="signInForm">
+											<div class="form-group">
+												<input class="form-control" wicket:id="username" type="text" />
+											</div>
+											
+											<button class="btn btn-success" type="submit">
+												<span class="fa fa-lock" />
+												<wicket:message key="console.signIn.action.signIn" />
+											</button>
+										</form>
+									</div>
+								</div>
 							</div>
-							
-							<button class="btn btn-success" type="submit">
-								<span class="fa fa-lock" />
-								<wicket:message key="console.signIn.action.signIn" />
-							</button>
-						</form>
+						</div>
 					</div>
 				</div>
 			</div>

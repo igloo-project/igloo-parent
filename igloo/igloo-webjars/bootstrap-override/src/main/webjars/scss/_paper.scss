@@ -27,24 +27,30 @@ $shadows: map-merge((
 	24: (0px 11px 15px -7px rgba($black, 0.2), 0px 24px 38px 3px rgba($black, 0.14), 0px 9px 46px 8px rgba($black, 0.12))
 ), $shadows);
 
+$shadow-xs:		map-get($shadows, 2);
+$shadow-sm:		map-get($shadows, 6);
+$shadow-md:		map-get($shadows, 8);
+$shadow-lg:		map-get($shadows, 12);
+$shadow-xl:		map-get($shadows, 24);
+
 .shadow-xs {
-	@extend .shadow-2;
+	box-shadow: $shadow-xs;
 }
 
 .shadow-sm {
-	@extend .shadow-6;
+	box-shadow: $shadow-sm;
 }
 
 .shadow-md {
-	@extend .shadow-8;
+	box-shadow: $shadow-md;
 }
 
 .shadow-lg {
-	@extend .shadow-12;
+	box-shadow: $shadow-lg;
 }
 
 .shadow-xl {
-	@extend .shadow-24;
+	box-shadow: $shadow-xl;
 }
 
 @each $size, $value in $shadows {

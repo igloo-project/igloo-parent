@@ -4,23 +4,40 @@
 	<wicket:extend>
 		<div wicket:id="addPopup" />
 		
-		<div class="page-content">
-			<div class="page-header">
-				<h2 class="page-header-title"><wicket:message key="administration.userGroup.list.title"/></h2>
-				
-				<div class="page-header-action">
-					<div class="page-header-action-container">
-						<div wicket:enclosure="add" class="page-header-action-item">
-							<button wicket:id="add" type="button" class="btn btn-primary">
-								<span class="fa fa-plus" />
-								<wicket:message key="common.action.add" />
-							</button>
+		<div class="content-container">
+			<div class="content-header-section">
+				<div class="content-header-container">
+					<div class="content-header">
+						<div wicket:id="breadCrumb" />
+						
+						<h5 class="content-header-title">
+							<wicket:message key="administration.userGroup.list.title"/>
+						</h5>
+						
+						<div wicket:enclosure-container class="content-header-action">
+							<div class="content-header-action-container">
+								<div wicket:enclosure-component="add" class="content-header-action-item">
+									<button wicket:id="add" type="button" class="btn btn-primary">
+										<span class="fa fa-plus" />
+										<wicket:message key="common.action.add" />
+									</button>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="page-body">
-				<div wicket:id="results" />
+			
+			<div class="content-body-section">
+				<div class="content-body-container">
+					<div class="content-body">
+						<div class="row row-default">
+							<div class="col-12">
+								<div class="card card-page" wicket:id="results" />
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</wicket:extend>

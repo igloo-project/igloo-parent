@@ -1,0 +1,48 @@
+%scope {
+	@import "../scope/variables-dependencies";
+	
+	$brand-color:									$primary !global;
+	//$brand-color:									#1B0FA4 !global;
+	$brand-text-color:								$white !global;
+	
+	// OVERRIDE shadows hover / focus
+	$input-btn-focus-box-shadow:					0px 1px 8px 0px rgba($black, 0.2), 0px 3px 4px 0px rgba($black, 0.14), 0px 3px 3px -2px rgba($black, 0.12) !default !global;
+	// OVERRIDE shadows hover / focus
+}
+
+%scope {
+	@import "../scope/variables-dependencies";
+	
+	$navbar-main-color:								rgba(color("brand-text"), 1) !global;
+	$navbar-main-hover-color:						rgba(color("brand-text"), 1) !global;
+	$navbar-main-active-color:						color("brand-text") !global;
+	$navbar-main-disabled-color:					rgba(color("brand-text"), .5) !global;
+	$navbar-main-toggler-icon-bg:					str-replace(url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#{$navbar-main-color}' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"), "#", "%23") !global;
+	$navbar-main-toggler-border-color:				rgba(color("brand-text"), .1) !global;
+}
+
+// Font Awesome
+$fa-font-family:									'Font Awesome 5 Free';
+$fa-font-weight:									900;
+
+// OVERRIDE shadows hover / focus
+$input-focus-box-shadow:							$input-btn-focus-box-shadow;
+$input-transition:									border-color .25s ease-in-out, box-shadow .25s ease-in-out;
+
+$custom-control-indicator-focus-box-shadow:			$input-focus-box-shadow;
+
+$btn-hover-box-shadow:								$input-btn-focus-box-shadow;
+$btn-focus-box-shadow:								$btn-hover-box-shadow;
+$btn-transition:									color .25s ease-in-out, background-color .25s ease-in-out, border-color .25s ease-in-out, box-shadow .25s ease-in-out;
+
+$dropdown-box-shadow:								$btn-focus-box-shadow;
+// OVERRIDE shadows hover / focus
+
+// OVERRIDE Bootstrap
+$table-striped-order:								even;
+// OVERRIDE Bootstrap
+
+$nav-pills-striped-order:							even;
+$nav-pills-link-color:								inherit;
+$nav-pills-link-bg:									#FFFFFF;
+$nav-pills-link-accent-bg:							#F9F9F9;

@@ -5,7 +5,7 @@
 		<wicket:panel>
 			<div class="row row-default">
 				<div class="col-12" wicket:id="cacheManagerList">
-					<div class="card">
+					<div class="card card-page">
 						<div class="card-header">
 							<h5 class="card-header-title">
 								<wicket:container wicket:id="cacheManagerName" />
@@ -58,11 +58,11 @@
 								<td style="text-align: right;"><span wicket:id="cacheCacheFillRatio"></span></td>
 								<td rowspan="2" style="text-align: center; vertical-align:middle; white-space: nowrap;">
 									<div class="actions">
-										<button wicket:id="modifierCache" class="btn btn-xs btn-primary" type="button"
+										<button wicket:id="modifierCache" class="btn btn-table-row-action btn-primary" type="button"
 												wicket:message="title:console.maintenance.ehcache.cacheManager.cache.modification">
 											<i class="fa fa-pencil-alt"></i>
 										</button>
-										<button wicket:id="viderCache" class="btn btn-xs btn-danger" type="button"
+										<button wicket:id="viderCache" class="btn btn-table-row-action btn-danger" type="button"
 												wicket:message="title:console.maintenance.ehcache.portfolio.viderCache.button">
 											<i class="fa fa-trash"></i>
 										</button>

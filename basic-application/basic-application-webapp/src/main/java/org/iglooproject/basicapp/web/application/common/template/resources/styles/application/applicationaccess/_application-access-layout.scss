@@ -1,0 +1,166 @@
+html {
+	height: 100%;
+	font-size: $font-size-root;
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-color: $gray-100;
+}
+
+.application-access-page {
+	padding-top: 60px;
+	padding-bottom: 60px;
+	
+	.page-container {
+		.container {
+			max-width: map-get($grid-breakpoints, sm) - $grid-gutter-width;
+			margin-left: auto;
+			margin-right: auto;
+			
+			.card {
+				border: 0;
+				box-shadow: $shadow-md;
+				
+				.card-img-top {
+					padding: $card-spacer-y $card-spacer-x;
+				}
+				
+				.card-header {
+					&.card-main-title {
+						@include bg($brand-color);
+						border-top: $card-border-width solid $card-border-color;
+						font-size: $h4-font-size;
+					}
+					
+					&.card-header-alert-section {
+						@include bg($light);
+						
+						padding: 0;
+						
+						> .card-header-alert-main {
+							height: 100%;
+							
+							> .card-header-alert-container {
+								> .card-header-alert-content {
+									position: relative;
+									padding: $card-spacer-y $card-spacer-x;
+								}
+							}
+						}
+						
+						&.card-header-alert-dismissible {
+							cursor: pointer;
+							
+							> .card-header-alert-main {
+								> .card-header-alert-container {
+									> .card-header-alert-content {
+										padding-right: ($close-font-size + $alert-padding-x * 2);
+										
+										.close {
+											position: absolute;
+											top: 0;
+											right: 0;
+											padding: $alert-padding-y $alert-padding-x;
+											color: inherit;
+										}
+									}
+								}
+							}
+							
+							&:hover {
+								.close {
+									color: $close-color;
+									text-decoration: none;
+									opacity: .75;
+								}
+							}
+						}
+						
+						&.environment-section {
+							@include bg($secondary);
+							
+							&.environment-section-dismissed {
+								height: 8px;
+							}
+							
+							&.development {
+								@include bg($success);
+							}
+							
+							&.testing {
+								@include bg($info);
+							}
+							
+							&.staging {
+								@include bg($warning);
+							}
+							
+							&.production {
+								@include bg($danger);
+							}
+						}
+					}
+				}
+				
+				.card-footer {
+					text-align: right;
+				}
+				
+				&.card-main-title-cascade {
+					margin: 0 10px;
+					
+					.card-header {
+						&.card-main-title {
+							margin: 0 -10px;
+							border-radius: 0.15rem;
+							box-shadow: $shadow-md;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@include media-breakpoint-down(xs) {
+		background-color: $white;
+		padding: 0;
+		
+		.page-container {
+			.container {
+				max-width: 100%;
+				margin: 0;
+				padding: 0;
+				
+				.card {
+					border-top: 0;
+					border-left: 0;
+					border-right: 0;
+					@include border-radius(0);
+					box-shadow: none !important;
+					
+					[class*="card-"] {
+						@include border-radius(0);
+					}
+					
+					
+					&.card-main-title-cascade {
+						margin: 0;
+						
+						.card-header {
+							&.card-main-title {
+								margin: 0 !important;
+								box-shadow: none !important;
+								border-radius: 0 !important;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+}

@@ -30,8 +30,8 @@ import org.iglooproject.basicapp.web.application.common.renderer.UserGroupRender
 import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
 import org.iglooproject.basicapp.web.application.common.template.favicon.ApplicationFaviconPackage;
 import org.iglooproject.basicapp.web.application.common.template.resources.BasicApplicationResourcesPackage;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.StylesScssResourceReference;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.applicationaccess.ApplicationAccessScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.advanced.StylesScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.applicationaccess.ApplicationAccessScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.console.ConsoleScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.console.consoleaccess.ConsoleAccessScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.NotificationScssResourceReference;
