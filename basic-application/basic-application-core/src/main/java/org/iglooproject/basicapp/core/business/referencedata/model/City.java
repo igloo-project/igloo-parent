@@ -22,16 +22,16 @@ public class City extends LocalizedReferenceData<City> {
 	private static final long serialVersionUID = -5714475132350205234L;
 
 	public static final String LABEL_AUTOCOMPLETE = "labelAutocomplete";
-	
-	public City() {
-	}
-	
-	public City(LocalizedText label) {
-		super(label);
-	}
 
 	@Basic(optional = false)
 	private PostalCode postalCode;
+
+	public City() {
+	}
+
+	public City(LocalizedText label) {
+		super(label);
+	}
 
 	public PostalCode getPostalCode() {
 		return postalCode;
@@ -40,7 +40,7 @@ public class City extends LocalizedReferenceData<City> {
 	public void setPostalCode(PostalCode postalCode) {
 		this.postalCode = postalCode;
 	}
-	
+
 	@Override
 	@Transient
 	public String getCode() {

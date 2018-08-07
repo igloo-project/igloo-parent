@@ -44,7 +44,7 @@ public class SimpleLocalizedReferenceDataSearchPanel<T extends LocalizedReferenc
 						.setLabel(new ResourceModel("business.referenceData.label"))
 						.add(new LabelPlaceholderBehavior()),
 				new EnumDropDownSingleChoice<>("enabledFilter", dataProvider.getEnabledFilterModel(), EnabledFilter.class)
-						.setLabel(new ResourceModel("business.referenceData.enabledState"))
+						.setLabel(new ResourceModel("business.referenceData.enabled.state"))
 		);
 	}
 }
