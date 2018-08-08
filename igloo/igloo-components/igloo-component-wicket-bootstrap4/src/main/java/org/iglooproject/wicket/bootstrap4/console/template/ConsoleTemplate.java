@@ -151,7 +151,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		
 		add(ConsoleConfiguration.get().getConsoleHeaderAdditionalContentComponentFactory().create("headerAdditionalContent"));
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle"), getApplicationHomePageLinkDescriptor()));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("common.application"), getApplicationHomePageLinkDescriptor()));
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("common.console"), ConsoleMaintenanceSearchPage.linkDescriptor()));
 		
 		add(
