@@ -96,10 +96,6 @@ public enum BasicApplicationApplicationTheme {
 							secondMenuPageSupplier
 					)
 			);
-			
-//			mainTemplate.add(
-//					new PerfectScrollbarBehavior("#sidebar-body-scrollable")
-//			);
 		}
 
 		@Override
