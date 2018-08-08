@@ -35,6 +35,7 @@ import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
+import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
@@ -66,6 +67,11 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel",
 				propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE),
 				propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT))
+		);
+		
+		add(
+				getApplicationHomePageLinkDescriptor()
+						.link("applicationHomePageLink")
 		);
 		
 		add(new ListView<ConsoleMenuSection>("mainNav", ConsoleConfiguration.get().getMenuSections()) {
@@ -145,7 +151,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		
 		add(ConsoleConfiguration.get().getConsoleHeaderAdditionalContentComponentFactory().create("headerAdditionalContent"));
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle"), LinkDescriptorBuilder.start().page(getApplication().getHomePage())));
+		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle"), getApplicationHomePageLinkDescriptor()));
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("common.console"), ConsoleMaintenanceSearchPage.linkDescriptor()));
 		
 		add(
@@ -181,6 +187,10 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		}
 		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
 		response.render(JavaScriptHeaderItem.forReference(BootstrapDropDownJavaScriptResourceReference.get()));
+	}
+
+	protected IPageLinkDescriptor getApplicationHomePageLinkDescriptor() {
+		return LinkDescriptorBuilder.start().page(getApplication().getHomePage());
 	}
 
 	@Override
