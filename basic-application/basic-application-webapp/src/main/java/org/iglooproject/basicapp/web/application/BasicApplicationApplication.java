@@ -11,6 +11,7 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.resource.JQueryResourceReference;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.iglooproject.basicapp.core.business.common.model.PostalCode;
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
@@ -127,6 +128,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		);
 		
 		FormInvalidDecoratorListener.init(this);
+		
+		getJavaScriptLibrarySettings().setJQueryReference(JQueryResourceReference.getV3());
 		
 		// Don't include css files from wicketstuff-select2.
 		// We take care of Select2 css file and Select2 Bootstrap scss files on our side.
