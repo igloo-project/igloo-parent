@@ -200,7 +200,7 @@
 		<igloo.elasticsearch-cluster-runner.version>${igloo.elasticsearch.version}.0</igloo.elasticsearch-cluster-runner.version>
 		<igloo.embedded-elasticsearch.version>2.5.1</igloo.embedded-elasticsearch.version>
 		
-		<igloo.webjars.popper.version>1.13.0</igloo.webjars.popper.version>
+		<igloo.webjars.popper.version>1.14.3</igloo.webjars.popper.version>
 		<igloo.webjars.clipboard.version>2.0.0</igloo.webjars.clipboard.version>
 		<igloo.webjars.bootstrap.version>4.1.2</igloo.webjars.bootstrap.version>
 	</properties>
