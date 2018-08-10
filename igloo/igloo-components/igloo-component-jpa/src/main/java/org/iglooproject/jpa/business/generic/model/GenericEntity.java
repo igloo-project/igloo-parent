@@ -20,7 +20,6 @@ package org.iglooproject.jpa.business.generic.model;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.text.Collator;
 import java.util.Locale;
 
 import javax.persistence.MappedSuperclass;
@@ -30,6 +29,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.SortableField;
+import org.iglooproject.commons.util.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +37,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Ordering;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryType;
-
-import org.iglooproject.commons.util.ordering.SerializableCollator;
 
 /**
  * <p>Entité racine pour la persistence des objets via JPA.</p>
@@ -56,19 +54,17 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntity.class);
 
 	public static final String ID_SORT = "idSort";
-	
+
 	@SuppressWarnings("rawtypes")
 	private static final Ordering<Comparable> DEFAULT_KEY_ORDERING = Ordering.natural().nullsLast();
-	
-	public static final Ordering<String> DEFAULT_STRING_COLLATOR;
-	
-	static {
-		// On n'utilise PAS la classe Collator directement, car elle n'est pas Serializable.
-		SerializableCollator collator = new SerializableCollator(Locale.FRENCH);
-		collator.setStrength(Collator.PRIMARY);
-		DEFAULT_STRING_COLLATOR = collator.nullsLast();
-	}
-	
+
+	public static final Ordering<String> STRING_COLLATOR_FRENCH = LocaleUtils.initCollator(Locale.FRENCH);
+	public static final Ordering<String> STRING_COLLATOR_ENGLISH = LocaleUtils.initCollator(Locale.ENGLISH);
+	public static final Ordering<String> STRING_COLLATOR_ROOT = LocaleUtils.initCollator(Locale.ROOT);
+
+	@Deprecated
+	public static final Ordering<String> DEFAULT_STRING_COLLATOR = STRING_COLLATOR_FRENCH; // French should not be considered as default locale.
+
 	@Override
 	@Transient
 	@SuppressWarnings("unchecked")

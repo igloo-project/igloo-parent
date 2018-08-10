@@ -186,7 +186,8 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		Set<Class<?>> indexedEntityClasses = new TreeSet<Class<?>>(new Comparator<Class<?>>() {
 			@Override
 			public int compare(Class<?> o1, Class<?> o2) {
-				return GenericEntity.DEFAULT_STRING_COLLATOR.compare(o1.getSimpleName(), o2.getSimpleName());
+				// Legacy. French should not be considered as default locale.
+				return GenericEntity.STRING_COLLATOR_FRENCH.compare(o1.getSimpleName(), o2.getSimpleName());
 			}
 		});
 		indexedEntityClasses.addAll(getIndexedRootEntities(fullTextEntityManager.getSearchFactory(), selection));

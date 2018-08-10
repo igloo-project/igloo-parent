@@ -15,20 +15,36 @@ public abstract class AbstractLocalizedTextComparator<T extends AbstractLocalize
 	private static final long serialVersionUID = -6565287329417568609L;
 	
 	private final Locale locale;
-	private final Comparator<String> textComparator;
+	private final Comparator<String> comparator;
 	
 	public AbstractLocalizedTextComparator(Locale locale) {
 		if (locale == null) {
 			throw new IllegalStateException("Locale missing.");
 		}
-		this.locale = locale;
+		
 		SerializableCollator collator = new SerializableCollator(locale);
 		collator.setStrength(Collator.PRIMARY);
-		this.textComparator = collator.nullsLast();
+		collator.nullsLast();
+		
+		this.locale = locale;
+		this.comparator = collator;
+	}
+	
+	public AbstractLocalizedTextComparator(Locale locale, Comparator<String> comparator) {
+		if (locale == null) {
+			throw new IllegalStateException("Locale missing.");
+		}
+		
+		if (comparator == null) {
+			throw new IllegalStateException("Comparator missing.");
+		}
+		
+		this.locale = locale;
+		this.comparator = comparator;
 	}
 	
 	@Override
 	protected int compareNotNullObjects(T left, T right) {
-		return textComparator.compare(left.get(locale), right.get(locale));
+		return comparator.compare(left.get(locale), right.get(locale));
 	}
 }
