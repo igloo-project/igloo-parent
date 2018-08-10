@@ -42,7 +42,7 @@ public abstract class AbstractReferenceDataListPanel<
 	@SpringBean
 	protected IPropertyService propertyService;
 	
-	protected DecoratedCoreDataTablePanel<T, S> resultats;
+	protected DecoratedCoreDataTablePanel<T, S> results;
 	
 	private AbstractGenericReferenceDataPopup<T> popup;
 	
@@ -58,7 +58,7 @@ public abstract class AbstractReferenceDataListPanel<
 		
 		popup = createPopup("popup");
 		
-		resultats = addInHeadingRight(
+		results = addInHeadingRight(
 							addIn(
 									addActionColumn(
 											addColumns(builder)
@@ -69,11 +69,11 @@ public abstract class AbstractReferenceDataListPanel<
 											.ajaxPagers()
 							)
 					)
-							.build("resultats", propertyService.get(BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE));
+							.build("results", propertyService.get(BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE));
 		
 		add(
 				popup,
-				resultats
+				results
 		);
 	}
 	

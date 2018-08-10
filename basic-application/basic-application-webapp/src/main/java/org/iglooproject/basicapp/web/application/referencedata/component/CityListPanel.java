@@ -43,7 +43,7 @@ public class CityListPanel extends AbstractReferenceDataListPanel<City, Localize
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void refresh(AjaxRequestTarget target) {
-				target.add(resultats);
+				target.add(results);
 			}
 		};
 	}

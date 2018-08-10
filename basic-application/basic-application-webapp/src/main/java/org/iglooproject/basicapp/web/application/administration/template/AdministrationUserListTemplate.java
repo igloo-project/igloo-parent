@@ -63,7 +63,7 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 		AbstractUserPopup<U> addPopup = createAddPopup("addPopup");
 		
 		final AbstractUserDataProvider<U> dataProvider = newDataProvider();
-		DecoratedCoreDataTablePanel<U, ?> dataTablePanel = createDataTable("dataTable", dataProvider, propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
+		DecoratedCoreDataTablePanel<U, ?> results = createDataTable("results", dataProvider, propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 		
 		add(
 				addPopup,
@@ -96,8 +96,8 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 		add(
 				new CoreLabel("title", pageTitleModel),
 				
-				new UserListSearchPanel<>("search", dataTablePanel, typeDescriptor, dataProvider),
-				dataTablePanel
+				new UserListSearchPanel<>("search", results, typeDescriptor, dataProvider),
+				results
 		);
 		
 	}

@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableList;
 
 public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 	
-	private static final String SHEET_NAME_RESOURCE_KEY = "administration.export.excel.sheetName";
+	private static final String SHEET_NAME_RESOURCE_KEY = "administration.user.list.export.excel.sheetName";
 	
 	private final Collection<ColumnInformation> columns = ImmutableList.of(
 			new ColumnInformation("business.user.username"),
