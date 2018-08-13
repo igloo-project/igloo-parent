@@ -274,7 +274,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 	}
 
 	@Override
-	public IModel<String> getCssClassNamesModel() {
+	public IModel<String> getModalDialogCssClassModel() {
 		return Model.of("modal-user");
 	}
 
