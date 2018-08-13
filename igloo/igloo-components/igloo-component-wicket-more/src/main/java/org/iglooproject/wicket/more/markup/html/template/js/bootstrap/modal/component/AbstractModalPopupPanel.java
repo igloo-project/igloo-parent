@@ -20,7 +20,6 @@ import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.beha
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModal;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalBackdrop;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalStatement;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IModalPopupPanel {
@@ -42,8 +41,6 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 
 	private BootstrapModal bootstrapModal;
 
-	private IModel<String> dialogCssClassModel;
-
 	public AbstractModalPopupPanel(String id, IModel<? extends O> model) {
 		super(id, model);
 		setOutputMarkupId(true);
@@ -56,9 +53,9 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 				container
 						.add(
 								dialog
-										.add(new ClassAttributeAppender(dialogCssClassModel))
+										.add(new ClassAttributeAppender(getModalDialogCssClassModel()))
 						)
-						.add(new ClassAttributeAppender(getCssClassNamesModel()))
+						.add(new ClassAttributeAppender(getModalCssClassModel()))
 						.add(new AttributeAppender("tabindex", Model.of("-1")))
 						.setOutputMarkupId(true)
 		);
@@ -143,20 +140,17 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		modules.forEach(module -> module.renderHead(this, response));
 	}
 
-	/**
-	 * A surcharger pour personnaliser la classe CSS de la popup.
-	 */
+	@Deprecated
 	protected IModel<String> getCssClassNamesModel() {
 		return Model.of();
 	}
 
-	public AbstractModalPopupPanel<O> dialogCssClass(String dialogCssClass) {
-		return dialogCssClass(Model.of(dialogCssClass));
+	public IModel<String> getModalCssClassModel() {
+		return getCssClassNamesModel();
 	}
 
-	public AbstractModalPopupPanel<O> dialogCssClass(IModel<String> dialogCssClassModel) {
-		this.dialogCssClassModel = dialogCssClassModel;
-		return this;
+	public IModel<String> getModalDialogCssClassModel() {
+		return Model.of();
 	}
 
 	/**
@@ -214,12 +208,6 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		bootstrapModal.setKeyboard(false);
 		bootstrapModal.setBackdrop(BootstrapModalBackdrop.STATIC);
 		return this;
-	}
-
-	@Override
-	protected void onDetach() {
-		super.onDetach();
-		Detachables.detach(dialogCssClassModel);
 	}
 
 }
