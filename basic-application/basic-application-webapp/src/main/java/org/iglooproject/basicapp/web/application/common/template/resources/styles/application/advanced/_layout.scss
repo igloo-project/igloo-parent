@@ -33,11 +33,15 @@ body {
 				padding: 0;
 				
 				> .content-header-section {
+					border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+					background-color: $white;
+					
 					> .content-header-container {
+						@include make-container();
+						@include make-container-max-widths();
+						
 						> .content-header {
 							padding: $content-main-header-padding-y $content-main-header-padding-x;
-							border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-							background-color: $white;
 							
 							> .content-header-title {
 								margin: 0;
@@ -85,6 +89,9 @@ body {
 				
 				> .content-body-section {
 					> .content-body-container {
+						@include make-container();
+						@include make-container-max-widths();
+						
 						> .content-body {
 							padding: $content-main-body-padding-y $content-main-body-padding-x;
 						}
