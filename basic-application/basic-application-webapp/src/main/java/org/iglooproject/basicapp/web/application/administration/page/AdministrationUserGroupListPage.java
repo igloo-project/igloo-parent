@@ -19,7 +19,7 @@ import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.administration.form.UserGroupPopup;
-import org.iglooproject.basicapp.web.application.administration.template.AdministrationTemplate;
+import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserGroupTemplate;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -31,7 +31,6 @@ import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
-import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
@@ -40,7 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-public class AdministrationUserGroupListPage extends AdministrationTemplate {
+public class AdministrationUserGroupListPage extends AdministrationUserGroupTemplate {
 
 	private static final long serialVersionUID = 2733071974944289365L;
 
@@ -59,9 +58,6 @@ public class AdministrationUserGroupListPage extends AdministrationTemplate {
 
 	public AdministrationUserGroupListPage(PageParameters parameters) {
 		super(parameters);
-		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.userGroup"),
-				AdministrationUserGroupListPage.linkDescriptor()));
 		
 		IModel<List<UserGroup>> userGroupListModel = new LoadableDetachableModel<List<UserGroup>>() {
 			private static final long serialVersionUID = 1L;

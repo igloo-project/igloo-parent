@@ -19,8 +19,13 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 	public AdministrationTechnicalUserDetailPage(PageParameters parameters) {
 		super(parameters, UserTypeDescriptor.TECHNICAL_USER);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.technical"), typeDescriptor.administrationTypeDescriptor().list()));
-		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Bindings.user().fullName())));
+		addBreadCrumbElement(new BreadCrumbElement(
+				new ResourceModel("navigation.administration.user.technical"),
+				typeDescriptor.administrationTypeDescriptor().list()
+		));
+		addBreadCrumbElement(new BreadCrumbElement(
+				BindingModel.of(userModel, Bindings.user().fullName())
+		));
 		
 		add(
 				new UserDetailDescriptionPanel<>("description", userModel, typeDescriptor),

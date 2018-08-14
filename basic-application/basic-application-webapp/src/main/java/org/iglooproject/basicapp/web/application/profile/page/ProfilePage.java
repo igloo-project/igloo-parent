@@ -28,7 +28,9 @@ public class ProfilePage extends ProfileTemplate {
 	public ProfilePage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Bindings.user().fullName())));
+		addBreadCrumbElement(new BreadCrumbElement(
+				BindingModel.of(userModel, Bindings.user().fullName())
+		));
 		
 		add(
 				new CoreLabel("pageTitle", BindingModel.of(userModel, Bindings.user().fullName()))

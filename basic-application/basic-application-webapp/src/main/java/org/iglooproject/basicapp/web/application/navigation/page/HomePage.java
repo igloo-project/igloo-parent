@@ -25,7 +25,10 @@ public class HomePage extends MainTemplate {
 	public HomePage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("home.pageTitle")));
+		addBreadCrumbElement(new BreadCrumbElement(
+				new ResourceModel("home.pageTitle"),
+				HomePage.linkDescriptor()
+		));
 		
 		add(new CoreLabel("pageTitle", new ResourceModel("home.pageTitle")));
 		

@@ -5,13 +5,12 @@ import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.administration.component.UserGroupDetailDescriptionPanel;
 import org.iglooproject.basicapp.web.application.administration.component.UserGroupDetailUsersPanel;
-import org.iglooproject.basicapp.web.application.administration.template.AdministrationTemplate;
+import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserGroupTemplate;
 import org.iglooproject.basicapp.web.application.navigation.link.LinkFactory;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -26,7 +25,7 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 
-public class AdministrationUserGroupDetailPage extends AdministrationTemplate {
+public class AdministrationUserGroupDetailPage extends AdministrationUserGroupTemplate {
 
 	private static final long serialVersionUID = -5780326896837623229L;
 
@@ -58,11 +57,9 @@ public class AdministrationUserGroupDetailPage extends AdministrationTemplate {
 						getString("common.error.unexpected")
 				);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.userGroup"),
-				AdministrationUserGroupListPage.linkDescriptor()));
-		
-		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userGroupModel, Bindings.userGroup().name()),
-				AdministrationUserGroupDetailPage.linkDescriptor(userGroupModel, sourcePageModel)));
+		addBreadCrumbElement(new BreadCrumbElement(
+				BindingModel.of(userGroupModel, Bindings.userGroup().name())
+		));
 		
 		Component backToSourcePage =
 				LinkFactory.get().linkGenerator(

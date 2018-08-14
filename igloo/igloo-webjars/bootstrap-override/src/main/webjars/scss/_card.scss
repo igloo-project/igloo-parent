@@ -10,11 +10,11 @@
 	margin-top: 1rem;
 	
 	> .card-action-container {
-		@include basic-container();
+		@include basic-elements-container-index(1);
 		justify-content: flex-end;
 		
 		> .card-action-item {
-			@include basic-item();
+			@include basic-elements-item-index(1);
 		}
 	}
 }

@@ -19,8 +19,13 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 	public AdministrationBasicUserDetailPage(PageParameters parameters) {
 		super(parameters, UserTypeDescriptor.BASIC_USER);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.basic"), typeDescriptor.administrationTypeDescriptor().list()));
-		addBreadCrumbElement(new BreadCrumbElement(BindingModel.of(userModel, Bindings.user().fullName())));
+		addBreadCrumbElement(new BreadCrumbElement(
+				new ResourceModel("navigation.administration.user.basic"),
+				typeDescriptor.administrationTypeDescriptor().list()
+		));
+		addBreadCrumbElement(new BreadCrumbElement(
+				BindingModel.of(userModel, Bindings.user().fullName())
+		));
 		
 		add(
 				new UserDetailDescriptionPanel<>("description", userModel, typeDescriptor),

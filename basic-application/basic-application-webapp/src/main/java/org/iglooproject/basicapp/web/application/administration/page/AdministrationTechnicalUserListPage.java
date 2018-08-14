@@ -18,7 +18,9 @@ public class AdministrationTechnicalUserListPage extends AdministrationUserListT
 	public AdministrationTechnicalUserListPage(PageParameters parameters) {
 		super(parameters, UserTypeDescriptor.TECHNICAL_USER, new ResourceModel("administration.user.technical.list.title"));
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.technical")));
+		addBreadCrumbElement(new BreadCrumbElement(
+				new ResourceModel("navigation.administration.user.technical")
+		));
 	}
 	
 	@Override

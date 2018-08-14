@@ -44,7 +44,7 @@ import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreCol
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-public abstract class AdministrationUserListTemplate<U extends User> extends AdministrationTemplate {
+public abstract class AdministrationUserListTemplate<U extends User> extends AdministrationUserTemplate {
 
 	private static final long serialVersionUID = 1824247169136460059L;
 	
@@ -94,7 +94,7 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 		);
 		
 		add(
-				new CoreLabel("title", pageTitleModel),
+				new CoreLabel("pageTitle", pageTitleModel),
 				
 				new UserListSearchPanel<>("search", results, typeDescriptor, dataProvider),
 				results

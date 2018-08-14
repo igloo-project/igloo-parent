@@ -6,6 +6,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserListPage;
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
+import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
@@ -17,7 +18,10 @@ public abstract class AdministrationTemplate extends MainTemplate {
 	public AdministrationTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration")));
+		addBreadCrumbElement(new BreadCrumbElement(
+				new ResourceModel("navigation.administration"),
+				UserTypeDescriptor.BASIC_USER.administrationTypeDescriptor().list()
+		));
 	}
 
 	@Override

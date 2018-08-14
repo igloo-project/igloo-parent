@@ -14,7 +14,10 @@ public class ProfileTemplate extends MainTemplate {
 	public ProfileTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.profile")));
+		addBreadCrumbElement(new BreadCrumbElement(
+				new ResourceModel("navigation.profile"),
+				ProfilePage.linkDescriptor()
+		));
 	}
 
 	@Override

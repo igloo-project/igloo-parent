@@ -18,7 +18,9 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 	public AdministrationBasicUserListPage(PageParameters parameters) {
 		super(parameters, UserTypeDescriptor.BASIC_USER, new ResourceModel("administration.user.basic.list.title"));
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration.user.basic")));
+		addBreadCrumbElement(new BreadCrumbElement(
+				new ResourceModel("navigation.administration.user.basic")
+		));
 	}
 	
 	@Override

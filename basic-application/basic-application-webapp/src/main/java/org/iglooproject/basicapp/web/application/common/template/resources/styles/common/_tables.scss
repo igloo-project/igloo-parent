@@ -143,11 +143,11 @@ table {
 		> tr {
 			> th, > td {
 				.table-row-actions {
-					@include basic-container(4px);
+					@include basic-elements-container(4px);
 					justify-content: center;
 					
 					.table-row-action {
-						@include basic-item(4px);
+						@include basic-elements-item(4px);
 					}
 				}
 				
@@ -160,17 +160,17 @@ table {
 }
 
 .add-in-container {
-	@include basic-container();
+	@include basic-elements-container-index(2);
 	
 	> .add-in-section {
-		@include basic-item();
+		@include basic-elements-item-index(2);
 		align-self: center;
 		
 		> .add-in-wrapper {
-			@include basic-container();
+			@include basic-elements-container-index(1);
 			
 			> .add-in {
-				@include basic-item();
+				@include basic-elements-item-index(1);
 				
 				> nav {
 					> .pagination {

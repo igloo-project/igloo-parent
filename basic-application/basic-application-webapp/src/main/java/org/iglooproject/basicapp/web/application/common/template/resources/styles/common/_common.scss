@@ -70,15 +70,32 @@
 	}
 }
 
-.basic-container {
-	@include basic-container();
+.basic-elements-wrapper {
+	@include basic-elements-container-index(2);
 	
-	&.basic-container-right {
+	> .basic-elements-item {
+		@include basic-elements-item-index(2);
+	}
+}
+
+.basic-elements-container {
+	@include basic-elements-container-index(1);
+	
+	&.basic-elements-container-right {
 		justify-content: flex-end;
 	}
 	
-	> .basic-item {
-		@include basic-item();
+	> .basic-elements-item {
+		@include basic-elements-item-index(1);
+	}
+}
+
+.basic-elements-wrapper,
+.basic-elements-container {
+	> .basic-elements-item {
+		&.basic-elements-item-right {
+			margin-left: auto;
+		}
 	}
 }
 

@@ -41,21 +41,41 @@ body {
 							
 							> .content-header-title {
 								margin: 0;
+								padding: 0;
 							}
 							
-							> .content-header-action {
-								margin-top: 0.5rem;
+							> .content-header-elements-section {
+								margin-top: .75rem;
 								
 								&:first-child {
 									margin-top: 0;
 								}
 								
-								> .content-header-action-container {
-									@include basic-container();
-									justify-content: flex-end;
+								> .content-header-elements-wrapper {
+									@include basic-elements-container-index(2);
+									
+									> .content-header-elements-item {
+										@include basic-elements-item-index(2);
+										
+										&.content-header-elements-item-actions {
+											margin-left: auto;
+										}
+									}
+								}
+								
+								.content-header-info-container {
+									@include basic-elements-container-index(1);
+									
+									> .content-header-info-item {
+										@include basic-elements-item-index(1);
+									}
+								}
+								
+								.content-header-action-container {
+									@include basic-elements-container-index(1);
 									
 									> .content-header-action-item {
-										@include basic-item();
+										@include basic-elements-item-index(1);
 									}
 								}
 							}

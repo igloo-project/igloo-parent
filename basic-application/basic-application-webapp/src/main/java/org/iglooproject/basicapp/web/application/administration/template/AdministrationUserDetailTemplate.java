@@ -19,8 +19,10 @@ import org.iglooproject.basicapp.core.security.service.ISecurityManagementServic
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.administration.form.UserPasswordUpdatePopup;
+import org.iglooproject.basicapp.web.application.common.renderer.UserActiveRenderer;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.navigation.link.LinkFactory;
+import org.iglooproject.wicket.bootstrap4.markup.html.bootstrap.component.BootstrapBadge;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -42,7 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-public class AdministrationUserDetailTemplate<U extends User> extends AdministrationTemplate {
+public class AdministrationUserDetailTemplate<U extends User> extends AdministrationUserTemplate {
 
 	private static final long serialVersionUID = -550100874222819991L;
 
@@ -104,6 +106,10 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 						.add(Condition.componentVisible(backToSourcePage).thenHide()),
 				
 				new CoreLabel("pageTitle", BindingModel.of(userModel, Bindings.user().fullName()))
+		);
+		
+		add(
+				new BootstrapBadge<>("active", userModel, UserActiveRenderer.get())
 		);
 		
 		add(
