@@ -305,5 +305,68 @@
 		<url>https://github.com/igloo-project/igloo-parent</url>
 		<tag>HEAD</tag>
 	</scm>
+
+	<repositories>
+		<repository>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus Igloo Releases</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		
+		<repository>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus Igloo Snapshots</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+
+		<!--
+		  for repository exhaustivity, and for owasp plugin, declaration of
+		  bindgen's related repository, for joist-util dependency.
+
+		  (owasp needs to lookup all dependencies, and does not seem to extract
+		  repository from dependency's pom).
+		-->
+		<repository>
+			<id>bindgen</id>
+			<url>http://repo.joist.ws/</url>
+		</repository>
+
+		<!--
+		  for repository exhaustivity, and for owasp plugin, declaration of
+		  ehcache 2 related repository, for terracotta statistics dependency.
+
+		  (owasp needs to lookup all dependencies, and does not seem to extract
+		  repository from dependency's pom).
+		-->
+		<repository>
+			<id>terracotta-snapshots</id>
+			<url>http://www.terracotta.org/download/reflector/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>terracotta-releases</id>
+			<url>http://www.terracotta.org/download/reflector/releases</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	
 </project>
