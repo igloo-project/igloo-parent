@@ -1,8 +1,8 @@
 package org.iglooproject.wicket.more.link.descriptor.mapper;
 
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
+import org.iglooproject.wicket.more.util.model.Models;
 
 
 public abstract class AbstractOneParameterLinkDescriptorMapper<L, T1>
@@ -12,7 +12,12 @@ public abstract class AbstractOneParameterLinkDescriptorMapper<L, T1>
 
 	@Override
 	public void detach() { }
-	
+
+	@Override
+	public L setParameter1(IModel<T1> model1) {
+		return map(model1);
+	}
+
 	@Override
 	public <U1 extends T1> IOneParameterLinkDescriptorMapper<L, U1> castParameter1() {
 		return new AbstractOneParameterLinkDescriptorMapper<L, U1>() {
@@ -28,4 +33,10 @@ public abstract class AbstractOneParameterLinkDescriptorMapper<L, T1>
 			}
 		};
 	}
+
+	@Override
+	public L ignoreParameter1() {
+		return setParameter1(Models.<T1>placeholder());
+	}
+
 }
