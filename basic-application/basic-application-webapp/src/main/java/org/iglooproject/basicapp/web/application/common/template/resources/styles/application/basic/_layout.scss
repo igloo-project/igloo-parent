@@ -41,7 +41,7 @@ body {
 				@include make-container();
 				@include make-container-max-widths();
 				
-				padding: 1rem 1.25rem;
+				padding: 15px;
 				
 				> .content-header {
 					> .content-header-title {
@@ -96,7 +96,7 @@ body {
 				@include make-container();
 				@include make-container-max-widths();
 				
-				padding: 1.25rem;
+				padding: 25px 15px;
 				
 				> .content-body {
 					
@@ -115,7 +115,7 @@ body {
 		@include make-container();
 		@include make-container-max-widths();
 		
-		padding: 1rem 1.25rem;
+		padding: 15px;
 		
 		display: flex;
 		flex-direction: row-reverse;

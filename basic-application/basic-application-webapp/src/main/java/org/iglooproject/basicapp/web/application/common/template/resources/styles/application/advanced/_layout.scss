@@ -40,8 +40,10 @@ body {
 						@include make-container();
 						@include make-container-max-widths();
 						
+						padding: $main-content-main-header-container-padding-y $main-content-main-header-container-padding-x;
+						
 						> .content-header {
-							padding: $content-main-header-padding-y $content-main-header-padding-x;
+							padding: 0;
 							
 							> .content-header-title {
 								margin: 0;
@@ -92,8 +94,10 @@ body {
 						@include make-container();
 						@include make-container-max-widths();
 						
+						padding: $main-content-main-body-container-padding-y $main-content-main-body-container-padding-x;
+						
 						> .content-body {
-							padding: $content-main-body-padding-y $content-main-body-padding-x;
+							padding: 0;
 						}
 					}
 				}
@@ -164,11 +168,11 @@ body {
 												font-weight: 600;
 												font-size: .8rem;
 												text-transform: uppercase;
-												padding: 10px 20px;
+												padding: 10px 15px;
 											}
 											
 											.sidebar-section-content {
-												padding: 7px 20px;
+												padding: 7px 15px;
 											}
 										}
 									}

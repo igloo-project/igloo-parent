@@ -33,7 +33,11 @@
 			.nav-link-icon {
 				display: inline;
 			}
-		
+			
+			.navbar-text {
+				padding-right: $navbar-nav-link-padding-x;
+				padding-left: $navbar-nav-link-padding-x;
+			}
 		}
 	}
 	
@@ -55,6 +59,10 @@
 
 		&#{$infix} {
 			@include media-breakpoint-up($next) {
+				.navbar-body {
+					margin-top: 0;
+				}
+				
 				.navbar-nav {
 					> li {
 						&.nav-item {
