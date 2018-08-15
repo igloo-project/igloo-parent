@@ -25,8 +25,9 @@
 		<igloo.spring.version>5.0.7.RELEASE</igloo.spring.version>
 		<!-- https://www.eclipse.org/aspectj/doc/released/README-191.html -->
 		<igloo.aspectj.version>1.9.1</igloo.aspectj.version>
-		
-		<igloo.hibernate.version>5.3.4.Final</igloo.hibernate.version>
+
+		<!-- http://hibernate.org/orm/releases/5.3/ -->
+		<igloo.hibernate.version>5.3.5.Final</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
 		<igloo.jboss-logging.version>3.3.2.Final</igloo.jboss-logging.version>
 		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
@@ -196,7 +197,7 @@
 		<!-- both needed by less4j and hibernate-search ; we keep hibernate-search version -->
 		<igloo.gson.version>2.6.2</igloo.gson.version>
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
-		<igloo.byte-buddy.version>1.8.15</igloo.byte-buddy.version>
+		<igloo.byte-buddy.version>1.8.17</igloo.byte-buddy.version>
 		<igloo.elasticsearch-cluster-runner.version>${igloo.elasticsearch.version}.0</igloo.elasticsearch-cluster-runner.version>
 		<igloo.embedded-elasticsearch.version>2.5.1</igloo.embedded-elasticsearch.version>
 		
