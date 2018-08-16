@@ -115,7 +115,7 @@ body {
 		@include make-container();
 		@include make-container-max-widths();
 		
-		padding: 15px;
+		padding: 10px 15px;
 		
 		display: flex;
 		flex-direction: row-reverse;
@@ -125,7 +125,7 @@ body {
 				color: #03FFB0;
 				font-weight: bold;
 				font-size: 1rem;
-				margin-bottom: .15rem;
+				margin-bottom: .1rem;
 			}
 			
 			.footer-info-version {
