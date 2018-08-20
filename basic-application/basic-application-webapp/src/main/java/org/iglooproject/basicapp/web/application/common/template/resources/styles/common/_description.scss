@@ -1,0 +1,44 @@
+.description-section {
+	> .description-group {
+		> .description-row {
+			@include make-row();
+			margin-right: -4px;
+			margin-left: -4px;
+			
+			.description-label-col {
+				@extend %grid-column;
+				padding-right: 4px;
+				padding-left: 4px;
+				
+				color: $gray-600;
+				//font-weight: bold;
+				
+				.description-label {
+				}
+			}
+			
+			.description-value-col {
+				@extend %grid-column;
+				padding-right: 4px;
+				padding-left: 4px;
+				
+				.description-value{
+				}
+			}
+			
+			@include media-breakpoint-up(md) {
+				.description-label-col {
+					@include make-col(4);
+				}
+				
+				.description-value-col {
+					@include make-col(8);
+				}
+			}
+		}
+	}
+	
+	+ .description-section {
+		margin-top: .5rem;
+	}
+}

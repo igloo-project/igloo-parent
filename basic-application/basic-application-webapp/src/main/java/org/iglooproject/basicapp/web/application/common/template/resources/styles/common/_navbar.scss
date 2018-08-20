@@ -1,0 +1,76 @@
+@mixin navbar-nav-link-hover() {
+	border-radius: $border-radius;
+	background-color: rgba($white, .1);
+	@include transition(all .3s ease 0s);
+}
+
+@mixin navbar-nav-link-focus() {
+	@include navbar-nav-link-hover();
+}
+
+.navbar {
+	box-shadow: $shadow-xs;
+	
+	.navbar-nav {
+		.nav-item {
+			margin: 2px 0;
+			
+			&.active, &.dropdown.show {
+				.nav-link {
+					@include navbar-nav-link-focus();
+				}
+			}
+			
+			.nav-link {
+				padding-right: $navbar-nav-link-padding-x;
+				padding-left: $navbar-nav-link-padding-x;
+				
+				&:not(.disabled):hover {
+					@include navbar-nav-link-hover();
+				}
+			}
+			
+			.nav-link-icon {
+				display: inline;
+			}
+			
+			.navbar-text {
+				padding-right: $navbar-nav-link-padding-x;
+				padding-left: $navbar-nav-link-padding-x;
+			}
+		}
+	}
+	
+	.navbar-text {
+		a {
+			text-decoration: none;
+		}
+	}
+	
+	.navbar-body {
+		margin-top: 5px;
+	}
+}
+
+.navbar-expand {
+	@each $breakpoint in map-keys($grid-breakpoints) {
+		$next: breakpoint-next($breakpoint, $grid-breakpoints);
+		$infix: breakpoint-infix($next, $grid-breakpoints);
+
+		&#{$infix} {
+			@include media-breakpoint-up($next) {
+				.navbar-body {
+					margin-top: 0;
+				}
+				
+				.navbar-nav {
+					> li {
+						&.nav-item {
+							margin: 0 2px;
+						}
+					}
+				}
+			}
+		}
+	}
+}

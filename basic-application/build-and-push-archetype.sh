@@ -73,10 +73,10 @@ pushd ${temp_directory}/archetype &> /dev/null
 			mvn clean install
 			;;
 		"snapshot")
-			mvn clean package deploy -DaltDeploymentRepository=nexus-owsi-core-snapshots::default::https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots/
+			mvn clean package deploy -DaltDeploymentRepository=nexus-kobalt-snapshots::default::https://nexus.tools.kobalt-si.fr/repository/kobalt-snapshots/
 			;;
 		"release")
-			mvn clean package deploy -DaltDeploymentRepository=nexus-owsi-core::default::https://projects.openwide.fr/services/nexus/content/repositories/owsi-core/
+			mvn clean package deploy -DaltDeploymentRepository=nexus-kobalt-releases::default::https://nexus.tools.kobalt-si.fr/repository/kobalt-releases/
 			;;
 	esac
 

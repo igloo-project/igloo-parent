@@ -4,8 +4,8 @@
 	
 	<parent>
 		<artifactId>basic-application</artifactId>
-		<groupId>fr.openwide.core.archetype</groupId>
-		<version>0.16</version>
+		<groupId>org.iglooproject.archetype</groupId>
+		<version>1.0</version>
 	</parent>
 	
 	<packaging>war</packaging>
@@ -17,30 +17,36 @@
 	<dependencies>
 		
 		<dependency>
-			<groupId>fr.openwide.core.archetype</groupId>
+			<groupId>org.iglooproject.archetype</groupId>
 			<artifactId>basic-application-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		
-		<!-- OWSI Core -->
+		<!-- Igloo -->
 		<dependency>
-			<groupId>fr.openwide.core.packages</groupId>
-			<artifactId>owsi-core-package-web-wicket-app</artifactId>
-			<version>${owsi-core.version}</version>
+			<groupId>org.iglooproject.packages</groupId>
+			<artifactId>igloo-package-web-wicket-app</artifactId>
+			<version>${igloo.version}</version>
 			<type>pom</type>
 		</dependency>
 		
 		<dependency>
-			<groupId>fr.openwide.core.packages</groupId>
-			<artifactId>owsi-core-package-web-spring-security</artifactId>
-			<version>${owsi-core.version}</version>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-bootstrap4</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.packages</groupId>
+			<artifactId>igloo-package-web-spring-security</artifactId>
+			<version>${igloo.version}</version>
 			<type>pom</type>
 		</dependency>
 		
 		<dependency>
-			<groupId>fr.openwide.core.components</groupId>
-			<artifactId>owsi-core-components</artifactId>
-			<version>${owsi-core.version}</version>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-components</artifactId>
+			<version>${igloo.version}</version>
 			<type>pom</type>
 		</dependency>
 		
@@ -72,10 +78,6 @@
 			</resource>
 		</resources>
 		<plugins>
-			<plugin>
-				<groupId>net.alchim31.maven</groupId>
-				<artifactId>yuicompressor-maven-plugin</artifactId>
-			</plugin>
 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>

@@ -1,0 +1,69 @@
+.modal-content {
+	border: none;
+	border-radius: 0;
+	box-shadow: $shadow-lg;
+}
+
+.modal-header {
+	font-size: $modal-header-font-size;
+	line-height: $modal-header-line-height;
+	
+	.close {
+		font-size: $modal-header-close-font-size;
+		line-height: $modal-header-close-line-height;
+	}
+}
+
+@mixin modal-headerless() {
+	.modal-header {
+		display: none;
+	}
+}
+
+@mixin modal-closeless() {
+	.modal-header {
+		.close {
+			display: none;
+		}
+	}
+}
+
+@mixin modal-footerless() {
+	.modal-footer {
+		display: none;
+	}
+}
+
+.modal {
+	&.modal-headerless {
+		@include modal-headerless();
+	}
+	&.modal-closeless {
+		@include modal-closeless();
+	}
+	&.modal-footerless {
+		@include modal-footerless();
+	}
+	&.modal-bodyonly {
+		@include modal-headerless();
+		@include modal-footerless();
+	}
+	
+	input.hasDatepicker,
+	input.hasMonthpicker {
+		z-index: $zindex-modal-date-picker;
+		
+		&:focus {
+			z-index: $zindex-modal-date-picker;
+		}
+	}
+}
+
+.modal.modal-work-in-progress {
+	@include modal-closeless();
+	@include modal-footerless();
+	
+	.modal-dialog {
+		max-width: $modal-sm;
+	}
+}

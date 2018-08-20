@@ -1,0 +1,11 @@
+@each $color, $value in $theme-colors {
+	.bg-#{$color} {
+		color: color-yiq($value);
+	}
+	
+	@if $enable-gradients {
+		.bg-gradient-#{$color} {
+			color: color-yiq($value);
+		}
+	}
+}

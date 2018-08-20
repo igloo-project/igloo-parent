@@ -4,8 +4,8 @@
 	
 	<parent>
 		<artifactId>basic-application</artifactId>
-		<groupId>fr.openwide.core.archetype</groupId>
-		<version>0.16</version>
+		<groupId>org.iglooproject.archetype</groupId>
+		<version>1.0</version>
 	</parent>
 	
 	<artifactId>basic-application-core</artifactId>
@@ -14,103 +14,44 @@
 	
 	<dependencies>
 		
-		<!-- OWSI Core -->
+		<!-- Igloo -->
 		<dependency>
-			<groupId>fr.openwide.core.packages</groupId>
-			<artifactId>owsi-core-package-core-spring-jpa-app</artifactId>
-			<version>${owsi-core.version}</version>
+			<groupId>org.iglooproject.packages</groupId>
+			<artifactId>igloo-package-core-spring-jpa-app</artifactId>
+			<version>${igloo.version}</version>
 			<type>pom</type>
 		</dependency>
 		
-		<!-- Pooling -->
+		<!-- JDBC Driver -->
 		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 		
 		<!-- Test dependencies -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-test</artifactId>
 			<scope>test</scope>
+			<type>pom</type>
 		</dependency>
-		
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa-test</artifactId>
+			<version>${igloo.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	
-	<profiles>
-		<profile>
-			<id>development</id>
-			<activation>
-				<property>
-					<!-- propriété présente en environnement m2eclipse -->
-					<name>m2e.version</name>
-				</property>
-			</activation>
-			<properties>
-				<profile.filter.file>src/main/filters/development.properties</profile.filter.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>test</id>
-			<properties>
-				<profile.filter.file>src/main/filters/test.properties</profile.filter.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>travis</id>
-			<properties>
-				<profile.filter.file>src/main/filters/travis.properties</profile.filter.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>recette</id>
-			<properties>
-				<profile.filter.file>src/main/filters/recette.properties</profile.filter.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>preproduction</id>
-			<properties>
-				<profile.filter.file>src/main/filters/preproduction.properties</profile.filter.file>
-			</properties>
-		</profile>
-		<profile>
-			<id>production</id>
-			<properties>
-				<profile.filter.file>src/main/filters/production.properties</profile.filter.file>
-			</properties>
-		</profile>
-	</profiles>
-	
 	<build>
-		<filters>
-			<filter>${profile.filter.file}</filter>
-		</filters>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
 			</resource>
 		</resources>
 		<testResources>
 			<testResource>
 				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>**/*.properties</include>
-				</includes>
-			</testResource>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>false</filtering>
-				<excludes>
-					<exclude>**/*.properties</exclude>
-				</excludes>
 			</testResource>
 		</testResources>
 		<plugins>

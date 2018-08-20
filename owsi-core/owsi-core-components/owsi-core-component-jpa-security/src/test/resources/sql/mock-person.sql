@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX idx_MockPerson_userName_lower ON MockPerson (lower(userName));

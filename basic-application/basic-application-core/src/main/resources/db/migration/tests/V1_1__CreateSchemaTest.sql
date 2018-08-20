@@ -1,1 +1,0 @@
-CREATE SCHEMA IF NOT EXISTS basic_application_test;

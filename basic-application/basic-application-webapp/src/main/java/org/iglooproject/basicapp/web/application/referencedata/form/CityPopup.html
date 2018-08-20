@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<div class="form-group col-12">
+			<div class="row">
+				<label class="col-sm-4 col-form-label" wicket:for="labelFr"><wicket:label /></label>
+				<div class="col-sm-8">
+					<input wicket:id="labelFr" type="text" class="form-control" />
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-12">
+			<div class="row">
+				<label class="col-sm-4 col-form-label" wicket:for="labelEn"><wicket:label /></label>
+				<div class="col-sm-8">
+					<input wicket:id="labelEn" type="text" class="form-control" />
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-12">
+			<div class="row">
+				<label class="col-sm-4 col-form-label" wicket:for="postalCode"><wicket:label /></label>
+				<div class="col-sm-8">
+					<input wicket:id="postalCode" type="text" class="form-control" />
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-12">
+			<div class="row">
+				<div class="col-sm-8 offset-sm-4">
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" wicket:id="enabled">
+						<label class="custom-control-label" wicket:for="enabled"><wicket:label /></label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</wicket:extend>
+</html>

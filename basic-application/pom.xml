@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>fr.openwide.core.parents</groupId>
-		<artifactId>owsi-core-parent-core-project</artifactId>
-		<relativePath>../owsi-core/owsi-core-parents/owsi-core-parent-core-project/pom.xml</relativePath>
-		<version>0.16</version>
+		<groupId>org.iglooproject.parents</groupId>
+		<artifactId>igloo-parent-core-project</artifactId>
+		<relativePath>../igloo/igloo-parents/igloo-parent-core-project/pom.xml</relativePath>
+		<version>1.0</version>
 	</parent>
 	
-	<groupId>fr.openwide.core.archetype</groupId>
+	<groupId>org.iglooproject.archetype</groupId>
 	<artifactId>basic-application</artifactId>
 	<packaging>pom</packaging>
 	
@@ -20,36 +20,6 @@
 		<module>basic-application-init</module>
 		<module>basic-application-webapp</module>
 	</modules>
-	
-	<properties>
-		<!-- il est préférable de bien surcharger la version du pool jdbc Tomcat au niveau du projet en fonction de la version de Tomcat -->
-		<tomcat-jdbc.version>${owsi-core.tomcat-jdbc.version}</tomcat-jdbc.version>
-	</properties>
-	
-	<profiles>
-		<profile>
-			<id>recette</id>
-			<properties>
-				<remote-deployment-url>scpexe://root@openwidesi-vm-recettejava.accelance.net/root/livraison/${maven.build.timestamp}</remote-deployment-url>
-			</properties>
-		</profile>
-		<profile>
-			<id>production</id>
-			<properties>
-				<remote-deployment-url>scpexe://openwide@todo/data/home/openwide/livraison/${maven.build.timestamp}</remote-deployment-url>
-			</properties>
-		</profile>
-	</profiles>
-	
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.apache.tomcat</groupId>
-				<artifactId>tomcat-jdbc</artifactId>
-				<version>${tomcat-jdbc.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	
 	<build>
 		<pluginManagement>
@@ -67,18 +37,21 @@
 	
 	<repositories>
 		<repository>
-			<id>nexus-owsi-core</id>
-			<name>Nexus OWSI Core</name>
-			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core</url>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus Igloo Releases</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
 		
 		<repository>
-			<id>nexus-owsi-core-snapshots</id>
-			<name>Nexus OWSI Core Snapshots</name>
-			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus Igloo Snapshots</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -87,17 +60,17 @@
 	
 	<issueManagement>
 		<system>GitLab</system>
-		<url>https://gitlab.openwide.fr/open-wide/${wombatProjectName}/issues</url>
+		<url>https://gitlab.tools.kobalt-si.fr/kobalt/${projectName}/issues</url>
 	</issueManagement>
 
 	<ciManagement>
-		<system>Jenkins</system>
-		<url>https://projects.openwide.fr/services/ci/java/jenkins/</url>
+		<system>GitLab</system>
+		<url>https://gitlab.tools.kobalt-si.fr/kobalt/${projectName}/pipelines</url>
 	</ciManagement>
 
 	<scm>
-		<developerConnection>scm:git:git@git.projects.openwide.fr:open-wide/${wombatProjectName}.git</developerConnection>
-		<url>https://gitlab.openwide.fr/open-wide/${wombatProjectName}/tree/master</url>
+		<developerConnection>scm:git:git@gitlab.tools.kobalt-si.fr:kobalt/${projectName}.git</developerConnection>
+		<url>https://gitlab.tools.kobalt-si.fr/kobalt/${projectName}</url>
 		<tag>HEAD</tag>
 	</scm>
 	

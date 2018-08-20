@@ -9,7 +9,21 @@
 	
 	<security:http pattern="/static/**" security="none" />
 	<security:http pattern="/monitoring/**" security="none" />
+	<security:http pattern="/webjars/**" security="none" />
+	
+	<!-- 
+		See favicon generator https://realfavicongenerator.net/
+		See BasicApplicationApplication#mountApplicationResources()
+	 -->
+	<security:http pattern="/android-chrome-192x192.png" security="none" />
+	<security:http pattern="/apple-touch-icon.png" security="none" />
+	<security:http pattern="/browserconfig.xml" security="none" />
+	<security:http pattern="/favicon-16x16.png" security="none" />
+	<security:http pattern="/favicon-32x32.png" security="none" />
 	<security:http pattern="/favicon.ico" security="none" />
+	<security:http pattern="/manifest.json" security="none" />
+	<security:http pattern="/mstile-150x150.png" security="none" />
+	<security:http pattern="/safari-pinned-tab.svg" security="none" />
 	
 	<!-- An entry point to respond with a 403 error if Spring Security wants the user to log in.
 		Useful in situations where loging in is not an option, such as when serving CSS.
@@ -40,10 +54,10 @@
 		<security:headers disabled="true"/>
 		<security:csrf disabled="true"/>
 		
-		<security:intercept-url pattern="^/wicket/resource/fr.openwide.core.basicapp.web.application.common.template.js.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="^/wicket/resource/fr.openwide.core.basicapp.web.application.common.template.styles.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="^/wicket/resource/fr.openwide.core.basicapp.web.application.common.template.images.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
-		<security:intercept-url pattern="^/wicket/resource/fr.openwide.core.basicapp.web.application.[^/]+.*" access="hasRole('ROLE_AUTHENTICATED')" />
+		<security:intercept-url pattern="^/wicket/resource/org.iglooproject.basicapp.web.application.common.template.resources.js.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="^/wicket/resource/org.iglooproject.basicapp.web.application.common.template.resources.styles.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="^/wicket/resource/org.iglooproject.basicapp.web.application.common.template.resources.images.[^/]+.*" access="hasRole('ROLE_ANONYMOUS')" />
+		<security:intercept-url pattern="^/wicket/resource/org.iglooproject.basicapp.web.application.[^/]+.*" access="hasRole('ROLE_AUTHENTICATED')" />
 		<security:intercept-url pattern="^/wicket/resource/.*" access="hasRole('ROLE_ANONYMOUS')" />
 	</security:http>
 	

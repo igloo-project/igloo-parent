@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.iglooproject.parents</groupId>
+		<artifactId>igloo-parent-maven-configuration-core</artifactId>
+		<version>1.0</version>
+		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
+	</parent>
+	
+	<groupId>org.iglooproject.components</groupId>
+	<artifactId>igloo-components</artifactId>
+	<packaging>pom</packaging>
+
+	<name>Igloo - Components</name>
+
+	<modules>
+		<module>bindgen-functional</module>
+		
+		<module>igloo-component-config-test</module>
+		
+		<module>igloo-component-jul-to-slf4j</module>
+		<module>igloo-component-truezip</module>
+		<module>igloo-component-commons-io</module>
+		
+		<module>igloo-component-commons</module>
+		<module>igloo-component-functional</module>
+		<module>igloo-component-spring</module>
+		<module>igloo-component-spring-bootstrap-config</module>
+		<module>igloo-component-lucene-analyzers</module>
+		<module>igloo-component-elasticsearch-test</module>
+		
+		<module>igloo-component-web-test</module>
+		<module>igloo-component-web-jpa-test</module>
+		
+		<module>igloo-component-jpa</module>
+		<module>igloo-component-jpa-test</module>
+		
+		<module>igloo-component-jpa-more</module>
+		<module>igloo-component-jpa-security</module>
+		<module>igloo-component-jpa-externallinkchecker</module>
+		
+		<module>igloo-component-export</module>
+		<module>igloo-component-imports</module>
+		
+		<module>igloo-component-sass</module>
+		
+		<module>igloo-component-wicket</module>
+		<module>igloo-component-wicket-more</module>
+		<module>igloo-component-wicket-bootstrap3</module>
+		<module>igloo-component-wicket-bootstrap4</module>
+		<module>igloo-component-wicket-more-jqplot</module>
+		
+		<module>igloo-component-web-security</module>
+		<module>igloo-component-rest-jersey2</module>
+		<module>igloo-component-jpa-migration</module>
+		<module>igloo-component-infinispan</module>
+		<module>igloo-component-elasticsearch-plugin</module>
+	</modules>
+
+</project>

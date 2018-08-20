@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<div class="content-container">
+			<div class="content-header-section">
+				<div class="content-header-container">
+					<div class="content-header">
+						<div wicket:id="breadCrumb" />
+						
+						<h4 class="content-header-title">
+							<a wicket:id="backToSourcePage" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
+								<span class="fa fa-arrow-left" />
+							</a>
+							<a wicket:id="backToList" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
+								<span class="fa fa-arrow-left" />
+							</a>
+							<wicket:container wicket:id="pageTitle" />
+						</h4>
+					</div>
+				</div>
+			</div>
+			
+			<div class="content-body-section">
+				<div class="content-body-container">
+					<div class="content-body">
+						<div class="row row-default">
+							<div class="col-lg-6">
+								<div wicket:id="description" />
+							</div>
+							<div class="col-lg-6">
+								<div wicket:id="users" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</wicket:extend>
+</html>

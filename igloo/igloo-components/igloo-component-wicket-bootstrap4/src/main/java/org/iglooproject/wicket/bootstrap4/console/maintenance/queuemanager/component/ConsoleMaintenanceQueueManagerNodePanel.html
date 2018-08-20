@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<body>
+	<wicket:panel>
+		<div wicket:id="nodes" class="row">
+			<div class="col-md-12">
+				<div wicket:id="node" class="card card-page" />
+			</div>
+		</div>
+	</wicket:panel>
+
+	<wicket:fragment wicket:id="node">
+		<wicket:container wicket:id="queueIds" />
+	</wicket:fragment>
+
+	<wicket:fragment wicket:id="nodeTitle">
+		<wicket:container wicket:id="node" />
+		<span wicket:id="local" />
+		<div wicket:id="status" />
+	</wicket:fragment>
+
+	<wicket:fragment wicket:id="nodeActions">
+		<a wicket:id="start" class="btn btn-success btn-xs">
+			<span class="fa fa-play" />
+			<wicket:message key="console.maintenance.queuemanager.actions.start" />
+		</a>
+		<a wicket:id="stop" class="btn btn-danger btn-xs">
+			<span class="fa fa-stop" />
+			<wicket:message key="console.maintenance.queuemanager.actions.stop" />
+		</a>
+	</wicket:fragment>
+
+	<wicket:fragment wicket:id="threads">
+		<span wicket:id="thread" />
+	</wicket:fragment>
+
+	<wicket:fragment wicket:id="runningThreads">
+		<span wicket:id="thread" />
+	</wicket:fragment>
+
+	<wicket:fragment wicket:id="waitingThreads">
+		<span wicket:id="thread" />
+	</wicket:fragment>
+</body>
+</html>

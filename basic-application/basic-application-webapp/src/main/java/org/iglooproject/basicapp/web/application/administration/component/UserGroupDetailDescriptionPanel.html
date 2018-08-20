@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div wicket:id="editPopup"/>
+		
+		<div class="card card-page">
+			<div class="card-header">
+				<h5 class="card-header-title"><wicket:message key="administration.userGroup.detail.description" /></h5>
+			</div>
+			<div class="card-body">
+				<div wicket:id="lockedWarningContainer" class="alert alert-warning">
+					<span class="fa fa-lock" />
+					<wicket:message key="administration.userGroup.detail.description.warning.locked" />
+				</div>
+				
+				<div class="description-section">
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.userGroup.description" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<div wicket:id="description" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.userGroup.authorities" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<ul class="list-unstyled m-0">
+										<li wicket:id="authorities" class="media">
+											<span wicket:id="authorityCheck" class="mr-3" />
+											<div class="media-body">
+												<span wicket:id="authorityName" />
+											</div>
+										</li>
+									</ul>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="card-action">
+					<div class="card-action-container">
+						<div class="card-action-item">
+							<button type="button" wicket:id="edit" class="btn btn-primary">
+								<span class="fa fa-pencil-alt" />
+								<wicket:message key="common.action.update" />
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</wicket:panel>
+</html>

@@ -1,0 +1,16 @@
+.navbar {
+	@extend .bg-dark;
+	@extend .navbar-dark;
+	@extend .navbar-expand-md;
+	
+	.navbar-nav {
+		.dropdown-menu {
+			.dropdown-item {
+				&.active,
+				&:active {
+					background-color: $dark;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,61 @@
+.navbar-main {
+	@include bg($brand-color);
+	
+	.navbar-brand {
+		color: $navbar-main-active-color;
+		
+		@include hover-focus {
+			color: $navbar-main-active-color;
+		}
+	}
+	
+	.navbar-nav {
+		.nav-link {
+			color: $navbar-main-color;
+			
+			@include hover-focus {
+				color: $navbar-main-hover-color;
+			}
+			
+			&.disabled {
+				color: $navbar-main-disabled-color;
+			}
+		}
+		
+		.show > .nav-link,
+		.active > .nav-link,
+		.nav-link.show,
+		.nav-link.active {
+			color: $navbar-main-active-color;
+		}
+		
+		.dropdown-menu {
+			.dropdown-item {
+				&.active,
+				&:active {
+					background-color: $brand-color;
+				}
+			}
+		}
+	}
+	
+	.navbar-toggler {
+		color: $navbar-main-color;
+		border-color: $navbar-main-toggler-border-color;
+	}
+	
+	.navbar-toggler-icon {
+		background-image: $navbar-main-toggler-icon-bg;
+	}
+	
+	.navbar-text {
+		color: $navbar-main-color;
+		a {
+			color: $navbar-main-active-color;
+			
+			@include hover-focus {
+				color: $navbar-main-active-color;
+			}
+		}
+	}
+}

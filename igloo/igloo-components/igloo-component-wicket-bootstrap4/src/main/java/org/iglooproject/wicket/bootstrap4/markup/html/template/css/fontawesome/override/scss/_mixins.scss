@@ -1,0 +1,13 @@
+@mixin fa-mixin-font() {
+	font-family: $fa-font-family;
+	font-weight: $fa-font-weight;
+}
+
+@mixin fa-mixin-content($fa-var-icon) {
+	content: fa-content($fa-var-icon);
+}
+
+@mixin fa-mixin-icon($fa-var-icon) {
+	@include fa-mixin-font();
+	content: fa-content($fa-var-icon);
+}

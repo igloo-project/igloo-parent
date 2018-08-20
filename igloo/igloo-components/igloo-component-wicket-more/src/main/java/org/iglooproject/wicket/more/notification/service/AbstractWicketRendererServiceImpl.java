@@ -1,0 +1,25 @@
+package org.iglooproject.wicket.more.notification.service;
+
+import java.util.Locale;
+
+import org.apache.wicket.Component;
+import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.jpa.security.service.ISecurityService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public abstract class AbstractWicketRendererServiceImpl extends AbstractOfflinePanelRendererServiceImpl {
+	
+	@Autowired
+	private ISecurityService securityService;
+
+	public AbstractWicketRendererServiceImpl(IWicketContextProvider wicketContextProvider) {
+		super(wicketContextProvider);
+	}
+	
+	@Override
+	protected String renderComponent(final SerializableSupplier2<Component> componentSupplier, final Locale locale, final String variation) {
+		return securityService.runAsSystem(
+			() -> AbstractWicketRendererServiceImpl.super.renderComponent(componentSupplier, locale, variation)
+		);
+	}
+}

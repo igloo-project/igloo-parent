@@ -5,7 +5,7 @@
 		eternal="false" memoryStoreEvictionPolicy="LRU" timeToLiveSeconds="86400" overflowToDisk="false" 
 		statistics="true" />
 	
-	<cache name="fr.openwide.core.basicapp.core.business.user.model.User"
+	<cache name="org.iglooproject.basicapp.core.business.user.model.User"
 		maxEntriesLocalHeap="7000"
 		eternal="true" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" statistics="true"/>
 

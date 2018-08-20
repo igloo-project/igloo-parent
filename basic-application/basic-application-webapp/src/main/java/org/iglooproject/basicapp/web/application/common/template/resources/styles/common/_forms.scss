@@ -1,0 +1,9 @@
+label.col-form-label.required:before {
+	@include fa-mixin-font();
+	content: fa-content($fa-var-exclamation-circle);
+	color: $warning;
+	margin-right: 4px;
+	font-size: .9rem;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}

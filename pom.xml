@@ -2,33 +2,49 @@
 	
 	<modelVersion>4.0.0</modelVersion>
 	
-	<groupId>fr.openwide.core</groupId>
-	<artifactId>owsi-core-parent</artifactId>
-	<version>0.16</version>
+	<groupId>org.iglooproject</groupId>
+	<artifactId>igloo-parent</artifactId>
+	<version>1.0</version>
 	<packaging>pom</packaging>
 	
-	<name>OWSI Core - Parent</name>
+	<name>Igloo - Parent</name>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
-		<owsi-core.maven-release-plugin.version>2.5.2</owsi-core.maven-release-plugin.version>
 		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
+		<igloo.jsch.version>0.1.54</igloo.jsch.version>
 		<maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
+		
+		<!-- version needed here as we use allure to aggregate child reports -->
+		<igloo.allure-maven.version>2.9</igloo.allure-maven.version>
+		<igloo.allure.version>2.6.0</igloo.allure.version>
 	</properties>
 	
 	<profiles>
 		<profile>
-			<id>owsi-core-release</id>
+			<id>sonar-branch</id>
+			<activation>
+				<property>
+					<name>sonar.projectBranch</name>
+				</property>
+			</activation>
+			<properties>
+				<sonar.projectKey>${project.groupId}:${project.artifactId}:${sonar.projectBranch}</sonar.projectKey>
+				<sonar.projectName>${project.name} (${sonar.projectBranch})</sonar.projectName>
+			</properties>
+		</profile>
+		<profile>
+			<id>igloo-release</id>
 			<activation>
 				<property>
 					<name>distribution</name>
-					<value>owsi-core-release</value>
+					<value>igloo-release</value>
 				</property>
 			</activation>
 			<modules>
-				<module>owsi-core</module>
+				<module>igloo</module>
 			</modules>
 		</profile>
 		<profile>
@@ -39,34 +55,12 @@
 				</property>
 			</activation>
 			<modules>
-				<module>owsi-core</module>
+				<module>igloo</module>
 				<module>basic-application</module>
 			</modules>
 		</profile>
 		<profile>
-			<id>jdk7</id>
-			<activation>
-				<property>
-					<name>jdk7</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-toolchains-plugin</artifactId>
-						<configuration>
-							<toolchains>
-								<jdk>
-									<version>1.7</version>
-								</jdk>
-							</toolchains>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
+			<!-- profile example for switching toolchain; no longer used -->
 			<id>jdk8</id>
 			<activation>
 				<property>
@@ -101,15 +95,33 @@
 			</build>
 		</profile>
 		<profile>
-			<id>target2</id>
+			<id>allure</id>
 			<activation>
 				<property>
-					<name>target2</name>
+					<name>allure.enabled</name>
+					<value>true</value>
 				</property>
 			</activation>
-			<build>
-				<directory>${project.basedir}/target2</directory>
-			</build>
+			<reporting>
+				<excludeDefaults>true</excludeDefaults>
+				<plugins>
+					<plugin>
+						<groupId>io.qameta.allure</groupId>
+						<artifactId>allure-maven</artifactId>
+						<version>${igloo.allure-maven.version}</version>
+						<configuration>
+							<reportVersion>${igloo.allure.version}</reportVersion>
+						</configuration>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>aggregate</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
 		</profile>
 	</profiles>
 	
@@ -130,6 +142,13 @@
 						<versionTagPrefix>v</versionTagPrefix>
 					</flowInitContext>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.jcraft</groupId>
+						<artifactId>jsch</artifactId>
+						<version>${igloo.jsch.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -139,11 +158,6 @@
 					<artifactId>maven-toolchains-plugin</artifactId>
 					<version>${maven-toolchains-plugin.version}</version>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>${owsi-core.maven-release-plugin.version}</version>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -151,8 +165,8 @@
 	<!-- Project information -->
 
 	<organization>
-		<name>Open Wide</name>
-		<url>http://www.openwide.fr/</url>
+		<name>Kobalt</name>
+		<url>https://www.kobalt-si.fr/</url>
 	</organization>
 
 	<licenses>
@@ -173,20 +187,20 @@
 		<developer>
 			<id>lalmeras</id>
 			<name>Laurent Almeras</name>
-			<email>laurent.almeras@openwide.fr</email>
-			<organization>Open Wide</organization>
+			<email>laurent.almeras@kobalt-si.fr</email>
+			<organization>Kobalt</organization>
 		</developer>
 		<developer>
 			<id>jgonzalez</id>
 			<name>Julien Gonzalez</name>
-			<email>julien.gonzalez@openwide.fr</email>
-			<organization>Open Wide</organization>
+			<email>julien.gonzalez@kobalt-si.fr</email>
+			<organization>Kobalt</organization>
 		</developer>
 		<developer>
 			<id>rjoly</id>
 			<name>Renaud Joly</name>
-			<email>renaud.joly@openwide.fr</email>
-			<organization>Open Wide</organization>
+			<email>renaud.joly@kobalt-si.fr</email>
+			<organization>Kobalt</organization>
 		</developer>
 		<developer>
 			<id>yrodiere</id>
@@ -197,8 +211,8 @@
 		<developer>
 			<id>flacreuse</id>
 			<name>Florian Lacreuse</name>
-			<email>florian.lacreuse@openwide.fr</email>
-			<organization>Open Wide</organization>
+			<email>florian.lacreuse@kobalt-si.fr</email>
+			<organization>Kobalt</organization>
 		</developer>
 		<developer>
 			<id>nbarithel</id>
@@ -209,37 +223,37 @@
 		<developer>
 			<id>jbenichou</id>
 			<name>Julien Bénichou</name>
-			<email>julien.benichou@openwide.fr</email>
-			<organization>Open Wide</organization>
+			<email>julien.benichou@kobalt-si.fr</email>
+			<organization>Kobalt</organization>
 		</developer>
 	</developers>
 	
 	<distributionManagement>
 		<repository>
-			<id>nexus-owsi-core</id>
-			<name>Nexus OWSI Core</name>
-			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core</url>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus Igloo Releases</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
 		</repository>
 		<snapshotRepository>
-			<id>nexus-owsi-core-snapshots</id>
-			<name>Nexus OWSI Core Snapshots</name>
-			<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus Igloo Snapshots</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
 	<issueManagement>
-		<system>Trac</system>
-		<url>https://projects.openwide.fr/services/svn/trac/owsi-tools/report</url>
+		<system>GitHub</system>
+		<url>https://github.com/igloo-project/igloo-parent/issues</url>
 	</issueManagement>
 
 	<ciManagement>
-		<system>Jenkins</system>
-		<url>https://projects.openwide.fr/services/ci/hudson/jenkins/owsi-core/</url>
+		<system>GitLab</system>
+		<url>https://gitlab.tools.kobalt-si.fr/igloo/igloo-parent/pipelines</url>
 	</ciManagement>
 
 	<scm>
-		<developerConnection>scm:git:git@github.com:openwide-java/owsi-core-parent.git</developerConnection>
-		<url>https://github.com/openwide-java/owsi-core-parent</url>
+		<developerConnection>scm:git:git@github.com:igloo-project/igloo-parent.git</developerConnection>
+		<url>https://github.com/igloo-project/igloo-parent</url>
 		<tag>HEAD</tag>
 	</scm>
 	

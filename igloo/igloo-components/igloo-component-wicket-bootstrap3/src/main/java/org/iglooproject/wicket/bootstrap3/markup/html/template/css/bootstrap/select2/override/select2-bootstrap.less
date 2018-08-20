@@ -1,0 +1,107 @@
+body {
+	.select2-container {
+		&.select2-container--bootstrap {
+			// By default, the selector with "width: auto" must take all the space
+			display: block;
+		}
+		
+		.select2-selection--single .select2-selection__rendered {
+			padding: 0px;
+		}
+		
+		.select2-results__options {
+			padding-left: 4px;
+			margin: 4px 4px 4px 0;
+			
+			.select2-results__message {
+				padding-top: 2px;
+				padding-bottom: 2px;
+				
+				// BS warning theme
+				background-color: #fcf8e3;
+				color: #8a6d3b
+			}
+			
+			.select2-results__option[aria-selected=true] {
+				background-color: transparent;
+				
+				&.select2-results__option--highlighted {
+					background-color: @s2bs-dropdown-link-active-bg;
+					color: @s2bs-dropdown-link-active-color;
+				}
+			}
+		}
+		
+		.select2-selection__clear {
+			// Hiding the original 'x'
+			visibility: hidden;
+			position: relative;
+			
+			// fa
+			display: inline-block;
+			font-family: FontAwesome;
+			font-style: normal;
+			font-weight: normal;
+			line-height: 1;
+						
+			// fa-times
+			&:before {
+				content: @fa-var-times;
+				visibility: visible;
+				position: absolute;
+				top: 2px;
+				left: 0;
+			}
+		}
+		
+		.select2-selection--multiple {
+			.select2-selection__rendered {
+				padding-left: 0px;
+				
+				.select2-selection__choice {
+					color: @select2-multiple-choice-color;
+					background-color: @select2-multiple-choice-bg;
+					border: 1px solid @select2-multiple-choice-border-color;
+					border: none;
+					
+					padding: 2px 10px 2px 8px;
+					margin-top: 5px;
+					margin-bottom: 3px;
+					
+					.select2-selection__choice__remove {
+						color: @select2-multiple-choice-close-color;
+						float: right;
+						
+						// Hiding the original 'x'
+						visibility: hidden;
+						position: relative;
+						
+						// fa
+						display: inline-block;
+						font-family: FontAwesome;
+						font-style: normal;
+						font-weight: normal;
+						line-height: 1;
+						
+						// fa-times-circle
+						&:before {
+							content: @fa-var-times-circle;
+							padding-left: 5px;
+							visibility: visible;
+							position: absolute;
+							top: 2px;
+							left: 0;
+						}
+					}
+				}
+				
+				.select2-search__field {
+					box-shadow: none;
+				}
+			}
+			.select2-selection__clear {
+				display: none;
+			}
+		}
+	}
+}

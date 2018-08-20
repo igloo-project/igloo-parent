@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<div wicket:id="body">
+		<form wicket:id="form">
+			<div class="row row-form">
+				<div class="form-group col-12">
+					<div class="row">
+						<label wicket:for="value" class="col-sm-3 col-form-label"><wicket:label /></label>
+						<div class="col-sm-9">
+							<input wicket:id="value" class="form-control" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div wicket:id="footer">
+		<button wicket:id="cancel" class="btn btn-outline-secondary" type="button">
+			<span class="fa fa-ban" />
+			<wicket:message key="common.cancel" />
+		</button>
+		<button wicket:id="save" class="btn btn-success" type="button">
+			<span class="fa fa-check" />
+			<span><wicket:message key="common.action.save" /></span>
+		</button>
+	</div>
+</wicket:panel>
+</html>

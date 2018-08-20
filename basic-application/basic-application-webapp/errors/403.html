@@ -4,34 +4,44 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		
 		<link type="image/x-icon" href="/errors/images/favicon.ico" rel="shortcut icon" />
-		<link href="/errors/css/static-content.css" type="text/css" rel="stylesheet" />
 		<link href="/errors/css/bootstrap.css" type="text/css" rel="stylesheet" />
 		<link href="/errors/css/font-awesome.css" type="text/css" rel="stylesheet" />
+		<link href="/errors/css/style.css" type="text/css" rel="stylesheet" />
+		
 		<title>Basic Application - Accès non autorisé</title>
 	</head>
-
-	<body>
-		<div id="error-main">
-			<div id="banner-title">
-				Basic Application - Accès non autorisé
-			</div>
-
-			<div id="content">
-				<p>Vous n'avez pas accès à la page demandée.</p>
-				<p class="retour-application">
-					<a class="btn btn-link" href="/">
-						<span class="fa fa-chevron-left"></span>
-						Retourner à la page d'accueil
-					</a>
-				</p>
-			</div>
-
-			<div id="bandeau-inferieur">
-				<span class="logo">
-					<img src="/errors/images/logo_openwide.png" alt="Basic Application" height="66" width="210" />
-				</span>
-				<div class="clear-both"></div>
+	
+	<body class="application-access-page">
+		<div class="page-container">
+			<div class="container">
+				<div class="card card-main-title-cascade">
+					<div class="card-img-top">
+						<img src="/errors/images/logo.png" alt="Basic Application" width="114" height="55" />
+					</div>
+					<div class="card-header card-main-title">
+						Basic Application - Accès non autorisé
+					</div>
+					<div class="card-body">
+						<div class="alert alert-warning m-0">
+							<h5 class="alert-heading m-0">Vous n'avez pas accès à la page demandée.</h5>
+						</div>
+						
+						<hr class="my-4">
+						
+						<div class="text-right">
+							<a class="btn btn-outline-primary" href="/">
+								<span class="fa fa-home fa-fw"></span>
+								Page d'accueil
+							</a>
+						</div>
+					</div>
+					<div class="card-footer">
+						<small class="text-muted">Erreur 403</small>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>

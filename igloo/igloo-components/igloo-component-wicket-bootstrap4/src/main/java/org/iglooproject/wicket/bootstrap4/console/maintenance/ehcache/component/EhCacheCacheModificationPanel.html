@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head></head>
+<body>
+	<wicket:panel>
+		<div wicket:id="body">
+			<form wicket:id="form">
+				<div class="form-group row">
+					<label wicket:for="maxSize" class="col-sm-4 col-form-label"><wicket:label /></label>
+					<div class="col-sm-8">
+						<input wicket:id="maxSize" type="text" class="form-control" autocomplete="off" />
+					</div>
+				</div>
+			</form>
+		</div>
+		<div wicket:id="footer">
+			<button wicket:id="annulerModificationCache" class="btn btn-outline-secondary" type="button">
+				<span class="fa fa-ban"></span>
+				<wicket:message key="common.cancel" />
+			</button>
+			<button wicket:id="validerModificationCache" class="btn btn-success">
+				<span class="fa fa-check"></span>
+				<wicket:message key="common.action.save" />
+			</button>
+		</div>
+	</wicket:panel>
+</body>
+</html>
