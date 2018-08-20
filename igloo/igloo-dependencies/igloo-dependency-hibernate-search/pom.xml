@@ -30,6 +30,11 @@
 					<groupId>org.hibernate</groupId>
 					<artifactId>hibernate-core</artifactId>
 				</exclusion>
+				<!-- driven by hibernate-core -->
+				<exclusion>
+					<groupId>org.hibernate.common</groupId>
+					<artifactId>hibernate-commons-annotations</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		

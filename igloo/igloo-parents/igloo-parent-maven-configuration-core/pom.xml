@@ -25,8 +25,9 @@
 		<igloo.spring.version>5.0.7.RELEASE</igloo.spring.version>
 		<!-- https://www.eclipse.org/aspectj/doc/released/README-191.html -->
 		<igloo.aspectj.version>1.9.1</igloo.aspectj.version>
-		
-		<igloo.hibernate.version>5.2.17.Final</igloo.hibernate.version>
+
+		<!-- http://hibernate.org/orm/releases/5.3/ -->
+		<igloo.hibernate.version>5.3.5.Final</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
 		<igloo.jboss-logging.version>3.3.2.Final</igloo.jboss-logging.version>
 		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
@@ -60,7 +61,7 @@
 		
 		<igloo.spring-ldap.version>2.3.2.RELEASE</igloo.spring-ldap.version>
 		
-		<igloo.hibernate-search.version>5.9.2.Final</igloo.hibernate-search.version>
+		<igloo.hibernate-search.version>5.10.3.Final</igloo.hibernate-search.version>
 		
 		<!-- overriden in some modules, when we are in a elasticsearch context -->
 		<igloo.lucene.version>5.5.4</igloo.lucene.version>
@@ -196,7 +197,7 @@
 		<!-- both needed by less4j and hibernate-search ; we keep hibernate-search version -->
 		<igloo.gson.version>2.6.2</igloo.gson.version>
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
-		<igloo.byte-buddy.version>1.6.14</igloo.byte-buddy.version>
+		<igloo.byte-buddy.version>1.8.17</igloo.byte-buddy.version>
 		<igloo.elasticsearch-cluster-runner.version>${igloo.elasticsearch.version}.0</igloo.elasticsearch-cluster-runner.version>
 		<igloo.embedded-elasticsearch.version>2.5.1</igloo.embedded-elasticsearch.version>
 		
@@ -1505,16 +1506,6 @@
 					</plugins>
 				</pluginManagement>
 			</build>
-		</profile>
-		<profile>
-			<id>eclipse-processor</id>
-			<!--
-			A profile for sources generation. Simply maps the maven-processor-plugin executions to the generate-sources
-			phase (even for test sources), so that we only need to run generate-sources and nothing else.
-			-->
-			<properties>
-				<generated-sources-test.directory>${generated-sources.directory}</generated-sources-test.directory>
-			</properties>
 		</profile>
 	</profiles>
 	

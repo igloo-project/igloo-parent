@@ -17,8 +17,7 @@ import org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
-import org.hibernate.cache.ehcache.EhCacheRegionFactory;
-import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory;
+import org.hibernate.cache.ehcache.ConfigSettings;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
@@ -85,6 +84,9 @@ public final class JpaConfigUtils {
 		properties.setProperty(Environment.USE_REFLECTION_OPTIMIZER, Boolean.TRUE.toString());
 		properties.setProperty(Environment.CREATE_EMPTY_COMPOSITES_ENABLED,
 				Boolean.valueOf(configuration.isCreateEmptyCompositesEnabled()).toString());
+		
+		properties.setProperty(AvailableSettings.JPAQL_STRICT_COMPLIANCE, Boolean.TRUE.toString());
+		
 		Integer defaultBatchSize = configuration.getDefaultBatchSize();
 		if (defaultBatchSize != null) {
 			properties.setProperty(Environment.DEFAULT_BATCH_FETCH_SIZE, Integer.toString(defaultBatchSize));
@@ -103,14 +105,17 @@ public final class JpaConfigUtils {
 			if (configuration.getEhCacheRegionFactory() != null) {
 				properties.setProperty(Environment.CACHE_REGION_FACTORY, configuration.getEhCacheRegionFactory().getName());
 			} else {
+				// from 5.3.x, hibernate use alias names for hibernate-provided factory
+				// classes still supported
+				// https://github.com/hibernate/hibernate-orm/commit/f8964847dd40f64e1f478eba47c767be98742125
 				if (singletonCache) {
-					properties.setProperty(Environment.CACHE_REGION_FACTORY, SingletonEhCacheRegionFactory.class.getName());
+					properties.setProperty(Environment.CACHE_REGION_FACTORY, "ehcache-singleton");
 				} else {
-					properties.setProperty(Environment.CACHE_REGION_FACTORY, EhCacheRegionFactory.class.getName());
+					properties.setProperty(Environment.CACHE_REGION_FACTORY, "ehcache");
 				}
 			}
 			properties.setProperty(AvailableSettings.JPA_SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
-			properties.setProperty(EhCacheRegionFactory.NET_SF_EHCACHE_CONFIGURATION_RESOURCE_NAME, ehCacheConfiguration);
+			properties.setProperty(ConfigSettings.EHCACHE_CONFIGURATION_RESOURCE_NAME, ehCacheConfiguration);
 			properties.setProperty(Environment.USE_SECOND_LEVEL_CACHE, Boolean.TRUE.toString());
 			if (queryCacheEnabled) {
 				properties.setProperty(Environment.USE_QUERY_CACHE, Boolean.TRUE.toString());
