@@ -23,7 +23,7 @@
 		<argLine>${test.argLine} ${allure.argLine}</argLine>
 		
 		<!-- conditionally overridden by allure profile -->
-		<allure.argLine></allure.argLine>
+		<allure.argLine />
 		
 		<!--
 			Should be a valid artifact of type "signature"
