@@ -21,7 +21,7 @@ maven-build:
   stage: build
   environment: staging
   script:
-    - "mvn -DskipTests clean compile"
+    - "mvn -DskipTests clean package"
 
 maven-test:
   stage: test
