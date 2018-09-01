@@ -55,35 +55,6 @@ body {
 						&:first-child {
 							margin-top: 0;
 						}
-						
-						> .content-header-elements-wrapper {
-							@include basic-elements-container-index(2);
-							
-							> .content-header-elements-item {
-								@include basic-elements-item-index(2);
-								
-								&.content-header-elements-item-actions {
-									margin-left: auto;
-								}
-							}
-						}
-						
-						.content-header-info-container {
-							@include basic-elements-container-index(1);
-							
-							> .content-header-info-item {
-								@include basic-elements-item-index(1);
-							}
-						}
-						
-						.content-header-action-container {
-							@include basic-elements-container-index(1);
-							justify-content: flex-end;
-							
-							> .content-header-action-item {
-								@include basic-elements-item-index(1);
-							}
-						}
 					}
 				}
 			}

@@ -113,11 +113,12 @@ $spacers: map-merge(
 $grid-gutter-widths: () !default;
 $grid-gutter-widths: map-merge((
 	0: 0,
-	1: 8px,
-	2: 15px,
-	3: 30px,
-	4: 40px,
-	5: 50px
+	1: 4px,
+	2: 8px,
+	3: 15px,
+	4: 30px,
+	5: 40px,
+	6: 50px
 ), $grid-gutter-widths);
 
 // Font Awesome

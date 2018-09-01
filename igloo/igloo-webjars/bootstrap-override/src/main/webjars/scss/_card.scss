@@ -8,15 +8,6 @@
 
 .card-action {
 	margin-top: 1rem;
-	
-	> .card-action-container {
-		@include basic-elements-container-index(1);
-		justify-content: flex-end;
-		
-		> .card-action-item {
-			@include basic-elements-item-index(1);
-		}
-	}
 }
 
 .card {

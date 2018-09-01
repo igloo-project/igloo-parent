@@ -142,12 +142,14 @@ table {
 	> thead, > tbody, > tfoot {
 		> tr {
 			> th, > td {
-				.table-row-actions {
-					@include basic-elements-container(4px);
+				.row-table-action {
+					@include make-row();
+					@include make-row-grid(map-get($grid-gutter-widths, 1));
 					justify-content: center;
 					
-					.table-row-action {
-						@include basic-elements-item(4px);
+					.col-table-action {
+						@include make-col-ready();
+						@include make-col-auto();
 					}
 				}
 				
@@ -160,17 +162,25 @@ table {
 }
 
 .add-in-container {
-	@include basic-elements-container-index(2);
+	display: flex;
+	flex: 1 1 auto;
+	flex-wrap: wrap;
+	align-items: center;
+	margin: -1 * (map-get($grid-gutter-widths, 3) / 2);
 	
 	> .add-in-section {
-		@include basic-elements-item-index(2);
+		padding: (map-get($grid-gutter-widths, 3) / 2);
 		align-self: center;
 		
 		> .add-in-wrapper {
-			@include basic-elements-container-index(1);
+			display: flex;
+			flex: 1 1 auto;
+			flex-wrap: wrap;
+			align-items: center;
+			margin: -1 * (map-get($grid-gutter-widths, 2) / 2);
 			
 			> .add-in {
-				@include basic-elements-item-index(1);
+				padding: (map-get($grid-gutter-widths, 2) / 2);
 				
 				> nav {
 					> .pagination {

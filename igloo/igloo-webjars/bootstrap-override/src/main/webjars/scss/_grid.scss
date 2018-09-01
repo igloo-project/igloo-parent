@@ -84,6 +84,12 @@
 	}
 }
 
+@mixin make-col-auto() {
+	flex: 0 0 auto;
+	width: auto;
+	max-width: none; // Reset earlier grid tiers
+}
+
 @mixin make-flex-gutters($abbrev, $length, $direction:"") {
 	margin#{$direction}: -1 * ($length / 2);
 	
@@ -123,16 +129,24 @@
 
 .row {
 	&.row-default {
-		@extend .row-g-3;
+		@include make-row-grid(map-get($grid-gutter-widths, 4));
 	}
 	
 	&.row-form {
-		@extend .row-g-2;
+		@include make-row-grid(map-get($grid-gutter-widths, 3));
 		
 		> .form-group {
 			margin: 0;
 			padding: 0;
 		}
+	}
+	
+	&.row-action {
+		@include make-row-grid(map-get($grid-gutter-widths, 2));
+	}
+	
+	&.row-compact {
+		@include make-row-grid(map-get($grid-gutter-widths, 2));
 	}
 }
 
