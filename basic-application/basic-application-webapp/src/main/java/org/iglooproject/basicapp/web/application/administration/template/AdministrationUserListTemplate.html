@@ -16,16 +16,16 @@
 						</h4>
 						
 						<div wicket:enclosure-container class="content-header-elements-section">
-							<div class="content-header-elements-wrapper">
-								<div class="content-header-elements-item content-header-elements-item-actions">
-									<div class="content-header-action-container">
-										<div wicket:enclosure-component="add" class="content-header-action-item">
+							<div class="row row-compact align-items-center">
+								<div class="col-auto ml-auto">
+									<div class="row row-compact align-items-center">
+										<div wicket:enclosure-component="add" class="col-auto">
 											<button wicket:id="add" class="btn btn-primary" type="button">
 												<span class="fa fa-plus"></span>
 												<wicket:message key="common.action.create" />
 											</button>
 										</div>
-										<div wicket:enclosure-component="exportExcel" class="content-header-action-item">
+										<div wicket:enclosure-component="exportExcel" class="col-auto">
 											<button wicket:id="exportExcel" class="btn btn-default" type="button" wicket:message="title:common.action.export.excel">
 												<span class="fa fa-download"></span>
 											</button>

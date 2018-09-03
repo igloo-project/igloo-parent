@@ -8,13 +8,19 @@
 
 // Variables
 @import "webjars://bootstrap:current/scss/functions";
-@import "webjars://bootstrap:current/scss/variables";
-@import "webjars://bootstrap-override:current/scss/variables";
-@import "../common/variables";
+@import "webjars://bootstrap-override:current/scss/functions";
 @import "variables";
+@import "../common/variables";
+@import "../common/bootstrap/variables";
+@import "webjars://bootstrap-override:current/scss/variables";
+@import "webjars://bootstrap:current/scss/variables";
+
 
 // Bootstrap-like styles
 @import "webjars://bootstrap:current/scss/mixins";
+@import "webjars://bootstrap-override:current/scss/mixins";
+@import "../common/bootstrap/mixins";
+
 @import "framework/scaffolding";
 @import "framework/tables";
 @import "framework/buttons";

@@ -10,11 +10,11 @@ Igloo is a versatile Java toolbox used to build business applications... and hav
 
 It is an ongoing effort and we continuously improve it and add new features. It has been used in production for several years now.
 
-Apart from the toolbox, we also released a Maven archetype to start a new application: it's called the "Basic application".
+Apart from the toolbox, we also released a Maven archetype to start a new application: it's called the "Basic Application".
 
 Sources are licensed under the Apache 2 license.
 
-This toolbox is developed by Kobalt SI - http://kobalt-si.fr/ (formerly by Open Wide - http://www.openwide.fr/ then Smile - http://www.smile.fr).
+This toolbox is developed by **Kobalt** - https://www.kobalt.fr/ (formerly by Open Wide then Smile - https://www.smile.eu/).
 
 Architecture
 ------------
@@ -22,11 +22,11 @@ Architecture
 Igloo is standing on the shoulders of giants:
 - Spring and Spring Security
 - Hibernate and Hibernate Search
-- Wicket
-- POI, XHTMLRenderer...
-- jQuery
+- Apache Wicket
 - Bootstrap
-- Font-Awesome
+- Font Awesome
+- jQuery
+- POI, XHTMLRenderer...
 
 Documentation
 -------------

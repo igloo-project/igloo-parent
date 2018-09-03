@@ -21,35 +21,35 @@
 						</h4>
 						
 						<div class="content-header-elements-section">
-							<div class="content-header-elements-wrapper">
-								<div class="content-header-elements-item">
-									<div class="content-header-info-container">
-										<div class="content-header-info-item">
+							<div class="row row-compact align-items-center">
+								<div class="col-auto">
+									<div class="row row-compact">
+										<div class="col-auto">
 											<span wicket:id="active" class="badge-header" />
 										</div>
 									</div>
 								</div>
-								<div wicket:enclosure-container class="content-header-elements-item content-header-elements-item-actions">
-									<div class="content-header-action-container">
-										<div wicket:enclosure-component="passwordEdit" class="content-header-action-item">
+								<div wicket:enclosure-container class="col-auto ml-auto">
+									<div class="row row-compact">
+										<div wicket:enclosure-component="passwordEdit" class="col-auto">
 											<button type="button" wicket:id="passwordEdit" class="btn btn-primary">
 												<span class="fa fa-key" /> 
 												<wicket:message key="administration.user.action.password.edit" />
 											</button>
 										</div>
-										<div wicket:enclosure-component="passwordReset" class="content-header-action-item">
+										<div wicket:enclosure-component="passwordReset" class="col-auto">
 											<button type="button" wicket:id="passwordReset" class="btn btn-primary"> 
 												<span class="fa fa-unlock-alt" />
 												<wicket:message key="administration.user.action.password.recovery.reset" />
 											</button>
 										</div>
-										<div wicket:enclosure-component="enable" class="content-header-action-item">
+										<div wicket:enclosure-component="enable" class="col-auto">
 											<button type="button" wicket:id="enable" class="btn btn-success"> 
 												<span class="fa fa-check" />
 												<wicket:message key="common.action.enable" />
 											</button>
 										</div>
-										<div wicket:enclosure-component="disable" class="content-header-action-item">
+										<div wicket:enclosure-component="disable" class="col-auto">
 											<button type="button" wicket:id="disable" class="btn btn-danger"> 
 												<span class="fa fa-times" />
 												<wicket:message key="common.action.disable" />
