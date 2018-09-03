@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
@@ -91,16 +92,24 @@ public abstract class AbstractJpaSecurityConfig {
 		detailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
 		return detailsService;
 	}
-
+	
 	@Bean
-	public AuthenticationManager authenticationManager(UserDetailsService userDetailsService,
-			RunAsImplAuthenticationProvider runAsProvider, PasswordEncoder passwordEncoder) {
+	public AuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService,
+			PasswordEncoder passwordEncoder) {
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+		provider.setUserDetailsService(userDetailsService);
+		provider.setPasswordEncoder(passwordEncoder);
+		return provider;
+	}
+	
+	/**
+	 * authenticationProviders are injected by type lookup. This bean can be overriden by declaring a new bean
+	 * with a new method name, an alias for <em>authenticationManager</em> and a @{@link Primary} annotation.
+	 */
+	@Bean
+	public AuthenticationManager authenticationManager(List<AuthenticationProvider> authenticationProviders) {
 		List<AuthenticationProvider> providers = Lists.newArrayList();
-		providers.add(runAsProvider);
-		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-		authenticationProvider.setUserDetailsService(userDetailsService);
-		authenticationProvider.setPasswordEncoder(passwordEncoder);
-		providers.add(authenticationProvider);
+		providers.addAll(authenticationProviders);
 		return new ProviderManager(providers);
 	}
 	
