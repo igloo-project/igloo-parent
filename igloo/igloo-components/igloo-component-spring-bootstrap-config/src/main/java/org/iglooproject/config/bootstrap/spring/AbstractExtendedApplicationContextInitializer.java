@@ -103,7 +103,7 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 					LOGGER.info(String.format("Log4j : %1$s added", location));
 					hasSource = true;
 					ResourcePropertySource source = new ResourcePropertySource(applicationContext.getResource(location));
-					sources.addLast(source);
+					sources.addFirst(source);
 					propertyNames.addAll(Arrays.asList(source.getPropertyNames()));
 				} else {
 					ignoredConfigurations.add(location);
