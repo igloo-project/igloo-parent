@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.naming.NamingException;
 import javax.persistence.SharedCacheMode;
 import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
@@ -26,6 +27,8 @@ import org.hibernate.search.elasticsearch.cfg.ElasticsearchEnvironment;
 import org.hibernate.search.store.impl.FSDirectoryProvider;
 import org.hibernate.search.store.impl.RAMDirectoryProvider;
 import org.iglooproject.jpa.business.generic.service.ITransactionalAspectAwareService;
+import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionConfigurationProvider;
+import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionJndiConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionPoolConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.IJpaPropertiesProvider;
@@ -37,6 +40,7 @@ import org.iglooproject.jpa.hibernate.jpa.PerTableSequenceStrategyProvider;
 import org.iglooproject.jpa.hibernate.model.naming.PostgreSQLPhysicalNamingStrategyImpl;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
+import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -262,21 +266,40 @@ public final class JpaConfigUtils {
 		return transactionInterceptor;
 	}
 
-	public static DataSource dataSource(IDatabaseConnectionPoolConfigurationProvider configurationProvider) {
-		HikariDataSource dataSource = new HikariDataSource();
-		
-		dataSource.setDriverClassName(configurationProvider.getDriverClass().getName());
-		dataSource.setJdbcUrl(configurationProvider.getUrl());
-		dataSource.setUsername(configurationProvider.getUser());
-		dataSource.setPassword(configurationProvider.getPassword());
-		dataSource.addDataSourceProperty("user", configurationProvider.getUser());
-		dataSource.addDataSourceProperty("password", configurationProvider.getPassword());
-		dataSource.setMinimumIdle(configurationProvider.getMinIdle());
-		dataSource.setMaximumPoolSize(configurationProvider.getMaxPoolSize());
-		dataSource.setConnectionTestQuery(configurationProvider.getValidationQuery());
-		dataSource.setConnectionInitSql(emptyToNull(configurationProvider.getInitSql()));
-		
-		return dataSource;
+	public static DataSource dataSource(IDatabaseConnectionConfigurationProvider configurationProvider) {
+		if (configurationProvider instanceof IDatabaseConnectionJndiConfigurationProvider) {
+			String jndiName = ((IDatabaseConnectionJndiConfigurationProvider) configurationProvider).getJndiName();
+			JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
+			bean.setJndiName(jndiName);
+			bean.setExpectedType(DataSource.class);
+			try {
+				bean.afterPropertiesSet();
+			} catch (IllegalArgumentException | NamingException e) {
+				throw new IllegalStateException(String.format("Error during jndi lookup for %s resource",
+						jndiName), e);
+			}
+			return (DataSource) bean.getObject();
+		} else if (configurationProvider instanceof IDatabaseConnectionPoolConfigurationProvider) {
+			IDatabaseConnectionPoolConfigurationProvider provider =
+					(IDatabaseConnectionPoolConfigurationProvider) configurationProvider;
+			HikariDataSource dataSource = new HikariDataSource();
+			
+			dataSource.setDriverClassName(configurationProvider.getDriverClass().getName());
+			dataSource.setJdbcUrl(provider.getUrl());
+			dataSource.setUsername(provider.getUser());
+			dataSource.setPassword(provider.getPassword());
+			dataSource.addDataSourceProperty("user", provider.getUser());
+			dataSource.addDataSourceProperty("password", provider.getPassword());
+			dataSource.setMinimumIdle(provider.getMinIdle());
+			dataSource.setMaximumPoolSize(provider.getMaxPoolSize());
+			dataSource.setConnectionTestQuery(provider.getValidationQuery());
+			dataSource.setConnectionInitSql(emptyToNull(provider.getInitSql()));
+			
+			return dataSource;
+		} else {
+			throw new IllegalStateException(String.format("JDBC pool : %s type not handled",
+					configurationProvider.getClass().getName()));
+		}
 	}
 
 	private static String[] getPackagesToScan(List<JpaPackageScanProvider> jpaPackageScanProviders) {

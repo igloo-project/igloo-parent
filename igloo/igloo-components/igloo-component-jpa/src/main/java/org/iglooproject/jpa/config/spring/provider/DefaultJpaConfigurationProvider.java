@@ -23,10 +23,10 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Autowired
 	private List<JpaPackageScanProvider> jpaPackageScanProviders;
 
-	@Value("${${db.type}.db.dialect}")
+	@Value("${db.dialect}")
 	private Class<Dialect> dialect;
 
-	@Value("${hibernate.defaultSchema:${db.user}}")
+	@Value("${db.schema}")
 	private String defaultSchema;
 
 	@Value("${hibernate.hbm2ddl.auto}")

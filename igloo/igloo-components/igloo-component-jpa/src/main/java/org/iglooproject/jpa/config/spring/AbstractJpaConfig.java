@@ -130,16 +130,18 @@ public abstract class AbstractJpaConfig {
 		return f;
 	}
 
+	/**
+	 * Déclaration explicite de close comme destroyMethod (Spring doit la prendre en compte auto-magiquement même
+	 * si non configurée).
+	 */
+	@Bean(destroyMethod = "close")
+	public DataSource dataSource() {
+		return JpaConfigUtils.dataSource(defaultJpaConfig.defaultDatabaseConnectionPoolConfigurationProvider(null));
+	}
+
 	@Bean
 	@DependsOn("databaseInitialization")
 	public abstract LocalContainerEntityManagerFactoryBean entityManagerFactory();
-
-	/**
-	 * Il est important de déterminer la destroyMethod sur l'annotation {@link Bean}. Spring prend en compte
-	 * auto-magiquement la méthode close() si présente si pas de configuration.
-	 */
-	@Bean
-	public abstract DataSource dataSource();
 
 	@Bean
 	public abstract JpaPackageScanProvider applicationJpaPackageScanProvider();
