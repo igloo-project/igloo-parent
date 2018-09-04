@@ -134,7 +134,9 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 			
 			if (LOGGER_SYNTHETIC.isInfoEnabled()) {
 				LOGGER_SYNTHETIC.info("Log4j configurations (ordered): {}", Joiner.on(", ").join(loadedConfigurations));
-				LOGGER_SYNTHETIC.warn("Log4j configurations **ignored**: {}", Joiner.on(",").join(ignoredConfigurations));
+				if (! ignoredConfigurations.isEmpty()) {
+					LOGGER_SYNTHETIC.warn("Log4j configurations **ignored**: {}", Joiner.on(",").join(ignoredConfigurations));
+				}
 			}
 		} else {
 			LOGGER_SYNTHETIC.warn("Log4j: no {} configuration found; keeping default configuration", LOG4J_CONFIGURATIONS_PROPERTY);
