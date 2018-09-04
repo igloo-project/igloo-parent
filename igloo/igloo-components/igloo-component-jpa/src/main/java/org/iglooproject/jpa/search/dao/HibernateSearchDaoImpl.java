@@ -333,7 +333,13 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			if (throwException) {
 				throw new IllegalStateException(message);
 			} else {
-				LOGGER.warn(message);
+				if (jpaPropertiesProvider.isHibernateSearchElasticSearchEnabled()) {
+					// error if needed (elasticsearch mode)
+					LOGGER.error(message);
+				} else {
+					// debug if not mandatory (lucene mode)
+					LOGGER.debug(message);
+				}
 				return false;
 			}
 		} else {
