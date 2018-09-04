@@ -78,7 +78,9 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 			LOGGER_SYNTHETIC.info("Bootstrap configurations (ordered): {}", Joiner.on(", ").join(loadedLocations));
 			List<String> ignoredLocations = Lists.newArrayList(locations);
 			ignoredLocations.removeAll(loadedLocations);
-			LOGGER_SYNTHETIC.warn("Bootstrap configurations **ignored**: {}", Joiner.on(",").join(ignoredLocations));
+			if (! ignoredLocations.isEmpty()) {
+				LOGGER_SYNTHETIC.warn("Bootstrap configurations **ignored**: {}", Joiner.on(",").join(ignoredLocations));
+			}
 		}
 		
 		for (String location : reversedLocations) {
