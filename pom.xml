@@ -166,7 +166,7 @@
 
 	<organization>
 		<name>Kobalt</name>
-		<url>https://www.kobalt-si.fr/</url>
+		<url>https://www.kobalt.fr/</url>
 	</organization>
 
 	<licenses>
@@ -187,19 +187,19 @@
 		<developer>
 			<id>lalmeras</id>
 			<name>Laurent Almeras</name>
-			<email>laurent.almeras@kobalt-si.fr</email>
+			<email>laurent.almeras@kobalt.fr</email>
 			<organization>Kobalt</organization>
 		</developer>
 		<developer>
 			<id>jgonzalez</id>
 			<name>Julien Gonzalez</name>
-			<email>julien.gonzalez@kobalt-si.fr</email>
+			<email>julien.gonzalez@kobalt.fr</email>
 			<organization>Kobalt</organization>
 		</developer>
 		<developer>
 			<id>rjoly</id>
 			<name>Renaud Joly</name>
-			<email>renaud.joly@kobalt-si.fr</email>
+			<email>renaud.joly@kobalt.fr</email>
 			<organization>Kobalt</organization>
 		</developer>
 		<developer>
@@ -211,7 +211,7 @@
 		<developer>
 			<id>flacreuse</id>
 			<name>Florian Lacreuse</name>
-			<email>florian.lacreuse@kobalt-si.fr</email>
+			<email>florian.lacreuse@kobalt.fr</email>
 			<organization>Kobalt</organization>
 		</developer>
 		<developer>
@@ -223,7 +223,7 @@
 		<developer>
 			<id>jbenichou</id>
 			<name>Julien Bénichou</name>
-			<email>julien.benichou@kobalt-si.fr</email>
+			<email>julien.benichou@kobalt.fr</email>
 			<organization>Kobalt</organization>
 		</developer>
 	</developers>
