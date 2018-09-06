@@ -1212,7 +1212,7 @@
 				<dependency>
 					<groupId>org.iglooproject.dependencies</groupId>
 					<artifactId>igloo-dependency-hibernate-search</artifactId>
-					<version>${project.version}</version>
+					<version>1.2-SNAPSHOT</version>
 				</dependency>
 				
 				<dependency>
