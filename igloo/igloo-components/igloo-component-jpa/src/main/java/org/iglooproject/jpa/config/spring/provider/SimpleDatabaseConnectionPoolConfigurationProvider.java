@@ -2,7 +2,12 @@ package org.iglooproject.jpa.config.spring.provider;
 
 import java.sql.Driver;
 
-public class SimpleDatabaseConnectionPoolConfigurationProvider implements IDatabaseConnectionPoolConfigurationProvider {
+public class SimpleDatabaseConnectionPoolConfigurationProvider
+		implements IDatabaseConnectionJndiConfigurationProvider, IDatabaseConnectionPoolConfigurationProvider {
+
+	private String jndiName;
+
+	private DatasourceProvider provider;
 
 	private Class<Driver> driverClass;
 
@@ -19,6 +24,24 @@ public class SimpleDatabaseConnectionPoolConfigurationProvider implements IDatab
 	private String validationQuery;
 
 	private String initSql;
+
+	@Override
+	public String getJndiName() {
+		return jndiName;
+	}
+
+	public void setJndiName(String jndiName) {
+		this.jndiName = jndiName;
+	}
+
+	@Override
+	public DatasourceProvider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(DatasourceProvider provider) {
+		this.provider = provider;
+	}
 
 	@Override
 	public Class<Driver> getDriverClass() {

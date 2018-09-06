@@ -1,13 +1,9 @@
 package org.iglooproject.jpa.config.spring.provider;
 
-import java.sql.Driver;
-
 import org.springframework.beans.factory.annotation.Value;
 
-public class DatabaseConnectionPoolConfigurationProvider implements IDatabaseConnectionPoolConfigurationProvider {
-
-	@Value("${${db.type}.db.driverClass}")
-	private Class<Driver> driverClass;
+public class DatabaseConnectionPoolConfigurationProvider
+		extends AbstractDatabaseConnectionConfigurationProvider implements IDatabaseConnectionPoolConfigurationProvider {
 
 	@Value("${db.jdbcUrl}")
 	private String url;
@@ -24,16 +20,11 @@ public class DatabaseConnectionPoolConfigurationProvider implements IDatabaseCon
 	@Value("${db.maxPoolSize}")
 	private int maxPoolSize;
 
-	@Value("${${db.type}.db.preferredTestQuery}")
+	@Value("${db.preferredTestQuery}")
 	private String validationQuery;
 
 	@Value("${db.initSql}")
 	private String initSql;
-
-	@Override
-	public Class<Driver> getDriverClass() {
-		return driverClass;
-	}
 
 	@Override
 	public String getUrl() {

@@ -78,7 +78,9 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 			LOGGER_SYNTHETIC.info("Bootstrap configurations (ordered): {}", Joiner.on(", ").join(loadedLocations));
 			List<String> ignoredLocations = Lists.newArrayList(locations);
 			ignoredLocations.removeAll(loadedLocations);
-			LOGGER_SYNTHETIC.warn("Bootstrap configurations **ignored**: {}", Joiner.on(",").join(ignoredLocations));
+			if (! ignoredLocations.isEmpty()) {
+				LOGGER_SYNTHETIC.warn("Bootstrap configurations **ignored**: {}", Joiner.on(",").join(ignoredLocations));
+			}
 		}
 		
 		for (String location : reversedLocations) {
@@ -103,7 +105,7 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 					LOGGER.info(String.format("Log4j : %1$s added", location));
 					hasSource = true;
 					ResourcePropertySource source = new ResourcePropertySource(applicationContext.getResource(location));
-					sources.addLast(source);
+					sources.addFirst(source);
 					propertyNames.addAll(Arrays.asList(source.getPropertyNames()));
 				} else {
 					ignoredConfigurations.add(location);
@@ -132,7 +134,9 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 			
 			if (LOGGER_SYNTHETIC.isInfoEnabled()) {
 				LOGGER_SYNTHETIC.info("Log4j configurations (ordered): {}", Joiner.on(", ").join(loadedConfigurations));
-				LOGGER_SYNTHETIC.warn("Log4j configurations **ignored**: {}", Joiner.on(",").join(ignoredConfigurations));
+				if (! ignoredConfigurations.isEmpty()) {
+					LOGGER_SYNTHETIC.warn("Log4j configurations **ignored**: {}", Joiner.on(",").join(ignoredConfigurations));
+				}
 			}
 		} else {
 			LOGGER_SYNTHETIC.warn("Log4j: no {} configuration found; keeping default configuration", LOG4J_CONFIGURATIONS_PROPERTY);

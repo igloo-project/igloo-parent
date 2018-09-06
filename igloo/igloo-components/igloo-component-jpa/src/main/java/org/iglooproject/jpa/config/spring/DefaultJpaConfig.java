@@ -1,15 +1,22 @@
 package org.iglooproject.jpa.config.spring;
 
+import org.iglooproject.jpa.config.spring.provider.DatabaseConnectionJndiConfigurationProvider;
+import org.iglooproject.jpa.config.spring.provider.DatabaseConnectionPoolConfigurationProvider;
+import org.iglooproject.jpa.config.spring.provider.DatasourceProvider;
+import org.iglooproject.jpa.config.spring.provider.DefaultJpaConfigurationProvider;
+import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionConfigurationProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import org.iglooproject.jpa.config.spring.provider.DatabaseConnectionPoolConfigurationProvider;
-import org.iglooproject.jpa.config.spring.provider.DefaultJpaConfigurationProvider;
-
 @Configuration
 @Import(JpaApplicationPropertyRegistryConfig.class)
 public class DefaultJpaConfig {
+
+	public static final Logger LOGGER = LoggerFactory.getLogger(DefaultJpaConfig.class);
 
 	@Bean
 	public DefaultJpaConfigurationProvider defaultJpaCoreConfigurationProvider() {
@@ -17,8 +24,18 @@ public class DefaultJpaConfig {
 	}
 
 	@Bean
-	public DatabaseConnectionPoolConfigurationProvider defaultDatabaseConnectionPoolConfigurationProvider() {
-		return new DatabaseConnectionPoolConfigurationProvider();
+	public IDatabaseConnectionConfigurationProvider defaultDatabaseConnectionPoolConfigurationProvider(
+			@Value("${db.datasourceProvider:}") DatasourceProvider datasourceProvider) {
+		if (DatasourceProvider.JNDI.equals(datasourceProvider)) {
+			LOGGER.info("JDBC pool configuration: using jndi");
+			return new DatabaseConnectionJndiConfigurationProvider();
+		} else if (DatasourceProvider.APPLICATION.equals(datasourceProvider)) {
+			LOGGER.info("JDBC pool configuration: using application pool");
+			return new DatabaseConnectionPoolConfigurationProvider();
+		} else {
+			throw new IllegalStateException(String.format("JDBC pool configuration: unknown provider %s",
+					datasourceProvider.name()));
+		}
 	}
 
 }
