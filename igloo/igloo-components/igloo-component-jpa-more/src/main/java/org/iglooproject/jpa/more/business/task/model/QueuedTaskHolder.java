@@ -16,7 +16,6 @@ import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
@@ -67,10 +66,8 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private Long id;
 
 	@Column(nullable = false)
-	@Fields({ 
-		@Field(name = NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-		@Field(name = NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	})
+	@Field(name = NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Field(name = NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = NAME_SORT)
 	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
@@ -85,31 +82,23 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private String taskType;
 
 	@Column(nullable = false)
-	@Fields({
-		@Field(name = CREATION_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
-		@Field(name = CREATION_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
-	})
+	@Field(name = CREATION_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field(name = CREATION_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
 	@SortableField(forField = CREATION_DATE_SORT)
 	private Date creationDate;
 
-	@Fields({
-		@Field(name = TRIGGERING_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
-		@Field(name = TRIGGERING_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
-	})
+	@Field(name = TRIGGERING_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field(name = TRIGGERING_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
 	@SortableField(forField = TRIGGERING_DATE_SORT)
 	private Date triggeringDate = null;
 
-	@Fields({
-		@Field(name = START_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
-		@Field(name = START_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
-	})
+	@Field(name = START_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field(name = START_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
 	@SortableField(forField = START_DATE_SORT)
 	private Date startDate = null;
 
-	@Fields({
-		@Field(name = END_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
-		@Field(name = END_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
-	})
+	@Field(name = END_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field(name = END_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
 	@SortableField(forField = END_DATE_SORT)
 	private Date endDate = null;
 

@@ -23,7 +23,6 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
-import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
@@ -66,10 +65,8 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	
 	@Column(nullable = false)
 	@NaturalId(mutable = true)
-	@Fields({
-		@Field(name = USERNAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-		@Field(name = USERNAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	})
+	@Field(name = USERNAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Field(name = USERNAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = USERNAME_SORT)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String username;

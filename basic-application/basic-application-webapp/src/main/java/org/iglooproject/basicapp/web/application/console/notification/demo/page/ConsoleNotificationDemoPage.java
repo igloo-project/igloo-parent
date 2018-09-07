@@ -35,7 +35,7 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 	private final IModel<String> subjectModel;
 	private final IModel<String> bodyModel;
 	
-	public ConsoleNotificationDemoPage(PageParameters parameters, final IModel<INotificationContentDescriptor> descriptorModel) throws NotificationContentRenderingException {
+	public ConsoleNotificationDemoPage(PageParameters parameters, final IModel<INotificationContentDescriptor> descriptorModel) {
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.notifications")));

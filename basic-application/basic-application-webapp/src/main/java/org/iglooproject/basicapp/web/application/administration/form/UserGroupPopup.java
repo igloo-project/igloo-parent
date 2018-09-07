@@ -74,7 +74,7 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserGroupPopup.class);
 		
-		userGroupForm = new Form<UserGroup>("form", getModel());
+		userGroupForm = new Form<>("form", getModel());
 		body.add(
 				userGroupForm
 						.add(
@@ -178,11 +178,6 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 
 	protected Condition editModeCondition() {
 		return FormMode.EDIT.condition(formModeModel);
-	}
-
-	@Override
-	public IModel<String> getCssClassNamesModel() {
-		return Model.of("modal-usergroup");
 	}
 
 }

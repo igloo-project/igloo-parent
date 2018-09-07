@@ -3,8 +3,6 @@ package org.iglooproject.basicapp.core.config.hibernate;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
-
 import org.iglooproject.basicapp.core.business.common.model.EmailAddress;
 import org.iglooproject.basicapp.core.business.common.model.PhoneNumber;
 import org.iglooproject.basicapp.core.business.common.model.PostalCode;
@@ -16,14 +14,12 @@ import org.iglooproject.jpa.hibernate.usertype.StringClobType;
 /**
  * Class used to define types with annotations.
  */
-@TypeDefs({
-	// We use "text" instead of "varchar" for String columns
-	@TypeDef(defaultForType = String.class, typeClass = StringClobType.class),
-	// We declare here the types we want to store as String instead of binary
-	@TypeDef(defaultForType = EmailAddress.class, typeClass = EmailAddressType.class),
-	@TypeDef(defaultForType = PhoneNumber.class, typeClass = PhoneNumberType.class),
-	@TypeDef(defaultForType = PostalCode.class, typeClass = PostalCodeType.class)
-})
+// We use "text" instead of "varchar" for String columns
+@TypeDef(defaultForType = String.class, typeClass = StringClobType.class)
+// We declare here the types we want to store as String instead of binary
+@TypeDef(defaultForType = EmailAddress.class, typeClass = EmailAddressType.class)
+@TypeDef(defaultForType = PhoneNumber.class, typeClass = PhoneNumberType.class)
+@TypeDef(defaultForType = PostalCode.class, typeClass = PostalCodeType.class)
 @MappedSuperclass
 public final class TypeDefinitions {
 	

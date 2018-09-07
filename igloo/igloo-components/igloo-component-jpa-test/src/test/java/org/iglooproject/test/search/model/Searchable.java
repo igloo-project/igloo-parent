@@ -8,7 +8,6 @@ import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Indexed;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 
@@ -31,10 +30,8 @@ public class Searchable {
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	public String keyword;
 	
-	@Fields({
-		@Field(name = MULTIPLE_INDEXES, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-		@Field(name = MULTIPLE_INDEXES_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_STEMMING))
-	})
+	@Field(name = MULTIPLE_INDEXES, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Field(name = MULTIPLE_INDEXES_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_STEMMING))
 	public String multipleIndexes;
 	
 	public String notIndexed;

@@ -107,7 +107,7 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 	protected abstract AbstractUserPopup<U> createAddPopup(String wicketId);
 	
 	protected DecoratedCoreDataTablePanel<U, ?> createDataTable(String wicketId, final AbstractUserDataProvider<U> dataProvider, int itemsPerPage) {
-		PageModel<Page> pageModel = new PageModel<Page>(this);
+		PageModel<Page> pageModel = new PageModel<>(this);
 		
 		return DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 				.addBootstrapBadgeColumn(Model.of(), Bindings.user(), UserActiveRenderer.get())
@@ -148,7 +148,7 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 						.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
 						.end()
 						.withClass("actions actions-1x")
-				.addRowCssClass((user) -> (user != null && !user.isActive()) ? CssClassConstants.ROW_DISABLED : null)
+				.addRowCssClass(user -> (user != null && !user.isActive()) ? CssClassConstants.ROW_DISABLED : null)
 				.withNoRecordsResourceKey("administration.user.list.count.zero")
 				.bootstrapCard()
 						.ajaxPagers()

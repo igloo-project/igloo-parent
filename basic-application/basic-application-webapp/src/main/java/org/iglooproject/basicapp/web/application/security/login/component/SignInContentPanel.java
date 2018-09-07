@@ -85,7 +85,7 @@ public class SignInContentPanel<U extends User> extends Panel {
 		};
 		add(form);
 		
-		usernameField = new RequiredTextField<String>("username", Model.of(""));
+		usernameField = new RequiredTextField<>("username", Model.of(""));
 		usernameField.setLabel(new ResourceModel("signIn.username"));
 		usernameField.add(new LabelPlaceholderBehavior());
 		usernameField.setOutputMarkupId(true);

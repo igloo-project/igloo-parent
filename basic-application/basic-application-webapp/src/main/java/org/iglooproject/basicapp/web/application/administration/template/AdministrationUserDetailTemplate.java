@@ -62,7 +62,7 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 				.pickSecond().map(CommonParameters.SOURCE_PAGE_ID).optional()
 				.pickFirst().page(DetachableFactories.forUnit(
 						ReadOnlyModel.factory(
-								(u) -> u == null ? null : UserTypeDescriptor.get(u).administrationTypeDescriptor().getDetailPageClass()
+								u -> u == null ? null : UserTypeDescriptor.get(u).administrationTypeDescriptor().getDetailPageClass()
 						)
 				));
 	}
@@ -75,9 +75,9 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 	
 	protected final UserTypeDescriptor<U> typeDescriptor;
 	
-	protected final IModel<U> userModel = new GenericEntityModel<Long, U>(null);
+	protected final IModel<U> userModel = new GenericEntityModel<>();
 	
-	protected final IModel<Page> sourcePageModel = new PageModel<Page>();
+	protected final IModel<Page> sourcePageModel = new PageModel<>();
 	
 	public AdministrationUserDetailTemplate(PageParameters parameters, UserTypeDescriptor<U> typeDescriptor) {
 		super(parameters);

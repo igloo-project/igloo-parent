@@ -13,7 +13,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 @Repository("personDao")
 public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 
-	private final QUser qUser = QUser.user;
+	private static final QUser qUser = QUser.user;
 
 	public UserDaoImpl() {
 		super();

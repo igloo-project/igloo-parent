@@ -9,7 +9,6 @@ import javax.persistence.Transient;
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
@@ -35,18 +34,14 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 	public static final String EMAIL = "email";
 	
 	@Column(nullable = false)
-	@Fields({
-			@Field(name = FIRST_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-			@Field(name = FIRST_NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	})
+	@Field(name = FIRST_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Field(name = FIRST_NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = FIRST_NAME_SORT)
 	private String firstName;
 	
 	@Column(nullable = false)
-	@Fields({
-			@Field(name = LAST_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-			@Field(name = LAST_NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	})
+	@Field(name = LAST_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Field(name = LAST_NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = LAST_NAME_SORT)
 	private String lastName;
 	

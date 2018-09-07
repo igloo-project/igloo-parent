@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
 import org.iglooproject.basicapp.core.business.history.model.HistoryLog;
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
 import org.iglooproject.basicapp.core.business.history.search.IHistoryLogSearchQuery;
@@ -26,8 +25,8 @@ public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<Hist
 
 	private final IModel<? extends User> subjectModel;
 	
-	private final IModel<Date> dateMinModel = new Model<Date>();
-	private final IModel<Date> dateMaxModel = new Model<Date>();
+	private final IModel<Date> dateMinModel = new Model<>();
+	private final IModel<Date> dateMaxModel = new Model<>();
 	
 	private final IModel<? extends GenericEntity<?, ?>> objectModel;
 	

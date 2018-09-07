@@ -5,7 +5,6 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
@@ -59,10 +58,8 @@ public class LocalizedReferenceData<E extends LocalizedReferenceData<?>> extends
 	}
 
 	@Override
-	@Fields({
-		@Field(name = CODE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
-		@Field(name = CODE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	})
+	@Field(name = CODE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field(name = CODE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = CODE_SORT)
 	public String getCode() {
 		return null;

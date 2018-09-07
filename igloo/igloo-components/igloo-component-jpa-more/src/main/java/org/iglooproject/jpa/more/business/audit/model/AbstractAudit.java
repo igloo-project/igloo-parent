@@ -28,7 +28,6 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.commons.util.CloneUtils;
@@ -148,10 +147,8 @@ public abstract class AbstractAudit<Action> extends GenericEntity<Long, Abstract
 	 * Date et heure de création.
 	 */
 	@Basic(optional = false)
-	@Fields({
-		@Field(name = DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-		@Field(name = DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	})
+	@Field(name = DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Field(name = DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = DATE_SORT)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private Date date;

@@ -50,7 +50,7 @@ public abstract class SimpleLocalizedReferenceDataDataProvider<T extends Localiz
 	}
 
 	private static CompositeSortModel<LocalizedReferenceDataSort> defaultSortModel() {
-		return new CompositeSortModel<LocalizedReferenceDataSort>(
+		return new CompositeSortModel<>(
 						CompositingStrategy.LAST_ONLY,
 						ImmutableMap.of(
 								LocalizedReferenceDataSort.POSITION, LocalizedReferenceDataSort.POSITION.getDefaultOrder(),

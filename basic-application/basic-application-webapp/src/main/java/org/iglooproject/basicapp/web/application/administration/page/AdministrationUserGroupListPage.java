@@ -125,7 +125,7 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 												}
 											}
 										})
-										.when((userGroup) -> BasicApplicationSession.get().hasRoleAdmin() && !userGroup.isLocked())
+										.when(userGroup -> (BasicApplicationSession.get().hasRoleAdmin() && !userGroup.isLocked()))
 										.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
 								.end()
 								.withClass("actions actions-1x")

@@ -3,7 +3,6 @@ package org.iglooproject.basicapp.web.application.console.notification.demo.page
 import java.util.Date;
 import java.util.List;
 
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -16,7 +15,6 @@ import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.console.notification.demo.template.ConsoleNotificationDemoTemplate;
 import org.iglooproject.basicapp.web.application.console.notification.demo.util.NotificationDemoEntry;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -78,12 +76,7 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 							private static final long serialVersionUID = 1L;
 							@Override
 							public void onClick() {
-								try {
-									setResponsePage(new ConsoleNotificationDemoPage(new PageParameters(), entry));
-								} catch (NotificationContentRenderingException e) {
-									LOGGER.error("Error while instanciating notification demo page", e);
-									Session.get().error(getString("common.error.unexpected"));
-								}
+								setResponsePage(new ConsoleNotificationDemoPage(new PageParameters(), entry));
 							}
 						};
 						link.add(new Label("label", entry.getLabelModel()));

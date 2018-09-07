@@ -19,7 +19,7 @@ public class UserPopup<U extends User> extends AbstractUserPopup<U> {
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, getClass());
 		
-		userForm = new Form<Void>("form");
+		userForm = new Form<>("form");
 		
 		body.add(
 				userForm

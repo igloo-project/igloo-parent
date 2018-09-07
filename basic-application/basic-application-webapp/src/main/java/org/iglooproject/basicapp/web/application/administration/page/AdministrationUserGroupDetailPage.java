@@ -47,8 +47,8 @@ public class AdministrationUserGroupDetailPage extends AdministrationUserGroupTe
 	public AdministrationUserGroupDetailPage(PageParameters parameters) {
 		super(parameters);
 		
-		IModel<UserGroup> userGroupModel = new GenericEntityModel<Long, UserGroup>(null);
-		IModel<Page> sourcePageModel = new PageModel<Page>();
+		IModel<UserGroup> userGroupModel = new GenericEntityModel<>();
+		IModel<Page> sourcePageModel = new PageModel<>();
 		
 		linkDescriptor(userGroupModel, sourcePageModel)
 				.extractSafely(

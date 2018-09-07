@@ -22,7 +22,7 @@ public class SimpleLocalizedReferenceDataSearchPanel<T extends LocalizedReferenc
 	public SimpleLocalizedReferenceDataSearchPanel(String id, AbstractLocalizedReferenceDataDataProvider<T, ?> dataProvider, final Component table) {
 		super(id);
 		
-		Form<Void> form = new Form<Void>("form");
+		Form<Void> form = new Form<>("form");
 		add(form);
 		
 		form.add(

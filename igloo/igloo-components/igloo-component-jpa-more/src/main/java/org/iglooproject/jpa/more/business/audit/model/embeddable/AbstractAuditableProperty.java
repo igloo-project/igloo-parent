@@ -12,7 +12,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.SortableField;
@@ -32,10 +31,8 @@ public abstract class AbstractAuditableProperty<T> implements Serializable {
 
 	@DateBridge(resolution = Resolution.MILLISECOND)
 	@Temporal(TemporalType.TIMESTAMP)
-	@Fields({
-		@Field(name = LAST_EDIT_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)),
-		@Field(name = LAST_EDIT_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	})
+	@Field(name = LAST_EDIT_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field(name = LAST_EDIT_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = LAST_EDIT_DATE_SORT)
 	private Date lastEditDate;
 

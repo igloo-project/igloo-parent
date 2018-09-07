@@ -38,4 +38,7 @@ public final class ActionRenderers {
 		return constant("common.action.view", "fa fa-fw fa-search", BootstrapColor.PRIMARY);
 	}
 
+	private ActionRenderers() {
+	}
+
 }

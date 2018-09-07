@@ -31,10 +31,10 @@ public class UserListSearchPanel<U extends User> extends Panel {
 	public UserListSearchPanel(String id, IPageable pageable, UserTypeDescriptor<U> typeDescriptor, AbstractUserDataProvider<U> dataProvider) {
 		super(id);
 		
-		IModel<U> quickAccessModel = new GenericEntityModel<Long, U>();
+		IModel<U> quickAccessModel = new GenericEntityModel<>();
 		
 		add(
-				new PageableSearchForm<Void>("form", pageable)
+				new PageableSearchForm<>("form", pageable)
 						.add(
 								new TextField<String>("name", dataProvider.getNameModel())
 										.setLabel(new ResourceModel("business.user.name"))

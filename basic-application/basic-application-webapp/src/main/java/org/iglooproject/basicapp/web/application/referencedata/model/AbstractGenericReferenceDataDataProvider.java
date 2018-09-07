@@ -18,7 +18,7 @@ public abstract class AbstractGenericReferenceDataDataProvider<T extends Generic
 
 	private static final long serialVersionUID = 268769371721921631L;
 	
-	private final IModel<EnabledFilter> enabledFilterModel = new Model<EnabledFilter>(EnabledFilter.ENABLED_ONLY);
+	private final IModel<EnabledFilter> enabledFilterModel = new Model<>(EnabledFilter.ENABLED_ONLY);
 	
 	private final CompositeSortModel<S> sortModel;
 	
