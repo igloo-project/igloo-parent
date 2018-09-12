@@ -23,6 +23,7 @@ import org.iglooproject.commons.util.context.AbstractExecutionContext;
 import org.iglooproject.commons.util.context.ExecutionContexts;
 import org.iglooproject.commons.util.context.IExecutionContext;
 import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
+import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.property.WicketMorePropertyIds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,6 +152,8 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 				return ExecutionContexts.noOp().open();
 			}
 
+			Locale actualLocale = locale == null ? propertyService.get(SpringPropertyIds.DEFAULT_LOCALE) : locale;
+
 			WebApplication application = WebApplication.get();
 
 			final ServletContext context = application.getServletContext();
@@ -159,7 +162,7 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 			final MockHttpServletRequest servletRequest = new ContextConfiguredMockHttpServletRequest(application,
 					newHttpSession, context);
 			final MockHttpServletResponse servletResponse = new MockHttpServletResponse(servletRequest);
-			servletRequest.initialize(locale);
+			servletRequest.initialize(actualLocale);
 			servletResponse.initialize();
 
 			final ServletWebRequest webRequest = new ServletWebRequest(servletRequest, servletRequest.getFilterPrefix());
