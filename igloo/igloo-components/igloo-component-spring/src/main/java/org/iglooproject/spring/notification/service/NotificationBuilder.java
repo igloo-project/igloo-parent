@@ -184,7 +184,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	@Override
 	public INotificationBuilderBaseState sender(String sender) {
 		if (StringUtils.hasText(sender)) {
-			this.sender = NotificationTarget.of(sender);
+			this.sender = NotificationTarget.ofInternetAddress(sender);
 		} else {
 			this.sender = null;
 		}
