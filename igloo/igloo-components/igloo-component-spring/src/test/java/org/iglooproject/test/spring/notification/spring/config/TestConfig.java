@@ -4,16 +4,21 @@ import org.iglooproject.config.bootstrap.spring.ApplicationConfigurerBeanFactory
 import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.spring.config.CorePropertyPlaceholderConfigurer;
+import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.config.spring.SpringApplicationPropertyRegistryConfig;
 import org.iglooproject.spring.property.dao.IImmutablePropertyDao;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.dao.ImmutablePropertyDaoImpl;
 import org.iglooproject.spring.property.dao.StubMutablePropertyDao;
 import org.iglooproject.spring.property.service.IConfigurablePropertyService;
 import org.iglooproject.spring.property.service.PropertyServiceImpl;
+import org.mockito.Mockito;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
+import org.springframework.mail.javamail.JavaMailSender;
 
 @Configuration
 @ApplicationDescription(name = "TestNotification")
@@ -42,8 +47,18 @@ public class TestConfig {
 	}
 
 	@Bean
+	public IPropertyRegistryConfig propertyRegistryConfig() {
+		return new SpringApplicationPropertyRegistryConfig();
+	}
+
+	@Bean
 	public static ApplicationConfigurerBeanFactoryPostProcessor applicationConfigurer() {
 		return new ApplicationConfigurerBeanFactoryPostProcessor(false);
 	}
-	
+
+	@Bean
+	@Primary
+	public JavaMailSender javaMailSenderMock() {
+		return Mockito.mock(JavaMailSender.class);
+	}
 }

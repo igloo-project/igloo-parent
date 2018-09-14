@@ -66,6 +66,13 @@
 		<!-- Test dependencies -->
 		
 		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-config-test</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-test</artifactId>
 			<type>pom</type>
