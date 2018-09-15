@@ -62,7 +62,13 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 
 	@Override
 	public IExecutionContext context(WebApplication application, Locale locale) {
-		Locale actualLocale = locale == null ? null : propertyService.toAvailableLocale(locale);
+		// 2018-09-14: for mail splitting (the fact to split a notification send by context, for example one send
+		// by target locale), we need to compute the actual locale that will be used (and so to switch to the default
+		// locale if no locale is provided).
+		// It is needed to consider that a context with initialization locale == null to be considered equals
+		// with a context with initialization locale == DEFAULT_LOCALE
+		Locale actualLocale = locale == null ?
+				propertyService.get(SpringPropertyIds.DEFAULT_LOCALE) : propertyService.toAvailableLocale(locale);
 		return ExecutionContexts.composite()
 				.add(new ApplicationExecutionContext(application))
 				.add(new RequestCycleExecutionContext(actualLocale))
@@ -152,8 +158,6 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 				return ExecutionContexts.noOp().open();
 			}
 
-			Locale actualLocale = locale == null ? propertyService.get(SpringPropertyIds.DEFAULT_LOCALE) : locale;
-
 			WebApplication application = WebApplication.get();
 
 			final ServletContext context = application.getServletContext();
@@ -162,7 +166,7 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 			final MockHttpServletRequest servletRequest = new ContextConfiguredMockHttpServletRequest(application,
 					newHttpSession, context);
 			final MockHttpServletResponse servletResponse = new MockHttpServletResponse(servletRequest);
-			servletRequest.initialize(actualLocale);
+			servletRequest.initialize(locale);
 			servletResponse.initialize();
 
 			final ServletWebRequest webRequest = new ServletWebRequest(servletRequest, servletRequest.getFilterPrefix());
@@ -194,12 +198,23 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 		
 		@Override
 		public boolean equals(Object obj) {
-			return super.equals(obj);
+			if (obj instanceof RequestCycleExecutionContext) {
+				if (obj == this) {
+					return true;
+				}
+				RequestCycleExecutionContext other = (RequestCycleExecutionContext) this;
+				return new EqualsBuilder()
+						.append(locale, other.locale)
+						.build();
+			}
+			return false;
 		}
 		
 		@Override
 		public int hashCode() {
-			return super.hashCode();
+			return new HashCodeBuilder()
+					.append(locale)
+					.build();
 		}
 	}
 	
