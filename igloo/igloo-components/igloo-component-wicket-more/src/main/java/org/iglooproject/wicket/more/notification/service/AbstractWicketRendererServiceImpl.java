@@ -4,13 +4,13 @@ import java.util.Locale;
 
 import org.apache.wicket.Component;
 import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.jpa.security.service.ISecurityService;
+import org.iglooproject.jpa.security.service.IRunAsSystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractWicketRendererServiceImpl extends AbstractOfflinePanelRendererServiceImpl {
 	
 	@Autowired
-	private ISecurityService securityService;
+	private IRunAsSystemService securityService;
 
 	public AbstractWicketRendererServiceImpl(IWicketContextProvider wicketContextProvider) {
 		super(wicketContextProvider);
