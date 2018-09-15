@@ -12,13 +12,10 @@ import org.iglooproject.spring.property.dao.ImmutablePropertyDaoImpl;
 import org.iglooproject.spring.property.dao.StubMutablePropertyDao;
 import org.iglooproject.spring.property.service.IConfigurablePropertyService;
 import org.iglooproject.spring.property.service.PropertyServiceImpl;
-import org.mockito.Mockito;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
-import org.springframework.mail.javamail.JavaMailSender;
 
 @Configuration
 @ApplicationDescription(name = "TestNotification")
@@ -54,11 +51,5 @@ public class TestConfig {
 	@Bean
 	public static ApplicationConfigurerBeanFactoryPostProcessor applicationConfigurer() {
 		return new ApplicationConfigurerBeanFactoryPostProcessor(false);
-	}
-
-	@Bean
-	@Primary
-	public JavaMailSender javaMailSenderMock() {
-		return Mockito.mock(JavaMailSender.class);
 	}
 }

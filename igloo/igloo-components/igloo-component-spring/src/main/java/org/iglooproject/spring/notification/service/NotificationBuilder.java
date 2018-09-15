@@ -38,6 +38,7 @@ import org.iglooproject.spring.notification.service.impl.ExplicitelyDefinedNotif
 import org.iglooproject.spring.notification.service.impl.FirstNotNullNotificationContentDescriptorImpl;
 import org.iglooproject.spring.notification.service.impl.FreemarkerTemplateNotificationContentDescriptorImpl;
 import org.iglooproject.spring.notification.util.NotificationUtils;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.SpringBeanUtils;
 import org.iglooproject.spring.util.StringUtils;
 import org.javatuples.LabelValue;
@@ -81,7 +82,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	private JavaMailSender mailSender;
 	
 	@Autowired
-	private org.iglooproject.spring.property.service.IPropertyService propertyService;
+	private IPropertyService propertyService;
 	
 	@Autowired
 	@Qualifier(value = "freemarkerMailConfiguration")
