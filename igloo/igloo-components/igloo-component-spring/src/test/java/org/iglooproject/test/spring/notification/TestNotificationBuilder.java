@@ -1,31 +1,20 @@
 package org.iglooproject.test.spring.notification;
 
+import javax.mail.Address;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
 import org.assertj.core.api.Assertions;
-import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.exception.InvalidNotificationTargetException;
 import org.iglooproject.spring.notification.service.INotificationBuilderBaseState;
-import org.iglooproject.test.spring.notification.spring.config.TestConfig;
+import org.iglooproject.spring.notification.service.NotificationBuilder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
-@ContextConfiguration(
-		classes = { TestConfig.class },
-		initializers = { ExtendedApplicationContextInitializer.class }
-)
 public class TestNotificationBuilder extends AbstractTestNotification {
 
 	@Test
@@ -63,6 +52,24 @@ public class TestNotificationBuilder extends AbstractTestNotification {
 		Assertions.assertThat(mimeMessage.getRecipients(RecipientType.TO)).hasSize(2)
 			.anyMatch((a) -> ((InternetAddress) a).getAddress().equals(address1))
 			.anyMatch((a) -> ((InternetAddress) a).getAddress().equals(address2));
+	}
+
+	/**
+	 * Test added on 09-2018 specifically for {@link NotificationBuilder#sender(String)} behavior in regard to
+	 * address format.
+	 * 
+	 * @see InternetAddress
+	 */
+	@Test
+	public void testSenderRFC822() throws ServiceException, MessagingException {
+		createNotificationBuilder().sender("Sender <sender@example.com>").toAddress("to@example.com")
+			.subject("subject").textBody("text").send();
+		MimeMessage message = mockitoSend(Mockito.times(1)).getValue();
+		Address sender = message.getSender();
+		Assertions.assertThat(sender).isInstanceOf(InternetAddress.class);
+		Assertions.assertThat(((InternetAddress) sender).getAddress()).isEqualTo("sender@example.com");
+		Assertions.assertThat(((InternetAddress) sender).getPersonal()).isEqualTo("Sender");
+		Assertions.assertThat(((InternetAddress) sender).getGroup(false)).isNull();
 	}
 
 }

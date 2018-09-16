@@ -10,28 +10,20 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 
 import org.assertj.core.api.Assertions;
-import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.service.INotificationBuilderBaseState;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.test.spring.notification.spring.config.TestConfig;
 import org.iglooproject.test.spring.notification.spring.config.TestFilteredConfig;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 @ContextConfiguration(
-		classes = { TestConfig.class, TestFilteredConfig.class },
-		initializers = { ExtendedApplicationContextInitializer.class }
+		classes = { TestFilteredConfig.class },
+		inheritInitializers = true
 )
 public class TestNotificationFiltered extends AbstractTestNotification {
 
