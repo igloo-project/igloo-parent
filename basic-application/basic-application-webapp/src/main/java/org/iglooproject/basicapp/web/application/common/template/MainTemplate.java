@@ -99,9 +99,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		getApplicationTheme().specificContent(
 				this,
-				(SerializableSupplier2<List<NavigationMenuItem>>) () -> getMainNav(),
-				(SerializableSupplier2<Class<? extends WebPage>>) () -> getFirstMenuPage(),
-				(SerializableSupplier2<Class<? extends WebPage>>) () -> getSecondMenuPage()
+				(SerializableSupplier2<List<NavigationMenuItem>>) this::getMainNav,
+				(SerializableSupplier2<Class<? extends WebPage>>) this::getFirstMenuPage,
+				(SerializableSupplier2<Class<? extends WebPage>>) this::getSecondMenuPage
 		);
 	}
 

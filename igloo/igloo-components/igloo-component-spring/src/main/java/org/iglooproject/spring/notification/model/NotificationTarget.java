@@ -10,11 +10,10 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.google.common.base.Splitter;
-
 import org.iglooproject.spring.notification.exception.InvalidNotificationTargetException;
 import org.iglooproject.spring.util.StringUtils;
+
+import com.google.common.base.Splitter;
 
 public class NotificationTarget implements Serializable {
 	
@@ -32,6 +31,18 @@ public class NotificationTarget implements Serializable {
 	
 	public static NotificationTarget of(String email) throws InvalidNotificationTargetException {
 		return new NotificationTarget(getInternetAddress(email, null, null));
+	}
+	
+	/**
+	 * Accept either a full email (Label <address@domain>) or an email only (address@domain) address. Must be
+	 * compatible with java {@link InternetAddress} parsing.
+	 */
+	public static NotificationTarget ofInternetAddress(String email) throws InvalidNotificationTargetException {
+		try {
+			return new NotificationTarget(new InternetAddress(email));
+		} catch (AddressException e) {
+			throw new InvalidNotificationTargetException(String.format("Error parsing address: %s", email), e);
+		}
 	}
 	
 	public static NotificationTarget of(INotificationRecipient recipient, Charset charset) throws InvalidNotificationTargetException {

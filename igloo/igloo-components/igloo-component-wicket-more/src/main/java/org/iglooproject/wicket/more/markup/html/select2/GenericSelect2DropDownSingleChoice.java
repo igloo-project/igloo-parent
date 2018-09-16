@@ -25,7 +25,7 @@ public class GenericSelect2DropDownSingleChoice<T> extends DropDownChoice<T> {
 		super(id);
 		
 		setModel(model);
-		choicesWrapperModel = new ChoicesWrapperModel<T>(model, choicesModel);
+		choicesWrapperModel = new ChoicesWrapperModel<>(model, choicesModel);
 		setChoices(choicesWrapperModel);
 		setChoiceRenderer(renderer);
 		setNullValid(true);

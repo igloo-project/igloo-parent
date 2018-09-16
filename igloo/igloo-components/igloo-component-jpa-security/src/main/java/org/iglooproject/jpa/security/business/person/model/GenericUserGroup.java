@@ -21,7 +21,6 @@ import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.commons.util.collections.CollectionUtils;
@@ -53,10 +52,8 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 	@GeneratedValue
 	private Long id;
 
-	@Fields({
-		@Field(name = NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT)),
-		@Field(name = NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	})
+	@Field(name = NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@Field(name = NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = NAME_SORT)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String name;

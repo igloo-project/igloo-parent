@@ -6,6 +6,7 @@ import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MA
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_FROM;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_RECIPIENTS_FILTERED;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SENDER;
+import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SENDER_BEHAVIOR;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_MAIL_SUBJECT_PREFIX;
 import static org.iglooproject.spring.property.SpringPropertyIds.NOTIFICATION_TEST_EMAILS;
 
@@ -24,11 +25,13 @@ import java.util.stream.Collectors;
 import javax.mail.Address;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.iglooproject.functional.Function2;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.spring.config.util.MailSenderBehavior;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.iglooproject.spring.notification.model.INotificationRecipient;
@@ -38,6 +41,7 @@ import org.iglooproject.spring.notification.service.impl.ExplicitelyDefinedNotif
 import org.iglooproject.spring.notification.service.impl.FirstNotNullNotificationContentDescriptorImpl;
 import org.iglooproject.spring.notification.service.impl.FreemarkerTemplateNotificationContentDescriptorImpl;
 import org.iglooproject.spring.notification.util.NotificationUtils;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.SpringBeanUtils;
 import org.iglooproject.spring.util.StringUtils;
 import org.javatuples.LabelValue;
@@ -81,7 +85,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	private JavaMailSender mailSender;
 	
 	@Autowired
-	private org.iglooproject.spring.property.service.IPropertyService propertyService;
+	private IPropertyService propertyService;
 	
 	@Autowired
 	@Qualifier(value = "freemarkerMailConfiguration")
@@ -180,17 +184,28 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		}
 		return this;
 	}
-	
+
+	/**
+	 * Argument may be either an addr-spec or an address
+	 * (<i>local-part@domain</i> or <i>Personal &lt;local-part@domain&lt;</i>)
+	 * 
+	 * @see InternetAddress
+	 */
 	@Override
 	public INotificationBuilderBaseState sender(String sender) {
 		if (StringUtils.hasText(sender)) {
-			this.sender = NotificationTarget.of(sender);
+			this.sender = NotificationTarget.ofInternetAddress(sender);
 		} else {
 			this.sender = null;
 		}
 		return this;
 	}
 	
+	/**
+	 * Arguments must be simple email addresses (addr-spec), not RFC822 address.
+	 * 
+	 * i.e. arguments must be <i>local-part@domain</i> addresses and NOT <i>Personal &lt;local-part@domain&lt;</i>
+	 */
 	@Override
 	public INotificationBuilderBuildState toAddress(String toFirst, String... toOthers) {
 		return toAddress(Lists.asList(toFirst, toOthers));
@@ -647,9 +662,9 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		if (sender != null) {
 			message.setSender(sender.getAddress());
 		} else {
-			String defaultEmailSender = getDefaultSender();
+			String defaultEmailSender = getDefaultSender(from);
 			if(defaultEmailSender != null && !defaultEmailSender.isEmpty()) {
-				message.setSender(NotificationTarget.of(getDefaultSender()).getAddress());
+				message.setSender(NotificationTarget.ofInternetAddress(defaultEmailSender).getAddress());
 			}
 		}
 		
@@ -727,8 +742,22 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		return propertyService.get(NOTIFICATION_MAIL_FROM);
 	}
 	
-	private String getDefaultSender() {
-		return propertyService.get(NOTIFICATION_MAIL_SENDER);
+	private String getDefaultSender(String from) {
+		MailSenderBehavior behavior = propertyService.get(NOTIFICATION_MAIL_SENDER_BEHAVIOR);
+		switch (behavior) {
+		/** Do not override builder value */
+		case EXPLICIT:
+			return null;
+		/** Use value from configuration */
+		case FALLBACK_TO_CONFIGURATION:
+			return propertyService.get(NOTIFICATION_MAIL_SENDER);
+		/** Use value from From: */
+		case FALLBACK_TO_FROM:
+			return from;
+		default:
+			throw new IllegalStateException(String.format("Unknown value %s for %s",
+					behavior, MailSenderBehavior.class.getSimpleName()));
+		}
 	}
 	
 	private Locale getDefaultLocale() {

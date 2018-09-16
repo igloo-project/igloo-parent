@@ -63,7 +63,7 @@ public abstract class AbstractReferenceDataListPanel<
 									addActionColumn(
 											addColumns(builder)
 									)
-											.addRowCssClass((referenceData) -> (referenceData != null && !referenceData.isEnabled()) ? ROW_DISABLED : null)
+											.addRowCssClass(referenceData -> (referenceData != null && !referenceData.isEnabled()) ? ROW_DISABLED : null)
 											.bootstrapCard()
 											.count("referenceData.count")
 											.ajaxPagers()

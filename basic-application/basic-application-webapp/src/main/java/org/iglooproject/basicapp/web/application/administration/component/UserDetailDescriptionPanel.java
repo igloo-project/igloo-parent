@@ -64,6 +64,6 @@ public class UserDetailDescriptionPanel<U extends User> extends GenericPanel<U> 
 	}
 	
 	protected AbstractUserPopup<U> createEditPopup(String wicketId, IModel<U> model, UserTypeDescriptor<U> typeDescriptor) {
-		return new UserPopup<U>(wicketId, typeDescriptor);
+		return new UserPopup<>(wicketId, typeDescriptor);
 	}
 }

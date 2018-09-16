@@ -23,11 +23,11 @@ public abstract class AbstractUserDataProvider<U extends User> extends AbstractS
 
 	private final IModel<String> nameModel = Model.of();
 	
-	private final IModel<UserGroup> groupModel = new GenericEntityModel<Long, UserGroup>();
+	private final IModel<UserGroup> groupModel = new GenericEntityModel<>();
 	
 	private final IModel<Boolean> includeInactivesModel = Model.of(Boolean.FALSE);
 	
-	private final CompositeSortModel<UserSort> sortModel = new CompositeSortModel<UserSort>(
+	private final CompositeSortModel<UserSort> sortModel = new CompositeSortModel<>(
 			CompositingStrategy.LAST_ONLY,
 			ImmutableMap.of(
 					UserSort.FULL_NAME, UserSort.FULL_NAME.getDefaultOrder(),
@@ -47,7 +47,7 @@ public abstract class AbstractUserDataProvider<U extends User> extends AbstractS
 	
 	@Override
 	public IModel<U> model(U item) {
-		return new GenericEntityModel<Long, U>(item);
+		return new GenericEntityModel<>(item);
 	}
 	
 	public Class<U> getClazz() {

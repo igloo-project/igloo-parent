@@ -22,7 +22,7 @@ public class CitySearchPanel extends Panel {
 	public CitySearchPanel(String id, final AbstractLocalizedReferenceDataDataProvider<City, ?> dataProvider, final DecoratedCoreDataTablePanel<?, ?> table) {
 		super(id);
 		
-		PageableSearchForm<Void> form = new PageableSearchForm<Void>("form", table);
+		PageableSearchForm<Void> form = new PageableSearchForm<>("form", table);
 		add(form);
 		
 		form.add(

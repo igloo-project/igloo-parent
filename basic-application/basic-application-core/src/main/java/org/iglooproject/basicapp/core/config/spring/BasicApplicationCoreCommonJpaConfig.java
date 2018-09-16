@@ -34,7 +34,7 @@ public class BasicApplicationCoreCommonJpaConfig extends AbstractConfiguredJpaSe
 	@Bean
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public <T extends LocalizedReferenceData<? super T>, S extends ISort<SortField>> ISimpleLocalizedReferenceDataSearchQuery<T, S> simpleLocalizedReferenceDataSearchQuery(Class<T> clazz) {
-		return new SimpleLocalizedReferenceDataSearchQueryImpl<T, S>(clazz);
+		return new SimpleLocalizedReferenceDataSearchQueryImpl<>(clazz);
 	}
 
 }

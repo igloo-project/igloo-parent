@@ -35,9 +35,9 @@ public class GenericSelect2DropDownMultipleChoice<T> extends ListMultipleChoice<
 			IModel<? extends Collection<? extends T>> choicesModel, IChoiceRenderer<? super T> renderer) {
 		super(id);
 		
-		setModel(new ConcreteCollectionToCollectionWrapperModel<T, C>(collectionModel, collectionSupplier));
+		setModel(new ConcreteCollectionToCollectionWrapperModel<>(collectionModel, collectionSupplier));
 		
-		choicesWrapperModel = new MultipleChoicesWrapperModel<T>(collectionModel, choicesModel);
+		choicesWrapperModel = new MultipleChoicesWrapperModel<>(collectionModel, choicesModel);
 		setChoices(choicesWrapperModel);
 		setSelectedObjectForcedInChoices(true);
 		setChoiceRenderer(renderer);

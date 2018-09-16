@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 
-public interface ISecurityService {
+public interface ISecurityService extends IRunAsSystemService {
 	
 	boolean hasPermission(Authentication authentication, Permission requirePermission);
 	
@@ -48,8 +48,6 @@ public interface ISecurityService {
 	
 	void clearAuthentication();
 	
-	<T> T runAsSystem(Callable<T> task);
-
 	<T> T runAs(Callable<T> task, String username, String... additionalAuthorities);
 
 	Collection<? extends Permission> getPermissions(Authentication authentication);

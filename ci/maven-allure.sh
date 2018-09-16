@@ -10,7 +10,8 @@ for POM in $( find -name pom.xml ); do
   mkdir -p "${MODULE}/${HISTORY_TGT_FOLDER}"
   for HISTORY_FILE in history.json retry-trend.json history-trend.json duration-trend.json categories-trend.json; do
     HISTORY_URL="https://reports.tools.kobalt-si.fr/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}/last/artifacts/${MODULE}/${HISTORY_SRC_FOLDER}/${HISTORY_FILE}"
-    curl -s --basic --fail \
+    # -L --location-trusted added to follow redirection
+    curl -L --location-trusted -s --basic --fail \
       -u "$SYNC_TEST_REPORTS_HISTORY_AUTHORIZATION" \
       -o "${MODULE}/${HISTORY_TGT_FOLDER}/${HISTORY_FILE}" \
       "$HISTORY_URL"

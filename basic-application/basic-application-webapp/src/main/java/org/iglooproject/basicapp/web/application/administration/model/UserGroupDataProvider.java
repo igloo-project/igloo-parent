@@ -20,9 +20,9 @@ public class UserGroupDataProvider extends AbstractSearchQueryDataProvider<UserG
 
 	private final IModel<? extends User> userModel;
 
-	private final IModel<String> nameModel = new Model<String>();
+	private final IModel<String> nameModel = new Model<>();
 
-	private final CompositeSortModel<UserGroupSort> sortModel = new CompositeSortModel<UserGroupSort>(
+	private final CompositeSortModel<UserGroupSort> sortModel = new CompositeSortModel<>(
 			CompositingStrategy.LAST_ONLY,
 			ImmutableMap.of(
 					UserGroupSort.NAME, UserGroupSort.NAME.getDefaultOrder(),

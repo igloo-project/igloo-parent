@@ -117,7 +117,8 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 		
 		public UserGroupAddUserFragment(String id) {
 			super(id, "addUser", UserGroupDetailUsersPanel.this);
-			IModel<User> userModel = new GenericEntityModel<Long, User>();
+			
+			IModel<User> userModel = new GenericEntityModel<>();
 			
 			add(
 					new Form<User>("form", userModel)
