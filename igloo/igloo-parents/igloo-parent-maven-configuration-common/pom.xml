@@ -60,6 +60,7 @@
 		<igloo.maven-project-info-reports-plugin.version>2.9</igloo.maven-project-info-reports-plugin.version>
 		<igloo.maven-failsafe-plugin.version>2.21.0</igloo.maven-failsafe-plugin.version>
 		<igloo.jacoco-maven-plugin.version>0.8.0</igloo.jacoco-maven-plugin.version>
+		<igloo.buildnumber-maven-plugin.version>1.4</igloo.buildnumber-maven-plugin.version>
 		
 		<igloo.wagon-maven-plugin.version>1.0</igloo.wagon-maven-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.1.0</igloo.wagon-ssh-external-plugin.version>
@@ -284,6 +285,10 @@
 							<manifest>
 								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							</manifest>
+							<manifestEntries>
+								<Implementation-Build>${buildNumber}</Implementation-Build>
+								<Built-Date>${timestamp}</Built-Date>
+							</manifestEntries>
 						</archive>
 					</configuration>
 				</plugin>
@@ -449,6 +454,23 @@
 							</goals>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>buildnumber-maven-plugin</artifactId>
+					<version>${igloo.buildnumber-maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<phase>validate</phase>
+							<goals>
+								<goal>create</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<doCheck>false</doCheck>
+						<doUpdate>false</doUpdate>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -640,5 +662,11 @@
 		<name>Kobalt</name>
 		<url>https://www.kobalt.fr/</url>
 	</organization>
+	
+	<scm>
+		<developerConnection>scm:git:git@github.com:igloo-project/igloo-parent.git</developerConnection>
+		<url>https://github.com/igloo-project/igloo-parent</url>
+		<tag>HEAD</tag>
+	</scm>
 	
 </project>
