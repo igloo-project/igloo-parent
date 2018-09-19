@@ -1636,6 +1636,9 @@ S2.define('select2/selection/multiple',[
         var $remove = $(this);
         var $selection = $remove.parent();
 
+        // Dispose tooltip before unselect / clear to avoid js error from popper.js.
+        $selection.tooltip('dispose');
+
         var data = $selection.data('data');
 
         self.trigger('unselect', {
