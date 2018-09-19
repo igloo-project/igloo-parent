@@ -1613,6 +1613,12 @@ S2.define('select2/selection/multiple',[
     MultipleSelection.__super__.bind.apply(this, arguments);
 
     this.$selection.on('click', function (evt) {
+
+      // Prevent dropdown toggle on clear.
+      if ($(evt.target).hasClass('select2-selection__choice__remove')) {
+        return;
+      }
+
       self.trigger('toggle', {
         originalEvent: evt
       });
@@ -1808,7 +1814,8 @@ S2.define('select2/selection/allowClear',[
 
     this.$element.val(this.placeholder.id).trigger('change');
 
-    this.trigger('toggle', {});
+    // Prevent dropdown toggle on clear.
+    //this.trigger('toggle', {});
   };
 
   AllowClear.prototype._handleKeyboardClear = function (_, evt, container) {
