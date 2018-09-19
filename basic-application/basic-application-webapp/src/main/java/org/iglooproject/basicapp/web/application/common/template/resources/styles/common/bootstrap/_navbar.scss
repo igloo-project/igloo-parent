@@ -1,6 +1,6 @@
 @mixin navbar-nav-link-hover() {
 	border-radius: $border-radius;
-	background-color: rgba($white, .1);
+	background-color: rgba($white, .2);
 	@include transition(all .3s ease 0s);
 }
 
