@@ -1,5 +1,6 @@
 package org.iglooproject.wicket.more.security.page;
 
+import org.apache.wicket.Session;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.markup.html.CoreWebPage;
@@ -13,7 +14,7 @@ public class LoginFailurePage extends CoreWebPage {
 	}
 
 	protected LoginFailurePage(IPageLinkDescriptor signInPageLinkDescriptor) {
-		getSession().error(getLocalizer().getString("login.failed", this));
+		Session.get().error(getLocalizer().getString("login.failed", this));
 		
 		throw signInPageLinkDescriptor.newRestartResponseException();
 	}

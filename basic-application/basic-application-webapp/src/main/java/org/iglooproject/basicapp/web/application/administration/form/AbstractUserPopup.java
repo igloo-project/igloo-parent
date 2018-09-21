@@ -195,10 +195,10 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 											BasicApplicationSession.get().getUser()
 									);
 									
-									getSession().success(getString("administration.user.action.add.success.notification"));
+									Session.get().success(getString("administration.user.action.add.success.notification"));
 								}
 								
-								getSession().success(getString("common.success"));
+								Session.get().success(getString("common.success"));
 								
 								throw AdministrationUserDetailTemplate.<U>mapper()
 										.ignoreParameter2()
@@ -210,7 +210,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 									BasicApplicationSession.get().setLocale(user.getLocale());
 								}
 								userService.update(user);
-								getSession().success(getString("common.success"));
+								Session.get().success(getString("common.success"));
 								closePopup(target);
 								target.add(getPage());
 							}

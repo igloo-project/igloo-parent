@@ -3,6 +3,7 @@ package org.iglooproject.basicapp.web.application.console.notification.demo.page
 import java.util.Date;
 import java.util.List;
 
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
@@ -57,10 +58,10 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 			public void onClick() {
 				try {
 					notificationService.sendExampleNotification(BasicApplicationSession.get().getUser());
-					getSession().success(getString("console.notifications.example.send.success"));
+					Session.get().success(getString("console.notifications.example.send.success"));
 				} catch (ServiceException e) {
 					LOGGER.error("Error while sending example notification", e);
-					getSession().error(getString("common.error.unexpected"));
+					Session.get().error(getString("common.error.unexpected"));
 				}
 			}
 		});

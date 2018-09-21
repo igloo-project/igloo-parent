@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -84,10 +85,10 @@ public class DataUpgradePanel extends Panel {
 							public void execute(IModel<IDataUpgrade> parameter) {
 								try {
 									dataUpgradeService.executeDataUpgrade(parameter.getObject());
-									getSession().success(getString("console.maintenance.dataUpgrade.execute.success"));
+									Session.get().success(getString("console.maintenance.dataUpgrade.execute.success"));
 								} catch (Exception e) {
 									LOGGER.error("Erreur lors de l'exécution de la mise à jour '" + getModelObject() +"'", e);
-									getSession().error(getString("console.maintenance.dataUpgrade.execute.error"));
+									Session.get().error(getString("console.maintenance.dataUpgrade.execute.error"));
 								}
 								setResponsePage(getPage());
 							}

@@ -2,6 +2,7 @@ package org.iglooproject.basicapp.web.application.administration.template;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebPage;
@@ -135,11 +136,11 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 											UserPasswordRecoveryRequestInitiator.ADMIN,
 											BasicApplicationSession.get().getUser()
 									);
-									getSession().success(getString("administration.user.action.password.recovery.reset.success"));
+									Session.get().success(getString("administration.user.action.password.recovery.reset.success"));
 									target.add(getPage());
 								} catch (Exception e) {
 									LOGGER.error("Error occured while sending a password recovery request", e);
-									getSession().error(getString("common.error.unexpected"));
+									Session.get().error(getString("common.error.unexpected"));
 								}
 								FeedbackUtils.refreshFeedback(target, getPage());
 							}
@@ -156,11 +157,11 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 					public void onClick(AjaxRequestTarget target) {
 						try {
 							userService.setActive(getModelObject(), true);
-							getSession().success(getString("administration.user.action.enable.success"));
+							Session.get().success(getString("administration.user.action.enable.success"));
 							target.add(getPage());
 						} catch (Exception e) {
 							LOGGER.error("Error occured while enabling user", e);
-							getSession().error(getString("common.error.unexpected"));
+							Session.get().error(getString("common.error.unexpected"));
 						}
 						FeedbackUtils.refreshFeedback(target, getPage());
 					}
@@ -178,10 +179,10 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 									public void execute(AjaxRequestTarget target) {
 										try {
 											userService.setActive(userModel.getObject(), false);
-											getSession().success(getString("administration.user.action.disable.success"));
+											Session.get().success(getString("administration.user.action.disable.success"));
 										} catch (Exception e) {
 											LOGGER.error("Error occured while disabling user", e);
-											getSession().error(getString("common.error.unexpected"));
+											Session.get().error(getString("common.error.unexpected"));
 										}
 										target.add(getPage());
 										FeedbackUtils.refreshFeedback(target, getPage());

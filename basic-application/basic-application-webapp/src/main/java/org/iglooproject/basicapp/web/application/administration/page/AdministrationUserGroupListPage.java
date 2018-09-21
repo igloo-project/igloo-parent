@@ -120,7 +120,7 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 													throw e;
 												} catch (Exception e) {
 													LOGGER.error("Error when delete a user group.", e);
-													getSession().error(getString("common.error.unexpected"));
+													Session.get().error(getString("common.error.unexpected"));
 													FeedbackUtils.refreshFeedback(target, getPage());
 												}
 											}

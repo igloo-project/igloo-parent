@@ -84,9 +84,9 @@ public class TaskManagerInformationPanel extends Panel {
 				try {
 					if (queuedTaskHolderManager.isAvailableForAction()) {
 						queuedTaskHolderManager.stop();
-						getSession().success(getString("console.maintenance.task.manager.stop.success"));
+						Session.get().success(getString("console.maintenance.task.manager.stop.success"));
 					} else {
-						getSession().error(getString("console.maintenance.task.manager.action.unavailable"));
+						Session.get().error(getString("console.maintenance.task.manager.action.unavailable"));
 					}
 
 					FeedbackUtils.refreshFeedback(target, getPage());
@@ -116,9 +116,9 @@ public class TaskManagerInformationPanel extends Panel {
 				try {
 					if (queuedTaskHolderManager.isAvailableForAction()) {
 						queuedTaskHolderManager.start();
-						getSession().success(getString("console.maintenance.task.manager.start.success"));
+						Session.get().success(getString("console.maintenance.task.manager.start.success"));
 					} else {
-						getSession().error(getString("console.maintenance.task.manager.action.unavailable"));
+						Session.get().error(getString("console.maintenance.task.manager.action.unavailable"));
 					}
 
 					FeedbackUtils.refreshFeedback(target, getPage());

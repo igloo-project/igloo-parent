@@ -1,6 +1,7 @@
 package org.iglooproject.basicapp.web.application.security.password.component;
 
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
@@ -82,7 +83,7 @@ public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
 							User user = SecurityPasswordResetContentPanel.this.getModelObject();
 							securityManagementService.updatePassword(user, newPasswordModel.getObject());
 							
-							getSession().success(getString("security.password.reset.validate.success"));
+							Session.get().success(getString("security.password.reset.validate.success"));
 							
 							throw UserTypeDescriptor.get(user).securityTypeDescriptor()
 									.loginSuccessPageLinkDescriptor().newRestartResponseException();
@@ -90,7 +91,7 @@ public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
 							throw e;
 						} catch (Exception e) {
 							LOGGER.error("Error occurred while resetting password", e);
-							getSession().error(getString("common.error.unexpected"));
+							Session.get().error(getString("common.error.unexpected"));
 						}
 						
 						FeedbackUtils.refreshFeedback(target, getPage());

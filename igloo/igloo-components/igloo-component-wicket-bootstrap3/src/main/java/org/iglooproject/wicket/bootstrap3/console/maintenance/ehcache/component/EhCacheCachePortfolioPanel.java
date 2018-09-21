@@ -2,6 +2,7 @@ package org.iglooproject.wicket.bootstrap3.console.maintenance.ehcache.component
 
 import java.util.List;
 
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -76,10 +77,10 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 							public void execute(AjaxRequestTarget target) {
 								try {
 									item.getModelObject().clearAll();
-									getSession().success(getString("console.maintenance.ehcache.cacheManager.purge.success"));
+									Session.get().success(getString("console.maintenance.ehcache.cacheManager.purge.success"));
 								} catch (Exception e) {
 									LOGGER.error("Erreur lors de la purge du cache manager", e);
-									getSession().error(getString("console.maintenance.ehcache.cacheManager.purge.failure"));
+									Session.get().error(getString("console.maintenance.ehcache.cacheManager.purge.failure"));
 								}
 								
 								cacheList.detach();
@@ -162,10 +163,10 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 									public void execute(AjaxRequestTarget target) {
 										try {
 											item.getModelObject().removeAll();
-											getSession().success(getString("console.maintenance.ehcache.portfolio.viderCache.success"));
+											Session.get().success(getString("console.maintenance.ehcache.portfolio.viderCache.success"));
 										} catch (Exception e) {
 											LOGGER.error("Erreur lors du vidage du cache", e);
-											getSession().error(getString("console.maintenance.ehcache.portfolio.viderCache.error"));
+											Session.get().error(getString("console.maintenance.ehcache.portfolio.viderCache.error"));
 										}
 										
 										cacheList.detach();

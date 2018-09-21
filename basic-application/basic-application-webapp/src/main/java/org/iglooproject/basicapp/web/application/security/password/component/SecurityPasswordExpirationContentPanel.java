@@ -1,6 +1,7 @@
 package org.iglooproject.basicapp.web.application.security.password.component;
 
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
@@ -73,7 +74,7 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
 							User user = BasicApplicationSession.get().getUser();
 							securityManagementService.updatePassword(user, newPasswordModel.getObject());
 							
-							getSession().success(getString("security.password.expiration.validate.success"));
+							Session.get().success(getString("security.password.expiration.validate.success"));
 							
 							throw UserTypeDescriptor.get(user).securityTypeDescriptor()
 									.loginSuccessPageLinkDescriptor().newRestartResponseException();
@@ -81,7 +82,7 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
 							throw e;
 						} catch (Exception e) {
 							LOGGER.error("Error occurred while reseting password after expiration", e);
-							getSession().error(getString("common.error.unexpected"));
+							Session.get().error(getString("common.error.unexpected"));
 						}
 						
 						FeedbackUtils.refreshFeedback(target, getPage());
