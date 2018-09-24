@@ -45,11 +45,13 @@ $table-striped-order:								even !default;
 %scope {
 	@import "../../scope/variables-dependencies";
 	
-	$nav-page-striped-order:							even !default !global;
-	$nav-page-link-border-width:						$border-width !default !global;
-	$nav-page-link-border-color:						rgba($black, .125) !default !global;
-	$nav-page-link-color:								inherit !default !global;
-	$nav-page-link-bg:									$white !default !global;
-	$nav-page-link-accent-color:						$nav-page-link-color !default !global;
-	$nav-page-link-accent-bg:							$nav-page-link-bg !default !global;
+	$nav-pills-page-striped-order:					even !default !global;
+	$nav-pills-page-link-border-width:				$border-width !default !global;
+	$nav-pills-page-link-border-color:				rgba($black, .125) !default !global;
+	$nav-pills-page-link-color:						$link-color !default !global;
+	$nav-pills-page-link-bg:						$white !default !global;
+	$nav-pills-page-link-accent-color:				$nav-pills-page-link-color !default !global;
+	$nav-pills-page-link-accent-bg:					$nav-pills-page-link-bg !default !global;
+	$nav-pills-page-link-active-color:				$nav-pills-link-active-color !default !global;
+	$nav-pills-page-link-active-bg:					$nav-pills-link-active-bg !default !global;
 }

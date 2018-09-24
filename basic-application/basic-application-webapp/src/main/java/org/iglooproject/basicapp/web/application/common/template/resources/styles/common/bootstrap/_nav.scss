@@ -6,22 +6,22 @@
 			padding: 3px;
 			
 			.nav-link {
-				border: $nav-page-link-border-width solid $nav-page-link-border-color;
-				color: $nav-page-link-color;
-				background-color: $nav-page-link-bg;
+				border: $nav-pills-page-link-border-width solid $nav-pills-page-link-border-color;
+				color: $nav-pills-page-link-color;
+				background-color: $nav-pills-page-link-bg;
 			}
 			
-			&:nth-of-type(#{$nav-page-striped-order}) {
+			&:nth-of-type(#{$nav-pills-page-striped-order}) {
 				.nav-link {
-					color: $nav-page-link-accent-color;
-					background-color: $nav-page-link-accent-bg;
+					color: $nav-pills-page-link-accent-color;
+					background-color: $nav-pills-page-link-accent-bg;
 				}
 			}
 			
 			.nav-link.active,
 			.show > .nav-link {
-				color: $nav-pills-link-active-color;
-				background-color: $nav-pills-link-active-bg;
+				color: $nav-pills-page-link-active-color;
+				background-color: $nav-pills-page-link-active-bg;
 			}
 		}
 	}
