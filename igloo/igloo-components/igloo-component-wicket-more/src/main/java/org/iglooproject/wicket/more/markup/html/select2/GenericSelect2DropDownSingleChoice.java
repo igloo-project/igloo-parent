@@ -53,6 +53,13 @@ public class GenericSelect2DropDownSingleChoice<T> extends DropDownChoice<T> {
 	}
 
 	@Override
+	protected void onInitialize() {
+		super.onInitialize();
+		
+		Select2Utils.setDropdownParent(getSettings(), this);
+	}
+
+	@Override
 	protected void onConfigure() {
 		ensureChoicesModelIsWrapped();
 		
