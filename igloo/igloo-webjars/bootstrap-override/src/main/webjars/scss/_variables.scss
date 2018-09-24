@@ -47,11 +47,11 @@
 	$pagination-border-width:			0px !default !global;
 	$pagination-border-color:			transparent !default !global;
 	$pagination-focus-color:			rgba($black, .87) !default !global;
-	$pagination-focus-bg:				hsla(0,0%, 60%, .4) !default !global;
+	$pagination-focus-bg:				$gray-300 !default !global;
 	$pagination-focus-border-color:		transparent !default !global;
 	$pagination-focus-box-shadow:		none !default !global;
 	$pagination-hover-color:			rgba($black, .87) !default !global;
-	$pagination-hover-bg:				hsla(0,0%, 60%, .4) !default !global;
+	$pagination-hover-bg:				$gray-200 !default !global;
 	$pagination-hover-border-color:		transparent !default !global;
 	$pagination-hover-box-shadow:		none !default !global;
 	$pagination-active-color:			$component-active-color !default !global;
