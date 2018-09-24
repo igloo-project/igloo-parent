@@ -22,7 +22,6 @@ import org.iglooproject.basicapp.web.application.administration.component.UserLi
 import org.iglooproject.basicapp.web.application.administration.export.UserExcelTableExport;
 import org.iglooproject.basicapp.web.application.administration.form.AbstractUserPopup;
 import org.iglooproject.basicapp.web.application.administration.model.AbstractUserDataProvider;
-import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.renderer.UserActiveRenderer;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
@@ -117,7 +116,6 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 						.withLink(AdministrationUserDetailTemplate.<U>mapper().setParameter2(pageModel))
 						.withClass("text text-md")
 				.addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
-						.withSideLink(AdministrationUserDetailTemplate.<U>mapper().setParameter2(pageModel))
 						.withSort(UserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 						.withClass("text text-md")
 				.addLabelColumn(new ResourceModel("business.user.firstName"), Bindings.user().firstName())
@@ -143,11 +141,6 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 				})
 						.withClass("text text-md")
 						.withClass(CELL_HIDDEN_MD_AND_LESS)
-				.addActionColumn()
-						.addLink(ActionRenderers.view(), AdministrationUserDetailTemplate.<U>mapper().setParameter2(pageModel))
-						.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
-						.end()
-						.withClass("actions actions-1x")
 				.addRowCssClass(user -> (user != null && !user.isActive()) ? CssClassConstants.ROW_DISABLED : null)
 				.withNoRecordsResourceKey("administration.user.list.count.zero")
 				.bootstrapCard()
