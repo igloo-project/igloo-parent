@@ -1,6 +1,7 @@
 package org.iglooproject.basicapp.web.application.security.password.component;
 
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
@@ -63,7 +64,7 @@ public class SecurityPasswordRecoveryContentPanel extends Panel {
 									UserPasswordRecoveryRequestInitiator.USER
 							);
 							
-							getSession().success(getString("security.password.recovery.validate.success"));
+							Session.get().success(getString("security.password.recovery.validate.success"));
 							
 							throw SecurityUserTypeDescriptor.USER.signInPageLinkDescriptor()
 									.newRestartResponseException();
@@ -71,7 +72,7 @@ public class SecurityPasswordRecoveryContentPanel extends Panel {
 							throw e;
 						} catch (Exception e) {
 							LOGGER.error("Error occurred while recovering password", e);
-							getSession().error(getString("common.error.unexpected"));
+							Session.get().error(getString("common.error.unexpected"));
 						}
 						
 						FeedbackUtils.refreshFeedback(target, getPage());

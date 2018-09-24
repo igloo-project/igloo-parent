@@ -10,15 +10,19 @@
 					<div class="content-header">
 						<div wicket:id="breadCrumb" />
 						
-						<h4 class="content-header-title">
-							<a wicket:id="backToSourcePage" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
-								<span class="fa fa-arrow-left" />
-							</a>
-							<a wicket:id="backToList" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
-								<span class="fa fa-arrow-left" />
-							</a>
-							<wicket:container wicket:id="pageTitle" />
-						</h4>
+						<div class="row row-compact align-items-center">
+							<div class="col-auto">
+								<a wicket:id="backToSourcePage" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
+									<span class="fa fa-arrow-left" />
+								</a>
+								<a wicket:id="backToList" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
+									<span class="fa fa-arrow-left" />
+								</a>
+							</div>
+							<div class="col-auto">
+								<h4 wicket:id="pageTitle" class="content-header-title" />
+							</div>
+						</div>
 						
 						<div class="content-header-elements-section">
 							<div class="row row-compact align-items-center">

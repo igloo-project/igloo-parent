@@ -56,6 +56,9 @@ public abstract class AbstractExcelExportAjaxLink extends AjaxLink<Void> {
 		add(ajaxDownload);
 	}
 	
+	/**
+	 * @return A media type for a Microsoft Excel file (xls or xlsx). Media type for ODF Spreadsheet (ods) is not valid.
+	 */
 	protected MediaType getMediaType(Workbook workbook) {
 		if (workbook instanceof HSSFWorkbook) {
 			return MediaType.APPLICATION_MS_EXCEL;

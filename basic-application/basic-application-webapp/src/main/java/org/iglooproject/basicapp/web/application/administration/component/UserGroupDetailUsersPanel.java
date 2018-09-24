@@ -88,7 +88,7 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 													throw e;
 												} catch (Exception e) {
 													LOGGER.error("Unknown error occured while removing a group from the user", e);
-													getSession().error(getString("common.error.unexpected"));
+													Session.get().error(getString("common.error.unexpected"));
 													FeedbackUtils.refreshFeedback(target, getPage());
 												}
 											}
@@ -140,14 +140,14 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 												if (!user.getGroups().contains(userGroup)) {
 													try {
 														userGroupService.addUser(userGroup, user);
-														getSession().success(getString("common.success"));
+														Session.get().success(getString("common.success"));
 													} catch (Exception e) {
 														LOGGER.error("Error when adding a user to a user group.", e);
-														getSession().error(getString("common.error.unexpected"));
+														Session.get().error(getString("common.error.unexpected"));
 													}
 												} else {
 													LOGGER.error("User already added to this group.");
-													getSession().warn(getString("administration.userGroup.detail.users.action.add.error.duplicate"));
+													Session.get().warn(getString("administration.userGroup.detail.users.action.add.error.duplicate"));
 												}
 											}
 											

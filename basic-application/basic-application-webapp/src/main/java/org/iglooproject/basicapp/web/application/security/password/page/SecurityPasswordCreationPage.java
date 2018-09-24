@@ -1,6 +1,7 @@
 package org.iglooproject.basicapp.web.application.security.password.page;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -49,7 +50,7 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 		);
 		
 		if (!tokenModel.getObject().equals(userModel.getObject().getPasswordRecoveryRequest().getToken())) {
-			getSession().error(getString("security.password.creation.wrongToken"));
+			Session.get().error(getString("security.password.creation.wrongToken"));
 			throw BasicApplicationApplication.get().getHomePageLinkDescriptor().newRestartResponseException();
 		}
 		

@@ -16,7 +16,7 @@ public class SpringInformationsTest extends AbstractJpaCoreTestCase {
 
 	@Value("${igloo.version}")
 	private String version;
-	@Value("${build.user.name}")
+	@Value("${igloo.build.user.name}")
 	private String buildUserName;
 
 	/**

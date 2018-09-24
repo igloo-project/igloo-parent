@@ -1,6 +1,7 @@
 package org.iglooproject.basicapp.web.application.administration.form;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.basic.Label;
@@ -129,15 +130,15 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 					if (!isOldPasswordRequired.applies() || securityManagementService.checkPassword(oldPassword, user)) {
 						securityManagementService.updatePassword(user, newPassword, BasicApplicationSession.get().getUser());
 						
-						getSession().success(getString("common.success"));
+						Session.get().success(getString("common.success"));
 						closePopup(target);
 						target.add(getPage());
 					} else {
-						getSession().error(getString("administration.user.action.password.edit.error.oldPassword"));
+						Session.get().error(getString("administration.user.action.password.edit.error.oldPassword"));
 					}
 				} catch (Exception e) {
 					LOGGER.error("Error occured while changing password.", e);
-					getSession().error(getString("common.error.unexpected"));
+					Session.get().error(getString("common.error.unexpected"));
 				}
 				FeedbackUtils.refreshFeedback(target, getPage());
 			}

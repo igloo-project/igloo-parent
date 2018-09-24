@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -61,10 +62,10 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 							public void execute() {
 								try {
 									hibernateSearchService.reindexAll();
-									getSession().success(getString("console.maintenance.search.reindex.success"));
+									Session.get().success(getString("console.maintenance.search.reindex.success"));
 								} catch(Exception e) {
 									LOGGER.error("console.maintenance.search.reindex.failure", e);
-									getSession().error(getString("console.maintenance.search.reindex.failure"));
+									Session.get().error(getString("console.maintenance.search.reindex.failure"));
 								}
 								setResponsePage(ConsoleMaintenanceSearchPage.class);
 							}
@@ -135,10 +136,10 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 										classesModel.getObject().clear();
 										idsTextArea.setModelObject("");
 										
-										getSession().success(getString("console.maintenance.search.reindex.success"));
+										Session.get().success(getString("console.maintenance.search.reindex.success"));
 									} catch (Exception e) {
 										LOGGER.error("Erreur lors la réindexation d'entités", e);
-										getSession().error(getString("console.maintenance.search.reindex.failure"));
+										Session.get().error(getString("console.maintenance.search.reindex.failure"));
 									}
 								}
 							})
@@ -146,7 +147,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 			);
 		} catch (Exception e) {
 			LOGGER.error("Erreur lors de la récupération de la liste des classes indexées", e);
-			getSession().error(getString("console.maintenance.search.reindex.partial.error.getClasses"));
+			Session.get().error(getString("console.maintenance.search.reindex.partial.error.getClasses"));
 			reindexClassesForm.setVisible(false);
 		}
 	}

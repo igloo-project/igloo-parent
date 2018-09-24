@@ -152,7 +152,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 									throw e;
 								} catch (Exception e) {
 									LOGGER.error("Unexpected error while reloading task", e);
-									getSession().error(getString("common.error.unexpected"));
+									Session.get().error(getString("common.error.unexpected"));
 								}
 								FeedbackUtils.refreshFeedback(target, getPage());
 							}
@@ -187,7 +187,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 									throw e;
 								} catch (Exception e) {
 									LOGGER.error("Unexpected error while cancelling task", e);
-									getSession().error(getString("common.error.unexpected"));
+									Session.get().error(getString("common.error.unexpected"));
 								}
 								FeedbackUtils.refreshFeedback(target, getPage());
 							}

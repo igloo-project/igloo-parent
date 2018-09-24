@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>1.1.4</version>
+		<version>1.1.5</version>
 	</parent>
 
 	<artifactId>igloo-component-spring</artifactId>
-	
+
 	<name>Igloo - Component - Spring</name>
 	<description>Capitalisation des outils génériques pour la technologie Spring</description>
 
@@ -86,6 +86,12 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 	
 </project>

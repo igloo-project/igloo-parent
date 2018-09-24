@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.Link;
@@ -79,10 +80,10 @@ public class DataUpgradePanel extends Panel {
 					public void onClick() {
 						try {
 							dataUpgradeService.executeDataUpgrade(getModelObject());
-							getSession().success(getString("console.maintenance.dataUpgrade.execute.success"));
+							Session.get().success(getString("console.maintenance.dataUpgrade.execute.success"));
 						} catch (Exception e) {
 							LOGGER.error("Erreur lors de l'exécution de la mise à jour '" + getModelObject() +"'", e);
-							getSession().error(getString("console.maintenance.dataUpgrade.execute.error"));
+							Session.get().error(getString("console.maintenance.dataUpgrade.execute.error"));
 						}
 						setResponsePage(getPage());
 					}
