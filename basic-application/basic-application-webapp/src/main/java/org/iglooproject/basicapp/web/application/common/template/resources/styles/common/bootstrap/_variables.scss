@@ -42,7 +42,14 @@ $dropdown-box-shadow:								$btn-focus-box-shadow !default;
 $table-striped-order:								even !default;
 // OVERRIDE Bootstrap
 
-$nav-pills-striped-order:							even !default;
-$nav-pills-link-color:								inherit !default;
-$nav-pills-link-bg:									#E0E0E0 !default;
-$nav-pills-link-accent-bg:							$nav-pills-link-bg !default;
+%scope {
+	@import "../../scope/variables-dependencies";
+	
+	$nav-page-striped-order:							even !default !global;
+	$nav-page-link-border-width:						$border-width !default !global;
+	$nav-page-link-border-color:						rgba($black, .125) !default !global;
+	$nav-page-link-color:								inherit !default !global;
+	$nav-page-link-bg:									$white !default !global;
+	$nav-page-link-accent-color:						$nav-page-link-color !default !global;
+	$nav-page-link-accent-bg:							$nav-page-link-bg !default !global;
+}

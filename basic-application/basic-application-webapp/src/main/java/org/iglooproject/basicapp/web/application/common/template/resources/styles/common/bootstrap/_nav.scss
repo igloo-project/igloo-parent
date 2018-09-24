@@ -6,13 +6,15 @@
 			padding: 3px;
 			
 			.nav-link {
-				color: $nav-pills-link-color;
-				background-color: $nav-pills-link-bg;
+				border: $nav-page-link-border-width solid $nav-page-link-border-color;
+				color: $nav-page-link-color;
+				background-color: $nav-page-link-bg;
 			}
 			
-			&:nth-of-type(#{$nav-pills-striped-order}) {
+			&:nth-of-type(#{$nav-page-striped-order}) {
 				.nav-link {
-					background-color: $nav-pills-link-accent-bg;
+					color: $nav-page-link-accent-color;
+					background-color: $nav-page-link-accent-bg;
 				}
 			}
 			
