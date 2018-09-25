@@ -1,13 +1,3 @@
-@import "webjars://bootstrap-override:current/scss/colors";
-@import "webjars://bootstrap-override:current/scss/paper";
-
-@import "webjars://bootstrap:current/scss/functions";
-@import "webjars://bootstrap-override:current/scss/functions";
-
-@import "variables";
-@import "webjars://bootstrap-override:current/scss/variables";
-@import "webjars://bootstrap:current/scss/variables";
-
 @import "webjars://bootstrap:current/scss/mixins";
 @import "webjars://bootstrap-override:current/scss/mixins";
 @import "mixins";
@@ -132,6 +122,8 @@
 @import "webjars://bootstrap-override:current/scss/utilities/position";
 @import "webjars://bootstrap:current/scss/utilities/screenreaders";
 @import "webjars://bootstrap-override:current/scss/utilities/screenreaders";
+@import "webjars://bootstrap:current/scss/utilities/shadows";
+@import "webjars://bootstrap-override:current/scss/utilities/shadows";
 @import "webjars://bootstrap:current/scss/utilities/sizing";
 @import "webjars://bootstrap-override:current/scss/utilities/sizing";
 @import "webjars://bootstrap:current/scss/utilities/spacing";

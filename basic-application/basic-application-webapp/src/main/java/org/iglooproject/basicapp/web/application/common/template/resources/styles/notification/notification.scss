@@ -9,11 +9,12 @@
 // Variables
 @import "webjars://bootstrap:current/scss/functions";
 @import "webjars://bootstrap-override:current/scss/functions";
-@import "variables";
-@import "../common/variables";
-@import "../common/bootstrap/variables";
-@import "webjars://bootstrap-override:current/scss/variables";
+
 @import "webjars://bootstrap:current/scss/variables";
+@import "webjars://bootstrap-override:current/scss/variables";
+@import "../common/bootstrap/variables";
+@import "../common/variables";
+@import "variables";
 
 
 // Bootstrap-like styles

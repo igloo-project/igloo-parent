@@ -21,12 +21,8 @@
 
 @import "../common/common";
 
+@import "$(scope-core-console)console";
+
 @import "common";
 @import "layout";
-@import "buttons";
 @import "navbar";
-@import "sidenav";
-@import "card";
-@import "description";
-@import "forms";
-@import "tables";

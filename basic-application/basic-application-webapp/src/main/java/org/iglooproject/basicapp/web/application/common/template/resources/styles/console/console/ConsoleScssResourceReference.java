@@ -1,4 +1,4 @@
-package org.iglooproject.basicapp.web.application.common.template.resources.styles.console;
+package org.iglooproject.basicapp.web.application.common.template.resources.styles.console.console;
 
 import java.util.List;
 

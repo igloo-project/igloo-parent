@@ -1,15 +1,24 @@
 @import "../../common/fontawesome/fontawesome";
 
-@import "variables";
-@import "../../common/variables";
-@import "../../common/bootstrap/bootstrap";
+@import "webjars://bootstrap:current/scss/functions";
+@import "webjars://bootstrap-override:current/scss/functions";
 
-@import "$(scope-core-console)consoleaccess/console-access";
+@import "webjars://bootstrap:current/scss/variables";
+@import "webjars://bootstrap-override:current/scss/variables";
+@import "../../common/bootstrap/variables";
+@import "../../common/variables";
+@import "../common/variables";
+@import "variables";
+
+@import "../../common/bootstrap/bootstrap";
 
 @import "../../common/common";
 @import "../../common/layout";
 @import "../../common/description";
 @import "../../common/forms";
 @import "../../common/tables";
-
 @import "../../common/shadows-hover-focus";
+
+@import "../common/common";
+
+@import "$(scope-core-console)consoleaccess/console-access";
