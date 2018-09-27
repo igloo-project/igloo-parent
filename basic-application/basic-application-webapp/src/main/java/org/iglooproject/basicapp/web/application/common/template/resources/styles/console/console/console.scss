@@ -1,16 +1,12 @@
 @import "../../common/fontawesome/fontawesome";
 
-@import "webjars://bootstrap:current/scss/functions";
-@import "webjars://bootstrap-override:current/scss/functions";
+@import "../../common/bootstrap/bootstrap-prerequisite";
+@import "../common/bootstrap-variables";
+@import "../../common/bootstrap/bootstrap-core";
 
-@import "webjars://bootstrap:current/scss/variables";
-@import "webjars://bootstrap-override:current/scss/variables";
-@import "../../common/bootstrap/variables";
-@import "../../common/variables";
-@import "../common/variables";
 @import "variables";
-
-@import "../../common/bootstrap/bootstrap";
+@import "../common/variables";
+@import "../../common/variables";
 
 @import "../../common/common";
 @import "../../common/layout";

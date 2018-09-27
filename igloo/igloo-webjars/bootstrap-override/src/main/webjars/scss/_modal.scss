@@ -51,10 +51,10 @@
 	
 	input.hasDatepicker,
 	input.hasMonthpicker {
-		z-index: $zindex-modal-date-picker;
+		z-index: $zindex-modal-datepicker;
 		
 		&:focus {
-			z-index: $zindex-modal-date-picker;
+			z-index: $zindex-modal-datepicker;
 		}
 	}
 }

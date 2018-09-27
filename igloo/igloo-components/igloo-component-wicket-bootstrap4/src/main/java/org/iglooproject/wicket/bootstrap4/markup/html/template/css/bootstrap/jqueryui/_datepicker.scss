@@ -1,32 +1,32 @@
-$ui-datepicker-width:							19rem !default;
+$ui-datepicker-width:									19rem !default;
 
-$ui-datepicker-border-radius:					0 !default;
-$ui-datepicker-border:							none !default;
-$ui-datepicker-bg:								$white !default;
-$ui-datepicker-color:							$body-color !default;
-$ui-datepicker-box-shadow:						map-get($shadows, 10) !default;
+$ui-datepicker-border-radius:							0 !default;
+$ui-datepicker-border:									none !default;
+$ui-datepicker-bg:										$white !default;
+$ui-datepicker-color:									$body-color !default;
+$ui-datepicker-box-shadow:								map-get($shadows, 10) !default;
 
-$ui-datepicker-header-padding-x:				1rem !default;
-$ui-datepicker-header-padding-y:				1rem !default;
-$ui-datepicker-header-color:					$white !default;
-$ui-datepicker-header-border:					none !default;
-$ui-datepicker-header-bg:						$primary !default;
+$ui-datepicker-header-padding-x:						1rem !default;
+$ui-datepicker-header-padding-y:						1rem !default;
+$ui-datepicker-header-color:							$white !default;
+$ui-datepicker-header-border:							none !default;
+$ui-datepicker-header-bg:								theme-color("primary") !default;
 
-$ui-datepicker-calendar-day-color:				#2B2B2B !default;
-$ui-datepicker-calendar-day-bg:					transparent !default;
-$ui-datepicker-calendar-day-border-radius:		.25rem !default;
+$ui-datepicker-calendar-day-color:						#2B2B2B !default;
+$ui-datepicker-calendar-day-bg:							transparent !default;
+$ui-datepicker-calendar-day-border-radius:				.25rem !default;
 
-$ui-datepicker-calendar-day-today-color:		$ui-datepicker-calendar-day-color !default;
-$ui-datepicker-calendar-day-today-bg:			$gray-200 !default;
+$ui-datepicker-calendar-day-today-color:				$ui-datepicker-calendar-day-color !default;
+$ui-datepicker-calendar-day-today-bg:					$gray-200 !default;
 
-$ui-datepicker-calendar-day-highlight-color:	$ui-datepicker-calendar-day-color !default;
-$ui-datepicker-calendar-day-highlight-bg:		$ui-datepicker-calendar-day-bg !default;
+$ui-datepicker-calendar-day-highlight-color:			$ui-datepicker-calendar-day-color !default;
+$ui-datepicker-calendar-day-highlight-bg:				$ui-datepicker-calendar-day-bg !default;
 
-$ui-datepicker-calendar-day-hover-color:		$ui-datepicker-calendar-day-color !default;
-$ui-datepicker-calendar-day-hover-bg:			$gray-300 !default;
+$ui-datepicker-calendar-day-hover-color:				$ui-datepicker-calendar-day-color !default;
+$ui-datepicker-calendar-day-hover-bg:					$gray-300 !default;
 
-$ui-datepicker-calendar-day-current-day-color:		$white !default;
-$ui-datepicker-calendar-day-current-day-bg:			$primary !default;
+$ui-datepicker-calendar-day-current-day-color:			$white !default;
+$ui-datepicker-calendar-day-current-day-bg:				theme-color("primary") !default;
 
 $ui-datepicker-footer-padding:					.5em .75em !default;
 
