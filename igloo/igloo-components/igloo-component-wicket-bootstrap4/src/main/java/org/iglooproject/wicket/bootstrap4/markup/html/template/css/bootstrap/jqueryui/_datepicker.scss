@@ -10,7 +10,7 @@ $ui-datepicker-header-padding-x:						1rem !default;
 $ui-datepicker-header-padding-y:						1rem !default;
 $ui-datepicker-header-color:							$white !default;
 $ui-datepicker-header-border:							none !default;
-$ui-datepicker-header-bg:								theme-color("primary") !default;
+$ui-datepicker-header-bg:								$component-active-bg !default;
 
 $ui-datepicker-calendar-day-color:						#2B2B2B !default;
 $ui-datepicker-calendar-day-bg:							transparent !default;
@@ -26,9 +26,9 @@ $ui-datepicker-calendar-day-hover-color:				$ui-datepicker-calendar-day-color !d
 $ui-datepicker-calendar-day-hover-bg:					$gray-300 !default;
 
 $ui-datepicker-calendar-day-current-day-color:			$white !default;
-$ui-datepicker-calendar-day-current-day-bg:				theme-color("primary") !default;
+$ui-datepicker-calendar-day-current-day-bg:				$component-active-bg !default;
 
-$ui-datepicker-footer-padding:					.5em .75em !default;
+$ui-datepicker-footer-padding:							.5em .75em !default;
 
 .ui-datepicker {
 	.ui-helper-clearfix {
