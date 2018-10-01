@@ -1,16 +1,15 @@
 package org.iglooproject.test.transaction;
 
 import org.hibernate.LazyInitializationException;
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.company.model.Company;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.util.service.ServiceExceptionService;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -64,6 +63,21 @@ public class TestTransactionService extends AbstractJpaCoreTestCase {
 		}
 
 		Assert.assertEquals(1, serviceExceptionService.size());
+	}
+	
+	@Test
+	public void testCommitOnCheckedException() throws ServiceException, SecurityServiceException {
+		serviceExceptionService.dontThrow();
+
+		Assert.assertEquals(1, serviceExceptionService.size());
+
+		try {
+			serviceExceptionService.throwCheckedException();
+			Assert.fail(String.format("Exception {} obligatoire", CheckedException.class.getName()));
+		} catch (CheckedException e) {
+		}
+
+		Assert.assertEquals(2, serviceExceptionService.size());
 	}
 
 	@Test

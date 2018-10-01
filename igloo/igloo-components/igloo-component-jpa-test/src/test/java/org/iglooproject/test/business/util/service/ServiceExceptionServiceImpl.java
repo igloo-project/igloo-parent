@@ -1,12 +1,12 @@
 package org.iglooproject.test.business.util.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.business.company.model.Company;
 import org.iglooproject.test.business.company.service.ICompanyService;
+import org.iglooproject.test.transaction.CheckedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -38,7 +38,7 @@ public class ServiceExceptionServiceImpl implements ServiceExceptionService {
 	public void throwServiceInheritedException() throws ServiceException, SecurityServiceException {
 		Company company = new Company("Company Test");
 		companyService.create(company);
-		throw new MyException() ;
+		throw new MyException();
 	}
 
 	@Override
@@ -46,6 +46,13 @@ public class ServiceExceptionServiceImpl implements ServiceExceptionService {
 		Company company = new Company("Company Test");
 		companyService.create(company);
 		throw new IllegalStateException();
+	}
+
+	@Override
+	public void throwCheckedException() throws ServiceException, SecurityServiceException, CheckedException {
+		Company company = new Company("Company Test");
+		companyService.create(company);
+		throw new CheckedException();
 	}
 
 	@Override
