@@ -33,7 +33,7 @@ import org.iglooproject.basicapp.web.application.common.template.favicon.Applica
 import org.iglooproject.basicapp.web.application.common.template.resources.BasicApplicationResourcesPackage;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.advanced.StylesScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.applicationaccess.ApplicationAccessScssResourceReference;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.console.ConsoleScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.console.console.ConsoleScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.console.consoleaccess.ConsoleAccessScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.NotificationScssResourceReference;
 import org.iglooproject.basicapp.web.application.console.common.component.ConsoleAccessHeaderAdditionalContentPanel;

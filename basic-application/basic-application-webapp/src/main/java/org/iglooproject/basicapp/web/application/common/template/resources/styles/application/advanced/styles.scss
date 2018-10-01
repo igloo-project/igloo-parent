@@ -1,16 +1,21 @@
 @import "../../common/fontawesome/fontawesome";
 
+@import "../../common/bootstrap/bootstrap-prerequisite";
+@import "bootstrap-variables";
+@import "../../common/bootstrap/bootstrap-core";
+
 @import "variables";
+@import "../common/variables";
 @import "../../common/variables";
-@import "../../common/bootstrap/bootstrap";
 
 @import "../../common/common";
 @import "../../common/layout";
 @import "../../common/description";
 @import "../../common/forms";
 @import "../../common/tables";
-
 @import "../../common/shadows-hover-focus";
+
+@import "../common/common";
 
 @import "common";
 @import "layout";
