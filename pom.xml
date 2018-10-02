@@ -248,7 +248,7 @@
 
 	<ciManagement>
 		<system>GitLab</system>
-		<url>https://gitlab.tools.kobalt-si.fr/igloo/igloo-parent/pipelines</url>
+		<url>https://gitlab.tools.kobalt.fr/igloo/igloo-parent/pipelines</url>
 	</ciManagement>
 
 	<scm>

@@ -60,17 +60,17 @@
 	
 	<issueManagement>
 		<system>GitLab</system>
-		<url>https://gitlab.tools.kobalt-si.fr/kobalt/${projectName}/issues</url>
+		<url>https://gitlab.tools.kobalt.fr/kobalt/${projectName}/issues</url>
 	</issueManagement>
 
 	<ciManagement>
 		<system>GitLab</system>
-		<url>https://gitlab.tools.kobalt-si.fr/kobalt/${projectName}/pipelines</url>
+		<url>https://gitlab.tools.kobalt.fr/kobalt/${projectName}/pipelines</url>
 	</ciManagement>
 
 	<scm>
-		<developerConnection>scm:git:git@gitlab.tools.kobalt-si.fr:kobalt/${projectName}.git</developerConnection>
-		<url>https://gitlab.tools.kobalt-si.fr/kobalt/${projectName}</url>
+		<developerConnection>scm:git:git@gitlab.tools.kobalt.fr:kobalt/${projectName}.git</developerConnection>
+		<url>https://gitlab.tools.kobalt.fr/kobalt/${projectName}</url>
 		<tag>HEAD</tag>
 	</scm>
 	
