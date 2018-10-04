@@ -21,6 +21,7 @@ import org.iglooproject.wicket.more.CoreDefaultExceptionMapper;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.CoreMarkupFactory;
+import org.iglooproject.wicket.more.markup.parser.filter.InlineEnclosureComponentHandler;
 import org.iglooproject.wicket.more.security.authorization.CoreAuthorizationStrategy;
 import org.iglooproject.wicket.more.security.authorization.StandardUnauthorizedComponentInstantiationListener;
 import org.iglooproject.wicket.more.security.page.AccessDeniedPage;
@@ -62,6 +63,8 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
 	@Override
 	public void init() {
 		super.init();
+		
+		getPageSettings().addComponentResolver(new InlineEnclosureComponentHandler());
 		
 		getMarkupSettings().setMarkupFactory(new CoreMarkupFactory());
 		
