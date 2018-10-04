@@ -27,6 +27,7 @@ import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.model.ComponentPageModel;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
+import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
@@ -67,19 +68,31 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 			}
 		};
 		
+		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
+		add(headerElementsSection.anyChildVisible());
+		
 		UserGroupPopup addPopup = new UserGroupPopup("addPopup");
+		add(addPopup);
 		
 		add(
-				addPopup,
-				new BlankLink("add")
-						.add(new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
-							private static final long serialVersionUID = 1L;
-							@Override
-							protected void onShow(AjaxRequestTarget target) {
-								addPopup.setUpAdd(new UserGroup());
-							}
-						}),
-				
+			headerElementsSection
+				.add(
+					new EnclosureContainer("actionsContainer")
+						.anyChildVisible()
+						.add(
+							new BlankLink("add")
+									.add(new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
+										private static final long serialVersionUID = 1L;
+										@Override
+										protected void onShow(AjaxRequestTarget target) {
+											addPopup.setUpAdd(new UserGroup());
+										}
+									})
+						)
+				)
+		);
+		
+		add(
 				DataTableBuilder.start(ReadOnlyCollectionModel.of(userGroupListModel, GenericEntityModel.factory()))
 						.addLabelColumn(new ResourceModel("business.userGroup.name"), Bindings.userGroup().name())
 								.withLink(AdministrationUserGroupDetailPage.MAPPER_SOURCE.setParameter2(new ComponentPageModel(this)))

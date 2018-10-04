@@ -15,9 +15,9 @@
 							<wicket:container wicket:id="pageTitle" />
 						</h4>
 						
-						<div wicket:enclosure-container class="content-header-elements-section">
+						<div wicket:id="headerElementsSection" class="content-header-elements-section">
 							<div class="row row-compact align-items-center">
-								<div class="col-auto ml-auto">
+								<div wicket:id="actionsContainer" class="col-auto ml-auto">
 									<div class="row row-compact align-items-center">
 										<div wicket:enclosure-component="add" class="col-auto">
 											<button wicket:id="add" class="btn btn-primary" type="button">

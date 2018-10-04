@@ -33,6 +33,7 @@ import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.export.excel.component.AbstractExcelExportAjaxLink;
 import org.iglooproject.wicket.more.export.excel.component.ExcelExportWorkInProgressModalPopupPanel;
 import org.iglooproject.wicket.more.link.model.PageModel;
+import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
@@ -59,46 +60,57 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 		super(parameters);
 		this.typeDescriptor = typeDescriptor;
 		
-		AbstractUserPopup<U> addPopup = createAddPopup("addPopup");
-		
 		final AbstractUserDataProvider<U> dataProvider = newDataProvider();
+		
+		add(
+				new CoreLabel("pageTitle", pageTitleModel)
+		);
+		
+		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
+		add(headerElementsSection.anyChildVisible());
+		
+		AbstractUserPopup<U> addPopup = createAddPopup("addPopup");
+		add(addPopup);
+		
+		ExcelExportWorkInProgressModalPopupPanel loadingPopup = new ExcelExportWorkInProgressModalPopupPanel("loadingPopup");
+		add(loadingPopup);
+		
+		add(
+			headerElementsSection
+				.add(
+					new EnclosureContainer("actionsContainer")
+						.anyChildVisible()
+						.add(
+							new BlankLink("add")
+								.add(
+									new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
+										private static final long serialVersionUID = 1L;
+										@Override
+										protected void onShow(AjaxRequestTarget target) {
+											addPopup.setUpAdd(typeDescriptor.administrationTypeDescriptor().newInstance());
+										}
+									}
+								),
+							
+							new AbstractExcelExportAjaxLink("exportExcel", loadingPopup, "export-users-") {
+								private static final long serialVersionUID = 1L;
+								
+								@Override
+								protected Workbook generateWorkbook() {
+									UserExcelTableExport export = new UserExcelTableExport(this);
+									return export.generate(dataProvider);
+								}
+							}
+						)
+				)
+		);
+		
 		DecoratedCoreDataTablePanel<U, ?> results = createDataTable("results", dataProvider, propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 		
 		add(
-				addPopup,
-				new BlankLink("add")
-						.add(
-								new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
-									private static final long serialVersionUID = 1L;
-									@Override
-									protected void onShow(AjaxRequestTarget target) {
-										addPopup.setUpAdd(typeDescriptor.administrationTypeDescriptor().newInstance());
-									}
-								}
-						)
-		);
-		
-		ExcelExportWorkInProgressModalPopupPanel loadingPopup = new ExcelExportWorkInProgressModalPopupPanel("loadingPopup");
-		add(
-				loadingPopup,
-				new AbstractExcelExportAjaxLink("exportExcel", loadingPopup, "export-users-") {
-					private static final long serialVersionUID = 1L;
-					
-					@Override
-					protected Workbook generateWorkbook() {
-						UserExcelTableExport export = new UserExcelTableExport(this);
-						return export.generate(dataProvider);
-					}
-				}
-		);
-		
-		add(
-				new CoreLabel("pageTitle", pageTitleModel),
-				
 				new UserListSearchPanel<>("search", results, typeDescriptor, dataProvider),
 				results
 		);
-		
 	}
 	
 	protected abstract AbstractUserDataProvider<U> newDataProvider();

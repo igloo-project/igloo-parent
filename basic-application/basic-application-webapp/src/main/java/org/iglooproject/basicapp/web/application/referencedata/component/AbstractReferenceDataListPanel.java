@@ -5,7 +5,6 @@ import static org.iglooproject.basicapp.web.application.common.util.CssClassCons
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
@@ -19,7 +18,9 @@ import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.security.model.CorePermissionConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
@@ -143,17 +144,21 @@ public abstract class AbstractReferenceDataListPanel<
 		public ItemActionsFragment(String id, final IModel<T> itemModel) {
 			super(id, "itemActionsFragment", AbstractReferenceDataListPanel.this, itemModel);
 			
-			add(Condition.permission(itemModel, getPermissionEdit()).thenShow());
+			add(Condition.anyChildVisible(ItemActionsFragment.this).thenShow());
 			
 			add(
-				new WebMarkupContainer("edit")
-						.add(new AjaxModalOpenBehavior(getPopup(), MouseEvent.CLICK) {
-							private static final long serialVersionUID = 1L;
-							@Override
-							protected void onShow(AjaxRequestTarget target) {
-								getPopup().setUpEdit(itemModel.getObject());
-							}
-						})
+				new EnclosureContainer("actionsContainer")
+					.anyChildVisible()
+					.add(
+						new BlankLink("edit")
+							.add(new AjaxModalOpenBehavior(getPopup(), MouseEvent.CLICK) {
+								private static final long serialVersionUID = 1L;
+								@Override
+								protected void onShow(AjaxRequestTarget target) {
+									getPopup().setUpEdit(itemModel.getObject());
+								}
+							})
+					)
 			);
 		}
 	}
@@ -165,16 +170,22 @@ public abstract class AbstractReferenceDataListPanel<
 		public GlobalActionsFragment(String id) {
 			super(id, "globalActionsFragment", AbstractReferenceDataListPanel.this);
 			
+			add(Condition.anyChildVisible(GlobalActionsFragment.this).thenShow());
+			
 			add(
-				new WebMarkupContainer("add")
-						.add(new AjaxModalOpenBehavior(getPopup(), MouseEvent.CLICK) {
-							private static final long serialVersionUID = 1L;
-							@Override
-							protected void onShow(AjaxRequestTarget target) {
-								getPopup().setUpAdd(getNewInstance());
-							}
-						})
-				.add(Condition.permission(getPermissionAdd()).thenShow())
+				new EnclosureContainer("actionsContainer")
+					.anyChildVisible()
+					.add(
+						new BlankLink("add")
+							.add(new AjaxModalOpenBehavior(getPopup(), MouseEvent.CLICK) {
+								private static final long serialVersionUID = 1L;
+								@Override
+								protected void onShow(AjaxRequestTarget target) {
+									getPopup().setUpAdd(getNewInstance());
+								}
+							})
+						.add(Condition.permission(getPermissionAdd()).thenShow())
+					)
 			);
 		}
 	}
