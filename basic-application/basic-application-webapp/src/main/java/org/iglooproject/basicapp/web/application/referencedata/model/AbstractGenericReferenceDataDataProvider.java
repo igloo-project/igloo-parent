@@ -31,12 +31,6 @@ public abstract class AbstractGenericReferenceDataDataProvider<T extends Generic
 	public IModel<T> model(T item) {
 		return GenericEntityModel.of(item);
 	}
-	
-	@Override
-	public void detach() {
-		super.detach();
-		Detachables.detach(enabledFilterModel, sortModel);
-	}
 
 	public IModel<EnabledFilter> getEnabledFilterModel() {
 		return enabledFilterModel;
@@ -54,4 +48,14 @@ public abstract class AbstractGenericReferenceDataDataProvider<T extends Generic
 	}
 
 	protected abstract IGenericReferenceDataSearchQuery<T, S, ?> createSearchQuery();
+
+	@Override
+	public void detach() {
+		super.detach();
+		Detachables.detach(
+			enabledFilterModel,
+			sortModel
+		);
+	}
+
 }

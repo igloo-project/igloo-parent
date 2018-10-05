@@ -19,6 +19,7 @@ import org.iglooproject.basicapp.core.security.service.ISecurityManagementServic
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.passay.LengthRule;
 import org.passay.PasswordData;
 import org.passay.PasswordValidator;
@@ -67,9 +68,7 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 	@Override
 	public void detach(Component component) {
 		super.detach(component);
-		if (userModel != null) {
-			userModel.detach();
-		}
+		Detachables.detach(userModel);
 	}
 
 	@Override

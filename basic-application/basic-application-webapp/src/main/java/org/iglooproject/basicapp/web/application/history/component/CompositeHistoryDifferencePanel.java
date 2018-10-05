@@ -13,6 +13,7 @@ import org.iglooproject.jpa.more.business.history.model.atomic.HistoryDifference
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.model.BindingModel;
+import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDifference> {
 	private static final long serialVersionUID = 1L;
@@ -33,7 +34,7 @@ public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDiffere
 			
 			@Override
 			public void detach() {
-				childFactory.detach();
+				Detachables.detach(childFactory);
 			}
 		};
 	}
@@ -53,7 +54,7 @@ public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDiffere
 			
 			@Override
 			public void detach() {
-				childFactory.detach();
+				Detachables.detach(childFactory);
 			}
 		};
 	}

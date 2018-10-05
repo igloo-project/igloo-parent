@@ -40,7 +40,10 @@ public abstract class AbstractLocalizedReferenceDataDataProvider<T extends Local
 	@Override
 	public void detach() {
 		super.detach();
-		Detachables.detach(labelModel, codeModel);
+		Detachables.detach(
+			labelModel,
+			codeModel
+		);
 	}
 
 }

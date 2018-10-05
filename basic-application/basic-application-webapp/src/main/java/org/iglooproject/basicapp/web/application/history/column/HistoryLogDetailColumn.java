@@ -20,6 +20,7 @@ import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
+import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -89,7 +90,7 @@ public class HistoryLogDetailColumn extends AbstractCoreColumn<HistoryLog, Histo
 	@Override
 	public void detach() {
 		super.detach();
-		historyComponentFactory.detach();
+		Detachables.detach(historyComponentFactory);
 	}
 
 }
