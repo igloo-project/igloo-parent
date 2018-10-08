@@ -68,29 +68,27 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 			}
 		};
 		
-		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
-		add(headerElementsSection.anyChildVisible());
-		
 		UserGroupPopup addPopup = new UserGroupPopup("addPopup");
 		add(addPopup);
 		
-		add(
-			headerElementsSection
-				.add(
-					new EnclosureContainer("actionsContainer")
-						.anyChildVisible()
-						.add(
-							new BlankLink("add")
-									.add(new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
-										private static final long serialVersionUID = 1L;
-										@Override
-										protected void onShow(AjaxRequestTarget target) {
-											addPopup.setUpAdd(new UserGroup());
-										}
-									})
-						)
-				)
-		);
+		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
+		add(headerElementsSection.anyChildVisible());
+		
+		headerElementsSection
+			.add(
+				new EnclosureContainer("actionsContainer")
+					.anyChildVisible()
+					.add(
+						new BlankLink("add")
+								.add(new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
+									private static final long serialVersionUID = 1L;
+									@Override
+									protected void onShow(AjaxRequestTarget target) {
+										addPopup.setUpAdd(new UserGroup());
+									}
+								})
+					)
+			);
 		
 		add(
 				DataTableBuilder.start(ReadOnlyCollectionModel.of(userGroupListModel, GenericEntityModel.factory()))

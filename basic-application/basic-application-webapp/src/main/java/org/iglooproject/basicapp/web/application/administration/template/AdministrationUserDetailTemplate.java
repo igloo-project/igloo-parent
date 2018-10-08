@@ -108,116 +108,112 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 				new CoreLabel("pageTitle", BindingModel.of(userModel, Bindings.user().fullName()))
 		);
 		
-		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
-		add(headerElementsSection.anyChildVisible());
-		
-		add(
-			headerElementsSection
-				.add(
-					new EnclosureContainer("informationContainer")
-						.anyChildVisible()
-						.add(
-							new BootstrapBadge<>("active", userModel, UserActiveRenderer.get())
-						)
-				)
-		);
-		
 		UserPasswordUpdatePopup<U> passwordEditPopup = new UserPasswordUpdatePopup<>("passwordEditPopup", userModel);
 		add(passwordEditPopup);
 		
-		add(
-			headerElementsSection
-				.add(
-					new EnclosureContainer("actionsContainer")
-						.anyChildVisible()
-						.add(
-							new BlankLink("passwordEdit")
-								.add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
-								.add(
-										Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminUpdateEnabled()))
-												.thenShow()
-								),
-							
-							AjaxConfirmLink.<U>build()
-								.title(new ResourceModel("administration.user.action.password.recovery.reset.confirmation.title"))
-								.content(new StringResourceModel("administration.user.action.password.recovery.reset.confirmation.content", userModel))
-								.confirm()
-								.onClick(new IAjaxAction() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public void execute(AjaxRequestTarget target) {
-										try {
-											securityManagementService.initiatePasswordRecoveryRequest(userModel.getObject(),
-													UserPasswordRecoveryRequestType.RESET,
-													UserPasswordRecoveryRequestInitiator.ADMIN,
-													BasicApplicationSession.get().getUser()
-											);
-											Session.get().success(getString("administration.user.action.password.recovery.reset.success"));
-											target.add(getPage());
-										} catch (Exception e) {
-											LOGGER.error("Error occured while sending a password recovery request", e);
-											Session.get().error(getString("common.error.unexpected"));
-										}
-										FeedbackUtils.refreshFeedback(target, getPage());
-									}
-								})
-								.create("passwordReset", userModel)
-								.add(
-									Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminRecoveryEnabled()))
-										.thenShow()
-								),
-							
-							new AjaxLink<U>("enable", userModel) {
+		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
+		add(headerElementsSection.anyChildVisible());
+		
+		headerElementsSection
+			.add(
+				new EnclosureContainer("informationContainer")
+					.anyChildVisible()
+					.add(
+						new BootstrapBadge<>("active", userModel, UserActiveRenderer.get())
+					)
+			);
+		
+		headerElementsSection
+			.add(
+				new EnclosureContainer("actionsContainer")
+					.anyChildVisible()
+					.add(
+						new BlankLink("passwordEdit")
+							.add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
+							.add(
+									Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminUpdateEnabled()))
+											.thenShow()
+							),
+						
+						AjaxConfirmLink.<U>build()
+							.title(new ResourceModel("administration.user.action.password.recovery.reset.confirmation.title"))
+							.content(new StringResourceModel("administration.user.action.password.recovery.reset.confirmation.content", userModel))
+							.confirm()
+							.onClick(new IAjaxAction() {
 								private static final long serialVersionUID = 1L;
 								@Override
-								public void onClick(AjaxRequestTarget target) {
+								public void execute(AjaxRequestTarget target) {
 									try {
-										userService.setActive(getModelObject(), true);
-										Session.get().success(getString("administration.user.action.enable.success"));
+										securityManagementService.initiatePasswordRecoveryRequest(userModel.getObject(),
+												UserPasswordRecoveryRequestType.RESET,
+												UserPasswordRecoveryRequestInitiator.ADMIN,
+												BasicApplicationSession.get().getUser()
+										);
+										Session.get().success(getString("administration.user.action.password.recovery.reset.success"));
 										target.add(getPage());
 									} catch (Exception e) {
-										LOGGER.error("Error occured while enabling user", e);
+										LOGGER.error("Error occured while sending a password recovery request", e);
 										Session.get().error(getString("common.error.unexpected"));
 									}
 									FeedbackUtils.refreshFeedback(target, getPage());
 								}
+							})
+							.create("passwordReset", userModel)
+							.add(
+								Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminRecoveryEnabled()))
+									.thenShow()
+							),
+						
+						new AjaxLink<U>("enable", userModel) {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void onClick(AjaxRequestTarget target) {
+								try {
+									userService.setActive(getModelObject(), true);
+									Session.get().success(getString("administration.user.action.enable.success"));
+									target.add(getPage());
+								} catch (Exception e) {
+									LOGGER.error("Error occured while enabling user", e);
+									Session.get().error(getString("common.error.unexpected"));
+								}
+								FeedbackUtils.refreshFeedback(target, getPage());
 							}
-								.add(Condition.isFalse(BindingModel.of(userModel, Bindings.user().active())).thenShow()),
-							
-							AjaxConfirmLink.<U>build()
-								.title(new ResourceModel("administration.user.action.disable.confirmation.title"))
-								.content(new StringResourceModel("administration.user.action.disable.confirmation.content", userModel))
-								.confirm()
-								.onClick(new IAjaxAction() {
-										private static final long serialVersionUID = 1L;
-										@Override
-										public void execute(AjaxRequestTarget target) {
-											try {
-												userService.setActive(userModel.getObject(), false);
-												Session.get().success(getString("administration.user.action.disable.success"));
-											} catch (Exception e) {
-												LOGGER.error("Error occured while disabling user", e);
-												Session.get().error(getString("common.error.unexpected"));
-											}
-											target.add(getPage());
-											FeedbackUtils.refreshFeedback(target, getPage());
+						}
+							.add(Condition.isFalse(BindingModel.of(userModel, Bindings.user().active())).thenShow()),
+						
+						AjaxConfirmLink.<U>build()
+							.title(new ResourceModel("administration.user.action.disable.confirmation.title"))
+							.content(new StringResourceModel("administration.user.action.disable.confirmation.content", userModel))
+							.confirm()
+							.onClick(new IAjaxAction() {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public void execute(AjaxRequestTarget target) {
+										try {
+											userService.setActive(userModel.getObject(), false);
+											Session.get().success(getString("administration.user.action.disable.success"));
+										} catch (Exception e) {
+											LOGGER.error("Error occured while disabling user", e);
+											Session.get().error(getString("common.error.unexpected"));
 										}
-								})
-								.create("disable", userModel)
-								.add(
-									new Condition() {
-										private static final long serialVersionUID = 1L;
-										@Override
-										public boolean applies() {
-											User user = userModel.getObject();
-											User currentUser = BasicApplicationSession.get().getUser();
-											return !user.equals(currentUser) && user.isActive();
-										}
-									}.thenShow()
-								)
-						)
-				)
-		);
+										target.add(getPage());
+										FeedbackUtils.refreshFeedback(target, getPage());
+									}
+							})
+							.create("disable", userModel)
+							.add(
+								new Condition() {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public boolean applies() {
+										User user = userModel.getObject();
+										User currentUser = BasicApplicationSession.get().getUser();
+										return !user.equals(currentUser) && user.isActive();
+									}
+								}.thenShow()
+							)
+					)
+			);
 	}
 	
 	@Override

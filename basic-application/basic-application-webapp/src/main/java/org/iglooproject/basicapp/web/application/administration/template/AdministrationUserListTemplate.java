@@ -66,44 +66,42 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 				new CoreLabel("pageTitle", pageTitleModel)
 		);
 		
-		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
-		add(headerElementsSection.anyChildVisible());
-		
 		AbstractUserPopup<U> addPopup = createAddPopup("addPopup");
 		add(addPopup);
 		
 		ExcelExportWorkInProgressModalPopupPanel loadingPopup = new ExcelExportWorkInProgressModalPopupPanel("loadingPopup");
 		add(loadingPopup);
 		
-		add(
-			headerElementsSection
-				.add(
-					new EnclosureContainer("actionsContainer")
-						.anyChildVisible()
-						.add(
-							new BlankLink("add")
-								.add(
-									new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
-										private static final long serialVersionUID = 1L;
-										@Override
-										protected void onShow(AjaxRequestTarget target) {
-											addPopup.setUpAdd(typeDescriptor.administrationTypeDescriptor().newInstance());
-										}
+		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
+		add(headerElementsSection.anyChildVisible());
+		
+		headerElementsSection
+			.add(
+				new EnclosureContainer("actionsContainer")
+					.anyChildVisible()
+					.add(
+						new BlankLink("add")
+							.add(
+								new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
+									private static final long serialVersionUID = 1L;
+									@Override
+									protected void onShow(AjaxRequestTarget target) {
+										addPopup.setUpAdd(typeDescriptor.administrationTypeDescriptor().newInstance());
 									}
-								),
-							
-							new AbstractExcelExportAjaxLink("exportExcel", loadingPopup, "export-users-") {
-								private static final long serialVersionUID = 1L;
-								
-								@Override
-								protected Workbook generateWorkbook() {
-									UserExcelTableExport export = new UserExcelTableExport(this);
-									return export.generate(dataProvider);
 								}
+							),
+						
+						new AbstractExcelExportAjaxLink("exportExcel", loadingPopup, "export-users-") {
+							private static final long serialVersionUID = 1L;
+							
+							@Override
+							protected Workbook generateWorkbook() {
+								UserExcelTableExport export = new UserExcelTableExport(this);
+								return export.generate(dataProvider);
 							}
-						)
-				)
-		);
+						}
+					)
+			);
 		
 		DecoratedCoreDataTablePanel<U, ?> results = createDataTable("results", dataProvider, propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 		
