@@ -15,7 +15,6 @@ import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.markup.head.PriorityFirstComparator;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.resource.PackageResource;
@@ -33,6 +32,7 @@ import org.iglooproject.wicket.more.css.lesscss.service.ILessCssService;
 import org.iglooproject.wicket.more.css.scss.service.ICachedScssService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import org.iglooproject.wicket.more.markup.head.CoreHeaderItemComparator;
 import org.iglooproject.wicket.request.mapper.NoVersionMountedMapper;
 import org.iglooproject.wicket.request.mapper.PageParameterAwareMountedMapper;
 import org.iglooproject.wicket.request.mapper.StaticResourceMapper;
@@ -123,8 +123,9 @@ public abstract class CoreWicketApplication extends WebApplication {
 		// gestion du cache sur les ressources
 		getResourceSettings().setCachingStrategy(new FilenameWithVersionResourceCachingStrategy(new LastModifiedResourceVersion()));
 		
-		// on place les éléments présents dans le wicket:head en premier
-		getResourceSettings().setHeaderItemComparator(new PriorityFirstComparator(true));
+		// Custom comparator to have a specific order for some header items, fallback to default comparator.
+		// Global final order: specific order > priority > page > component.
+		getResourceSettings().setHeaderItemComparator(CoreHeaderItemComparator.get());
 		
 		// configuration du disk data store de Wicket
 		getStoreSettings().setInmemoryCacheSize(propertyService.get(WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE));
