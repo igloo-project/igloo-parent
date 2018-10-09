@@ -5,8 +5,11 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.iglooproject.jpa.more.business.sort.ISort;
+import org.iglooproject.jpa.more.business.sort.SortUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.ImmutableList;
 import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.CollectionExpression;
 import com.querydsl.core.types.EntityPath;
@@ -17,9 +20,6 @@ import com.querydsl.core.types.dsl.CollectionPath;
 import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.jpa.impl.JPAQuery;
-
-import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.jpa.more.business.sort.SortUtils;
 
 public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?>>> extends AbstractSearchQuery<T, S> /* NOT Serializable */ {
 	
@@ -111,6 +111,9 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	@Override
 	@Transactional(readOnly = true)
 	public final List<T> list(long offset, long limit) {
+		if (limit == 0) {
+			return ImmutableList.of();
+		}
 		return getQueryList(offset, limit).fetch();
 	}
 
