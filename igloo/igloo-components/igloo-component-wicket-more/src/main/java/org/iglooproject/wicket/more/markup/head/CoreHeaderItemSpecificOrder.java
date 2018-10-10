@@ -2,10 +2,8 @@ package org.iglooproject.wicket.more.markup.head;
 
 import java.util.stream.Stream;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.markup.head.ResourceAggregator.RecordedHeaderItem;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference;
 
 public class CoreHeaderItemSpecificOrder implements IHeaderItemSpecificOrder {
 
@@ -13,9 +11,8 @@ public class CoreHeaderItemSpecificOrder implements IHeaderItemSpecificOrder {
 
 	protected static enum HeaderItemOrder {
 		
-		// JQuery and JQuery UI need to be added before Bootstrap JS resources.
-		JQUERY(Application.get().getJavaScriptLibrarySettings().getJQueryReference()),
-		JQUERY_UI(JQueryUIJavaScriptResourceReference.get());
+		;
+		// Add top priority resource references here.
 		
 		private final ResourceReference resourceReference;
 		
