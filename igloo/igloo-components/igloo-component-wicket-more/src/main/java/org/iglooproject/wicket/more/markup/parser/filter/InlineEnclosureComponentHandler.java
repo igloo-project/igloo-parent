@@ -17,7 +17,7 @@ import org.iglooproject.wicket.more.markup.html.internal.InternalInlineEnclosure
 
 public final class InlineEnclosureComponentHandler extends AbstractMarkupFilter implements IComponentResolver {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7296604782230893979L;
 
 	public final static String INLINE_ENCLOSURE_COMPONENT_ID_PREFIX = "InlineEnclosureComponent-";
 
@@ -76,6 +76,10 @@ public final class InlineEnclosureComponentHandler extends AbstractMarkupFilter 
 		return tag.getAttributes().getString(getInlineEnclosureComponentAttributeName(markupStream));
 	}
 
+	private String getInlineEnclosureComponentAttributeName(MarkupStream markupStream) {
+		return getWicketNamespace(markupStream) + ':' + INLINE_ENCLOSURE_COMPONENT_ATTRIBUTE_NAME;
+	}
+
 	@Override
 	public Component resolve(final MarkupContainer container, final MarkupStream markupStream, final ComponentTag tag) {
 		String inlineEnclosureComponentChildId = getAttribute(tag, markupStream);
@@ -85,10 +89,6 @@ public final class InlineEnclosureComponentHandler extends AbstractMarkupFilter 
 		}
 		
 		return null;
-	}
-
-	private String getInlineEnclosureComponentAttributeName(MarkupStream markupStream) {
-		return getWicketNamespace(markupStream) + ':' + INLINE_ENCLOSURE_COMPONENT_ATTRIBUTE_NAME;
 	}
 
 }

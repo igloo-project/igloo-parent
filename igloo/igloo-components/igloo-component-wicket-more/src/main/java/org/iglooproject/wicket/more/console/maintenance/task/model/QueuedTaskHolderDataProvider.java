@@ -17,6 +17,7 @@ import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class QueuedTaskHolderDataProvider extends AbstractSearchQueryDataProvider<QueuedTaskHolder, QueuedTaskHolderSort> {
 
@@ -86,20 +87,6 @@ public class QueuedTaskHolderDataProvider extends AbstractSearchQueryDataProvide
 	}
 
 	@Override
-	public void detach() {
-		super.detach();
-		
-		nameModel.detach();
-		statusesModel.detach();
-		resultsModel.detach();
-		taskTypesModel.detach();
-		queueIdsModel.detach();
-		creationDateModel.detach();
-		startDateModel.detach();
-		endDateModel.detach();
-	}
-
-	@Override
 	protected ISearchQuery<QueuedTaskHolder, QueuedTaskHolderSort> getSearchQuery() {
 		return createSearchQuery(IQueuedTaskHolderSearchQuery.class)
 				.name(nameModel.getObject())
@@ -112,4 +99,20 @@ public class QueuedTaskHolderDataProvider extends AbstractSearchQueryDataProvide
 				.endDate(endDateModel.getObject())
 				.sort(sortModel.getObject());
 	}
+
+	@Override
+	public void detach() {
+		super.detach();
+		Detachables.detach(
+			nameModel,
+			statusesModel,
+			resultsModel,
+			taskTypesModel,
+			queueIdsModel,
+			creationDateModel,
+			startDateModel,
+			endDateModel
+		);
+	}
+
 }

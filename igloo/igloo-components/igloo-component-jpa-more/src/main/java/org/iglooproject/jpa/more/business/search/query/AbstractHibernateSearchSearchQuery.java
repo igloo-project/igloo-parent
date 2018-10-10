@@ -32,6 +32,7 @@ import org.iglooproject.spring.util.lucene.search.LuceneUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 
@@ -198,6 +199,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	@Transactional(readOnly = true)
 	@SuppressWarnings("unchecked")
 	public final List<T> list(long offset, long limit) {
+		if (limit == 0) {
+			return ImmutableList.of();
+		}
 		return getFullTextQueryList(offset, limit).getResultList();
 	}
 	

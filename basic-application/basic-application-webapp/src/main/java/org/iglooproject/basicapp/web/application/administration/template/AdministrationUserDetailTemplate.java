@@ -32,6 +32,7 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDesc
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.link.model.PageModel;
 import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
+import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
@@ -99,8 +100,6 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 				)
 				.link("backToSourcePage").hideIfInvalid();
 		
-		UserPasswordUpdatePopup<U> passwordEditPopup = new UserPasswordUpdatePopup<>("passwordEditPopup", userModel);
-		
 		add(
 				backToSourcePage,
 				typeDescriptor.administrationTypeDescriptor().list().link("backToList")
@@ -109,71 +108,84 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 				new CoreLabel("pageTitle", BindingModel.of(userModel, Bindings.user().fullName()))
 		);
 		
-		add(
-				new BootstrapBadge<>("active", userModel, UserActiveRenderer.get())
-		);
+		UserPasswordUpdatePopup<U> passwordEditPopup = new UserPasswordUpdatePopup<>("passwordEditPopup", userModel);
+		add(passwordEditPopup);
 		
-		add(
-				passwordEditPopup,
-				new BlankLink("passwordEdit")
-						.add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
-						.add(
-								Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminUpdateEnabled()))
-										.thenShow()
-						),
-				
-				AjaxConfirmLink.<U>build()
-						.title(new ResourceModel("administration.user.action.password.recovery.reset.confirmation.title"))
-						.content(new StringResourceModel("administration.user.action.password.recovery.reset.confirmation.content", userModel))
-						.confirm()
-						.onClick(new IAjaxAction() {
+		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
+		add(headerElementsSection.anyChildVisible());
+		
+		headerElementsSection
+			.add(
+				new EnclosureContainer("informationContainer")
+					.anyChildVisible()
+					.add(
+						new BootstrapBadge<>("active", userModel, UserActiveRenderer.get())
+					)
+			);
+		
+		headerElementsSection
+			.add(
+				new EnclosureContainer("actionsContainer")
+					.anyChildVisible()
+					.add(
+						new BlankLink("passwordEdit")
+							.add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
+							.add(
+									Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminUpdateEnabled()))
+											.thenShow()
+							),
+						
+						AjaxConfirmLink.<U>build()
+							.title(new ResourceModel("administration.user.action.password.recovery.reset.confirmation.title"))
+							.content(new StringResourceModel("administration.user.action.password.recovery.reset.confirmation.content", userModel))
+							.confirm()
+							.onClick(new IAjaxAction() {
+								private static final long serialVersionUID = 1L;
+								@Override
+								public void execute(AjaxRequestTarget target) {
+									try {
+										securityManagementService.initiatePasswordRecoveryRequest(userModel.getObject(),
+												UserPasswordRecoveryRequestType.RESET,
+												UserPasswordRecoveryRequestInitiator.ADMIN,
+												BasicApplicationSession.get().getUser()
+										);
+										Session.get().success(getString("administration.user.action.password.recovery.reset.success"));
+										target.add(getPage());
+									} catch (Exception e) {
+										LOGGER.error("Error occured while sending a password recovery request", e);
+										Session.get().error(getString("common.error.unexpected"));
+									}
+									FeedbackUtils.refreshFeedback(target, getPage());
+								}
+							})
+							.create("passwordReset", userModel)
+							.add(
+								Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminRecoveryEnabled()))
+									.thenShow()
+							),
+						
+						new AjaxLink<U>("enable", userModel) {
 							private static final long serialVersionUID = 1L;
 							@Override
-							public void execute(AjaxRequestTarget target) {
+							public void onClick(AjaxRequestTarget target) {
 								try {
-									securityManagementService.initiatePasswordRecoveryRequest(userModel.getObject(),
-											UserPasswordRecoveryRequestType.RESET,
-											UserPasswordRecoveryRequestInitiator.ADMIN,
-											BasicApplicationSession.get().getUser()
-									);
-									Session.get().success(getString("administration.user.action.password.recovery.reset.success"));
+									userService.setActive(getModelObject(), true);
+									Session.get().success(getString("administration.user.action.enable.success"));
 									target.add(getPage());
 								} catch (Exception e) {
-									LOGGER.error("Error occured while sending a password recovery request", e);
+									LOGGER.error("Error occured while enabling user", e);
 									Session.get().error(getString("common.error.unexpected"));
 								}
 								FeedbackUtils.refreshFeedback(target, getPage());
 							}
-						})
-						.create("passwordReset", userModel)
-						.add(
-								Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminRecoveryEnabled()))
-										.thenShow()
-						),
-				
-				new AjaxLink<U>("enable", userModel) {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						try {
-							userService.setActive(getModelObject(), true);
-							Session.get().success(getString("administration.user.action.enable.success"));
-							target.add(getPage());
-						} catch (Exception e) {
-							LOGGER.error("Error occured while enabling user", e);
-							Session.get().error(getString("common.error.unexpected"));
 						}
-						FeedbackUtils.refreshFeedback(target, getPage());
-					}
-				}
-						.add(Condition.isFalse(BindingModel.of(userModel, Bindings.user().active())).thenShow()),
-				
-				AjaxConfirmLink.<U>build()
-						.title(new ResourceModel("administration.user.action.disable.confirmation.title"))
-						.content(new StringResourceModel("administration.user.action.disable.confirmation.content", userModel))
-						.confirm()
-						.onClick(
-								new IAjaxAction() {
+							.add(Condition.isFalse(BindingModel.of(userModel, Bindings.user().active())).thenShow()),
+						
+						AjaxConfirmLink.<U>build()
+							.title(new ResourceModel("administration.user.action.disable.confirmation.title"))
+							.content(new StringResourceModel("administration.user.action.disable.confirmation.content", userModel))
+							.confirm()
+							.onClick(new IAjaxAction() {
 									private static final long serialVersionUID = 1L;
 									@Override
 									public void execute(AjaxRequestTarget target) {
@@ -187,10 +199,9 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 										target.add(getPage());
 										FeedbackUtils.refreshFeedback(target, getPage());
 									}
-								}
-						)
-						.create("disable", userModel)
-						.add(
+							})
+							.create("disable", userModel)
+							.add(
 								new Condition() {
 									private static final long serialVersionUID = 1L;
 									@Override
@@ -200,8 +211,9 @@ public class AdministrationUserDetailTemplate<U extends User> extends Administra
 										return !user.equals(currentUser) && user.isActive();
 									}
 								}.thenShow()
-						)
-		);
+							)
+					)
+			);
 	}
 	
 	@Override

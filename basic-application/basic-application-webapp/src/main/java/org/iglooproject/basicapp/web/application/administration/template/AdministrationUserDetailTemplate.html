@@ -24,16 +24,16 @@
 							</div>
 						</div>
 						
-						<div class="content-header-elements-section">
+						<div wicket:id="headerElementsSection" class="content-header-elements-section">
 							<div class="row row-compact align-items-center">
-								<div class="col-auto">
+								<div wicket:id="informationContainer" class="col-auto">
 									<div class="row row-compact">
 										<div class="col-auto">
 											<span wicket:id="active" class="badge-header" />
 										</div>
 									</div>
 								</div>
-								<div wicket:enclosure-container class="col-auto ml-auto">
+								<div wicket:id="actionsContainer" class="col-auto ml-auto">
 									<div class="row row-compact">
 										<div wicket:enclosure-component="passwordEdit" class="col-auto">
 											<button type="button" wicket:id="passwordEdit" class="btn btn-primary">

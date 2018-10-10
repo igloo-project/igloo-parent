@@ -13,12 +13,20 @@ import org.apache.wicket.markup.MarkupResourceStream;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.WicketParseException;
 import org.apache.wicket.markup.parser.AbstractMarkupFilter;
+import org.apache.wicket.markup.resolver.IComponentResolver;
 import org.apache.wicket.util.string.Strings;
+import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.internal.InternalInlineEnclosureContainer;
 
 import com.google.common.base.Joiner;
 
-public final class InlineEnclosureContainerHandler extends AbstractMarkupFilter {
+/**
+ * @deprecated Use {@link EnclosureContainer#anyChildVisible()} instead.
+ */
+@Deprecated
+public final class InlineEnclosureContainerHandler extends AbstractMarkupFilter implements IComponentResolver {
+
+	private static final long serialVersionUID = -6887170399988887069L;
 
 	public static final String INLINE_ENCLOSURE_CONTAINER_ID_PREFIX = "InlineEnclosureContainer-";
 
@@ -130,6 +138,17 @@ public final class InlineEnclosureContainerHandler extends AbstractMarkupFilter 
 
 	private String getInlineEnclosureContainerChildrenAttributeName(MarkupStream markupStream) {
 		return getWicketNamespace(markupStream) + ':' + INLINE_ENCLOSURE_CONTAINER_CHILDREN_ATTRIBUTE_NAME;
+	}
+
+	@Override
+	public Component resolve(MarkupContainer container, MarkupStream markupStream, ComponentTag tag) {
+		String inlineEnclosureComponentChildrenId = getInlineEnclosureContainerChildrenAttribute(tag, markupStream);
+		
+		if (!Strings.isEmpty(inlineEnclosureComponentChildrenId)) {
+			return new InternalInlineEnclosureContainer(tag.getId(), inlineEnclosureComponentChildrenId);
+		}
+		
+		return null;
 	}
 
 }

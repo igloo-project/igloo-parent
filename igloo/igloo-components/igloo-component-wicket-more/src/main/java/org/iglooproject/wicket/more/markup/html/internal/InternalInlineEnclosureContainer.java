@@ -16,11 +16,16 @@ import org.apache.wicket.markup.resolver.ComponentResolvers;
 import org.apache.wicket.markup.resolver.ComponentResolvers.ResolverFilter;
 import org.apache.wicket.markup.resolver.IComponentResolver;
 import org.apache.wicket.util.string.Strings;
+import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+/**
+ * @deprecated Use {@link EnclosureContainer#anyChildVisible()} instead.
+ */
+@Deprecated
 public class InternalInlineEnclosureContainer extends WebMarkupContainer implements IComponentResolver {
 
 	private static final long serialVersionUID = 1L;

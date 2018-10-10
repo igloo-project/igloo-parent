@@ -21,6 +21,7 @@ import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,7 +101,7 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		newPasswordModel.detach();
+		Detachables.detach(newPasswordModel);
 	}
 
 }

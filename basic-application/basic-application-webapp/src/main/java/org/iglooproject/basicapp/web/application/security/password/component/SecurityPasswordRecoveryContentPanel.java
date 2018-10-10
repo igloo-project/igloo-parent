@@ -21,6 +21,7 @@ import org.iglooproject.basicapp.web.application.common.typedescriptor.user.Secu
 import org.iglooproject.basicapp.web.application.common.validator.EmailExistsValidator;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,6 +90,6 @@ public class SecurityPasswordRecoveryContentPanel extends Panel {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		emailModel.detach();
+		Detachables.detach(emailModel);
 	}
 }

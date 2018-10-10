@@ -12,6 +12,7 @@ import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -84,9 +85,11 @@ public abstract class AbstractUserDataProvider<U extends User> extends AbstractS
 	@Override
 	public void detach() {
 		super.detach();
-		nameModel.detach();
-		groupModel.detach();
-		sortModel.detach();
-		includeInactivesModel.detach();
+		Detachables.detach(
+			nameModel,
+			groupModel,
+			includeInactivesModel,
+			sortModel
+		);
 	}
 }

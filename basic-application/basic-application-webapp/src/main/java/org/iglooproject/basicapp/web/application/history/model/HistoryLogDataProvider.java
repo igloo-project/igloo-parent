@@ -63,12 +63,6 @@ public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<Hist
 				.sort(sortModel.getObject());
 	}
 	
-	@Override
-	public void detach() {
-		super.detach();
-		Detachables.detach(subjectModel, dateMinModel, dateMaxModel, objectModel, sortModel);
-	}
-	
 	public IModel<Date> getDateMinModel() {
 		return dateMinModel;
 	}
@@ -84,5 +78,17 @@ public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<Hist
 	public HistoryLogDataProvider addMandatoryDifferenceEventType(HistoryEventType eventType) {
 		mandatoryDifferencesEventTypes.add(eventType);
 		return this;
+	}
+	
+	@Override
+	public void detach() {
+		super.detach();
+		Detachables.detach(
+			subjectModel,
+			dateMinModel,
+			dateMaxModel,
+			objectModel,
+			sortModel
+		);
 	}
 }
