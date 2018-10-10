@@ -10,6 +10,7 @@ import org.iglooproject.wicket.bootstrap4.console.template.style.CoreConsoleCssS
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.bootstrap.CoreBootstrap4CssScope;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.fontawesome.CoreFontAwesome5CssScope;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.jqueryui.JQueryUIJavaScriptResourceReference;
 import org.iglooproject.wicket.more.application.CoreWicketApplication;
 import org.iglooproject.wicket.more.application.IWicketModule;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
@@ -28,6 +29,7 @@ public class WicketBootstrapModule implements IWicketModule {
 
 	@Override
 	public void addResourceReplacements(CoreWicketApplication application) {
+		application.addResourceReplacement(org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference.get(), JQueryUIJavaScriptResourceReference.get());
 		application.addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
 	}
 
