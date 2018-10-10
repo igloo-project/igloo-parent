@@ -9,7 +9,7 @@ public final class JQueryUiCssResourceReference extends CssResourceReference {
 	private static final JQueryUiCssResourceReference INSTANCE = new JQueryUiCssResourceReference();
 
 	private JQueryUiCssResourceReference() {
-		super(JQueryUiCssResourceReference.class, "jquery-ui-1.10.4.custom.css");
+		super(JQueryUiCssResourceReference.class, "jquery-ui.css");
 	}
 
 	public static JQueryUiCssResourceReference get() {
