@@ -144,6 +144,10 @@ public abstract class CoreWicketApplication extends WebApplication {
 			}
 		}
 		
+		updateJavaScriptLibrarySettings();
+		
+		updateSelect2ApplicationSettings();
+		
 		addResourceReplacements();
 		
 		mountCommonResources();
@@ -155,6 +159,18 @@ public abstract class CoreWicketApplication extends WebApplication {
 		registerImportScopes();
 		
 		updateResourceSettings();
+	}
+	
+	protected void updateJavaScriptLibrarySettings() {
+		for (IWicketModule module : modules) {
+			module.updateJavaScriptLibrarySettings(getJavaScriptLibrarySettings());
+		}
+	}
+	
+	protected void updateSelect2ApplicationSettings() {
+		for (IWicketModule module : modules) {
+			module.updateSelect2ApplicationSettings(org.wicketstuff.select2.ApplicationSettings.get());
+		}
 	}
 	
 	protected void addResourceReplacements() {

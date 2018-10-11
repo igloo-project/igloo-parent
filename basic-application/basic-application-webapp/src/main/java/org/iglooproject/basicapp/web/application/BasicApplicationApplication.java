@@ -11,7 +11,6 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.resource.JQueryResourceReference;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.iglooproject.basicapp.core.business.common.model.PostalCode;
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
@@ -67,7 +66,6 @@ import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleLoginFa
 import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleLoginSuccessPage;
 import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleSignInPage;
 import org.iglooproject.wicket.bootstrap4.console.template.ConsoleConfiguration;
-import org.iglooproject.wicket.bootstrap4.markup.html.template.js.select2.Select2JavaScriptResourceReference;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
@@ -128,15 +126,6 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		);
 		
 		FormInvalidDecoratorListener.init(this);
-		
-		getJavaScriptLibrarySettings().setJQueryReference(JQueryResourceReference.getV3());
-		
-		// Don't include css files from wicketstuff-select2.
-		// We take care of Select2 css file and Select2 Bootstrap scss files on our side.
-		// We also override select2 js file to deal with BS tooltip on change/update.
-		org.wicketstuff.select2.ApplicationSettings.get()
-				.setIncludeCss(false)
-				.setJavascriptReferenceFull(Select2JavaScriptResourceReference.get());
 	}
 	
 	@Override
