@@ -20,6 +20,7 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserDetailPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserListPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationGeneralMessageListPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserDetailPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserListPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDetailPage;
@@ -183,6 +184,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountParameterizedPage("/administration/technical-user/${" + CommonParameters.ID + "}/", AdministrationTechnicalUserDetailPage.class);
 		mountPage("/administration/user-group/", AdministrationUserGroupListPage.class);
 		mountParameterizedPage("/administration/user-group/${" + CommonParameters.ID + "}/", AdministrationUserGroupDetailPage.class);
+		mountPage("/administration/general-message/", AdministrationGeneralMessageListPage.class);
 		
 		// Reference data
 		mountPage("/reference-data/", ReferenceDataPage.class);

@@ -49,7 +49,7 @@
 		@include bg($secondary);
 		
 		&.environment-section-dismissed {
-			height: 8px;
+			height: 10px;
 		}
 		
 		&.development {
@@ -68,6 +68,15 @@
 			@include bg($danger);
 		}
 	}
+
+	&.general-message-section {
+		@include bg($warning);
+		
+		&.general-message-section-dismissed {
+			height: 10px;
+		}
+	}
+
 }
 
 .break-word-container {

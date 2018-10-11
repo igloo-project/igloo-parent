@@ -21,8 +21,10 @@ import org.iglooproject.basicapp.core.security.model.BasicApplicationAuthorityCo
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationGeneralMessageListPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupListPage;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationEnvironmentPanel;
+import org.iglooproject.basicapp.web.application.common.component.GeneralMessagePanel;
 import org.iglooproject.basicapp.web.application.common.template.theme.BasicApplicationApplicationTheme;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.AdministrationUserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
@@ -88,6 +90,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		add(new ApplicationEnvironmentPanel("environment"));
 		
+		add(new GeneralMessagePanel("generalMessage"));
+		
 		add(
 				createBodyBreadCrumb("breadCrumb")
 						.add(displayBreadcrumb().thenShow())
@@ -108,30 +112,33 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	protected List<NavigationMenuItem> getMainNav() {
 		return ImmutableList.of(
 				BasicApplicationApplication.get().getHomePageLinkDescriptor()
-						.navigationMenuItem(new ResourceModel("navigation.home"))
-						.setIconClassesModel(Model.of("fa fa-home fa-fw")),
+					.navigationMenuItem(new ResourceModel("navigation.home"))
+					.setIconClassesModel(Model.of("fa fa-home fa-fw")),
 				ReferenceDataPage.linkDescriptor()
-						.navigationMenuItem(new ResourceModel("navigation.referenceData"))
-						.setIconClassesModel(Model.of("fa fa-list fa-fw")),
+					.navigationMenuItem(new ResourceModel("navigation.referenceData"))
+					.setIconClassesModel(Model.of("fa fa-list fa-fw")),
 				AdministrationUserTypeDescriptor.BASIC_USER.list()
-						.navigationMenuItem(new ResourceModel("navigation.administration"))
-						.setIconClassesModel(Model.of("fa fa-cogs fa-fw"))
-						.setSubMenuItems(ImmutableList.of(
-								AdministrationUserTypeDescriptor.BASIC_USER.list()
-										.navigationMenuItem(new ResourceModel("navigation.administration.user.basic"))
-										.setIconClassesModel(Model.of("fa fa-user-cog fa-fw")),
-								AdministrationUserTypeDescriptor.TECHNICAL_USER.list()
-										.navigationMenuItem(new ResourceModel("navigation.administration.user.technical"))
-										.setIconClassesModel(Model.of("fa fa-user-shield fa-fw")),
-								AdministrationUserGroupListPage.linkDescriptor()
-										.navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
-										.setIconClassesModel(Model.of("fa fa-users-cog fa-fw"))
-						)),
+					.navigationMenuItem(new ResourceModel("navigation.administration"))
+					.setIconClassesModel(Model.of("fa fa-cogs fa-fw"))
+					.setSubMenuItems(ImmutableList.of(
+							AdministrationUserTypeDescriptor.BASIC_USER.list()
+								.navigationMenuItem(new ResourceModel("navigation.administration.user.basic"))
+								.setIconClassesModel(Model.of("fa fa-user-cog fa-fw")),
+							AdministrationUserTypeDescriptor.TECHNICAL_USER.list()
+								.navigationMenuItem(new ResourceModel("navigation.administration.user.technical"))
+								.setIconClassesModel(Model.of("fa fa-user-shield fa-fw")),
+							AdministrationUserGroupListPage.linkDescriptor()
+								.navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
+								.setIconClassesModel(Model.of("fa fa-users-cog fa-fw")),
+							AdministrationGeneralMessageListPage.linkDescriptor()
+								.navigationMenuItem(new ResourceModel("navigation.administration.generalMessage"))
+								.setIconClassesModel(Model.of("fa fa-comment-alt fa-fw"))
+					)),
 				LinkDescriptorBuilder.start()
-						.validator(Condition.role(BasicApplicationAuthorityConstants.ROLE_ADMIN))
-						.page(ConsoleMaintenanceSearchPage.class)
-						.navigationMenuItem(new ResourceModel("navigation.console"))
-						.setIconClassesModel(Model.of("fa fa-wrench fa-fw"))
+					.validator(Condition.role(BasicApplicationAuthorityConstants.ROLE_ADMIN))
+					.page(ConsoleMaintenanceSearchPage.class)
+					.navigationMenuItem(new ResourceModel("navigation.console"))
+					.setIconClassesModel(Model.of("fa fa-wrench fa-fw"))
 		);
 	}
 
