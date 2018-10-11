@@ -83,7 +83,7 @@ $ui-datepicker-footer-padding:							.5em .75em !default;
 			height: auto;
 			width: auto;
 			margin: 0;
-			padding: $ui-datepicker-header-padding-y $ui-datepicker-header-padding-x;
+			padding: 0;
 			
 			color: $ui-datepicker-header-color;
 			
@@ -118,8 +118,7 @@ $ui-datepicker-footer-padding:							.5em .75em !default;
 		}
 		
 		.ui-datepicker-prev {
-			top: 0;
-			left: 0;
+			left: $ui-datepicker-header-padding-x;
 			
 			order: 1;
 			
@@ -141,8 +140,7 @@ $ui-datepicker-footer-padding:							.5em .75em !default;
 		}
 		
 		.ui-datepicker-next {
-			top: 0;
-			right: 0;
+			right: $ui-datepicker-header-padding-x;
 			
 			order: 3;
 			
