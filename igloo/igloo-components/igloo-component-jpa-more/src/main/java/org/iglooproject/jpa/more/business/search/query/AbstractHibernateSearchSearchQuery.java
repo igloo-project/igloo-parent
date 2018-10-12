@@ -494,7 +494,6 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return getFacetManager().getFacets(facetName);
 	}
 
-	@Override
 	public final List<String> listFacetValues(String facetName) {
 		return getFacets(facetName)
 				.stream()
