@@ -5,22 +5,23 @@ import static org.iglooproject.basicapp.web.application.property.BasicApplicatio
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.basicapp.core.business.message.model.GeneralMessage;
-import org.iglooproject.basicapp.core.business.message.search.GeneralMessageSort;
-import org.iglooproject.basicapp.core.business.message.service.IGeneralMessageService;
+import org.iglooproject.basicapp.core.business.announcement.model.Announcement;
+import org.iglooproject.basicapp.core.business.announcement.search.AnnouncementSort;
+import org.iglooproject.basicapp.core.business.announcement.service.IAnnouncementService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
-import org.iglooproject.basicapp.web.application.administration.form.GeneralMessagePopup;
-import org.iglooproject.basicapp.web.application.administration.model.GeneralMessageDataProvider;
-import org.iglooproject.basicapp.web.application.administration.template.AdministrationGeneralMessageTemplate;
+import org.iglooproject.basicapp.web.application.administration.form.AnnouncementPopup;
+import org.iglooproject.basicapp.web.application.administration.model.AnnouncementDataProvider;
+import org.iglooproject.basicapp.web.application.administration.template.AdministrationAnnouncementTemplate;
+import org.iglooproject.basicapp.web.application.common.component.AnnouncementMessagePanel;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
-import org.iglooproject.basicapp.web.application.common.renderer.GeneralMessageActiveRenderer;
-import org.iglooproject.basicapp.web.application.common.renderer.GeneralMessageRenderer;
+import org.iglooproject.basicapp.web.application.common.renderer.AnnouncementActiveRenderer;
 import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -28,7 +29,6 @@ import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.action.OneParameterModalOpenAjaxAction;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
@@ -36,33 +36,34 @@ import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
+import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;
 import org.iglooproject.wicket.more.util.DatePattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-public class AdministrationGeneralMessageListPage extends AdministrationGeneralMessageTemplate {
+public class AdministrationAnnouncementListPage extends AdministrationAnnouncementTemplate {
 
 	private static final long serialVersionUID = -4746355629579854697L;
 
-	private Logger LOGGER = LoggerFactory.getLogger(AdministrationGeneralMessageListPage.class);
+	private Logger LOGGER = LoggerFactory.getLogger(AdministrationAnnouncementListPage.class);
 
 	@SpringBean
-	private IGeneralMessageService generalMessageService;
+	private IAnnouncementService announcementService;
 
 	@SpringBean
 	private IPropertyService propertyService;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()
-				.page(AdministrationGeneralMessageListPage.class);
+				.page(AdministrationAnnouncementListPage.class);
 	}
 
-	public AdministrationGeneralMessageListPage(PageParameters parameters) {
+	public AdministrationAnnouncementListPage(PageParameters parameters) {
 		super(parameters);
 		
-		GeneralMessagePopup popup = new GeneralMessagePopup("popup");
+		AnnouncementPopup popup = new AnnouncementPopup("popup");
 		add(popup);
 		
 		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
@@ -77,60 +78,60 @@ public class AdministrationGeneralMessageListPage extends AdministrationGeneralM
 						private static final long serialVersionUID = 1L;
 						@Override
 						protected void onShow(AjaxRequestTarget target) {
-							popup.setUpAdd(new GeneralMessage());
+							popup.setUpAdd(new Announcement());
 						}
 					}
 				)
 			);
 		
-		GeneralMessageDataProvider dataProvider = new GeneralMessageDataProvider();
+		AnnouncementDataProvider dataProvider = new AnnouncementDataProvider();
 		
 		DecoratedCoreDataTablePanel<?, ?> results =
 		DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
-			.addBootstrapBadgeColumn(Model.of(), Bindings.generalMessage(), GeneralMessageActiveRenderer.get())
+			.addBootstrapBadgeColumn(Model.of(), Bindings.announcement(), AnnouncementActiveRenderer.get())
 				.hideLabel()
 				.withClass("narrow")
-			.addLabelColumn(new ResourceModel("administration.generalMessage.list.id"), Bindings.generalMessage().id())
-				.withSort(GeneralMessageSort.ID, SortIconStyle.NUMERIC, CycleMode.DEFAULT_REVERSE)
+			.addLabelColumn(new ResourceModel("business.announcement.id"), Bindings.announcement().id())
+				.withSort(AnnouncementSort.ID, SortIconStyle.NUMERIC, CycleMode.DEFAULT_REVERSE)
 				.withClass("numeric numeric-sm")
-			.addLabelColumn(new ResourceModel("administration.generalMessage.list.type"), Bindings.generalMessage().type(), EnumRenderer.get())
-			.addLabelColumn(new ResourceModel("administration.generalMessage.list.message"), GeneralMessageRenderer.get())
-			.addLabelColumn(new ResourceModel("administration.generalMessage.list.publication.startDateTime"), Bindings.generalMessage().publication().startDateTime(), DatePattern.REALLY_SHORT_DATETIME)
-				.withSort(GeneralMessageSort.PUBLICATION_START_DATE_TIME, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
+			.addLabelColumn(new ResourceModel("business.announcement.type"), Bindings.announcement().type(), EnumRenderer.get())
+			.addColumn(new AbstractCoreColumn<Announcement, AnnouncementSort>(new ResourceModel("business.announcement.message")) {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public void populateItem(Item<ICellPopulator<Announcement>> cellItem, String componentId, IModel<Announcement> rowModel) {
+					cellItem.add(new AnnouncementMessagePanel(componentId, rowModel));
+				}
+			})
+			.addLabelColumn(new ResourceModel("business.announcement.publication.startDateTime"), Bindings.announcement().publication().startDateTime(), DatePattern.REALLY_SHORT_DATETIME)
+				.withSort(AnnouncementSort.PUBLICATION_START_DATE_TIME, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
 				.withClass("date date-md")
-			.addLabelColumn(new ResourceModel("administration.generalMessage.list.publication.endDateTime"), Bindings.generalMessage().publication().endDateTime(), DatePattern.REALLY_SHORT_DATETIME)
+			.addLabelColumn(new ResourceModel("business.announcement.publication.endDateTime"), Bindings.announcement().publication().endDateTime(), DatePattern.REALLY_SHORT_DATETIME)
 				.withClass("date date-md")
 			.addActionColumn()
-				.addAction(ActionRenderers.edit(), new OneParameterModalOpenAjaxAction<IModel<GeneralMessage>>(popup) {
+				.addAction(ActionRenderers.edit(), new OneParameterModalOpenAjaxAction<IModel<Announcement>>(popup) {
 					private static final long serialVersionUID = 1L;
 					@Override
-					protected void onShow(AjaxRequestTarget target, IModel<GeneralMessage> generalMessageModel) {
-						super.onShow(target, generalMessageModel);
-						popup.setUpEdit(generalMessageModel.getObject());
+					protected void onShow(AjaxRequestTarget target, IModel<Announcement> announcementModel) {
+						super.onShow(target, announcementModel);
+						popup.setUpEdit(announcementModel.getObject());
 					}
 				})
 				.addConfirmAction(ActionRenderers.delete())
-					.title(new IDetachableFactory<IModel<GeneralMessage>, IModel<String>>() {
-						private static final long serialVersionUID = 1L;
-						@Override
-						public IModel<String> create(IModel<GeneralMessage> parameter) {
-							return new ResourceModel("administration.generalMessage.action.delete.confirmation.title");
-						}
-					})
-					.content(new ResourceModel("administration.generalMessage.action.delete.confirmation.content"))
+					.title(new ResourceModel("administration.announcement.action.delete.confirmation.title"))
+					.content(new ResourceModel("administration.announcement.action.delete.confirmation.content"))
 					.confirm()
-					.onClick(new IOneParameterAjaxAction<IModel<GeneralMessage>>() {
+					.onClick(new IOneParameterAjaxAction<IModel<Announcement>>() {
 						private static final long serialVersionUID = 1L;
 						@Override
-						public void execute(AjaxRequestTarget target, IModel<GeneralMessage> parameter) {
+						public void execute(AjaxRequestTarget target, IModel<Announcement> parameter) {
 							try {
-								generalMessageService.delete(parameter.getObject());
+								announcementService.delete(parameter.getObject());
 								Session.get().success(getString("common.success"));
 								throw new RestartResponseException(getPage());
 							} catch (RestartResponseException e) {
 								throw e;
 							} catch (Exception e) {
-								LOGGER.error("Erreur lors de la suppression d'un message de service", e);
+								LOGGER.error("Error when deleting an announcement.", e);
 								Session.get().error(getString("common.error.unexpected"));
 								FeedbackUtils.refreshFeedback(target, getPage());
 							}
@@ -138,18 +139,14 @@ public class AdministrationGeneralMessageListPage extends AdministrationGeneralM
 					})
 					.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
 				.end()
-				.withClass("actions actions-3x")
+				.withClass("actions actions-2x")
 			.addRowCssClass(message -> (message != null && !message.isActive()) ? CssClassConstants.ROW_DISABLED : null)
 			.bootstrapCard()
+				.count("administration.announcement.list.count")
 				.ajaxPagers()
 			.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 		
 		add(results);
-	}
-
-	@Override
-	protected Class<? extends WebPage> getSecondMenuPage() {
-		return null;
 	}
 
 }

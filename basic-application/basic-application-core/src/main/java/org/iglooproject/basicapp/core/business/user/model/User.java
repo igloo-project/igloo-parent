@@ -1,22 +1,17 @@
 package org.iglooproject.basicapp.core.business.user.model;
 
-import java.util.Date;
-
-import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Indexed;
+import org.iglooproject.basicapp.core.business.user.model.embeddable.UserAnnouncementInformation;
 import org.iglooproject.basicapp.core.business.user.model.embeddable.UserPasswordInformation;
 import org.iglooproject.basicapp.core.business.user.model.embeddable.UserPasswordRecoveryRequest;
-import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.security.business.person.model.GenericSimpleUser;
 import org.iglooproject.spring.util.StringUtils;
 
@@ -38,12 +33,8 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 	@Embedded
 	private UserPasswordRecoveryRequest passwordRecoveryRequest;
 
-	@Basic(optional = false)
-	private boolean openGeneralMessage = true;
-
-	@Basic
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastGeneralMessageActionDate;
+	@Embedded
+	private UserAnnouncementInformation announcementInformation = new UserAnnouncementInformation();
 
 	public User() {
 		super();
@@ -63,20 +54,15 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 		return passwordRecoveryRequest;
 	}
 
-	public boolean isOpenGeneralMessage() {
-		return openGeneralMessage;
+	public UserAnnouncementInformation getAnnouncementInformation() {
+		if (announcementInformation == null) {
+			announcementInformation = new UserAnnouncementInformation();
+		}
+		return announcementInformation;
 	}
 
-	public void setOpenGeneralMessage(boolean openGeneralMessage) {
-		this.openGeneralMessage = openGeneralMessage;
-	}
-
-	public Date getLastGeneralMessageActionDate() {
-		return CloneUtils.clone(lastGeneralMessageActionDate);
-	}
-
-	public void setLastGeneralMessageActionDate(Date lastGeneralMessageActionDate) {
-		this.lastGeneralMessageActionDate = CloneUtils.clone(lastGeneralMessageActionDate);
+	public void setAnnouncementInformation(UserAnnouncementInformation announcementInformation) {
+		this.announcementInformation = announcementInformation;
 	}
 
 	@Transient

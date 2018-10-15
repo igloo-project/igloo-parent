@@ -19,7 +19,7 @@ public final class ActionRenderers {
 	}
 
 	public static <T> BootstrapRenderer<T> edit() {
-		return constant("common.action.edit", "fa fa-fw fa-edit", BootstrapColor.PRIMARY);
+		return constant("common.action.edit", "fa fa-fw fa-pencil-alt", BootstrapColor.PRIMARY);
 	}
 
 	public static <T> BootstrapRenderer<T> remove() {

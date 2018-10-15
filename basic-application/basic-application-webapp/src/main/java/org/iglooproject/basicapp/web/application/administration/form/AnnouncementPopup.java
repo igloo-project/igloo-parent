@@ -18,11 +18,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.basicapp.core.business.message.model.GeneralMessage;
-import org.iglooproject.basicapp.core.business.message.model.atomic.GeneralMessageType;
-import org.iglooproject.basicapp.core.business.message.service.IGeneralMessageService;
+import org.iglooproject.basicapp.core.business.announcement.model.Announcement;
+import org.iglooproject.basicapp.core.business.announcement.model.atomic.AnnouncementType;
+import org.iglooproject.basicapp.core.business.announcement.service.IAnnouncementService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationGeneralMessageListPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationAnnouncementListPage;
 import org.iglooproject.basicapp.web.application.common.form.TimeField;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.functional.Predicates2;
@@ -46,35 +46,33 @@ import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GeneralMessagePopup extends AbstractAjaxModalPopupPanel<GeneralMessage> {
+public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement> {
 
 	private static final long serialVersionUID = -757028645835449815L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(GeneralMessagePopup.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AnnouncementPopup.class);
 
 	@SpringBean
-	private IGeneralMessageService generalMessageService;
+	private IAnnouncementService announcementService;
 
-	private Form<GeneralMessage> form;
+	private Form<Announcement> form;
 
 	private final IModel<FormMode> formModeModel = new Model<>(FormMode.ADD);
 
-	private IModel<GeneralMessageType> typeModel;
+	private final IModel<AnnouncementType> typeModel = BindingModel.of(getModel(), Bindings.announcement().type());
 
-	private IModel<Date> publicationStartDateModel;
-	private IModel<Date> publicationStartTimeModel = Model.of();
-	private IModel<Date> publicationEndDateModel;
-	private IModel<Date> publicationEndTimeModel = Model.of();
+	private final IModel<Date> publicationStartDateModel = BindingModel.of(getModel(), Bindings.announcement().publication().startDateTime());
+	private final IModel<Date> publicationStartTimeModel = Model.of();
+	private final IModel<Date> publicationEndDateModel = BindingModel.of(getModel(), Bindings.announcement().publication().endDateTime());
+	private final IModel<Date> publicationEndTimeModel = Model.of();
 
-	private IModel<Date> interruptionStartDateModel;
-	private IModel<Date> interruptionStartTimeModel = Model.of();
-	private IModel<Date> interruptionEndDateModel;
-	private IModel<Date> interruptionEndTimeModel = Model.of();
+	private final IModel<Date> interruptionStartDateModel = BindingModel.of(getModel(), Bindings.announcement().interruption().startDateTime());
+	private final IModel<Date> interruptionStartTimeModel = Model.of();
+	private final IModel<Date> interruptionEndDateModel = BindingModel.of(getModel(), Bindings.announcement().interruption().endDateTime());
+	private final IModel<Date> interruptionEndTimeModel = Model.of();
 
-	public GeneralMessagePopup(String id) {
-		super(id, new GenericEntityModel<Long, GeneralMessage>(new GeneralMessage()));
-		
-		typeModel = BindingModel.of(getModel(), Bindings.generalMessage().type());
+	public AnnouncementPopup(String id) {
+		super(id, new GenericEntityModel<Long, Announcement>(new Announcement()));
 	}
 
 	@Override
@@ -82,8 +80,8 @@ public class GeneralMessagePopup extends AbstractAjaxModalPopupPanel<GeneralMess
 		return new CoreLabel(
 			wicketId,
 			addModeCondition()
-				.then(new ResourceModel("administration.generalMessage.action.add.title"))
-				.otherwise(new ResourceModel("administration.generalMessage.action.edit.title"))
+				.then(new ResourceModel("administration.announcement.action.add.title"))
+				.otherwise(new ResourceModel("administration.announcement.action.edit.title"))
 		);
 	}
 
@@ -91,28 +89,18 @@ public class GeneralMessagePopup extends AbstractAjaxModalPopupPanel<GeneralMess
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, getClass());
 		
-		publicationStartDateModel = BindingModel.of(getModel(), Bindings.generalMessage().publication().startDateTime());
-		publicationEndDateModel = BindingModel.of(getModel(), Bindings.generalMessage().publication().endDateTime());
-		interruptionStartDateModel = BindingModel.of(getModel(), Bindings.generalMessage().interruption().startDateTime());
-		interruptionEndDateModel = BindingModel.of(getModel(), Bindings.generalMessage().interruption().endDateTime());
-		
-		Condition isTypeInterruption = Condition.predicate(
-			BindingModel.of(getModel(),Bindings.generalMessage().type()),
-			Predicates2.isEqual(GeneralMessageType.SERVICE_INTERRUPTION)
+		Condition isTypeServiceInterruption = Condition.predicate(
+			BindingModel.of(getModel(),Bindings.announcement().type()),
+			Predicates2.isEqual(AnnouncementType.SERVICE_INTERRUPTION)
 		);
 		
 		form = new Form<>("form", getModel());
 		
 		body.add(form);
 		
-		TextField<String> titleFr = new TextField<String>("titleFr", BindingModel.of(getModel(), Bindings.generalMessage().title().fr()));
-		TextField<String> titleEn = new TextField<String>("titleEn", BindingModel.of(getModel(), Bindings.generalMessage().title().en()));
-		TextArea<String> descriptionFr = new TextArea<String>("descriptionFr", BindingModel.of(getModel(), Bindings.generalMessage().description().fr()));
-		TextArea<String> descriptionEn = new TextArea<String>("descriptionEn", BindingModel.of(getModel(), Bindings.generalMessage().description().en()));
-		
 		form.add(
-			new EnumDropDownSingleChoice<>("type", typeModel, GeneralMessageType.class)
-				.setLabel(new ResourceModel("business.generalMessage.type"))
+			new EnumDropDownSingleChoice<>("type", typeModel, AnnouncementType.class)
+				.setLabel(new ResourceModel("business.announcement.type"))
 				.setRequired(true)
 				.add(
 					new UpdateOnChangeAjaxEventBehavior()
@@ -125,59 +113,59 @@ public class GeneralMessagePopup extends AbstractAjaxModalPopupPanel<GeneralMess
 						})
 				),
 			new EnclosureContainer("descriptionContainer")
-				.condition(isTypeInterruption.negate())
+				.condition(isTypeServiceInterruption.negate())
 				.add(
-					titleFr
-						.setLabel(new ResourceModel("business.generalMessage.title.fr"))
-						.setRequired(isTypeInterruption.negate().applies()),
-					titleEn
-						.setLabel(new ResourceModel("business.generalMessage.title.en"))
-						.setRequired(isTypeInterruption.negate().applies()),
-					descriptionFr
-						.setLabel(new ResourceModel("business.generalMessage.description.fr"))
+					new TextField<String>("titleFr", BindingModel.of(getModel(), Bindings.announcement().title().fr()))
+						.setLabel(new ResourceModel("business.announcement.title.fr"))
+						.setRequired(isTypeServiceInterruption.negate().applies()),
+					new TextField<String>("titleEn", BindingModel.of(getModel(), Bindings.announcement().title().en()))
+						.setLabel(new ResourceModel("business.announcement.title.en"))
+						.setRequired(isTypeServiceInterruption.negate().applies()),
+					new TextArea<String>("descriptionFr", BindingModel.of(getModel(), Bindings.announcement().description().fr()))
+						.setLabel(new ResourceModel("business.announcement.description.fr"))
 						.add(new AutosizeBehavior()),
-					descriptionEn
-						.setLabel(new ResourceModel("business.generalMessage.description.en"))
+					new TextArea<String>("descriptionEn", BindingModel.of(getModel(), Bindings.announcement().description().en()))
+						.setLabel(new ResourceModel("business.announcement.description.en"))
 						.add(new AutosizeBehavior())
 				),
-			new CoreLabel("publicationStartDateTitle", new ResourceModel("business.generalMessage.publication.startDateTime")),
+			new CoreLabel("publicationStartDateTitle", new ResourceModel("business.announcement.publication.startDateTime")),
 			new DatePicker("publicationStartDate", publicationStartDateModel, DatePattern.SHORT_DATE)
-				.setLabel(new ResourceModel("business.generalMessage.publication.startDateTime.date"))
+				.setLabel(new ResourceModel("business.announcement.publication.startDateTime.date"))
 				.setRequired(true)
 				.add(new AttributeModifier("placeholder", new ResourceModel("date.format.shortDate.placeholder"))),
 			new TimeField("publicationStartTime", publicationStartTimeModel, DatePattern.TIME)
-				.setLabel(new ResourceModel("business.generalMessage.publication.startDateTime.time"))
+				.setLabel(new ResourceModel("business.announcement.publication.startDateTime.time"))
 				.setRequired(true),
-			new CoreLabel("publicationEndDateTitle", new ResourceModel("business.generalMessage.publication.endDateTime")),
+			new CoreLabel("publicationEndDateTitle", new ResourceModel("business.announcement.publication.endDateTime")),
 			new DatePicker("publicationEndDate", publicationEndDateModel, DatePattern.SHORT_DATE)
-				.setLabel(new ResourceModel("business.generalMessage.publication.endDateTime.date"))
+				.setLabel(new ResourceModel("business.announcement.publication.endDateTime.date"))
 				.setRequired(true)
 				.add(new AttributeModifier("placeholder", new ResourceModel("date.format.shortDate.placeholder"))),
 			new TimeField("publicationEndTime", publicationEndTimeModel, DatePattern.TIME)
-				.setLabel(new ResourceModel("business.generalMessage.publication.endDateTime.time"))
+				.setLabel(new ResourceModel("business.announcement.publication.endDateTime.time"))
 				.setRequired(true),
 			new EnclosureContainer("interruptionContainer")
-				.condition(isTypeInterruption)
+				.condition(isTypeServiceInterruption)
 				.add(
-					new CoreLabel("interruptionStartDateTitle", new ResourceModel("business.generalMessage.interruption.startDateTime")),
+					new CoreLabel("interruptionStartDateTitle", new ResourceModel("business.announcement.interruption.startDateTime")),
 					new DatePicker("interruptionStartDate", interruptionStartDateModel, DatePattern.SHORT_DATE)
-						.setLabel(new ResourceModel("business.generalMessage.interruption.startDateTime.date"))
+						.setLabel(new ResourceModel("business.announcement.interruption.startDateTime.date"))
 						.setRequired(true)
 						.add(new AttributeModifier("placeholder", new ResourceModel("date.format.shortDate.placeholder"))),
 					new TimeField("interruptionStartTime", interruptionStartTimeModel, DatePattern.TIME)
-						.setLabel(new ResourceModel("business.generalMessage.interruption.startDateTime.time"))
+						.setLabel(new ResourceModel("business.announcement.interruption.startDateTime.time"))
 						.setRequired(true),
-					new CoreLabel("interruptionEndDateTitle", new ResourceModel("business.generalMessage.interruption.endDateTime")),
+					new CoreLabel("interruptionEndDateTitle", new ResourceModel("business.announcement.interruption.endDateTime")),
 					new DatePicker("interruptionEndDate", interruptionEndDateModel, DatePattern.SHORT_DATE)
-						.setLabel(new ResourceModel("business.generalMessage.interruption.endDateTime.date"))
+						.setLabel(new ResourceModel("business.announcement.interruption.endDateTime.date"))
 						.setRequired(true)
 						.add(new AttributeModifier("placeholder", new ResourceModel("date.format.shortDate.placeholder"))),
 					new TimeField("interruptionEndTime", interruptionEndTimeModel, DatePattern.TIME)
-						.setLabel(new ResourceModel("business.generalMessage.interruption.endDateTime.time"))
+						.setLabel(new ResourceModel("business.announcement.interruption.endDateTime.time"))
 						.setRequired(true)
 				),
-			new CheckBox("active", BindingModel.of(getModel(), Bindings.generalMessage().active()))
-				.setLabel(new ResourceModel("business.generalMessage.active"))
+			new CheckBox("active", BindingModel.of(getModel(), Bindings.announcement().active()))
+				.setLabel(new ResourceModel("business.announcement.active"))
 				.setOutputMarkupId(true)
 		);
 		
@@ -195,24 +183,24 @@ public class GeneralMessagePopup extends AbstractAjaxModalPopupPanel<GeneralMess
 			protected void onSubmit(AjaxRequestTarget target) {
 				try {
 					
-					GeneralMessage generalMessage = GeneralMessagePopup.this.getModelObject();
-					generalMessage.getPublication().setStartDateTime(GeneralMessagePopup.this.getpublicationDateTime(publicationStartDateModel, publicationStartTimeModel));
-					generalMessage.getPublication().setEndDateTime(GeneralMessagePopup.this.getpublicationDateTime(publicationEndDateModel, publicationEndTimeModel));
-					generalMessage.getInterruption().setStartDateTime(GeneralMessagePopup.this.getpublicationDateTime(interruptionStartDateModel, interruptionStartTimeModel));
-					generalMessage.getInterruption().setEndDateTime(GeneralMessagePopup.this.getpublicationDateTime(interruptionEndDateModel, interruptionEndTimeModel));
+					Announcement announcement = AnnouncementPopup.this.getModelObject();
+					announcement.getPublication().setStartDateTime(AnnouncementPopup.this.getpublicationDateTime(publicationStartDateModel, publicationStartTimeModel));
+					announcement.getPublication().setEndDateTime(AnnouncementPopup.this.getpublicationDateTime(publicationEndDateModel, publicationEndTimeModel));
+					announcement.getInterruption().setStartDateTime(AnnouncementPopup.this.getpublicationDateTime(interruptionStartDateModel, interruptionStartTimeModel));
+					announcement.getInterruption().setEndDateTime(AnnouncementPopup.this.getpublicationDateTime(interruptionEndDateModel, interruptionEndTimeModel));
 					
 					if(FormMode.EDIT.equals(formModeModel.getObject())) {
-						generalMessageService.update(generalMessage);
+						announcementService.update(announcement);
 					} else {
-						generalMessageService.create(generalMessage);
+						announcementService.create(announcement);
 					}
 					
 					Session.get().success(getString("common.success"));
-					throw AdministrationGeneralMessageListPage.linkDescriptor().newRestartResponseException();
+					throw AdministrationAnnouncementListPage.linkDescriptor().newRestartResponseException();
 				} catch (RestartResponseException e) { // NOSONAR
 					throw e;
 				} catch (Exception e) {
-					LOGGER.error("Erreur lors de la création d'un message de service.", e);
+					LOGGER.error("Erreur lors de la création d'une annonce.", e);
 					Session.get().error(getString("common.error.unexpected"));
 				}
 				
@@ -254,7 +242,7 @@ public class GeneralMessagePopup extends AbstractAjaxModalPopupPanel<GeneralMess
 		super.onShow(target);
 		
 		if (FormMode.ADD.equals(formModeModel.getObject())) {
-			typeModel.setObject(GeneralMessageType.SERVICE_INTERRUPTION);
+			typeModel.setObject(AnnouncementType.SERVICE_INTERRUPTION);
 			publicationStartTimeModel.setObject(null);
 			publicationEndTimeModel.setObject(null);
 			interruptionStartTimeModel.setObject(null);
@@ -263,7 +251,7 @@ public class GeneralMessagePopup extends AbstractAjaxModalPopupPanel<GeneralMess
 			publicationStartTimeModel.setObject(CloneUtils.clone(getModelObject().getPublication().getStartDateTime()));
 			publicationEndTimeModel.setObject(CloneUtils.clone(getModelObject().getPublication().getEndDateTime()));
 			
-			if (GeneralMessageType.SERVICE_INTERRUPTION.equals(getModelObject().getType())) {
+			if (AnnouncementType.SERVICE_INTERRUPTION.equals(getModelObject().getType())) {
 				interruptionStartTimeModel.setObject(CloneUtils.clone(getModelObject().getInterruption().getStartDateTime()));
 				interruptionEndTimeModel.setObject(CloneUtils.clone(getModelObject().getInterruption().getEndDateTime()));
 			}
@@ -287,13 +275,13 @@ public class GeneralMessagePopup extends AbstractAjaxModalPopupPanel<GeneralMess
 		);
 	}
 
-	public void setUpAdd(GeneralMessage generalMessage) {
-		getModel().setObject(generalMessage);
+	public void setUpAdd(Announcement announcement) {
+		getModel().setObject(announcement);
 		formModeModel.setObject(FormMode.ADD);
 	}
 
-	public void setUpEdit(GeneralMessage generalMessage) {
-		getModel().setObject(generalMessage);
+	public void setUpEdit(Announcement announcement) {
+		getModel().setObject(announcement);
 		formModeModel.setObject(FormMode.EDIT);
 	}
 

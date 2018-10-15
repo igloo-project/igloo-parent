@@ -21,10 +21,10 @@ import org.iglooproject.basicapp.core.security.model.BasicApplicationAuthorityCo
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.basicapp.web.application.administration.page.AdministrationGeneralMessageListPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationAnnouncementListPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupListPage;
+import org.iglooproject.basicapp.web.application.common.component.AnnouncementsPanel;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationEnvironmentPanel;
-import org.iglooproject.basicapp.web.application.common.component.GeneralMessagePanel;
 import org.iglooproject.basicapp.web.application.common.template.theme.BasicApplicationApplicationTheme;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.AdministrationUserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
@@ -90,7 +90,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		add(new ApplicationEnvironmentPanel("environment"));
 		
-		add(new GeneralMessagePanel("generalMessage"));
+		add(new AnnouncementsPanel("announcements"));
 		
 		add(
 				createBodyBreadCrumb("breadCrumb")
@@ -130,9 +130,9 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 						AdministrationUserGroupListPage.linkDescriptor()
 							.navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
 							.setIconClassesModel(Model.of("fa fa-users-cog fa-fw")),
-						AdministrationGeneralMessageListPage.linkDescriptor()
-							.navigationMenuItem(new ResourceModel("navigation.administration.generalMessage"))
-							.setIconClassesModel(Model.of("fa fa-comment-alt fa-fw"))
+						AdministrationAnnouncementListPage.linkDescriptor()
+							.navigationMenuItem(new ResourceModel("navigation.administration.announcement"))
+							.setIconClassesModel(Model.of("fa fa-bullhorn fa-fw"))
 					)),
 				LinkDescriptorBuilder.start()
 					.validator(Condition.role(BasicApplicationAuthorityConstants.ROLE_ADMIN))

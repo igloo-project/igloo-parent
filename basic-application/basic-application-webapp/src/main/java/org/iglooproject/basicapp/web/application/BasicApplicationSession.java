@@ -5,8 +5,6 @@ import static org.iglooproject.basicapp.core.property.BasicApplicationCoreProper
 import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Request;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.basicapp.core.business.message.service.IGeneralMessageService;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.config.util.Environment;
 import org.iglooproject.wicket.more.AbstractCoreSession;
@@ -15,9 +13,6 @@ import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 public class BasicApplicationSession extends AbstractCoreSession<User> {
 
 	private static final long serialVersionUID = 1870827020904365541L;
-
-	@SpringBean
-	private IGeneralMessageService generalMessageService;
 
 	private final IModel<Environment> environmentModel = ApplicationPropertyModel.of(ENVIRONMENT);
 

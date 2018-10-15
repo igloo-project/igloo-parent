@@ -1,21 +1,21 @@
-package org.iglooproject.basicapp.core.business.message.search;
+package org.iglooproject.basicapp.core.business.announcement.search;
 
 import java.util.List;
 
-import org.iglooproject.basicapp.core.business.message.model.QGeneralMessage;
+import org.iglooproject.basicapp.core.business.announcement.model.QAnnouncement;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
 
 import com.google.common.collect.ImmutableList;
 import com.querydsl.core.types.OrderSpecifier;
 
-public enum GeneralMessageSort implements ISort<OrderSpecifier<?>> {
+public enum AnnouncementSort implements ISort<OrderSpecifier<?>> {
 
 	ID {
 		@Override
 		public List<OrderSpecifier<?>> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-				SortUtils.orderSpecifier(this, sortOrder, QGeneralMessage.generalMessage.id)
+				SortUtils.orderSpecifier(this, sortOrder, QAnnouncement.announcement.id)
 			);
 		}
 		@Override
@@ -27,7 +27,7 @@ public enum GeneralMessageSort implements ISort<OrderSpecifier<?>> {
 		@Override
 		public List<OrderSpecifier<?>> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-				SortUtils.orderSpecifier(this, sortOrder, QGeneralMessage.generalMessage.publication.startDateTime)
+				SortUtils.orderSpecifier(this, sortOrder, QAnnouncement.announcement.publication.startDateTime)
 			);
 		}
 		@Override

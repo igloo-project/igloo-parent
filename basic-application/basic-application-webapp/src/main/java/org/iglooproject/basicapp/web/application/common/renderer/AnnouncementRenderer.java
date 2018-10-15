@@ -5,39 +5,63 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.apache.wicket.model.StringResourceModel;
-import org.iglooproject.basicapp.core.business.message.model.GeneralMessage;
-import org.iglooproject.basicapp.core.business.message.model.atomic.GeneralMessageType;
+import org.iglooproject.basicapp.core.business.announcement.model.Announcement;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.functional.Joiners;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;
 import org.iglooproject.wicket.more.rendering.Renderer;
 import org.iglooproject.wicket.more.util.DatePattern;
 
-public abstract class GeneralMessageRenderer extends Renderer<GeneralMessage> {
+public abstract class AnnouncementRenderer extends Renderer<Announcement> {
 
 	private static final long serialVersionUID = 5707691630314666729L;
 
-	private static final Renderer<GeneralMessage> INSTANCE = new GeneralMessageRenderer() {
+	private static final Renderer<Announcement> TITLE = new AnnouncementRenderer() {
 		private static final long serialVersionUID = 1L;
 		@Override
-		public String render(GeneralMessage value, Locale locale) {
-			String title = value.getTitle().get(BasicApplicationSession.get().getLocale());
-			String description = value.getDescription().get(BasicApplicationSession.get().getLocale());
-			
-			if (GeneralMessageType.SERVICE_INTERRUPTION.equals(value.getType())) {
-				title = EnumRenderer.get().render(GeneralMessageType.SERVICE_INTERRUPTION, locale);
-				description = getInterruptionDescription(value.getInterruption().getStartDateTime(), value.getInterruption().getEndDateTime());
+		public String render(Announcement value, Locale locale) {
+			if (value.getType() == null) {
+				return null;
 			}
 			
-			return Joiners.onMiddotSpace().join(title, description);
+			switch(value.getType()) {
+			case SERVICE_INTERRUPTION:
+				return EnumRenderer.get().render(value.getType(), locale);
+			case OTHER:
+				return value.getTitle().get(locale);
+			}
+			
+			return null;
 		}
 	}.nullsAsNull();
 
-	public static Renderer<GeneralMessage> get() {
-		return INSTANCE;
+	private static final Renderer<Announcement> DESCRIPTION = new AnnouncementRenderer() {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public String render(Announcement value, Locale locale) {
+			if (value.getType() == null) {
+				return null;
+			}
+			
+			switch(value.getType()) {
+			case SERVICE_INTERRUPTION:
+				return getInterruptionDescription(value.getInterruption().getStartDateTime(), value.getInterruption().getEndDateTime());
+			case OTHER:
+				return value.getDescription().get(locale);
+			}
+			
+			return null;
+		}
+	}.nullsAsNull();
+
+	public static Renderer<Announcement> title() {
+		return TITLE;
 	}
 
-	private GeneralMessageRenderer() {
+	public static Renderer<Announcement> description() {
+		return DESCRIPTION;
+	}
+
+	private AnnouncementRenderer() {
 	}
 
 	protected String getInterruptionDescription(Date startDate, Date endDate) {
@@ -54,11 +78,11 @@ public abstract class GeneralMessageRenderer extends Renderer<GeneralMessage> {
 		endCal.setTime(endDate);
 		
 		if (startCal.get(Calendar.DAY_OF_WEEK) == endCal.get(Calendar.DAY_OF_WEEK)) {
-			return new StringResourceModel("business.generalMessage.interruption.message.window.sameDay")
+			return new StringResourceModel("business.announcement.interruption.message.window.sameDay")
 				.setParameters(interruptionStartDate, interruptionStartTime, interruptionEndTime)
 				.getString();
 		} else {
-			return new StringResourceModel("business.generalMessage.interruption.message.window")
+			return new StringResourceModel("business.announcement.interruption.message.window")
 				.setParameters(interruptionStartDate, interruptionStartTime, interruptionEndDate, interruptionEndTime)
 				.getString();
 		}

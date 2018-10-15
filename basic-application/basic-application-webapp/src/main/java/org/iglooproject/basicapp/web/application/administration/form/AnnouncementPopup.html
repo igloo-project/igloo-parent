@@ -7,8 +7,8 @@
 				<div class="row row-form">
 					<div class="form-group col-12">
 						<div class="row">
-							<label class="col-md-5 col-form-label" wicket:for="type"><wicket:label /></label>
-							<div class="col-md-7">
+							<label class="col-sm-4 col-form-label" wicket:for="type"><wicket:label /></label>
+							<div class="col-sm-8">
 								<select class="form-control" wicket:id="type" />
 							</div>
 						</div>
@@ -16,32 +16,32 @@
 					<wicket:container wicket:id="descriptionContainer">
 						<div class="form-group col-12">
 							<div class="row">
-								<label class="col-sm-5 col-form-label" wicket:for="titleFr"><wicket:label /></label>
-								<div class="col-sm-7">
+								<label class="col-sm-4 col-form-label" wicket:for="titleFr"><wicket:label /></label>
+								<div class="col-sm-8">
 									<input wicket:id="titleFr" class="form-control" type="text" />
 								</div>
 							</div>
 						</div>
 						<div class="form-group col-12">
 							<div class="row">
-								<label class="col-sm-5 col-form-label" wicket:for="titleEn"><wicket:label /></label>
-								<div class="col-sm-7">
+								<label class="col-sm-4 col-form-label" wicket:for="titleEn"><wicket:label /></label>
+								<div class="col-sm-8">
 									<input wicket:id="titleEn" class="form-control" type="text" />
 								</div>
 							</div>
 						</div>
 						<div class="form-group col-12">
 							<div class="row">
-								<label class="col-sm-5 col-form-label" wicket:for="descriptionFr"><wicket:label /></label>
-								<div class="col-sm-7">
+								<label class="col-sm-4 col-form-label" wicket:for="descriptionFr"><wicket:label /></label>
+								<div class="col-sm-8">
 									<textarea wicket:id="descriptionFr" class="form-control" />
 								</div>
 							</div>
 						</div>
 						<div class="form-group col-12">
 							<div class="row">
-								<label class="col-sm-5 col-form-label" wicket:for="descriptionEn"><wicket:label /></label>
-								<div class="col-sm-7">
+								<label class="col-sm-4 col-form-label" wicket:for="descriptionEn"><wicket:label /></label>
+								<div class="col-sm-8">
 									<textarea wicket:id="descriptionEn" class="form-control" />
 								</div>
 							</div>
@@ -49,8 +49,8 @@
 					</wicket:container>
 					<div class="form-group col-12">
 						<div class="row">
-							<label class="col-sm-5 col-form-label" wicket:for="publicationStartDate"><span wicket:id="publicationStartDateTitle"/></label>
-							<div class="col-sm-7">
+							<label class="col-sm-4 col-form-label" wicket:for="publicationStartDate"><span wicket:id="publicationStartDateTitle"/></label>
+							<div class="col-sm-8">
 								<div class="row row-compact">
 									<div class="col-7">
 										<span class="input-group">
@@ -70,8 +70,8 @@
 					</div>
 					<div class="form-group col-12">
 						<div class="row">
-							<label class="col-sm-5 col-form-label" wicket:for="publicationEndDate"><span wicket:id="publicationEndDateTitle"/></label>
-							<div class="col-sm-7">
+							<label class="col-sm-4 col-form-label" wicket:for="publicationEndDate"><span wicket:id="publicationEndDateTitle"/></label>
+							<div class="col-sm-8">
 								<div class="row row-compact">
 									<div class="col-7">
 										<span class="input-group">
@@ -92,8 +92,8 @@
 					<wicket:container wicket:id="interruptionContainer">
 						<div class="form-group col-12">
 							<div class="row">
-								<label class="col-sm-5 col-form-label" wicket:for="interruptionStartDate"><span wicket:id="interruptionStartDateTitle"/></label>
-								<div class="col-sm-7">
+								<label class="col-sm-4 col-form-label" wicket:for="interruptionStartDate"><span wicket:id="interruptionStartDateTitle"/></label>
+								<div class="col-sm-8">
 									<div class="row row-compact">
 										<div class="col-7">
 											<span class="input-group">
@@ -113,8 +113,8 @@
 						</div>
 						<div class="form-group col-12">
 							<div class="row">
-								<label class="col-sm-5 col-form-label" wicket:for="interruptionEndDate"><span wicket:id="interruptionEndDateTitle"/></label>
-								<div class="col-sm-7">
+								<label class="col-sm-4 col-form-label" wicket:for="interruptionEndDate"><span wicket:id="interruptionEndDateTitle"/></label>
+								<div class="col-sm-8">
 									<div class="row row-compact">
 										<div class="col-7">
 											<span class="input-group">
@@ -135,7 +135,7 @@
 					</wicket:container>
 					<div class="form-group col-12">
 						<div class="row">
-							<div class="col-sm-7 offset-sm-5">
+							<div class="col-sm-8 offset-sm-4">
 								<div class="custom-control custom-checkbox form-control-plaintext">
 									<input type="checkbox" class="custom-control-input" wicket:id="active">
 									<label class="custom-control-label" wicket:for="active"><wicket:label /></label>
@@ -148,7 +148,6 @@
 		</div>
 		<div wicket:id="footer">
 			<button wicket:id="cancel" class="btn btn-outline-secondary" type="button">
-				<span class="fa fa-ban"></span>
 				<wicket:message key="common.cancel" />
 			</button>
 			<button wicket:id="save" class="btn btn-success">

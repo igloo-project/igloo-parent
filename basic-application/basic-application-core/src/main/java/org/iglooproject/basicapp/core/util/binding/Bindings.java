@@ -1,8 +1,8 @@
 package org.iglooproject.basicapp.core.util.binding;
 
+import org.iglooproject.basicapp.core.business.announcement.model.AnnouncementBinding;
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifferenceBinding;
 import org.iglooproject.basicapp.core.business.history.model.HistoryLogBinding;
-import org.iglooproject.basicapp.core.business.message.model.GeneralMessageBinding;
 import org.iglooproject.basicapp.core.business.referencedata.model.CityBinding;
 import org.iglooproject.basicapp.core.business.referencedata.model.ILocalizedReferenceDataBindingInterfaceBinding;
 import org.iglooproject.basicapp.core.business.user.model.UserBinding;
@@ -21,7 +21,7 @@ public final class Bindings {
 	private static final ILocalizedReferenceDataBindingInterfaceBinding LOCALIZED_REFERENCE_DATA = new ILocalizedReferenceDataBindingInterfaceBinding();
 	private static final CityBinding CITY = new CityBinding();
 
-	private static final GeneralMessageBinding GENERAL_MESSAGE = new GeneralMessageBinding();
+	private static final AnnouncementBinding ANNOUNCEMENT = new AnnouncementBinding();
 
 	public static UserBinding user() {
 		return USER;
@@ -47,8 +47,8 @@ public final class Bindings {
 		return CITY;
 	}
 
-	public static GeneralMessageBinding generalMessage() {
-		return GENERAL_MESSAGE;
+	public static AnnouncementBinding announcement() {
+		return ANNOUNCEMENT;
 	}
 
 	private Bindings() {

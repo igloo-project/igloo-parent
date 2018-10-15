@@ -1,4 +1,4 @@
-package org.iglooproject.basicapp.core.business.message.model;
+package org.iglooproject.basicapp.core.business.announcement.model.embeddable;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,7 +13,7 @@ import org.iglooproject.commons.util.CloneUtils;
 
 @Embeddable
 @Bindable
-public class GeneralMessageDate implements Serializable {
+public class AnnouncementDate implements Serializable {
 
 	private static final long serialVersionUID = -6711976886958374843L;
 

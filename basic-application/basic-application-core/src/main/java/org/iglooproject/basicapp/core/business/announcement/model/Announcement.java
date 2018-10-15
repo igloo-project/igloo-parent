@@ -1,7 +1,6 @@
-package org.iglooproject.basicapp.core.business.message.model;
+package org.iglooproject.basicapp.core.business.announcement.model;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Basic;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -14,8 +13,9 @@ import javax.persistence.Id;
 
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Indexed;
+import org.iglooproject.basicapp.core.business.announcement.model.atomic.AnnouncementType;
+import org.iglooproject.basicapp.core.business.announcement.model.embeddable.AnnouncementDate;
 import org.iglooproject.basicapp.core.business.common.model.embeddable.LocalizedText;
-import org.iglooproject.basicapp.core.business.message.model.atomic.GeneralMessageType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventSummary;
 
@@ -23,7 +23,7 @@ import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventS
 @Bindable
 @Cacheable
 @Indexed
-public class GeneralMessage extends GenericEntity<Long, GeneralMessage> {
+public class Announcement extends GenericEntity<Long, Announcement> {
 
 	private static final long serialVersionUID = 3430831126687319860L;
 
@@ -33,7 +33,7 @@ public class GeneralMessage extends GenericEntity<Long, GeneralMessage> {
 
 	@Basic(optional = false)
 	@Enumerated(EnumType.STRING)
-	private GeneralMessageType type;
+	private AnnouncementType type;
 
 	@Embedded
 	private LocalizedText title;
@@ -51,14 +51,12 @@ public class GeneralMessage extends GenericEntity<Long, GeneralMessage> {
 	private HistoryEventSummary modification;
 
 	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name = "startDateTime", column = @Column(nullable = false)),
-		@AttributeOverride(name = "endDateTime", column = @Column(nullable = false))
-	})
-	private GeneralMessageDate publication;
+	@AttributeOverride(name = "startDateTime", column = @Column(nullable = false))
+	@AttributeOverride(name = "endDateTime", column = @Column(nullable = false))
+	private AnnouncementDate publication;
 
 	@Embedded
-	private GeneralMessageDate interruption;
+	private AnnouncementDate interruption;
 
 	@Override
 	public Long getId() {
@@ -70,11 +68,11 @@ public class GeneralMessage extends GenericEntity<Long, GeneralMessage> {
 		this.id = id;
 	}
 
-	public GeneralMessageType getType() {
+	public AnnouncementType getType() {
 		return type;
 	}
 
-	public void setType(GeneralMessageType type) {
+	public void setType(AnnouncementType type) {
 		this.type = type;
 	}
 
@@ -130,25 +128,25 @@ public class GeneralMessage extends GenericEntity<Long, GeneralMessage> {
 		this.modification = modification;
 	}
 
-	public GeneralMessageDate getPublication() {
+	public AnnouncementDate getPublication() {
 		if (publication == null) {
-			publication = new GeneralMessageDate();
+			publication = new AnnouncementDate();
 		}
 		return publication;
 	}
 
-	public void setPublication(GeneralMessageDate publication) {
+	public void setPublication(AnnouncementDate publication) {
 		this.publication = publication;
 	}
 
-	public GeneralMessageDate getInterruption() {
+	public AnnouncementDate getInterruption() {
 		if (interruption == null) {
-			interruption = new GeneralMessageDate();
+			interruption = new AnnouncementDate();
 		}
 		return interruption;
 	}
 
-	public void setInterruption(GeneralMessageDate interruption) {
+	public void setInterruption(AnnouncementDate interruption) {
 		this.interruption = interruption;
 	}
 
