@@ -20,13 +20,13 @@ import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableList;
 
 public class EnvironmentPanel extends Panel {
 
 	private static final long serialVersionUID = -916735857360352450L;
 
-	private static final List<Environment> VISIBLE_ALERTS = Lists.newArrayList(Environment.development, Environment.staging);
+	private static final List<Environment> VISIBLE_ALERTS = ImmutableList.of(Environment.development, Environment.staging);
 
 	private static final CookieUtils COOKIE_UTILS = new CookieUtils();
 
