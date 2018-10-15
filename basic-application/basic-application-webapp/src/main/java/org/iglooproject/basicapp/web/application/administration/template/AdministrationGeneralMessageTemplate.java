@@ -14,8 +14,8 @@ public class AdministrationGeneralMessageTemplate extends AdministrationTemplate
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-				new ResourceModel("navigation.administration.generalMessage"),
-				AdministrationGeneralMessageListPage.linkDescriptor()
+			new ResourceModel("navigation.administration.generalMessage"),
+			AdministrationGeneralMessageListPage.linkDescriptor()
 		));
 	}
 

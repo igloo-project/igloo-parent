@@ -11,4 +11,5 @@ public interface IGeneralMessageDao extends IGenericEntityDao<Long, GeneralMessa
 	public List<GeneralMessage> listActiveMessages();
 
 	public Date getMostRecentPublicationStartDate();
+
 }

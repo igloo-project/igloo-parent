@@ -20,16 +20,16 @@ public abstract class GeneralMessageActiveRenderer extends BootstrapRenderer<Gen
 			}
 			if (value.isActive()) {
 				return BootstrapRendererInformation.builder()
-						.label(getString("business.generalMessage.active.true", locale))
-						.icon("fa fa-check fa-fw")
-						.color(BootstrapColor.SUCCESS)
-						.build();
+					.label(getString("business.generalMessage.active.true", locale))
+					.icon("fa fa-check fa-fw")
+					.color(BootstrapColor.SUCCESS)
+					.build();
 			} else {
 				return BootstrapRendererInformation.builder()
-						.label(getString("business.generalMessage.active.false", locale))
-						.icon("fa fa-ban fa-fw")
-						.color(BootstrapColor.SECONDARY)
-						.build();
+					.label(getString("business.generalMessage.active.false", locale))
+					.icon("fa fa-ban fa-fw")
+					.color(BootstrapColor.SECONDARY)
+					.build();
 			}
 		}
 	};

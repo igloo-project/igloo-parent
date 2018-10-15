@@ -121,18 +121,18 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 					.navigationMenuItem(new ResourceModel("navigation.administration"))
 					.setIconClassesModel(Model.of("fa fa-cogs fa-fw"))
 					.setSubMenuItems(ImmutableList.of(
-							AdministrationUserTypeDescriptor.BASIC_USER.list()
-								.navigationMenuItem(new ResourceModel("navigation.administration.user.basic"))
-								.setIconClassesModel(Model.of("fa fa-user-cog fa-fw")),
-							AdministrationUserTypeDescriptor.TECHNICAL_USER.list()
-								.navigationMenuItem(new ResourceModel("navigation.administration.user.technical"))
-								.setIconClassesModel(Model.of("fa fa-user-shield fa-fw")),
-							AdministrationUserGroupListPage.linkDescriptor()
-								.navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
-								.setIconClassesModel(Model.of("fa fa-users-cog fa-fw")),
-							AdministrationGeneralMessageListPage.linkDescriptor()
-								.navigationMenuItem(new ResourceModel("navigation.administration.generalMessage"))
-								.setIconClassesModel(Model.of("fa fa-comment-alt fa-fw"))
+						AdministrationUserTypeDescriptor.BASIC_USER.list()
+							.navigationMenuItem(new ResourceModel("navigation.administration.user.basic"))
+							.setIconClassesModel(Model.of("fa fa-user-cog fa-fw")),
+						AdministrationUserTypeDescriptor.TECHNICAL_USER.list()
+							.navigationMenuItem(new ResourceModel("navigation.administration.user.technical"))
+							.setIconClassesModel(Model.of("fa fa-user-shield fa-fw")),
+						AdministrationUserGroupListPage.linkDescriptor()
+							.navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
+							.setIconClassesModel(Model.of("fa fa-users-cog fa-fw")),
+						AdministrationGeneralMessageListPage.linkDescriptor()
+							.navigationMenuItem(new ResourceModel("navigation.administration.generalMessage"))
+							.setIconClassesModel(Model.of("fa fa-comment-alt fa-fw"))
 					)),
 				LinkDescriptorBuilder.start()
 					.validator(Condition.role(BasicApplicationAuthorityConstants.ROLE_ADMIN))

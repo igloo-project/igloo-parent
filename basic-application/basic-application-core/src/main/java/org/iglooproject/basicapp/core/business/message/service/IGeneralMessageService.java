@@ -13,4 +13,5 @@ public interface IGeneralMessageService extends IGenericEntityService<Long, Gene
 	public boolean newMessages();
 
 	public Date getMostRecentPublicationStartDate();
+
 }

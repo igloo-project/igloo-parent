@@ -9,7 +9,7 @@ public class Masks {
 	
 	public static MaskOptions timeOptions() {
 		return new MaskOptions()
-				.setPlaceholder(new ResourceModel("date.format.time.placeholder"));
+			.setPlaceholder(new ResourceModel("date.format.time.placeholder"));
 	}
 
 }

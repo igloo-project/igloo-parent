@@ -19,25 +19,26 @@ public class GeneralMessageDaoImpl extends GenericEntityDaoImpl<Long, GeneralMes
 	public List<GeneralMessage> listActiveMessages() {
 		Date now = new Date();
 		return new JPAQuery<>(getEntityManager())
-				.select(qGeneralMessage)
-				.from(qGeneralMessage)
-				.where(qGeneralMessage.publication.startDateTime.before(now))
-				.where(qGeneralMessage.publication.endDateTime.after(now))
-				.where(qGeneralMessage.active.eq(true))
-				.orderBy(qGeneralMessage.publication.startDateTime.asc())
-				.fetch();
+			.select(qGeneralMessage)
+			.from(qGeneralMessage)
+			.where(qGeneralMessage.publication.startDateTime.before(now))
+			.where(qGeneralMessage.publication.endDateTime.after(now))
+			.where(qGeneralMessage.active.eq(true))
+			.orderBy(qGeneralMessage.publication.startDateTime.asc())
+			.fetch();
 	}
 
 	@Override
 	public Date getMostRecentPublicationStartDate() {
 		Date now = new Date();
 		return new JPAQuery<>(getEntityManager())
-				.select(qGeneralMessage.publication.startDateTime)
-				.from(qGeneralMessage)
-				.where(qGeneralMessage.publication.startDateTime.before(now))
-				.where(qGeneralMessage.publication.endDateTime.after(now))
-				.where(qGeneralMessage.active.eq(true))
-				.orderBy(qGeneralMessage.publication.startDateTime.desc())
-				.fetchFirst();
+			.select(qGeneralMessage.publication.startDateTime)
+			.from(qGeneralMessage)
+			.where(qGeneralMessage.publication.startDateTime.before(now))
+			.where(qGeneralMessage.publication.endDateTime.after(now))
+			.where(qGeneralMessage.active.eq(true))
+			.orderBy(qGeneralMessage.publication.startDateTime.desc())
+			.fetchFirst();
 	}
+
 }

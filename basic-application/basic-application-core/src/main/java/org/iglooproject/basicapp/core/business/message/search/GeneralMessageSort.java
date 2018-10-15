@@ -15,7 +15,7 @@ public enum GeneralMessageSort implements ISort<OrderSpecifier<?>> {
 		@Override
 		public List<OrderSpecifier<?>> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.orderSpecifier(this, sortOrder, QGeneralMessage.generalMessage.id)
+				SortUtils.orderSpecifier(this, sortOrder, QGeneralMessage.generalMessage.id)
 			);
 		}
 		@Override
@@ -27,7 +27,7 @@ public enum GeneralMessageSort implements ISort<OrderSpecifier<?>> {
 		@Override
 		public List<OrderSpecifier<?>> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.orderSpecifier(this, sortOrder, QGeneralMessage.generalMessage.publication.startDateTime)
+				SortUtils.orderSpecifier(this, sortOrder, QGeneralMessage.generalMessage.publication.startDateTime)
 			);
 		}
 		@Override

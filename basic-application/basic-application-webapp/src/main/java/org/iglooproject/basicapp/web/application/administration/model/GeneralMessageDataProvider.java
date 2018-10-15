@@ -33,7 +33,7 @@ public class GeneralMessageDataProvider extends AbstractSearchQueryDataProvider<
 		ImmutableMap.of(
 			GeneralMessageSort.ID, GeneralMessageSort.ID.getDefaultOrder()
 		)
-);
+	);
 
 	public GeneralMessageDataProvider() {
 		Injector.get().inject(this);
@@ -51,7 +51,7 @@ public class GeneralMessageDataProvider extends AbstractSearchQueryDataProvider<
 	@Override
 	protected ISearchQuery<GeneralMessage, GeneralMessageSort> getSearchQuery() {
 		return createSearchQuery(IGeneralMessageSearchQuery.class)
-				.sort(sortModel.getObject());
+			.sort(sortModel.getObject());
 	}
 
 	@Override

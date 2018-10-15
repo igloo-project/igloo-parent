@@ -59,6 +59,8 @@ public class GeneralMessagePopup extends AbstractAjaxModalPopupPanel<GeneralMess
 
 	private final IModel<FormMode> formModeModel = new Model<>(FormMode.ADD);
 
+	private IModel<GeneralMessageType> typeModel;
+
 	private IModel<Date> publicationStartDateModel;
 	private IModel<Date> publicationStartTimeModel = Model.of();
 	private IModel<Date> publicationEndDateModel;
@@ -68,8 +70,6 @@ public class GeneralMessagePopup extends AbstractAjaxModalPopupPanel<GeneralMess
 	private IModel<Date> interruptionStartTimeModel = Model.of();
 	private IModel<Date> interruptionEndDateModel;
 	private IModel<Date> interruptionEndTimeModel = Model.of();
-
-	private IModel<GeneralMessageType> typeModel;
 
 	public GeneralMessagePopup(String id) {
 		super(id, new GenericEntityModel<Long, GeneralMessage>(new GeneralMessage()));
@@ -274,6 +274,8 @@ public class GeneralMessagePopup extends AbstractAjaxModalPopupPanel<GeneralMess
 	protected void onDetach() {
 		super.onDetach();
 		Detachables.detach(
+			formModeModel,
+			typeModel,
 			publicationEndDateModel,
 			publicationEndTimeModel,
 			publicationStartDateModel,
@@ -281,9 +283,7 @@ public class GeneralMessagePopup extends AbstractAjaxModalPopupPanel<GeneralMess
 			interruptionStartTimeModel,
 			interruptionStartTimeModel,
 			interruptionEndDateModel,
-			interruptionEndTimeModel,
-			typeModel,
-			formModeModel
+			interruptionEndTimeModel
 		);
 	}
 
