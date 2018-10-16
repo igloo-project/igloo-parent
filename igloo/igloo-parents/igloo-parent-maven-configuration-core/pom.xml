@@ -22,7 +22,10 @@
 		<!-- 5.0.6: https://jira.spring.io/secure/ReleaseNote.jspa?projectId=10000&version=16720 -->
 		<!-- 5.0.7: https://jira.spring.io/jira/secure/ReleaseNote.jspa?projectId=10000&version=16753 -->
 		<!-- Minor update from 5.0.4, improvements for Java 10 support -->
-		<igloo.spring.version>5.0.7.RELEASE</igloo.spring.version>
+		<!-- 5.0.8: https://spring.io/blog/2018/07/26/spring-framework-5-0-8-available-now -->
+		<!-- 5.0.9: https://spring.io/blog/2018/09/07/spring-framework-5-1-rc3-5-0-9-and-4-3-19-available-now -->
+		<!-- 5.0.10: https://spring.io/blog/2018/10/15/spring-framework-5-1-1-5-0-10-and-4-3-20-available-now -->
+		<igloo.spring.version>5.0.10.RELEASE</igloo.spring.version>
 		<!-- https://www.eclipse.org/aspectj/doc/released/README-191.html -->
 		<igloo.aspectj.version>1.9.1</igloo.aspectj.version>
 
@@ -63,7 +66,10 @@
 		<!-- 5.0.4: https://github.com/spring-projects/spring-security/milestone/112?closed=1 -->
 		<!-- 5.0.5: https://github.com/spring-projects/spring-security/milestone/114?closed=1 -->
 		<!-- 5.0.6: https://github.com/spring-projects/spring-security/milestone/116?closed=1 -->
-		<igloo.spring-security.version>5.0.6.RELEASE</igloo.spring-security.version>
+		<!-- 5.0.7: https://spring.io/blog/2018/07/26/spring-security-5-0-7-released -->
+		<!-- 5.0.8: https://spring.io/blog/2018/09/11/spring-security-5-0-8-and-4-2-8-released -->
+		<!-- 5.0.9: https://spring.io/blog/2018/10/16/spring-security-5-1-1-5-0-9-and-4-2-9-released -->
+		<igloo.spring-security.version>5.0.9.RELEASE</igloo.spring-security.version>
 		
 		<igloo.spring-ldap.version>2.3.2.RELEASE</igloo.spring-ldap.version>
 		
