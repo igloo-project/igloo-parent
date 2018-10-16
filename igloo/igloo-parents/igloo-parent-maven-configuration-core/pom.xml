@@ -110,7 +110,7 @@
 		<igloo.commons-compress.version>1.18</igloo.commons-compress.version>
 		<igloo.commons-validator.version>1.6</igloo.commons-validator.version>
 		<igloo.commons-collections.version>3.2.2</igloo.commons-collections.version>
-		<igloo.commons-collections4.version>4.1</igloo.commons-collections4.version>
+		<igloo.commons-collections4.version>4.2</igloo.commons-collections4.version>
 		<igloo.commons-beanutils.version>1.9.3</igloo.commons-beanutils.version>
 		<igloo.commons-fileupload.version>1.3.3</igloo.commons-fileupload.version>
 		<igloo.commons-configuration.version>2.3</igloo.commons-configuration.version>
@@ -203,7 +203,11 @@
 		<igloo.java-object-diff.version>0.95</igloo.java-object-diff.version>
 		<igloo.elasticsearch.version>5.6.9</igloo.elasticsearch.version>
 		<igloo.elasticsearch-cluster-runner.version>${igloo.elasticsearch.version}.0</igloo.elasticsearch-cluster-runner.version>
+
 		<igloo.embedded-elasticsearch.version>2.7.1</igloo.embedded-elasticsearch.version>
+		<!-- Theses dependencies must be redefined when elasticsearh is embedded -->
+		<igloo.elasticsearch-test.snakeyaml.version>1.23</igloo.elasticsearch-test.snakeyaml.version>
+		<igloo.elasticsearch-test.asm2.version>5.1</igloo.elasticsearch-test.asm2.version>
 		
 		<igloo.webjars.popper.version>1.14.4</igloo.webjars.popper.version>
 		<igloo.webjars.clipboard.version>2.0.1</igloo.webjars.clipboard.version>
@@ -370,7 +374,7 @@
 				</dependency>
 				
 				<dependency>
-					<groupId>commons-collections4</groupId>
+					<groupId>org.apache.commons</groupId>
 					<artifactId>commons-collections4</artifactId>
 					<version>${igloo.commons-collections4.version}</version>
 					<exclusions>
@@ -951,6 +955,13 @@
 					<groupId>org.apache.poi</groupId>
 					<artifactId>poi</artifactId>
 					<version>${igloo.poi.version}</version>
+					<exclusions>
+						<exclusion>
+							<!-- conflict with opencsv dependency -->
+							<groupId>commons-collections4</groupId>
+							<artifactId>commons-collections4</artifactId>
+						</exclusion>
+					</exclusions>
 				</dependency>
 				
 				<dependency>
@@ -972,6 +983,13 @@
 					<groupId>com.opencsv</groupId>
 					<artifactId>opencsv</artifactId>
 					<version>${igloo.opencsv.version}</version>
+					<exclusions>
+						<exclusion>
+							<!-- conflict with poi dependency -->
+							<groupId>commons-collections4</groupId>
+							<artifactId>commons-collections4</artifactId>
+						</exclusion>
+					</exclusions>
 				</dependency>
 			
 			<!-- TrueZip -->

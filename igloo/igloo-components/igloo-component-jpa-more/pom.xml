@@ -56,15 +56,11 @@
 		</dependency>
 		
 		<!-- Excel Import -->
-		
 		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-poi</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
 		</dependency>
 		
 		<!-- ImageInfo -->

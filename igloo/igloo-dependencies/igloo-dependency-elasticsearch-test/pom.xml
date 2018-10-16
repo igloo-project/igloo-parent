@@ -71,12 +71,12 @@
 		<dependency>
 			<groupId>org.yaml</groupId>
 			<artifactId>snakeyaml</artifactId>
-			<version>1.18</version> <!-- version from jackson-dataformat-yaml -->
+			<version>${igloo.elasticsearch-test.snakeyaml.version}</version> <!-- version from jackson-dataformat-yaml -->
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm</artifactId>
-			<version>5.1</version> <!-- newest, from lucene-expressions -->
+			<version>${igloo.elasticsearch-test.asm2.version}</version> <!-- newest, from lucene-expressions -->
 		</dependency>
 	</dependencies>
 	

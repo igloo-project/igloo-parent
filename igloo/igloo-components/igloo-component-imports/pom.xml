@@ -26,18 +26,16 @@
 		
 		<!-- Export Excel -->
 		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-poi</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
 		</dependency>
-		
 		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-opencsv</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
 		</dependency>
 		
 		<!-- Test dependencies -->
