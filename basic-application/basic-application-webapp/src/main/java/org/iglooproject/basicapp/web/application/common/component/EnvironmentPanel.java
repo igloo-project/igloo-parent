@@ -73,7 +73,7 @@ public class EnvironmentPanel extends Panel {
 		
 		add(
 				new ClassAttributeAppender(environmentModel),
-				new ClassAttributeAppender(Condition.isTrue(closeModel).then("environment-section-dismissed").otherwise(""))
+				new ClassAttributeAppender(Condition.isTrue(closeModel).then("header-alert-section-dismissed").otherwise(""))
 		);
 	}
 

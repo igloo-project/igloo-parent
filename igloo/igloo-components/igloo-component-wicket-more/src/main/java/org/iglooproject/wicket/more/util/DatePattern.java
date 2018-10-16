@@ -15,7 +15,9 @@ public enum DatePattern implements IDatePattern {
 	
 	MONTH_YEAR("date.format.monthYear", "javascript.date.format.monthYear"),
 	SHORT_MONTH_YEAR("date.format.shortMonthYear", "javascript.date.format.shortMonthYear"),
-	COMPLETE_MONTH_YEAR("date.format.completeMonthYear", "javascript.date.format.completeMonthYear", true);
+	COMPLETE_MONTH_YEAR("date.format.completeMonthYear", "javascript.date.format.completeMonthYear", true),
+	
+	TIME("date.format.time", null);
 	
 	private String javaPatternKey;
 	

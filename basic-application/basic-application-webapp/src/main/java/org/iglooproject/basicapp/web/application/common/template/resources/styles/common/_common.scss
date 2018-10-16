@@ -3,6 +3,10 @@
 	
 	border-bottom: 1px solid rgba($black, .125);
 	
+	&.header-alert-section-dismissed {
+		height: 10px;
+	}
+	
 	> .header-alert-main {
 		height: 100%;
 		
@@ -48,10 +52,6 @@
 	&.environment-section {
 		@include bg($secondary);
 		
-		&.environment-section-dismissed {
-			height: 8px;
-		}
-		
 		&.development {
 			@include bg($success);
 		}
@@ -68,6 +68,11 @@
 			@include bg($danger);
 		}
 	}
+	
+	&.general-message-section {
+		@include bg($warning);
+	}
+
 }
 
 .break-word-container {
@@ -75,4 +80,10 @@
 	table-layout: fixed;
 	width: 100%;
 	word-wrap: break-word;
+}
+
+.divider {
+	&.divider-middle {
+		width: 60%;
+	}
 }

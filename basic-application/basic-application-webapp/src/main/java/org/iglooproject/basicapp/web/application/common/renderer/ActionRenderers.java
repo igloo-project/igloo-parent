@@ -18,6 +18,10 @@ public final class ActionRenderers {
 		return constant("common.action.add", "fa fa-fw fa-plus", BootstrapColor.PRIMARY);
 	}
 
+	public static <T> BootstrapRenderer<T> edit() {
+		return constant("common.action.edit", "fa fa-fw fa-pencil-alt", BootstrapColor.PRIMARY);
+	}
+
 	public static <T> BootstrapRenderer<T> remove() {
 		return constant("common.action.remove", "fa fa-fw fa-times", BootstrapColor.DANGER);
 	}
@@ -35,7 +39,7 @@ public final class ActionRenderers {
 	}
 
 	public static <T> BootstrapRenderer<T> view() {
-		return constant("common.action.view", "fa fa-fw fa-search", BootstrapColor.PRIMARY);
+		return constant("common.action.view", "fa fa-fw fa-search", BootstrapColor.SECONDARY);
 	}
 
 	private ActionRenderers() {
