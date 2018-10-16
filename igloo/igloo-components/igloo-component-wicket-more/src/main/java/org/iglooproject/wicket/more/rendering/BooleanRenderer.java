@@ -61,13 +61,13 @@ public class BooleanRenderer extends BootstrapRenderer<Boolean> {
 		if (value) {
 			return BootstrapRendererInformation.builder()
 					.label(renderLabel(value, locale))
-					.icon("fa fa-check fa-fw")
+					.icon("fa fa-fw fa-check fa-fw")
 					// No color
 					.build();
 		} else {
 			return BootstrapRendererInformation.builder()
 					.label(renderLabel(value, locale))
-					.icon("fa fa-times fa-fw")
+					.icon("fa fa-fw fa-times fa-fw")
 					// No color
 					.build();
 		}

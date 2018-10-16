@@ -78,7 +78,7 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 					public MarkupContainer getSideLink(String wicketId, IModel<T> rowModel) {
 						if (sideLinkGeneratorMapper != null) {
 							return decorate(sideLinkGeneratorMapper.map(rowModel).link(wicketId))
-									.add(new WebMarkupContainer("sideLinkIcon").add(new ClassAttributeAppender("fa fa-share-square fa-share-square-o")));
+									.add(new WebMarkupContainer("sideLinkIcon").add(new ClassAttributeAppender("fa fa-fw fa-share-square fa-share-square-o")));
 						}
 						return new InvisiblePanel(wicketId);
 					}

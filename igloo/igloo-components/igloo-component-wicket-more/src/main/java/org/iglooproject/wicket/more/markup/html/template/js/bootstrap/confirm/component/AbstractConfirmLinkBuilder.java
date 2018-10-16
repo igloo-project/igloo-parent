@@ -117,7 +117,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	@Override
 	public IConfirmLinkBuilderStepNo<L, O> yes(IModel<String> yesLabelModel) {
 		this.yesLabelModel = yesLabelModel;
-		this.yesIconModel = new Model<String>("fa fa-check");
+		this.yesIconModel = new Model<String>("fa fa-fw fa-check");
 		this.yesButtonModel = new Model<String>("btn btn-success");
 		return this;
 	}
@@ -141,7 +141,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	@Override
 	public IConfirmLinkBuilderStepOnclick<L, O> no(IModel<String> noLabelModel) {
 		this.noLabelModel = noLabelModel;
-		this.noIconModel = new Model<String>("fa fa-ban");
+		this.noIconModel = new Model<String>("fa fa-fw fa-ban");
 		this.noButtonModel = new Model<String>("btn btn-default btn-outline-secondary");
 		return this;
 	}
@@ -166,8 +166,8 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	public IConfirmLinkBuilderStepOnclick<L, O> yesNo() {
 		this.yesLabelModel = new ResourceModel("common.yes");
 		this.noLabelModel = new ResourceModel("common.no");
-		this.yesIconModel = new Model<String>("fa fa-check");
-		this.noIconModel = new Model<String>("fa fa-ban");
+		this.yesIconModel = new Model<String>("fa fa-fw fa-check");
+		this.noIconModel = new Model<String>("fa fa-fw fa-ban");
 		this.yesButtonModel = new Model<String>("btn btn-success");
 		this.noButtonModel = new Model<String>("btn btn-default btn-outline-secondary");
 		return this;
@@ -177,8 +177,8 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	public IConfirmLinkBuilderStepOnclick<L, O> confirm() {
 		this.yesLabelModel = new ResourceModel("common.action.confirm");
 		this.noLabelModel = new ResourceModel("common.cancel");
-		this.yesIconModel = new Model<String>("fa fa-check");
-		this.noIconModel = new Model<String>("fa fa-ban");
+		this.yesIconModel = new Model<String>("fa fa-fw fa-check");
+		this.noIconModel = new Model<String>("fa fa-fw fa-ban");
 		this.yesButtonModel = new Model<String>("btn btn-success");
 		this.noButtonModel = new Model<String>("btn btn-default btn-outline-secondary");
 		return this;
@@ -188,8 +188,8 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	public IConfirmLinkBuilderStepOnclick<L, O> validate() {
 		this.yesLabelModel = new ResourceModel("common.action.validate");
 		this.noLabelModel = new ResourceModel("common.cancel");
-		this.yesIconModel = new Model<String>("fa fa-check");
-		this.noIconModel = new Model<String>("fa fa-ban");
+		this.yesIconModel = new Model<String>("fa fa-fw fa-check");
+		this.noIconModel = new Model<String>("fa fa-fw fa-ban");
 		this.yesButtonModel = new Model<String>("btn btn-success");
 		this.noButtonModel = new Model<String>("btn btn-default btn-outline-secondary");
 		return this;
@@ -199,8 +199,8 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	public IConfirmLinkBuilderStepOnclick<L, O> save() {
 		this.yesLabelModel = new ResourceModel("common.action.save");
 		this.noLabelModel = new ResourceModel("common.cancel");
-		this.yesIconModel = new Model<String>("fa fa-check");
-		this.noIconModel = new Model<String>("fa fa-ban");
+		this.yesIconModel = new Model<String>("fa fa-fw fa-check");
+		this.noIconModel = new Model<String>("fa fa-fw fa-ban");
 		this.yesButtonModel = new Model<String>("btn btn-success");
 		this.noButtonModel = new Model<String>("btn btn-default btn-outline-secondary");
 		return this;

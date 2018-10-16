@@ -113,32 +113,32 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		return ImmutableList.of(
 				BasicApplicationApplication.get().getHomePageLinkDescriptor()
 					.navigationMenuItem(new ResourceModel("navigation.home"))
-					.setIconClassesModel(Model.of("fa fa-home fa-fw")),
+					.setIconClassesModel(Model.of("fa fa-fw fa-home")),
 				ReferenceDataPage.linkDescriptor()
 					.navigationMenuItem(new ResourceModel("navigation.referenceData"))
-					.setIconClassesModel(Model.of("fa fa-list fa-fw")),
+					.setIconClassesModel(Model.of("fa fa-fw fa-list")),
 				AdministrationUserTypeDescriptor.BASIC_USER.list()
 					.navigationMenuItem(new ResourceModel("navigation.administration"))
-					.setIconClassesModel(Model.of("fa fa-cogs fa-fw"))
+					.setIconClassesModel(Model.of("fa fa-fw fa-cogs"))
 					.setSubMenuItems(ImmutableList.of(
 						AdministrationUserTypeDescriptor.BASIC_USER.list()
 							.navigationMenuItem(new ResourceModel("navigation.administration.user.basic"))
-							.setIconClassesModel(Model.of("fa fa-user-cog fa-fw")),
+							.setIconClassesModel(Model.of("fa fa-fw fa-user-cog")),
 						AdministrationUserTypeDescriptor.TECHNICAL_USER.list()
 							.navigationMenuItem(new ResourceModel("navigation.administration.user.technical"))
-							.setIconClassesModel(Model.of("fa fa-user-shield fa-fw")),
+							.setIconClassesModel(Model.of("fa fa-fw fa-user-shield")),
 						AdministrationUserGroupListPage.linkDescriptor()
 							.navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
-							.setIconClassesModel(Model.of("fa fa-users-cog fa-fw")),
+							.setIconClassesModel(Model.of("fa fa-fw fa-users-cog")),
 						AdministrationAnnouncementListPage.linkDescriptor()
 							.navigationMenuItem(new ResourceModel("navigation.administration.announcement"))
-							.setIconClassesModel(Model.of("fa fa-bullhorn fa-fw"))
+							.setIconClassesModel(Model.of("fa fa-fw fa-bullhorn"))
 					)),
 				LinkDescriptorBuilder.start()
 					.validator(Condition.role(BasicApplicationAuthorityConstants.ROLE_ADMIN))
 					.page(ConsoleMaintenanceSearchPage.class)
 					.navigationMenuItem(new ResourceModel("navigation.console"))
-					.setIconClassesModel(Model.of("fa fa-wrench fa-fw"))
+					.setIconClassesModel(Model.of("fa fa-fw fa-wrench"))
 		);
 	}
 

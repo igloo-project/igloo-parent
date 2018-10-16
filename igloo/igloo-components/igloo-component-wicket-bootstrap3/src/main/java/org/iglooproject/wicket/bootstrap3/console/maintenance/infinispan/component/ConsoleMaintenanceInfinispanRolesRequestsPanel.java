@@ -98,7 +98,7 @@ public class ConsoleMaintenanceInfinispanRolesRequestsPanel extends Panel {
 						)
 						.addActionColumn()
 								.addConfirmAction(
-										BootstrapRenderer.constant("console.maintenance.infinispan.roles.requests.actions.delete", "fa fa-times fa-fw", BootstrapColor.DANGER)
+										BootstrapRenderer.constant("console.maintenance.infinispan.roles.requests.actions.delete", "fa fa-fw fa-times", BootstrapColor.DANGER)
 								)
 										.title(new ResourceModel("console.maintenance.infinispan.roles.requests.actions.delete.confirm.title"))
 										.content(new ResourceModel("console.maintenance.infinispan.roles.requests.actions.delete.confirm.content"))

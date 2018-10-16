@@ -21,13 +21,13 @@ public abstract class AnnouncementActiveRenderer extends BootstrapRenderer<Annou
 			if (value.isActive()) {
 				return BootstrapRendererInformation.builder()
 					.label(getString("business.announcement.active.true", locale))
-					.icon("fa fa-check fa-fw")
+					.icon("fa fa-fw fa-check")
 					.color(BootstrapColor.SUCCESS)
 					.build();
 			} else {
 				return BootstrapRendererInformation.builder()
 					.label(getString("business.announcement.active.false", locale))
-					.icon("fa fa-ban fa-fw")
+					.icon("fa fa-fw fa-ban")
 					.color(BootstrapColor.SECONDARY)
 					.build();
 			}

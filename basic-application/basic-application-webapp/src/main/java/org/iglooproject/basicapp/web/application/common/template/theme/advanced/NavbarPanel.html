@@ -31,32 +31,32 @@
 			<li class="nav-item" wicket:id="profileLinkNavItem">
 				<a wicket:id="profileLink" class="nav-link" wicket:message="title:common.profile.tooltip">
 					<wicket:enclosure child="originalAuthentication">
-						<span class="fa fa-user-secret fa-fw" />
+						<span class="fa fa-fw fa-user-secret" />
 						<span wicket:id="originalAuthentication" />
 						&middot;
 					</wicket:enclosure>
-					<span class="fa fa-user-circle fa-fw" />
+					<span class="fa fa-fw fa-user-circle" />
 					<wicket:container wicket:id="userFullName" />
 				</a>
 			</li>
 			<wicket:enclosure child="reconnexionLink">
 				<li class="nav-item">
 					<a wicket:id="reconnexionLink" class="nav-link" wicket:message="title:common.signInAsMe">
-						<span class="fa fa-undo fa-fw" />
+						<span class="fa fa-fw fa-undo" />
 						<span class=""><wicket:message key="common.signInAsMe" /></span>
 					</a>
 				</li>
 			</wicket:enclosure>
 			<li class="nav-item">
 				<a wicket:id="logoutLink" class="nav-link">
-					<span class="fa fa-power-off fa-fw" />
+					<span class="fa fa-fw fa-power-off" />
 					<span><wicket:message key="common.logout" /></span>
 				</a>
 			</li>
 			<wicket:enclosure child="changeTheme">
 				<li class="nav-item">
 					<a wicket:id="changeTheme" class="btn btn-warning">
-						<span class="fa fa-drafting-compass fa-fw" />
+						<span class="fa fa-fw fa-drafting-compass" />
 					</a>
 				</li>
 			</wicket:enclosure>
