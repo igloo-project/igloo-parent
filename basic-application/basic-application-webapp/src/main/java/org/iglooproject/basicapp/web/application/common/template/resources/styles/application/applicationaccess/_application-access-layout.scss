@@ -41,23 +41,27 @@ body {
 						
 						padding: 0;
 						
-						> .card-header-alert-main {
+						&.header-alert-section-dismissed {
+							height: 10px;
+						}
+						
+						> .header-alert-main {
 							height: 100%;
 							
-							> .card-header-alert-container {
-								> .card-header-alert-content {
+							> .header-alert-container {
+								> .header-alert-content {
 									position: relative;
 									padding: $card-spacer-y $card-spacer-x;
 								}
 							}
 						}
 						
-						&.card-header-alert-dismissible {
+						&.header-alert-dismissible {
 							cursor: pointer;
 							
-							> .card-header-alert-main {
-								> .card-header-alert-container {
-									> .card-header-alert-content {
+							> .header-alert-main {
+								> .header-alert-container {
+									> .header-alert-content {
 										padding-right: ($close-font-size + $alert-padding-x * 2);
 										
 										.close {
@@ -82,10 +86,6 @@ body {
 						
 						&.environment-section {
 							@include bg($secondary);
-							
-							&.environment-section-dismissed {
-								height: 8px;
-							}
 							
 							&.development {
 								@include bg($success);
@@ -136,11 +136,9 @@ body {
 				padding: 0;
 				
 				.card {
-					border-top: 0;
-					border-left: 0;
-					border-right: 0;
+					border-bottom: $card-border-width solid $card-border-color;
 					@include border-radius(0);
-					box-shadow: none !important;
+					box-shadow: none;
 					
 					[class*="card-"] {
 						@include border-radius(0);
