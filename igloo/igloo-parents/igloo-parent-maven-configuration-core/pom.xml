@@ -27,11 +27,18 @@
 		<igloo.aspectj.version>1.9.1</igloo.aspectj.version>
 
 		<!-- http://hibernate.org/orm/releases/5.3/ -->
-		<igloo.hibernate.version>5.3.5.Final</igloo.hibernate.version>
+		<!-- https://hibernate.atlassian.net/browse/HHH-12932?jql=project%20%3D%20HHH%20AND%20fixVersion%20in%20(5.3.6)%20ORDER%20BY%20updated -->
+		<!-- https://hibernate.atlassian.net/browse/HHH-12784?jql=project%20%3D%20HHH%20AND%20fixVersion%20%3D%205.3.7%20ORDER%20BY%20updated -->
+		<igloo.hibernate.version>5.3.7.Final</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
 		<igloo.byte-buddy.version>1.8.17</igloo.byte-buddy.version>
 		<igloo.jboss-logging.version>3.3.2.Final</igloo.jboss-logging.version>
+		
+		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_7 -->
+		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_8 -->
+		<igloo.cglib.version>3.2.8</igloo.cglib.version>
+		<igloo.javassist.version>3.23.1-GA</igloo.javassist.version>
 
 		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
 		<igloo.hikaricp.version>3.2.0</igloo.hikaricp.version>
@@ -49,11 +56,6 @@
 		<igloo.oracle10g.version>10.2.0.5</igloo.oracle10g.version>
 		<igloo.mysql.version>5.1.14</igloo.mysql.version>
 		
-		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_7 -->
-		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_8 -->
-		<igloo.cglib.version>3.2.8</igloo.cglib.version>
-		<igloo.javassist.version>3.22.0-GA</igloo.javassist.version>
-		
 		<igloo.bindgen.version>4.0.0</igloo.bindgen.version>
 		<igloo.bindgen-java.version>1.0.0</igloo.bindgen-java.version>
 		<igloo.bindgen-bindings-java.version>1.0.0</igloo.bindgen-bindings-java.version>
@@ -65,7 +67,8 @@
 		
 		<igloo.spring-ldap.version>2.3.2.RELEASE</igloo.spring-ldap.version>
 		
-		<igloo.hibernate-search.version>5.10.3.Final</igloo.hibernate-search.version>
+		<!-- http://in.relation.to/2018/09/13/hibernate-search-5-10-4-Final-5-9-3-Final-5-6-6-Final/ -->
+		<igloo.hibernate-search.version>5.10.4.Final</igloo.hibernate-search.version>
 		<!-- both needed by less4j and hibernate-search ; we keep hibernate-search version -->
 		<igloo.gson.version>2.8.5</igloo.gson.version>
 		<!-- overriden in some modules, when we are in a elasticsearch context -->
