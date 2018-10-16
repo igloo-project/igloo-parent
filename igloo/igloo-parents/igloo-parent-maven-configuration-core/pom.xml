@@ -25,7 +25,9 @@
 		<!-- 5.0.8: https://spring.io/blog/2018/07/26/spring-framework-5-0-8-available-now -->
 		<!-- 5.0.9: https://spring.io/blog/2018/09/07/spring-framework-5-1-rc3-5-0-9-and-4-3-19-available-now -->
 		<!-- 5.0.10: https://spring.io/blog/2018/10/15/spring-framework-5-1-1-5-0-10-and-4-3-20-available-now -->
-		<igloo.spring.version>5.0.10.RELEASE</igloo.spring.version>
+		<!-- 5.1: https://spring.io/blog/2018/09/21/spring-framework-5-1-goes-ga -->
+		<!-- 5.1.1: https://spring.io/blog/2018/10/15/spring-framework-5-1-1-5-0-10-and-4-3-20-available-now -->
+		<igloo.spring.version>5.1.1.RELEASE</igloo.spring.version>
 		<!-- https://www.eclipse.org/aspectj/doc/released/README-191.html -->
 		<igloo.aspectj.version>1.9.1</igloo.aspectj.version>
 
@@ -69,7 +71,10 @@
 		<!-- 5.0.7: https://spring.io/blog/2018/07/26/spring-security-5-0-7-released -->
 		<!-- 5.0.8: https://spring.io/blog/2018/09/11/spring-security-5-0-8-and-4-2-8-released -->
 		<!-- 5.0.9: https://spring.io/blog/2018/10/16/spring-security-5-1-1-5-0-9-and-4-2-9-released -->
-		<igloo.spring-security.version>5.0.9.RELEASE</igloo.spring-security.version>
+		<!-- 5.1: https://docs.spring.io/spring-security/site/docs/5.1.0.RELEASE/reference/htmlsingle/#new
+		          https://spring.io/blog/2018/09/27/spring-security-5-1-goes-ga -->
+		<!-- 5.1.1: https://spring.io/blog/2018/10/16/spring-security-5-1-1-5-0-9-and-4-2-9-released -->
+		<igloo.spring-security.version>5.1.1.RELEASE</igloo.spring-security.version>
 		
 		<igloo.spring-ldap.version>2.3.2.RELEASE</igloo.spring-ldap.version>
 		
