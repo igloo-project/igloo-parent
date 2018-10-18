@@ -131,7 +131,6 @@ body {
 	}
 	
 	@include media-breakpoint-down(xs) {
-		background-color: $white;
 		padding: 0;
 		
 		.page-container {
@@ -142,11 +141,11 @@ body {
 				
 				.card {
 					border-bottom: $card-border-width solid $card-border-color;
-					@include border-radius(0);
+					border-radius: 0;
 					box-shadow: none;
 					
 					[class*="card-"] {
-						@include border-radius(0);
+						border-radius: 0;
 					}
 					
 					&.card-main-title-cascade {
@@ -154,9 +153,9 @@ body {
 						
 						.card-header {
 							&.card-main-title {
-								margin: 0 !important;
-								box-shadow: none !important;
-								border-radius: 0 !important;
+								margin: 0;
+								border-radius: 0;
+								box-shadow: none;
 							}
 						}
 					}
