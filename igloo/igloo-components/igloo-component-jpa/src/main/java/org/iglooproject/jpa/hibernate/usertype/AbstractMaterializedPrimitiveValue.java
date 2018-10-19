@@ -17,7 +17,7 @@ public abstract class AbstractMaterializedPrimitiveValue<P extends Comparable<P>
 	private static final long serialVersionUID = 1388663091843463782L;
 	
 	public static <P extends Comparable<P>> SerializableFunction2<AbstractMaterializedPrimitiveValue<P, ?>, P> materializedToPrimitive() {
-		return (v) -> v == null ? null : v.getValue();
+		return v -> v == null ? null : v.getValue();
 	}
 	
 	private final P value;

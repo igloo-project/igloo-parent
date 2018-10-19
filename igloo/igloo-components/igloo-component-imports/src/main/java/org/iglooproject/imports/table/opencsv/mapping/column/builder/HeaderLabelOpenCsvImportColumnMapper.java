@@ -49,7 +49,7 @@ import org.iglooproject.imports.table.opencsv.model.CsvTable;
 				String cellValue = StringUtils.trimToNull(cell.getContent());
 				if (predicate.test(cellValue)) {
 					if (matchedColumnsCount == indexAmongMatchedColumns) {
-						return (row) -> row == null ? null : new CsvCellReference(row.getIndex(), cell.getIndex());
+						return row -> row == null ? null : new CsvCellReference(row.getIndex(), cell.getIndex());
 					} else {
 						++matchedColumnsCount;
 					}

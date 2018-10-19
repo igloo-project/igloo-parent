@@ -33,7 +33,7 @@ public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>
 			if (fileUploadMediaType == null || !mediaTypes.contains(fileUploadMediaType)) {
 				ValidationError error = new ValidationError();
 				error.addKey(this);
-				error.setVariable("extensions", Joiner.on(", ").skipNulls().join(mediaTypes.stream().map((input) -> input.extension()).iterator()));
+				error.setVariable("extensions", Joiner.on(", ").skipNulls().join(mediaTypes.stream().map(input -> input.extension()).iterator()));
 				error.setVariable("clientFileName", fileUpload.getClientFileName());
 				validatable.error(error);
 			}

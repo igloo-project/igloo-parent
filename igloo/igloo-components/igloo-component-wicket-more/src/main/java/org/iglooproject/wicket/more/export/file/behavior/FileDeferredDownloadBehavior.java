@@ -48,7 +48,7 @@ public class FileDeferredDownloadBehavior extends AbstractDeferredDownloadBehavi
 		super(
 				ReadOnlyModel.<LabelValue<String, File>, File>of(
 						fileInformationModel,
-						(input) -> input != null ? input.getValue() : null
+						input -> input != null ? input.getValue() : null
 				),
 				addAntiCache
 		);

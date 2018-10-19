@@ -54,11 +54,11 @@ public class PropertyIdListPanel extends Panel {
 				)
 						.addLabelColumn(
 								new ResourceModel("common.propertyId.key"),
-								(p) -> p.getKey()
+								p -> p.getKey()
 						)
 						.addLabelColumn(
 								new ResourceModel("common.propertyId.value"),
-								(p) -> propertyService.getAsString(p)
+								p -> propertyService.getAsString(p)
 						)
 						.addActionColumn()
 								.addAction(

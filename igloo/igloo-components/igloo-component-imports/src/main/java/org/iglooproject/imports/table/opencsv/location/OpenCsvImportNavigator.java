@@ -53,7 +53,7 @@ public class OpenCsvImportNavigator implements ITableImportNavigator<CsvTable, C
 	@Override
 	public Iterator<CsvRow> nonEmptyRows(CsvTable sheet) {
 		return Streams.stream(rows(sheet))
-				.filter((row) -> rowHasContent(row))
+				.filter(row -> rowHasContent(row))
 				.iterator();
 	}
 

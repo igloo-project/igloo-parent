@@ -31,7 +31,7 @@ import com.google.common.collect.Maps;
 public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLuceneQueryFactory {
 
 	private static final Function2<BindingRoot<?, String>, String> BINDING_TO_PATH_FUNCTION =
-			(input) -> {
+			input -> {
 				if (input == null) {
 					throw new IllegalStateException("Path may not be null.");
 				}

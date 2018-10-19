@@ -25,28 +25,28 @@ public final class Predicates2 {
 	}
 
 	public static <T> SerializablePredicate2<T> alwaysTrue() {
-		return (t) -> true;
+		return t -> true;
 	}
 
 	public static <T> SerializablePredicate2<T> alwaysFalse() {
-		return (t) -> false;
+		return t -> false;
 	}
 
 	public static <T> SerializablePredicate2<T> isNull() {
-		return (t) -> t == null;
+		return t -> t == null;
 	}
 
 	public static <T> SerializablePredicate2<T> notNull() {
-		return (t) -> t != null;
+		return t -> t != null;
 	}
 
 	public static <T> SerializablePredicate2<T> not(Predicate<T> predicate) {
 		Objects.requireNonNull(predicate);
-		return (t) -> predicate.negate().test(t);
+		return t -> predicate.negate().test(t);
 	}
 
 	public static <T> SerializablePredicate2<T> and(Iterable<? extends Predicate<? super T>> predicates) {
-		return (t) -> {
+		return t -> {
 			for (Predicate<? super T> predicate : defensiveCopy(predicates)) {
 				if (!predicate.test(t)) {
 					return false;
@@ -66,7 +66,7 @@ public final class Predicates2 {
 	}
 
 	public static <T> SerializablePredicate2<T> or(Iterable<? extends Predicate<? super T>> predicates) {
-		return (t) -> {
+		return t -> {
 			for (Predicate<? super T> predicate : defensiveCopy(predicates)) {
 				if (predicate.test(t)) {
 					return true;
@@ -111,7 +111,7 @@ public final class Predicates2 {
 	public static <A, B> SerializablePredicate2<A> compose(Predicate<B> predicate, Function<A, ? extends B> function) {
 		Objects.requireNonNull(predicate);
 		Objects.requireNonNull(function);
-		return (a) -> predicate.test(function.apply(a));
+		return a -> predicate.test(function.apply(a));
 	}
 
 	public static SerializablePredicate2<CharSequence> containsPattern(String pattern) {
@@ -121,7 +121,7 @@ public final class Predicates2 {
 
 	public static SerializablePredicate2<CharSequence> contains(Pattern pattern) {
 		Objects.requireNonNull(pattern);
-		return (t) -> pattern.matcher(t).find();
+		return t -> pattern.matcher(t).find();
 	}
 
 	public static SerializablePredicate2<Boolean> isTrue() {
@@ -141,28 +141,28 @@ public final class Predicates2 {
 	}
 
 	public static <T extends Collection<?>> SerializablePredicate2<T> isEmpty() {
-		return (c) -> c == null || c.isEmpty();
+		return c -> c == null || c.isEmpty();
 	}
 
 	public static <T extends Collection<?>> SerializablePredicate2<T> notEmpty() {
-		return (c) -> c == null || !c.isEmpty();
+		return c -> c == null || !c.isEmpty();
 	}
 
 	public static <T extends Map<?, ?>> SerializablePredicate2<T> mapIsEmpty() {
-		return (m) -> m == null || m.isEmpty();
+		return m -> m == null || m.isEmpty();
 	}
 
 	public static <T extends Map<?, ?>> SerializablePredicate2<T> mapNotEmpty() {
-		return (m) -> m == null || !m.isEmpty();
+		return m -> m == null || !m.isEmpty();
 	}
 
 	public static SerializablePredicate2<Collection<?>> contains(Object referenceValue) {
-		return (c) -> c != null && c.contains(referenceValue);
+		return c -> c != null && c.contains(referenceValue);
 	}
 
 	public static SerializablePredicate2<Collection<?>> containsAny(Iterable<?> referenceValues) {
 		Objects.requireNonNull(referenceValues);
-		return (c) -> c.stream().anyMatch(Sets.newLinkedHashSet(referenceValues)::contains);
+		return c -> c.stream().anyMatch(Sets.newLinkedHashSet(referenceValues)::contains);
 	}
 
 	public static SerializablePredicate2<String> hasText() {
@@ -170,15 +170,15 @@ public final class Predicates2 {
 	}
 
 	public static <T> SerializablePredicate2<T> comparesEqualTo(T value, Comparator<? super T> comparator) {
-		return (t) -> comparator.compare(value, t) == 0;
+		return t -> comparator.compare(value, t) == 0;
 	}
 
 	public static <T> SerializablePredicate2<Iterable<? extends T>> any(Predicate<? super T> itemPredicate) {
-		return (t) -> Streams.stream(t).anyMatch(itemPredicate);
+		return t -> Streams.stream(t).anyMatch(itemPredicate);
 	}
 
 	public static <T> SerializablePredicate2<Iterable<? extends T>> all(Predicate<? super T> itemPredicate) {
-		return (t) -> Streams.stream(t).allMatch(itemPredicate);
+		return t -> Streams.stream(t).allMatch(itemPredicate);
 	}
 
 	public static <T> SerializablePredicate2<T> notNullAnd(Predicate<T> predicate) {

@@ -26,9 +26,9 @@ import org.iglooproject.imports.table.opencsv.model.CsvTable;
 
 public class OpenCsvImportColumnBuilder extends AbstractTableImportColumnBuilder<CsvTable, CsvRow, CsvCell, CsvCellReference> {
 	
-	private static final Function2<String, Double> DOUBLE_FORMAT_FUNCTION = (input) -> Double.valueOf(input);
+	private static final Function2<String, Double> DOUBLE_FORMAT_FUNCTION = input -> Double.valueOf(input);
 	
-	private static final Function2<String, BigDecimal> BIG_DECIMAL_FORMAT_FUNCTION = (input) -> input == null ? null : new BigDecimal(input);
+	private static final Function2<String, BigDecimal> BIG_DECIMAL_FORMAT_FUNCTION = input -> input == null ? null : new BigDecimal(input);
 	
 	private final Function2<? super String, ? extends Date> dateFormatFunction;
 	
@@ -83,7 +83,7 @@ public class OpenCsvImportColumnBuilder extends AbstractTableImportColumnBuilder
 		@Override
 		public StringState<CsvTable, CsvRow, CsvCell, CsvCellReference> asString(final Supplier2<? extends NumberFormat> formatIfNumeric) {
 			return new TypeStateSwitcher<CsvCell>(Functions2.<CsvCell>identity()).toString(
-					(cell) -> cell != null ? cell.getContent() : null
+					cell -> cell != null ? cell.getContent() : null
 			);
 		}
 

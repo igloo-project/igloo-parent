@@ -22,7 +22,7 @@ import com.google.common.collect.Multimaps;
 public class TestHistoryDifferenceCollectionMatcher<D extends AbstractHistoryDifference<?, ?>> extends TypeSafeMatcher<Collection<D>> {
 	
 	private static final Function2<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceKey> HISTORY_DIFFERENCE_TO_DIFFERENCE_KEY =
-			(input) -> new TestHistoryDifferenceKey(input);
+			input -> new TestHistoryDifferenceKey(input);
 	
 	private static final Function2<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceDescription> HISTORY_DIFFERENCE_TO_DESCRIPTION =
 			new Function2<AbstractHistoryDifference<?, ?>, TestHistoryDifferenceDescription>() {

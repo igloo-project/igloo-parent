@@ -13,7 +13,7 @@ public final class SqlExpressions {
 	}
 	
 	public static <E extends Enum<E>> Expression<E> enumFromName(final Class<E> clazz, Expression<String> expression) {
-		return Expressions2.fromFunction(String.class, expression, clazz, (input) -> input != null ? EnumUtils.getEnum(clazz, input) : null);
+		return Expressions2.fromFunction(String.class, expression, clazz, input -> input != null ? EnumUtils.getEnum(clazz, input) : null);
 	}
 	
 	/**

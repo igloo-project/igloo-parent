@@ -52,15 +52,15 @@ public final class Splitters {
 
 	public static final class Functions {
 
-		private static final SerializableFunction2<Object, Splitter> SPACE = (o) -> Splitters.SPACE;
-		private static final SerializableFunction2<Object, Splitter> NON_BREAKING_SPACE = (o) -> Splitters.NON_BREAKING_SPACE;
-		private static final SerializableFunction2<Object, Splitter> NEW_LINE = (o) -> Splitters.NEW_LINE;
-		private static final SerializableFunction2<Object, Splitter> NEW_LINE_SEMICOLON = (o) -> Splitters.NEW_LINE_SEMICOLON;
-		private static final SerializableFunction2<Object, Splitter> HYPHEN_SPACE = (o) -> Splitters.HYPHEN_SPACE;
-		private static final SerializableFunction2<Object, Splitter> MIDDOT_SPACE = (o) -> Splitters.MIDDOT_SPACE;
-		private static final SerializableFunction2<Object, Splitter> DOT = (o) -> Splitters.DOT;
-		private static final SerializableFunction2<Object, Splitter> SLASH = (o) -> Splitters.SLASH;
-		private static final SerializableFunction2<Object, Splitter> COMMA = (o) -> Splitters.COMMA;
+		private static final SerializableFunction2<Object, Splitter> SPACE = o -> Splitters.SPACE;
+		private static final SerializableFunction2<Object, Splitter> NON_BREAKING_SPACE = o -> Splitters.NON_BREAKING_SPACE;
+		private static final SerializableFunction2<Object, Splitter> NEW_LINE = o -> Splitters.NEW_LINE;
+		private static final SerializableFunction2<Object, Splitter> NEW_LINE_SEMICOLON = o -> Splitters.NEW_LINE_SEMICOLON;
+		private static final SerializableFunction2<Object, Splitter> HYPHEN_SPACE = o -> Splitters.HYPHEN_SPACE;
+		private static final SerializableFunction2<Object, Splitter> MIDDOT_SPACE = o -> Splitters.MIDDOT_SPACE;
+		private static final SerializableFunction2<Object, Splitter> DOT = o -> Splitters.DOT;
+		private static final SerializableFunction2<Object, Splitter> SLASH = o -> Splitters.SLASH;
+		private static final SerializableFunction2<Object, Splitter> COMMA = o -> Splitters.COMMA;
 		
 		public static SerializableFunction2<Object, Splitter> onSpace() {
 			return SPACE;

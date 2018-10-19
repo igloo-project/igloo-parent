@@ -215,7 +215,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	@SuppressWarnings("unchecked")
 	protected <Q> List<Q> listProjection(Long offset, Long limit, String field) {
 		List<Object[]> projections = getFullTextQueryList(offset, limit).setProjection(field).getResultList();
-		return Lists.transform(projections, (input) -> (Q) input[0]);
+		return Lists.transform(projections, input -> (Q) input[0]);
 	}
 	
 	@Override
@@ -497,7 +497,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	public final List<String> listFacetValues(String facetName) {
 		return getFacets(facetName)
 				.stream()
-				.map((facet) -> facet.getValue())
+				.map(facet -> facet.getValue())
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 }

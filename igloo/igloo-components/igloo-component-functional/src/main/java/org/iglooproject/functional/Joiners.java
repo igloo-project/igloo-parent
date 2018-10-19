@@ -65,16 +65,16 @@ public final class Joiners {
 	 */
 	public static final class Functions {
 
-		private static final SerializableFunction2<Object, Joiner> SPACE = (o) -> Joiners.SPACE;
-		private static final SerializableFunction2<Object, Joiner> NON_BREAKING_SPACE = (o) -> Joiners.NON_BREAKING_SPACE;
-		private static final SerializableFunction2<Object, Joiner> NEW_LINE = (o) -> Joiners.NEW_LINE;
-		private static final SerializableFunction2<Object, Joiner> NEW_LINE_SEMICOLON = (o) -> Joiners.NEW_LINE_SEMICOLON;
-		private static final SerializableFunction2<Object, Joiner> HYPHEN = (o) -> Joiners.HYPHEN;
-		private static final SerializableFunction2<Object, Joiner> HYPHEN_SPACE = (o) -> Joiners.HYPHEN_SPACE;
-		private static final SerializableFunction2<Object, Joiner> MIDDOT_SPACE = (o) -> Joiners.MIDDOT_SPACE;
-		private static final SerializableFunction2<Object, Joiner> DOT = (o) -> Joiners.DOT;
-		private static final SerializableFunction2<Object, Joiner> SLASH = (o) -> Joiners.SLASH;
-		private static final SerializableFunction2<Object, Joiner> COMMA = (o) -> Joiners.COMMA;
+		private static final SerializableFunction2<Object, Joiner> SPACE = o -> Joiners.SPACE;
+		private static final SerializableFunction2<Object, Joiner> NON_BREAKING_SPACE = o -> Joiners.NON_BREAKING_SPACE;
+		private static final SerializableFunction2<Object, Joiner> NEW_LINE = o -> Joiners.NEW_LINE;
+		private static final SerializableFunction2<Object, Joiner> NEW_LINE_SEMICOLON = o -> Joiners.NEW_LINE_SEMICOLON;
+		private static final SerializableFunction2<Object, Joiner> HYPHEN = o -> Joiners.HYPHEN;
+		private static final SerializableFunction2<Object, Joiner> HYPHEN_SPACE = o -> Joiners.HYPHEN_SPACE;
+		private static final SerializableFunction2<Object, Joiner> MIDDOT_SPACE = o -> Joiners.MIDDOT_SPACE;
+		private static final SerializableFunction2<Object, Joiner> DOT = o -> Joiners.DOT;
+		private static final SerializableFunction2<Object, Joiner> SLASH = o -> Joiners.SLASH;
+		private static final SerializableFunction2<Object, Joiner> COMMA = o -> Joiners.COMMA;
 		
 		public static SerializableFunction2<Object, Joiner> onSpace() {
 			return SPACE;

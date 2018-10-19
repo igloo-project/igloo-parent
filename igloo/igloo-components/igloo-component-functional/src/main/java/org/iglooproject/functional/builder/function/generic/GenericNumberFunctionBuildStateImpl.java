@@ -29,22 +29,22 @@ public abstract class GenericNumberFunctionBuildStateImpl
 	
 	@Override
 	public TIntegerState toInteger() {
-		return toInteger((input) -> input == null ? null : input.intValue());
+		return toInteger(input -> input == null ? null : input.intValue());
 	}
 	
 	@Override
 	public TLongState toLong() {
-		return toLong((input) -> input == null ? null : input.longValue());
+		return toLong(input -> input == null ? null : input.longValue());
 	}
 	
 	@Override
 	public TDoubleState toDouble() {
-		return toDouble((input) -> input == null ? null : input.doubleValue());
+		return toDouble(input -> input == null ? null : input.doubleValue());
 	}
 	
 	@Override
 	public TBigDecimalState toBigDecimal() {
-		return toBigDecimal((input) -> input == null ? null : BigDecimal.valueOf(input.doubleValue()));
+		return toBigDecimal(input -> input == null ? null : BigDecimal.valueOf(input.doubleValue()));
 	}
 
 }

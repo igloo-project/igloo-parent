@@ -121,7 +121,7 @@ public class JSassClassPathImporter implements Importer {
 			// "/<version>" or ""
 			// "current" magic version is stripped out (for compatibility with wicket-webjars) 
 			String slashVersionOrEmpty = Optional.<String>ofNullable(webjarUrl.getVersion())
-					.filter((s) -> ! "current".equals(s)) // filter out magic "current" version
+					.filter(s -> ! "current".equals(s)) // filter out magic "current" version
 					.map("/"::concat) // prepend '/'
 					.orElse("");
 			// "/<version>/path"

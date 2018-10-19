@@ -40,7 +40,7 @@ public class ThreadedProcessor {
 
 	private static final RejectedExecutionHandler THROW_EXCEPTION_ON_REJECTED_EXECUTION = new ThreadPoolExecutor.AbortPolicy();
 
-	private static final Function2<Runnable, Callable<Object>> RUNNABLE_TO_CALLABLE = (input) -> input == null ? null : Executors.callable(input);
+	private static final Function2<Runnable, Callable<Object>> RUNNABLE_TO_CALLABLE = input -> input == null ? null : Executors.callable(input);
 
 	private final int threadPoolSize;
 	private final int keepAliveTime;

@@ -151,7 +151,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	}
 
 	private Function2<String, Class<?>> getBeanType(ConfigurableListableBeanFactory beanFactory) {
-		return (beanName) -> ClassUtils.getUserClass(beanFactory.getType(beanName));
+		return beanName -> ClassUtils.getUserClass(beanFactory.getType(beanName));
 	}
 
 	/**
@@ -266,7 +266,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	 * and store targetted configuration resources in the provided multimap.
 	 */
 	private Consumer<Class<?>> configurationLocationsBeanTypeToLocations(Multimap<Integer, Resource> locations) {
-		return (Class<?> beanType) -> {
+		return beanType -> {
 			ConfigurationLocations annotation = beanType.getAnnotation(ConfigurationLocations.class);
 			
 			List<Resource> resources = Arrays.stream(annotation.locations())
@@ -305,7 +305,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	 * <p>If you map a collection, you need to filter null values after mapping.</p>
 	 */
 	private Function2<String, Resource> resourceFromLocation(boolean throwErrorIfNotReadable) {
-		return (location) -> {
+		return location -> {
 			String resolvedLocation = applicationContext.getEnvironment().resolveRequiredPlaceholders(location);
 			if (applicationContext.getResource(resolvedLocation).isReadable()) {
 				LOGGER.debug("Configuration {} detected and added", location);

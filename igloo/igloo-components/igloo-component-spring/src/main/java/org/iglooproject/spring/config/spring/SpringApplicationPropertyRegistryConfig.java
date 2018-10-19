@@ -53,7 +53,7 @@ public class SpringApplicationPropertyRegistryConfig extends AbstractApplication
 		registry.registerString(IGLOO_VERSION);
 		registry.register(
 				CONFIGURATION_TYPE,
-				(input) -> {
+				input -> {
 					if (SpringPropertyIds.CONFIGURATION_TYPE_DEVELOPMENT.equals(input) || SpringPropertyIds.CONFIGURATION_TYPE_DEPLOYMENT.equals(input)) {
 						return input;
 					} else {
@@ -67,7 +67,7 @@ public class SpringApplicationPropertyRegistryConfig extends AbstractApplication
 		
 		registry.register(
 				AVAILABLE_LOCALES,
-				(input) -> {
+				input -> {
 					Set<Locale> locales = Sets.newHashSet();
 					for (String localeAsString : Splitter.on(" ").omitEmptyStrings().split(input)) {
 						try {

@@ -50,8 +50,8 @@ public class TestNotificationBuilder extends AbstractTestNotification {
 		ArgumentCaptor<MimeMessage> argument = mockitoSend(Mockito.times(1));
 		MimeMessage mimeMessage = argument.getValue();
 		Assertions.assertThat(mimeMessage.getRecipients(RecipientType.TO)).hasSize(2)
-			.anyMatch((a) -> ((InternetAddress) a).getAddress().equals(address1))
-			.anyMatch((a) -> ((InternetAddress) a).getAddress().equals(address2));
+			.anyMatch(a -> ((InternetAddress) a).getAddress().equals(address1))
+			.anyMatch(a -> ((InternetAddress) a).getAddress().equals(address2));
 	}
 
 	/**

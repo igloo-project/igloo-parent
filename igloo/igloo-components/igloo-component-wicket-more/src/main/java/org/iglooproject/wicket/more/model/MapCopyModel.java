@@ -64,7 +64,7 @@ public final class MapCopyModel<K, V, M extends Map<K, V>, MK extends IModel<K>,
 			factory(final SerializableSupplier2<? extends M> newMapSupplier,
 					final SerializableFunction2<? super K, ? extends MK> keyModelFunction,
 					final SerializableFunction2<? super V, ? extends MV> valueModelFunction) {
-		return (input) -> {
+		return input -> {
 			MapCopyModel<K, V, M, MK, MV> result = custom(newMapSupplier, keyModelFunction, valueModelFunction);
 			result.setObject(input);
 			return result;

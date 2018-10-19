@@ -162,7 +162,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		
 		protected Iterator<RowContext> toRowContexts(Iterator<TRow> rows) {
 			return Streams.stream(rows)
-					.map((input) -> row(input))
+					.map(input -> row(input))
 					.iterator();
 		}
 		

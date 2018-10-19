@@ -63,7 +63,7 @@ public final class CollectionCopyModel<T, C extends Collection<T>, M extends IMo
 	public static <T, C extends Collection<T>, M extends IModel<T>> SerializableFunction2<C, CollectionCopyModel<T, C, M>>
 			factory(final SerializableSupplier2<? extends C> newCollectionSupplier,
 					final SerializableFunction2<? super T, ? extends M> itemModelFunction) {
-		return (input) -> {
+		return input -> {
 			CollectionCopyModel<T, C, M> result = custom(newCollectionSupplier, itemModelFunction);
 			result.setObject(input);
 			return result;

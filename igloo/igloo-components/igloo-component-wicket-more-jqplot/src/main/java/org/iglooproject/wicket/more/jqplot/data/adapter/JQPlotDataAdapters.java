@@ -65,7 +65,7 @@ public final class JQPlotDataAdapters {
 		
 		Renderer<SeriesEntry<TK, V>> entryRenderer = percentRenderer.onResultOf(
 			(SerializableFunction2<SeriesEntry<TK, V>, Double>)
-				(entry) -> {
+				entry -> {
 					V absoluteValue = entry.getValue();
 					if (absoluteValue == null) {
 						return null;

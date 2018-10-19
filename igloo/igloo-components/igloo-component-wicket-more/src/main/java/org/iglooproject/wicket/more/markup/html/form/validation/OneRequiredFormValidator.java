@@ -78,7 +78,7 @@ public class OneRequiredFormValidator extends AbstractFormValidator {
 	
 	protected void onError(Form<?> form) {
 		Joiner labelJoiner = Joiner.on(form.getString("common.validator.oneRequired.labels.separator"));
-		String labels = labelJoiner.join(Iterables.transform(requiredFormComponents, (input) -> input.getLabel().getObject()));
+		String labels = labelJoiner.join(Iterables.transform(requiredFormComponents, input -> input.getLabel().getObject()));
 		
 		if (mode == OneRequiredMode.ONE_ONLY) {
 			error(requiredFormComponents.iterator().next(), "common.validator.oneRequired.oneOnly", ImmutableMap.<String, Object>of("labels", labels));
