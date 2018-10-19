@@ -12,7 +12,6 @@ import org.apache.wicket.markup.html.navigation.paging.IPageableItems;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
-import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CountLabel;
@@ -20,6 +19,7 @@ import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
+import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.html.navigation.paging.HideableAjaxPagingNavigator;
 import org.iglooproject.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
@@ -55,7 +55,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 			IDataTableFactory<T, S> factory,
 			Map<IColumn<T, S>, Condition> columns,
 			ISequenceProvider<T> sequenceProvider,
-			List<SerializableFunction2<T, String>> rowCssClassProviders,
+			List<IDetachableFactory<? super IModel<? extends T>, ? extends String>> rowCssClassFactories,
 			long rowsPerPage,
 			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories,
 			Condition responsiveCondition) {
@@ -63,7 +63,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		
 		this.sequenceProvider = sequenceProvider;
 		
-		dataTable = newDataTable("dataTable", factory, columns, sequenceProvider, rowCssClassProviders, rowsPerPage);
+		dataTable = newDataTable("dataTable", factory, columns, sequenceProvider, rowCssClassFactories, rowsPerPage);
 		
 		add(
 				new WebMarkupContainer("dataTableContainer")
@@ -138,9 +138,10 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	}
 	
 	protected CoreDataTable<T, S> newDataTable(String id, IDataTableFactory<T, S> factory,
-			Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider, 
-			List<SerializableFunction2<T, String>> rowCssClassProviders, long rowsPerPage) {
-		return factory.create(id, columns, sequenceProvider, rowCssClassProviders, rowsPerPage);
+			Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider,
+			List<IDetachableFactory<? super IModel<? extends T>, ? extends String>> rowCssClassFactories,
+			long rowsPerPage) {
+		return factory.create(id, columns, sequenceProvider, rowCssClassFactories, rowsPerPage);
 	}
 	
 	public CoreDataTable<T, S> getDataTable() {

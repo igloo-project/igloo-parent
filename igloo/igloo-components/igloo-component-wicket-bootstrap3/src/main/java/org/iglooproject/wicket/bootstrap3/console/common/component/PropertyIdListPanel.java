@@ -71,7 +71,7 @@ public class PropertyIdListPanel extends Panel {
 											}
 										}
 								)
-										.when(Predicates2.instanceOf(MutablePropertyId.class))
+										.whenPredicate(Predicates2.instanceOf(MutablePropertyId.class))
 										.withClassOnElements("btn-xs")
 								.end()
 						.bootstrapPanel()

@@ -1,28 +1,28 @@
 package org.iglooproject.basicapp.web.application.referencedata.component;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.LocalizedReferenceData;
 import org.iglooproject.basicapp.web.application.referencedata.model.AbstractLocalizedReferenceDataDataProvider;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
+import org.iglooproject.wicket.markup.html.form.PageableSearchForm;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.wicketstuff.wiquery.core.events.StateEvent;
 
 public class SimpleLocalizedReferenceDataSearchPanel<T extends LocalizedReferenceData<? super T>> extends Panel {
 	
 	private static final long serialVersionUID = 3027788723051745121L;
 
-	public SimpleLocalizedReferenceDataSearchPanel(String id, AbstractLocalizedReferenceDataDataProvider<T, ?> dataProvider, final Component table) {
+	public SimpleLocalizedReferenceDataSearchPanel(String id, final AbstractLocalizedReferenceDataDataProvider<T, ?> dataProvider, final DecoratedCoreDataTablePanel<?, ?> table) {
 		super(id);
 		
-		Form<Void> form = new Form<>("form");
+		PageableSearchForm<Void> form = new PageableSearchForm<>("form", table);
 		add(form);
 		
 		form.add(

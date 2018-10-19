@@ -1,23 +1,23 @@
 package org.iglooproject.basicapp.web.application.referencedata.component;
 
-import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.ROW_DISABLED;
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.TABLE_ROW_DISABLED;
+import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds;
+import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
+import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.basicapp.web.application.referencedata.form.AbstractGenericReferenceDataPopup;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.security.model.CorePermissionConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.markup.html.action.OneParameterModalOpenAjaxAction;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
@@ -28,7 +28,6 @@ import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IDecoratedBuildState;
-import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
@@ -60,17 +59,17 @@ public abstract class AbstractReferenceDataListPanel<
 		popup = createPopup("popup");
 		
 		results = addInHeadingRight(
-							addIn(
-									addActionColumn(
-											addColumns(builder)
-									)
-											.addRowCssClass(referenceData -> (referenceData != null && !referenceData.isEnabled()) ? ROW_DISABLED : null)
-											.bootstrapCard()
-											.count("referenceData.count")
-											.ajaxPagers()
-							)
-					)
-							.build("results", propertyService.get(BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE));
+				addIn(
+						addActionColumn(
+								addColumns(builder)
+						)
+								.addRowCssClass(itemModel -> (itemModel != null && !itemModel.getObject().isEnabled()) ? TABLE_ROW_DISABLED : null)
+								.bootstrapCard()
+								.count("referenceData.count")
+								.ajaxPagers()
+				)
+		)
+				.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 		
 		add(
 				popup,
@@ -90,26 +89,30 @@ public abstract class AbstractReferenceDataListPanel<
 		return popup;
 	}
 	
-	protected String getPermissionAdd() {
-		return CorePermissionConstants.CREATE;
+	protected Condition getAddCondition() {
+		return Condition.permission(CorePermissionConstants.CREATE);
 	}
 	
-	protected String getPermissionEdit() {
-		return CorePermissionConstants.WRITE;
+	protected Condition getEditCondition(final IModel<? extends T> itemModel) {
+		return Condition.alwaysTrue();
 	}
 	
 	protected abstract IAddedCoreColumnState<T, S> addColumns(DataTableBuilder<T, S> builder);
 	
 	protected IAddedCoreColumnState<T, S> addActionColumn(IAddedCoreColumnState<T, S> builder) {
 		return builder
-				.addColumn(new AbstractCoreColumn<T, S>(new Model<String>()) {
-					private static final long serialVersionUID = 1L;
-					
-					@Override
-					public void populateItem(Item<ICellPopulator<T>> cellItem, String componentId, final IModel<T> rowModel) {
-						cellItem.add(new ItemActionsFragment(componentId, rowModel));
-					}
-				})
+				.addActionColumn()
+						.addAction(ActionRenderers.edit(), new OneParameterModalOpenAjaxAction<IModel<T>>(getPopup()) {
+							private static final long serialVersionUID = 1L;
+							@Override
+							protected void onShow(AjaxRequestTarget target, IModel<T> parameter) {
+								super.onShow(target, parameter);
+								getPopup().setUpEdit(parameter.getObject());
+							}
+						})
+						.when(itemModel -> getEditCondition(itemModel))
+						.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
+						.end()
 						.withClass("actions actions-1x");
 	}
 	
@@ -137,32 +140,6 @@ public abstract class AbstractReferenceDataListPanel<
 				});
 	}
 	
-	private class ItemActionsFragment extends Fragment {
-		
-		private static final long serialVersionUID = 1L;
-		
-		public ItemActionsFragment(String id, final IModel<T> itemModel) {
-			super(id, "itemActionsFragment", AbstractReferenceDataListPanel.this, itemModel);
-			
-			add(Condition.anyChildVisible(ItemActionsFragment.this).thenShow());
-			
-			add(
-				new EnclosureContainer("actionsContainer")
-					.anyChildVisible()
-					.add(
-						new BlankLink("edit")
-							.add(new AjaxModalOpenBehavior(getPopup(), MouseEvent.CLICK) {
-								private static final long serialVersionUID = 1L;
-								@Override
-								protected void onShow(AjaxRequestTarget target) {
-									getPopup().setUpEdit(itemModel.getObject());
-								}
-							})
-					)
-			);
-		}
-	}
-	
 	private class GlobalActionsFragment extends Fragment {
 		
 		private static final long serialVersionUID = 1L;
@@ -184,7 +161,7 @@ public abstract class AbstractReferenceDataListPanel<
 									getPopup().setUpAdd(getNewInstance());
 								}
 							})
-						.add(Condition.permission(getPermissionAdd()).thenShow())
+						.add(getAddCondition().thenShow())
 					)
 			);
 		}

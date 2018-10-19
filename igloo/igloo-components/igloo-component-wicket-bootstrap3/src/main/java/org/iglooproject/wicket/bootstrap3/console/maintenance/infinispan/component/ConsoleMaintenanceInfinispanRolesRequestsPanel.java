@@ -120,7 +120,7 @@ public class ConsoleMaintenanceInfinispanRolesRequestsPanel extends Panel {
 													}
 												}
 										)
-										.when((input) -> {
+										.whenPredicate((input) -> {
 											IAttribution roleAttribution = infinispanClusterService.getRoleRequestAttribution(input);
 											return roleAttribution != null && roleAttribution.getAttributionDate() != null && roleAttribution.getOwner() != null;
 										})

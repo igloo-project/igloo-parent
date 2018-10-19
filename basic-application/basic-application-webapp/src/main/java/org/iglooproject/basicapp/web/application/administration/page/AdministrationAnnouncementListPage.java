@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.page;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.TABLE_ROW_DISABLED;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import org.apache.wicket.RestartResponseException;
@@ -140,7 +141,7 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 					.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
 				.end()
 				.withClass("actions actions-2x")
-			.addRowCssClass(message -> (message != null && !message.isActive()) ? CssClassConstants.ROW_DISABLED : null)
+			.addRowCssClass(itemModel -> (itemModel.getObject() != null && !itemModel.getObject().isActive()) ? TABLE_ROW_DISABLED : null)
 			.bootstrapCard()
 				.count("administration.announcement.list.count")
 				.ajaxPagers()
