@@ -19,7 +19,7 @@ public class CitySearchPanel extends Panel {
 	
 	private static final long serialVersionUID = -2395663840251286432L;
 
-	public CitySearchPanel(String id, final AbstractLocalizedReferenceDataDataProvider<City, ?> dataProvider, final DecoratedCoreDataTablePanel<?, ?> table) {
+	public CitySearchPanel(String id, final AbstractLocalizedReferenceDataDataProvider<City, ?> dataProvider, final DecoratedCoreDataTablePanel<City, ?> table) {
 		super(id);
 		
 		PageableSearchForm<Void> form = new PageableSearchForm<>("form", table);

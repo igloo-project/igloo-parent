@@ -19,7 +19,7 @@ public class SimpleLocalizedReferenceDataSearchPanel<T extends LocalizedReferenc
 	
 	private static final long serialVersionUID = 3027788723051745121L;
 
-	public SimpleLocalizedReferenceDataSearchPanel(String id, final AbstractLocalizedReferenceDataDataProvider<T, ?> dataProvider, final DecoratedCoreDataTablePanel<?, ?> table) {
+	public SimpleLocalizedReferenceDataSearchPanel(String id, final AbstractLocalizedReferenceDataDataProvider<T, ?> dataProvider, final DecoratedCoreDataTablePanel<T, ?> table) {
 		super(id);
 		
 		PageableSearchForm<Void> form = new PageableSearchForm<>("form", table);
