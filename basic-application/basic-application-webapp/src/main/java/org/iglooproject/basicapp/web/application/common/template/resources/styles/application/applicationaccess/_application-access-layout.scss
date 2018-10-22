@@ -62,13 +62,13 @@ body {
 							> .header-alert-main {
 								> .header-alert-container {
 									> .header-alert-content {
-										padding-right: ($close-font-size + $alert-padding-x * 2);
+										padding-right: ($close-font-size + $card-spacer-x * 2);
 										
 										.close {
 											position: absolute;
 											top: 0;
 											right: 0;
-											padding: $alert-padding-y $alert-padding-x;
+											padding: $card-spacer-y $card-spacer-x;
 											color: inherit;
 										}
 									}

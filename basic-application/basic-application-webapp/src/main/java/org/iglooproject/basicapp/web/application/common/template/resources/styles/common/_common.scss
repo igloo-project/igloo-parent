@@ -1,5 +1,5 @@
 .header-alert-section {
-	background-color: $light;
+	@include bg($light);
 	
 	border-bottom: 1px solid rgba($black, .125);
 	
@@ -13,10 +13,11 @@
 		> .header-alert-container {
 			@include make-container();
 			@include make-container-max-widths();
+			padding: 0;
 			
 			> .header-alert-content {
 				position: relative;
-				padding: $alert-padding-y 0;
+				padding: $alert-padding-y ($grid-gutter-width / 2);
 			}
 		}
 	}
