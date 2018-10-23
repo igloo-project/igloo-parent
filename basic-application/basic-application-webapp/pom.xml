@@ -62,6 +62,36 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
+		<!-- Tests -->
+		<dependency>
+			<groupId>org.iglooproject.archetype</groupId>
+			<artifactId>basic-application-core</artifactId>
+			<version>${project.version}</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+		
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.glassfish.jersey.test-framework.providers</groupId> -->
+<!-- 			<artifactId>jersey-test-framework-provider-jetty</artifactId> -->
+<!-- 			<version>${igloo.jersey2.version}</version> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
+		
+		<dependency>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-test</artifactId>
+			<scope>test</scope>
+			<type>pom</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa-test</artifactId>
+			<version>${igloo.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	
 	<build>
