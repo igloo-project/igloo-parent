@@ -74,5 +74,11 @@
 				}
 			}
 		}
+		
+		> li.sidenav-item {
+			> a.sidenav-link {
+				font-weight: bold;
+			}
+		}
 	}
 }
