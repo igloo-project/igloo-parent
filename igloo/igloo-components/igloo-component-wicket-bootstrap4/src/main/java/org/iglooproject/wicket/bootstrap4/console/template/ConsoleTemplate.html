@@ -17,57 +17,55 @@
 		
 		<div class="main-wrapper">
 			<header class="header-section">
-				<div class="sticky-top">
-					<wicket:container wicket:id="headerEnvironment" />
-					
-					<nav class="navbar">
-						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-							<span class="navbar-toggler-icon" />
-						</button>
-						
-						<span class="navbar-brand"><wicket:message key="common.console" /></span>
-						
-						<div class="collapse navbar-collapse" id="navbarSupportedContent">
-							<ul class="navbar-nav mr-auto">
-								<li class="nav-item">
-									<a wicket:id="applicationHomePageLink" class="nav-link">
-										<span class="fa fa-fw fa-home" />
-										<wicket:message key="common.application" />
-									</a>
-								</li>
-								<li wicket:id="mainNav" class="nav-item">
-									<a wicket:id="navLink" class="nav-link">
-										<span wicket:id="label" />
-									</a>
-									<div wicket:id="subNavContainer" class="dropdown-menu">
-										<wicket:container wicket:id="subNav">
-											<a wicket:id="navLink" class="dropdown-item">
-												<span wicket:id="label" />
-											</a>
-										</wicket:container>
-									</div>
-								</li>
-							</ul>
-							
-							<ul class="navbar-nav ml-auto">
-								<li class="nav-item">
-									<span class="navbar-text">
-										<span class="fa fa-fw fa-user-circle" />
-										<wicket:container wicket:id="userFullName" />
-									</span>
-								</li>
-								<li class="nav-item">
-									<a wicket:id="logoutLink" class="nav-link">
-										<span class="fa fa-fw fa-power-off" />
-										<span><wicket:message key="common.logout" /></span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</nav>
-				</div>
+				<wicket:container wicket:id="headerEnvironment" />
 				
 				<wicket:container wicket:id="headerAdditionalContent" />
+				
+				<nav class="navbar">
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+						<span class="navbar-toggler-icon" />
+					</button>
+					
+					<span class="navbar-brand"><wicket:message key="common.console" /></span>
+					
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav mr-auto">
+							<li class="nav-item">
+								<a wicket:id="applicationHomePageLink" class="nav-link">
+									<span class="fa fa-fw fa-home" />
+									<wicket:message key="common.application" />
+								</a>
+							</li>
+							<li wicket:id="mainNav" class="nav-item">
+								<a wicket:id="navLink" class="nav-link">
+									<span wicket:id="label" />
+								</a>
+								<div wicket:id="subNavContainer" class="dropdown-menu">
+									<wicket:container wicket:id="subNav">
+										<a wicket:id="navLink" class="dropdown-item">
+											<span wicket:id="label" />
+										</a>
+									</wicket:container>
+								</div>
+							</li>
+						</ul>
+						
+						<ul class="navbar-nav ml-auto">
+							<li class="nav-item">
+								<span class="navbar-text">
+									<span class="fa fa-fw fa-user-circle" />
+									<wicket:container wicket:id="userFullName" />
+								</span>
+							</li>
+							<li class="nav-item">
+								<a wicket:id="logoutLink" class="nav-link">
+									<span class="fa fa-fw fa-power-off" />
+									<span><wicket:message key="common.logout" /></span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</nav>
 			</header>
 			
 			<div class="body-section">

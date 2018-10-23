@@ -12,16 +12,17 @@
 	</head>
 	
 	<body class="console-access-page">
-		<div class="page-container">
-			<div wicket:id="feedback" data-placement="bottom"></div>
-			
+		<div wicket:id="feedback" data-placement="bottom"></div>
+		
+		<wicket:container wicket:id="headerAdditionalContent" />
+		
+		<div class="body-section">
 			<div class="container">
 				<div class="card card-main-title-cascade">
 					<div class="card-img-top">
-						<img src="static/common/images/logo.png" alt="Console" width="114" height="55" />
+						<img src="static/application/images/logo.png" alt="Basic Application" width="114" height="55" />
 					</div>
 					<div class="card-header card-main-title" wicket:id="title" />
-					<wicket:container wicket:id="headerAdditionalContent" />
 					<div wicket:id="content" />
 					<wicket:child/>
 					<div class="card-footer" wicket:id="footer" />

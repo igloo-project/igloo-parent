@@ -12,10 +12,9 @@ body {
 }
 
 .console-access-page {
-	padding-top: 60px;
-	padding-bottom: 60px;
-	
-	.page-container {
+	.body-section {
+		margin: 60px 0;
+		
 		.container {
 			max-width: map-get($grid-breakpoints, sm) - $grid-gutter-width;
 			margin-left: auto;
@@ -31,88 +30,10 @@ body {
 				
 				.card-header {
 					&.card-main-title {
-						@include bg($dark);
-						
+						@include bg($dark)
 						border-top: $card-border-width solid $card-border-color;
 						font-size: $h4-font-size;
 					}
-					
-					&.card-header-alert-section {
-						@include bg($light);
-						
-						padding: 0;
-						
-						&.header-alert-section-dismissed {
-							height: 10px;
-						}
-						
-						> .header-alert-main {
-							height: 100%;
-							
-							> .header-alert-container {
-								> .header-alert-content {
-									position: relative;
-									padding: $card-spacer-y $card-spacer-x;
-								}
-							}
-						}
-						
-						&.header-alert-dismissible {
-							cursor: pointer;
-							
-							> .header-alert-main {
-								> .header-alert-container {
-									> .header-alert-content {
-										padding-right: ($close-font-size + $card-spacer-x * 2);
-										
-										.close {
-											position: absolute;
-											top: 0;
-											right: 0;
-											padding: $card-spacer-y $card-spacer-x;
-											color: inherit;
-										}
-									}
-								}
-							}
-							
-							&:hover {
-								.close {
-									color: $close-color;
-									text-decoration: none;
-									opacity: .75;
-								}
-							}
-						}
-						
-						&.environment-section {
-							@include bg($secondary);
-							
-							&.environment-section-dismissed {
-								height: 8px;
-							}
-							
-							&.development {
-								@include bg($success);
-							}
-							
-							&.testing {
-								@include bg($info);
-							}
-							
-							&.staging {
-								@include bg($warning);
-							}
-							
-							&.production {
-								@include bg($danger);
-							}
-						}
-					}
-				}
-				
-				.card-footer {
-					text-align: right;
 				}
 				
 				&.card-main-title-cascade {
@@ -131,9 +52,9 @@ body {
 	}
 	
 	@include media-breakpoint-down(xs) {
-		padding: 0;
-		
-		.page-container {
+		.body-section {
+			margin: 0;
+			
 			.container {
 				max-width: 100%;
 				margin: 0;

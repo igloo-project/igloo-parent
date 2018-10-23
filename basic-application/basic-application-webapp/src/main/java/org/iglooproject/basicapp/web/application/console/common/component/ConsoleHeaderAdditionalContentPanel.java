@@ -8,7 +8,6 @@ public class ConsoleHeaderAdditionalContentPanel extends Panel {
 
 	public ConsoleHeaderAdditionalContentPanel(String id) {
 		super(id);
-		
-		setVisible(false);
 	}
+
 }
