@@ -16,14 +16,10 @@ body {
 	height: 100%;
 	
 	> .header-section {
-		z-index: 2;
 		flex: 0 0 auto;
-		
-		box-shadow: $shadow-xs;
 	}
 	
 	> .body-section {
-		z-index: 1;
 		flex: 1 0 auto;
 		
 		> .content-container {
@@ -75,7 +71,6 @@ body {
 	}
 	
 	> .footer-section {
-		z-index: 2;
 		flex: 0 0 auto;
 		
 		background-color: #21212E;
