@@ -19,9 +19,9 @@ public class BootstrapPopoverBehavior extends Behavior {
 	@SpringBean
 	private List<IBootstrapPopoverModule> modules;
 
-	private BootstrapPopoverOptions options;
+	private IBootstrapPopoverOptions options;
 
-	public BootstrapPopoverBehavior(BootstrapPopoverOptions options) {
+	public BootstrapPopoverBehavior(IBootstrapPopoverOptions options) {
 		super();
 		this.options = options;
 	}

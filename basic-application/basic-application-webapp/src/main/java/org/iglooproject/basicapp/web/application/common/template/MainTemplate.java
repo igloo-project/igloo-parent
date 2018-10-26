@@ -34,13 +34,13 @@ import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
@@ -172,11 +172,10 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	}
 	
 	protected BootstrapTooltip getBootstrapTooltip() {
-		BootstrapTooltip bootstrapTooltip = new BootstrapTooltip();
-		bootstrapTooltip.setSelector("[title],[data-original-title]");
-		bootstrapTooltip.setAnimation(true);
-		bootstrapTooltip.setContainer("body");
-		return bootstrapTooltip;
+		return new BootstrapTooltip()
+			.selector("[title],[data-original-title]")
+			.animation(true)
+			.container("body");
 	}
 
 	protected BasicApplicationApplicationTheme getApplicationTheme() {

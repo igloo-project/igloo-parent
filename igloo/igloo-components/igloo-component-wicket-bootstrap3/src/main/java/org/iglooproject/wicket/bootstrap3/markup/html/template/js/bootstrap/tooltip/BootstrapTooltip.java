@@ -1,5 +1,8 @@
-package org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip;
+package org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstrap.tooltip;
 
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.IBootstrapTooltip;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 import org.wicketstuff.wiquery.core.options.Options;
@@ -58,6 +61,10 @@ public class BootstrapTooltip implements IBootstrapTooltip {
 	}
 
 	@Override
+	public IModel<String> getSelectorModel() {
+		return Model.of(selector);
+	}
+
 	public String getSelector() {
 		return selector;
 	}
@@ -126,11 +133,6 @@ public class BootstrapTooltip implements IBootstrapTooltip {
 	}
 
 	@Override
-	public String chainLabel() {
-		return "tooltip";
-	}
-
-	@Override
 	public CharSequence[] statementArgs() {
 		Options options = new Options();
 		
@@ -184,35 +186,37 @@ public class BootstrapTooltip implements IBootstrapTooltip {
 		return new CharSequence[] { options.getJavaScriptOptions() };
 	}
 
-	public enum Placement {
+	public enum Placement implements IBootstrapTooltip.IPlacement {
 		TOP("top"),
 		BOTTOM("bottom"),
 		LEFT("left"),
 		RIGHT("right");
 		
-		private String value;
+		private final String value;
 		
 		private Placement(String value) {
 			this.value = value;
 		}
 		
+		@Override
 		public String getValue() {
 			return value;
 		}
 	}
 
-	public enum Trigger {
+	public enum Trigger implements IBootstrapTooltip.ITrigger {
 		CLICK("click"),
 		HOVER("hover"),
 		FOCUS("focus"),
 		MANUAL("manual");
 		
-		private String value;
+		private final String value;
 		
 		private Trigger(String value) {
 			this.value = value;
 		}
 		
+		@Override
 		public String getValue() {
 			return value;
 		}

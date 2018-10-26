@@ -1,11 +1,29 @@
 package org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip;
 
-import java.io.Serializable;
+import org.apache.wicket.model.IModel;
+import org.iglooproject.wicket.more.markup.html.template.js.IDetachableChainableStatement;
+import org.iglooproject.wicket.more.markup.html.template.js.IStatementValueOption;
 
-import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
+public interface IBootstrapTooltip extends IDetachableChainableStatement {
 
-public interface IBootstrapTooltip extends ChainableStatement, Serializable {
+	static final String CHAIN_LABEL = "tooltip";
 
-	CharSequence getSelector();
+	IModel<? extends CharSequence> getSelectorModel();
+
+	@Override
+	default String chainLabel() {
+		return CHAIN_LABEL;
+	}
+
+	@Override
+	default void detach() {
+		// nothing to do
+	}
+
+	interface IPlacement extends IStatementValueOption {
+	}
+
+	interface ITrigger extends IStatementValueOption {
+	}
 
 }

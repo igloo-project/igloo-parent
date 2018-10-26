@@ -2,13 +2,13 @@ package org.iglooproject.wicket.more.markup.html.template.js.bootstrap.scrollspy
 
 import org.wicketstuff.wiquery.core.events.EventLabel;
 
-public enum BootstrapScrollSpyEvent implements EventLabel {
+public enum BootstrapScrollspyEvent implements EventLabel {
 
 	ACTIVATE("activate.bs.scrollspy");
 
 	private final String eventLabel;
 
-	private BootstrapScrollSpyEvent(String eventLabel) {
+	private BootstrapScrollspyEvent(String eventLabel) {
 		this.eventLabel = eventLabel;
 	}
 
