@@ -15,23 +15,24 @@ body {
 	background-color: #F5F5F5;
 }
 
+.header-container {
+	
+}
+
 .main-container {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
 	
-	.sidebar-wrapper {
+	> .sidebar-wrapper {
 		display: none;
 	}
 	
-	.main-content-wrapper {
-		.main-content-container {
+	> .main-content-wrapper {
+		> .main-content-container {
 			flex: 1;
 			
 			.content-container {
-				@include make-container();
-				padding: 0;
-				
 				> .content-header-section {
 					border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 					background-color: $white;
@@ -96,7 +97,6 @@ body {
 				}
 				
 				.header-container {
-					z-index: 3;
 					overflow: hidden;
 				}
 				
@@ -115,8 +115,6 @@ body {
 						background-color: $sidebar-bg;
 						color: $sidebar-color;
 						border-right: $sidebar-border-width solid $sidebar-border-color;
-						box-shadow: $sidebar-expand-box-shadow;
-						z-index: 2;
 						
 						.sidebar-body-wrapper { // needed for firefox css hack (clean)
 							display: flex;

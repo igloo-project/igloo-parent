@@ -59,7 +59,7 @@ public class ApachePoiImportColumnBuilder extends AbstractTableImportColumnBuild
 		
 		@Override
 		public DoubleState<Sheet, Row, Cell, CellReference> asDouble() {
-			return new TypeStateSwitcher<Cell>(Functions2.<Cell>identity()).toDouble((cell) -> {
+			return new TypeStateSwitcher<Cell>(Functions2.<Cell>identity()).toDouble(cell -> {
 				if (cell == null) {
 					return null;
 				}
@@ -80,7 +80,7 @@ public class ApachePoiImportColumnBuilder extends AbstractTableImportColumnBuild
 
 		@Override
 		public StringState<Sheet, Row, Cell, CellReference> asString(final Supplier2<? extends NumberFormat> formatIfNumeric) {
-			return new TypeStateSwitcher<Cell>(Functions2.<Cell>identity()).toString((cell) -> {
+			return new TypeStateSwitcher<Cell>(Functions2.<Cell>identity()).toString(cell -> {
 				if (cell == null) {
 					return null;
 				}
@@ -98,7 +98,7 @@ public class ApachePoiImportColumnBuilder extends AbstractTableImportColumnBuild
 
 		@Override
 		public DateState<Sheet, Row, Cell, CellReference> asDate() {
-			return new TypeStateSwitcher<Cell>(Functions2.<Cell>identity()).toDate((cell) -> {
+			return new TypeStateSwitcher<Cell>(Functions2.<Cell>identity()).toDate(cell -> {
 				if (cell == null) {
 					return null;
 				}

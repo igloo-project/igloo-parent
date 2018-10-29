@@ -67,7 +67,7 @@ public class ApachePoiImportNavigator implements ITableImportNavigator<Sheet, Ro
 	@Override
 	public Iterator<Row> nonEmptyRows(Sheet sheet) {
 		return Streams.stream(sheet.iterator())
-				.filter((row) -> rowHasContent(row))
+				.filter(row -> rowHasContent(row))
 				.iterator();
 	}
 

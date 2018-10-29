@@ -11,6 +11,7 @@ import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.util.lang.Classes;
 import org.iglooproject.wicket.more.jqplot.data.provider.AbstractJQPlotDataProvider;
 import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
+import org.iglooproject.wicket.more.util.model.Detachables;
 
 import nl.topicus.wqplot.data.AbstractSeries;
 import nl.topicus.wqplot.data.SeriesEntry;
@@ -92,7 +93,7 @@ public abstract class AbstractJQPlotDataAdapter<S, K, V, TK> extends AbstractJQP
 	
 	@Override
 	public void detach() {
-		dataProvider.detach();
+		Detachables.detach(dataProvider);
 	}
 	
 	@Override

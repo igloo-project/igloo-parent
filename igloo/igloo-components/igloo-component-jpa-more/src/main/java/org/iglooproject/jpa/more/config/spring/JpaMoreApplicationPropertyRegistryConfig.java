@@ -23,7 +23,7 @@ public class JpaMoreApplicationPropertyRegistryConfig extends AbstractApplicatio
 		
 		registry.register( // NOSONAR findbugs:DMI_HARDCODED_ABSOLUTE_FILENAME
 				IMAGE_MAGICK_CONVERT_BINARY_PATH,
-				(input) -> {
+				input -> {
 					if (!StringUtils.hasText(input)) {
 						return null;
 					}

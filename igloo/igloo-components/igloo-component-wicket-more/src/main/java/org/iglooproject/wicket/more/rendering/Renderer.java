@@ -195,7 +195,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 			checkNotNull(renderers);
 			return joinerFunction.apply(locale).join(
 					Streams.stream(renderers)
-							.map((input) -> input.render(value, locale))
+							.map(input -> input.render(value, locale))
 							.iterator()
 			);
 		}
@@ -447,7 +447,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	protected static <T> Renderer<T> fromFormat(Format format) {
 		checkNotNull(format);
 		final Format copiedFormat = (Format) format.clone(); // Ignore changes on 'format'
-		return new FormatRenderer<T>((locale) -> (Format) copiedFormat.clone());
+		return new FormatRenderer<T>(locale -> (Format) copiedFormat.clone());
 	}
 	
 	protected static <T> Renderer<T> fromFormat(SerializableFunction2<? super Locale, ? extends Format> formatFunction) {
@@ -565,7 +565,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 			return joiner.join(
 					value.entrySet()
 							.stream()
-							.map((input) -> joinerKeyValue.join(
+							.map(input -> joinerKeyValue.join(
 									keyRenderer.render(input.getKey(), locale),
 									valueRenderer.render(input.getValue(), locale)
 							))
@@ -627,7 +627,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	
 	public static <T extends Date> Renderer<T> fromDatePattern(final IDatePattern datePattern) {
 		Renderer<T> renderer = fromFormat(
-				(locale) -> new SimpleDateFormat(Localizer.get().getString(datePattern.getJavaPatternKey(), null, null, locale, null, (IModel<String>) null), locale)
+				locale -> new SimpleDateFormat(Localizer.get().getString(datePattern.getJavaPatternKey(), null, null, locale, null, (IModel<String>) null), locale)
 		);
 		if (datePattern.capitalize()) {
 			renderer = renderer.compose(Functions2.capitalize());

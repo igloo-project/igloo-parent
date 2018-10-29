@@ -19,6 +19,7 @@ import org.iglooproject.wicket.more.markup.html.action.IOneParameterAction;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.factory.ConditionFactories;
+import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.factory.ActionColumnActionFactory;
@@ -236,13 +237,19 @@ public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParame
 		}
 		
 		@Override
+		public NextState when(final IDetachableFactory<? super IModel<? extends T>, ? extends Condition> conditionFactory) {
+			getElementBuilder().addConditionFactory(conditionFactory);
+			return getNextState();
+		}
+		
+		@Override
 		public NextState when(final Condition condition) {
 			getElementBuilder().addConditionFactory(ConditionFactories.constant(condition));
 			return getNextState();
 		}
 		
 		@Override
-		public NextState when(final SerializablePredicate2<? super T> predicate) {
+		public NextState whenPredicate(final SerializablePredicate2<? super T> predicate) {
 			getElementBuilder().addConditionFactory(ConditionFactories.predicate(predicate));
 			return getNextState();
 		}

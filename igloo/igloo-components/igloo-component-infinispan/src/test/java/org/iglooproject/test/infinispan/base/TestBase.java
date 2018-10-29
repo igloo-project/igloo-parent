@@ -58,7 +58,7 @@ public abstract class TestBase {
 	}
 
 	protected final Process runInfinispan(String nodeName, String... customArguments) throws IOException {
-		Function2<URL, String> urlToFile = (input) -> input.getFile();
+		Function2<URL, String> urlToFile = input -> input.getFile();
 		String classpath = Joiner.on(File.pathSeparator)
 				.join(
 						Lists.newArrayList(((URLClassLoader) Thread.currentThread().getContextClassLoader()).getURLs())

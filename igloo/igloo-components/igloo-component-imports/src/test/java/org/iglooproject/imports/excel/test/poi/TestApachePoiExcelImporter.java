@@ -35,7 +35,7 @@ public class TestApachePoiExcelImporter {
 
 	private static class Columns extends ApachePoiImportColumnSet {
 		final Column<Date> dateColumn = withIndex(0).asDate().build();
-		final Column<Boolean> booleanColumn = withIndex(1).asString().toBoolean((input) -> "true".equals(input) ? true : false).build();
+		final Column<Boolean> booleanColumn = withIndex(1).asString().toBoolean(input -> "true".equals(input) ? true : false).build();
 		final Column<String> stringColumn = withHeader("StringColumn", 2, MappingConstraint.REQUIRED).asString().clean().build();
 		final Column<Integer> integerColumn = withHeader("IntegerColumn").asInteger().build();
 		final Column<Integer> missingColumn = withHeader("MissingColumn", MappingConstraint.OPTIONAL).asInteger().build();

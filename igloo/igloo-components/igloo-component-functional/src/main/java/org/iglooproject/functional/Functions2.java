@@ -61,19 +61,19 @@ public final class Functions2 {
 	}
 
 	public static <K, V> SerializableFunction2<K, V> forMap(Map<? super K, ? extends V> map, Function<? super K, ? extends V> defaultValueFunction) {
-		return (k) -> Optional.ofNullable((V) map.get(k)).orElse(defaultValueFunction.apply(k));
+		return k -> Optional.ofNullable((V) map.get(k)).orElse(defaultValueFunction.apply(k));
 	}
 
 	public static <A, B, C> SerializableFunction2<A, C> compose(Function<B, C> g, Function<A, ? extends B> f) {
 		Objects.requireNonNull(g);
 		Objects.requireNonNull(f);
-		return (a) -> g.apply(f.apply(a));
+		return a -> g.apply(f.apply(a));
 	}
 
 	public static <A, B, C> SerializableFunction2<A, C> andThen(Function<A, ? extends B> f, Function<B, C> g) {
 		Objects.requireNonNull(g);
 		Objects.requireNonNull(f);
-		return (a) -> g.apply(f.apply(a));
+		return a -> g.apply(f.apply(a));
 	}
 
 	public static <T> SerializableFunction2<T, Boolean> forPredicate(Predicate<T> predicate) {
@@ -82,24 +82,24 @@ public final class Functions2 {
 	}
 
 	public static <E> SerializableFunction2<Object, E> constant(E value) {
-		return (o) -> value;
+		return o -> value;
 	}
 
 	public static <T> SerializableFunction2<Object, T> forSupplier(Supplier<T> supplier) {
 		Objects.requireNonNull(supplier);
-		return (t) -> supplier.get();
+		return t -> supplier.get();
 	}
 
 	public static <A, B> SerializableFunction2<Iterable<? extends A>, Iterable<B>> transformedIterable(Function<? super A, B> function) {
-		return (i) -> (() -> Streams.stream(i).map(function).iterator());
+		return i -> (() -> Streams.stream(i).map(function).iterator());
 	}
 
 	public static <A, B> SerializableFunction2<Collection<? extends A>, Collection<B>> transformedCollection(Function<? super A, B> function) {
-		return (c) -> c.stream().map(function).collect(Collectors.toCollection(ArrayList::new));
+		return c -> c.stream().map(function).collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	public static <A, B> SerializableFunction2<List<? extends A>, List<B>> transformedList(Function<? super A, B> function) {
-		return (l) -> l.stream().map(function).collect(Collectors.toList());
+		return l -> l.stream().map(function).collect(Collectors.toList());
 	}
 
 	public static <T> SerializableFunction2<Collection<? extends T>, Collection<T>> unmodifiableCollection() {
@@ -127,13 +127,13 @@ public final class Functions2 {
 	}
 
 	public static <T> SerializableFunction2<Iterable<T>, T> first() {
-		return (t) -> Iterables.getFirst(t, null);
+		return t -> Iterables.getFirst(t, null);
 	}
 
 	public static <T> SerializableFunction2<T, T> defaultValue(Predicate<? super T> validValuePredicate, Function<? super T, ? extends T> defaultValueFunction) {
 		Objects.requireNonNull(validValuePredicate);
 		Objects.requireNonNull(defaultValueFunction);
-		return (t) -> validValuePredicate.test(t) ? t : defaultValueFunction.apply(t);
+		return t -> validValuePredicate.test(t) ? t : defaultValueFunction.apply(t);
 	}
 
 	public static <T> SerializableFunction2<T, T> defaultValue(T valueIfInvalid) {
@@ -149,7 +149,7 @@ public final class Functions2 {
 	}
 
 	public static <K, V> SerializableFunction2<Entry<? extends K, ? extends V>, Pair<K, V>> entryToPair() {
-		return (e) -> e != null ? Pair.with(e.getKey(), e.getValue()) : null;
+		return e -> e != null ? Pair.with(e.getKey(), e.getValue()) : null;
 	}
 
 	public static <T> SerializableFunction2<IValue0<? extends T>, T> tupleValue0() {

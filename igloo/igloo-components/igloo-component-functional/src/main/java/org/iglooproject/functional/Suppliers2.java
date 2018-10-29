@@ -79,7 +79,7 @@ public final class Suppliers2 {
 	}
 
 	public static <T> SerializableFunction2<Supplier<T>, T> supplierFunction() {
-		return (s) -> s.get();
+		return s -> s.get();
 	}
 
 	public static <T> SerializableSupplier2<LinkedList<T>> linkedList() {

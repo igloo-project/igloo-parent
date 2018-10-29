@@ -42,39 +42,39 @@ public abstract class GenericStringFunctionBuildStateImpl
 	
 	@Override
 	public TBuildResult withDefault(final String defaultValue) {
-		return toString((input) -> StringUtils.defaultIfEmpty(input, defaultValue)).build();
+		return toString(input -> StringUtils.defaultIfEmpty(input, defaultValue)).build();
 	}
 	
 	@Override
 	public TStringState strip() {
-		return toString((input) -> stripToNull(input));
+		return toString(input -> stripToNull(input));
 	}
 	
 	@Override
 	public TStringState trim() {
-		return toString((input) -> StringUtils.trimToNull(input));
+		return toString(input -> StringUtils.trimToNull(input));
 	}
 	
 	@Override
 	public TStringState clean() {
-		return toString((input) -> stripToNull(StringUtils.trimToNull(input)));
+		return toString(input -> stripToNull(StringUtils.trimToNull(input)));
 	}
 	
 	@Override
 	public TStringState capitalize(char... delimiters) {
 		final char[] actualDelimiters = (delimiters == null || delimiters.length == 0) ? DEFAULT_WORD_DELIMITERS : delimiters; 
-		return toString((input) -> WordUtils.capitalize(input, actualDelimiters));
+		return toString(input -> WordUtils.capitalize(input, actualDelimiters));
 	}
 	
 	@Override
 	public TStringState capitalizeFully(char... delimiters) {
 		final char[] actualDelimiters = (delimiters == null || delimiters.length == 0) ? DEFAULT_WORD_DELIMITERS : delimiters;
-		return toString((input) -> WordUtils.capitalizeFully(input, actualDelimiters));
+		return toString(input -> WordUtils.capitalizeFully(input, actualDelimiters));
 	}
 	
 	@Override
 	public TStringState replaceAll(final Pattern pattern, final String replacement) {
-		return toString((input) ->  {
+		return toString(input ->  {
 			if (input == null) {
 				return null;
 			} else {
@@ -86,7 +86,7 @@ public abstract class GenericStringFunctionBuildStateImpl
 	
 	@Override
 	public TStringState replaceAll(final CharMatcher charMatcher, final CharSequence replacement) {
-		return toString((input) ->  {
+		return toString(input ->  {
 			if (input == null) {
 				return null;
 			} else {
@@ -102,7 +102,7 @@ public abstract class GenericStringFunctionBuildStateImpl
 	
 	@Override
 	public TStringState removeAll(final CharMatcher charMatcher) {
-		return toString((input) ->  {
+		return toString(input ->  {
 			if (input == null) {
 				return null;
 			} else {
@@ -118,7 +118,7 @@ public abstract class GenericStringFunctionBuildStateImpl
 	
 	@Override
 	public TStringState extract(final Pattern pattern, final int group) {
-		return toString((input) ->  {
+		return toString(input ->  {
 			if (input == null) {
 				return null;
 			} else {
@@ -134,7 +134,7 @@ public abstract class GenericStringFunctionBuildStateImpl
 	
 	@Override
 	public TStringState stripLineBreaks() {
-		return toString((input) ->  {
+		return toString(input ->  {
 			if (input == null) {
 				return null;
 			}

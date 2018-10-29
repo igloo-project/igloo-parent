@@ -20,7 +20,7 @@ public class CsvTable implements Serializable, Iterable<CsvRow> {
 		Objects.requireNonNull(rows);
 		
 		this.rows = rows.stream()
-				.map((input) -> Arrays.asList(input))
+				.map(input -> Arrays.asList(input))
 				.collect(Collectors.toList());
 	}
 	

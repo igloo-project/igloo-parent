@@ -11,15 +11,15 @@ import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 
 public class BasicApplicationSession extends AbstractCoreSession<User> {
-	
+
 	private static final long serialVersionUID = 1870827020904365541L;
-	
+
 	private final IModel<Environment> environmentModel = ApplicationPropertyModel.of(ENVIRONMENT);
-	
+
 	public BasicApplicationSession(Request request) {
 		super(request);
 	}
-	
+
 	public static BasicApplicationSession get() {
 		return (BasicApplicationSession) Session.get();
 	}

@@ -117,7 +117,7 @@ public class ReadOnlyMapModel<K, V, M extends Map<K, V>>
 				return ImmutableSet.<IModel<V>>of();
 			} else {
 				return Streams.stream(keyModelIterable())
-						.map((input) -> valueModel(input))
+						.map(input -> valueModel(input))
 						::iterator;
 			}
 		}

@@ -16,7 +16,7 @@ import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 public class ReferenceDataPage extends ReferenceDataTemplate {
 
 	private static final long serialVersionUID = -4381694964311714573L;
-	
+
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()
 				.page(ReferenceDataPage.class);
@@ -30,6 +30,7 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 		add(new NavTabsPanel("tabs")
 				.add(
 						new NavTabsPanel.SimpleTabFactory("business.city") {
+							private static final long serialVersionUID = 1L;
 							@Override
 							public Component createContent(String wicketId) {
 								// Here, you can also use the SimpleGenericListItemListPanel<City>(wicketId, CITY_SUPPLIER, ICitySearchQuery.class);
@@ -39,6 +40,7 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 				)
 				.add(
 						new NavTabsPanel.SimpleTabFactory(Model.of("Reference data #2")) {
+							private static final long serialVersionUID = 1L;
 							@Override
 							public Component createContent(String wicketId) {
 								return new FeatureNotYetAvailablePanel(wicketId);
@@ -47,6 +49,7 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 				)
 				.add(
 						new NavTabsPanel.SimpleTabFactory(Model.of("Reference data #3")) {
+							private static final long serialVersionUID = 1L;
 							@Override
 							public Component createContent(String wicketId) {
 								return new FeatureNotYetAvailablePanel(wicketId);
@@ -55,6 +58,7 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 				)
 				.add(
 						new NavTabsPanel.SimpleTabFactory(Model.of("Reference data #4")) {
+							private static final long serialVersionUID = 1L;
 							@Override
 							public Component createContent(String wicketId) {
 								return new FeatureNotYetAvailablePanel(wicketId);
@@ -63,6 +67,7 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 				)
 				.add(
 						new NavTabsPanel.SimpleTabFactory(Model.of("Reference data #5")) {
+							private static final long serialVersionUID = 1L;
 							@Override
 							public Component createContent(String wicketId) {
 								return new FeatureNotYetAvailablePanel(wicketId);
@@ -76,4 +81,5 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 	protected Class<? extends WebPage> getSecondMenuPage() {
 		return null;
 	}
+
 }

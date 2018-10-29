@@ -77,7 +77,7 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl imple
 		
 		Throwable result = null;
 		try {
-			transactionTemplate.execute((TransactionStatus transactionStatus) -> performUpgrade(upgrade, transactionStatus));
+			transactionTemplate.execute(transactionStatus -> performUpgrade(upgrade, transactionStatus));
 		} catch (Exception e) {
 			result = e;
 		}

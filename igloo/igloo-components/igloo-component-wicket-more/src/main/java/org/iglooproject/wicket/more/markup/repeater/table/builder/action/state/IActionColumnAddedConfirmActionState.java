@@ -1,7 +1,9 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action.state;
 
+import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.springframework.security.acls.model.Permission;
 
 public interface IActionColumnAddedConfirmActionState<T, I> extends IActionColumnAddedElementState<T, I> {
@@ -55,10 +57,13 @@ public interface IActionColumnAddedConfirmActionState<T, I> extends IActionColum
 	IActionColumnAddedConfirmActionState<T, I> hidePlaceholder(Condition hidePlaceholderCondition);
 
 	@Override
+	IActionColumnAddedConfirmActionState<T, I> when(IDetachableFactory<? super IModel<? extends T>, ? extends Condition> conditionFactory);
+
+	@Override
 	IActionColumnAddedConfirmActionState<T, I> when(Condition condition);
 
 	@Override
-	IActionColumnAddedConfirmActionState<T, I> when(SerializablePredicate2<? super T> predicate);
+	IActionColumnAddedConfirmActionState<T, I> whenPredicate(SerializablePredicate2<? super T> predicate);
 
 	@Override
 	IActionColumnAddedConfirmActionState<T, I> whenPermission(String permission);

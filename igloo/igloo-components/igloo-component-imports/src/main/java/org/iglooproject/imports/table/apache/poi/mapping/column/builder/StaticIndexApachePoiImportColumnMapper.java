@@ -21,6 +21,6 @@ import org.iglooproject.imports.table.common.mapping.column.builder.ITableImport
 	
 	@Override
 	public Function2<? super Row, CellReference> tryMap(Sheet sheet, ITableImportNavigator<Sheet, Row, Cell, CellReference> navigator, ITableImportEventHandler eventHandler) {
-		return (row) -> row == null ? null : new CellReference(row.getRowNum(), columnIndex);
+		return row -> row == null ? null : new CellReference(row.getRowNum(), columnIndex);
 	}
 }

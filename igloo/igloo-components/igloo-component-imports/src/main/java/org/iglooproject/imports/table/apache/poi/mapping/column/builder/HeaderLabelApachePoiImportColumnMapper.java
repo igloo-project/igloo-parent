@@ -53,7 +53,7 @@ import org.iglooproject.imports.table.common.mapping.column.builder.MappingConst
 				String cellValue = StringUtils.trimToNull(cell.getStringCellValue());
 				if (predicate.test(cellValue)) {
 					if (matchedColumnsCount == indexAmongMatchedColumns) {
-						return (row) -> row == null ? null : new CellReference(row.getRowNum(), cell.getColumnIndex());
+						return row -> row == null ? null : new CellReference(row.getRowNum(), cell.getColumnIndex());
 					} else {
 						++matchedColumnsCount;
 					}

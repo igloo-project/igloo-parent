@@ -9,7 +9,7 @@ import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Indexed;
-
+import org.iglooproject.basicapp.core.business.user.model.embeddable.UserAnnouncementInformation;
 import org.iglooproject.basicapp.core.business.user.model.embeddable.UserPasswordInformation;
 import org.iglooproject.basicapp.core.business.user.model.embeddable.UserPasswordRecoveryRequest;
 import org.iglooproject.jpa.security.business.person.model.GenericSimpleUser;
@@ -33,6 +33,9 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 	@Embedded
 	private UserPasswordRecoveryRequest passwordRecoveryRequest;
 
+	@Embedded
+	private UserAnnouncementInformation announcementInformation = new UserAnnouncementInformation();
+
 	public User() {
 		super();
 	}
@@ -49,6 +52,17 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 			passwordRecoveryRequest = new UserPasswordRecoveryRequest();
 		}
 		return passwordRecoveryRequest;
+	}
+
+	public UserAnnouncementInformation getAnnouncementInformation() {
+		if (announcementInformation == null) {
+			announcementInformation = new UserAnnouncementInformation();
+		}
+		return announcementInformation;
+	}
+
+	public void setAnnouncementInformation(UserAnnouncementInformation announcementInformation) {
+		this.announcementInformation = announcementInformation;
 	}
 
 	@Transient

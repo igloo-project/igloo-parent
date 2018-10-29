@@ -9,11 +9,10 @@ import java.util.List;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
+
+import com.google.common.collect.ImmutableList;
 
 public final class SequenceProviders {
 
@@ -105,7 +104,7 @@ public final class SequenceProviders {
 		
 		@Override
 		public void detach() {
-			dataProvider.detach();
+			Detachables.detach(dataProvider);
 		}
 
 		@Override

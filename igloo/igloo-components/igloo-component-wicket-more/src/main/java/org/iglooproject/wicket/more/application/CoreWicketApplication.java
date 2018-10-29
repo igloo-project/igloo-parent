@@ -144,6 +144,10 @@ public abstract class CoreWicketApplication extends WebApplication {
 			}
 		}
 		
+		updateJavaScriptLibrarySettings();
+		
+		updateSelect2ApplicationSettings();
+		
 		addResourceReplacements();
 		
 		mountCommonResources();
@@ -157,33 +161,41 @@ public abstract class CoreWicketApplication extends WebApplication {
 		updateResourceSettings();
 	}
 	
+	protected void updateJavaScriptLibrarySettings() {
+		modules.stream()
+			.forEach(module -> module.updateJavaScriptLibrarySettings(getJavaScriptLibrarySettings()));
+	}
+	
+	protected void updateSelect2ApplicationSettings() {
+		modules.stream()
+			.forEach(module -> module.updateSelect2ApplicationSettings(org.wicketstuff.select2.ApplicationSettings.get()));
+	}
+	
 	protected void addResourceReplacements() {
-		for (IWicketModule module : modules) {
-			module.addResourceReplacements(this);
-		}
+		modules.stream()
+			.forEach(module -> module.addResourceReplacements(this));
 	}
 	
 	protected void mountCommonResources() {
-		for (IWicketModule module : modules) {
-			for (StaticResourceMapper mapper : module.listStaticResources()) {
-				mount(mapper);
-			}
-		}
+		modules.stream()
+			.forEach(module -> {
+				for (StaticResourceMapper mapper : module.listStaticResources()) {
+					mount(mapper);
+				}
+			});
 	}
 	
 	protected void mountCommonPages() {
 	}
 	
 	protected void registerImportScopes() {
-		for (IWicketModule module : modules) {
-			module.registerImportScopes();
-		}
+		modules.stream()
+			.forEach(module -> module.registerImportScopes());
 	}
 	
 	protected void updateResourceSettings() {
-		for (IWicketModule module : modules) {
-			module.updateResourceSettings(getResourceSettings());
-		}
+		modules.stream()
+			.forEach(module -> module.updateResourceSettings(getResourceSettings()));
 	}
 	
 	protected abstract void mountApplicationPages();

@@ -16,17 +16,17 @@ public interface Predicate2<T> extends Predicate<T>, com.google.common.base.Pred
 
 	default Predicate2<T> and(Predicate2<? super T> other) {
 		Objects.requireNonNull(other);
-		return (t) -> test(t) && other.test(t);
+		return t -> test(t) && other.test(t);
 	}
 
 	@Override
 	default Predicate2<T> negate() {
-		return (t) -> !test(t);
+		return t -> !test(t);
 	}
 
 	default Predicate2<T> or(Predicate2<? super T> other) {
 		Objects.requireNonNull(other);
-		return (t) -> test(t) || other.test(t);
+		return t -> test(t) || other.test(t);
 	}
 
 	static <T> Predicate2<T> isEqual(Object targetRef) {

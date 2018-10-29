@@ -27,6 +27,7 @@ import org.iglooproject.wicket.more.markup.html.factory.AbstractComponentFactory
 import org.iglooproject.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.ComponentFactories;
 import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;
+import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
@@ -89,7 +90,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 	private final List<CustomizableToolbarBuilder<T, S>> bottomToolbarBuilders = Lists.newArrayList();
 
-	private final List<SerializableFunction2<T, String>> rowCssClassProviders = Lists.newArrayList();
+	private final List<IDetachableFactory<? super IModel<? extends T>, ? extends String>> rowCssClassFactories = Lists.newArrayList();
 
 	private boolean showTopToolbar = true;
 	
@@ -99,9 +100,10 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		private static final long serialVersionUID = 1L;
 		@Override
 		public CoreDataTable<T, S> create(String id, Map<IColumn<T, S>, Condition> columns,
-				ISequenceProvider<T> sequenceProvider, List<SerializableFunction2<T, String>> rowCssClassProviders,
+				ISequenceProvider<T> sequenceProvider,
+				List<IDetachableFactory<? super IModel<? extends T>, ? extends String>> rowCssClassFactories,
 				long rowsPerPage) {
-			return new CoreDataTable<T, S>(id, columns, sequenceProvider, rowCssClassProviders, rowsPerPage);
+			return new CoreDataTable<T, S>(id, columns, sequenceProvider, rowCssClassFactories, rowsPerPage);
 		}
 	};
 
@@ -368,8 +370,8 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
-	public DataTableBuilder<T, S> addRowCssClass(SerializableFunction2<T, String> cssClassProvider) {
-		rowCssClassProviders.add(cssClassProvider);
+	public DataTableBuilder<T, S> addRowCssClass(IDetachableFactory<? super IModel<? extends T>, ? extends String> rowCssClassFactory) {
+		rowCssClassFactories.add(rowCssClassFactory);
 		return this;
 	}
 	
@@ -405,7 +407,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 	@Override
 	public CoreDataTable<T, S> build(String id, long rowsPerPage) {
-		CoreDataTable<T, S> dataTable = factory.create(id, columns, sequenceProvider, rowCssClassProviders, rowsPerPage);
+		CoreDataTable<T, S> dataTable = factory.create(id, columns, sequenceProvider, rowCssClassFactories, rowsPerPage);
 		finalizeBuild(dataTable);
 		return dataTable;
 	}
@@ -549,8 +551,8 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 
 		@Override
-		public IBuildState<T, S> addRowCssClass(SerializableFunction2<T, String> cssClassProvider) {
-			return DataTableBuilder.this.addRowCssClass(cssClassProvider);
+		public IBuildState<T, S> addRowCssClass(IDetachableFactory<? super IModel<? extends T>, ? extends String> rowCssClassFactory) {
+			return DataTableBuilder.this.addRowCssClass(rowCssClassFactory);
 		}
 		
 		@Override
@@ -1102,7 +1104,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 					factory,
 					columns,
 					sequenceProvider,
-					rowCssClassProviders,
+					rowCssClassFactories,
 					rowsPerPage,
 					addInComponentFactories,
 					responsiveCondition
@@ -1133,7 +1135,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
 			BootstrapCardCoreDataTablePanel<T, S> panel = new BootstrapCardCoreDataTablePanel<T, S>(id, factory,
-					columns, sequenceProvider, rowCssClassProviders, rowsPerPage, addInComponentFactories,
+					columns, sequenceProvider, rowCssClassFactories, rowsPerPage, addInComponentFactories,
 					responsiveCondition);
 			if (noRecordsResourceKey == null && countResourceKey != null) {
 				withNoRecordsResourceKey(countResourceKey + ".zero");
@@ -1162,7 +1164,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
 			BootstrapPanelCoreDataTablePanel<T, S> panel = new BootstrapPanelCoreDataTablePanel<T, S>(id, factory,
-					columns, sequenceProvider, rowCssClassProviders, rowsPerPage, addInComponentFactories, responsiveCondition);
+					columns, sequenceProvider, rowCssClassFactories, rowsPerPage, addInComponentFactories, responsiveCondition);
 			if (noRecordsResourceKey == null && countResourceKey != null) {
 				withNoRecordsResourceKey(countResourceKey + ".zero");
 			}

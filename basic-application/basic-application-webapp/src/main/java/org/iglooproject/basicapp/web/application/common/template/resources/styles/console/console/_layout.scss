@@ -21,86 +21,82 @@ body {
 	
 	> .body-section {
 		flex: 1 0 auto;
-	}
-	
-	> .footer-section {
-		flex: 0 0 auto;
-	}
-}
-
-.body-section {
-	.content-container {
-		display: flex;
-		flex-direction: column;
 		
-		> .content-header-section {
-			background-color: $white;
-			border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+		> .content-container {
+			display: flex;
+			flex-direction: column;
 			
-			> .content-header-container {
-				@include make-container();
-				@include make-container-max-widths();
+			> .content-header-section {
+				background-color: $white;
+				border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 				
-				padding: 15px;
-				
-				> .content-header {
-					.content-header-title {
-						margin: 0;
-						padding: 0;
-					}
+				> .content-header-container {
+					@include make-container();
+					@include make-container-max-widths();
 					
-					> .content-header-elements-section {
-						margin-top: .75rem;
+					padding: 15px;
+					
+					> .content-header {
+						.content-header-title {
+							margin: 0;
+							padding: 0;
+						}
 						
-						&:first-child {
-							margin-top: 0;
+						> .content-header-elements-section {
+							margin-top: .75rem;
+							
+							&:first-child {
+								margin-top: 0;
+							}
 						}
 					}
 				}
 			}
-		}
-		
-		> .content-body-section {
-			flex: 1 0 auto;
 			
-			> .content-body-container {
-				@include make-container();
-				@include make-container-max-widths();
+			> .content-body-section {
+				flex: 1 0 auto;
 				
-				padding: 25px 15px;
-				
-				> .content-body {
+				> .content-body-container {
+					@include make-container();
+					@include make-container-max-widths();
 					
+					padding: 25px 15px;
+					
+					> .content-body {
+						
+					}
 				}
 			}
 		}
 	}
-}
-
-.footer-section {
-	background-color: #21212E;
-	border-top: 1px solid #03FFB0;
-	color: #FFFFFF;
 	
-	.footer-container {
-		@include make-container();
-		@include make-container-max-widths();
+	> .footer-section {
+		flex: 0 0 auto;
 		
-		padding: 15px;
+		background-color: #21212E;
+		border-top: 1px solid #03FFB0;
+		color: #FFFFFF;
 		
-		display: flex;
-		flex-direction: row-reverse;
-		
-		.footer-info {
-			.footer-info-title {
-				color: #03FFB0;
-				font-weight: bold;
-				font-size: 1rem;
-				margin-bottom: .15rem;
-			}
+		> .footer-container {
+			@include make-container();
+			@include make-container-max-widths();
 			
-			.footer-info-version {
-				font-size: .85rem;
+			padding: 15px;
+			
+			display: flex;
+			flex-direction: row-reverse;
+			
+			.footer-info {
+				.footer-info-title {
+					color: #03FFB0;
+					font-weight: bold;
+					font-size: 1rem;
+					margin-bottom: .15rem;
+				}
+				
+				.footer-info-version {
+					font-size: .85rem;
+				}
 			}
 		}
 	}

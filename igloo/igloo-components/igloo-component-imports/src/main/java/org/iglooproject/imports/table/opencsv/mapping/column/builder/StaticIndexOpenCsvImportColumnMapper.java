@@ -22,6 +22,6 @@ import org.iglooproject.imports.table.opencsv.model.CsvTable;
 	@Override
 	public Function2<? super CsvRow, CsvCellReference> tryMap(CsvTable sheet, ITableImportNavigator<CsvTable, CsvRow, CsvCell, CsvCellReference> navigator,
 			ITableImportEventHandler eventHandler) {
-		return (row) -> row == null ? null : new CsvCellReference(row.getIndex(), columnIndex);
+		return row -> row == null ? null : new CsvCellReference(row.getIndex(), columnIndex);
 	}
 }

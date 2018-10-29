@@ -27,7 +27,7 @@ public class SpringInformationsTest extends AbstractJpaCoreTestCase {
 	public void iglooInformations() {
 		// test that igloo version is correctly read from MANIFEST files
 		// deployed jar provides version number
-		Condition<String> real = new Condition<>((s) -> Pattern.matches("[0-9]\\.[0-9].*", s), "A normal version pattern");
+		Condition<String> real = new Condition<>(s -> Pattern.matches("[0-9]\\.[0-9].*", s), "A normal version pattern");
 		// maven test provides only a fake MANIFEST.MF
 		Condition<String> workaround = new Condition<>("placeholder"::equals, "A placeholder pattern");
 		Condition<String> versionCondition = anyOf(real, workaround);

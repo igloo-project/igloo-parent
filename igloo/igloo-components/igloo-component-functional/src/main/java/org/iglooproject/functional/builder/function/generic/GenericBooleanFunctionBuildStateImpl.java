@@ -27,7 +27,7 @@ public abstract class GenericBooleanFunctionBuildStateImpl
 
 	@Override
 	public TBooleanState not() {
-		return toBoolean((input) -> input != null ? !input : null);
+		return toBoolean(input -> input != null ? !input : null);
 	}
 	
 	@Override

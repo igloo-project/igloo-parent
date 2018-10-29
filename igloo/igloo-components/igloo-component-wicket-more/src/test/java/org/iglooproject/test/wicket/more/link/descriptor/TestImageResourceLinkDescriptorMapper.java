@@ -60,7 +60,7 @@ public class TestImageResourceLinkDescriptorMapper extends AbstractAnyTargetTest
 					IOneParameterLinkDescriptorMapper<IImageResourceLinkDescriptor, T>
 					> builder) {
 		return builder.imageResource(DetachableFactories.forUnit(ReadOnlyModel.factory(
-					(input) ->
+					input ->
 						input == null
 								? TestLinkDescriptorNoParameterResource.REFERENCE
 								: TestLinkDescriptorOneParameterResource.REFERENCE

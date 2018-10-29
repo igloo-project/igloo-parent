@@ -67,7 +67,7 @@ public class INodeRenderer {
 			}
 			
 			return BootstrapRendererInformation.builder()
-					.icon("fa fa-exclamation")
+					.icon("fa fa-fw fa-exclamation")
 					.color(BootstrapColor.DANGER)
 					.label(getString("business.infinispan.node.anonymous", locale))
 					.build();
@@ -98,13 +98,13 @@ public class INodeRenderer {
 			
 			if (infinispanClusterService.getMembers().contains(value.getAddress())) {
 				return BootstrapRendererInformation.builder()
-						.icon("fa fa-toggle-on")
+						.icon("fa fa-fw fa-toggle-on")
 						.label(getString("business.infinispan.node.connected", locale))
 						.build();
 			}
 			
 			return BootstrapRendererInformation.builder()
-					.icon("fa fa-toggle-off")
+					.icon("fa fa-fw fa-toggle-off")
 					.label(getString("business.infinispan.node.disconnected", locale))
 					.build();
 		}
@@ -131,7 +131,7 @@ public class INodeRenderer {
 			
 			if (infinispanClusterService.getLocalAddress().equals(value.getAddress())) {
 				return BootstrapRendererInformation.builder()
-						.icon("fa fa-user")
+						.icon("fa fa-fw fa-user")
 						.label(getString("business.infinispan.node.local", locale))
 						.build();
 			}

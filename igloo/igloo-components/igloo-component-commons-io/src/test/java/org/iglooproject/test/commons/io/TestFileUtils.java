@@ -349,8 +349,8 @@ public class TestFileUtils {
 	@Test
 	public void listRecursivelyNull() throws IOException {
 		Assertions.assertThatCode(() -> FileUtils.listRecursively(null,
-				new DelegateFileFilter((f) -> true), // stub
-				new DelegateFileFilter((f) -> true)) // stub
+				new DelegateFileFilter(f -> true), // stub
+				new DelegateFileFilter(f -> true)) // stub
 		).isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -420,7 +420,7 @@ public class TestFileUtils {
 		
 		Collection<File> files = FileUtils.listRecursively(subFolder,
 				FileFileFilter.FILE, // list only files
-				new DelegateFileFilter((f) -> f.getName().equals(dir1.getName())) // recurse only in dir1
+				new DelegateFileFilter(f -> f.getName().equals(dir1.getName())) // recurse only in dir1
 		);
 		Assertions.assertThat(files).hasSize(3);
 		Assertions.assertThat(files).containsSequence(file1, file2, file3);

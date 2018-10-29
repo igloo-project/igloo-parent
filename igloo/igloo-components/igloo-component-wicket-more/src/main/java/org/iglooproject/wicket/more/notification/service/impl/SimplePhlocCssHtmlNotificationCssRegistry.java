@@ -79,7 +79,7 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
 			Collection<CSSSelector> matchedSelectors = getMatchedSelectors(matchableTag, rule);
 			Collection<CssSelectorSpecificity> matchedSelectorsSpecificities = matchedSelectors
 					.stream()
-					.map((input) -> computeSpecificity(input))
+					.map(input -> computeSpecificity(input))
 					.collect(Collectors.toList());
 			if (!matchedSelectorsSpecificities.isEmpty()) {
 				matchedRules.put(rule, Ordering.natural().max(matchedSelectorsSpecificities));
@@ -120,7 +120,7 @@ public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificat
 		
 		return mergedDeclarations.values()
 				.stream()
-				.map((input) -> input.getLeft())
+				.map(input -> input.getLeft())
 				.collect(Collectors.toList());
 	}
 	

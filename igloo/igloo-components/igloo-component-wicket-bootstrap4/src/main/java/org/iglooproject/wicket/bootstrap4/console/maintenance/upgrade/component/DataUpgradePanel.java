@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -20,6 +19,7 @@ import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
 import org.iglooproject.jpa.more.business.upgrade.service.IAbstractDataUpgradeService;
 import org.iglooproject.jpa.more.business.upgrade.service.IDataUpgradeRecordService;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAction;
 import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
@@ -68,7 +68,7 @@ public class DataUpgradePanel extends Panel {
 				IModel<Boolean> doneModel = new PropertyModel<Boolean>(recordModel, "done");
 				
 				item.add(
-						new Label("name", new PropertyModel<String>(item.getModel(), "name")),
+						new CoreLabel("name", new PropertyModel<String>(item.getModel(), "name")),
 						new DateLabel("executionDate", new PropertyModel<Date>(recordModel, "executionDate"), DatePattern.SHORT_DATETIME)
 								.showPlaceholder(),
 						new BooleanIcon("autoPerform", new PropertyModel<Boolean>(recordModel, "autoPerform"))

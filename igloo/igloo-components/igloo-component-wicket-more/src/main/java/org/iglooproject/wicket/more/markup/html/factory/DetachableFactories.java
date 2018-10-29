@@ -67,7 +67,7 @@ public final class DetachableFactories {
 	}
 
 	public static final <T, R> SerializableFunction2<IDetachableFactory<T, R>, R> toApplyFunction(final T parameter) {
-		return (input) -> input.create(parameter);
+		return input -> input.create(parameter);
 	}
 
 }

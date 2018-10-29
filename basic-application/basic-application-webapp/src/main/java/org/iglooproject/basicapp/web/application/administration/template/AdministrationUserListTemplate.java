@@ -1,6 +1,7 @@
 package org.iglooproject.basicapp.web.application.administration.template;
 
 import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_HIDDEN_MD_AND_LESS;
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.TABLE_ROW_DISABLED;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import org.apache.poi.ss.usermodel.Workbook;
@@ -24,7 +25,6 @@ import org.iglooproject.basicapp.web.application.administration.form.AbstractUse
 import org.iglooproject.basicapp.web.application.administration.model.AbstractUserDataProvider;
 import org.iglooproject.basicapp.web.application.common.renderer.UserActiveRenderer;
 import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
-import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
@@ -151,7 +151,7 @@ public abstract class AdministrationUserListTemplate<U extends User> extends Adm
 				})
 						.withClass("text text-md")
 						.withClass(CELL_HIDDEN_MD_AND_LESS)
-				.addRowCssClass(user -> (user != null && !user.isActive()) ? CssClassConstants.ROW_DISABLED : null)
+				.addRowCssClass(itemModel -> (itemModel.getObject() != null && !itemModel.getObject().isActive()) ? TABLE_ROW_DISABLED : null)
 				.withNoRecordsResourceKey("administration.user.list.count.zero")
 				.bootstrapCard()
 						.ajaxPagers()

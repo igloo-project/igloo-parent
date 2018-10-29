@@ -9,17 +9,17 @@ public interface SerializablePredicate2<T> extends Predicate2<T>, SerializablePr
 
 	default SerializablePredicate2<T> and(SerializablePredicate2<? super T> other) {
 		Objects.requireNonNull(other);
-		return (t) -> test(t) && other.test(t);
+		return t -> test(t) && other.test(t);
 	}
 
 	@Override
 	default SerializablePredicate2<T> negate() {
-		return (t) -> !test(t);
+		return t -> !test(t);
 	}
 
 	default SerializablePredicate2<T> or(SerializablePredicate2<? super T> other) {
 		Objects.requireNonNull(other);
-		return (t) -> test(t) || other.test(t);
+		return t -> test(t) || other.test(t);
 	}
 
 	static <T> SerializablePredicate2<T> isEqual(Object targetRef) {

@@ -11,4 +11,5 @@ public class ConsoleAccessHeaderAdditionalContentPanel extends Panel {
 		
 		add(new ConsoleAccessEnvironmentPanel("environment"));
 	}
+
 }

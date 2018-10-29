@@ -12,7 +12,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.util.string.Strings;
-
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 
 public abstract class AbstractMonitoringPage extends Page {
@@ -36,7 +35,7 @@ public abstract class AbstractMonitoringPage extends Page {
 	@Override
 	public void onInitialize() {
 		super.onInitialize();
-		add(new Label("status", isSuccess() ? "OK" : "KO").setEscapeModelStrings(false));
+		add(new CoreLabel("status", isSuccess() ? "OK" : "KO").setEscapeModelStrings(false));
 		
 		add(new ListView<String>("details", getDetails()) {
 			
@@ -44,9 +43,9 @@ public abstract class AbstractMonitoringPage extends Page {
 			
 			@Override
 			protected void populateItem(ListItem<String> item) {
-				item.add(new Label("detail", item.getModelObject().replaceAll("\\|", "<pipe>")).setEscapeModelStrings(false));
+				item.add(new CoreLabel("detail", item.getModelObject().replaceAll("\\|", "<pipe>")).setEscapeModelStrings(false));
 				
-				Label separator = new Label("separator", " | ");
+				Label separator = new CoreLabel("separator", " | ");
 				separator.setVisible(item.getIndex() != getList().size() - 1);
 				item.add(separator);
 			}

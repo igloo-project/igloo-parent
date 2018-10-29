@@ -12,7 +12,7 @@ import org.iglooproject.functional.SerializableFunction2;
 public final class CoreRenderers {
 
 	private static SerializableFunction2<Locale, DecimalFormat> percentDecimalFormatFunction(final String pattern, final RoundingMode roundingMode) {
-		return (input) -> {
+		return input -> {
 			DecimalFormat df = new DecimalFormat(pattern, new DecimalFormatSymbols(input));
 			df.setRoundingMode(roundingMode);
 			df.setMultiplier(100);
@@ -28,7 +28,7 @@ public final class CoreRenderers {
 
 	private static final Renderer<BigDecimal> PERCENT_NO_SIGN = Renderer.<BigDecimal>fromNumberFormat(PERCENT_NO_SIGN_FORMAT_FUNCTION);
 
-	private static final SerializableFunction2<DecimalFormat, DecimalFormat> TO_RELATIVE_FORMAT_FUNCTION = (input) -> {
+	private static final SerializableFunction2<DecimalFormat, DecimalFormat> TO_RELATIVE_FORMAT_FUNCTION = input -> {
 		input.setPositivePrefix("+");
 		input.setNegativePrefix("-");
 		return input;

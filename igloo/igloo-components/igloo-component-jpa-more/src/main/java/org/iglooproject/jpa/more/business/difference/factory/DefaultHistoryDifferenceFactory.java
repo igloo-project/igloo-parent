@@ -38,9 +38,9 @@ import de.danielbechler.diff.node.Visit;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public final class DefaultHistoryDifferenceFactory<T> extends AbstractHistoryDifferenceFactory<T> {
-	private Predicate2<? super DiffNode> branchFilter = (input) -> input.hasChanges();
+	private Predicate2<? super DiffNode> branchFilter = input -> input.hasChanges();
 	
-	private Predicate2<? super DiffNode> nodeFilter = (input) -> DiffUtils.isItem(input) || !input.hasChildren();;
+	private Predicate2<? super DiffNode> nodeFilter = input -> DiffUtils.isItem(input) || !input.hasChildren();;
 	
 	public void setFilter(Predicate2<? super DiffNode> filter) {
 		this.branchFilter = filter;

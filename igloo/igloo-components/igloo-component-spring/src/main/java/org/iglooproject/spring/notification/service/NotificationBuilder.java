@@ -76,10 +76,10 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	private static final String DEV_SUBJECT_PREFIX = "[Dev]";
 	
 	private static final Function2<String, NotificationTarget> ADDRESS_TO_TARGET_FUNCTION =
-			(address) -> address != null ? NotificationTarget.of(address) : null;
+			address -> address != null ? NotificationTarget.of(address) : null;
 	
 	private static final Function2<INotificationRecipient, NotificationTarget> I_NOTIFICATION_RECIPIENT_TO_TARGET_FUNCTION =
-			(recipient) -> recipient != null ? NotificationTarget.of(recipient.getEmail()) : null;
+			recipient -> recipient != null ? NotificationTarget.of(recipient.getEmail()) : null;
 
 	@Autowired
 	private JavaMailSender mailSender;

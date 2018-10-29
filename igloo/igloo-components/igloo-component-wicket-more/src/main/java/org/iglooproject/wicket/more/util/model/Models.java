@@ -53,6 +53,10 @@ public final class Models {
 		return (SerializableFunction2<? super IModel<? extends T>, T>) ModelGetObjectFunction.INSTANCE;
 	}
 	
+	public static <T> T getObject(IModel<? extends T> model) {
+		return Models.<T>getObject().apply(model);
+	}
+	
 	@SuppressWarnings("rawtypes") // ModelGetObjectFunction works for any T
 	private enum ModelGetObjectFunction implements SerializableFunction2<IModel, Object> {
 		INSTANCE;

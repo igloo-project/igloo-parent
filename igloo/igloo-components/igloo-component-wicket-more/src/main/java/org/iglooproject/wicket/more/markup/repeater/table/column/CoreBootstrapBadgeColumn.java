@@ -105,7 +105,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 					public MarkupContainer getSideLink(String wicketId, IModel<T> rowModel) {
 						if (sideLinkGeneratorMapper != null) {
 							return decorate(sideLinkGeneratorMapper.map(rowModel).link(wicketId))
-									.add(new WebMarkupContainer("sideLinkIcon").add(new ClassAttributeAppender("fa fa-share-square-o")));
+									.add(new WebMarkupContainer("sideLinkIcon").add(new ClassAttributeAppender("fa fa-fw fa-share-square-o")));
 						}
 						return new InvisiblePanel(wicketId);
 					}

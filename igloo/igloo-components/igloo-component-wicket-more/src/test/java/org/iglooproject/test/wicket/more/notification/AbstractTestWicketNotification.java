@@ -29,7 +29,7 @@ public abstract class AbstractTestWicketNotification extends AbstractWicketMoreT
 	public void resetJavaMailSenderMock() {
 		Mockito.reset(javaMailSender);
 		JavaMailSender real = new JavaMailSenderImpl();
-		Mockito.when(javaMailSender.createMimeMessage()).then((invocation) -> real.createMimeMessage());
+		Mockito.when(javaMailSender.createMimeMessage()).then(invocation -> real.createMimeMessage());
 	}
 
 	protected INotificationBuilderBaseState createNotificationBuilder() {

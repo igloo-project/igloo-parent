@@ -52,7 +52,7 @@ public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workb
 	
 	protected static final Map<SheetSelection, ? extends Predicate2<? super Sheet>> SELECTIONS_PREDICATES = ImmutableMap.of(
 			SheetSelection.ALL, Predicates2.<Sheet>alwaysTrue(),
-			SheetSelection.NON_HIDDEN_ONLY, (sheet) -> {
+			SheetSelection.NON_HIDDEN_ONLY, sheet -> {
 				if (sheet == null) {
 					return false;
 				}

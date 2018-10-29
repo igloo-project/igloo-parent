@@ -17,7 +17,7 @@ import org.iglooproject.imports.table.opencsv.model.CsvTable;
 
 public class OpenCsvImportColumnSet extends AbstractTableImportColumnSet<CsvTable, CsvRow, CsvCell, CsvCellReference> {
 
-	private static final SerializableFunction2<String, Date> DEFAULT_DATE_FORMAT_FUNCTION = (s) -> {
+	private static final SerializableFunction2<String, Date> DEFAULT_DATE_FORMAT_FUNCTION = s -> {
 		if (s == null) {
 			return null;
 		}

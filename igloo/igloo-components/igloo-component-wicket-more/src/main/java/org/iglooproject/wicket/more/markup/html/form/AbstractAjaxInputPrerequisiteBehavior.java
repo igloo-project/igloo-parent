@@ -174,7 +174,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 */
 	@Deprecated
 	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedModelIfInvalid(boolean resetAttachedModel) {
-		this.resetAttachedModelPredicate = (input) -> !objectValidPredicate.test(input);
+		this.resetAttachedModelPredicate = input -> !objectValidPredicate.test(input);
 		return this;
 	}
 
@@ -211,7 +211,7 @@ public abstract class AbstractAjaxInputPrerequisiteBehavior<T> extends Behavior 
 	 * handle input clearing of their children themselves).
 	 */
 	public AbstractAjaxInputPrerequisiteBehavior<T> setResetAttachedFormComponentsIfInvalid() {
-		this.resetAttachedFormComponentsPredicate = (input) -> !objectValidPredicate.test(input);
+		this.resetAttachedFormComponentsPredicate = input -> !objectValidPredicate.test(input);
 		return this;
 	}
 

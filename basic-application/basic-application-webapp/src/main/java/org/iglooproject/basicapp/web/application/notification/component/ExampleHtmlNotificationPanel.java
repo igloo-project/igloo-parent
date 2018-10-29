@@ -4,13 +4,13 @@ import java.util.Date;
 
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.DatePattern;
@@ -25,7 +25,7 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		// Intro
 		StringResourceModel introModel = new StringResourceModel("notification.panel.example.intro")
 				.setParameters(BindingModel.of(userModel, Bindings.user().fullName()), dateModel);
-		add(new Label("intro", introModel));
+		add(new CoreLabel("intro", introModel));
 		
 		// Main link
 		add(
@@ -51,17 +51,17 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		
 		// 	>	First name
 		addMiddleProperty(propertiesTable, "firstname",
-				new Label("firstnameValue", BindingModel.of(userModel, Bindings.user().firstName()))
+				new CoreLabel("firstnameValue", BindingModel.of(userModel, Bindings.user().firstName()))
 		);
 		
 		// 	>	Last name
 		addMiddleProperty(propertiesTable, "lastname",
-				new Label("lastnameValue", BindingModel.of(userModel, Bindings.user().lastName()))
+				new CoreLabel("lastnameValue", BindingModel.of(userModel, Bindings.user().lastName()))
 		);
 		
 		// 	>	E-mail
 		addMiddleProperty(propertiesTable, "email",
-				new Label("emailValue", BindingModel.of(userModel, Bindings.user().email()))
+				new CoreLabel("emailValue", BindingModel.of(userModel, Bindings.user().email()))
 		);
 		
 		// 	>	Last login date

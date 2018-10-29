@@ -208,7 +208,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	@Override
 	public List<INode> getNodes() {
 		return getMembers().stream()
-				.map((input) -> getNodesCache().get(input))
+				.map(input -> getNodesCache().get(input))
 				.filter(Predicates2.notNull())
 				.collect(ImmutableList.toImmutableList());
 	}
@@ -488,7 +488,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 				// get rid of this node slot
 				filterPriorityQueue(
 						lockRequest.getPriorityQueue(),
-						(input) -> !input.match(getAddress())
+						input -> !input.match(getAddress())
 				);
 			}
 		} else {
@@ -1050,7 +1050,7 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 						// found orphan items, we lock and securely remove orphans
 						filterPriorityQueue(
 								priorityQueueEntry.getKey(),
-								(input) -> getMembers().contains(input.getOwner())
+								input -> getMembers().contains(input.getOwner())
 						);
 					}
 				}
@@ -1085,8 +1085,8 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 			Map<IRole, IRoleAttribution> roles = Maps.newHashMap(getRolesCache());
 			ListMultimap<AddressWrapper, IRole> rolesByMember = roles.entrySet().stream().collect(
 					Multimaps.<Entry<IRole, IRoleAttribution>, AddressWrapper, IRole, ListMultimap<AddressWrapper, IRole>>toMultimap(
-							(item) -> item.getValue().getOwner(),
-							(item) -> item.getKey(),
+							item -> item.getValue().getOwner(),
+							item -> item.getKey(),
 							MultimapBuilder.linkedHashKeys().arrayListValues()::<AddressWrapper, IRole>build
 			));
 			for (Entry<AddressWrapper, Collection<IRole>> rolesByMemberEntry : rolesByMember.asMap().entrySet()) {
@@ -1105,5 +1105,5 @@ public class InfinispanClusterServiceImpl implements IInfinispanClusterService {
 	}
 
 	private static final SerializableFunction2<org.infinispan.remoting.transport.Address, AddressWrapper> INFINISPAN_ADDRESS_TO_JGROUPS_ADDRESS =
-			(input) -> AddressWrapper.from(((JGroupsAddress) input).getJGroupsAddress());
+			input -> AddressWrapper.from(((JGroupsAddress) input).getJGroupsAddress());
 }

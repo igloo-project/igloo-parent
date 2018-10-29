@@ -981,7 +981,7 @@ $figure-caption-color:									$gray-600 !default; // bootstrap
 // Breadcrumbs
 
 $breadcrumb-padding-y:									0 !default; // bootstrap | override
-$breadcrumb-padding-x:									1rem !default; // bootstrap
+$breadcrumb-padding-x:									0 !default; // bootstrap | override
 $breadcrumb-item-padding:								.5rem !default; // bootstrap
 
 $breadcrumb-margin-bottom:								.5rem !default; // bootstrap | override

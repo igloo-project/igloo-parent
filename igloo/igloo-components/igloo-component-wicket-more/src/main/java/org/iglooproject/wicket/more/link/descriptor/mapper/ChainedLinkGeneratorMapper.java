@@ -33,7 +33,7 @@ public class ChainedLinkGeneratorMapper<L extends ILinkGenerator, T>
 	 * {@link IPageLinkGenerator page link generators}.
 	 */
 	public static <T> Builder<IPageLinkGenerator, T> forPage() {
-		return new Builder<>((input) -> input.getValue0().chain(input.getValue1()));
+		return new Builder<>(input -> input.getValue0().chain(input.getValue1()));
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class ChainedLinkGeneratorMapper<L extends ILinkGenerator, T>
 	 * {@link ILinkGenerator resource link generators}.
 	 */
 	public static <T> Builder<ILinkGenerator, T> forResource() {
-		return new Builder<>((input) -> input.getValue0().chain(input.getValue1()));
+		return new Builder<>(input -> input.getValue0().chain(input.getValue1()));
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class ChainedLinkGeneratorMapper<L extends ILinkGenerator, T>
 	 * {@link IImageResourceLinkGenerator image resource link generators}.
 	 */
 	public static <T> Builder<IImageResourceLinkGenerator, T> forImage() {
-		return new Builder<>((input) -> input.getValue0().chain(input.getValue1()));
+		return new Builder<>(input -> input.getValue0().chain(input.getValue1()));
 	}
 	
 	public static class Builder<L extends ILinkGenerator, T> {

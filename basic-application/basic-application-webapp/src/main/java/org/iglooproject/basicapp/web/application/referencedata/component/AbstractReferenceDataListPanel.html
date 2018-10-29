@@ -8,21 +8,11 @@
 		
 		<wicket:child/>
 		
-		<wicket:fragment wicket:id="itemActionsFragment">
-			<div wicket:id="actionsContainer" class="row row-table-action">
-				<div wicket:enclosure-component="edit" class="col-table-action">
-					<button wicket:id="edit" class="btn btn-table-row-action btn-primary" wicket:message="title:common.action.update" type="button">
-						<span class="fa fa-pencil-alt"></span>
-					</button>
-				</div>
-			</div>
-		</wicket:fragment>
-		
 		<wicket:fragment wicket:id="globalActionsFragment">
 			<div wicket:id="actionsContainer" class="row row-compact align-items-center">
 				<div wicket:enclosure-component="add" class="col-auto">
 					<button wicket:id="add" class="btn btn-primary" wicket:message="title:common.action.create" type="button">
-						<span class="fa fa-plus" />
+						<span class="fa fa-fw fa-plus" />
 					</button>
 				</div>
 			</div>

@@ -33,7 +33,7 @@ public class JpaExternalLinkCheckerApplicationPropertyRegistryConfig extends Abs
 		registry.registerInteger(BATCH_SIZE, 500);
 		registry.register(
 				MIN_DELAY_BETWEEN_TWO_CHECKS_IN_DAYS,
-				(input) -> {
+				input -> {
 					Integer value = Ints.stringConverter().convert(input);
 					if (value == null) {
 						return null;

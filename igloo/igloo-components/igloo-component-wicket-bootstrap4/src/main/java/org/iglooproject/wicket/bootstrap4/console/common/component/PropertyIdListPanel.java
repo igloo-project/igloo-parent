@@ -54,15 +54,15 @@ public class PropertyIdListPanel extends Panel {
 				)
 						.addLabelColumn(
 								new ResourceModel("common.propertyId.key"),
-								(p) -> p.getKey()
+								p -> p.getKey()
 						)
 						.addLabelColumn(
 								new ResourceModel("common.propertyId.value"),
-								(p) -> propertyService.getAsString(p)
+								p -> propertyService.getAsString(p)
 						)
 						.addActionColumn()
 								.addAction(
-										BootstrapRenderer.constant("common.propertyId.action.edit", "fa fa-pencil-alt fa-fw", BootstrapColor.PRIMARY),
+										BootstrapRenderer.constant("common.propertyId.action.edit", "fa fa-fw fa-pencil-alt", BootstrapColor.PRIMARY),
 										new OneParameterModalOpenAjaxAction<IModel<? extends PropertyId<?>>>(modifyPopup) {
 											private static final long serialVersionUID = 1L;
 											@Override
@@ -71,7 +71,7 @@ public class PropertyIdListPanel extends Panel {
 											}
 										}
 								)
-										.when(Predicates2.instanceOf(MutablePropertyId.class))
+										.whenPredicate(Predicates2.instanceOf(MutablePropertyId.class))
 										.withClassOnElements("btn-table-row-action")
 								.end()
 						.bootstrapCard()

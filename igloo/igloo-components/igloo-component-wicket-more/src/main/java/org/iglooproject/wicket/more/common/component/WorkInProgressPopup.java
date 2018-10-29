@@ -3,9 +3,9 @@ package org.iglooproject.wicket.more.common.component;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
@@ -48,7 +48,7 @@ public class WorkInProgressPopup extends AbstractModalPopupPanel<String> {
 	
 	@Override
 	protected Component createHeader(String wicketId) {
-		return new Label(wicketId, getModel());
+		return new CoreLabel(wicketId, getModel());
 	}
 	
 	@Override

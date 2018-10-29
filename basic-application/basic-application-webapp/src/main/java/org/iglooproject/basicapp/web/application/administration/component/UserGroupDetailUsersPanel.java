@@ -32,6 +32,7 @@ import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,7 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 	
 	private final UserDataProvider dataProvider;
 	
-	public UserGroupDetailUsersPanel(String id, IModel<UserGroup> userGroupModel) {
+	public UserGroupDetailUsersPanel(String id, final IModel<UserGroup> userGroupModel) {
 		super(id, userGroupModel);
 		setOutputMarkupId(true);
 		
@@ -167,4 +168,11 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 			);
 		}
 	}
+	
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		Detachables.detach(dataProvider);
+	}
+	
 }

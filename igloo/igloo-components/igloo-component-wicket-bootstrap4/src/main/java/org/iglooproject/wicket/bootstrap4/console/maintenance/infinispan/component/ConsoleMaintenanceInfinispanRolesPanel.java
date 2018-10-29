@@ -103,7 +103,7 @@ public class ConsoleMaintenanceInfinispanRolesPanel extends Panel {
 						)
 						.addActionColumn()
 								.addAction(
-										BootstrapRenderer.constant("console.maintenance.infinispan.roles.actions.assign", "fa fa-exchange-alt fa-fw", BootstrapColor.PRIMARY),
+										BootstrapRenderer.constant("console.maintenance.infinispan.roles.actions.assign", "fa fa-fw fa-exchange-alt", BootstrapColor.PRIMARY),
 										new OneParameterModalOpenAjaxAction<IModel<IRole>>(assignPopup) {
 											private static final long serialVersionUID = 1L;
 											@Override
@@ -113,7 +113,7 @@ public class ConsoleMaintenanceInfinispanRolesPanel extends Panel {
 										}
 								)
 								.addConfirmAction(
-										BootstrapRenderer.constant("common.action.delete", "fa fa-times fa-fw", BootstrapColor.DANGER)
+										BootstrapRenderer.constant("common.action.delete", "fa fa-fw fa-times", BootstrapColor.DANGER)
 								)
 										.title(new ResourceModel("console.maintenance.infinispan.roles.actions.delete.confirm.title"))
 										.content(new ResourceModel("console.maintenance.infinispan.roles.actions.delete.confirm.content"))
@@ -135,7 +135,7 @@ public class ConsoleMaintenanceInfinispanRolesPanel extends Panel {
 													}
 												}
 										)
-										.when((input) -> {
+										.whenPredicate(input -> {
 											IRoleAttribution roleAttribution = infinispanClusterService.getRoleAttribution(input);
 											return roleAttribution != null && roleAttribution.getAttributionDate() != null && roleAttribution.getOwner() != null;
 										})

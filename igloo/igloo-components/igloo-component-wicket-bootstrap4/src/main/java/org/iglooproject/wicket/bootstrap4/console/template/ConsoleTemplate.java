@@ -30,6 +30,7 @@ import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.dropdown.BootstrapDropDownJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -41,7 +42,6 @@ import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackP
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -172,11 +172,10 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 	}
 	
 	private BootstrapTooltip getBootstrapTooltip() {
-		BootstrapTooltip bootstrapTooltip = new BootstrapTooltip();
-		bootstrapTooltip.setSelector("[title],[data-original-title]");
-		bootstrapTooltip.setAnimation(true);
-		bootstrapTooltip.setContainer("body");
-		return bootstrapTooltip;
+		return new BootstrapTooltip()
+			.selector("[title],[data-original-title]")
+			.animation(true)
+			.container("body");
 	}
 	
 	@Override

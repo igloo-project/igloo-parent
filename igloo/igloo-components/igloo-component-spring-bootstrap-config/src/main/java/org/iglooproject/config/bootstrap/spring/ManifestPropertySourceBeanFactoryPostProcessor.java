@@ -157,7 +157,7 @@ public class ManifestPropertySourceBeanFactoryPostProcessor implements Applicati
 	}
 
 	private Function2<String, Class<?>> getBeanType(ConfigurableListableBeanFactory beanFactory) {
-		return (beanName) -> ClassUtils.getUserClass(beanFactory.getType(beanName));
+		return beanName -> ClassUtils.getUserClass(beanFactory.getType(beanName));
 	}
 
 	/**

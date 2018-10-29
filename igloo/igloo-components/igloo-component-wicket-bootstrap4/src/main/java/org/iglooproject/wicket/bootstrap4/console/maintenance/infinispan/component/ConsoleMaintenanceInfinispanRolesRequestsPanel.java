@@ -98,7 +98,7 @@ public class ConsoleMaintenanceInfinispanRolesRequestsPanel extends Panel {
 						)
 						.addActionColumn()
 								.addConfirmAction(
-										BootstrapRenderer.constant("common.action.delete", "fa fa-times fa-fw", BootstrapColor.DANGER)
+										BootstrapRenderer.constant("common.action.delete", "fa fa-fw fa-times", BootstrapColor.DANGER)
 								)
 										.title(new ResourceModel("console.maintenance.infinispan.roles.requests.actions.delete.confirm.title"))
 										.content(new ResourceModel("console.maintenance.infinispan.roles.requests.actions.delete.confirm.content"))
@@ -120,7 +120,7 @@ public class ConsoleMaintenanceInfinispanRolesRequestsPanel extends Panel {
 													}
 												}
 										)
-										.when((input) -> {
+										.whenPredicate(input -> {
 											IAttribution roleAttribution = infinispanClusterService.getRoleRequestAttribution(input);
 											return roleAttribution != null && roleAttribution.getAttributionDate() != null && roleAttribution.getOwner() != null;
 										})

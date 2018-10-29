@@ -60,7 +60,7 @@ public class TestPageLinkDescriptorMapper extends AbstractAnyTargetTestLinkDescr
 					IOneParameterLinkDescriptorMapper<IImageResourceLinkDescriptor, T>
 					> builder) {
 		return builder.page(DetachableFactories.forUnit(ReadOnlyModel.factory(
-				(input) -> input == null ? TestLinkDescriptorNoParameterPage.class : TestLinkDescriptorOneParameterPage.class
+				input -> input == null ? TestLinkDescriptorNoParameterPage.class : TestLinkDescriptorOneParameterPage.class
 		)));
 	}
 

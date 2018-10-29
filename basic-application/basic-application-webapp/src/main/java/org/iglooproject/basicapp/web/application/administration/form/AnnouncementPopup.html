@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div wicket:id="body">
+			<form wicket:id="form">
+				<div class="row row-form">
+					<div class="form-group col-12">
+						<div class="row">
+							<label class="col-sm-4 col-form-label" wicket:for="type"><wicket:label /></label>
+							<div class="col-sm-8">
+								<select class="form-control" wicket:id="type" />
+							</div>
+						</div>
+					</div>
+					<wicket:container wicket:id="descriptionContainer">
+						<div class="form-group col-12">
+							<div class="row">
+								<label class="col-sm-4 col-form-label" wicket:for="titleFr"><wicket:label /></label>
+								<div class="col-sm-8">
+									<input wicket:id="titleFr" class="form-control" type="text" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-12">
+							<div class="row">
+								<label class="col-sm-4 col-form-label" wicket:for="titleEn"><wicket:label /></label>
+								<div class="col-sm-8">
+									<input wicket:id="titleEn" class="form-control" type="text" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-12">
+							<div class="row">
+								<label class="col-sm-4 col-form-label" wicket:for="descriptionFr"><wicket:label /></label>
+								<div class="col-sm-8">
+									<textarea wicket:id="descriptionFr" class="form-control" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-12">
+							<div class="row">
+								<label class="col-sm-4 col-form-label" wicket:for="descriptionEn"><wicket:label /></label>
+								<div class="col-sm-8">
+									<textarea wicket:id="descriptionEn" class="form-control" />
+								</div>
+							</div>
+						</div>
+					</wicket:container>
+					<div class="form-group col-12">
+						<div class="row">
+							<label class="col-sm-4 col-form-label" wicket:for="publicationStartDate"><span wicket:id="publicationStartDateTitle"/></label>
+							<div class="col-sm-8">
+								<div class="row row-compact">
+									<div class="col-7">
+										<span class="input-group">
+											<label wicket:for="publicationStartDate" class="input-group-prepend mb-0"><span class="input-group-text"><span class="fa fa-fw fa-calendar" /></span></label>
+											<input class="form-control" wicket:id="publicationStartDate" type="text" />
+										</span>
+									</div>
+									<div class="col-5">
+										<span class="input-group">
+											<label wicket:for="publicationStartTime" class="input-group-prepend mb-0"><span class="input-group-text"><span class="fa fa-fw fa-hourglass-start" /></span></label>
+											<input wicket:id="publicationStartTime" class="form-control time" type="text" />
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group col-12">
+						<div class="row">
+							<label class="col-sm-4 col-form-label" wicket:for="publicationEndDate"><span wicket:id="publicationEndDateTitle"/></label>
+							<div class="col-sm-8">
+								<div class="row row-compact">
+									<div class="col-7">
+										<span class="input-group">
+											<label wicket:for="publicationEndDate" class="input-group-prepend mb-0"><span class="input-group-text"><span class="fa fa-fw fa-calendar" /></span></label>
+											<input class="form-control" wicket:id="publicationEndDate" type="text" />
+										</span>
+									</div>
+									<div class="col-5">
+										<span class="input-group">
+											<label wicket:for="publicationEndTime" class="input-group-prepend mb-0"><span class="input-group-text"><span class="fa fa-fw fa-hourglass-start" /></span></label>
+											<input class="form-control time" wicket:id="publicationEndTime" type="text" />
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<wicket:container wicket:id="interruptionContainer">
+						<div class="form-group col-12">
+							<div class="row">
+								<label class="col-sm-4 col-form-label" wicket:for="interruptionStartDate"><span wicket:id="interruptionStartDateTitle"/></label>
+								<div class="col-sm-8">
+									<div class="row row-compact">
+										<div class="col-7">
+											<span class="input-group">
+												<label wicket:for="interruptionStartDate" class="input-group-prepend mb-0"><span class="input-group-text"><span class="fa fa-fw fa-calendar" /></span></label>
+												<input class="form-control" wicket:id="interruptionStartDate" type="text" />
+											</span>
+										</div>
+										<div class="col-5">
+											<span class="input-group">
+												<label wicket:for="interruptionStartTime" class="input-group-prepend mb-0"><span class="input-group-text"><span class="fa fa-fw fa-hourglass-start" /></span></label>
+												<input wicket:id="interruptionStartTime" class="form-control time" type="text" />
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group col-12">
+							<div class="row">
+								<label class="col-sm-4 col-form-label" wicket:for="interruptionEndDate"><span wicket:id="interruptionEndDateTitle"/></label>
+								<div class="col-sm-8">
+									<div class="row row-compact">
+										<div class="col-7">
+											<span class="input-group">
+												<label wicket:for="interruptionEndDate" class="input-group-prepend mb-0"><span class="input-group-text"><span class="fa fa-fw fa-calendar" /></span></label>
+												<input class="form-control" wicket:id="interruptionEndDate" type="text" />
+											</span>
+										</div>
+										<div class="col-5">
+											<span class="input-group">
+												<label wicket:for="interruptionEndTime" class="input-group-prepend mb-0"><span class="input-group-text"><span class="fa fa-fw fa-hourglass-start" /></span></label>
+												<input class="form-control time" wicket:id="interruptionEndTime" type="text" />
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</wicket:container>
+					<div class="form-group col-12">
+						<div class="row">
+							<div class="col-sm-8 offset-sm-4">
+								<div class="custom-control custom-checkbox form-control-plaintext">
+									<input type="checkbox" class="custom-control-input" wicket:id="active">
+									<label class="custom-control-label" wicket:for="active"><wicket:label /></label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div wicket:id="footer">
+			<button wicket:id="cancel" class="btn btn-outline-secondary" type="button">
+				<wicket:message key="common.cancel" />
+			</button>
+			<button wicket:id="save" class="btn btn-success">
+				<span class="fa fa-fw fa-check"></span>
+				<wicket:message key="common.action.validate" />
+			</button>
+		</div>
+	</wicket:panel>
+</html>

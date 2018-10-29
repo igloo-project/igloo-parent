@@ -4,7 +4,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
@@ -69,7 +68,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 
 	@Override
 	protected Component createHeader(String wicketId) {
-		return new Label(wicketId, new ResourceModel("administration.user.action.password.edit.title"));
+		return new CoreLabel(wicketId, new ResourceModel("administration.user.action.password.edit.title"));
 	}
 
 	@Override
@@ -150,7 +149,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 			}
 		};
 		footer.add(validate);
-				
+		
 		BlankLink cancel = new BlankLink("cancel");
 		addCancelBehavior(cancel);
 		footer.add(cancel);
@@ -163,7 +162,8 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 		super.onDetach();
 		Detachables.detach(
 			oldPasswordModel,
-			newPasswordModel
+			newPasswordModel,
+			isOldPasswordRequired
 		);
 	}
 }

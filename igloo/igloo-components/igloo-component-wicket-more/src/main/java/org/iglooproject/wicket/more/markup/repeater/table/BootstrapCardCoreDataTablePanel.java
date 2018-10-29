@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.iglooproject.functional.SerializableFunction2;
+import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFactory;
@@ -22,7 +23,7 @@ public class BootstrapCardCoreDataTablePanel<T, S extends ISort<?>> extends Deco
 			IDataTableFactory<T, S> factory,
 			Map<IColumn<T, S>, Condition> columns,
 			ISequenceProvider<T> sequenceProvider,
-			List<SerializableFunction2<T, String>> rowCssClassFactories,
+			List<IDetachableFactory<? super IModel<? extends T>, ? extends String>> rowCssClassFactories,
 			long rowsPerPage,
 			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories,
 			Condition responsiveCondition) {

@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
@@ -61,7 +60,7 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 				item.setOutputMarkupId(true);
 				item.add(new ListFilterBehavior(getListFilterInitOptions()));
 				
-				item.add(new Label("cacheManagerName", item.getModelObject().getName()));
+				item.add(new CoreLabel("cacheManagerName", item.getModelObject().getName()));
 				
 				IModel<String> purgerCacheTextModel = new StringResourceModel(
 						"console.maintenance.ehcache.cacheManager.purge.confirm")
@@ -119,19 +118,19 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 										)
 						);
 						
-						item.add(new Label("cacheMaxElements", BindingModel.of(cacheInformationModel, 
+						item.add(new CoreLabel("cacheMaxElements", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBindings.ehCacheCacheInformation().maxElementsInMemory())));
-						item.add(new Label("cacheStoredElements", BindingModel.of(cacheInformationModel, 
+						item.add(new CoreLabel("cacheStoredElements", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBindings.ehCacheCacheInformation().memoryStoreObjectCount())));
-						item.add(new Label("cacheEvictionCount", BindingModel.of(cacheInformationModel, 
+						item.add(new CoreLabel("cacheEvictionCount", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBindings.ehCacheCacheInformation().evictionCount())));
 						
 						item.add(new CoreLabel("cacheCacheFillRatio", CoreRenderers.percent().asModel(
 								PercentageFloatToBigDecimalModel.of(BindingModel.of(cacheInformationModel,
 										CoreWicketMoreBindings.ehCacheCacheInformation().cacheFillRatio())))));
-						item.add(new Label("cacheHits", BindingModel.of(cacheInformationModel, 
+						item.add(new CoreLabel("cacheHits", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBindings.ehCacheCacheInformation().cacheHits())));
-						item.add(new Label("cacheMisses", BindingModel.of(cacheInformationModel, 
+						item.add(new CoreLabel("cacheMisses", BindingModel.of(cacheInformationModel, 
 								CoreWicketMoreBindings.ehCacheCacheInformation().cacheMisses())));
 						item.add(new CoreLabel("cacheHitRatio", CoreRenderers.percent().asModel(
 								PercentageFloatToBigDecimalModel.of(BindingModel.of(cacheInformationModel,
