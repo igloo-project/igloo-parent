@@ -7,10 +7,10 @@ import java.util.Set;
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IStyledColumn;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 
@@ -43,7 +43,7 @@ public abstract class AbstractCoreColumn<T, S extends ISort<?>> implements IStyl
 
 	@Override
 	public Component getHeader(String componentId) {
-		return new Label(componentId, headerLabelModel);
+		return new CoreLabel(componentId, headerLabelModel);
 	}
 
 	@Override

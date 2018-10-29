@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -17,6 +16,7 @@ import org.iglooproject.basicapp.web.application.console.notification.demo.templ
 import org.iglooproject.basicapp.web.application.console.notification.demo.util.NotificationDemoEntry;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -80,7 +80,7 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 								setResponsePage(new ConsoleNotificationDemoPage(new PageParameters(), entry));
 							}
 						};
-						link.add(new Label("label", entry.getLabelModel()));
+						link.add(new CoreLabel("label", entry.getLabelModel()));
 						item.add(link);
 					}
 				}

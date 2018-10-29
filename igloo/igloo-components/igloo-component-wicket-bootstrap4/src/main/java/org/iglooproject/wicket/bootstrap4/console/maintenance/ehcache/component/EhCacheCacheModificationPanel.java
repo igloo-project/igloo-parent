@@ -4,12 +4,12 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformation;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
@@ -42,7 +42,7 @@ public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<E
 
 	@Override
 	protected Component createHeader(String wicketId) {
-		return new Label(wicketId, BindingModel.of(getModel(), CoreWicketMoreBindings.ehCacheCacheInformation().name()));
+		return new CoreLabel(wicketId, BindingModel.of(getModel(), CoreWicketMoreBindings.ehCacheCacheInformation().name()));
 	}
 
 	@Override

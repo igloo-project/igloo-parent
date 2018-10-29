@@ -64,7 +64,7 @@ public class TaskExecutionResultPanel extends GenericPanel<QueuedTaskHolder> {
 				IModel<List<BatchReportItem>> itemListModel = BindingModel.of(contexteItemsItem.getModel(),
 						new EntryBinding<String, List<BatchReportItem>>().value());
 				
-				contexteItemsItem.add(new Label("contexte", contexteModel) {
+				contexteItemsItem.add(new CoreLabel("contexte", contexteModel) {
 					private static final long serialVersionUID = 1L;
 					
 					@Override
