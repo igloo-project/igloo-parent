@@ -54,6 +54,7 @@ public interface IAddedLabelColumnState<T, S extends ISort<?>> extends IAddedCor
 	/**
 	 * @deprecated This is the default behavior, calling this method is no longer needed.
 	 */
+	@Deprecated
 	IAddedLabelColumnState<T, S> disableIfInvalid();
 
 	IAddedLabelColumnState<T, S> hideIfInvalid();
