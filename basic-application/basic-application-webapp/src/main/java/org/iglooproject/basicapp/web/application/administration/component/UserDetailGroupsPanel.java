@@ -48,9 +48,9 @@ public class UserDetailGroupsPanel extends GenericPanel<User> {
 	@SpringBean
 	private IPropertyService propertyService;
 	
-	private final UserGroupDataProvider dataProvider;
+	private final IModel<? extends User> userModel;
 	
-	private IModel<? extends User> userModel;
+	private final UserGroupDataProvider dataProvider;
 	
 	public UserDetailGroupsPanel(String id, final IModel<? extends User> userModel) {
 		super(id, userModel);
@@ -114,12 +114,6 @@ public class UserDetailGroupsPanel extends GenericPanel<User> {
 		);
 	}
 	
-	@Override
-	protected void onDetach() {
-		super.onDetach();
-		Detachables.detach(userModel, dataProvider);
-	}
-	
 	private class UserGroupAddFragment extends Fragment {
 		
 		private static final long serialVersionUID = 1L;
@@ -170,4 +164,11 @@ public class UserDetailGroupsPanel extends GenericPanel<User> {
 			);
 		}
 	}
+	
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		Detachables.detach(userModel, dataProvider);
+	}
+	
 }

@@ -29,6 +29,7 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuild
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IDecoratedBuildState;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public abstract class AbstractReferenceDataListPanel<
@@ -46,7 +47,7 @@ public abstract class AbstractReferenceDataListPanel<
 	
 	private AbstractGenericReferenceDataPopup<T> popup;
 	
-	private D dataProvider;
+	private final D dataProvider;
 	
 	public AbstractReferenceDataListPanel(String id, final D dataProvider, CompositeSortModel<S> sortModel) {
 		super(id);
@@ -166,4 +167,11 @@ public abstract class AbstractReferenceDataListPanel<
 			);
 		}
 	}
+	
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		Detachables.detach(dataProvider);
+	}
+	
 }

@@ -20,6 +20,7 @@ import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,4 +123,11 @@ public abstract class AbstractGenericReferenceDataPopup<T extends GenericReferen
 	}
 	
 	protected abstract void refresh(AjaxRequestTarget target);
+	
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		Detachables.detach(formModeModel);
+	}
+	
 }

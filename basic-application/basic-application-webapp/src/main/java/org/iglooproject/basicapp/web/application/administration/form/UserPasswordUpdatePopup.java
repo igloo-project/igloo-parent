@@ -150,7 +150,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 			}
 		};
 		footer.add(validate);
-				
+		
 		BlankLink cancel = new BlankLink("cancel");
 		addCancelBehavior(cancel);
 		footer.add(cancel);
@@ -163,7 +163,8 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 		super.onDetach();
 		Detachables.detach(
 			oldPasswordModel,
-			newPasswordModel
+			newPasswordModel,
+			isOldPasswordRequired
 		);
 	}
 }
