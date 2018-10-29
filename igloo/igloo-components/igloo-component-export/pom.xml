@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>1.1.9</version>
+		<version>1.1.10</version>
 	</parent>
 	
 	<artifactId>igloo-component-export</artifactId>
@@ -21,13 +21,10 @@
 		
 		<!-- Export Excel -->
 		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-poi</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
 		</dependency>
 		
 		<!-- Test dependencies -->

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>1.1.9</version>
+		<version>1.1.10</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
@@ -24,6 +24,8 @@
 		<module>igloo-dependency-hibernate-search</module>
 		<module>igloo-dependency-less4j</module>
 		<module>igloo-dependency-wicket</module>
+		<module>igloo-dependency-poi</module>
+		<module>igloo-dependency-opencsv</module>
 		
 		<module>igloo-dependency-test</module>
 		<module>igloo-dependency-elasticsearch-test</module>
