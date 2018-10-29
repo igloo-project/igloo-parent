@@ -32,6 +32,7 @@ public class NavTabsPanel extends Panel {
 	}
 	
 	public interface ITabFactory extends IDetachable {
+		
 		Component createLabel(String wicketId);
 		Component createContent(String wicketId);
 		
