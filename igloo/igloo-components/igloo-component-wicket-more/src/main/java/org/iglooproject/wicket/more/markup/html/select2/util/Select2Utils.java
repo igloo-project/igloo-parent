@@ -1,7 +1,5 @@
 package org.iglooproject.wicket.more.markup.html.select2.util;
 
-import org.apache.wicket.markup.html.form.FormComponent;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.IModalPopupPanel;
 import org.wicketstuff.select2.Settings;
 
 public final class Select2Utils {
@@ -27,13 +25,6 @@ public final class Select2Utils {
 			settings.setPlaceholder("");
 		}
 		settings.setAllowClear(false);
-	}
-	
-	public static void setDropdownParent(Settings settings, FormComponent<?> select2Component) {
-		IModalPopupPanel modal = select2Component.findParent(IModalPopupPanel.class);
-		if (modal != null) {
-			settings.setDropdownParent(modal.getContainerMarkupId());
-		}
 	}
 	
 	public static void setDefaultAjaxSettings(Settings settings) {

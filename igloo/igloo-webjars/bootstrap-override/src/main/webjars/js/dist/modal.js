@@ -631,4 +631,7 @@
   return Modal;
 
 })));
+
+// See https://stackoverflow.com/a/19574076
+$.fn.modal.Constructor.prototype._enforceFocus = function() {};
 //# sourceMappingURL=modal.js.map
