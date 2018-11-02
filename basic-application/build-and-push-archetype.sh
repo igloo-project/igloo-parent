@@ -73,10 +73,10 @@ pushd ${temp_directory}/archetype &> /dev/null
 			mvn clean install
 			;;
 		"snapshot")
-			mvn clean package deploy -DaltDeploymentRepository=nexus-kobalt-snapshots::default::https://nexus.tools.kobalt-si.fr/repository/kobalt-snapshots/
+			mvn clean package deploy -DaltDeploymentRepository=nexus-kobalt-snapshots::default::https://nexus.tools.kobalt.fr/repository/kobalt-snapshots/
 			;;
 		"release")
-			mvn clean package deploy -DaltDeploymentRepository=nexus-kobalt-releases::default::https://nexus.tools.kobalt-si.fr/repository/kobalt-releases/
+			mvn clean package deploy -DaltDeploymentRepository=nexus-kobalt-releases::default::https://nexus.tools.kobalt.fr/repository/kobalt-releases/
 			;;
 	esac
 
