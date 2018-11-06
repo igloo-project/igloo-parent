@@ -32,9 +32,8 @@ public abstract class SimpleLocalizedReferenceDataPopup<E extends LocalizedRefer
 		
 		form = new Form<E>("form", model);
 		
-		
 		Condition disableableCondition = Condition.isTrue(
-				BindingModel.of(model, Bindings.localizedReferenceData().disableable())
+			BindingModel.of(model, Bindings.localizedReferenceData().disableable())
 		);
 		
 		this.labelFr = new TextField<>("labelFr", BindingModel.of(model, Bindings.localizedReferenceData().label().fr()), String.class);
@@ -42,18 +41,18 @@ public abstract class SimpleLocalizedReferenceDataPopup<E extends LocalizedRefer
 		this.enabled = new CheckBox("enabled", BindingModel.of(model, Bindings.localizedReferenceData().enabled()));
 		
 		body.add(
-				form
-						.add(
-								labelFr
-										.setLabel(new ResourceModel("business.localizedReferenceData.label.fr"))
-										.setRequired(true),
-								labelEn
-										.setLabel(new ResourceModel("business.localizedReferenceData.label.en"))
-										.setRequired(true),
-								enabled
-										.setLabel(new ResourceModel("business.referenceData.enabled"))
-										.add(disableableCondition.thenEnable())
-						)
+			form
+				.add(
+					labelFr
+						.setLabel(new ResourceModel("business.localizedReferenceData.label.fr"))
+						.setRequired(true),
+					labelEn
+						.setLabel(new ResourceModel("business.localizedReferenceData.label.en"))
+						.setRequired(true),
+					enabled
+						.setLabel(new ResourceModel("business.referenceData.enabled"))
+						.add(disableableCondition.thenEnable())
+				)
 		);
 		
 		return body;

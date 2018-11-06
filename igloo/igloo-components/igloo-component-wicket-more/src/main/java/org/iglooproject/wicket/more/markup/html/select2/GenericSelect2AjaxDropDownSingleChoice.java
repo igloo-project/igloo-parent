@@ -18,13 +18,6 @@ public class GenericSelect2AjaxDropDownSingleChoice<T> extends Select2Choice<T> 
 	}
 
 	@Override
-	protected void onInitialize() {
-		super.onInitialize();
-		
-		Select2Utils.setDropdownParent(getSettings(), this);
-	}
-
-	@Override
 	protected void onConfigure() {
 		super.onConfigure();
 		

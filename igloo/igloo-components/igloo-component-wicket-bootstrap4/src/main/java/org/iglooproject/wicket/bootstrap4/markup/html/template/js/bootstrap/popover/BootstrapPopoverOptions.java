@@ -330,7 +330,7 @@ public class BootstrapPopoverOptions extends SimpleOptions implements IBootstrap
 
 	public BootstrapPopoverOptions offsetNumber(IModel<Integer> offsetNumberModel) {
 		if (offsetNumberModel == null || offsetNumberModel.getObject() == null) {
-			offset((IModel<String>) null);
+			return offset((IModel<String>) null);
 		}
 		return offset(offsetNumberModel.map(offsetNumber -> offsetNumber + "px"));
 	}

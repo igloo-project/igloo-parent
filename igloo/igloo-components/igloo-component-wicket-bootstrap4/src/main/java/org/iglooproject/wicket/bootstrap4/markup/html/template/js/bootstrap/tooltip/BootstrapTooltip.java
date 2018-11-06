@@ -231,7 +231,7 @@ public class BootstrapTooltip implements IBootstrapTooltip {
 
 	public BootstrapTooltip offsetNumber(IModel<Integer> offsetNumberModel) {
 		if (offsetNumberModel == null || offsetNumberModel.getObject() == null) {
-			offset((IModel<String>) null);
+			return offset((IModel<String>) null);
 		}
 		return offset(offsetNumberModel.map(offsetNumber -> offsetNumber + "px"));
 	}
