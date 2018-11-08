@@ -88,7 +88,7 @@
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-jpa-test</artifactId>
+			<artifactId>igloo-component-wicket-more-test</artifactId>
 			<version>${igloo.version}</version>
 			<scope>test</scope>
 		</dependency>
