@@ -1,9 +1,6 @@
 package test.wicket.more.bindable;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.test.wicket.more.bindable.CollectionPropertyItemValueBinding;
-import org.iglooproject.test.wicket.more.bindable.RootValueBinding;
-import org.iglooproject.test.wicket.more.bindable.SimplePropertyValueBinding;
 import org.junit.Rule;
 import org.mockito.Answers;
 import org.mockito.Mock;
