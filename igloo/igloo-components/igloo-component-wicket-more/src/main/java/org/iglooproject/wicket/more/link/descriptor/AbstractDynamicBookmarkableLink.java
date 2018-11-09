@@ -136,7 +136,7 @@ public abstract class AbstractDynamicBookmarkableLink extends Link<Void> {
 	 * No click event is allowed.
 	 */
 	@Override
-	public final void onClick() {
+	public void onClick() {
 		// Unused
 	}
 

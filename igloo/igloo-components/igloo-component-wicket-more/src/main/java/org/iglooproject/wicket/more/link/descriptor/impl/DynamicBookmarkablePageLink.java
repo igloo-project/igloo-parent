@@ -3,7 +3,6 @@ package org.iglooproject.wicket.more.link.descriptor.impl;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
@@ -35,6 +34,14 @@ public class DynamicBookmarkablePageLink extends DynamicBookmarkableLink {
 	@Override
 	protected boolean linksTo(Page page) {
 		return getLinkGenerator().isActive(page.getPageClass());
+	}
+	
+	/**
+	 * No click event is allowed.
+	 */
+	@Override
+	public final void onClick() {
+		getLinkGenerator().setResponsePage();
 	}
 
 }
