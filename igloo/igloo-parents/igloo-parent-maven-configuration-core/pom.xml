@@ -135,7 +135,7 @@
 		<igloo.freemarker.version>2.3.28</igloo.freemarker.version>
 		<igloo.dom4j.version>1.6.1</igloo.dom4j.version>
 		
-		<igloo.poi.version>3.17</igloo.poi.version>
+		<igloo.poi.version>4.0.0</igloo.poi.version>
 		
 		<!-- 
 		Version 3 does not exist.
