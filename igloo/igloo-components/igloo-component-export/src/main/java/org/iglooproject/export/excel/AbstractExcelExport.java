@@ -29,6 +29,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.PrintSetup;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.DefaultIndexedColorMap;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -195,7 +196,7 @@ public abstract class AbstractExcelExport {
 
 	protected final void setFontColor(Font font, Map<Short, Color> colorRegistry, short color) {
 		if (font instanceof XSSFFont && colorRegistry.containsKey(color)) {
-			((XSSFFont) font).setColor(new XSSFColor(colorRegistry.get(color)));
+			((XSSFFont) font).setColor(fromAwtColor(colorRegistry, color));
 		} else {
 			font.setColor(color);
 		}
@@ -203,7 +204,7 @@ public abstract class AbstractExcelExport {
 	
 	protected final void setStyleFillForegroundColor(CellStyle style, Map<Short, Color> colorRegistry, short color) {
 		if (style instanceof XSSFCellStyle && colorRegistry.containsKey(color)) {
-			((XSSFCellStyle) style).setFillForegroundColor(new XSSFColor(colorRegistry.get(color)));
+			((XSSFCellStyle) style).setFillForegroundColor(fromAwtColor(colorRegistry, color));
 		} else {
 			style.setFillForegroundColor(color);
 		}
@@ -211,7 +212,7 @@ public abstract class AbstractExcelExport {
 	
 	protected final void setStyleFillBackgroundColor(CellStyle style, Map<Short, Color> colorRegistry, short color) {
 		if (style instanceof XSSFCellStyle && colorRegistry.containsKey(color)) {
-			((XSSFCellStyle) style).setFillBackgroundColor(new XSSFColor(colorRegistry.get(color)));
+			((XSSFCellStyle) style).setFillBackgroundColor(fromAwtColor(colorRegistry, color));
 		} else {
 			style.setFillBackgroundColor(color);
 		}
@@ -219,7 +220,7 @@ public abstract class AbstractExcelExport {
 	
 	protected final void setStyleTopBorderColor(CellStyle style, Map<Short, Color> colorRegistry, short color) {
 		if (style instanceof XSSFCellStyle && colorRegistry.containsKey(color)) {
-			((XSSFCellStyle) style).setTopBorderColor(new XSSFColor(colorRegistry.get(color)));
+			((XSSFCellStyle) style).setTopBorderColor(fromAwtColor(colorRegistry, color));
 		} else {
 			style.setTopBorderColor(color);
 		}
@@ -227,7 +228,7 @@ public abstract class AbstractExcelExport {
 	
 	protected final void setStyleBottomBorderColor(CellStyle style, Map<Short, Color> colorRegistry, short color) {
 		if (style instanceof XSSFCellStyle && colorRegistry.containsKey(color)) {
-			((XSSFCellStyle) style).setBottomBorderColor(new XSSFColor(colorRegistry.get(color)));
+			((XSSFCellStyle) style).setBottomBorderColor(fromAwtColor(colorRegistry, color));
 		} else {
 			style.setBottomBorderColor(color);
 		}
@@ -235,7 +236,7 @@ public abstract class AbstractExcelExport {
 	
 	protected final void setStyleLeftBorderColor(CellStyle style, Map<Short, Color> colorRegistry, short color) {
 		if (style instanceof XSSFCellStyle && colorRegistry.containsKey(color)) {
-			((XSSFCellStyle) style).setLeftBorderColor(new XSSFColor(colorRegistry.get(color)));
+			((XSSFCellStyle) style).setLeftBorderColor(fromAwtColor(colorRegistry, color));
 		} else {
 			style.setLeftBorderColor(color);
 		}
@@ -243,10 +244,17 @@ public abstract class AbstractExcelExport {
 	
 	protected final void setStyleRightBorderColor(CellStyle style, Map<Short, Color> colorRegistry, short color) {
 		if (style instanceof XSSFCellStyle && colorRegistry.containsKey(color)) {
-			((XSSFCellStyle) style).setRightBorderColor(new XSSFColor(colorRegistry.get(color)));
+			((XSSFCellStyle) style).setRightBorderColor(fromAwtColor(colorRegistry, color));
 		} else {
 			style.setRightBorderColor(color);
 		}
+	}
+
+	protected XSSFColor fromAwtColor(Map<Short, Color> colorRegistry, short color) {
+		XSSFColor xssfColor = new XSSFColor(new DefaultIndexedColorMap());
+		Color awtColor = colorRegistry.get(color);
+		xssfColor.setRGB(new byte[] { (byte) awtColor.getRed(), (byte) awtColor.getGreen(), (byte) awtColor.getBlue() });
+		return xssfColor;
 	}
 
 	public void setPaperSize(short paperSize) {
