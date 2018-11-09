@@ -58,7 +58,7 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl imple
 			if (missed == 0) {
 				LOGGER.info("Executing automatically data upgrades (success)");
 			} else {
-				LOGGER.warn("Executing automatically data upgrades (done): %d errors", missed);
+				LOGGER.warn("Executing automatically data upgrades (done): {} errors", missed);
 			}
 		}
 	}
