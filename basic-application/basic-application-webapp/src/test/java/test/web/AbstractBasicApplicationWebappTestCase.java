@@ -1,5 +1,6 @@
 package test.web;
 
+import org.apache.wicket.Localizer;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.tester.WicketTester;
 import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
@@ -102,5 +103,17 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 	private void initAuthorities() throws ServiceException, SecurityServiceException {
 		authorityService.create(new Authority(CoreAuthorityConstants.ROLE_ADMIN));
 		authorityService.create(new Authority(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+	}
+
+	protected static String localize(String key) {
+		return Localizer.get().getString(key, null);
+	}
+
+	protected String modalPath(String path) {
+		return path + ":container:dialog";
+	}
+
+	protected String modalFormPath(String path) {
+		return modalPath(path) + ":body:form";
 	}
 }
