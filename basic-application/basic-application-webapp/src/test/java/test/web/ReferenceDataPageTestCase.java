@@ -38,5 +38,4 @@ public class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTes
 		}
 		Assert.assertTrue(unauthorizedInstantiation);
 	}
-
 }

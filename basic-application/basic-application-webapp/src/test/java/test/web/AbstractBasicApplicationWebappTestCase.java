@@ -1,11 +1,19 @@
 package test.web;
 
+import java.util.Set;
+
 import org.apache.wicket.Localizer;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.tester.WicketTester;
+import org.assertj.core.util.Sets;
 import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
+import org.iglooproject.basicapp.core.business.user.model.BasicUser;
+import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
+import org.iglooproject.basicapp.core.business.user.model.UserGroup;
+import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
+import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
@@ -17,6 +25,7 @@ import org.iglooproject.test.wicket.more.AbstractWicketMoreTestCase;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 
 import test.web.config.spring.BasicApplicationWebappTestCommonConfig;
@@ -28,6 +37,9 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 	protected IUserService userService;
 
 	@Autowired
+	protected IUserGroupService userGroupService;
+
+	@Autowired
 	protected IAuthorityService authorityService;
 
 	@Autowired
@@ -37,10 +49,13 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 	protected IHistoryLogService historyLogService;
 
 	@Autowired
+	protected PasswordEncoder passwordEncoder;
+
+	@Autowired
 	private IMutablePropertyDao mutablePropertyDao;
 
 	@Autowired
-	WebApplication application;
+	private WebApplication application;
 
 	@Before
 	public void setUp() throws ServiceException, SecurityServiceException {
@@ -53,6 +68,7 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 		entityManagerClear();
 		
 		cleanEntities(userService);
+		cleanEntities(userGroupService);
 		cleanEntities(authorityService);
 		cleanEntities(historyLogService);
 		
@@ -61,48 +77,71 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 		authenticationService.signOut();
 	}
 
-	protected User createUser(String username, String firstname, String lastname, String password)
-		throws ServiceException, SecurityServiceException {
-		return createUser(username, firstname, lastname, password, CoreAuthorityConstants.ROLE_AUTHENTICATED);
-	}
-
-	protected User createUser(String username, String firstname, String lastname, String password, String authority)
-		throws ServiceException, SecurityServiceException {
-		User user = new User();
+	protected <U extends User> User createUser(String username, String firstname, String lastname, String password,
+		UserTypeDescriptor<U> type, Set<UserGroup> userGroups, Set<String> authorities) throws ServiceException, SecurityServiceException {
+		
+		User user;
+		if (UserTypeDescriptor.BASIC_USER.equals(type)) {
+			user = new BasicUser();
+		} else if (UserTypeDescriptor.TECHNICAL_USER.equals(type)) {
+			user = new TechnicalUser();
+		} else {
+			user = new User();
+		}
+		
 		user.setUsername(username);
 		user.setFirstName(firstname);
 		user.setLastName(lastname);
-		user.addAuthority(authorityService.getByName(authority));
+		if (authorities != null) {
+			for (String authority : authorities) {
+				user.addAuthority(authorityService.getByName(authority));
+			}
+		}
 		
 		userService.create(user);
 		userService.setPasswords(user, password);
 		
+		if (userGroups != null) {
+			for (UserGroup userGroup : userGroups) {
+				userGroupService.addUser(userGroup, user);
+			}
+		}
+		
 		return user;
 	}
 
-	protected void createAndAuthenticateUser(String username, String firstname, String lastname, String password, String authority)
-		throws ServiceException, SecurityServiceException {
-		createUser(username, firstname, lastname, password, authority);
-		
+	protected void authenticateUser(User user, String password) throws ServiceException, SecurityServiceException {
 		AbstractCoreSession<?> session = AbstractCoreSession.get();
 		User loggedInUser = null;
 		
-		session.signIn(username, password);
+		session.signIn(user.getUsername(), password);
 		loggedInUser = (User) session.getUser();
 		userService.onSignIn(loggedInUser);
 	}
 
-	protected void createAndAuthenticateUser(String authority) throws ServiceException, SecurityServiceException {
-		String username = "admin";
-		String firstname = "Kobalt";
-		String lastname = "Kobalt";
-		String password = "kobalt69";
-		createAndAuthenticateUser(username, firstname, lastname, password, authority);
+	protected User createAndAuthenticateUser(String username, String firstname, String lastname, String password, String authority)
+		throws ServiceException, SecurityServiceException {
+		User user = createUser(username, firstname, lastname, password, null, null, Sets.newTreeSet(authority));
+		authenticateUser(user, password);
+		return user;
+	}
+
+	protected User createAndAuthenticateUser(String authority) throws ServiceException, SecurityServiceException {
+		String username = "Username";
+		String firstname = "Firstname";
+		String lastname = "Lastname";
+		String password = "Password";
+		return createAndAuthenticateUser(username, firstname, lastname, password, authority);
 	}
 
 	private void initAuthorities() throws ServiceException, SecurityServiceException {
 		authorityService.create(new Authority(CoreAuthorityConstants.ROLE_ADMIN));
 		authorityService.create(new Authority(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+	}
+
+	protected void initUserGroups() throws ServiceException, SecurityServiceException {
+		userGroupService.create(new UserGroup("Users"));
+		userGroupService.create(new UserGroup("Administrators"));
 	}
 
 	protected static String localize(String key) {

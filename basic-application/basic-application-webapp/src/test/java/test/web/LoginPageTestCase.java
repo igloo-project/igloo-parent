@@ -41,7 +41,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		String firstname = "Kobalt";
 		String lastname = "Lyon";
 		String password = "kobalt";
-		createUser(username, firstname, lastname, password);
+		createUser(username, firstname, lastname, password,  null, null, null);
 		
 		getWicketTester().startPage(SignInPage.class);
 		getWicketTester().startComponentInPage(new SignInContentPanel<>("content", UserTypeDescriptor.USER));
@@ -64,7 +64,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		String firstname = "Kobalt";
 		String lastname = "Lyon";
 		String password = "kobalt";
-		createUser(username, firstname, lastname, password);
+		createUser(username, firstname, lastname, password, null, null, null);
 		
 		getWicketTester().startPage(SignInPage.class);
 		getWicketTester().startComponentInPage(new SignInContentPanel<>("content", UserTypeDescriptor.USER));

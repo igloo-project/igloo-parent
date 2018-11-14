@@ -1,10 +1,12 @@
 package test.web;
 
+import org.apache.wicket.Component;
 import org.iglooproject.basicapp.web.application.common.template.theme.basic.NavbarPanel;
 import org.iglooproject.basicapp.web.application.navigation.page.HomePage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
+import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.junit.Test;
 
@@ -21,12 +23,8 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void homePageComponents() throws ServiceException, SecurityServiceException {
-		String username = "admin";
-		String firstname = "Kobalt";
-		String lastname = "Kobalt";
-		String password = "kobalt69";
-		createAndAuthenticateUser(username, firstname, lastname, password, CoreAuthorityConstants.ROLE_AUTHENTICATED);
+	public void homePageComponentsAuthenticated() throws ServiceException, SecurityServiceException {
+		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
 		getWicketTester().startPage(HomePage.class);
 		
@@ -39,14 +37,25 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
 	public void navbarAuthenticated() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser("user", "random", "Kobalt", "user", CoreAuthorityConstants.ROLE_AUTHENTICATED);
+		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		navBarComponents();
 	}
 
 	@Test
 	public void navbarAdmin() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser("admin", "Kobalt", "Kobalt", "kobalt", CoreAuthorityConstants.ROLE_ADMIN);
+		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		navBarComponents();
+	}
+
+	@Test
+	public void navBarNavigation() throws ServiceException, SecurityServiceException {
+		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
+		
+		getWicketTester().startPage(HomePage.class);
+		
+		Component consoleNavItem = getWicketTester().getComponentFromLastRenderedPage("navbar:mainNav:" + NavbarItem.CONSOLE.getOrder());
+		getWicketTester().clickLink(consoleNavItem.getPageRelativePath() + ":navLink");
+		getWicketTester().assertRenderedPage(ConsoleMaintenanceSearchPage.class);
 	}
 
 	private void navBarComponents() throws ServiceException, SecurityServiceException {
@@ -56,14 +65,13 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		
 		for (NavbarItem navbarItem : NavbarItem.values()) {
 			if (authenticationService.hasRole(navbarItem.getAuthority())) {
-				getWicketTester().assertVisible("navbar:mainNav:"+ navbarItem.getOrder());
-				getWicketTester().assertEnabled("navbar:mainNav:"+ navbarItem.getOrder() +":navLink");
-				getWicketTester().assertLabel("navbar:mainNav:"+ navbarItem.getOrder() +":navLink:label", navbarItem.getLabel());
+				getWicketTester().assertVisible("navbar:mainNav:" + navbarItem.getOrder());
+				getWicketTester().assertEnabled("navbar:mainNav:" + navbarItem.getOrder() + ":navLink");
+				getWicketTester().assertLabel("navbar:mainNav:" + navbarItem.getOrder() + ":navLink:label", navbarItem.getLabel());
 			} else {
-				getWicketTester().assertInvisible("navbar:mainNav:"+ navbarItem.getOrder());
+				getWicketTester().assertInvisible("navbar:mainNav:" + navbarItem.getOrder());
 			}
 		}
-		
 	}
 
 	private enum NavbarItem {
