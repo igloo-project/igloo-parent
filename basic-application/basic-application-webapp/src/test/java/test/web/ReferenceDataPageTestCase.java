@@ -17,9 +17,9 @@ public class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTes
 	public void referenceDataPage() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
-		getWicketTester().startPage(ReferenceDataPage.class);
+		tester.startPage(ReferenceDataPage.class);
 		
-		getWicketTester().assertRenderedPage(ReferenceDataPage.class);
+		tester.assertRenderedPage(ReferenceDataPage.class);
 	}
 
 	/*
@@ -32,7 +32,7 @@ public class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTes
 		
 		boolean unauthorizedInstantiation = false;
 		try {
-			getWicketTester().executeUrl("./reference-data/"); // equals to startPage(ReferenceDataPage.class)
+			tester.executeUrl("./reference-data/"); // equals to startPage(ReferenceDataPage.class)
 		} catch (UnauthorizedInstantiationException e) {
 			unauthorizedInstantiation = true;
 		}

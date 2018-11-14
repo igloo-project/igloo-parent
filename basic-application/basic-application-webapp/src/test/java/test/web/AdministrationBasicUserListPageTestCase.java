@@ -25,9 +25,9 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 	public void administrationBasicUserListPage() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
-		getWicketTester().startPage(AdministrationBasicUserListPage.class);
+		tester.startPage(AdministrationBasicUserListPage.class);
 		
-		getWicketTester().assertRenderedPage(AdministrationBasicUserListPage.class);
+		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
 	}
 
 	@Test
@@ -41,14 +41,14 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
-		getWicketTester().startPage(AdministrationBasicUserListPage.class);
+		tester.startPage(AdministrationBasicUserListPage.class);
 		
-		getWicketTester().assertComponent("results", DecoratedCoreDataTablePanel.class);
+		tester.assertComponent("results", DecoratedCoreDataTablePanel.class);
 		@SuppressWarnings("unchecked")
-		DecoratedCoreDataTablePanel<User, ?> results = (DecoratedCoreDataTablePanel<User, ?>) getWicketTester().getComponentFromLastRenderedPage("results");
+		DecoratedCoreDataTablePanel<User, ?> results = (DecoratedCoreDataTablePanel<User, ?>) tester.getComponentFromLastRenderedPage("results");
 		assertEquals(2, results.getItemCount(), 0);
 		
-		FormTester form = getWicketTester().newFormTester("search:form");
+		FormTester form = tester.newFormTester("search:form");
 		UserGroupDropDownSingleChoice userGroupField = (UserGroupDropDownSingleChoice) form.getForm().get("userGroup");
 		assertEquals(userGroupField.getChoices().size(), 2);
 		form.select(userGroupField.getId(), 0); // It should be Administrators

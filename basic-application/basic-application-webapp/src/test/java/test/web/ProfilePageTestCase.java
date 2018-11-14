@@ -24,79 +24,79 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 	public void profilePage() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
-		getWicketTester().startPage(ProfilePage.class);
+		tester.startPage(ProfilePage.class);
 		
-		getWicketTester().assertRenderedPage(ProfilePage.class);
+		tester.assertRenderedPage(ProfilePage.class);
 	}
 
 	@Test
 	public void updatePasswordComponents() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
-		getWicketTester().startPage(ProfilePage.class);
+		tester.startPage(ProfilePage.class);
 		
-		getWicketTester().assertVisible("description:passwordEditPopup");
-		getWicketTester().assertComponent("description:passwordEditPopup", UserPasswordUpdatePopup.class);
+		tester.assertVisible("description:passwordEditPopup");
+		tester.assertComponent("description:passwordEditPopup", UserPasswordUpdatePopup.class);
 		
-		getWicketTester().assertVisible("description:passwordEditPopup:container");
-		Component container = getWicketTester().getComponentFromLastRenderedPage("description:passwordEditPopup:container");
+		tester.assertVisible("description:passwordEditPopup:container");
+		Component container = tester.getComponentFromLastRenderedPage("description:passwordEditPopup:container");
 		
 		// TODO : To use when we find a way to execute js with WicketTester
-//		TagTester tagTesterContainerHidden = TagTester.createTagByAttribute(getWicketTester().getLastResponse().getDocument(), "id", container.getMarkupId());
+//		TagTester tagTesterContainerHidden = TagTester.createTagByAttribute(tester.getLastResponse().getDocument(), "id", container.getMarkupId());
 //		assertEquals(tagTesterContainerHidden.getAttribute("style"), "display: none;");
 //		assertFalse(tagTesterContainerHidden.getAttributeContains("class", "show"));
 		
 		// The elements present in AbstractModalPopupPanel.html should be visible (such as the header)
 		// Header
-		getWicketTester().assertVisible(modalPath() + ":header");
-		getWicketTester().assertComponent(modalPath() + ":header", CoreLabel.class);
-		getWicketTester().assertLabel(modalPath() + ":header", localize("administration.user.action.password.edit.title"));
+		tester.assertVisible(modalPath() + ":header");
+		tester.assertComponent(modalPath() + ":header", CoreLabel.class);
+		tester.assertLabel(modalPath() + ":header", localize("administration.user.action.password.edit.title"));
 		// Body elements should be invisible
-		getWicketTester().assertInvisible(formPath());
+		tester.assertInvisible(formPath());
 		// Footer elements should be invisible
-		getWicketTester().assertInvisible(modalPath() + ":footer:save");
-		getWicketTester().assertInvisible(modalPath() + ":footer:cancel");
+		tester.assertInvisible(modalPath() + ":footer:save");
+		tester.assertInvisible(modalPath() + ":footer:cancel");
 		
-		getWicketTester().executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
-		getWicketTester().assertComponentOnAjaxResponse(container);
+		tester.executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
+		tester.assertComponentOnAjaxResponse(container);
 		
 		// TODO : To use when we find a way to execute js with WicketTester
-//		TagTester tagTesterContainerVisible= TagTester.createTagByAttribute(getWicketTester().getLastResponse().getDocument(), "id", container.getMarkupId());
+//		TagTester tagTesterContainerVisible= TagTester.createTagByAttribute(tester.getLastResponse().getDocument(), "id", container.getMarkupId());
 //		assertEquals(tagTesterContainerVisible.getAttribute("style"), "display: block;");
 //		assertTrue(tagTesterContainerVisible.getAttributeContains("class", "show"));
 		
 		// Body elements should now be visible
-		getWicketTester().assertVisible(formPath());
-		getWicketTester().assertVisible(formPath() + ":oldPassword");
-		getWicketTester().assertRequired(formPath() + ":oldPassword");
-		getWicketTester().assertVisible(formPath() + ":newPassword");
-		getWicketTester().assertRequired(formPath() + ":newPassword");
-		getWicketTester().assertVisible(formPath() + ":confirmPassword");
-		getWicketTester().assertRequired(formPath() + ":confirmPassword");
+		tester.assertVisible(formPath());
+		tester.assertVisible(formPath() + ":oldPassword");
+		tester.assertRequired(formPath() + ":oldPassword");
+		tester.assertVisible(formPath() + ":newPassword");
+		tester.assertRequired(formPath() + ":newPassword");
+		tester.assertVisible(formPath() + ":confirmPassword");
+		tester.assertRequired(formPath() + ":confirmPassword");
 		// Footer elements should now be visible
-		getWicketTester().assertVisible(modalPath() + ":footer:save");
-		getWicketTester().assertEnabled(modalPath() + ":footer:save");
-		getWicketTester().assertVisible(modalPath() + ":footer:cancel");
-		getWicketTester().assertEnabled(modalPath() + ":footer:cancel");
+		tester.assertVisible(modalPath() + ":footer:save");
+		tester.assertEnabled(modalPath() + ":footer:save");
+		tester.assertVisible(modalPath() + ":footer:cancel");
+		tester.assertEnabled(modalPath() + ":footer:cancel");
 	}
 
 	@Test
 	public void updatePasswordFormWrongOldPassword() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
-		getWicketTester().startPage(ProfilePage.class);
+		tester.startPage(ProfilePage.class);
 		
-		getWicketTester().executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
+		tester.executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
 		
-		FormTester form = getWicketTester().newFormTester(formPath());
+		FormTester form = tester.newFormTester(formPath());
 		// Necessary because the submission button is outside the form
-		Component submitButton = getWicketTester().getComponentFromLastRenderedPage(modalPath() + ":footer:save");
+		Component submitButton = tester.getComponentFromLastRenderedPage(modalPath() + ":footer:save");
 		form.setValue(form.getForm().get("oldPassword"), "wrongOldPassword");
 		form.setValue(form.getForm().get("newPassword"), "newPassword");
 		form.setValue(form.getForm().get("confirmPassword"), "newPassword");
 		form.submit(submitButton);
 		
-		getWicketTester().assertErrorMessages(localize("administration.user.action.password.edit.error.oldPassword"));
+		tester.assertErrorMessages(localize("administration.user.action.password.edit.error.oldPassword"));
 	}
 
 	@Test
@@ -107,21 +107,21 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		String password = "oldPassword";
 		createAndAuthenticateUser(username, firstname, lastname, password, CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
-		getWicketTester().startPage(ProfilePage.class);
+		tester.startPage(ProfilePage.class);
 		
-		getWicketTester().executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
+		tester.executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
 		
-		FormTester form = getWicketTester().newFormTester(formPath());
+		FormTester form = tester.newFormTester(formPath());
 		// Necessary because the submission button is outside the form
-		Component submitButton = getWicketTester().getComponentFromLastRenderedPage(modalPath() + ":footer:save");
+		Component submitButton = tester.getComponentFromLastRenderedPage(modalPath() + ":footer:save");
 		String newPassword = "newPassword";
 		form.setValue(form.getForm().get("oldPassword"), password);
 		form.setValue(form.getForm().get("newPassword"), newPassword);
 		form.setValue(form.getForm().get("confirmPassword"), newPassword);
 		form.submit(submitButton);
 		
-		getWicketTester().assertNoErrorMessage();
-		getWicketTester().assertFeedbackMessages(new ExactLevelFeedbackMessageFilter(FeedbackMessage.SUCCESS), localize("common.success"));
+		tester.assertNoErrorMessage();
+		tester.assertFeedbackMessages(new ExactLevelFeedbackMessageFilter(FeedbackMessage.SUCCESS), localize("common.success"));
 		
 		assertTrue(passwordEncoder.matches(newPassword, userService.getByUsername(username).getPasswordHash()));
 	}

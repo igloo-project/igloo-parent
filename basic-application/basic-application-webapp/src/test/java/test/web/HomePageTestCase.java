@@ -14,25 +14,25 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
 	public void homePage() {
-		getWicketTester().startPage(HomePage.class);
+		tester.startPage(HomePage.class);
 		
-		getWicketTester().assertRenderedPage(HomePage.class);
+		tester.assertRenderedPage(HomePage.class);
 		
-		getWicketTester().assertComponent("pageTitle", CoreLabel.class);
-		getWicketTester().assertLabel("pageTitle", localize("home.pageTitle"));
+		tester.assertComponent("pageTitle", CoreLabel.class);
+		tester.assertLabel("pageTitle", localize("home.pageTitle"));
 	}
 
 	@Test
 	public void homePageComponentsAuthenticated() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
-		getWicketTester().startPage(HomePage.class);
+		tester.startPage(HomePage.class);
 		
-		getWicketTester().assertVisible("profile");
-		getWicketTester().assertEnabled("profile");
+		tester.assertVisible("profile");
+		tester.assertEnabled("profile");
 		
-		getWicketTester().assertInvisible("users");
-		getWicketTester().assertInvisible("referenceData");
+		tester.assertInvisible("users");
+		tester.assertInvisible("referenceData");
 	}
 
 	@Test
@@ -51,25 +51,25 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	public void navBarNavigation() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
-		getWicketTester().startPage(HomePage.class);
+		tester.startPage(HomePage.class);
 		
-		Component consoleNavItem = getWicketTester().getComponentFromLastRenderedPage("navbar:mainNav:" + NavbarItem.CONSOLE.getOrder());
-		getWicketTester().clickLink(consoleNavItem.getPageRelativePath() + ":navLink");
-		getWicketTester().assertRenderedPage(ConsoleMaintenanceSearchPage.class);
+		Component consoleNavItem = tester.getComponentFromLastRenderedPage("navbar:mainNav:" + NavbarItem.CONSOLE.getOrder());
+		tester.clickLink(consoleNavItem.getPageRelativePath() + ":navLink");
+		tester.assertRenderedPage(ConsoleMaintenanceSearchPage.class);
 	}
 
 	private void navBarComponents() throws ServiceException, SecurityServiceException {
-		getWicketTester().startPage(HomePage.class);
+		tester.startPage(HomePage.class);
 		
-		getWicketTester().assertComponent("navbar", NavbarPanel.class);
+		tester.assertComponent("navbar", NavbarPanel.class);
 		
 		for (NavbarItem navbarItem : NavbarItem.values()) {
 			if (authenticationService.hasRole(navbarItem.getAuthority())) {
-				getWicketTester().assertVisible("navbar:mainNav:" + navbarItem.getOrder());
-				getWicketTester().assertEnabled("navbar:mainNav:" + navbarItem.getOrder() + ":navLink");
-				getWicketTester().assertLabel("navbar:mainNav:" + navbarItem.getOrder() + ":navLink:label", navbarItem.getLabel());
+				tester.assertVisible("navbar:mainNav:" + navbarItem.getOrder());
+				tester.assertEnabled("navbar:mainNav:" + navbarItem.getOrder() + ":navLink");
+				tester.assertLabel("navbar:mainNav:" + navbarItem.getOrder() + ":navLink:label", navbarItem.getLabel());
 			} else {
-				getWicketTester().assertInvisible("navbar:mainNav:" + navbarItem.getOrder());
+				tester.assertInvisible("navbar:mainNav:" + navbarItem.getOrder());
 			}
 		}
 	}

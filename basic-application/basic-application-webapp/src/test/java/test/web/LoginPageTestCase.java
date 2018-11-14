@@ -15,24 +15,24 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
 	public void loginPage() {
-		getWicketTester().startPage(SignInPage.class);
-		getWicketTester().assertRenderedPage(SignInPage.class);
+		tester.startPage(SignInPage.class);
+		tester.assertRenderedPage(SignInPage.class);
 		
-		getWicketTester().assertComponent("content", SignInContentPanel.class);
+		tester.assertComponent("content", SignInContentPanel.class);
 	}
 
 	@Test
 	public void loginPagePasswordRecovery() {
-		getWicketTester().startPage(SignInPage.class);
-		getWicketTester().assertRenderedPage(SignInPage.class);
+		tester.startPage(SignInPage.class);
+		tester.assertRenderedPage(SignInPage.class);
 		
-		getWicketTester().assertComponent("content", SignInContentPanel.class);
-		getWicketTester().assertComponent("footer", SignInFooterPanel.class);
+		tester.assertComponent("content", SignInContentPanel.class);
+		tester.assertComponent("footer", SignInFooterPanel.class);
 		
-		getWicketTester().assertEnabled("footer:passwordRecovery");
-		getWicketTester().clickLink("footer:passwordRecovery");
+		tester.assertEnabled("footer:passwordRecovery");
+		tester.clickLink("footer:passwordRecovery");
 		
-		getWicketTester().assertRenderedPage(SecurityPasswordRecoveryPage.class);
+		tester.assertRenderedPage(SecurityPasswordRecoveryPage.class);
 	}
 
 	@Test
@@ -43,19 +43,19 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		String password = "kobalt";
 		createUser(username, firstname, lastname, password,  null, null, null);
 		
-		getWicketTester().startPage(SignInPage.class);
-		getWicketTester().startComponentInPage(new SignInContentPanel<>("content", UserTypeDescriptor.USER));
-		getWicketTester().assertRequired("content:form:username");
-		getWicketTester().assertRequired("content:form:password");
+		tester.startPage(SignInPage.class);
+		tester.startComponentInPage(new SignInContentPanel<>("content", UserTypeDescriptor.USER));
+		tester.assertRequired("content:form:username");
+		tester.assertRequired("content:form:password");
 		
-		FormTester form = getWicketTester().newFormTester("content:form");
+		FormTester form = tester.newFormTester("content:form");
 		
 		form.setValue(form.getForm().get("username"), username);
 		form.setValue(form.getForm().get("password"), password);
 		
 		form.submit();
 		
-		getWicketTester().assertRenderedPage(HomePage.class);
+		tester.assertRenderedPage(HomePage.class);
 	}
 
 	@Test
@@ -66,19 +66,19 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		String password = "kobalt";
 		createUser(username, firstname, lastname, password, null, null, null);
 		
-		getWicketTester().startPage(SignInPage.class);
-		getWicketTester().startComponentInPage(new SignInContentPanel<>("content", UserTypeDescriptor.USER));
-		getWicketTester().assertRequired("content:form:username");
-		getWicketTester().assertRequired("content:form:password");
+		tester.startPage(SignInPage.class);
+		tester.startComponentInPage(new SignInContentPanel<>("content", UserTypeDescriptor.USER));
+		tester.assertRequired("content:form:username");
+		tester.assertRequired("content:form:password");
 		
-		FormTester form = getWicketTester().newFormTester("content:form");
+		FormTester form = tester.newFormTester("content:form");
 		
 		form.setValue(form.getForm().get("username"), username);
 		form.setValue(form.getForm().get("password"), "wrongPassword");
 		
 		form.submit();
 		
-		getWicketTester().assertErrorMessages(localize("signIn.error.authentication"));
-		getWicketTester().assertRenderedPage(SignInPage.class);
+		tester.assertErrorMessages(localize("signIn.error.authentication"));
+		tester.assertRenderedPage(SignInPage.class);
 	}
 }

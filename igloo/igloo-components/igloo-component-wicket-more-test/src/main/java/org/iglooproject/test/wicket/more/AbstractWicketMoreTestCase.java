@@ -23,15 +23,15 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 @DirtiesContext
 public abstract class AbstractWicketMoreTestCase extends AbstractTestCase implements IWicketTestCase {
 	
-	private WicketTester wicketTester;
+	protected WicketTester tester;
 
 	@Override
-	public void setWicketTester(WicketTester wicketTester) {
-		this.wicketTester = wicketTester;
+	public void setWicketTester(WicketTester tester) {
+		this.tester = tester;
 	}
 
 	public WicketTester getWicketTester() {
-		return wicketTester;
+		return tester;
 	}
 
 	protected static <D extends IDetachable> D serializeAndDeserialize(D object) {
