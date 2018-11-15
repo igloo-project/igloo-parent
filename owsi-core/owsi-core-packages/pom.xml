@@ -1,20 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-maven-configuration-core</artifactId>
-		<version>0.13.4</version>
+		<version>0.13.5-SNAPSHOT</version>
 		<relativePath>../owsi-core-parents/owsi-core-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
-	
+
 	<groupId>fr.openwide.core.packages</groupId>
 	<artifactId>owsi-core-packages</artifactId>
 	<packaging>pom</packaging>
-	
+
 	<name>OWSI Core - Packages</name>
-	
+
 	<modules>
 		<module>owsi-core-package-core-spring-jpa</module>
 		<module>owsi-core-package-core-spring-security</module>
@@ -26,7 +26,7 @@
 		<module>owsi-core-package-web-spring-security</module>
 		<module>owsi-core-package-web-jersey2</module>
 	</modules>
-	
+
 	<!-- Project information -->
 
 	<organization>
@@ -62,5 +62,5 @@
 			<organization>Open Wide</organization>
 		</developer>
 	</developers>
-	
+
 </project>

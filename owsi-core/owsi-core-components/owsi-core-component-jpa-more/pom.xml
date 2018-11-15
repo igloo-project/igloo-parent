@@ -5,80 +5,80 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.13.4</version>
+		<version>0.13.5-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>owsi-core-component-jpa-more</artifactId>
-	
+
 	<name>OWSI Core - Component - JPA - More JPA fun</name>
 
 	<dependencies>
-		
+
 		<!-- OWSI Core dependencies -->
-		
+
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
 			<artifactId>owsi-core-component-jpa</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>fr.openwide.core.dependencies</groupId>
 			<artifactId>owsi-core-dependency-core-spring-security</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
-		
+
 		<!-- Jackson est utilisé pour sérialiser les tâches avant persistence -->
-		
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
-		
+
 		<!-- Bindgen -->
-		
+
 		<dependency>
 			<groupId>org.bindgen</groupId>
 			<artifactId>bindgen</artifactId>
 		</dependency>
-		
+
 		<!-- Excel Import -->
-		
+
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 		</dependency>
-		
+
 		<!-- ImageInfo -->
-		
+
 		<dependency>
 			<groupId>org.devlib.schmidt</groupId>
 			<artifactId>imageinfo</artifactId>
 		</dependency>
-		
+
 		<!-- Diff -->
-		
+
 		<dependency>
 			<groupId>de.danielbechler</groupId>
 			<artifactId>java-object-diff</artifactId>
 		</dependency>
-		
+
 		<!-- Database pooling -->
-		
+
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- Test dependencies -->
-		
+
 		<!--
 		Scope provided is necessary because test helpers are
 		included in artifact (TestHistoryDifferenceCollectionMatcher for instance)
@@ -90,20 +90,20 @@
 			<artifactId>junit</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -112,7 +112,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<repositories>
 		<repository>
 			<id>org.bindgen</id>
@@ -123,5 +123,5 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	
+
 </project>
