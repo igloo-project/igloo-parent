@@ -107,11 +107,11 @@
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<flowInitContext>
-						<masterBranchName>mt-0.13</masterBranchName>
-						<developBranchName>dev</developBranchName>
-						<featureBranchPrefix>ft-</featureBranchPrefix>
-						<releaseBranchPrefix>rl-</releaseBranchPrefix>
-						<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
+						<masterBranchName>mt-0.13-master</masterBranchName>
+						<developBranchName>mt-0.13-dev</developBranchName>
+						<featureBranchPrefix>ft-0.13-</featureBranchPrefix>
+						<releaseBranchPrefix>rl-0.13-</releaseBranchPrefix>
+						<hotfixBranchPrefix>hf-0.13-</hotfixBranchPrefix>
 						<versionTagPrefix>v</versionTagPrefix>
 					</flowInitContext>
 				</configuration>
