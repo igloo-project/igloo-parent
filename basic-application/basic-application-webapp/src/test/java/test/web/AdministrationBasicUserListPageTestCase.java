@@ -3,7 +3,9 @@ package test.web;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.util.tester.FormTester;
+import org.apache.wicket.util.tester.TagTester;
 import org.assertj.core.util.Sets;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
@@ -15,6 +17,7 @@ import org.iglooproject.basicapp.web.application.common.typedescriptor.user.User
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
+import org.iglooproject.wicket.markup.html.basic.CountLabel;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceGridView;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelLinkColumnPanel;
@@ -30,8 +33,40 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
-		
 		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
+	}
+
+	@Test
+	public void administrationBasicUserListPageCountZero() throws ServiceException, SecurityServiceException {
+		testCountLabel("Aucun utilisateur");
+	}
+
+	@Test
+	public void administrationBasicUserListPageCountOne() throws ServiceException, SecurityServiceException {
+		createUser("user", "firstname", "lastname", "password",
+				UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+		
+		testCountLabel("1 utilisateur");
+	}
+
+	@Test
+	public void administrationBasicUserListPageCountMultiple() throws ServiceException, SecurityServiceException {
+		createUser("user1", "firstname1", "lastname1", "password1",
+				UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+		createUser("user2", "firstname2", "lastname2", "password2",
+				UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+		
+		testCountLabel("2 utilisateurs");
+	}
+
+	private void testCountLabel(String label) throws ServiceException, SecurityServiceException {
+		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
+		
+		tester.startPage(AdministrationBasicUserListPage.class);
+		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
+		
+		tester.assertComponent("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", CountLabel.class);
+		tester.assertLabel("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", label);
 	}
 
 	@Test
@@ -41,11 +76,12 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		createUser("user1", "firstname1", "lastname1", "password1",
 				UserTypeDescriptor.BASIC_USER, Sets.newTreeSet(administrators), Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		createUser("user2", "firstname2", "lastname2", "password2",
-				UserTypeDescriptor.BASIC_USER, Sets.newTreeSet(), Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+				UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
+		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
 		
 		tester.assertComponent("results", DecoratedCoreDataTablePanel.class);
 		@SuppressWarnings("unchecked")
@@ -69,6 +105,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
+		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
 		
 		tester.assertComponent("results:dataTableContainer:dataTable:body:rows", SequenceGridView.class);
 		@SuppressWarnings("unchecked")
@@ -86,5 +123,19 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		tester.clickLink(usernameCell.getPageRelativePath() + ":link");
 		
 		tester.assertRenderedPage(AdministrationBasicUserDetailPage.class);
+	}
+
+	@Test
+	public void administrationBasicUserListExcelTootilp() throws ServiceException, SecurityServiceException {
+		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
+		
+		tester.startPage(AdministrationBasicUserListPage.class);
+		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
+		
+		tester.assertVisible("headerElementsSection:actionsContainer:exportExcel");
+		
+		Component exportExcel = tester.getComponentFromLastRenderedPage("headerElementsSection:actionsContainer:exportExcel");
+		TagTester tagTester = TagTester.createTagByAttribute(tester.getLastResponse().getDocument(), "id", exportExcel.getMarkupId());
+		assertEquals(tagTester.getAttribute("title"), localize("common.action.export.excel"));
 	}
 }

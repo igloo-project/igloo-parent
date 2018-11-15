@@ -5,7 +5,6 @@ import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDat
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
@@ -18,7 +17,6 @@ public class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTes
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
 		tester.startPage(ReferenceDataPage.class);
-		
 		tester.assertRenderedPage(ReferenceDataPage.class);
 	}
 
@@ -26,16 +24,10 @@ public class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTes
 	 * WicketTester does not passes through Spring Security, so the accessibility test for most pages is not relevant
 	 * except when we use an @AuthorizeInstantiation annotation (here on ReferenceDataTemplate)
 	 */
-	@Test
-	public void referenceDataPageAccessibilityAuthenticated() throws ServiceException, SecurityServiceException {
+	@Test(expected = UnauthorizedInstantiationException.class)
+	public void referenceDataPageUnauthorized() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
-		boolean unauthorizedInstantiation = false;
-		try {
-			tester.executeUrl("./reference-data/"); // equals to startPage(ReferenceDataPage.class)
-		} catch (UnauthorizedInstantiationException e) {
-			unauthorizedInstantiation = true;
-		}
-		Assert.assertTrue(unauthorizedInstantiation);
+		tester.executeUrl("./reference-data/"); // equals to startPage(ReferenceDataPage.class)
 	}
 }

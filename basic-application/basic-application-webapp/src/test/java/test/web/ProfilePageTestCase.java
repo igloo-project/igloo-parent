@@ -25,7 +25,6 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
 		tester.startPage(ProfilePage.class);
-		
 		tester.assertRenderedPage(ProfilePage.class);
 	}
 
@@ -34,6 +33,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
 		tester.startPage(ProfilePage.class);
+		tester.assertRenderedPage(ProfilePage.class);
 		
 		tester.assertVisible("description:passwordEditPopup");
 		tester.assertComponent("description:passwordEditPopup", UserPasswordUpdatePopup.class);
@@ -85,6 +85,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
 		tester.startPage(ProfilePage.class);
+		tester.assertRenderedPage(ProfilePage.class);
 		
 		tester.executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
 		
@@ -108,6 +109,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		createAndAuthenticateUser(username, firstname, lastname, password, CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
 		tester.startPage(ProfilePage.class);
+		tester.assertRenderedPage(ProfilePage.class);
 		
 		tester.executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
 		

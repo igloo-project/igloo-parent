@@ -1,6 +1,11 @@
 package test.web;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.Locale;
+
 import org.apache.wicket.Component;
+import org.apache.wicket.util.tester.TagTester;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationAnnouncementListPage;
 import org.iglooproject.basicapp.web.application.common.template.theme.basic.NavbarPanel;
 import org.iglooproject.basicapp.web.application.navigation.page.HomePage;
@@ -16,7 +21,6 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	@Test
 	public void homePage() {
 		tester.startPage(HomePage.class);
-		
 		tester.assertRenderedPage(HomePage.class);
 		
 		tester.assertComponent("pageTitle", CoreLabel.class);
@@ -24,16 +28,39 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
+	public void homePageLocale() {
+		tester.getSession().setLocale(Locale.ENGLISH);
+		tester.startPage(HomePage.class);
+		tester.assertRenderedPage(HomePage.class);
+		
+		tester.assertComponent("pageTitle", CoreLabel.class);
+		
+		tester.assertLabel("pageTitle", "Home");
+	}
+
+	@Test
 	public void homePageComponentsAuthenticated() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
 		tester.startPage(HomePage.class);
+		tester.assertRenderedPage(HomePage.class);
 		
 		tester.assertVisible("profile");
 		tester.assertEnabled("profile");
 		
 		tester.assertInvisible("users");
 		tester.assertInvisible("referenceData");
+	}
+
+	@Test
+	public void homePageLogoIglooAlt() throws ServiceException, SecurityServiceException {
+		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
+		
+		tester.startPage(HomePage.class);
+		tester.assertRenderedPage(HomePage.class);
+		
+		TagTester tagTester = TagTester.createTagByAttribute(tester.getLastResponse().getDocument(), "class", "footer-section");
+		assertEquals(tagTester.getChild("img").getAttribute("alt"), "Logo Igloo");
 	}
 
 	@Test
@@ -53,6 +80,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
 		tester.startPage(HomePage.class);
+		tester.assertRenderedPage(HomePage.class);
 		
 		Component consoleNavItem = tester.getComponentFromLastRenderedPage("navbar:mainNav:" + NavbarItem.CONSOLE.getOrder());
 		tester.clickLink(consoleNavItem.getPageRelativePath() + ":navLink");
@@ -64,6 +92,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
 		tester.startPage(HomePage.class);
+		tester.assertRenderedPage(HomePage.class);
 		
 		Component announcementNavItem = tester.getComponentFromLastRenderedPage("navbar:mainNav:" + NavbarItem.ADMINISTRATION.getOrder() + ":subNavContainer:subNav:3");
 		tester.clickLink(announcementNavItem.getPageRelativePath() + ":navLink");
@@ -72,6 +101,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	private void navBarComponents() throws ServiceException, SecurityServiceException {
 		tester.startPage(HomePage.class);
+		tester.assertRenderedPage(HomePage.class);
 		
 		tester.assertComponent("navbar", NavbarPanel.class);
 		
@@ -87,6 +117,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	private enum NavbarItem {
+
 		HOME(localize("navigation.home"), CoreAuthorityConstants.ROLE_AUTHENTICATED, 0),
 		REFERENCE_DATA(localize("navigation.referenceData"), CoreAuthorityConstants.ROLE_ADMIN, 1),
 		ADMINISTRATION(localize("navigation.administration"), CoreAuthorityConstants.ROLE_ADMIN, 2),

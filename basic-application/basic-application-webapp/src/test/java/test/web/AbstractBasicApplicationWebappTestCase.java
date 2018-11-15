@@ -97,7 +97,6 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 				user.addAuthority(authorityService.getByName(authority));
 			}
 		}
-		
 		userService.create(user);
 		userService.setPasswords(user, password);
 		
@@ -144,6 +143,7 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 		userGroupService.create(new UserGroup("Administrators"));
 	}
 
+	// Depends on the tester.getSession.getLocale()
 	protected static String localize(String key) {
 		return Localizer.get().getString(key, null);
 	}

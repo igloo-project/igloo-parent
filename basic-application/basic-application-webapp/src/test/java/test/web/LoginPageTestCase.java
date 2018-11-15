@@ -19,15 +19,13 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.assertRenderedPage(SignInPage.class);
 		
 		tester.assertComponent("content", SignInContentPanel.class);
+		tester.assertComponent("footer", SignInFooterPanel.class);
 	}
 
 	@Test
 	public void loginPagePasswordRecovery() {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
-		
-		tester.assertComponent("content", SignInContentPanel.class);
-		tester.assertComponent("footer", SignInFooterPanel.class);
 		
 		tester.assertEnabled("footer:passwordRecovery");
 		tester.clickLink("footer:passwordRecovery");
@@ -44,6 +42,8 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		createUser(username, firstname, lastname, password,  null, null, null);
 		
 		tester.startPage(SignInPage.class);
+		tester.assertRenderedPage(SignInPage.class);
+		
 		tester.startComponentInPage(new SignInContentPanel<>("content", UserTypeDescriptor.USER));
 		tester.assertRequired("content:form:username");
 		tester.assertRequired("content:form:password");
@@ -67,6 +67,8 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		createUser(username, firstname, lastname, password, null, null, null);
 		
 		tester.startPage(SignInPage.class);
+		tester.assertRenderedPage(SignInPage.class);
+		
 		tester.startComponentInPage(new SignInContentPanel<>("content", UserTypeDescriptor.USER));
 		tester.assertRequired("content:form:username");
 		tester.assertRequired("content:form:password");
