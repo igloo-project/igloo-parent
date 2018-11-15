@@ -1,22 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>fr.openwide.core.parents</groupId>
 	<artifactId>owsi-core-parent-maven-configuration-common</artifactId>
 	<version>0.13.4</version>
 	<packaging>pom</packaging>
-	
+
 	<name>OWSI Core - Parent - Maven configuration - Common</name>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
-		
+
 		<jdk.version>1.8</jdk.version>
 		<minimal.jdk.version>1.8</minimal.jdk.version>
-		
+
 		<!--
 			Should be a valid artifact of type "signature"
 			See http://search.maven.org/#search|ga|1|g%3A%22org.codehaus.mojo.signature%22
@@ -24,12 +24,12 @@
 		<jdk.signature.groupId>org.codehaus.mojo.signature</jdk.signature.groupId>
 		<jdk.signature.artifactId>java18</jdk.signature.artifactId>
 		<jdk.signature.version>1.0</jdk.signature.version>
-		
+
 		<minimal.maven.version>3.2.5</minimal.maven.version>
-		
+
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
 		<generated-sources-test.directory>target/generated-sources-test/apt</generated-sources-test.directory>
-		
+
 		<owsi-core.maven-toolchains-plugin.version>1.1</owsi-core.maven-toolchains-plugin.version>
 		<owsi-core.maven-jgitflow-plugin.version>1.0-m5.1</owsi-core.maven-jgitflow-plugin.version>
 		<owsi-core.maven-compiler-plugin.version>3.6.0</owsi-core.maven-compiler-plugin.version>
@@ -48,19 +48,19 @@
 		<owsi-core.maven-dependency-plugin.version>2.10</owsi-core.maven-dependency-plugin.version>
 		<owsi-core.animal-sniffer-maven-plugin.version>1.15</owsi-core.animal-sniffer-maven-plugin.version>
 		<owsi-core.exec-maven-plugin.version>1.5.0</owsi-core.exec-maven-plugin.version>
-		
+
 		<owsi-core.wagon-maven-plugin.version>1.0</owsi-core.wagon-maven-plugin.version>
 		<owsi-core.wagon-ssh-external-plugin.version>2.10</owsi-core.wagon-ssh-external-plugin.version>
-		
+
 		<owsi-core.maven-processor-plugin.version>3.1.0</owsi-core.maven-processor-plugin.version>
 		<owsi-core.maven-yui-compressor-plugin.version>1.5.1</owsi-core.maven-yui-compressor-plugin.version>
 		<owsi-core.aspectj-maven-plugin.version>1.8</owsi-core.aspectj-maven-plugin.version>
 	</properties>
-	
+
 	<prerequisites>
 		<maven>${minimal.maven.version}</maven>
 	</prerequisites>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -122,7 +122,7 @@
 				This ensures that none of the newer classes or methods that were not yet defined in the
 				target JRE are referenced in this project.
 				See https://maven.apache.org/guides/mini/guide-building-jdk14-on-jdk15.html
-				
+
 				Please be aware that code generation tools may be affected by the JDK used to compile, and thus
 				may trigger a failure (because they automatically referenced newer classes or methods). In this case,
 				the only way to make things work is to use the proper JDK.
@@ -313,7 +313,7 @@
 						</dependency>
 					</dependencies>
 				</plugin>
-				
+
 				<!--
 				This plugin's configuration is used to skip plugin executions in Eclipse m2e only.
 				It has no influence on the Maven build itself.
@@ -390,7 +390,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<activation>
@@ -401,14 +401,14 @@
 			</activation>
 			<distributionManagement>
 				<repository>
-					<id>nexus-owsi-core</id>
-					<name>Nexus OWSI Core</name>
-					<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core</url>
+					<id>nexus-igloo-releases</id>
+					<name>Nexus Igloo Releases</name>
+					<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
 				</repository>
 				<snapshotRepository>
-					<id>nexus-owsi-core-snapshots</id>
-					<name>Nexus OWSI Core Snapshots</name>
-					<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
+					<id>nexus-igloo-snapshots</id>
+					<name>Nexus Igloo Snapshots</name>
+					<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
 				</snapshotRepository>
 			</distributionManagement>
 		</profile>
@@ -471,5 +471,5 @@
 			</build>
 		</profile>
 	</profiles>
-	
+
 </project>
