@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.core.property;
 
+import java.util.Date;
 import java.util.List;
 
 import org.iglooproject.basicapp.core.config.util.Environment;
@@ -17,6 +18,9 @@ public final class BasicApplicationCorePropertyIds extends AbstractPropertyIds {
 	/*
 	 * Immutable Properties
 	 */
+
+	public static final ImmutablePropertyId<Date> BUILD_DATE = immutable("build.date");
+	public static final ImmutablePropertyId<String> BUILD_SHA = immutable("build.sha");
 
 	public static final ImmutablePropertyId<Environment> ENVIRONMENT = immutable("environment");
 

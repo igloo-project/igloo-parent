@@ -17,8 +17,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
+import org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds;
 import org.iglooproject.basicapp.web.application.administration.form.UserAjaxDropDownSingleChoice;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
+import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
@@ -32,6 +34,8 @@ import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.rendering.Renderer;
+import org.iglooproject.wicket.more.util.DatePattern;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class SidebarPanel extends Panel {
@@ -155,10 +159,33 @@ public class SidebarPanel extends Panel {
 		});
 		
 		add(
-				new CoreLabel("version", new StringResourceModel("common.version", ApplicationPropertyModel.of(SpringPropertyIds.VERSION)))
-						.add(new AttributeModifier("title", new StringResourceModel("common.version.full")
-								.setParameters(ApplicationPropertyModel.of(SpringPropertyIds.VERSION), ApplicationPropertyModel.of(SpringPropertyIds.IGLOO_VERSION))
-						))
+			new CoreLabel(
+				"version",
+				new StringResourceModel("common.version")
+					.setParameters(
+						ApplicationPropertyModel.of(SpringPropertyIds.VERSION),
+						Condition.modelNotNull(ApplicationPropertyModel.of(BasicApplicationCorePropertyIds.BUILD_DATE))
+							.then(Renderer.fromDatePattern(DatePattern.SHORT_DATE).asModel(ApplicationPropertyModel.of(BasicApplicationCorePropertyIds.BUILD_DATE)))
+							.otherwise(new ResourceModel("common.version.date.placeholder"))
+					)
+			)
+				.add(new AttributeModifier(
+					"title",
+					new StringResourceModel("common.version.full")
+						.setParameters(
+							ApplicationPropertyModel.of(SpringPropertyIds.VERSION),
+							ApplicationPropertyModel.of(SpringPropertyIds.IGLOO_VERSION)
+						)
+				)),
+			
+			new CoreLabel(
+				"sha",
+				Condition.hasText(ApplicationPropertyModel.of(BasicApplicationCorePropertyIds.BUILD_SHA))
+					.then(ApplicationPropertyModel.of(BasicApplicationCorePropertyIds.BUILD_SHA))
+					.otherwise(new ResourceModel("common.build.sha.placeholder"))
+			)
+				.hideIfEmpty()
+				.add(Condition.role(CoreAuthorityConstants.ROLE_ADMIN).thenShow())
 		);
 	}
 

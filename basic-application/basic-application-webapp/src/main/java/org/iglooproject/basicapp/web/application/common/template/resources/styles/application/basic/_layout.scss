@@ -87,15 +87,21 @@ body {
 			flex-direction: row-reverse;
 			
 			.footer-info {
+				max-width: 400px;
+				
 				.footer-info-title {
 					color: #03FFB0;
 					font-weight: bold;
 					font-size: 1rem;
-					margin-bottom: .1rem;
+					margin-bottom: .15rem;
 				}
 				
 				.footer-info-version {
 					font-size: .85rem;
+				}
+				
+				.footer-info-sha {
+					font-size: .5rem;
 				}
 			}
 		}
