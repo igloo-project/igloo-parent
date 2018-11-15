@@ -5,60 +5,60 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.13.4</version>
+		<version>0.13.5</version>
 	</parent>
 
 	<artifactId>owsi-core-component-jpa-security</artifactId>
-	
+
 	<name>OWSI Core - Component - JPA - Spring Security support</name>
 
 	<dependencies>
-		
+
 		<!-- OWSI Core dependencies -->
-		
+
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
 			<artifactId>owsi-core-component-jpa-more</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>fr.openwide.core.dependencies</groupId>
 			<artifactId>owsi-core-dependency-core-spring-security</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
-		
+
 		<!-- Database pooling -->
-		
+
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-jdbc</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- Test dependencies -->
-		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- Security -->
 		<dependency>
 			<groupId>org.passay</groupId>
 			<artifactId>passay</artifactId>
 		</dependency>
-		
+
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -67,5 +67,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>

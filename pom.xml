@@ -4,7 +4,7 @@
 
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-parent</artifactId>
-	<version>0.13.4</version>
+	<version>0.13.5</version>
 	<packaging>pom</packaging>
 
 	<name>OWSI Core - Parent</name>
@@ -15,6 +15,7 @@
 
 		<owsi-core.maven-release-plugin.version>2.5.2</owsi-core.maven-release-plugin.version>
 		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
+		<owsi-core.jsch.version>0.1.54</owsi-core.jsch.version>
 		<maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
 	</properties>
 
@@ -115,6 +116,13 @@
 						<versionTagPrefix>v</versionTagPrefix>
 					</flowInitContext>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.jcraft</groupId>
+						<artifactId>jsch</artifactId>
+						<version>${owsi-core.jsch.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 		<pluginManagement>

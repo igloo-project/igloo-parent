@@ -3,28 +3,28 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.13.4</version>
+		<version>0.13.5</version>
 	</parent>
 	<artifactId>owsi-core-component-wicket-more-jqplot</artifactId>
-	
+
 	<name>OWSI Core - Component - Wicket - More Wicket fun - JQPlot</name>
-	
+
 	<dependencies>
 		<!-- OWSI Core dependencies -->
-		
+
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
 			<artifactId>owsi-core-component-wicket-more</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<!-- WiQuery-jqPlot -->
 		<dependency>
 			<groupId>nl.topicus</groupId>
 			<artifactId>wqplot</artifactId>
 			<version>${owsi-core.wqplot.version}</version>
 		</dependency>
-		
+
 	</dependencies>
-	
+
 </project>

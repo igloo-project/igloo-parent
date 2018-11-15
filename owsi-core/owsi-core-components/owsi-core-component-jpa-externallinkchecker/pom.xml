@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.13.4</version>
+		<version>0.13.5</version>
 	</parent>
 
 	<artifactId>owsi-core-component-jpa-externallinkchecker</artifactId>
@@ -21,54 +21,54 @@
 			<artifactId>owsi-core-component-jpa</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<!-- Http Client -->
-		
+
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 		</dependency>
-		
+
 		<!-- URL parsing (net.java classes do not support escaping and IDN -->
-		
+
 		<dependency>
 			<groupId>io.mola.galimatias</groupId>
 			<artifactId>galimatias</artifactId>
 		</dependency>
-		
+
 		<!-- Test dependencies -->
-		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
 			<artifactId>owsi-core-component-rest-jersey2</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-grizzly2-servlet</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-client</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>

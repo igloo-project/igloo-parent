@@ -5,74 +5,74 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.13.4</version>
+		<version>0.13.5</version>
 	</parent>
 
 	<artifactId>owsi-core-component-spring</artifactId>
-	
+
 	<name>OWSI Core - Component - Spring</name>
 	<description>Capitalisation des outils génériques pour la technologie Spring</description>
 
 	<dependencies>
-	
+
 		<!-- OWSI Core -->
-		
+
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
 			<artifactId>owsi-core-component-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>fr.openwide.core.dependencies</groupId>
 			<artifactId>owsi-core-dependency-core-spring</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
-		
+
 		<!-- Misc dependencies -->
-		
+
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-queryparser</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-analyzers-common</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.sf.ehcache.internal</groupId>
 			<artifactId>ehcache-core</artifactId>
 		</dependency>
-		
+
 		<!-- Test dependencies -->
-		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 	</dependencies>
-	
+
 	<build>
 		<resources>
 			<resource>
@@ -81,5 +81,5 @@
 			</resource>
 		</resources>
 	</build>
-	
+
 </project>

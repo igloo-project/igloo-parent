@@ -5,39 +5,39 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.13.4</version>
+		<version>0.13.5</version>
 	</parent>
 
 	<artifactId>owsi-core-component-wicket</artifactId>
-	
+
 	<name>OWSI Core - Component - Wicket</name>
-	
+
 	<dependencies>
-	
+
 		<!-- OWSI Core -->
-		
+
 		<dependency>
 			<groupId>fr.openwide.core.dependencies</groupId>
 			<artifactId>owsi-core-dependency-core-spring</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>fr.openwide.core.components</groupId>
 			<artifactId>owsi-core-component-commons</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>fr.openwide.core.dependencies</groupId>
 			<artifactId>owsi-core-dependency-core-logging</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
-	
+
 		<!-- Wicket -->
-	
+
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket</artifactId>
@@ -48,30 +48,30 @@
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-ioc</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-spring</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-auth-roles</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
 		</dependency>
-		
+
 		<!-- Dependencies -->
-		
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>
@@ -86,7 +86,7 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
-		
+
 		<plugins>
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
@@ -94,5 +94,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 </project>
