@@ -81,7 +81,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 	}
 
 	@Test
-	public void updatePasswordFormWrongOldPassword() throws ServiceException, SecurityServiceException {
+	public void updatePasswordFormMissingRequiredFields() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
 		tester.startPage(ProfilePage.class);
@@ -91,12 +91,12 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		FormTester form = tester.newFormTester(formPath());
 		// Necessary because the submission button is outside the form
 		Component submitButton = tester.getComponentFromLastRenderedPage(modalPath() + ":footer:save");
-		form.setValue(form.getForm().get("oldPassword"), "wrongOldPassword");
-		form.setValue(form.getForm().get("newPassword"), "newPassword");
-		form.setValue(form.getForm().get("confirmPassword"), "newPassword");
 		form.submit(submitButton);
 		
-		tester.assertErrorMessages(localize("administration.user.action.password.edit.error.oldPassword"));
+		String oldPasswordRequired ="Le champ 'Ancien mot de passe' est obligatoire.";
+		String newPasswordRequired ="Le champ 'Nouveau mot de passe' est obligatoire.";
+		String confirmPasswordRequired ="Le champ 'Confirmation' est obligatoire.";
+		tester.assertErrorMessages(oldPasswordRequired, newPasswordRequired, confirmPasswordRequired);
 	}
 
 	@Test

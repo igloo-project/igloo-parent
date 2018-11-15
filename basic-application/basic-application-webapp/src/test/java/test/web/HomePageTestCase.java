@@ -1,6 +1,7 @@
 package test.web;
 
 import org.apache.wicket.Component;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationAnnouncementListPage;
 import org.iglooproject.basicapp.web.application.common.template.theme.basic.NavbarPanel;
 import org.iglooproject.basicapp.web.application.navigation.page.HomePage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -48,7 +49,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void navBarNavigation() throws ServiceException, SecurityServiceException {
+	public void navBarNavigationMenu() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
 		tester.startPage(HomePage.class);
@@ -56,6 +57,17 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		Component consoleNavItem = tester.getComponentFromLastRenderedPage("navbar:mainNav:" + NavbarItem.CONSOLE.getOrder());
 		tester.clickLink(consoleNavItem.getPageRelativePath() + ":navLink");
 		tester.assertRenderedPage(ConsoleMaintenanceSearchPage.class);
+	}
+
+	@Test
+	public void navBarNavigationSubMenu() throws ServiceException, SecurityServiceException {
+		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
+		
+		tester.startPage(HomePage.class);
+		
+		Component announcementNavItem = tester.getComponentFromLastRenderedPage("navbar:mainNav:" + NavbarItem.ADMINISTRATION.getOrder() + ":subNavContainer:subNav:3");
+		tester.clickLink(announcementNavItem.getPageRelativePath() + ":navLink");
+		tester.assertRenderedPage(AdministrationAnnouncementListPage.class);
 	}
 
 	private void navBarComponents() throws ServiceException, SecurityServiceException {
