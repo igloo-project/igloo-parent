@@ -137,7 +137,6 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-more-test</artifactId>
-			<version>1.2-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

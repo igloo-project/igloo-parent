@@ -91,7 +91,6 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-jpa-test</artifactId>
-			<version>${igloo.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
