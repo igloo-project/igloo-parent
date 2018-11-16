@@ -13,7 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 public class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
-	public void referenceDataPage() throws ServiceException, SecurityServiceException {
+	public void initPage() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
 		tester.startPage(ReferenceDataPage.class);
@@ -21,11 +21,11 @@ public class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTes
 	}
 
 	/*
-	 * WicketTester does not passes through Spring Security, so the accessibility test for most pages is not relevant
-	 * except when we use an @AuthorizeInstantiation annotation (here on ReferenceDataTemplate)
+	 * WicketTester does not pass through Spring Security, so accessibility test is not relevant
+	 * except when we use an @AuthorizeInstantiation annotation (for example on ReferenceDataTemplate)
 	 */
 	@Test(expected = UnauthorizedInstantiationException.class)
-	public void referenceDataPageUnauthorized() throws ServiceException, SecurityServiceException {
+	public void accessUserUnauthorized() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
 		tester.executeUrl("./reference-data/"); // equals to startPage(ReferenceDataPage.class)

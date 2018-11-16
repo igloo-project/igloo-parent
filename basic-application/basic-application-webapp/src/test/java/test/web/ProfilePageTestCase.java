@@ -21,15 +21,15 @@ import org.wicketstuff.wiquery.core.events.MouseEvent;
 public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
-	public void profilePage() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
+	public void initPage() throws ServiceException, SecurityServiceException {
+		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
 		tester.startPage(ProfilePage.class);
 		tester.assertRenderedPage(ProfilePage.class);
 	}
 
 	@Test
-	public void updatePasswordComponents() throws ServiceException, SecurityServiceException {
+	public void updatePasswordPanelComponents() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
 		tester.startPage(ProfilePage.class);
@@ -40,11 +40,6 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		
 		tester.assertVisible("description:passwordEditPopup:container");
 		Component container = tester.getComponentFromLastRenderedPage("description:passwordEditPopup:container");
-		
-		// TODO : To use when we find a way to execute js with WicketTester
-//		TagTester tagTesterContainerHidden = TagTester.createTagByAttribute(tester.getLastResponse().getDocument(), "id", container.getMarkupId());
-//		assertEquals(tagTesterContainerHidden.getAttribute("style"), "display: none;");
-//		assertFalse(tagTesterContainerHidden.getAttributeContains("class", "show"));
 		
 		// The elements present in AbstractModalPopupPanel.html should be visible (such as the header)
 		// Header
@@ -59,11 +54,6 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		
 		tester.executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
 		tester.assertComponentOnAjaxResponse(container);
-		
-		// TODO : To use when we find a way to execute js with WicketTester
-//		TagTester tagTesterContainerVisible= TagTester.createTagByAttribute(tester.getLastResponse().getDocument(), "id", container.getMarkupId());
-//		assertEquals(tagTesterContainerVisible.getAttribute("style"), "display: block;");
-//		assertTrue(tagTesterContainerVisible.getAttributeContains("class", "show"));
 		
 		// Body elements should now be visible
 		tester.assertVisible(formPath());

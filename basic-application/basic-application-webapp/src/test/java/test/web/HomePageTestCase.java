@@ -19,7 +19,7 @@ import org.junit.Test;
 public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
-	public void homePage() {
+	public void initPage() {
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
 		
@@ -28,7 +28,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void homePageLocale() {
+	public void switchLocale() {
 		tester.getSession().setLocale(Locale.ENGLISH);
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
@@ -39,7 +39,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void homePageComponentsAuthenticated() throws ServiceException, SecurityServiceException {
+	public void initPageUserAuthenticated() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
 		tester.startPage(HomePage.class);
@@ -53,7 +53,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void homePageLogoIglooAlt() throws ServiceException, SecurityServiceException {
+	public void checkImageAlt() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
 		tester.startPage(HomePage.class);
@@ -64,13 +64,13 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void navbarAuthenticated() throws ServiceException, SecurityServiceException {
+	public void navbarUserAuthenticated() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		navBarComponents();
 	}
 
 	@Test
-	public void navbarAdmin() throws ServiceException, SecurityServiceException {
+	public void navbarUserAdmin() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		navBarComponents();
 	}

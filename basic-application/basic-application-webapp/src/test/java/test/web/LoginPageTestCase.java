@@ -14,7 +14,7 @@ import org.junit.Test;
 public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
-	public void loginPage() {
+	public void initPage() {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
@@ -23,7 +23,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void loginPagePasswordRecovery() {
+	public void redirectionToPasswordRecovery() {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
@@ -34,7 +34,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void loginPageFormSuccess() throws ServiceException, SecurityServiceException {
+	public void formSubmitSuccess() throws ServiceException, SecurityServiceException {
 		String username = "admin";
 		String firstname = "Kobalt";
 		String lastname = "Lyon";
@@ -59,7 +59,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void loginPageFormFail() throws ServiceException, SecurityServiceException {
+	public void formSubmitFail() throws ServiceException, SecurityServiceException {
 		String username = "admin";
 		String firstname = "Kobalt";
 		String lastname = "Lyon";

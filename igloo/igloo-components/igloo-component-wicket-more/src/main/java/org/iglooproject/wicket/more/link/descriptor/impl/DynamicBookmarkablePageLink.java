@@ -38,6 +38,7 @@ public class DynamicBookmarkablePageLink extends DynamicBookmarkableLink {
 	
 	/**
 	 * No click event is allowed.
+	 * This method is implemented only for WicketTester, outside of the tests this method should never call.
 	 */
 	@Override
 	public final void onClick() {

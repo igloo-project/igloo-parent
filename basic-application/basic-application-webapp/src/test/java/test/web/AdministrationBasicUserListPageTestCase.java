@@ -29,7 +29,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
-	public void administrationBasicUserListPage() throws ServiceException, SecurityServiceException {
+	public void initPage() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
@@ -37,24 +37,24 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 	}
 
 	@Test
-	public void administrationBasicUserListPageCountZero() throws ServiceException, SecurityServiceException {
+	public void dataTableBuilderCountZero() throws ServiceException, SecurityServiceException {
 		testCountLabel("Aucun utilisateur");
 	}
 
 	@Test
-	public void administrationBasicUserListPageCountOne() throws ServiceException, SecurityServiceException {
+	public void dataTableBuilderCountOne() throws ServiceException, SecurityServiceException {
 		createUser("user", "firstname", "lastname", "password",
-				UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+			UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		
 		testCountLabel("1 utilisateur");
 	}
 
 	@Test
-	public void administrationBasicUserListPageCountMultiple() throws ServiceException, SecurityServiceException {
+	public void dataTableBuilderCountMultiple() throws ServiceException, SecurityServiceException {
 		createUser("user1", "firstname1", "lastname1", "password1",
-				UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+			UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		createUser("user2", "firstname2", "lastname2", "password2",
-				UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+			UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		
 		testCountLabel("2 utilisateurs");
 	}
@@ -70,13 +70,13 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 	}
 
 	@Test
-	public void administrationBasicUserListPageFilters() throws ServiceException, SecurityServiceException {
+	public void dataTableBuilderFiltersDropDown() throws ServiceException, SecurityServiceException {
 		initUserGroups();
 		UserGroup administrators = userGroupService.getByName("Administrators");
 		createUser("user1", "firstname1", "lastname1", "password1",
-				UserTypeDescriptor.BASIC_USER, Sets.newTreeSet(administrators), Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+			UserTypeDescriptor.BASIC_USER, Sets.newTreeSet(administrators), Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		createUser("user2", "firstname2", "lastname2", "password2",
-				UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+			UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
@@ -100,7 +100,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 	}
 
 	@Test
-	public void administrationBasicUserListGoToDetail() throws ServiceException, SecurityServiceException {
+	public void accessToDetail() throws ServiceException, SecurityServiceException {
 		createUser("user", "firstname", "lastname", "password", UserTypeDescriptor.BASIC_USER, null, null);
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
@@ -110,9 +110,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		tester.assertComponent("results:dataTableContainer:dataTable:body:rows", SequenceGridView.class);
 		@SuppressWarnings("unchecked")
 		SequenceGridView<User> rows = (SequenceGridView<User>) tester.getComponentFromLastRenderedPage("results:dataTableContainer:dataTable:body:rows");
-		if (!rows.getItems().hasNext()) {
-			return;
-		}
+		assertTrue(rows.getItems().hasNext());
 		
 		String userRowPath = rows.getItems().next().getPageRelativePath();
 		
@@ -126,7 +124,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 	}
 
 	@Test
-	public void administrationBasicUserListExcelTootilp() throws ServiceException, SecurityServiceException {
+	public void excelButtonTootilp() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);

@@ -10,7 +10,7 @@ import org.junit.Test;
 public class AdministrationAnnouncementPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
-	public void administrationAnnouncementPage() throws ServiceException, SecurityServiceException {
+	public void initPage() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
 		
 		tester.startPage(AdministrationAnnouncementListPage.class);
@@ -18,7 +18,7 @@ public class AdministrationAnnouncementPageTestCase extends AbstractBasicApplica
 	}
 
 	@Test(expected = LinkInvalidTargetRuntimeException.class)
-	public void administrationAnnouncementPageUnauthorizedLinkDescriptor() throws ServiceException, SecurityServiceException {
+	public void accessUnauthorizedLinkDescriptor() throws ServiceException, SecurityServiceException {
 		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 		
 		tester.executeUrl(AdministrationAnnouncementListPage.linkDescriptor().fullUrl());

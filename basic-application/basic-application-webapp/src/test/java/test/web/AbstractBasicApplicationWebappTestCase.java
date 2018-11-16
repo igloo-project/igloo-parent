@@ -155,4 +155,12 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 	protected String modalFormPath(String path) {
 		return modalPath(path) + ":body:form";
 	}
+
+	protected String breadCrumbPath() {
+		return "breadCrumb:breadCrumbElementListView";
+	}
+
+	protected String breadCrumbElementPath(int element) {
+		return "breadCrumb:breadCrumbElementListView:" + element + ":breadCrumbElement";
+	}
 }
