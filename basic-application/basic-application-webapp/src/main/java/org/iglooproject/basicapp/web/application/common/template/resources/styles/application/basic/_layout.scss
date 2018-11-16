@@ -89,6 +89,8 @@ body {
 			.footer-info {
 				max-width: 400px;
 				
+				@include flex-overflow-wrap();
+				
 				.footer-info-title {
 					color: #03FFB0;
 					font-weight: bold;
