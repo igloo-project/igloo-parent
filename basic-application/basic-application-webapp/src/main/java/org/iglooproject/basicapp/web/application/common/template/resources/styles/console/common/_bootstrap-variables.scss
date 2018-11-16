@@ -173,6 +173,12 @@ $sizes: map-merge(
 	$sizes
 ); // bootstrap
 
+@for $i from 0 through 100 {
+	$sizes: map-merge((
+		$i: $i * 1%
+	), $sizes);
+} // bootstrap | bootstrap-override
+
 // Body
 //
 // Settings for the `<body>` element.

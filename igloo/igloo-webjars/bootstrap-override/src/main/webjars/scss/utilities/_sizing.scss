@@ -1,0 +1,11 @@
+@each $breakpoint in map-keys($grid-breakpoints) {
+	@include media-breakpoint-up($breakpoint) {
+		$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+		
+		@each $prop, $abbrev in (width: w, min-width: minw, max-width: maxw, height: h, min-height: minh, max-height: maxh) {
+			@each $size, $length in $sizes {
+				.#{$abbrev}#{$infix}-#{$size} { #{$prop}: $length !important; }
+			}
+		}
+	}
+}

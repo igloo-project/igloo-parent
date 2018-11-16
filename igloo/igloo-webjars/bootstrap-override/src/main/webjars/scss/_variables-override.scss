@@ -15,6 +15,15 @@ $theme-colors: map-merge((
 ), $theme-colors) !default; // bootstrap | bootstrap-override
 
 
+// Spacing
+
+@for $i from 0 through 100 {
+	$sizes: map-merge((
+		$i: $i * 1%
+	), $sizes);
+} // bootstrap | bootstrap-override
+
+
 // Grid columns
 
 $grid-gutter-widths: () !default; // bootstrap-override
