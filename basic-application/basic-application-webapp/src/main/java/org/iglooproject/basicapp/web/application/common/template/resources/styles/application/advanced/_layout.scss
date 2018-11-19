@@ -161,11 +161,15 @@ body {
 									color: #03FFB0;
 									font-weight: bold;
 									font-size: 1rem;
-									margin-bottom: 0;
+									margin-bottom: .15rem;
 								}
 								
 								.sidebar-footer-info-version {
 									font-size: .85rem;
+								}
+								
+								.sidebar-footer-info-sha {
+									font-size: .5rem;
 								}
 							}
 						}

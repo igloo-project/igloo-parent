@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-common</artifactId>
-		<version>1.1.11</version>
+		<version>1.1.12</version>
 		<relativePath>../igloo-parent-maven-configuration-common/pom.xml</relativePath>
 	</parent>
 	
@@ -59,7 +59,7 @@
 		<igloo.oracle10g.version>10.2.0.5</igloo.oracle10g.version>
 		<igloo.mysql.version>5.1.14</igloo.mysql.version>
 		
-		<igloo.bindgen.version>4.0.0</igloo.bindgen.version>
+		<igloo.bindgen.version>4.0.1</igloo.bindgen.version>
 		<igloo.bindgen-java.version>1.0.0</igloo.bindgen-java.version>
 		<igloo.bindgen-bindings-java.version>1.0.0</igloo.bindgen-bindings-java.version>
 		
@@ -125,7 +125,7 @@
 		<igloo.commons-configuration.version>2.3</igloo.commons-configuration.version>
 		
 		<igloo.jta.version>1.1</igloo.jta.version>
-		<igloo.javax-mail.version>1.4.7</igloo.javax-mail.version>
+		<igloo.javax-mail.version>1.6.2</igloo.javax-mail.version>
 		
 		<igloo.slf4j.version>1.7.25</igloo.slf4j.version>
 		<igloo.log4j.version>1.2.17</igloo.log4j.version>
@@ -135,7 +135,7 @@
 		<igloo.freemarker.version>2.3.28</igloo.freemarker.version>
 		<igloo.dom4j.version>1.6.1</igloo.dom4j.version>
 		
-		<igloo.poi.version>3.17</igloo.poi.version>
+		<igloo.poi.version>4.0.0</igloo.poi.version>
 		
 		<!-- 
 		Version 3 does not exist.
@@ -183,8 +183,7 @@
 		<igloo.javax-activation.version>1.1.1</igloo.javax-activation.version>
 		<igloo.javax-validation-api.version>1.1.0.Final</igloo.javax-validation-api.version>
 		
-		<!-- https://www.apache.org/dist/wicket/8.1.0/CHANGELOG-8.x -->
-		<igloo.wicket.version>8.1.0</igloo.wicket.version>
+		<igloo.wicket.version>8.2.0</igloo.wicket.version>
 		<igloo.wiquery.version>8.1.1</igloo.wiquery.version>
 		<igloo.wicketstuff-select2.version>8.1.0</igloo.wicketstuff-select2.version>
 		<!-- https://github.com/l0rdn1kk0n/wicket-webjars (0.5.x -> wicket 7, 2.0.x -> wicket 8) -->
@@ -226,11 +225,25 @@
 	
 	<dependencyManagement>
 		<dependencies>
-			
+
+				<dependency>
+					<groupId>org.iglooproject.components</groupId>
+					<artifactId>igloo-component-jpa-test</artifactId>
+					<version>1.1.12</version>
+					<scope>test</scope>
+				</dependency>
+
+				<dependency>
+					<groupId>org.iglooproject.components</groupId>
+					<artifactId>igloo-component-wicket-more-test</artifactId>
+					<version>1.1.12</version>
+					<scope>test</scope>
+				</dependency>
+
 				<dependency>
 					<groupId>org.iglooproject.dependencies</groupId>
 					<artifactId>igloo-dependency-test</artifactId>
-					<version>1.1.11</version>
+					<version>1.1.12</version>
 					<scope>test</scope>
 					<type>pom</type>
 				</dependency>
@@ -238,7 +251,7 @@
 				<dependency>
 					<groupId>org.iglooproject.dependencies</groupId>
 					<artifactId>igloo-dependency-elasticsearch-test</artifactId>
-					<version>1.1.11</version>
+					<version>1.1.12</version>
 					<scope>test</scope>
 					<type>pom</type>
 				</dependency>
@@ -804,8 +817,8 @@
 				</dependency>
 				
 				<dependency>
-					<groupId>javax.mail</groupId>
-					<artifactId>mail</artifactId>
+					<groupId>com.sun.mail</groupId>
+					<artifactId>javax.mail</artifactId>
 					<version>${igloo.javax-mail.version}</version>
 				</dependency>
 				
@@ -1244,7 +1257,7 @@
 				<dependency>
 					<groupId>org.iglooproject.dependencies</groupId>
 					<artifactId>igloo-dependency-hibernate-search</artifactId>
-					<version>1.1.11</version>
+					<version>1.1.12</version>
 				</dependency>
 				
 				<dependency>
@@ -1423,6 +1436,8 @@
 										<exclude>postgresql:postgresql</exclude>
 										<!-- this dependency is intended for testing -->
 										<exclude>*:elasticsearch-cluster-runner:*:jar:compile</exclude>
+										<!-- this dependency is renamed com.sun.mail:javax.mail -->
+										<exclude>javax.mail:mail</exclude>
 									</excludes>
 								</bannedDependencies>
 								<requireMavenVersion>

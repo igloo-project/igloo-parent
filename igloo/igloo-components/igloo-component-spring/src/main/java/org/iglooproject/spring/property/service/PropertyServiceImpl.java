@@ -513,7 +513,7 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 	 * <p>Le mapping se fait ainsi :
 	 * <ul>
 	 * <li>si la locale est dans locale.availableLocales, alors on utilise la locale</li>
-	 * <li>sinon on vérifié si le <i>Language</i> de la locale correspond à un <i>Language</i>
+	 * <li>sinon on vérifie si le <i>Language</i> de la locale correspond à un <i>Language</i>
 	 * dans locale.availableLocales ; alors on utilise la locale correspondante
 	 * </li>
 	 * <li>sinon on utilise <i>locale.default</i></li>

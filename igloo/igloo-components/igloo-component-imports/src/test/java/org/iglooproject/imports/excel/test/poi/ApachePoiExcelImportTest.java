@@ -11,7 +11,6 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.iglooproject.imports.table.common.event.exception.TableImportException;
 import org.javatuples.Quartet;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.google.common.collect.ImmutableList;
 
@@ -20,12 +19,8 @@ public class ApachePoiExcelImportTest {
 	@Test
 	public void testSuccess() throws TableImportException {
 		InputStream stream = ApachePoiExcelImportTest.class.getResourceAsStream("/wellFormattedFile.xlsx");
-		stream = Mockito.spy(stream);
 		TestApachePoiExcelImporter importer = new TestApachePoiExcelImporter();
-		
 		List<Quartet<Date, Boolean, String, Integer>> results = importer.doImport(stream, "wellFormattedFile.xlsx");
-		// check that our stream is not closed by import process
-		Mockito.verify(stream, Mockito.never());
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(2014, Calendar.FEBRUARY, 14);

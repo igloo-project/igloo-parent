@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>1.1.11</version>
+		<version>1.1.12</version>
 	</parent>
 
 	<artifactId>igloo-component-spring</artifactId>
@@ -39,8 +39,8 @@
 		<!-- Misc dependencies -->
 		
 		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
 		</dependency>
 		
 		<dependency>

@@ -4,7 +4,7 @@
 	
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>1.1.11</version>
+	<version>1.1.12</version>
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Parent - Maven configuration - Common</name>
@@ -153,6 +153,8 @@
 										<!-- this dependency is intended for testing -->
 										<exclude>*:elasticsearch-cluster-runner:*:jar:compile</exclude>
 										<exclude>*:embedded-elasticsearch:*:jar:test</exclude>
+										<!-- this dependency is renamed com.sun.mail:javax.mail -->
+										<exclude>javax.mail:mail</exclude>
 									</excludes>
 								</bannedDependencies>
 								<requireMavenVersion>

@@ -14,7 +14,6 @@ import java.io.InputStream;
 import java.util.Map;
 
 import org.apache.commons.lang3.Validate;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -91,7 +90,7 @@ public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workb
 					visitor.visitSheet(navigator, workbook, sheet);
 				}
 			}
-		} catch (InvalidFormatException | IOException | IllegalArgumentException e) {
+		} catch (IOException | IllegalArgumentException e) {
 			throw new TableImportFileException(e, navigator.getLocation(null, null, null));
 		}
 	}
@@ -109,7 +108,7 @@ public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workb
 					visitor.visitSheet(navigator, workbook, sheet);
 				}
 			}
-		} catch (InvalidFormatException | IOException | IllegalArgumentException e) {
+		} catch (IOException | IllegalArgumentException e) {
 			throw new TableImportFileException(e, navigator.getLocation(null, null, null));
 		}
 	}
