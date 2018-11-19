@@ -22,8 +22,6 @@ class ScssResource extends PackageResource {
 
 	private static final long serialVersionUID = 9067443522105165705L;
 
-	private String name;
-
 	private Locale locale;
 
 	private String variation;
@@ -40,13 +38,8 @@ class ScssResource extends PackageResource {
 		
 		Injector.get().inject(this);
 		
-		this.name = name;
 		this.locale = locale;
 		this.variation = variation;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public Locale getLocale() {

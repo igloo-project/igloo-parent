@@ -22,12 +22,10 @@ public class LessCssResource extends PackageResource {
 
 	private static final long serialVersionUID = 9067443522105165705L;
 
-	private String name;
-
 	private Locale locale;
 
 	private String variation;
-	
+
 	@SpringBean
 	private ILessCssService lessCssService;
 
@@ -40,13 +38,8 @@ public class LessCssResource extends PackageResource {
 		
 		Injector.get().inject(this);
 		
-		this.name = name;
 		this.locale = locale;
 		this.variation = variation;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public Locale getLocale() {
