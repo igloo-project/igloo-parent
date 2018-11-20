@@ -874,9 +874,9 @@ $modal-title-line-height:								$line-height-base !default; // bootstrap
 $modal-content-bg:										$white !default; // bootstrap
 $modal-content-border-color:							rgba($black, .2) !default; // bootstrap
 $modal-content-border-width:							$border-width !default; // bootstrap
-$modal-content-border-radius:							$border-radius-lg !default; // bootstrap
-$modal-content-box-shadow-xs:							none !default; // bootstrap | bootstrap-override
-$modal-content-box-shadow-sm-up:						none !default; // bootstrap | bootstrap-override
+$modal-content-border-radius:							0 !default; // bootstrap | bootstrap-override
+$modal-content-box-shadow-xs:							0 .25rem .5rem rgba($black, .5) !default; // bootstrap
+$modal-content-box-shadow-sm-up:						0 .5rem 1rem rgba($black, .5) !default; // bootstrap
 
 $modal-backdrop-bg:										rgba($black, .2) !default; // bootstrap | bootstrap-override
 $modal-backdrop-opacity:								1 !default; // bootstrap | bootstrap-override

@@ -140,8 +140,7 @@ $popover-header-close-line-height:						1.2 !default; // bootstrap-override
 
 // Modals
 
-$modal-content-box-shadow-xs:							none !default; // bootstrap | bootstrap-override
-$modal-content-box-shadow-sm-up:						none !default; // bootstrap | bootstrap-override
+$modal-content-border-radius:							0 !default; // bootstrap | bootstrap-override
 
 $modal-backdrop-bg:										rgba($black, .2) !default; // bootstrap | bootstrap-override
 $modal-backdrop-opacity:								1 !default; // bootstrap | bootstrap-override
