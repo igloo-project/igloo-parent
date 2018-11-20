@@ -130,20 +130,12 @@ $pagination-disabled-border-color:						transparent !default; // bootstrap | boo
 
 // Popovers
 
-$popover-font-size:										$font-size-base !default; // bootstrap | bootstrap-override
 $popover-max-width:										300px !default; // bootstrap | bootstrap-override
-$popover-border-radius:									0 !default; // bootstrap | bootstrap-override
-$popover-box-shadow:									$modal-content-box-shadow-sm-up !default; // bootstrap | bootstrap-override
 
-$popover-header-font-size:								1.25rem !default; // bootstrap-override
-$popover-header-line-height:							1.5 !default; // bootstrap-override
-$popover-header-close-font-size:						1.5 !default; // bootstrap-override
-$popover-header-close-line-height:						1.25 !default; // bootstrap-override
-$popover-header-bg:										$white !default; // bootstrap | bootstrap-override
-$popover-header-padding-y:								.85rem !default; // bootstrap | bootstrap-override
-$popover-header-padding-x:								1rem !default; // bootstrap | bootstrap-override
-$popover-header-border-width:							1px !default; // bootstrap-override
-$popover-header-border-color:							$gray-200 !default; // bootstrap-override
+$popover-header-font-size:								1rem !default; // bootstrap-override
+$popover-header-line-height:							1.2 !default; // bootstrap-override
+$popover-header-close-font-size:						1rem !default; // bootstrap-override
+$popover-header-close-line-height:						1.2 !default; // bootstrap-override
 
 
 // Modals

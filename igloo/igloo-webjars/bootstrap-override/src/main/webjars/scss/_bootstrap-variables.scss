@@ -819,24 +819,22 @@ $tooltip-arrow-color:									$tooltip-bg !default; // bootstrap
 
 // Popovers
 
-$popover-font-size:										$font-size-base !default; // bootstrap | bootstrap-override
+$popover-font-size:										$font-size-sm !default; // bootstrap
 $popover-bg:											$white !default; // bootstrap
 $popover-max-width:										300px !default; // bootstrap | bootstrap-override
 $popover-border-width:									$border-width !default; // bootstrap
 $popover-border-color:									rgba($black, .2) !default; // bootstrap
-$popover-border-radius:									0 !default; // bootstrap | bootstrap-override
-$popover-box-shadow:									none !default; // bootstrap | bootstrap-override
+$popover-border-radius:									$border-radius-lg !default; // bootstrap
+$popover-box-shadow:									0 .25rem .5rem rgba($black, .2) !default; // bootstrap
 
-$popover-header-font-size:								1.25rem !default; // bootstrap-override
-$popover-header-line-height:							1.5 !default; // bootstrap-override
-$popover-header-close-font-size:						1.5 !default; // bootstrap-override
-$popover-header-close-line-height:						1.25 !default; // bootstrap-override
-$popover-header-bg:										$white !default; // bootstrap | bootstrap-override
+$popover-header-font-size:								1rem !default; // bootstrap-override
+$popover-header-line-height:							1.2 !default; // bootstrap-override
+$popover-header-close-font-size:						1rem !default; // bootstrap-override
+$popover-header-close-line-height:						1.2 !default; // bootstrap-override
+$popover-header-bg:										darken($popover-bg, 3%) !default; // bootstrap
 $popover-header-color:									$headings-color !default; // bootstrap
-$popover-header-padding-y:								.85rem !default; // bootstrap | bootstrap-override
-$popover-header-padding-x:								1rem !default; // bootstrap | bootstrap-override
-$popover-header-border-width:							1px !default; // bootstrap-override
-$popover-header-border-color:							$gray-200 !default; // bootstrap-override
+$popover-header-padding-y:								.5rem !default; // bootstrap
+$popover-header-padding-x:								.75rem !default; // bootstrap
 
 $popover-body-color:									$body-color !default; // bootstrap
 $popover-body-padding-y:								$popover-header-padding-y !default; // bootstrap
