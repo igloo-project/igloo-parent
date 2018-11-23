@@ -1,6 +1,3 @@
-/**
- * Wrapper simple autour de la fenêtre modale pour gérer des fenêtres de confirmation.
- */
 !function( $, window, document, undefined ) {
 	
 	"use strict";
@@ -22,6 +19,11 @@
 			var $modal = $("<div class='modal fade confirm' tabindex='-1'></div>");
 			var $dialog = $("<div class='modal-dialog'></div>");
 			var $content = $("<div class='modal-content'></div>");
+			
+			$modal.on('hidden.bs.modal', function(e) {
+				$modal.modal('dispose');
+				$modal.remove();
+			})
 			
 			if (cssClassNames) {
 				$content.addClass(cssClassNames);
@@ -56,7 +58,7 @@
 				$content.append(
 						$("<div class='modal-footer'></div>")
 							.append(
-								$("<button class='" + noButton + "' data-dismiss='modal' type='button'></button>")
+								$("<button class='" + noButton + "' type='button'></button>")
 									.append($("<span class='" + noIcon +"'></span>"))
 									.append(document.createTextNode(" " + noLabel))
 									.click(onCancel)

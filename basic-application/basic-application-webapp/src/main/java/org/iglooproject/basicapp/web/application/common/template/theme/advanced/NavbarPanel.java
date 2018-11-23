@@ -61,15 +61,9 @@ public class NavbarPanel extends AbstractNavbarPanel {
 			protected void populateItem(ListItem<NavigationMenuItem> item) {
 				NavigationMenuItem navItem = item.getModelObject();
 				
-				item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
-				
-				addActiveClass(navItem, firstMenuPageSupplier.get(), item);
-				
 				AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
 				
-				item.add(
-						Condition.componentVisible(navLink).thenShow()
-				);
+				item.add(Condition.componentVisible(navLink).thenShow());
 				
 				item.add(
 						navLink
@@ -80,6 +74,10 @@ public class NavbarPanel extends AbstractNavbarPanel {
 										new CoreLabel("label", navItem.getLabelModel())
 								)
 				);
+				
+				item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
+				
+				addActiveClass(item, firstMenuPageSupplier.get(), item);
 				
 				List<NavigationMenuItem> subMenuItems = navItem.getSubMenuItems();
 				
@@ -100,9 +98,10 @@ public class NavbarPanel extends AbstractNavbarPanel {
 											protected void populateItem(ListItem<NavigationMenuItem> item) {
 												NavigationMenuItem navItem = item.getModelObject();
 												
-												item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
-												
 												AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
+												
+												item.add(Condition.componentVisible(navLink).thenShow());
+												
 												navLink.add(
 														new CoreLabel("label", navItem.getLabelModel()),
 														new EnclosureContainer("icon")
@@ -110,7 +109,9 @@ public class NavbarPanel extends AbstractNavbarPanel {
 																.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
 												);
 												
-												addActiveClass(navItem, secondMenuPageSupplier.get(), navLink);
+												item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
+												
+												addActiveClass(item, secondMenuPageSupplier.get(), navLink);
 												
 												item.add(navLink);
 											}

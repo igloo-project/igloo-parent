@@ -12,7 +12,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -20,6 +19,7 @@ import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds;
 import org.iglooproject.basicapp.web.application.administration.form.UserAjaxDropDownSingleChoice;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
+import org.iglooproject.basicapp.web.application.common.template.theme.common.AbstractNavbarPanel;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
@@ -38,7 +38,7 @@ import org.iglooproject.wicket.more.rendering.Renderer;
 import org.iglooproject.wicket.more.util.DatePattern;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
-public class SidebarPanel extends Panel {
+public class SidebarPanel extends AbstractNavbarPanel {
 
 	private static final long serialVersionUID = 3187936834300791175L;
 
@@ -89,17 +89,9 @@ public class SidebarPanel extends Panel {
 			protected void populateItem(ListItem<NavigationMenuItem> item) {
 				NavigationMenuItem navItem = item.getModelObject();
 				
-				item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
-				
-				if (navItem.isActive(firstMenuPageSupplier.get())) {
-					item.add(new ClassAttributeAppender("active"));
-				}
-				
 				AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
 				
-				item.add(
-						Condition.componentVisible(navLink).thenShow()
-				);
+				item.add(Condition.componentVisible(navLink).thenShow());
 				
 				item.add(
 						navLink
@@ -110,6 +102,10 @@ public class SidebarPanel extends Panel {
 										new CoreLabel("label", navItem.getLabelModel())
 								)
 				);
+				
+				item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
+				
+				addActiveClass(item, firstMenuPageSupplier.get(), item);
 				
 				List<NavigationMenuItem> subMenuItems = navItem.getSubMenuItems();
 				
@@ -123,19 +119,20 @@ public class SidebarPanel extends Panel {
 											protected void populateItem(ListItem<NavigationMenuItem> item) {
 												NavigationMenuItem navItem = item.getModelObject();
 												
-												item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
-												
-												if (navItem.isActive(secondMenuPageSupplier.get())) {
-													item.add(new ClassAttributeAppender("active"));
-												}
-												
 												AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
+												
+												item.add(Condition.componentVisible(navLink).thenShow());
+												
 												navLink.add(
 														new CoreLabel("label", navItem.getLabelModel()),
 														new EnclosureContainer("icon")
 																.condition(Condition.hasText(navItem.getIconClassesModel()))
 																.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
 												);
+												
+												item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
+												
+												addActiveClass(item, secondMenuPageSupplier.get(), navLink);
 												
 												item.add(navLink);
 											}
