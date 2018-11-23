@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
+import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -39,12 +40,12 @@ public abstract class AbstractNavbarPanel extends Panel {
 	}
 
 	protected void addActiveClass(
-			NavigationMenuItem navItem,
+			ListItem<NavigationMenuItem> item,
 			Class<? extends Page> clazz,
 			Component component
 	) {
 		addActiveClass(
-				navItem::isActive,
+				item.getModelObject()::isActive,
 				clazz,
 				component
 		);
