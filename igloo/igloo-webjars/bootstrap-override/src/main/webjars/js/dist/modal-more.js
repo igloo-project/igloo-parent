@@ -1,5 +1,7 @@
 var _show = $.fn.modal.Constructor.prototype.show;
 $.fn.modal.Constructor.prototype.show = function show(relatedTarget) {
+	this._ignoreTransitioning();
+	
 	this._appendToBody();
 	
 	_show.apply(this, relatedTarget);
@@ -8,6 +10,8 @@ $.fn.modal.Constructor.prototype.show = function show(relatedTarget) {
 
 var _hide = $.fn.modal.Constructor.prototype.hide;
 $.fn.modal.Constructor.prototype.hide = function hide(event) {
+	this._ignoreTransitioning();
+	
 	_hide.apply(this, arguments);
 	
 	this._appendToParent();
@@ -31,6 +35,10 @@ $.fn.modal.Constructor.prototype._appendToParent = function _appendToParent() {
 	if (this._parent) {
 		$(this._element).appendTo(this._parent);
 	}
+};
+
+$.fn.modal.Constructor.prototype._ignoreTransitioning = function _ignoreTransitioning() {
+	this._isTransitioning = false;
 };
 
 // See https://stackoverflow.com/a/19574076
