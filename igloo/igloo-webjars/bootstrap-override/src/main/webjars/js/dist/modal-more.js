@@ -1,2 +1,37 @@
+var _show = $.fn.modal.Constructor.prototype.show;
+$.fn.modal.Constructor.prototype.show = function show(relatedTarget) {
+	this._appendToBody();
+	
+	_show.apply(this, relatedTarget);
+};
+
+
+var _hide = $.fn.modal.Constructor.prototype.hide;
+$.fn.modal.Constructor.prototype.hide = function hide(event) {
+	_hide.apply(this, arguments);
+	
+	this._appendToParent();
+};
+
+// Move modal to html body.
+$.fn.modal.Constructor.prototype._appendToBody = function _appendToBody() {
+	this._parent = $(this._element).parent();
+	
+	if (!$(this._parent).length || $(this._parent).is(document.body)) {
+		this._parent = null;
+	}
+	
+	if (this._parent) {
+		$(this._element).appendTo(document.body);
+	}
+};
+
+// Put back modal to its parent.
+$.fn.modal.Constructor.prototype._appendToParent = function _appendToParent() {
+	if (this._parent) {
+		$(this._element).appendTo(this._parent);
+	}
+};
+
 // See https://stackoverflow.com/a/19574076
 $.fn.modal.Constructor.prototype._enforceFocus = function _enforceFocus() {};
