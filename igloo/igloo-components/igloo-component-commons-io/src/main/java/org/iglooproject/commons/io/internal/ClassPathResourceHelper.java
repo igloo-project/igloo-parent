@@ -16,9 +16,7 @@ public class ClassPathResourceHelper {
 
 	public long lastModifiedJarResource(URL url) throws IOException {
 		JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
-		try (InputStream is = jarURLConnection.getInputStream()) {
-			return jarURLConnection.getLastModified();
-		}
+		return new File((jarURLConnection).getJarFile().getName()).lastModified();
 	}
 
 	public URL resolveUrl(ClassLoader classLoader, String resourcePath) throws FileNotFoundException {
