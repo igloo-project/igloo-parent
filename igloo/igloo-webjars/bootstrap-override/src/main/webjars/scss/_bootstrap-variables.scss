@@ -113,7 +113,6 @@ $theme-colors: map-merge((
 	"brand":		$brand-color
 ), $theme-colors); // bootstrap | bootstrap-override
 
-
 // Set a specific jump point for requesting color jumps
 $theme-color-interval:									8% !default; // bootstrap
 
@@ -173,6 +172,13 @@ $sizes: map-merge(
 	),
 	$sizes
 ); // bootstrap
+
+@for $i from 0 through 100 {
+	$sizes: map-merge((
+		$i: $i * 1%
+	), $sizes);
+} // bootstrap | bootstrap-override
+
 
 // Body
 //
