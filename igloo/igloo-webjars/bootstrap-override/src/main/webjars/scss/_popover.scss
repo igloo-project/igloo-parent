@@ -1,6 +1,5 @@
 .popover {
-	border-radius: 0;
-	box-shadow: $shadow-lg;
+	box-shadow: $popover-box-shadow;
 	
 	&.popover-modal {
 		z-index: $zindex-modal-popover;
@@ -10,12 +9,9 @@
 .popover-header {
 	display: flex;
 	align-items: flex-start;
-	justify-content: space-between;
 	
-	font-size: $modal-header-font-size;
-	line-height: $modal-header-line-height;
-	
-	border-bottom: $popover-header-border-width solid $popover-header-border-color;
+	font-size: $popover-header-font-size;
+	line-height: $popover-header-line-height;
 	
 	.close {
 		padding: $popover-header-padding-y $popover-header-padding-x;

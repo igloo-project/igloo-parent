@@ -2,3 +2,8 @@
 	background-color: $value;
 	color: color-yiq($value);
 }
+
+@mixin overflow-wrap() {
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+}

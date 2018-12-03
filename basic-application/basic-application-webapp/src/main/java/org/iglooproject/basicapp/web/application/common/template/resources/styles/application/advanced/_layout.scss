@@ -132,6 +132,8 @@ body {
 									padding: $sidebar-body-padding-y 0;
 									
 									.sidebar-body-content {
+										@include flex-item-overflow-wrap();
+										
 										.sidebar-section {
 											.sidebar-section-title {
 												color: #B0B0B0;
@@ -157,6 +159,8 @@ body {
 							color: $sidebar-footer-color;
 							
 							.sidebar-footer-info {
+								@include flex-overflow-wrap();
+								
 								.sidebar-footer-info-title {
 									color: #03FFB0;
 									font-weight: bold;

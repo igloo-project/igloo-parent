@@ -1,7 +1,6 @@
 .modal-content {
-	border: none;
-	border-radius: 0;
-	box-shadow: $shadow-lg;
+	border: 0;
+	box-shadow: $modal-content-box-shadow-xs;
 }
 
 .modal-header {
@@ -65,5 +64,11 @@
 	
 	.modal-dialog {
 		max-width: $modal-sm;
+	}
+}
+
+@include media-breakpoint-up(sm) {
+	.modal-content {
+		box-shadow: $modal-content-box-shadow-sm-up;
 	}
 }
