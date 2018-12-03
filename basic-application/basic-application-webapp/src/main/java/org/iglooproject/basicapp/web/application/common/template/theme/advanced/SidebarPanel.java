@@ -132,7 +132,7 @@ public class SidebarPanel extends AbstractNavbarPanel {
 												
 												item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
 												
-												addActiveClass(item, secondMenuPageSupplier.get(), navLink);
+												addActiveClass(item, secondMenuPageSupplier.get(), item);
 												
 												item.add(navLink);
 											}

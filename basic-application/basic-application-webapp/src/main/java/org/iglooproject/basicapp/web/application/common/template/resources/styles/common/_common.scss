@@ -1,3 +1,7 @@
+body {
+	@include overflow-wrap();
+}
+
 .header-alert-section {
 	@include bg($light);
 	
@@ -74,13 +78,6 @@
 		@include bg($warning);
 	}
 
-}
-
-.break-word-container {
-	display: table;
-	table-layout: fixed;
-	width: 100%;
-	word-wrap: break-word;
 }
 
 .divider {

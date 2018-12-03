@@ -1,0 +1,27 @@
+@mixin navbar-nav-link-hover() {
+	border-radius: $border-radius;
+	background-color: rgba($white, .2);
+	@include transition(all .3s ease 0s);
+}
+
+@mixin navbar-nav-link-focus() {
+	@include navbar-nav-link-hover();
+}
+
+.navbar {
+	.navbar-nav {
+		.nav-item {
+			&.active, &.dropdown.show {
+				.nav-link {
+					@include navbar-nav-link-focus();
+				}
+			}
+			
+			.nav-link {
+				&:not(.disabled):hover {
+					@include navbar-nav-link-hover();
+				}
+			}
+		}
+	}
+}
