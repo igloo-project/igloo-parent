@@ -2,6 +2,7 @@ package org.iglooproject.jpa.config.spring;
 
 import static org.iglooproject.jpa.property.JpaPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -11,14 +12,16 @@ import javax.sql.DataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.BooleanQuery;
 import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.configuration.FluentConfiguration;
+import org.flywaydb.core.internal.scanner.Scanner;
 import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
 import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
 import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
+import org.iglooproject.jpa.migration.IglooMigrationResolver;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
-import org.iglooproject.jpa.more.config.util.FlywaySpring;
 import org.iglooproject.jpa.property.FlywayPropertyIds;
 import org.iglooproject.jpa.search.CoreJpaSearchPackage;
 import org.iglooproject.jpa.util.CoreJpaUtilPackage;
@@ -80,26 +83,36 @@ public abstract class AbstractJpaConfig {
 	@Bean(initMethod = "migrate", value = { "flyway", "databaseInitialization" })
 	@Profile("flyway")
 	public Flyway flyway(DataSource dataSource, FlywayConfiguration flywayConfiguration,
-			IPropertyService propertyService, ConfigurableApplicationContext applicationContext) {
-		FlywaySpring flyway = new FlywaySpring();
-		flyway.setApplicationContext(applicationContext);
-		flyway.setDataSource(dataSource);
-		flyway.setSchemas(flywayConfiguration.getSchemas()); 
-		flyway.setTable(flywayConfiguration.getTable());
-		flyway.setLocations(StringUtils.split(flywayConfiguration.getLocations(), ","));
-		flyway.setBaselineOnMigrate(true);
-		// difficult to handle this case for the moment; we ignore mismatching checksums
-		// TODO allow developers to handle mismatches during their tests.
-		flyway.setValidateOnMigrate(false);
+		IPropertyService propertyService, ConfigurableApplicationContext applicationContext) {
 		
+		FluentConfiguration configuration = Flyway.configure()
+			.dataSource(dataSource)
+			.schemas(flywayConfiguration.getSchemas())
+			.table(flywayConfiguration.getTable())
+			.locations(StringUtils.split(flywayConfiguration.getLocations(), ","))
+			.baselineOnMigrate(true)
+			// difficult to handle this case for the moment; we ignore mismatching checksums
+			// TODO allow developers to handle mismatches during their tests.
+			.validateOnMigrate(false);
+		
+		// Placeholders
 		Map<String, String> placeholders = Maps.newHashMap();
 		for (String property : propertyService.get(FlywayPropertyIds.FLYWAY_PLACEHOLDERS_PROPERTIES)) {
 			placeholders.put(property, propertyService.get(FlywayPropertyIds.property(property)));
 		}
-		flyway.setPlaceholderReplacement(true);
-		flyway.setPlaceholders(placeholders);
+		configuration.placeholderReplacement(true);
+		configuration.placeholders(placeholders);
 		
-		return flyway;
+		// Custom Spring-autowiring migration resolver
+		Scanner scanner = new Scanner(
+			Arrays.asList(configuration.getLocations()),
+			configuration.getClassLoader(),
+			configuration.getEncoding()
+		);
+		
+		configuration.resolvers(new IglooMigrationResolver(scanner, configuration, applicationContext));
+		
+		return configuration.load();
 	}
 
 	@Bean
