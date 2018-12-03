@@ -1,31 +1,11 @@
-@mixin navbar-nav-link-hover() {
-	border-radius: $border-radius;
-	background-color: rgba($white, .2);
-	@include transition(all .3s ease 0s);
-}
-
-@mixin navbar-nav-link-focus() {
-	@include navbar-nav-link-hover();
-}
-
 .navbar {
 	.navbar-nav {
 		.nav-item {
 			margin: 2px 0;
 			
-			&.active, &.dropdown.show {
-				.nav-link {
-					@include navbar-nav-link-focus();
-				}
-			}
-			
 			.nav-link {
 				padding-right: $navbar-nav-link-padding-x;
 				padding-left: $navbar-nav-link-padding-x;
-				
-				&:not(.disabled):hover {
-					@include navbar-nav-link-hover();
-				}
 			}
 			
 			.nav-link-icon {
