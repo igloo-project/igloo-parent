@@ -2,8 +2,8 @@ package org.iglooproject.test.wicket.more.junit;
 
 import org.apache.wicket.util.tester.WicketTester;
 
-public interface IWicketTestCase {
+public interface IWicketTestCase<T extends WicketTester> {
 	
-	void setWicketTester(WicketTester tester);
+	void setWicketTester(T tester);
 
 }

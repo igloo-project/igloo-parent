@@ -4,7 +4,6 @@ import java.util.Set;
 
 import org.apache.wicket.Localizer;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.util.tester.WicketTester;
 import org.assertj.core.util.Sets;
 import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
@@ -31,7 +30,7 @@ import org.springframework.test.context.ContextConfiguration;
 import test.web.config.spring.BasicApplicationWebappTestCommonConfig;
 
 @ContextConfiguration(classes = BasicApplicationWebappTestCommonConfig.class)
-public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWicketMoreTestCase {
+public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWicketMoreTestCase<BasicApplicationWicketTester> {
 
 	@Autowired
 	protected IUserService userService;
@@ -60,7 +59,7 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 	@Before
 	public void setUp() throws ServiceException, SecurityServiceException {
 		initAuthorities();
-		setWicketTester(new WicketTester(application));
+		setWicketTester(new BasicApplicationWicketTester(application));
 	}
 
 	@Override
