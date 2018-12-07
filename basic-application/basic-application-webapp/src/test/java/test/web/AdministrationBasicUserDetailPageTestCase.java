@@ -5,15 +5,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.wicket.markup.html.link.Link;
-import org.assertj.core.util.Sets;
-import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.basicapp.core.business.user.typedescriptor.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserDetailPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserListPage;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.more.markup.html.template.component.BreadCrumbListView;
 import org.iglooproject.wicket.more.markup.html.template.component.LinkGeneratorBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
@@ -26,14 +22,24 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 
 	@Test
 	public void initPage() throws ServiceException, SecurityServiceException {
-		initBasicUserAndStartPage();
+		authenticateUser(administrateur);
+		
+		String url = AdministrationUserDetailTemplate.mapper()
+			.ignoreParameter2()
+			.map(GenericEntityModel.of(utilisateur)).url();
+		tester.executeUrl(url);
 		
 		tester.assertRenderedPage(AdministrationBasicUserDetailPage.class);
 	}
 
 	@Test
 	public void breadcrumb() throws ServiceException, SecurityServiceException {
-		initBasicUserAndStartPage();
+		authenticateUser(administrateur);
+		
+		String url = AdministrationUserDetailTemplate.mapper()
+			.ignoreParameter2()
+			.map(GenericEntityModel.of(utilisateur)).url();
+		tester.executeUrl(url);
 		
 		tester.assertRenderedPage(AdministrationBasicUserDetailPage.class);
 		
@@ -66,9 +72,14 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 
 	@Test
 	public void desactivateUser() throws ServiceException, SecurityServiceException {
-		User user = initBasicUserAndStartPage();
+		authenticateUser(administrateur);
 		
-		assertTrue(user.isActive());
+		String url = AdministrationUserDetailTemplate.mapper()
+			.ignoreParameter2()
+			.map(GenericEntityModel.of(utilisateur)).url();
+		tester.executeUrl(url);
+		
+		assertTrue(utilisateur.isActive());
 		
 		tester.assertInvisible("headerElementsSection:actionsContainer:enable");
 		tester.assertVisible("headerElementsSection:actionsContainer:disable");
@@ -80,20 +91,6 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 		tester.assertEnabled("headerElementsSection:actionsContainer:enable");
 		tester.assertInvisible("headerElementsSection:actionsContainer:disable");
 		
-		assertFalse(user.isActive());
-	}
-
-	private User initBasicUserAndStartPage() throws ServiceException, SecurityServiceException {
-		User user = createUser("user1", "firstname1", "lastname1", "password1",
-				UserTypeDescriptor.BASIC_USER, null, Sets.newTreeSet(CoreAuthorityConstants.ROLE_AUTHENTICATED));
-		
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
-		
-		String url = AdministrationUserDetailTemplate.mapper()
-			.ignoreParameter2()
-			.map(GenericEntityModel.of(user)).url();
-		tester.executeUrl(url);
-		
-		return user;
+		assertFalse(utilisateur.isActive());
 	}
 }

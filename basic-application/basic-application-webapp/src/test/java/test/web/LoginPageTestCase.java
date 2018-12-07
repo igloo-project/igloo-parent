@@ -34,12 +34,6 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
 	public void formSubmitSuccess() throws ServiceException, SecurityServiceException {
-		String username = "admin";
-		String firstname = "Kobalt";
-		String lastname = "Lyon";
-		String password = "kobalt";
-		createUser(username, firstname, lastname, password,  null, null, null);
-		
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
@@ -49,8 +43,8 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		
 		FormTester form = tester.newFormTester("content:form");
 		
-		form.setValue(form.getForm().get("username"), username);
-		form.setValue(form.getForm().get("password"), password);
+		form.setValue(form.getForm().get("username"), utilisateur.getUsername());
+		form.setValue(form.getForm().get("password"), USER_PASSWORD);
 		
 		form.submit();
 		
@@ -59,12 +53,6 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
 	public void formSubmitFail() throws ServiceException, SecurityServiceException {
-		String username = "admin";
-		String firstname = "Kobalt";
-		String lastname = "Lyon";
-		String password = "kobalt";
-		createUser(username, firstname, lastname, password, null, null, null);
-		
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
@@ -74,7 +62,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		
 		FormTester form = tester.newFormTester("content:form");
 		
-		form.setValue(form.getForm().get("username"), username);
+		form.setValue(form.getForm().get("username"), utilisateur.getUsername());
 		form.setValue(form.getForm().get("password"), "wrongPassword");
 		
 		form.submit();

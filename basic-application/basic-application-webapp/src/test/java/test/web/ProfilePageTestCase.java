@@ -10,7 +10,6 @@ import org.iglooproject.basicapp.web.application.administration.form.UserPasswor
 import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.junit.Test;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,7 +21,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 
 	@Test
 	public void initPage() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
+		authenticateUser(utilisateur);
 		
 		tester.startPage(ProfilePage.class);
 		tester.assertRenderedPage(ProfilePage.class);
@@ -30,7 +29,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 
 	@Test
 	public void updatePasswordPanelComponents() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
+		authenticateUser(utilisateur);
 		
 		tester.startPage(ProfilePage.class);
 		tester.assertRenderedPage(ProfilePage.class);
@@ -72,7 +71,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 
 	@Test
 	public void updatePasswordFormMissingRequiredFields() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
+		authenticateUser(utilisateur);
 		
 		tester.startPage(ProfilePage.class);
 		tester.assertRenderedPage(ProfilePage.class);
@@ -92,11 +91,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 
 	@Test
 	public void updatePasswordFormSuccess() throws ServiceException, SecurityServiceException {
-		String username = "username";
-		String firstname = "firstname";
-		String lastname = "lastname";
-		String password = "oldPassword";
-		createAndAuthenticateUser(username, firstname, lastname, password, CoreAuthorityConstants.ROLE_AUTHENTICATED);
+		authenticateUser(utilisateur);
 		
 		tester.startPage(ProfilePage.class);
 		tester.assertRenderedPage(ProfilePage.class);
@@ -107,7 +102,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		// Necessary because the submission button is outside the form
 		Component submitButton = tester.getComponentFromLastRenderedPage(modalPath() + ":footer:save");
 		String newPassword = "newPassword";
-		form.setValue(form.getForm().get("oldPassword"), password);
+		form.setValue(form.getForm().get("oldPassword"), USER_PASSWORD);
 		form.setValue(form.getForm().get("newPassword"), newPassword);
 		form.setValue(form.getForm().get("confirmPassword"), newPassword);
 		form.submit(submitButton);
@@ -115,7 +110,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		tester.assertNoErrorMessage();
 		tester.assertFeedbackMessages(new ExactLevelFeedbackMessageFilter(FeedbackMessage.SUCCESS), localize("common.success"));
 		
-		assertTrue(passwordEncoder.matches(newPassword, userService.getByUsername(username).getPasswordHash()));
+		assertTrue(passwordEncoder.matches(newPassword, userService.getByUsername("utilisateur").getPasswordHash()));
 	}
 
 	private String modalPath() {

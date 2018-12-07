@@ -40,7 +40,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
 	public void initPageUserAuthenticated() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
+		authenticateUser(utilisateur);
 		
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
@@ -54,7 +54,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
 	public void checkImageAlt() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
+		authenticateUser(utilisateur);
 		
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
@@ -65,19 +65,19 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
 	public void navbarUserAuthenticated() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
+		authenticateUser(utilisateur);
 		navBarComponents();
 	}
 
 	@Test
 	public void navbarUserAdmin() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
+		authenticateUser(administrateur);
 		navBarComponents();
 	}
 
 	@Test
 	public void navBarNavigationMenu() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
+		authenticateUser(administrateur);
 		
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
@@ -89,7 +89,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
 	public void navBarNavigationSubMenu() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
+		authenticateUser(administrateur);
 		
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
