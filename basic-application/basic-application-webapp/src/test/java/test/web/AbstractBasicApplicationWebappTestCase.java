@@ -5,10 +5,6 @@ import java.util.Set;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.FullTextQuery;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
 import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -18,7 +14,6 @@ import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.security.model.BasicApplicationAuthorityConstants;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
@@ -70,34 +65,7 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 	private IMutablePropertyDao mutablePropertyDao;
 
 	@Autowired
-	private IHibernateSearchService hibernateSearchService;
-
-	@Autowired
 	private WebApplication application;
-
-	@Override
-	public void init() throws ServiceException, SecurityServiceException {
-		super.init();
-		emptyIndexes();
-	}
-
-	/**
-	 * This method is used to clean Lucene indexes by reindexing an empty database
-	 * It takes around 10 milliseconds if the database is empty (except the first time, it can take 200 millisecond)
-	 * otherwise it takes 500 milliseconds wheter there is 1000 or 10 000 objets to reindex
-	 */
-	public void emptyIndexes() throws ServiceException {
-		Set<Class<?>> clazzes = hibernateSearchService.getIndexedRootEntities();
-		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
-		for (Class<?> clazz : clazzes) {
-			QueryBuilder builder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(clazz).get();
-			FullTextQuery query = fullTextEntityManager.createFullTextQuery(builder.all().createQuery(), clazz);
-			if (query.getResultSize() > 0) {
-				hibernateSearchService.reindexAll();
-				break;
-			}
-		}
-	}
 
 	@Before
 	public void setUp() throws ServiceException, SecurityServiceException {
@@ -120,6 +88,8 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 		mutablePropertyDao.cleanInTransaction();
 		
 		authenticationService.signOut();
+		
+		emptyIndexes();
 	}
 
 	private void initAuthorities() throws ServiceException, SecurityServiceException {
