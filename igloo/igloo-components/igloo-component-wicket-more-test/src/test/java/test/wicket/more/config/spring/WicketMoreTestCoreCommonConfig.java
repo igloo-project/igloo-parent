@@ -4,7 +4,7 @@ import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescripti
 import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
-import org.iglooproject.test.wicket.more.config.spring.WicketMoreTestApplicationPropertyConfig;
+import org.iglooproject.test.wicket.core.config.spring.WicketTestApplicationPropertyConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ import test.wicket.more.business.WicketMoreTestBusinessPackage;
 })
 @Import({
 	WicketMoreTestJpaConfig.class,
-	WicketMoreTestApplicationPropertyConfig.class
+	WicketTestApplicationPropertyConfig.class
 })
 @ComponentScan(
 		basePackageClasses = WicketMoreTestBusinessPackage.class,

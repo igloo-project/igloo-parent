@@ -1,4 +1,4 @@
-package org.iglooproject.test.wicket.more;
+package org.iglooproject.test.wicket.core;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.protocol.http.WebApplication;

@@ -19,7 +19,7 @@ import org.iglooproject.jpa.security.business.authority.service.IAuthorityServic
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
-import org.iglooproject.test.wicket.more.AbstractWicketMoreTestCase;
+import org.iglooproject.test.wicket.core.AbstractWicketTestCase;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import com.google.common.collect.ImmutableSet;
 import test.web.config.spring.BasicApplicationWebappTestCommonConfig;
 
 @ContextConfiguration(classes = BasicApplicationWebappTestCommonConfig.class)
-public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWicketMoreTestCase<BasicApplicationWicketTester> {
+public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWicketTestCase<BasicApplicationWicketTester> {
 
 	protected static final String USER_PASSWORD = "kobalt";
 

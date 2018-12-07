@@ -1,4 +1,4 @@
-package org.iglooproject.test.wicket.more.junit;
+package org.iglooproject.test.wicket.core.junit;
 
 import org.apache.wicket.util.tester.WicketTester;
 
