@@ -42,31 +42,31 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		
 		// The elements present in AbstractModalPopupPanel.html should be visible (such as the header)
 		// Header
-		tester.assertVisible(modalPath() + ":header");
-		tester.assertComponent(modalPath() + ":header", CoreLabel.class);
-		tester.assertLabel(modalPath() + ":header", localize("administration.user.action.password.edit.title"));
+		tester.assertVisible(passwordEditPopupPath() + ":header");
+		tester.assertComponent(passwordEditPopupPath() + ":header", CoreLabel.class);
+		tester.assertLabel(passwordEditPopupPath() + ":header", localize("administration.user.action.password.edit.title"));
 		// Body elements should be invisible
-		tester.assertInvisible(formPath());
+		tester.assertInvisible(passwordEditPopupFormPath());
 		// Footer elements should be invisible
-		tester.assertInvisible(modalPath() + ":footer:save");
-		tester.assertInvisible(modalPath() + ":footer:cancel");
+		tester.assertInvisible(passwordEditPopupPath() + ":footer:save");
+		tester.assertInvisible(passwordEditPopupPath() + ":footer:cancel");
 		
 		tester.executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
 		tester.assertComponentOnAjaxResponse(container);
 		
 		// Body elements should now be visible
-		tester.assertVisible(formPath());
-		tester.assertVisible(formPath() + ":oldPassword");
-		tester.assertRequired(formPath() + ":oldPassword");
-		tester.assertVisible(formPath() + ":newPassword");
-		tester.assertRequired(formPath() + ":newPassword");
-		tester.assertVisible(formPath() + ":confirmPassword");
-		tester.assertRequired(formPath() + ":confirmPassword");
+		tester.assertVisible(passwordEditPopupFormPath());
+		tester.assertVisible(passwordEditPopupFormPath() + ":oldPassword");
+		tester.assertRequired(passwordEditPopupFormPath() + ":oldPassword");
+		tester.assertVisible(passwordEditPopupFormPath() + ":newPassword");
+		tester.assertRequired(passwordEditPopupFormPath() + ":newPassword");
+		tester.assertVisible(passwordEditPopupFormPath() + ":confirmPassword");
+		tester.assertRequired(passwordEditPopupFormPath() + ":confirmPassword");
 		// Footer elements should now be visible
-		tester.assertVisible(modalPath() + ":footer:save");
-		tester.assertEnabled(modalPath() + ":footer:save");
-		tester.assertVisible(modalPath() + ":footer:cancel");
-		tester.assertEnabled(modalPath() + ":footer:cancel");
+		tester.assertVisible(passwordEditPopupPath() + ":footer:save");
+		tester.assertEnabled(passwordEditPopupPath() + ":footer:save");
+		tester.assertVisible(passwordEditPopupPath() + ":footer:cancel");
+		tester.assertEnabled(passwordEditPopupPath() + ":footer:cancel");
 	}
 
 	@Test
@@ -78,9 +78,9 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		
 		tester.executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
 		
-		FormTester form = tester.newFormTester(formPath());
+		FormTester form = tester.newFormTester(passwordEditPopupFormPath());
 		// Necessary because the submission button is outside the form
-		Component submitButton = tester.getComponentFromLastRenderedPage(modalPath() + ":footer:save");
+		Component submitButton = tester.getComponentFromLastRenderedPage(passwordEditPopupPath() + ":footer:save");
 		form.submit(submitButton);
 		
 		String oldPasswordRequired ="Le champ 'Ancien mot de passe' est obligatoire.";
@@ -98,9 +98,9 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		
 		tester.executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
 		
-		FormTester form = tester.newFormTester(formPath());
+		FormTester form = tester.newFormTester(passwordEditPopupFormPath());
 		// Necessary because the submission button is outside the form
-		Component submitButton = tester.getComponentFromLastRenderedPage(modalPath() + ":footer:save");
+		Component submitButton = tester.getComponentFromLastRenderedPage(passwordEditPopupPath() + ":footer:save");
 		String newPassword = "newPassword";
 		form.setValue(form.getForm().get("oldPassword"), USER_PASSWORD);
 		form.setValue(form.getForm().get("newPassword"), newPassword);
@@ -113,11 +113,11 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		assertTrue(passwordEncoder.matches(newPassword, userService.getByUsername("utilisateur").getPasswordHash()));
 	}
 
-	private String modalPath() {
-		return modalPath("description:passwordEditPopup");
+	private String passwordEditPopupPath() {
+		return tester.modalPath("description:passwordEditPopup");
 	}
 
-	private String formPath() {
-		return modalFormPath("description:passwordEditPopup");
+	private String passwordEditPopupFormPath() {
+		return tester.modalFormPath("description:passwordEditPopup");
 	}
 }

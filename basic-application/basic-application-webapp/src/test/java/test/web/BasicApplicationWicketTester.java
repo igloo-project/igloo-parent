@@ -9,4 +9,19 @@ public class BasicApplicationWicketTester extends WicketMoreWicketTester {
 		super(application);
 	}
 
+	public String modalPath(String path) {
+		return path + ":container:dialog";
+	}
+
+	public String modalFormPath(String path) {
+		return modalPath(path) + ":body:form";
+	}
+
+	public String breadCrumbPath() {
+		return "breadCrumb:breadCrumbElementListView";
+	}
+
+	public String breadCrumbElementPath(int element) {
+		return "breadCrumb:breadCrumbElementListView:" + element + ":breadCrumbElement";
+	}
 }
