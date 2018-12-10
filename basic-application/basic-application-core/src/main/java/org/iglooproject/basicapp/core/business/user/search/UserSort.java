@@ -11,6 +11,7 @@ import org.iglooproject.jpa.more.business.sort.SortUtils;
 import com.google.common.collect.ImmutableList;
 
 public enum UserSort implements ISort<SortField> {
+
 	LAST_NAME {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
@@ -56,16 +57,16 @@ public enum UserSort implements ISort<SortField> {
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID_SORT));
 		}
-
+		
 		@Override
 		public SortOrder getDefaultOrder() {
 			return SortOrder.DESC;
 		}
 	};
-	
+
 	@Override
 	public abstract List<SortField> getSortFields(SortOrder sortOrder);
-	
+
 	@Override
 	public abstract SortOrder getDefaultOrder();
 

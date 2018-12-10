@@ -2,10 +2,9 @@ package org.iglooproject.basicapp.web.application.security.login.component;
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
 
 public class SignInFooterPanel<U extends User> extends Panel {
 
@@ -14,15 +13,13 @@ public class SignInFooterPanel<U extends User> extends Panel {
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
 	
-	public SignInFooterPanel(String wicketId, UserTypeDescriptor<U> typeDescriptor) {
+	public SignInFooterPanel(String wicketId) {
 		super(wicketId);
 		
-		boolean passwordRecoveryEnabled = securityManagementService.getOptions(typeDescriptor.getEntityClass())
-				.isPasswordUserRecoveryEnabled();
-		
 		add(
-				typeDescriptor.securityTypeDescriptor().passwordRecoveryPageLinkDescriptor().link("passwordRecovery")
-						.setVisibilityAllowed(passwordRecoveryEnabled)
+			SecurityPasswordRecoveryPage.linkDescriptor()
+				.link("passwordRecovery")
+				.setVisibilityAllowed(securityManagementService.getOptions(User.class).isPasswordUserRecoveryEnabled())
 		);
 	}
 

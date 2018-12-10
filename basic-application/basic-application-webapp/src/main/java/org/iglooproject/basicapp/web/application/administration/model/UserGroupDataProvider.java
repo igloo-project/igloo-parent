@@ -24,14 +24,14 @@ public class UserGroupDataProvider extends AbstractSearchQueryDataProvider<UserG
 	private final IModel<String> nameModel = new Model<>();
 
 	private final CompositeSortModel<UserGroupSort> sortModel = new CompositeSortModel<>(
-			CompositingStrategy.LAST_ONLY,
-			ImmutableMap.of(
-					UserGroupSort.NAME, UserGroupSort.NAME.getDefaultOrder(),
-					UserGroupSort.ID, UserGroupSort.ID.getDefaultOrder()
-			),
-			ImmutableMap.of(
-					UserGroupSort.ID, UserGroupSort.ID.getDefaultOrder()
-			)
+		CompositingStrategy.LAST_ONLY,
+		ImmutableMap.of(
+			UserGroupSort.NAME, UserGroupSort.NAME.getDefaultOrder(),
+			UserGroupSort.ID, UserGroupSort.ID.getDefaultOrder()
+		),
+		ImmutableMap.of(
+			UserGroupSort.ID, UserGroupSort.ID.getDefaultOrder()
+		)
 	);
 
 	public UserGroupDataProvider(IModel<? extends User> userModel) {
@@ -55,9 +55,9 @@ public class UserGroupDataProvider extends AbstractSearchQueryDataProvider<UserG
 	@Override
 	protected ISearchQuery<UserGroup, UserGroupSort> getSearchQuery() {
 		return createSearchQuery(IUserGroupSearchQuery.class)
-				.user(userModel.getObject())
-				.name(nameModel.getObject())
-				.sort(sortModel.getObject());
+			.user(userModel.getObject())
+			.name(nameModel.getObject())
+			.sort(sortModel.getObject());
 	}
 
 	@Override

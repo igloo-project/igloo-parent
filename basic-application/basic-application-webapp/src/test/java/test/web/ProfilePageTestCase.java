@@ -6,7 +6,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.feedback.ExactLevelFeedbackMessageFilter;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.util.tester.FormTester;
-import org.iglooproject.basicapp.web.application.administration.form.UserPasswordUpdatePopup;
+import org.iglooproject.basicapp.web.application.administration.form.UserPasswordEditPopup;
 import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -36,7 +36,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		tester.assertRenderedPage(ProfilePage.class);
 		
 		tester.assertVisible("description:passwordEditPopup");
-		tester.assertComponent("description:passwordEditPopup", UserPasswordUpdatePopup.class);
+		tester.assertComponent("description:passwordEditPopup", UserPasswordEditPopup.class);
 		
 		tester.assertVisible("description:passwordEditPopup:container");
 		Component container = tester.getComponentFromLastRenderedPage("description:passwordEditPopup:container");

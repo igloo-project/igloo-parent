@@ -22,10 +22,10 @@ public abstract class AbstractNavbarPanel extends Panel {
 	}
 
 	protected void addNavItem(
-			String navItemWicketId,
-			IPageLinkDescriptor pageLinkGenerator,
-			Class<? extends Page> clazz,
-			Function<IPageLinkGenerator, Component> function
+		String navItemWicketId,
+		IPageLinkDescriptor pageLinkGenerator,
+		Class<? extends Page> clazz,
+		Function<IPageLinkGenerator, Component> function
 	) {
 		EnclosureContainer navItem = new EnclosureContainer(navItemWicketId);
 		Component component = function.apply(pageLinkGenerator);
@@ -33,40 +33,40 @@ public abstract class AbstractNavbarPanel extends Panel {
 		addActiveClass(pageLinkGenerator, clazz, navItem);
 		
 		add(
-				navItem
-					.anyChildVisible()
-					.add(component)
+			navItem
+				.anyChildVisible()
+				.add(component)
 		);
 	}
 
 	protected void addActiveClass(
-			ListItem<NavigationMenuItem> item,
-			Class<? extends Page> clazz,
-			Component component
+		ListItem<NavigationMenuItem> item,
+		Class<? extends Page> clazz,
+		Component component
 	) {
 		addActiveClass(
-				item.getModelObject()::isActive,
-				clazz,
-				component
+			item.getModelObject()::isActive,
+			clazz,
+			component
 		);
 	}
 
 	protected void addActiveClass(
-			IPageLinkGenerator pageLinkGenerator,
-			Class<? extends Page> clazz,
-			Component component
+		IPageLinkGenerator pageLinkGenerator,
+		Class<? extends Page> clazz,
+		Component component
 	) {
 		addActiveClass(
-				pageLinkGenerator::isActive,
-				clazz,
-				component
+			pageLinkGenerator::isActive,
+			clazz,
+			component
 		);
 	}
 
 	private void addActiveClass(
-			Predicate<Class<? extends Page>> predicate,
-			Class<? extends Page> clazz,
-			Component component
+		Predicate<Class<? extends Page>> predicate,
+		Class<? extends Page> clazz,
+		Component component
 	) {
 		if (predicate.test(clazz)) {
 			component.add(new ClassAttributeAppender("active"));

@@ -131,7 +131,10 @@ public class AnnouncementsPanel extends Panel {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		Detachables.detach(announcementsModel, closeModel);
+		Detachables.detach(
+			announcementsModel,
+			closeModel
+		);
 	}
 
 }

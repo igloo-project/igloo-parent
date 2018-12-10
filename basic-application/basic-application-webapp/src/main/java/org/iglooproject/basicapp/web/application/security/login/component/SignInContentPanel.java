@@ -13,9 +13,10 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.wicket.more.AbstractCoreSession;
+import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -35,7 +36,7 @@ public class SignInContentPanel<U extends User> extends Panel {
 
 	private FormComponent<String> passwordField;
 	
-	public SignInContentPanel(String wicketId, final UserTypeDescriptor<U> defaultTypeDescriptor) {
+	public SignInContentPanel(String wicketId) {
 		super(wicketId);
 		
 		Form<Void> form = new Form<Void>("form") {
@@ -68,7 +69,7 @@ public class SignInContentPanel<U extends User> extends Panel {
 					/* Redirect the user depending on its type, and not based on the authentication page.
 					 * This allows user to authenticate from the wrong page, when there's multiple authentication pages.
 					 */
-					throw UserTypeDescriptor.get(loggedInUser).securityTypeDescriptor().loginSuccessPageLinkDescriptor().newRestartResponseException();
+					throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
 				} else if (badCredentials) {
 					User user = userService.getByUsername(usernameField.getModelObject());
 					if (user != null) {
@@ -80,7 +81,8 @@ public class SignInContentPanel<U extends User> extends Panel {
 						}
 					}
 				}
-				throw defaultTypeDescriptor.securityTypeDescriptor().signInPageLinkDescriptor().newRestartResponseException();
+				
+				throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor().newRestartResponseException();
 			}
 		};
 		add(form);

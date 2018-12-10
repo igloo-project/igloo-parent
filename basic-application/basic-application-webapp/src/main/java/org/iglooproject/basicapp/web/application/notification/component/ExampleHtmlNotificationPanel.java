@@ -24,14 +24,14 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		
 		// Intro
 		StringResourceModel introModel = new StringResourceModel("notification.panel.example.intro")
-				.setParameters(BindingModel.of(userModel, Bindings.user().fullName()), dateModel);
+			.setParameters(BindingModel.of(userModel, Bindings.user().fullName()), dateModel);
 		add(new CoreLabel("intro", introModel));
 		
 		// Main link
 		add(
-				BasicApplicationApplication.get().getHomePageLinkDescriptor()
-						.link("mainLink")
-						.setAbsolute(true)
+			BasicApplicationApplication.get().getHomePageLinkDescriptor()
+				.link("mainLink")
+				.setAbsolute(true)
 		);
 		
 		// Properties
@@ -40,33 +40,35 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		
 		// 	>	Username
 		addTopProperty(propertiesTable, "username",
-				new WebMarkupContainer("usernameValue")
-				.add(
-						AdministrationUserDetailTemplate.mapper().ignoreParameter2().map(userModel)
-								.link("userLink")
-								.setAbsolute(true)
-								.setBody(BindingModel.of(userModel, Bindings.user().username()))
-				)
+			new WebMarkupContainer("usernameValue")
+			.add(
+				AdministrationUserDetailTemplate.mapper()
+					.ignoreParameter2()
+					.map(userModel)
+					.link("userLink")
+					.setAbsolute(true)
+					.setBody(BindingModel.of(userModel, Bindings.user().username()))
+			)
 		);
 		
 		// 	>	First name
 		addMiddleProperty(propertiesTable, "firstname",
-				new CoreLabel("firstnameValue", BindingModel.of(userModel, Bindings.user().firstName()))
+			new CoreLabel("firstnameValue", BindingModel.of(userModel, Bindings.user().firstName()))
 		);
 		
 		// 	>	Last name
 		addMiddleProperty(propertiesTable, "lastname",
-				new CoreLabel("lastnameValue", BindingModel.of(userModel, Bindings.user().lastName()))
+			new CoreLabel("lastnameValue", BindingModel.of(userModel, Bindings.user().lastName()))
 		);
 		
 		// 	>	E-mail
 		addMiddleProperty(propertiesTable, "email",
-				new CoreLabel("emailValue", BindingModel.of(userModel, Bindings.user().email()))
+			new CoreLabel("emailValue", BindingModel.of(userModel, Bindings.user().email()))
 		);
 		
 		// 	>	Last login date
 		addBottomProperty(propertiesTable, "lastLoginDate",
-				new DateLabel("lastLoginDateValue", BindingModel.of(userModel, Bindings.user().lastLoginDate()), DatePattern.SHORT_DATETIME)
+			new DateLabel("lastLoginDateValue", BindingModel.of(userModel, Bindings.user().lastLoginDate()), DatePattern.SHORT_DATETIME)
 		);
 	}
 

@@ -15,8 +15,8 @@ public class AdministrationUserGroupTemplate extends AdministrationTemplate {
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-				new ResourceModel("navigation.administration.userGroup"),
-				AdministrationUserGroupListPage.linkDescriptor()
+			new ResourceModel("navigation.administration.userGroup"),
+			AdministrationUserGroupListPage.linkDescriptor()
 		));
 	}
 

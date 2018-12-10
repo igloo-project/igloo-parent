@@ -23,7 +23,7 @@ import org.springframework.security.acls.domain.PermissionFactory;
 
 @Configuration
 public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecuredConfig {
-	
+
 	@Override
 	@Bean
 	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
@@ -57,40 +57,41 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecur
 		SecurityManagementServiceImpl securityManagementService = new SecurityManagementServiceImpl();
 		securityManagementService
 				.setOptions(
-						TechnicalUser.class,
-						new SecurityOptions()
-								.passwordAdminRecovery()
-								.passwordAdminUpdate()
-								.passwordUserRecovery()
-								.passwordUserUpdate()
-								.passwordRules(
-										SecurityPasswordRulesBuilder.start()
-												.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
-												.forbiddenUsername()
-												.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
-												.build()
-								)
+					TechnicalUser.class,
+					new SecurityOptions()
+						.passwordAdminRecovery()
+						.passwordAdminUpdate()
+						.passwordUserRecovery()
+						.passwordUserUpdate()
+						.passwordRules(
+							SecurityPasswordRulesBuilder.start()
+								.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
+								.forbiddenUsername()
+								.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
+								.build()
+						)
 				)
 				.setOptions(
-						BasicUser.class,
-						new SecurityOptions()
-								.passwordExpiration()
-								.passwordHistory()
-								.passwordUserRecovery()
-								.passwordUserUpdate()
-								.passwordRules(
-										SecurityPasswordRulesBuilder.start()
-												.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
-												.forbiddenUsername()
-												.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
-												.build()
-								)
+					BasicUser.class,
+					new SecurityOptions()
+						.passwordExpiration()
+						.passwordHistory()
+						.passwordUserRecovery()
+						.passwordUserUpdate()
+						.passwordRules(
+							SecurityPasswordRulesBuilder.start()
+								.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
+								.forbiddenUsername()
+								.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
+								.build()
+						)
 				)
 				.setDefaultOptions(
-						SecurityOptions.DEFAULT
+					SecurityOptions.DEFAULT
 				)
 		;
 		
 		return securityManagementService;
 	}
+
 }

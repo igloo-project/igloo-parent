@@ -48,13 +48,13 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 
 	@SpringBean
 	private IUserGroupService userGroupService;
-	
+
 	@SpringBean
 	private BasicApplicationAuthorityUtils authorityUtils;
 
 	private final IModel<FormMode> formModeModel = new Model<>(FormMode.ADD);
 
-	private Form<UserGroup> userGroupForm;
+	private Form<UserGroup> form;
 
 	public UserGroupPopup(String id) {
 		super(id, new GenericEntityModel<Long, UserGroup>(new UserGroup()));
@@ -63,10 +63,10 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 	@Override
 	protected Component createHeader(String wicketId) {
 		return new CoreLabel(
-				wicketId,
-				addModeCondition()
-						.then(new ResourceModel("administration.userGroup.action.add.title"))
-						.otherwise(new StringResourceModel("administration.userGroup.action.edit.title", getModel()))
+			wicketId,
+			addModeCondition()
+				.then(new ResourceModel("administration.userGroup.action.add.title"))
+				.otherwise(new StringResourceModel("administration.userGroup.action.edit.title", getModel()))
 		);
 	}
 
@@ -74,33 +74,33 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserGroupPopup.class);
 		
-		userGroupForm = new Form<>("form", getModel());
-		body.add(
-				userGroupForm
-						.add(
-								new RequiredTextField<String>("name", BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().name()))
-										.setLabel(new ResourceModel("business.userGroup.name")),
-								new TextArea<String>("description", BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().description()))
-										.setLabel(new ResourceModel("business.userGroup.description"))
-										.add(new AutosizeBehavior()),
-								new CheckGroup<Authority>("authorities",
-										BindingModel.of(userGroupForm.getModel(), Bindings.userGroup().authorities()),
-										Suppliers2.<Authority>hashSet()
-								)
-										.add(
-												new SequenceView<Authority>("authorities", new RoleDataProvider()) {
-													private static final long serialVersionUID = 1L;
-													@Override
-													protected void populateItem(Item<Authority> item) {
-														item.add(
-																new Check<Authority>("authority", item.getModel())
-																		.setLabel(AuthorityRenderer.get().asModel(item.getModel()))
-														);
-													}
-												}
-										)
-						)
-		);
+		form = new Form<>("form", getModel());
+		body.add(form);
+		
+		form
+			.add(
+				new RequiredTextField<String>("name", BindingModel.of(getModel(), Bindings.userGroup().name()))
+					.setLabel(new ResourceModel("business.userGroup.name")),
+				new TextArea<String>("description", BindingModel.of(getModel(), Bindings.userGroup().description()))
+					.setLabel(new ResourceModel("business.userGroup.description"))
+					.add(new AutosizeBehavior()),
+				new CheckGroup<Authority>("authorities",
+					BindingModel.of(getModel(), Bindings.userGroup().authorities()),
+					Suppliers2.<Authority>hashSet()
+				)
+					.add(
+						new SequenceView<Authority>("authorities", new RoleDataProvider()) {
+							private static final long serialVersionUID = 1L;
+							@Override
+							protected void populateItem(Item<Authority> item) {
+								item.add(
+									new Check<Authority>("authority", item.getModel())
+										.setLabel(AuthorityRenderer.get().asModel(item.getModel()))
+								);
+							}
+						}
+					)
+			);
 		
 		return body;
 	}
@@ -110,14 +110,14 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserGroupPopup.class);
 		
 		footer.add(
-				new AjaxButton("save", userGroupForm) {
+				new AjaxButton("save", form) {
 					private static final long serialVersionUID = 1L;
 					
 					@Override
 					protected void onSubmit(AjaxRequestTarget target) {
-						UserGroup userGroup = UserGroupPopup.this.getModelObject();
-						
 						try {
+							UserGroup userGroup = UserGroupPopup.this.getModelObject();
+							
 							if (addModeCondition().applies()) {
 								userGroupService.create(userGroup);
 								Session.get().success(getString("common.success"));
@@ -148,10 +148,10 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 					}
 				}
 				.add(new CoreLabel(
-						"label",
-						addModeCondition()
-								.then(new ResourceModel("common.action.create"))
-								.otherwise(new ResourceModel("common.action.save"))
+					"label",
+					addModeCondition()
+						.then(new ResourceModel("common.action.create"))
+						.otherwise(new ResourceModel("common.action.save"))
 				))
 		);
 		

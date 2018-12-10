@@ -30,15 +30,15 @@ public class AdministrationUserGroupDetailPage extends AdministrationUserGroupTe
 	private static final long serialVersionUID = -5780326896837623229L;
 
 	public static final IOneParameterLinkDescriptorMapper<IPageLinkDescriptor, UserGroup> MAPPER =
-			LinkDescriptorBuilder.start()
-					.model(UserGroup.class).map(CommonParameters.ID).mandatory()
-					.page(AdministrationUserGroupDetailPage.class);
+		LinkDescriptorBuilder.start()
+			.model(UserGroup.class).map(CommonParameters.ID).mandatory()
+			.page(AdministrationUserGroupDetailPage.class);
 	
 	public static final ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, UserGroup, Page> MAPPER_SOURCE =
-			LinkDescriptorBuilder.start()
-					.model(UserGroup.class).map(CommonParameters.ID).mandatory()
-					.model(Page.class).pickSecond().map(CommonParameters.SOURCE_PAGE_ID).optional()
-					.page(AdministrationUserGroupDetailPage.class);
+		LinkDescriptorBuilder.start()
+			.model(UserGroup.class).map(CommonParameters.ID).mandatory()
+			.model(Page.class).pickSecond().map(CommonParameters.SOURCE_PAGE_ID).optional()
+			.page(AdministrationUserGroupDetailPage.class);
 	
 	public static final IPageLinkDescriptor linkDescriptor(IModel<UserGroup> userGroupModel, IModel<Page> sourcePageModel) {
 		return MAPPER_SOURCE.map(userGroupModel, sourcePageModel);
@@ -51,34 +51,34 @@ public class AdministrationUserGroupDetailPage extends AdministrationUserGroupTe
 		IModel<Page> sourcePageModel = new PageModel<>();
 		
 		linkDescriptor(userGroupModel, sourcePageModel)
-				.extractSafely(
-						parameters,
-						AdministrationUserGroupListPage.linkDescriptor(),
-						getString("common.error.unexpected")
-				);
+			.extractSafely(
+				parameters,
+				AdministrationUserGroupListPage.linkDescriptor(),
+				getString("common.error.unexpected")
+			);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-				BindingModel.of(userGroupModel, Bindings.userGroup().name())
+			BindingModel.of(userGroupModel, Bindings.userGroup().name())
 		));
 		
 		Component backToSourcePage =
-				LinkFactory.get().linkGenerator(
-						sourcePageModel,
-						AdministrationUserGroupDetailPage.class
-				)
-				.link("backToSourcePage").hideIfInvalid();
+			LinkFactory.get().linkGenerator(
+					sourcePageModel,
+					AdministrationUserGroupDetailPage.class
+			)
+			.link("backToSourcePage").hideIfInvalid();
 		
 		add(
-				backToSourcePage,
-				AdministrationUserGroupListPage.linkDescriptor().link("backToList")
-						.add(Condition.componentVisible(backToSourcePage).thenHide()),
-				
-				new CoreLabel("pageTitle", BindingModel.of(userGroupModel, Bindings.userGroup().name()))
+			backToSourcePage,
+			AdministrationUserGroupListPage.linkDescriptor().link("backToList")
+				.add(Condition.componentVisible(backToSourcePage).thenHide()),
+			
+			new CoreLabel("pageTitle", BindingModel.of(userGroupModel, Bindings.userGroup().name()))
 		);
 		
 		add(
-				new UserGroupDetailDescriptionPanel("description", userGroupModel),
-				new UserGroupDetailUsersPanel("users", userGroupModel)
+			new UserGroupDetailDescriptionPanel("description", userGroupModel),
+			new UserGroupDetailUsersPanel("users", userGroupModel)
 		);
 	}
 
@@ -90,4 +90,5 @@ public class AdministrationUserGroupDetailPage extends AdministrationUserGroupTe
 	protected Class<? extends WebPage> getSecondMenuPage() {
 		return AdministrationUserGroupDetailPage.class;
 	}
+
 }

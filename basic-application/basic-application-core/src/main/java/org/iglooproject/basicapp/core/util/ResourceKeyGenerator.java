@@ -1,9 +1,8 @@
-package org.iglooproject.basicapp.web.application.common.util;
+package org.iglooproject.basicapp.core.util;
 
 import java.io.Serializable;
 
 import org.iglooproject.functional.Joiners;
-
 
 public final class ResourceKeyGenerator implements Serializable {
 	
@@ -35,7 +34,7 @@ public final class ResourceKeyGenerator implements Serializable {
 		return new ResourceKeyGenerator(join(base, suffix));
 	}
 	
-	public ResourceKeyGenerator withPrefix(CharSequence prefix) {
+	public ResourceKeyGenerator prepend(CharSequence prefix) {
 		return new ResourceKeyGenerator(join(prefix, base));
 	}
 }

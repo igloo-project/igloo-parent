@@ -96,7 +96,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 			return (BasicApplicationApplication) application;
 		}
 		throw new WicketRuntimeException("There is no BasicApplicationApplication attached to current thread " +
-				Thread.currentThread().getName());
+			Thread.currentThread().getName());
 	}
 	
 	@Override
@@ -106,24 +106,24 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		// si on n'est pas en développement, on précharge les feuilles de styles pour éviter la ruée et permettre le remplissage du cache
 		if (!propertyService.isConfigurationTypeDevelopment()) {
 			preloadStyleSheets(
-					ConsoleScssResourceReference.get(),
-					NotificationScssResourceReference.get(),
-					ApplicationAccessScssResourceReference.get(),
-					StylesScssResourceReference.get()
+				ConsoleScssResourceReference.get(),
+				NotificationScssResourceReference.get(),
+				ApplicationAccessScssResourceReference.get(),
+				StylesScssResourceReference.get()
 			);
 		}
 		
 		getResourceSettings().getStringResourceLoaders().addAll(
-				0, // Override the keys in existing resource loaders with the following 
-				ImmutableList.of(
-						new ClassStringResourceLoader(BasicApplicationApplicationResources.class),
-						new ClassStringResourceLoader(BasicApplicationBusinessResources.class),
-						new ClassStringResourceLoader(BasicApplicationCommonResources.class),
-						new ClassStringResourceLoader(BasicApplicationConsoleResources.class),
-						new ClassStringResourceLoader(BasicApplicationEnumResources.class),
-						new ClassStringResourceLoader(BasicApplicationNavigationResources.class),
-						new ClassStringResourceLoader(BasicApplicationNotificationResources.class)
-				)
+			0, // Override the keys in existing resource loaders with the following 
+			ImmutableList.of(
+				new ClassStringResourceLoader(BasicApplicationApplicationResources.class),
+				new ClassStringResourceLoader(BasicApplicationBusinessResources.class),
+				new ClassStringResourceLoader(BasicApplicationCommonResources.class),
+				new ClassStringResourceLoader(BasicApplicationConsoleResources.class),
+				new ClassStringResourceLoader(BasicApplicationEnumResources.class),
+				new ClassStringResourceLoader(BasicApplicationNavigationResources.class),
+				new ClassStringResourceLoader(BasicApplicationNotificationResources.class)
+			)
 		);
 		
 		FormInvalidDecoratorListener.init(this);
@@ -194,36 +194,40 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		consoleConfiguration.addCssResourceReference(ConsoleScssResourceReference.get());
 		consoleConfiguration.addConsoleAccessCssResourceReference(ConsoleAccessScssResourceReference.get());
 		consoleConfiguration.setConsoleAccessHeaderAdditionalContentComponentFactory(
-				new AbstractComponentFactory<Component>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Component create(String wicketId) {
-						return new ConsoleAccessHeaderAdditionalContentPanel(wicketId);
-					}
+			new AbstractComponentFactory<Component>() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public Component create(String wicketId) {
+					return new ConsoleAccessHeaderAdditionalContentPanel(wicketId);
 				}
+			}
 		);
 		consoleConfiguration.setConsoleHeaderEnvironmentComponentFactory(
-				new AbstractComponentFactory<Component>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Component create(String wicketId) {
-						return new ConsoleHeaderEnvironmentPanel(wicketId);
-					}
+			new AbstractComponentFactory<Component>() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public Component create(String wicketId) {
+					return new ConsoleHeaderEnvironmentPanel(wicketId);
 				}
+			}
 		);
 		consoleConfiguration.setConsoleHeaderAdditionalContentComponentFactory(
-				new AbstractComponentFactory<Component>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Component create(String wicketId) {
-						return new ConsoleHeaderAdditionalContentPanel(wicketId);
-					}
+			new AbstractComponentFactory<Component>() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public Component create(String wicketId) {
+					return new ConsoleHeaderAdditionalContentPanel(wicketId);
 				}
+			}
 		);
 		consoleConfiguration.mountPages(this);
 		
-		ConsoleMenuSection notificationMenuSection = new ConsoleMenuSection("notificationsMenuSection", "console.notifications",
-				"notifications", ConsoleNotificationDemoIndexPage.class);
+		ConsoleMenuSection notificationMenuSection = new ConsoleMenuSection(
+			"notificationsMenuSection",
+			"console.notifications",
+			"notifications",
+			ConsoleNotificationDemoIndexPage.class
+		);
 		consoleConfiguration.addMenuSection(notificationMenuSection);
 		
 		mountPage("/console/notifications/", ConsoleNotificationDemoIndexPage.class);
@@ -262,5 +266,5 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 	public Class<? extends WebPage> getSignInPageClass() {
 		return SignInPage.class;
 	}
-	
+
 }

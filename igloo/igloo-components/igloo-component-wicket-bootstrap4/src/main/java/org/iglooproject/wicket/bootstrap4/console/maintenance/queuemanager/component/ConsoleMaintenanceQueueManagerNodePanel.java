@@ -184,7 +184,10 @@ public class ConsoleMaintenanceQueueManagerNodePanel extends Panel {
 		@Override
 		protected void onDetach() {
 			super.onDetach();
-			Detachables.detach(queueTaskManagerStatusModel, taskQueuesStatusModel);
+			Detachables.detach(
+				queueTaskManagerStatusModel,
+				taskQueuesStatusModel
+			);
 		}
 
 	}

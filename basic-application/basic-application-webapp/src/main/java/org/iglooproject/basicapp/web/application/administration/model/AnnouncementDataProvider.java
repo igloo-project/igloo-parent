@@ -23,7 +23,6 @@ public class AnnouncementDataProvider extends AbstractSearchQueryDataProvider<An
 	@SpringBean
 	private IAnnouncementService announcementService;
 
-	// Tri
 	private final CompositeSortModel<AnnouncementSort> sortModel = new CompositeSortModel<>(
 		CompositingStrategy.LAST_ONLY,
 		ImmutableMap.of(

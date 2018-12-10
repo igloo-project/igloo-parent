@@ -5,19 +5,14 @@ import java.util.Date;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.basicapp.core.business.notification.service.IBasicApplicationNotificationContentDescriptorFactory;
 import org.iglooproject.basicapp.core.business.user.model.User;
+import org.iglooproject.basicapp.core.util.ResourceKeyGenerator;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.NotificationUserTypeDescriptor;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
-import org.iglooproject.basicapp.web.application.common.util.ResourceKeyGenerator;
 import org.iglooproject.basicapp.web.application.notification.component.ExampleHtmlNotificationPanel;
 import org.iglooproject.basicapp.web.application.notification.component.SimpleUserActionHtmlNotificationPanel;
+import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordCreationPage;
+import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
@@ -25,6 +20,10 @@ import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.notification.service.AbstractNotificationContentDescriptorFactory;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.ImmutableList;
 
 @Service("BasicApplicationNotificationPanelRendererService")
 public class BasicApplicationNotificationContentDescriptorFactoryImpl
@@ -56,23 +55,23 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 
 	@Override
 	public INotificationContentDescriptor userPasswordRecoveryRequest(final User user) {
-		
 		final ITwoParameterLinkDescriptorMapper<? extends ILinkGenerator, User, String> mapper;
 		switch (user.getPasswordRecoveryRequest().getType()) {
 		case CREATION:
-			mapper = UserTypeDescriptor.get(user).securityTypeDescriptor().passwordCreationPageLinkDescriptorMapper();
+			mapper = SecurityPasswordCreationPage.MAPPER;
 			break;
 		case RESET:
-			mapper = UserTypeDescriptor.get(user).securityTypeDescriptor().passwordResetPageLinkDescriptorMapper();
+			mapper = SecurityPasswordResetPage.MAPPER;
 			break;
 		default:
 			throw new IllegalStateException("Recovery request type unknown.");
 		}
-
-		String actionMessageKeyPart = "password.recovery.request." + user.getPasswordRecoveryRequest().getType().name()
-				+ "." + user.getPasswordRecoveryRequest().getInitiator().name();
-		final ResourceKeyGenerator keyGenerator = NotificationUserTypeDescriptor.USER.resourceKeyGenerator()
-				.append(actionMessageKeyPart);
+		
+		final ResourceKeyGenerator keyGenerator =
+			ResourceKeyGenerator.of("notification.panel.user.password.recovery.request")
+				.append(user.getPasswordRecoveryRequest().getType().name())
+				.append(user.getPasswordRecoveryRequest().getInitiator().name());
+		
 		return new AbstractSimpleWicketNotificationDescriptor(keyGenerator.resourceKey()) {
 			@Override
 			public IModel<?> getSubjectParameter() {

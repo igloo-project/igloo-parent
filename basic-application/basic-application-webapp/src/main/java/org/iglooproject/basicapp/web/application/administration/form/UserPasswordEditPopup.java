@@ -11,13 +11,15 @@ import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
+import org.iglooproject.basicapp.core.business.user.typedescriptor.UserTypeDescriptor;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import org.iglooproject.basicapp.web.application.common.model.UserTypeDescriptorModel;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
@@ -31,11 +33,11 @@ import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPopupPanel<U> {
+public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopupPanel<U> {
 
 	private static final long serialVersionUID = -4580284817084080271L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserPasswordUpdatePopup.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserPasswordEditPopup.class);
 
 	@SpringBean
 	private IUserService userService;
@@ -46,24 +48,25 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
 
-	private Form<?> passwordForm;
+	private final IModel<? extends UserTypeDescriptor<? extends User>> userTypeDescriptorModel;
+
+	private Form<?> form;
 
 	private final IModel<String> oldPasswordModel = Model.of("");
 	private final IModel<String> newPasswordModel = Model.of("");
 
-	private final UserTypeDescriptor<U> typeDescriptor;
-
 	private final Condition isOldPasswordRequired;
-	
-	public UserPasswordUpdatePopup(String id, IModel<U> model) {
-		super(id, model);
+
+	public UserPasswordEditPopup(String id, IModel<U> userModel) {
+		super(id, userModel);
 		
-		this.typeDescriptor = UserTypeDescriptor.get(model.getObject());
+		userTypeDescriptorModel = UserTypeDescriptorModel.fromUser(getModel());
 		
-		this.isOldPasswordRequired = Condition.or(
-				Condition.isEqual(Model.of(typeDescriptor.getEntityClass()), Model.of(TechnicalUser.class)),
+		this.isOldPasswordRequired =
+			Condition.or(
+				Condition.isEqual(userModel.map(User::getClass), Model.of(TechnicalUser.class)),
 				Condition.role(CoreAuthorityConstants.ROLE_ADMIN)
-		).negate();
+			).negate();
 	}
 
 	@Override
@@ -73,82 +76,82 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 
 	@Override
 	protected Component createBody(String wicketId) {
-		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserPasswordUpdatePopup.class);
+		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserPasswordEditPopup.class);
 		
-		passwordForm = new Form<Void>("form");
+		form = new Form<Void>("form");
+		body.add(form);
+		
 		TextField<String> oldPasswordField = new PasswordTextField("oldPassword", oldPasswordModel);
 		TextField<String> newPasswordField = new PasswordTextField("newPassword", newPasswordModel);
 		TextField<String> confirmPasswordField = new PasswordTextField("confirmPassword", Model.of(""));
 		
-		body.add(
-				passwordForm
-						.add(
-								oldPasswordField
-										.setLabel(new ResourceModel("business.user.oldPassword"))
-										.setRequired(true)
-										.add(isOldPasswordRequired.thenShow()),
-								newPasswordField
-										.setLabel(new ResourceModel("business.user.newPassword"))
-										.setRequired(true)
-										.add(
-												new UserPasswordValidator(typeDescriptor)
-														.userModel(getModel())
-										),
-								
-								new CoreLabel("passwordHelp",
-										new ResourceModel(
-												typeDescriptor.securityTypeDescriptor().resourceKeyGenerator().resourceKey("password.help"),
-												new ResourceModel(UserTypeDescriptor.USER.securityTypeDescriptor().resourceKeyGenerator().resourceKey("password.help"))
-										)
-								),
-								
-								confirmPasswordField
-										.setLabel(new ResourceModel("business.user.confirmPassword"))
-										.setRequired(true)
-						)
-						.add(new EqualPasswordInputValidator(newPasswordField, confirmPasswordField))
-		);
+		form
+			.add(
+				oldPasswordField
+					.setLabel(new ResourceModel("business.user.oldPassword"))
+					.setRequired(true)
+					.add(isOldPasswordRequired.thenShow()),
+				newPasswordField
+					.setLabel(new ResourceModel("business.user.newPassword"))
+					.setRequired(true)
+					.add(
+						new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz))
+							.userModel(getModel())
+					),
+				new CoreLabel("passwordHelp",
+					new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
+						.setDefaultValue(new ResourceModel("security.user.password.help"))
+				),
+				confirmPasswordField
+					.setLabel(new ResourceModel("business.user.confirmPassword"))
+					.setRequired(true)
+			)
+			.add(
+				new EqualPasswordInputValidator(newPasswordField, confirmPasswordField)
+			);
 		
 		return body;
 	}
 
 	@Override
 	protected Component createFooter(String wicketId) {
-		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserPasswordUpdatePopup.class);
+		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserPasswordEditPopup.class);
 		
-		// Validate button
-		AjaxButton validate = new AjaxButton("save", passwordForm) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void onSubmit(AjaxRequestTarget target) {
-				try {
-					User user = UserPasswordUpdatePopup.this.getModelObject();
-					String oldPassword = oldPasswordModel.getObject();
-					String newPassword = newPasswordModel.getObject();
-					
-					if (!isOldPasswordRequired.applies() || securityManagementService.checkPassword(oldPassword, user)) {
-						securityManagementService.updatePassword(user, newPassword, BasicApplicationSession.get().getUser());
+		footer.add(
+			new AjaxButton("save", form) {
+				private static final long serialVersionUID = 1L;
+				
+				@Override
+				protected void onSubmit(AjaxRequestTarget target) {
+					try {
+						IModel<U> userModel = UserPasswordEditPopup.this.getModel();
+						U user = userModel.getObject();
 						
-						Session.get().success(getString("common.success"));
-						closePopup(target);
-						target.add(getPage());
-					} else {
-						Session.get().error(getString("administration.user.action.password.edit.error.oldPassword"));
+						String oldPassword = oldPasswordModel.getObject();
+						String newPassword = newPasswordModel.getObject();
+						
+						if (!isOldPasswordRequired.applies() || securityManagementService.checkPassword(oldPassword, user)) {
+							securityManagementService.updatePassword(user, newPassword, BasicApplicationSession.get().getUser());
+							
+							Session.get().success(getString("common.success"));
+							closePopup(target);
+							target.add(getPage());
+						} else {
+							Session.get().error(getString("administration.user.action.password.edit.error.oldPassword"));
+						}
+					} catch (Exception e) {
+						LOGGER.error("Error occured while changing password.", e);
+						Session.get().error(getString("common.error.unexpected"));
 					}
-				} catch (Exception e) {
-					LOGGER.error("Error occured while changing password.", e);
-					Session.get().error(getString("common.error.unexpected"));
+					FeedbackUtils.refreshFeedback(target, getPage());
 				}
-				FeedbackUtils.refreshFeedback(target, getPage());
+				
+				@Override
+				protected void onError(AjaxRequestTarget target) {
+					FeedbackUtils.refreshFeedback(target, getPage());
+				}
 			}
-			
-			@Override
-			protected void onError(AjaxRequestTarget target) {
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-		};
-		footer.add(validate);
+		);
 		
 		BlankLink cancel = new BlankLink("cancel");
 		addCancelBehavior(cancel);
@@ -161,6 +164,7 @@ public class UserPasswordUpdatePopup<U extends User> extends AbstractAjaxModalPo
 	protected void onDetach() {
 		super.onDetach();
 		Detachables.detach(
+			userTypeDescriptorModel,
 			oldPasswordModel,
 			newPasswordModel,
 			isOldPasswordRequired

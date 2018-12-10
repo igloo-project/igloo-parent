@@ -1,7 +1,6 @@
 package test.web;
 
 import org.apache.wicket.util.tester.FormTester;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.navigation.page.HomePage;
 import org.iglooproject.basicapp.web.application.security.login.component.SignInContentPanel;
 import org.iglooproject.basicapp.web.application.security.login.component.SignInFooterPanel;
@@ -44,7 +43,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
-		tester.startComponentInPage(new SignInContentPanel<>("content", UserTypeDescriptor.USER));
+		tester.startComponentInPage(new SignInContentPanel<>("content"));
 		tester.assertRequired("content:form:username");
 		tester.assertRequired("content:form:password");
 		
@@ -69,7 +68,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
-		tester.startComponentInPage(new SignInContentPanel<>("content", UserTypeDescriptor.USER));
+		tester.startComponentInPage(new SignInContentPanel<>("content"));
 		tester.assertRequired("content:form:username");
 		tester.assertRequired("content:form:password");
 		

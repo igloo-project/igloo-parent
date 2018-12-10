@@ -101,7 +101,13 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		Detachables.detach(descriptorModel, recipientModel, descriptorWithContextModel, subjectModel, bodyModel);
+		Detachables.detach(
+			descriptorModel,
+			recipientModel,
+			descriptorWithContextModel,
+			subjectModel,
+			bodyModel
+		);
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()
-				.page(AdministrationUserGroupListPage.class);
+			.page(AdministrationUserGroupListPage.class);
 	}
 
 	@SpringBean
@@ -80,70 +80,70 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 					.anyChildVisible()
 					.add(
 						new BlankLink("add")
-								.add(new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
-									private static final long serialVersionUID = 1L;
-									@Override
-									protected void onShow(AjaxRequestTarget target) {
-										addPopup.setUpAdd(new UserGroup());
-									}
-								})
+							.add(new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
+								private static final long serialVersionUID = 1L;
+								@Override
+								protected void onShow(AjaxRequestTarget target) {
+									addPopup.setUpAdd(new UserGroup());
+								}
+							})
 					)
 			);
 		
 		add(
-				DataTableBuilder.start(ReadOnlyCollectionModel.of(userGroupListModel, GenericEntityModel.factory()))
-						.addLabelColumn(new ResourceModel("business.userGroup.name"), Bindings.userGroup().name())
-								.withLink(AdministrationUserGroupDetailPage.MAPPER_SOURCE.setParameter2(new ComponentPageModel(this)))
-						.addLabelColumn(new ResourceModel("business.userGroup.description"), Bindings.userGroup().description())
-								.withClass(CssClassConstants.CELL_HIDDEN_SM_AND_LESS)
-						.addActionColumn()
-								.addConfirmAction(ActionRenderers.delete())
-										.title(new IDetachableFactory<IModel<UserGroup>, IModel<String>>() {
-											private static final long serialVersionUID = 1L;
-											@Override
-											public IModel<String> create(IModel<UserGroup> parameter) {
-												return new StringResourceModel(
-														"administration.userGroup.action.delete.confirmation.title",
-														BindingModel.of(parameter, Bindings.userGroup().name())
-												);
-											}
-										})
-										.content(new IDetachableFactory<IModel<UserGroup>, IModel<String>>() {
-											private static final long serialVersionUID = 1L;
-											@Override
-											public IModel<String> create(IModel<UserGroup> parameter) {
-												return new StringResourceModel(
-														"administration.userGroup.action.delete.confirmation.content",
-														BindingModel.of(parameter, Bindings.userGroup().name())
-												);
-											}
-										})
-										.confirm()
-										.onClick(new IOneParameterAjaxAction<IModel<UserGroup>>() {
-											private static final long serialVersionUID = 1L;
-											@Override
-											public void execute(AjaxRequestTarget target, IModel<UserGroup> parameter) {
-												try {
-													userGroupService.delete(parameter.getObject());
-													Session.get().success(getString("common.success"));
-													throw new RestartResponseException(getPage());
-												} catch (RestartResponseException e) {
-													throw e;
-												} catch (Exception e) {
-													LOGGER.error("Error when delete a user group.", e);
-													Session.get().error(getString("common.error.unexpected"));
-													FeedbackUtils.refreshFeedback(target, getPage());
-												}
-											}
-										})
-										.whenPredicate(userGroup -> (BasicApplicationSession.get().hasRoleAdmin() && !userGroup.isLocked()))
-										.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
-								.end()
-								.withClass("actions actions-1x")
-						.bootstrapCard()
-								.ajaxPagers()
-								.count("administration.userGroup.list.count")
-						.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE))
+			DataTableBuilder.start(ReadOnlyCollectionModel.of(userGroupListModel, GenericEntityModel.factory()))
+				.addLabelColumn(new ResourceModel("business.userGroup.name"), Bindings.userGroup().name())
+					.withLink(AdministrationUserGroupDetailPage.MAPPER_SOURCE.setParameter2(new ComponentPageModel(this)))
+				.addLabelColumn(new ResourceModel("business.userGroup.description"), Bindings.userGroup().description())
+					.withClass(CssClassConstants.CELL_HIDDEN_SM_AND_LESS)
+				.addActionColumn()
+					.addConfirmAction(ActionRenderers.delete())
+						.title(new IDetachableFactory<IModel<UserGroup>, IModel<String>>() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public IModel<String> create(IModel<UserGroup> parameter) {
+								return new StringResourceModel(
+										"administration.userGroup.action.delete.confirmation.title",
+										BindingModel.of(parameter, Bindings.userGroup().name())
+								);
+							}
+						})
+						.content(new IDetachableFactory<IModel<UserGroup>, IModel<String>>() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public IModel<String> create(IModel<UserGroup> parameter) {
+								return new StringResourceModel(
+										"administration.userGroup.action.delete.confirmation.content",
+										BindingModel.of(parameter, Bindings.userGroup().name())
+								);
+							}
+						})
+						.confirm()
+						.onClick(new IOneParameterAjaxAction<IModel<UserGroup>>() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void execute(AjaxRequestTarget target, IModel<UserGroup> parameter) {
+								try {
+									userGroupService.delete(parameter.getObject());
+									Session.get().success(getString("common.success"));
+									throw new RestartResponseException(getPage());
+								} catch (RestartResponseException e) {
+									throw e;
+								} catch (Exception e) {
+									LOGGER.error("Error when delete a user group.", e);
+									Session.get().error(getString("common.error.unexpected"));
+									FeedbackUtils.refreshFeedback(target, getPage());
+								}
+							}
+						})
+						.whenPredicate(userGroup -> (BasicApplicationSession.get().hasRoleAdmin() && !userGroup.isLocked()))
+						.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
+					.end()
+					.withClass("actions actions-1x")
+				.bootstrapCard()
+					.ajaxPagers()
+					.count("administration.userGroup.list.count")
+				.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE))
 		);
 	}
 
@@ -151,4 +151,5 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 	protected Class<? extends WebPage> getSecondMenuPage() {
 		return AdministrationUserGroupListPage.class;
 	}
+
 }

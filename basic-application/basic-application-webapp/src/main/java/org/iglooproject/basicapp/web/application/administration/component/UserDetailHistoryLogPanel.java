@@ -20,9 +20,9 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuild
 import org.iglooproject.wicket.more.util.DatePattern;
 
 public class UserDetailHistoryLogPanel extends GenericPanel<User> {
-	
-	private static final long serialVersionUID = 809335942700940194L;
-	
+
+	private static final long serialVersionUID = -5322394816999794266L;
+
 	@SpringBean
 	private IPropertyService propertyService;
 
@@ -32,19 +32,20 @@ public class UserDetailHistoryLogPanel extends GenericPanel<User> {
 		
 		HistoryLogDataProvider dataProvider = HistoryLogDataProvider.object(userModel);
 		dataProvider.addMandatoryDifferenceEventType(HistoryEventType.UPDATE);
+		
 		add(
-				DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
-						.addLabelColumn(new ResourceModel("business.history.date"), Bindings.historyLog().date(), DatePattern.SHORT_DATETIME)
-								.withSort(HistoryLogSort.DATE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
-								.withClass("date date-lg")
-						.addLabelColumn(new ResourceModel("business.history.subject"), Bindings.historyLog().subject())
-								.withClass("text text-lg")
-						.addColumn(new HistoryLogDetailColumn())
-								.withClass("text text-xl")
-						.bootstrapCard()
-								.title("administration.user.detail.audits")
-								.ajaxPager(AddInPlacement.FOOTER_RIGHT)
-						.build("history", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE))
+			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
+				.addLabelColumn(new ResourceModel("business.history.date"), Bindings.historyLog().date(), DatePattern.SHORT_DATETIME)
+					.withSort(HistoryLogSort.DATE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
+					.withClass("date date-lg")
+				.addLabelColumn(new ResourceModel("business.history.subject"), Bindings.historyLog().subject())
+					.withClass("text text-lg")
+				.addColumn(new HistoryLogDetailColumn())
+					.withClass("text text-xl")
+				.bootstrapCard()
+					.title("administration.user.detail.audits")
+					.ajaxPager(AddInPlacement.FOOTER_RIGHT)
+				.build("history", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE))
 		);
 	}
 

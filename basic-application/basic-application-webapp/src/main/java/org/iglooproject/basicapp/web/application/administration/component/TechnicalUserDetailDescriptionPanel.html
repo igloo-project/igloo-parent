@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div wicket:id="editPopup" />
+		
+		<div class="card card-page">
+			<div class="card-header">
+				<h5 class="card-header-title"><wicket:message key="administration.user.detail.description" /></h5>
+			</div>
+			<div class="card-body">
+				<div class="description-section">
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.username" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<span wicket:id="username" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.active" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<span wicket:id="active" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.email" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<a wicket:id="email"></a>
+									<wicket:container wicket:id="emailPlaceholder" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.locale" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<span wicket:id="locale" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="description-section">
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.creationDate" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<span wicket:id="creationDate" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.lastUpdateDate" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<span wicket:id="lastUpdateDate" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="description-group">
+						<div class="description-row">
+							<div class="description-label-col">
+								<div class="description-label">
+									<wicket:message key="business.user.lastLoginDate" />
+								</div>
+							</div>
+							<div class="description-value-col">
+								<div class="description-value">
+									<span wicket:id="lastLoginDate" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="card-action">
+					<div class="row row-action justify-content-end">
+						<div wicket:enclosure-component="edit" class="col-auto">
+							<button type="button" wicket:id="edit" class="btn btn-primary"> 
+								<span class="fa fa-fw fa-pencil-alt" /> 
+								<wicket:message key="common.action.edit" />
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</wicket:panel>
+</html>

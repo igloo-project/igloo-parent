@@ -5,7 +5,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.web.application.common.template.ApplicationAccessTemplate;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.security.login.component.SignInContentPanel;
 import org.iglooproject.basicapp.web.application.security.login.component.SignInFooterPanel;
 import org.iglooproject.wicket.more.link.descriptor.ILinkDescriptor;
@@ -32,12 +31,12 @@ public class SignInPage extends ApplicationAccessTemplate {
 
 	@Override
 	protected Component getContentComponent(String wicketId) {
-		return new SignInContentPanel<>(wicketId, UserTypeDescriptor.USER);
+		return new SignInContentPanel<>(wicketId);
 	}
 
 	@Override
 	protected Component getFooterComponent(String wicketId) {
-		return new SignInFooterPanel<>(wicketId, UserTypeDescriptor.USER);
+		return new SignInFooterPanel<>(wicketId);
 	}
 
 }

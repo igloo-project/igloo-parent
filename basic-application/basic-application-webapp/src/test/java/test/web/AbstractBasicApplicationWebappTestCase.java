@@ -13,7 +13,7 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
+import org.iglooproject.basicapp.core.business.user.typedescriptor.UserTypeDescriptor;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.model.Authority;

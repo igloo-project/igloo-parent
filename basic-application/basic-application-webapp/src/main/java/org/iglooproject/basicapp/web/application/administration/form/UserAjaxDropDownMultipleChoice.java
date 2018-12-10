@@ -42,9 +42,9 @@ public class UserAjaxDropDownMultipleChoice<U extends User, C extends Collection
 		@Override
 		public void query(String term, int page, Response<U> response) {
 			response.addAll(
-					((IUserSearchQuery<U>) getBean(IUserSearchQuery.class, searchTypeClass))
-							.nameAutocomplete(term)
-							.fullList()
+				((IUserSearchQuery<U>) getBean(IUserSearchQuery.class, searchTypeClass))
+					.nameAutocomplete(term)
+					.fullList()
 			);
 		}
 	}

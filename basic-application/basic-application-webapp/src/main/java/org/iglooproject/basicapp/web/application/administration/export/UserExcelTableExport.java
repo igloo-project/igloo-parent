@@ -24,14 +24,14 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 	private static final String SHEET_NAME_RESOURCE_KEY = "administration.user.list.export.excel.sheetName";
 	
 	private final Collection<ColumnInformation> columns = ImmutableList.of(
-			new ColumnInformation("business.user.username"),
-			new ColumnInformation("business.user.lastName"),
-			new ColumnInformation("business.user.firstName"),
-			new ColumnInformation("business.user.email"),
-			new ColumnInformation("business.user.active"),
-			new ColumnInformation("business.user.creationDate"),
-			new ColumnInformation("business.user.lastUpdateDate"),
-			new ColumnInformation("business.user.lastLoginDate")
+		new ColumnInformation("business.user.username"),
+		new ColumnInformation("business.user.lastName"),
+		new ColumnInformation("business.user.firstName"),
+		new ColumnInformation("business.user.email"),
+		new ColumnInformation("business.user.active"),
+		new ColumnInformation("business.user.creationDate"),
+		new ColumnInformation("business.user.lastUpdateDate"),
+		new ColumnInformation("business.user.lastLoginDate")
 	);
 
 	public UserExcelTableExport(Component component) {
