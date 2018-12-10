@@ -1,9 +1,11 @@
 package test.wicket.more;
 
+import org.apache.wicket.protocol.http.WebApplication;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.wicket.core.AbstractWicketTestCase;
 import org.iglooproject.wicket.more.test.WicketMoreWicketTester;
+import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -15,6 +17,14 @@ public abstract class AbstractWicketMoreTestCase extends AbstractWicketTestCase<
 	
 	@Autowired
 	private IPersonService personService;
+
+	@Autowired
+	private WebApplication application;
+
+	@Before
+	public void setUp() throws ServiceException, SecurityServiceException {
+		setWicketTester(new WicketMoreWicketTester(application));
+	}
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
