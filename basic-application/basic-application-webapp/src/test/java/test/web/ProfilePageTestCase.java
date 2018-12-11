@@ -21,7 +21,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 
 	@Test
 	public void initPage() throws ServiceException, SecurityServiceException {
-		authenticateUser(utilisateur);
+		authenticateUser(basicUser);
 		
 		tester.startPage(ProfilePage.class);
 		tester.assertRenderedPage(ProfilePage.class);
@@ -29,7 +29,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 
 	@Test
 	public void updatePasswordPanelComponents() throws ServiceException, SecurityServiceException {
-		authenticateUser(utilisateur);
+		authenticateUser(basicUser);
 		
 		tester.startPage(ProfilePage.class);
 		tester.assertRenderedPage(ProfilePage.class);
@@ -71,7 +71,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 
 	@Test
 	public void updatePasswordFormMissingRequiredFields() throws ServiceException, SecurityServiceException {
-		authenticateUser(utilisateur);
+		authenticateUser(basicUser);
 		
 		tester.startPage(ProfilePage.class);
 		tester.assertRenderedPage(ProfilePage.class);
@@ -91,7 +91,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 
 	@Test
 	public void updatePasswordFormSuccess() throws ServiceException, SecurityServiceException {
-		authenticateUser(utilisateur);
+		authenticateUser(basicUser);
 		
 		tester.startPage(ProfilePage.class);
 		tester.assertRenderedPage(ProfilePage.class);
@@ -110,7 +110,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		tester.assertNoErrorMessage();
 		tester.assertFeedbackMessages(new ExactLevelFeedbackMessageFilter(FeedbackMessage.SUCCESS), localize("common.success"));
 		
-		assertTrue(passwordEncoder.matches(newPassword, userService.getByUsername("utilisateur").getPasswordHash()));
+		assertTrue(passwordEncoder.matches(newPassword, userService.getByUsername("basicUser").getPasswordHash()));
 	}
 
 	private String passwordEditPopupPath() {

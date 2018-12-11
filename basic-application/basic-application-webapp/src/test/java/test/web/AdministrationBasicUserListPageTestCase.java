@@ -27,7 +27,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 
 	@Test
 	public void initPage() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
 		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
@@ -35,10 +35,14 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 
 	@Test
 	public void dataTableBuilderCountZero() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationTechnicalUserListPage.class);
 		tester.assertRenderedPage(AdministrationTechnicalUserListPage.class);
+		
+		FormTester form = tester.newFormTester("search:form");
+		form.setValue("name", "basicUser");
+		form.submit();
 		
 		tester.assertComponent("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", CountLabel.class);
 		tester.assertLabel("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", "Aucun utilisateur");
@@ -46,14 +50,10 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 
 	@Test
 	public void dataTableBuilderCountOne() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
-		tester.startPage(AdministrationBasicUserListPage.class);
-		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
-		
-		FormTester form = tester.newFormTester("search:form");
-		form.setValue("name", "utilisateur");
-		form.submit();
+		tester.startPage(AdministrationTechnicalUserListPage.class);
+		tester.assertRenderedPage(AdministrationTechnicalUserListPage.class);
 		
 		tester.assertComponent("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", CountLabel.class);
 		tester.assertLabel("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", "1 utilisateur");
@@ -61,7 +61,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 
 	@Test
 	public void dataTableBuilderCountMultiple() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
 		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
@@ -72,7 +72,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 
 	@Test
 	public void dataTableBuilderFiltersDropDown() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
 		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
@@ -80,22 +80,22 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		tester.assertComponent("results", DecoratedCoreDataTablePanel.class);
 		@SuppressWarnings("unchecked")
 		DecoratedCoreDataTablePanel<User, ?> results = (DecoratedCoreDataTablePanel<User, ?>) tester.getComponentFromLastRenderedPage("results");
-		assertEquals(2, results.getItemCount(), 0);
+		assertEquals(2, results.getItemCount());
 		
 		FormTester form = tester.newFormTester("search:form");
 		UserGroupDropDownSingleChoice userGroupField = (UserGroupDropDownSingleChoice) form.getForm().get("userGroup");
-		assertEquals(userGroupField.getChoices().size(), 2);
+		assertEquals(2, userGroupField.getChoices().size());
 		form.select(userGroupField.getId(), 0); // It should be Administrators
 		
 		form.submit();
 		
 		assertTrue(administrators.equals(userGroupField.getModelObject()));
-		assertEquals(1, results.getItemCount(), 0);
+		assertEquals(0, results.getItemCount());
 	}
 
 	@Test
 	public void accessToDetail() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
 		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
@@ -118,7 +118,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 
 	@Test
 	public void excelButtonTootilp() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
 		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
@@ -127,6 +127,6 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		
 		Component exportExcel = tester.getComponentFromLastRenderedPage("headerElementsSection:actionsContainer:exportExcel");
 		TagTester tagTester = TagTester.createTagByAttribute(tester.getLastResponse().getDocument(), "id", exportExcel.getMarkupId());
-		assertEquals(tagTester.getAttribute("title"), localize("common.action.export.excel"));
+		assertEquals(localize("common.action.export.excel"), tagTester.getAttribute("title"));
 	}
 }

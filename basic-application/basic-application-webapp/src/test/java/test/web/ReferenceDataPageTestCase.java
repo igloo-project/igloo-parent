@@ -13,7 +13,7 @@ public class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTes
 
 	@Test
 	public void initPage() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
 		tester.startPage(ReferenceDataPage.class);
 		tester.assertRenderedPage(ReferenceDataPage.class);
@@ -25,7 +25,7 @@ public class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTes
 	 */
 	@Test(expected = UnauthorizedInstantiationException.class)
 	public void accessUserUnauthorized() throws ServiceException, SecurityServiceException {
-		authenticateUser(utilisateur);
+		authenticateUser(basicUser);
 		
 		tester.executeUrl("./reference-data/"); // equals to startPage(ReferenceDataPage.class)
 	}

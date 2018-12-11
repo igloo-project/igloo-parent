@@ -49,7 +49,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
 	public void initPageUserAuthenticated() throws ServiceException, SecurityServiceException {
-		authenticateUser(utilisateur);
+		authenticateUser(basicUser);
 		
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
@@ -63,18 +63,18 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
 	public void checkImageAlt() throws ServiceException, SecurityServiceException {
-		authenticateUser(utilisateur);
+		authenticateUser(basicUser);
 		
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
 		
 		TagTester tagTester = TagTester.createTagByAttribute(tester.getLastResponse().getDocument(), "class", "footer-section");
-		assertEquals(tagTester.getChild("img").getAttribute("alt"), "Logo Igloo");
+		assertEquals("Logo Igloo", tagTester.getChild("img").getAttribute("alt"));
 	}
 
 	@Test
 	public void navbarUserAuthenticated() throws ServiceException, SecurityServiceException {
-		authenticateUser(utilisateur);
+		authenticateUser(basicUser);
 		
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
@@ -84,7 +84,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
 	public void navbarUserAdmin() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
@@ -115,8 +115,8 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		});
 		
 		int countAccessibleItems = navBarComponents(NavbarItem.menu(), "navbar:mainNav");
-		assertEquals(nbExpectedItems, countAccessibleItems, 0);
-		assertEquals(nbExpectedItems, countVisibleItems.getValue(), 0);
+		assertEquals(nbExpectedItems, countAccessibleItems);
+		assertEquals(nbExpectedItems, countVisibleItems.getValue().intValue());
 	}
 
 	private int navBarComponents(List<NavbarItem> menu, String pathToMenu) {

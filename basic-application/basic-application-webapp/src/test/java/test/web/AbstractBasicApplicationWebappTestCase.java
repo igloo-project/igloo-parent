@@ -7,10 +7,12 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
+import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
+import org.iglooproject.basicapp.core.business.user.typedescriptor.UserTypeDescriptor;
 import org.iglooproject.basicapp.core.security.model.BasicApplicationAuthorityConstants;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -39,9 +41,9 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 
 	protected UserGroup administrators;
 
-	protected BasicUser utilisateur;
+	protected BasicUser basicUser;
 
-	protected BasicUser administrateur;
+	protected TechnicalUser administrator;
 
 	@Autowired
 	protected IUserService userService;
@@ -106,16 +108,19 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 	}
 
 	private void initUsers() throws ServiceException, SecurityServiceException {
-		utilisateur = createBasicUser("utilisateur", ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_AUTHENTICATED),
-			ImmutableSet.of(users));
-		administrateur = createBasicUser("administrateur", ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_ADMIN),
-			ImmutableSet.of(administrators));
+		basicUser = createUser("basicUser", UserTypeDescriptor.BASIC_USER,
+			ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_AUTHENTICATED), ImmutableSet.of(users));
+		createUser("basicUser2", UserTypeDescriptor.BASIC_USER,
+				ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_AUTHENTICATED), ImmutableSet.of(users));
+		
+		administrator = createUser("administrator", UserTypeDescriptor.TECHNICAL_USER,
+			ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_ADMIN), ImmutableSet.of(administrators));
 	}
 
-	private BasicUser createBasicUser(String username, Set<String> authorities, Set<UserGroup> userGroups)
+	private <U extends User> U createUser(String username, UserTypeDescriptor<U> type, Set<String> authorities, Set<UserGroup> userGroups)
 		throws ServiceException, SecurityServiceException {
 		
-		BasicUser user = new BasicUser();
+		U user = type.getSupplier().get();
 		user.setUsername(username);
 		user.setFirstName(username);
 		user.setLastName(username);

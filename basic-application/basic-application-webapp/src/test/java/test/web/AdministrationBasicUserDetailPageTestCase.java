@@ -22,11 +22,11 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 
 	@Test
 	public void initPage() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
 		String url = AdministrationUserDetailTemplate.mapper()
 			.ignoreParameter2()
-			.map(GenericEntityModel.of(utilisateur)).url();
+			.map(GenericEntityModel.of(basicUser)).url();
 		tester.executeUrl(url);
 		
 		tester.assertRenderedPage(AdministrationBasicUserDetailPage.class);
@@ -34,11 +34,11 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 
 	@Test
 	public void breadcrumb() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
 		String url = AdministrationUserDetailTemplate.mapper()
 			.ignoreParameter2()
-			.map(GenericEntityModel.of(utilisateur)).url();
+			.map(GenericEntityModel.of(basicUser)).url();
 		tester.executeUrl(url);
 		
 		tester.assertRenderedPage(AdministrationBasicUserDetailPage.class);
@@ -55,7 +55,7 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 		@SuppressWarnings("unchecked")
 		Link<Void> administrationLink = (Link<Void>) tester.getComponentFromLastRenderedPage(administrationBreadCrumbPath + ":breadCrumbElementLink");
 		String administrationLabel = (String) administrationLink.getBody().getObject();
-		assertEquals(administrationLabel, localize("navigation.administration"));
+		assertEquals(localize("navigation.administration"), administrationLabel);
 		
 		String administrationBasicUserBreadCrumbPath = tester.breadCrumbElementPath(1);
 		tester.assertVisible(administrationBasicUserBreadCrumbPath);
@@ -66,7 +66,7 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 		@SuppressWarnings("unchecked")
 		Link<Void> administrationBasicUserLink = (Link<Void>) tester.getComponentFromLastRenderedPage(administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink");
 		String administrationBasicUserLabel = (String) administrationBasicUserLink.getBody().getObject();
-		assertEquals(administrationBasicUserLabel, localize("navigation.administration.user.basicUser"));
+		assertEquals(localize("navigation.administration.user.basicUser"), administrationBasicUserLabel);
 		
 		tester.clickLink(administrationBreadCrumbPath + ":breadCrumbElementLink");
 		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
@@ -74,14 +74,14 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 
 	@Test
 	public void desactivateUser() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
 		String url = AdministrationUserDetailTemplate.mapper()
 			.ignoreParameter2()
-			.map(GenericEntityModel.of(utilisateur)).url();
+			.map(GenericEntityModel.of(basicUser)).url();
 		tester.executeUrl(url);
 		
-		assertTrue(utilisateur.isActive());
+		assertTrue(basicUser.isActive());
 		
 		tester.assertInvisible("headerElementsSection:actionsContainer:enable");
 		tester.assertVisible("headerElementsSection:actionsContainer:disable");
@@ -93,6 +93,6 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 		tester.assertEnabled("headerElementsSection:actionsContainer:enable");
 		tester.assertInvisible("headerElementsSection:actionsContainer:disable");
 		
-		assertFalse(utilisateur.isActive());
+		assertFalse(basicUser.isActive());
 	}
 }

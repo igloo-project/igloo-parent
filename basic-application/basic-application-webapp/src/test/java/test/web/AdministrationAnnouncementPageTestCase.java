@@ -10,7 +10,7 @@ public class AdministrationAnnouncementPageTestCase extends AbstractBasicApplica
 
 	@Test
 	public void initPage() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrateur);
+		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationAnnouncementListPage.class);
 		tester.assertRenderedPage(AdministrationAnnouncementListPage.class);
@@ -18,7 +18,7 @@ public class AdministrationAnnouncementPageTestCase extends AbstractBasicApplica
 
 	@Test(expected = LinkInvalidTargetRuntimeException.class)
 	public void accessUnauthorizedLinkDescriptor() throws ServiceException, SecurityServiceException {
-		authenticateUser(utilisateur);
+		authenticateUser(basicUser);
 		
 		tester.executeUrl(AdministrationAnnouncementListPage.linkDescriptor().fullUrl());
 	}

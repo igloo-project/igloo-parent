@@ -43,7 +43,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		
 		FormTester form = tester.newFormTester("content:form");
 		
-		form.setValue(form.getForm().get("username"), utilisateur.getUsername());
+		form.setValue(form.getForm().get("username"), basicUser.getUsername());
 		form.setValue(form.getForm().get("password"), USER_PASSWORD);
 		
 		form.submit();
@@ -62,7 +62,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		
 		FormTester form = tester.newFormTester("content:form");
 		
-		form.setValue(form.getForm().get("username"), utilisateur.getUsername());
+		form.setValue(form.getForm().get("username"), basicUser.getUsername());
 		form.setValue(form.getForm().get("password"), "wrongPassword");
 		
 		form.submit();
