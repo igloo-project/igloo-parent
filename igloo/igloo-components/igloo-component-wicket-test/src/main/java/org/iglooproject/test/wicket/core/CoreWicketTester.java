@@ -4,6 +4,12 @@ import org.apache.wicket.Component;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.tester.WicketTester;
 
+/**
+ * Extra helpers to execute test with {@link WicketTester}.
+ * 
+ * Please give attention to modified {@link CoreWicketTester#assertDisabled(String)} implementation. We both check
+ * that component is <b>disabled</b> and <b>visible</b>. Wicket implementation checks only that component is disabled.
+ */
 public class CoreWicketTester extends WicketTester {
 
 	public CoreWicketTester(final WebApplication application) {
@@ -37,7 +43,8 @@ public class CoreWicketTester extends WicketTester {
 	}
 
 	/**
-	 * Assert that a Component is visible and disabled
+	 * Assert that a Component is visible and disabled. This behavior is different from
+	 * {@link WicketTester#assertDisabled(String)} that only checks disabled status.
 	 */
 	@Override
 	public void assertDisabled(String path) {

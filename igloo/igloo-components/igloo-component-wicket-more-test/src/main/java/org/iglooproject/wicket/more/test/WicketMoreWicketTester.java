@@ -20,6 +20,10 @@ import org.iglooproject.wicket.more.markup.html.template.component.BreadCrumbLis
 import org.iglooproject.wicket.more.markup.html.template.component.LinkGeneratorBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractModalPopupPanel;
 
+/**
+ * Extended {@link CoreWicketTester} that adds wicket-more related assertions.
+ *
+ */
 public class WicketMoreWicketTester extends CoreWicketTester {
 
 	public WicketMoreWicketTester(WebApplication application) {
@@ -72,7 +76,7 @@ public class WicketMoreWicketTester extends CoreWicketTester {
 	 */
 	public <P extends Page>void assertDynamicBookmarkablePageLinkUsability(String path, Class<P> pageClass) {
 		DynamicBookmarkablePageLink linkComponent = assertUsability(path, DynamicBookmarkablePageLink.class);
-		assertTrue(linkComponent.isPageAccessible(pageClass));
+		assertTrue(linkComponent.isLinkedPageAccessible(pageClass));
 	}
 
 	/**
@@ -80,7 +84,7 @@ public class WicketMoreWicketTester extends CoreWicketTester {
 	 */
 	public <P extends Page>void assertDynamicBookmarkablePageLinkDisabled(String path, Class<P> pageClass) {
 		DynamicBookmarkablePageLink linkComponent = assertDisabled(path, DynamicBookmarkablePageLink.class);
-		assertTrue(linkComponent.isPageAccessible(pageClass));
+		assertTrue(linkComponent.isLinkedPageAccessible(pageClass));
 	}
 
 	/**

@@ -26,7 +26,7 @@ public class DynamicBookmarkablePageLink extends DynamicBookmarkableLink {
 	/**
 	 * This method is mainly used in WicketTester test case
 	 */
-	public <P extends Page> boolean isPageAccessible(Class<P> classPage) {
+	public <P extends Page> boolean isLinkedPageAccessible(Class<P> classPage) {
 		return getLinkGenerator().isActive(classPage) && getLinkGenerator().isAccessible();
 	}
 	
