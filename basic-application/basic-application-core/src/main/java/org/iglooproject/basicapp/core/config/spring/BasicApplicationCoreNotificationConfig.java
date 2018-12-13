@@ -24,4 +24,5 @@ public class BasicApplicationCoreNotificationConfig {
 		configuration.setTemplateLoaderPath("classpath:notification");
 		return configuration;
 	}
+
 }

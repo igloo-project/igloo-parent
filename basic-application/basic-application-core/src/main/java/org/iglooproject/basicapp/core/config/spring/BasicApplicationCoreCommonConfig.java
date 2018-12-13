@@ -39,5 +39,5 @@ public class BasicApplicationCoreCommonConfig extends AbstractApplicationConfig 
 	public static final String APPLICATION_NAME = "basic-application";
 
 	public static final String PROFILE_TEST = "test";
-	
+
 }

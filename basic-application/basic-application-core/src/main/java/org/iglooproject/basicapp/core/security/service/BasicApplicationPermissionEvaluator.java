@@ -30,4 +30,5 @@ public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionE
 		
 		return false;
 	}
+
 }

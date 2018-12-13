@@ -4,10 +4,9 @@ import java.util.Locale;
 
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.converter.AbstractConverter;
-import org.springframework.util.StringUtils;
-
 import org.iglooproject.basicapp.core.business.common.model.PostalCode;
 import org.iglooproject.basicapp.web.application.common.validator.PostalCodeValidator;
+import org.springframework.util.StringUtils;
 
 public final class PostalCodeConverter extends AbstractConverter<PostalCode> {
 
@@ -21,14 +20,14 @@ public final class PostalCodeConverter extends AbstractConverter<PostalCode> {
 
 	private PostalCodeConverter() {
 	}
-	
+
 	@Override
 	public PostalCode convertToObject(String value, Locale locale) throws ConversionException {
 		String trimmedValue = StringUtils.trimAllWhitespace(value);
 		if (StringUtils.hasText(trimmedValue)) {
 			if (!PostalCodeValidator.getInstance().isValid(trimmedValue)) {
 				throw newConversionException("Invalid post code format", value, locale)
-						.setResourceKey("common.validator.postalCode");
+					.setResourceKey("common.validator.postalCode");
 			}
 			return new PostalCode(trimmedValue);
 		}

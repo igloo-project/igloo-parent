@@ -43,7 +43,7 @@ public abstract class SimpleLocalizedReferenceDataDataProvider<T extends Localiz
 			@Override
 			protected ISimpleLocalizedReferenceDataSearchQuery<T, S> createSearchQuery() {
 				return CoreWicketApplication.get().getApplicationContext().getBean(
-						ISimpleLocalizedReferenceDataSearchQuery.class, itemType
+					ISimpleLocalizedReferenceDataSearchQuery.class, itemType
 				);
 			}
 		};
@@ -51,16 +51,16 @@ public abstract class SimpleLocalizedReferenceDataDataProvider<T extends Localiz
 
 	private static CompositeSortModel<LocalizedReferenceDataSort> defaultSortModel() {
 		return new CompositeSortModel<>(
-						CompositingStrategy.LAST_ONLY,
-						ImmutableMap.of(
-								LocalizedReferenceDataSort.POSITION, LocalizedReferenceDataSort.POSITION.getDefaultOrder(),
-								LocalizedReferenceDataSort.LABEL_FR, LocalizedReferenceDataSort.LABEL_FR.getDefaultOrder(),
-								LocalizedReferenceDataSort.LABEL_EN, LocalizedReferenceDataSort.LABEL_EN.getDefaultOrder()
-						),
-						ImmutableMap.of(
-								LocalizedReferenceDataSort.ID, LocalizedReferenceDataSort.ID.getDefaultOrder()
-						)
-				);
+			CompositingStrategy.LAST_ONLY,
+			ImmutableMap.of(
+				LocalizedReferenceDataSort.POSITION, LocalizedReferenceDataSort.POSITION.getDefaultOrder(),
+				LocalizedReferenceDataSort.LABEL_FR, LocalizedReferenceDataSort.LABEL_FR.getDefaultOrder(),
+				LocalizedReferenceDataSort.LABEL_EN, LocalizedReferenceDataSort.LABEL_EN.getDefaultOrder()
+			),
+			ImmutableMap.of(
+				LocalizedReferenceDataSort.ID, LocalizedReferenceDataSort.ID.getDefaultOrder()
+			)
+		);
 	}
 
 	private SimpleLocalizedReferenceDataDataProvider(CompositeSortModel<S> sortModel) {

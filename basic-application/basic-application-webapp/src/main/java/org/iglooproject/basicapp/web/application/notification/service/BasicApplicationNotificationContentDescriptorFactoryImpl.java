@@ -81,10 +81,10 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 			public Component createComponent(String wicketId) {
 				IModel<User> userModel = GenericEntityModel.of(user);
 				return new SimpleUserActionHtmlNotificationPanel<>(
-						wicketId,
-						keyGenerator,
-						userModel, userModel, Model.of(new Date()),
-						mapper.map(userModel, BindingModel.of(userModel, Bindings.user().passwordRecoveryRequest().token()))
+					wicketId,
+					keyGenerator,
+					userModel, userModel, Model.of(new Date()),
+					mapper.map(userModel, BindingModel.of(userModel, Bindings.user().passwordRecoveryRequest().token()))
 				);
 			}
 		};

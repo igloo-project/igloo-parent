@@ -28,7 +28,7 @@ public class CityUnicityFormValidator extends AbstractUnicityFormValidator<City>
 	@Override
 	protected City getByUniqueField() {
 		return cityService.getByLabelAndPostalCode(
-				label.getConvertedInput(), postalCode.getConvertedInput()
+			label.getConvertedInput(), postalCode.getConvertedInput()
 		);
 	}
 

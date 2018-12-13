@@ -56,40 +56,39 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecur
 	public ISecurityManagementService securityManagementService() {
 		SecurityManagementServiceImpl securityManagementService = new SecurityManagementServiceImpl();
 		securityManagementService
-				.setOptions(
-					TechnicalUser.class,
-					new SecurityOptions()
-						.passwordAdminRecovery()
-						.passwordAdminUpdate()
-						.passwordUserRecovery()
-						.passwordUserUpdate()
-						.passwordRules(
-							SecurityPasswordRulesBuilder.start()
-								.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
-								.forbiddenUsername()
-								.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
-								.build()
-						)
-				)
-				.setOptions(
-					BasicUser.class,
-					new SecurityOptions()
-						.passwordExpiration()
-						.passwordHistory()
-						.passwordUserRecovery()
-						.passwordUserUpdate()
-						.passwordRules(
-							SecurityPasswordRulesBuilder.start()
-								.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
-								.forbiddenUsername()
-								.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
-								.build()
-						)
-				)
-				.setDefaultOptions(
-					SecurityOptions.DEFAULT
-				)
-		;
+			.setOptions(
+				TechnicalUser.class,
+				new SecurityOptions()
+					.passwordAdminRecovery()
+					.passwordAdminUpdate()
+					.passwordUserRecovery()
+					.passwordUserUpdate()
+					.passwordRules(
+						SecurityPasswordRulesBuilder.start()
+							.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
+							.forbiddenUsername()
+							.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
+							.build()
+					)
+			)
+			.setOptions(
+				BasicUser.class,
+				new SecurityOptions()
+					.passwordExpiration()
+					.passwordHistory()
+					.passwordUserRecovery()
+					.passwordUserUpdate()
+					.passwordRules(
+						SecurityPasswordRulesBuilder.start()
+							.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
+							.forbiddenUsername()
+							.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
+							.build()
+					)
+			)
+			.setDefaultOptions(
+				SecurityOptions.DEFAULT
+			);
 		
 		return securityManagementService;
 	}

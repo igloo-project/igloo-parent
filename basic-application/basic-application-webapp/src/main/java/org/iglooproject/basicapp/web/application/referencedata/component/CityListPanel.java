@@ -18,14 +18,14 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuild
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
 
 public class CityListPanel extends AbstractReferenceDataListPanel<City, LocalizedReferenceDataSort, AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort>> {
-	
+
 	public CityListPanel(String id) {
 		this(id, SimpleLocalizedReferenceDataDataProvider.forItemType(City.class));
 	}
-	
+
 	public CityListPanel(
-			String id,
-			AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort> dataProvider
+		String id,
+		AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort> dataProvider
 	) {
 		super(id, dataProvider, dataProvider.getSortModel());
 	}
@@ -53,23 +53,23 @@ public class CityListPanel extends AbstractReferenceDataListPanel<City, Localize
 			DataTableBuilder<City, LocalizedReferenceDataSort> builder
 	) {
 		return builder
-				.addLabelColumn(new ResourceModel("business.localizedReferenceData.label.fr"), Bindings.city().label().fr())
-						.withSort(LocalizedReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-						.withClass("text text-md")
-				.addLabelColumn(new ResourceModel("business.localizedReferenceData.label.en"), Bindings.city().label().en())
-						.withSort(LocalizedReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-						.withClass("text text-md")
-						.withClass(CssClassConstants.CELL_HIDDEN_MD_AND_LESS)
-				.addLabelColumn(new ResourceModel("business.city.postalCode"), Bindings.city().postalCode())
-						.withSort(LocalizedReferenceDataSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
-						.withClass("code code-sm");
+			.addLabelColumn(new ResourceModel("business.localizedReferenceData.label.fr"), Bindings.city().label().fr())
+				.withSort(LocalizedReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+				.withClass("text text-md")
+			.addLabelColumn(new ResourceModel("business.localizedReferenceData.label.en"), Bindings.city().label().en())
+				.withSort(LocalizedReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+				.withClass("text text-md")
+				.withClass(CssClassConstants.CELL_HIDDEN_MD_AND_LESS)
+			.addLabelColumn(new ResourceModel("business.city.postalCode"), Bindings.city().postalCode())
+				.withSort(LocalizedReferenceDataSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
+				.withClass("code code-sm");
 	}
 
 	@Override
 	protected Component createSearchForm(
-			String wicketId,
-			AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort> dataProvider,
-			DecoratedCoreDataTablePanel<City, LocalizedReferenceDataSort> table
+		String wicketId,
+		AbstractLocalizedReferenceDataDataProvider<City, LocalizedReferenceDataSort> dataProvider,
+		DecoratedCoreDataTablePanel<City, LocalizedReferenceDataSort> table
 	) {
 		return new CitySearchPanel(wicketId, dataProvider, table);
 	}

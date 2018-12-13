@@ -18,7 +18,7 @@ public final class ConsoleAccessScssResourceReference extends ScssResourceRefere
 	private ConsoleAccessScssResourceReference() {
 		super(ConsoleAccessScssResourceReference.class, "console-access.scss");
 	}
-	
+
 	@Override
 	public List<HeaderItem> getDependencies() {
 		List<HeaderItem> dependencies = Lists.newArrayListWithExpectedSize(2);

@@ -17,10 +17,10 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 
 	@Autowired
 	private INotificationUserProfileUrlBuilderService notificationUrlBuilderService;
-	
+
 	@Autowired
 	private IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory;
-	
+
 	@Override
 	public void sendExampleNotification(User user) throws ServiceException {
 		Date date = new Date();
@@ -28,12 +28,12 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 		
 		try {
 			builder().to(user)
-					.content(contentDescriptorFactory.example(user, date))
-					.template("example.ftl")
-					.variable("userFullName", user.getFullName())
-					.variable("date", date)
-					.variable("url", url)
-					.send();
+				.content(contentDescriptorFactory.example(user, date))
+				.template("example.ftl")
+				.variable("userFullName", user.getFullName())
+				.variable("date", date)
+				.variable("url", url)
+				.send();
 		} catch (RuntimeException | ServiceException e) {
 			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
 		}
@@ -43,9 +43,9 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 	public void sendUserPasswordRecoveryRequest(User user) throws ServiceException {
 		try {
 			builder()
-					.to(user)
-					.content(contentDescriptorFactory.userPasswordRecoveryRequest(user))
-					.send();
+				.to(user)
+				.content(contentDescriptorFactory.userPasswordRecoveryRequest(user))
+				.send();
 		} catch (RuntimeException | ServiceException e) {
 			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
 		}
@@ -56,14 +56,14 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 		try {
 			Date date = new Date();
 			builder()
-			.sender("no-reply@basicapp.org")
-			.from(from)
-			.to(new SimpleRecipient(Locale.FRANCE, userTo.getEmail(), userTo.getDisplayName()))
-			.content(contentDescriptorFactory.example(userTo, date))
-			.send();
+				.sender("no-reply@basicapp.org")
+				.from(from)
+				.to(new SimpleRecipient(Locale.FRANCE, userTo.getEmail(), userTo.getDisplayName()))
+				.content(contentDescriptorFactory.example(userTo, date))
+				.send();
 		} catch (RuntimeException | ServiceException e) {
 			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
 		}
-		
 	}
+
 }

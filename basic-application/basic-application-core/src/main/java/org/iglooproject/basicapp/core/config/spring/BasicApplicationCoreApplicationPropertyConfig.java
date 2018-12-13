@@ -40,12 +40,12 @@ public class BasicApplicationCoreApplicationPropertyConfig extends AbstractAppli
 		
 		registry.registerBoolean(SECURITY_PASSWORD_VALIDATOR_ENABLED, true);
 		registry.register(
-				SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS,
-				new StringCollectionConverter<>(
-						Converter.<String>identity(),
-						Suppliers2.<String>arrayList()
-				),
-				Lists.<String>newArrayList()
+			SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS,
+			new StringCollectionConverter<>(
+				Converter.<String>identity(),
+				Suppliers2.<String>arrayList()
+			),
+			Lists.<String>newArrayList()
 		);
 	}
 

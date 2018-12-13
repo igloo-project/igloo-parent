@@ -69,7 +69,6 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
 				.setLabel(new ResourceModel("business.user.confirmPassword"))
 				.setRequired(true)
 				.add(new LabelPlaceholderBehavior())
-				
 		);
 		
 		form.add(new EqualPasswordInputValidator(newPasswordField, confirmPasswordField));

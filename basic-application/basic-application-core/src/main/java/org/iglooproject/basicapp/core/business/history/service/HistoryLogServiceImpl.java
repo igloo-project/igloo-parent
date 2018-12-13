@@ -21,15 +21,15 @@ public class HistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<History
 		implements IHistoryLogService {
 
 	private static final Supplier2<HistoryDifference> HISTORY_DIFFERENCE_SUPPLIER = () -> new HistoryDifference();
-	
+
 	@Autowired
 	private IUserService userService;
-	
+
 	@Autowired
 	public HistoryLogServiceImpl(IHistoryLogDao dao) {
 		super(dao);
 	}
-	
+
 	@Override
 	protected <T> HistoryLog newHistoryLog(Date date, HistoryEventType eventType, List<HistoryDifference> differences,
 			T mainObject, HistoryLogAdditionalInformationBean additionalInformation) {

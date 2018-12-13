@@ -3,26 +3,26 @@ package org.iglooproject.basicapp.web.application.history.renderer;
 import java.util.Locale;
 
 import org.apache.wicket.model.IModel;
+import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
+import org.iglooproject.commons.util.fieldpath.FieldPath;
+import org.iglooproject.wicket.more.util.model.Models;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
-import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
-import org.iglooproject.commons.util.fieldpath.FieldPath;
-import org.iglooproject.wicket.more.util.model.Models;
-
 public final class HistoryDifferencePathRenderer extends AbstractHistoryRenderer<HistoryDifference> {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(HistoryDifferencePathRenderer.class);
-	
+
 	private static final HistoryDifferencePathRenderer INSTANCE = new HistoryDifferencePathRenderer();
-	
+
 	public static HistoryDifferencePathRenderer get() {
 		return INSTANCE;
 	}
-	
+
 	private HistoryDifferencePathRenderer() {
 	}
 
@@ -38,8 +38,8 @@ public final class HistoryDifferencePathRenderer extends AbstractHistoryRenderer
 		String entityResourceKeyPart = getEntityResourceKeyPart(difference);
 		
 		Optional<String> result = getStringOptional(
-				JOINER.join(HISTORY_DIFFERENCE_ROOT, entityResourceKeyPart, pathResourceKeyPart),
-				locale, keyDataModel
+			JOINER.join(HISTORY_DIFFERENCE_ROOT, entityResourceKeyPart, pathResourceKeyPart),
+			locale, keyDataModel
 		);
 		if (!result.isPresent()) {
 			result = getStringOptional(JOINER.join(BUSINESS_ROOT, entityResourceKeyPart, pathResourceKeyPart), locale, keyDataModel);
@@ -59,4 +59,5 @@ public final class HistoryDifferencePathRenderer extends AbstractHistoryRenderer
 			return pathResourceKeyPart;
 		}
 	}
+
 }

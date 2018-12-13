@@ -21,7 +21,10 @@ public class SignInPage extends ApplicationAccessTemplate {
 
 	public SignInPage(PageParameters parameters) {
 		super(parameters);
-		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("signIn.pageTitle")));
+		
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(
+				new ResourceModel("signIn.pageTitle")
+		));
 	}
 
 	@Override

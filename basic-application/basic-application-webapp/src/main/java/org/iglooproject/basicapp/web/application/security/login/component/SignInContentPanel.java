@@ -102,10 +102,10 @@ public class SignInContentPanel<U extends User> extends Panel {
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-
+		
 		// There's javascript directly in the HTML file
 		response.render(JavaScriptHeaderItem.forReference(
-				Application.get().getJavaScriptLibrarySettings().getJQueryReference()
+			Application.get().getJavaScriptLibrarySettings().getJQueryReference()
 		));
 	}
 

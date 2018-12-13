@@ -11,4 +11,5 @@ public class V1_2__InitDataFromExcel extends AbstractDataUpgradeMigration {
 	protected Class<? extends IDataUpgrade> getDataUpgradeClass() {
 		return DataUpgrade_InitDataFromExcel.class;
 	}
+
 }

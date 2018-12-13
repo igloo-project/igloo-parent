@@ -22,7 +22,7 @@ import org.iglooproject.jpa.hibernate.usertype.StringClobType;
 @TypeDef(defaultForType = PostalCode.class, typeClass = PostalCodeType.class)
 @MappedSuperclass
 public final class TypeDefinitions {
-	
+
 	/**
 	 * Usage:
 	 * <pre>
@@ -32,7 +32,7 @@ public final class TypeDefinitions {
 	 * </pre>
 	 */
 	public static final String STRING_CLOB = StringClobType.TYPENAME;
-	
+
 	/**
 	 * Usage:
 	 * <pre>
@@ -42,7 +42,7 @@ public final class TypeDefinitions {
 	 * </pre>
 	 */
 	public static final String STRING_VARCHAR = "org.hibernate.type.StringType";
-	
+
 	private TypeDefinitions() { }
-	
+
 }

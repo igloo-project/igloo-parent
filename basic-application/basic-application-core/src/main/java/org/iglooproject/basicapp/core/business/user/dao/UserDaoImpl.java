@@ -22,9 +22,9 @@ public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 	@Override
 	public User getByEmailCaseInsensitive(String email) {
 		return new JPAQuery<User>(getEntityManager())
-				.from(qUser)
-				.where(qUser.email.lower().eq(StringUtils.lowerCase(email)))
-				.fetchOne();
+			.from(qUser)
+			.where(qUser.email.lower().eq(StringUtils.lowerCase(email)))
+			.fetchOne();
 	}
 
 	@Override

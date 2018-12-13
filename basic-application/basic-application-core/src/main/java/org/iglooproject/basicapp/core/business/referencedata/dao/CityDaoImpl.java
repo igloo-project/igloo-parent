@@ -14,11 +14,11 @@ public class CityDaoImpl extends GenericEntityDaoImpl<Long, City> implements ICi
 	@Override
 	public City getByLabelAndPostalCode(String label, PostalCode postalCode) {
 		return new JPAQuery<>(getEntityManager())
-				.from(QCity.city)
-				.where(QCity.city.label.fr.eq(label))
-				.where(QCity.city.postalCode.eq(postalCode))
-				.select(QCity.city)
-				.fetchOne();
+			.from(QCity.city)
+			.where(QCity.city.label.fr.eq(label))
+			.where(QCity.city.postalCode.eq(postalCode))
+			.select(QCity.city)
+			.fetchOne();
 	}
 
 }

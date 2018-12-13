@@ -14,4 +14,5 @@ public class PostalCodeType extends AbstractImmutableMaterializedStringValueUser
 	protected PostalCode instantiate(String value) {
 		return new PostalCode(value);
 	}
+
 }

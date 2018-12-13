@@ -12,5 +12,5 @@ public final class BasicApplicationSecurityExpressionConstants {
 
 	private BasicApplicationSecurityExpressionConstants() {
 	}
-	
+
 }

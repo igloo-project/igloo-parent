@@ -90,40 +90,40 @@ public class NavbarPanel extends AbstractNavbarPanel {
 				
 				item.add(
 					new WebMarkupContainer("subNavContainer")
-							.add(
-								new ListView<NavigationMenuItem>("subNav", subMenuItems) {
-									private static final long serialVersionUID = -2257358650754295013L;
+						.add(
+							new ListView<NavigationMenuItem>("subNav", subMenuItems) {
+								private static final long serialVersionUID = -2257358650754295013L;
+								
+								@Override
+								protected void populateItem(ListItem<NavigationMenuItem> item) {
+									NavigationMenuItem navItem = item.getModelObject();
 									
-									@Override
-									protected void populateItem(ListItem<NavigationMenuItem> item) {
-										NavigationMenuItem navItem = item.getModelObject();
-										
-										AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
-										
-										item.add(Condition.componentVisible(navLink).thenShow());
-										
-										navLink.add(
-											new CoreLabel("label", navItem.getLabelModel()),
-											new EnclosureContainer("icon")
-												.condition(Condition.hasText(navItem.getIconClassesModel()))
-												.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
-										);
-										
-										item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
-										
-										addActiveClass(item, secondMenuPageSupplier.get(), navLink);
-										
-										item.add(navLink);
-									}
+									AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
 									
-									@Override
-									protected void onDetach() {
-										super.onDetach();
-										Detachables.detach(getModelObject());
-									}
+									item.add(Condition.componentVisible(navLink).thenShow());
+									
+									navLink.add(
+										new CoreLabel("label", navItem.getLabelModel()),
+										new EnclosureContainer("icon")
+											.condition(Condition.hasText(navItem.getIconClassesModel()))
+											.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
+									);
+									
+									item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
+									
+									addActiveClass(item, secondMenuPageSupplier.get(), navLink);
+									
+									item.add(navLink);
 								}
-							)
-							.setVisibilityAllowed(!subMenuItems.isEmpty())
+								
+								@Override
+								protected void onDetach() {
+									super.onDetach();
+									Detachables.detach(getModelObject());
+								}
+							}
+						)
+						.setVisibilityAllowed(!subMenuItems.isEmpty())
 				);
 			}
 			

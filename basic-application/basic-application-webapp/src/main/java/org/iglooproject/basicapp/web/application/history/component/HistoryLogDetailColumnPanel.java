@@ -18,7 +18,7 @@ import com.google.common.collect.ImmutableList;
 public class HistoryLogDetailColumnPanel extends GenericPanel<HistoryLog> {
 
 	private static final long serialVersionUID = 1188689543635870482L;
-	
+
 	public HistoryLogDetailColumnPanel(String id, IModel<HistoryLog> model,
 			IHistoryComponentFactory historyComponentFactory,
 			final SerializablePredicate2<? super HistoryDifference> filter) {
@@ -39,9 +39,9 @@ public class HistoryLogDetailColumnPanel extends GenericPanel<HistoryLog> {
 		};
 		
 		add(
-				new CoreLabel("action", BindingModel.of(model, Bindings.historyLog().eventType())),
-				new HistoryDifferenceListPanel("differences", historyDifferenceListModel, historyComponentFactory)
+			new CoreLabel("action", BindingModel.of(model, Bindings.historyLog().eventType())),
+			new HistoryDifferenceListPanel("differences", historyDifferenceListModel, historyComponentFactory)
 		);
 	}
-	
+
 }

@@ -5,19 +5,18 @@ import java.util.List;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
 import org.iglooproject.basicapp.web.application.history.component.factory.IHistoryComponentFactory;
 import org.iglooproject.basicapp.web.application.history.renderer.HistoryDifferencePathRenderer;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.repeater.collection.CollectionView;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.condition.Condition;
 
 public class HistoryDifferenceListPanel extends GenericPanel<List<HistoryDifference>> {
 
 	private static final long serialVersionUID = 1188689543635870482L;
-	
+
 	private final IHistoryComponentFactory historyComponentFactory;
 
 	public HistoryDifferenceListPanel(String id, IModel<List<HistoryDifference>> model,
@@ -36,10 +35,11 @@ public class HistoryDifferenceListPanel extends GenericPanel<List<HistoryDiffere
 			@Override
 			protected void populateItem(Item<HistoryDifference> item) {
 				item.add(
-						new CoreLabel("path", HistoryDifferencePathRenderer.get().asModel(item.getModel())),
-						historyComponentFactory.create("difference", item.getModel())
+					new CoreLabel("path", HistoryDifferencePathRenderer.get().asModel(item.getModel())),
+					historyComponentFactory.create("difference", item.getModel())
 				);
 			}
 		});
 	}
+
 }

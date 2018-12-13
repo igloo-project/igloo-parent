@@ -5,5 +5,5 @@ import org.springframework.context.annotation.Scope;
 
 @Scope("prototype")
 public interface IBasicUserSearchQuery extends IAbstractUserSearchQuery<BasicUser> {
-	
+
 }

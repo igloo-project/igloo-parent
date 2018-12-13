@@ -19,7 +19,7 @@ public class HomePage extends MainTemplate {
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()
-				.page(HomePage.class);
+			.page(HomePage.class);
 	}
 
 	public HomePage(PageParameters parameters) {
@@ -54,4 +54,5 @@ public class HomePage extends MainTemplate {
 	protected Class<? extends WebPage> getFirstMenuPage() {
 		return HomePage.class;
 	}
+
 }

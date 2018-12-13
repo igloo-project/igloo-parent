@@ -12,7 +12,7 @@ public final class BasicApplicationSqlUpdateScriptMain extends AbstractBasicAppl
 
 	private BasicApplicationSqlUpdateScriptMain() {
 	}
-	
+
 	public static void main(String[] args) {
 		new BasicApplicationSqlUpdateScriptMain().run(args);
 	}

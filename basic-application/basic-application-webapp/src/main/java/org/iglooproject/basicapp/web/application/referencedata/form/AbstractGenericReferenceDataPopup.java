@@ -47,7 +47,7 @@ public abstract class AbstractGenericReferenceDataPopup<T extends GenericReferen
 	}
 
 	@Override
-	abstract protected Component createBody(String wicketId);
+	protected abstract Component createBody(String wicketId);
 
 	@Override
 	protected Component createFooter(String wicketId) {
@@ -58,9 +58,9 @@ public abstract class AbstractGenericReferenceDataPopup<T extends GenericReferen
 			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target) {
-				T referenceData = AbstractGenericReferenceDataPopup.this.getModelObject();
-				
 				try {
+					T referenceData = AbstractGenericReferenceDataPopup.this.getModelObject();
+					
 					if (addModeCondition().applies()) {
 						onSubmitAddMode(referenceData);
 						Session.get().success(getString("referenceData.ADD.success"));
@@ -95,39 +95,39 @@ public abstract class AbstractGenericReferenceDataPopup<T extends GenericReferen
 		
 		return footer;
 	}
-	
+
 	public void setUpAdd(T referenceData) {
 		getModel().setObject(referenceData);
 		formModeModel.setObject(FormMode.ADD);
 	}
-	
+
 	public void setUpEdit(T referenceData) {
 		getModel().setObject(referenceData);
 		formModeModel.setObject(FormMode.EDIT);
 	}
-	
+
 	protected void onSubmitAddMode(T referenceData) {
 		genericReferenceDataService.create(referenceData);
 	}
-	
+
 	protected void onSubmitEditMode(T referenceData) {
 		genericReferenceDataService.update(referenceData);
 	}
-	
+
 	protected Condition addModeCondition() {
 		return FormMode.ADD.condition(formModeModel);
 	}
-	
+
 	protected Condition editModeCondition() {
 		return FormMode.EDIT.condition(formModeModel);
 	}
-	
+
 	protected abstract void refresh(AjaxRequestTarget target);
-	
+
 	@Override
 	protected void onDetach() {
 		super.onDetach();
 		Detachables.detach(formModeModel);
 	}
-	
+
 }

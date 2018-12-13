@@ -20,16 +20,16 @@ public class LocalizedReferenceDataComparator extends AbstractGenericEntityCompa
 		
 		if (!Hibernate.getClass(left).equals(Hibernate.getClass(right))) {
 			comparaisonChain
-					.compare(
-							Hibernate.getClass(left).getSimpleName(),
-							Hibernate.getClass(right).getSimpleName(),
-							BasicApplicationLocale.comparator()
-					);
+				.compare(
+					Hibernate.getClass(left).getSimpleName(),
+					Hibernate.getClass(right).getSimpleName(),
+					BasicApplicationLocale.comparator()
+				);
 		}
 		
 		comparaisonChain
-				.compare(left.getPosition(), right.getPosition())
-				.compare(left.getLabel(), right.getLabel(), LocalizedTextComparator.get());
+			.compare(left.getPosition(), right.getPosition())
+			.compare(left.getLabel(), right.getLabel(), LocalizedTextComparator.get());
 		
 		int order = comparaisonChain.result();
 		

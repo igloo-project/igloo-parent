@@ -35,7 +35,7 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl imple
 	@Override
 	public List<IDataUpgrade> listDataUpgrades() {
 		return ImmutableList.<IDataUpgrade>of(
-				new DataUpgrade_InitDataFromExcel()
+			new DataUpgrade_InitDataFromExcel()
 		);
 	}
 
@@ -111,4 +111,5 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl imple
 		DefaultTransactionAttribute transactionAttribute = new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRES_NEW);
 		transactionTemplate = new TransactionTemplate(transactionManager, transactionAttribute);
 	}
+
 }

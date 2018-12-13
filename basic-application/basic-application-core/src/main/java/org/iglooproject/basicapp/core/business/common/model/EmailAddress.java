@@ -10,4 +10,5 @@ public class EmailAddress extends AbstractMaterializedPrimitiveValue<String, Ema
 	public EmailAddress(String value) {
 		super(StringUtils.lowerCase(value));
 	}
+
 }

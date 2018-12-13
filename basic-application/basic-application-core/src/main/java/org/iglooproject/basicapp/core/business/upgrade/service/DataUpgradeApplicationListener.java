@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DataUpgradeApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataUpgradeApplicationListener.class);
-	
+
 	@Autowired
 	private IDataUpgradeManager dataUpgradeManager;
 
@@ -21,9 +21,11 @@ public class DataUpgradeApplicationListener implements ApplicationListener<Conte
 	 */
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		if (event != null && event.getSource() != null
-				&& AbstractApplicationContext.class.isAssignableFrom(event.getSource().getClass())
-				&& ((AbstractApplicationContext) event.getSource()).getParent() == null) {
+		if (
+				event != null && event.getSource() != null
+			&&	AbstractApplicationContext.class.isAssignableFrom(event.getSource().getClass())
+			&&	((AbstractApplicationContext) event.getSource()).getParent() == null
+		) {
 			init();
 		}
 	}
@@ -35,4 +37,5 @@ public class DataUpgradeApplicationListener implements ApplicationListener<Conte
 			LOGGER.error("Error executing data upgrades", e);
 		}
 	}
+
 }

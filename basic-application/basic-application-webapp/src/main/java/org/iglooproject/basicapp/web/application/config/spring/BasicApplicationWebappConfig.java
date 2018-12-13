@@ -32,10 +32,10 @@ import org.springframework.context.annotation.Import;
 	BasicApplicationWebappApplicationPropertyRegistryConfig.class
 })
 @ComponentScan(
-		basePackageClasses = {
-				BasicApplicationApplication.class
-		},
-		excludeFilters = @Filter(Configuration.class)
+	basePackageClasses = {
+		BasicApplicationApplication.class
+	},
+	excludeFilters = @Filter(Configuration.class)
 )
 public class BasicApplicationWebappConfig extends AbstractBootstrapWebappConfig {
 
@@ -44,22 +44,22 @@ public class BasicApplicationWebappConfig extends AbstractBootstrapWebappConfig 
 	public BasicApplicationApplication application() {
 		return new BasicApplicationApplication();
 	}
-	
+
 	@Override
 	public IRendererService rendererService(IWicketContextProvider wicketContextProvider) {
 		RendererServiceImpl rendererService = new RendererServiceImpl(wicketContextProvider);
-
+		
 		rendererService.registerRenderer(Boolean.class, BooleanRenderer.get());
 		rendererService.registerRenderer(boolean.class, BooleanRenderer.get());
-
+		
 		Renderer<Date> shortDateRenderer = Renderer.fromDatePattern(DatePattern.SHORT_DATE);
 		rendererService.registerRenderer(Date.class, shortDateRenderer);
 		rendererService.registerRenderer(java.sql.Date.class, shortDateRenderer);
-
+		
 		rendererService.registerRenderer(User.class, UserRenderer.get());
 		rendererService.registerRenderer(TechnicalUser.class, UserRenderer.get());
 		rendererService.registerRenderer(BasicUser.class, UserRenderer.get());
-
+		
 		return rendererService;
 	}
 

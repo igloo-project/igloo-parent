@@ -11,13 +11,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.google.common.collect.EvictingQueue;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
 import org.iglooproject.basicapp.core.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
@@ -33,6 +26,12 @@ import org.iglooproject.jpa.security.business.person.model.GenericUser;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import com.google.common.collect.EvictingQueue;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class SecurityManagementServiceImpl implements ISecurityManagementService {
 
@@ -89,14 +88,20 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	}
 
 	@Override
-	public void initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
-			UserPasswordRecoveryRequestInitiator initiator) throws ServiceException, SecurityServiceException {
+	public void initiatePasswordRecoveryRequest(
+		User user,
+		UserPasswordRecoveryRequestType type,
+		UserPasswordRecoveryRequestInitiator initiator
+	) throws ServiceException, SecurityServiceException {
 		initiatePasswordRecoveryRequest(user, type, initiator, user);
 	}
 
 	@Override
-	public void initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
-			UserPasswordRecoveryRequestInitiator initiator, User author) throws ServiceException, SecurityServiceException {
+	public void initiatePasswordRecoveryRequest(
+		User user,
+		UserPasswordRecoveryRequestType type,
+		UserPasswordRecoveryRequestInitiator initiator, User author
+	) throws ServiceException, SecurityServiceException {
 		Date now = new Date();
 		
 		user.getPasswordRecoveryRequest().setToken(RandomStringUtils.randomAlphanumeric(propertyService.get(PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT)));
@@ -183,4 +188,5 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	public boolean checkPassword(String password, User user) throws ServiceException, SecurityServiceException {
 		return passwordEncoder.matches(password, user.getPasswordHash());
 	}
+
 }

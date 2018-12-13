@@ -67,24 +67,24 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 		});
 		
 		add(
-				new SpecificModelCollectionView<INotificationContentDescriptor, NotificationDemoEntry>(
-						"notifications", SequenceProviders.fromItemModels(createDemoEntries())) {
-					private static final long serialVersionUID = 1L;
-					@Override
-					protected void populateItem(SpecificModelItem item) {
-						final NotificationDemoEntry entry = item.getSpecificModel();
-						Link<Void> link = new Link<Void>("link") {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public void onClick() {
-								setResponsePage(new ConsoleNotificationDemoPage(new PageParameters(), entry));
-							}
-						};
-						link.add(new CoreLabel("label", entry.getLabelModel()));
-						item.add(link);
-					}
+			new SpecificModelCollectionView<INotificationContentDescriptor, NotificationDemoEntry>(
+					"notifications", SequenceProviders.fromItemModels(createDemoEntries())) {
+				private static final long serialVersionUID = 1L;
+				@Override
+				protected void populateItem(SpecificModelItem item) {
+					final NotificationDemoEntry entry = item.getSpecificModel();
+					Link<Void> link = new Link<Void>("link") {
+						private static final long serialVersionUID = 1L;
+						@Override
+						public void onClick() {
+							setResponsePage(new ConsoleNotificationDemoPage(new PageParameters(), entry));
+						}
+					};
+					link.add(new CoreLabel("label", entry.getLabelModel()));
+					item.add(link);
 				}
-						.add(Condition.collectionModelNotEmpty(SequenceProviders.fromItemModels(createDemoEntries())).thenShow())
+			}
+				.add(Condition.collectionModelNotEmpty(SequenceProviders.fromItemModels(createDemoEntries())).thenShow())
 		);
 		
 		add(new PlaceholderContainer("emptyList").condition(Condition.collectionModelNotEmpty(SequenceProviders.fromItemModels(createDemoEntries()))));
@@ -92,14 +92,14 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 
 	private List<NotificationDemoEntry> createDemoEntries() {
 		return Lists.<NotificationDemoEntry>newArrayList(
-				new NotificationDemoEntry("example") {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public INotificationContentDescriptor getDescriptor() {
-						return descriptorService.example(getFirstInRange(User.class, DEFAULT_ID_RANGE), new Date());
-					}
+			new NotificationDemoEntry("example") {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public INotificationContentDescriptor getDescriptor() {
+					return descriptorService.example(getFirstInRange(User.class, DEFAULT_ID_RANGE), new Date());
 				}
-				// Add new demo entries here
+			}
+			// Add new demo entries here
 		);
 	}
 

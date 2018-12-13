@@ -56,28 +56,28 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 		TextField<String> confirmPasswordField = new PasswordTextField("confirmPassword", Model.of(""));
 		
 		form.add(
-				new TextField<String>("email", emailModel)
-					.setLabel(new ResourceModel("business.user.email"))
-					.setRequired(true)
-					.add(EmailAddressValidator.getInstance())
-					.add(EmailExistsValidator.get())
-					.add(new LabelPlaceholderBehavior()),
-				passwordField
-					.setLabel(new ResourceModel("business.user.password"))
-					.setRequired(true)
-					.add(
-						new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz))
-							.userModel(userModel)
-					)
-					.add(new LabelPlaceholderBehavior()),
-				new CoreLabel("passwordHelp",
-					new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
-						.setDefaultValue(new ResourceModel("security.user.password.help"))
-				),
-				confirmPasswordField
-					.setLabel(new ResourceModel("business.user.confirmPassword"))
-					.setRequired(true)
-					.add(new LabelPlaceholderBehavior())
+			new TextField<String>("email", emailModel)
+				.setLabel(new ResourceModel("business.user.email"))
+				.setRequired(true)
+				.add(EmailAddressValidator.getInstance())
+				.add(EmailExistsValidator.get())
+				.add(new LabelPlaceholderBehavior()),
+			passwordField
+				.setLabel(new ResourceModel("business.user.password"))
+				.setRequired(true)
+				.add(
+					new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz))
+						.userModel(userModel)
+				)
+				.add(new LabelPlaceholderBehavior()),
+			new CoreLabel("passwordHelp",
+				new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
+					.setDefaultValue(new ResourceModel("security.user.password.help"))
+			),
+			confirmPasswordField
+				.setLabel(new ResourceModel("business.user.confirmPassword"))
+				.setRequired(true)
+				.add(new LabelPlaceholderBehavior())
 		);
 		
 		form.add(new EqualPasswordInputValidator(passwordField, confirmPasswordField));
