@@ -152,8 +152,8 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		CONSOLE(null, localize("navigation.console"), 3, CoreAuthorityConstants.ROLE_ADMIN),
 		
 		// SubMenu
-		ADMINISTRATION_BASIC_USER(ADMINISTRATION, localize("navigation.administration.user.basic"), 0, CoreAuthorityConstants.ROLE_ADMIN),
-		ADMINISTRATION_TECHNICAL_USER(ADMINISTRATION, localize("navigation.administration.user.technical"), 1, CoreAuthorityConstants.ROLE_ADMIN),
+		ADMINISTRATION_BASIC_USER(ADMINISTRATION, localize("navigation.administration.user.basicUser"), 0, CoreAuthorityConstants.ROLE_ADMIN),
+		ADMINISTRATION_TECHNICAL_USER(ADMINISTRATION, localize("navigation.administration.user.technicalUser"), 1, CoreAuthorityConstants.ROLE_ADMIN),
 		ADMINISTRATION_USERGROUP(ADMINISTRATION, localize("navigation.administration.userGroup"), 2, CoreAuthorityConstants.ROLE_ADMIN),
 		ADMINISTRATION_ANNOUNCEMENT(ADMINISTRATION, localize("navigation.administration.announcement"), 3, CoreAuthorityConstants.ROLE_ADMIN);
 		
