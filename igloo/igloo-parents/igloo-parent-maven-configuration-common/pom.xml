@@ -72,8 +72,8 @@
 		<!-- aspectj is used by allure -->
 		<igloo.allure-aspectj.version>1.8.13</igloo.allure-aspectj.version>
 		<igloo.allure-maven.version>2.9</igloo.allure-maven.version>
-		<igloo.allure.version>2.6.0</igloo.allure.version>
-		<igloo.allure-junit4.version>2.7.0</igloo.allure-junit4.version>
+		<igloo.allure.version>2.8.1</igloo.allure.version>
+		<igloo.allure-junit4.version>2.8.1</igloo.allure-junit4.version>
 		<igloo.junit-dataprovider.version>1.13.1</igloo.junit-dataprovider.version>
 	</properties>
 	
