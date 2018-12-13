@@ -32,7 +32,7 @@
 		<!-- http://hibernate.org/orm/releases/5.3/ -->
 		<!-- https://hibernate.atlassian.net/browse/HHH-12932?jql=project%20%3D%20HHH%20AND%20fixVersion%20in%20(5.3.6)%20ORDER%20BY%20updated -->
 		<!-- https://hibernate.atlassian.net/browse/HHH-12784?jql=project%20%3D%20HHH%20AND%20fixVersion%20%3D%205.3.7%20ORDER%20BY%20updated -->
-		<igloo.hibernate.version>5.4.0.CR2</igloo.hibernate.version>
+		<igloo.hibernate.version>5.4.0.Final</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
 		<igloo.byte-buddy.version>1.9.5</igloo.byte-buddy.version>
