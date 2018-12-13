@@ -1,4 +1,4 @@
-package org.iglooproject.test.wicket.more;
+package org.iglooproject.test.wicket.core;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,28 +9,27 @@ import java.io.ObjectOutputStream;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.util.tester.WicketTester;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;
-import org.iglooproject.test.wicket.more.config.spring.WicketMoreTestCommonConfig;
-import org.iglooproject.test.wicket.more.junit.IWicketTestCase;
-import org.iglooproject.test.wicket.more.junit.WicketTesterTestExecutionListener;
+import org.iglooproject.test.wicket.core.config.spring.WicketTestCommonConfig;
+import org.iglooproject.test.wicket.core.junit.IWicketTestCase;
 import org.javatuples.Tuple;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 
-@ContextConfiguration(classes = WicketMoreTestCommonConfig.class)
-@TestExecutionListeners({ WicketTesterTestExecutionListener.class, DirtiesContextTestExecutionListener.class })
+@ContextConfiguration(classes = WicketTestCommonConfig.class)
+@TestExecutionListeners({DirtiesContextTestExecutionListener.class })
 @DirtiesContext
-public abstract class AbstractWicketMoreTestCase extends AbstractTestCase implements IWicketTestCase {
+public abstract class AbstractWicketTestCase<T extends WicketTester> extends AbstractTestCase implements IWicketTestCase<T> {
 	
-	protected WicketTester tester;
+	protected T tester;
 
 	@Override
-	public void setWicketTester(WicketTester tester) {
+	public void setWicketTester(T tester) {
 		this.tester = tester;
 	}
 
-	public WicketTester getWicketTester() {
+	public T getWicketTester() {
 		return tester;
 	}
 

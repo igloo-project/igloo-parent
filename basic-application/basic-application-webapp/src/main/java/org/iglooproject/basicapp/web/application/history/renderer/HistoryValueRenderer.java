@@ -17,10 +17,8 @@ public final class HistoryValueRenderer extends Renderer<HistoryValue> {
 	@SpringBean
 	private IHistoryValueService historyValueService;
 
-	private static final HistoryValueRenderer INSTANCE = new HistoryValueRenderer();
-
 	public static HistoryValueRenderer get() {
-		return INSTANCE;
+		return new HistoryValueRenderer();
 	}
 
 	private HistoryValueRenderer() {

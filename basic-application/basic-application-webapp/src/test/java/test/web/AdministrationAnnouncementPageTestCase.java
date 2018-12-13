@@ -3,7 +3,6 @@ package test.web;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationAnnouncementListPage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import org.junit.Test;
 
@@ -11,7 +10,7 @@ public class AdministrationAnnouncementPageTestCase extends AbstractBasicApplica
 
 	@Test
 	public void initPage() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_ADMIN);
+		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationAnnouncementListPage.class);
 		tester.assertRenderedPage(AdministrationAnnouncementListPage.class);
@@ -19,7 +18,7 @@ public class AdministrationAnnouncementPageTestCase extends AbstractBasicApplica
 
 	@Test(expected = LinkInvalidTargetRuntimeException.class)
 	public void accessUnauthorizedLinkDescriptor() throws ServiceException, SecurityServiceException {
-		createAndAuthenticateUser(CoreAuthorityConstants.ROLE_AUTHENTICATED);
+		authenticateUser(basicUser);
 		
 		tester.executeUrl(AdministrationAnnouncementListPage.linkDescriptor().fullUrl());
 	}

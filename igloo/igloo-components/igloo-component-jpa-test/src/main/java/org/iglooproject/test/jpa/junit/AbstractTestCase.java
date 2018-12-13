@@ -27,11 +27,16 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hibernate.metamodel.internal.EmbeddableTypeImpl;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.junit.After;
 import org.junit.Assert;
@@ -72,6 +77,9 @@ public abstract class AbstractTestCase {
 	@Autowired
 	private EntityManagerUtils entityManagerUtils;
 	
+	@Autowired
+	private IHibernateSearchService hibernateSearchService;
+	
 	protected abstract void cleanAll() throws ServiceException, SecurityServiceException;
 	
 	protected static <E extends GenericEntity<?, ? super E>> void cleanEntities(IGenericEntityService<?, E> service) throws ServiceException, SecurityServiceException {
@@ -90,6 +98,25 @@ public abstract class AbstractTestCase {
 	public void close() throws ServiceException, SecurityServiceException {
 		cleanAll();
 		checkEmptyDatabase();
+	}
+	
+	/**
+	 * This method serves only when the test threads are stopped abruptly (not for the nominal case)
+	 * The purpose is to clean Lucene indexes by reindexing an empty database
+	 * It takes around 10 milliseconds if the database is empty (except the first time, it can take 200 millisecond)
+	 * otherwise it takes 500 milliseconds wheter there is 1000 or 10 000 objets to reindex
+	 */
+	protected void emptyIndexes() throws ServiceException {
+		Set<Class<?>> clazzes = hibernateSearchService.getIndexedRootEntities();
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
+		for (Class<?> clazz : clazzes) {
+			QueryBuilder builder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(clazz).get();
+			FullTextQuery query = fullTextEntityManager.createFullTextQuery(builder.all().createQuery(), clazz);
+			if (query.getResultSize() > 0) {
+				hibernateSearchService.reindexAll();
+				break;
+			}
+		}
 	}
 	
 	protected final <T extends GenericEntity<?, ?>> Matcher<T> isAttachedToSession() {

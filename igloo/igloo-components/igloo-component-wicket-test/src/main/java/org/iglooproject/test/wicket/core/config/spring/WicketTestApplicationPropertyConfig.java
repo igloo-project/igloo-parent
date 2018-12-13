@@ -1,4 +1,4 @@
-package org.iglooproject.test.wicket.more.config.spring;
+package org.iglooproject.test.wicket.core.config.spring;
 
 import org.springframework.context.annotation.Bean;
 
@@ -7,7 +7,7 @@ import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.dao.StubMutablePropertyDao;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 
-public class WicketMoreTestApplicationPropertyConfig extends AbstractApplicationPropertyConfig {
+public class WicketTestApplicationPropertyConfig extends AbstractApplicationPropertyConfig {
 
 	@Override
 	@Bean
