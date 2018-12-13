@@ -58,7 +58,7 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 		@SuppressWarnings("unchecked")
 		Link<Void> administrationBasicUserListLink = (Link<Void>) tester.getComponentFromLastRenderedPage(breadCrumbElementPath(1) + ":breadCrumbElementLink");
 		String administrationBasicUserListLabel = (String) administrationBasicUserListLink.getBody().getObject();
-		assertEquals(administrationBasicUserListLabel, localize("navigation.administration.user.basic"));
+		assertEquals(administrationBasicUserListLabel, localize("navigation.administration.user.basicUser"));
 		
 		tester.clickLink(breadCrumbElementPath(0) + ":breadCrumbElementLink");
 		tester.assertRenderedPage(AdministrationBasicUserListPage.class);

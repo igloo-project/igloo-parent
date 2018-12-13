@@ -53,7 +53,7 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-			new ResourceModel("navigation.administration.user.basic"),
+			new ResourceModel("navigation.administration.user.basicUser"),
 			AdministrationBasicUserListPage.linkDescriptor()
 		));
 		addBreadCrumbElement(new BreadCrumbElement(

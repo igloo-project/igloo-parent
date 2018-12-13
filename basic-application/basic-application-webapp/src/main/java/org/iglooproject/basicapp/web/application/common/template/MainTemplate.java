@@ -120,10 +120,10 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				.setIconClassesModel(Model.of("fa fa-fw fa-cogs"))
 				.setSubMenuItems(ImmutableList.of(
 					AdministrationBasicUserListPage.linkDescriptor()
-						.navigationMenuItem(new ResourceModel("navigation.administration.user.basic"))
+						.navigationMenuItem(new ResourceModel("navigation.administration.user.basicUser"))
 						.setIconClassesModel(Model.of("fa fa-fw fa-user-cog")),
 					AdministrationTechnicalUserListPage.linkDescriptor()
-						.navigationMenuItem(new ResourceModel("navigation.administration.user.technical"))
+						.navigationMenuItem(new ResourceModel("navigation.administration.user.technicalUser"))
 						.setIconClassesModel(Model.of("fa fa-fw fa-user-shield")),
 					AdministrationUserGroupListPage.linkDescriptor()
 						.navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
