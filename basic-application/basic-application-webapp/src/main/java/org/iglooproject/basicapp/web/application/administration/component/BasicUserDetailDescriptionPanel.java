@@ -27,13 +27,13 @@ public class BasicUserDetailDescriptionPanel extends GenericPanel<BasicUser> {
 	@SpringBean
 	private IUserService userService;
 
-	public BasicUserDetailDescriptionPanel(String id, final IModel<? extends BasicUser> model) {
-		super(id, model);
+	public BasicUserDetailDescriptionPanel(String id, final IModel<? extends BasicUser> userModel) {
+		super(id, userModel);
 		
 		BasicUserPopup editPopup = new BasicUserPopup("editPopup");
 		add(editPopup);
 		
-		IModel<String> emailModel = BindingModel.of(model, Bindings.user().email());
+		IModel<String> emailModel = BindingModel.of(userModel, Bindings.user().email());
 		
 		add(
 			new BlankLink("edit")
@@ -47,18 +47,18 @@ public class BasicUserDetailDescriptionPanel extends GenericPanel<BasicUser> {
 		);
 		
 		add(
-			new CoreLabel("username", BindingModel.of(model, Bindings.user().username()))
+			new CoreLabel("username", BindingModel.of(userModel, Bindings.user().username()))
 				.showPlaceholder(),
-			new BooleanIcon("active", BindingModel.of(model, Bindings.user().active())),
+			new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())),
 			new EmailLink("email", emailModel),
 			new DefaultPlaceholderPanel("emailPlaceholder").condition(Condition.modelNotNull(emailModel)),
-			new DateLabel("creationDate", BindingModel.of(model, Bindings.user().creationDate()), DatePattern.SHORT_DATETIME)
+			new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()), DatePattern.SHORT_DATETIME)
 				.showPlaceholder(),
-			new DateLabel("lastUpdateDate", BindingModel.of(model, Bindings.user().lastUpdateDate()), DatePattern.SHORT_DATETIME)
+			new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()), DatePattern.SHORT_DATETIME)
 				.showPlaceholder(),
-			new CoreLabel("locale", BindingModel.of(model, Bindings.user().locale()))
+			new CoreLabel("locale", BindingModel.of(userModel, Bindings.user().locale()))
 				.showPlaceholder(),
-			new DateLabel("lastLoginDate", BindingModel.of(model, Bindings.user().lastLoginDate()), DatePattern.SHORT_DATETIME)
+			new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()), DatePattern.SHORT_DATETIME)
 				.showPlaceholder()
 		);
 	}

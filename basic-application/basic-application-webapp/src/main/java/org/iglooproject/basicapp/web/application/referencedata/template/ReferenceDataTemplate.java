@@ -28,7 +28,4 @@ public abstract class ReferenceDataTemplate extends MainTemplate {
 		return ReferenceDataPage.class;
 	}
 
-	@Override
-	protected abstract Class<? extends WebPage> getSecondMenuPage();
-
 }

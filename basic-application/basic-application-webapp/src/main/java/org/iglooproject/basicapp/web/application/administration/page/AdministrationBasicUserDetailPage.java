@@ -16,12 +16,12 @@ import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRec
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.basicapp.web.application.administration.component.BasicUserDetailDescriptionPanel;
-import org.iglooproject.basicapp.web.application.administration.component.BasicUserDetailGroupsPanel;
-import org.iglooproject.basicapp.web.application.administration.component.UserDetailHistoryLogPanel;
+import org.iglooproject.basicapp.web.application.administration.component.tab.AdministrationBasicUserDetailTabMainInformationPanel;
+import org.iglooproject.basicapp.web.application.administration.component.tab.AdministrationBasicUserDetailTabSecurityPanel;
 import org.iglooproject.basicapp.web.application.administration.form.UserPasswordEditPopup;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
 import org.iglooproject.basicapp.web.application.common.renderer.UserActiveRenderer;
+import org.iglooproject.basicapp.web.application.common.util.BootstrapTabsUtils;
 import org.iglooproject.basicapp.web.application.navigation.link.LinkFactory;
 import org.iglooproject.wicket.bootstrap4.markup.html.bootstrap.component.BootstrapBadge;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
@@ -34,6 +34,7 @@ import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tab.BootstrapTabBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.slf4j.Logger;
@@ -48,6 +49,9 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 
 	public static final ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, BasicUser, Page> MAPPER =
 		AdministrationUserDetailTemplate.mapper(BasicUser.class);
+
+	public static final String ANCHOR_TAB_MAIN_INFORMATION = "tab-main-information";
+	public static final String ANCHOR_TAB_SECURITY = "tab-security";
 
 	public AdministrationBasicUserDetailPage(PageParameters parameters) {
 		super(parameters);
@@ -89,7 +93,7 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 		
 		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
 		add(headerElementsSection.anyChildVisible());
-
+		
 		headerElementsSection
 			.add(
 				new EnclosureContainer("informationContainer")
@@ -163,19 +167,19 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 							.content(new StringResourceModel("administration.user.action.disable.confirmation.content", userModel))
 							.confirm()
 							.onClick(new IAjaxAction() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public void execute(AjaxRequestTarget target) {
-										try {
-											userService.setActive(userModel.getObject(), false);
-											Session.get().success(getString("administration.user.action.disable.success"));
-										} catch (Exception e) {
-											LOGGER.error("Error occured while disabling user", e);
-											Session.get().error(getString("common.error.unexpected"));
-										}
-										target.add(getPage());
-										FeedbackUtils.refreshFeedback(target, getPage());
+								private static final long serialVersionUID = 1L;
+								@Override
+								public void execute(AjaxRequestTarget target) {
+									try {
+										userService.setActive(userModel.getObject(), false);
+										Session.get().success(getString("administration.user.action.disable.success"));
+									} catch (Exception e) {
+										LOGGER.error("Error occured while disabling user", e);
+										Session.get().error(getString("common.error.unexpected"));
 									}
+									target.add(getPage());
+									FeedbackUtils.refreshFeedback(target, getPage());
+								}
 							})
 							.create("disable", userModel)
 							.add(
@@ -193,10 +197,14 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 			);
 		
 		add(
-				new BasicUserDetailDescriptionPanel("description", userModel),
-				new BasicUserDetailGroupsPanel("groups", userModel),
-				new UserDetailHistoryLogPanel("audits", userModel)
+			BootstrapTabsUtils.buildTabLink("mainInformationTabLink", ANCHOR_TAB_MAIN_INFORMATION),
+			new AdministrationBasicUserDetailTabMainInformationPanel("mainInformation", userModel),
+			
+			BootstrapTabsUtils.buildTabLink("securityTabLink", ANCHOR_TAB_SECURITY),
+			new AdministrationBasicUserDetailTabSecurityPanel("security", userModel)
 		);
+		
+		add(new BootstrapTabBehavior());
 	}
 
 	@Override

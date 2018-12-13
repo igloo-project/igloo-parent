@@ -4,13 +4,17 @@
 <wicket:panel>
 	<div class="col-lg-2">
 		<ul class="nav nav-page flex-column nav-pills" role="tablist">
-			<li wicket:id="tabs" class="nav-item"><a wicket:id="link" class="nav-link" role="tab" data-toggle="tab"><span wicket:id="label" /></a></li>
+			<li wicket:id="tabs" class="nav-item">
+				<a wicket:id="link" class="nav-link" role="tab" data-toggle="tab">
+					<span wicket:id="label" />
+				</a>
+			</li>
 		</ul>
 	</div>
 	
 	<div class="col-lg-10">
 		<div class="tab-content">
-			<div wicket:id="tabsContents" class="tab-pane" id="home" />
+			<div wicket:id="tabsContents" class="tab-pane fade" role="tabpanel" />
 		</div>
 	</div>
 </wicket:panel>

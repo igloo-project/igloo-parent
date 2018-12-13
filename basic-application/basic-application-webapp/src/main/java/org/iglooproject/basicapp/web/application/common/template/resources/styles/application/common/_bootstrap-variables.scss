@@ -741,15 +741,14 @@ $nav-pills-border-radius:								$border-radius !default; // bootstrap
 $nav-pills-link-active-color:							$component-active-color !default; // bootstrap
 $nav-pills-link-active-bg:								$component-active-bg !default; // bootstrap
 
-$nav-pills-page-striped-order:							even;
 $nav-pills-page-link-border-width:						$border-width;
 $nav-pills-page-link-border-color:						rgba($black, .125);
 $nav-pills-page-link-color:								$link-color;
 $nav-pills-page-link-bg:								$white;
-$nav-pills-page-link-accent-color:						$nav-pills-page-link-color;
-$nav-pills-page-link-accent-bg:							$nav-pills-page-link-bg;
 $nav-pills-page-link-active-color:						$nav-pills-link-active-color;
 $nav-pills-page-link-active-bg:							$nav-pills-link-active-bg;
+$nav-pills-page-link-disabled-color:					$nav-link-disabled-color;
+$nav-pills-page-link-disabled-bg:						$nav-pills-page-link-bg;
 
 $nav-divider-color:										$gray-200 !default; // bootstrap
 $nav-divider-margin-y:									($spacer / 2) !default; // bootstrap

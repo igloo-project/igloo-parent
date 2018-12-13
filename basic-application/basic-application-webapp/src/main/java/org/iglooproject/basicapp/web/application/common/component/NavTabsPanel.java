@@ -1,6 +1,5 @@
 package org.iglooproject.basicapp.web.application.common.component;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.Behavior;
@@ -10,9 +9,9 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.iglooproject.basicapp.web.application.common.util.BootstrapTabsUtils;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tab.BootstrapTabBehavior;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
@@ -96,9 +95,11 @@ public class NavTabsPanel extends Panel {
 		boolean first = tabsContentsRepeatingView.size() == 0;
 		
 		MarkupContainer tab = new WebMarkupContainer(tabsRepeatingView.newChildId());
-		BlankLink link = new BlankLink("link");
+		WebMarkupContainer link = new WebMarkupContainer("link");
 		
 		Component content = factory.createContent(tabsContentsRepeatingView.newChildId());
+		
+		BootstrapTabsUtils.decorateTabLink(link, content.getMarkupId());
 		
 		if (first) {
 			Behavior activeBehavior = new ClassAttributeAppender("active show");
@@ -107,18 +108,17 @@ public class NavTabsPanel extends Panel {
 		}
 		
 		tabsRepeatingView.add(
-				tab
-						.add(
-								link
-										.add(factory.createLabel("label"))
-										.add(new AttributeModifier("href", "#" + content.getMarkupId()))
-						)
-						.add(new BootstrapTabBehavior())
+			tab
+				.add(
+					link
+						.add(factory.createLabel("label"))
+				)
+				.add(new BootstrapTabBehavior())
 		);
 		
 		tabsContentsRepeatingView.add(
-				content
-						.setOutputMarkupId(true)
+			content
+				.setOutputMarkupId(true)
 		);
 		
 		return this;
