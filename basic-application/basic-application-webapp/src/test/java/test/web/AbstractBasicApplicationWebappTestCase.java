@@ -67,7 +67,7 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 	private IMutablePropertyDao mutablePropertyDao;
 
 	@Autowired
-	private WebApplication application;
+	protected WebApplication application;
 
 	@Before
 	public void setUp() throws ServiceException, SecurityServiceException {
