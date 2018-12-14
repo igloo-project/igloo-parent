@@ -48,15 +48,14 @@ public class WicketMoreWicketTester extends CoreWicketTester {
 	 * Assert that a Component is a BreadCrumbLinkElement and displays expectedValue
 	 */
 	public void assertBreadcrumbLinkElement(String path, int element, String expectedValue) {
-		assertVisible(path);
-		assertComponent(path, BreadCrumbListView.class);
+		assertVisible(path, BreadCrumbListView.class);
 		
 		String elementPath = path + ":" + element + ":breadCrumbElement";
-		assertVisible(elementPath);
-		assertComponent(elementPath, LinkGeneratorBreadCrumbElementPanel.class);
+		assertVisible(elementPath, LinkGeneratorBreadCrumbElementPanel.class);
+		
 		String elementLinkPath = elementPath + ":breadCrumbElementLink";
-		assertUsability(elementLinkPath);
-		assertComponent(elementLinkPath, Link.class);
+		assertEnabled(elementLinkPath, Link.class);
+		
 		@SuppressWarnings("unchecked")
 		Link<Void> link = (Link<Void>) getComponentFromLastRenderedPage(elementLinkPath);
 		String label = (String) link.getBody().getObject();
@@ -72,15 +71,15 @@ public class WicketMoreWicketTester extends CoreWicketTester {
 	}
 
 	/**
-	 * Assert a Component is a usabled DynamicBookmarkablePageLink and points to the page
+	 * Assert a Component is a enabled and visible DynamicBookmarkablePageLink and points to the page
 	 */
-	public <P extends Page>void assertDynamicBookmarkablePageLinkUsability(String path, Class<P> pageClass) {
-		DynamicBookmarkablePageLink linkComponent = assertUsability(path, DynamicBookmarkablePageLink.class);
+	public <P extends Page>void assertDynamicBookmarkablePageLinkEnabled(String path, Class<P> pageClass) {
+		DynamicBookmarkablePageLink linkComponent = assertEnabled(path, DynamicBookmarkablePageLink.class);
 		assertTrue(linkComponent.isLinkedPageAccessible(pageClass));
 	}
 
 	/**
-	 * Assert a Component is a disabled DynamicBookmarkablePageLink and points to the page
+	 * Assert a Component is a disabled and visible DynamicBookmarkablePageLink and points to the page
 	 */
 	public <P extends Page>void assertDynamicBookmarkablePageLinkDisabled(String path, Class<P> pageClass) {
 		DynamicBookmarkablePageLink linkComponent = assertDisabled(path, DynamicBookmarkablePageLink.class);

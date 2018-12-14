@@ -32,7 +32,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
 		
-		tester.assertComponent("pageTitle", CoreLabel.class);
+		tester.assertVisible("pageTitle", CoreLabel.class);
 		tester.assertLabel("pageTitle", localize("home.pageTitle"));
 	}
 
@@ -42,7 +42,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
 		
-		tester.assertComponent("pageTitle", CoreLabel.class);
+		tester.assertVisible("pageTitle", CoreLabel.class);
 		
 		tester.assertLabel("pageTitle", "Home");
 	}
@@ -54,7 +54,6 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
 		
-		tester.assertVisible("profile");
 		tester.assertEnabled("profile");
 		
 		tester.assertInvisible("users");
@@ -131,7 +130,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 			}
 			if (hasRoleMenu) {
 				tester.assertVisible(pathToMenu);
-				tester.assertUsability(pathToMenu + ":" + menuItem.getOrder() + ":navLink");
+				tester.assertEnabled(pathToMenu + ":" + menuItem.getOrder() + ":navLink");
 				tester.assertEscapeLabel(pathToMenu + ":" + menuItem.getOrder() + ":navLink:label", menuItem.getLabel());
 				nbItems ++;
 				

@@ -44,7 +44,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		form.setValue("name", "basicUser");
 		form.submit();
 		
-		tester.assertComponent("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", CountLabel.class);
+		tester.assertVisible("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", CountLabel.class);
 		tester.assertLabel("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", "Aucun utilisateur");
 	}
 
@@ -55,7 +55,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		tester.startPage(AdministrationTechnicalUserListPage.class);
 		tester.assertRenderedPage(AdministrationTechnicalUserListPage.class);
 		
-		tester.assertComponent("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", CountLabel.class);
+		tester.assertVisible("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", CountLabel.class);
 		tester.assertLabel("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", "1 utilisateur");
 	}
 
@@ -66,7 +66,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		tester.startPage(AdministrationBasicUserListPage.class);
 		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
 		
-		tester.assertComponent("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", CountLabel.class);
+		tester.assertVisible("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", CountLabel.class);
 		tester.assertLabel("results:headingAddInContainer:leftAddInWrapper:leftAddIn:1", "2 utilisateurs");
 	}
 
@@ -77,7 +77,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		tester.startPage(AdministrationBasicUserListPage.class);
 		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
 		
-		tester.assertComponent("results", DecoratedCoreDataTablePanel.class);
+		tester.assertVisible("results", DecoratedCoreDataTablePanel.class);
 		@SuppressWarnings("unchecked")
 		DecoratedCoreDataTablePanel<User, ?> results = (DecoratedCoreDataTablePanel<User, ?>) tester.getComponentFromLastRenderedPage("results");
 		assertEquals(2, results.getItemCount());
@@ -100,14 +100,14 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		tester.startPage(AdministrationBasicUserListPage.class);
 		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
 		
-		tester.assertComponent("results:dataTableContainer:dataTable:body:rows", SequenceGridView.class);
+		tester.assertVisible("results:dataTableContainer:dataTable:body:rows", SequenceGridView.class);
 		@SuppressWarnings("unchecked")
 		SequenceGridView<User> rows = (SequenceGridView<User>) tester.getComponentFromLastRenderedPage("results:dataTableContainer:dataTable:body:rows");
 		assertTrue(rows.getItems().hasNext());
 		
 		String userRowPath = rows.getItems().next().getPageRelativePath();
 		
-		tester.assertComponent(userRowPath + ":cells:2:cell", CoreLabelLinkColumnPanel.class);
+		tester.assertVisible(userRowPath + ":cells:2:cell", CoreLabelLinkColumnPanel.class);
 		@SuppressWarnings("unchecked")
 		CoreLabelLinkColumnPanel<User, UserSort> usernameCell = (CoreLabelLinkColumnPanel<User, UserSort>) tester.getComponentFromLastRenderedPage(userRowPath + ":cells:2:cell");
 

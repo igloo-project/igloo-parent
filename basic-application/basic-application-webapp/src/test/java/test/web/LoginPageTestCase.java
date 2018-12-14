@@ -17,8 +17,8 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
-		tester.assertComponent("content", SignInContentPanel.class);
-		tester.assertComponent("footer", SignInFooterPanel.class);
+		tester.assertVisible("content", SignInContentPanel.class);
+		tester.assertVisible("footer", SignInFooterPanel.class);
 	}
 
 	@Test

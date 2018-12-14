@@ -34,16 +34,14 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		tester.startPage(ProfilePage.class);
 		tester.assertRenderedPage(ProfilePage.class);
 		
-		tester.assertVisible("description:passwordEditPopup");
-		tester.assertComponent("description:passwordEditPopup", UserPasswordEditPopup.class);
+		tester.assertVisible("description:passwordEditPopup", UserPasswordEditPopup.class);
 		
 		tester.assertVisible("description:passwordEditPopup:container");
 		Component container = tester.getComponentFromLastRenderedPage("description:passwordEditPopup:container");
 		
 		// The elements present in AbstractModalPopupPanel.html should be visible (such as the header)
 		// Header
-		tester.assertVisible(passwordEditPopupPath() + ":header");
-		tester.assertComponent(passwordEditPopupPath() + ":header", CoreLabel.class);
+		tester.assertVisible(passwordEditPopupPath() + ":header", CoreLabel.class);
 		tester.assertLabel(passwordEditPopupPath() + ":header", localize("administration.user.action.password.edit.title"));
 		// Body elements should be invisible
 		tester.assertInvisible(passwordEditPopupFormPath());
@@ -63,9 +61,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 		tester.assertVisible(passwordEditPopupFormPath() + ":confirmPassword");
 		tester.assertRequired(passwordEditPopupFormPath() + ":confirmPassword");
 		// Footer elements should now be visible
-		tester.assertVisible(passwordEditPopupPath() + ":footer:save");
 		tester.assertEnabled(passwordEditPopupPath() + ":footer:save");
-		tester.assertVisible(passwordEditPopupPath() + ":footer:cancel");
 		tester.assertEnabled(passwordEditPopupPath() + ":footer:cancel");
 	}
 

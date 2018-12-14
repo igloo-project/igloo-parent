@@ -25,20 +25,39 @@ public class CoreWicketTester extends WicketTester {
 	}
 
 	/**
-	 * Assert that a Component is visible and enabled
+	 * Assert that a Component is visible and/or enabled
 	 */
 	public void assertUsability(String path) {
+		assertUsability(getComponentFromLastRenderedPage(path));
+	}
+
+	/**
+	 * Assert that a Component is visible and/or enabled and of type clazz
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends Component> T assertUsability(String path, Class<T> clazz) {
+		assertUsability(path);
+		assertComponent(path, clazz);
+		return (T) getComponentFromLastRenderedPage(path);
+	}
+
+	/**
+	 * Assert that a Component is visible and enabled. This behavior is different from
+	 * {@link WicketTester#assertEnabled(String)} that only checks enable status.
+	 */
+	@Override
+	public void assertEnabled(String path) {
 		assertVisible(path);
-		assertEnabled(path);
+		super.assertEnabled(path);
 	}
 
 	/**
 	 * Assert that a Component is visible, enabled and of type clazz
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Component> T assertUsability(String path, Class<T> clazz) {
-		assertVisible(path, clazz);
+	public <T extends Component> T assertEnabled(String path, Class<T> clazz) {
 		assertEnabled(path);
+		assertComponent(path, clazz);
 		return (T) getComponentFromLastRenderedPage(path);
 	}
 
@@ -57,8 +76,8 @@ public class CoreWicketTester extends WicketTester {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Component> T assertDisabled(String path, Class<T> clazz) {
-		assertVisible(path, clazz);
 		assertDisabled(path);
+		assertComponent(path, clazz);
 		return (T) getComponentFromLastRenderedPage(path);
 	}
 

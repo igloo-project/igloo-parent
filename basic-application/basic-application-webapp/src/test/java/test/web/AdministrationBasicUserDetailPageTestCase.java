@@ -43,26 +43,19 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 		
 		tester.assertRenderedPage(AdministrationBasicUserDetailPage.class);
 		
-		tester.assertVisible(tester.breadCrumbPath());
-		tester.assertComponent(tester.breadCrumbPath(), BreadCrumbListView.class);
+		tester.assertVisible(tester.breadCrumbPath(), BreadCrumbListView.class);
 		
 		String administrationBreadCrumbPath = tester.breadCrumbElementPath(0);
-		tester.assertVisible(administrationBreadCrumbPath);
-		tester.assertComponent(administrationBreadCrumbPath, LinkGeneratorBreadCrumbElementPanel.class);
-		tester.assertVisible(administrationBreadCrumbPath + ":breadCrumbElementLink");
-		tester.assertEnabled(administrationBreadCrumbPath + ":breadCrumbElementLink");
-		tester.assertComponent(administrationBreadCrumbPath + ":breadCrumbElementLink", Link.class);
+		tester.assertVisible(administrationBreadCrumbPath, LinkGeneratorBreadCrumbElementPanel.class);
+		tester.assertEnabled(administrationBreadCrumbPath + ":breadCrumbElementLink", Link.class);
 		@SuppressWarnings("unchecked")
 		Link<Void> administrationLink = (Link<Void>) tester.getComponentFromLastRenderedPage(administrationBreadCrumbPath + ":breadCrumbElementLink");
 		String administrationLabel = (String) administrationLink.getBody().getObject();
 		assertEquals(localize("navigation.administration"), administrationLabel);
 		
 		String administrationBasicUserBreadCrumbPath = tester.breadCrumbElementPath(1);
-		tester.assertVisible(administrationBasicUserBreadCrumbPath);
-		tester.assertComponent(administrationBasicUserBreadCrumbPath, LinkGeneratorBreadCrumbElementPanel.class);
-		tester.assertVisible(administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink");
-		tester.assertEnabled(administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink");
-		tester.assertComponent(administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink", Link.class);
+		tester.assertVisible(administrationBasicUserBreadCrumbPath, LinkGeneratorBreadCrumbElementPanel.class);
+		tester.assertEnabled(administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink", Link.class);
 		@SuppressWarnings("unchecked")
 		Link<Void> administrationBasicUserLink = (Link<Void>) tester.getComponentFromLastRenderedPage(administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink");
 		String administrationBasicUserLabel = (String) administrationBasicUserLink.getBody().getObject();
@@ -84,12 +77,10 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 		assertTrue(basicUser.isActive());
 		
 		tester.assertInvisible("headerElementsSection:actionsContainer:enable");
-		tester.assertVisible("headerElementsSection:actionsContainer:disable");
 		tester.assertEnabled("headerElementsSection:actionsContainer:disable");
 		
 		tester.executeAjaxEvent("headerElementsSection:actionsContainer:disable", "confirm");
 		
-		tester.assertVisible("headerElementsSection:actionsContainer:enable");
 		tester.assertEnabled("headerElementsSection:actionsContainer:enable");
 		tester.assertInvisible("headerElementsSection:actionsContainer:disable");
 		
