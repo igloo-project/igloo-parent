@@ -72,13 +72,6 @@
 			<scope>test</scope>
 		</dependency>
 		
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.glassfish.jersey.test-framework.providers</groupId> -->
-<!-- 			<artifactId>jersey-test-framework-provider-jetty</artifactId> -->
-<!-- 			<version>${igloo.jersey2.version}</version> -->
-<!-- 			<scope>test</scope> -->
-<!-- 		</dependency> -->
-		
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-test</artifactId>
