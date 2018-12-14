@@ -15,7 +15,9 @@ public class MaintenancePage extends ApplicationAccessTemplate {
 	public MaintenancePage(PageParameters parameters) {
 		super(parameters);
 		
-		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("maintenance.pageTitle")));
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(
+				new ResourceModel("maintenance.pageTitle")
+		));
 	}
 
 	@Override

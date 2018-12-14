@@ -28,13 +28,13 @@ public class SecurityOptions {
 	private Set<Rule> passwordRules = Sets.newHashSet();
 
 	public static final SecurityOptions DEFAULT = new SecurityOptions()
-				.passwordUserRecovery()
-				.passwordUserUpdate()
-				.passwordRules(
-						SecurityPasswordRulesBuilder.start()
-								.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
-								.build()
-				);
+		.passwordUserRecovery()
+		.passwordUserUpdate()
+		.passwordRules(
+			SecurityPasswordRulesBuilder.start()
+				.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
+				.build()
+		);
 
 	public SecurityOptions passwordExpiration() {
 		passwordExpiration = SecurityOptionsMode.ENABLED;
@@ -127,4 +127,5 @@ public class SecurityOptions {
 		ENABLED,
 		DISABLED;
 	}
+
 }

@@ -15,7 +15,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.iglooproject.basicapp.core.business.user.model.BasicUser;
+import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds;
 import org.iglooproject.basicapp.web.application.administration.form.UserAjaxDropDownSingleChoice;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
@@ -42,44 +42,44 @@ public class SidebarPanel extends AbstractNavbarPanel {
 
 	private static final long serialVersionUID = 3187936834300791175L;
 
-	private final IModel<BasicUser> searchModel = GenericEntityModel.of((BasicUser) null);
+	private final IModel<User> searchModel = GenericEntityModel.of((User) null);
 
 	public SidebarPanel(
-			String id,
-			Supplier<List<NavigationMenuItem>> mainNavSupplier,
-			Supplier<Class<? extends WebPage>> firstMenuPageSupplier,
-			Supplier<Class<? extends WebPage>> secondMenuPageSupplier
+		String id,
+		Supplier<List<NavigationMenuItem>> mainNavSupplier,
+		Supplier<Class<? extends WebPage>> firstMenuPageSupplier,
+		Supplier<Class<? extends WebPage>> secondMenuPageSupplier
 	) {
 		super(id);
 		
 		add(
-				new EnclosureContainer("quickSearchContainer")
-					.anyChildVisible()
-					.add(
-							new UserAjaxDropDownSingleChoice<>("user", searchModel, BasicUser.class)
-								.setRequired(true)
-								.setLabel(new ResourceModel("sidebar.quicksearch.user"))
-								.add(new LabelPlaceholderBehavior())
-								.add(
-										new UpdateOnChangeAjaxEventBehavior()
-												.onChange(new SerializableListener() {
-													private static final long serialVersionUID = 1L;
-													@Override
-													public void onBeforeRespond(Map<String, Component> map, AjaxRequestTarget target) {
-														IPageLinkDescriptor linkDescriptor = AdministrationUserDetailTemplate.<BasicUser>mapper()
-																.setParameter2(new ComponentPageModel(SidebarPanel.this))
-																.map(new GenericEntityModel<>(searchModel.getObject()));
-														
-														searchModel.setObject(null);
-														searchModel.detach();
-														
-														if (linkDescriptor.isAccessible()) {
-															throw linkDescriptor.newRestartResponseException();
-														}
-													}
-												})
-								)
-					)
+			new EnclosureContainer("quickSearchContainer")
+				.anyChildVisible()
+				.add(
+					new UserAjaxDropDownSingleChoice<>("user", searchModel, User.class)
+						.setRequired(true)
+						.setLabel(new ResourceModel("sidebar.quicksearch.user"))
+						.add(new LabelPlaceholderBehavior())
+						.add(
+							new UpdateOnChangeAjaxEventBehavior()
+								.onChange(new SerializableListener() {
+									private static final long serialVersionUID = 1L;
+									@Override
+									public void onBeforeRespond(Map<String, Component> map, AjaxRequestTarget target) {
+										IPageLinkDescriptor linkDescriptor = AdministrationUserDetailTemplate.mapper()
+											.setParameter2(new ComponentPageModel(SidebarPanel.this))
+											.map(new GenericEntityModel<>(searchModel.getObject()));
+										
+										searchModel.setObject(null);
+										searchModel.detach();
+										
+										if (linkDescriptor.isAccessible()) {
+											throw linkDescriptor.newRestartResponseException();
+										}
+									}
+								})
+						)
+				)
 		);
 		
 		add(new ListView<NavigationMenuItem>("sidenavItems", mainNavSupplier.get()) {
@@ -94,13 +94,13 @@ public class SidebarPanel extends AbstractNavbarPanel {
 				item.add(Condition.componentVisible(navLink).thenShow());
 				
 				item.add(
-						navLink
-								.add(
-										new EnclosureContainer("icon")
-												.condition(Condition.hasText(navItem.getIconClassesModel()))
-												.add(new ClassAttributeAppender(navItem.getIconClassesModel())),
-										new CoreLabel("label", navItem.getLabelModel())
-								)
+					navLink
+						.add(
+							new EnclosureContainer("icon")
+								.condition(Condition.hasText(navItem.getIconClassesModel()))
+								.add(new ClassAttributeAppender(navItem.getIconClassesModel())),
+							new CoreLabel("label", navItem.getLabelModel())
+						)
 				);
 				
 				item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
@@ -110,41 +110,41 @@ public class SidebarPanel extends AbstractNavbarPanel {
 				List<NavigationMenuItem> subMenuItems = navItem.getSubMenuItems();
 				
 				item.add(
-						new WebMarkupContainer("sidenavSubContainer")
-								.add(
-										new ListView<NavigationMenuItem>("sidenavSubItems", subMenuItems) {
-											private static final long serialVersionUID = -2257358650754295013L;
-											
-											@Override
-											protected void populateItem(ListItem<NavigationMenuItem> item) {
-												NavigationMenuItem navItem = item.getModelObject();
-												
-												AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
-												
-												item.add(Condition.componentVisible(navLink).thenShow());
-												
-												navLink.add(
-														new CoreLabel("label", navItem.getLabelModel()),
-														new EnclosureContainer("icon")
-																.condition(Condition.hasText(navItem.getIconClassesModel()))
-																.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
-												);
-												
-												item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
-												
-												addActiveClass(item, secondMenuPageSupplier.get(), item);
-												
-												item.add(navLink);
-											}
-											
-											@Override
-											protected void onDetach() {
-												super.onDetach();
-												Detachables.detach(getModelObject());
-											}
-										}
-								)
-								.setVisibilityAllowed(!subMenuItems.isEmpty())
+					new WebMarkupContainer("sidenavSubContainer")
+						.add(
+							new ListView<NavigationMenuItem>("sidenavSubItems", subMenuItems) {
+								private static final long serialVersionUID = -2257358650754295013L;
+								
+								@Override
+								protected void populateItem(ListItem<NavigationMenuItem> item) {
+									NavigationMenuItem navItem = item.getModelObject();
+									
+									AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
+									
+									item.add(Condition.componentVisible(navLink).thenShow());
+									
+									navLink.add(
+										new CoreLabel("label", navItem.getLabelModel()),
+										new EnclosureContainer("icon")
+											.condition(Condition.hasText(navItem.getIconClassesModel()))
+											.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
+									);
+									
+									item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
+									
+									addActiveClass(item, secondMenuPageSupplier.get(), item);
+									
+									item.add(navLink);
+								}
+								
+								@Override
+								protected void onDetach() {
+									super.onDetach();
+									Detachables.detach(getModelObject());
+								}
+							}
+						)
+						.setVisibilityAllowed(!subMenuItems.isEmpty())
 				);
 			}
 			

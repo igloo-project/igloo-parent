@@ -62,6 +62,15 @@ body {
 					}
 				}
 				
+				> .content-header-section.content-header-section-tabs {
+					background-color: #FBFBFB;
+					
+					> .content-header-container {
+						padding-top: 10px;
+						padding-bottom: 10px;
+					}
+				}
+				
 				> .content-body-section {
 					> .content-body-container {
 						@include make-container();

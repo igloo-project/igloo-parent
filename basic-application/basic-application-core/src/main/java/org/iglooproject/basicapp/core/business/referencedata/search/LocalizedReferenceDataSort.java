@@ -36,10 +36,10 @@ public enum LocalizedReferenceDataSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.luceneSortField(
-							this, sortOrder, SortField.Type.INT,
-							LocalizedReferenceData.POSITION
-					)
+				SortUtils.luceneSortField(
+					this, sortOrder, SortField.Type.INT,
+					LocalizedReferenceData.POSITION
+				)
 			);
 		}
 		@Override
@@ -51,10 +51,10 @@ public enum LocalizedReferenceDataSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.luceneSortField(
-							this, sortOrder, SortField.Type.STRING,
-							LocalizedReferenceData.CODE_SORT
-					)
+				SortUtils.luceneSortField(
+					this, sortOrder, SortField.Type.STRING,
+					LocalizedReferenceData.CODE_SORT
+				)
 			);
 		}
 		@Override
@@ -67,10 +67,10 @@ public enum LocalizedReferenceDataSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.luceneSortField(
-							this, sortOrder, SortField.Type.INT,
-							LocalizedReferenceData.LABEL_FR_SORT
-					)
+				SortUtils.luceneSortField(
+					this, sortOrder, SortField.Type.INT,
+					LocalizedReferenceData.LABEL_FR_SORT
+				)
 			);
 		}
 		@Override
@@ -83,10 +83,10 @@ public enum LocalizedReferenceDataSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.luceneSortField(
-							this, sortOrder, SortField.Type.INT,
-							LocalizedReferenceData.LABEL_EN_SORT
-					)
+				SortUtils.luceneSortField(
+					this, sortOrder, SortField.Type.INT,
+					LocalizedReferenceData.LABEL_EN_SORT
+				)
 			);
 		}
 		@Override

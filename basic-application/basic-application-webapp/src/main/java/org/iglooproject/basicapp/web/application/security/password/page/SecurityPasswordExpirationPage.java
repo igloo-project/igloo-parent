@@ -16,15 +16,15 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()
-				.page(SecurityPasswordExpirationPage.class);
+			.page(SecurityPasswordExpirationPage.class);
 	}
 
 	public SecurityPasswordExpirationPage(PageParameters parameters) {
 		super(parameters);
 		
-		addHeadPageTitlePrependedElement(
-				new BreadCrumbElement(new ResourceModel("security.password.expiration.pageTitle"))
-		);
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(
+			new ResourceModel("security.password.expiration.pageTitle")
+		));
 	}
 
 	@Override

@@ -14,4 +14,5 @@ public class EmailAddressType extends AbstractImmutableMaterializedStringValueUs
 	protected EmailAddress instantiate(String value) {
 		return new EmailAddress(value);
 	}
+
 }

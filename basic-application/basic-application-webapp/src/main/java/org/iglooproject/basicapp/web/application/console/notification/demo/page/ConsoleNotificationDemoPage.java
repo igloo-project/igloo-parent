@@ -23,18 +23,18 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Throwables;
 
 public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate {
-	
+
 	private static final long serialVersionUID = -1929048481327622623L;
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleNotificationDemoPage.class);
-	
+
 	private final IModel<INotificationContentDescriptor> descriptorModel;
-	
+
 	private final IModel<User> recipientModel;
 	private final IModel<INotificationContentDescriptor> descriptorWithContextModel;
 	private final IModel<String> subjectModel;
 	private final IModel<String> bodyModel;
-	
+
 	public ConsoleNotificationDemoPage(PageParameters parameters, final IModel<INotificationContentDescriptor> descriptorModel) {
 		super(parameters);
 		
@@ -45,13 +45,13 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 		recipientModel = new GenericEntityModel<>(BasicApplicationSession.get().getUser());
 		
 		descriptorWithContextModel =
-				new IModel<INotificationContentDescriptor>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public INotificationContentDescriptor getObject() {
-						return descriptorModel.getObject().withContext(recipientModel.getObject());
-					}
-				};
+			new IModel<INotificationContentDescriptor>() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public INotificationContentDescriptor getObject() {
+					return descriptorModel.getObject().withContext(recipientModel.getObject());
+				}
+			};
 		
 		subjectModel = new IModel<String>() {
 			private static final long serialVersionUID = 1L;
@@ -84,24 +84,30 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 		
 		form.add(
 				new UserAjaxDropDownSingleChoice<>("recipient", recipientModel, User.class)
-						.setLabel(new ResourceModel("console.notifications.demo.recipient"))
-						.setRequired(true)
-						.add(
-								new UpdateOnChangeAjaxEventBehavior()
-										.onChange(AjaxListeners.refreshPage())
-						),
+					.setLabel(new ResourceModel("console.notifications.demo.recipient"))
+					.setRequired(true)
+					.add(
+							new UpdateOnChangeAjaxEventBehavior()
+									.onChange(AjaxListeners.refreshPage())
+					),
 				
 				new CoreLabel("subject", subjectModel),
 				
 				new CoreLabel("body", bodyModel)
-						.setEscapeModelStrings(false)
+					.setEscapeModelStrings(false)
 		);
 	}
 
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		Detachables.detach(descriptorModel, recipientModel, descriptorWithContextModel, subjectModel, bodyModel);
+		Detachables.detach(
+			descriptorModel,
+			recipientModel,
+			descriptorWithContextModel,
+			subjectModel,
+			bodyModel
+		);
 	}
 
 	@Override

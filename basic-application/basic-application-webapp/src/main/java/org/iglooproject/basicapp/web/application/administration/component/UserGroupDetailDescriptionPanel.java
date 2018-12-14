@@ -24,7 +24,7 @@ import org.wicketstuff.wiquery.core.events.MouseEvent;
 public class UserGroupDetailDescriptionPanel extends GenericPanel<UserGroup> {
 
 	private static final long serialVersionUID = 4372823586880908316L;
-	
+
 	@SpringBean
 	private BasicApplicationAuthorityUtils authorityUtils;
 
@@ -34,39 +34,40 @@ public class UserGroupDetailDescriptionPanel extends GenericPanel<UserGroup> {
 		UserGroupPopup editPopup = new UserGroupPopup("editPopup");
 		
 		add(
-				new EnclosureContainer("lockedWarningContainer")
-						.condition(Condition.isTrue(BindingModel.of(getModel(), Bindings.userGroup().locked()))),
-				
-				new CoreLabel("description", BindingModel.of(userGroupModel, Bindings.userGroup().description()))
-						.multiline()
-						.showPlaceholder(),
-				
-				new SequenceView<Authority>("authorities", new RoleDataProvider()) {
+			new EnclosureContainer("lockedWarningContainer")
+				.condition(Condition.isTrue(BindingModel.of(getModel(), Bindings.userGroup().locked()))),
+			
+			new CoreLabel("description", BindingModel.of(userGroupModel, Bindings.userGroup().description()))
+				.multiline()
+				.showPlaceholder(),
+			
+			new SequenceView<Authority>("authorities", new RoleDataProvider()) {
+				private static final long serialVersionUID = 1L;
+				@Override
+				protected void populateItem(final Item<Authority> item) {
+					item.add(
+						new CoreLabel("authorityName", item.getModel()),
+						new BooleanIcon(
+							"authorityCheck", 
+							Condition.contains(
+								BindingModel.of(userGroupModel, Bindings.userGroup().authorities()),
+								item.getModel()
+							)
+						)
+					);
+				}
+			},
+			
+			editPopup,
+			new BlankLink("edit")
+				.add(new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK) {
 					private static final long serialVersionUID = 1L;
 					@Override
-					protected void populateItem(final Item<Authority> item) {
-						item.add(
-								new CoreLabel("authorityName", item.getModel()),
-								new BooleanIcon(
-										"authorityCheck", 
-										Condition.contains(
-												BindingModel.of(userGroupModel, Bindings.userGroup().authorities()),
-												item.getModel()
-										)
-								)
-						);
+					protected void onShow(AjaxRequestTarget target) {
+						editPopup.setUpEdit(getModelObject());
 					}
-				},
-				
-				editPopup,
-				new BlankLink("edit")
-						.add(new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK) {
-							private static final long serialVersionUID = 1L;
-							@Override
-							protected void onShow(AjaxRequestTarget target) {
-								editPopup.setUpEdit(getModelObject());
-							}
-						})
+				})
 		);
 	}
+
 }

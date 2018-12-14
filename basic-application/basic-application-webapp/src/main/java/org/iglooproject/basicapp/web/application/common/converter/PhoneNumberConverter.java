@@ -4,13 +4,12 @@ import java.util.Locale;
 
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.converter.AbstractConverter;
+import org.iglooproject.basicapp.core.business.common.model.PhoneNumber;
+import org.iglooproject.commons.util.validator.PermissivePhoneNumberValidator;
 import org.springframework.util.StringUtils;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
-
-import org.iglooproject.basicapp.core.business.common.model.PhoneNumber;
-import org.iglooproject.commons.util.validator.PermissivePhoneNumberValidator;
 
 public final class PhoneNumberConverter extends AbstractConverter<PhoneNumber> {
 
@@ -22,7 +21,7 @@ public final class PhoneNumberConverter extends AbstractConverter<PhoneNumber> {
 		if (StringUtils.hasText(trimmedValue)) {
 			if (!PermissivePhoneNumberValidator.getInstance().isValid(trimmedValue)) {
 				throw newConversionException("Invalid phone number format", value, locale)
-						.setResourceKey("common.validator.phoneNumber");
+					.setResourceKey("common.validator.phoneNumber");
 			}
 			return PhoneNumber.buildClean(trimmedValue);
 		}

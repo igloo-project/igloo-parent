@@ -8,13 +8,13 @@ public final class BasicApplicationAdviceOrder {
 
 	private BasicApplicationAdviceOrder() {
 	}
-	
+
 	/**
 	 * DON'T CHANGE THIS, it won't have any effect.
 	 * See <code>igloo-component-jpa-security-context.xml</code> in Igloo for the actual order definition.
 	 */
 	public static final int SECURITY = 0;
-	
+
 	/**
 	 * THIS CONSTANT IS NOT USED, initially. If you add an <code>@EnableCaching</code> annotation to your JavaConfig,
 	 * please reference this constant.
@@ -27,4 +27,5 @@ public final class BasicApplicationAdviceOrder {
 	 * Transactions are opened only when there is no cache entry, so as to avoid performance hit.
 	 */
 	public static final int TRANSACTION = 2;
+
 }

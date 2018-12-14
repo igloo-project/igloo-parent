@@ -24,15 +24,14 @@ public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<Hist
 	private static final long serialVersionUID = 1604966591810765209L;
 
 	private final IModel<? extends User> subjectModel;
-	
+
 	private final IModel<Date> dateMinModel = new Model<>();
 	private final IModel<Date> dateMaxModel = new Model<>();
-	
+
 	private final IModel<? extends GenericEntity<?, ?>> objectModel;
-	
-	private final CompositeSortModel<HistoryLogSort> sortModel =
-			new CompositeSortModel<>(CompositingStrategy.LAST_ONLY, HistoryLogSort.DATE);
-	
+
+	private final CompositeSortModel<HistoryLogSort> sortModel = new CompositeSortModel<>(CompositingStrategy.LAST_ONLY, HistoryLogSort.DATE);
+
 	private Set<HistoryEventType> mandatoryDifferencesEventTypes = EnumSet.noneOf(HistoryEventType.class);
 	
 	public static HistoryLogDataProvider subject(IModel<? extends User> subjectModel) {
@@ -52,7 +51,7 @@ public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<Hist
 	public IModel<HistoryLog> model(HistoryLog object) {
 		return GenericEntityModel.of(object);
 	}
-	
+
 	@Override
 	protected ISearchQuery<HistoryLog, HistoryLogSort> getSearchQuery() {
 		return createSearchQuery(IHistoryLogSearchQuery.class)
@@ -62,24 +61,24 @@ public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<Hist
 				.differencesMandatoryFor(mandatoryDifferencesEventTypes)
 				.sort(sortModel.getObject());
 	}
-	
+
 	public IModel<Date> getDateMinModel() {
 		return dateMinModel;
 	}
-	
+
 	public IModel<Date> getDateMaxModel() {
 		return dateMaxModel;
 	}
-	
+
 	public CompositeSortModel<HistoryLogSort> getSortModel() {
 		return sortModel;
 	}
-	
+
 	public HistoryLogDataProvider addMandatoryDifferenceEventType(HistoryEventType eventType) {
 		mandatoryDifferencesEventTypes.add(eventType);
 		return this;
 	}
-	
+
 	@Override
 	public void detach() {
 		super.detach();
@@ -91,4 +90,5 @@ public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<Hist
 			sortModel
 		);
 	}
+
 }

@@ -25,7 +25,7 @@ public class UserGroupDropDownSingleChoice extends GenericSelect2DropDownSingleC
 		@Override
 		protected List<UserGroup> load() {
 			return CoreWicketApplication.get().getApplicationContext().getBean(IUserGroupSearchQuery.class)
-					.fullList();
+				.fullList();
 		}
 	}
 }

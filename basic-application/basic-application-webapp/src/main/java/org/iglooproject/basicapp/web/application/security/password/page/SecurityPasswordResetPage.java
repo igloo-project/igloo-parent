@@ -26,12 +26,12 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 	private static final long serialVersionUID = 1L;
 	
 	public static final ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, User, String> MAPPER = 
-			LinkDescriptorBuilder.start()
-					.model(User.class)
-					.model(String.class)
-					.pickFirst().map(CommonParameters.ID).mandatory()
-					.pickSecond().map(CommonParameters.TOKEN).mandatory()
-					.page(SecurityPasswordResetPage.class);
+		LinkDescriptorBuilder.start()
+			.model(User.class)
+			.model(String.class)
+			.pickFirst().map(CommonParameters.ID).mandatory()
+			.pickSecond().map(CommonParameters.TOKEN).mandatory()
+			.page(SecurityPasswordResetPage.class);
 
 	private final IModel<User> userModel = new GenericEntityModel<Long, User>();
 
@@ -40,7 +40,7 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 
 	public SecurityPasswordResetPage(PageParameters parameters) {
 		super(parameters);
-
+		
 		// Being connected here doesn't make any sense
 		if (BasicApplicationSession.get().isSignedIn()) {
 			BasicApplicationSession.get().invalidate();
@@ -49,9 +49,9 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 		final IModel<String> tokenModel = Model.of("");
 		
 		MAPPER.map(userModel, tokenModel).extractSafely(
-				parameters,
-				BasicApplicationApplication.get().getHomePageLinkDescriptor(),
-				getString("common.error.unexpected")
+			parameters,
+			BasicApplicationApplication.get().getHomePageLinkDescriptor(),
+			getString("common.error.unexpected")
 		);
 		
 		parameters.remove(CommonParameters.TOKEN);
@@ -66,9 +66,9 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 			throw BasicApplicationApplication.get().getHomePageLinkDescriptor().newRestartResponseException();
 		}
 		
-		addHeadPageTitlePrependedElement(
-				new BreadCrumbElement(new ResourceModel("security.password.reset.pageTitle"))
-		);
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(
+				new ResourceModel("security.password.reset.pageTitle")
+		));
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 	protected Component getContentComponent(String wicketId) {
 		return new SecurityPasswordResetContentPanel(wicketId, userModel);
 	}
-	
+
 	@Override
 	protected void onDetach() {
 		super.onDetach();

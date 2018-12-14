@@ -42,16 +42,16 @@ public class NavbarPanel extends AbstractNavbarPanel {
 	private static final Logger LOGGER = LoggerFactory.getLogger(NavbarPanel.class);
 
 	public NavbarPanel(
-			String id,
-			Supplier<List<NavigationMenuItem>> mainNavSupplier,
-			Supplier<Class<? extends WebPage>> firstMenuPageSupplier,
-			Supplier<Class<? extends WebPage>> secondMenuPageSupplier
+		String id,
+		Supplier<List<NavigationMenuItem>> mainNavSupplier,
+		Supplier<Class<? extends WebPage>> firstMenuPageSupplier,
+		Supplier<Class<? extends WebPage>> secondMenuPageSupplier
 	) {
 		super(id);
 			
 		add(
-				BasicApplicationApplication.get().getHomePageLinkDescriptor()
-						.link("home")
+			BasicApplicationApplication.get().getHomePageLinkDescriptor()
+				.link("home")
 		);
 		
 		add(new ListView<NavigationMenuItem>("mainNav", mainNavSupplier.get()) {
@@ -66,13 +66,13 @@ public class NavbarPanel extends AbstractNavbarPanel {
 				item.add(Condition.componentVisible(navLink).thenShow());
 				
 				item.add(
-						navLink
-								.add(
-										new EnclosureContainer("icon")
-												.condition(Condition.hasText(navItem.getIconClassesModel()))
-												.add(new ClassAttributeAppender(navItem.getIconClassesModel())),
-										new CoreLabel("label", navItem.getLabelModel())
-								)
+					navLink
+						.add(
+							new EnclosureContainer("icon")
+								.condition(Condition.hasText(navItem.getIconClassesModel()))
+								.add(new ClassAttributeAppender(navItem.getIconClassesModel())),
+							new CoreLabel("label", navItem.getLabelModel())
+						)
 				);
 				
 				item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
@@ -89,41 +89,41 @@ public class NavbarPanel extends AbstractNavbarPanel {
 				}
 				
 				item.add(
-						new WebMarkupContainer("subNavContainer")
-								.add(
-										new ListView<NavigationMenuItem>("subNav", subMenuItems) {
-											private static final long serialVersionUID = -2257358650754295013L;
-											
-											@Override
-											protected void populateItem(ListItem<NavigationMenuItem> item) {
-												NavigationMenuItem navItem = item.getModelObject();
-												
-												AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
-												
-												item.add(Condition.componentVisible(navLink).thenShow());
-												
-												navLink.add(
-														new CoreLabel("label", navItem.getLabelModel()),
-														new EnclosureContainer("icon")
-																.condition(Condition.hasText(navItem.getIconClassesModel()))
-																.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
-												);
-												
-												item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
-												
-												addActiveClass(item, secondMenuPageSupplier.get(), navLink);
-												
-												item.add(navLink);
-											}
-											
-											@Override
-											protected void onDetach() {
-												super.onDetach();
-												Detachables.detach(getModelObject());
-											}
-										}
-								)
-								.setVisibilityAllowed(!subMenuItems.isEmpty())
+					new WebMarkupContainer("subNavContainer")
+						.add(
+							new ListView<NavigationMenuItem>("subNav", subMenuItems) {
+								private static final long serialVersionUID = -2257358650754295013L;
+								
+								@Override
+								protected void populateItem(ListItem<NavigationMenuItem> item) {
+									NavigationMenuItem navItem = item.getModelObject();
+									
+									AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
+									
+									item.add(Condition.componentVisible(navLink).thenShow());
+									
+									navLink.add(
+										new CoreLabel("label", navItem.getLabelModel()),
+										new EnclosureContainer("icon")
+											.condition(Condition.hasText(navItem.getIconClassesModel()))
+											.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
+									);
+									
+									item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
+									
+									addActiveClass(item, secondMenuPageSupplier.get(), navLink);
+									
+									item.add(navLink);
+								}
+								
+								@Override
+								protected void onDetach() {
+									super.onDetach();
+									Detachables.detach(getModelObject());
+								}
+							}
+						)
+						.setVisibilityAllowed(!subMenuItems.isEmpty())
 				);
 			}
 			
@@ -135,58 +135,58 @@ public class NavbarPanel extends AbstractNavbarPanel {
 		});
 		
 		addNavItem(
-				"profileLinkNavItem",
-				ProfilePage.linkDescriptor(),
-				firstMenuPageSupplier.get(),
-				new SerializableFunction2<IPageLinkGenerator, Component>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Component apply(IPageLinkGenerator pageLinkGenerator) {
-						return pageLinkGenerator
-								.link("profileLink")
-								.add(
-										new CoreLabel("originalAuthentication", new IModel<String>() {
-											private static final long serialVersionUID = 1L;
-											@Override
-											public String getObject() {
-												return BasicApplicationSession.get().getOriginalAuthentication() != null ? BasicApplicationSession.get().getOriginalAuthentication().getName() : null;
-											}
-										})
-												.hideIfEmpty(),
-										new CoreLabel("userFullName", BindingModel.of(BasicApplicationSession.get().getUserModel(), Bindings.user().fullName()))
-												.hideIfEmpty()
-								);
-					}
+			"profileLinkNavItem",
+			ProfilePage.linkDescriptor(),
+			firstMenuPageSupplier.get(),
+			new SerializableFunction2<IPageLinkGenerator, Component>() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public Component apply(IPageLinkGenerator pageLinkGenerator) {
+					return pageLinkGenerator
+						.link("profileLink")
+						.add(
+							new CoreLabel("originalAuthentication", new IModel<String>() {
+								private static final long serialVersionUID = 1L;
+								@Override
+								public String getObject() {
+									return BasicApplicationSession.get().getOriginalAuthentication() != null ? BasicApplicationSession.get().getOriginalAuthentication().getName() : null;
+								}
+							})
+								.hideIfEmpty(),
+							new CoreLabel("userFullName", BindingModel.of(BasicApplicationSession.get().getUserModel(), Bindings.user().fullName()))
+								.hideIfEmpty()
+						);
 				}
+			}
 		);
 		
 		add(
-				new AjaxLink<Void>("reconnexionLink") {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						try {
-							BasicApplicationSession.get().signInAsMe();
-							BasicApplicationSession.get().success(getString("authentication.back.success"));
-						} catch (Exception e) {
-							LOGGER.error("Erreur lors de la reconnexion de l'utilisateur.", e);
-							Session.get().error(getString("signIn.error.unknown"));
-						}
-						throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
+			new AjaxLink<Void>("reconnexionLink") {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public void onClick(AjaxRequestTarget target) {
+					try {
+						BasicApplicationSession.get().signInAsMe();
+						BasicApplicationSession.get().success(getString("authentication.back.success"));
+					} catch (Exception e) {
+						LOGGER.error("Erreur lors de la reconnexion de l'utilisateur.", e);
+						Session.get().error(getString("signIn.error.unknown"));
 					}
-					
-					@Override
-					protected void onConfigure() {
-						super.onConfigure();
-						setVisible(BasicApplicationSession.get().getOriginalAuthentication() != null);
-					}
-				},
+					throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
+				}
 				
-				new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class)
+				@Override
+				protected void onConfigure() {
+					super.onConfigure();
+					setVisible(BasicApplicationSession.get().getOriginalAuthentication() != null);
+				}
+			},
+			
+			new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class)
 		);
 		
 		add(
-				new ChangeApplicationThemeAjaxLink("changeTheme")
+			new ChangeApplicationThemeAjaxLink("changeTheme")
 		);
 	}
 

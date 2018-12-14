@@ -17,5 +17,5 @@ public class BasicApplicationCoreSchedulingConfig {
 	public void temporaryFilesCleaning() {
 		schedulingService.temporaryFilesCleaning();
 	}
-	
+
 }

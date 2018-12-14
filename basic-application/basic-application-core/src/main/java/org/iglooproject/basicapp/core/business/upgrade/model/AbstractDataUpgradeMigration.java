@@ -23,23 +23,23 @@ public abstract class AbstractDataUpgradeMigration extends BaseSpringJdbcMigrati
 	public void migrate(JdbcTemplate jdbcTemplate) throws Exception {
 		((FlywaySpring) flywayConfiguration).getApplicationContext().getAutowireCapableBeanFactory().autowireBean(this);
 		final Integer id = jdbcTemplate.queryForObject(
-				String.format("SELECT NEXTVAL('%s.%s_id_seq');", defaultSchema, DataUpgradeRecord.class.getSimpleName()),
-				Integer.class
+			String.format("SELECT NEXTVAL('%s.%s_id_seq');", defaultSchema, DataUpgradeRecord.class.getSimpleName()),
+			Integer.class
 		);
 		
 		jdbcTemplate.execute(
-				String.format("INSERT INTO %s.%s (id, name, autoPerform, done) VALUES (?, ?, ?, ?)",
-						defaultSchema, DataUpgradeRecord.class.getSimpleName()),
-				new PreparedStatementCallback<Boolean>() {
-					@Override
-					public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException {
-						ps.setInt(1, id);
-						ps.setString(2, getDataUpgradeClass().getSimpleName());
-						ps.setBoolean(3, true);
-						ps.setBoolean(4, false);
-						return ps.execute();
-					}
+			String.format("INSERT INTO %s.%s (id, name, autoPerform, done) VALUES (?, ?, ?, ?)",
+				defaultSchema, DataUpgradeRecord.class.getSimpleName()),
+			new PreparedStatementCallback<Boolean>() {
+				@Override
+				public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException {
+					ps.setInt(1, id);
+					ps.setString(2, getDataUpgradeClass().getSimpleName());
+					ps.setBoolean(3, true);
+					ps.setBoolean(4, false);
+					return ps.execute();
 				}
+			}
 		);
 	}
 
@@ -49,4 +49,5 @@ public abstract class AbstractDataUpgradeMigration extends BaseSpringJdbcMigrati
 	public Integer getChecksum(){
 		return getDataUpgradeClass().getSimpleName().hashCode() * 23;
 	}
+
 }

@@ -11,21 +11,21 @@ import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
 import org.iglooproject.jpa.more.business.search.query.ISearchQuery;
 
 public interface IHistoryLogSearchQuery extends ISearchQuery<HistoryLog, HistoryLogSort> {
-	
+
 	IHistoryLogSearchQuery subject(User user);
 
 	IHistoryLogSearchQuery date(Date dateMin, Date dateMax);
-	
+
 	IHistoryLogSearchQuery object(GenericEntity<?, ?> object);
-	
+
 	IHistoryLogSearchQuery object1(GenericEntity<?, ?> object);
-	
+
 	IHistoryLogSearchQuery object2(GenericEntity<?, ?> object);
-	
+
 	IHistoryLogSearchQuery object3(GenericEntity<?, ?> object);
-	
+
 	IHistoryLogSearchQuery object4(GenericEntity<?, ?> object);
 
 	IHistoryLogSearchQuery differencesMandatoryFor(Set<HistoryEventType> mandatoryDifferencesEventTypes);
-	
+
 }

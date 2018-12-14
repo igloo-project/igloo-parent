@@ -9,12 +9,10 @@
 				border: $nav-pills-page-link-border-width solid $nav-pills-page-link-border-color;
 				color: $nav-pills-page-link-color;
 				background-color: $nav-pills-page-link-bg;
-			}
-			
-			&:nth-of-type(#{$nav-pills-page-striped-order}) {
-				.nav-link {
-					color: $nav-pills-page-link-accent-color;
-					background-color: $nav-pills-page-link-accent-bg;
+				
+				&.disabled {
+					color: $nav-pills-page-link-disabled-color;
+					background-color: $nav-pills-page-link-disabled-bg;
 				}
 			}
 			

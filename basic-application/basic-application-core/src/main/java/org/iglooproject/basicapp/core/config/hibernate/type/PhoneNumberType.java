@@ -14,4 +14,5 @@ public class PhoneNumberType extends AbstractImmutableMaterializedStringValueUse
 	protected PhoneNumber instantiate(String value) {
 		return PhoneNumber.buildClean(value);
 	}
+
 }

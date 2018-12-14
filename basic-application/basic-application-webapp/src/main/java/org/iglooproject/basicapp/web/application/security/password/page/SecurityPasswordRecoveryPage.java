@@ -17,7 +17,7 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()
-				.page(SecurityPasswordRecoveryPage.class);
+			.page(SecurityPasswordRecoveryPage.class);
 	}
 
 	public SecurityPasswordRecoveryPage(PageParameters parameters) {
@@ -28,9 +28,9 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 			BasicApplicationSession.get().invalidate();
 		}
 		
-		addHeadPageTitlePrependedElement(
-				new BreadCrumbElement(new ResourceModel("security.password.recovery.pageTitle"))
-		);
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(
+			new ResourceModel("security.password.recovery.pageTitle")
+		));
 	}
 
 	@Override
@@ -42,4 +42,5 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 	protected Component getContentComponent(String wicketId) {
 		return new SecurityPasswordRecoveryContentPanel(wicketId);
 	}
+
 }

@@ -68,12 +68,21 @@ public class CachedScssServiceImpl extends ScssServiceImpl implements ICachedScs
 		ScssStylesheetInformation stylesheet = cacheManager.getCache(SCSS_COMPILED_STYLESHEETS_CACHE_NAME)
 				.get(cacheKey, ScssStylesheetInformation.class);
 		if (stylesheet == null) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("SCSS {}:{} not available. UpToDate = false", scope.getSimpleName(), path);
+			}
 			return false;
 		}
 		for (String referencedResource : stylesheet.getReferencedResources()) {
 			if (!isUpToDate(stylesheet, referencedResource)) {
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("SCSS {}:{} is older than target resource. UpToDate = false", scope.getSimpleName(), path);
+				}
 				return false;
 			}
+		}
+		if (LOGGER.isTraceEnabled()) {
+			LOGGER.trace("SCSS {}:{} available and valid. UpToDate = true", scope.getSimpleName(), path);
 		}
 		return true;
 	}

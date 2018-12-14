@@ -242,7 +242,12 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 
 	@Override
 	public void detach() {
-		Detachables.detach(showLabelCondition, showTooltipCondition, showIconCondition, showPlaceholderCondition);
+		Detachables.detach(
+			showLabelCondition,
+			showTooltipCondition,
+			showIconCondition,
+			showPlaceholderCondition
+		);
 		Detachables.detach(conditionFactories);
 	}
 }

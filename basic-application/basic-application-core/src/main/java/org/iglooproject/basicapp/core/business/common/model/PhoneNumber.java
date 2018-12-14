@@ -4,23 +4,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.iglooproject.jpa.hibernate.usertype.AbstractMaterializedPrimitiveValue;
 
 import com.google.common.base.CharMatcher;
-
-import org.iglooproject.jpa.hibernate.usertype.AbstractMaterializedPrimitiveValue;
 
 public final class PhoneNumber extends AbstractMaterializedPrimitiveValue<String, PhoneNumber> {
 
 	private static final long serialVersionUID = 7055290426664681655L;
-	
-	public static final int TAILLE_FR = 10;
 
 	private static final CharMatcher SEPARATOR_MATCHER = CharMatcher.whitespace().or(CharMatcher.anyOf(".-"));
-	
+
 	private static final Pattern LOCAL_FRENCH_NUMBER_PATTERN = Pattern.compile("^\\d{10}$");
 	private static final Pattern INTERNATIONAL_FRENCH_NUMBER_PATTERN = Pattern.compile("^(\\((00|\\+33)\\)0|(00|\\+)33)(?=\\d{9}$)");
 	private static final String INTERNATION_FRENCH_NUMBER_TO_LOCAL_REPLACEMENT = "0$1";
-	
+
 	private static String clean(String value) {
 		String noSeparator = SEPARATOR_MATCHER.removeFrom(value);
 		if (StringUtils.isEmpty(noSeparator)) {
@@ -40,7 +37,7 @@ public final class PhoneNumber extends AbstractMaterializedPrimitiveValue<String
 			return SEPARATOR_MATCHER.trimAndCollapseFrom(value, ' ');
 		}
 	}
-	
+
 	public static PhoneNumber buildClean(String value) {
 		String cleaned = clean(value);
 		if (StringUtils.isEmpty(cleaned)) {
@@ -49,11 +46,11 @@ public final class PhoneNumber extends AbstractMaterializedPrimitiveValue<String
 			return new PhoneNumber(cleaned);
 		}
 	}
-	
+
 	private PhoneNumber(String value) {
 		super(value);
 	}
-	
+
 	public boolean isLocalFrench() {
 		return LOCAL_FRENCH_NUMBER_PATTERN.matcher(getValue()).find();
 	}

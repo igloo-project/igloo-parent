@@ -44,12 +44,12 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 
 	@SpringBean
 	private IUserGroupService userGroupService;
-	
+
 	@SpringBean
 	private IPropertyService propertyService;
-	
+
 	private final UserDataProvider dataProvider;
-	
+
 	public UserGroupDetailUsersPanel(String id, final IModel<UserGroup> userGroupModel) {
 		super(id, userGroupModel);
 		setOutputMarkupId(true);
@@ -58,60 +58,60 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 		dataProvider.getGroupModel().setObject(userGroupModel.getObject());
 		
 		add(
-				DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
-						.addLabelColumn(new ResourceModel("business.userGroup.name"))
-								.withLink(AdministrationUserDetailTemplate.mapper().setParameter2(new ComponentPageModel(this)))
-								.withClass("text text-md")
-						.addActionColumn()
-								.addConfirmAction(ActionRenderers.remove())
-										.title(new ResourceModel("administration.userGroup.detail.users.action.remove.confirmation.title"))
-										.content(new IDetachableFactory<IModel<User>, IModel<String>>() {
-											private static final long serialVersionUID = 1L;
-											@Override
-											public IModel<String> create(IModel<User> userModel) {
-												return new StringResourceModel("administration.userGroup.detail.users.action.remove.confirmation.content")
-														.setParameters(userModel.getObject().getFullName(), UserGroupDetailUsersPanel.this.getModelObject().getName());
-											}
-										})
-										.confirm()
-										.onClick(new IOneParameterAjaxAction<IModel<User>>() {
-											private static final long serialVersionUID = 1L;
-											@Override
-											public void execute(AjaxRequestTarget target, IModel<User> parameter) {
-												try {
-													UserGroup userGroup = UserGroupDetailUsersPanel.this.getModelObject();
-													User user = parameter.getObject();
-													
-													userGroupService.removeUser(userGroup, user);
-													Session.get().success(getString("common.success"));
-													throw new RestartResponseException(getPage());
-												} catch (RestartResponseException e) {
-													throw e;
-												} catch (Exception e) {
-													LOGGER.error("Unknown error occured while removing a group from the user", e);
-													Session.get().error(getString("common.error.unexpected"));
-													FeedbackUtils.refreshFeedback(target, getPage());
-												}
-											}
-										})
-										.hideLabel()
-								.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
-								.end()
-								.withClass("actions actions-1x")
-						.bootstrapCard()
-								.addIn(AddInPlacement.FOOTER_MAIN, new AbstractParameterizedComponentFactory<Component, Component>() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public Component create(String wicketId, final Component table ) {
-										return new UserGroupAddUserFragment(wicketId);
-									}
-								})
-								.ajaxPager(AddInPlacement.HEADING_RIGHT)
-								.count("administration.userGroup.detail.users.count")
-						.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION))
+			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
+				.addLabelColumn(new ResourceModel("business.user.name"))
+					.withLink(AdministrationUserDetailTemplate.mapper().setParameter2(new ComponentPageModel(this)))
+					.withClass("text text-md")
+				.addActionColumn()
+					.addConfirmAction(ActionRenderers.remove())
+						.title(new ResourceModel("administration.userGroup.detail.users.action.remove.confirmation.title"))
+						.content(new IDetachableFactory<IModel<User>, IModel<String>>() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public IModel<String> create(IModel<User> userModel) {
+								return new StringResourceModel("administration.userGroup.detail.users.action.remove.confirmation.content")
+									.setParameters(userModel.getObject().getFullName(), UserGroupDetailUsersPanel.this.getModelObject().getName());
+							}
+						})
+						.confirm()
+						.onClick(new IOneParameterAjaxAction<IModel<User>>() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void execute(AjaxRequestTarget target, IModel<User> parameter) {
+								try {
+									UserGroup userGroup = UserGroupDetailUsersPanel.this.getModelObject();
+									User user = parameter.getObject();
+									
+									userGroupService.removeUser(userGroup, user);
+									Session.get().success(getString("common.success"));
+									throw new RestartResponseException(getPage());
+								} catch (RestartResponseException e) {
+									throw e;
+								} catch (Exception e) {
+									LOGGER.error("Unknown error occured while removing a group from the user", e);
+									Session.get().error(getString("common.error.unexpected"));
+									FeedbackUtils.refreshFeedback(target, getPage());
+								}
+							}
+						})
+						.hideLabel()
+					.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
+					.end()
+					.withClass("actions actions-1x")
+				.bootstrapCard()
+					.addIn(AddInPlacement.FOOTER_MAIN, new AbstractParameterizedComponentFactory<Component, Component>() {
+						private static final long serialVersionUID = 1L;
+						@Override
+						public Component create(String wicketId, final Component table ) {
+							return new UserGroupAddUserFragment(wicketId);
+						}
+					})
+					.ajaxPager(AddInPlacement.HEADING_RIGHT)
+					.count("administration.userGroup.detail.users.count")
+				.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION))
 		);
 	}
-	
+
 	private class UserGroupAddUserFragment extends Fragment {
 		
 		private static final long serialVersionUID = 1L;
@@ -122,57 +122,57 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 			IModel<User> userModel = new GenericEntityModel<>();
 			
 			add(
-					new Form<User>("form", userModel)
-							.add(
-									new UserAjaxDropDownSingleChoice<>("user", userModel, User.class)
-											.setRequired(true)
-											.setLabel(new ResourceModel("business.user"))
-											.add(new LabelPlaceholderBehavior()),
-									
-									new AjaxButton("add") {
-										private static final long serialVersionUID = 1L;
-										
-										@Override
-										protected void onSubmit(AjaxRequestTarget target) {
-											UserGroup userGroup = UserGroupDetailUsersPanel.this.getModelObject();
-											User user = userModel.getObject();
-											
-											if (user != null) {
-												if (!user.getGroups().contains(userGroup)) {
-													try {
-														userGroupService.addUser(userGroup, user);
-														Session.get().success(getString("common.success"));
-													} catch (Exception e) {
-														LOGGER.error("Error when adding a user to a user group.", e);
-														Session.get().error(getString("common.error.unexpected"));
-													}
-												} else {
-													LOGGER.error("User already added to this group.");
-													Session.get().warn(getString("administration.userGroup.detail.users.action.add.error.duplicate"));
-												}
-											}
-											
-											userModel.setObject(null);
-											userModel.detach();
-											
-											target.add(getPage());
-											FeedbackUtils.refreshFeedback(target, getPage());
+				new Form<User>("form", userModel)
+					.add(
+						new UserAjaxDropDownSingleChoice<>("user", userModel, User.class)
+							.setRequired(true)
+							.setLabel(new ResourceModel("business.user"))
+							.add(new LabelPlaceholderBehavior()),
+						
+						new AjaxButton("add") {
+							private static final long serialVersionUID = 1L;
+							
+							@Override
+							protected void onSubmit(AjaxRequestTarget target) {
+								UserGroup userGroup = UserGroupDetailUsersPanel.this.getModelObject();
+								User user = userModel.getObject();
+								
+								if (user != null) {
+									if (!user.getGroups().contains(userGroup)) {
+										try {
+											userGroupService.addUser(userGroup, user);
+											Session.get().success(getString("common.success"));
+										} catch (Exception e) {
+											LOGGER.error("Error when adding a user to a user group.", e);
+											Session.get().error(getString("common.error.unexpected"));
 										}
-										
-										@Override
-										protected void onError(AjaxRequestTarget target) {
-											FeedbackUtils.refreshFeedback(target, getPage());
-										}
+									} else {
+										LOGGER.error("User already added to this group.");
+										Session.get().warn(getString("administration.userGroup.detail.users.action.add.error.duplicate"));
 									}
-							)
+								}
+								
+								userModel.setObject(null);
+								userModel.detach();
+								
+								target.add(getPage());
+								FeedbackUtils.refreshFeedback(target, getPage());
+							}
+							
+							@Override
+							protected void onError(AjaxRequestTarget target) {
+								FeedbackUtils.refreshFeedback(target, getPage());
+							}
+						}
+					)
 			);
 		}
 	}
-	
+
 	@Override
 	protected void onDetach() {
 		super.onDetach();
 		Detachables.detach(dataProvider);
 	}
-	
+
 }

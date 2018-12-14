@@ -6,7 +6,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
-
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.spring.util.StringUtils;
 

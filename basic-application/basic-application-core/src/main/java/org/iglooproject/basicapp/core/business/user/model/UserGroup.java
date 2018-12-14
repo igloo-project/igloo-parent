@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Indexed;
-
 import org.iglooproject.jpa.security.business.person.model.GenericUserGroup;
 
 @Entity
@@ -13,6 +12,7 @@ import org.iglooproject.jpa.security.business.person.model.GenericUserGroup;
 @Bindable
 @Cacheable
 public class UserGroup extends GenericUserGroup<UserGroup, User> {
+
 	private static final long serialVersionUID = 2156717229285615454L;
 
 	public UserGroup() {

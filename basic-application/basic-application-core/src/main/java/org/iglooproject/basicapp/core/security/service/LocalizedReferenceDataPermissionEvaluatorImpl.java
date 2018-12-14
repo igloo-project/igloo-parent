@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LocalizedReferenceDataPermissionEvaluatorImpl extends AbstractGenericPermissionEvaluator<LocalizedReferenceData<?>>
 		implements ILocalizedReferenceDataPermissionEvaluator {
-	
+
 	@Override
 	public boolean hasPermission(User user, LocalizedReferenceData<?> referenceData, Permission permission) {
 		if (is(permission, CorePermissionConstants.READ)) {
@@ -20,4 +20,5 @@ public class LocalizedReferenceDataPermissionEvaluatorImpl extends AbstractGener
 			return is(permission, CorePermissionConstants.CREATE);
 		}
 	}
+
 }

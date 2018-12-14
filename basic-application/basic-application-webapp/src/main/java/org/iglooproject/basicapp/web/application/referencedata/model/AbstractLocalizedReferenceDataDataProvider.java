@@ -25,8 +25,8 @@ public abstract class AbstractLocalizedReferenceDataDataProvider<T extends Local
 	@Override
 	public ILocalizedReferenceDataSearchQuery<T, S, ?> getSearchQuery() {
 		return ((ILocalizedReferenceDataSearchQuery<T, S, ?>) super.getSearchQuery())
-				.label(labelModel.getObject())
-				.code(codeModel.getObject());
+			.label(labelModel.getObject())
+			.code(codeModel.getObject());
 	}
 
 	public IModel<String> getLabelModel() {

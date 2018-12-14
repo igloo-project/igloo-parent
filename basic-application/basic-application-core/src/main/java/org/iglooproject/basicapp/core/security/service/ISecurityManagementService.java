@@ -14,12 +14,18 @@ public interface ISecurityManagementService extends ITransactionalAspectAwareSer
 
 	SecurityOptions getOptions(User user);
 
-	void initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
-			UserPasswordRecoveryRequestInitiator initiator) throws ServiceException, SecurityServiceException;
+	void initiatePasswordRecoveryRequest(
+		User user,
+		UserPasswordRecoveryRequestType type,
+		UserPasswordRecoveryRequestInitiator initiator
+	) throws ServiceException, SecurityServiceException;
 
-	void initiatePasswordRecoveryRequest(User user, UserPasswordRecoveryRequestType type,
-			UserPasswordRecoveryRequestInitiator initiator, User author) throws ServiceException,
-			SecurityServiceException;
+	void initiatePasswordRecoveryRequest(
+		User user,
+		UserPasswordRecoveryRequestType type,
+		UserPasswordRecoveryRequestInitiator initiator,
+		User author
+	) throws ServiceException, SecurityServiceException;
 
 	boolean isPasswordExpired(User user);
 

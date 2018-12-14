@@ -95,7 +95,6 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 		);
 		
 		form = new Form<>("form", getModel());
-		
 		body.add(form);
 		
 		form.add(
@@ -176,42 +175,43 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 	protected Component createFooter(String wicketId) {
 		DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, getClass());
 		
-		footer.add(new AjaxButton("save", form) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void onSubmit(AjaxRequestTarget target) {
-				try {
-					
-					Announcement announcement = AnnouncementPopup.this.getModelObject();
-					announcement.getPublication().setStartDateTime(AnnouncementPopup.this.getpublicationDateTime(publicationStartDateModel, publicationStartTimeModel));
-					announcement.getPublication().setEndDateTime(AnnouncementPopup.this.getpublicationDateTime(publicationEndDateModel, publicationEndTimeModel));
-					announcement.getInterruption().setStartDateTime(AnnouncementPopup.this.getpublicationDateTime(interruptionStartDateModel, interruptionStartTimeModel));
-					announcement.getInterruption().setEndDateTime(AnnouncementPopup.this.getpublicationDateTime(interruptionEndDateModel, interruptionEndTimeModel));
-					
-					if(FormMode.EDIT.equals(formModeModel.getObject())) {
-						announcementService.update(announcement);
-					} else {
-						announcementService.create(announcement);
+		footer.add(
+			new AjaxButton("save", form) {
+				private static final long serialVersionUID = 1L;
+				
+				@Override
+				protected void onSubmit(AjaxRequestTarget target) {
+					try {
+						Announcement announcement = AnnouncementPopup.this.getModelObject();
+						announcement.getPublication().setStartDateTime(AnnouncementPopup.this.getpublicationDateTime(publicationStartDateModel, publicationStartTimeModel));
+						announcement.getPublication().setEndDateTime(AnnouncementPopup.this.getpublicationDateTime(publicationEndDateModel, publicationEndTimeModel));
+						announcement.getInterruption().setStartDateTime(AnnouncementPopup.this.getpublicationDateTime(interruptionStartDateModel, interruptionStartTimeModel));
+						announcement.getInterruption().setEndDateTime(AnnouncementPopup.this.getpublicationDateTime(interruptionEndDateModel, interruptionEndTimeModel));
+						
+						if(FormMode.EDIT.equals(formModeModel.getObject())) {
+							announcementService.update(announcement);
+						} else {
+							announcementService.create(announcement);
+						}
+						
+						Session.get().success(getString("common.success"));
+						throw AdministrationAnnouncementListPage.linkDescriptor().newRestartResponseException();
+					} catch (RestartResponseException e) { // NOSONAR
+						throw e;
+					} catch (Exception e) {
+						LOGGER.error("Erreur lors de la création d'une annonce.", e);
+						Session.get().error(getString("common.error.unexpected"));
 					}
 					
-					Session.get().success(getString("common.success"));
-					throw AdministrationAnnouncementListPage.linkDescriptor().newRestartResponseException();
-				} catch (RestartResponseException e) { // NOSONAR
-					throw e;
-				} catch (Exception e) {
-					LOGGER.error("Erreur lors de la création d'une annonce.", e);
-					Session.get().error(getString("common.error.unexpected"));
+					FeedbackUtils.refreshFeedback(target, getPage());
 				}
 				
-				FeedbackUtils.refreshFeedback(target, getPage());
+				@Override
+				protected void onError(AjaxRequestTarget target) {
+					FeedbackUtils.refreshFeedback(target, getPage());
+				}
 			}
-			
-			@Override
-			protected void onError(AjaxRequestTarget target) {
-				FeedbackUtils.refreshFeedback(target, getPage());
-			}
-		});
+		);
 		
 		BlankLink cancel = new BlankLink("cancel");
 		addCancelBehavior(cancel);

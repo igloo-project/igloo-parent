@@ -20,16 +20,16 @@ public abstract class UserActiveRenderer extends BootstrapRenderer<User> {
 			}
 			if (value.isActive()) {
 				return BootstrapRendererInformation.builder()
-						.label(getString("business.user.active.true", locale))
-						.icon("fa fa-fw fa-check")
-						.color(BootstrapColor.SUCCESS)
-						.build();
+					.label(getString("business.user.active.true", locale))
+					.icon("fa fa-fw fa-check")
+					.color(BootstrapColor.SUCCESS)
+					.build();
 			} else {
 				return BootstrapRendererInformation.builder()
-						.label(getString("business.user.active.false", locale))
-						.icon("fa fa-fw fa-times")
-						.color(BootstrapColor.SECONDARY)
-						.build();
+					.label(getString("business.user.active.false", locale))
+					.icon("fa fa-fw fa-times")
+					.color(BootstrapColor.SECONDARY)
+					.build();
 			}
 		}
 	};

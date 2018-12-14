@@ -37,31 +37,31 @@ import com.google.common.collect.Sets;
  * even by providing their own {@link IHistoryComponentFactory}.
  */
 public class HistoryLogDetailColumn extends AbstractCoreColumn<HistoryLog, HistoryLogSort> {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private final IHistoryComponentFactory historyComponentFactory;
-	
+
 	private final Multimap<Class<?>, FieldPath> fieldsWhiteList = HashMultimap.create();
-	
+
 	public HistoryLogDetailColumn() {
 		this(DefaultHistoryDifferencePanel.factory());
 	}
-	
+
 	public HistoryLogDetailColumn(IHistoryComponentFactory historyComponentFactory) {
 		super(new ResourceModel("business.history.detail"));
 		this.historyComponentFactory = historyComponentFactory;
 	}
-	
+
 	public HistoryLogDetailColumn showOnly(Class<?> clazz, FieldPath path) {
 		fieldsWhiteList.put(clazz, path);
 		return this;
 	}
-	
+
 	public HistoryLogDetailColumn showOnly(BindingRoot<?, ?> binding) {
 		return showOnly(binding.getRootBinding().getType(), FieldPath.fromBinding(binding));
 	}
-	
+
 	/**
 	 * To be used when the elements to be displayed don't refer to the collection field itself, but to <em>items</em>
 	 * of this collection.
@@ -86,7 +86,7 @@ public class HistoryLogDetailColumn extends AbstractCoreColumn<HistoryLog, Histo
 		}
 		cellItem.add(new HistoryLogDetailColumnPanel(componentId, rowModel, historyComponentFactory, filter));
 	}
-	
+
 	@Override
 	public void detach() {
 		super.detach();

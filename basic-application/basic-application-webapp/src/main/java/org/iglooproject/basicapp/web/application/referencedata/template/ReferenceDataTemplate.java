@@ -18,8 +18,8 @@ public abstract class ReferenceDataTemplate extends MainTemplate {
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-				new ResourceModel("navigation.referenceData"),
-				ReferenceDataPage.linkDescriptor()
+			new ResourceModel("navigation.referenceData"),
+			ReferenceDataPage.linkDescriptor()
 		));
 	}
 
@@ -27,8 +27,5 @@ public abstract class ReferenceDataTemplate extends MainTemplate {
 	protected Class<? extends WebPage> getFirstMenuPage() {
 		return ReferenceDataPage.class;
 	}
-
-	@Override
-	protected abstract Class<? extends WebPage> getSecondMenuPage();
 
 }

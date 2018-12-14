@@ -3,8 +3,8 @@ package org.iglooproject.basicapp.web.application.navigation.page;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserListPage;
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.AdministrationUserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
 import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDataPage;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
@@ -19,29 +19,29 @@ public class HomePage extends MainTemplate {
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()
-				.page(HomePage.class);
+			.page(HomePage.class);
 	}
 
 	public HomePage(PageParameters parameters) {
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-				new ResourceModel("home.pageTitle"),
-				HomePage.linkDescriptor()
+			new ResourceModel("home.pageTitle"),
+			HomePage.linkDescriptor()
 		));
 		
 		add(new CoreLabel("pageTitle", new ResourceModel("home.pageTitle")));
 		
 		add(
-				AdministrationUserTypeDescriptor.BASIC_USER.list()
-						.link("users")
-						.hideIfInvalid(),
-				ReferenceDataPage.linkDescriptor()
-						.link("referenceData")
-						.hideIfInvalid(),
-				ProfilePage.linkDescriptor()
-						.link("profile")
-						.hideIfInvalid()
+			AdministrationBasicUserListPage.linkDescriptor()
+				.link("users")
+				.hideIfInvalid(),
+			ReferenceDataPage.linkDescriptor()
+				.link("referenceData")
+				.hideIfInvalid(),
+			ProfilePage.linkDescriptor()
+				.link("profile")
+				.hideIfInvalid()
 		);
 	}
 
@@ -54,4 +54,5 @@ public class HomePage extends MainTemplate {
 	protected Class<? extends WebPage> getFirstMenuPage() {
 		return HomePage.class;
 	}
+
 }

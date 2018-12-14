@@ -1,14 +1,13 @@
 package org.iglooproject.basicapp.core.business.user.difference.service;
 
 import org.bindgen.BindingRoot;
-import org.springframework.stereotype.Service;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.jpa.more.business.difference.service.AbstractGenericEntityDifferenceServiceImpl;
+import org.springframework.stereotype.Service;
+
+import com.google.common.collect.ImmutableList;
 
 @Service
 public class UserDifferenceServiceImpl extends AbstractGenericEntityDifferenceServiceImpl<User>
@@ -25,11 +24,11 @@ public class UserDifferenceServiceImpl extends AbstractGenericEntityDifferenceSe
 	protected Iterable<? extends BindingRoot<? super User, ?>> getMinimalDifferenceFieldsBindings() {
 		// we don't use this at the moment: the usage of differences is commented.
 		return ImmutableList.of(
-				Bindings.user().firstName(),
-				Bindings.user().lastName(),
-				Bindings.user().email(),
-				Bindings.user().locale(),
-				Bindings.user().groups()
+			Bindings.user().firstName(),
+			Bindings.user().lastName(),
+			Bindings.user().email(),
+			Bindings.user().locale(),
+			Bindings.user().groups()
 		);
 	}
 

@@ -43,8 +43,8 @@ public abstract class AbstractGenericReferenceDataDataProvider<T extends Generic
 	@Override
 	public IGenericReferenceDataSearchQuery<T, S, ?> getSearchQuery() {
 		return createSearchQuery()
-				.enabled(getEnabledFilterModel().getObject())
-				.sort(getSortModel().getObject());
+			.enabled(getEnabledFilterModel().getObject())
+			.sort(getSortModel().getObject());
 	}
 
 	protected abstract IGenericReferenceDataSearchQuery<T, S, ?> createSearchQuery();

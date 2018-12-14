@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>1.1.14</version>
+		<version>1.1.15</version>
 	</parent>
 	
 	<artifactId>basic-application-core</artifactId>
@@ -63,7 +63,7 @@
 				<artifactId>buildnumber-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-				<!-- Nécessaire pour récupérer les outils de tests dans la webapp -->
+				<!-- Mandatory for the webapp tests -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<executions>

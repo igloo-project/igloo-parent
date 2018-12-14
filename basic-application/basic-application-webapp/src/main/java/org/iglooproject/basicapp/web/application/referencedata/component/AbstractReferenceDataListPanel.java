@@ -59,87 +59,87 @@ public abstract class AbstractReferenceDataListPanel<
 		popup = createPopup("popup");
 		
 		results = addInHeadingRight(
-				addIn(
-						addActionColumn(
-								addColumns(builder)
-						)
-								.addRowCssClass(itemModel -> (itemModel != null && !itemModel.getObject().isEnabled()) ? TABLE_ROW_DISABLED : null)
-								.bootstrapCard()
-								.count("referenceData.count")
-								.ajaxPagers()
+			addIn(
+				addActionColumn(
+					addColumns(builder)
 				)
+					.addRowCssClass(itemModel -> (itemModel != null && !itemModel.getObject().isEnabled()) ? TABLE_ROW_DISABLED : null)
+					.bootstrapCard()
+					.count("referenceData.count")
+					.ajaxPagers()
+			)
 		)
-				.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
+			.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 		
 		add(
-				popup,
-				results
+			popup,
+			results
 		);
 	}
 	
 	protected D getDataProvider() {
 		return dataProvider;
 	}
-	
+
 	protected abstract T getNewInstance();
 
 	protected abstract AbstractGenericReferenceDataPopup<T> createPopup(String wicketId);
-	
+
 	protected AbstractGenericReferenceDataPopup<T> getPopup() {
 		return popup;
 	}
-	
+
 	protected Condition getAddCondition() {
 		return Condition.alwaysTrue();
 	}
-	
+
 	protected Condition getEditCondition(final IModel<? extends T> itemModel) {
 		return Condition.alwaysTrue();
 	}
-	
+
 	protected abstract IAddedCoreColumnState<T, S> addColumns(DataTableBuilder<T, S> builder);
-	
+
 	protected IAddedCoreColumnState<T, S> addActionColumn(IAddedCoreColumnState<T, S> builder) {
 		return builder
-				.addActionColumn()
-						.addAction(ActionRenderers.edit(), new OneParameterModalOpenAjaxAction<IModel<T>>(getPopup()) {
-							private static final long serialVersionUID = 1L;
-							@Override
-							protected void onShow(AjaxRequestTarget target, IModel<T> parameter) {
-								super.onShow(target, parameter);
-								getPopup().setUpEdit(parameter.getObject());
-							}
-						})
-						.when(itemModel -> getEditCondition(itemModel))
-						.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
-						.end()
-						.withClass("actions actions-1x");
+			.addActionColumn()
+				.addAction(ActionRenderers.edit(), new OneParameterModalOpenAjaxAction<IModel<T>>(getPopup()) {
+					private static final long serialVersionUID = 1L;
+					@Override
+					protected void onShow(AjaxRequestTarget target, IModel<T> parameter) {
+						super.onShow(target, parameter);
+						getPopup().setUpEdit(parameter.getObject());
+					}
+				})
+				.when(itemModel -> getEditCondition(itemModel))
+				.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
+				.end()
+				.withClass("actions actions-1x");
 	}
-	
+
 	protected IDecoratedBuildState<T, S> addIn(IDecoratedBuildState<T, S> builder) {
 		return builder
-				.addIn(AddInPlacement.HEADING_MAIN, new AbstractParameterizedComponentFactory<Component, DecoratedCoreDataTablePanel<T, S>>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Component create(String wicketId, final DecoratedCoreDataTablePanel<T, S> table) {
-						return createSearchForm(wicketId, getDataProvider(), table);
-					}
-				});
+			.addIn(AddInPlacement.HEADING_MAIN, new AbstractParameterizedComponentFactory<Component, DecoratedCoreDataTablePanel<T, S>>() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public Component create(String wicketId, final DecoratedCoreDataTablePanel<T, S> table) {
+					return createSearchForm(wicketId, getDataProvider(), table);
+				}
+			});
 	}
-	
+
 	protected abstract Component createSearchForm(String wicketId, D dataProvider, DecoratedCoreDataTablePanel<T, S> table);
-	
+
 	protected IDecoratedBuildState<T, S> addInHeadingRight(IDecoratedBuildState<T, S> builder) {
 		return builder
-				.addIn(AddInPlacement.HEADING_RIGHT, new AbstractParameterizedComponentFactory<Component, Component>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public Component create(String wicketId, final Component table) {
-						return new GlobalActionsFragment(wicketId);
-					}
-				});
+			.addIn(AddInPlacement.HEADING_RIGHT, new AbstractParameterizedComponentFactory<Component, Component>() {
+				private static final long serialVersionUID = 1L;
+				@Override
+				public Component create(String wicketId, final Component table) {
+					return new GlobalActionsFragment(wicketId);
+				}
+			});
 	}
-	
+
 	private class GlobalActionsFragment extends Fragment {
 		
 		private static final long serialVersionUID = 1L;
@@ -166,11 +166,11 @@ public abstract class AbstractReferenceDataListPanel<
 			);
 		}
 	}
-	
+
 	@Override
 	protected void onDetach() {
 		super.onDetach();
 		Detachables.detach(dataProvider);
 	}
-	
+
 }

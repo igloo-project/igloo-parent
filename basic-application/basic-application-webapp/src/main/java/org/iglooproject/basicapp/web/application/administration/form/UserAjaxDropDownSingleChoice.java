@@ -39,9 +39,9 @@ public class UserAjaxDropDownSingleChoice<U extends User> extends GenericSelect2
 		@Override
 		public void query(String term, int page, Response<U> response) {
 			response.addAll(
-					((IUserSearchQuery<U>) getBean(IUserSearchQuery.class, searchTypeClass))
-							.nameAutocomplete(term)
-							.fullList()
+				((IUserSearchQuery<U>) getBean(IUserSearchQuery.class, searchTypeClass))
+					.nameAutocomplete(term)
+					.fullList()
 			);
 		}
 	}

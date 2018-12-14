@@ -4,10 +4,9 @@ import java.util.Locale;
 
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.converter.AbstractConverter;
-import org.springframework.util.StringUtils;
-
 import org.iglooproject.basicapp.core.business.common.model.EmailAddress;
 import org.iglooproject.commons.util.validator.AnyTldEmailAddressValidator;
+import org.springframework.util.StringUtils;
 
 public final class EmailAddressConverter extends AbstractConverter<EmailAddress> {
 
@@ -19,7 +18,7 @@ public final class EmailAddressConverter extends AbstractConverter<EmailAddress>
 		if (StringUtils.hasText(trimmedValue)) {
 			if (!AnyTldEmailAddressValidator.getInstance().isValid(trimmedValue)) {
 				throw newConversionException("Invalid email format", value, locale)
-						.setResourceKey("common.validator.email");
+					.setResourceKey("common.validator.email");
 			}
 			return new EmailAddress(trimmedValue);
 		}
@@ -33,7 +32,7 @@ public final class EmailAddressConverter extends AbstractConverter<EmailAddress>
 		}
 		return value.getValue();
 	}
-	
+
 	@Override
 	protected Class<EmailAddress> getTargetType() {
 		return EmailAddress.class;

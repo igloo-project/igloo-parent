@@ -14,7 +14,7 @@ Apart from the toolbox, we also released a Maven archetype to start a new applic
 
 Sources are licensed under the Apache 2 license.
 
-This toolbox is developed by **Kobalt** - https://www.kobalt.fr/ (formerly by Open Wide then Smile - https://www.smile.eu/).
+This toolbox is developed by [**Kobalt**](https://www.kobalt.fr/). This repository has been initially forked from [OWSI-Core](https://github.com/openwide-java/owsi-core-parent).
 
 Architecture
 ------------

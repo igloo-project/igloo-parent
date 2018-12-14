@@ -14,27 +14,26 @@ public abstract class AbstractUserSearchQueryImpl<U extends User> extends Abstra
 
 	@Override
 	public IAbstractUserSearchQuery<U> name(String name) {
-		must(matchFuzzyIfGiven(name, 2,
-				Bindings.user().firstName(), Bindings.user().lastName(), Bindings.user().username()));
+		must(matchFuzzyIfGiven(name, 2, Bindings.user().firstName(), Bindings.user().lastName(), Bindings.user().username()));
 		return this;
 	}
-	
+
 	@Override
 	public IAbstractUserSearchQuery<U> group(UserGroup group) {
 		must(matchIfGiven(Bindings.user().groups().getPath(), group));
 		return this;
 	}
-	
+
 	@Override
 	public IAbstractUserSearchQuery<U> includeInactive(Boolean includeInactives) {
 		must(matchIfTrue(Bindings.user().active(), Boolean.TRUE, !includeInactives));
 		return this;
 	}
-	
+
 	@Override
 	public IAbstractUserSearchQuery<U> nameAutocomplete(String terms) {
-		must(matchAutocompleteIfGiven(terms,
-				Bindings.user().firstName(), Bindings.user().lastName(), Bindings.user().username()));
+		must(matchAutocompleteIfGiven(terms, Bindings.user().firstName(), Bindings.user().lastName(), Bindings.user().username()));
 		return this;
 	}
+
 }

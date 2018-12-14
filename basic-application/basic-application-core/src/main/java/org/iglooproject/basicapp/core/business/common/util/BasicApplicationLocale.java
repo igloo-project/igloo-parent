@@ -17,7 +17,7 @@ public final class BasicApplicationLocale {
 	public static final Locale ENGLISH = Locale.ENGLISH;
 	public static final Locale FRENCH = Locale.FRENCH;
 
-	public static final Locale DEFAULT = ENGLISH;
+	public static final Locale DEFAULT = FRENCH;
 
 	public static final Map<Locale, Comparator<String>> COMPARATORS = ImmutableMap.<Locale, Comparator<String>>builder()
 			.put(ENGLISH, initCollator(ENGLISH))

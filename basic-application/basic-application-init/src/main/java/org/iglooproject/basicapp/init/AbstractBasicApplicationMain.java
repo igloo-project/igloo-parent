@@ -20,7 +20,6 @@ public class AbstractBasicApplicationMain {
 				.addFirst(new MapPropertySource("cliIglooProfile", ps));
 		new ExtendedApplicationContextInitializer().initialize(context);
 		context.register(configClass);
-		
 		return context;
 	}
 

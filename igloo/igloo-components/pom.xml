@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>1.1.14</version>
+		<version>1.1.15</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
@@ -47,6 +47,7 @@
 		<module>igloo-component-sass</module>
 		
 		<module>igloo-component-wicket</module>
+		<module>igloo-component-wicket-test</module>
 		<module>igloo-component-wicket-more</module>
 		<module>igloo-component-wicket-more-test</module>
 		<module>igloo-component-wicket-bootstrap3</module>

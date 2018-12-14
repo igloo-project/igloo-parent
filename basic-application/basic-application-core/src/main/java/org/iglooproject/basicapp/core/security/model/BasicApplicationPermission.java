@@ -3,14 +3,14 @@ package org.iglooproject.basicapp.core.security.model;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
-import com.google.common.collect.ImmutableSet;
-
 import org.iglooproject.jpa.security.model.NamedPermission;
 
+import com.google.common.collect.ImmutableSet;
+
 public final class BasicApplicationPermission extends NamedPermission {
-	
+
 	private static final long serialVersionUID = 8541973919257428300L;
-	
+
 	public static final Collection<BasicApplicationPermission> ALL;
 	static {
 		ImmutableSet.Builder<BasicApplicationPermission> builder = ImmutableSet.builder();
@@ -30,5 +30,5 @@ public final class BasicApplicationPermission extends NamedPermission {
 	private BasicApplicationPermission(String name) {
 		super(name);
 	}
-	
+
 }

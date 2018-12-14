@@ -34,15 +34,15 @@ public final class Bindings {
 	public static HistoryLogBinding historyLog() {
 		return HISTORY_LOG;
 	}
-	
+
 	public static HistoryDifferenceBinding historyDifference() {
 		return HISTORY_DIFFERENCE;
 	}
-	
+
 	public static ILocalizedReferenceDataBindingInterfaceBinding localizedReferenceData() {
 		return LOCALIZED_REFERENCE_DATA;
 	}
-	
+
 	public static CityBinding city() {
 		return CITY;
 	}
@@ -53,4 +53,5 @@ public final class Bindings {
 
 	private Bindings() {
 	}
+
 }

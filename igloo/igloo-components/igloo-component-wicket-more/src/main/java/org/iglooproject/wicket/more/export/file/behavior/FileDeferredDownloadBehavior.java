@@ -31,7 +31,10 @@ public class FileDeferredDownloadBehavior extends AbstractDeferredDownloadBehavi
 					@Override
 					public void detach() {
 						IModel.super.detach();
-						Detachables.detach(fileModel, fileNameModel);
+						Detachables.detach(
+							fileModel,
+							fileNameModel
+						);
 					}
 				},
 				addAntiCache

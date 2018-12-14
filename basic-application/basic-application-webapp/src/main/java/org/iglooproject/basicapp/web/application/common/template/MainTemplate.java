@@ -22,13 +22,14 @@ import org.iglooproject.basicapp.core.security.service.ISecurityManagementServic
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationAnnouncementListPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserListPage;
+import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserListPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupListPage;
 import org.iglooproject.basicapp.web.application.common.component.AnnouncementsPanel;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.theme.BasicApplicationApplicationTheme;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.AdministrationUserTypeDescriptor;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDataPage;
+import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -71,17 +72,14 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		}
 		
 		if (securityManagementService.isPasswordExpired(BasicApplicationSession.get().getUser())) {
-			throw UserTypeDescriptor.get(BasicApplicationSession.get().getUser())
-					.securityTypeDescriptor()
-					.passwordExpirationPageLinkDescriptor()
-					.newRestartResponseException();
+			throw SecurityPasswordExpirationPage.linkDescriptor().newRestartResponseException();
 		}
 		
 		add(new TransparentWebMarkupContainer("htmlRootElement")
-				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage())));
+			.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage())));
 		
 		add(new TransparentWebMarkupContainer("bodyContainer")
-				.add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel())));
+			.add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel())));
 		
 		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
 		
@@ -93,8 +91,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(new AnnouncementsPanel("announcements"));
 		
 		add(
-				createBodyBreadCrumb("breadCrumb")
-						.add(displayBreadcrumb().thenShow())
+			createBodyBreadCrumb("breadCrumb")
+				.add(displayBreadcrumb().thenShow())
 		);
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
@@ -102,43 +100,43 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		add(new BootstrapDropdownBehavior());
 		
 		getApplicationTheme().specificContent(
-				this,
-				(SerializableSupplier2<List<NavigationMenuItem>>) this::getMainNav,
-				(SerializableSupplier2<Class<? extends WebPage>>) this::getFirstMenuPage,
-				(SerializableSupplier2<Class<? extends WebPage>>) this::getSecondMenuPage
+			this,
+			(SerializableSupplier2<List<NavigationMenuItem>>) this::getMainNav,
+			(SerializableSupplier2<Class<? extends WebPage>>) this::getFirstMenuPage,
+			(SerializableSupplier2<Class<? extends WebPage>>) this::getSecondMenuPage
 		);
 	}
 
 	protected List<NavigationMenuItem> getMainNav() {
 		return ImmutableList.of(
-				BasicApplicationApplication.get().getHomePageLinkDescriptor()
-					.navigationMenuItem(new ResourceModel("navigation.home"))
-					.setIconClassesModel(Model.of("fa fa-fw fa-home")),
-				ReferenceDataPage.linkDescriptor()
-					.navigationMenuItem(new ResourceModel("navigation.referenceData"))
-					.setIconClassesModel(Model.of("fa fa-fw fa-list")),
-				AdministrationUserTypeDescriptor.BASIC_USER.list()
-					.navigationMenuItem(new ResourceModel("navigation.administration"))
-					.setIconClassesModel(Model.of("fa fa-fw fa-cogs"))
-					.setSubMenuItems(ImmutableList.of(
-						AdministrationUserTypeDescriptor.BASIC_USER.list()
-							.navigationMenuItem(new ResourceModel("navigation.administration.user.basic"))
-							.setIconClassesModel(Model.of("fa fa-fw fa-user-cog")),
-						AdministrationUserTypeDescriptor.TECHNICAL_USER.list()
-							.navigationMenuItem(new ResourceModel("navigation.administration.user.technical"))
-							.setIconClassesModel(Model.of("fa fa-fw fa-user-shield")),
-						AdministrationUserGroupListPage.linkDescriptor()
-							.navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
-							.setIconClassesModel(Model.of("fa fa-fw fa-users-cog")),
-						AdministrationAnnouncementListPage.linkDescriptor()
-							.navigationMenuItem(new ResourceModel("navigation.administration.announcement"))
-							.setIconClassesModel(Model.of("fa fa-fw fa-bullhorn"))
-					)),
-				LinkDescriptorBuilder.start()
-					.validator(Condition.role(BasicApplicationAuthorityConstants.ROLE_ADMIN))
-					.page(ConsoleMaintenanceSearchPage.class)
-					.navigationMenuItem(new ResourceModel("navigation.console"))
-					.setIconClassesModel(Model.of("fa fa-fw fa-wrench"))
+			BasicApplicationApplication.get().getHomePageLinkDescriptor()
+				.navigationMenuItem(new ResourceModel("navigation.home"))
+				.setIconClassesModel(Model.of("fa fa-fw fa-home")),
+			ReferenceDataPage.linkDescriptor()
+				.navigationMenuItem(new ResourceModel("navigation.referenceData"))
+				.setIconClassesModel(Model.of("fa fa-fw fa-list")),
+			AdministrationBasicUserListPage.linkDescriptor()
+				.navigationMenuItem(new ResourceModel("navigation.administration"))
+				.setIconClassesModel(Model.of("fa fa-fw fa-cogs"))
+				.setSubMenuItems(ImmutableList.of(
+					AdministrationBasicUserListPage.linkDescriptor()
+						.navigationMenuItem(new ResourceModel("navigation.administration.user.basicUser"))
+						.setIconClassesModel(Model.of("fa fa-fw fa-user-cog")),
+					AdministrationTechnicalUserListPage.linkDescriptor()
+						.navigationMenuItem(new ResourceModel("navigation.administration.user.technicalUser"))
+						.setIconClassesModel(Model.of("fa fa-fw fa-user-shield")),
+					AdministrationUserGroupListPage.linkDescriptor()
+						.navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
+						.setIconClassesModel(Model.of("fa fa-fw fa-users-cog")),
+					AdministrationAnnouncementListPage.linkDescriptor()
+						.navigationMenuItem(new ResourceModel("navigation.administration.announcement"))
+						.setIconClassesModel(Model.of("fa fa-fw fa-bullhorn"))
+				)),
+			LinkDescriptorBuilder.start()
+				.validator(Condition.role(BasicApplicationAuthorityConstants.ROLE_ADMIN))
+				.page(ConsoleMaintenanceSearchPage.class)
+				.navigationMenuItem(new ResourceModel("navigation.console"))
+				.setIconClassesModel(Model.of("fa fa-fw fa-wrench"))
 		);
 	}
 
@@ -146,16 +144,16 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	protected Class<? extends WebPage> getSecondMenuPage() {
 		return null;
 	}
-	
+
 	@Override
 	protected Component createBodyBreadCrumb(String wicketId) {
 		// By default, we remove one element from the breadcrumb as it is usually also used to generate the page title.
 		// The last element is usually the title of the current page and shouldn't be displayed in the breadcrumb.
 		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel, 1)
-				.setDividerModel(Model.of(""))
-				.setTrailingSeparator(true);
+			.setDividerModel(Model.of(""))
+			.setTrailingSeparator(true);
 	}
-	
+
 	protected Condition displayBreadcrumb() {
 		return Condition.alwaysTrue();
 	}
@@ -170,7 +168,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	public String getVariation() {
 		return getApplicationTheme().getMarkupVariation();
 	}
-	
+
 	protected BootstrapTooltip getBootstrapTooltip() {
 		return new BootstrapTooltip()
 			.selector("[title],[data-original-title]")

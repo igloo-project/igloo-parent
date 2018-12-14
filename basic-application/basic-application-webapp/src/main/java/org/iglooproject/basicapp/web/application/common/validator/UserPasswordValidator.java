@@ -16,7 +16,6 @@ import org.apache.wicket.validation.ValidationError;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
-import org.iglooproject.basicapp.web.application.common.typedescriptor.user.UserTypeDescriptor;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.util.model.Detachables;
@@ -45,7 +44,7 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 
 	private static final String COMMON_ERROR = "COMMON_ERROR";
 
-	private final UserTypeDescriptor<?> typeDescriptor;
+	private final IModel<? extends Class<? extends User>> userClassModel;
 
 	private IModel<? extends User> userModel;
 
@@ -58,17 +57,20 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 	@SpringBean
 	private IPropertyService propertyService;
 
-	public UserPasswordValidator(UserTypeDescriptor<?> typeDescriptor) {
+	public UserPasswordValidator(IModel<? extends Class<? extends User>> userClassModel) {
 		super();
 		Injector.get().inject(this);
 		
-		this.typeDescriptor = checkNotNull(typeDescriptor);
+		this.userClassModel = checkNotNull(userClassModel);
 	}
 
 	@Override
 	public void detach(Component component) {
 		super.detach(component);
-		Detachables.detach(userModel);
+		Detachables.detach(
+			userClassModel,
+			userModel
+		);
 	}
 
 	@Override
@@ -79,11 +81,12 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 			return;
 		}
 		
+		Class<? extends User> userClass = userClassModel.getObject();
 		User user = userModel != null ? userModel.getObject() : null;
 		
 		PasswordData passwordData = new PasswordData(password);
 		
-		List<Rule> passwordRules = Lists.newArrayList(securityManagementService.getOptions(typeDescriptor.getEntityClass()).getPasswordRules());
+		List<Rule> passwordRules = Lists.newArrayList(securityManagementService.getOptions(userClass).getPasswordRules());
 		
 		if (user != null && StringUtils.hasText(user.getUsername())) {
 			passwordData.setUsername(user.getUsername());
@@ -100,32 +103,30 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 			for (RuleResultDetail detail : result.getDetails()) {
 				if (RULES_CUSTOM_ERROR.contains(detail.getErrorCode())) {
 					validatable.error(
-							new ValidationError(this, detail.getErrorCode())
-									.setVariables((Map<String, Object>) detail.getParameters())
+						new ValidationError(this, detail.getErrorCode())
+							.setVariables((Map<String, Object>) detail.getParameters())
 					);
 				}
 			}
 		}
 		
-		if (user != null
-				&& securityManagementService.getOptions(user).isPasswordHistoryEnabled()
-				&& user.getPasswordInformation().getHistory() != null
-				&& !user.getPasswordInformation().getHistory().isEmpty()) {
+		if (
+				user != null
+			&&	securityManagementService.getOptions(user).isPasswordHistoryEnabled()
+			&&	user.getPasswordInformation().getHistory() != null
+			&&	!user.getPasswordInformation().getHistory().isEmpty()
+		) {
 			for (String historyPasswordHash : user.getPasswordInformation().getHistory()) {
 				if (passwordEncoder.matches(password, historyPasswordHash)) {
 					valid = false;
-					validatable.error(
-							new ValidationError(this, HISTORY_VIOLATION)
-					);
+					validatable.error(new ValidationError(this, HISTORY_VIOLATION));
 					break;
 				}
 			}
 		}
 		
 		if (!valid) {
-			validatable.error(
-					new ValidationError(this, COMMON_ERROR)
-			);
+			validatable.error(new ValidationError(this, COMMON_ERROR));
 		}
 	}
 
@@ -133,4 +134,5 @@ public class UserPasswordValidator extends Behavior implements IValidator<String
 		this.userModel = checkNotNull(userModel);
 		return this;
 	}
+
 }

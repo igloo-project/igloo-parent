@@ -16,26 +16,27 @@ import org.iglooproject.wicket.more.util.model.Models.MapModelBuilder;
 import com.google.common.base.Optional;
 
 public final class DefaultHistoryDifferenceValueRenderer extends AbstractHistoryRenderer<HistoryDifference> {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final Renderer<HistoryDifference> BEFORE = new DefaultHistoryDifferenceValueRenderer(
 			Bindings.historyDifference().before());
-	
+
 	private static final Renderer<HistoryDifference> AFTER = new DefaultHistoryDifferenceValueRenderer(
 			Bindings.historyDifference().after());
-	
+
 	private static final String DEFAULT_KEY = "history.difference.common.default.value";
-	
+
 	public static Renderer<HistoryDifference> before() {
 		return BEFORE;
 	}
-	
+
 	public static Renderer<HistoryDifference> after() {
 		return AFTER;
 	}
-	
+
 	private final Renderer<HistoryDifference> valueRenderer;
-	
+
 	private DefaultHistoryDifferenceValueRenderer(SerializableFunction2<HistoryDifference, HistoryValue> valueFunction) {
 		this.valueRenderer = HistoryValueRenderer.get().onResultOf(valueFunction).orBlank();
 	}
@@ -45,14 +46,14 @@ public final class DefaultHistoryDifferenceValueRenderer extends AbstractHistory
 		FieldPath path = difference.getAbsolutePath();
 		String pathResourceKeyPart = getFieldPathKeyPart(path);
 		IModel<?> dataModel = Models.dataMap()
-				.put("current", valueRenderer.asModel(Models.transientModel(difference)))
-				.put("children", createChildrenMap(difference))
-				.build();
+			.put("current", valueRenderer.asModel(Models.transientModel(difference)))
+			.put("children", createChildrenMap(difference))
+			.build();
 		String entityResourceKeyPart = getEntityResourceKeyPart(difference);
 		
 		Optional<String> result = getStringOptional(
-				JOINER.join(HISTORY_DIFFERENCE_ROOT, entityResourceKeyPart, pathResourceKeyPart, ".value"),
-				locale, dataModel
+			JOINER.join(HISTORY_DIFFERENCE_ROOT, entityResourceKeyPart, pathResourceKeyPart, ".value"),
+			locale, dataModel
 		);
 		if (!result.isPresent()) {
 			result = getStringOptional(JOINER.join(HISTORY_DIFFERENCE_ROOT, ".common", pathResourceKeyPart, ".value"), locale, dataModel);
@@ -75,4 +76,5 @@ public final class DefaultHistoryDifferenceValueRenderer extends AbstractHistory
 		}
 		return builder.build();
 	}
+
 }

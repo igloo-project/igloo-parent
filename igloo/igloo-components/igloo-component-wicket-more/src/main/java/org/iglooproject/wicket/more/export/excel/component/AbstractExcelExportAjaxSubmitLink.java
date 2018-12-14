@@ -133,6 +133,9 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		Detachables.detach(tempFileModel, mediaTypeModel);
+		Detachables.detach(
+			tempFileModel,
+			mediaTypeModel
+		);
 	}
 }

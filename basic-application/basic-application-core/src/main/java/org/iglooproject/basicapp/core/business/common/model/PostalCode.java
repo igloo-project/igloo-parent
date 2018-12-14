@@ -9,4 +9,5 @@ public class PostalCode extends AbstractMaterializedPrimitiveValue<String, Posta
 	public PostalCode(String value) {
 		super(value);
 	}
+
 }

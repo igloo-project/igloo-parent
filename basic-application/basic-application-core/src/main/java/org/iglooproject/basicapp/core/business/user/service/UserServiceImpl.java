@@ -60,8 +60,8 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 		super.updateEntity(user);
 		
 //		historyLogService.logWithDifferences(HistoryEventType.UPDATE, user, HistoryLogObjectsBean.of(user),
-//				userDifferenceService.getMinimalDifferenceGenerator(),
-//				userDifferenceService);
+//			userDifferenceService.getMinimalDifferenceGenerator(),
+//			userDifferenceService);
 	}
 
 	@Override

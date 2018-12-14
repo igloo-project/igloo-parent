@@ -16,8 +16,9 @@ import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDifference> {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Displays a composite difference as a block: first a line for the composite field,
 	 * then one line for each sub-field.
@@ -58,7 +59,7 @@ public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDiffere
 			}
 		};
 	}
-	
+
 	public CompositeHistoryDifferencePanel(String id, IModel<HistoryDifference> model, String cssClass,
 			IHistoryComponentFactory historyComponentFactory) {
 		super(id, model);
@@ -66,21 +67,20 @@ public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDiffere
 		IModel<HistoryDifferenceEventType> eventTypeModel = BindingModel.of(model, Bindings.historyDifference().eventType());
 		
 		add(
-				new EnclosureContainer("updated").condition(predicate(eventTypeModel, Predicates2.equalTo(HistoryDifferenceEventType.UPDATED)))
-						.add(newHistoryDifferenceListPanel("differences", cssClass, historyComponentFactory)),
-				new EnclosureContainer("untouched").condition(predicate(eventTypeModel, Predicates2.equalTo(HistoryDifferenceEventType.UNTOUCHED))),
-				new EnclosureContainer("added").condition(predicate(eventTypeModel, Predicates2.equalTo(HistoryDifferenceEventType.ADDED)))
-						.add(newHistoryDifferenceListPanel("differences", cssClass, historyComponentFactory)),
-				new EnclosureContainer("removed").condition(predicate(eventTypeModel, Predicates2.equalTo(HistoryDifferenceEventType.REMOVED)))
-						.add(newHistoryDifferenceListPanel("differences", cssClass, historyComponentFactory))
+			new EnclosureContainer("updated").condition(predicate(eventTypeModel, Predicates2.equalTo(HistoryDifferenceEventType.UPDATED)))
+				.add(newHistoryDifferenceListPanel("differences", cssClass, historyComponentFactory)),
+			new EnclosureContainer("untouched").condition(predicate(eventTypeModel, Predicates2.equalTo(HistoryDifferenceEventType.UNTOUCHED))),
+			new EnclosureContainer("added").condition(predicate(eventTypeModel, Predicates2.equalTo(HistoryDifferenceEventType.ADDED)))
+				.add(newHistoryDifferenceListPanel("differences", cssClass, historyComponentFactory)),
+			new EnclosureContainer("removed").condition(predicate(eventTypeModel, Predicates2.equalTo(HistoryDifferenceEventType.REMOVED)))
+				.add(newHistoryDifferenceListPanel("differences", cssClass, historyComponentFactory))
 		);
 	}
 
 	private Component newHistoryDifferenceListPanel(String wicketId, String cssClass, IHistoryComponentFactory historyComponentFactory) {
-		return
-				new HistoryDifferenceListPanel(
-						wicketId, BindingModel.of(getModel(), Bindings.historyDifference().differences()), historyComponentFactory
-				)
+		return new HistoryDifferenceListPanel(
+			wicketId, BindingModel.of(getModel(), Bindings.historyDifference().differences()), historyComponentFactory
+		)
 				.add(new ClassAttributeAppender(cssClass));
 	}
 }
