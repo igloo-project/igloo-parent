@@ -3,9 +3,7 @@ package test.web;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.util.tester.FormTester;
-import org.apache.wicket.util.tester.TagTester;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.search.UserSort;
 import org.iglooproject.basicapp.web.application.administration.form.UserGroupDropDownSingleChoice;
@@ -125,8 +123,6 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		
 		tester.assertVisible("headerElementsSection:actionsContainer:exportExcel");
 		
-		Component exportExcel = tester.getComponentFromLastRenderedPage("headerElementsSection:actionsContainer:exportExcel");
-		TagTester tagTester = TagTester.createTagByAttribute(tester.getLastResponse().getDocument(), "id", exportExcel.getMarkupId());
-		assertEquals(localize("common.action.export.excel"), tagTester.getAttribute("title"));
+		tester.assertTooltip("headerElementsSection:actionsContainer:exportExcel", localize("common.action.export.excel"));
 	}
 }
