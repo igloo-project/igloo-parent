@@ -69,8 +69,8 @@
 			<param-value>BasicApplicationApplication</param-value>
 		</init-param>
 		<init-param>
-			<param-name>filterPath</param-name>
-			<param-value></param-value>
+			<param-name>filterMappingUrlPattern</param-name>
+			<param-value>/*</param-value>
 		</init-param>
 	</filter>
 	

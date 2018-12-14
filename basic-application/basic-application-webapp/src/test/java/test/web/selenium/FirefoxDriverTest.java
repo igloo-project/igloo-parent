@@ -1,12 +1,15 @@
 package test.web.selenium;
 
-import org.apache.wicket.protocol.http.WicketFilter;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.iglooproject.basicapp.core.business.user.service.IUserService;
+import org.iglooproject.spring.util.context.ApplicationContextUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -15,8 +18,28 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.rules.SpringClassRule;
+import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
+import test.web.spring.JettyTestExecutionListener;
+
+@TestPropertySource(properties = "igloo.profile=test")
+@TestExecutionListeners(listeners = { JettyTestExecutionListener.class })
 public class FirefoxDriverTest {
+
+	/**
+	 * Use this instead of SpringJUnit4ClassRunner, so that implementors can choose their own runner
+	 */
+	@ClassRule
+	public static final SpringClassRule SCR = new SpringClassRule();
+	/**
+	 * Use this instead of SpringJUnit4ClassRunner, so that implementors can choose their own runner
+	 */
+	@Rule
+	public final SpringMethodRule springMethodRule = new SpringMethodRule();
 
 	private WebDriver driver;
 
@@ -24,11 +47,14 @@ public class FirefoxDriverTest {
 
 	private Server server;
 
+	@Autowired
+	private IUserService userService;
+
 	@Before
 	public void initialization() throws Exception {
 		System.setProperty("webdriver.gecko.driver", "/home/mpiva/Documents/apps/geckodriver-v0.23.0-linux64/geckodriver");
-		
-		launchJettyServer();
+
+		ApplicationContextUtils.getInstance().getContext().getAutowireCapableBeanFactory().autowireBean(this);
 	}
 
 	private void launchJettyServer() throws Exception {
@@ -59,8 +85,12 @@ public class FirefoxDriverTest {
 		WebAppContext webapp = new WebAppContext();
 		webapp.setResourceBase("src/main/java");
 		webapp.setContextPath("/");
-		webapp.setInitParameter(WicketFilter.FILTER_MAPPING_PARAM, "/*");
 		webapp.setDefaultsDescriptor("src/test/java/test/web/selenium/web.xml");
+		
+//		FilterHolder filterHolder = new FilterHolder(WicketFilter.class);
+//		filterHolder.setInitParameter(WicketFilter.FILTER_MAPPING_PARAM, "/*");
+//		filterHolder.setInitParameter("applicationClassName", BasicApplicationApplication.class.getName());
+//		webapp.addFilter(filterHolder, "/*", null);
 		
 		server.setHandler(webapp);
 		
@@ -75,6 +105,11 @@ public class FirefoxDriverTest {
 		if (server != null && server.isRunning()) {
 			server.stop();
 		}
+	}
+
+	@Test
+	public void launchServer() {
+		
 	}
 
 	@Test
