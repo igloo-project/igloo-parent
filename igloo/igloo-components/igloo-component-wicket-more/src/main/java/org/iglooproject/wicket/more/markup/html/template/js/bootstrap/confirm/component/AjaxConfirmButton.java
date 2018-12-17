@@ -32,50 +32,51 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 			IModel<String> yesLabelModel, IModel<String> noLabelModel,
 			IModel<String> cssClassNamesModel, boolean textNoEscape) {
 		this(
-				id,
-				titleModel,
-				textModel,
-				yesLabelModel,
-				noLabelModel,
-				new Model<String>("fa fa-fw fa-check"),
-				new Model<String>("fa fa-fw fa-ban"),
-				new Model<String>("btn btn-success"),
-				new Model<String>("btn btn-default"),
-				cssClassNamesModel,
-				textNoEscape,
-				null
+			id,
+			titleModel,
+			textModel,
+			yesLabelModel,
+			noLabelModel,
+			new Model<String>("fa fa-fw fa-check"),
+			new Model<String>("fa fa-fw fa-ban"),
+			new Model<String>("btn btn-success"),
+			new Model<String>("btn btn-default"),
+			cssClassNamesModel,
+			textNoEscape,
+			null
 		);
 	}
 	
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
-			IModel<String> yesButtonModel, IModel<String> noButtonModel,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel,
+			IModel<String> noIconModel, IModel<String> yesButtonModel, IModel<String> noButtonModel,
 			IModel<String> cssClassNamesModel, boolean textNoEscape) {
-		this(id, titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel,
-				yesButtonModel, noButtonModel, cssClassNamesModel, textNoEscape, null);
+		this(id, titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel, yesButtonModel,
+				noButtonModel, cssClassNamesModel, textNoEscape, null);
 	}
 
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel,
-			IModel<String> cssClassNamesModel, boolean textNoEscape, Form<?> form) {
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
+			boolean textNoEscape, Form<?> form) {
 		this(
-				id,
-				titleModel,
-				textModel,
-				yesLabelModel,
-				noLabelModel,
-				new Model<String>("fa fa-fw fa-check"),
-				new Model<String>("fa fa-fw fa-ban"),
-				new Model<String>("btn btn-success"),
-				new Model<String>("btn btn-default"),
-				cssClassNamesModel,
-				textNoEscape,
-				form
+			id,
+			titleModel,
+			textModel,
+			yesLabelModel,
+			noLabelModel,
+			new Model<String>("fa fa-fw fa-check"),
+			new Model<String>("fa fa-fw fa-ban"),
+			new Model<String>("btn btn-success"),
+			new Model<String>("btn btn-default"),
+			cssClassNamesModel,
+			textNoEscape,
+			form
 		);
 	}
+
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
-			IModel<String> yesButtonModel, IModel<String> noButtonModel,
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel,
+			IModel<String> noIconModel, IModel<String> yesButtonModel, IModel<String> noButtonModel,
 			IModel<String> cssClassNamesModel, boolean textNoEscape, Form<?> form) {
 		super(id, null, form);
 		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel,
@@ -114,35 +115,35 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 				// On ajoute le handler seulement si le composant est activé
 				return AjaxConfirmButton.this.isEnabledInHierarchy();
 			}
-
+			
 			@Override
 			protected void onSubmit(AjaxRequestTarget target) {
 				AjaxConfirmButton.this.onSubmit(target);
 			}
-
+			
 			@Override
 			protected void onAfterSubmit(AjaxRequestTarget target) {
 				AjaxConfirmButton.this.onAfterSubmit(target);
 			}
-
+			
 			@Override
 			protected void onError(AjaxRequestTarget target) {
 				AjaxConfirmButton.this.onError(target);
 			}
-
+			
 			// TODO 0.10 : checker avec LAL ou YRO
 //			@SuppressWarnings("deprecation")
 //			@Override
 //			protected AjaxChannel getChannel() {
 //				return AjaxConfirmButton.this.getChannel();
 //			}
-
+			
 			@Override
 			protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
 				super.updateAjaxAttributes(attributes);
 				AjaxConfirmButton.this.updateAjaxAttributes(attributes);
 			}
-
+			
 			@Override
 			public boolean getDefaultProcessing() {
 				return AjaxConfirmButton.this.getDefaultFormProcessing();

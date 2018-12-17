@@ -4,6 +4,7 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
 
 public class AjaxConfirmLinkBuilder<O> extends AbstractConfirmLinkBuilder<AjaxConfirmLink<O>, O> {
+
 	private static final long serialVersionUID = 5629930352899730245L;
 
 	@Override
