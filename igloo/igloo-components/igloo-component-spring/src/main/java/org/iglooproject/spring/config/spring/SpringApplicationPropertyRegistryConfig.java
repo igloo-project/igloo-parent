@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.functional.converter.StringCollectionConverter;
-import org.iglooproject.functional.converter.StringEnumConverter;
 import org.iglooproject.functional.converter.StringLocaleConverter;
 import org.iglooproject.spring.config.util.MailSenderBehavior;
 import org.iglooproject.spring.notification.util.NotificationSendMode;
@@ -90,7 +89,7 @@ public class SpringApplicationPropertyRegistryConfig extends AbstractApplication
 		registry.registerString(NOTIFICATION_MAIL_SUBJECT_PREFIX);
 		registry.registerString(NOTIFICATION_MAIL_SENDER);
 		registry.registerEnum(NOTIFICATION_MAIL_SENDER_BEHAVIOR, MailSenderBehavior.class, MailSenderBehavior.EXPLICIT);
-		registry.register(NOTIFICATION_MAIL_SEND_MODE, StringEnumConverter.forType(NotificationSendMode.class));
+		registry.registerEnum(NOTIFICATION_MAIL_SEND_MODE, NotificationSendMode.class, NotificationSendMode.SEND);
 		registry.register(NOTIFICATION_MAIL_FILTER_EMAILS, new StringCollectionConverter<String, List<String>>(Converter.<String>identity(), Suppliers2.<String>arrayList()), Lists.<String>newArrayList());
 		registry.register(NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK, new StringCollectionConverter<String, List<String>>(Converter.<String>identity(), Suppliers2.<String>arrayList()), Lists.<String>newArrayList());
 	}
