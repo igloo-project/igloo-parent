@@ -39,15 +39,21 @@ $grid-gutter-widths: () !default; // bootstrap-override
 $grid-gutter-widths: map-merge(
 	(
 		0: 0,
-		1: 4px,
-		2: 8px,
-		3: 15px,
-		4: 30px,
-		5: 40px,
-		6: 50px
+		xxs: 4px,
+		xs: 8px,
+		sm: 15px,
+		md: 30px,
+		lg: 40px,
+		xl: 50px,
+		xxl: 60px
 	),
 	$grid-gutter-widths
 ); // bootstrap-override
+
+
+// Layout
+
+$layout-container-padding-x:							$grid-gutter-width / 2; // bootstrap-override
 
 
 // Components

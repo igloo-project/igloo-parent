@@ -1,0 +1,22 @@
+@mixin make-container-grid($gutter, $direction:"") {
+	padding#{$direction}: ($gutter / 2);
+}
+
+@mixin make-row-grid($gutter, $direction:"") {
+	&.row,
+	&[class*="row-"] {
+		margin#{$direction}: -1 * ($gutter / 2);
+		
+		> .col,
+		> [class*="col-"],
+		> [class*="-col"] {
+			padding#{$direction}: ($gutter / 2);
+		}
+	}
+}
+
+@mixin make-col-auto() {
+	flex: 0 0 auto;
+	width: auto;
+	max-width: 100%; // Reset earlier grid tiers
+}
