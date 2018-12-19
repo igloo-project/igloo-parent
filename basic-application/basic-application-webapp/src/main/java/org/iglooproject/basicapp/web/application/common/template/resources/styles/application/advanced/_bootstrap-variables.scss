@@ -104,14 +104,20 @@ $theme-colors: map-merge(
 $brand-color:											$primary !default; // bootstrap-override
 $brand-text-color:										$white !default; // bootstrap-override
 
-$colors: map-merge((
-	"brand":		$brand-color,
-	"brand-text":	$brand-text-color
-), $colors); // bootstrap | bootstrap-override
+$colors: map-merge(
+	(
+		"brand": $brand-color,
+		"brand-text": $brand-text-color
+	),
+	$colors
+); // bootstrap | bootstrap-override
 
-$theme-colors: map-merge((
-	"brand":		$brand-color
-), $theme-colors); // bootstrap | bootstrap-override
+$theme-colors: map-merge(
+	(
+		"brand": $brand-color
+	),
+	$theme-colors
+); // bootstrap | bootstrap-override
 
 // Set a specific jump point for requesting color jumps
 $theme-color-interval:									8% !default; // bootstrap
@@ -174,9 +180,12 @@ $sizes: map-merge(
 ); // bootstrap
 
 @for $i from 0 through 100 {
-	$sizes: map-merge((
-		$i: $i * 1%
-	), $sizes);
+	$sizes: map-merge(
+		(
+			$i: $i * 1%
+		),
+		$sizes
+	);
 } // bootstrap | bootstrap-override
 
 
@@ -247,15 +256,22 @@ $grid-gutter-widths: () !default; // bootstrap-override
 $grid-gutter-widths: map-merge(
 	(
 		0: 0,
-		1: 4px,
-		2: 8px,
-		3: 15px,
-		4: 30px,
-		5: 40px,
-		6: 50px
+		xxs: 4px,
+		xs: 8px,
+		sm: 15px,
+		md: 30px,
+		lg: 40px,
+		xl: 50px,
+		xxl: 60px
 	),
 	$grid-gutter-widths
 ); // bootstrap-override
+
+
+// Layout
+
+$layout-container-padding-x:							$grid-gutter-width / 2; // bootstrap-override
+
 
 // Components
 //

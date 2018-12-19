@@ -8,16 +8,31 @@
 	}
 }
 
-@mixin make-container-gutters($length, $direction:"") {
-	padding#{$direction}: ($length / 2);
-	
-	> .row {
-		margin#{$direction}: -1 * ($length / 2);
+@each $breakpoint in map-keys($grid-breakpoints) {
+	@include media-breakpoint-up($breakpoint) {
+		$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+		$abbrev: container;
 		
-		> .col,
-		> [class*="col-"],
-		> [class*="-col"] {
-			padding#{$direction}: ($length / 2);
+		@each $size, $gutter in $grid-gutter-widths {
+			.#{$abbrev}#{$infix}-#{$size} {
+				@include make-container-grid($gutter);
+			}
+			.#{$abbrev}-t#{$infix}-#{$size},
+			.#{$abbrev}-y#{$infix}-#{$size} {
+				@include make-container-grid($gutter, "-top");
+			}
+			.#{$abbrev}-r#{$infix}-#{$size},
+			.#{$abbrev}-x#{$infix}-#{$size} {
+				@include make-container-grid($gutter, "-right");
+			}
+			.#{$abbrev}-b#{$infix}-#{$size},
+			.#{$abbrev}-y#{$infix}-#{$size} {
+				@include make-container-grid($gutter, "-bottom");
+			}
+			.#{$abbrev}-l#{$infix}-#{$size},
+			.#{$abbrev}-x#{$infix}-#{$size} {
+				@include make-container-grid($gutter, "-left");
+			}
 		}
 	}
 }
@@ -25,125 +40,35 @@
 @each $breakpoint in map-keys($grid-breakpoints) {
 	@include media-breakpoint-up($breakpoint) {
 		$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
-		$abbrev: container-g;
+		$abbrev: row;
 		
-		@each $size, $length in $grid-gutter-widths {
+		@each $size, $gutter in $grid-gutter-widths {
 			.#{$abbrev}#{$infix}-#{$size} {
-				@include make-container-gutters($length);
+				@include make-row-grid($gutter);
 			}
-			.#{$abbrev}t#{$infix}-#{$size},
-			.#{$abbrev}y#{$infix}-#{$size} {
-				@include make-container-gutters($length, "-top");
+			.#{$abbrev}-t#{$infix}-#{$size},
+			.#{$abbrev}-y#{$infix}-#{$size} {
+				@include make-row-grid($gutter, "-top");
 			}
-			.#{$abbrev}r#{$infix}-#{$size},
-			.#{$abbrev}x#{$infix}-#{$size} {
-				@include make-container-gutters($length, "-right");
+			.#{$abbrev}-r#{$infix}-#{$size},
+			.#{$abbrev}-x#{$infix}-#{$size} {
+				@include make-row-grid($gutter, "-right");
 			}
-			.#{$abbrev}b#{$infix}-#{$size},
-			.#{$abbrev}y#{$infix}-#{$size} {
-				@include make-container-gutters($length, "-bottom");
+			.#{$abbrev}-b#{$infix}-#{$size},
+			.#{$abbrev}-y#{$infix}-#{$size} {
+				@include make-row-grid($gutter, "-bottom");
 			}
-			.#{$abbrev}l#{$infix}-#{$size},
-			.#{$abbrev}x#{$infix}-#{$size} {
-				@include make-container-gutters($length, "-left");
-			}
-		}
-	}
-}
-
-@mixin make-row-grid($length, $direction:"") {
-	&.row,
-	&[class*="row-"],
-	&[class*="-row"] {
-		margin#{$direction}: -1 * ($length / 2);
-		
-		> .col,
-		> [class*="col-"],
-		> [class*="-col"] {
-			padding#{$direction}: ($length / 2);
-		}
-	}
-}
-
-@each $breakpoint in map-keys($grid-breakpoints) {
-	@include media-breakpoint-up($breakpoint) {
-		$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
-		$abbrev: row-g;
-		
-		@each $size, $length in $grid-gutter-widths {
-			.#{$abbrev}#{$infix}-#{$size} {
-				@include make-row-grid($length);
-			}
-			.#{$abbrev}t#{$infix}-#{$size},
-			.#{$abbrev}y#{$infix}-#{$size} {
-				@include make-row-grid($length, "-top");
-			}
-			.#{$abbrev}r#{$infix}-#{$size},
-			.#{$abbrev}x#{$infix}-#{$size} {
-				@include make-row-grid($length, "-right");
-			}
-			.#{$abbrev}b#{$infix}-#{$size},
-			.#{$abbrev}y#{$infix}-#{$size} {
-				@include make-row-grid($length, "-bottom");
-			}
-			.#{$abbrev}l#{$infix}-#{$size},
-			.#{$abbrev}x#{$infix}-#{$size} {
-				@include make-row-grid($length, "-left");
-			}
-		}
-	}
-}
-
-@mixin make-col-auto() {
-	flex: 0 0 auto;
-	width: auto;
-	max-width: none; // Reset earlier grid tiers
-}
-
-@mixin make-flex-gutters($abbrev, $length, $direction:"") {
-	margin#{$direction}: -1 * ($length / 2);
-	
-	> .flex-item {
-		padding#{$direction}: ($length / 2);
-	}
-}
-
-@each $breakpoint in map-keys($grid-breakpoints) {
-	@include media-breakpoint-up($breakpoint) {
-		$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
-		$abbrev: flex-g;
-		
-		@each $size, $length in $grid-gutter-widths {
-			.#{$abbrev}#{$infix}-#{$size} {
-				@include make-flex-gutters($abbrev, $length);
-			}
-			.#{$abbrev}t#{$infix}-#{$size},
-			.#{$abbrev}y#{$infix}-#{$size} {
-				@include make-flex-gutters($abbrev, $length, "-top");
-			}
-			.#{$abbrev}r#{$infix}-#{$size},
-			.#{$abbrev}x#{$infix}-#{$size} {
-				@include make-flex-gutters($abbrev, $length, "-right");
-			}
-			.#{$abbrev}b#{$infix}-#{$size},
-			.#{$abbrev}y#{$infix}-#{$size} {
-				@include make-flex-gutters($abbrev, $length, "-bottom");
-			}
-			.#{$abbrev}l#{$infix}-#{$size},
-			.#{$abbrev}x#{$infix}-#{$size} {
-				@include make-flex-gutters($abbrev, $length, "-left");
+			.#{$abbrev}-l#{$infix}-#{$size},
+			.#{$abbrev}-x#{$infix}-#{$size} {
+				@include make-row-grid($gutter, "-left");
 			}
 		}
 	}
 }
 
 .row {
-	&.row-default {
-		@include make-row-grid(map-get($grid-gutter-widths, 4));
-	}
-	
 	&.row-form {
-		@include make-row-grid(map-get($grid-gutter-widths, 3));
+		@include make-row-grid(map-get($grid-gutter-widths, sm));
 		
 		> .form-group {
 			margin: 0;
@@ -151,12 +76,11 @@
 		}
 	}
 	
-	&.row-action {
-		@include make-row-grid(map-get($grid-gutter-widths, 2));
+	&.row-description {
+		@include make-row-grid(map-get($grid-gutter-widths, sm));
 	}
 	
-	&.row-compact {
-		@include make-row-grid(map-get($grid-gutter-widths, 2));
+	&.row-action {
+		@include make-row-grid(map-get($grid-gutter-widths, xs));
 	}
 }
-

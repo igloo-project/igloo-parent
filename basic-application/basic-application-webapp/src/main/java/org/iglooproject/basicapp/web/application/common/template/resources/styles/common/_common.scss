@@ -21,7 +21,7 @@ body {
 			
 			> .header-alert-content {
 				position: relative;
-				padding: $alert-padding-y ($grid-gutter-width / 2);
+				padding: $alert-padding-y $layout-container-padding-x;
 			}
 		}
 	}
