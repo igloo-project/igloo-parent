@@ -1,7 +1,5 @@
 package test.web.config.spring;
 
-import org.apache.wicket.protocol.http.WebApplication;
-import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.config.spring.BasicApplicationWebappConfig;
 import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.spring.util.context.ApplicationContextUtils;
@@ -18,10 +16,10 @@ import org.springframework.context.annotation.Import;
 })
 public class BasicApplicationWebappTestCommonConfig {
 
-	@Bean
-	public WebApplication application() {
-		return new BasicApplicationApplication();
-	}
+//	@Bean
+//	public WebApplication application() {
+//		return new BasicApplicationApplication();
+//	}
 
 	@Bean
 	public ApplicationContextUtils applicationContextUtils() {

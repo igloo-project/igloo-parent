@@ -20,13 +20,18 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
 import test.web.spring.JettyTestExecutionListener;
 
-@TestPropertySource(properties = "igloo.profile=test")
+/**
+ * Injection pour initialiser la base de données --> 19/12/2018 : apparemment ne servirai pas ???
+ */
+//@ContextConfiguration(classes = BasicApplicationWebappTestCommonConfig.class)
+/**
+ * Utilisé pour initialisé le serveur Jetty avant l'initialisation du contexte Spring et qu'il soit encapsulé
+ */
 @TestExecutionListeners(listeners = { JettyTestExecutionListener.class })
 public class FirefoxDriverTest {
 
@@ -53,8 +58,22 @@ public class FirefoxDriverTest {
 	@Before
 	public void initialization() throws Exception {
 		System.setProperty("webdriver.gecko.driver", "/home/mpiva/Documents/apps/geckodriver-v0.23.0-linux64/geckodriver");
-
+		
+		// Nécessaire pour l'injection des bean
 		ApplicationContextUtils.getInstance().getContext().getAutowireCapableBeanFactory().autowireBean(this);
+		
+		// Working --> l'EntityManager est bien lancé
+//		User user = new User();
+//		user.setUsername("admin");
+//		user.setFirstName("admin");
+//		user.setLastName("admin");
+//		userService.create(user);
+//		userService.setPasswords(user, "kobalt");
+	}
+
+	@Test
+	public void databaseInitialized() {
+		userService.list(); //Si ne marche pas throw une exception
 	}
 
 	private void launchJettyServer() throws Exception {
@@ -108,11 +127,6 @@ public class FirefoxDriverTest {
 	}
 
 	@Test
-	public void launchServer() {
-		
-	}
-
-	@Test
 	public void kobalt() {
 		DesiredCapabilities capabilities = DesiredCapabilities.firefox();
 		capabilities.setCapability("marionette", true);
@@ -123,7 +137,7 @@ public class FirefoxDriverTest {
 	}
 
 	@Test
-	public void basicApplication() {
+	public void login() {
 		driver = new FirefoxDriver();
 		
 		driver.get(rootUrl);
@@ -143,4 +157,5 @@ public class FirefoxDriverTest {
 		
 		driver.findElement(By.id("wrongid"));
 	}
+
 }

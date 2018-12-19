@@ -30,9 +30,9 @@ import org.springframework.test.context.ContextConfiguration;
 
 import com.google.common.collect.ImmutableSet;
 
-import test.web.config.spring.BasicApplicationWebappTestCommonConfig;
+import test.web.config.spring.BasicApplicationWebappTestWicketTesterConfig;
 
-@ContextConfiguration(classes = BasicApplicationWebappTestCommonConfig.class)
+@ContextConfiguration(classes = BasicApplicationWebappTestWicketTesterConfig.class)
 public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWicketTestCase<BasicApplicationWicketTester> {
 
 	protected static final String USER_PASSWORD = "kobalt";

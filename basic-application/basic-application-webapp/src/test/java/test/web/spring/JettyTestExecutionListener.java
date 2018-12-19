@@ -18,6 +18,16 @@ public class JettyTestExecutionListener implements TestExecutionListener {
 		}
 	}
 
+	/**
+	 * Indispensable pour cleaner le contexte et permettre aux tests WicketTester de s'exécuter par la suite
+	 */
+	@Override
+	public void afterTestClass(TestContext testContext) throws Exception {
+		if (server != null && server.isRunning()) {
+			server.stop();
+		}
+	}
+
 	private void launchJettyServer() throws Exception {
 		server = new Server();
 		ServerConnector connector = new ServerConnector(server);
@@ -31,6 +41,9 @@ public class JettyTestExecutionListener implements TestExecutionListener {
 		webapp.setDefaultsDescriptor("src/test/java/test/web/selenium/web.xml");
 		
 		server.setHandler(webapp);
+		
+		// Nécessaire pour lancer le serveur en mode test
+		System.setProperty("igloo.profile", "test");
 		
 		server.start();
 	}
