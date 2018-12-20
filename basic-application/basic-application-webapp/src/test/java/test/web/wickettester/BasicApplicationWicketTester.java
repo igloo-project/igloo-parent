@@ -1,4 +1,4 @@
-package test.web;
+package test.web.wickettester;
 
 import org.apache.wicket.protocol.http.WebApplication;
 import org.iglooproject.wicket.more.test.WicketMoreWicketTester;

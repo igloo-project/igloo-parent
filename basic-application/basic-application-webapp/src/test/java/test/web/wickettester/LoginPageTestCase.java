@@ -1,4 +1,4 @@
-package test.web;
+package test.web.wickettester;
 
 import org.apache.wicket.util.tester.FormTester;
 import org.iglooproject.basicapp.web.application.navigation.page.HomePage;

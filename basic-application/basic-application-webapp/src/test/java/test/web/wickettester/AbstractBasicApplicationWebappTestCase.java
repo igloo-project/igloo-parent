@@ -1,4 +1,4 @@
-package test.web;
+package test.web.wickettester;
 
 import java.util.Set;
 

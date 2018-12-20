@@ -1,4 +1,4 @@
-package test.web;
+package test.web.wickettester;
 
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationAnnouncementListPage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
