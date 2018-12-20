@@ -1,5 +1,7 @@
 package test.web.selenium;
 
+import static test.web.property.SeleniumPropertyIds.GECKODRIVER_PATH;
+
 import org.eclipse.jetty.server.Server;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
@@ -8,6 +10,7 @@ import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.util.EntityManagerUtils;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.context.ApplicationContextUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -62,12 +65,16 @@ public class AbstractSeleniumTestCase {
 	@Autowired
 	protected EntityManagerUtils entityManagerUtils;
 
+	@Autowired
+	private IPropertyService propertyService;
+
 	@Before
 	public void initialization() throws Exception {
 		// Nécessaire pour l'injection des bean
 		ApplicationContextUtils.getInstance().getContext().getAutowireCapableBeanFactory().autowireBean(this);
 		
-		System.setProperty("webdriver.gecko.driver", "/home/mpiva/Documents/apps/geckodriver-v0.23.0-linux64/geckodriver");
+//		System.setProperty("webdriver.gecko.driver", "/home/mpiva/Documents/apps/geckodriver-v0.23.0-linux64/geckodriver");
+		System.setProperty("webdriver.gecko.driver", propertyService.get(GECKODRIVER_PATH));
 		
 		if (userService.list().isEmpty()) {
 			authorityService.create(new Authority(CoreAuthorityConstants.ROLE_AUTHENTICATED));

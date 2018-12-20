@@ -6,18 +6,11 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-//@ContextConfiguration(classes = BasicApplicationWebappTestCommonConfig.class)
 public class FirefoxDriverTest extends AbstractSeleniumTestCase {
 
 	@Override
 	public void initialization() throws Exception {
 		super.initialization();
-		
-		// @mpiva : voir à quoi ça peut servir
-//		DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-//		capabilities.setCapability("marionette", true);
-//		FirefoxOptions options = new FirefoxOptions(capabilities);
-//		driver = new FirefoxDriver(options);
 		
 		driver = new FirefoxDriver();
 	}

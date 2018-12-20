@@ -12,7 +12,8 @@ import org.springframework.context.annotation.Import;
 @ConfigurationLocations(locations = { "classpath:configuration-env-test.properties" }, order = 1000)
 @Import({
 	BasicApplicationWebappConfig.class,
-	WicketMoreApplicationPropertyRegistryConfig.class
+	WicketMoreApplicationPropertyRegistryConfig.class,
+	SeleniumPropertyRegistryConfig.class
 })
 public class BasicApplicationWebappTestCommonConfig {
 
