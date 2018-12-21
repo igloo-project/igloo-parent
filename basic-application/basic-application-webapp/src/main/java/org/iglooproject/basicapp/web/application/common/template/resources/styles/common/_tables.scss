@@ -143,7 +143,7 @@ table {
 			> th, > td {
 				.row-table-action {
 					@include make-row();
-					@include make-row-grid(map-get($grid-gutter-widths, xxs));
+					@include make-row-grid(map-get($grid-gutters, xxs));
 					
 					justify-content: center;
 					
@@ -166,21 +166,24 @@ table {
 	flex: 1 1 auto;
 	flex-wrap: wrap;
 	align-items: center;
-	margin: -1 * (map-get($grid-gutter-widths, sm) / 2);
+	
+	@include make-row-grid-row(map-get($grid-gutters, sm));
 	
 	> .add-in-section {
-		padding: (map-get($grid-gutter-widths, sm) / 2);
 		align-self: center;
+		
+		@include make-row-grid-col(map-get($grid-gutters, sm));
 		
 		> .add-in-wrapper {
 			display: flex;
 			flex: 1 1 auto;
 			flex-wrap: wrap;
 			align-items: center;
-			margin: -1 * (map-get($grid-gutter-widths, xs) / 2);
+			
+			@include make-row-grid-row(map-get($grid-gutters, xs));
 			
 			> .add-in {
-				padding: (map-get($grid-gutter-widths, xs) / 2);
+				@include make-row-grid-col(map-get($grid-gutters, xs));
 				
 				> nav {
 					> .pagination {

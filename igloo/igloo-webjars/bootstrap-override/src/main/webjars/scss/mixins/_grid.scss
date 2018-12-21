@@ -1,16 +1,54 @@
-@mixin make-container-grid($gutter, $direction:"") {
-	padding#{$direction}: ($gutter / 2);
+@mixin make-container-grid($gutters, $direction:"") {
+	@if type-of($gutters) == number {
+		padding#{$direction}: $gutters / 2;
+	} @else if type-of($gutters) == list {
+		@if length($gutters) == 1 {
+			padding: (nth($gutters, 1) / 2);
+		} @else if length($gutters) == 2 {
+			padding: (nth($gutters, 1) / 2) (nth($gutters, 2) / 2);
+		} @else if length($gutters) == 4 {
+			padding: (nth($gutters, 1) / 2) (nth($gutters, 2) / 2) (nth($gutters, 3) / 2) (nth($gutters, 4) / 2);
+		}
+	}
 }
 
-@mixin make-row-grid($gutter, $direction:"") {
+@mixin make-row-grid($gutters, $direction:"") {
 	&.row,
 	&[class*="row-"] {
-		margin#{$direction}: -1 * ($gutter / 2);
+		@include make-row-grid-row($gutters, $direction);
 		
 		> .col,
 		> [class*="col-"],
 		> [class*="-col"] {
-			padding#{$direction}: ($gutter / 2);
+			@include make-row-grid-col($gutters, $direction);
+		}
+	}
+}
+
+@mixin make-row-grid-row($gutters, $direction:"") {
+	@if type-of($gutters) == number {
+		margin#{$direction}: (-1 * ($gutters / 2));
+	} @else if type-of($gutters) == list {
+		@if length($gutters) == 1 {
+			margin: (-1 * (nth($gutters, 1) / 2));
+		} @else if length($gutters) == 2 {
+			margin: (-1 * (nth($gutters, 1) / 2)) (-1 * (nth($gutters, 2) / 2));
+		} @else if length($gutters) == 4 {
+			margin: (-1 * (nth($gutters, 1) / 2)) (-1 * (nth($gutters, 2) / 2)) (-1 * (nth($gutters, 3) / 2)) (-1 * (nth($gutters, 4) / 2));
+		}
+	}
+}
+
+@mixin make-row-grid-col($gutters, $direction:"") {
+	@if type-of($gutters) == number {
+		padding#{$direction}: $gutters / 2;
+	} @else if type-of($gutters) == list {
+		@if length($gutters) == 1 {
+			padding: (nth($gutters, 1) / 2);
+		} @else if length($gutters) == 2 {
+			padding: (nth($gutters, 1) / 2) (nth($gutters, 2) / 2);
+		} @else if length($gutters) == 4 {
+			padding: (nth($gutters, 1) / 2) (nth($gutters, 2) / 2) (nth($gutters, 3) / 2) (nth($gutters, 4) / 2);
 		}
 	}
 }

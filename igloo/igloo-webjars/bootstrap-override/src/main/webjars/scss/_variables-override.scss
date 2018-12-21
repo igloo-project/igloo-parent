@@ -35,19 +35,20 @@ $theme-colors: map-merge(
 
 // Grid columns
 
-$grid-gutter-widths: () !default; // bootstrap-override
-$grid-gutter-widths: map-merge(
+$grid-gutters: () !default; // bootstrap-override
+$grid-gutters: map-merge(
 	(
-		0: 0,
-		xxs: 4px,
-		xs: 8px,
-		sm: 15px,
-		md: 30px,
-		lg: 40px,
-		xl: 50px,
-		xxl: 60px
+		0: (0, 0, 0, 0),
+		xxxs: (2px, 2px, 2px, 2px),
+		xxs: (4px, 4px, 4px, 4px),
+		xs: (8px, 8px, 8px, 8px),
+		sm: (15px, 15px, 15px, 15px),
+		md: (30px, 30px, 30px, 30px),
+		lg: (40px, 40px, 40px, 40px),
+		xl: (50px, 50px, 50px, 50px),
+		xxl: (60px, 60px, 60px, 60px)
 	),
-	$grid-gutter-widths
+	$grid-gutters
 ); // bootstrap-override
 
 

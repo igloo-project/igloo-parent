@@ -5,35 +5,38 @@
 		<wicket:fragment wicket:id="content">
 			<div class="card-body">
 				<form wicket:id="form">
-					<fieldset>
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><span class="fa fa-fw fa-user" /></span>
-								</div>
-								<input class="form-control form-control-username" wicket:id="username" type="text" id="username" />
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><span class="fa fa-fw fa-lock" /></span>
-								</div>
-								<input class="form-control form-control-password" wicket:id="password" type="password" id="password" />
-							</div>
-						</div>
-						
-						<div class="card-action">
-							<div class="row row-action justify-content-end">
-								<div class="col-auto">
-									<button class="btn btn-danger" type="submit">
-										<span class="fa fa-fw fa-sign-in-alt" />
-										<wicket:message key="console.signIn.action.signIn" />
-									</button>
+					<div class="row row-form">
+						<div class="col-12">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><span class="fa fa-fw fa-user" /></span>
+									</div>
+									<input class="form-control form-control-username" wicket:id="username" type="text" id="username" />
 								</div>
 							</div>
 						</div>
-					</fieldset>
+						<div class="col-12">
+							<div class="form-group">
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><span class="fa fa-fw fa-lock" /></span>
+									</div>
+									<input class="form-control form-control-password" wicket:id="password" type="password" id="password" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-action">
+						<div class="row row-action justify-content-end">
+							<div class="col-auto">
+								<button class="btn btn-danger" type="submit">
+									<span class="fa fa-fw fa-sign-in-alt" />
+									<wicket:message key="console.signIn.action.signIn" />
+								</button>
+							</div>
+						</div>
+					</div>
 				</form>
 			</div>
 			
