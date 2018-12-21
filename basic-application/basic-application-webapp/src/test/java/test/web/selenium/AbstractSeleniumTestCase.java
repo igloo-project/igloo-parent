@@ -103,7 +103,7 @@ public class AbstractSeleniumTestCase {
 	private IHibernateSearchService hibernateSearchService;
 
 	@Autowired
-	private IPropertyService propertyService;
+	protected IPropertyService propertyService;
 
 	@Autowired
 	protected IHistoryLogService historyLogService;
@@ -111,9 +111,8 @@ public class AbstractSeleniumTestCase {
 	@Before
 	public void init() throws ServiceException, SecurityServiceException {
 		// Nécessaire pour l'injection des bean
-		ApplicationContextUtils.getInstance().getContext().getAutowireCapableBeanFactory().autowireBean(this);
+		ApplicationContextUtils.getContext().getAutowireCapableBeanFactory().autowireBean(this);
 		
-//		System.setProperty("webdriver.gecko.driver", "/home/mpiva/Documents/apps/geckodriver-v0.23.0-linux64/geckodriver");
 		System.setProperty("webdriver.gecko.driver", propertyService.get(GECKODRIVER_PATH));
 		
 		cleanAll();

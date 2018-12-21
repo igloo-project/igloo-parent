@@ -13,4 +13,5 @@ public class SeleniumPropertyIds extends AbstractPropertyIds {
 	 */
 	
 	public static final ImmutablePropertyId<String> GECKODRIVER_PATH = immutable("selenium.firefox.geckodriver.path");
+	public static final ImmutablePropertyId<String> XVFB_DISPLAY = immutable("selenium.xvfb.display");
 }

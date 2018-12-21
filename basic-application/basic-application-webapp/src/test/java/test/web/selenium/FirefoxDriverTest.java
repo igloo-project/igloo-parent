@@ -1,5 +1,7 @@
 package test.web.selenium;
 
+import static test.web.property.SeleniumPropertyIds.XVFB_DISPLAY;
+
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.Test;
@@ -7,13 +9,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class FirefoxDriverTest extends AbstractSeleniumTestCase {
 
 	@Override
 	public void init() throws ServiceException, SecurityServiceException  {
 		super.init();
-		driver = new FirefoxDriver();
+		FirefoxOptions fo = new FirefoxOptions();
+		fo.addArguments("--display=" + propertyService.get(XVFB_DISPLAY));
+		driver = new FirefoxDriver(fo);
 	}
 
 	@Test

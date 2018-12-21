@@ -19,7 +19,7 @@ public class JettyTestExecutionListener implements TestExecutionListener {
 	}
 
 	/**
-	 * Indispensable pour cleaner le contexte et permettre aux tests WicketTester de s'exécuter par la suite
+	 * Indispensable pour cleaner le contexte
 	 */
 	@Override
 	public void afterTestClass(TestContext testContext) throws Exception {

@@ -27,7 +27,7 @@ public class EntityManagerSeleniumExecutionListener extends AbstractTestExecutio
 	}
 
 	private void refreshBean() {
-		ApplicationContextUtils.getInstance().getContext().getAutowireCapableBeanFactory().autowireBean(this);
+		ApplicationContextUtils.getContext().getAutowireCapableBeanFactory().autowireBean(this);
 	}
 
 }
