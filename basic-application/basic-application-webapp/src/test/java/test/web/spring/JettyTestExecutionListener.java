@@ -43,7 +43,7 @@ public class JettyTestExecutionListener implements TestExecutionListener {
 		server.setHandler(webapp);
 		
 		// Nécessaire pour lancer le serveur en mode test
-//		System.setProperty("igloo.profile", "test");
+		System.setProperty("igloo.profile", "test");
 		
 		server.start();
 	}

@@ -28,9 +28,6 @@ public abstract class AbstractSpringBoostrapProfileTest extends AbstractBootstra
 	@Value("${property.test:}")
 	protected String test;
 
-	@Value("${property.ci:}")
-	protected String ci;
-
 	@Value("${property.development:}")
 	protected String development;
 
