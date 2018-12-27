@@ -49,11 +49,11 @@ public class ProfileDescriptionPanel extends GenericPanel<User> {
 			new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())),
 			new EmailLink("email", emailModel),
 			new DefaultPlaceholderPanel("emailPlaceholder").condition(Condition.modelNotNull(emailModel)),
+			new CoreLabel("locale", BindingModel.of(userModel, Bindings.user().locale()))
+				.showPlaceholder(),
 			new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()), DatePattern.SHORT_DATETIME)
 				.showPlaceholder(),
 			new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()), DatePattern.SHORT_DATETIME)
-				.showPlaceholder(),
-			new CoreLabel("locale", BindingModel.of(userModel, Bindings.user().locale()))
 				.showPlaceholder(),
 			new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()), DatePattern.SHORT_DATETIME)
 				.showPlaceholder()

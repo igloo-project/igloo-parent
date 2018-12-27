@@ -162,25 +162,25 @@ table {
 }
 
 .add-in-container {
+	@include make-row-grid-row(map-get($grid-gutters, sm));
+	
 	display: flex;
 	flex: 1 1 auto;
 	flex-wrap: wrap;
 	align-items: center;
 	
-	@include make-row-grid-row(map-get($grid-gutters, sm));
-	
 	> .add-in-section {
-		align-self: center;
-		
 		@include make-row-grid-col(map-get($grid-gutters, sm));
 		
+		align-self: center;
+		
 		> .add-in-wrapper {
+			@include make-row-grid-row(map-get($grid-gutters, xs));
+			
 			display: flex;
 			flex: 1 1 auto;
 			flex-wrap: wrap;
 			align-items: center;
-			
-			@include make-row-grid-row(map-get($grid-gutters, xs));
 			
 			> .add-in {
 				@include make-row-grid-col(map-get($grid-gutters, xs));
