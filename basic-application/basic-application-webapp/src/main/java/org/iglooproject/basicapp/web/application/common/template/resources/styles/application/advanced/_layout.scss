@@ -41,7 +41,7 @@ body {
 						@include make-container();
 						@include make-container-max-widths();
 						
-						padding: $main-content-main-header-container-padding-y $main-content-main-header-container-padding-x;
+						padding: 15px $layout-container-padding-x;
 						
 						> .content-header {
 							padding: 0;
@@ -76,7 +76,7 @@ body {
 						@include make-container();
 						@include make-container-max-widths();
 						
-						padding: $main-content-main-body-container-padding-y $main-content-main-body-container-padding-x;
+						padding: 25px $layout-container-padding-x;
 						
 						> .content-body {
 							padding: 0;
@@ -134,6 +134,7 @@ body {
 							.sidebar-body-scrollable {
 								overflow-x: hidden;
 								overflow-y: auto;
+								flex: 1;
 								
 								.sidebar-body {
 									display: flex;
@@ -142,6 +143,8 @@ body {
 									
 									.sidebar-body-content {
 										@include flex-item-overflow-wrap();
+										
+										flex: 1;
 										
 										.sidebar-section {
 											.sidebar-section-title {
@@ -162,10 +165,10 @@ body {
 						}
 						
 						.sidebar-footer {
-							padding: $sidebar-footer-padding-y $sidebar-footer-padding-x;
-							background-color: $sidebar-footer-bg;
-							border-top: 1px solid $sidebar-footer-border-color;
-							color: $sidebar-footer-color;
+							padding: 15px 15px;
+							background-color: #21212E;
+							border-top: 1px solid #03FFB0;
+							color: #FFFFFF;
 							
 							.sidebar-footer-info {
 								@include flex-overflow-wrap();

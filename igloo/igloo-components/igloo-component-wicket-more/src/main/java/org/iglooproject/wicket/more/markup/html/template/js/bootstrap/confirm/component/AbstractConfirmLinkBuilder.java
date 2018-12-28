@@ -33,62 +33,62 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	private static final long serialVersionUID = 365949870142796149L;
 
 	protected IDetachableFactory<? super IModel<O>, ? extends IModel<String>> titleModelFactory;
-	
+
 	protected IDetachableFactory<? super IModel<O>, ? extends IModel<String>> contentModelFactory;
-	
+
 	protected IModel<String> yesLabelModel;
-	
+
 	protected IModel<String> noLabelModel;
-	
+
 	protected IModel<String> yesIconModel;
-	
+
 	protected IModel<String> noIconModel;
-	
+
 	protected IModel<String> yesButtonModel;
-	
+
 	protected IModel<String> noButtonModel;
-	
+
 	protected IModel<String> cssClassNamesModel;
-	
+
 	protected Form<?> form;
-	
+
 	protected boolean keepMarkup = false;
-	
+
 	protected IOneParameterAjaxAction<? super IModel<O>> onAjaxClick;
-	
+
 	protected IOneParameterAction<? super IModel<O>> onClick;
-	
+
 	protected AbstractConfirmLinkBuilder() {
 	}
-	
+
 	@Override
 	public IConfirmLinkBuilderStepContent<L, O> title(IModel<String> titleModel) {
 		return title(ModelFactories.constant(titleModel));
 	}
-	
+
 	@Override
 	public IConfirmLinkBuilderStepContent<L, O> title(IDetachableFactory<? super IModel<O>, ? extends IModel<String>> titleModelFactory) {
 		this.titleModelFactory = titleModelFactory;
 		return this;
 	}
-	
+
 	@Override
 	public IConfirmLinkBuilderStepEndContent<L, O> content(IModel<String> contentModel) {
 		return content(ModelFactories.constant(contentModel));
 	}
-	
+
 	@Override
 	public IConfirmLinkBuilderStepEndContent<L, O> content(IDetachableFactory<? super IModel<O>, ? extends IModel<String>> contentModelFactory) {
 		this.contentModelFactory = contentModelFactory;
 		return this;
 	}
-	
+
 	@Override
 	public IConfirmLinkBuilderStepEndContent<L, O> cssClassNamesModel(IModel<String> cssClassNamesModel) {
 		this.cssClassNamesModel = cssClassNamesModel;
 		return this;
 	}
-	
+
 	@Override
 	public IConfirmLinkBuilderStepOnclick<L, O> deleteConfirmation() {
 		confirm();
@@ -121,7 +121,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.yesButtonModel = new Model<String>("btn btn-success");
 		return this;
 	}
-	
+
 	@Override
 	public IConfirmLinkBuilderStepNo<L, O> yes(IModel<String> yesLabelModel, IModel<String> yesIconModel) {
 		this.yesLabelModel = yesLabelModel;
@@ -129,7 +129,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.yesButtonModel = new Model<String>("btn btn-success");
 		return this;
 	}
-	
+
 	@Override
 	public IConfirmLinkBuilderStepNo<L, O> yes(IModel<String> yesLabelModel, IModel<String> yesIconModel, IModel<String> yesButtonModel) {
 		this.yesLabelModel = yesLabelModel;
@@ -145,7 +145,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.noButtonModel = new Model<String>("btn btn-default btn-outline-secondary");
 		return this;
 	}
-	
+
 	@Override
 	public IConfirmLinkBuilderStepOnclick<L, O> no(IModel<String> noLabelModel, IModel<String> noIconModel) {
 		this.noLabelModel = noLabelModel;
@@ -153,7 +153,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.noButtonModel = new Model<String>("btn btn-default btn-outline-secondary");
 		return this;
 	}
-	
+
 	@Override
 	public IConfirmLinkBuilderStepOnclick<L, O> no(IModel<String> noLabelModel, IModel<String> noIconModel, IModel<String> noButtonModel) {
 		this.noLabelModel = noLabelModel;
@@ -161,7 +161,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.noButtonModel = noButtonModel;
 		return this;
 	}
-	
+
 	@Override
 	public IConfirmLinkBuilderStepOnclick<L, O> yesNo() {
 		this.yesLabelModel = new ResourceModel("common.yes");
@@ -250,16 +250,16 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		
 		private final IOneParameterAjaxAction<? super IModel<O>> onClick;
 		
-		public FunctionalAjaxConfirmLink(String id, IModel<O> model,
-				Form<?> form,
+		public FunctionalAjaxConfirmLink(String id, IModel<O> model, Form<?> form,
 				IDetachableFactory<? super IModel<O>, ? extends IModel<String>> titleModelFactory,
 				IDetachableFactory<? super IModel<O>, ? extends IModel<String>> textModelFactory,
-				IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
-				IModel<String> yesButtonModel, IModel<String> noButtonModel,
+				IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel,
+				IModel<String> noIconModel, IModel<String> yesButtonModel, IModel<String> noButtonModel,
 				IModel<String> cssClassNamesModel, boolean textNoEscape,
 				IOneParameterAjaxAction<? super IModel<O>> onClick) {
 			super(id, model, form, titleModelFactory.create(model), textModelFactory.create(model), yesLabelModel,
-					noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel, cssClassNamesModel, textNoEscape);
+					noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel, cssClassNamesModel,
+					textNoEscape);
 			this.onClick = onClick;
 		}
 		
@@ -290,12 +290,13 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		public FunctionalConfirmLink(String id, IModel<O> model,
 				IDetachableFactory<? super IModel<O>, ? extends IModel<String>> titleModelFactory,
 				IDetachableFactory<? super IModel<O>, ? extends IModel<String>> textModelFactory,
-				IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
-				IModel<String> yesButtonModel, IModel<String> noButtonModel,
+				IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel,
+				IModel<String> noIconModel, IModel<String> yesButtonModel, IModel<String> noButtonModel,
 				IModel<String> cssClassNamesModel, boolean textNoEscape,
 				IOneParameterAction<? super IModel<O>> onClick) {
 			super(id, model, titleModelFactory.create(model), textModelFactory.create(model), yesLabelModel,
-					noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel, cssClassNamesModel, textNoEscape);
+					noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel, cssClassNamesModel,
+					textNoEscape);
 			this.onClick = onClick;
 		}
 		
@@ -315,16 +316,16 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	@Override
 	public void detach() {
 		Detachables.detach(
-				titleModelFactory,
-				contentModelFactory,
-				yesLabelModel,
-				noLabelModel,
-				yesIconModel,
-				noIconModel,
-				yesButtonModel,
-				noButtonModel,
-				cssClassNamesModel,
-				onClick
+			titleModelFactory,
+			contentModelFactory,
+			yesLabelModel,
+			noLabelModel,
+			yesIconModel,
+			noIconModel,
+			yesButtonModel,
+			noButtonModel,
+			cssClassNamesModel,
+			onClick
 		);
 	}
 

@@ -37,27 +37,29 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 	private final Form<?> form;
 
 	protected AjaxConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel, boolean textNoEscape) {
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> cssClassNamesModel,
+			boolean textNoEscape) {
 		this(
-				id,
-				model,
-				null,
-				titleModel,
-				textModel,
-				yesLabelModel,
-				noLabelModel,
-				new Model<String>("fa fa-fw fa-check"),
-				new Model<String>("fa fa-fw fa-ban"),
-				new Model<String>("btn btn-success"),
-				new Model<String>("btn btn-default"),
-				cssClassNamesModel,
-				textNoEscape
+			id,
+			model,
+			null,
+			titleModel,
+			textModel,
+			yesLabelModel,
+			noLabelModel,
+			new Model<String>("fa fa-fw fa-check"),
+			new Model<String>("fa fa-fw fa-ban"),
+			new Model<String>("btn btn-success"),
+			new Model<String>("btn btn-default"),
+			cssClassNamesModel,
+			textNoEscape
 		);
 	}
 	
-	protected AjaxConfirmLink(String id, IModel<O> model, Form<?> form, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
-			IModel<String> yesButtonModel, IModel<String> noButtonModel, IModel<String> cssClassNamesModel, boolean textNoEscape) {
+	protected AjaxConfirmLink(String id, IModel<O> model, Form<?> form, IModel<String> titleModel,
+			IModel<String> textModel, IModel<String> yesLabelModel, IModel<String> noLabelModel,
+			IModel<String> yesIconModel, IModel<String> noIconModel, IModel<String> yesButtonModel,
+			IModel<String> noButtonModel, IModel<String> cssClassNamesModel, boolean textNoEscape) {
 		super(id, model);
 		setOutputMarkupId(true);
 		this.form = form;

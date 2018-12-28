@@ -4,7 +4,7 @@
 	
 	<groupId>org.iglooproject</groupId>
 	<artifactId>igloo-parent</artifactId>
-	<version>1.1.15</version>
+	<version>1.1.16</version>
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Parent</name>
@@ -19,7 +19,8 @@
 		
 		<!-- version needed here as we use allure to aggregate child reports -->
 		<igloo.allure-maven.version>2.9</igloo.allure-maven.version>
-		<igloo.allure.version>2.6.0</igloo.allure.version>
+		<igloo.allure.version>2.8.1</igloo.allure.version>
+		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
 	</properties>
 	
 	<profiles>
@@ -111,6 +112,7 @@
 						<version>${igloo.allure-maven.version}</version>
 						<configuration>
 							<reportVersion>${igloo.allure.version}</reportVersion>
+							<allureDownloadUrl>${igloo.allure.downloadUrl}</allureDownloadUrl>
 						</configuration>
 						<reportSets>
 							<reportSet>

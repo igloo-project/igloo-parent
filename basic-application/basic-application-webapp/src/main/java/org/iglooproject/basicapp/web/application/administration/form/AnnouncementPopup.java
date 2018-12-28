@@ -61,15 +61,15 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 
 	private final IModel<AnnouncementType> typeModel = BindingModel.of(getModel(), Bindings.announcement().type());
 
-	private final IModel<Date> publicationStartDateModel = BindingModel.of(getModel(), Bindings.announcement().publication().startDateTime());
-	private final IModel<Date> publicationStartTimeModel = Model.of();
-	private final IModel<Date> publicationEndDateModel = BindingModel.of(getModel(), Bindings.announcement().publication().endDateTime());
-	private final IModel<Date> publicationEndTimeModel = Model.of();
-
 	private final IModel<Date> interruptionStartDateModel = BindingModel.of(getModel(), Bindings.announcement().interruption().startDateTime());
 	private final IModel<Date> interruptionStartTimeModel = Model.of();
 	private final IModel<Date> interruptionEndDateModel = BindingModel.of(getModel(), Bindings.announcement().interruption().endDateTime());
 	private final IModel<Date> interruptionEndTimeModel = Model.of();
+
+	private final IModel<Date> publicationStartDateModel = BindingModel.of(getModel(), Bindings.announcement().publication().startDateTime());
+	private final IModel<Date> publicationStartTimeModel = Model.of();
+	private final IModel<Date> publicationEndDateModel = BindingModel.of(getModel(), Bindings.announcement().publication().endDateTime());
+	private final IModel<Date> publicationEndTimeModel = Model.of();
 
 	public AnnouncementPopup(String id) {
 		super(id, new GenericEntityModel<Long, Announcement>(new Announcement()));
@@ -111,6 +111,26 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 							}
 						})
 				),
+			new EnclosureContainer("interruptionContainer")
+				.condition(isTypeServiceInterruption)
+				.add(
+					new CoreLabel("interruptionStartDateTitle", new ResourceModel("business.announcement.interruption.startDateTime")),
+					new DatePicker("interruptionStartDate", interruptionStartDateModel, DatePattern.SHORT_DATE)
+						.setLabel(new ResourceModel("business.announcement.interruption.startDateTime.date"))
+						.setRequired(true)
+						.add(new AttributeModifier("placeholder", new ResourceModel("date.format.shortDate.placeholder"))),
+					new TimeField("interruptionStartTime", interruptionStartTimeModel, DatePattern.TIME)
+						.setLabel(new ResourceModel("business.announcement.interruption.startDateTime.time"))
+						.setRequired(true),
+					new CoreLabel("interruptionEndDateTitle", new ResourceModel("business.announcement.interruption.endDateTime")),
+					new DatePicker("interruptionEndDate", interruptionEndDateModel, DatePattern.SHORT_DATE)
+						.setLabel(new ResourceModel("business.announcement.interruption.endDateTime.date"))
+						.setRequired(true)
+						.add(new AttributeModifier("placeholder", new ResourceModel("date.format.shortDate.placeholder"))),
+					new TimeField("interruptionEndTime", interruptionEndTimeModel, DatePattern.TIME)
+						.setLabel(new ResourceModel("business.announcement.interruption.endDateTime.time"))
+						.setRequired(true)
+				),
 			new EnclosureContainer("descriptionContainer")
 				.condition(isTypeServiceInterruption.negate())
 				.add(
@@ -143,26 +163,6 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 			new TimeField("publicationEndTime", publicationEndTimeModel, DatePattern.TIME)
 				.setLabel(new ResourceModel("business.announcement.publication.endDateTime.time"))
 				.setRequired(true),
-			new EnclosureContainer("interruptionContainer")
-				.condition(isTypeServiceInterruption)
-				.add(
-					new CoreLabel("interruptionStartDateTitle", new ResourceModel("business.announcement.interruption.startDateTime")),
-					new DatePicker("interruptionStartDate", interruptionStartDateModel, DatePattern.SHORT_DATE)
-						.setLabel(new ResourceModel("business.announcement.interruption.startDateTime.date"))
-						.setRequired(true)
-						.add(new AttributeModifier("placeholder", new ResourceModel("date.format.shortDate.placeholder"))),
-					new TimeField("interruptionStartTime", interruptionStartTimeModel, DatePattern.TIME)
-						.setLabel(new ResourceModel("business.announcement.interruption.startDateTime.time"))
-						.setRequired(true),
-					new CoreLabel("interruptionEndDateTitle", new ResourceModel("business.announcement.interruption.endDateTime")),
-					new DatePicker("interruptionEndDate", interruptionEndDateModel, DatePattern.SHORT_DATE)
-						.setLabel(new ResourceModel("business.announcement.interruption.endDateTime.date"))
-						.setRequired(true)
-						.add(new AttributeModifier("placeholder", new ResourceModel("date.format.shortDate.placeholder"))),
-					new TimeField("interruptionEndTime", interruptionEndTimeModel, DatePattern.TIME)
-						.setLabel(new ResourceModel("business.announcement.interruption.endDateTime.time"))
-						.setRequired(true)
-				),
 			new CheckBox("active", BindingModel.of(getModel(), Bindings.announcement().active()))
 				.setLabel(new ResourceModel("business.announcement.active"))
 				.setOutputMarkupId(true)

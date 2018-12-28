@@ -13,28 +13,25 @@ import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
-/**
- * Déclenche le submit du formulaire lié après une validation.
- *
- */
 public class ConfirmButton extends Button {
 
 	private static final long serialVersionUID = -4124927130129944090L;
-	
-	public ConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
-			IModel<String> yesButtonModel, IModel<String> noButtonModel, IModel<String> cssClassNamesModel, boolean textNoEscape) {
+
+	public ConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel, IModel<String> yesLabelModel,
+			IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
+			IModel<String> yesButtonModel, IModel<String> noButtonModel, IModel<String> cssClassNamesModel,
+			boolean textNoEscape) {
 		super(id);
 		setOutputMarkupId(true);
 		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel,
 				yesButtonModel, noButtonModel, cssClassNamesModel, textNoEscape));
 	}
-	
+
 	@Override
 	protected String getOnClickScript() {
 		return BootstrapConfirmStatement.confirm(ConfirmButton.this).append("return false;").render().toString();
 	}
-	
+
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);

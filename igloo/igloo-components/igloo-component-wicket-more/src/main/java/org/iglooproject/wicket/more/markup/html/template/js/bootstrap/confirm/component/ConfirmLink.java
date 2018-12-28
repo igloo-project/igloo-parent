@@ -18,9 +18,6 @@ import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
-/**
- * Comme un {@link Link} standard, sauf que l'exécution du {@link Link#onClick()} est soumis à confirmation préalable.
- */
 public abstract class ConfirmLink<O> extends Link<O> {
 
 	private static final long serialVersionUID = -4124927130129944090L;
@@ -33,8 +30,9 @@ public abstract class ConfirmLink<O> extends Link<O> {
 	}
 
 	protected ConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,
-			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
-			IModel<String> yesButtonModel, IModel<String> noButtonModel, IModel<String> cssClassNamesModel, boolean textNoEscape) {
+			IModel<String> yesLabelModel, IModel<String> noLabelModel, IModel<String> yesIconModel,
+			IModel<String> noIconModel, IModel<String> yesButtonModel, IModel<String> noButtonModel,
+			IModel<String> cssClassNamesModel, boolean textNoEscape) {
 		super(id, model);
 		setOutputMarkupId(true);
 		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel,

@@ -1,0 +1,14 @@
+.form-group {
+	
+}
+
+.form-label {
+	color: #5F6368;
+	
+	&.required:before {
+		@include fa-mixin-icon($fa-var-exclamation-circle);
+		color: $warning;
+		margin-right: 4px;
+		font-size: .9rem;
+	}
+}
