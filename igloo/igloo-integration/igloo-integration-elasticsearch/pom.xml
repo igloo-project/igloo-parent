@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.integration</groupId>
 		<artifactId>igloo-integration</artifactId>
-		<version>1.2-SNAPSHOT</version>
+		<version>1.1.16-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>igloo-integration-elasticsearch</artifactId>
