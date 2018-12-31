@@ -1,6 +1,7 @@
 package test.web.config.spring;
 
 import static test.web.property.SeleniumPropertyIds.GECKODRIVER_PATH;
+import static test.web.property.SeleniumPropertyIds.XVFB_DISPLAY;
 
 import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
@@ -12,6 +13,7 @@ public class SeleniumPropertyRegistryConfig extends AbstractApplicationPropertyR
 	@Override
 	public void register(IPropertyRegistry registry) {
 		registry.registerString(GECKODRIVER_PATH);
+		registry.registerString(XVFB_DISPLAY);
 	}
 
 }
