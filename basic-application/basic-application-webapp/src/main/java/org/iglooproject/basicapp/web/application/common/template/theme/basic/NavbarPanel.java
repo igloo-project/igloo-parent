@@ -73,6 +73,7 @@ public class NavbarPanel extends AbstractNavbarPanel {
 								.add(new ClassAttributeAppender(navItem.getIconClassesModel())),
 							new CoreLabel("label", navItem.getLabelModel())
 						)
+						.add(new AttributeModifier("name", navItem.getLabelModel()))
 				);
 				
 				item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
@@ -108,6 +109,8 @@ public class NavbarPanel extends AbstractNavbarPanel {
 											.condition(Condition.hasText(navItem.getIconClassesModel()))
 											.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
 									);
+									
+									navLink.add(new AttributeModifier("name", navItem.getLabelModel()));
 									
 									item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
 									

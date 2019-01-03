@@ -49,18 +49,21 @@ public class FirefoxDriverTest extends AbstractSeleniumTestCase {
 	public void subMenuWithLinkTextAccess() throws InterruptedException {
 		login(administrator);
 		
-		getElementWithTimeout(By.linkText("Administration"), 10).click();
-		driver.findElement(By.linkText("Annonces")).click();
+		getElementWithTimeout(By.name("Administration"), 10).click();
+		driver.findElement(By.name("Annonces")).click();
+		
+		String expectedUrl = rootUrl + "administration/announcement/";
+		waitUntil(10, ExpectedConditions.urlMatches(expectedUrl + "[?]*[-a-zA-Z0-9+&@#/%=~_]*"));
 	}
 
 	@Test
 	public void dropDownSingleChoice() {
 		login(administrator);
 		
-		getElementWithTimeout(By.linkText("Administration"), 10).click();
-		driver.findElement(By.linkText("Utilisateurs")).click();
+		getElementWithTimeout(By.name("Administration"), 10).click();
+		driver.findElement(By.name("Utilisateurs")).click();
 		
-		WebElement userGroup = getElementWithTimeout(By.name("userGroup"), 10).findElement(By.tagName("span"));
+		WebElement userGroup = getElementWithTimeout(By.name("userGroup"), 10).findElement(By.className("select2-container"));
 		userGroup.click();
 		
 		waitUntil(10, ExpectedConditions.numberOfElementsToBe(By.className("select2-results__option"), 2));
@@ -77,7 +80,7 @@ public class FirefoxDriverTest extends AbstractSeleniumTestCase {
 		getElementWithTimeout(By.linkText("Administration"), 10).click();
 		driver.findElement(By.linkText("Utilisateurs")).click();
 		
-		WebElement quickAccess = getElementWithTimeout(By.name("quickAccess"), 10).findElement(By.tagName("span"));
+		WebElement quickAccess = getElementWithTimeout(By.name("quickAccess"), 10).findElement(By.className("select2-container"));
 		quickAccess.click();
 		
 		WebElement searchBox = getElementWithTimeout(By.className("select2-search__field"), 5);
