@@ -79,6 +79,8 @@ public class AbstractSeleniumTestCase {
 
 	protected BasicUser basicUser;
 
+	protected BasicUser basicUser2;
+
 	protected TechnicalUser administrator;
 
 	protected String rootUrl = "http://localhost:8090/";
@@ -164,7 +166,7 @@ public class AbstractSeleniumTestCase {
 	private void initUsers() throws ServiceException, SecurityServiceException {
 		basicUser = createUser("basicUser", UserTypeDescriptor.BASIC_USER,
 			ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_AUTHENTICATED), ImmutableSet.of(users));
-		createUser("basicUser2", UserTypeDescriptor.BASIC_USER,
+		basicUser2 = createUser("basicUser2", UserTypeDescriptor.BASIC_USER,
 				ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_AUTHENTICATED), ImmutableSet.of(users));
 		
 		administrator = createUser("administrator", UserTypeDescriptor.TECHNICAL_USER,

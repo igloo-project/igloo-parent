@@ -5,6 +5,7 @@ import static org.iglooproject.basicapp.web.application.common.util.CssClassCons
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.ComponentTag;
@@ -114,6 +115,7 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 			.addLabelColumn(new ResourceModel("business.user.username"), Bindings.user().username())
 				.withLink(AdministrationBasicUserDetailPage.MAPPER.setParameter2(new PageModel<>(this)))
 				.withClass("text text-md")
+				.linkBehavior(new AttributeModifier("name", "username"))
 			.addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
 				.withSort(UserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 				.withClass("text text-md")
