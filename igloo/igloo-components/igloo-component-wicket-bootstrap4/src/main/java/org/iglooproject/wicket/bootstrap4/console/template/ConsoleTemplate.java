@@ -101,6 +101,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 					navLink.add(new ClassAttributeAppender("dropdown-toggle"));
 					navLink.add(new AttributeModifier("data-toggle", "dropdown"));
 					navLink.add(new AttributeModifier("data-hover", "dropdown"));
+					navLink.add(new AttributeModifier("href", "#"));
 				}
 				
 				item.add(
