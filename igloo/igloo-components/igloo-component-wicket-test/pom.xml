@@ -10,7 +10,7 @@
 
 	<artifactId>igloo-component-wicket-test</artifactId>
 	
-	<name>Igloo - Component - Utilisties for wicket application test</name>
+	<name>Igloo - Component - Utilities for wicket application test</name>
 	
 	<dependencies>
 		
