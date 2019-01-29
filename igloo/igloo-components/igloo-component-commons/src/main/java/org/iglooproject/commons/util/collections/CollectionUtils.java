@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import com.google.common.base.Equivalence;
 import com.google.common.collect.Iterables;
@@ -34,6 +36,23 @@ public final class CollectionUtils {
 			dst.clear();
 			dst.addAll(elements);
 		}
+	}
+	
+	public static <T> void replaceAll(
+		Collection<T> dst,
+		Collection<? extends T> src,
+		Consumer<T> addConsumer,
+		Consumer<T> removeConsumer
+	) {
+		src.stream()
+			.filter(((Predicate<T>) dst::contains).negate())
+			.forEach(addConsumer);
+		
+		dst.stream()
+			.filter(((Predicate<T>) src::contains).negate())
+			.forEach(removeConsumer);
+		
+		replaceAll(dst, src);
 	}
 	
 	/**

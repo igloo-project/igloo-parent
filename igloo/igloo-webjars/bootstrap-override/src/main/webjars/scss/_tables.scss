@@ -1,0 +1,47 @@
+.table-bordered-inner {
+	th,
+	td {
+		border: $table-border-width solid $table-border-color;
+		
+		&:first-child {
+			border-left: 0;
+		}
+		
+		&:last-child {
+			border-right: 0;
+		}
+	}
+	
+	thead,
+	tbody {
+		tr {
+			&:first-child {
+				th,
+				td {
+					border-top: 0;
+				}
+			}
+		}
+	}
+	
+	tbody,
+	tfoot {
+		tr {
+			&:last-child {
+				th,
+				td {
+					border-bottom: 0;
+				}
+			}
+		}
+	}
+}
+
+.table-card-body {
+	margin: 0;
+	
+	caption {
+		padding-left: $card-spacer-x;
+		padding-right: $card-spacer-x;
+	}
+}
