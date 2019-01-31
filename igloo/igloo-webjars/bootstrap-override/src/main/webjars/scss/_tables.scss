@@ -1,15 +1,14 @@
+.table {
+	tfoot th {
+		vertical-align: top;
+		border-top: (2 * $table-border-width) solid $table-border-color;
+	}
+}
+
 .table-bordered-inner {
 	th,
 	td {
-		border: $table-border-width solid $table-border-color;
-		
-		&:first-child {
-			border-left: 0;
-		}
-		
-		&:last-child {
-			border-right: 0;
-		}
+		border-top: $table-border-width solid $table-border-color;
 	}
 	
 	thead,
@@ -24,16 +23,9 @@
 		}
 	}
 	
-	tbody,
-	tfoot {
-		tr {
-			&:last-child {
-				th,
-				td {
-					border-bottom: 0;
-				}
-			}
-		}
+	th + th,
+	td + td {
+		border-left: $table-border-width solid $table-border-color;
 	}
 }
 
