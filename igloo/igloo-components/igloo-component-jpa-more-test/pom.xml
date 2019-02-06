@@ -10,7 +10,7 @@
 
 	<artifactId>igloo-component-jpa-more-test</artifactId>
 	
-	<name>Igloo - Component - JPA - More JPA fun</name>
+	<name>Igloo - Component - JPA - More JPA fun - Test</name>
 
 	<dependencies>
 		
