@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>1.1.17</version>
+		<version>1.1.18</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
@@ -38,6 +38,7 @@
 		<module>igloo-component-jpa-test</module>
 		
 		<module>igloo-component-jpa-more</module>
+		<module>igloo-component-jpa-more-test</module>
 		<module>igloo-component-jpa-security</module>
 		<module>igloo-component-jpa-externallinkchecker</module>
 		

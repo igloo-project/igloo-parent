@@ -5,13 +5,12 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>1.1.17</version>
+		<version>1.1.18</version>
 	</parent>
 
 	<artifactId>igloo-component-jpa-test</artifactId>
 	
 	<name>Igloo - Component - JPA - Test</name>
-	<description>Capitalisation des outils génériques pour la technologie JPA - test tools</description>
 
 	<dependencies>
 		

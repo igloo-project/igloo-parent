@@ -1,6 +1,7 @@
 @mixin fa-mixin-font() {
 	@include fa-icon();
 	vertical-align: 0;
+	font-display: $fa-font-display;
 	font-family: $fa-font-family;
 	font-weight: $fa-font-weight;
 }

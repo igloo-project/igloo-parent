@@ -1,7 +1,6 @@
 package org.iglooproject.basicapp.core.business.common.util;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -19,7 +18,7 @@ public final class BasicApplicationLocale {
 
 	public static final Locale DEFAULT = FRENCH;
 
-	public static final Map<Locale, Comparator<String>> COMPARATORS = ImmutableMap.<Locale, Comparator<String>>builder()
+	public static final Map<Locale, Ordering<String>> COMPARATORS = ImmutableMap.<Locale, Ordering<String>>builder()
 			.put(ENGLISH, initCollator(ENGLISH))
 			.put(FRENCH, initCollator(FRENCH))
 			.build();
@@ -35,11 +34,11 @@ public final class BasicApplicationLocale {
 		return LocaleUtils.initCollator(locale);
 	}
 
-	public static final Comparator<String> comparator() {
+	public static final Ordering<String> comparator() {
 		return comparator(DEFAULT);
 	}
 
-	public static final Comparator<String> comparator(Locale locale) {
+	public static final Ordering<String> comparator(Locale locale) {
 		Locale localeToUse = locale;
 		
 		if (localeToUse == null) {
