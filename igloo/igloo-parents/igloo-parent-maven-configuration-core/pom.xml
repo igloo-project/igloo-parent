@@ -64,7 +64,7 @@
 		<igloo.oracle10g.version>10.2.0.5</igloo.oracle10g.version>
 		<igloo.mysql.version>5.1.14</igloo.mysql.version>
 		
-		<igloo.bindgen.version>4.1-SNAPSHOT</igloo.bindgen.version>
+		<igloo.bindgen.version>4.0.2</igloo.bindgen.version>
 		<igloo.bindgen-java.version>1.0.0</igloo.bindgen-java.version>
 		<igloo.bindgen-bindings-java.version>1.0.0</igloo.bindgen-bindings-java.version>
 		
