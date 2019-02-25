@@ -170,22 +170,22 @@ body {
 							border-top: 1px solid #03FFB0;
 							color: #FFFFFF;
 							
-							.sidebar-footer-info {
-								@include flex-overflow-wrap();
-								
-								.sidebar-footer-info-title {
-									color: #03FFB0;
-									font-weight: bold;
-									font-size: 1rem;
-									margin-bottom: .15rem;
-								}
-								
-								.sidebar-footer-info-version {
-									font-size: .85rem;
-								}
-								
-								.sidebar-footer-info-sha {
-									font-size: .5rem;
+							.footer-title {
+								color: #03FFB0;
+								font-weight: bold;
+								font-size: 1rem;
+								margin-bottom: .15rem;
+							}
+							
+							.footer-description {
+								.footer-description-info {
+									.footer-info-version {
+										font-size: .85rem;
+									}
+									
+									.footer-info-sha {
+										font-size: .5rem;
+									}
 								}
 							}
 						}

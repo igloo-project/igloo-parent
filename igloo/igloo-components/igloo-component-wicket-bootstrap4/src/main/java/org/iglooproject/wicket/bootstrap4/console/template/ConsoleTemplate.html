@@ -74,14 +74,26 @@
 			
 			<footer class="footer-section">
 				<div class="footer-container">
-					<div class="footer-info media align-items-center">
-						<a href="https://github.com/igloo-project/igloo-parent" target="_blank">
-							<img class="mr-3" src="static/common/images/logo-igloo-square.png" height="50" width="50" alt="Logo Igloo">
-						</a>
-						<div class="media-body">
-							<h6 class="footer-info-title"><wicket:message key="console.footer" /></h6>
-							<div wicket:id="applicationVersion" class="footer-info-version" />
-							<div wicket:id="iglooVersion" class="footer-info-version" />
+					<div class="row row-xs">
+						<div class="col-auto ml-auto">
+							<div class="footer-description">
+								<div class="row row-xs align-items-center justify-content-end">
+									<div class="col-auto">
+										<div class="footer-description-info">
+											<h6 class="footer-title"><wicket:message key="common.rootPageTitle" /></h6>
+											<div wicket:id="applicationVersion" class="footer-info-version-app" />
+											<div wicket:id="iglooVersion" class="footer-info-version-igloo" />
+										</div>
+									</div>
+									<div class="col-auto">
+										<div class="footer-description-logo">
+											<a href="https://github.com/igloo-project/igloo-parent" target="_blank">
+												<img src="static/application/images/logo-igloo-square.png" height="45" width="45" alt="Logo Igloo">
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

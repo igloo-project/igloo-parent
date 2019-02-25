@@ -62,14 +62,22 @@
 		</div>
 	</div>
 	<div class="sidebar-footer">
-		<div class="sidebar-footer-info media align-items-center">
-			<a href="https://github.com/igloo-project/igloo-parent" target="_blank">
-				<img class="mr-3" src="static/application/images/logo-igloo-square.png" height="40" width="40" alt="Logo Igloo">
-			</a>
-			<div class="media-body">
-				<h6 class="sidebar-footer-info-title"><wicket:message key="common.rootPageTitle" /></h6>
-				<div wicket:id="version" class="sidebar-footer-info-version" />
-				<div wicket:id="sha" class="sidebar-footer-info-sha" />
+		<div class="footer-description">
+			<div class="row row-xs align-items-center">
+				<div class="col-auto">
+					<div class="footer-description-logo">
+						<a href="https://github.com/igloo-project/igloo-parent" target="_blank">
+							<img src="static/application/images/logo-igloo-square.png" height="40" width="40" alt="Logo Igloo">
+						</a>
+					</div>
+				</div>
+				<div class="col minw-0">
+					<div class="footer-description-info">
+						<h6 class="footer-title"><wicket:message key="common.rootPageTitle" /></h6>
+						<div wicket:id="version" class="footer-info-version" />
+						<div wicket:id="sha" class="footer-info-sha" />
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
