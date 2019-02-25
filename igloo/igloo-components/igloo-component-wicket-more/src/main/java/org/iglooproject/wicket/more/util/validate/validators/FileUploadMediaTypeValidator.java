@@ -20,10 +20,12 @@ public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>
 
 	private final List<MediaType> mediaTypes;
 
+	private String errorResourceKey;
+
 	public FileUploadMediaTypeValidator(Collection<MediaType> mediaTypes) {
 		this.mediaTypes = ImmutableList.copyOf(Args.notNull(mediaTypes, "mediaTypes"));
 	}
-	
+
 	@Override
 	public void validate(IValidatable<List<FileUpload>> validatable) {
 		for (FileUpload fileUpload : validatable.getValue()) {
@@ -32,12 +34,20 @@ public class FileUploadMediaTypeValidator implements IValidator<List<FileUpload>
 			
 			if (fileUploadMediaType == null || !mediaTypes.contains(fileUploadMediaType)) {
 				ValidationError error = new ValidationError();
+				if (errorResourceKey != null) {
+					error.addKey(errorResourceKey);
+				}
 				error.addKey(this);
 				error.setVariable("extensions", Joiner.on(", ").skipNulls().join(mediaTypes.stream().map(input -> input.extension()).iterator()));
 				error.setVariable("clientFileName", fileUpload.getClientFileName());
 				validatable.error(error);
 			}
 		}
+	}
+
+	public FileUploadMediaTypeValidator setErrorResourceKey(String errorResourceKey) {
+		this.errorResourceKey = errorResourceKey;
+		return this;
 	}
 
 }

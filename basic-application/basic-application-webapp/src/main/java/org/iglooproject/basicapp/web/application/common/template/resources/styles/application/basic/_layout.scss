@@ -92,27 +92,29 @@ body {
 			
 			padding: 10px $layout-container-padding-x;
 			
-			display: flex;
-			flex-direction: row-reverse;
+			.footer-title {
+				color: #03FFB0;
+				font-weight: bold;
+				font-size: 1rem;
+				margin-bottom: .1rem;
+			}
 			
-			.footer-info {
-				max-width: 400px;
-				
-				@include flex-overflow-wrap();
-				
-				.footer-info-title {
-					color: #03FFB0;
-					font-weight: bold;
-					font-size: 1rem;
-					margin-bottom: .15rem;
-				}
-				
-				.footer-info-version {
-					font-size: .85rem;
-				}
-				
-				.footer-info-sha {
-					font-size: .5rem;
+			.footer-link {
+				color: #FFFFFF;
+			}
+			
+			.footer-description {
+				.footer-description-info {
+					max-width: 250px;
+					text-align: right;
+					
+					.footer-info-version {
+						font-size: .85rem;
+					}
+					
+					.footer-info-sha {
+						font-size: .5rem;
+					}
 				}
 			}
 		}
