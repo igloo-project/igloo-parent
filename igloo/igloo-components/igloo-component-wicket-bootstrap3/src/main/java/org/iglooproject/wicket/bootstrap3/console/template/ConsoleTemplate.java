@@ -222,7 +222,7 @@ public abstract class ConsoleTemplate extends CoreWebPage {
 
 	@Override
 	public String getVariation() {
-		// La console en BS4 quoi qu'il arrive, il ne faut pas laisser l'application qui l'utilise choisir la version.
-		return AbstractWebPageTemplate.BOOTSTRAP4_VARIATION;
+		return AbstractWebPageTemplate.BOOTSTRAP3_VARIATION;
 	}
+
 }
