@@ -1,56 +1,47 @@
 package org.iglooproject.wicket.more.rendering;
 
+import java.io.Serializable;
 import java.util.Locale;
+import java.util.Objects;
 
 import org.apache.wicket.model.Model;
-import org.iglooproject.spring.util.StringUtils;
+import org.apache.wicket.model.StringResourceModel;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.BootstrapColor;
+import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.IBootstrapColor;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
 
 public class BooleanRenderer extends BootstrapRenderer<Boolean> {
 
 	private static final long serialVersionUID = -6934415690685574154L;
-	
-	private static final BooleanRenderer TRUE_FALSE = BooleanRenderer.withPrefix("common.boolean");
-	
-	private static final BooleanRenderer YES_NO = BooleanRenderer.withPrefix("common.boolean.yesNo");
-	
+
+	private static final BooleanRenderer TRUE_FALSE = BooleanRenderer.builder().trueFalse().build();
+
+	private static final BooleanRenderer YES_NO = BooleanRenderer.builder().yesNo().build();
+
 	public static BooleanRenderer get() {
-		return YES_NO;
+		return yesNo();
 	}
-	
+
 	public static BooleanRenderer yesNo() {
 		return YES_NO;
 	}
-	
+
 	public static BooleanRenderer trueFalse() {
 		return TRUE_FALSE;
 	}
-	
-	public static BooleanRenderer withPrefix(String prefix) {
-		return with(prefix, null);
-	}
-	
-	public static BooleanRenderer withSuffix(String suffix) {
-		return with(null, suffix);
-	}
-	
-	public static BooleanRenderer with(String prefix, String suffix) {
-		return new BooleanRenderer(prefix, suffix);
-	}
-	
-	private String prefix = null;
-	
-	private String suffix = null;
-	
-	private BooleanRenderer() {
+
+	private final String resourceKey;
+
+	private final ValueInformation onTrue;
+
+	private final ValueInformation onFalse;
+
+	private BooleanRenderer(Builder builder) {
 		super();
-	}
-	
-	private BooleanRenderer(String prefix, String suffix) {
-		this();
-		this.prefix = prefix;
-		this.suffix = suffix;
+		this.resourceKey = Objects.requireNonNull(builder.resourceKey);
+		this.onTrue = Objects.requireNonNull(builder.onTrueBuilder.information);
+		this.onFalse = Objects.requireNonNull(builder.onFalseBuilder.information);
 	}
 
 	@Override
@@ -60,40 +51,107 @@ public class BooleanRenderer extends BootstrapRenderer<Boolean> {
 		}
 		if (value) {
 			return BootstrapRendererInformation.builder()
-					.label(renderLabel(value, locale))
-					.icon("fa fa-fw fa-check fa-fw")
-					// No color
-					.build();
+				.label(renderLabel(value, locale))
+				.icon(onTrue.icon)
+				.color(onTrue.color)
+				.build();
 		} else {
 			return BootstrapRendererInformation.builder()
-					.label(renderLabel(value, locale))
-					.icon("fa fa-fw fa-times fa-fw")
-					// No color
-					.build();
+				.label(renderLabel(value, locale))
+				.icon(onFalse.icon)
+				.color(onFalse.color)
+				.build();
 		}
 	}
 
 	private String renderLabel(Boolean value, Locale locale) {
-		StringBuilder key = new StringBuilder();
-		
-		if (StringUtils.hasText(prefix)) {
-			key.append(prefix).append(".");
-		}
-		
-		key.append(resourceKey(value));
-		
-		if (StringUtils.hasText(suffix)) {
-			key.append(".").append(suffix);
-		}
-		return getString(key.toString(), locale, Model.of(value));
+		return new StringResourceModel(resourceKey, Model.of(value)).getObject();
 	}
 
-	/**
-	 * @deprecated Do not override this.
-	 */
-	@Deprecated
-	protected String resourceKey(Boolean value) {
-		return value.toString();
+	private static final class ValueInformation implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+		
+		private IBootstrapColor color;
+		
+		private String icon;
+		
+		public ValueInformation color(IBootstrapColor color) {
+			this.color = Objects.requireNonNull(color);
+			return this;
+		}
+		
+		public ValueInformation icon(String icon) {
+			this.icon = Objects.requireNonNull(icon);
+			return this;
+		}
+	}
+
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	public static final class Builder {
+		
+		private String resourceKey;
+		
+		private ValueBuilder onTrueBuilder = new ValueBuilder(this);
+		
+		private ValueBuilder onFalseBuilder = new ValueBuilder(this);
+		
+		private Builder() {
+			yesNo();
+			onTrueBuilder.information()
+				.color(BootstrapColor.SUCCESS)
+				.icon("fa fa-fw fa-check");
+			onFalseBuilder.information()
+				.color(BootstrapColor.DANGER)
+				.icon("fa fa-fw fa-times");
+		}
+		
+		public Builder resourceKey(String resourceKey) {
+			this.resourceKey = resourceKey;
+			return this;
+		}
+		
+		public Builder yesNo() {
+			return resourceKey("common.boolean.yesNo.${}");
+		}
+		
+		public Builder trueFalse() {
+			return resourceKey("common.boolean.${}");
+		}
+		
+		public ValueBuilder onTrue() {
+			return onTrueBuilder;
+		}
+		
+		public ValueBuilder onFalse() {
+			return onFalseBuilder;
+		}
+		
+		public BooleanRenderer build() {
+			return new BooleanRenderer(this);
+		}
+	}
+
+	public static final class ValueBuilder {
+		
+		private final Builder builder;
+		
+		private ValueInformation information = new ValueInformation();
+		
+		private ValueBuilder(Builder builder) {
+			this.builder = Objects.requireNonNull(builder);
+		}
+		
+		public ValueInformation information() {
+			return information;
+		}
+		
+		public Builder done() {
+			return builder;
+		}
 	}
 
 }
