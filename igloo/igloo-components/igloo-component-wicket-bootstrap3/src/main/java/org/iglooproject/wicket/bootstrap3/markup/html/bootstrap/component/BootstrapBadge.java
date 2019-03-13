@@ -29,7 +29,7 @@ public class BootstrapBadge<T> extends GenericPanel<T> implements IBootstrapBadg
 		
 		add(
 				Condition.modelNotNull(iconCssClassModel).thenShowInternal(), // No icon => No badge
-				BootstrapColorBehavior.badge(labelModel.getColorModel()),
+				BootstrapColorBehavior.label(labelModel.getColorModel()),
 				new AttributeAppender("title", labelModel)
 		);
 	}
