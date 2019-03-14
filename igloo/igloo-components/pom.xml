@@ -60,6 +60,8 @@
 		<module>igloo-component-jpa-migration</module>
 		<module>igloo-component-infinispan</module>
 		<module>igloo-component-elasticsearch-plugin</module>
+		
+		<module>igloo-spring-autoconfigure</module>
 	</modules>
 
 </project>

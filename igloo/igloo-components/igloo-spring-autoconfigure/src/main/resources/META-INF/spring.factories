@@ -1,0 +1,5 @@
+
+# PlaceholderAutoConfiguration is added as empty value is invalid for AutoConfigurationImportSelector
+org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration=\
+org.igloo.spring.autoconfigure.placeholder.PlaceholderAutoConfiguration
+
