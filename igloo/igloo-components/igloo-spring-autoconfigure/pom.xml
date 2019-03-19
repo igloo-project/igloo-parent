@@ -54,6 +54,13 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-test</artifactId>
+			<version>${igloo.spring-boot.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-test</artifactId>
 			<type>pom</type>
