@@ -56,8 +56,8 @@ public class WicketBootstrapModule implements IWicketModule {
 	@Override
 	public List<StaticResourceMapper> listStaticResources() {
 		return ImmutableList.of(
-				staticResourceMaper("/common", AbstractWebPageTemplate.class),
-				staticResourceMaper("/font-awesome", CoreFontAwesome5CssScope.class)
+				staticResourceMapper("/common", AbstractWebPageTemplate.class),
+				staticResourceMapper("/font-awesome", CoreFontAwesome5CssScope.class)
 		);
 	}
 
