@@ -1,10 +1,5 @@
 body {
 	.select2-container {
-		&.select2-container--bootstrap {
-			// By default, the selector with "width: auto" must take all the space
-			display: block;
-		}
-		
 		.select2-selection--single .select2-selection__rendered {
 			padding: 0px;
 		}
@@ -26,8 +21,8 @@ body {
 				background-color: transparent;
 				
 				&.select2-results__option--highlighted {
-					background-color: @s2bs-dropdown-link-active-bg;
-					color: @s2bs-dropdown-link-active-color;
+					background-color: @dropdown-link-active-bg;
+					color: @dropdown-link-active-color;
 				}
 			}
 		}
@@ -103,5 +98,11 @@ body {
 				display: none;
 			}
 		}
+	}
+}
+
+.select2-w-100 {
+	.select2 {
+		width: 100% !important;
 	}
 }
