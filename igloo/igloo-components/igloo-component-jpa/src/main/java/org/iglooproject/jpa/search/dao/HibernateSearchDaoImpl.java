@@ -149,6 +149,9 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			reindexClasses(fullTextEntityManager, getIndexedRootEntities(fullTextEntityManager.getSearchFactory(),
 					classes.length > 0 ? classes : new Class<?>[] { Object.class }));
 		} catch (RuntimeException | InterruptedException e) {
+			if (e instanceof InterruptedException) {
+				Thread.currentThread().interrupt();
+			}
 			throw new ServiceException(e);
 		}
 	}
@@ -303,6 +306,9 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 						}
 					}
 				} catch (RuntimeException | InterruptedException e) {
+					if (e instanceof InterruptedException) {
+						Thread.currentThread().interrupt();
+					}
 					if (!stopped) {
 						LOGGER.error("Error ; massindexer monitor stopped", e);
 					}

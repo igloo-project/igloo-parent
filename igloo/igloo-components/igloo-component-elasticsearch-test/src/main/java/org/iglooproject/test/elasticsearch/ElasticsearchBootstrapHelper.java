@@ -33,6 +33,9 @@ public final class ElasticsearchBootstrapHelper {
 			}
 			return builder.build().start();
 		} catch (IOException | InterruptedException e) {
+			if (e instanceof InterruptedException) {
+				Thread.currentThread().interrupt();
+			}
 			throw new IllegalStateException("Fail to start embedded elasticsearch", e);
 		}
 	}

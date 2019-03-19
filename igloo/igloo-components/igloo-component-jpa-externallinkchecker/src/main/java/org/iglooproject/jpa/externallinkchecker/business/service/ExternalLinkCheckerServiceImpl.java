@@ -385,6 +385,9 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 				future.get(); // Check that no error has occurred
 			}
 		} catch (RuntimeException | InterruptedException | ExecutionException e) {
+			if (e instanceof InterruptedException) {
+				Thread.currentThread().interrupt();
+			}
 			throw new ServiceException("Interrupted request", e);
 		} finally {
 			try {
