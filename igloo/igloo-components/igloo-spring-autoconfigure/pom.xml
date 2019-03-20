@@ -95,4 +95,25 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+				<configuration>
+					<processors self="override">
+						<processor>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor</processor>
+					</processors>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-autoconfigure-processor</artifactId>
+						<version>${igloo.spring-boot.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
