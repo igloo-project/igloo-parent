@@ -21,7 +21,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
  *  <li>Igloo auto-configuration behavior</li>
  * </ul>
  * 
- * This class ApplicationContextRunner to initialize contexts with suitable configurations,
+ * This class uses ApplicationContextRunner to initialize contexts with suitable configurations,
  * which are declared at the bottom of the file.
  * 
  *  
