@@ -14,6 +14,7 @@ import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.config.spring.provider.DatasourceProvider;
 import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.springframework.context.annotation.Configuration;
 
 import com.google.common.primitives.Ints;
