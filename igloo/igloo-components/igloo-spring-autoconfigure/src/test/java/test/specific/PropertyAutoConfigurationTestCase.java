@@ -43,7 +43,6 @@ public class PropertyAutoConfigurationTestCase {
 	public void testIglooNoJpaAutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-
 			.withPropertyValues(String.format("spring.autoconfigure.exclude=%s",
 					Joiner.on(",").join(IglooJpaAutoConfiguration.class.getName(),
 							IglooFlywayAutoConfiguration.class.getName(),

@@ -15,22 +15,19 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class IglooPropertyAutoConfiguration {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(IglooPropertyAutoConfiguration.class);
-	
-	@ConditionalOnMissingBean(CorePropertyPlaceholderConfigurer.class)
+
 	@Bean
 	public CorePropertyPlaceholderConfigurer corePropertyPlaceholderConfigurer() {
 		return new CorePropertyPlaceholderConfigurer();
 	}
-	
-	@ConditionalOnMissingBean(IImmutablePropertyDao.class)
+
 	@Bean
 	public IImmutablePropertyDao immutablePropertyDao() {
 		return new ImmutablePropertyDaoImpl();
 	}
-	
-	@ConditionalOnMissingBean(IPropertyService.class)
+
 	@Bean
 	public IPropertyService propertyService() {
 		return new PropertyServiceImpl();
@@ -43,7 +40,8 @@ public class IglooPropertyAutoConfiguration {
 			
 			@Override
 			public void register(IPropertyRegistry registry) {
-				LOGGER.warn("Define at least one property bean");
+				LOGGER.warn("Please define at least one {} bean. No property registered.",
+						IPropertyRegistry.class.getSimpleName());
 			}
 		};
 	}
