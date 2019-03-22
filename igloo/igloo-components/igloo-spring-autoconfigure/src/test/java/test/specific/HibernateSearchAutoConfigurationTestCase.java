@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 public class HibernateSearchAutoConfigurationTestCase {
 
 	/**
-	 * Check that autoconfiguration from {@link EntityManagerFactory} is triggered with EnableIglooAutoConfiguration
+	 * Check that autoconfiguration from {@link IHibernateSearchService} is triggered with EnableIglooAutoConfiguration
 	 */
 	@Test
 	public void testIglooHibernateSearchAutoConfigure() {

@@ -18,6 +18,7 @@ public class IglooPropertyAutoConfiguration {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(IglooPropertyAutoConfiguration.class);
 
+	@ConditionalOnMissingBean
 	@Bean
 	public CorePropertyPlaceholderConfigurer corePropertyPlaceholderConfigurer() {
 		return new CorePropertyPlaceholderConfigurer();
