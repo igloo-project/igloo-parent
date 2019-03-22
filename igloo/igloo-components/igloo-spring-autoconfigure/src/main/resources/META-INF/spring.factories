@@ -7,4 +7,5 @@ org.igloo.spring.autoconfigure.search.IglooHibernateSearchAutoConfiguration, \
 org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration, \
 org.igloo.spring.autoconfigure.wicket.IglooWicketAutoConfiguration, \
 org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration, \
-org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration
+org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration, \
+org.igloo.spring.autoconfigure.task.IglooTaskManagementAutoConfiguration
