@@ -3,9 +3,13 @@ package test.specific;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
+import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
 import org.igloo.spring.autoconfigure.search.IglooHibernateSearchAutoConfiguration;
+import org.igloo.spring.autoconfigure.wicket.IglooWicketAutoConfiguration;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.junit.Test;
@@ -28,9 +32,13 @@ public class PropertyAutoConfigurationTestCase {
 	 * Check that autoconfiguration from {@link IPropertyService} is triggered with EnableIglooAutoConfiguration
 	 */
 	@Test
-	public void testIglooAutoConfigure() {
+	public void testIglooPropertyAutoConfigure() {
 		new ApplicationContextRunner()
-			.withConfiguration(AutoConfigurations.of(TestConfig.class)).run(
+			.withConfiguration(AutoConfigurations.of(TestConfig.class))
+			.withPropertyValues(String.format("%s=%s",
+					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
+					IglooBootstrap3AutoConfiguration.class.getName()))
+			.run(
 				(context) -> { assertThat(context).hasSingleBean(IPropertyService.class); }
 			);
 	}
@@ -40,13 +48,17 @@ public class PropertyAutoConfigurationTestCase {
 	 * when excluding jpa, flyway and hibernate search auto configurations
 	 */
 	@Test
-	public void testIglooNoJpaAutoConfigure() {
+	public void testIglooPropertyNoJpaAutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-			.withPropertyValues(String.format("spring.autoconfigure.exclude=%s",
+			.withPropertyValues(String.format("%s=%s",
+					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
 					Joiner.on(",").join(IglooJpaAutoConfiguration.class.getName(),
 							IglooFlywayAutoConfiguration.class.getName(),
-							IglooHibernateSearchAutoConfiguration.class.getName())))
+							IglooHibernateSearchAutoConfiguration.class.getName(),
+							IglooBootstrap3AutoConfiguration.class.getName(),
+							IglooBootstrap4AutoConfiguration.class.getName(),
+							IglooWicketAutoConfiguration.class.getName())))
 			.run(
 				(context) -> {
 					assertThat(context).hasSingleBean(IPropertyService.class);

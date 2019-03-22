@@ -5,9 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import javax.persistence.EntityManagerFactory;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
+import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
 import org.igloo.spring.autoconfigure.property.IglooPropertyAutoConfiguration;
 import org.igloo.spring.autoconfigure.search.IglooHibernateSearchAutoConfiguration;
+import org.igloo.spring.autoconfigure.wicket.IglooWicketAutoConfiguration;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -31,7 +35,11 @@ public class JpaAutoConfigurationTestCase {
 	@Test
 	public void testIglooJpaAutoConfigure() {
 		new ApplicationContextRunner()
-			.withConfiguration(AutoConfigurations.of(TestConfig.class)).run(
+			.withConfiguration(AutoConfigurations.of(TestConfig.class))
+			.withPropertyValues(String.format("%s=%s",
+					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
+					IglooBootstrap3AutoConfiguration.class.getName()))
+			.run(
 				(context) -> { assertThat(context).hasSingleBean(EntityManagerFactory.class); }
 			);
 	}
@@ -44,10 +52,14 @@ public class JpaAutoConfigurationTestCase {
 	public void testIglooJpaNoPropertyAutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-			.withPropertyValues(String.format("spring.autoconfigure.exclude=%s",
+			.withPropertyValues(String.format("%s=%s",
+					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
 					Joiner.on(",").join(IglooPropertyAutoConfiguration.class.getName(),
 							IglooFlywayAutoConfiguration.class.getName(),
-							IglooHibernateSearchAutoConfiguration.class.getName())))
+							IglooHibernateSearchAutoConfiguration.class.getName(),
+							IglooBootstrap3AutoConfiguration.class.getName(),
+							IglooBootstrap4AutoConfiguration.class.getName(),
+							IglooWicketAutoConfiguration.class.getName())))
 			.run(
 				(context) -> {
 					assertThat(context).hasSingleBean(EntityManagerFactory.class);

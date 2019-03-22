@@ -2,9 +2,8 @@ package test.specific;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.persistence.EntityManagerFactory;
-
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
+import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.iglooproject.wicket.bootstrap4.application.WicketBootstrapModule;
@@ -30,7 +29,8 @@ public class BootstrapAutoConfigurationTestCase {
 	public void testIglooBootstrap4AutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-			.withPropertyValues(String.format("spring.autoconfigure.exclude=%s",
+			.withPropertyValues(String.format("%s=%s",
+					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
 					IglooBootstrap3AutoConfiguration.class.getName()))
 			.run(
 				(context) -> { 
@@ -51,7 +51,8 @@ public class BootstrapAutoConfigurationTestCase {
 	public void testIglooBootstrap3AutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-			.withPropertyValues(String.format("spring.autoconfigure.exclude=%s",
+			.withPropertyValues(String.format("%s=%s",
+					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
 					IglooBootstrap4AutoConfiguration.class.getName()))
 			.run(
 				(context) -> { 

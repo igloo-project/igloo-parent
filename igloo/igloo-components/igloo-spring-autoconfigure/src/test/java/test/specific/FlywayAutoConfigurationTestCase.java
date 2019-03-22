@@ -3,6 +3,8 @@ package test.specific;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
+import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -24,7 +26,11 @@ public class FlywayAutoConfigurationTestCase {
 	@Test
 	public void testIglooFlywayAutoConfigure() {
 		new ApplicationContextRunner()
-			.withConfiguration(AutoConfigurations.of(TestConfig.class)).run(
+			.withConfiguration(AutoConfigurations.of(TestConfig.class))
+			.withPropertyValues(String.format("%s=%s",
+					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
+					IglooBootstrap3AutoConfiguration.class.getName()))
+			.run(
 				(context) -> { assertThat(context).hasSingleBean(FlywayConfiguration.class); }
 			);
 	}

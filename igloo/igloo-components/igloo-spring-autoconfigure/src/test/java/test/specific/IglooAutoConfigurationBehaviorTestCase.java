@@ -3,9 +3,12 @@ package test.specific;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
+import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +31,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
  * This test relies on the fact that javax.mail and spring-mail is available on classpath.
  * 
  */
-public class AutoConfigurationBehaviorContextRunnerTestCase {
+public class IglooAutoConfigurationBehaviorTestCase {
 
 	/**
 	 * Check that autoconfiguration from {@link MailSenderAutoConfiguration} is triggered normally as we use here both
@@ -38,7 +41,11 @@ public class AutoConfigurationBehaviorContextRunnerTestCase {
 	public void testBothSpringBootIglooAutoConfigure() {
 		new ApplicationContextRunner()
 			.withPropertyValues("spring.mail.host=localhost")
-			.withConfiguration(AutoConfigurations.of(TestBothSpringBootIglooConfig.class)).run(
+			.withPropertyValues(String.format("%s=%s",
+					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
+					IglooBootstrap3AutoConfiguration.class.getName()))
+			.withConfiguration(AutoConfigurations.of(TestBothSpringBootIglooConfig.class))
+			.run(
 				(context) -> { assertThat(context).hasSingleBean(JavaMailSenderImpl.class); }
 			);
 	}
@@ -51,7 +58,10 @@ public class AutoConfigurationBehaviorContextRunnerTestCase {
 	public void testSpringBootAutoConfigure() {
 		new ApplicationContextRunner()
 			.withPropertyValues("spring.mail.host=localhost")
-			.withConfiguration(AutoConfigurations.of(TestSpringBootConfig.class)).run(
+			.withPropertyValues(String.format("%s=%s",
+					"spring.autoconfigure.exclude", FlywayAutoConfiguration.class.getName()))
+			.withConfiguration(AutoConfigurations.of(TestSpringBootConfig.class))
+			.run(
 				(context) -> { assertThat(context).hasSingleBean(JavaMailSenderImpl.class); }
 			);
 	}
@@ -64,7 +74,11 @@ public class AutoConfigurationBehaviorContextRunnerTestCase {
 	public void testIglooAutoConfigure() {
 		new ApplicationContextRunner()
 			.withPropertyValues("spring.mail.host=localhost")
-			.withConfiguration(AutoConfigurations.of(TestIglooConfig.class)).run(
+			.withPropertyValues(String.format("%s=%s",
+					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
+					IglooBootstrap3AutoConfiguration.class.getName()))
+			.withConfiguration(AutoConfigurations.of(TestIglooConfig.class))
+			.run(
 				(context) -> { assertThat(context).doesNotHaveBean(JavaMailSenderImpl.class); }
 			);
 	}
