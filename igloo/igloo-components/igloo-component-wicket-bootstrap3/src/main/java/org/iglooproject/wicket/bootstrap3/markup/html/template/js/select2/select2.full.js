@@ -1336,7 +1336,7 @@ S2.define('select2/selection/base',[
       this._tabindex = this.$element.attr('tabindex');
     }
 
-    $selection.attr('title', this.$element.attr('title'));
+    //$selection.attr('title', this.$element.attr('title'));
     $selection.attr('tabindex', this._tabindex);
 
     this.$selection = $selection;
@@ -1560,7 +1560,7 @@ S2.define('select2/selection/single',[
     var formatted = this.display(selection, $rendered);
 
     $rendered.empty().append(formatted);
-    $rendered.prop('title', selection.title || selection.text);
+    //$rendered.prop('title', selection.title || selection.text);
   };
 
   return SingleSelection;
@@ -1667,7 +1667,7 @@ S2.define('select2/selection/multiple',[
       var formatted = this.display(selection, $selection);
 
       $selection.append(formatted);
-      $selection.prop('title', selection.title || selection.text);
+      //$selection.prop('title', selection.title || selection.text);
 
       $selection.data('data', selection);
 
