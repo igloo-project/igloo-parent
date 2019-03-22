@@ -140,7 +140,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		converterLocator.set(UserGroup.class, UserGroupRenderer.get());
 		
 		converterLocator.set(Locale.class, LocaleRenderer.get());
-		converterLocator.set(Boolean.class, BooleanRenderer.withPrefix("common.boolean.yesNo"));
+		converterLocator.set(Boolean.class, BooleanRenderer.get());
 		
 		converterLocator.set(HistoryValue.class, HistoryValueRenderer.get());
 		converterLocator.set(HistoryEventType.class, EnumRenderer.get());

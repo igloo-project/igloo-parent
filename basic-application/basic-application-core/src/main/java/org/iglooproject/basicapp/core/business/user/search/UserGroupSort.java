@@ -10,8 +10,9 @@ import org.iglooproject.jpa.more.business.sort.SortUtils;
 
 import com.google.common.collect.ImmutableList;
 
+// TODO: switch to final List<SortField> attribute ?
 public enum UserGroupSort implements ISort<SortField> {
-
+	@SuppressWarnings("common-java:DuplicatedBlocks")
 	NAME {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
@@ -24,6 +25,7 @@ public enum UserGroupSort implements ISort<SortField> {
 			return SortOrder.ASC;
 		}
 	},
+	@SuppressWarnings("common-java:DuplicatedBlocks")
 	ID {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {

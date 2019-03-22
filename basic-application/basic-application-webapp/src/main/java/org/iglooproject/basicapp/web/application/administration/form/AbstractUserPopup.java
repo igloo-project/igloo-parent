@@ -92,7 +92,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 				private static final long serialVersionUID = 1L;
 				
 				@Override
-				protected void onAfterSubmit(AjaxRequestTarget target) {
+				protected void onSubmit(AjaxRequestTarget target) {
 					try {
 						IModel<U> userModel = AbstractUserPopup.this.getModel();
 						U user = userModel.getObject();

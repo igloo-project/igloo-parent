@@ -23,8 +23,8 @@ public class BooleanDropDownSingleChoice extends GenericSelect2DropDownSingleCho
 		super(id, model, new BooleanChoicesModel(), new ResourceKeyWithParameterBooleanChoiceRenderer());
 	}
 	
-	public BooleanDropDownSingleChoice(String id, IModel<Boolean> model, String prefix) {
-		super(id, model, new BooleanChoicesModel(), new ResourceKeyWithParameterBooleanChoiceRenderer(prefix));
+	public BooleanDropDownSingleChoice(String id, IModel<Boolean> model, String resourceKey) {
+		super(id, model, new BooleanChoicesModel(), new ResourceKeyWithParameterBooleanChoiceRenderer(resourceKey));
 	}
 	
 	public BooleanDropDownSingleChoice(String id, IModel<Boolean> model, IChoiceRenderer<Boolean> renderer) {
@@ -51,22 +51,24 @@ public class BooleanDropDownSingleChoice extends GenericSelect2DropDownSingleCho
 	}
 	
 	private static class ResourceKeyWithParameterBooleanChoiceRenderer extends ChoiceRenderer<Boolean> {
-		private static final long serialVersionUID = -5914319140045008140L;
-		String prefix = null;
 		
-		public ResourceKeyWithParameterBooleanChoiceRenderer(String prefix) {
+		private static final long serialVersionUID = 1L;
+		
+		private final String resourceKey;
+		
+		public ResourceKeyWithParameterBooleanChoiceRenderer(String resourceKey) {
 			super();
-			this.prefix = prefix;
+			this.resourceKey = resourceKey;
 		}
-
+		
 		public ResourceKeyWithParameterBooleanChoiceRenderer() {
-			super();
+			this(null);
 		}
-
+		
 		@Override
 		public Object getDisplayValue(Boolean object) {
-			if (StringUtils.hasText(prefix)) {
-				return BooleanRenderer.withPrefix(prefix).render(object, Session.get().getLocale());
+			if (StringUtils.hasText(resourceKey)) {
+				return BooleanRenderer.builder().resourceKey(resourceKey).build().render(object, Session.get().getLocale());
 			} else {
 				return BooleanRenderer.get().render(object, Session.get().getLocale());
 			}

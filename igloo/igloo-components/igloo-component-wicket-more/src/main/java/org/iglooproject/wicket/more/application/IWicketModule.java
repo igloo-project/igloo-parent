@@ -20,7 +20,7 @@ public interface IWicketModule {
 
 	void registerImportScopes();
 
-	default StaticResourceMapper staticResourceMaper(final String path, final Class<?> clazz) {
+	default StaticResourceMapper staticResourceMapper(final String path, final Class<?> clazz) {
 		return new StaticResourceMapper("/static" + path, clazz);
 	}
 

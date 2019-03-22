@@ -2,6 +2,7 @@ package org.iglooproject.wicket.bootstrap3.application;
 
 import java.util.List;
 
+import org.apache.wicket.resource.JQueryResourceReference;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.settings.JavaScriptLibrarySettings;
 import org.apache.wicket.settings.ResourceSettings;
@@ -10,6 +11,8 @@ import org.iglooproject.wicket.bootstrap3.console.template.style.CoreConsoleCssS
 import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.CoreBootstrap3CssScope;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.fontawesome.CoreFontAwesome4CssScope;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.jqueryui.JQueryUiCssResourceReference;
+import org.iglooproject.wicket.bootstrap3.markup.html.template.js.jqueryui.JQueryUIJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap3.markup.html.template.js.select2.Select2JavaScriptResourceReference;
 import org.iglooproject.wicket.more.application.CoreWicketApplication;
 import org.iglooproject.wicket.more.application.IWicketModule;
 import org.iglooproject.wicket.more.css.lesscss.service.ILessCssService;
@@ -30,24 +33,31 @@ public class WicketBootstrapModule implements IWicketModule {
 
 	@Override
 	public void updateJavaScriptLibrarySettings(JavaScriptLibrarySettings javaScriptLibrarySettings) {
-		// nothing to do
+		// Select2 need JQuery 3+ to work
+		javaScriptLibrarySettings.setJQueryReference(JQueryResourceReference.getV3());
 	}
 
 	@Override
 	public void updateSelect2ApplicationSettings(ApplicationSettings select2ApplicationSettings) {
-		// nothing to do
+		// Don't include css files from wicketstuff-select2.
+		// We take care of Select2 css file and Select2 Bootstrap scss files on our side.
+		// We also override select2 js file to choose specific version and also fix stuff.
+		select2ApplicationSettings
+			.setIncludeCss(false)
+			.setJavascriptReferenceFull(Select2JavaScriptResourceReference.get());
 	}
 
 	@Override
 	public void addResourceReplacements(CoreWicketApplication application) {
+		application.addResourceReplacement(org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference.get(), JQueryUIJavaScriptResourceReference.get());
 		application.addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
 	}
 
 	@Override
 	public List<StaticResourceMapper> listStaticResources() {
 		return ImmutableList.of(
-				staticResourceMaper("/common", AbstractWebPageTemplate.class),
-				staticResourceMaper("/font-awesome", CoreFontAwesome4CssScope.class)
+				staticResourceMapper("/common", AbstractWebPageTemplate.class),
+				staticResourceMapper("/font-awesome", CoreFontAwesome4CssScope.class)
 		);
 	}
 

@@ -145,7 +145,7 @@ public final class Predicates2 {
 	}
 
 	public static <T extends Collection<?>> SerializablePredicate2<T> notEmpty() {
-		return c -> c == null || !c.isEmpty();
+		return c -> c != null && !c.isEmpty();
 	}
 
 	public static <T extends Map<?, ?>> SerializablePredicate2<T> mapIsEmpty() {
@@ -153,7 +153,7 @@ public final class Predicates2 {
 	}
 
 	public static <T extends Map<?, ?>> SerializablePredicate2<T> mapNotEmpty() {
-		return m -> m == null || !m.isEmpty();
+		return m -> m != null && !m.isEmpty();
 	}
 
 	public static SerializablePredicate2<Collection<?>> contains(Object referenceValue) {

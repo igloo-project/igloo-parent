@@ -18,6 +18,7 @@ import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import org.iglooproject.wicket.more.markup.html.CoreWebPage;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -92,6 +93,11 @@ public class ConsoleSignInPage extends CoreWebPage {
 		
 		response.render(JavaScriptHeaderItem.forReference(Application.get().getJavaScriptLibrarySettings().getJQueryReference()));
 		response.render(CssHeaderItem.forReference(ConsoleSignInLessCssResourceReference.get()));
+	}
+
+	@Override
+	public String getVariation() {
+		return AbstractWebPageTemplate.BOOTSTRAP3_VARIATION;
 	}
 
 }

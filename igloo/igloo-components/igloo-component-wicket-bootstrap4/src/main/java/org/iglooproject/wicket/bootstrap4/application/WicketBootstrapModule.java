@@ -41,7 +41,7 @@ public class WicketBootstrapModule implements IWicketModule {
 	public void updateSelect2ApplicationSettings(ApplicationSettings select2ApplicationSettings) {
 		// Don't include css files from wicketstuff-select2.
 		// We take care of Select2 css file and Select2 Bootstrap scss files on our side.
-		// We also override select2 js file to deal with BS tooltip on change/update.
+		// We also override select2 js file to choose specific version and also fix stuff.
 		select2ApplicationSettings
 			.setIncludeCss(false)
 			.setJavascriptReferenceFull(Select2JavaScriptResourceReference.get());
@@ -56,8 +56,8 @@ public class WicketBootstrapModule implements IWicketModule {
 	@Override
 	public List<StaticResourceMapper> listStaticResources() {
 		return ImmutableList.of(
-				staticResourceMaper("/common", AbstractWebPageTemplate.class),
-				staticResourceMaper("/font-awesome", CoreFontAwesome5CssScope.class)
+				staticResourceMapper("/common", AbstractWebPageTemplate.class),
+				staticResourceMapper("/font-awesome", CoreFontAwesome5CssScope.class)
 		);
 	}
 
