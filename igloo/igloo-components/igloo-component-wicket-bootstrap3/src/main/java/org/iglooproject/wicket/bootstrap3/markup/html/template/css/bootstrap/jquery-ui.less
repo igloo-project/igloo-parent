@@ -1,7 +1,25 @@
 // jQuery UI
+.ui-datepicker {
+	width: 19em;
+}
+
+.ui-widget {
+	&.ui-widget-content {
+		border: 1px solid #ddd;
+	}
+}
+
 .ui-state-default {
 	&, .ui-widget-content &, .ui-widget-header & {
 		color: @main-color;
+		border: 1px solid #ddd;
+	}
+}
+
+.ui-state-highlight {
+	&, .ui-widget-content &, .ui-widget-header &, .ui-datepicker-today & {
+		border: 1px solid #ddd;
+		background: #FFFFFF;
 	}
 }
 
