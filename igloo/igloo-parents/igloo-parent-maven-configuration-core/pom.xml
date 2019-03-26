@@ -1,22 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-common</artifactId>
 		<version>1.2-SNAPSHOT</version>
 		<relativePath>../igloo-parent-maven-configuration-common/pom.xml</relativePath>
 	</parent>
-	
+
 	<artifactId>igloo-parent-maven-configuration-core</artifactId>
 	<packaging>pom</packaging>
-	
+
 	<name>Igloo - Parent - Maven configuration - Core</name>
-	
+
 	<properties>
 		<igloo.version>${project.version}</igloo.version>
-		
+
 		<!-- https://spring.io/blog/2018/04/03/spring-framework-5-0-5-and-4-3-15-available-now -->
 		<!-- 5.0.5: https://jira.spring.io/secure/ReleaseNote.jspa?projectId=10000&version=16634 -->
 		<!-- 5.0.6: https://jira.spring.io/secure/ReleaseNote.jspa?projectId=10000&version=16720 -->
@@ -30,45 +30,47 @@
 		<!-- 5.1.2: https://spring.io/blog/2018/10/29/spring-framework-5-1-2-available-now -->
 		<!-- 5.1.3: https://spring.io/blog/2018/11/27/spring-framework-5-1-3-5-0-11-and-4-3-21-available-now -->
 		<!-- 5.1.4: https://spring.io/blog/2019/01/09/spring-framework-5-1-4-5-0-12-and-4-3-22-available-now -->
-		<igloo.spring.version>5.1.4.RELEASE</igloo.spring.version>
+		<!-- 5.1.5: https://spring.io/blog/2019/02/13/spring-framework-5-1-5-available-now -->
+		<!-- 5.1.6: https://spring.io/blog/2019/04/01/spring-framework-5-1-6-5-0-13-and-4-3-23-available-now -->
+		<igloo.spring.version>5.1.6.RELEASE</igloo.spring.version>
 		<igloo.spring-boot.version>2.1.3.RELEASE</igloo.spring-boot.version>
-		<!-- https://www.eclipse.org/aspectj/doc/released/README-191.html -->
-		<igloo.aspectj.version>1.9.1</igloo.aspectj.version>
+		<!-- https://www.eclipse.org/aspectj/doc/released/README-192.html -->
+		<igloo.aspectj.version>1.9.2</igloo.aspectj.version>
 
 		<!-- http://hibernate.org/orm/releases/5.3/ -->
 		<!-- https://hibernate.atlassian.net/browse/HHH-12932?jql=project%20%3D%20HHH%20AND%20fixVersion%20in%20(5.3.6)%20ORDER%20BY%20updated -->
 		<!-- https://hibernate.atlassian.net/browse/HHH-12784?jql=project%20%3D%20HHH%20AND%20fixVersion%20%3D%205.3.7%20ORDER%20BY%20updated -->
-		<igloo.hibernate.version>5.4.1.Final</igloo.hibernate.version>
-		<igloo.hibernate-validator.version>5.4.2.Final</igloo.hibernate-validator.version>
+		<igloo.hibernate.version>5.4.2.Final</igloo.hibernate.version>
+		<igloo.hibernate-validator.version>5.4.3.Final</igloo.hibernate-validator.version>
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
-		<igloo.byte-buddy.version>1.9.5</igloo.byte-buddy.version>
+		<igloo.byte-buddy.version>1.9.10</igloo.byte-buddy.version>
 		<igloo.jboss-logging.version>3.3.2.Final</igloo.jboss-logging.version>
-		
+
 		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_7 -->
 		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_8 -->
-		<igloo.cglib.version>3.2.8</igloo.cglib.version>
-		<igloo.javassist.version>3.24.0-GA</igloo.javassist.version>
+		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_9 -->
+		<igloo.cglib.version>3.2.10</igloo.cglib.version>
+		<igloo.javassist.version>3.24.1-GA</igloo.javassist.version>
 
 		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
-		<igloo.hikaricp.version>3.2.0</igloo.hikaricp.version>
+		<igloo.hikaricp.version>3.3.1</igloo.hikaricp.version>
 		<!-- https://jira.terracotta.org/jira/browse/EHC/fixforversion/13000/?selectedTab=com.atlassian.jira.jira-projects-plugin:version-summary-panel -->
-		<igloo.ehcache.version>2.10.6</igloo.ehcache.version>
+		<igloo.ehcache.version>2.10.6.5.1</igloo.ehcache.version>
 		<!-- https://github.com/querydsl/querydsl/issues?utf8=%E2%9C%93&q=milestone%3A4.2.1 -->
 		<igloo.querydsl.version>4.2.1</igloo.querydsl.version>
-		
+
 		<!--https://github.com/google/guava/releases/ -->
-		<igloo.guava.version>27.0-jre</igloo.guava.version>
-		
+		<igloo.guava.version>27.1-jre</igloo.guava.version>
+
 		<!-- https://jdbc.postgresql.org/documentation/changelog.html -->
 		<igloo.postgresql.version>42.2.5</igloo.postgresql.version>
-		<igloo.pgjdbc-ng.version>0.7.1</igloo.pgjdbc-ng.version>
 		<igloo.oracle10g.version>10.2.0.5</igloo.oracle10g.version>
 		<igloo.mysql.version>5.1.14</igloo.mysql.version>
-		
+
 		<igloo.bindgen.version>4.0.2</igloo.bindgen.version>
 		<igloo.bindgen-java.version>1.0.0</igloo.bindgen-java.version>
 		<igloo.bindgen-bindings-java.version>1.0.0</igloo.bindgen-bindings-java.version>
-		
+
 		<!-- 5.0.4: https://github.com/spring-projects/spring-security/milestone/112?closed=1 -->
 		<!-- 5.0.5: https://github.com/spring-projects/spring-security/milestone/114?closed=1 -->
 		<!-- 5.0.6: https://github.com/spring-projects/spring-security/milestone/116?closed=1 -->
@@ -79,11 +81,12 @@
 		          https://spring.io/blog/2018/09/27/spring-security-5-1-goes-ga -->
 		<!-- 5.1.1: https://spring.io/blog/2018/10/16/spring-security-5-1-1-5-0-9-and-4-2-9-released -->
 		<!-- 5.1.2: https://spring.io/blog/2018/11/29/spring-security-5-1-2-5-0-10-4-2-10-released -->
-		<!-- 5.1.3: not already published -->
-		<igloo.spring-security.version>5.1.3.RELEASE</igloo.spring-security.version>
-		
+		<!-- 5.1.3: https://spring.io/blog/2019/01/11/spring-security-5-1-3-5-0-11-4-2-11-released -->
+		<!-- 5.1.4: https://spring.io/blog/2019/02/14/spring-security-5-1-4-released -->
+		<igloo.spring-security.version>5.1.4.RELEASE</igloo.spring-security.version>
+
 		<igloo.spring-ldap.version>2.3.2.RELEASE</igloo.spring-ldap.version>
-		
+
 		<!-- http://in.relation.to/2018/09/13/hibernate-search-5-10-4-Final-5-9-3-Final-5-6-6-Final/ -->
 		<!-- http://in.relation.to/2018/12/20/hibernate-search-5-11-0-Final/ -->
 		<!-- http://in.relation.to/2019/02/01/hibernate-search-6-0-0-Alpha2-and-5-11-1-Final/ -->
@@ -92,31 +95,31 @@
 		<igloo.gson.version>2.8.5</igloo.gson.version>
 		<!-- overriden in some modules, when we are in a elasticsearch context -->
 		<igloo.lucene.version>5.5.5</igloo.lucene.version>
-		
+
 		<igloo.javatuples.version>1.2</igloo.javatuples.version>
-		
+
 		<igloo.jdk-serializable-functional.version>1.8.5</igloo.jdk-serializable-functional.version>
-		
+
 		<!--
 			We're stuck at version 2.4 because of an incompatibility with TrueZip from commons-io 2.5 on.
-			
+
 			In commit 1721:f836922f4de2 in TrueZip, released in version 7.2, the developer decided *not* to implement
 			part of the standard Java API, namely File.toPath(), which throws an exception as of this commit.
-			This decision causes commons-io to fail miserably when performing operations on TFiles, for instance 
+			This decision causes commons-io to fail miserably when performing operations on TFiles, for instance
 			org.apache.commons.io.FileUtils.deleteDirectory, which calls Java7Support.isSymlink, which calls
 			TFile.toPath, which throws an exception. Unfortunately, we have no control over this code and cannot decide
 			not to use File.toPath, so we can't do a thing to solve this issue.
-			
+
 			This call to `toPath` in commons-io has been introduced in revision `r1686472` (released in version 2.5).
 			There was no issue that we know of before.
-			
+
 			Rolling back to TrueZip 7.1 is not an option: it's really old and missing features that we're using right
 			now.
 			Thus, for now, we'll stick with commons-io 2.4, until we migrate from TrueZip to its successor, TrueVFS,
-			which seems to have solved the issue. 
+			which seems to have solved the issue.
 		 -->
 		<igloo.commons-io.version>2.4</igloo.commons-io.version>
-		
+
 		<igloo.commons-lang.version>2.6</igloo.commons-lang.version>
 		<!-- https://commons.apache.org/proper/commons-lang/release-notes/RELEASE-NOTES-3.8.1.txt -->
 		<igloo.commons-lang3.version>3.8.1</igloo.commons-lang3.version>
@@ -126,116 +129,119 @@
 		<igloo.commons-text.version>1.6</igloo.commons-text.version>
 		<igloo.commons-math3.version>3.6.1</igloo.commons-math3.version>
 		<igloo.commons-cli.version>1.4</igloo.commons-cli.version>
-		<igloo.commons-codec.version>1.11</igloo.commons-codec.version>
+		<igloo.commons-codec.version>1.12</igloo.commons-codec.version>
 		<igloo.commons-exec.version>1.3</igloo.commons-exec.version>
 		<!-- https://commons.apache.org/proper/commons-compress/ -->
 		<igloo.commons-compress.version>1.18</igloo.commons-compress.version>
 		<igloo.commons-validator.version>1.6</igloo.commons-validator.version>
 		<igloo.commons-collections.version>3.2.2</igloo.commons-collections.version>
-		<igloo.commons-collections4.version>4.2</igloo.commons-collections4.version>
+		<igloo.commons-collections4.version>4.3</igloo.commons-collections4.version>
 		<igloo.commons-beanutils.version>1.9.3</igloo.commons-beanutils.version>
-		<igloo.commons-fileupload.version>1.3.3</igloo.commons-fileupload.version>
-		<igloo.commons-configuration.version>2.3</igloo.commons-configuration.version>
-		
+		<igloo.commons-fileupload.version>1.4</igloo.commons-fileupload.version>
+		<igloo.commons-configuration.version>2.4</igloo.commons-configuration.version>
+
 		<igloo.jta.version>1.1</igloo.jta.version>
 		<igloo.javax-mail.version>1.6.2</igloo.javax-mail.version>
-		
-		<igloo.slf4j.version>1.7.25</igloo.slf4j.version>
+
+		<igloo.slf4j.version>1.7.26</igloo.slf4j.version>
 		<igloo.log4j.version>1.2.17</igloo.log4j.version>
-		
+
 		<!-- https://sourceforge.net/p/opencsv/wiki/What%27s%20new/ -->
 		<igloo.opencsv.version>4.3.2</igloo.opencsv.version>
 		<igloo.freemarker.version>2.3.28</igloo.freemarker.version>
 		<igloo.dom4j.version>1.6.1</igloo.dom4j.version>
-		
+
 		<igloo.poi.version>4.0.1</igloo.poi.version>
-		
-		<!-- 
+
+		<!--
 		Version 3 does not exist.
 		Version 4 is not supported by XHTMLRenderer.
 		Versions 5 and above are released under the artifact id com.itextpdf:itextpdf.
 		But these are licensed under Affero GPL, which is unsuitable for use in closed-source applications,
-		so using it here would prevent closed-source applications from using Igloo. 
+		so using it here would prevent closed-source applications from using Igloo.
 		See http://itextpdf.com/AGPL
 		 -->
 		<igloo.itext.version>2.1.7</igloo.itext.version>
-		
+
 		<igloo.json-lib.version>2.3</igloo.json-lib.version>
 		<!-- https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.9 -->
-		<igloo.jackson2-core.version>2.9.7</igloo.jackson2-core.version>
+		<igloo.jackson2-core.version>2.9.8</igloo.jackson2-core.version>
 		<igloo.jackson2-annotations.version>${igloo.jackson2-core.version}</igloo.jackson2-annotations.version>
 		<igloo.jackson2-databind.version>${igloo.jackson2-core.version}</igloo.jackson2-databind.version>
 		<igloo.jackson2-jaxrs.version>${igloo.jackson2-core.version}</igloo.jackson2-jaxrs.version>
 		<igloo.jackson2-dataformat-xml.version>${igloo.jackson2-core.version}</igloo.jackson2-dataformat-xml.version>
-		
+
 		<!-- See comments on property igloo.commons-io.version -->
 		<igloo.truezip.version>7.7.10</igloo.truezip.version>
 		<igloo.bouncycastle.version>2.55</igloo.bouncycastle.version>
-		
-		<igloo.flying-saucer.version>9.1.16</igloo.flying-saucer.version>
+		<igloo.bouncycastle-jdk15on.version>1.61</igloo.bouncycastle-jdk15on.version>
+
+		<igloo.flying-saucer.version>9.1.18</igloo.flying-saucer.version>
 		<igloo.imageinfo.version>1.9</igloo.imageinfo.version>
 		<igloo.jsoup.version>1.11.3</igloo.jsoup.version>
 		<!-- https://hc.apache.org/news.html -->
-		<igloo.httpclient.version>4.5.6</igloo.httpclient.version>
-		<igloo.httpcore.version>4.4.10</igloo.httpcore.version>
+		<!-- Since 4.5.8 we have to use setNormalizeUri(false) on links, otherwise URIUtils.rewriteURI will try
+		 to parse the path and will return broke paths if your path doesn't respect the ASCII standard -->
+		<igloo.httpclient.version>4.5.8</igloo.httpclient.version>
+		<igloo.httpcore.version>4.4.11</igloo.httpcore.version>
 		<igloo.prettytime.version>4.0.2.Final</igloo.prettytime.version>
-		<igloo.ph-css.version>4.1.3</igloo.ph-css.version>
+		<igloo.ph-css.version>6.1.2</igloo.ph-css.version>
 		<igloo.galimatias.version>0.2.1</igloo.galimatias.version>
-		
+
 		<igloo.jersey.version>1.19.4</igloo.jersey.version>
 		<igloo.jersey2.version>2.25.1</igloo.jersey2.version>
 		<igloo.glassfish-asm-all-repackaged.version>2.5.0-b60</igloo.glassfish-asm-all-repackaged.version>
-		
+
 		<igloo.jstl.version>1.2</igloo.jstl.version>
 		<igloo.jsp-api.version>2.2</igloo.jsp-api.version>
 		<igloo.servlet-api.version>3.1.0</igloo.servlet-api.version>
 		<igloo.taglibs-standard.version>1.1.2</igloo.taglibs-standard.version>
 		<igloo.javax-el-api.version>2.2.4</igloo.javax-el-api.version>
 		<igloo.sitemesh.version>2.4.2</igloo.sitemesh.version>
-		
+
 		<igloo.javax-activation.version>1.1.1</igloo.javax-activation.version>
 		<igloo.javax-validation-api.version>1.1.0.Final</igloo.javax-validation-api.version>
-		
+
 		<igloo.wicket.version>8.2.0</igloo.wicket.version>
 		<igloo.wiquery.version>8.1.1</igloo.wiquery.version>
 		<igloo.wicketstuff-select2.version>8.2.0</igloo.wicketstuff-select2.version>
 		<!-- https://github.com/l0rdn1kk0n/wicket-webjars (0.5.x -> wicket 7, 2.0.x -> wicket 8) -->
-		<igloo.wicket-webjars.version>2.0.8</igloo.wicket-webjars.version>
-		<igloo.webjars-locator-core.version>0.35</igloo.webjars-locator-core.version>
+		<igloo.wicket-webjars.version>2.0.11</igloo.wicket-webjars.version>
+		<igloo.webjars-locator-core.version>0.37</igloo.webjars-locator-core.version>
 		<igloo.wqplot.version>7.1.0.owsi1</igloo.wqplot.version>
-		
+
 		<igloo.less4j.version>1.17.2</igloo.less4j.version>
 		<!-- http://jsass.readthedocs.io/en/latest/changelog.html -->
-		<igloo.jsass.version>5.7.3</igloo.jsass.version>
-		
+		<igloo.jsass.version>5.8.0</igloo.jsass.version>
+
 		<igloo.flywaydb.version>5.0.7</igloo.flywaydb.version>
 		<igloo.infinispan.version>9.2.4.Final</igloo.infinispan.version>
-		
+
 		<igloo.junit.version>4.12</igloo.junit.version>
-		<igloo.h2.version>1.4.197</igloo.h2.version>
-		<igloo.mockito.version>2.23.0</igloo.mockito.version>
-		<igloo.assertj.version>3.11.1</igloo.assertj.version>
-		<igloo.assertj-guava.version>3.2.0</igloo.assertj-guava.version>
+		<igloo.h2.version>1.4.199</igloo.h2.version>
+		<igloo.mockito.version>2.25.1</igloo.mockito.version>
+		<igloo.assertj.version>3.12.2</igloo.assertj.version>
+		<igloo.assertj-guava.version>3.2.1</igloo.assertj-guava.version>
 		<igloo.grizzly.version>1.9.65</igloo.grizzly.version>
 		<igloo.findbugs-annotations.version>3.0.1u2</igloo.findbugs-annotations.version>
 		<igloo.findbugs-jsr305.version>3.0.2</igloo.findbugs-jsr305.version>
-		
+
 		<!-- https://github.com/vt-middleware/passay/commits/master -->
-		<igloo.passay.version>1.3.1</igloo.passay.version>
+		<igloo.passay.version>1.4.0</igloo.passay.version>
 		<igloo.java-object-diff.version>0.95</igloo.java-object-diff.version>
-		<igloo.elasticsearch.version>5.6.9</igloo.elasticsearch.version>
+		<igloo.elasticsearch.version>5.6.10</igloo.elasticsearch.version>
 		<igloo.elasticsearch-cluster-runner.version>${igloo.elasticsearch.version}.0</igloo.elasticsearch-cluster-runner.version>
 
-		<igloo.embedded-elasticsearch.version>2.7.1</igloo.embedded-elasticsearch.version>
+		<igloo.embedded-elasticsearch.version>2.10.0</igloo.embedded-elasticsearch.version>
 		<!-- Theses dependencies must be redefined when elasticsearh is embedded -->
 		<igloo.elasticsearch-test.snakeyaml.version>1.23</igloo.elasticsearch-test.snakeyaml.version>
 		<igloo.elasticsearch-test.asm2.version>5.1</igloo.elasticsearch-test.asm2.version>
-		
+
 		<igloo.webjars.popper.version>1.14.7</igloo.webjars.popper.version>
 		<igloo.webjars.clipboard.version>2.0.4</igloo.webjars.clipboard.version>
 		<igloo.webjars.bootstrap.version>4.3.1</igloo.webjars.bootstrap.version>
 	</properties>
-	
+
 	<dependencyManagement>
 		<dependencies>
 
@@ -274,7 +280,7 @@
 					<scope>test</scope>
 					<type>pom</type>
 				</dependency>
-			
+
 				<dependency>
 					<groupId>org.iglooproject.dependencies</groupId>
 					<artifactId>igloo-dependency-elasticsearch-test</artifactId>
@@ -295,93 +301,93 @@
 				</dependency>
 
 			<!-- Logging -->
-				
+
 				<dependency>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-api</artifactId>
 					<version>${igloo.slf4j.version}</version>
 				</dependency>
-		
+
 				<dependency>
 					<groupId>org.slf4j</groupId>
 					<artifactId>jcl-over-slf4j</artifactId>
 					<version>${igloo.slf4j.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-log4j12</artifactId>
 					<version>${igloo.slf4j.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>log4j</groupId>
 					<artifactId>log4j</artifactId>
 					<version>${igloo.log4j.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.slf4j</groupId>
 					<artifactId>jul-to-slf4j</artifactId>
 					<version>${igloo.slf4j.version}</version>
 				</dependency>
-			
+
 			<!-- Apache Commons -->
-			
+
 				<dependency>
 					<groupId>commons-lang</groupId>
 					<artifactId>commons-lang</artifactId>
 					<version>${igloo.commons-lang.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.commons</groupId>
 					<artifactId>commons-lang3</artifactId>
 					<version>${igloo.commons-lang3.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.commons</groupId>
 					<artifactId>commons-text</artifactId>
 					<version>${igloo.commons-text.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.commons</groupId>
 					<artifactId>commons-math3</artifactId>
 					<version>${igloo.commons-math3.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>commons-io</groupId>
 					<artifactId>commons-io</artifactId>
 					<version>${igloo.commons-io.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>commons-codec</groupId>
 					<artifactId>commons-codec</artifactId>
 					<version>${igloo.commons-codec.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.commons</groupId>
 					<artifactId>commons-exec</artifactId>
 					<version>${igloo.commons-exec.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.commons</groupId>
 					<artifactId>commons-compress</artifactId>
 					<version>${igloo.commons-compress.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>commons-cli</groupId>
 					<artifactId>commons-cli</artifactId>
 					<version>${igloo.commons-cli.version}</version>
 				</dependency>
-		
+
 				<dependency>
 					<groupId>commons-validator</groupId>
 					<artifactId>commons-validator</artifactId>
@@ -393,7 +399,7 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<!-- used for tests for spring-less environments -->
 				<dependency>
 					<groupId>org.apache.commons</groupId>
@@ -406,7 +412,7 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<!--
 				Solves a "dependency convergence error" triggered by commons-beanutils and commons-validation
 				which does not require the same version of commons-collections.
@@ -422,7 +428,7 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.commons</groupId>
 					<artifactId>commons-collections4</artifactId>
@@ -434,7 +440,7 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<!--
 				Solves a "dependency convergence error" triggered by less4j, which requires an older version
 				of commons-beanutils
@@ -450,15 +456,15 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>commons-fileupload</groupId>
 					<artifactId>commons-fileupload</artifactId>
 					<version>${igloo.commons-fileupload.version}</version>
 				</dependency>
-			
+
 			<!-- Spring -->
-			
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-core</artifactId>
@@ -470,25 +476,25 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-aop</artifactId>
 					<version>${igloo.spring.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-aspects</artifactId>
 					<version>${igloo.spring.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-beans</artifactId>
 					<version>${igloo.spring.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-context</artifactId>
@@ -500,107 +506,107 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-context-support</artifactId>
 					<version>${igloo.spring.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-expression</artifactId>
 					<version>${igloo.spring.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-jdbc</artifactId>
 					<version>${igloo.spring.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-orm</artifactId>
 					<version>${igloo.spring.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-tx</artifactId>
 					<version>${igloo.spring.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-web</artifactId>
 					<version>${igloo.spring.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-webmvc</artifactId>
 					<version>${igloo.spring.version}</version>
 				</dependency>
-				
+
 			<!-- Reflection, proxying, instrumentation... -->
-				
+
 				<dependency>
 					<groupId>cglib</groupId>
 					<artifactId>cglib-nodep</artifactId>
 					<version>${igloo.cglib.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.aspectj</groupId>
 					<artifactId>aspectjrt</artifactId>
 					<version>${igloo.aspectj.version}</version>
 				</dependency>
-		
+
 				<dependency>
 					<groupId>org.aspectj</groupId>
 					<artifactId>aspectjweaver</artifactId>
 					<version>${igloo.aspectj.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.javassist</groupId>
 					<artifactId>javassist</artifactId>
 					<version>${igloo.javassist.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>net.bytebuddy</groupId>
 					<artifactId>byte-buddy</artifactId>
 					<version>${igloo.byte-buddy.version}</version>
 				</dependency>
-			
+
 			<!-- Spring Security -->
-			
+
 				<dependency>
 					<groupId>org.springframework.security</groupId>
 					<artifactId>spring-security-core</artifactId>
 					<version>${igloo.spring-security.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework.security</groupId>
 					<artifactId>spring-security-acl</artifactId>
 					<version>${igloo.spring-security.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework.security</groupId>
 					<artifactId>spring-security-config</artifactId>
 					<version>${igloo.spring-security.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework.security</groupId>
 					<artifactId>spring-security-web</artifactId>
 					<version>${igloo.spring-security.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework.security</groupId>
 					<artifactId>spring-security-ldap</artifactId>
@@ -612,53 +618,47 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework.security</groupId>
 					<artifactId>spring-security-taglibs</artifactId>
 					<version>${igloo.spring-security.version}</version>
 				</dependency>
-				
+
 			<!-- Spring LDAP -->
-				
+
 				<dependency>
 					<groupId>org.springframework.ldap</groupId>
 					<artifactId>spring-ldap-core</artifactId>
 					<version>${igloo.spring-ldap.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework.ldap</groupId>
 					<artifactId>spring-ldap-core-tiger</artifactId>
 					<version>${igloo.spring-ldap.version}</version>
 				</dependency>
-				
+
 			<!-- Persistence -->
-			
+
 				<!-- JDBC drivers -->
-				
+
 					<dependency>
 						<groupId>org.postgresql</groupId>
 						<artifactId>postgresql</artifactId>
 						<version>${igloo.postgresql.version}</version>
 					</dependency>
-					
-					<dependency>
-						<groupId>com.impossibl.pgjdbc-ng</groupId>
-						<artifactId>pgjdbc-ng</artifactId>
-						<version>${igloo.pgjdbc-ng.version}</version>
-					</dependency>
-				
+
 				<!-- Pooling -->
-					
+
 					<dependency>
 						<groupId>com.zaxxer</groupId>
 						<artifactId>HikariCP</artifactId>
 						<version>${igloo.hikaricp.version}</version>
 					</dependency>
-					
+
 				<!-- Hibernate -->
-				
+
 					<dependency>
 						<groupId>org.hibernate</groupId>
 						<artifactId>hibernate-core</artifactId>
@@ -670,19 +670,19 @@
 							</exclusion>
 						</exclusions>
 					</dependency>
-					
+
 					<dependency>
 						<groupId>javax.transaction</groupId>
 						<artifactId>jta</artifactId>
 						<version>${igloo.jta.version}</version>
 					</dependency>
-					
+
 					<dependency>
 						<groupId>org.hibernate</groupId>
 						<artifactId>hibernate-ehcache</artifactId>
 						<version>${igloo.hibernate.version}</version>
 					</dependency>
-					
+
 					<dependency>
 						<groupId>org.hibernate</groupId>
 						<artifactId>hibernate-validator</artifactId>
@@ -710,9 +710,9 @@
 							</exclusion>
 						</exclusions>
 					</dependency>
-					
+
 				<!-- QueryDSL -->
-				
+
 					<dependency>
 						<groupId>com.querydsl</groupId>
 						<artifactId>querydsl-jpa</artifactId>
@@ -724,143 +724,137 @@
 							</exclusion>
 						</exclusions>
 					</dependency>
-			
+
 			<!-- Cache (also used for Hibernate second level cache) -->
-			
+
 				<dependency>
 					<groupId>net.sf.ehcache.internal</groupId>
 					<artifactId>ehcache-core</artifactId>
 					<version>${igloo.ehcache.version}</version>
 				</dependency>
-			
+
 			<!-- Lucene -->
-			
+
 				<dependency>
 					<groupId>org.apache.lucene</groupId>
 					<artifactId>lucene-core</artifactId>
 					<version>${igloo.lucene.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.lucene</groupId>
 					<artifactId>lucene-queryparser</artifactId>
 					<version>${igloo.lucene.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.lucene</groupId>
 					<artifactId>lucene-queries</artifactId>
 					<version>${igloo.lucene.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.lucene</groupId>
 					<artifactId>lucene-analyzers-common</artifactId>
 					<version>${igloo.lucene.version}</version>
 				</dependency>
-				
-				<dependency>
-					<groupId>org.apache.solr</groupId>
-					<artifactId>solr-core</artifactId>
-					<version>${igloo.lucene.version}</version>
-				</dependency>
-			
+
 			<!-- Jackson -->
-				
+
 					<dependency>
 						<groupId>com.fasterxml.jackson.core</groupId>
 						<artifactId>jackson-core</artifactId>
 						<version>${igloo.jackson2-core.version}</version>
 					</dependency>
-					
+
 					<dependency>
 						<groupId>com.fasterxml.jackson.core</groupId>
 						<artifactId>jackson-annotations</artifactId>
 						<version>${igloo.jackson2-annotations.version}</version>
 					</dependency>
-					
+
 					<dependency>
 						<groupId>com.fasterxml.jackson.core</groupId>
 						<artifactId>jackson-databind</artifactId>
 						<version>${igloo.jackson2-databind.version}</version>
 					</dependency>
-					
+
 					<dependency>
 						<groupId>com.fasterxml.jackson.jaxrs</groupId>
 						<artifactId>jackson-jaxrs-json-provider</artifactId>
 						<version>${igloo.jackson2-jaxrs.version}</version>
 					</dependency>
-					
+
 					<dependency>
 						<groupId>com.fasterxml.jackson.module</groupId>
 						<artifactId>jackson-module-jaxb-annotations</artifactId>
 						<version>${igloo.jackson2-jaxrs.version}</version>
 					</dependency>
-					
+
 					<dependency>
 						<groupId>com.fasterxml.jackson.jaxrs</groupId>
 						<artifactId>jackson-jaxrs-xml-provider</artifactId>
 						<version>${igloo.jackson2-jaxrs.version}</version>
 					</dependency>
-					
+
 					<dependency>
 						<groupId>com.fasterxml.jackson.dataformat</groupId>
 						<artifactId>jackson-dataformat-xml</artifactId>
 						<version>${igloo.jackson2-dataformat-xml.version}</version>
 					</dependency>
-				
+
 			<!--  Guava -->
-			
+
 				<dependency>
 					<groupId>com.google.guava</groupId>
 					<artifactId>guava</artifactId>
 					<version>${igloo.guava.version}</version>
 				</dependency>
-			
+
 			<!-- Utils -->
-			
+
 				<dependency>
 					<groupId>org.javatuples</groupId>
 					<artifactId>javatuples</artifactId>
 					<version>${igloo.javatuples.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.danekja</groupId>
 					<artifactId>jdk-serializable-functional</artifactId>
 					<version>${igloo.jdk-serializable-functional.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.bindgen</groupId>
 					<artifactId>bindgen</artifactId>
 					<version>${igloo.bindgen.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.devlib.schmidt</groupId>
 					<artifactId>imageinfo</artifactId>
 					<version>${igloo.imageinfo.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>com.sun.mail</groupId>
 					<artifactId>javax.mail</artifactId>
 					<version>${igloo.javax-mail.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>javax.activation</groupId>
 					<artifactId>activation</artifactId>
 					<version>${igloo.javax-activation.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.freemarker</groupId>
 					<artifactId>freemarker</artifactId>
 					<version>${igloo.freemarker.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>com.github.sommeri</groupId>
 					<artifactId>less4j</artifactId>
@@ -872,19 +866,19 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>io.bit3</groupId>
 					<artifactId>jsass</artifactId>
 					<version>${igloo.jsass.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.jsoup</groupId>
 					<artifactId>jsoup</artifactId>
 					<version>${igloo.jsoup.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.httpcomponents</groupId>
 					<artifactId>httpclient</artifactId>
@@ -896,7 +890,7 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.httpcomponents</groupId>
 					<artifactId>httpmime</artifactId>
@@ -908,7 +902,7 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.httpcomponents</groupId>
 					<artifactId>httpcore</artifactId>
@@ -920,25 +914,25 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>io.mola.galimatias</groupId>
 					<artifactId>galimatias</artifactId>
 					<version>${igloo.galimatias.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.ocpsoft.prettytime</groupId>
 					<artifactId>prettytime</artifactId>
 					<version>${igloo.prettytime.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>com.helger</groupId>
 					<artifactId>ph-css</artifactId>
 					<version>${igloo.ph-css.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.passay</groupId>
 					<artifactId>passay</artifactId>
@@ -955,22 +949,22 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>de.danielbechler</groupId>
 					<artifactId>java-object-diff</artifactId>
 					<version>${igloo.java-object-diff.version}</version>
 				</dependency>
-			
+
 			<!-- Exports divers -->
-			
+
 				<dependency>
 					<groupId>org.xhtmlrenderer</groupId>
 					<artifactId>flying-saucer-pdf</artifactId>
 					<version>${igloo.flying-saucer.version}</version>
 				</dependency>
-				
-				<!-- 
+
+				<!--
 				The most recent versions of this artifact are released under the artifact id com.itextpdf:itextpdf.
 				But these are licensed under Affero GPL; see comments on property igloo.itext.version
 				for more information.
@@ -998,9 +992,9 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-			
+
 			<!-- Apache POI -->
-			
+
 				<dependency>
 					<groupId>org.apache.poi</groupId>
 					<artifactId>poi</artifactId>
@@ -1013,7 +1007,7 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.poi</groupId>
 					<artifactId>poi-ooxml</artifactId>
@@ -1026,9 +1020,9 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-			
+
 			<!-- OpenCSV -->
-			
+
 				<dependency>
 					<groupId>com.opencsv</groupId>
 					<artifactId>opencsv</artifactId>
@@ -1041,27 +1035,27 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-			
+
 			<!-- TrueZip -->
-			
+
 				<dependency>
 					<groupId>de.schlichtherle.truezip</groupId>
 					<artifactId>truezip-file</artifactId>
 					<version>${igloo.truezip.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>de.schlichtherle.truezip</groupId>
 					<artifactId>truezip-driver-file</artifactId>
 					<version>${igloo.truezip.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>de.schlichtherle.truezip</groupId>
 					<artifactId>truezip-driver-tar</artifactId>
 					<version>${igloo.truezip.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>de.schlichtherle.truezip</groupId>
 					<artifactId>truezip-driver-zip</artifactId>
@@ -1077,35 +1071,35 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 			<!-- Explicit bouncycastle dependency (excluded from transitive) -->
 				<dependency>
-					<groupId>bouncycastle</groupId>
+					<groupId>org.bouncycastle</groupId>
 					<artifactId>bcprov-jdk15on</artifactId>
-					<version>${igloo.bouncycastle.version}</version>
+					<version>${igloo.bouncycastle-jdk15on.version}</version>
 				</dependency>
-			
+
 			<!-- Wicket -->
-			
+
 				<dependency>
 					<groupId>org.apache.wicket</groupId>
 					<artifactId>wicket</artifactId>
 					<version>${igloo.wicket.version}</version>
 					<type>pom</type>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.wicket</groupId>
 					<artifactId>wicket-core</artifactId>
 					<version>${igloo.wicket.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>de.agilecoders.wicket.webjars</groupId>
 					<artifactId>wicket-webjars</artifactId>
 					<version>${igloo.wicket-webjars.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.webjars</groupId>
 					<artifactId>webjars-locator-core</artifactId>
@@ -1122,7 +1116,7 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.wicket</groupId>
 					<artifactId>wicket-ioc</artifactId>
@@ -1134,7 +1128,7 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.wicket</groupId>
 					<artifactId>wicket-spring</artifactId>
@@ -1146,67 +1140,67 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.wicket</groupId>
 					<artifactId>wicket-auth-roles</artifactId>
 					<version>${igloo.wicket.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.wicket</groupId>
 					<artifactId>wicket-extensions</artifactId>
 					<version>${igloo.wicket.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.apache.wicket</groupId>
 					<artifactId>wicket-devutils</artifactId>
 					<version>${igloo.wicket.version}</version>
 				</dependency>
-				
+
 				<!-- WiQuery -->
-				
+
 					<dependency>
 						<groupId>org.wicketstuff.wiquery</groupId>
 						<artifactId>wiquery-core</artifactId>
 						<version>${igloo.wiquery.version}</version>
 					</dependency>
-					
+
 					<dependency>
 						<groupId>org.wicketstuff.wiquery</groupId>
 						<artifactId>wiquery-jquery-ui</artifactId>
 						<version>${igloo.wiquery.version}</version>
 					</dependency>
-					
+
 				<!-- wicket-select2 -->
-				
+
 					<dependency>
 						<groupId>org.wicketstuff</groupId>
 						<artifactId>wicketstuff-select2</artifactId>
 						<version>${igloo.wicketstuff-select2.version}</version>
 					</dependency>
-			
+
 			<!-- Jersey 2 -->
-			
+
 				<dependency>
 					<groupId>org.glassfish.jersey.core</groupId>
 					<artifactId>jersey-server</artifactId>
 					<version>${igloo.jersey2.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.glassfish.jersey.core</groupId>
 					<artifactId>jersey-client</artifactId>
 					<version>${igloo.jersey2.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.glassfish.jersey.media</groupId>
 					<artifactId>jersey-media-multipart</artifactId>
 					<version>${igloo.jersey2.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.glassfish.jersey.ext</groupId>
 					<artifactId>jersey-spring3</artifactId>
@@ -1223,45 +1217,45 @@
 					<artifactId>asm-all-repackaged</artifactId>
 					<version>${igloo.glassfish-asm-all-repackaged.version}</version>
 				</dependency>
-			
+
 			<!-- Servlet / JSP -->
-			
+
 				<dependency>
 					<groupId>javax.servlet</groupId>
 					<artifactId>jstl</artifactId>
 					<version>${igloo.jstl.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>javax.servlet</groupId>
 					<artifactId>javax.servlet-api</artifactId>
 					<version>${igloo.servlet-api.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>opensymphony</groupId>
 					<artifactId>sitemesh</artifactId>
 					<version>${igloo.sitemesh.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>javax.validation</groupId>
 					<artifactId>validation-api</artifactId>
 					<version>${igloo.javax-validation-api.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>javax.servlet.jsp</groupId>
 					<artifactId>jsp-api</artifactId>
 					<version>${igloo.jsp-api.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.flywaydb</groupId>
 					<artifactId>flyway-core</artifactId>
 					<version>${igloo.flywaydb.version}</version>
 				</dependency>
-				
+
 			<!-- Elasticsearch -->
 				<dependency>
 					<groupId>org.elasticsearch</groupId>
@@ -1279,22 +1273,22 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<!-- Hibernate-search -->
 				<dependency>
 					<groupId>org.iglooproject.dependencies</groupId>
 					<artifactId>igloo-dependency-hibernate-search</artifactId>
 					<version>1.2-SNAPSHOT</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>com.google.code.gson</groupId>
 					<artifactId>gson</artifactId>
 					<version>${igloo.gson.version}</version>
 				</dependency>
-		
+
 			<!-- Test dependencies -->
-			
+
 				<dependency>
 					<groupId>junit</groupId>
 					<artifactId>junit</artifactId>
@@ -1323,7 +1317,7 @@
 					<artifactId>assertj-guava</artifactId>
 					<version>${igloo.assertj-guava.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-test</artifactId>
@@ -1335,7 +1329,7 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>com.sun.grizzly</groupId>
 					<artifactId>grizzly-webserver</artifactId>
@@ -1347,19 +1341,19 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>com.sun.jersey</groupId>
 					<artifactId>jersey-grizzly</artifactId>
 					<version>${igloo.jersey.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.glassfish.jersey.test-framework.providers</groupId>
 					<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
 					<version>${igloo.jersey2.version}</version>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.glassfish.jersey.containers</groupId>
 					<artifactId>jersey-container-grizzly2-servlet</artifactId>
@@ -1371,14 +1365,14 @@
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>com.google.code.findbugs</groupId>
 					<artifactId>annotations</artifactId>
 					<version>${igloo.findbugs-annotations.version}</version>
 				</dependency>
-				
-				
+
+
 				<!--
 				Solves a "dependency convergence error" triggered by JQuery, which requires an older version
 				of jsr305
@@ -1388,7 +1382,7 @@
 					<artifactId>jsr305</artifactId>
 					<version>${igloo.findbugs-jsr305.version}</version>
 				</dependency>
-				
+
 				<!-- Used for testing purpose -->
 				<dependency>
 					<groupId>org.codelibs</groupId>
@@ -1406,28 +1400,28 @@
 					<groupId>pl.allegro.tech</groupId>
 					<version>${igloo.embedded-elasticsearch.version}</version>
 				</dependency>
-			
+
 			<dependency>
 				<groupId>org.webjars.npm</groupId>
 				<artifactId>popper.js</artifactId>
 				<version>${igloo.webjars.popper.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.webjars.npm</groupId>
 				<artifactId>clipboard</artifactId>
 				<version>${igloo.webjars.clipboard.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.webjars.npm</groupId>
 				<artifactId>bootstrap</artifactId>
 				<version>${igloo.webjars.bootstrap.version}</version>
 			</dependency>
-			
+
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -1523,7 +1517,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<id>sonar-branch</id>
@@ -1582,7 +1576,7 @@
 			</build>
 		</profile>
 	</profiles>
-	
+
 	<repositories>
 		<repository>
 			<id>nexus-igloo-releases</id>
@@ -1592,7 +1586,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		
+
 		<repository>
 			<id>nexus-igloo-snapshots</id>
 			<name>Nexus Igloo Snapshots</name>
@@ -1605,7 +1599,7 @@
 			</releases>
 		</repository>
 	</repositories>
-	
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>nexus-igloo-releases</id>
@@ -1615,7 +1609,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
-		
+
 		<pluginRepository>
 			<id>nexus-igloo-snapshots</id>
 			<name>Nexus Igloo Snapshots</name>
@@ -1628,5 +1622,5 @@
 			</releases>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
 </project>

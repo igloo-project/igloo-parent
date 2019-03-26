@@ -21,7 +21,7 @@ for POM in $( find -name pom.xml ); do
   done
 done
 
-MAVEN_OPTS="$MAVEN_OPTS -Dowasp.enabled=true -Dallure.enabled=true -Djacoco.enabled=true -Dallure.install.directory=$( pwd )/.allure"
+MAVEN_OPTS="$MAVEN_OPTS -Dallure.enabled=true -Djacoco.enabled=true -Dallure.install.directory=$( pwd )/.allure"
 echo mvn -fae integration-test site:site
 mvn -fae integration-test site:site
 TEST_RESULT=$?
