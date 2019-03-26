@@ -5,9 +5,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
+import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.security.access.expression.method.CoreMethodSecurityExpressionHandler;
+import org.iglooproject.jpa.security.business.JpaSecurityBusinessPackage;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.jpa.security.config.spring.DefaultJpaSecurityConfig;
 import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
 import org.iglooproject.jpa.security.hierarchy.PermissionHierarchyImpl;
 import org.iglooproject.jpa.security.model.CorePermissionConstants;
@@ -20,14 +22,17 @@ import org.iglooproject.jpa.security.service.CoreSecurityServiceImpl;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
 import org.iglooproject.jpa.security.service.ISecurityService;
+import org.iglooproject.jpa.security.service.JpaSecurityServicePackage;
 import org.iglooproject.jpa.security.service.NamedPermissionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -52,14 +57,15 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
 @Configuration
-@Import(DefaultJpaSecurityConfig.class)
+@AutoConfigureAfter({ IglooJpaAutoConfiguration.class })
+@ComponentScan(basePackageClasses = {
+		JpaSecurityBusinessPackage.class,
+		JpaSecurityServicePackage.class
+})
 public class IglooJpaSecurityAutoConfiguration {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(IglooJpaSecurityAutoConfiguration.class);
 
-	@Autowired
-	private DefaultJpaSecurityConfig defaultJpaSecurityConfig;
-	
 	/**
 	 * N'est pas basculé en configuration car on n'est pas censé basculer d'un
 	 * mode à un autre au cours de la vie de l'application. Doit être décidé au
@@ -140,7 +146,7 @@ public class IglooJpaSecurityAutoConfiguration {
 	@Bean
 	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 	public ICorePermissionEvaluator permissionEvaluator() {
-		LOGGER.warn("No permissions find, please define your own.");
+		LOGGER.warn("No permissions found, please define your own.");
 		return new ICorePermissionEvaluator() {
 			
 			@Override
@@ -202,16 +208,18 @@ public class IglooJpaSecurityAutoConfiguration {
 	}
 
 	@Bean
-	public RunAsManager runAsManager() {
+	@ConditionalOnBean(SecurityProperties.class)
+	public RunAsManager runAsManager(SecurityProperties securityProperties) {
 		CoreRunAsManagerImpl runAsManager = new CoreRunAsManagerImpl();
-		runAsManager.setKey(defaultJpaSecurityConfig.getRunAsKey());
+		runAsManager.setKey(securityProperties.getRunAsKey());
 		return runAsManager;
 	}
 
+	@ConditionalOnBean(SecurityProperties.class)
 	@Bean
-	public RunAsImplAuthenticationProvider runAsAuthenticationProvider() {
+	public RunAsImplAuthenticationProvider runAsAuthenticationProvider(SecurityProperties securityProperties) {
 		RunAsImplAuthenticationProvider runAsAuthenticationProvider = new RunAsImplAuthenticationProvider();
-		runAsAuthenticationProvider.setKey(defaultJpaSecurityConfig.getRunAsKey());
+		runAsAuthenticationProvider.setKey(securityProperties.getRunAsKey());
 		return runAsAuthenticationProvider;
 	}
 
@@ -245,6 +253,11 @@ public class IglooJpaSecurityAutoConfiguration {
 			}
 		}
 		return builder.toString();
+	}
+	
+	@Bean
+	public JpaPackageScanProvider jpaSecurityPackageScanProvider() {
+		return new JpaPackageScanProvider(JpaSecurityBusinessPackage.class.getPackage());
 	}
 
 }

@@ -28,6 +28,7 @@ public class JpaSecurityAutoConfigurationTestCase {
 	public void testIglooJpaSecurityAutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
+//			.withPropertyValues("security.runAsKey=aaa")
 			.withPropertyValues(String.format("%s=%s",
 					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
 					IglooBootstrap3AutoConfiguration.class.getName()))
