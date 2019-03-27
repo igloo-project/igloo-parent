@@ -7,7 +7,6 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -30,6 +29,7 @@ import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;
+import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
@@ -65,7 +65,7 @@ public abstract class AbstractUserPopup<U extends User> extends AbstractAjaxModa
 
 	protected final IModel<FormMode> formModeModel = new Model<>(FormMode.ADD);
 
-	protected Form<U> form;
+	protected ModelValidatingForm<U> form;
 
 	protected final IModel<String> passwordModel = Model.of();
 

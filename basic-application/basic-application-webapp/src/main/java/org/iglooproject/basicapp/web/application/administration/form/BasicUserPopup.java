@@ -3,7 +3,6 @@ package org.iglooproject.basicapp.web.application.administration.form;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.EmailTextField;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
@@ -25,6 +24,7 @@ import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
+import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
@@ -45,7 +45,7 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, getClass());
 		
-		form = new Form<>("form", getModel());
+		form = new ModelValidatingForm<>("form", getModel());
 		body.add(form);
 		
 		boolean passwordRequired =
@@ -76,11 +76,7 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 							.add(
 								passwordField
 									.setLabel(new ResourceModel("business.user.password"))
-									.setRequired(passwordRequired)
-									.add(
-										new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz))
-											.userModel(getModel())
-									),
+									.setRequired(passwordRequired),
 								new CoreLabel("passwordHelp",
 									new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
 										.setDefaultValue(new ResourceModel("security.user.password.help"))
@@ -104,6 +100,11 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 			);
 		
 		form.add(new EqualPasswordInputValidator(passwordField, confirmPasswordField));
+		
+		form.add(
+			new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), passwordField)
+				.userModel(getModel())
+		);
 		
 		return body;
 	}
