@@ -8,7 +8,7 @@
 	@include navbar-nav-link-hover();
 }
 
-.navbar {
+.navbar-main {
 	.navbar-nav {
 		.nav-item {
 			&.active, &.dropdown.show {

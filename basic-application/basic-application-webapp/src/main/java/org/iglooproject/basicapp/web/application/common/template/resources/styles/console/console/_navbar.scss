@@ -9,8 +9,7 @@
 }
 
 .navbar {
-	@extend .bg-dark;
-	@extend .navbar-dark;
+	@extend .navbar-main;
 	@extend .navbar-expand-md;
 	
 	.navbar-nav {
