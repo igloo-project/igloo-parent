@@ -13,9 +13,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.iglooproject.commons.io.FileUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -48,9 +48,9 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractImportDataServiceImpl.class);
 	
-	protected static final String REFERENCE_DATA_FILE = "reference_data.xls";
+	protected static final String REFERENCE_DATA_FILE = "reference_data.xlsx";
 	
-	protected static final String BUSINESS_DATA_FILE = "business_data.xls";
+	protected static final String BUSINESS_DATA_FILE = "business_data.xlsx";
 	
 	private static final String ID_FIELD_NAME = "id";
 	
@@ -82,7 +82,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		importBeforeReferenceData(directory, idsMapping);
 		
 		LOGGER.info("Importing {}", REFERENCE_DATA_FILE);
-		Workbook referenceDataWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, REFERENCE_DATA_FILE)));
+		Workbook referenceDataWorkbook = new XSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, REFERENCE_DATA_FILE)));
 		importReferenceData(idsMapping, referenceDataWorkbook);
 		LOGGER.info("Import of {} complete", REFERENCE_DATA_FILE);
 		
@@ -91,7 +91,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		importBeforeBusinessData(directory, idsMapping);
 
 		LOGGER.info("Importing {}", BUSINESS_DATA_FILE);
-		Workbook businessItemWorkbook = new HSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, BUSINESS_DATA_FILE)));
+		Workbook businessItemWorkbook = new XSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, BUSINESS_DATA_FILE)));
 		importMainBusinessItems(idsMapping, businessItemWorkbook);
 		LOGGER.info("Import of {} complete", BUSINESS_DATA_FILE);
 		
