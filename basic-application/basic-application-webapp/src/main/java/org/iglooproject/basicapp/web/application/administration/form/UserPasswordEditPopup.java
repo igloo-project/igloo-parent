@@ -4,7 +4,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
@@ -26,6 +25,7 @@ import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
+import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
@@ -50,7 +50,7 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 
 	private final IModel<? extends UserTypeDescriptor<? extends User>> userTypeDescriptorModel;
 
-	private Form<?> form;
+	private ModelValidatingForm<?> form;
 
 	private final IModel<String> oldPasswordModel = Model.of("");
 	private final IModel<String> newPasswordModel = Model.of("");
@@ -78,7 +78,7 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserPasswordEditPopup.class);
 		
-		form = new Form<Void>("form");
+		form = new ModelValidatingForm<Void>("form");
 		body.add(form);
 		
 		TextField<String> oldPasswordField = new PasswordTextField("oldPassword", oldPasswordModel);
@@ -93,11 +93,7 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 					.add(isOldPasswordRequired.thenShow()),
 				newPasswordField
 					.setLabel(new ResourceModel("business.user.newPassword"))
-					.setRequired(true)
-					.add(
-						new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz))
-							.userModel(getModel())
-					),
+					.setRequired(true),
 				new CoreLabel("passwordHelp",
 					new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
 						.setDefaultValue(new ResourceModel("security.user.password.help"))
@@ -105,10 +101,16 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 				confirmPasswordField
 					.setLabel(new ResourceModel("business.user.confirmPassword"))
 					.setRequired(true)
-			)
-			.add(
-				new EqualPasswordInputValidator(newPasswordField, confirmPasswordField)
 			);
+		
+		form.add(
+			new EqualPasswordInputValidator(newPasswordField, confirmPasswordField)
+		);
+		
+		form.add(
+			new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), newPasswordField)
+				.userModel(getModel())
+		);
 		
 		return body;
 	}

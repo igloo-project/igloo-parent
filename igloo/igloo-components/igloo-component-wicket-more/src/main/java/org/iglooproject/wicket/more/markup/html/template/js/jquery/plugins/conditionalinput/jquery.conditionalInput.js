@@ -1,6 +1,6 @@
 (function($) {
 	function findAllInputs($element) {
-		return $element.find('input, select, textarea').andSelf().filter('input, select, textarea');
+		return $element.find('input, select, textarea').addBack().filter('input, select, textarea');
 	}
 	
 	function resetAllInputs($element) {

@@ -13,6 +13,8 @@ import org.apache.lucene.search.BooleanQuery;
 import org.flywaydb.core.Flyway;
 import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
 import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
+import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionConfigurationProvider;
+import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
@@ -57,7 +59,10 @@ import com.google.common.collect.Maps;
 public abstract class AbstractJpaConfig {
 
 	@Autowired
-	protected DefaultJpaConfig defaultJpaConfig;
+	protected IDatabaseConnectionConfigurationProvider databaseConfigurationProvider;
+
+	@Autowired
+	protected IJpaConfigurationProvider jpaConfigurationProvider;
 	
 	@Autowired
 	private IPropertyService propertyService;
@@ -136,7 +141,7 @@ public abstract class AbstractJpaConfig {
 	 */
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource() {
-		return JpaConfigUtils.dataSource(defaultJpaConfig.defaultDatabaseConnectionPoolConfigurationProvider(null));
+		return JpaConfigUtils.dataSource(databaseConfigurationProvider);
 	}
 
 	@Bean

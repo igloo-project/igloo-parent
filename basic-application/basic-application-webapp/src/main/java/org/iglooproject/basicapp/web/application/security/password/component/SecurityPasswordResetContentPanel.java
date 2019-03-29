@@ -4,7 +4,6 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
@@ -13,19 +12,19 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.typedescriptor.UserTypeDescriptor;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.common.model.UserTypeDescriptorModel;
-import org.iglooproject.basicapp.web.application.common.validator.EmailExistsValidator;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.iglooproject.wicket.more.util.model.Detachables;
+import org.iglooproject.wicket.more.util.validate.validators.PredicateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +48,7 @@ public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
 		
 		userTypeDescriptorModel = UserTypeDescriptorModel.fromUser(getModel());
 		
-		Form<?> form = new Form<Void>("form");
+		ModelValidatingForm<?> form = new ModelValidatingForm<Void>("form");
 		add(form);
 		
 		TextField<String> newPasswordField = new PasswordTextField("newPassword", newPasswordModel);
@@ -59,16 +58,14 @@ public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
 			new TextField<String>("email", emailModel)
 				.setLabel(new ResourceModel("business.user.email"))
 				.setRequired(true)
-				.add(EmailAddressValidator.getInstance())
-				.add(EmailExistsValidator.get())
-				.add(new LabelPlaceholderBehavior()),
+				.add(new LabelPlaceholderBehavior())
+				.add(
+					PredicateValidator.of(email -> email != null && email.equals(getModelObject().getEmail()))
+						.errorKey("common.validator.email.match.user")
+				),
 			newPasswordField
 				.setLabel(new ResourceModel("business.user.newPassword"))
 				.setRequired(true)
-				.add(
-					new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz))
-						.userModel(userModel)
-				)
 				.add(new LabelPlaceholderBehavior()),
 			new CoreLabel("passwordHelp",
 				new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
@@ -81,6 +78,11 @@ public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
 		);
 		
 		form.add(new EqualPasswordInputValidator(newPasswordField, confirmPasswordField));
+		
+		form.add(
+			new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), newPasswordField)
+				.userModel(getModel())
+		);
 		
 		form.add(
 			new AjaxButton("validate", form) {

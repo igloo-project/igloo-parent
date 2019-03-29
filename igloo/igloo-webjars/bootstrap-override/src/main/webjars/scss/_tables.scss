@@ -1,7 +1,7 @@
 .table {
 	tfoot th {
 		vertical-align: top;
-		border-top: (2 * $table-border-width) solid $table-border-color;
+		border-top: 2 * $table-border-width solid $table-border-color;
 	}
 }
 

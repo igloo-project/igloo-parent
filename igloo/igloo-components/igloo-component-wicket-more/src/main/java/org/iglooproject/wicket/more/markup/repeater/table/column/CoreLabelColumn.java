@@ -6,11 +6,9 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
@@ -77,8 +75,7 @@ public abstract class CoreLabelColumn<T, S extends ISort<?>> extends AbstractCor
 					@Override
 					public MarkupContainer getSideLink(String wicketId, IModel<T> rowModel) {
 						if (sideLinkGeneratorMapper != null) {
-							return decorate(sideLinkGeneratorMapper.map(rowModel).link(wicketId))
-									.add(new WebMarkupContainer("sideLinkIcon").add(new ClassAttributeAppender("fa fa-fw fa-share-square fa-share-square-o")));
+							return decorate(sideLinkGeneratorMapper.map(rowModel).link(wicketId));
 						}
 						return new InvisiblePanel(wicketId);
 					}

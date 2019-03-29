@@ -1,9 +1,11 @@
-// Custom
+// Vendor
+@import "vendor/rfs";
 
+// Deprecate
+@import "mixins/deprecate";
+
+// Common
 @import "mixins/common";
-@import "mixins/card";
-
-// Bootstrap
 
 // Utilities
 @import "mixins/breakpoints";
@@ -20,6 +22,7 @@
 @import "mixins/visibility";
 
 // // Components
+@import "mixins/card";
 @import "mixins/alert";
 @import "mixins/buttons";
 @import "mixins/caret";
