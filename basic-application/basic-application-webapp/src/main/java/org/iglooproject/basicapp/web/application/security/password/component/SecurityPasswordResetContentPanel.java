@@ -12,12 +12,10 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.typedescriptor.UserTypeDescriptor;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.common.model.UserTypeDescriptorModel;
-import org.iglooproject.basicapp.web.application.common.validator.EmailExistsValidator;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
@@ -26,6 +24,7 @@ import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.iglooproject.wicket.more.util.model.Detachables;
+import org.iglooproject.wicket.more.util.validate.validators.PredicateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,9 +58,11 @@ public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
 			new TextField<String>("email", emailModel)
 				.setLabel(new ResourceModel("business.user.email"))
 				.setRequired(true)
-				.add(EmailAddressValidator.getInstance())
-				.add(EmailExistsValidator.get())
-				.add(new LabelPlaceholderBehavior()),
+				.add(new LabelPlaceholderBehavior())
+				.add(
+					PredicateValidator.of(email -> email != null && email.equals(getModelObject().getEmail()))
+						.errorKey("common.validator.email.match.user")
+				),
 			newPasswordField
 				.setLabel(new ResourceModel("business.user.newPassword"))
 				.setRequired(true)
