@@ -29,6 +29,7 @@ import org.passay.RuleResultDetail;
 import org.passay.UsernameRule;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
@@ -36,9 +37,9 @@ public class UserPasswordValidator implements IFormModelValidator {
 
 	private static final long serialVersionUID = 5619802188558408589L;
 
-	private static final List<String> RULES_CUSTOM_ERROR = Lists.newArrayList(
-			LengthRule.ERROR_CODE_MIN,
-			LengthRule.ERROR_CODE_MAX
+	private static final List<String> RULES_CUSTOM_ERROR = ImmutableList.of(
+		LengthRule.ERROR_CODE_MIN,
+		LengthRule.ERROR_CODE_MAX
 	);
 
 	private static final String HISTORY_VIOLATION = "HISTORY_VIOLATION";
@@ -75,7 +76,6 @@ public class UserPasswordValidator implements IFormModelValidator {
 
 	@Override
 	public void validate(Form<?> form) {
-		String username = Bindings.user().username().getSafelyWithRoot(userModel.getObject());
 		String password = passwordFormComponent.getValue();
 		
 		if (Boolean.FALSE.equals(propertyService.get(BasicApplicationCorePropertyIds.SECURITY_PASSWORD_VALIDATOR_ENABLED)) || !StringUtils.hasText(password)) {
@@ -84,6 +84,7 @@ public class UserPasswordValidator implements IFormModelValidator {
 		
 		Class<? extends User> userClass = userClassModel.getObject();
 		User user = userModel != null ? userModel.getObject() : null;
+		String username = Bindings.user().username().getSafelyWithRoot(user);
 		
 		PasswordData passwordData = new PasswordData(password);
 		
