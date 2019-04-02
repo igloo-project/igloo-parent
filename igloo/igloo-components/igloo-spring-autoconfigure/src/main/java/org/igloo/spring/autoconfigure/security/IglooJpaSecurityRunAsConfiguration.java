@@ -8,5 +8,4 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty("security.runAsKey")
 @EnableConfigurationProperties(SecurityProperties.class)
 public class IglooJpaSecurityRunAsConfiguration {
-
 }

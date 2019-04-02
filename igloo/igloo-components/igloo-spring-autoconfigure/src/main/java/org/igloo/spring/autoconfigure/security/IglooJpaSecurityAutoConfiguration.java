@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
+import org.igloo.spring.autoconfigure.security.stub.StubSecurityUserServiceImpl;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.security.access.expression.method.CoreMethodSecurityExpressionHandler;
 import org.iglooproject.jpa.security.business.JpaSecurityBusinessPackage;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
+import org.iglooproject.jpa.security.business.person.service.ISecurityUserService;
 import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
 import org.iglooproject.jpa.security.hierarchy.PermissionHierarchyImpl;
 import org.iglooproject.jpa.security.model.CorePermissionConstants;
@@ -28,11 +30,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -57,10 +59,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
 @Configuration
+@Import(IglooJpaSecurityRunAsConfiguration.class)
 @AutoConfigureAfter({ IglooJpaAutoConfiguration.class })
 @ComponentScan(basePackageClasses = {
 		JpaSecurityBusinessPackage.class,
 		JpaSecurityServicePackage.class
+		
 })
 public class IglooJpaSecurityAutoConfiguration {
 
@@ -75,14 +79,21 @@ public class IglooJpaSecurityAutoConfiguration {
 	 * 
 	 * @see AuthenticationUsernameComparison
 	 */
+	@Bean
+	@ConditionalOnMissingBean
 	public AuthenticationUsernameComparison authenticationUsernameComparison() {
 		return AuthenticationUsernameComparison.CASE_SENSITIVE;
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean
+	public ISecurityUserService<?> userServiceImpl() {
+		return new StubSecurityUserServiceImpl();
+	}
+	
+	@Bean
 	public PasswordEncoder passwordEncoder() {
-		PasswordEncoder passwordEncoder =
-			    PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		return passwordEncoder;
 	}
 
@@ -97,7 +108,7 @@ public class IglooJpaSecurityAutoConfiguration {
 	}
 	
 	@Bean
-	public UserDetailsService userDetailsService() {
+	public UserDetailsService userDetailsService(AuthenticationUsernameComparison authenticationUsernameComparison) {
 		CoreJpaUserDetailsServiceImpl detailsService = new CoreJpaUserDetailsServiceImpl();
 		detailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
 		return detailsService;
@@ -208,14 +219,12 @@ public class IglooJpaSecurityAutoConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnBean(SecurityProperties.class)
 	public RunAsManager runAsManager(SecurityProperties securityProperties) {
 		CoreRunAsManagerImpl runAsManager = new CoreRunAsManagerImpl();
 		runAsManager.setKey(securityProperties.getRunAsKey());
 		return runAsManager;
 	}
 
-	@ConditionalOnBean(SecurityProperties.class)
 	@Bean
 	public RunAsImplAuthenticationProvider runAsAuthenticationProvider(SecurityProperties securityProperties) {
 		RunAsImplAuthenticationProvider runAsAuthenticationProvider = new RunAsImplAuthenticationProvider();

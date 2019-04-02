@@ -9,7 +9,7 @@ import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
 import org.iglooproject.jpa.security.business.person.model.IGroupedUser;
 import org.iglooproject.jpa.security.business.person.model.IUserGroup;
-import org.iglooproject.jpa.security.business.person.service.IGenericUserService;
+import org.iglooproject.jpa.security.business.person.service.ISecurityUserService;
 import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
 import org.iglooproject.jpa.security.model.CoreUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	private static final String EMPTY_PASSWORD_HASH = "* NO PASSWORD *";
 
 	@Autowired
-	private IGenericUserService<?> userService; 
+	private ISecurityUserService<?> userService; 
 	
 	@Autowired
 	private RoleHierarchy roleHierarchy;

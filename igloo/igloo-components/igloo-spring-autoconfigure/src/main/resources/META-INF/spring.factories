@@ -9,4 +9,5 @@ org.igloo.spring.autoconfigure.wicket.IglooWicketAutoConfiguration, \
 org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration, \
 org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration, \
 org.igloo.spring.autoconfigure.task.IglooTaskManagementAutoConfiguration, \
-org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration
+org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration, \
+org.igloo.spring.autoconfigure.infinispan.IglooInfinispanAutoConfiguration
