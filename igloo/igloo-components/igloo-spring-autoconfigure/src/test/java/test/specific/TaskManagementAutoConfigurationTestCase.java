@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
+import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderManagerImpl;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -27,16 +28,13 @@ public class TaskManagementAutoConfigurationTestCase {
 	public void testIglooTaskManagementAutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-			.withPropertyValues(String.format("%s=%s",
-					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
-					IglooBootstrap3AutoConfiguration.class.getName()))
 			.run(
 				(context) -> { assertThat(context).hasSingleBean(QueuedTaskHolderManagerImpl.class); }
 			);
 	}
 	
 	@Configuration
-	@EnableIglooAutoConfiguration
+	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class})
 	public static class TestConfig {}
 
 }

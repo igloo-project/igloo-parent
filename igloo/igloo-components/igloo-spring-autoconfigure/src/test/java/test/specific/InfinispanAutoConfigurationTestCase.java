@@ -3,7 +3,6 @@ package test.specific;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
-import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.iglooproject.infinispan.service.IInfinispanClusterService;
@@ -12,8 +11,6 @@ import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
-
-import com.google.common.base.Joiner;
 
 /**
  * Base class used to check that {@link EnableIglooAutoConfiguration} triggers IglooFlywayAutoConfiguration properly. 
@@ -31,17 +28,13 @@ public class InfinispanAutoConfigurationTestCase {
 	public void testIglooInfinispanAutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-			.withPropertyValues(String.format("%s=%s",
-					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
-					Joiner.on(",").join(IglooBootstrap3AutoConfiguration.class.getName(),
-							IglooJpaSecurityAutoConfiguration.class.getName())))
 			.run(
 				(context) -> { assertThat(context).hasSingleBean(IInfinispanClusterService.class); }
 			);
 	}
 	
 	@Configuration
-	@EnableIglooAutoConfiguration
+	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class})
 	public static class TestConfig {}
 
 }

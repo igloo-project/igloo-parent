@@ -3,7 +3,6 @@ package test.specific;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
-import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.junit.Test;
@@ -29,16 +28,13 @@ public class JpaSecurityAutoConfigurationTestCase {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.withPropertyValues("security.runAsKey=aaa")
-			.withPropertyValues(String.format("%s=%s",
-					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
-					IglooBootstrap3AutoConfiguration.class.getName()))
 			.run(
 				(context) -> { assertThat(context).hasSingleBean(RunAsManager.class); }
 			);
 	}
 	
 	@Configuration
-	@EnableIglooAutoConfiguration
+	@EnableIglooAutoConfiguration(exclude = IglooBootstrap3AutoConfiguration.class)
 	public static class TestConfig {}
 
 }

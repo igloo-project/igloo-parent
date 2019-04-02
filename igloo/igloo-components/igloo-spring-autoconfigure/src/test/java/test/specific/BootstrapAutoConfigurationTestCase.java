@@ -6,6 +6,7 @@ import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
+import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.iglooproject.wicket.bootstrap4.application.WicketBootstrapModule;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -66,7 +67,7 @@ public class BootstrapAutoConfigurationTestCase {
 	}
 	
 	@Configuration
-	@EnableIglooAutoConfiguration
+	@EnableIglooAutoConfiguration(exclude = IglooJpaSecurityAutoConfiguration.class)
 	public static class TestConfig {}
 
 }
