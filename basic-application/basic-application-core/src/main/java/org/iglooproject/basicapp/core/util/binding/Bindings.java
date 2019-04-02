@@ -4,7 +4,7 @@ import org.iglooproject.basicapp.core.business.announcement.model.AnnouncementBi
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifferenceBinding;
 import org.iglooproject.basicapp.core.business.history.model.HistoryLogBinding;
 import org.iglooproject.basicapp.core.business.referencedata.model.CityBinding;
-import org.iglooproject.basicapp.core.business.referencedata.model.ILocalizedReferenceDataBindingInterfaceBinding;
+import org.iglooproject.basicapp.core.business.referencedata.model.IReferenceDataBindingInterfaceBinding;
 import org.iglooproject.basicapp.core.business.user.model.UserBinding;
 import org.iglooproject.basicapp.core.business.user.model.UserGroupBinding;
 
@@ -18,7 +18,7 @@ public final class Bindings {
 
 	private static final HistoryDifferenceBinding HISTORY_DIFFERENCE = new HistoryDifferenceBinding();
 
-	private static final ILocalizedReferenceDataBindingInterfaceBinding LOCALIZED_REFERENCE_DATA = new ILocalizedReferenceDataBindingInterfaceBinding();
+	private static final IReferenceDataBindingInterfaceBinding REFERENCE_DATA = new IReferenceDataBindingInterfaceBinding();
 	private static final CityBinding CITY = new CityBinding();
 
 	private static final AnnouncementBinding ANNOUNCEMENT = new AnnouncementBinding();
@@ -39,8 +39,8 @@ public final class Bindings {
 		return HISTORY_DIFFERENCE;
 	}
 
-	public static ILocalizedReferenceDataBindingInterfaceBinding localizedReferenceData() {
-		return LOCALIZED_REFERENCE_DATA;
+	public static IReferenceDataBindingInterfaceBinding referenceData() {
+		return REFERENCE_DATA;
 	}
 
 	public static CityBinding city() {

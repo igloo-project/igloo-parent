@@ -20,7 +20,7 @@ import com.google.common.base.MoreObjects;
 @Bindable
 public abstract class GenericReferenceData<E extends GenericReferenceData<?, ?>, T>
 		extends GenericEntity<Long, E>
-		implements IGenericReferenceDataInterface<T> {
+		implements IGenericReferenceDataBindingInterface<T> {
 
 	private static final long serialVersionUID = -4060821429592653558L;
 

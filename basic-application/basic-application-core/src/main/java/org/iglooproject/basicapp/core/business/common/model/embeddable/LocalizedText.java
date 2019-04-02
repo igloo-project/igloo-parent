@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;
@@ -56,6 +57,7 @@ public class LocalizedText extends AbstractLocalizedText {
 	}
 
 	@Override
+	@Transient
 	public Collection<Locale> getSupportedLocales() {
 		return BasicApplicationLocale.ALL;
 	}
@@ -77,6 +79,7 @@ public class LocalizedText extends AbstractLocalizedText {
 	}
 
 	@Override
+	@Transient
 	public String get(Locale locale) {
 		if (locale == null) {
 			throw new IllegalArgumentException("Locale should not be null");
@@ -92,6 +95,7 @@ public class LocalizedText extends AbstractLocalizedText {
 	}
 
 	@Override
+	@Transient
 	public void set(Locale locale, String text) {
 		if (locale == null) {
 			throw new IllegalArgumentException("Locale should not be null");

@@ -1,6 +1,5 @@
 package org.iglooproject.jpa.more.business.localization.model;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -19,18 +18,18 @@ import com.google.common.collect.Lists;
 
 @MappedSuperclass
 @Bindable
-public abstract class AbstractLocalizedText implements Serializable, Cloneable {
+public abstract class AbstractLocalizedText implements ILocalizedText {
 
 	private static final long serialVersionUID = -4433811130100791706L;
 
 	@Transient
 	public abstract Collection<Locale> getSupportedLocales();
 
+	@Override
+	@Transient
 	public abstract String get(Locale locale);
 	
-	/**
-	 * Null-safe version of {@link #get(Locale)}.
-	 */
+	@Transient
 	public static String get(AbstractLocalizedText text, Locale locale) {
 		if (text == null) {
 			return null;
@@ -38,15 +37,18 @@ public abstract class AbstractLocalizedText implements Serializable, Cloneable {
 			return text.get(locale);
 		}
 	}
-
+	
+	@Transient
 	public abstract void set(Locale locale, String text);
 	
+	@Transient
 	public String getOrDefault(Locale locale) {
 		List<Locale> locales = Lists.newArrayList(locale);
 		locales.addAll(getSupportedLocales());
 		return getFirstNonEmpty(locales);
 	}
 	
+	@Transient
 	public String getFirstNonEmpty(Collection<Locale> locales) {
 		if (locales == null) {
 			throw new IllegalArgumentException("Locales collection should not be null");
@@ -65,6 +67,7 @@ public abstract class AbstractLocalizedText implements Serializable, Cloneable {
 	/**
 	 * Null-safe version of {@link #getFirstNonEmpty(Collection)}.
 	 */
+	@Transient
 	public static String getFirstNonEmpty(AbstractLocalizedText text, Collection<Locale> locales) {
 		if (text == null) {
 			return null;
@@ -94,8 +97,8 @@ public abstract class AbstractLocalizedText implements Serializable, Cloneable {
 		return StringUtils.hasText(value);
 	}
 
-	@Transient
 	@Override
+	@Transient
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
 		for (Locale locale : getSupportedLocales()) {
@@ -105,6 +108,7 @@ public abstract class AbstractLocalizedText implements Serializable, Cloneable {
 	}
 
 	@Override
+	@Transient
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;
@@ -126,8 +130,8 @@ public abstract class AbstractLocalizedText implements Serializable, Cloneable {
 		return true;
 	}
 
-	@Transient
 	@Override
+	@Transient
 	public int hashCode() {
 		HashCodeBuilder builder = new HashCodeBuilder();
 		for (Locale locale : getSupportedLocales()) {
@@ -136,8 +140,8 @@ public abstract class AbstractLocalizedText implements Serializable, Cloneable {
 		return builder.build();
 	}
 
-	@Transient
 	@Override
+	@Transient
 	public AbstractLocalizedText clone() { // NOSONAR
 		try {
 			return (AbstractLocalizedText) super.clone();

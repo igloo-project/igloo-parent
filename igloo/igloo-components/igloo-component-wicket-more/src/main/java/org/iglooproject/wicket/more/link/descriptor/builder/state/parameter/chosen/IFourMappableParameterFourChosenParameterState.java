@@ -12,12 +12,12 @@ public interface IFourMappableParameterFourChosenParameterState
 		TLateTargetDefinitionImageResourceResult
 		>
 		extends IFourChosenParameterState
-						<
-						TInitialState,
-						TChosenParam1, TChosenParam2, TChosenParam3, TChosenParam4,
-						TLateTargetDefinitionPageResult,
-						TLateTargetDefinitionResourceResult,
-						TLateTargetDefinitionImageResourceResult
-						> {
+					<
+					TInitialState,
+					TChosenParam1, TChosenParam2, TChosenParam3, TChosenParam4,
+					TLateTargetDefinitionPageResult,
+					TLateTargetDefinitionResourceResult,
+					TLateTargetDefinitionImageResourceResult
+					> {
 
 }

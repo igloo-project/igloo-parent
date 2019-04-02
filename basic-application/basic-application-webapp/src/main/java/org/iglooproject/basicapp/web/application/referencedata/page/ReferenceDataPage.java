@@ -33,7 +33,6 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 						private static final long serialVersionUID = 1L;
 						@Override
 						public Component createContent(String wicketId) {
-							// Here, you can also use the SimpleGenericListItemListPanel<City>(wicketId, CITY_SUPPLIER, ICitySearchQuery.class);
 							return new CityListPanel(wicketId);
 						}
 					}

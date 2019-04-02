@@ -11,7 +11,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
-import org.iglooproject.basicapp.web.application.referencedata.form.AbstractGenericReferenceDataPopup;
+import org.iglooproject.basicapp.web.application.referencedata.form.AbstractReferenceDataPopup;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -36,18 +36,18 @@ public abstract class AbstractReferenceDataListPanel<
 		S extends ISort<?>,
 		D extends AbstractSearchQueryDataProvider<T, S>
 		> extends Panel {
-	
+
 	private static final long serialVersionUID = -8240552205613934114L;
 
 	@SpringBean
 	protected IPropertyService propertyService;
-	
+
 	protected DecoratedCoreDataTablePanel<T, S> results;
-	
-	private AbstractGenericReferenceDataPopup<T> popup;
-	
+
+	private AbstractReferenceDataPopup<T> popup;
+
 	private final D dataProvider;
-	
+
 	public AbstractReferenceDataListPanel(String id, final D dataProvider, CompositeSortModel<S> sortModel) {
 		super(id);
 		setOutputMarkupId(true);
@@ -76,16 +76,16 @@ public abstract class AbstractReferenceDataListPanel<
 			results
 		);
 	}
-	
+
 	protected D getDataProvider() {
 		return dataProvider;
 	}
 
 	protected abstract T getNewInstance();
 
-	protected abstract AbstractGenericReferenceDataPopup<T> createPopup(String wicketId);
+	protected abstract AbstractReferenceDataPopup<T> createPopup(String wicketId);
 
-	protected AbstractGenericReferenceDataPopup<T> getPopup() {
+	protected AbstractReferenceDataPopup<T> getPopup() {
 		return popup;
 	}
 
