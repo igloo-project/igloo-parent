@@ -2,9 +2,9 @@ package org.iglooproject.basicapp.core.config.spring;
 
 import org.apache.lucene.search.SortField;
 import org.iglooproject.basicapp.core.business.BasicApplicationCoreCommonBusinessPackage;
-import org.iglooproject.basicapp.core.business.referencedata.model.LocalizedReferenceData;
-import org.iglooproject.basicapp.core.business.referencedata.search.ISimpleLocalizedReferenceDataSearchQuery;
-import org.iglooproject.basicapp.core.business.referencedata.search.SimpleLocalizedReferenceDataSearchQueryImpl;
+import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
+import org.iglooproject.basicapp.core.business.referencedata.search.BasicReferenceDataSearchQueryImpl;
+import org.iglooproject.basicapp.core.business.referencedata.search.IBasicReferenceDataSearchQuery;
 import org.iglooproject.basicapp.core.config.hibernate.HibernateConfigPackage;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.more.business.sort.ISort;
@@ -26,15 +26,15 @@ public class BasicApplicationCoreCommonJpaConfig extends AbstractConfiguredJpaSe
 	@Bean
 	public JpaPackageScanProvider applicationJpaPackageScanProvider() {
 		return new JpaPackageScanProvider(
-				BasicApplicationCoreCommonBusinessPackage.class.getPackage(),
-				HibernateConfigPackage.class.getPackage() // Typedef config
+			BasicApplicationCoreCommonBusinessPackage.class.getPackage(),
+			HibernateConfigPackage.class.getPackage() // Typedef config
 		);
 	}
 
 	@Bean
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public <T extends LocalizedReferenceData<? super T>, S extends ISort<SortField>> ISimpleLocalizedReferenceDataSearchQuery<T, S> simpleLocalizedReferenceDataSearchQuery(Class<T> clazz) {
-		return new SimpleLocalizedReferenceDataSearchQueryImpl<>(clazz);
+	public <T extends ReferenceData<? super T>, S extends ISort<SortField>> IBasicReferenceDataSearchQuery<T, S> basicReferenceDataSearchQuery(Class<T> clazz) {
+		return new BasicReferenceDataSearchQueryImpl<>(clazz);
 	}
 
 }

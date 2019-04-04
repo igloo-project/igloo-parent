@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.core.security.service;
 
-import org.iglooproject.basicapp.core.business.referencedata.model.LocalizedReferenceData;
+import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.jpa.security.service.AbstractCorePermissionEvaluator;
 import org.iglooproject.jpa.util.HibernateUtils;
@@ -10,7 +10,7 @@ import org.springframework.security.acls.model.Permission;
 public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionEvaluator<User> {
 
 	@Autowired
-	private ILocalizedReferenceDataPermissionEvaluator localizedReferenceDataPermissionEvaluator;
+	private IReferenceDataPermissionEvaluator referenceDataPermissionEvaluator;
 
 	@Override
 	protected boolean hasPermission(User user, Object targetDomainObject, Permission permission) {
@@ -24,8 +24,8 @@ public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionE
 			user = HibernateUtils.unwrap(user); // NOSONAR
 		}
 		
-		if (targetDomainObject instanceof LocalizedReferenceData) {
-			return localizedReferenceDataPermissionEvaluator.hasPermission(user, (LocalizedReferenceData<?>) targetDomainObject, permission);
+		if (targetDomainObject instanceof ReferenceData) {
+			return referenceDataPermissionEvaluator.hasPermission(user, (ReferenceData<?>) targetDomainObject, permission);
 		}
 		
 		return false;

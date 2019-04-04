@@ -15,7 +15,7 @@ import org.iglooproject.jpa.more.business.referencedata.service.IGenericReferenc
 public class GenericReferenceDataModel<T extends GenericReferenceData<?, ?>> extends LoadableDetachableModel<List<T>> {
 
 	private static final long serialVersionUID = -8014868217254919305L;
-	
+
 	private Class<T> clazz;
 	private final Comparator<? super T> comparator;
 	private final EnabledFilter enabledFilter;

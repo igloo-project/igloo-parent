@@ -12,9 +12,6 @@ import com.querydsl.core.types.dsl.StringExpression;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.QGenericEntity;
 
-/**
- * Permet de factoriser les méthodes de GenericEntityDaoImpl, GenericListItemDaoImpl et GenericLocalizedGenericListItemDaoImpl
- */
 public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
 
 	protected <T extends E, V extends Comparable<?>> T getByField(EntityPath<T> entityPath, SimpleExpression<V> field, V fieldValue) {

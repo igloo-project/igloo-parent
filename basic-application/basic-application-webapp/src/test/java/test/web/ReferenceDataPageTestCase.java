@@ -29,4 +29,5 @@ public class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTes
 		
 		tester.executeUrl("./reference-data/"); // equals to startPage(ReferenceDataPage.class)
 	}
+
 }
