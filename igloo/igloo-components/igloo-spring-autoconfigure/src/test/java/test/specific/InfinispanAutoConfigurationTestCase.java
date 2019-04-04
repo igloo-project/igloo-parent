@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
+import org.iglooproject.infinispan.service.IInfinispanClusterService;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -18,17 +19,17 @@ import org.springframework.context.annotation.Configuration;
  * which are declared at the bottom of the file.
  *  
  */
-public class FlywayAutoConfigurationTestCase {
+public class InfinispanAutoConfigurationTestCase {
 
 	/**
 	 * Check that autoconfiguration from {@link FlywayConfiguration} is triggered with EnableIglooAutoConfiguration
 	 */
 	@Test
-	public void testIglooFlywayAutoConfigure() {
+	public void testIglooInfinispanAutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.run(
-				(context) -> { assertThat(context).hasSingleBean(FlywayConfiguration.class); }
+				(context) -> { assertThat(context).hasSingleBean(IInfinispanClusterService.class); }
 			);
 	}
 	

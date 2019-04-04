@@ -4,12 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
-import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.intercept.RunAsManager;
 
 /**
  * Base class used to check that {@link EnableIglooAutoConfiguration} triggers IglooFlywayAutoConfiguration properly. 
@@ -18,22 +18,23 @@ import org.springframework.context.annotation.Configuration;
  * which are declared at the bottom of the file.
  *  
  */
-public class FlywayAutoConfigurationTestCase {
+public class JpaSecurityAutoConfigurationTestCase {
 
 	/**
 	 * Check that autoconfiguration from {@link FlywayConfiguration} is triggered with EnableIglooAutoConfiguration
 	 */
 	@Test
-	public void testIglooFlywayAutoConfigure() {
+	public void testIglooJpaSecurityAutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
+			.withPropertyValues("security.runAsKey=aaa")
 			.run(
-				(context) -> { assertThat(context).hasSingleBean(FlywayConfiguration.class); }
+				(context) -> { assertThat(context).hasSingleBean(RunAsManager.class); }
 			);
 	}
 	
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class})
+	@EnableIglooAutoConfiguration(exclude = IglooBootstrap3AutoConfiguration.class)
 	public static class TestConfig {}
 
 }

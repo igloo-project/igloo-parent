@@ -2,11 +2,9 @@ package test.specific;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.persistence.EntityManagerFactory;
-
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
-import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
+import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -29,16 +27,13 @@ public class HibernateSearchAutoConfigurationTestCase {
 	public void testIglooHibernateSearchAutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-			.withPropertyValues(String.format("%s=%s",
-					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
-					IglooBootstrap3AutoConfiguration.class.getName()))
 			.run(
 				(context) -> { assertThat(context).hasSingleBean(IHibernateSearchService.class); }
 			);
 	}
 	
 	@Configuration
-	@EnableIglooAutoConfiguration
+	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class})
 	public static class TestConfig {}
 
 }

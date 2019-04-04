@@ -51,7 +51,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 )
 @PropertySource({
 	IglooJpaAutoConfiguration.PROPERTIES_COMPONENT_JPA,
-	ConfigurationPropertiesUrlConstants.JPA_COMMON 
+	ConfigurationPropertiesUrlConstants.JPA_COMMON
 })
 public class IglooJpaAutoConfiguration {
 
