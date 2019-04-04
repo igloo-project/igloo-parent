@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,10 +14,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.NameFileFilter;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.iglooproject.commons.io.FileUtils;
+import org.iglooproject.commons.util.mime.MediaType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -39,7 +44,9 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 
 import de.schlichtherle.truezip.file.TFileInputStream;
@@ -48,9 +55,9 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractImportDataServiceImpl.class);
 	
-	protected static final String REFERENCE_DATA_FILE = "reference_data.xlsx";
+	protected static final List<String> REFERENCE_DATA_FILE_NAMES = ImmutableList.of("reference_data.xlsx", "reference_data.xls");
 	
-	protected static final String BUSINESS_DATA_FILE = "business_data.xlsx";
+	protected static final List<String> BUSINESS_DATA_FILE_NAMES = ImmutableList.of("business_data.xlsx", "business_data.xls");
 	
 	private static final String ID_FIELD_NAME = "id";
 	
@@ -81,19 +88,23 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		
 		importBeforeReferenceData(directory, idsMapping);
 		
-		LOGGER.info("Importing {}", REFERENCE_DATA_FILE);
-		Workbook referenceDataWorkbook = new XSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, REFERENCE_DATA_FILE)));
+		File referenceDataFile = getFirstFile(directory, REFERENCE_DATA_FILE_NAMES);
+		
+		LOGGER.info("Importing {}", referenceDataFile.getName());
+		Workbook referenceDataWorkbook = getWorkbook(referenceDataFile);
 		importReferenceData(idsMapping, referenceDataWorkbook);
-		LOGGER.info("Import of {} complete", REFERENCE_DATA_FILE);
+		LOGGER.info("Import of {} complete", referenceDataFile.getName());
 		
 		importAfterReferenceData(directory, idsMapping);
 		
 		importBeforeBusinessData(directory, idsMapping);
-
-		LOGGER.info("Importing {}", BUSINESS_DATA_FILE);
-		Workbook businessItemWorkbook = new XSSFWorkbook(new TFileInputStream(FileUtils.getFile(directory, BUSINESS_DATA_FILE)));
+		
+		File businessDataFile = getFirstFile(directory, BUSINESS_DATA_FILE_NAMES);
+		
+		LOGGER.info("Importing {}", businessDataFile.getName());
+		Workbook businessItemWorkbook = getWorkbook(businessDataFile);
 		importMainBusinessItems(idsMapping, businessItemWorkbook);
-		LOGGER.info("Import of {} complete", BUSINESS_DATA_FILE);
+		LOGGER.info("Import of {} complete", businessDataFile.getName());
 		
 		importAfterBusinessData(directory, idsMapping);
 		
@@ -102,6 +113,31 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		propertyService.set(DATABASE_INITIALIZED, true);
 		
 		LOGGER.info("Import complete");
+	}
+	
+	protected File getFirstFile(File directory, List<String> fileNames) {
+		Objects.requireNonNull(directory);
+		Objects.requireNonNull(fileNames);
+		
+		return FileUtils.listFiles(directory, new NameFileFilter(fileNames))
+			.stream()
+			.sorted(Comparator.comparing(File::getName, Ordering.explicit(fileNames).nullsLast()))
+			.findFirst()
+			.get();
+	}
+	
+	protected Workbook getWorkbook(File file) throws FileNotFoundException, IOException {
+		Objects.requireNonNull(file);
+		
+		String fileExtension = FilenameUtils.getExtension(file.getPath());
+		
+		if (MediaType.APPLICATION_MS_EXCEL.extension().equals(fileExtension)) {
+			return new HSSFWorkbook(new TFileInputStream(file));
+		} else if (MediaType.APPLICATION_OPENXML_EXCEL.extension().equals(fileExtension)) {
+			return new XSSFWorkbook(new TFileInputStream(file));
+		}
+		
+		throw new IllegalStateException();
 	}
 	
 	protected void importBeforeReferenceData(File directory, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
