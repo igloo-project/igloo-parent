@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.core.config.spring;
 
+import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.iglooproject.basicapp.core.BasicApplicationCorePackage;
 import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
@@ -34,6 +36,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 )
 // fonctionnement de l'annotation @Transactional
 @EnableTransactionManagement(order = BasicApplicationAdviceOrder.TRANSACTION)
+@EnableIglooAutoConfiguration
+@PropertySource(name="default", value="classpath:spring-boot-workaround.properties")
 public class BasicApplicationCoreCommonConfig extends AbstractApplicationConfig {
 
 	public static final String APPLICATION_NAME = "basic-application";

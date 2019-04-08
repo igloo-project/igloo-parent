@@ -13,9 +13,10 @@ import org.iglooproject.basicapp.core.config.util.Environment;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.functional.converter.StringCollectionConverter;
 import org.iglooproject.jpa.more.business.parameter.dao.ParameterDaoImpl;
-import org.iglooproject.spring.config.spring.AbstractApplicationPropertyConfig;
+import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.google.common.base.Converter;
@@ -23,7 +24,7 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Longs;
 
 @Configuration
-public class BasicApplicationCoreApplicationPropertyConfig extends AbstractApplicationPropertyConfig {
+public class BasicApplicationCoreApplicationPropertyConfig extends AbstractApplicationPropertyRegistryConfig {
 
 	@Override
 	public void register(IPropertyRegistry registry) {
@@ -49,7 +50,7 @@ public class BasicApplicationCoreApplicationPropertyConfig extends AbstractAppli
 		);
 	}
 
-	@Override
+	@Bean
 	public IMutablePropertyDao mutablePropertyDao() {
 		return new ParameterDaoImpl();
 	}

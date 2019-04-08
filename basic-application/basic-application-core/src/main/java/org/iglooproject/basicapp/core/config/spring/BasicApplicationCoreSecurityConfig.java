@@ -2,6 +2,7 @@ package org.iglooproject.basicapp.core.config.spring;
 
 import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
 
+import org.igloo.spring.autoconfigure.security.util.SecurityUtils;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -12,55 +13,72 @@ import org.iglooproject.basicapp.core.security.service.BasicApplicationUserDetai
 import org.iglooproject.basicapp.core.security.service.IBasicApplicationUserDetailsService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.core.security.service.SecurityManagementServiceImpl;
-import org.iglooproject.jpa.security.config.spring.AbstractJpaSecuritySecuredConfig;
+import org.iglooproject.jpa.security.config.spring.DefaultJpaSecurityConfig;
 import org.iglooproject.jpa.security.password.rule.SecurityPasswordRulesBuilder;
+import org.iglooproject.jpa.security.runas.CoreRunAsManagerImpl;
 import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
 import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
 import org.iglooproject.jpa.security.service.NamedPermissionFactory;
+import org.iglooproject.spring.property.service.IPropertyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.access.intercept.RunAsImplAuthenticationProvider;
+import org.springframework.security.access.intercept.RunAsManager;
 import org.springframework.security.acls.domain.PermissionFactory;
 
 @Configuration
-public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecuredConfig {
+@Import(DefaultJpaSecurityConfig.class)
+public class BasicApplicationCoreSecurityConfig {
+
+	@Autowired
+	protected DefaultJpaSecurityConfig defaultJpaSecurityConfig;
+	
+	@Autowired
+	protected IPropertyService propertyService;
 
 	@Bean
 	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-	@Override
 	public ICorePermissionEvaluator permissionEvaluator() {
 		return new BasicApplicationPermissionEvaluator();
 	}
 
 	@Bean
-	@Override
 	public AuthenticationUsernameComparison authenticationUsernameComparison() {
 		return AuthenticationUsernameComparison.CASE_SENSITIVE;
 	}
 
 	@Bean
-	@Override
 	public IBasicApplicationUserDetailsService userDetailsService() {
 		BasicApplicationUserDetailsService userDetailsService = new BasicApplicationUserDetailsService();
 		userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
 		return userDetailsService;
 	}
 
-	@Override
-	public String roleHierarchyAsString() {
-		return defaultRoleHierarchyAsString();
-	}
-
-	@Override
 	public String permissionHierarchyAsString() {
-		return defaultPermissionHierarchyAsString();
+		return SecurityUtils.defaultPermissionHierarchyAsString();
 	}
 
 	@Bean
-	@Override
 	public PermissionFactory permissionFactory() {
 		return new NamedPermissionFactory(BasicApplicationPermission.ALL);
+	}
+
+	@Bean
+	public RunAsManager runAsManager() {
+		CoreRunAsManagerImpl runAsManager = new CoreRunAsManagerImpl();
+		runAsManager.setKey(defaultJpaSecurityConfig.getRunAsKey());
+		return runAsManager;
+	}
+
+	@Bean
+	public RunAsImplAuthenticationProvider runAsAuthenticationProvider() {
+		RunAsImplAuthenticationProvider runAsAuthenticationProvider = new RunAsImplAuthenticationProvider();
+		runAsAuthenticationProvider.setKey(defaultJpaSecurityConfig.getRunAsKey());
+		return runAsAuthenticationProvider;
 	}
 
 	@Bean
