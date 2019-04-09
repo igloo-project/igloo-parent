@@ -7,8 +7,10 @@ import org.iglooproject.spring.property.dao.ImmutablePropertyDaoImpl;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.property.service.PropertyServiceImpl;
+import org.iglooproject.spring.util.ConfigurationLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +34,15 @@ public class IglooPropertyAutoConfiguration {
 	@Bean
 	public IPropertyService propertyService() {
 		return new PropertyServiceImpl();
+	}
+
+	@Bean
+	public ConfigurationLogger configurationLogger(@Value("${propertyNamesForInfoLogLevel}") String propertyNamesForInfoLogLevel) {
+		ConfigurationLogger configurationLogger = new ConfigurationLogger();
+		
+		configurationLogger.setPropertyNamesForInfoLogLevel(propertyNamesForInfoLogLevel);
+		
+		return configurationLogger;
 	}
 
 	@ConditionalOnMissingBean

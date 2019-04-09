@@ -11,7 +11,6 @@ import com.google.common.collect.Multimap;
 
 public class SecurityUtils {
 
-
 	public static String defaultPermissionHierarchyAsString() {
 		return hierarchyAsStringFromMap(ImmutableMultimap.<String, String>builder()
 				.put(CorePermissionConstants.ADMINISTRATION, CorePermissionConstants.WRITE)
