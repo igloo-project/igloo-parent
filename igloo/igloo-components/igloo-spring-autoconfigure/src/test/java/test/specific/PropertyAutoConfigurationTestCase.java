@@ -4,10 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
+import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
+import org.igloo.spring.autoconfigure.jpa.IglooJpaMoreAutoConfiguration;
 import org.igloo.spring.autoconfigure.search.IglooHibernateSearchAutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.igloo.spring.autoconfigure.task.IglooTaskManagementAutoConfiguration;
@@ -53,12 +55,14 @@ public class PropertyAutoConfigurationTestCase {
 			.withPropertyValues(String.format("%s=%s",
 					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
 					Joiner.on(",").join(IglooJpaAutoConfiguration.class.getName(),
+							IglooJpaMoreAutoConfiguration.class.getName(),
 							IglooFlywayAutoConfiguration.class.getName(),
 							IglooHibernateSearchAutoConfiguration.class.getName(),
 							IglooBootstrap4AutoConfiguration.class.getName(),
 							IglooWicketAutoConfiguration.class.getName(),
 							IglooJpaSecurityAutoConfiguration.class.getName(),
 							IglooTaskManagementAutoConfiguration.class.getName())))
+			.withPropertyValues("propertyNamesForInfoLogLevel=version")
 			.run(
 				(context) -> {
 					assertThat(context).hasSingleBean(IPropertyService.class);
@@ -68,7 +72,8 @@ public class PropertyAutoConfigurationTestCase {
 	}
 
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class})
+	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class,
+			IglooApplicationConfigAutoConfiguration.class})
 	public static class TestConfig {}
 
 }

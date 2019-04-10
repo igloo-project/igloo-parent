@@ -8,7 +8,6 @@ import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
 import org.iglooproject.jpa.more.business.search.query.HibernateSearchLuceneQueryFactoryImpl;
 import org.iglooproject.jpa.more.business.search.query.IHibernateSearchLuceneQueryFactory;
 import org.iglooproject.jpa.more.config.spring.JpaMoreApplicationPropertyRegistryConfig;
-import org.iglooproject.jpa.more.config.spring.JpaMoreInfinispanConfig;
 import org.iglooproject.jpa.more.util.CoreJpaMoreUtilPackage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -23,8 +22,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Import({
-	JpaMoreApplicationPropertyRegistryConfig.class,
-	JpaMoreInfinispanConfig.class
+	JpaMoreApplicationPropertyRegistryConfig.class
 })
 @ComponentScan(basePackageClasses = { CoreJpaMoreBusinessPackage.class, CoreJpaMoreUtilPackage.class })
 @Configuration

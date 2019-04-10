@@ -3,8 +3,10 @@ package test.specific;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
+import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
+import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -77,17 +79,22 @@ public class IglooAutoConfigurationBehaviorTestCase {
 
 	@Configuration
 	@EnableAutoConfiguration
-	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class})
+	@ApplicationDescription(name = "igloo-spring-autoconfigure")
+	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class,
+			IglooApplicationConfigAutoConfiguration.class})
 	public static class TestBothSpringBootIglooConfig {
 	}
 
 	@Configuration
+	@ApplicationDescription(name = "igloo-spring-autoconfigure")
 	@EnableAutoConfiguration(exclude = FlywayAutoConfiguration.class)
 	public static class TestSpringBootConfig {
 	}
 
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class})
+	@ApplicationDescription(name = "igloo-spring-autoconfigure")
+	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class,
+			IglooApplicationConfigAutoConfiguration.class})
 	public static class TestIglooConfig {
 	}
 }

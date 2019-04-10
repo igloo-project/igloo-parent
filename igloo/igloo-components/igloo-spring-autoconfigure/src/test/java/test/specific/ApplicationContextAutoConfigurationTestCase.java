@@ -3,10 +3,13 @@ package test.specific;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
-import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
+import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
+import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
+import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
+import org.iglooproject.spring.util.ConfigurationLogger;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -19,23 +22,26 @@ import org.springframework.context.annotation.Configuration;
  * which are declared at the bottom of the file.
  *  
  */
-public class FlywayAutoConfigurationTestCase {
+public class ApplicationContextAutoConfigurationTestCase {
 
 	/**
 	 * Check that autoconfiguration from {@link FlywayConfiguration} is triggered with EnableIglooAutoConfiguration
 	 */
 	@Test
-	public void testIglooFlywayAutoConfigure() {
+	public void testIglooApplicationConfigAutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
+			.withInitializer(new ExtendedTestApplicationContextInitializer())
+			.withPropertyValues("igloo.profile=test")
 			.run(
-				(context) -> { assertThat(context).hasSingleBean(FlywayConfiguration.class); }
+				(context) -> { assertThat(context).hasSingleBean(ConfigurationLogger.class); }
 			);
 	}
 	
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class,
-			IglooApplicationConfigAutoConfiguration.class})
+	@ConfigurationLocations
+	@ApplicationDescription(name = "igloo-spring-autoconfigure")
+	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class})
 	public static class TestConfig {}
 
 }
