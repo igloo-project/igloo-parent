@@ -40,30 +40,31 @@
 		
 		<igloo.maven-toolchains-plugin.version>1.1</igloo.maven-toolchains-plugin.version>
 		<igloo.maven-jgitflow-plugin.version>1.0-m5.1</igloo.maven-jgitflow-plugin.version>
-		<igloo.jsch.version>0.1.54</igloo.jsch.version>
-		<igloo.maven-compiler-plugin.version>3.7.0</igloo.maven-compiler-plugin.version>
-		<igloo.maven-resources-plugin.version>3.0.2</igloo.maven-resources-plugin.version>
-		<igloo.maven-surefire-plugin.version>2.21.0</igloo.maven-surefire-plugin.version>
-		<igloo.maven-install-plugin.version>2.5.2</igloo.maven-install-plugin.version>
-		<igloo.maven-war-plugin.version>3.2.1</igloo.maven-war-plugin.version>
-		<igloo.maven-assembly-plugin.version>3.1.0</igloo.maven-assembly-plugin.version>
-		<igloo.maven-jar-plugin.version>3.0.2</igloo.maven-jar-plugin.version>
-		<igloo.maven-deploy-plugin.version>2.8.2</igloo.maven-deploy-plugin.version>
+		<igloo.jsch.version>0.1.55</igloo.jsch.version>
+		<igloo.maven-compiler-plugin.version>3.8.0</igloo.maven-compiler-plugin.version>
+		<igloo.maven-resources-plugin.version>3.1.0</igloo.maven-resources-plugin.version>
+		<igloo.maven-surefire-plugin.version>3.0.0-M3</igloo.maven-surefire-plugin.version>
+		<igloo.maven-install-plugin.version>3.0.0-M1</igloo.maven-install-plugin.version>
+		<igloo.maven-war-plugin.version>3.2.2</igloo.maven-war-plugin.version>
+		<igloo.maven-assembly-plugin.version>3.1.1</igloo.maven-assembly-plugin.version>
+		<igloo.maven-jar-plugin.version>3.1.1</igloo.maven-jar-plugin.version>
+		<igloo.maven-deploy-plugin.version>3.0.0-M1</igloo.maven-deploy-plugin.version>
 		<igloo.maven-source-plugin.version>3.0.1</igloo.maven-source-plugin.version>
-		<igloo.maven-javadoc-plugin.version>3.0.1</igloo.maven-javadoc-plugin.version>
-		<igloo.maven-enforcer-plugin.version>3.0.0-M1</igloo.maven-enforcer-plugin.version>
-		<igloo.maven-dependency-plugin.version>3.0.2</igloo.maven-dependency-plugin.version>
-		<igloo.animal-sniffer-maven-plugin.version>1.16</igloo.animal-sniffer-maven-plugin.version>
+		<igloo.maven-javadoc-plugin.version>3.1.0</igloo.maven-javadoc-plugin.version>
+		<igloo.maven-enforcer-plugin.version>3.0.0-M2</igloo.maven-enforcer-plugin.version>
+		<igloo.maven-dependency-plugin.version>3.1.1</igloo.maven-dependency-plugin.version>
+		<igloo.maven-antrun-plugin.version>1.4</igloo.maven-antrun-plugin.version>
+		<igloo.animal-sniffer-maven-plugin.version>1.17</igloo.animal-sniffer-maven-plugin.version>
 		<igloo.exec-maven-plugin.version>1.6.0</igloo.exec-maven-plugin.version>
-		<igloo.maven-clean-plugin.version>3.0.0</igloo.maven-clean-plugin.version>
-		<igloo.maven-site-plugin.version>3.7</igloo.maven-site-plugin.version>
-		<igloo.maven-project-info-reports-plugin.version>2.9</igloo.maven-project-info-reports-plugin.version>
-		<igloo.maven-failsafe-plugin.version>2.21.0</igloo.maven-failsafe-plugin.version>
-		<igloo.jacoco-maven-plugin.version>0.8.0</igloo.jacoco-maven-plugin.version>
+		<igloo.maven-clean-plugin.version>3.1.0</igloo.maven-clean-plugin.version>
+		<igloo.maven-site-plugin.version>3.7.1</igloo.maven-site-plugin.version>
+		<igloo.maven-project-info-reports-plugin.version>3.0.0</igloo.maven-project-info-reports-plugin.version>
+		<igloo.maven-failsafe-plugin.version>3.0.0-M3</igloo.maven-failsafe-plugin.version>
+		<igloo.jacoco-maven-plugin.version>0.8.3</igloo.jacoco-maven-plugin.version>
 		<igloo.buildnumber-maven-plugin.version>1.4</igloo.buildnumber-maven-plugin.version>
 		
-		<igloo.wagon-maven-plugin.version>1.0</igloo.wagon-maven-plugin.version>
-		<igloo.wagon-ssh-external-plugin.version>3.2.0</igloo.wagon-ssh-external-plugin.version>
+		<igloo.wagon-maven-plugin.version>2.0.0</igloo.wagon-maven-plugin.version>
+		<igloo.wagon-ssh-external-plugin.version>3.3.2</igloo.wagon-ssh-external-plugin.version>
 		
 		<igloo.maven-processor-plugin.version>3.3.3</igloo.maven-processor-plugin.version>
 		<igloo.aspectj-maven-plugin.version>1.8</igloo.aspectj-maven-plugin.version>
@@ -71,11 +72,12 @@
 		
 		<!-- aspectj is used by allure -->
 		<igloo.allure-aspectj.version>1.8.13</igloo.allure-aspectj.version>
-		<igloo.allure-maven.version>2.9</igloo.allure-maven.version>
+		<igloo.allure-maven.version>2.10.0</igloo.allure-maven.version>
 		<igloo.allure.version>2.8.1</igloo.allure.version>
 		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
-		<igloo.allure-junit4.version>2.8.1</igloo.allure-junit4.version>
+		<igloo.allure-junit4.version>2.10.0</igloo.allure-junit4.version>
 		<igloo.junit-dataprovider.version>1.13.1</igloo.junit-dataprovider.version>
+		<igloo.owasp-maven-plugin.version>4.0.2</igloo.owasp-maven-plugin.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -338,6 +340,11 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-dependency-plugin</artifactId>
 					<version>${igloo.maven-dependency-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>${igloo.maven-antrun-plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -610,8 +617,18 @@
 				</plugins>
 			</build>
 			<reporting>
-				<excludeDefaults>true</excludeDefaults>
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-project-info-reports-plugin</artifactId>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>index</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
 					<plugin>
 						<groupId>io.qameta.allure</groupId>
 						<artifactId>allure-maven</artifactId>
@@ -627,6 +644,106 @@
 				</plugins>
 			</reporting>
 		</profile>
+		<profile>
+			<id>owasp</id>
+			<activation>
+				<property>
+					<name>owasp.enabled</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.owasp</groupId>
+						<artifactId>dependency-check-maven</artifactId>
+						<version>${igloo.owasp-maven-plugin.version}</version>
+						<configuration>
+							<suppressionFiles>
+								<suppressionFile>owasp-suppressions.xml</suppressionFile>
+							</suppressionFiles>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>check</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<reporting>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-project-info-reports-plugin</artifactId>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>index</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+					<plugin>
+						<groupId>org.owasp</groupId>
+						<artifactId>dependency-check-maven</artifactId>
+						<version>${igloo.owasp-maven-plugin.version}</version>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>aggregate</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
+		</profile>
+		
+		<profile>
+			<id>update-report</id>
+			<activation>
+				<property>
+					<name>update-report.enabled</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<reporting>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-project-info-reports-plugin</artifactId>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>index</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+						<version>2.7</version>
+						<configuration>
+							<processDependencyManagement>false</processDependencyManagement>
+						</configuration>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>dependency-updates-report</report>
+									<report>plugin-updates-report</report>
+									<report>property-updates-report</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
+		</profile>
+		
 		<profile>
 			<id>jacoco</id>
 			<activation>
@@ -649,7 +766,88 @@
 		</profile>
 	</profiles>
 	
+	<repositories>
+		<repository>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus Igloo Releases</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		
+		<repository>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus Igloo Snapshots</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+
+		<!--
+		  for repository exhaustivity, and for owasp plugin, declaration of
+		  bindgen's related repository, for joist-util dependency.
+
+		  (owasp needs to lookup all dependencies, and does not seem to extract
+		  repository from dependency's pom).
+		-->
+		<repository>
+			<id>bindgen</id>
+			<url>http://repo.joist.ws/</url>
+		</repository>
+
+		<!--
+		  for repository exhaustivity, and for owasp plugin, declaration of
+		  ehcache 2 related repository, for terracotta statistics dependency.
+
+		  (owasp needs to lookup all dependencies, and does not seem to extract
+		  repository from dependency's pom).
+		-->
+		<repository>
+			<id>terracotta-releases</id>
+			<url>http://repo.terracotta.org/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus Igloo Releases</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		
+		<pluginRepository>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus Igloo Snapshots</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+	
 	<distributionManagement>
+		<site>
+			<id>igloo</id>
+			<name>Igloo site</name>
+			<url>https://igloo-doc.readthedocs.org/</url>
+		</site>
 		<repository>
 			<id>nexus-igloo-releases</id>
 			<name>Nexus Igloo Releases</name>
