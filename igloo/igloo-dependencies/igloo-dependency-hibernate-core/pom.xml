@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>igloo-dependencies</artifactId>
 		<groupId>org.iglooproject.dependencies</groupId>
-		<version>1.1.23</version>
+		<version>1.1.24</version>
 	</parent>
 	
 	<artifactId>igloo-dependency-hibernate-core</artifactId>
@@ -29,27 +29,6 @@
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>cglib</groupId>
-					<artifactId>cglib</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
 		</dependency>
 		
 		<dependency>
@@ -60,7 +39,7 @@
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-core-logging</artifactId>
-			<version>1.1.23</version>
+			<version>1.1.24</version>
 			<type>pom</type>
 		</dependency>
 	</dependencies>

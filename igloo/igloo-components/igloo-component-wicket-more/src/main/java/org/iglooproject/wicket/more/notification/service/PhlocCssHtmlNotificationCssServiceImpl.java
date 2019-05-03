@@ -122,6 +122,11 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 				return null; // The phloc way: return null, do not throw exceptions
 			}
 		}
+
+		@Override
+		public boolean isReadMultiple() {
+			return false;
+		}
 	}
 
 }

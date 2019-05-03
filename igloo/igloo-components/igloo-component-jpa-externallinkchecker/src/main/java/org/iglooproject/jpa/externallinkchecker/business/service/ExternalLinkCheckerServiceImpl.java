@@ -7,7 +7,6 @@ import static org.iglooproject.jpa.externallinkchecker.property.JpaExternalLinkC
 import static org.iglooproject.jpa.externallinkchecker.property.JpaExternalLinkCheckerPropertyIds.THREAD_POOL_SIZE;
 import static org.iglooproject.jpa.externallinkchecker.property.JpaExternalLinkCheckerPropertyIds.TIMEOUT;
 import static org.iglooproject.jpa.externallinkchecker.property.JpaExternalLinkCheckerPropertyIds.USER_AGENT;
-import io.mola.galimatias.GalimatiasParseException;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -44,6 +43,12 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.externallinkchecker.business.model.ExternalLinkErrorType;
+import org.iglooproject.jpa.externallinkchecker.business.model.ExternalLinkStatus;
+import org.iglooproject.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,12 +62,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.externallinkchecker.business.model.ExternalLinkErrorType;
-import org.iglooproject.jpa.externallinkchecker.business.model.ExternalLinkStatus;
-import org.iglooproject.jpa.externallinkchecker.business.model.ExternalLinkWrapper;
-import org.iglooproject.spring.property.service.IPropertyService;
+import io.mola.galimatias.GalimatiasParseException;
 
 @Service("externalLinkCheckerService")
 public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerService {
@@ -91,10 +91,16 @@ public class ExternalLinkCheckerServiceImpl implements IExternalLinkCheckerServi
 	
 	private int minDelayBetweenTwoChecks;
 	
+
+	/**
+	 * Since 4.5.8 we have to use setNormalizeUri(false) on links, otherwise URIUtils.rewriteURI will try
+	 * to parse the path and will return broke paths if your path doesn't respect the ASCII standard 
+	 */
 	@PostConstruct
 	private void initialize() {
 		RequestConfig requestConfig = RequestConfig.custom()
 				.setMaxRedirects(propertyService.get(MAX_REDIRECTS))
+				.setNormalizeUri(false)
 				.setSocketTimeout(propertyService.get(TIMEOUT))
 				.setConnectionRequestTimeout(propertyService.get(TIMEOUT))
 				.setConnectTimeout(propertyService.get(TIMEOUT))

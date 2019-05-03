@@ -4,7 +4,7 @@
 	
 	<groupId>org.iglooproject</groupId>
 	<artifactId>igloo-parent</artifactId>
-	<version>1.1.23</version>
+	<version>1.1.24</version>
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Parent</name>
@@ -14,13 +14,17 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
 		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
-		<igloo.jsch.version>0.1.54</igloo.jsch.version>
+		<igloo.jsch.version>0.1.55</igloo.jsch.version>
 		<maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
+		<maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+		<maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
 		
 		<!-- version needed here as we use allure to aggregate child reports -->
-		<igloo.allure-maven.version>2.9</igloo.allure-maven.version>
+		<igloo.allure-maven.version>2.10.0</igloo.allure-maven.version>
+
 		<igloo.allure.version>2.8.1</igloo.allure.version>
 		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
+		<igloo.owasp-maven-plugin.version>4.0.2</igloo.owasp-maven-plugin.version>
 	</properties>
 	
 	<profiles>
@@ -104,8 +108,18 @@
 				</property>
 			</activation>
 			<reporting>
-				<excludeDefaults>true</excludeDefaults>
 				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-project-info-reports-plugin</artifactId>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>index</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
 					<plugin>
 						<groupId>io.qameta.allure</groupId>
 						<artifactId>allure-maven</artifactId>
@@ -118,6 +132,90 @@
 							<reportSet>
 								<reports>
 									<report>aggregate</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
+		</profile>
+		
+		<profile>
+			<id>owasp</id>
+			<activation>
+				<property>
+					<name>owasp.enabled</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<reporting>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-project-info-reports-plugin</artifactId>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>index</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+					<plugin>
+						<groupId>org.owasp</groupId>
+						<artifactId>dependency-check-maven</artifactId>
+						<version>${igloo.owasp-maven-plugin.version}</version>
+						<configuration>
+							<suppressionFiles>
+								<suppressionFile>owasp-suppressions.xml</suppressionFile>
+							</suppressionFiles>
+						</configuration>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>aggregate</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+				</plugins>
+			</reporting>
+		</profile>
+		
+		<profile>
+			<id>update-report</id>
+			<activation>
+				<property>
+					<name>update-report.enabled</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<reporting>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-project-info-reports-plugin</artifactId>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>index</report>
+								</reports>
+							</reportSet>
+						</reportSets>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>versions-maven-plugin</artifactId>
+						<version>2.7</version>
+						<configuration>
+							<processDependencyManagement>false</processDependencyManagement>
+						</configuration>
+						<reportSets>
+							<reportSet>
+								<reports>
+									<report>dependency-updates-report</report>
+									<report>plugin-updates-report</report>
+									<report>property-updates-report</report>
 								</reports>
 							</reportSet>
 						</reportSets>
@@ -159,6 +257,16 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-toolchains-plugin</artifactId>
 					<version>${maven-toolchains-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>${maven-site-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-project-info-reports-plugin</artifactId>
+					<version>${maven-project-info-reports-plugin.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -231,6 +339,11 @@
 	</developers>
 	
 	<distributionManagement>
+		<site>
+			<id>igloo</id>
+			<name>Igloo site</name>
+			<url>https://igloo-doc.readthedocs.org/</url>
+		</site>
 		<repository>
 			<id>nexus-igloo-releases</id>
 			<name>Nexus Igloo Releases</name>
@@ -258,5 +371,58 @@
 		<url>https://github.com/igloo-project/igloo-parent</url>
 		<tag>HEAD</tag>
 	</scm>
+
+	<repositories>
+		<repository>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus Igloo Releases</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		
+		<repository>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus Igloo Snapshots</name>
+			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+
+		<!--
+		  for repository exhaustivity, and for owasp plugin, declaration of
+		  bindgen's related repository, for joist-util dependency.
+
+		  (owasp needs to lookup all dependencies, and does not seem to extract
+		  repository from dependency's pom).
+		-->
+		<repository>
+			<id>bindgen</id>
+			<url>http://repo.joist.ws/</url>
+		</repository>
+
+		<!--
+		  for repository exhaustivity, and for owasp plugin, declaration of
+		  ehcache 2 related repository, for terracotta statistics dependency.
+
+		  (owasp needs to lookup all dependencies, and does not seem to extract
+		  repository from dependency's pom).
+		-->
+		<repository>
+			<id>terracotta-releases</id>
+			<url>http://repo.terracotta.org/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	
 </project>

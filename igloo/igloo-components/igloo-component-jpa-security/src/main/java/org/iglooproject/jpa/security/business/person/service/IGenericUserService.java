@@ -8,9 +8,7 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.person.model.GenericUser;
 
-public interface IGenericUserService<U extends GenericUser<U, ?>> extends IGenericEntityService<Long, U> {
-
-	U getByUsername(String username);
+public interface IGenericUserService<U extends GenericUser<U, ?>> extends IGenericEntityService<Long, U>, ISecurityUserService<U> {
 
 	void setActive(U person, boolean active) throws ServiceException, SecurityServiceException;
 
@@ -27,7 +25,5 @@ public interface IGenericUserService<U extends GenericUser<U, ?>> extends IGener
 	void updateLocale(U person, Locale locale) throws ServiceException, SecurityServiceException;
 
 	void updateProfileInformation(U person) throws ServiceException, SecurityServiceException;
-
-	U getByUsernameCaseInsensitive(String username);
 
 }

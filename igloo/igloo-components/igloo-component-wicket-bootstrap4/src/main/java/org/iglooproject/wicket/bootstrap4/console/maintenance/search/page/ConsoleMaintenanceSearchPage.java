@@ -140,6 +140,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 								LOGGER.error("Erreur lors la réindexation d'entités", e);
 								Session.get().error(getString("console.maintenance.search.reindex.failure"));
 							}
+							setResponsePage(ConsoleMaintenanceSearchPage.class);
 						}
 					})
 					.create("reindexClasses")

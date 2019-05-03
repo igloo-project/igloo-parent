@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 		extends GenericEntityServiceImpl<Long, U>
-		implements IGenericUserService<U> {
+		implements IGenericUserService<U>, ISecurityUserService<U> {
 	
 	@Autowired
 	private IAuthorityService authorityService;

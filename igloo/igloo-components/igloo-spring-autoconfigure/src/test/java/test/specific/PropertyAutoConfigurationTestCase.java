@@ -7,8 +7,11 @@ import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
+import org.igloo.spring.autoconfigure.infinispan.IglooInfinispanAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
 import org.igloo.spring.autoconfigure.search.IglooHibernateSearchAutoConfiguration;
+import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
+import org.igloo.spring.autoconfigure.task.IglooTaskManagementAutoConfiguration;
 import org.igloo.spring.autoconfigure.wicket.IglooWicketAutoConfiguration;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -35,9 +38,6 @@ public class PropertyAutoConfigurationTestCase {
 	public void testIglooPropertyAutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-			.withPropertyValues(String.format("%s=%s",
-					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
-					IglooBootstrap3AutoConfiguration.class.getName()))
 			.run(
 				(context) -> { assertThat(context).hasSingleBean(IPropertyService.class); }
 			);
@@ -56,9 +56,11 @@ public class PropertyAutoConfigurationTestCase {
 					Joiner.on(",").join(IglooJpaAutoConfiguration.class.getName(),
 							IglooFlywayAutoConfiguration.class.getName(),
 							IglooHibernateSearchAutoConfiguration.class.getName(),
-							IglooBootstrap3AutoConfiguration.class.getName(),
 							IglooBootstrap4AutoConfiguration.class.getName(),
-							IglooWicketAutoConfiguration.class.getName())))
+							IglooWicketAutoConfiguration.class.getName(),
+							IglooJpaSecurityAutoConfiguration.class.getName(),
+							IglooTaskManagementAutoConfiguration.class.getName(),
+							IglooInfinispanAutoConfiguration.class.getName())))
 			.run(
 				(context) -> {
 					assertThat(context).hasSingleBean(IPropertyService.class);
@@ -68,7 +70,7 @@ public class PropertyAutoConfigurationTestCase {
 	}
 
 	@Configuration
-	@EnableIglooAutoConfiguration
+	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class})
 	public static class TestConfig {}
 
 }
