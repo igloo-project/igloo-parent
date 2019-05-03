@@ -3,7 +3,6 @@ package test.specific;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
-import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderManagerImpl;
