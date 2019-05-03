@@ -11,6 +11,7 @@ import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
 
 class FilterByModelItemModelAwareCollectionModel<T, C extends Collection<T>, M extends IModel<T>>
@@ -91,7 +92,7 @@ class FilterByModelItemModelAwareCollectionModel<T, C extends Collection<T>, M e
 
 	@Override
 	public long size() {
-		return unfiltered.size();
+		return Iterables.size(getFilteredIterable());
 	}
 
 	private Iterable<M> getFilteredIterable() {
