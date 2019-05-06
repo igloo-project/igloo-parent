@@ -6,6 +6,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
 public class BootstrapAffixBehavior extends Behavior {
 
@@ -28,6 +29,7 @@ public class BootstrapAffixBehavior extends Behavior {
 	public void renderHead(Component component, IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(BootstrapAffixJavaScriptResourceReference.get()));
 		response.render(OnDomReadyHeaderItem.forScript(statement(component).render()));
+		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(component).chain("affix", JsUtils.quotes("checkPosition")).render()));
 	}
 
 }
