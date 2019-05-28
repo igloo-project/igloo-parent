@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * <p>This configuration must be combined with a custom {@link IExtendedApplicationContextInitializer} to
  * use bootstrap igloo override profiles, {@link ApplicationDescription}, {@link ConfigurationLocations}
- * and log4j merged configuration.</p>
+ * (deprecated) and log4j merged configuration.</p>
  * 
  * <p>Context initializer can be configured {@link org.springframework.test.context.ContextConfiguration}</p>
  * 

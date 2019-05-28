@@ -1,12 +1,16 @@
 package org.iglooproject.test.spring.notification.spring.config;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * Load configuration for mail filtering.
  */
 @Configuration
-@ConfigurationLocations(locations = {"classpath:notification-test-filtered.properties"}, order = Integer.MAX_VALUE)
+@PropertySource(
+	name = IglooPropertySourcePriority.APPLICATION,
+	value = "classpath:notification-test-filtered.properties"
+)
 public class TestFilteredConfig {
 }

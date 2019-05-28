@@ -6,6 +6,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
 import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
 import org.iglooproject.jpa.config.spring.DefaultJpaConfig;
@@ -49,10 +50,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 	},
 	excludeFilters = @Filter(Configuration.class)
 )
-@PropertySource({
-	IglooJpaAutoConfiguration.PROPERTIES_COMPONENT_JPA,
-	ConfigurationPropertiesUrlConstants.JPA_COMMON
-})
+@PropertySource(
+	name = IglooPropertySourcePriority.COMPONENT,
+	value = {
+		IglooJpaAutoConfiguration.PROPERTIES_COMPONENT_JPA,
+		ConfigurationPropertiesUrlConstants.JPA_COMMON
+	}
+)
 public class IglooJpaAutoConfiguration {
 
 	/**

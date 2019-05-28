@@ -1,15 +1,14 @@
 package org.iglooproject.test.jpa.config.spring;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * Added configuration to override some properties
  */
 @Configuration
-@ConfigurationLocations(locations = {
-		"classpath:/igloo-jpa-batch.properties"
-}, order = Integer.MAX_VALUE)
+@PropertySource(name = IglooPropertySourcePriority.APPLICATION, value = "classpath:/igloo-jpa-batch.properties")
 public class JpaBatchTestConfig {
 
 }

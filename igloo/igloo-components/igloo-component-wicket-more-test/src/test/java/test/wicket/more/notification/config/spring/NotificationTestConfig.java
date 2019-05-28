@@ -2,20 +2,21 @@ package test.wicket.more.notification.config.spring;
 
 import java.util.concurrent.Callable;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.security.service.IRunAsSystemService;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 import test.wicket.more.notification.service.NotificationContentDescriptorFactoryImpl;
 
 @Configuration
-@ConfigurationLocations(locations = { "classpath:notification-test.properties" })
+@PropertySource(name = IglooPropertySourcePriority.APPLICATION, value = "classpath:notification-test.properties")
 public class NotificationTestConfig {
 
 	@Bean

@@ -2,24 +2,20 @@ package org.iglooproject.basicapp.init.config.spring;
 
 import org.iglooproject.basicapp.core.config.spring.BasicApplicationCoreCommonConfig;
 import org.iglooproject.basicapp.init.BasicApplicationInitPackage;
-import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
+@PropertySource(name = IglooPropertySourcePriority.FRAMEWORK, value = "classpath:configuration-init.properties")
 @Import({
 	BasicApplicationCoreCommonConfig.class
 })
-@ConfigurationLocations(
-	locations = {
-			"classpath:configuration-init.properties",
-	},
-	order = 1 // Permet de surcharger la configuration du core
-)
 @ComponentScan(
 	basePackageClasses = {
 		BasicApplicationInitPackage.class

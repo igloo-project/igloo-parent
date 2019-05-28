@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Active la prise en compte des annotations {@link ApplicationDescription} et {@link ConfigurationLocations}.
+ * Active la prise en compte des annotations {@link ApplicationDescription} et {@link ConfigurationLocations}
+ * (dépréciée).
  * 
  * @see ApplicationConfigurerBeanFactoryPostProcessor
  */

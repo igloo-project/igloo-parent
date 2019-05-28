@@ -5,8 +5,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.springframework.context.annotation.PropertySource;
+
+/**
+ * @deprecated deprecated in favor of @{@link PropertySource} name from {@link IglooPropertySourcePriority}.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Deprecated
 public @interface ConfigurationLocations {
 
 	/**

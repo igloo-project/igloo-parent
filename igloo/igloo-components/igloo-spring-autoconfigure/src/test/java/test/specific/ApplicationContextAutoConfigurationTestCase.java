@@ -7,7 +7,6 @@ import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
-import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.iglooproject.spring.util.ConfigurationLogger;
 import org.junit.Test;
@@ -39,7 +38,6 @@ public class ApplicationContextAutoConfigurationTestCase {
 	}
 	
 	@Configuration
-	@ConfigurationLocations
 	@ApplicationDescription(name = "igloo-spring-autoconfigure")
 	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class})
 	public static class TestConfig {}

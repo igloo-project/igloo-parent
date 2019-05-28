@@ -2,7 +2,7 @@ package org.iglooproject.test.spring.notification.spring.config;
 
 import org.iglooproject.config.bootstrap.spring.ApplicationConfigurerBeanFactoryPostProcessor;
 import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
-import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.spring.config.CorePropertyPlaceholderConfigurer;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
 import org.iglooproject.spring.config.spring.SpringApplicationPropertyRegistryConfig;
@@ -16,10 +16,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ApplicationDescription(name = "TestNotification")
-@ConfigurationLocations(locations = {"classpath:notification-test.properties"})
+@PropertySource(name = IglooPropertySourcePriority.APPLICATION, value = "classpath:notification-test.properties")
 @Import({ NotificationTestConfig.class })
 public class TestConfig {
 

@@ -6,19 +6,18 @@ import static org.iglooproject.jpa.property.FlywayPropertyIds.FLYWAY_PLACEHOLDER
 import java.util.Collections;
 import java.util.Set;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.functional.converter.StringCollectionConverter;
 import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import com.google.common.base.Converter;
 
-@ConfigurationLocations(
-	locations = "classpath:flyway-placeholders.properties"
-)
 @Configuration
+@PropertySource(name = IglooPropertySourcePriority.COMPONENT, value = "classpath:flyway-placeholders.properties")
 public class FlywayPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 	
 	@Override

@@ -80,7 +80,8 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 		
 		configureApplicationDescription(beanFactory);
 		
-		List<Resource> bootstrapedConfigurations = getLocationsFromBootstrapConfiguration();
+		List<Resource> bootstrapedConfigurations = getLocationsFromBootstrapConfiguration(applicationContext,
+				notFoundLocationThrowError);
 		if (bootstrapedConfigurations.isEmpty()) {
 			LOGGER.info("Bootstraped-configured configurations is empty (overriding configurations missing)");
 		}
@@ -202,7 +203,8 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	 * 
 	 * @see #notFoundLocationThrowError
 	 */
-	private List<Resource> getLocationsFromBootstrapConfiguration() {
+	public static List<Resource> getLocationsFromBootstrapConfiguration(ApplicationContext applicationContext,
+			boolean notFoundLocationThrowError) {
 		List<Resource> locations = Lists.newArrayList();
 		Environment environment = applicationContext.getEnvironment();
 		if (environment.containsProperty(IGLOO_PROFILES_LOCATIONS_PROPERTY)) {
@@ -210,7 +212,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 			final List<String> profileLocations =
 					(List<String>) environment.getProperty(IGLOO_PROFILES_LOCATIONS_PROPERTY, List.class);
 			List<Resource> profileResources = profileLocations.stream()
-					.map(this.resourceFromLocation(notFoundLocationThrowError)).filter(Objects::nonNull)
+					.map(resourceFromLocation(applicationContext, notFoundLocationThrowError)).filter(Objects::nonNull)
 					.collect(Collectors.toList());
 			if (LOGGER.isDebugEnabled()) {
 				LOGGER.debug("Loaded locations from {} value ({}): {}",
@@ -270,7 +272,7 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 			ConfigurationLocations annotation = beanType.getAnnotation(ConfigurationLocations.class);
 			
 			List<Resource> resources = Arrays.stream(annotation.locations())
-					.map(resourceFromLocation(notFoundLocationThrowError)).filter(Objects::nonNull)
+					.map(resourceFromLocation(applicationContext, notFoundLocationThrowError)).filter(Objects::nonNull)
 					.collect(Collectors.toList());
 			locations.putAll(annotation.order(), resources);
 			if (LOGGER.isDebugEnabled()) {
@@ -304,7 +306,8 @@ public class ApplicationConfigurerBeanFactoryPostProcessor implements BeanFactor
 	 * 
 	 * <p>If you map a collection, you need to filter null values after mapping.</p>
 	 */
-	private Function2<String, Resource> resourceFromLocation(boolean throwErrorIfNotReadable) {
+	private static Function2<String, Resource> resourceFromLocation(ApplicationContext applicationContext,
+			boolean throwErrorIfNotReadable) {
 		return location -> {
 			String resolvedLocation = applicationContext.getEnvironment().resolveRequiredPlaceholders(location);
 			if (applicationContext.getResource(resolvedLocation).isReadable()) {

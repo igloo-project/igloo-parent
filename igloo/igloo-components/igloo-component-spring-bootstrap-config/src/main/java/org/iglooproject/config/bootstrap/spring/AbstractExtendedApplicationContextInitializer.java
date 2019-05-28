@@ -13,8 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePropertySource;
 
 import com.google.common.base.Joiner;
@@ -86,6 +88,22 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 		for (String location : reversedLocations) {
 			applicationContext.getEnvironment().getPropertySources().addLast(resources.get(location));
 		}
+		
+		loadIglooConfigurationLocations(applicationContext);
+	}
+
+	private void loadIglooConfigurationLocations(ConfigurableApplicationContext applicationContext) {
+		List<Resource> resources =
+				ApplicationConfigurerBeanFactoryPostProcessor.getLocationsFromBootstrapConfiguration(applicationContext, false);
+		CompositePropertySource propertySource = new CompositePropertySource("igloo.configurationLocations");
+		for (Resource resource : resources) {
+			try {
+				propertySource.addFirstPropertySource(new ResourcePropertySource(resource));
+			} catch (IOException e) {
+				throw new IllegalStateException(String.format("Error loading resource %s", resource.getDescription()), e);
+			}
+		}
+		applicationContext.getEnvironment().getPropertySources().addFirst(propertySource);
 	}
 
 	private void loadLog4jConfiguration(ConfigurableApplicationContext applicationContext) throws IOException {
