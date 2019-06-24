@@ -71,21 +71,24 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 		add(popup);
 		
 		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
-		add(headerElementsSection);
+		add(headerElementsSection.anyChildVisible());
 		
 		headerElementsSection
-			.anyChildVisible()
 			.add(
-				new BlankLink("add")
-				.add(
-					new AjaxModalOpenBehavior(popup, MouseEvent.CLICK) {
-						private static final long serialVersionUID = 1L;
-						@Override
-						protected void onShow(AjaxRequestTarget target) {
-							popup.setUpAdd(new Announcement());
-						}
-					}
-				)
+				new EnclosureContainer("actionsContainer")
+					.anyChildVisible()
+					.add(
+						new BlankLink("add")
+							.add(
+								new AjaxModalOpenBehavior(popup, MouseEvent.CLICK) {
+									private static final long serialVersionUID = 1L;
+									@Override
+									protected void onShow(AjaxRequestTarget target) {
+										popup.setUpAdd(new Announcement());
+									}
+								}
+							)
+					)
 			);
 		
 		DecoratedCoreDataTablePanel<?, ?> results =
