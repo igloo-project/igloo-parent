@@ -1,7 +1,5 @@
 package org.iglooproject.spring.config.spring;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
-import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.spring.config.CorePropertyPlaceholderConfigurer;
 import org.iglooproject.spring.config.spring.annotation.CoreConfigurationLocationsAnnotationConfig;
 import org.iglooproject.spring.util.ConfigurationLogger;

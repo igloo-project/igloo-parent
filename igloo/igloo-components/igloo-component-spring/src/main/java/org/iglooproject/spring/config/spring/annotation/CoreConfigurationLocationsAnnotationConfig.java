@@ -1,9 +1,5 @@
 package org.iglooproject.spring.config.spring.annotation;
 
-import org.iglooproject.config.bootstrap.spring.ApplicationConfigurerBeanFactoryPostProcessor;
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
-import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
-import org.iglooproject.config.bootstrap.spring.config.BootstrapSpringConfiguration;
 import org.iglooproject.config.bootstrap.spring.config.ManifestPropertySourceConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -17,7 +13,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({
 	// cleanly separate bootstrap and configuration overrides
-	BootstrapSpringConfiguration.class,
+//	BootstrapSpringConfiguration.class,
 	// transform MANIFEST.MF files in properties
 	ManifestPropertySourceConfiguration.class
 })

@@ -1,6 +1,5 @@
 package org.iglooproject.test.config.spring;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
 import org.iglooproject.test.business.JpaTestBusinessPackage;
@@ -11,7 +10,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ApplicationDescription(name = "jpa-test")
 @PropertySource(name = IglooPropertySourcePriority.APPLICATION,
 	value = {
 		"classpath:igloo-component-jpa.properties",

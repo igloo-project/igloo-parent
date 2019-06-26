@@ -1,6 +1,5 @@
 package org.iglooproject.test.rest.jersey2.server.config.spring;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * This configuration relies on bootstrap-configuration.properties enforcing igloo.profile=test
  */
 @Configuration
-@ApplicationDescription(name = "rest-test-server")
 @PropertySource(
 	name = IglooPropertySourcePriority.APPLICATION,
 	value = {

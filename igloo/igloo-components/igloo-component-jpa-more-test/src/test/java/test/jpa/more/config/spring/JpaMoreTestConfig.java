@@ -1,6 +1,5 @@
 package test.jpa.more.config.spring;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import test.jpa.more.business.JpaMoreTestBusinessPackage;
 
 @Configuration
-@ApplicationDescription(name = "igloo-component-jpa-more")
 @PropertySource(name = IglooPropertySourcePriority.APPLICATION,
 	value = {
 		"classpath:igloo-component-jpa.properties",

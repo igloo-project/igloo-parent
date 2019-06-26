@@ -1,6 +1,5 @@
 package org.iglooproject.test.jpa.security.config.spring;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ApplicationDescription(name = "igloo-component-security")
 @PropertySource(name = IglooPropertySourcePriority.APPLICATION,
 	value = {
 		"classpath:igloo-component-jpa.properties",

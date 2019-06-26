@@ -2,7 +2,6 @@ package org.iglooproject.basicapp.core.config.spring;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.iglooproject.basicapp.core.BasicApplicationCorePackage;
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.config.bootstrap.spring.annotations.ManifestPropertySource;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,7 +12,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ApplicationDescription(name = BasicApplicationCoreCommonConfig.APPLICATION_NAME)
 @ManifestPropertySource(prefix = "basic-application.core")
 @PropertySource(name = IglooPropertySourcePriority.COMPONENT, value = "", ignoreResourceNotFound = true)
 @PropertySource(name = IglooPropertySourcePriority.FRAMEWORK, value = "", ignoreResourceNotFound = true)

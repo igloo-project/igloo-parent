@@ -1,6 +1,5 @@
 package org.iglooproject.test.jpa.externallinkchecker.business.rest.server.config.spring;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 		"classpath:rest-server.properties"
 	}
 )
-@ApplicationDescription(name = "rest-test-server")
 @Import({
 	RestServerTestApplicationPropertyConfig.class
 })

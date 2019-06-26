@@ -1,6 +1,5 @@
 package org.iglooproject.test.search.config.spring;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.hibernate.analyzers.LuceneEmbeddedAnalyzerRegistry;
 import org.iglooproject.jpa.hibernate.analyzers.LuceneEmbeddedFromElasticsearchAnalyzerRegistry;
@@ -16,7 +15,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ApplicationDescription(name = "jpa-test")
 @PropertySource(name = IglooPropertySourcePriority.APPLICATION,
 	value = {
 		"classpath:igloo-component-jpa.properties",

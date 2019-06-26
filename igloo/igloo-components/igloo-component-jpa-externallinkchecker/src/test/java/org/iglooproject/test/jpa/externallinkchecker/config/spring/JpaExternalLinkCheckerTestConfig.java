@@ -1,6 +1,5 @@
 package org.iglooproject.test.jpa.externallinkchecker.config.spring;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.externallinkchecker.business.JpaExternalLinkCheckerBusinessPackage;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
@@ -16,7 +15,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ApplicationDescription(name = "igloo-component-jpa-more")
 @PropertySource(name = IglooPropertySourcePriority.APPLICATION,
 	value = {
 		"classpath:igloo-component-jpa.properties",

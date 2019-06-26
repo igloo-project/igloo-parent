@@ -1,7 +1,5 @@
 package org.iglooproject.test.spring.notification.spring.config;
 
-import org.iglooproject.config.bootstrap.spring.ApplicationConfigurerBeanFactoryPostProcessor;
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.spring.config.CorePropertyPlaceholderConfigurer;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
@@ -19,7 +17,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ApplicationDescription(name = "TestNotification")
 @PropertySource(name = IglooPropertySourcePriority.APPLICATION, value = "classpath:notification-test.properties")
 @Import({ NotificationTestConfig.class })
 public class TestConfig {
@@ -49,8 +46,4 @@ public class TestConfig {
 		return new SpringApplicationPropertyRegistryConfig();
 	}
 
-	@Bean
-	public static ApplicationConfigurerBeanFactoryPostProcessor applicationConfigurer() {
-		return new ApplicationConfigurerBeanFactoryPostProcessor(false);
-	}
 }

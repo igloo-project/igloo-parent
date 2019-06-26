@@ -15,7 +15,6 @@ import java.util.jar.Manifest;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
 import org.iglooproject.config.bootstrap.spring.annotations.ManifestPropertySource;
 import org.iglooproject.functional.Function2;
 import org.slf4j.Logger;
@@ -161,7 +160,7 @@ public class ManifestPropertySourceBeanFactoryPostProcessor implements Applicati
 	}
 
 	/**
-	 * Check if beanType is an {@link ApplicationDescription} annotated one. Used to filter streams.
+	 * Check if beanType is an {@link ManifestPropertySource} annotated one. Used to filter streams.
 	 */
 	private static boolean isManifestPropertySourceBeanType(Class<?> beanType) {
 		return isConfigurationBeanType(beanType) && beanType.isAnnotationPresent(ManifestPropertySource.class);
