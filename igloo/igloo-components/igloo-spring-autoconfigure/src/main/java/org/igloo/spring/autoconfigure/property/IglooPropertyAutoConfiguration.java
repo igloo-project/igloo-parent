@@ -8,6 +8,7 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.property.service.PropertyServiceImpl;
 import org.iglooproject.spring.util.ConfigurationLogger;
+import org.iglooproject.spring.util.PropertySourceLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +44,11 @@ public class IglooPropertyAutoConfiguration {
 		configurationLogger.setPropertyNamesForInfoLogLevel(propertyNamesForInfoLogLevel);
 		
 		return configurationLogger;
+	}
+
+	@Bean
+	public PropertySourceLogger propertySourceLogger() {
+		return new PropertySourceLogger();
 	}
 
 	@ConditionalOnMissingBean
