@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<div class="sidebar-section-title"><wicket:message key="sidebar.menu.title" /></div>
+	
+	<nav wicket:id="sidenavContainer" class="sidenav-container">
+		<ul class="sidenav">
+			<li wicket:id="sidenavItems" class="sidenav-item">
+				<a wicket:id="navLink" class="sidenav-link">
+					<span class="sidenav-icon" wicket:id="icon" />
+					<span class="sidenav-label" wicket:id="label" />
+					<span class="fa fa-angle-down fa-fw sidenav-label-sub-open-icon" />
+					<span class="fa fa-angle-left fa-fw sidenav-label-sub-close-icon" />
+				</a>
+				<ul wicket:id="sidenavSubContainer" class="sidenav-sub">
+					<li wicket:id="sidenavSubItems" class="sidenav-item">
+						<a wicket:id="navLink" class="sidenav-link">
+							<span class="sidenav-icon" wicket:id="icon" />
+							<span class="sidenav-label" wicket:id="label" />
+						</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+	
+	<div class="sidebar-divider" />
+</wicket:panel>
+</html>

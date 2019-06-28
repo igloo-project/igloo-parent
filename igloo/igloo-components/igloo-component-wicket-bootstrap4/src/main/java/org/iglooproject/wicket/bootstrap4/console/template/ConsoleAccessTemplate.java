@@ -33,8 +33,10 @@ public abstract class ConsoleAccessTemplate extends AbstractWebPageTemplate {
 	public ConsoleAccessTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		add(new TransparentWebMarkupContainer("htmlRootElement")
-				.add(AttributeAppender.append("lang", AbstractCoreSession.get().getLocale().getLanguage())));
+		add(
+			new TransparentWebMarkupContainer("htmlElement")
+				.add(AttributeAppender.append("lang", AbstractCoreSession.get().getLocale().getLanguage()))
+		);
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		

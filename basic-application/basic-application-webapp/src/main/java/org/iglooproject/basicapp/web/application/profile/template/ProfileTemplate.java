@@ -15,8 +15,8 @@ public class ProfileTemplate extends MainTemplate {
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-				new ResourceModel("navigation.profile"),
-				ProfilePage.linkDescriptor()
+			new ResourceModel("navigation.profile"),
+			ProfilePage.linkDescriptor()
 		));
 	}
 

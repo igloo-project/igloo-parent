@@ -95,9 +95,9 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.assertVisible("navbar", NavbarPanel.class);
 		
 		final MutableInt countVisibleItems = new MutableInt(0);
-		tester.assertVisible("navbar:mainNav", ListView.class);
+		tester.assertVisible("navbar:navbarNavContainer:navbarNavItems", ListView.class);
 		@SuppressWarnings("unchecked")
-		ListView<NavigationMenuItem> menuItems = (ListView<NavigationMenuItem>) tester.getComponentFromLastRenderedPage("navbar:mainNav");
+		ListView<NavigationMenuItem> menuItems = (ListView<NavigationMenuItem>) tester.getComponentFromLastRenderedPage("navbar:navbarNavContainer:navbarNavItems");
 		
 		menuItems.visitChildren(ListItem.class, (IVisitor<ListItem<NavigationMenuItem>, Void>) (object, visit) -> {
 			if (!(object.getModelObject() instanceof NavigationMenuItem)) {
@@ -113,7 +113,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 			}
 		});
 		
-		int countAccessibleItems = navBarComponents(NavbarItem.menu(), "navbar:mainNav");
+		int countAccessibleItems = navBarComponents(NavbarItem.menu(), "navbar:navbarNavContainer:navbarNavItems");
 		assertEquals(nbExpectedItems, countAccessibleItems);
 		assertEquals(nbExpectedItems, countVisibleItems.getValue().intValue());
 	}
@@ -136,7 +136,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 				
 				//SubMenu
 				
-				String subMenuPath = pathToMenu + ":" + menuItem.getOrder() + ":subNavContainer:subNav";
+				String subMenuPath = pathToMenu + ":" + menuItem.getOrder() + ":navbarNavSubContainer:navbarNavSubItems";
 				nbItems += navBarComponents(NavbarItem.submenu(menuItem), subMenuPath);
 			}
 		}

@@ -5,33 +5,113 @@ html {
 }
 
 body {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	height: 100vh;
 	margin: 0;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-color: #F5F5F5;
 }
 
-.header-container {
+.sidebar-container {
+	display: none;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	z-index: $sidebar-zindex;
+	flex: 0 0 $sidebar-expand-width;
+	flex-direction: column;
+	width: $sidebar-expand-width;
+	max-width: $sidebar-expand-width;
+	min-width: $sidebar-expand-width;
+	background-color: $sidebar-bg;
+	color: $sidebar-color;
+	overflow: hidden;
 	
+	> .sidebar {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		overflow-x: hidden;
+		overflow-y: auto;
+		
+		// Needed for scrollable flex item.
+		min-height: 0px;
+		min-width: 0px;
+		
+		> .sidebar-body-scrollable {
+			flex: 1;
+			min-height: 100px;
+			overflow-x: hidden;
+			overflow-y: auto;
+			
+			> .sidebar-body {
+				display: flex;
+				flex: 1;
+				padding: $sidebar-body-padding-y 0;
+				
+				.sidebar-body-content {
+					@include flex-item-overflow-wrap();
+					
+					flex: 1;
+					
+					.sidebar-section {
+						.sidebar-section-title {
+							color: #B0B0B0;
+							font-weight: 600;
+							font-size: .8rem;
+							text-transform: uppercase;
+							padding: 7px 15px;
+						}
+						
+						.sidebar-section-content {
+							padding: 7px 15px;
+						}
+					}
+				}
+			}
+		}
+		
+		> .sidebar-footer {
+			padding: 15px 15px;
+			background-color: #21212E;
+			border-top: 1px solid #03FFB0;
+			color: #FFFFFF;
+			
+			.footer-title {
+				color: #03FFB0;
+				font-weight: bold;
+				font-size: 1rem;
+				margin-bottom: .15rem;
+			}
+			
+			.footer-description {
+				.footer-description-info {
+					.footer-info-version {
+						font-size: .85rem;
+					}
+					
+					.footer-info-sha {
+						font-size: .5rem;
+					}
+				}
+			}
+		}
+		
+		.sidebar-divider {
+			border-top: 1px solid rgba(0, 0, 0, 0.1);
+			margin: 1rem 0px 1rem 15px;
+		}
+	}
 }
 
-.main-container {
-	display: flex;
-	flex-direction: column;
-	flex: 1;
-	
-	> .sidebar-wrapper {
-		display: none;
+.body-container {
+	> .header-section {
 	}
 	
-	> .main-content-wrapper {
-		> .main-content-container {
-			flex: 1;
-			
+	> .main-section {
+		> .main-header {
+		}
+		
+		> .main-body {
 			.content-container {
 				> .content-header-section {
 					border-bottom: 1px solid rgba(0, 0, 0, 0.125);
@@ -88,127 +168,80 @@ body {
 	}
 }
 
-.navigation-expand {
+body.sidebar-expand {
 	@each $breakpoint in map-keys($grid-breakpoints) {
 		$next: breakpoint-next($breakpoint, $grid-breakpoints);
 		$infix: breakpoint-infix($next, $grid-breakpoints);
 		
 		&#{$infix} {
-			@include media-breakpoint-down($breakpoint) {
-				.navigation-expand-visible {
-					display: none;
+			@include media-breakpoint-up($next) {
+				.navbar {
+					&.navbar-app {
+						.navbar-header {
+							.navbar-toggler {
+								display: none;
+							}
+						}
+					}
 				}
 			}
 			
 			@include media-breakpoint-up($next) {
-				.navigation-expand-hidden {
-					display: none;
+				.sidebar-container {
+					display: flex;
+					border-right: $sidebar-border-width solid $sidebar-border-color;
 				}
 				
-				.header-container {
-					overflow: hidden;
-				}
-				
-				.main-container {
-					flex-direction: row;
-					min-height: 0;
-					overflow: hidden;
-					
-					.sidebar-wrapper {
-						display: flex;
-						flex: 0 0 $sidebar-expand-width;
-						flex-direction: column;
-						width: $sidebar-expand-width;
-						max-width: $sidebar-expand-width;
-						min-width: $sidebar-expand-width;
-						background-color: $sidebar-bg;
-						color: $sidebar-color;
-						border-right: $sidebar-border-width solid $sidebar-border-color;
-						
-						.sidebar-body-wrapper { // needed for firefox css hack (clean)
-							display: flex;
-							flex: 1;
-							min-height: 0px;
-							min-width: 0px;
-							
-							.sidebar-body-scrollable {
-								overflow-x: hidden;
-								overflow-y: auto;
-								flex: 1;
-								
-								.sidebar-body {
-									display: flex;
-									flex: 1;
-									padding: $sidebar-body-padding-y 0;
-									
-									.sidebar-body-content {
-										@include flex-item-overflow-wrap();
-										
-										flex: 1;
-										
-										.sidebar-section {
-											.sidebar-section-title {
-												color: #B0B0B0;
-												font-weight: 600;
-												font-size: .8rem;
-												text-transform: uppercase;
-												padding: 10px 15px;
-											}
-											
-											.sidebar-section-content {
-												padding: 7px 15px;
-											}
-										}
-									}
-								}
-							}
-						}
-						
-						.sidebar-footer {
-							padding: 15px 15px;
-							background-color: #21212E;
-							border-top: 1px solid #03FFB0;
-							color: #FFFFFF;
-							
-							.footer-title {
-								color: #03FFB0;
-								font-weight: bold;
-								font-size: 1rem;
-								margin-bottom: .15rem;
-							}
-							
-							.footer-description {
-								.footer-description-info {
-									.footer-info-version {
-										font-size: .85rem;
-									}
-									
-									.footer-info-sha {
-										font-size: .5rem;
-									}
-								}
-							}
-						}
-						
-						.sidebar-divider {
-							border-top: 1px solid rgba(0, 0, 0, 0.1);
-							margin: 1rem 45px;
-						}
-					}
-					
-					.main-content-wrapper {
-						flex: 1 1 100%;
-						display: flex;
-						max-width: 100%;
-						min-height: 0px;
-						overflow: hidden;
-						
-						.main-content-container {
-							overflow: auto;
-						}
-					}
+				.body-container {
+					margin-left: $sidebar-expand-width;
 				}
 			}
 		}
 	}
+}
+
+body.sidebar-open {
+	.navbar {
+		&.navbar-app {
+			.navbar-header {
+				.navbar-toggler {
+					display: inline-block;
+				}
+			}
+		}
+		
+		&.navbar-sidebar {
+			display: flex;
+		}
+	}
+	
+	.sidebar-container {
+		display: flex;
+		border-right: none;
+		box-shadow: $sidebar-box-shadow;
+	}
+	
+	.body-container {
+		margin-left: 0;
+	}
+	
+	@media (max-width: $sidebar-expand-width) {
+		.sidebar-container {
+			flex-basis: 100%;
+			width: 100%;
+			min-width: 100%;
+			max-width: 100%;
+		}
+	}
+}
+
+.sidebar-backdrop {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: $sidebar-backdrop-zindex;
+	width: 100vw;
+	height: 100vh;
+	background-color: $sidebar-backdrop-bg;
 }

@@ -9,8 +9,11 @@ import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.iglooproject.commons.util.collections.CollectionUtils;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
+import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -18,56 +21,38 @@ import com.google.common.collect.Lists;
 public class NavigationMenuItem implements IDetachable {
 
 	private static final long serialVersionUID = -833923931725195545L;
-	
+
 	private IModel<String> labelModel;
-	
-	private IModel<String> cssClassesModel = Model.of("");
-	
-	private IModel<String> iconClassesModel = Model.of("");
-	
+
 	private IPageLinkGenerator pageLinkGenerator;
-	
+
+	private IModel<String> cssClassesModel = Model.of("");
+
+	private IModel<String> iconClassesModel = Model.of("");
+
+	private IModel<Boolean> subMenuForceOpenModel = Condition.alwaysFalse();
+
 	private final List<NavigationMenuItem> subMenuItems = Lists.newArrayList();
-	
-	protected NavigationMenuItem(NavigationMenuItem wrapped) {
-		setLabelModel(wrapped.getLabelModel());
-		setPageLinkGenerator(wrapped.getPageLinkGenerator());
-		setSubMenuItems(wrapped.getSubMenuItems());
-	}
-	
+
 	public NavigationMenuItem(IModel<String> labelModel) {
-		this.labelModel = labelModel;
+		this(labelModel, null);
 	}
-	
-	public NavigationMenuItem(IModel<String> labelModel, IPageLinkGenerator pageLinkGenerator,
-			Collection<NavigationMenuItem> subMenuItems) {
-		this.labelModel = labelModel;
-		this.pageLinkGenerator = pageLinkGenerator;
-		this.subMenuItems.addAll(subMenuItems);
+
+	public NavigationMenuItem(
+		IModel<String> labelModel,
+		IPageLinkGenerator pageLinkGenerator
+	) {
+		this(labelModel, pageLinkGenerator, ImmutableList.of());
 	}
-	
-	public NavigationMenuItem(IModel<String> labelModel, IPageLinkGenerator pageLinkGenerator) {
-		this(labelModel, pageLinkGenerator, ImmutableList.<NavigationMenuItem>of());
-	}
-	
-	@Override
-	public void detach() {
-		if (labelModel != null) {
-			labelModel.detach();
-		}
-		if (cssClassesModel != null) {
-			cssClassesModel.detach();
-		}
-		if (iconClassesModel != null) {
-			iconClassesModel.detach();
-		}
-		if (pageLinkGenerator != null) {
-			pageLinkGenerator.detach();
-		}
-		
-		for (NavigationMenuItem subMenuItem : subMenuItems) {
-			subMenuItem.detach();
-		}
+
+	public NavigationMenuItem(
+		IModel<String> labelModel,
+		IPageLinkGenerator pageLinkGenerator,
+		Collection<NavigationMenuItem> subMenuItems
+	) {
+		label(labelModel);
+		pageLinkGenerator(pageLinkGenerator);
+		subMenuItems(subMenuItems);
 	}
 
 	public AbstractLink link(String wicketId) {
@@ -85,7 +70,7 @@ public class NavigationMenuItem implements IDetachable {
 			return new BlankLink(wicketId);
 		}
 	}
-	
+
 	public boolean isActive(Class<? extends Page> selectedPage) {
 		if (pageLinkGenerator != null) {
 			return pageLinkGenerator.isActive(selectedPage);
@@ -93,38 +78,34 @@ public class NavigationMenuItem implements IDetachable {
 			return false;
 		}
 	}
-	
+
 	public IModel<String> getLabelModel() {
 		return labelModel;
 	}
-	
-	public NavigationMenuItem setLabelModel(IModel<String> labelModel) {
+
+	public NavigationMenuItem label(String label) {
+		return label(Model.of(label));
+	}
+
+	public NavigationMenuItem label(IModel<String> labelModel) {
 		this.labelModel = labelModel;
 		return this;
 	}
-	
-	protected IPageLinkGenerator getPageLinkGenerator() {
+
+	/**
+	 * @deprecated Use {@link #label(IModel)} instead.
+	 */
+	@Deprecated
+	public NavigationMenuItem setLabelModel(IModel<String> labelModel) {
+		return label(labelModel);
+	}
+
+	public IPageLinkGenerator getPageLinkGenerator() {
 		return pageLinkGenerator;
 	}
 
-	protected NavigationMenuItem setPageLinkGenerator(IPageLinkGenerator pageLinkGenerator) {
+	public NavigationMenuItem pageLinkGenerator(IPageLinkGenerator pageLinkGenerator) {
 		this.pageLinkGenerator = pageLinkGenerator;
-		return this;
-	}
-	
-	public List<NavigationMenuItem> getSubMenuItems() {
-		return Collections.unmodifiableList(subMenuItems);
-	}
-	
-	public NavigationMenuItem addSubMenuItem(NavigationMenuItem subMenuItem) {
-		this.subMenuItems.add(subMenuItem);
-		return this;
-	}
-	
-	public NavigationMenuItem setSubMenuItems(Collection<NavigationMenuItem> subMenuItems) {
-		Collection<NavigationMenuItem> menuItems = ImmutableList.copyOf(subMenuItems); // Handle collection views
-		this.subMenuItems.clear();
-		this.subMenuItems.addAll(menuItems);
 		return this;
 	}
 
@@ -132,18 +113,102 @@ public class NavigationMenuItem implements IDetachable {
 		return cssClassesModel;
 	}
 
-	public NavigationMenuItem setCssClassesModel(IModel<String> cssClassesModel) {
+	public NavigationMenuItem cssClasses(String cssClasses) {
+		return cssClasses(Model.of(cssClasses));
+	}
+
+	public NavigationMenuItem cssClasses(IModel<String> cssClassesModel) {
 		this.cssClassesModel = cssClassesModel;
 		return this;
+	}
+
+	/**
+	 * @deprecated Use {@link #cssClasses(IModel)} instead.
+	 * @param cssClassesModel
+	 * @return
+	 */
+	@Deprecated
+	public NavigationMenuItem setCssClassesModel(IModel<String> cssClassesModel) {
+		return cssClasses(cssClassesModel);
 	}
 
 	public IModel<String> getIconClassesModel() {
 		return iconClassesModel;
 	}
 
-	public NavigationMenuItem setIconClassesModel(IModel<String> iconClassesModel) {
+	public NavigationMenuItem iconClasses(String iconClasses) {
+		return iconClasses(Model.of(iconClasses));
+	}
+
+	public NavigationMenuItem iconClasses(IModel<String> iconClassesModel) {
 		this.iconClassesModel = iconClassesModel;
 		return this;
+	}
+
+	/**
+	 * @deprecated Use {@link #iconClasses(IModel)} instead.
+	 */
+	@Deprecated
+	public NavigationMenuItem setIconClassesModel(IModel<String> iconClassesModel) {
+		return iconClasses(iconClassesModel);
+	}
+
+	public IModel<Boolean> getSubMenuForceOpenModel() {
+		return subMenuForceOpenModel;
+	}
+
+	public NavigationMenuItem subMenuForceOpen() {
+		return subMenuForceOpen(true);
+	}
+
+	public NavigationMenuItem subMenuForceOpen(Boolean subMenuForceOpen) {
+		return subMenuForceOpen(Model.of(subMenuForceOpen));
+	}
+
+	public NavigationMenuItem subMenuForceOpen(IModel<Boolean> subMenuForceOpenModel) {
+		this.subMenuForceOpenModel = subMenuForceOpenModel;
+		return this;
+	}
+
+	/**
+	 * @deprecated Use {@link #subMenuForceOpen(IModel)} instead.
+	 */
+	@Deprecated
+	public NavigationMenuItem setSubMenuForceOpenModel(IModel<Boolean> subMenuForceOpenModel) {
+		return subMenuForceOpen(subMenuForceOpenModel);
+	}
+
+	public List<NavigationMenuItem> getSubMenuItems() {
+		return Collections.unmodifiableList(subMenuItems);
+	}
+
+	public NavigationMenuItem subMenuItems(NavigationMenuItem firstSubMenuItem, NavigationMenuItem ... otherSubMenuItems) {
+		return subMenuItems(Lists.asList(firstSubMenuItem, otherSubMenuItems));
+	}
+
+	public NavigationMenuItem subMenuItems(Collection<NavigationMenuItem> subMenuItems) {
+		CollectionUtils.replaceAll(this.subMenuItems, subMenuItems);
+		return this;
+	}
+
+	/**
+	 * @deprecated {@link #subMenuItem(Collection)} instead.
+	 */
+	@Deprecated
+	public NavigationMenuItem setSubMenuItems(Collection<NavigationMenuItem> subMenuItems) {
+		return subMenuItems(subMenuItems);
+	}
+
+	@Override
+	public void detach() {
+		Detachables.detach(
+			labelModel,
+			cssClassesModel,
+			iconClassesModel,
+			pageLinkGenerator,
+			subMenuForceOpenModel
+		);
+		Detachables.detach(subMenuItems);
 	}
 
 }

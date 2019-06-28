@@ -4,17 +4,22 @@ import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOL
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 
 import java.util.List;
+import java.util.Objects;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -38,6 +43,7 @@ import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
@@ -49,89 +55,142 @@ import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.security.page.LogoutPage;
 
 public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
-	
+
 	private static final long serialVersionUID = -477123413708677528L;
-	
+
 	@SpringBean
 	protected IPropertyService propertyService;
-	
+
 	@SpringBean(required = false)
 	protected IAbstractDataUpgradeService dataUpgradeService;
-	
+
 	public ConsoleTemplate(PageParameters parameters) {
 		super(parameters);
+		
+		add(
+			new TransparentWebMarkupContainer("htmlElement")
+				.add(AttributeAppender.append("lang", AbstractCoreSession.get().getLocale().getLanguage()))
+		);
+		
+		add(
+			new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel", propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE),propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT))
+		);
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
 		add(createHeadPageTitle("headPageTitle"));
 		
-		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel",
-				propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE),
-				propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT))
+		EnclosureContainer navbarNavContainer = new EnclosureContainer("navbarNavContainer");
+		add(navbarNavContainer.anyChildVisible());
+		
+		navbarNavContainer.add(
+			getApplicationHomePageLinkDescriptor()
+				.link("applicationHomePageLink")
 		);
 		
-		add(
-				getApplicationHomePageLinkDescriptor()
-						.link("applicationHomePageLink")
-		);
+		List<ConsoleMenuSection> menuItems = ConsoleConfiguration.get().getMenuSections();
 		
-		add(new ListView<ConsoleMenuSection>("mainNav", ConsoleConfiguration.get().getMenuSections()) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void populateItem(ListItem<ConsoleMenuSection> item) {
-				ConsoleMenuSection navItem = item.getModelObject();
+		navbarNavContainer.add(
+			new ListView<ConsoleMenuSection>("navbarNavItems", menuItems) {
+				private static final long serialVersionUID = 1L;
 				
-				if (navItem.getPageClass() != null && navItem.getPageClass().equals(ConsoleTemplate.this.getFirstMenuPage())) {
-					item.add(new ClassAttributeAppender("active"));
-				}
-				
-				AbstractLink navLink = new BookmarkablePageLink<Void>("navLink", navItem.getPageClass());
-				
-				item.add(
-						navLink
-								.add(
+				@Override
+				protected void populateItem(ListItem<ConsoleMenuSection> item) {
+					ConsoleMenuSection navItem = item.getModelObject();
+					AbstractLink navLink = new BookmarkablePageLink<Void>("navLink", navItem.getPageClass());
+					
+					item.add(navLink);
+					
+					navLink
+						.add(
+							new CoreLabel("label", new ResourceModel(navItem.getDisplayStringKey()))
+						);
+					
+					EnclosureContainer navbarNavSubContainer = new EnclosureContainer("navbarNavSubContainer");
+					item.add(
+						navbarNavSubContainer
+							.anyChildVisible()
+							.setOutputMarkupId(true)
+					);
+					
+					Condition isSubVisibleCondition = Condition.componentVisible(navbarNavSubContainer);
+					
+					IModel<Boolean> isSubActiveModel = Model.of(false);
+					Condition isSubActiveCondition = Condition.isTrue(isSubActiveModel);
+					
+					List<ConsoleMenuItem> subMenuItems = navItem.getMenuItems();
+					
+					navbarNavSubContainer
+						.add(
+							new ListView<ConsoleMenuItem>("navbarNavSubItems", subMenuItems) {
+								private static final long serialVersionUID = -2257358650754295013L;
+								
+								@Override
+								protected void populateItem(ListItem<ConsoleMenuItem> item) {
+									ConsoleMenuItem navItem = item.getModelObject();
+									AbstractLink navLink = new BookmarkablePageLink<Void>("navLink", navItem.getPageClass());
+									
+									item.add(navLink);
+									
+									navLink.add(
 										new CoreLabel("label", new ResourceModel(navItem.getDisplayStringKey()))
-								)
-				);
-				
-				List<ConsoleMenuItem> subMenuItems = navItem.getMenuItems();
-				
-				if (!subMenuItems.isEmpty()) {
-					item.add(new ClassAttributeAppender("dropdown"));
-					navLink.add(new ClassAttributeAppender("dropdown-toggle"));
-					navLink.add(new AttributeModifier("data-toggle", "dropdown"));
-					navLink.add(new AttributeModifier("data-hover", "dropdown"));
-					navLink.add(new AttributeModifier("href", "#"));
-				}
-				
-				item.add(
-						new WebMarkupContainer("subNavContainer")
-								.add(
-										new ListView<ConsoleMenuItem>("subNav", subMenuItems) {
-											private static final long serialVersionUID = 1L;
-											
-											@Override
-											protected void populateItem(ListItem<ConsoleMenuItem> item) {
-												ConsoleMenuItem navItem = item.getModelObject();
-												
-												AbstractLink navLink = new BookmarkablePageLink<Void>("navLink", navItem.getPageClass());
-												
-												navLink.add(
-														new CoreLabel("label", new ResourceModel(navItem.getDisplayStringKey()))
-												);
-												
-												if (navItem.getPageClass() != null && navItem.getPageClass().equals(ConsoleTemplate.this.getSecondMenuPage())) {
-													navLink.add(new ClassAttributeAppender("active"));
-												}
-												
-												item.add(navLink);
-											}
-										}
-								)
+									);
+									
+									if (Objects.equals(navItem.getPageClass(), ConsoleTemplate.this.getSecondMenuPage())) {
+										navLink.add(new ClassAttributeAppender("active"));
+										isSubActiveModel.setObject(true);
+									}
+								}
+							}
 								.setVisibilityAllowed(!subMenuItems.isEmpty())
-				);
+						);
+					
+					navLink.add(
+						new ClassAttributeAppender(
+							isSubVisibleCondition
+								.then(Model.of("dropdown-toggle"))
+								.otherwise(Model.of(""))
+						)
+					);
+					
+					navLink.add(
+						new Behavior() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void onComponentTag(Component component, ComponentTag tag) {
+								tag.put("data-toggle", "dropdown");
+								tag.put("data-hover", "dropdown");
+								tag.put("href", "#");
+								super.onComponentTag(component, tag);
+							}
+							@Override
+							public boolean isEnabled(Component component) {
+								return isSubVisibleCondition.applies();
+							}
+						}
+					);
+					
+					item.add(
+						new ClassAttributeAppender(
+							isSubVisibleCondition
+								.then(Model.of("dropdown"))
+								.otherwise(Model.of(""))
+						)
+					);
+					
+					item.add(
+						new ClassAttributeAppender(
+							Condition.or(
+								isSubVisibleCondition.and(isSubActiveCondition),
+								Condition.isTrue(() -> Objects.equals(navItem.getPageClass(), ConsoleTemplate.this.getFirstMenuPage()))
+							)
+								.then(Model.of("active"))
+								.otherwise(Model.of())
+						)
+					);
+				}
 			}
-		});
+				.setVisibilityAllowed(!menuItems.isEmpty())
+		);
 		
 		add(new CoreLabel("userFullName", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
@@ -156,13 +215,13 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("common.console"), ConsoleMaintenanceSearchPage.linkDescriptor()));
 		
 		add(
-				createBodyBreadCrumb("breadCrumb")
-						.add(displayBreadcrumb().thenShow())
+			createBodyBreadCrumb("breadCrumb")
+				.add(displayBreadcrumb().thenShow())
 		);
 		
 		add(
-				new CoreLabel("applicationVersion", new StringResourceModel("common.version.application", ApplicationPropertyModel.of(SpringPropertyIds.VERSION))),
-				new CoreLabel("iglooVersion", new StringResourceModel("common.version.igloo", ApplicationPropertyModel.of(SpringPropertyIds.IGLOO_VERSION)))
+			new CoreLabel("applicationVersion", new StringResourceModel("common.version.application", ApplicationPropertyModel.of(SpringPropertyIds.VERSION))),
+			new CoreLabel("iglooVersion", new StringResourceModel("common.version.igloo", ApplicationPropertyModel.of(SpringPropertyIds.IGLOO_VERSION)))
 		);
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
@@ -171,14 +230,14 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		
 		add(new WebMarkupContainer("scrollToTop").add(new ScrollToTopBehavior()));
 	}
-	
+
 	private BootstrapTooltip getBootstrapTooltip() {
 		return new BootstrapTooltip()
 			.selector("[title],[data-original-title]")
 			.animation(true)
 			.container("body");
 	}
-	
+
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
@@ -198,8 +257,8 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		// By default, we remove one element from the breadcrumb as it is usually also used to generate the page title.
 		// The last element is usually the title of the current page and shouldn't be displayed in the breadcrumb.
 		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel, 1)
-				.setDividerModel(Model.of(""))
-				.setTrailingSeparator(true);
+			.setDividerModel(Model.of(""))
+			.setTrailingSeparator(true);
 	}
 
 	protected Condition displayBreadcrumb() {
@@ -211,4 +270,5 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		// La console en BS4 quoi qu'il arrive, il ne faut pas laisser l'application qui l'utilise choisir la version.
 		return AbstractWebPageTemplate.BOOTSTRAP4_VARIATION;
 	}
+
 }

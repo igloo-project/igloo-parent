@@ -1,85 +1,48 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
-	<div class="sidebar-body-wrapper">
+	<div class="sidebar">
+		<nav wicket:id="navbar" class="navbar navbar-sidebar navbar-expand navbar-main" />
 		<div class="sidebar-body-scrollable">
 			<div class="sidebar-body">
 				<div class="sidebar-body-content">
-					<div wicket:id="quickSearchContainer" class="sidebar-section">
-						<div class="sidebar-section-title"><wicket:message key="sidebar.quicksearch.title" /></div>
-						
+					<div wicket:id="header" class="sidebar-section" />
+					<div wicket:id="user" class="sidebar-section" />
+					<div wicket:id="quickSearch" class="sidebar-section" />
+					<div wicket:id="menu" class="sidebar-section" />
+					<div class="sidebar-section">
 						<div class="sidebar-section-content">
-							<form>
-								<div class="input-group">
-									<div class="input-group-prepend">
-										<span class="input-group-text"><span class="fa fa-fw fa-search" /></span>
-									</div>
-									<select wicket:id="user" class="form-control" />
-								</div>
-							</form>
+							<a wicket:id="changeTheme" class="btn btn-warning btn-sm">
+								<span class="fa fa-fw fa-drafting-compass" />
+							</a>
 						</div>
-						
-						<div class="sidebar-divider" />
-					</div>
-					<div class="sidebar-section">
-						<div class="sidebar-section-title"><wicket:message key="sidebar.menu.title" /></div>
-						
-						<nav class="sidenav-container">
-							<ul class="sidenav">
-								<li wicket:id="sidenavItems" class="sidenav-item">
-									<a wicket:id="navLink" class="sidenav-link">
-										<span class="sidenav-icon" wicket:id="icon" />
-										<span class="sidenav-label" wicket:id="label" />
-									</a>
-									<ul wicket:id="sidenavSubContainer" class="sidenav-sub">
-										<li wicket:id="sidenavSubItems" class="sidenav-item">
-											<a wicket:id="navLink" class="sidenav-link">
-												<span class="sidenav-icon" wicket:id="icon" />
-												<span class="sidenav-label" wicket:id="label" />
-											</a>
-										</li>
-									</ul>
-								</li>
-							</ul>
-						</nav>
-						
-						<div class="sidebar-divider" />
-					</div>
-					<div class="sidebar-section">
-						<div class="sidebar-section-title">Lorem ipsum</div>
-						<div class="sidebar-section-content text-justify">
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi porta vestibulum elit consectetur ullamcorper. In efficitur dignissim turpis, in porta justo varius a. Phasellus sit amet blandit felis, sed tempor nibh. Nunc suscipit dapibus turpis, viverra tempus neque fermentum vel. Donec placerat nisl justo, a ultrices mi vehicula id. Sed in ornare mauris. Maecenas nisi nibh, porta eu placerat a, pellentesque sit amet tellus. Nullam bibendum, nisi eu rutrum ultrices, est libero elementum neque, a gravida elit enim mattis velit. Donec porta eu libero eu ullamcorper.
-							</p>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi porta vestibulum elit consectetur ullamcorper. In efficitur dignissim turpis, in porta justo varius a. Phasellus sit amet blandit felis, sed tempor nibh. Nunc suscipit dapibus turpis, viverra tempus neque fermentum vel. Donec placerat nisl justo, a ultrices mi vehicula id. Sed in ornare mauris. Maecenas nisi nibh, porta eu placerat a, pellentesque sit amet tellus. Nullam bibendum, nisi eu rutrum ultrices, est libero elementum neque, a gravida elit enim mattis velit. Donec porta eu libero eu ullamcorper.
-							</p>
+						<div class="sidebar-section-content">
+							<blockquote class="blockquote text-justify" style="font-size: 0.85rem;">
+								<p class="mb-0">Concevoir des logiciels sur mesure est un métier passionnant et complexe qui mérite une attention toute particulière.</p>
+								<footer class="blockquote-footer" style="font-size: inherit;"><cite>Kobalt</cite></footer>
+							</blockquote>
+							<div class="text-center">
+								<a href="https://www.kobalt.fr" class="text-center text-decoration-none">
+									<span class="fa fa-fw fa-home" /> kobalt.fr
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<div wicket:id="footer" class="sidebar-footer" />
 	</div>
-	<div class="sidebar-footer">
-		<div class="footer-description">
-			<div class="row row-xs align-items-center">
-				<div class="col-auto">
-					<div class="footer-description-logo">
-						<a href="https://github.com/igloo-project/igloo-parent" target="_blank">
-							<img src="static/application/images/logo-igloo-square.png" height="40" width="40" alt="Logo Igloo">
-						</a>
-					</div>
-				</div>
-				<div class="col minw-0">
-					<div class="footer-description-info">
-						<h6 class="footer-title"><wicket:message key="common.rootPageTitle" /></h6>
-						<div wicket:id="version" class="footer-info-version" />
-						<div wicket:id="sha" class="footer-info-sha" />
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	
+	<script>
+		$(function() {
+			$('.navbar-toggler, .sidebar-backdrop').click(function() {
+				$('.sidebar-backdrop').toggle();
+				$('body').toggleClass('sidebar-open');
+			});
+		});
+	</script>
 </wicket:panel>
 </html>

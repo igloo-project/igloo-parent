@@ -1,11 +1,10 @@
-package org.iglooproject.basicapp.web.application.common.template.theme.basic;
+package org.iglooproject.basicapp.web.application.common.template.theme.advanced;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds;
-import org.iglooproject.basicapp.web.application.common.template.theme.common.ChangeApplicationThemeAjaxLink;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
@@ -14,11 +13,11 @@ import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.rendering.Renderer;
 import org.iglooproject.wicket.more.util.DatePattern;
 
-public class FooterPanel extends Panel {
+public class SidebarFooterPanel extends Panel {
 
-	private static final long serialVersionUID = 7635635641028580879L;
+	private static final long serialVersionUID = 5860908201606549343L;
 
-	public FooterPanel(String id) {
+	public SidebarFooterPanel(String id) {
 		super(id);
 		
 		add(
@@ -50,11 +49,6 @@ public class FooterPanel extends Panel {
 				.hideIfEmpty()
 				.add(Condition.role(CoreAuthorityConstants.ROLE_ADMIN).thenShow())
 		);
-		
-		add(
-			new ChangeApplicationThemeAjaxLink("changeTheme")
-		);
 	}
-
 
 }

@@ -10,7 +10,7 @@ body {
 	height: 100%;
 }
 
-.main-wrapper {
+.body-container {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -19,60 +19,65 @@ body {
 		flex: 0 0 auto;
 	}
 	
-	> .body-section {
+	> .main-section {
 		flex: 1 0 auto;
 		
-		> .content-container {
-			display: flex;
-			flex-direction: column;
-			
-			> .content-header-section {
-				background-color: $white;
-				border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+		> .main-header {
+		}
+		
+		> .main-body {
+			> .content-container {
+				display: flex;
+				flex-direction: column;
 				
-				> .content-header-container {
-					@include make-container();
-					@include make-container-max-widths();
+				> .content-header-section {
+					background-color: $white;
+					border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 					
-					padding: 15px $layout-container-padding-x;
-					
-					> .content-header {
-						.content-header-title {
-							margin: 0;
-							padding: 0;
-						}
+					> .content-header-container {
+						@include make-container();
+						@include make-container-max-widths();
 						
-						> .content-header-elements-section {
-							margin-top: .75rem;
+						padding: 15px $layout-container-padding-x;
+						
+						> .content-header {
+							.content-header-title {
+								margin: 0;
+								padding: 0;
+							}
 							
-							&:first-child {
-								margin-top: 0;
+							> .content-header-elements-section {
+								margin-top: .75rem;
+								
+								&:first-child {
+									margin-top: 0;
+								}
 							}
 						}
 					}
 				}
-			}
-			
-			> .content-header-section.content-header-section-tabs {
-				background-color: #FBFBFB;
 				
-				> .content-header-container {
-					padding-top: 10px;
-					padding-bottom: 10px;
+				> .content-header-section.content-header-section-tabs {
+					background-color: #FBFBFB;
+					
+					> .content-header-container {
+						padding-top: 10px;
+						padding-bottom: 10px;
+					}
 				}
-			}
-			
-			> .content-body-section {
-				flex: 1 0 auto;
 				
-				> .content-body-container {
-					@include make-container();
-					@include make-container-max-widths();
+				> .content-body-section {
+					flex: 1 0 auto;
 					
-					padding: 25px $layout-container-padding-x;
-					
-					> .content-body {
+					> .content-body-container {
+						@include make-container();
+						@include make-container-max-widths();
 						
+						padding: 25px $layout-container-padding-x;
+						
+						> .content-body {
+							
+						}
 					}
 				}
 			}
@@ -81,7 +86,6 @@ body {
 	
 	> .footer-section {
 		flex: 0 0 auto;
-		
 		background-color: #21212E;
 		border-top: 1px solid #03FFB0;
 		color: #FFFFFF;

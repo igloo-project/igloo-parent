@@ -39,16 +39,19 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 	public ApplicationAccessTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE)) && !authenticationService.hasAdminRole()
-				&& hasMaintenanceRestriction()) {
+		if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE)) && !authenticationService.hasAdminRole() && hasMaintenanceRestriction()) {
 			throw new RedirectToUrlException(propertyService.get(MAINTENANCE_URL));
 		}
 		
-		add(new TransparentWebMarkupContainer("htmlRootElement")
-				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage())));
+		add(
+			new TransparentWebMarkupContainer("htmlElement")
+				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage()))
+		);
 		
-		add(new TransparentWebMarkupContainer("bodyContainer")
-				.add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel())));
+		add(
+			new TransparentWebMarkupContainer("bodyElement")
+				.add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel()))
+		);
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		
