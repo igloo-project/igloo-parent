@@ -3,6 +3,14 @@ package org.iglooproject.jpa.more.util.transaction.service;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.iglooproject.jpa.more.util.transaction.exception.TransactionSynchronizationException;
+import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
+import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationBeforeCommitTask;
+import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationTask;
+import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationTaskRollbackAware;
+import org.iglooproject.jpa.more.util.transaction.model.TransactionSynchronizationTasks;
+import org.iglooproject.jpa.more.util.transaction.util.ITransactionSynchronizationTaskMerger;
+import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -15,15 +23,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-
-import org.iglooproject.jpa.more.util.transaction.exception.TransactionSynchronizationException;
-import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
-import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationBeforeCommitTask;
-import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationTask;
-import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationTaskRollbackAware;
-import org.iglooproject.jpa.more.util.transaction.model.TransactionSynchronizationTasks;
-import org.iglooproject.jpa.more.util.transaction.util.ITransactionSynchronizationTaskMerger;
-import org.iglooproject.jpa.util.EntityManagerUtils;
 
 @Service
 public class TransactionSynchronizationTaskManagerServiceImpl
@@ -284,10 +283,13 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 		
 		@Override
 		public void afterCompletion(int status) {
-			if (TransactionSynchronization.STATUS_ROLLED_BACK == status) {
-				doOnRollback();
+			try {
+				if (TransactionSynchronization.STATUS_ROLLED_BACK == status) {
+					doOnRollback();
+				}
+			} finally {
+				unbindContext();
 			}
-			unbindContext();
 		}
 	}
 }
