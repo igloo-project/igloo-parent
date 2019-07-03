@@ -93,7 +93,7 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 		
 		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
 		add(headerElementsSection.anyChildVisible());
-
+		
 		headerElementsSection
 			.add(
 				new EnclosureContainer("informationContainer")
