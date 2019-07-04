@@ -1,8 +1,8 @@
 package org.iglooproject.test.config.bootstrap.spring.util;
 
 import org.assertj.core.api.Assertions;
-import org.iglooproject.test.config.bootstrap.spring.environment.SpringBoostrapOverrideByEnvironmentTest;
-import org.iglooproject.test.config.bootstrap.spring.environment.SpringBoostrapOverrideBySystemPropertyTest;
+import org.iglooproject.test.config.bootstrap.spring.environment.SpringBootstrapOverrideByEnvironmentTest;
+import org.iglooproject.test.config.bootstrap.spring.environment.SpringBootstrapOverrideBySystemPropertyTest;
 import org.junit.Test;
 import org.springframework.test.context.TestPropertySource;
 
@@ -10,8 +10,8 @@ import org.springframework.test.context.TestPropertySource;
 /**
  * Test both Environment variable and system properties style overriding
  * 
- * @see SpringBoostrapOverrideByEnvironmentTest
- * @see SpringBoostrapOverrideBySystemPropertyTest
+ * @see SpringBootstrapOverrideByEnvironmentTest
+ * @see SpringBootstrapOverrideBySystemPropertyTest
  */
 @TestPropertySource(inheritProperties = true, properties = {
 	"testPropertySourceNotOverridenProperty=@TestPropertySource",

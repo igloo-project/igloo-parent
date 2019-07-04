@@ -15,7 +15,6 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource(name = IglooPropertySourcePriority.APPLICATION,
 	value = {
-		"classpath:igloo-component-jpa.properties",
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JPA_SECURITY_COMMON,
 		"classpath:jpa-security-test.properties"
@@ -30,7 +29,7 @@ import org.springframework.context.annotation.PropertySource;
 	JpaSecurityTestApplicationPropertyConfig.class
 })
 public class JpaSecurityTestConfig extends AbstractApplicationConfig {
-	
+
 	@Bean
 	public IRendererService rendererService() {
 		return new EmptyRendererServiceImpl();

@@ -14,7 +14,9 @@ import test.jpa.more.business.task.model.TestQueueId;
 @Configuration
 @PropertySource(
 	name = IglooPropertySourcePriority.APPLICATION,
-	value = "classpath:jpa-more-test-task-management.properties"
+	value = {
+		"classpath:jpa-more-test-task-management.properties"
+	}
 )
 public class TestTaskManagementConfig extends AbstractTaskManagementConfig {
 

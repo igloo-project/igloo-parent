@@ -16,13 +16,12 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource(name = IglooPropertySourcePriority.APPLICATION,
-	value = {
-		"classpath:igloo-component-jpa.properties",
+value = {
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
 		"classpath:igloo-jpa.properties",
-		"classpath:igloo-jpa-search.properties"
-	}
+		"classpath:igloo-jpa-search.properties",
+}
 )
 @Import({
 	JpaSearchJpaTestConfig.class,
@@ -33,7 +32,7 @@ import org.springframework.context.annotation.PropertySource;
 	excludeFilters = @Filter(Configuration.class)
 )
 public class JpaSearchTestConfig extends AbstractApplicationConfig {
-	
+
 	@Bean
 	LuceneEmbeddedAnalyzerRegistry luceneEmbedddedAnalyzerRegistry() {
 		return new LuceneEmbeddedFromElasticsearchAnalyzerRegistry();

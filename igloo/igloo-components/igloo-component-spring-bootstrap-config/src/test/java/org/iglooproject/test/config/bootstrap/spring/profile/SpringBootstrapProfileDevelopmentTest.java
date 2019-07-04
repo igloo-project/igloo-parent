@@ -17,7 +17,7 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(inheritProperties = true, properties = {
 	"igloo.profile=development"
 })
-public class SpringBoostrapProfileDevelopmentTest extends AbstractSpringBoostrapProfileTest {
+public class SpringBootstrapProfileDevelopmentTest extends AbstractSpringBoostrapProfileTest {
 
 	/**
 	 * <p>Test override precedence. default -&gt; preproduction</p>

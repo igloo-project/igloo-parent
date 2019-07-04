@@ -15,31 +15,34 @@ import org.springframework.test.context.TestPropertySource;
  * <p><b>user.name<b> is overriden with <em>username<em></p>
  */
 @TestPropertySource(inheritProperties = true, properties = {
-	"igloo.profile=test"
+	"igloo.profile=production",
+	// needed as default configuration-default-bootstrap.properties references it
+	"igloo.applicationName=igloo-component-spring-bootstrap-config"
 })
-public class SpringBoostrapProfileTestTest extends AbstractSpringBoostrapProfileTest {
+public class SpringBootstrapProfileProductionTest extends AbstractSpringBoostrapProfileTest {
 
 	/**
 	 * <p>Test override precedence. default -&gt; preproduction</p>
-	 * <p>User is overriden by a specific configuration-test-user-username.properties file</p>
+	 * <p>configuration-user-username.properties file is <b>not</b> used in preproduction profile</p>
 	 */
 	@Override
 	@Test
 	public void testOverrides() {
 		// this value is not overriden
 		Assertions.assertThat(default_).isEqualTo("default");
+		Assertions.assertThat(deployment).isEqualTo("deployment");
 		
 		// this value is overriden
-		Assertions.assertThat(test).isEqualTo("test");
+		Assertions.assertThat(production).isEqualTo("production");
 		
 		// these profiles are not loaded !
+		Assertions.assertThat(test).isEqualTo("default");
 		Assertions.assertThat(development).isEqualTo("default");
-		Assertions.assertThat(deployment).isEqualTo("default");
+		Assertions.assertThat(qualification).isEqualTo("default");
 		Assertions.assertThat(preproduction).isEqualTo("default");
-		Assertions.assertThat(production).isEqualTo("default");
 		
-		// this profile is loaded from configuration-test-username-test.properties
-		Assertions.assertThat(user).isEqualTo("user-test");
+		// user configuration is not loaded
+		Assertions.assertThat(user).isEqualTo("default");
 	}
 
 }

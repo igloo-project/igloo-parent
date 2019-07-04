@@ -8,6 +8,6 @@ import org.springframework.test.context.TestPropertySource;
 	"IGLOO_BOOTSTRAP_LOCATIONS=classpath:test-bootstrap.properties,classpath:test-bootstrap-override.properties",
 	"IGLOO_BOOTSTRAP_OVERRIDE_DEFAULT=true"
 })
-public class SpringBoostrapOverrideByEnvironmentTest extends AbstractSpringBoostrapSimpleTest {
+public class SpringBootstrapOverrideByEnvironmentTest extends AbstractSpringBoostrapSimpleTest {
 
 }

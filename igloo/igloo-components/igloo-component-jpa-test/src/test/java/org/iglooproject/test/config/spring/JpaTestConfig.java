@@ -12,7 +12,6 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource(name = IglooPropertySourcePriority.APPLICATION,
 	value = {
-		"classpath:igloo-component-jpa.properties",
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
 		"classpath:igloo-jpa.properties"

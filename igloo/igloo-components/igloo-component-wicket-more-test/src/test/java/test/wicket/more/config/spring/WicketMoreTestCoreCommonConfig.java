@@ -1,5 +1,6 @@
 package test.wicket.more.config.spring;
 
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.test.wicket.core.config.spring.WicketTestApplicationPropertyConfig;
@@ -13,10 +14,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import test.wicket.more.business.WicketMoreTestBusinessPackage;
 
 @Configuration
-@PropertySource({
-		"classpath:igloo-component-jpa.properties",
-		ConfigurationPropertiesUrlConstants.JPA_COMMON
-})
+@PropertySource(
+	name = IglooPropertySourcePriority.APPLICATION,
+	value = ConfigurationPropertiesUrlConstants.JPA_COMMON
+)
 @Import({
 	WicketMoreTestJpaConfig.class,
 	WicketTestApplicationPropertyConfig.class

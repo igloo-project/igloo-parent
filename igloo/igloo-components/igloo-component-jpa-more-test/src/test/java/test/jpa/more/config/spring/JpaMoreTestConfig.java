@@ -18,11 +18,10 @@ import test.jpa.more.business.JpaMoreTestBusinessPackage;
 @Configuration
 @PropertySource(name = IglooPropertySourcePriority.APPLICATION,
 	value = {
-		"classpath:igloo-component-jpa.properties",
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
 		"classpath:jpa-more-test.properties",
-		"classpath:property-test.properties"
+		"classpath:property-test.properties",
 	}
 )
 @Import({

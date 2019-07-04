@@ -17,8 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @PropertySource(name = IglooPropertySourcePriority.APPLICATION,
 	value = {
-		ConfigurationPropertiesUrlConstants.JPA_COMMON,
-		"classpath:rest-server.properties"
+		ConfigurationPropertiesUrlConstants.JPA_COMMON
 	}
 )
 @Import({

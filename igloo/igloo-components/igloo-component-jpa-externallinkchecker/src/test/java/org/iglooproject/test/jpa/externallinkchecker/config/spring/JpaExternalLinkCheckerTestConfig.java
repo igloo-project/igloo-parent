@@ -17,7 +17,6 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource(name = IglooPropertySourcePriority.APPLICATION,
 	value = {
-		"classpath:igloo-component-jpa.properties",
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JERSEY_MOCK_COMMON,
 		"classpath:externallinkchecker-test.properties"

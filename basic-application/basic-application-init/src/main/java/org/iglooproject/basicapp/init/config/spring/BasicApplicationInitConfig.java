@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource(name = IglooPropertySourcePriority.FRAMEWORK, value = "classpath:configuration-init.properties")
+@PropertySource(name = IglooPropertySourcePriority.APPLICATION, value = "classpath:configuration-init.properties")
 @Import({
 	BasicApplicationCoreCommonConfig.class
 })

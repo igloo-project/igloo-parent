@@ -11,13 +11,22 @@ import java.util.Properties;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.PropertyConfigurator;
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcesLevels;
+import org.iglooproject.config.bootstrap.spring.config.IglooBootstrapPropertySourcesConfig;
+import org.iglooproject.config.bootstrap.spring.config.IglooPropertySourcesLevelsConfig;
+import org.iglooproject.config.bootstrap.spring.env.CompositeProtocolResolver;
 import org.iglooproject.functional.Function2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanDefinitionHolder;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.env.CompositePropertySource;
+import org.springframework.context.annotation.AnnotationConfigRegistry;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
@@ -33,8 +42,11 @@ import com.google.common.collect.Maps;
  * <p>
  * This initializer handles:
  * <ul>
- * <li>Load bootstrap configuration (list determined from environment or system property).</li>
- * <li>Build a custom log4j configuration.</li>
+ * <li>Loading of all {@link IglooPropertySourcesLevels} really early during context loading, to allow convenient
+ * {@link PropertySource} ordering, by including {@link IglooPropertySourcesLevelsConfig}.</li>
+ * <li>Loading of bootstrap configuration as a {@link PropertySource} by including
+ * {@link IglooBootstrapPropertySourcesConfig}.</li>
+ * <li>Build a custom log4j configuration, also based on bootstrap configuration.</li>
  * </ul>
  * </p>
  */
@@ -47,6 +59,10 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 	@Override
 	public void initialize(ConfigurableApplicationContext applicationContext) {
 		try {
+			applicationContext.addProtocolResolver(new CompositeProtocolResolver());
+			// add a configuration to preload all igloo @PropertySource levels
+			// (used to control property overriding)
+			registerIglooPropertySourcesLevels(applicationContext);
 			// add configurations from bootstrap configuration to spring environment
 			loadBootstrapConfiguration(applicationContext);
 			// merge configured log4j configurations and reconfigure log4j
@@ -54,6 +70,32 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 		} catch (IOException e) {
 			throw new IllegalStateException("Error loading configuration files", e);
 		}
+	}
+
+	private void registerIglooPropertySourcesLevels(ConfigurableApplicationContext applicationContext) {
+		registerBean(applicationContext,
+				IglooPropertySourcesLevelsConfig.class.getSimpleName(), IglooPropertySourcesLevelsConfig.class);
+		registerBean(applicationContext,
+				IglooBootstrapPropertySourcesConfig.class.getSimpleName(), IglooBootstrapPropertySourcesConfig.class);
+	}
+
+	protected void registerBean(ConfigurableApplicationContext applicationContext, String beanName, Class<?> beanClass) {
+		if (applicationContext instanceof BeanDefinitionRegistry) {
+			// GenericApplicationContext, AnnotationConfigApplicationContext : unit-test, cli cases
+			RootBeanDefinition def2 = new RootBeanDefinition(beanClass);
+			def2.setSource(null);
+			registerBean((BeanDefinitionRegistry) applicationContext, def2, beanName);
+		} else if (applicationContext instanceof AnnotationConfigRegistry) {
+			// AnnotationConfigWebApplicationContext : servlet case
+			((AnnotationConfigRegistry) applicationContext).register(beanClass);
+		}
+	}
+
+	private static BeanDefinitionHolder registerBean(
+			BeanDefinitionRegistry registry, RootBeanDefinition definition, String beanName) {
+		definition.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+		registry.registerBeanDefinition(beanName, definition);
+		return new BeanDefinitionHolder(definition, beanName);
 	}
 
 	private void loadBootstrapConfiguration(ConfigurableApplicationContext applicationContext) throws IOException {
@@ -93,21 +135,6 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 		for (String location : reversedLocations) {
 			applicationContext.getEnvironment().getPropertySources().addLast(resources.get(location));
 		}
-		
-		loadIglooConfigurationLocations(applicationContext);
-	}
-
-	private void loadIglooConfigurationLocations(ConfigurableApplicationContext applicationContext) {
-		List<Resource> resources = getLocationsFromBootstrapConfiguration(applicationContext, false);
-		CompositePropertySource propertySource = new CompositePropertySource("igloo.configurationLocations");
-		for (Resource resource : resources) {
-			try {
-				propertySource.addFirstPropertySource(new ResourcePropertySource(resource));
-			} catch (IOException e) {
-				throw new IllegalStateException(String.format("Error loading resource %s", resource.getDescription()), e);
-			}
-		}
-		applicationContext.getEnvironment().getPropertySources().addFirst(propertySource);
 	}
 
 	private void loadLog4jConfiguration(ConfigurableApplicationContext applicationContext) throws IOException {

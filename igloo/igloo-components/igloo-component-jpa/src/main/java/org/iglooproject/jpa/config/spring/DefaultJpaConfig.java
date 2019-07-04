@@ -1,5 +1,6 @@
 package org.iglooproject.jpa.config.spring;
 
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.config.spring.provider.DatabaseConnectionJndiConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.DatabaseConnectionPoolConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.DatasourceProvider;
@@ -10,8 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
+@PropertySource(name = IglooPropertySourcePriority.COMPONENT, value = "classpath:igloo-component-jpa.properties")
 public class DefaultJpaConfig {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(DefaultJpaConfig.class);

@@ -1,10 +1,12 @@
 package test.wicket.more.notification.config.spring;
 
 import org.apache.wicket.protocol.http.WebApplication;
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.wicket.more.config.spring.AbstractWebappConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 
 import test.wicket.more.config.spring.WicketMoreTestCoreCommonConfig;
 import test.wicket.more.notification.application.WicketMoreTestNotificationApplication;
@@ -17,6 +19,7 @@ import test.wicket.more.notification.application.WicketMoreTestNotificationAppli
 	WicketMoreTestCoreCommonConfig.class,
 	NotificationTestConfig.class
 })
+@PropertySource(name = IglooPropertySourcePriority.OVERRIDES, value = "classpath:notification-test.properties")
 public class WicketMoreTestNotificationWebappConfig extends AbstractWebappConfig {
 
 	@Override
