@@ -11,8 +11,8 @@ import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Streams;
 
 class FilterByModelItemModelAwareCollectionModel<T, C extends Collection<T>, M extends IModel<T>>
 		implements IItemModelAwareCollectionModel<T, C, M> {
@@ -97,7 +97,7 @@ class FilterByModelItemModelAwareCollectionModel<T, C extends Collection<T>, M e
 
 	private Iterable<M> getFilteredIterable() {
 		Objects.requireNonNull(unfiltered);
-		return Streams.stream(unfiltered).filter(modelPredicate)::iterator;
+		return ImmutableList.copyOf(unfiltered).stream().filter(modelPredicate)::iterator;
 	}
 
 	@Override
