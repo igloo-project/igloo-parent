@@ -32,31 +32,6 @@
 			<groupId>io.bit3</groupId>
 			<artifactId>jsass</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.eclipsesource.j2v8</groupId>
-			<artifactId>j2v8_linux_x86_64</artifactId>
-			<version>4.8.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>autoprefixer</artifactId>
-			<version>9.6.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.webjars.npm</groupId>
-					<artifactId>supports-color</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.webjars.npm</groupId>
-					<artifactId>caniuse-lite</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>supports-color</artifactId>
-			<version>6.1.0</version>
-		</dependency>
 		
 		<!--  webjars lookup -->
 		<dependency>
