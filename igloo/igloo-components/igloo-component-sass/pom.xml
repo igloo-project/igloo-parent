@@ -27,6 +27,12 @@
 			<version>${project.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-autoprefixer</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
 		<!-- SCSS -->
 		<dependency>
 			<groupId>io.bit3</groupId>

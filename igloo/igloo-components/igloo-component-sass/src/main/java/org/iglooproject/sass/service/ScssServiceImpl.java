@@ -9,6 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.ClassPathUtils;
+import org.iglooproject.autoprefixer.Autoprefixer;
+import org.iglooproject.autoprefixer.AutoprefixerException;
 import org.iglooproject.commons.io.ClassPathResourceUtil;
 import org.iglooproject.sass.jsass.JSassClassPathImporter;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
@@ -33,6 +35,8 @@ public class ScssServiceImpl implements IScssService {
 	
 	private final ClassPathResourceUtil classPathResourceUtil = new ClassPathResourceUtil();
 	
+	private boolean useAutoprefixer = false;
+	
 	@Override
 	public ScssStylesheetInformation getCompiledStylesheet(Class<?> scope, String path) {
 		String scssPath = getFullPath(scope, path);
@@ -50,8 +54,14 @@ public class ScssServiceImpl implements IScssService {
 			final String scss = classPathResourceUtil.asUtf8String(scssPath);
 			Context fileContext = new StringContext(scss, new URI(scssPath), null, options);
 			Output output = compiler.compile(fileContext);
+			String compiledOutput = output.getCss();
+			
+			if (isUseAutoprefixer()) {
+				compiledOutput = Autoprefixer.simple().process(compiledOutput);
+			}
+			
 			// Write result
-			ScssStylesheetInformation compiledStylesheet = new ScssStylesheetInformation(scssPath, output.getCss());
+			ScssStylesheetInformation compiledStylesheet = new ScssStylesheetInformation(scssPath, compiledOutput);
 			
 			for (String sourceUri : importer.getSourceUris()) {
 				long lastModified = classPathResourceUtil.lastModified(sourceUri);
@@ -59,7 +69,7 @@ public class ScssServiceImpl implements IScssService {
 			}
 			
 			return compiledStylesheet;
-		} catch (IOException | URISyntaxException | CompilationException e) {
+		} catch (IOException | URISyntaxException | CompilationException | AutoprefixerException e) {
 			throw new RuntimeException(String.format("Error compiling %s", scssPath), e);
 		}
 	}
@@ -77,6 +87,14 @@ public class ScssServiceImpl implements IScssService {
 		}
 		
 		SCOPES.put(scopeName, scope);
+	}
+
+	public boolean isUseAutoprefixer() {
+		return useAutoprefixer;
+	}
+
+	public void setUseAutoprefixer(boolean useAutoprefixer) {
+		this.useAutoprefixer = useAutoprefixer;
 	}
 
 	protected String getFullPath(Class<?> scope, String path) {
