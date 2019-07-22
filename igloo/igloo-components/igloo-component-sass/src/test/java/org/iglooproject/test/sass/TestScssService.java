@@ -21,8 +21,8 @@ public class TestScssService {
 	private IScssService autoprefixerScssService = new ScssServiceImpl();
 	{
 		ScssServiceImpl temp = new ScssServiceImpl();
-		temp.setUseAutoprefixer(true);
-		autoprefixerScssService = temp;
+		temp.setUseAutoprefixer(false);
+		scssService = temp;
 	}
 	
 	@Test

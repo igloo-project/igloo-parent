@@ -35,7 +35,7 @@ public class ScssServiceImpl implements IScssService {
 	
 	private final ClassPathResourceUtil classPathResourceUtil = new ClassPathResourceUtil();
 	
-	private boolean useAutoprefixer = false;
+	private boolean useAutoprefixer = true;
 	
 	@Override
 	public ScssStylesheetInformation getCompiledStylesheet(Class<?> scope, String path) {
