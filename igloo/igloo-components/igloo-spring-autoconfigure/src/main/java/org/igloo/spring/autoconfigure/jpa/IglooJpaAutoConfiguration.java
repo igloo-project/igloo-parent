@@ -18,7 +18,6 @@ import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
 import org.iglooproject.jpa.util.CoreJpaUtilPackage;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.springframework.aop.Advisor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
@@ -54,7 +53,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 	name = IglooPropertySourcePriority.COMPONENT,
 	value = {
 		IglooJpaAutoConfiguration.PROPERTIES_COMPONENT_JPA,
-		ConfigurationPropertiesUrlConstants.JPA_COMMON
+		"classpath:/configuration/jpa-common.properties"
 	}
 )
 public class IglooJpaAutoConfiguration {
