@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
@@ -32,7 +31,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 // fonctionnement de l'annotation @Transactional
 @EnableTransactionManagement(order = BasicApplicationAdviceOrder.TRANSACTION)
 @EnableIglooAutoConfiguration
-@PropertySource(name="default", value="classpath:spring-boot-workaround.properties")
 public class BasicApplicationCoreCommonConfig {
 
 	public static final String APPLICATION_NAME = "basic-application";
