@@ -23,11 +23,11 @@
 			<artifactId>commons-io</artifactId>
 		</dependency>
 		
-		<!-- J2V8 - javascript engine -->
+		<!-- Javascript engine -->
 		<dependency>
-			<groupId>com.eclipsesource.j2v8</groupId>
-			<artifactId>j2v8_linux_x86_64</artifactId>
-			<version>4.8.0</version>
+			<groupId>org.mozilla</groupId>
+			<artifactId>rhino</artifactId>
+			<version>${igloo.rhino.version}</version>
 		</dependency>
 		
 		<!-- Test dependencies -->

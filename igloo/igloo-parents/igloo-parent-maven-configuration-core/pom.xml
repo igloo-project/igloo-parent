@@ -240,6 +240,9 @@
 		<igloo.webjars.popper.version>1.14.7</igloo.webjars.popper.version>
 		<igloo.webjars.clipboard.version>2.0.4</igloo.webjars.clipboard.version>
 		<igloo.webjars.bootstrap.version>4.3.1</igloo.webjars.bootstrap.version>
+		
+		<!-- autoprefixer plugin; experimental, do not reuse without notice -->
+		<igloo.rhino.version>1.7.11</igloo.rhino.version>
 	</properties>
 
 	<dependencyManagement>

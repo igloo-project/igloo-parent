@@ -5,39 +5,32 @@ import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.iglooproject.autoprefixer.AutoprefixerException;
 import org.iglooproject.autoprefixer.IAutoprefixer;
-
-import com.eclipsesource.v8.JavaCallback;
-import com.eclipsesource.v8.V8;
-import com.eclipsesource.v8.V8Array;
-import com.eclipsesource.v8.V8Object;
-import com.eclipsesource.v8.V8ResultUndefined;
-import com.eclipsesource.v8.V8ScriptCompilationException;
-import com.eclipsesource.v8.V8ScriptExecutionException;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.Scriptable;
 
 public class SimpleAutoprefixerImpl implements IAutoprefixer {
 
-	private static final String GET_CSS_CALLBACK_METHOD_NAME = "javaGetCss";
+	private static final String GET_CSS_VARIABLE_NAME = "css";
 	private static final String AUTOPREFIXER_JS_CLASSPATH = "/autoprefixer/autoprefixer.js"; // NOSONAR
 
 	@Override
 	public String process(String css) throws AutoprefixerException {
-		final V8 runtime = V8.createV8Runtime();
+		// prepare javaGetCss method as a callback to provide css code
+		Context context = Context.enter();
 		try {
-			// prepare javaGetCss method as a callback to provide css code
-			JavaCallback callback = (V8Object receiver, V8Array parameters) -> css;
-			runtime.getRuntime().registerJavaMethod(callback, GET_CSS_CALLBACK_METHOD_NAME);
-			String scriptBuilder = buildScript();
-			return runtime.executeStringScript(scriptBuilder);
+			context.setLanguageVersion(Context.VERSION_ES6);
+			Scriptable scope = context.initStandardObjects();
+			scope.put("css", scope, Context.toString(css));
+			String script = buildScript();
+			return (String) context.evaluateString(scope, script, "autoprefixer.js", 1, null);
 		} catch (IOException e) {
 			// error loading autoprefixer runtime is considered as internal
 			throw new IllegalStateException("Error initializing autoprefixer script", e);
-		} catch (V8ScriptCompilationException e) {
-			// error compiling autoprefixer runtime is considered as internal
-			throw new IllegalStateException("Error compiling autoprefixer script", e);
-		} catch (V8ScriptExecutionException|V8ResultUndefined v8Exception) {
-			throw new AutoprefixerException("Error processing css", v8Exception);
+		} catch (JavaScriptException cssException) {
+			throw new AutoprefixerException("Error processing css", cssException);
 		} finally {
-			runtime.release();
+			Context.exit();
 		}
 	}
 
@@ -47,7 +40,10 @@ public class SimpleAutoprefixerImpl implements IAutoprefixer {
 		// load autoprefixer library from static classpath resource
 		scriptBuilder.append(loadAutoprefixerScriptAsString());
 		scriptBuilder.append("\n");
-		scriptBuilder.append(String.format("autoprefixer.process(%s()).css;%n", GET_CSS_CALLBACK_METHOD_NAME));
+		// we need a dummy Error#setMessage method (not needed with j2v8) to correctly store exceptions
+		// if not added, any error is hidden by a setMessage not found error message
+		scriptBuilder.append("Error.prototype.setMessage = function(message) {};");
+		scriptBuilder.append(String.format("autoprefixer.process(%s).css;%n", GET_CSS_VARIABLE_NAME));
 		return scriptBuilder.toString();
 	}
 
