@@ -9,7 +9,6 @@ import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
-import org.igloo.spring.autoconfigure.infinispan.IglooInfinispanAutoConfiguration;
 import org.igloo.spring.autoconfigure.property.IglooPropertyAutoConfiguration;
 import org.igloo.spring.autoconfigure.search.IglooHibernateSearchAutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
@@ -60,7 +59,6 @@ public class JpaAutoConfigurationTestCase {
 					Joiner.on(",").join(IglooPropertyAutoConfiguration.class.getName(),
 							IglooFlywayAutoConfiguration.class.getName(),
 							IglooHibernateSearchAutoConfiguration.class.getName(),
-							IglooInfinispanAutoConfiguration.class.getName(),
 							IglooBootstrap4AutoConfiguration.class.getName(),
 							IglooWicketAutoConfiguration.class.getName(),
 							IglooTaskManagementAutoConfiguration.class.getName())))

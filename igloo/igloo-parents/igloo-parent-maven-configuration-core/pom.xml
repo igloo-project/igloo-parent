@@ -215,7 +215,6 @@
 		<igloo.jsass.version>5.8.0</igloo.jsass.version>
 
 		<igloo.flywaydb.version>5.0.7</igloo.flywaydb.version>
-		<igloo.infinispan.version>9.2.4.Final</igloo.infinispan.version>
 
 		<igloo.junit.version>4.12</igloo.junit.version>
 		<igloo.h2.version>1.4.199</igloo.h2.version>

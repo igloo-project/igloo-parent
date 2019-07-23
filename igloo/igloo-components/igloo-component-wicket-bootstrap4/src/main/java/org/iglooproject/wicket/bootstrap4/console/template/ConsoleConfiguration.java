@@ -9,14 +9,11 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.UrlUtils;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.iglooproject.jpa.more.property.JpaMoreInfinispanPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.authentication.page.ConsoleMaintenanceAuthenticationPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.file.page.ConsoleMaintenanceFilePage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.gestion.page.ConsoleMaintenanceGestionPage;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.page.ConsoleMaintenanceInfinispanPage;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.queuemanager.page.ConsoleMaintenanceQueueManagerPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
@@ -119,15 +116,6 @@ public final class ConsoleConfiguration {
 			ConsoleMenuItem fileMenuItem = new ConsoleMenuItem("fileMenuItem",
 					"console.maintenance.file", "file", ConsoleMaintenanceFilePage.class);
 			maintenanceMenuSection.addMenuItem(fileMenuItem);
-			
-			if (Boolean.TRUE.equals(propertyService.get(JpaMoreInfinispanPropertyIds.INFINISPAN_ENABLED))) {
-				ConsoleMenuItem infinispanMenuItem = new ConsoleMenuItem("infinispanMenuItem",
-						"console.maintenance.infinispan", "infinispan", ConsoleMaintenanceInfinispanPage.class);
-				maintenanceMenuSection.addMenuItem(infinispanMenuItem);
-				ConsoleMenuItem queueManagerMenuItem = new ConsoleMenuItem("queuemanagerMenuItem", 
-						"console.maintenance.queuemanager", "queuemanager", ConsoleMaintenanceQueueManagerPage.class);
-				maintenanceMenuSection.addMenuItem(queueManagerMenuItem);
-			}
 			
 			INSTANCE.addMenuSection(maintenanceMenuSection);
 		}

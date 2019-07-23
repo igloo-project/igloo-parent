@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -23,17 +22,10 @@ import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 
 import org.iglooproject.functional.Suppliers2;
-import org.iglooproject.infinispan.model.IAttribution;
-import org.iglooproject.infinispan.model.SimpleLock;
-import org.iglooproject.infinispan.model.SimpleRole;
-import org.iglooproject.infinispan.model.impl.Attribution;
-import org.iglooproject.infinispan.model.impl.LockRequest;
-import org.iglooproject.infinispan.service.IInfinispanClusterService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.task.event.QueuedTaskFinishedEvent;
 import org.iglooproject.jpa.more.business.task.model.AbstractTask;
-import org.iglooproject.jpa.more.business.task.model.IInfinispanQueue;
 import org.iglooproject.jpa.more.business.task.model.IQueueId;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.service.impl.TaskConsumer;
@@ -45,7 +37,6 @@ import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchroniz
 import org.iglooproject.spring.config.util.TaskQueueStartMode;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.SpringBeanUtils;
-import org.infinispan.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +54,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 	
 public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, ApplicationListener<ContextRefreshedEvent> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(QueuedTaskHolderManagerImpl.class);
@@ -88,9 +78,6 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 
 	@Autowired
 	private ITransactionSynchronizationTaskManagerService synchronizationManager;
-
-	@Autowired(required = false)
-	private IInfinispanClusterService infinispanClusterService;
 
 	@Resource
 	private Collection<? extends IQueueId> queueIds;
@@ -163,17 +150,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		TaskQueue queue = new TaskQueue(queueId.getUniqueStringId());
 		for (int i = 0 ; i < numberOfThreads ; ++i) {
 			TaskConsumer consumer;
-			if (infinispanClusterService != null
-					&& queueId instanceof IInfinispanQueue
-					&& ((IInfinispanQueue) queueId).handleInfinispan()) {
-				IInfinispanQueue infinispanQueue = (IInfinispanQueue) queueId;
-				if (numberOfThreads != 1) {
-					throw new IllegalStateException("If you want to manage infinispan in queue, you must use only one thread");
-				}
-				consumer = new TaskConsumer(queue, i, infinispanQueue.getLock(), infinispanQueue.getPriorityQueue());
-			} else {
-				consumer = new TaskConsumer(queue, i);
-			}
+			consumer = new TaskConsumer(queue, i);
 			SpringBeanUtils.autowireBean(applicationContext, consumer);
 			consumersByQueue.put(queue, consumer);
 		}
@@ -280,16 +257,6 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	protected synchronized void startConsumers() {
 		if (!active.get()) {
 			availableForAction.set(false);
-			
-			// load infinispan backend if needed
-			getCache();
-			
-			if (infinispanClusterService  != null) {
-				// Init the recurrent executor for initQueues.
-				// Must be used only in a cluster context
-				initializeDatabaseExecutor();
-			}
-			
 			try {
 				initQueuesFromDatabase();
 				for (TaskConsumer consumer : consumersByQueue.values()) {
@@ -314,8 +281,6 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	 * Initialize queues with the tasks to be run from the database
 	 */
 	private void initQueuesFromDatabase() {
-		// NOTE : infinispanClusterService is initialized @PostConstruct, so infinispan subsystem is initialized at
-		// this time.
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
@@ -330,9 +295,6 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 						
 						if (! tasks.isEmpty()) {
 							// remove already loaded keys
-							if (infinispanClusterService != null) {
-								tasks.removeIf(t -> getCache().keySet().contains(t.getId()));
-							}
 							LOGGER.warn("Reload {} tasks in QueuedTaskHolderManager", tasks.size());
 							// Gets tasks  Id
 							List<Long> taskIds = tasks.stream().map(QueuedTaskHolder::getId).collect(Collectors.toList());
@@ -348,19 +310,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 				}
 			}
 		};
-		if (infinispanClusterService != null) {
-			LockRequest lockRequest = LockRequest.with(
-					SimpleRole.from(INIT_QUEUES_EXECUTOR_NAME),
-					SimpleLock.from(INIT_QUEUES_EXECUTOR_NAME, "QueueTaskHolder")
-			);
-			try {
-				infinispanClusterService.doIfRoleWithLock(lockRequest, runnable);
-			} catch (ExecutionException e) {
-				throw new RuntimeException(e);
-			}
-		} else {
-			runnable.run();
-		}
+		runnable.run();
 	}
 
 	@Override
@@ -529,16 +479,6 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	 * @return true if task is added to the queue
 	 */
 	private boolean queueOffer(TaskQueue queue, Long taskId) {
-		// check if task is already in a queue
-		Cache<Long, IAttribution> cache = getCache();
-		if (cache != null) {
-			IAttribution previous = cache.putIfAbsent(taskId, Attribution.from(infinispanClusterService.getLocalAddress(), new Date()));
-			if (previous != null) {
-				// if already loaded, stop processing
-				LOGGER.warn("Task {} already loaded in cluster and ignored", taskId);
-				return false;
-			}
-		}
 		// else offer in queue
 		boolean status = queue.offer(taskId);
 		if (!status) {
@@ -560,57 +500,8 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 		return queueOffer(queue, task.getId());
 	}
 
-	/**
-	 * Check if cache exists and returns it ; null if infinispan is disabled
-	 */
-	private Cache<Long, IAttribution> getCache() {
-		if (infinispanClusterService != null) {
-			if (!infinispanClusterService.getCacheManager().cacheExists(CACHE_KEY_TASK_ID)) {
-				infinispanClusterService.getCacheManager().getCache(CACHE_KEY_TASK_ID);
-			}
-			return infinispanClusterService.getCacheManager().getCache();
-		}
-		return null;
-	}
-
-	/**
-	 * Initialize the executor that will submit the tasks from DB every 1 minute
-	 * 
-	 * This method MUST NOT be called if cache is disabled
-	 */
-	private synchronized void initializeDatabaseExecutor() {
-		if (infinispanClusterService == null) {
-			throw new IllegalStateException("This code must not be called as infinispan is not enabled");
-		}
-		initQueuesFromDatabaseExecutor = new ScheduledThreadPoolExecutor(1,
-					new ThreadFactoryBuilder()
-						.setDaemon(true)
-						.setNameFormat(String.format("%s-%%d", INIT_QUEUES_EXECUTOR_NAME)) // %%d is an escaped %d
-						.build());
-		initQueuesFromDatabaseExecutor.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
-		initQueuesFromDatabaseExecutor.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
-		initQueuesFromDatabaseExecutor.prestartAllCoreThreads();
-		initQueuesFromDatabaseExecutor.scheduleAtFixedRate(new Runnable() {
-			@Override
-			public void run() {
-				initQueuesFromDatabase();
-			}
-		}, 1, 1, TimeUnit.MINUTES);
-	}
-
 	@Override
 	public void onTaskFinish(Long taskId) {
-		Cache<Long, IAttribution> cache = getCache();
-		if (cache != null) {
-			IAttribution previous = cache.remove(taskId);
-			if (previous == null) {
-				// if already loaded, stop processing
-				LOGGER.warn("Task {} finished but not in cache map", taskId);
-			}
-			if (previous != null && ! previous.match(infinispanClusterService.getLocalAddress())) {
-				LOGGER.warn("Task {} finished but attribution does not match", taskId);
-			}
-		}
 		eventPublisher.publishEvent(new QueuedTaskFinishedEvent(taskId));
 	}
 }

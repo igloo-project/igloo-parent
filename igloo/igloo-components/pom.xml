@@ -59,7 +59,6 @@
 		<module>igloo-component-web-security</module>
 		<module>igloo-component-rest-jersey2</module>
 		<module>igloo-component-jpa-migration</module>
-		<module>igloo-component-infinispan</module>
 		<module>igloo-component-elasticsearch-plugin</module>
 		
 		<module>igloo-spring-autoconfigure</module>

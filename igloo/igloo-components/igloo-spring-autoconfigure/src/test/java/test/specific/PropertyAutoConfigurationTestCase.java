@@ -7,7 +7,6 @@ import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
-import org.igloo.spring.autoconfigure.infinispan.IglooInfinispanAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
 import org.igloo.spring.autoconfigure.search.IglooHibernateSearchAutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
@@ -59,8 +58,7 @@ public class PropertyAutoConfigurationTestCase {
 							IglooBootstrap4AutoConfiguration.class.getName(),
 							IglooWicketAutoConfiguration.class.getName(),
 							IglooJpaSecurityAutoConfiguration.class.getName(),
-							IglooTaskManagementAutoConfiguration.class.getName(),
-							IglooInfinispanAutoConfiguration.class.getName())))
+							IglooTaskManagementAutoConfiguration.class.getName())))
 			.run(
 				(context) -> {
 					assertThat(context).hasSingleBean(IPropertyService.class);
