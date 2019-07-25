@@ -120,26 +120,31 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	private int navBarComponents(List<NavbarItem> menu, String pathToMenu) {
 		int nbItems = 0;
+		int itemIndex = 0;
 		
 		for (NavbarItem menuItem : menu) {
 			boolean hasRoleMenu = false;
+			
 			for (String authority : menuItem.getAuthorities()) {
 				if (authenticationService.hasRole(authority)) {
 					hasRoleMenu = true;
 				}
 			}
+			
 			if (hasRoleMenu) {
 				tester.assertVisible(pathToMenu);
-				tester.assertEnabled(pathToMenu + ":" + menuItem.getOrder() + ":navLink");
-				tester.assertEscapeLabel(pathToMenu + ":" + menuItem.getOrder() + ":navLink:label", menuItem.getLabel());
-				nbItems ++;
+				tester.assertEnabled(pathToMenu + ":" + itemIndex + ":navLink");
+				tester.assertEscapeLabel(pathToMenu + ":" + itemIndex + ":navLink:label", menuItem.getLabel());
+				++nbItems;
 				
-				//SubMenu
-				
-				String subMenuPath = pathToMenu + ":" + menuItem.getOrder() + ":navbarNavSubContainer:navbarNavSubItems";
+				// SubMenu
+				String subMenuPath = pathToMenu + ":" + itemIndex + ":navbarNavSubContainer:navbarNavSubItems";
 				nbItems += navBarComponents(NavbarItem.submenu(menuItem), subMenuPath);
+				
+				++itemIndex;
 			}
 		}
+		
 		return nbItems;
 	}
 

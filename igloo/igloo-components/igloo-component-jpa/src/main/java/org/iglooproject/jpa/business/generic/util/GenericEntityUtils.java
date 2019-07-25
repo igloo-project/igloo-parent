@@ -30,7 +30,7 @@ public final class GenericEntityUtils {
 			}
 			
 			clazz = clazz.getSuperclass();
-			retriesCount ++;
+			retriesCount++;
 			
 			if (retriesCount > 5) {
 				throw new IllegalArgumentException("Unable to find a generic type extending GenericEntity.");
