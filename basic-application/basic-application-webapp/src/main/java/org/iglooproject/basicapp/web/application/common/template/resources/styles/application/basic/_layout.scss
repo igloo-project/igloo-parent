@@ -22,9 +22,6 @@ body {
 	> .main-section {
 		flex: 1 0 auto;
 		
-		> .main-header {
-		}
-		
 		> .main-body {
 			> .content-container {
 				display: flex;
@@ -74,10 +71,6 @@ body {
 						@include make-container-max-widths();
 						
 						padding: 25px $layout-container-padding-x;
-						
-						> .content-body {
-							
-						}
 					}
 				}
 			}

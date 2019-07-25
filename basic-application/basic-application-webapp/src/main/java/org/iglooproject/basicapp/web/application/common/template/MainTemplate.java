@@ -85,8 +85,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				.add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel()))
 		);
 		
-		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
-		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
 		add(createHeadPageTitle("headPageTitle"));
 		
@@ -98,6 +96,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			createBodyBreadCrumb("breadCrumb")
 				.add(displayBreadcrumb().thenShow())
 		);
+		
+		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		
@@ -161,17 +161,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	protected Condition displayBreadcrumb() {
 		return Condition.alwaysTrue();
 	}
-	
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		getApplicationTheme().renderHead(response);
-	}
-
-	@Override
-	public String getVariation() {
-		return getApplicationTheme().getMarkupVariation();
-	}
 
 	protected BootstrapTooltip getBootstrapTooltip() {
 		return new BootstrapTooltip()
@@ -182,6 +171,17 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 
 	protected BasicApplicationApplicationTheme getApplicationTheme() {
 		return applicationThemeModel.getObject();
+	}
+
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+		getApplicationTheme().renderHead(response);
+	}
+
+	@Override
+	public String getVariation() {
+		return getApplicationTheme().getMarkupVariation();
 	}
 
 }

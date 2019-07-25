@@ -56,5 +56,4 @@ public class FooterPanel extends Panel {
 		);
 	}
 
-
 }

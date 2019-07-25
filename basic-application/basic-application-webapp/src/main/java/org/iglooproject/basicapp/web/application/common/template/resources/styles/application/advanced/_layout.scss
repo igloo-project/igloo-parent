@@ -104,13 +104,7 @@ body {
 }
 
 .body-container {
-	> .header-section {
-	}
-	
 	> .main-section {
-		> .main-header {
-		}
-		
 		> .main-body {
 			.content-container {
 				> .content-header-section {
@@ -157,10 +151,6 @@ body {
 						@include make-container-max-widths();
 						
 						padding: 25px $layout-container-padding-x;
-						
-						> .content-body {
-							padding: 0;
-						}
 					}
 				}
 			}

@@ -10,24 +10,29 @@
 		
 		<wicket:header-items/>
 	</head>
-	
-	<body class="console-access-page">
-		<div wicket:id="feedback" data-placement="bottom"></div>
-		
-		<wicket:container wicket:id="headerAdditionalContent" />
-		
-		<div class="body-section">
-			<div class="container">
-				<div class="card card-main-title-cascade">
-					<div class="card-img-top">
-						<img src="static/common/images/logo-kobalt.png" alt="Logo Kobalt" width="114" height="55" />
+	<body>
+		<div class="body-container">
+			<header class="header-section">
+				<wicket:container wicket:id="headerAdditionalContent" />
+			</header>
+			
+			<main class="main-section">
+				<div class="main-body">
+					<div class="container">
+						<div class="card card-main-title-cascade">
+							<div class="card-img-top">
+								<img src="static/common/images/logo-kobalt.png" alt="Logo Kobalt" width="114" height="55" />
+							</div>
+							<div class="card-header card-main-title" wicket:id="title" />
+							<div wicket:id="content" />
+							<wicket:child/>
+							<div class="card-footer" wicket:id="footer" />
+						</div>
 					</div>
-					<div class="card-header card-main-title" wicket:id="title" />
-					<div wicket:id="content" />
-					<wicket:child/>
-					<div class="card-footer" wicket:id="footer" />
 				</div>
-			</div>
+			</main>
 		</div>
+		
+		<div wicket:id="feedback" data-placement="bottom" />
 	</body>
 </html>	

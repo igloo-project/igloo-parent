@@ -10,24 +10,29 @@
 		
 		<wicket:header-items/>
 	</head>
-	
-	<body wicket:id="bodyElement" class="application-access-page">
-		<div wicket:id="feedback" data-placement="bottom" />
-		
-		<div wicket:id="environment" class="header-alert-section header-alert-dismissible environment-section" />
-		
-		<div class="body-section">
-			<div class="container">
-				<div class="card card-main-title-cascade">
-					<div class="card-img-top">
-						<img src="static/application/images/logo.png" alt="Logo" width="114" height="55" />
+	<body wicket:id="bodyElement">
+		<div class="body-container">
+			<header class="header-section">
+				<div wicket:id="environment" class="header-alert-section header-alert-dismissible environment-section" />
+			</header>
+			
+			<main class="main-section">
+				<div class="main-body">
+					<div class="container">
+						<div class="card card-main-title-cascade">
+							<div class="card-img-top">
+								<img src="static/application/images/logo.png" alt="Logo" width="114" height="55" />
+							</div>
+							<div class="card-header card-main-title" wicket:id="title" />
+							<div wicket:id="content" />
+							<wicket:child/>
+							<div class="card-footer" wicket:id="footer" />
+						</div>
 					</div>
-					<div class="card-header card-main-title" wicket:id="title" />
-					<div wicket:id="content" />
-					<wicket:child/>
-					<div class="card-footer" wicket:id="footer" />
 				</div>
-			</div>
+			</main>
 		</div>
+		
+		<div wicket:id="feedback" data-placement="bottom" />
 	</body>
-</html>	
+</html>

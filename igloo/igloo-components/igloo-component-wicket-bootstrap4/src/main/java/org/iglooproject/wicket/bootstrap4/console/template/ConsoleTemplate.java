@@ -72,10 +72,6 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 				.add(AttributeAppender.append("lang", AbstractCoreSession.get().getLocale().getLanguage()))
 		);
 		
-		add(
-			new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel", propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE),propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT))
-		);
-		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
 		add(createHeadPageTitle("headPageTitle"));
 		
@@ -224,28 +220,13 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 			new CoreLabel("iglooVersion", new StringResourceModel("common.version.igloo", ApplicationPropertyModel.of(SpringPropertyIds.IGLOO_VERSION)))
 		);
 		
+		add(new AnimatedGlobalFeedbackPanel("feedback", propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE), propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT)));
+		
+		add(new WebMarkupContainer("scrollToTop").add(new ScrollToTopBehavior()));
+		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		
 		add(new BootstrapDropdownBehavior());
-		
-		add(new WebMarkupContainer("scrollToTop").add(new ScrollToTopBehavior()));
-	}
-
-	private BootstrapTooltip getBootstrapTooltip() {
-		return new BootstrapTooltip()
-			.selector("[title],[data-original-title]")
-			.animation(true)
-			.container("body");
-	}
-
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		for (ResourceReference cssResourceReference : ConsoleConfiguration.get().getCssResourcesReferences()) {
-			response.render(CssHeaderItem.forReference(cssResourceReference));
-		}
-		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
-		response.render(JavaScriptHeaderItem.forReference(BootstrapDropDownJavaScriptResourceReference.get()));
 	}
 
 	protected IPageLinkDescriptor getApplicationHomePageLinkDescriptor() {
@@ -265,9 +246,25 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		return Condition.alwaysTrue();
 	}
 
+	protected BootstrapTooltip getBootstrapTooltip() {
+		return new BootstrapTooltip()
+			.selector("[title],[data-original-title]")
+			.animation(true)
+			.container("body");
+	}
+
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+		for (ResourceReference cssResourceReference : ConsoleConfiguration.get().getCssResourcesReferences()) {
+			response.render(CssHeaderItem.forReference(cssResourceReference));
+		}
+		response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapDropDownJavaScriptResourceReference.get()));
+	}
+
 	@Override
 	public String getVariation() {
-		// La console en BS4 quoi qu'il arrive, il ne faut pas laisser l'application qui l'utilise choisir la version.
 		return AbstractWebPageTemplate.BOOTSTRAP4_VARIATION;
 	}
 
