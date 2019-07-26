@@ -1,14 +1,11 @@
 package org.iglooproject.jpa.more.business.task.service.impl;
 
+import org.iglooproject.spring.util.SpringBeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
-
-import org.iglooproject.infinispan.model.ILock;
-import org.iglooproject.infinispan.model.IPriorityQueue;
-import org.iglooproject.spring.util.SpringBeanUtils;
 
 public final class TaskConsumer {
 
@@ -25,19 +22,10 @@ public final class TaskConsumer {
 	
 	private ConsumerThread thread;
 
-	private final ILock lock;
-	private final IPriorityQueue priorityQueue;
-
 	public TaskConsumer(TaskQueue queue, int threadIdForThisQueue) {
-		this(queue, threadIdForThisQueue, null, null);
-	}
-
-	public TaskConsumer(TaskQueue queue, int threadIdForThisQueue, ILock lock, IPriorityQueue priorityQueue) {
 		Assert.notNull(queue, "[Assertion failed] - this argument is required; it must not be null");
 		this.queue = queue;
 		this.threadIdForThisQueue = threadIdForThisQueue;
-		this.lock = lock;
-		this.priorityQueue = priorityQueue;
 	}
 
 	public TaskQueue getQueue() {
@@ -55,19 +43,11 @@ public final class TaskConsumer {
 		if (thread == null || !thread.isAlive()) { // synchronized access
 			thread = null;
 			String id = String.format(THREAD_NAME_FORMAT, queue.getId(), threadIdForThisQueue);
-			if (lock != null) {
-				thread = new ConsumerInfinispanAwareThread(
-						id,
-						startDelay,
-						queue,
-						lock, priorityQueue);
-			} else {
-				thread = new ConsumerThread(
-						id,
-						startDelay,
-						queue
-				);
-			}
+			thread = new ConsumerThread(
+					id,
+					startDelay,
+					queue
+			);
 			SpringBeanUtils.autowireBean(applicationContext, thread);
 			thread.start();
 		}

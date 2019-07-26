@@ -95,9 +95,9 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.assertVisible("navbar", NavbarPanel.class);
 		
 		final MutableInt countVisibleItems = new MutableInt(0);
-		tester.assertVisible("navbar:mainNav", ListView.class);
+		tester.assertVisible("navbar:navbarNavContainer:navbarNavItems", ListView.class);
 		@SuppressWarnings("unchecked")
-		ListView<NavigationMenuItem> menuItems = (ListView<NavigationMenuItem>) tester.getComponentFromLastRenderedPage("navbar:mainNav");
+		ListView<NavigationMenuItem> menuItems = (ListView<NavigationMenuItem>) tester.getComponentFromLastRenderedPage("navbar:navbarNavContainer:navbarNavItems");
 		
 		menuItems.visitChildren(ListItem.class, (IVisitor<ListItem<NavigationMenuItem>, Void>) (object, visit) -> {
 			if (!(object.getModelObject() instanceof NavigationMenuItem)) {
@@ -113,33 +113,38 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 			}
 		});
 		
-		int countAccessibleItems = navBarComponents(NavbarItem.menu(), "navbar:mainNav");
+		int countAccessibleItems = navBarComponents(NavbarItem.menu(), "navbar:navbarNavContainer:navbarNavItems");
 		assertEquals(nbExpectedItems, countAccessibleItems);
 		assertEquals(nbExpectedItems, countVisibleItems.getValue().intValue());
 	}
 
 	private int navBarComponents(List<NavbarItem> menu, String pathToMenu) {
 		int nbItems = 0;
+		int itemIndex = 0;
 		
 		for (NavbarItem menuItem : menu) {
 			boolean hasRoleMenu = false;
+			
 			for (String authority : menuItem.getAuthorities()) {
 				if (authenticationService.hasRole(authority)) {
 					hasRoleMenu = true;
 				}
 			}
+			
 			if (hasRoleMenu) {
 				tester.assertVisible(pathToMenu);
-				tester.assertEnabled(pathToMenu + ":" + menuItem.getOrder() + ":navLink");
-				tester.assertEscapeLabel(pathToMenu + ":" + menuItem.getOrder() + ":navLink:label", menuItem.getLabel());
-				nbItems ++;
+				tester.assertEnabled(pathToMenu + ":" + itemIndex + ":navLink");
+				tester.assertEscapeLabel(pathToMenu + ":" + itemIndex + ":navLink:label", menuItem.getLabel());
+				++nbItems;
 				
-				//SubMenu
-				
-				String subMenuPath = pathToMenu + ":" + menuItem.getOrder() + ":subNavContainer:subNav";
+				// SubMenu
+				String subMenuPath = pathToMenu + ":" + itemIndex + ":navbarNavSubContainer:navbarNavSubItems";
 				nbItems += navBarComponents(NavbarItem.submenu(menuItem), subMenuPath);
+				
+				++itemIndex;
 			}
 		}
+		
 		return nbItems;
 	}
 

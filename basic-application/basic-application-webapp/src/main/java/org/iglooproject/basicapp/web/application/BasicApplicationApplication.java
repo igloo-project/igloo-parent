@@ -57,11 +57,9 @@ import org.iglooproject.basicapp.web.application.security.password.page.Security
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
-import org.iglooproject.infinispan.model.impl.Node;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.infinispan.renderer.INodeRenderer;
 import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleAccessDeniedPage;
 import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleLoginFailurePage;
 import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleLoginSuccessPage;
@@ -146,8 +144,6 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		converterLocator.set(HistoryEventType.class, EnumRenderer.get());
 		
 		converterLocator.set(PostalCode.class, PostalCodeConverter.get());
-		
-		converterLocator.set(Node.class, INodeRenderer.get());
 		
 		return new HibernateProxyAwareConverterLocator(converterLocator);
 	}

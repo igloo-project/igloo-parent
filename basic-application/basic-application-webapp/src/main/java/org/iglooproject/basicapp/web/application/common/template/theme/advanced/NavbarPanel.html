@@ -3,63 +3,25 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
 	<div class="navbar-header">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navigation-collapse">
+		<button class="navbar-toggler" type="button">
 			<span class="navbar-toggler-icon" />
 		</button>
 		
 		<a class="navbar-brand" wicket:id="home"><wicket:message key="common.rootPageTitle" /></a>
 	</div>
-	<div class="collapse navbar-body navbar-collapse navigation-collapse">
-		<ul class="navbar-nav mr-auto navigation-expand-hidden">
-			<li wicket:id="mainNav" class="nav-item">
-				<a wicket:id="navLink" class="nav-link">
-					<span wicket:id="icon" />
-					<span wicket:id="label" />
-				</a>
-				<div wicket:id="subNavContainer" class="dropdown-menu">
-					<wicket:container wicket:id="subNav">
-						<a wicket:id="navLink" class="dropdown-item">
-							<span wicket:id="icon" />
-							<span wicket:id="label" />
-						</a>
-					</wicket:container>
-				</div>
-			</li>
-		</ul>
-		
+	<div class="navbar-body collapse navbar-collapse">
 		<ul class="navbar-nav ml-auto">
 			<li class="nav-item" wicket:id="profileLinkNavItem">
 				<a wicket:id="profileLink" class="nav-link" wicket:message="title:common.profile.tooltip">
-					<wicket:enclosure child="originalAuthentication">
-						<span class="fa fa-fw fa-user-secret" />
-						<span wicket:id="originalAuthentication" />
-						&middot;
-					</wicket:enclosure>
 					<span class="fa fa-fw fa-user-circle" />
 					<wicket:container wicket:id="userFullName" />
 				</a>
 			</li>
-			<wicket:enclosure child="reconnexionLink">
-				<li class="nav-item">
-					<a wicket:id="reconnexionLink" class="nav-link" wicket:message="title:common.signInAsMe">
-						<span class="fa fa-fw fa-undo" />
-						<span class=""><wicket:message key="common.signInAsMe" /></span>
-					</a>
-				</li>
-			</wicket:enclosure>
 			<li class="nav-item">
-				<a wicket:id="logoutLink" class="nav-link">
+				<a wicket:id="logout" class="btn btn-danger" wicket:message="title:common.logout">
 					<span class="fa fa-fw fa-power-off" />
-					<span><wicket:message key="common.logout" /></span>
 				</a>
 			</li>
-			<wicket:enclosure child="changeTheme">
-				<li class="nav-item">
-					<a wicket:id="changeTheme" class="btn btn-warning">
-						<span class="fa fa-fw fa-drafting-compass" />
-					</a>
-				</li>
-			</wicket:enclosure>
 		</ul>
 	</div>
 </wicket:panel>

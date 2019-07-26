@@ -1,3 +1,15 @@
+.navbar-app {
+	.navbar-header {
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		
+		.navbar-toggler {
+			margin-right: .5rem;
+		}
+	}
+}
+
 @mixin navbar-nav-link-hover() {
 	border-radius: $border-radius;
 	background-color: rgba($white, .2);

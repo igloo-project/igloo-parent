@@ -1,9 +1,11 @@
-$sidebar-border-width:									1px;
-$sidebar-border-color:									#E3E3E3;
-$sidebar-bg:											#F1F1F1;
-$sidebar-color:											#696969;
-$sidebar-expand-width:									260px;
+$sidebar-expand-width:									260px !default;
+$sidebar-zindex:										$zindex-fixed !default;
+$sidebar-border-width:									1px !default;
+$sidebar-border-color:									#E3E3E3 !default;
+$sidebar-bg:											$white !default;
+$sidebar-color:											#202124 !default;
+$sidebar-box-shadow:									 0 .5rem 1rem rgba($black, .5) !default;
+$sidebar-body-padding-y:								$navbar-padding-y !default;
 
-$sidebar-body-padding-y:								8px;
-
-$main-content-margin-left:								$sidebar-expand-width;
+$sidebar-backdrop-zindex:								$sidebar-zindex - 1 !default;
+$sidebar-backdrop-bg:									$modal-backdrop-bg !default;

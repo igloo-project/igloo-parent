@@ -49,8 +49,6 @@ export TEST_DB_PASSWORD=igloo_test
 export TEST_JERSEY_MOCK_HTTP_PORT={http_port}
 export TEST_INDEX_PATH={temp_dir}
 export TEST_DATA_PATH={temp_dir}
-export TEST_INFINISPAN_JGROUPS_PING_PORT={infinispan_tcp_port}
-export TEST_INFINISPAN_JGROUPS_PORT_PORT={infinispan_ping_port}
 
 mkdir -p {temp_dir}
 
@@ -58,10 +56,7 @@ mkdir -p {temp_dir}
   date=datetime.now().isoformat(),
   maven_opts=quote(' '.join([i for i in maven_opts])),
   temp_dir=quote(temp_dir),
-  http_port=base_port,
-  infinispan_tcp_port=base_port + 1,
-  # + 1 + 5 as we use port_range = 5 for jgroups
-  infinispan_ping_port=base_port + 6
+  http_port=base_port
 ).strip()
 
 # write and display config

@@ -3,23 +3,23 @@ package org.iglooproject.basicapp.web.application.common.template.theme.basic;
 import java.util.List;
 import java.util.function.Supplier;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.template.theme.common.AbstractNavbarPanel;
-import org.iglooproject.basicapp.web.application.common.template.theme.common.ChangeApplicationThemeAjaxLink;
 import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
@@ -31,9 +31,10 @@ import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuIte
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.iglooproject.wicket.more.security.page.LogoutPage;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ImmutableList;
 
 public class NavbarPanel extends AbstractNavbarPanel {
 
@@ -54,86 +55,143 @@ public class NavbarPanel extends AbstractNavbarPanel {
 				.link("home")
 		);
 		
-		add(new ListView<NavigationMenuItem>("mainNav", mainNavSupplier.get()) {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void populateItem(ListItem<NavigationMenuItem> item) {
-				NavigationMenuItem navItem = item.getModelObject();
+		EnclosureContainer navbarNavContainer = new EnclosureContainer("navbarNavContainer");
+		add(navbarNavContainer.anyChildVisible());
+		
+		List<NavigationMenuItem> menuItems =
+			mainNavSupplier.get().stream()
+				.filter(
+					mainNavItem -> {
+						return	(mainNavItem.getPageLinkGenerator() != null && Condition.visible(mainNavItem.linkHidingIfInvalid("navLink")).applies())
+							||	Condition.componentsAnyVisible(
+									mainNavItem.getSubMenuItems()
+										.stream()
+										.map(subMenuItem -> subMenuItem.linkHidingIfInvalid("navLink"))
+										.collect(ImmutableList.toImmutableList())
+								).applies();
+					}
+				)
+				.collect(ImmutableList.toImmutableList());
+		
+		navbarNavContainer.add(
+			new ListView<NavigationMenuItem>("navbarNavItems", menuItems) {
+				private static final long serialVersionUID = 1L;
 				
-				AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
-				
-				item.add(Condition.componentVisible(navLink).thenShow());
-				
-				item.add(
+				@Override
+				protected void populateItem(ListItem<NavigationMenuItem> item) {
+					NavigationMenuItem navItem = item.getModelObject();
+					MarkupContainer navLink = navItem.linkHidingIfInvalid("navLink");
+					
+					item.add(navLink);
+					
 					navLink
 						.add(
 							new EnclosureContainer("icon")
 								.condition(Condition.hasText(navItem.getIconClassesModel()))
 								.add(new ClassAttributeAppender(navItem.getIconClassesModel())),
 							new CoreLabel("label", navItem.getLabelModel())
-						)
-				);
-				
-				item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
-				
-				addActiveClass(item, firstMenuPageSupplier.get(), item);
-				
-				List<NavigationMenuItem> subMenuItems = navItem.getSubMenuItems();
-				
-				if (!subMenuItems.isEmpty()) {
-					item.add(new ClassAttributeAppender("dropdown"));
-					navLink.add(new ClassAttributeAppender("dropdown-toggle"));
-					navLink.add(new AttributeModifier("data-toggle", "dropdown"));
-					navLink.add(new AttributeModifier("data-hover", "dropdown"));
-					navLink.add(new AttributeModifier("href", "#"));
-				}
-				
-				item.add(
-					new WebMarkupContainer("subNavContainer")
+						);
+					
+					EnclosureContainer navbarNavSubContainer = new EnclosureContainer("navbarNavSubContainer");
+					item.add(
+						navbarNavSubContainer
+							.anyChildVisible()
+							.setOutputMarkupId(true)
+					);
+					
+					Condition isSubVisibleCondition = Condition.componentVisible(navbarNavSubContainer);
+					
+					IModel<Boolean> isSubActiveModel = Model.of(false);
+					Condition isSubActiveCondition = Condition.isTrue(isSubActiveModel);
+					
+					List<NavigationMenuItem> subMenuItems =
+						navItem.getSubMenuItems().stream()
+							.filter(subMenuItem -> Condition.visible(subMenuItem.linkHidingIfInvalid("navLink")).applies())
+							.collect(ImmutableList.toImmutableList());
+					
+					navbarNavSubContainer
 						.add(
-							new ListView<NavigationMenuItem>("subNav", subMenuItems) {
+							new ListView<NavigationMenuItem>("navbarNavSubItems", subMenuItems) {
 								private static final long serialVersionUID = -2257358650754295013L;
 								
 								@Override
 								protected void populateItem(ListItem<NavigationMenuItem> item) {
 									NavigationMenuItem navItem = item.getModelObject();
+									MarkupContainer navLink = navItem.linkHidingIfInvalid("navLink");
 									
-									AbstractLink navLink = navItem.linkHidingIfInvalid("navLink");
-									
-									item.add(Condition.componentVisible(navLink).thenShow());
+									item.add(navLink);
 									
 									navLink.add(
-										new CoreLabel("label", navItem.getLabelModel()),
 										new EnclosureContainer("icon")
 											.condition(Condition.hasText(navItem.getIconClassesModel()))
-											.add(new ClassAttributeAppender(navItem.getIconClassesModel()))
+											.add(new ClassAttributeAppender(navItem.getIconClassesModel())),
+										new CoreLabel("label", navItem.getLabelModel())
 									);
 									
 									item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
 									
-									addActiveClass(item, secondMenuPageSupplier.get(), navLink);
-									
-									item.add(navLink);
-								}
-								
-								@Override
-								protected void onDetach() {
-									super.onDetach();
-									Detachables.detach(getModelObject());
+									if (navItem.isActive(secondMenuPageSupplier.get())) {
+										navLink.add(new ClassAttributeAppender(Model.of("active")));
+										isSubActiveModel.setObject(true);
+									}
 								}
 							}
+								.setVisibilityAllowed(!subMenuItems.isEmpty())
+						);
+					
+					if (navItem.getPageLinkGenerator() == null) {
+						item.add(isSubVisibleCondition.thenShow());
+					}
+					
+					navLink.add(
+						new ClassAttributeAppender(
+							isSubVisibleCondition
+								.then(Model.of("dropdown-toggle"))
+								.otherwise(Model.of(""))
 						)
-						.setVisibilityAllowed(!subMenuItems.isEmpty())
-				);
+					);
+					
+					navLink.add(
+						new Behavior() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void onComponentTag(Component component, ComponentTag tag) {
+								tag.put("data-toggle", "dropdown");
+								tag.put("data-hover", "dropdown");
+								tag.put("href", "#");
+								super.onComponentTag(component, tag);
+							}
+							@Override
+							public boolean isEnabled(Component component) {
+								return isSubVisibleCondition.applies();
+							}
+						}
+					);
+					
+					item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
+					
+					item.add(
+						new ClassAttributeAppender(
+							isSubVisibleCondition
+								.then(Model.of("dropdown"))
+								.otherwise(Model.of(""))
+						)
+					);
+					
+					item.add(
+						new ClassAttributeAppender(
+							Condition.or(
+								isSubVisibleCondition.and(isSubActiveCondition),
+								Condition.isTrue(() -> navItem.isActive(firstMenuPageSupplier.get()))
+							)
+								.then(Model.of("active"))
+								.otherwise(Model.of())
+						)
+					);
+				}
 			}
-			
-			@Override
-			protected void onDetach() {
-				super.onDetach();
-				Detachables.detach(getModelObject());
-			}
-		});
+				.setVisibilityAllowed(!menuItems.isEmpty())
+		);
 		
 		addNavItem(
 			"profileLinkNavItem",
@@ -162,7 +220,7 @@ public class NavbarPanel extends AbstractNavbarPanel {
 		);
 		
 		add(
-			new AjaxLink<Void>("reconnexionLink") {
+			new AjaxLink<Void>("signInAsMe") {
 				private static final long serialVersionUID = 1L;
 				@Override
 				public void onClick(AjaxRequestTarget target) {
@@ -183,11 +241,7 @@ public class NavbarPanel extends AbstractNavbarPanel {
 				}
 			},
 			
-			new BookmarkablePageLink<Void>("logoutLink", LogoutPage.class)
-		);
-		
-		add(
-			new ChangeApplicationThemeAjaxLink("changeTheme")
+			new BookmarkablePageLink<Void>("logout", LogoutPage.class)
 		);
 	}
 

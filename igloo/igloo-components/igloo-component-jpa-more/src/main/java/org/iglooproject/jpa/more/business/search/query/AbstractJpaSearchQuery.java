@@ -16,7 +16,7 @@ import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.CollectionPath;
+import com.querydsl.core.types.dsl.CollectionPathBase;
 import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -149,7 +149,7 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 	}
 	
 	// 	>	Contains if given
-	protected <E, Q extends SimpleExpression<? super E>> BooleanExpression containsIfGiven(CollectionPath<E, Q> collectionPath, E value) {
+	protected <C extends Collection<E>, E, Q extends SimpleExpression<? super E>> BooleanExpression containsIfGiven(CollectionPathBase<C, E, Q> collectionPath, E value) {
 		if (value != null) {
 			return collectionPath.contains(value);
 		}

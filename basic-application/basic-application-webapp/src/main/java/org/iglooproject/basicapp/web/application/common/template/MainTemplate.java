@@ -75,13 +75,15 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			throw SecurityPasswordExpirationPage.linkDescriptor().newRestartResponseException();
 		}
 		
-		add(new TransparentWebMarkupContainer("htmlRootElement")
-			.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage())));
+		add(
+			new TransparentWebMarkupContainer("htmlElement")
+				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage()))
+		);
 		
-		add(new TransparentWebMarkupContainer("bodyContainer")
-			.add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel())));
-		
-		add(new AnimatedGlobalFeedbackPanel("animatedGlobalFeedbackPanel"));
+		add(
+			new TransparentWebMarkupContainer("bodyElement")
+				.add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel()))
+		);
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
 		add(createHeadPageTitle("headPageTitle"));
@@ -94,6 +96,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 			createBodyBreadCrumb("breadCrumb")
 				.add(displayBreadcrumb().thenShow())
 		);
+		
+		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		
@@ -111,32 +115,32 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		return ImmutableList.of(
 			BasicApplicationApplication.get().getHomePageLinkDescriptor()
 				.navigationMenuItem(new ResourceModel("navigation.home"))
-				.setIconClassesModel(Model.of("fa fa-fw fa-home")),
+				.iconClasses(Model.of("fa fa-fw fa-home")),
 			ReferenceDataPage.linkDescriptor()
 				.navigationMenuItem(new ResourceModel("navigation.referenceData"))
-				.setIconClassesModel(Model.of("fa fa-fw fa-list")),
-			AdministrationBasicUserListPage.linkDescriptor()
-				.navigationMenuItem(new ResourceModel("navigation.administration"))
-				.setIconClassesModel(Model.of("fa fa-fw fa-cogs"))
-				.setSubMenuItems(ImmutableList.of(
+				.iconClasses(Model.of("fa fa-fw fa-list")),
+			new NavigationMenuItem(new ResourceModel("navigation.administration"))
+				.iconClasses(Model.of("fa fa-fw fa-cogs"))
+				.subMenuForceOpen()
+				.subMenuItems(
 					AdministrationBasicUserListPage.linkDescriptor()
 						.navigationMenuItem(new ResourceModel("navigation.administration.user.basicUser"))
-						.setIconClassesModel(Model.of("fa fa-fw fa-user-cog")),
+						.iconClasses(Model.of("fa fa-fw fa-user-cog")),
 					AdministrationTechnicalUserListPage.linkDescriptor()
 						.navigationMenuItem(new ResourceModel("navigation.administration.user.technicalUser"))
-						.setIconClassesModel(Model.of("fa fa-fw fa-user-shield")),
+						.iconClasses(Model.of("fa fa-fw fa-user-shield")),
 					AdministrationUserGroupListPage.linkDescriptor()
 						.navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
-						.setIconClassesModel(Model.of("fa fa-fw fa-users-cog")),
+						.iconClasses(Model.of("fa fa-fw fa-users-cog")),
 					AdministrationAnnouncementListPage.linkDescriptor()
 						.navigationMenuItem(new ResourceModel("navigation.administration.announcement"))
-						.setIconClassesModel(Model.of("fa fa-fw fa-bullhorn"))
-				)),
+						.iconClasses(Model.of("fa fa-fw fa-bullhorn"))
+				),
 			LinkDescriptorBuilder.start()
 				.validator(Condition.role(BasicApplicationAuthorityConstants.ROLE_ADMIN))
 				.page(ConsoleMaintenanceSearchPage.class)
 				.navigationMenuItem(new ResourceModel("navigation.console"))
-				.setIconClassesModel(Model.of("fa fa-fw fa-wrench"))
+				.iconClasses(Model.of("fa fa-fw fa-wrench"))
 		);
 	}
 
@@ -157,17 +161,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	protected Condition displayBreadcrumb() {
 		return Condition.alwaysTrue();
 	}
-	
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		getApplicationTheme().renderHead(response);
-	}
-
-	@Override
-	public String getVariation() {
-		return getApplicationTheme().getMarkupVariation();
-	}
 
 	protected BootstrapTooltip getBootstrapTooltip() {
 		return new BootstrapTooltip()
@@ -178,6 +171,17 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 
 	protected BasicApplicationApplicationTheme getApplicationTheme() {
 		return applicationThemeModel.getObject();
+	}
+
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+		getApplicationTheme().renderHead(response);
+	}
+
+	@Override
+	public String getVariation() {
+		return getApplicationTheme().getMarkupVariation();
 	}
 
 }

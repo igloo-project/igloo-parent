@@ -1,3 +1,39 @@
+.navbar-app,
+.navbar-sidebar {
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	
+	.navbar-header {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		flex-shrink: 0;
+		
+		.navbar-toggler {
+			display: inline-block;
+			margin-right: .5rem;
+		}
+		
+		.navbar-brand {
+			margin: 0;
+		}
+	}
+}
+
+.navbar-app {
+	.navbar-header {
+		margin-right: $navbar-padding-x;
+	}
+	
+	.navbar-body {
+		margin-left: $navbar-padding-x;
+	}
+}
+
+.navbar-sidebar {
+	display: none;
+}
+
 @mixin navbar-nav-link-hover() {
 	border-radius: $border-radius;
 	background-color: rgba($white, .2);
@@ -20,44 +56,6 @@
 			.nav-link {
 				&:not(.disabled):hover {
 					@include navbar-nav-link-hover();
-				}
-			}
-		}
-	}
-}
-
-.navigation-expand {
-	@each $breakpoint in map-keys($grid-breakpoints) {
-		$next: breakpoint-next($breakpoint, $grid-breakpoints);
-		$infix: breakpoint-infix($next, $grid-breakpoints);
-		
-		&#{$infix} {
-			.navbar {
-				@extend .navbar-expand#{$infix};
-				
-				@include media-breakpoint-up($next) {
-					.navbar-nav {
-						> li {
-							&.nav-item {
-								margin: 0 2px;
-							}
-						}
-					}
-					
-					.navbar-header {
-						width: calc(#{$sidebar-expand-width} - #{$navbar-padding-x});
-						padding-right: $navbar-padding-x;
-						
-						.navbar-brand {
-							width: 100%;
-							margin: 0;
-						}
-					}
-					
-					.navbar-body {
-						margin-top: 0;
-						padding-left: $navbar-padding-x;
-					}
 				}
 			}
 		}

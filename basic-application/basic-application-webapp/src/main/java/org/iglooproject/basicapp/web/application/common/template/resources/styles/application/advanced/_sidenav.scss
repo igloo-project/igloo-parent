@@ -15,7 +15,7 @@
 				align-items: center;
 				justify-content: space-between;
 				
-				padding: 7px 1px 7px 12px;
+				padding: 6px 15px 6px 12px;
 				border-left: 3px solid transparent;
 				font-size: 1rem;
 				word-wrap: break-word;
@@ -25,12 +25,11 @@
 				&:hover, &:focus {
 					text-decoration: none;
 					outline: 0;
-					color: inherit;
 					background-color: rgba(0, 0, 0, 0.06);
-					color: #3D3D3D;
 				}
 				
 				> .sidenav-icon {
+					color: $gray-600;
 					margin-right: 10px;
 					line-height: 1.5;
 				}
@@ -40,45 +39,61 @@
 					flex: 1 1 100%;
 					line-height: 1.5;
 				}
+				
+				> .sidenav-label-sub-open-icon,
+				> .sidenav-label-sub-close-icon {
+					display: none;
+				}
+				
+				&.sidenav-link-sub {
+					&:not(.collapsed) {
+						> .sidenav-label-sub-open-icon {
+							display: inline;
+						}
+					}
+					
+					&.collapsed {
+						> .sidenav-label-sub-close-icon {
+							display: inline;
+						}
+					}
+				}
 			}
 			
 			&.active {
 				> a.sidenav-link {
-					background-color: rgba(0, 0, 0, 0.04);
+					background-color: rgba($primary, 0.15);
 					color: $primary;
+					font-weight: bold;
 					border-left: 3px solid $primary;
 					
 					> .sidenav-icon {
-						
+						color: $primary;
 					}
 					
 					> .sidenav-label {
-						
+						color: $primary;
 					}
 				}
-				
-				ul.sidenav-sub {
-					background-color: rgba(0, 0, 0, 0.04);
+			}
+			
+			&.active-sub {
+				> a.sidenav-link {
+					> .sidenav-label {
+						font-weight: bold;
+					}
 				}
 			}
 			
 			ul.sidenav-sub {
-				padding: 5px 0;
-				background-color: rgba(0, 0, 0, 0.01);
+				padding: 2px 0 0 0;
 				border-top: 1px solid rgba(0, 0, 0,.04);
-				border-bottom: 1px solid rgba(0, 0, 0,.04);
 				
 				> li.sidenav-item {
 					> a.sidenav-link {
-						padding: 7px 15px 7px 30px;
+						padding-left: 30px;
 					}
 				}
-			}
-		}
-		
-		> li.sidenav-item {
-			> a.sidenav-link {
-				font-weight: bold;
 			}
 		}
 	}

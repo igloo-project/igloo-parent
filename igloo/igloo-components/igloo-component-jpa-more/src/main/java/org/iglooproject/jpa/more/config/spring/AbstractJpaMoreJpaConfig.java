@@ -17,8 +17,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Import({
-	JpaMoreApplicationPropertyRegistryConfig.class,
-	JpaMoreInfinispanConfig.class
+	JpaMoreApplicationPropertyRegistryConfig.class
 })
 @ComponentScan(basePackageClasses = { CoreJpaMoreBusinessPackage.class, CoreJpaMoreUtilPackage.class })
 public abstract class AbstractJpaMoreJpaConfig extends AbstractJpaConfig {

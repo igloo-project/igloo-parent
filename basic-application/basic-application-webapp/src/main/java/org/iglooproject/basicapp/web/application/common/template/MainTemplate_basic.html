@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!doctype html>
-<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" wicket:id="htmlRootElement">
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" wicket:id="htmlElement">
 	<head>
 		<title wicket:id="headPageTitle"></title>
 		
@@ -17,24 +17,26 @@
 		
 		<wicket:header-items/>
 	</head>
-	<body wicket:id="bodyContainer">
-		<div wicket:id="animatedGlobalFeedbackPanel" data-placement="bottom" />
-		
-		<div class="main-wrapper">
+	<body wicket:id="bodyElement">
+		<div class="body-container">
 			<header class="header-section">
+				<nav wicket:id="navbar" class="navbar navbar-app navbar-main navbar-expand-lg" />
 				<div wicket:id="environment" class="header-alert-section header-alert-dismissible environment-section" />
-				
-				<div wicket:id="announcements" class="header-alert-section header-alert-dismissible general-message-section" />
-				
-				<nav wicket:id="navbar" class="navbar navbar-expand-lg navbar-main" />
 			</header>
 			
-			<div class="body-section">
-				<wicket:child />
-			</div>
+			<main class="main-section">
+				<div class="main-header">
+					<div wicket:id="announcements" class="header-alert-section header-alert-dismissible announcements-section" />
+				</div>
+				<div class="main-body">
+					<wicket:child />
+				</div>
+			</main>
 			
-			<footer class="footer-section" wicket:id="footer" />
+			<footer wicket:id="footer" class="footer-section" />
 		</div>
+		
+		<div wicket:id="feedback" data-placement="bottom" />
 		
 		<div wicket:id="scrollToTop" class="scroll-to-top">
 			<button class="scroll-to-top-btn" type="button">

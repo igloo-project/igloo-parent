@@ -3,6 +3,10 @@ package org.iglooproject.test.sass;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
+import java.io.IOException;
+
+import org.apache.commons.io.IOUtils;
+import org.assertj.core.api.Assertions;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.iglooproject.sass.service.IScssService;
 import org.iglooproject.sass.service.ScssServiceImpl;
@@ -14,6 +18,12 @@ import org.junit.Test;
 public class TestScssService {
 	
 	private IScssService scssService = new ScssServiceImpl();
+	private IScssService autoprefixerScssService = new ScssServiceImpl();
+	{
+		ScssServiceImpl temp = new ScssServiceImpl();
+		temp.setUseAutoprefixer(false);
+		scssService = temp;
+	}
 	
 	@Test
 	public void testGetCompiledStylesheet() throws Exception {
@@ -198,6 +208,33 @@ public class TestScssService {
 				TestScssServiceResourceScope.class,
 				"forbidden-extension.scss"
 		)).isInstanceOf(RuntimeException.class);
+	}
+
+	/**
+	 * disable autoprefixer: input == output
+	 */
+	@Test
+	public void noAutoprefixer() throws IOException {
+		// about autoprefixer.scss:
+		// use indent with tab as spaces are processed to tab by scss
+		// (we want to check input == output if no autoprefixer)
+		String source = IOUtils.toString(
+				getClass().getResourceAsStream("/org/iglooproject/test/sass/resources/autoprefixer.scss"));
+		String output =
+				scssService.getCompiledStylesheet(TestScssServiceResourceScope.class, "autoprefixer.scss").getSource();
+		Assertions.assertThat(output).isEqualTo(source);
+	}
+
+	/**
+	 * enable autoprefixer: as sticky is present in input, output must rewritten to include -webkit-sticky
+	 */
+	@Test
+	public void autoprefixer() throws IOException {
+		String output =
+				autoprefixerScssService.getCompiledStylesheet(TestScssServiceResourceScope.class, "autoprefixer.scss")
+				.getSource();
+		Assertions.assertThat(output).describedAs("-webkit-sticky must be added to the output")
+			.contains("-webkit-sticky");
 	}
 
 }

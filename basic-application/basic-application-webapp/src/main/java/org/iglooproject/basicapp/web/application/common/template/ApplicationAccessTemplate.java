@@ -20,10 +20,13 @@ import org.iglooproject.basicapp.web.application.common.template.resources.style
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate {
@@ -39,18 +42,19 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 	public ApplicationAccessTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE)) && !authenticationService.hasAdminRole()
-				&& hasMaintenanceRestriction()) {
+		if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE)) && !authenticationService.hasAdminRole() && hasMaintenanceRestriction()) {
 			throw new RedirectToUrlException(propertyService.get(MAINTENANCE_URL));
 		}
 		
-		add(new TransparentWebMarkupContainer("htmlRootElement")
-				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage())));
+		add(
+			new TransparentWebMarkupContainer("htmlElement")
+				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage()))
+		);
 		
-		add(new TransparentWebMarkupContainer("bodyContainer")
-				.add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel())));
-		
-		add(new AnimatedGlobalFeedbackPanel("feedback"));
+		add(
+			new TransparentWebMarkupContainer("bodyElement")
+				.add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel()))
+		);
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
 		add(createHeadPageTitle("headPageTitle"));
@@ -58,6 +62,12 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 		add(new ApplicationAccessEnvironmentPanel("environment"));
 		
 		add(new CoreLabel("title", getTitleModel()));
+		
+		add(new AnimatedGlobalFeedbackPanel("feedback"));
+		
+		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
+		
+		add(new BootstrapDropdownBehavior());
 	}
 	
 	@Override
@@ -81,12 +91,6 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 	}
 
 	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		response.render(CssHeaderItem.forReference(ApplicationAccessScssResourceReference.get()));
-	}
-
-	@Override
 	protected Class<? extends WebPage> getFirstMenuPage() {
 		return null;
 	}
@@ -94,6 +98,19 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 	@Override
 	protected Class<? extends WebPage> getSecondMenuPage() {
 		return null;
+	}
+
+	protected BootstrapTooltip getBootstrapTooltip() {
+		return new BootstrapTooltip()
+			.selector("[title],[data-original-title]")
+			.animation(true)
+			.container("body");
+	}
+
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		super.renderHead(response);
+		response.render(CssHeaderItem.forReference(ApplicationAccessScssResourceReference.get()));
 	}
 
 }

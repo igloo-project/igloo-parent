@@ -10,72 +10,78 @@ body {
 	background-color: $gray-100;
 }
 
-.console-access-page {
-	.body-section {
+.body-container {
+	> .main-section {
 		margin: 60px 0;
 		
-		.container {
-			max-width: map-get($grid-breakpoints, sm) - $grid-gutter-width;
-			margin-left: auto;
-			margin-right: auto;
-			
-			.card {
-				border: 0;
-				box-shadow: $shadow-md;
+		> .main-body {
+			.container {
+				max-width: map-get($grid-breakpoints, sm) - $grid-gutter-width;
+				margin-left: auto;
+				margin-right: auto;
 				
-				.card-img-top {
-					padding: $card-spacer-y $card-spacer-x;
-				}
-				
-				.card-header {
-					&.card-main-title {
-						@include bg($dark)
-						border-top: $card-border-width solid $card-border-color;
-						font-size: $h4-font-size;
+				.card {
+					border: 0;
+					box-shadow: $shadow-md;
+					
+					.card-img-top {
+						padding: $card-spacer-y $card-spacer-x;
 					}
-				}
-				
-				&.card-main-title-cascade {
-					margin: 0 10px;
 					
 					.card-header {
 						&.card-main-title {
-							margin: 0 -10px;
-							border-radius: 0.15rem;
-							box-shadow: $shadow-md;
+							@include bg($dark)
+							border-top: $card-border-width solid $card-border-color;
+							font-size: $h4-font-size;
+						}
+					}
+					
+					&.card-main-title-cascade {
+						margin: 0 10px;
+						
+						.card-header {
+							&.card-main-title {
+								margin: 0 -10px;
+								border-radius: 0.15rem;
+								box-shadow: $shadow-md;
+							}
 						}
 					}
 				}
 			}
 		}
 	}
-	
-	@include media-breakpoint-down(xs) {
-		.body-section {
+}
+
+@include media-breakpoint-down(xs) {
+	.body-container {
+		> .main-section {
 			margin: 0;
 			
-			.container {
-				max-width: 100%;
-				margin: 0;
-				padding: 0;
-				
-				.card {
-					border-bottom: $card-border-width solid $card-border-color;
-					border-radius: 0;
-					box-shadow: none;
+			> .main-body {
+				.container {
+					max-width: 100%;
+					margin: 0;
+					padding: 0;
 					
-					[class*="card-"] {
+					.card {
+						border-bottom: $card-border-width solid $card-border-color;
 						border-radius: 0;
-					}
-					
-					&.card-main-title-cascade {
-						margin: 0;
+						box-shadow: none;
 						
-						.card-header {
-							&.card-main-title {
-								margin: 0;
-								border-radius: 0;
-								box-shadow: none;
+						[class*="card-"] {
+							border-radius: 0;
+						}
+						
+						&.card-main-title-cascade {
+							margin: 0;
+							
+							.card-header {
+								&.card-main-title {
+									margin: 0;
+									border-radius: 0;
+									box-shadow: none;
+								}
 							}
 						}
 					}

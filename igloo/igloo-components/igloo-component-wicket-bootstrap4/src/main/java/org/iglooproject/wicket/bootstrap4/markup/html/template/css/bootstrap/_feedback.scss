@@ -1,22 +1,16 @@
 .feedback-container {
-	position: fixed;
 	display: none;
-	overflow: hidden;
+	position: fixed;
 	z-index: $zindex-alert-global;
-	width: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+	
+	left: 0;
+	right: 0;
+	
+	max-height: 250px;
 	
 	.feedback-panel {
-		box-shadow: $feedback-box-shadow;
-		position: relative;
-		
-		overflow-y: auto;
-		max-height: 250px;
-		
-		@include media-breakpoint-up(md) {
-			margin: 0 40px 30px 40px;
-			max-width: 750px;
-		}
-		
 		> .alert {
 			@include border-radius(0);
 			border: 0;
@@ -39,5 +33,30 @@
 			right: 0;
 			top: 0;
 		}
+	}
+}
+
+@include media-breakpoint-up(md) {
+	.animated-global-feedback {
+		&[data-placement="top"] {
+			.feedback-container { 
+				margin-top: 30px;
+			}
+		}
+		
+		&[data-placement="bottom"] {
+			.feedback-container { 
+				margin-bottom: 30px;
+			}
+		}
+	}
+	
+	.feedback-container {
+		left: 40px;
+		right: 40px;
+		
+		max-width: 750px;
+		
+		box-shadow: $feedback-box-shadow;
 	}
 }

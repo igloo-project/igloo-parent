@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>1.1.26</version>
+		<version>1.1.27</version>
 	</parent>
 
 	<artifactId>igloo-component-jpa-more</artifactId>
@@ -27,12 +27,6 @@
 			<artifactId>igloo-dependency-core-spring-security</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-infinispan</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>

@@ -5,6 +5,7 @@ import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocatio
 import org.iglooproject.spring.config.CorePropertyPlaceholderConfigurer;
 import org.iglooproject.spring.config.spring.annotation.CoreConfigurationLocationsAnnotationConfig;
 import org.iglooproject.spring.util.ConfigurationLogger;
+import org.iglooproject.spring.util.PropertySourceLogger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +36,12 @@ public abstract class AbstractApplicationConfig {
 		
 		return configurationLogger;
 	}
-	
+
+	@Bean
+	public PropertySourceLogger propertySourceLogger() {
+		return new PropertySourceLogger();
+	}
+
 	@Bean
 	public static CorePropertyPlaceholderConfigurer environment(ConfigurableApplicationContext context) {
 		return new CorePropertyPlaceholderConfigurer();

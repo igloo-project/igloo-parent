@@ -5,6 +5,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds;
+import org.iglooproject.basicapp.web.application.common.template.theme.common.ChangeApplicationThemeAjaxLink;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
@@ -49,7 +50,10 @@ public class FooterPanel extends Panel {
 				.hideIfEmpty()
 				.add(Condition.role(CoreAuthorityConstants.ROLE_ADMIN).thenShow())
 		);
+		
+		add(
+			new ChangeApplicationThemeAjaxLink("changeTheme")
+		);
 	}
-
 
 }
