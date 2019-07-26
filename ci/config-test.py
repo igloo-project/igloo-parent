@@ -56,7 +56,7 @@ mkdir -p {temp_dir}
   date=datetime.now().isoformat(),
   maven_opts=quote(' '.join([i for i in maven_opts])),
   temp_dir=quote(temp_dir),
-  http_port=base_port,
+  http_port=base_port
 ).strip()
 
 # write and display config
