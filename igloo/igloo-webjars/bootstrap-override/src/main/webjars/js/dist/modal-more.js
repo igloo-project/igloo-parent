@@ -7,12 +7,21 @@ $.fn.modal.Constructor.prototype.show = function show(relatedTarget) {
 	_show.apply(this, relatedTarget);
 };
 
-
 var _hide = $.fn.modal.Constructor.prototype.hide;
 $.fn.modal.Constructor.prototype.hide = function hide(event) {
 	this._ignoreTransitioning();
 	
+	var _animate = $(this._element).hasClass('fade');
+	
+	if (_animate) {
+		$(this._element).removeClass('fade');
+	}
+	
 	_hide.apply(this, arguments);
+	
+	if (_animate) {
+		$(this._element).addClass('fade');
+	}
 	
 	this._appendToParent();
 };
