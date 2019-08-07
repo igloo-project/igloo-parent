@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import org.apache.wicket.markup.html.WebPage;
 import org.iglooproject.basicapp.web.application.common.template.theme.common.AbstractNavbarPanel;
 import org.iglooproject.basicapp.web.application.common.template.theme.common.ChangeApplicationThemeAjaxLink;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.sidebar.SidebarBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 
 public class SidebarPanel extends AbstractNavbarPanel {
@@ -34,6 +35,10 @@ public class SidebarPanel extends AbstractNavbarPanel {
 		
 		add(
 			new SidebarFooterPanel("footer")
+		);
+		
+		add(
+			new SidebarBehavior()
 		);
 	}
 

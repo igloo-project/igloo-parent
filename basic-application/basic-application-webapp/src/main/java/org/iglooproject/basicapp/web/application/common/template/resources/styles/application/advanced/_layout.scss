@@ -11,8 +11,8 @@ body {
 	background-color: #F5F5F5;
 }
 
-.sidebar-container {
-	display: none;
+.sidebar {
+	display: flex;
 	position: fixed;
 	top: 0;
 	bottom: 0;
@@ -26,7 +26,9 @@ body {
 	color: $sidebar-color;
 	overflow: hidden;
 	
-	> .sidebar {
+	transform: translateX(-100%);
+	
+	> .sidebar-container {
 		display: flex;
 		flex: 1;
 		flex-direction: column;
@@ -158,7 +160,52 @@ body {
 	}
 }
 
-body.sidebar-expand {
+.sidebar {
+	&.sidebar-opening {
+		transition: transform .2s ease-out;
+	}
+	
+	&.sidebar-closing {
+		transition: transform .2s ease-in;
+	}
+	
+	&.sidebar-opening,
+	&.sidebar-open {
+		transform: none;
+	}
+	
+	&.sidebar-opening,
+	&.sidebar-closing,
+	&.sidebar-open {
+		border-right: none;
+		box-shadow: $sidebar-box-shadow;
+		
+		@media (max-width: $sidebar-expand-width) {
+			flex-basis: 100%;
+			width: 100%;
+			min-width: 100%;
+			max-width: 100%;
+		}
+	}
+}
+
+body.sidebar-open {
+	.navbar {
+		&.navbar-app {
+			.navbar-header {
+				.navbar-toggler {
+					display: inline-block;
+				}
+			}
+		}
+	}
+	
+	.body-container {
+		margin-left: 0;
+	}
+}
+
+body:not(.sidebar-open).sidebar-expand {
 	@each $breakpoint in map-keys($grid-breakpoints) {
 		$next: breakpoint-next($breakpoint, $grid-breakpoints);
 		$infix: breakpoint-infix($next, $grid-breakpoints);
@@ -173,13 +220,17 @@ body.sidebar-expand {
 							}
 						}
 					}
+					
+					&.navbar-sidebar {
+						display: none;
+					}
 				}
-			}
-			
-			@include media-breakpoint-up($next) {
-				.sidebar-container {
-					display: flex;
+				
+				.sidebar {
 					border-right: $sidebar-border-width solid $sidebar-border-color;
+					box-shadow: none;
+					
+					transform: none;
 				}
 				
 				.body-container {
@@ -190,43 +241,7 @@ body.sidebar-expand {
 	}
 }
 
-body.sidebar-open {
-	.navbar {
-		&.navbar-app {
-			.navbar-header {
-				.navbar-toggler {
-					display: inline-block;
-				}
-			}
-		}
-		
-		&.navbar-sidebar {
-			display: flex;
-		}
-	}
-	
-	.sidebar-container {
-		display: flex;
-		border-right: none;
-		box-shadow: $sidebar-box-shadow;
-	}
-	
-	.body-container {
-		margin-left: 0;
-	}
-	
-	@media (max-width: $sidebar-expand-width) {
-		.sidebar-container {
-			flex-basis: 100%;
-			width: 100%;
-			min-width: 100%;
-			max-width: 100%;
-		}
-	}
-}
-
 .sidebar-backdrop {
-	display: none;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -234,4 +249,7 @@ body.sidebar-open {
 	width: 100vw;
 	height: 100vh;
 	background-color: $sidebar-backdrop-bg;
+	
+	&.fade { opacity: 0; }
+	&.show { opacity: $sidebar-backdrop-opacity; }
 }

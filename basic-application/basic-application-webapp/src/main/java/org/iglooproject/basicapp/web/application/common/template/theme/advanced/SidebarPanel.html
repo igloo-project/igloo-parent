@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
-	<div class="sidebar">
+	<div class="sidebar-container">
 		<nav wicket:id="navbar" class="navbar navbar-sidebar navbar-expand navbar-main" />
 		<div class="sidebar-body-scrollable">
 			<div class="sidebar-body">
@@ -35,14 +35,5 @@
 		</div>
 		<div wicket:id="footer" class="sidebar-footer" />
 	</div>
-	
-	<script>
-		$(function() {
-			$('.navbar-toggler, .sidebar-backdrop').click(function() {
-				$('.sidebar-backdrop').toggle();
-				$('body').toggleClass('sidebar-open');
-			});
-		});
-	</script>
 </wicket:panel>
 </html>
