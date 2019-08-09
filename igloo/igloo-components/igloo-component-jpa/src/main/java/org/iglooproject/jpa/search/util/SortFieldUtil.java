@@ -12,6 +12,7 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.search.query.dsl.sort.SortAdditionalSortFieldContext;
 import org.hibernate.search.query.dsl.sort.SortContext;
+import org.hibernate.search.query.dsl.sort.SortFieldContext;
 import org.hibernate.search.query.dsl.sort.SortOrder;
 import org.hibernate.search.query.dsl.sort.SortTermination;
 
@@ -42,24 +43,33 @@ public final class SortFieldUtil {
 				break;
 			}
 			
+			fieldContext = onMissingValue(fieldContext, sortField);
 			fieldContext = order(fieldContext, sortField);
 		}
 		
 		return create(fieldContext);
 	}
 
+	private static SortAdditionalSortFieldContext onMissingValue(SortAdditionalSortFieldContext fieldContext, SortField sortField) {
+		if (!(fieldContext instanceof SortFieldContext)) {
+			throw new IllegalStateException("FieldContext must be a SortFieldContext.");
+		}
+		
+		return sortField.missingValue != null ? ((SortFieldContext) fieldContext).onMissingValue().use(sortField.missingValue) : fieldContext;
+	}
+
 	@SuppressWarnings("unchecked")
 	private static SortAdditionalSortFieldContext order(SortAdditionalSortFieldContext fieldContext, SortField sortField) {
-		if (fieldContext == null || !(fieldContext instanceof SortOrder)) {
-			throw new IllegalStateException("Field context must be a SortOrder.");
+		if (!(fieldContext instanceof SortOrder)) {
+			throw new IllegalStateException("FieldContext must be a SortOrder.");
 		}
 		
 		return !sortField.getReverse() ? ((SortOrder<SortAdditionalSortFieldContext>) fieldContext).asc() : ((SortOrder<SortAdditionalSortFieldContext>) fieldContext).desc();
 	}
 
 	private static Sort create(SortAdditionalSortFieldContext fieldContext) {
-		if (fieldContext == null || !(fieldContext instanceof SortTermination)) {
-			throw new IllegalStateException("Field context must be a SortTermination.");
+		if (!(fieldContext instanceof SortTermination)) {
+			throw new IllegalStateException("FieldContext must be a SortTermination.");
 		}
 		
 		return ((SortTermination) fieldContext).createSort();
