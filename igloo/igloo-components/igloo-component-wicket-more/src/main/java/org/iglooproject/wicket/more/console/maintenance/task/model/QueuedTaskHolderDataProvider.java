@@ -19,29 +19,37 @@ import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
+import com.google.common.collect.ImmutableMap;
+
 public class QueuedTaskHolderDataProvider extends AbstractSearchQueryDataProvider<QueuedTaskHolder, QueuedTaskHolderSort> {
 
 	private static final long serialVersionUID = -1886156254057416250L;
 
-	private final IModel<String> nameModel = new Model<String>();
+	private final IModel<String> nameModel = new Model<>();
 
-	private final IModel<Collection<TaskStatus>> statusesModel = new CollectionModel<TaskStatus>();
+	private final IModel<Collection<TaskStatus>> statusesModel = new CollectionModel<>();
 
-	private final IModel<Collection<TaskResult>> resultsModel = new CollectionModel<TaskResult>();
+	private final IModel<Collection<TaskResult>> resultsModel = new CollectionModel<>();
 
-	private final IModel<Collection<String>> taskTypesModel = new CollectionModel<String>();
+	private final IModel<Collection<String>> taskTypesModel = new CollectionModel<>();
 
-	private final IModel<Collection<String>> queueIdsModel = new CollectionModel<String>();
+	private final IModel<Collection<String>> queueIdsModel = new CollectionModel<>();
 
-	private final IModel<Date> creationDateModel = new Model<Date>();
+	private final IModel<Date> creationDateModel = new Model<>();
 
-	private final IModel<Date> startDateModel = new Model<Date>();
+	private final IModel<Date> startDateModel = new Model<>();
 
-	private final IModel<Date> endDateModel = new Model<Date>();
-	
+	private final IModel<Date> endDateModel = new Model<>();
+
 	private final CompositeSortModel<QueuedTaskHolderSort> sortModel = new CompositeSortModel<>(
 			CompositingStrategy.LAST_ONLY,
-			QueuedTaskHolderSort.CREATION_DATE
+			ImmutableMap.of(
+				QueuedTaskHolderSort.CREATION_DATE, QueuedTaskHolderSort.CREATION_DATE.getDefaultOrder()
+			),
+			ImmutableMap.of(
+				QueuedTaskHolderSort.CREATION_DATE, QueuedTaskHolderSort.CREATION_DATE.getDefaultOrder(),
+				QueuedTaskHolderSort.ID, QueuedTaskHolderSort.ID.getDefaultOrder()
+			)
 	);
 
 	public QueuedTaskHolderDataProvider() {
@@ -83,21 +91,21 @@ public class QueuedTaskHolderDataProvider extends AbstractSearchQueryDataProvide
 
 	@Override
 	public IModel<QueuedTaskHolder> model(QueuedTaskHolder object) {
-		return new GenericEntityModel<Long, QueuedTaskHolder>(object);
+		return new GenericEntityModel<>(object);
 	}
 
 	@Override
 	protected ISearchQuery<QueuedTaskHolder, QueuedTaskHolderSort> getSearchQuery() {
 		return createSearchQuery(IQueuedTaskHolderSearchQuery.class)
-				.name(nameModel.getObject())
-				.statuses(statusesModel.getObject())
-				.results(resultsModel.getObject())
-				.types(taskTypesModel.getObject())
-				.queueIds(queueIdsModel.getObject())
-				.creationDate(creationDateModel.getObject())
-				.startDate(startDateModel.getObject())
-				.endDate(endDateModel.getObject())
-				.sort(sortModel.getObject());
+			.name(nameModel.getObject())
+			.statuses(statusesModel.getObject())
+			.results(resultsModel.getObject())
+			.types(taskTypesModel.getObject())
+			.queueIds(queueIdsModel.getObject())
+			.creationDate(creationDateModel.getObject())
+			.startDate(startDateModel.getObject())
+			.endDate(endDateModel.getObject())
+			.sort(sortModel.getObject());
 	}
 
 	@Override

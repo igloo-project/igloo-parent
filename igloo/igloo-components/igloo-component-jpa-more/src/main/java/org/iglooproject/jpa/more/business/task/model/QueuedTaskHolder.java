@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Bindable
 @Indexed
 public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
+
 	private static final long serialVersionUID = 3926959721176678607L;
 
 	public static final String NAME = "name";
@@ -45,16 +46,9 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	public static final String TASK_TYPE = "taskType";
 
 	public static final String CREATION_DATE = "creationDate";
-	public static final String CREATION_DATE_SORT = "creationDateSort";
-
 	public static final String TRIGGERING_DATE = "triggeringDate";
-	public static final String TRIGGERING_DATE_SORT = "triggeringDateSort";
-
 	public static final String START_DATE = "startDate";
-	public static final String START_DATE_SORT = "startDateSort";
-
 	public static final String END_DATE = "endDate";
-	public static final String END_DATE_SORT = "endDateSort";
 
 	public static final String STATUS = "status";
 
@@ -82,24 +76,20 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private String taskType;
 
 	@Column(nullable = false)
-	@Field(name = CREATION_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	@Field(name = CREATION_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
-	@SortableField(forField = CREATION_DATE_SORT)
+	@Field(name = CREATION_DATE)
+	@SortableField(forField = CREATION_DATE)
 	private Date creationDate;
 
-	@Field(name = TRIGGERING_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	@Field(name = TRIGGERING_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
-	@SortableField(forField = TRIGGERING_DATE_SORT)
+	@Field(name = TRIGGERING_DATE)
+	@SortableField(forField = TRIGGERING_DATE)
 	private Date triggeringDate = null;
 
-	@Field(name = START_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	@Field(name = START_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
-	@SortableField(forField = START_DATE_SORT)
+	@Field(name = START_DATE)
+	@SortableField(forField = START_DATE)
 	private Date startDate = null;
 
-	@Field(name = END_DATE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	@Field(name = END_DATE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.KEYWORD))
-	@SortableField(forField = END_DATE_SORT)
+	@Field(name = END_DATE)
+	@SortableField(forField = END_DATE)
 	private Date endDate = null;
 
 	@Version

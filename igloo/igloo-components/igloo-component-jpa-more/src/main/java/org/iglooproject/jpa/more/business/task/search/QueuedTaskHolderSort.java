@@ -11,17 +11,14 @@ import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import com.google.common.collect.ImmutableList;
 
 public enum QueuedTaskHolderSort implements ISort<SortField> {
-	
-	CREATION_DATE {
+
+	ID {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.luceneLongSortField(this, sortOrder, QueuedTaskHolder.END_DATE_SORT, NullSortValue.GREATEST),
-					SortUtils.luceneLongSortField(this, sortOrder, QueuedTaskHolder.START_DATE_SORT, NullSortValue.GREATEST),
-					SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, QueuedTaskHolder.CREATION_DATE_SORT)
+					SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID_SORT)
 			);
 		}
-		
 		@Override
 		public SortOrder getDefaultOrder() {
 			return SortOrder.DESC;
@@ -34,34 +31,30 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 					SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, QueuedTaskHolder.NAME_SORT)
 			);
 		}
-		
 		@Override
 		public SortOrder getDefaultOrder() {
 			return SortOrder.ASC;
 		}
 	},
-	ID {
+	CREATION_DATE {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-					SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID_SORT)
+					SortUtils.luceneLongSortField(this, sortOrder, QueuedTaskHolder.END_DATE, NullSortValue.GREATEST),
+					SortUtils.luceneLongSortField(this, sortOrder, QueuedTaskHolder.START_DATE, NullSortValue.GREATEST),
+					SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, QueuedTaskHolder.CREATION_DATE)
 			);
 		}
-		
 		@Override
 		public SortOrder getDefaultOrder() {
 			return SortOrder.DESC;
 		}
 	};
-	
+
 	@Override
 	public abstract SortOrder getDefaultOrder();
-	
+
 	@Override
 	public abstract List<SortField> getSortFields(SortOrder sortOrder);
-	
-	// TODO RJO Sort : pourquoi on n'a pas ça dans l'interface ?
-	public List<SortField> getSortFields() {
-		return getSortFields(getDefaultOrder());
-	}
+
 }
