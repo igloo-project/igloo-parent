@@ -52,7 +52,7 @@ public final class SortFieldUtil {
 
 	private static SortAdditionalSortFieldContext onMissingValue(SortAdditionalSortFieldContext fieldContext, SortField sortField) {
 		if (!(fieldContext instanceof SortFieldContext)) {
-			throw new IllegalStateException("FieldContext must be a SortFieldContext.");
+			return fieldContext;
 		}
 		
 		if (sortField.missingValue == null) {
