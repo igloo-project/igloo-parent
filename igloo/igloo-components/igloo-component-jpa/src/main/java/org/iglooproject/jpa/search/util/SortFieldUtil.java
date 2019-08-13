@@ -55,7 +55,23 @@ public final class SortFieldUtil {
 			throw new IllegalStateException("FieldContext must be a SortFieldContext.");
 		}
 		
-		return sortField.missingValue != null ? ((SortFieldContext) fieldContext).onMissingValue().use(sortField.missingValue) : fieldContext;
+		if (sortField.missingValue == null) {
+			return fieldContext;
+		}
+		
+		SortFieldContext sortFieldContext = (SortFieldContext) fieldContext;
+		
+		if (SortField.Type.STRING.equals(sortField.getType()) || SortField.Type.STRING_VAL.equals(sortField.getType())) {
+			if (SortField.STRING_FIRST.equals(sortField.missingValue)) {
+				sortFieldContext.onMissingValue().sortFirst();
+			} else if (SortField.STRING_LAST.equals(sortField.missingValue)) {
+				sortFieldContext.onMissingValue().sortLast();
+			}
+		} else {
+			sortFieldContext.onMissingValue().use(sortField.missingValue);
+		}
+		
+		return fieldContext;
 	}
 
 	@SuppressWarnings("unchecked")
