@@ -4276,6 +4276,14 @@ S2.define('select2/dropdown/attachBody',[
           self._positionDropdown();
           self._resizeDropdown();
         });
+
+        // Temporary custom fix.
+        // See PR https://github.com/select2/select2/issues/4614
+        // See issue https://github.com/select2/select2/pull/5196
+        container.on('results:message', function () {
+          self._positionDropdown();
+          self._resizeDropdown();
+        });
       }
     });
 
