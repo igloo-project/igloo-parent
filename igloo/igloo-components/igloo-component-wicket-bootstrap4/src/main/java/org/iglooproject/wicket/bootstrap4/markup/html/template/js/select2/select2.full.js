@@ -1354,7 +1354,7 @@ S2.define('select2/selection/base',[
       this._tabindex = this.$element.attr('tabindex');
     }
 
-    $selection.attr('title', this.$element.attr('title'));
+    //$selection.attr('title', this.$element.attr('title'));
     $selection.attr('tabindex', this._tabindex);
 
     this.$selection = $selection;
@@ -1578,7 +1578,7 @@ S2.define('select2/selection/single',[
     var formatted = this.display(selection, $rendered);
 
     $rendered.empty().append(formatted);
-    $rendered.prop('title', selection.title || selection.text);
+    //$rendered.prop('title', selection.title || selection.text);
   };
 
   return SingleSelection;
@@ -1636,9 +1636,6 @@ S2.define('select2/selection/multiple',[
         var $remove = $(this);
         var $selection = $remove.parent();
 
-        // Dispose tooltip before unselect / clear to avoid js error from popper.js.
-        $selection.tooltip('dispose');
-
         var data = $selection.data('data');
 
         self.trigger('unselect', {
@@ -1688,7 +1685,7 @@ S2.define('select2/selection/multiple',[
       var formatted = this.display(selection, $selection);
 
       $selection.append(formatted);
-      $selection.prop('title', selection.title || selection.text);
+      //$selection.prop('title', selection.title || selection.text);
 
       $selection.data('data', selection);
 
@@ -5246,8 +5243,6 @@ S2.define('select2/core',[
           data: data
         });
       });
-      $(this).next('.select2.select2-container').find('[title],[data-original-title]').tooltip('dispose');
-      $(this).next('.select2.select2-container').find('[data-original-title]').attr('data-original-title', '');
     });
 
     this.$element.on('focus.select2', function (evt) {
