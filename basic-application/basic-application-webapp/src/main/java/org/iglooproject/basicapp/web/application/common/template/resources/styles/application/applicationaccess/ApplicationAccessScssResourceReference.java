@@ -7,7 +7,7 @@ import org.apache.wicket.markup.head.HeaderItem;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.more.css.scss.ScssResourceReference;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableList;
 
 public final class ApplicationAccessScssResourceReference extends ScssResourceReference {
 
@@ -21,9 +21,9 @@ public final class ApplicationAccessScssResourceReference extends ScssResourceRe
 	
 	@Override
 	public List<HeaderItem> getDependencies() {
-		List<HeaderItem> dependencies = Lists.newArrayListWithExpectedSize(2);
-		dependencies.add(CssHeaderItem.forReference(JQueryUiCssResourceReference.get()));
-		return dependencies;
+		return ImmutableList.of(
+			CssHeaderItem.forReference(JQueryUiCssResourceReference.get())
+		);
 	}
 
 	public static ApplicationAccessScssResourceReference get() {
