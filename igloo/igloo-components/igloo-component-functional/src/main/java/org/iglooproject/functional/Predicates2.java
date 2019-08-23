@@ -181,11 +181,11 @@ public final class Predicates2 {
 		return t -> Streams.stream(t).allMatch(itemPredicate);
 	}
 
-	public static <T> SerializablePredicate2<T> notNullAnd(Predicate<T> predicate) {
+	public static <T> SerializablePredicate2<T> notNullAnd(Predicate<? super T> predicate) {
 		return and(notNull(), predicate);
 	}
 
-	public static <T> SerializablePredicate2<T> notNullAndNot(Predicate<T> predicate) {
+	public static <T> SerializablePredicate2<T> notNullAndNot(Predicate<? super T> predicate) {
 		return notNullAnd(not(predicate));
 	}
 
