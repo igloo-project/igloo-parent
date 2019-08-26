@@ -23,6 +23,12 @@ maven-build:
   environment: staging
   script:
     - "mvn -DskipTests clean package"
+  except:
+    # temporary condition
+    refs:
+      - ft-auto-dependency-check
+    variables:
+      - $CHECK_DEPENDENCIES
 
 maven-test:
   stage: test
