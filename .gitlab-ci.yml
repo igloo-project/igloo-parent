@@ -7,6 +7,7 @@ stages:
   - test
   - analyze
   - deploy
+  - dependencies
 
 maven-prepare:
   stage: prepare
@@ -33,6 +34,25 @@ maven-test:
   script:
     - "source gitlab-ci.build.conf"
     - "./ci/maven-allure.sh"
+  except:
+    # temporary condition
+    refs:
+      - ft-auto-dependency-check
+    variables:
+      - $CHECK_DEPENDENCIES
+
+maven-dependencies:
+  stage: dependencies
+  environment: staging
+  script:
+    - "source gitlab-ci.build.conf"
+    - "./ci/maven-dependencies.sh"
+# temporary condition
+  only:
+    refs:
+      - ft-auto-dependency-check
+#    variables:
+#      - $CHECK_DEPENDENCIES
 
 maven-deploy:
   stage: deploy
@@ -45,6 +65,12 @@ maven-deploy:
     - /^ft-.*-deploy$/
     - /^rl-.*$/
     - /^hf-.*$/
+  except:
+    # temporary condition
+    refs:
+      - ft-auto-dependency-check
+    variables:
+      - $CHECK_DEPENDENCIES
 
 sonar-analyze:
   stage: analyze
@@ -57,3 +83,9 @@ sonar-analyze:
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
       -Dsonar.jacoco.reportPaths=target/jacoco.exec
+  except:
+    # temporary condition
+    refs:
+      - ft-auto-dependency-check
+    variables:
+      - $CHECK_DEPENDENCIES
