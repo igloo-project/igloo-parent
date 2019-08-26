@@ -6,8 +6,10 @@ set +e
 MAVEN_OPTS="$MAVEN_OPTS -DskipTests -Dowasp.enabled=true -Dupdate-report.enabled=true"
 export MAVEN_OPTS
 
-echo mvn -U clean package site:site '&&' mvn site:stage
-mvn -U clean package site:site && mvn site:stage
+# fail at end needed (fail at end) as we want a complete overview
+# do not fail at the first outdated / problematic dependency
+echo mvn -fae -U clean package site:site '&&' mvn site:stage
+mvn -fae -U clean package site:site && mvn site:stage
 TEST_RESULT=$?
 
 # interrupt on error
