@@ -24,7 +24,9 @@ chmod 700 ~/.ssh
 echo "$SYNC_TEST_REPORTS_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
 chmod 644 ~/.ssh/known_hosts
 
-mvn site:stage-deploy -DstagingSiteUrl="scp://${SYNC_TEST_REPORTS_USER}@${SYNC_TEST_REPORTS_HOST}/${SYNC_TEST_REPORTS_DOCUMENT_ROOT}/${CI_PROJECT_NAME}-dependencies/${CI_COMMIT_REF_NAME}/${SYNC_DATE_COMMIT}"
+mvn site:stage-deploy \
+	-DstagingSiteURL="scp://${SYNC_TEST_REPORTS_USER}@${SYNC_TEST_REPORTS_HOST}/${SYNC_TEST_REPORTS_DOCUMENT_ROOT}/${CI_PROJECT_NAME}-dependencies/${CI_COMMIT_REF_NAME}/${SYNC_DATE_COMMIT}" \
+	-DtopSiteURL=https://reports.tools.kobalt.fr/${CI_PROJECT_NAME}-dependencies/${CI_COMMIT_REF_NAME}/${SYNC_DATE_COMMIT}"
 
 if [ $TEST_RESULT -ne 0 ]; then
   echo "Dependency job ends with some test failures"
