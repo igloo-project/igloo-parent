@@ -3,7 +3,7 @@
 # do not interrupt on error
 set +e
 
-MAVEN_OPTS="$MAVEN_OPTS -DskipTests -Dowasp.enabled=true -Dupdate-report.enabled=true"
+MAVEN_OPTS="$MAVEN_OPTS -DskipTests=true -Dowasp.enabled=true -Dupdate-report.enabled=true"
 export MAVEN_OPTS
 
 # fail at end needed (fail at end) as we want a complete overview
