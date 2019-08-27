@@ -360,7 +360,7 @@
 					<dependencies>
 						<dependency><!-- add support for ssh/scp -->
 							<groupId>org.apache.maven.wagon</groupId>
-							<artifactId>wagon-ssh</artifactId>
+							<artifactId>wagon-ssh-external</artifactId>
 							<version>${igloo.wagon-ssh-external-plugin.version}</version>
 						</dependency>
 					</dependencies>	
