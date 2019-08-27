@@ -79,7 +79,7 @@
 		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
 		<igloo.allure-junit4.version>2.10.0</igloo.allure-junit4.version>
 		<igloo.junit-dataprovider.version>1.13.1</igloo.junit-dataprovider.version>
-		<igloo.owasp-maven-plugin.version>4.0.2</igloo.owasp-maven-plugin.version>
+		<igloo.owasp-maven-plugin.version>5.2.1</igloo.owasp-maven-plugin.version>
 	</properties>
 	
 	<dependencyManagement>
