@@ -16,7 +16,7 @@
 		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
 		<igloo.jsch.version>0.1.55</igloo.jsch.version>
 		<maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
-		<maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+		<maven-site-plugin.version>3.8.2</maven-site-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.3.3</igloo.wagon-ssh-external-plugin.version>
 		<maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
 		
@@ -263,6 +263,17 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>${maven-site-plugin.version}</version>
+					<executions>
+						<!-- BUGS (?): target/site is erroneously used as source by site:stage-deploy -->
+						<!-- found on maven-site-plugin 3.8.2 / not verified on a minimal use case -->
+						<!-- on command line, run with "mvn site:stage-deploy@stage-deploy" -->
+						<execution>
+							<id>stage-deploy</id>
+							<configuration>
+									<inputDirectory>target/staging</inputDirectory>
+							</configuration>
+						</execution>
+					</executions>
 					<dependencies>
 						<dependency><!-- add support for ssh/scp -->
 							<groupId>org.apache.maven.wagon</groupId>

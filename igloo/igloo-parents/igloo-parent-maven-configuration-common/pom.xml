@@ -59,7 +59,7 @@
 		<igloo.animal-sniffer-maven-plugin.version>1.17</igloo.animal-sniffer-maven-plugin.version>
 		<igloo.exec-maven-plugin.version>1.6.0</igloo.exec-maven-plugin.version>
 		<igloo.maven-clean-plugin.version>3.1.0</igloo.maven-clean-plugin.version>
-		<igloo.maven-site-plugin.version>3.7.1</igloo.maven-site-plugin.version>
+		<igloo.maven-site-plugin.version>3.8.2</igloo.maven-site-plugin.version>
 		<igloo.maven-project-info-reports-plugin.version>3.0.0</igloo.maven-project-info-reports-plugin.version>
 		<igloo.maven-failsafe-plugin.version>3.0.0-M3</igloo.maven-failsafe-plugin.version>
 		<igloo.jacoco-maven-plugin.version>0.8.3</igloo.jacoco-maven-plugin.version>
