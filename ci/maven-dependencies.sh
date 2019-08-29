@@ -6,10 +6,15 @@ set +e
 MAVEN_OPTS="$MAVEN_OPTS -DskipTests=true -Dowasp.enabled=true -Dupdate-report.enabled=true"
 export MAVEN_OPTS
 
+# Use a faked version so we can install artifacts
+# (if not installed, build ends with not found dependencies)
+mvn versions:set -DnewVersion=DEPENDENCIES-SNAPSHOT -DprocessAllModules=true
+mvn versions:commit
+
 # fail at end needed (fail at end) as we want a complete overview
 # do not fail at the first outdated / problematic dependency
-echo mvn -fae -U clean package site:site '&&' mvn site:stage
-mvn -fae -U clean package site:site && mvn site:stage
+echo mvn -fae -U clean install site:site '&&' mvn site:stage
+mvn -fae -U clean install site:site && mvn site:stage
 TEST_RESULT=$?
 
 # interrupt on error
