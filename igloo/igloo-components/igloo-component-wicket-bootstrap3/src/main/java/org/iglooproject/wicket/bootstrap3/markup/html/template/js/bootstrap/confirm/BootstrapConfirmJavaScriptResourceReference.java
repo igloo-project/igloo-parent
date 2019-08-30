@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstrap.modal.BootstrapModalManagerJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
 import com.google.common.collect.Lists;
@@ -21,7 +21,7 @@ public final class BootstrapConfirmJavaScriptResourceReference extends AbstractC
 	@Override
 	protected List<HeaderItem> getPluginDependencies() {
 		List<HeaderItem> dependencies = Lists.newArrayList();
-		dependencies.add(JavaScriptHeaderItem.forReference(BootstrapModalManagerJavaScriptResourceReference.get()));
+		dependencies.add(JavaScriptHeaderItem.forReference(BootstrapModalJavaScriptResourceReference.get()));
 		return dependencies;
 	}
 

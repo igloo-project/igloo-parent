@@ -53,13 +53,13 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceTaskDescriptionPage.class);
 	
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL)
-			.enable(SerializationFeature.INDENT_OUTPUT);
+		.enable(SerializationFeature.INDENT_OUTPUT);
 
 	public static final ILinkDescriptorMapper<IPageLinkDescriptor, IModel<QueuedTaskHolder>> MAPPER =
 		LinkDescriptorBuilder.start()
-				.model(QueuedTaskHolder.class)
-				.map(CommonParameters.ID).mandatory()
-				.page(ConsoleMaintenanceTaskDescriptionPage.class);
+			.model(QueuedTaskHolder.class)
+			.map(CommonParameters.ID).mandatory()
+			.page(ConsoleMaintenanceTaskDescriptionPage.class);
 	
 	@SpringBean
 	private IQueuedTaskHolderManager queuedTaskHolderManager;
@@ -71,11 +71,23 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		super(parameters);
 		setOutputMarkupId(true);
 		
-		final IModel<QueuedTaskHolder> queuedTaskHolderModel = new GenericEntityModel<Long, QueuedTaskHolder>(null);
-		MAPPER.map(queuedTaskHolderModel).extractSafely(parameters, ConsoleMaintenanceTaskListPage.linkDescriptor(),
-				getString("common.error.unexpected"));
+		final IModel<QueuedTaskHolder> queuedTaskHolderModel = new GenericEntityModel<>();
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.tasks")));
+		addBreadCrumbElement(new BreadCrumbElement(
+			new ResourceModel("console.maintenance.tasks"),
+			ConsoleMaintenanceTaskListPage.linkDescriptor()
+		));
+		addBreadCrumbElement(new BreadCrumbElement(
+			new ResourceModel("console.maintenance.task.common.task")
+		));
+		
+		MAPPER
+			.map(queuedTaskHolderModel)
+			.extractSafely(
+				parameters,
+				ConsoleMaintenanceTaskListPage.linkDescriptor(),
+				getString("common.error.unexpected")
+			);
 		
 		WebMarkupContainer statusContainer = new WebMarkupContainer("statusContainer") {
 			private static final long serialVersionUID = 1L;
@@ -123,8 +135,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		};
 		add(statusContainer);
 		
-		statusContainer.add(new EnumCoreLabel<TaskStatus>("status",
-				BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().status())) {
+		statusContainer.add(new EnumCoreLabel<TaskStatus>("status", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().status())) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
@@ -134,102 +145,103 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		});
 		
 		statusContainer.add(
-				AjaxConfirmLink.<QueuedTaskHolder>build()
-						.title(new ResourceModel("console.maintenance.task.description.mainInformation.reload.title"))
-						.content(new ResourceModel("console.maintenance.task.description.mainInformation.reload.confirmation"))
-						.keepMarkup()
-						.yesNo()
-						.onClick(new IAjaxAction() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public void execute(AjaxRequestTarget target) {
-								try {
-									queuedTaskHolderManager.reload(queuedTaskHolderModel.getObject().getId());
-									Session.get().success(getString("console.maintenance.task.description.mainInformation.reload.success"));
-									throw MAPPER.map(queuedTaskHolderModel).newRestartResponseException();
-								} catch (RestartResponseException e) {
-									throw e;
-								} catch (Exception e) {
-									LOGGER.error("Unexpected error while reloading task", e);
-									Session.get().error(getString("common.error.unexpected"));
-								}
-								FeedbackUtils.refreshFeedback(target, getPage());
-							}
-						})
-						.create("reload", queuedTaskHolderModel)
-						.add(
-								new Condition() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public boolean applies() {
-										return queuedTaskHolderService.isReloadable(queuedTaskHolderModel.getObject());
-									}
-								}.thenShowInternal()
-						)
+			AjaxConfirmLink.<QueuedTaskHolder>build()
+				.title(new ResourceModel("console.maintenance.task.description.mainInformation.reload.title"))
+				.content(new ResourceModel("console.maintenance.task.description.mainInformation.reload.confirmation"))
+				.keepMarkup()
+				.yesNo()
+				.onClick(new IAjaxAction() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public void execute(AjaxRequestTarget target) {
+						try {
+							queuedTaskHolderManager.reload(queuedTaskHolderModel.getObject().getId());
+							Session.get().success(getString("console.maintenance.task.description.mainInformation.reload.success"));
+							throw MAPPER.map(queuedTaskHolderModel).newRestartResponseException();
+						} catch (RestartResponseException e) {
+							throw e;
+						} catch (Exception e) {
+							LOGGER.error("Unexpected error while reloading task", e);
+							Session.get().error(getString("common.error.unexpected"));
+						}
+						FeedbackUtils.refreshFeedback(target, getPage());
+					}
+				})
+				.create("reload", queuedTaskHolderModel)
+				.add(
+					new Condition() {
+						private static final long serialVersionUID = 1L;
+						@Override
+						public boolean applies() {
+							return queuedTaskHolderService.isReloadable(queuedTaskHolderModel.getObject());
+						}
+					}.thenShowInternal()
+				)
 		);
 		
 		statusContainer.add(
-				AjaxConfirmLink.<QueuedTaskHolder>build()
-						.title(new ResourceModel("console.maintenance.task.description.mainInformation.cancel.title"))
-						.content(new ResourceModel("console.maintenance.task.description.mainInformation.cancel.confirmation"))
-						.keepMarkup()
-						.yesNo()
-						.onClick(new IAjaxAction() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public void execute(AjaxRequestTarget target) {
-								try {
-									queuedTaskHolderManager.cancel(queuedTaskHolderModel.getObject().getId());
-									Session.get().success(getString("console.maintenance.task.description.mainInformation.cancel.success"));
-									throw MAPPER.map(queuedTaskHolderModel).newRestartResponseException();
-								} catch (RestartResponseException e) {
-									throw e;
-								} catch (Exception e) {
-									LOGGER.error("Unexpected error while cancelling task", e);
-									Session.get().error(getString("common.error.unexpected"));
-								}
-								FeedbackUtils.refreshFeedback(target, getPage());
-							}
-						})
-						.create("cancel", queuedTaskHolderModel)
-						.add(
-								new Condition() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public boolean applies() {
-										return queuedTaskHolderService.isCancellable(queuedTaskHolderModel.getObject());
-									}
-								}
-										.thenShowInternal()
-						)
+			AjaxConfirmLink.<QueuedTaskHolder>build()
+				.title(new ResourceModel("console.maintenance.task.description.mainInformation.cancel.title"))
+				.content(new ResourceModel("console.maintenance.task.description.mainInformation.cancel.confirmation"))
+				.keepMarkup()
+				.yesNo()
+				.onClick(new IAjaxAction() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public void execute(AjaxRequestTarget target) {
+						try {
+							queuedTaskHolderManager.cancel(queuedTaskHolderModel.getObject().getId());
+							Session.get().success(getString("console.maintenance.task.description.mainInformation.cancel.success"));
+							throw MAPPER.map(queuedTaskHolderModel).newRestartResponseException();
+						} catch (RestartResponseException e) {
+							throw e;
+						} catch (Exception e) {
+							LOGGER.error("Unexpected error while cancelling task", e);
+							Session.get().error(getString("common.error.unexpected"));
+						}
+						FeedbackUtils.refreshFeedback(target, getPage());
+					}
+				})
+				.create("cancel", queuedTaskHolderModel)
+				.add(
+					new Condition() {
+						private static final long serialVersionUID = 1L;
+						@Override
+						public boolean applies() {
+							return queuedTaskHolderService.isCancellable(queuedTaskHolderModel.getObject());
+						}
+					}
+							.thenShowInternal()
+				)
 		);
 		
 		// Main information detail
 		Component queue = new CoreLabel("queue", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().queueId())).hideIfEmpty();
 		add(
-				new CoreLabel("name", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().name())),
-				queue,
-				new PlaceholderContainer("defaultQueue").condition(Condition.componentVisible(queue)),
-				new DateLabel("creationDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().creationDate()),
-						DatePattern.SHORT_DATETIME),
-				new DateLabel("startDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().startDate()),
-						DatePattern.SHORT_DATETIME),
-				new DateLabel("endDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().endDate()),
-						DatePattern.SHORT_DATETIME),
-				new EnumCoreLabel<TaskStatus>("status", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().status())),
-				new TaskStatusPanel("statusIcon", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().status())),
-				new EnumCoreLabel<TaskResult>("result", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().result())),
-				new TaskResultPanel("resultIcon", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().result()))
+			new CoreLabel("name", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().name())),
+			queue,
+			new PlaceholderContainer("defaultQueue").condition(Condition.componentVisible(queue)),
+			new DateLabel("creationDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().creationDate()),
+					DatePattern.SHORT_DATETIME),
+			new DateLabel("startDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().startDate()),
+					DatePattern.SHORT_DATETIME),
+			new DateLabel("endDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().endDate()),
+					DatePattern.SHORT_DATETIME),
+			new EnumCoreLabel<TaskStatus>("status", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().status())),
+			new TaskStatusPanel("statusIcon", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().status())),
+			new EnumCoreLabel<TaskResult>("result", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().result())),
+			new TaskResultPanel("resultIcon", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().result()))
 		);
-
+		
 		// Stack trace
-		add(new CoreLabel("stackTrace", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().stackTrace()))
-				.hideIfEmpty());
-
+		add(
+			new CoreLabel("stackTrace", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().stackTrace()))
+				.hideIfEmpty()
+		);
+		
 		// Serialized task
 		add(new CoreLabel("serializedTask", new LoadableDetachableModel<String>() {
 			private static final long serialVersionUID = 1L;
-
 			@Override
 			protected String load() {
 				try {

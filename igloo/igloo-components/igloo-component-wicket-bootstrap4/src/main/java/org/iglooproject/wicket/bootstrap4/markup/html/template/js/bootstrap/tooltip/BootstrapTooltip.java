@@ -50,7 +50,7 @@ public class BootstrapTooltip implements IBootstrapTooltip {
 
 	public BootstrapTooltip() {
 		super();
-		boundary("viewport");
+		boundary("window"); // https://github.com/FezVrasta/popper.js/issues/611
 	}
 
 	public IModel<Boolean> getAnimationModel() {

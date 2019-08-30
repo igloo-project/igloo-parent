@@ -12,7 +12,7 @@ public abstract class ChoiceProvider<T> extends org.wicketstuff.select2.ChoicePr
 
 	private static final int PAGE_SIZE = 10;
 
-	public int pageSize = PAGE_SIZE;
+	private int pageSize = PAGE_SIZE;
 
 	public ChoiceProvider() {
 	}

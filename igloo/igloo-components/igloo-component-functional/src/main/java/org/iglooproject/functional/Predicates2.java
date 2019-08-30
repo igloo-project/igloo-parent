@@ -57,8 +57,8 @@ public final class Predicates2 {
 	}
 
 	@SafeVarargs
-	public static <T> SerializablePredicate2<T> and(Predicate<? super T>... predicates) {
-		return and(defensiveCopy(predicates));
+	public static <T> SerializablePredicate2<? super T> and(Predicate<? super T>... predicates) {
+		return and(Predicates2.<Predicate<? super T>>defensiveCopy(predicates));
 	}
 
 	public static <T> SerializablePredicate2<T> and(SerializablePredicate2<? super T> first, Predicate<? super T> second) {
@@ -78,7 +78,7 @@ public final class Predicates2 {
 
 	@SafeVarargs
 	public static <T> SerializablePredicate2<T> or(Predicate<? super T>... predicates) {
-		return or(defensiveCopy(predicates));
+		return or(Predicates2.<Predicate<? super T>>defensiveCopy(predicates));
 	}
 
 	public static <T> SerializablePredicate2<T> or(Predicate<? super T> first, Predicate<? super T> second) {
@@ -181,11 +181,11 @@ public final class Predicates2 {
 		return t -> Streams.stream(t).allMatch(itemPredicate);
 	}
 
-	public static <T> SerializablePredicate2<T> notNullAnd(Predicate<T> predicate) {
+	public static <T> SerializablePredicate2<T> notNullAnd(Predicate<? super T> predicate) {
 		return and(notNull(), predicate);
 	}
 
-	public static <T> SerializablePredicate2<T> notNullAndNot(Predicate<T> predicate) {
+	public static <T> SerializablePredicate2<T> notNullAndNot(Predicate<? super T> predicate) {
 		return notNullAnd(not(predicate));
 	}
 

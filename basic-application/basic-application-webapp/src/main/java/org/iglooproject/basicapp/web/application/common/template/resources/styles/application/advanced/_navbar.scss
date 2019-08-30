@@ -1,5 +1,6 @@
 .navbar-app,
 .navbar-sidebar {
+	display: flex;
 	flex-flow: row nowrap;
 	justify-content: flex-start;
 	
@@ -28,10 +29,6 @@
 	.navbar-body {
 		margin-left: $navbar-padding-x;
 	}
-}
-
-.navbar-sidebar {
-	display: none;
 }
 
 @mixin navbar-nav-link-hover() {

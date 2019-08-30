@@ -4,7 +4,7 @@
 	
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>1.1.27</version>
+	<version>1.1.28</version>
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Parent - Maven configuration - Common</name>
@@ -15,6 +15,8 @@
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
 		
 		<jdk.version>1.8</jdk.version>
+		<!-- used for generation; version numbers are not compatible; keep it in sync with jdk.version -->
+		<jdk.release.version>8</jdk.release.version>
 		<minimal.jdk.version>1.8</minimal.jdk.version>
 		
 		<!-- ipv6 local network not available on travis - https://github.com/travis-ci/travis-ci/issues/4964 -->
@@ -499,38 +501,6 @@
 				<sonar.projectKey>${project.groupId}:${project.artifactId}:${sonar.projectBranch}</sonar.projectKey>
 				<sonar.projectName>${project.name} (${sonar.projectBranch})</sonar.projectName>
 			</properties>
-		</profile>
-		<!-- profile example to switch toolchain and animal sniffer target version; no longer used -->
-		<profile>
-			<id>jdk8</id>
-			<activation>
-				<property>
-					<name>jdk8</name>
-				</property>
-			</activation>
-			<properties>
-				<jdk.signature.groupId>org.codehaus.mojo.signature</jdk.signature.groupId>
-				<jdk.signature.artifactId>java18</jdk.signature.artifactId>
-				<jdk.signature.version>1.0</jdk.signature.version>
-				<jdk.version>1.8</jdk.version>
-				<maven.compiler.source>1.8</maven.compiler.source>
-				<maven.compiler.target>1.8</maven.compiler.target>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-toolchains-plugin</artifactId>
-						<configuration>
-							<toolchains>
-								<jdk>
-									<version>1.8</version>
-								</jdk>
-							</toolchains>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 		<profile>
 			<id>allure</id>

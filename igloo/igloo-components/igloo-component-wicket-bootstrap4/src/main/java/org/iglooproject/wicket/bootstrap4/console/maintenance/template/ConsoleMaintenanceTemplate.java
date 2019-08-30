@@ -14,7 +14,10 @@ public abstract class ConsoleMaintenanceTemplate extends ConsoleTemplate {
 	public ConsoleMaintenanceTemplate(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance")));
+		addBreadCrumbElement(new BreadCrumbElement(
+			new ResourceModel("console.maintenance"),
+			ConsoleMaintenanceSearchPage.linkDescriptor()
+		));
 	}
 
 	@Override

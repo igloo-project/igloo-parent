@@ -77,17 +77,7 @@ public class AnnouncementsPanel extends Panel {
 					new EnclosureContainer("container")
 						.condition(Condition.isFalse(closeModel))
 						.add(
-							new CollectionView<Announcement>(
-								"announcements",
-								new LoadableDetachableModel<List<Announcement>>() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									protected List<Announcement> load() {
-										return announcementService.listActive();
-									}
-								},
-								GenericEntityModel.factory()
-							) {
+							new CollectionView<Announcement>( "announcements", announcementsModel, GenericEntityModel.factory()) {
 								private static final long serialVersionUID = 1L;
 								@Override
 								protected void populateItem(Item<Announcement> item) {

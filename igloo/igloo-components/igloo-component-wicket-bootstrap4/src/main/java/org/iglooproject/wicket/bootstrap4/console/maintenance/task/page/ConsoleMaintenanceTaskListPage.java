@@ -18,13 +18,15 @@ public class ConsoleMaintenanceTaskListPage extends ConsoleMaintenanceTemplate {
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()
-				.page(ConsoleMaintenanceTaskListPage.class);
+			.page(ConsoleMaintenanceTaskListPage.class);
 	}
 
 	public ConsoleMaintenanceTaskListPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.tasks")));
+		addBreadCrumbElement(new BreadCrumbElement(
+			new ResourceModel("console.maintenance.tasks")
+		));
 		
 		QueuedTaskHolderDataProvider queuedTaskHolderDataProvider = new QueuedTaskHolderDataProvider();
 		
