@@ -1,6 +1,8 @@
-.list-group.list-group-sub {
-	.list-group-item {
-		padding: $list-group-item-padding-y/3 $list-group-item-padding-x/3;
-		border-top-style: dotted;
+.list-group-sub {
+	> .list-group-item {
+		padding: $table-cell-padding-sm;
+		background: transparent;
+		border-color: $table-border-color;
+		border-style: dotted;
 	}
 }
