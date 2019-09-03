@@ -6,7 +6,7 @@
 		<groupId>fr.openwide.core.parents</groupId>
 		<artifactId>owsi-core-parent-core-project</artifactId>
 		<relativePath>../owsi-core/owsi-core-parents/owsi-core-parent-core-project/pom.xml</relativePath>
-		<version>0.11-SNAPSHOT</version>
+		<version>0.11.6-SNAPSHOT</version>
 	</parent>
 	
 	<groupId>fr.openwide.core.archetype</groupId>
