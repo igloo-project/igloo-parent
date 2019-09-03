@@ -142,8 +142,6 @@
 		
 		<owsi-core.passay.version>1.1.0</owsi-core.passay.version>
 		<owsi-core.java-object-diff.version>0.92</owsi-core.java-object-diff.version>
-		
-		<owsi-core.localization-properties-consistency-maven-plugin.version>1.0.0</owsi-core.localization-properties-consistency-maven-plugin.version>
 	</properties>
 	
 	<prerequisites>
@@ -1243,19 +1241,6 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>fr.openwide.maven.plugins</groupId>
-					<artifactId>localization-properties-consistency-maven-plugin</artifactId>
-					<version>${owsi-core.localization-properties-consistency-maven-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>scan</id>
-							<goals>
-								<goal>scan</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
 				<plugin>
 					<groupId>org.bsc.maven</groupId>
 					<artifactId>maven-processor-plugin</artifactId>
