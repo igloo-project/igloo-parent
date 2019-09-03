@@ -18,6 +18,7 @@
 		<minimal.jdk.version>1.8</minimal.jdk.version>
 		
 		<owsi-core.maven-jgitflow-plugin.version>1.0-m5.1</owsi-core.maven-jgitflow-plugin.version>
+		<owsi-core.jsch.version>0.1.55</owsi-core.jsch.version>
 		<minimal.maven.version>3.2.5</minimal.maven.version>
 		
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
@@ -66,6 +67,13 @@
 						<versionTagPrefix>v</versionTagPrefix>
 					</flowInitContext>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.jcraft</groupId>
+						<artifactId>jsch</artifactId>
+						<version>${owsi-core.jsch.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
