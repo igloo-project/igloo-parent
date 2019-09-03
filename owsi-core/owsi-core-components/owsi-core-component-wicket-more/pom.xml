@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>fr.openwide.core.components</groupId>
 		<artifactId>owsi-core-components</artifactId>
-		<version>0.11.5</version>
+		<version>0.11.6</version>
 	</parent>
 
 	<artifactId>owsi-core-component-wicket-more</artifactId>
@@ -156,16 +156,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
-	<repositories>
-		<repository>
-			<id>org.bindgen</id>
-			<name>Bindgen Repository</name>
-			<url>http://repo.joist.ws</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 	
 </project>

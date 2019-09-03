@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>wicket-showcase</artifactId>
 		<groupId>fr.openwide.core.showcase</groupId>
-		<version>0.11.5</version>
+		<version>0.11.6-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>wicket-showcase-core</artifactId>
@@ -113,14 +113,4 @@
 		</plugins>
 	</build>
 	
-	<repositories>
-		<repository>
-			<id>org.bindgen</id>
-			<name>Bindgen Repository</name>
-			<url>http://repo.joist.ws</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 </project>

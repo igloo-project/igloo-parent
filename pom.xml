@@ -4,7 +4,7 @@
 
 	<groupId>fr.openwide.core</groupId>
 	<artifactId>owsi-core-parent</artifactId>
-	<version>0.11.5</version>
+	<version>0.11.6</version>
 	<packaging>pom</packaging>
 
 	<name>OWSI Core - Parent</name>
@@ -15,6 +15,7 @@
 
 		<owsi-core.maven-release-plugin.version>2.5.2</owsi-core.maven-release-plugin.version>
 		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
+		<owsi-core.jsch.version>0.1.55</owsi-core.jsch.version>
 	</properties>
 
 	<profiles>
@@ -26,6 +27,19 @@
 					<value>owsi-core-release</value>
 				</property>
 			</activation>
+			<distributionManagement>
+				<repository>
+					<id>nexus-igloo-releases</id>
+					<name>Nexus OWSI Core</name>
+					<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
+				</repository>
+		
+				<snapshotRepository>
+					<id>nexus-igloo-snapshots</id>
+					<name>Nexus OWSI Core Snapshots</name>
+					<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
+				</snapshotRepository>
+			</distributionManagement>
 			<modules>
 				<module>owsi-core</module>
 			</modules>
@@ -61,6 +75,13 @@
 						<versionTagPrefix>v</versionTagPrefix>
 					</flowInitContext>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.jcraft</groupId>
+						<artifactId>jsch</artifactId>
+						<version>${owsi-core.jsch.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 		<pluginManagement>
