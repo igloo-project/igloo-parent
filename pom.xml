@@ -27,6 +27,19 @@
 					<value>owsi-core-release</value>
 				</property>
 			</activation>
+			<distributionManagement>
+				<repository>
+					<id>nexus-igloo-releases</id>
+					<name>Nexus OWSI Core</name>
+					<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
+				</repository>
+		
+				<snapshotRepository>
+					<id>nexus-igloo-snapshots</id>
+					<name>Nexus OWSI Core Snapshots</name>
+					<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
+				</snapshotRepository>
+			</distributionManagement>
 			<modules>
 				<module>owsi-core</module>
 			</modules>
