@@ -341,14 +341,15 @@
 			</activation>
 			<distributionManagement>
 				<repository>
-					<id>nexus-owsi-core</id>
+					<id>nexus-igloo-releases</id>
 					<name>Nexus OWSI Core</name>
-					<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core</url>
+					<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
 				</repository>
+		
 				<snapshotRepository>
-					<id>nexus-owsi-core-snapshots</id>
+					<id>nexus-igloo-snapshots</id>
 					<name>Nexus OWSI Core Snapshots</name>
-					<url>https://projects.openwide.fr/services/nexus/content/repositories/owsi-core-snapshots</url>
+					<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
 				</snapshotRepository>
 			</distributionManagement>
 		</profile>
