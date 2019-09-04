@@ -25,6 +25,7 @@ body {
 	background-color: $sidebar-bg;
 	color: $sidebar-color;
 	overflow: hidden;
+	-webkit-overflow-scrolling: touch;
 	
 	transform: translateX(-100%);
 	
