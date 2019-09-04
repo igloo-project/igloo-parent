@@ -17,11 +17,11 @@ body {
 	top: 0;
 	bottom: 0;
 	z-index: $sidebar-zindex;
-	flex: 0 0 $sidebar-expand-width;
+	flex: 0 0 $sidebar-width;
 	flex-direction: column;
-	width: $sidebar-expand-width;
-	max-width: $sidebar-expand-width;
-	min-width: $sidebar-expand-width;
+	width: $sidebar-width;
+	max-width: $sidebar-width;
+	min-width: $sidebar-width;
 	background-color: $sidebar-bg;
 	color: $sidebar-color;
 	overflow: hidden;
@@ -180,7 +180,7 @@ body {
 		border-right: none;
 		box-shadow: $sidebar-box-shadow;
 		
-		@media (max-width: $sidebar-expand-width) {
+		@media (max-width: $sidebar-width) {
 			flex-basis: 100%;
 			width: 100%;
 			min-width: 100%;
@@ -205,36 +205,38 @@ body.sidebar-open {
 	}
 }
 
-body:not(.sidebar-open).sidebar-expand {
-	@each $breakpoint in map-keys($grid-breakpoints) {
-		$next: breakpoint-next($breakpoint, $grid-breakpoints);
-		$infix: breakpoint-infix($next, $grid-breakpoints);
-		
-		&#{$infix} {
-			@include media-breakpoint-up($next) {
-				.navbar {
-					&.navbar-app {
-						.navbar-header {
-							.navbar-toggler {
-								display: none;
+@each $breakpoint, $container-max-width in $container-max-widths {
+	$min-width: $sidebar-width + $container-max-width;
+	$max: breakpoint-max($breakpoint);
+	
+	@if not $max or $min-width <= $max {
+		@include media-breakpoint-down($breakpoint) {
+			@media (min-width: $min-width) {
+				body:not(.sidebar-open) {
+					.navbar {
+						&.navbar-app {
+							.navbar-header {
+								.navbar-toggler {
+									display: none;
+								}
 							}
+						}
+						
+						&.navbar-sidebar {
+							display: none;
 						}
 					}
 					
-					&.navbar-sidebar {
-						display: none;
+					.sidebar {
+						border-right: $sidebar-border-width solid $sidebar-border-color;
+						box-shadow: none;
+						
+						transform: none;
 					}
-				}
-				
-				.sidebar {
-					border-right: $sidebar-border-width solid $sidebar-border-color;
-					box-shadow: none;
 					
-					transform: none;
-				}
-				
-				.body-container {
-					margin-left: $sidebar-expand-width;
+					.body-container {
+						margin-left: $sidebar-width;
+					}
 				}
 			}
 		}
