@@ -29,10 +29,11 @@ chmod 700 ~/.ssh
 echo "$SYNC_TEST_REPORTS_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
 chmod 644 ~/.ssh/known_hosts
 
+SYNC_DATE_COMMIT="$( date +'%Y-%m-%dT%H:%m:%S' )@${CI_COMMIT_SHA:0:8}"
 # -N: non-recursive. Site is aggregated in root project, we do not need to
 #     perform stage-deploy in children modules.
 mvn -N site:stage-deploy@stage-deploy \
-	-DstagingSiteURL="scpexe://${SYNC_TEST_REPORTS_USER}@${SYNC_TEST_REPORTS_HOST}${SYNC_TEST_REPORTS_DOCUMENT_ROOT}/${CI_PROJECT_NAME}-dependencies/${CI_COMMIT_REF_NAME}/${SYNC_DATE_COMMIT}"
+	-DstagingSiteURL="scpexe://${SYNC_TEST_REPORTS_USER}@${SYNC_TEST_REPORTS_HOST}${SYNC_TEST_REPORTS_DOCUMENT_ROOT}/${CI_PROJECT_NAME}-dependencies/${CI_COMMIT_REF_NAME}/${SYNC_DATE_COMMIT}/"
 
 if [ $TEST_RESULT -ne 0 ]; then
   echo "Dependency job ends with some test failures"
