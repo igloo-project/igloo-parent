@@ -15,6 +15,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
+import org.iglooproject.basicapp.core.business.user.predicate.UserPredicates;
 import org.iglooproject.basicapp.core.business.user.search.UserSort;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
@@ -126,21 +127,23 @@ public class AdministrationTechnicalUserListPage extends AdministrationUserListT
 				public void populateItem(Item<ICellPopulator<TechnicalUser>> cellItem, String componentId, IModel<TechnicalUser> rowModel) {
 					IModel<String> emailModel = BindingModel.of(rowModel, Bindings.user().email());
 					cellItem.add(
-							new EmailLink(componentId, emailModel) {
-								private static final long serialVersionUID = 1L;
-								@Override
-								protected void onComponentTag(ComponentTag tag) {
-									tag.setName("a");
-									super.onComponentTag(tag);
-								}
+						new EmailLink(componentId, emailModel) {
+							private static final long serialVersionUID = 1L;
+							@Override
+							protected void onComponentTag(ComponentTag tag) {
+								tag.setName("a");
+								super.onComponentTag(tag);
 							}
+						}
 							.add(Condition.predicate(emailModel, Predicates2.hasText()).thenShow())
 					);
 				}
 			})
 				.withClass("text text-md")
 				.withClass(CELL_HIDDEN_MD_AND_LESS)
-			.addRowCssClass(itemModel -> (itemModel.getObject() != null && !itemModel.getObject().isActive()) ? TABLE_ROW_DISABLED : null)
+			.rows()
+				.withClass(itemModel -> Condition.predicate(itemModel, UserPredicates.inactive()).then(TABLE_ROW_DISABLED).otherwise(""))
+				.end()
 			.withNoRecordsResourceKey("administration.user.list.count.zero")
 			.bootstrapCard()
 				.ajaxPagers()

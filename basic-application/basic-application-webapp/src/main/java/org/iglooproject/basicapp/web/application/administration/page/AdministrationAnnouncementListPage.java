@@ -14,6 +14,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.announcement.model.Announcement;
+import org.iglooproject.basicapp.core.business.announcement.predicate.AnnouncementPredicates;
 import org.iglooproject.basicapp.core.business.announcement.search.AnnouncementSort;
 import org.iglooproject.basicapp.core.business.announcement.service.IAnnouncementService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
@@ -25,6 +26,7 @@ import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers
 import org.iglooproject.basicapp.web.application.common.renderer.AnnouncementActiveRenderer;
 import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
@@ -145,7 +147,9 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 						.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
 					.end()
 					.withClass("actions actions-2x")
-				.addRowCssClass(itemModel -> (itemModel.getObject() != null && !itemModel.getObject().isActive()) ? TABLE_ROW_DISABLED : null)
+				.rows()
+					.withClass(itemModel -> Condition.predicate(itemModel, AnnouncementPredicates.inactive()).then(TABLE_ROW_DISABLED).otherwise(""))
+					.end()
 				.bootstrapCard()
 					.count("administration.announcement.list.count")
 					.ajaxPagers()
