@@ -18,7 +18,7 @@ public final class ApplicationAccessScssResourceReference extends ScssResourceRe
 	private ApplicationAccessScssResourceReference() {
 		super(ApplicationAccessScssResourceReference.class, "application-access.scss");
 	}
-	
+
 	@Override
 	public List<HeaderItem> getDependencies() {
 		return ImmutableList.of(
