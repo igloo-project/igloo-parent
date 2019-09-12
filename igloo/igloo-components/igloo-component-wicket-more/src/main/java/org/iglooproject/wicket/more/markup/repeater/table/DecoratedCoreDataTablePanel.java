@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
@@ -55,7 +56,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 			IDataTableFactory<T, S> factory,
 			Map<IColumn<T, S>, Condition> columns,
 			ISequenceProvider<T> sequenceProvider,
-			List<IDetachableFactory<? super IModel<? extends T>, ? extends String>> rowCssClassFactories,
+			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
 			long rowsPerPage,
 			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories,
 			Condition responsiveCondition) {
@@ -63,7 +64,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		
 		this.sequenceProvider = sequenceProvider;
 		
-		dataTable = newDataTable("dataTable", factory, columns, sequenceProvider, rowCssClassFactories, rowsPerPage);
+		dataTable = newDataTable("dataTable", factory, columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage);
 		
 		add(
 				new WebMarkupContainer("dataTableContainer")
@@ -139,9 +140,9 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	
 	protected CoreDataTable<T, S> newDataTable(String id, IDataTableFactory<T, S> factory,
 			Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider,
-			List<IDetachableFactory<? super IModel<? extends T>, ? extends String>> rowCssClassFactories,
+			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
 			long rowsPerPage) {
-		return factory.create(id, columns, sequenceProvider, rowCssClassFactories, rowsPerPage);
+		return factory.create(id, columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage);
 	}
 	
 	public CoreDataTable<T, S> getDataTable() {
