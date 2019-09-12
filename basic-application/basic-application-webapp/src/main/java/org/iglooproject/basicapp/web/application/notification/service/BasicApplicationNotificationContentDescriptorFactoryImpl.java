@@ -10,7 +10,7 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.ResourceKeyGenerator;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.notification.component.ExampleHtmlNotificationPanel;
-import org.iglooproject.basicapp.web.application.notification.component.SimpleUserActionHtmlNotificationPanel;
+import org.iglooproject.basicapp.web.application.notification.component.UserPasswordRecoveryRequestHtmlNotificationPanel;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordCreationPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
@@ -80,7 +80,7 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 			@Override
 			public Component createComponent(String wicketId) {
 				IModel<User> userModel = GenericEntityModel.of(user);
-				return new SimpleUserActionHtmlNotificationPanel<>(
+				return new UserPasswordRecoveryRequestHtmlNotificationPanel<>(
 					wicketId,
 					keyGenerator,
 					userModel, userModel, Model.of(new Date()),
