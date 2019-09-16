@@ -1,5 +1,5 @@
 /*!
- * Select2 4.0.9
+ * Select2 4.0.10
  * https://select2.github.io
  *
  * Released under the MIT license
@@ -1655,9 +1655,9 @@ S2.define('select2/selection/single',[
 
     $rendered.empty().append(formatted);
 
-    /*
     var title = selection.title || selection.text;
 
+    /*
     if (title) {
       $rendered.attr('title', title);
     } else {
@@ -1699,10 +1699,10 @@ S2.define('select2/selection/multiple',[
 
     this.$selection.on('click', function (evt) {
 
-        // Prevent dropdown toggle on clear.
-        if ($(evt.target).hasClass('select2-selection__choice__remove')) {
-          return;
-        }
+      // Prevent dropdown toggle on clear.
+      if ($(evt.target).hasClass('select2-selection__choice__remove')) {
+        return;
+      }
 
       self.trigger('toggle', {
         originalEvent: evt
@@ -1773,9 +1773,9 @@ S2.define('select2/selection/multiple',[
 
       $selection.append(formatted);
 
-      /*
       var title = selection.title || selection.text;
 
+      /*
       if (title) {
         $selection.attr('title', title);
       }
@@ -4317,7 +4317,7 @@ S2.define('select2/dropdown/attachBody',[
   '../utils'
 ], function ($, Utils) {
   function AttachBody (decorated, $element, options) {
-    this.$dropdownParent = options.get('dropdownParent') || $(document.body);
+    this.$dropdownParent = $(options.get('dropdownParent') || document.body);
 
     decorated.call(this, $element, options);
   }
@@ -4330,36 +4330,14 @@ S2.define('select2/dropdown/attachBody',[
     container.on('open', function () {
       self._showDropdown();
       self._attachPositioningHandler(container);
+
+      // Must bind after the results handlers to ensure correct sizing
+      self._bindContainerResultHandlers(container);
     });
 
     container.on('close', function () {
       self._hideDropdown();
       self._detachPositioningHandler(container);
-    });
-
-    container.on('results:all', function () {
-      self._positionDropdown();
-      self._resizeDropdown();
-    });
-
-    container.on('results:append', function () {
-      self._positionDropdown();
-      self._resizeDropdown();
-    });
-
-    container.on('results:message', function () {
-      self._positionDropdown();
-      self._resizeDropdown();
-    });
-
-    container.on('select', function () {
-      self._positionDropdown();
-      self._resizeDropdown();
-    });
-
-    container.on('unselect', function () {
-      self._positionDropdown();
-      self._resizeDropdown();
     });
 
     this.$dropdownContainer.on('mousedown', function (evt) {
@@ -4401,6 +4379,44 @@ S2.define('select2/dropdown/attachBody',[
 
   AttachBody.prototype._hideDropdown = function (decorated) {
     this.$dropdownContainer.detach();
+  };
+
+  AttachBody.prototype._bindContainerResultHandlers =
+      function (decorated, container) {
+
+    // These should only be bound once
+    if (this._containerResultsHandlersBound) {
+      return;
+    }
+
+    var self = this;
+
+    container.on('results:all', function () {
+      self._positionDropdown();
+      self._resizeDropdown();
+    });
+
+    container.on('results:append', function () {
+      self._positionDropdown();
+      self._resizeDropdown();
+    });
+
+    container.on('results:message', function () {
+      self._positionDropdown();
+      self._resizeDropdown();
+    });
+
+    container.on('select', function () {
+      self._positionDropdown();
+      self._resizeDropdown();
+    });
+
+    container.on('unselect', function () {
+      self._positionDropdown();
+      self._resizeDropdown();
+    });
+
+    this._containerResultsHandlersBound = true;
   };
 
   AttachBody.prototype._attachPositioningHandler =
