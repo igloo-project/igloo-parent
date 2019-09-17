@@ -40,49 +40,12 @@
 	</dependencies>
 
 	<build>
-		<pluginManagement>
-			<plugins>
-				<!-- processor and compiler
-				
-				maven-compiler-plugin must be used in place of maven-processor-plugin because it supports toolchain
-				-->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<!-- two phases : processor and compiler -->
-					<executions>
-						<execution>
-							<id>default-compile</id>
-						</execution>
-						<execution>
-							<id>default-processor</id>
-							<phase>generate-sources</phase>
-							<goals>
-								<goal>compile</goal>
-							</goals>
-							<configuration>
-								<proc>only</proc>
-								<compilerArgument>-proc:only</compilerArgument>
-								<testCompilerArgument>-proc:only</testCompilerArgument>
-							</configuration>
-						</execution>
-					</executions>
-					<configuration>
-						<fork>true</fork>
-						<annotationProcessorPaths>
-							<path>
-								<groupId>org.bindgen</groupId>
-								<artifactId>bindgen</artifactId>
-								<version>${igloo.bindgen.version}</version>
-							</path>
-						</annotationProcessorPaths>
-						<annotationProcessors>
-							<annotationProcessor>org.bindgen.processor.Processor</annotationProcessor>
-						</annotationProcessors>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>

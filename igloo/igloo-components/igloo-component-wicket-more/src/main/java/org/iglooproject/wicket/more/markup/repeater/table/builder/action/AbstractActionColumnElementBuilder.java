@@ -221,7 +221,10 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 		this.cssClassBehaviorFactories.addAll(
 			valueModelFactories
 				.stream()
-				.map(f -> ((IDetachableFactory<IModel<? extends T>, Behavior>) itemModel -> new ClassAttributeAppender(f.create(itemModel))))
+				// https://bugs.openjdk.java.net/browse/JDK-8212750 -> JDK-11 le type de f est nécessaire dans la déclaration
+				// corrigé dans JDK-12
+				.map((IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> f)
+						-> ((IDetachableFactory<IModel<? extends T>, Behavior>) itemModel -> new ClassAttributeAppender(f.create(itemModel))))
 				.collect(ImmutableList.toImmutableList())
 		);
 		return thisAsF();
