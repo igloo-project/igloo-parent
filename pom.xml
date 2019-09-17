@@ -16,7 +16,8 @@
 		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
 		<igloo.jsch.version>0.1.55</igloo.jsch.version>
 		<maven-toolchains-plugin.version>1.1</maven-toolchains-plugin.version>
-		<maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+		<maven-site-plugin.version>3.8.2</maven-site-plugin.version>
+		<igloo.wagon-ssh-external-plugin.version>3.3.3</igloo.wagon-ssh-external-plugin.version>
 		<maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
 		
 		<!-- version needed here as we use allure to aggregate child reports -->
@@ -24,7 +25,7 @@
 
 		<igloo.allure.version>2.8.1</igloo.allure.version>
 		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
-		<igloo.owasp-maven-plugin.version>4.0.2</igloo.owasp-maven-plugin.version>
+		<igloo.owasp-maven-plugin.version>5.2.1</igloo.owasp-maven-plugin.version>
 	</properties>
 	
 	<profiles>
@@ -262,6 +263,24 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>${maven-site-plugin.version}</version>
+					<executions>
+						<!-- BUGS (?): target/site is erroneously used as source by site:stage-deploy -->
+						<!-- found on maven-site-plugin 3.8.2 / not verified on a minimal use case -->
+						<!-- on command line, run with "mvn site:stage-deploy@stage-deploy" -->
+						<execution>
+							<id>stage-deploy</id>
+							<configuration>
+									<inputDirectory>target/staging</inputDirectory>
+							</configuration>
+						</execution>
+					</executions>
+					<dependencies>
+						<dependency><!-- add support for ssh/scp -->
+							<groupId>org.apache.maven.wagon</groupId>
+							<artifactId>wagon-ssh-external</artifactId>
+							<version>${igloo.wagon-ssh-external-plugin.version}</version>
+						</dependency>
+					</dependencies>	
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -376,7 +395,7 @@
 		<repository>
 			<id>nexus-igloo-releases</id>
 			<name>Nexus Igloo Releases</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -385,7 +404,7 @@
 		<repository>
 			<id>nexus-igloo-snapshots</id>
 			<name>Nexus Igloo Snapshots</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>

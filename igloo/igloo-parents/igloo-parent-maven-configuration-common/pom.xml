@@ -59,14 +59,14 @@
 		<igloo.animal-sniffer-maven-plugin.version>1.17</igloo.animal-sniffer-maven-plugin.version>
 		<igloo.exec-maven-plugin.version>1.6.0</igloo.exec-maven-plugin.version>
 		<igloo.maven-clean-plugin.version>3.1.0</igloo.maven-clean-plugin.version>
-		<igloo.maven-site-plugin.version>3.7.1</igloo.maven-site-plugin.version>
+		<igloo.maven-site-plugin.version>3.8.2</igloo.maven-site-plugin.version>
 		<igloo.maven-project-info-reports-plugin.version>3.0.0</igloo.maven-project-info-reports-plugin.version>
 		<igloo.maven-failsafe-plugin.version>3.0.0-M3</igloo.maven-failsafe-plugin.version>
 		<igloo.jacoco-maven-plugin.version>0.8.3</igloo.jacoco-maven-plugin.version>
 		<igloo.buildnumber-maven-plugin.version>1.4</igloo.buildnumber-maven-plugin.version>
 		
 		<igloo.wagon-maven-plugin.version>2.0.0</igloo.wagon-maven-plugin.version>
-		<igloo.wagon-ssh-external-plugin.version>3.3.2</igloo.wagon-ssh-external-plugin.version>
+		<igloo.wagon-ssh-external-plugin.version>3.3.3</igloo.wagon-ssh-external-plugin.version>
 		
 		<igloo.maven-processor-plugin.version>3.3.3</igloo.maven-processor-plugin.version>
 		<igloo.aspectj-maven-plugin.version>1.8</igloo.aspectj-maven-plugin.version>
@@ -79,7 +79,7 @@
 		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
 		<igloo.allure-junit4.version>2.10.0</igloo.allure-junit4.version>
 		<igloo.junit-dataprovider.version>1.13.1</igloo.junit-dataprovider.version>
-		<igloo.owasp-maven-plugin.version>4.0.2</igloo.owasp-maven-plugin.version>
+		<igloo.owasp-maven-plugin.version>5.2.1</igloo.owasp-maven-plugin.version>
 	</properties>
 	
 	<dependencyManagement>
@@ -357,6 +357,13 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
 					<version>${igloo.maven-site-plugin.version}</version>
+					<dependencies>
+						<dependency><!-- add support for ssh/scp -->
+							<groupId>org.apache.maven.wagon</groupId>
+							<artifactId>wagon-ssh-external</artifactId>
+							<version>${igloo.wagon-ssh-external-plugin.version}</version>
+						</dependency>
+					</dependencies>	
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -740,7 +747,7 @@
 		<repository>
 			<id>nexus-igloo-releases</id>
 			<name>Nexus Igloo Releases</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -749,7 +756,7 @@
 		<repository>
 			<id>nexus-igloo-snapshots</id>
 			<name>Nexus Igloo Snapshots</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -793,7 +800,7 @@
 		<pluginRepository>
 			<id>nexus-igloo-releases</id>
 			<name>Nexus Igloo Releases</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-releases/</url>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
@@ -802,7 +809,7 @@
 		<pluginRepository>
 			<id>nexus-igloo-snapshots</id>
 			<name>Nexus Igloo Snapshots</name>
-			<url>https://nexus.tools.kobalt-si.fr/repository/igloo-snapshots/</url>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
