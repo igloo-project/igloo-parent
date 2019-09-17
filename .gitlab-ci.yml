@@ -24,9 +24,6 @@ maven-build:
   script:
     - "mvn -DskipTests clean package"
   except:
-    # temporary condition
-    refs:
-      - ft-auto-dependency-check
     variables:
       - $CHECK_DEPENDENCIES
 
@@ -41,9 +38,6 @@ maven-test:
     - "source gitlab-ci.build.conf"
     - "./ci/maven-allure.sh"
   except:
-    # temporary condition
-    refs:
-      - ft-auto-dependency-check
     variables:
       - $CHECK_DEPENDENCIES
 
@@ -53,12 +47,9 @@ maven-dependencies:
   script:
     - "source gitlab-ci.build.conf"
     - "./ci/maven-dependencies.sh"
-# temporary condition
   only:
-    refs:
-      - ft-auto-dependency-check
-#    variables:
-#      - $CHECK_DEPENDENCIES
+    variables:
+      - $CHECK_DEPENDENCIES
 
 maven-deploy:
   stage: deploy
@@ -72,9 +63,6 @@ maven-deploy:
     - /^rl-.*$/
     - /^hf-.*$/
   except:
-    # temporary condition
-    refs:
-      - ft-auto-dependency-check
     variables:
       - $CHECK_DEPENDENCIES
 
@@ -90,8 +78,5 @@ sonar-analyze:
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
       -Dsonar.jacoco.reportPaths=target/jacoco.exec
   except:
-    # temporary condition
-    refs:
-      - ft-auto-dependency-check
     variables:
       - $CHECK_DEPENDENCIES
