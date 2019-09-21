@@ -415,18 +415,6 @@
 
 		<!--
 		  for repository exhaustivity, and for owasp plugin, declaration of
-		  bindgen's related repository, for joist-util dependency.
-
-		  (owasp needs to lookup all dependencies, and does not seem to extract
-		  repository from dependency's pom).
-		-->
-		<repository>
-			<id>bindgen</id>
-			<url>http://repo.joist.ws/</url>
-		</repository>
-
-		<!--
-		  for repository exhaustivity, and for owasp plugin, declaration of
 		  ehcache 2 related repository, for terracotta statistics dependency.
 
 		  (owasp needs to lookup all dependencies, and does not seem to extract
