@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -59,7 +60,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 @Configuration
-@Import(IglooJpaSecurityRunAsConfiguration.class)
+@ConditionalOnProperty(name = "igloo-ac.jpa-security.disabled", havingValue = "true", matchIfMissing = true)
+@Import(IglooJpaSecurityRunAsConfig.class)
 @ImportResource("classpath:spring/igloo-component-jpa-security-context.xml")
 @AutoConfigureAfter({ IglooJpaAutoConfiguration.class })
 @ComponentScan(basePackageClasses = {

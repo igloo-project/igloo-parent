@@ -15,6 +15,7 @@ import org.iglooproject.wicket.more.notification.service.WicketContextProviderIm
 import org.iglooproject.wicket.more.rendering.service.RendererServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -23,6 +24,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 
 
 @Configuration
+@ConditionalOnProperty(name = "igloo-ac.wicket.disabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnClass(WebApplication.class)
 @Import({
 	WicketMoreServiceConfig.class,

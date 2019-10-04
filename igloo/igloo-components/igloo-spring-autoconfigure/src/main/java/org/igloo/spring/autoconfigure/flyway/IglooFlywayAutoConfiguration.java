@@ -19,6 +19,7 @@ import org.iglooproject.jpa.property.FlywayPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ import org.springframework.context.annotation.PropertySource;
 import com.google.common.collect.Maps;
 
 @Configuration
+@ConditionalOnProperty(name = "igloo-ac.flyway.disabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnClass(Flyway.class)
 @Import({ FlywayPropertyRegistryConfig.class })
 @AutoConfigureAfter(IglooPropertyAutoConfiguration.class)
