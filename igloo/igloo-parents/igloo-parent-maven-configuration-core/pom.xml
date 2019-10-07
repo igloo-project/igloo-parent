@@ -69,7 +69,7 @@
 
 		<igloo.bindgen.version>4.0.2</igloo.bindgen.version>
 		<igloo.bindgen-java.version>1.0.0</igloo.bindgen-java.version>
-		<igloo.bindgen-bindings-java.version>1.0.0</igloo.bindgen-bindings-java.version>
+		<igloo.bindgen-bindings-java.version>1.1</igloo.bindgen-bindings-java.version>
 
 		<!-- 5.0.4: https://github.com/spring-projects/spring-security/milestone/112?closed=1 -->
 		<!-- 5.0.5: https://github.com/spring-projects/spring-security/milestone/114?closed=1 -->
