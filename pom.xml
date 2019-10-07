@@ -209,7 +209,8 @@
 						<artifactId>versions-maven-plugin</artifactId>
 						<version>2.7</version>
 						<configuration>
-							<processDependencyManagement>false</processDependencyManagement>
+							<processDependencyManagement>true</processDependencyManagement>
+							<processDependencyManagementTransitive>true</processDependencyManagementTransitive>
 						</configuration>
 						<reportSets>
 							<reportSet>
