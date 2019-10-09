@@ -10,6 +10,7 @@ import org.assertj.core.api.Assertions;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.iglooproject.sass.service.IScssService;
 import org.iglooproject.sass.service.ScssServiceImpl;
+import org.iglooproject.test.sass.config.TestSassConfigurationProvider;
 import org.iglooproject.test.sass.resources.TestScssServiceResourceScope;
 import org.iglooproject.test.sass.resources.other.scope.TestScssServiceOtherResourceScope;
 import org.junit.Assert;
@@ -17,13 +18,8 @@ import org.junit.Test;
 
 public class TestScssService {
 	
-	private IScssService scssService = new ScssServiceImpl();
-	private IScssService autoprefixerScssService = new ScssServiceImpl();
-	{
-		ScssServiceImpl temp = new ScssServiceImpl();
-		temp.setUseAutoprefixer(false);
-		scssService = temp;
-	}
+	private IScssService scssService = new ScssServiceImpl(TestSassConfigurationProvider.of(false));
+	private IScssService autoprefixerScssService = new ScssServiceImpl(TestSassConfigurationProvider.of());
 	
 	@Test
 	public void testGetCompiledStylesheet() throws Exception {

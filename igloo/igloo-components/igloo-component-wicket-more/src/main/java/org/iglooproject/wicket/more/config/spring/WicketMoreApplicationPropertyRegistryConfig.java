@@ -1,6 +1,7 @@
 package org.iglooproject.wicket.more.config.spring;
 
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.AUTOCOMPLETE_LIMIT;
+import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.AUTOPREFIXER_ENABLED;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
@@ -40,6 +41,8 @@ public class WicketMoreApplicationPropertyRegistryConfig extends AbstractApplica
 
 	@Override
 	public void register(IPropertyRegistry registry) {
+		registry.registerBoolean(AUTOPREFIXER_ENABLED, true);
+		
 		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME, "http");
 		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME, "localhost");
 		registry.registerInteger(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_PORT, 8080);

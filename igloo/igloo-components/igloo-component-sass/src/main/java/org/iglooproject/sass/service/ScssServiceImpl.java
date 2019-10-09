@@ -12,6 +12,7 @@ import org.apache.commons.lang3.ClassPathUtils;
 import org.iglooproject.autoprefixer.Autoprefixer;
 import org.iglooproject.autoprefixer.AutoprefixerException;
 import org.iglooproject.commons.io.ClassPathResourceUtil;
+import org.iglooproject.sass.config.ISassConfigurationProvider;
 import org.iglooproject.sass.jsass.JSassClassPathImporter;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.slf4j.Logger;
@@ -26,17 +27,22 @@ import io.bit3.jsass.context.Context;
 import io.bit3.jsass.context.StringContext;
 
 public class ScssServiceImpl implements IScssService {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScssServiceImpl.class);
-	
+
 	private static final Pattern SCOPE_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
-	
+
 	private static final Map<String, Class<?>> SCOPES = new HashMap<>();
-	
+
+	private final ISassConfigurationProvider configurationProvider;
+
 	private final ClassPathResourceUtil classPathResourceUtil = new ClassPathResourceUtil();
-	
-	private boolean useAutoprefixer = true;
-	
+
+	public ScssServiceImpl(final ISassConfigurationProvider configurationProvider) {
+		super();
+		this.configurationProvider = configurationProvider;
+	}
+
 	@Override
 	public ScssStylesheetInformation getCompiledStylesheet(Class<?> scope, String path) {
 		String scssPath = getFullPath(scope, path);
@@ -56,7 +62,7 @@ public class ScssServiceImpl implements IScssService {
 			Output output = compiler.compile(fileContext);
 			String compiledOutput = output.getCss();
 			
-			if (isUseAutoprefixer()) {
+			if (configurationProvider.isAutoprefixerEnabled()) {
 				compiledOutput = Autoprefixer.simple().process(compiledOutput);
 			}
 			
@@ -73,7 +79,7 @@ public class ScssServiceImpl implements IScssService {
 			throw new RuntimeException(String.format("Error compiling %s", scssPath), e);
 		}
 	}
-	
+
 	@Override
 	public void registerImportScope(String scopeName, Class<?> scope) {
 		if (SCOPES.containsKey(scopeName)) {
@@ -87,14 +93,6 @@ public class ScssServiceImpl implements IScssService {
 		}
 		
 		SCOPES.put(scopeName, scope);
-	}
-
-	public boolean isUseAutoprefixer() {
-		return useAutoprefixer;
-	}
-
-	public void setUseAutoprefixer(boolean useAutoprefixer) {
-		this.useAutoprefixer = useAutoprefixer;
 	}
 
 	protected String getFullPath(Class<?> scope, String path) {
