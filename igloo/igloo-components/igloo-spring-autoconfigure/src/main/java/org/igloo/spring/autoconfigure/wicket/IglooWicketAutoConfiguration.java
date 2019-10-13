@@ -24,7 +24,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.wicket.disabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "igloo-ac.wicket.disabled", havingValue = "false", matchIfMissing = true)
 @ConditionalOnClass(WebApplication.class)
 @Import({
 	WicketMoreServiceConfig.class,

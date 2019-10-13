@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.bootstrap4.disabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "igloo-ac.bootstrap4.disabled", havingValue = "false", matchIfMissing = true)
 @ConditionalOnClass(value = WicketBootstrapModule.class)
 @AutoConfigureAfter({ IglooWicketAutoConfiguration.class })
 @Import({

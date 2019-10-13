@@ -60,7 +60,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.jpa-security.disabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "igloo-ac.jpa-security.disabled", havingValue = "false", matchIfMissing = true)
 @Import(IglooJpaSecurityRunAsConfig.class)
 @ImportResource("classpath:spring/igloo-component-jpa-security-context.xml")
 @AutoConfigureAfter({ IglooJpaAutoConfiguration.class })

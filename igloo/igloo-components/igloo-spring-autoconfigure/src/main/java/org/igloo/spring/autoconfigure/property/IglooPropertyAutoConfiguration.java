@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.property.disabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "igloo-ac.property.disabled", havingValue = "false", matchIfMissing = true)
 public class IglooPropertyAutoConfiguration {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(IglooPropertyAutoConfiguration.class);

@@ -30,7 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.tasks.disabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "igloo-ac.tasks.disabled", havingValue = "false", matchIfMissing = true)
 @ComponentScan(
 		basePackageClasses = { CoreJpaMoreBusinessPackage.class, CoreJpaMoreUtilTransactionPackage.class }
 )

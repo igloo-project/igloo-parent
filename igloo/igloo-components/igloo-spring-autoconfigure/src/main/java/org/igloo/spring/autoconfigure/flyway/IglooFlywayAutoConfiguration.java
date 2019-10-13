@@ -29,7 +29,7 @@ import org.springframework.context.annotation.PropertySource;
 import com.google.common.collect.Maps;
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.flyway.disabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "igloo-ac.flyway.disabled", havingValue = "false", matchIfMissing = true)
 @ConditionalOnClass(Flyway.class)
 @Import({ FlywayPropertyRegistryConfig.class })
 @AutoConfigureAfter(IglooPropertyAutoConfiguration.class)

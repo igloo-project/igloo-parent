@@ -18,7 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.hsearch.disabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "igloo-ac.hsearch.disabled", havingValue = "false", matchIfMissing = true)
 @ComponentScan(
 	basePackageClasses = {
 			CoreJpaSearchPackage.class

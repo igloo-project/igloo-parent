@@ -39,7 +39,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.jpa.disabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "igloo-ac.jpa.disabled", havingValue = "false", matchIfMissing = true)
 @ConditionalOnClass({ LocalContainerEntityManagerFactoryBean.class, EntityManager.class })
 @AutoConfigureAfter({ IglooFlywayAutoConfiguration.class })
 @Import({ DefaultJpaConfig.class })

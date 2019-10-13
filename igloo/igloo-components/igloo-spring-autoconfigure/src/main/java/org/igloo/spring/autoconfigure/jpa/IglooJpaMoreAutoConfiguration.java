@@ -23,7 +23,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.jpa-more.disabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "igloo-ac.jpa-more.disabled", havingValue = "false", matchIfMissing = true)
 	@AutoConfigureAfter({ IglooJpaAutoConfiguration.class })
 @Import({
 	JpaMoreApplicationPropertyRegistryConfig.class
