@@ -71,6 +71,8 @@ public class IglooTaskManagementAutoConfiguration {
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	// TODO fixme - this method only defines a bean of type Collection ; this may conflict with any other
+	// Collection bean
 	public Collection<? extends IQueueId> queueIds() {
 		return EnumUtils.getEnumList(StubQueueId.class);
 	}
