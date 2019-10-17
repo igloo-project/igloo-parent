@@ -39,7 +39,7 @@ public class TestNotificationFiltered extends AbstractTestNotification {
 
 		ArgumentCaptor<MimeMessage> argument = mockitoSend(Mockito.times(1));
 		MimeMessage mimeMessage = argument.getValue();
-		List<String> filtered = propertyService.get(SpringPropertyIds.NOTIFICATION_TEST_EMAILS);
+		List<String> filtered = propertyService.get(SpringPropertyIds.NOTIFICATION_MAIL_FILTER_EMAILS);
 		List<InternetAddress> filteredAddress = filtered.stream().map(m -> 
 			{ try { return new InternetAddress(m); } catch (AddressException e) { throw new RuntimeException(e); } }
 		).collect(Collectors.toList());

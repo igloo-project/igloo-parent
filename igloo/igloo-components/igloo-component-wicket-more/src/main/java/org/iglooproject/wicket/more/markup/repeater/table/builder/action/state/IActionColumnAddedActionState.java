@@ -1,5 +1,8 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action.state;
 
+import java.util.Collection;
+
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -57,6 +60,18 @@ public interface IActionColumnAddedActionState<T, I> extends IActionColumnAddedE
 	IActionColumnAddedActionState<T, I> hidePlaceholder(Condition hidePlaceholderCondition);
 
 	@Override
+	IActionColumnAddedActionState<T, I> withClass(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories);
+
+	@Override
+	IActionColumnAddedActionState<T, I> withClass(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory);
+
+	@Override
+	IActionColumnAddedActionState<T, I> withClass(IModel<? extends String> valueModel);
+
+	@Override
+	IActionColumnAddedActionState<T, I> withClass(String firstValue, String... otherValues);
+
+	@Override
 	IActionColumnAddedActionState<T, I> when(IDetachableFactory<? super IModel<? extends T>, ? extends Condition> conditionFactory);
 
 	@Override
@@ -72,6 +87,12 @@ public interface IActionColumnAddedActionState<T, I> extends IActionColumnAddedE
 	IActionColumnAddedActionState<T, I> whenPermission(Permission permission);
 
 	@Override
-	IActionColumnAddedActionState<T, I> withClass(String cssClass);
+	IActionColumnAddedActionState<T, I> add(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> behaviorFactories);
+
+	@Override
+	IActionColumnAddedActionState<T, I> add(IDetachableFactory<? super IModel<? extends T>, ? extends Behavior> behaviorFactory);
+
+	@Override
+	IActionColumnAddedActionState<T, I> add(Behavior firstBehavior, Behavior... otherBehaviors);
 
 }

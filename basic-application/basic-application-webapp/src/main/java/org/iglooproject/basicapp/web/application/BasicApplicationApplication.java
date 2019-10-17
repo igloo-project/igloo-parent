@@ -31,7 +31,6 @@ import org.iglooproject.basicapp.web.application.common.renderer.UserGroupRender
 import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
 import org.iglooproject.basicapp.web.application.common.template.favicon.ApplicationFaviconPackage;
 import org.iglooproject.basicapp.web.application.common.template.resources.BasicApplicationResourcesPackage;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.advanced.StylesScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.applicationaccess.ApplicationAccessScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.console.console.ConsoleScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.console.consoleaccess.ConsoleAccessScssResourceReference;
@@ -107,7 +106,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 				ConsoleScssResourceReference.get(),
 				NotificationScssResourceReference.get(),
 				ApplicationAccessScssResourceReference.get(),
-				StylesScssResourceReference.get()
+				org.iglooproject.basicapp.web.application.common.template.resources.styles.application.basic.StylesScssResourceReference.get(),
+				org.iglooproject.basicapp.web.application.common.template.resources.styles.application.advanced.StylesScssResourceReference.get()
 			);
 		}
 		

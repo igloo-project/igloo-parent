@@ -6,22 +6,24 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.ResourceKeyGenerator;
+import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.markup.html.link.InvisibleLink;
+import org.iglooproject.wicket.more.model.BindingModel;
 
-public class SimpleUserActionHtmlNotificationPanel<T> extends AbstractHtmlNotificationPanel<T> {
+public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> extends AbstractHtmlNotificationPanel<T> {
 
 	private static final long serialVersionUID = -6941290354402094613L;
 
-	public SimpleUserActionHtmlNotificationPanel(String id,
+	public UserPasswordRecoveryRequestHtmlNotificationPanel(String id,
 			ResourceKeyGenerator resourceKeyGenerator,
 			final IModel<T> objectModel, final IModel<User> authorModel, final IModel<Date> dateModel,
 			ILinkGenerator linkGenerator) {
 		this(id, resourceKeyGenerator, resourceKeyGenerator, objectModel, authorModel, dateModel, linkGenerator);
 	}
 
-	public SimpleUserActionHtmlNotificationPanel(String id,
+	public UserPasswordRecoveryRequestHtmlNotificationPanel(String id,
 			ResourceKeyGenerator resourceKeyGenerator, ResourceKeyGenerator defaultResourceKeyGenerator,
 			final IModel<T> objectModel, final IModel<User> authorModel, final IModel<Date> dateModel,
 			ILinkGenerator linkGenerator) {
@@ -78,6 +80,14 @@ public class SimpleUserActionHtmlNotificationPanel<T> extends AbstractHtmlNotifi
 		} else {
 			add(new InvisibleLink<>("mainLink"));
 		}
+		
+		add(
+			new CoreLabel(
+				"helpUsername",
+				new StringResourceModel("notification.panel.user.password.recovery.request.help.username", BindingModel.of(objectModel, Bindings.user().username()))
+			)
+				.setEscapeModelStrings(false)
+		);
 	}
 
 }

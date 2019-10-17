@@ -3,6 +3,7 @@ package org.iglooproject.wicket.more.css.scss.service;
 import java.io.IOException;
 
 import org.iglooproject.commons.io.ClassPathResourceUtil;
+import org.iglooproject.sass.config.ISassConfigurationProvider;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.iglooproject.sass.service.IScssService;
 import org.iglooproject.sass.service.ScssServiceImpl;
@@ -32,6 +33,10 @@ public class CachedScssServiceImpl extends ScssServiceImpl implements ICachedScs
 	 */
 	@Autowired(required = false)
 	private CacheManager cacheManager;
+
+	public CachedScssServiceImpl(final ISassConfigurationProvider configurationProvider) {
+		super(configurationProvider);
+	}
 
 	@Override
 	// If checkCacheInvalidation is true and, before invocation, a cached value exists and is not up to date, we evict the cache entry. 

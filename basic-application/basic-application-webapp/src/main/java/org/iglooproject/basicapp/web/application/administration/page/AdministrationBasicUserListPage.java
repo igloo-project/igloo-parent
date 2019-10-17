@@ -15,6 +15,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
+import org.iglooproject.basicapp.core.business.user.predicate.UserPredicates;
 import org.iglooproject.basicapp.core.business.user.search.UserSort;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
@@ -134,13 +135,15 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 								super.onComponentTag(tag);
 							}
 						}
-						.add(Condition.predicate(emailModel, Predicates2.hasText()).thenShow())
+							.add(Condition.predicate(emailModel, Predicates2.hasText()).thenShow())
 					);
 				}
 			})
 				.withClass("text text-md")
 				.withClass(CELL_HIDDEN_MD_AND_LESS)
-			.addRowCssClass(itemModel -> (itemModel.getObject() != null && !itemModel.getObject().isActive()) ? TABLE_ROW_DISABLED : null)
+			.rows()
+				.withClass(itemModel -> Condition.predicate(itemModel, UserPredicates.inactive()).then(TABLE_ROW_DISABLED).otherwise(""))
+				.end()
 			.withNoRecordsResourceKey("administration.user.list.count.zero")
 			.bootstrapCard()
 				.ajaxPagers()

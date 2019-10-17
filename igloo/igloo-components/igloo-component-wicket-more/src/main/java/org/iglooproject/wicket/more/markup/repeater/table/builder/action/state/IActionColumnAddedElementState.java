@@ -1,5 +1,7 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action.state;
 
+import java.util.Collection;
+
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializablePredicate2;
@@ -41,6 +43,14 @@ public interface IActionColumnAddedElementState<T, I> extends IActionColumnNoPar
 
 	IActionColumnAddedElementState<T, I> hidePlaceholder(Condition hidePlaceholderCondition);
 
+	IActionColumnAddedElementState<T, I> withClass(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories);
+
+	IActionColumnAddedElementState<T, I> withClass(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory);
+
+	IActionColumnAddedElementState<T, I> withClass(IModel<? extends String> valueModel);
+
+	IActionColumnAddedElementState<T, I> withClass(String firstValue, String... otherValues);
+
 	IActionColumnAddedElementState<T, I> when(IDetachableFactory<? super IModel<? extends T>, ? extends Condition> conditionFactory);
 
 	IActionColumnAddedElementState<T, I> when(Condition condition);
@@ -51,8 +61,10 @@ public interface IActionColumnAddedElementState<T, I> extends IActionColumnNoPar
 
 	IActionColumnAddedElementState<T, I> whenPermission(Permission permission);
 
-	IActionColumnAddedElementState<T, I> withClass(String cssClass);
-	
-	IActionColumnAddedElementState<T, I> add(Behavior...behaviors);
+	IActionColumnAddedElementState<T, I> add(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> behaviorFactories);
+
+	IActionColumnAddedElementState<T, I> add(IDetachableFactory<? super IModel<? extends T>, ? extends Behavior> behaviorFactory);
+
+	IActionColumnAddedElementState<T, I> add(Behavior firstBehavior, Behavior... otherBehaviors);
 
 }

@@ -1,12 +1,13 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -18,7 +19,7 @@ import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAction;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.factory.ConditionFactories;
+import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
@@ -34,15 +35,14 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.I
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnNoParameterBuildState;
 import org.springframework.security.acls.model.Permission;
 
-import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParameterBuildState<T, I>, IActionColumnBuildState<T, I> {
 
-	private final Set<String> cssClassesOnElements = Sets.newHashSet();
-
 	private final List<AbstractActionColumnElementBuilder<T, ?, ?>> builders = Lists.newArrayList();
+
+	private final List<IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> cssClassOnElementsModelFactories = Lists.newArrayList();
 
 	public ActionColumnBuilder() {
 	}
@@ -117,8 +117,23 @@ public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParame
 		}
 		
 		@Override
-		public IActionColumnBuildState<T, I> withClassOnElements(String cssClassOnElements) {
-			return ActionColumnBuilder.this.withClassOnElements(cssClassOnElements);
+		public IActionColumnBuildState<T, I> withClassOnElements(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories) {
+			return ActionColumnBuilder.this.withClassOnElements(valueModelFactories);
+		}
+		
+		@Override
+		public IActionColumnBuildState<T, I> withClassOnElements(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory) {
+			return ActionColumnBuilder.this.withClassOnElements(valueModelFactory);
+		}
+		
+		@Override
+		public IActionColumnBuildState<T, I> withClassOnElements(IModel<? extends String> valueModel) {
+			return ActionColumnBuilder.this.withClassOnElements(valueModel);
+		}
+		
+		@Override
+		public IActionColumnBuildState<T, I> withClassOnElements(String firstValue, String... otherValues) {
+			return ActionColumnBuilder.this.withClassOnElements(firstValue, otherValues);
 		}
 		
 		@Override
@@ -237,44 +252,74 @@ public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParame
 		}
 		
 		@Override
+		public NextState withClass(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories) {
+			getElementBuilder().withClass(valueModelFactories);
+			return getNextState();
+		}
+		
+		@Override
+		public NextState withClass(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory) {
+			getElementBuilder().withClass(valueModelFactory);
+			return getNextState();
+		}
+		
+		@Override
+		public NextState withClass(IModel<? extends String> valueModel) {
+			getElementBuilder().withClass(valueModel);
+			return getNextState();
+		}
+		
+		@Override
+		public NextState withClass(String firstValue, String... otherValues) {
+			getElementBuilder().withClass(firstValue, otherValues);
+			return getNextState();
+		}
+		
+		@Override
 		public NextState when(final IDetachableFactory<? super IModel<? extends T>, ? extends Condition> conditionFactory) {
-			getElementBuilder().addConditionFactory(conditionFactory);
+			getElementBuilder().when(conditionFactory);
 			return getNextState();
 		}
 		
 		@Override
 		public NextState when(final Condition condition) {
-			getElementBuilder().addConditionFactory(ConditionFactories.constant(condition));
+			getElementBuilder().when(condition);
 			return getNextState();
 		}
 		
 		@Override
 		public NextState whenPredicate(final SerializablePredicate2<? super T> predicate) {
-			getElementBuilder().addConditionFactory(ConditionFactories.predicate(predicate));
+			getElementBuilder().whenPredicate(predicate);
 			return getNextState();
 		}
 		
 		@Override
 		public NextState whenPermission(final String permission) {
-			getElementBuilder().addConditionFactory(ConditionFactories.<T>permission(permission));
+			getElementBuilder().whenPermission(permission);
 			return getNextState();
 		}
 		
 		@Override
 		public NextState whenPermission(final Permission permission) {
-			getElementBuilder().addConditionFactory(ConditionFactories.<T>permission(permission));
+			getElementBuilder().whenPermission(permission);
 			return getNextState();
 		}
 		
 		@Override
-		public NextState withClass(String cssClass) {
-			getElementBuilder().addCssClass(cssClass);
+		public NextState add(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> behaviorFactories) {
+			getElementBuilder().add(behaviorFactories);
 			return getNextState();
 		}
 		
 		@Override
-		public NextState add(Behavior...behaviors) {
-			getElementBuilder().addBehaviors(behaviors);
+		public NextState add(IDetachableFactory<? super IModel<? extends T>, ? extends Behavior> behaviorFactory) {
+			getElementBuilder().add(behaviorFactory);
+			return getNextState();
+		}
+		
+		@Override
+		public NextState add(Behavior firstBehavior, Behavior... otherBehaviors) {
+			getElementBuilder().add(firstBehavior, otherBehaviors);
 			return getNextState();
 		}
 	}
@@ -458,19 +503,34 @@ public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParame
 	}
 
 	@Override
-	public IActionColumnBuildState<T, I> withClassOnElements(String cssClassOnElements) {
-		cssClassesOnElements.add(cssClassOnElements);
+	public IActionColumnBuildState<T, I> withClassOnElements(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories) {
+		this.cssClassOnElementsModelFactories.addAll(valueModelFactories);
 		return this;
 	}
 
-	public String getCssClassOnElements() {
-		return Joiner.on(" ").join(cssClassesOnElements);
+	@Override
+	public IActionColumnBuildState<T, I> withClassOnElements(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory) {
+		return withClassOnElements(ImmutableList.of(Objects.requireNonNull(valueModelFactory)));
+	}
+
+	@Override
+	public IActionColumnBuildState<T, I> withClassOnElements(IModel<? extends String> valueModel) {
+		return withClassOnElements(DetachableFactories.constant(valueModel));
+	}
+
+	@Override
+	public IActionColumnBuildState<T, I> withClassOnElements(String firstValue, String... otherValues) {
+		Lists.asList(Objects.requireNonNull(firstValue), otherValues)
+			.stream()
+			.map(Model::of)
+			.forEach(this::withClassOnElements);
+		return this;
 	}
 
 	@Override
 	public I end() {
 		for (AbstractActionColumnElementBuilder<T, ?, ?> builder : builders) {
-			builder.addCssClass(getCssClassOnElements());
+			builder.withClass(cssClassOnElementsModelFactories);
 		}
 		return onEnd(builders);
 	}

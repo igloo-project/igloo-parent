@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IStyledColumn;
@@ -38,7 +39,7 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 
 	private final List<IColumn<T, S>> displayedColumns;
 
-	private final List<IDetachableFactory<? super IModel<? extends T>, ? extends String>> rowCssClassFactories;
+	private final List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories;
 
 	private final SequenceGridView<T> gridView;
 
@@ -55,16 +56,16 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 	private MarkupContainer componentToRefresh;
 	
 	public CoreDataTable(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider,
-			List<IDetachableFactory<? super IModel<? extends T>, ? extends String>> rowCssClassFactories, long rowsPerPage) {
-		this(id, columns, SequenceProviders.forDataProvider(dataProvider), rowCssClassFactories, rowsPerPage);
+			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories, long rowsPerPage) {
+		this(id, columns, SequenceProviders.forDataProvider(dataProvider), rowsBehaviorFactories, rowsPerPage);
 	}
 	
 	public CoreDataTable(String id, Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider, 
-			List<IDetachableFactory<? super IModel<? extends T>, ? extends String>> rowCssClassFactories, long rowsPerPage) {
+			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories, long rowsPerPage) {
 		super(id);
 		this.columnToConditionMap = columns;
 		this.displayedColumns = Lists.newArrayList();
-		this.rowCssClassFactories = rowCssClassFactories;
+		this.rowsBehaviorFactories = rowsBehaviorFactories;
 		
 		body = newBodyContainer("body");
 		add(body);
@@ -87,6 +88,7 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 	protected void onDetach() {
 		super.onDetach();
 		Detachables.detach(columnToConditionMap);
+		Detachables.detach(rowsBehaviorFactories);
 	}
 	
 	@Override
@@ -249,16 +251,9 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 		@Override
 		protected Item<T> newRowItem(final String id, final int index, final IModel<T> model) {
 			Item<T> item = CoreDataTable.this.newRowItem(id, index, model);
-			for (final IDetachableFactory<? super IModel<? extends T>, ? extends String> rowCssClassFactory : rowCssClassFactories) {
-				item.add(new ClassAttributeAppender(new IModel<String>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public String getObject() {
-						return rowCssClassFactory.create(model);
-					}
-				}));
-			}
+			item.add(rowsBehaviorFactories.stream().map(f -> f.create(model)).toArray(Behavior[]::new));
 			return item;
 		}
 	}
+
 }

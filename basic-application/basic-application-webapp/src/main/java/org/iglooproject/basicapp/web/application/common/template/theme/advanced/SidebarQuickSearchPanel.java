@@ -1,5 +1,7 @@
 package org.iglooproject.basicapp.web.application.common.template.theme.advanced;
 
+import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants.ROLE_ADMIN;
+
 import java.util.Map;
 
 import org.apache.wicket.Component;
@@ -58,6 +60,7 @@ public class SidebarQuickSearchPanel extends Panel {
 									}
 								})
 						)
+						.add(Condition.role(ROLE_ADMIN).thenShow())
 				)
 		);
 	}

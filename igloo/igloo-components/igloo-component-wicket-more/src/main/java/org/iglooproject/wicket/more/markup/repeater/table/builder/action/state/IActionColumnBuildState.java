@@ -1,5 +1,7 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action.state;
 
+import java.util.Collection;
+
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
@@ -8,6 +10,7 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAction;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
+import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 
 public interface IActionColumnBuildState<T, I> extends IActionColumnCommonBuildState<T, I> {
@@ -47,7 +50,16 @@ public interface IActionColumnBuildState<T, I> extends IActionColumnCommonBuildS
 			IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory);
 
 	@Override
-	IActionColumnBuildState<T, I> withClassOnElements(String cssClassOnElements);
+	IActionColumnBuildState<T, I> withClassOnElements(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories);
+
+	@Override
+	IActionColumnBuildState<T, I> withClassOnElements(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory);
+
+	@Override
+	IActionColumnBuildState<T, I> withClassOnElements(IModel<? extends String> valueModel);
+
+	@Override
+	IActionColumnBuildState<T, I> withClassOnElements(String firstValue, String... otherValues);
 
 	@Override
 	I end();

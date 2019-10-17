@@ -3,25 +3,24 @@ package org.iglooproject.basicapp.core.business.upgrade.model;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.flywaydb.core.api.configuration.ConfigurationAware;
-import org.flywaydb.core.api.migration.MigrationChecksumProvider;
-import org.flywaydb.core.api.migration.spring.BaseSpringJdbcMigration;
+import org.flywaydb.core.api.migration.Context;
+import org.iglooproject.jpa.migration.IglooMigration;
 import org.iglooproject.jpa.more.business.upgrade.model.DataUpgradeRecord;
 import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
-import org.iglooproject.jpa.more.config.util.FlywaySpring;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
-public abstract class AbstractDataUpgradeMigration extends BaseSpringJdbcMigration
-		implements MigrationChecksumProvider, ConfigurationAware {
+public abstract class AbstractDataUpgradeMigration extends IglooMigration {
 
 	@Value("${db.schema}")
 	private String defaultSchema;
 
 	@Override
-	public void migrate(JdbcTemplate jdbcTemplate) throws Exception {
-		((FlywaySpring) flywayConfiguration).getApplicationContext().getAutowireCapableBeanFactory().autowireBean(this);
+	public void migrate(Context context) throws Exception {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(new SingleConnectionDataSource(context.getConnection(), true));
+		
 		final Integer id = jdbcTemplate.queryForObject(
 			String.format("SELECT NEXTVAL('%s.%s_id_seq');", defaultSchema, DataUpgradeRecord.class.getSimpleName()),
 			Integer.class
