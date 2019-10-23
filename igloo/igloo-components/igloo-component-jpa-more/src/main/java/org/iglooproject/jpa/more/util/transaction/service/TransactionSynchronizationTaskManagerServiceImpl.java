@@ -11,6 +11,8 @@ import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizat
 import org.iglooproject.jpa.more.util.transaction.model.TransactionSynchronizationTasks;
 import org.iglooproject.jpa.more.util.transaction.util.ITransactionSynchronizationTaskMerger;
 import org.iglooproject.jpa.util.EntityManagerUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -27,7 +29,9 @@ import com.google.common.collect.Lists;
 @Service
 public class TransactionSynchronizationTaskManagerServiceImpl
 		implements ITransactionSynchronizationTaskManagerService {
-	
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionSynchronizationTaskManagerServiceImpl.class);
+
 	private static final Class<?> TASKS_RESOURCE_KEY = TransactionSynchronizationTaskManagerServiceImpl.class;
 
 	public static final String EXCEPTION_MESSAGE_NO_ACTUAL_TRANSACTION_ACTIVE = "No actual transaction active.";
@@ -193,9 +197,8 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 		}
 	}
 	
-	private void doOnRollback() {
+	private void doOnRollback(TransactionSynchronizationTasks tasks) {
 		Exception firstException = null;
-		TransactionSynchronizationTasks tasks = getTasksIfExist();
 		if (tasks == null) {
 			return;
 		}
@@ -283,12 +286,23 @@ public class TransactionSynchronizationTaskManagerServiceImpl
 		
 		@Override
 		public void afterCompletion(int status) {
-			try {
-				if (TransactionSynchronization.STATUS_ROLLED_BACK == status) {
-					doOnRollback();
-				}
-			} finally {
-				unbindContext();
+			TransactionSynchronizationTasks tasks = null;
+			
+			// no try-finally as a failure on getTasksIfExists implies a failure on unbindContext
+			if (TransactionSynchronization.STATUS_ROLLED_BACK == status) {
+				// tasks are needed only for rollback
+				tasks = getTasksIfExist();
+			}
+			
+			// We need to unbind context before doOnRollback as synchronization is already removed by caller and
+			// remaining resources prevent correct transaction synchronization creation during doOnRollback.
+			// (isTaskSynchronizationActive will return true as resources should be present, so this
+			// TransactionSynchronization would not be installed)
+			unbindContext();
+			
+			if (tasks != null) {
+				// populated only for rollbacks
+				doOnRollback(tasks);
 			}
 		}
 	}
