@@ -35,7 +35,6 @@ import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.autosize.AutosizeBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.mask.MaskBehavior;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.DatePattern;
@@ -145,11 +144,9 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 						.add(new UpdateOnChangeAjaxEventBehavior()),
 					new TextArea<String>("descriptionFr", bindableModel.bind(Bindings.announcement().description().fr()))
 						.setLabel(new ResourceModel("business.announcement.description.fr"))
-						.add(new AutosizeBehavior())
 						.add(new UpdateOnChangeAjaxEventBehavior()),
 					new TextArea<String>("descriptionEn", bindableModel.bind(Bindings.announcement().description().en()))
 						.setLabel(new ResourceModel("business.announcement.description.en"))
-						.add(new AutosizeBehavior())
 						.add(new UpdateOnChangeAjaxEventBehavior())
 				),
 			new CoreLabel("publicationStartDateTitle", new ResourceModel("business.announcement.publication.startDateTime")),

@@ -6,6 +6,11 @@ import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 import org.wicketstuff.wiquery.core.options.Options;
 
+/**
+ * @deprecated This old JQuery plugin doesn't work well within BS4 modal and will be removed in a upcoming release.
+ * Use HTML {@code <textarea>} {@code rows} attribute instead. No more autosize, just a default relevant height.
+ */
+@Deprecated
 public class Autosize implements ChainableStatement, Serializable {
 
 	private static final long serialVersionUID = 4530534546458613607L;
