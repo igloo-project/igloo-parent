@@ -236,9 +236,10 @@
 		<igloo.elasticsearch-test.snakeyaml.version>1.23</igloo.elasticsearch-test.snakeyaml.version>
 		<igloo.elasticsearch-test.asm2.version>5.1</igloo.elasticsearch-test.asm2.version>
 
+		<igloo.webjars.bootstrap.version>4.3.1</igloo.webjars.bootstrap.version>
 		<igloo.webjars.popper.version>1.16.0</igloo.webjars.popper.version>
 		<igloo.webjars.clipboard.version>2.0.4</igloo.webjars.clipboard.version>
-		<igloo.webjars.bootstrap.version>4.3.1</igloo.webjars.bootstrap.version>
+		<igloo.webjars.jquery-mask-plugin.version>1.14.16</igloo.webjars.jquery-mask-plugin.version>
 		
 		<!-- autoprefixer plugin; experimental, do not reuse without notice -->
 		<igloo.rhino.version>1.7.11</igloo.rhino.version>
@@ -1408,6 +1409,12 @@
 
 			<dependency>
 				<groupId>org.webjars.npm</groupId>
+				<artifactId>bootstrap</artifactId>
+				<version>${igloo.webjars.bootstrap.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.webjars.npm</groupId>
 				<artifactId>popper.js</artifactId>
 				<version>${igloo.webjars.popper.version}</version>
 			</dependency>
@@ -1420,8 +1427,8 @@
 
 			<dependency>
 				<groupId>org.webjars.npm</groupId>
-				<artifactId>bootstrap</artifactId>
-				<version>${igloo.webjars.bootstrap.version}</version>
+				<artifactId>jquery-mask-plugin</artifactId>
+				<version>${igloo.webjars.jquery-mask-plugin.version}</version>
 			</dependency>
 
 			<dependency>

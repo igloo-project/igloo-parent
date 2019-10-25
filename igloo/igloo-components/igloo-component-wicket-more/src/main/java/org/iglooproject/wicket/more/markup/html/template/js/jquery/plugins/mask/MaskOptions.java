@@ -7,10 +7,11 @@ import org.wicketstuff.wiquery.core.options.IComplexOption;
 import org.wicketstuff.wiquery.core.options.Options;
 
 public class MaskOptions extends Options {
+
 	private static final long serialVersionUID = 8361789161890761478L;
 
 	private final Options translationOptions = new Options();
-	
+
 	private static class MaskTranslationOptions implements IComplexOption {
 		private static final long serialVersionUID = -7911528421294931614L;
 		
@@ -19,7 +20,7 @@ public class MaskOptions extends Options {
 		private final boolean recursive;
 		
 		private final Character fallback;
-
+		
 		public MaskTranslationOptions(String pattern, boolean optional, boolean recursive, Character fallback) {
 			super();
 			this.pattern = pattern;
@@ -27,7 +28,7 @@ public class MaskOptions extends Options {
 			this.recursive = recursive;
 			this.fallback = fallback;
 		}
-
+		
 		@Override
 		public CharSequence getJavascriptOption() {
 			Options options =  new Options()
@@ -43,57 +44,89 @@ public class MaskOptions extends Options {
 		}
 		
 	}
-	
+
 	@Override
 	public void detach() {
 		super.detach();
 		translationOptions.detach();
 	}
-	
+
 	@Override
 	public CharSequence getJavaScriptOptions() {
 		put("translation", translationOptions.getJavaScriptOptions().toString());
 		return super.getJavaScriptOptions();
 	}
 
-	public MaskOptions setOnKeyPress(JsScope onKeyPress) {
-		put("onKeyPress", onKeyPress);
+	public MaskOptions translation(char character, String pattern) {
+		return translation(character, new MaskTranslationOptions(pattern, false, false, null));
+	}
+
+	public MaskOptions translation(char character, String pattern, boolean optional, boolean recursive) {
+		return translation(character, new MaskTranslationOptions(pattern, optional, recursive, null));
+	}
+
+	public MaskOptions translation(char character, String pattern, char fallback) {
+		return translation(character, new MaskTranslationOptions(pattern, false, false, fallback));
+	}
+
+	public MaskOptions translation(char character, String pattern, boolean optional, boolean recursive, char fallback) {
+		return translation(character, new MaskTranslationOptions(pattern, optional, recursive, fallback));
+	}
+
+	protected MaskOptions translation(char character, MaskTranslationOptions options) {
+		translationOptions.put(JsUtils.quotes(String.valueOf(character)), options);
 		return this;
 	}
 
-	public MaskOptions setOnComplete(JsScope onComplete) {
+	public MaskOptions placeholder(IModel<String> placeholder) {
+		putLiteral("placeholder", placeholder);
+		return this;
+	}
+
+	public MaskOptions reverse() {
+		return reverse(true);
+	}
+
+	public MaskOptions reverse(boolean reverse) {
+		put("reverse", reverse);
+		return this;
+	}
+
+	public MaskOptions clearIfNotMatch() {
+		return clearIfNotMatch(true);
+	}
+
+	public MaskOptions clearIfNotMatch(boolean clearIfNotMatch) {
+		put("clearIfNotMatch", clearIfNotMatch);
+		return this;
+	}
+
+	public MaskOptions selectOnFocus() {
+		return selectOnFocus(true);
+	}
+
+	public MaskOptions selectOnFocus(boolean selectOnFocus) {
+		put("selectOnFocus", selectOnFocus);
+		return this;
+	}
+
+	public MaskOptions onComplete(JsScope onComplete) {
 		put("onComplete", onComplete);
 		return this;
 	}
 
-	public MaskOptions setOnChange(JsScope onChange) {
+	public MaskOptions onKeyPress(JsScope onKeyPress) {
+		put("onKeyPress", onKeyPress);
+		return this;
+	}
+
+	public MaskOptions onChange(JsScope onChange) {
 		put("onChange", onChange);
 		return this;
 	}
-	
-	public MaskOptions addTranslation(char character, String pattern) {
-		return addTranslation(character, new MaskTranslationOptions(pattern, false, false, null));
-	}
-	
-	public MaskOptions addTranslation(char character, String pattern, boolean optional, boolean recursive) {
-		return addTranslation(character, new MaskTranslationOptions(pattern, optional, recursive, null));
-	}
-	
-	public MaskOptions addTranslation(char character, String pattern, char fallback) {
-		return addTranslation(character, new MaskTranslationOptions(pattern, false, false, fallback));
-	}
-	
-	public MaskOptions addTranslation(char character, String pattern, boolean optional, boolean recursive, char fallback) {
-		return addTranslation(character, new MaskTranslationOptions(pattern, optional, recursive, fallback));
-	}
-	
-	protected MaskOptions addTranslation(char character, MaskTranslationOptions options) {
-		translationOptions.put(JsUtils.quotes(String.valueOf(character)), options);
-		return this;
-	}
-	
-	public MaskOptions setPlaceholder(IModel<String> placeholder) {
-		putLiteral("placeholder", placeholder);
+
+	public MaskOptions onInvalid(JsScope onInvalid) {
+		put("onInvalid", onInvalid);
 		return this;
 	}
 
