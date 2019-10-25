@@ -102,12 +102,6 @@
 			<version>${project.version}</version>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.webjars</groupId>
-			<artifactId>jquery.carouFredSel</artifactId>
-			<version>${project.version}</version>
-			<optional>true</optional>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
