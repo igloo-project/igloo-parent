@@ -12,15 +12,10 @@
 							</h5>
 						</div>
 						<div class="card-body">
-							<button wicket:id="cacheManagerPurgeLink" class="btn btn-danger mb-3" type="button">
+							<button wicket:id="cacheManagerPurgeLink" class="btn btn-danger" type="button">
 								<i class="fa fa-fw fa-trash"></i>
 								<wicket:message key="console.maintenance.ehcache.cacheManager.purge.title" />
 							</button>
-							
-							<div class="form-group mb-0">
-								<input type="text" id="filtre" class="form-control filter-input" autocomplete="off"
-									wicket:message="placeholder:console.maintenance.ehcache.portfolio.filtre" />
-							</div>
 						</div>
 						<div class="card-body card-body-table">
 							<table class="table table-bordered-inner table-card-body">
@@ -80,13 +75,6 @@
 										</td>
 									</tr>
 								</tbody>
-								<tfoot>
-									<tr class="filter-empty-message">
-										<td colspan="9" class="alert">
-											<wicket:message key="console.maintenance.ehcache.portfolio.filtre.empty" />
-										</td>
-									</tr>
-								</tfoot>
 							</table>
 						</div>
 					</div>
