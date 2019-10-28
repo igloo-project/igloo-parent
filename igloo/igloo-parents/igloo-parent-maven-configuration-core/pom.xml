@@ -239,6 +239,7 @@
 		<igloo.webjars.bootstrap.version>4.3.1</igloo.webjars.bootstrap.version>
 		<igloo.webjars.popper.version>1.16.0</igloo.webjars.popper.version>
 		<igloo.webjars.clipboard.version>2.0.4</igloo.webjars.clipboard.version>
+		<igloo.webjars.jquery-ui.version>1.12.1</igloo.webjars.jquery-ui.version>
 		<igloo.webjars.jquery-mask-plugin.version>1.14.16</igloo.webjars.jquery-mask-plugin.version>
 		
 		<!-- autoprefixer plugin; experimental, do not reuse without notice -->
@@ -1423,6 +1424,12 @@
 				<groupId>org.webjars.npm</groupId>
 				<artifactId>clipboard</artifactId>
 				<version>${igloo.webjars.clipboard.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.webjars.npm</groupId>
+				<artifactId>jquery-ui</artifactId>
+				<version>${igloo.webjars.jquery-ui.version}</version>
 			</dependency>
 
 			<dependency>

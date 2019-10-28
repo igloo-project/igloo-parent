@@ -12,7 +12,6 @@ import org.iglooproject.wicket.bootstrap4.console.template.style.CoreConsoleCssS
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.bootstrap.CoreBootstrap4CssScope;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.fontawesome.CoreFontAwesome5CssScope;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
-import org.iglooproject.wicket.bootstrap4.markup.html.template.js.jqueryui.JQueryUIJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.select2.Select2JavaScriptResourceReference;
 import org.iglooproject.wicket.more.application.CoreWicketApplication;
 import org.iglooproject.wicket.more.application.IWicketModule;
@@ -49,25 +48,24 @@ public class WicketBootstrapModule implements IWicketModule {
 
 	@Override
 	public void addResourceReplacements(CoreWicketApplication application) {
-		application.addResourceReplacement(org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference.get(), JQueryUIJavaScriptResourceReference.get());
 		application.addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
 	}
 
 	@Override
 	public List<StaticResourceMapper> listStaticResources() {
 		return ImmutableList.of(
-				staticResourceMapper("/common", AbstractWebPageTemplate.class),
-				staticResourceMapper("/font-awesome", CoreFontAwesome5CssScope.class)
+			staticResourceMapper("/common", AbstractWebPageTemplate.class),
+			staticResourceMapper("/font-awesome", CoreFontAwesome5CssScope.class)
 		);
 	}
 
 	@Override
 	public void updateResourceSettings(ResourceSettings resourceSettings) {
 		resourceSettings.getStringResourceLoaders().addAll(
-				0, // Override the keys in existing resource loaders with the following
-				ImmutableList.of(
-						new ClassStringResourceLoader(CoreWicketConsoleResources.class)
-				)
+			0, // Override the keys in existing resource loaders with the following
+			ImmutableList.of(
+				new ClassStringResourceLoader(CoreWicketConsoleResources.class)
+			)
 		);
 	}
 
