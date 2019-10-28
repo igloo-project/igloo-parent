@@ -3,6 +3,7 @@ package org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstrap.pop
 import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipJavaScriptResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
@@ -17,8 +18,10 @@ public final class BootstrapPopoverJavaScriptResourceReference extends AbstractC
 	}
 
 	@Override
-	protected List<HeaderItem> getPluginDependencies() {
-		return forReferences(BootstrapTooltipJavaScriptResourceReference.get());
+	public List<HeaderItem> getDependencies() {
+		List<HeaderItem> dependencies = super.getDependencies();
+		dependencies.add(JavaScriptHeaderItem.forReference(BootstrapTooltipJavaScriptResourceReference.get()));
+		return dependencies;
 	}
 
 	public static BootstrapPopoverJavaScriptResourceReference get() {

@@ -3,7 +3,7 @@ package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.file
 import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
-
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.fileupload.FileUploadJavaScriptResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
@@ -22,8 +22,10 @@ public final class FileUploadGlueJavaScriptResourceReference extends AbstractCor
 	}
 
 	@Override
-	public List<HeaderItem> getPluginDependencies() {
-		return forReferences(FileUploadJavaScriptResourceReference.get());
+	public List<HeaderItem> getDependencies() {
+		List<HeaderItem> dependencies = super.getDependencies();
+		dependencies.add(JavaScriptHeaderItem.forReference(FileUploadJavaScriptResourceReference.get()));
+		return dependencies;
 	}
 
 }

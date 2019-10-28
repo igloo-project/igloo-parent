@@ -4,11 +4,9 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.wicket.more.jqplot.plugin.adddomreference.JQPlotAddDomReferenceResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
+
 import nl.topicus.wqplot.components.JQPlotJavaScriptResourceReference;
 
 /**
@@ -17,9 +15,9 @@ import nl.topicus.wqplot.components.JQPlotJavaScriptResourceReference;
 public class JQPlotAutoresizeJavascriptReference extends AbstractCoreJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = -2866004739366521046L;
-	
+
 	private static final JQPlotAutoresizeJavascriptReference INSTANCE = new JQPlotAutoresizeJavascriptReference();
-	
+
 	public static JQPlotAutoresizeJavascriptReference get() {
 		return INSTANCE;
 	}
@@ -27,13 +25,13 @@ public class JQPlotAutoresizeJavascriptReference extends AbstractCoreJQueryPlugi
 	private JQPlotAutoresizeJavascriptReference() {
 		super(JQPlotAutoresizeJavascriptReference.class, "jqplot.autoresize.js");
 	}
-	
+
 	@Override
-	protected List<HeaderItem> getPluginDependencies() {
-		return ImmutableList.<HeaderItem>of(
-				JavaScriptHeaderItem.forReference(JQPlotJavaScriptResourceReference.get()),
-				JavaScriptHeaderItem.forReference(JQPlotAddDomReferenceResourceReference.get())
-		);
+	public List<HeaderItem> getDependencies() {
+		List<HeaderItem> dependencies = super.getDependencies();
+		dependencies.add(JavaScriptHeaderItem.forReference(JQPlotJavaScriptResourceReference.get()));
+		dependencies.add(JavaScriptHeaderItem.forReference(JQPlotAddDomReferenceResourceReference.get()));
+		return dependencies;
 	}
 
 }

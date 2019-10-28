@@ -7,8 +7,6 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 import org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference;
 
-import com.google.common.collect.ImmutableList;
-
 public final class MonthPickerJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = -1451228678288396852L;
@@ -20,10 +18,10 @@ public final class MonthPickerJavaScriptResourceReference extends AbstractCoreJQ
 	}
 
 	@Override
-	protected List<HeaderItem> getPluginDependencies() {
-		return ImmutableList.of(
-			JavaScriptHeaderItem.forReference(JQueryUIJavaScriptResourceReference.get())
-		);
+	public List<HeaderItem> getDependencies() {
+		List<HeaderItem> dependencies = super.getDependencies();
+		dependencies.add(JavaScriptHeaderItem.forReference(JQueryUIJavaScriptResourceReference.get()));
+		return dependencies;
 	}
 
 	public static MonthPickerJavaScriptResourceReference get() {
