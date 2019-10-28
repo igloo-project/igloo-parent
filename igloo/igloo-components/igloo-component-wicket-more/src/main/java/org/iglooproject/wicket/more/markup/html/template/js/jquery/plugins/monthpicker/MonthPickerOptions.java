@@ -29,7 +29,11 @@ public class MonthPickerOptions extends Options {
 		putLiteral("dateFormat", dateFormat);
 		return this;
 	}
-	
+
+	public void setChangeYear(boolean changeYear) {
+		put("changeYear", changeYear);
+	}
+
 	/**
 	 * Range of years to display in drop-down,
 	 * either relative to today's year (-nn:+nn), relative to currently displayed year
@@ -39,14 +43,14 @@ public class MonthPickerOptions extends Options {
 		putLiteral("yearRange", yearRange);
 		return this;
 	}
-	
+
 	/**
 	 * Undocumented option. Seems to set the minimum <strong>year</strong>.
 	 */
 	public void setMinDate(DateOption minDate) {
 		put("minDate", minDate);
 	}
-	
+
 	/**
 	 * Undocumented option. Seems to set the maximum <strong>year</strong>.
 	 */
@@ -60,6 +64,10 @@ public class MonthPickerOptions extends Options {
 
 	public void setNextText(String nextText) {
 		putLiteral("nextText", nextText);
+	}
+
+	public void setShowButtonPanel(boolean showButtonPanel) {
+		put("showButtonPanel", showButtonPanel);
 	}
 
 }
