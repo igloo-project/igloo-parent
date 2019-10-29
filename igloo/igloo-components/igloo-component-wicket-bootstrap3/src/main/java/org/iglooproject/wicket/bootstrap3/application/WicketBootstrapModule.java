@@ -9,7 +9,7 @@ import org.apache.wicket.settings.ResourceSettings;
 import org.iglooproject.wicket.bootstrap3.console.resources.CoreWicketConsoleResources;
 import org.iglooproject.wicket.bootstrap3.console.template.style.CoreConsoleCssScope;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.CoreBootstrap3CssScope;
-import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.fontawesome.CoreFontAwesome4CssScope;
+import org.iglooproject.wicket.bootstrap3.markup.html.template.css.fontawesome.CoreFontAwesome4CssScope;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.js.select2.Select2JavaScriptResourceReference;
 import org.iglooproject.wicket.more.application.CoreWicketApplication;
