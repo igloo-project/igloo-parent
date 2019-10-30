@@ -31,9 +31,9 @@ public final class MonthPickerLanguageResourceReference extends JavaScriptResour
 		Locale locale = dpl.getLocale();
 		String country = locale.getCountry();
 		String variant = locale.getVariant();
-		StringBuffer js = new StringBuffer();
+		StringBuilder js = new StringBuilder();
 		
-		js.append("i18n/jquery.ui.monthpicker-");
+		js.append("i18n/jquery.ui.monthpicker.");
 		js.append(locale.getLanguage());
 		
 		if (country != null && country.trim().length() > 0) {
@@ -48,4 +48,5 @@ public final class MonthPickerLanguageResourceReference extends JavaScriptResour
 		
 		return js.toString();
 	}
+
 }

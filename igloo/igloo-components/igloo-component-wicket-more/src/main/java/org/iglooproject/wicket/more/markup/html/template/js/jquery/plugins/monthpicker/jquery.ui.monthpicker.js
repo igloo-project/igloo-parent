@@ -1,17 +1,19 @@
-/**
+/*!
+ * jQuery UI Monthpicker
+ *
  * MIT License
  * Copyright (c) 2011, Julien Poumailloux
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy 
- * of this software and associated documentation files (the "Software"), to deal 
- * in the Software without restriction, including without limitation the rights 
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
- * copies of the Software, and to permit persons to whom the Software is 
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software i
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,29 +22,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-/**
- * GPL LIcense
- * Copyright (c) 2011, Julien Poumailloux
- * 
- * This program is free software: you can redistribute it and/or modify it 
- * under the terms of the GNU General Public License as published by the 
- * Free Software Foundation, either version 3 of the License, or 
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License 
- * for more details.
- * 
- * You should have received a copy of the GNU General Public License along 
- * with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 (function ($) {
 
 	$.extend($.ui, { monthpicker: { version: "@VERSION" } });
 
 	var PROP_NAME = 'monthpicker';
-	var dpuuid = new Date().getTime();
 	var instActive;
 
 	/* Month picker manager.
@@ -52,29 +36,40 @@
 
 	function Monthpicker() {
 		this.uuid = 0;
+		this._keyEvent = false; // If the last event was a key event
 		this._curInst = null; // The current instance in use
 		this._disabledInputs = []; // List of date picker inputs that have been disabled
 		this._monthpickerShowing = false; // True if the popup picker is showing , false if not
 		this._mainDivId = 'ui-monthpicker-div'; // The ID of the main monthpicker division
 		this._triggerClass = 'ui-monthpicker-trigger'; // The name of the trigger marker class
 		this._dialogClass = 'ui-monthpicker-dialog'; // The name of the dialog marker class
+		this._currentClass = "ui-datepicker-current-day"; // The name of the current day marker class
+		this._dayOverClass = "ui-datepicker-days-cell-over"; // The name of the day hover marker class
+		this._unselectableClass = "ui-datepicker-unselectable"; // The name of the unselectable cell marker class
 		this.regional = []; // Available regional settings, indexed by language code
 		this.regional[''] = { // Default regional settings
+			closeText: "Done", // Display text for close link
 			prevText: 'Prev', // Display text for previous month link
 			nextText: 'Next', // Display text for next month link
+			currentText: "Current", // Display text for current month link
 			monthNames: ['January','February','March','April','May','June',
 				'July','August','September','October','November','December'], // Names of months for drop-down and formatting
 			monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], // For formatting
 			dateFormat: 'mm/yy',
+			isRTL: false,
 			yearSuffix: '' // Additional text to append to the year in the month headers
 		};
 		this._defaults = { // Global defaults for all the date picker instances
 			showOn: 'focus', // 'focus' for popup on focus,
 				// 'button' for trigger button, or 'both' for either
 			showAnim: 'fadeIn', // Name of jQuery animation for popup
+			showButtonPanel: false, // True to show button panel, false to not show it
+			appendText: "", // Display text following the input box, e.g. showing the format
 			buttonText: '...', // Text for trigger button
 			buttonImage: '', // URL for trigger button image
+			gotoCurrent: false, // True if today link goes back to current selection instead
 			changeYear: false, // True if year can be selected directly, false if only prev/next
+			navigationAsDateFormat: false, // True if date formatting applied to prev/today/next links
 			yearRange: 'c-10:c+10', // Range of years to display in drop-down,
 				// either relative to today's year (-nn:+nn), relative to currently displayed year
 				// (c-nn:c+nn), absolute (nnnn:nnnn), or a combination of the above (nnnn:-n)
@@ -84,12 +79,16 @@
 			onChangeYear: null, // Define a callback function when the year is changed
 			onClose: null, // Define a callback function when the monthpicker is closed
 			stepYears: 1, // Number of months to step back/forward
+			stepBigYears: 3, // Number of months to step back/forward
+			defaultDate: null, // Used when field is blank: actual date,
+			minDate: null, // The earliest selectable date, or null for no limit
+			maxDate: null, // The latest selectable date, or null for no limit
 			altField: '', // Selector for an alternate field to store selected dates into
 			altFormat: '', // The date format to use for the alternate field
 			disabled: false // The initial disabled state
 		};
 		$.extend(this._defaults, this.regional['']);
-		this.dpDiv = bindHover($('<div id="' + this._mainDivId + '" class="ui-datepicker ui-monthpicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>'));
+		this.dpDiv = bindHover($('<div id="' + this._mainDivId + '" class="ui-monthpicker ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"></div>'));
 	}
 	
 	$.extend(Monthpicker.prototype, {
@@ -106,14 +105,16 @@
 		_widgetMonthpicker: function() {
 			return this.dpDiv;
 		},
-		
+
 		/* Override the default settings for all instances of the date picker.
-		   @param  settings  object - the new settings to use as defaults (anonymous object)
-		   @return the manager object */
+		 * @param  settings  object - the new settings to use as defaults (anonymous object)
+		 * @return the manager object
+		 */
 		setDefaults: function(settings) {
 			extendRemove(this._defaults, settings || {});
 			return this;
 		},
+
 		
 		/* Retrieve the instance data for the target control.
 		   @param  target  element - the target input field or division or span
@@ -182,7 +183,6 @@
 				return;
 			this._attachments(input, inst);
 			input.addClass(this.markerClassName).keydown(this._doKeyDown).
-				keypress(this._doKeyPress).keyup(this._doKeyUp).
 				bind("setData.monthpicker", function(event, key, value) {
 					inst.settings[key] = value;
 				}).bind("getData.monthpicker", function(event, key) {
@@ -198,23 +198,40 @@
 
 		/* Make attachments based on settings. */
 		_attachments: function(input, inst) {
+			var buttonText, buttonImage;
+			var appendText = this._get(inst, "appendText"),
+				isRTL = this._get(inst, "isRTL");
+
+			if (appendText) {
+				inst.append = $("<span class='" + this._appendClass + "'>" + appendText + "</span>");
+				input[isRTL ? "before" : "after"](inst.append);
+			}
+
 			input.unbind('focus', this._showMonthpicker);
 			if (inst.trigger)
 				inst.trigger.remove();
 			var showOn = this._get(inst, 'showOn');
 			if (showOn == 'focus' || showOn == 'both') // pop-up month picker when in the marked field
 				input.focus(this._showMonthpicker);
-			if (showOn == 'button' || showOn == 'both') { // pop-up month picker when button clicked
-				var buttonText = this._get(inst, 'buttonText');
-				var buttonImage = this._get(inst, 'buttonImage');
-				inst.trigger = $('<img/>').addClass(this._triggerClass).
-						attr({ src: buttonImage, alt: buttonText, title: buttonText });
-				input['after'](inst.trigger);
+			if (showOn === "button" || showOn === "both") { // pop-up month picker when button clicked
+				buttonText = this._get(inst, "buttonText");
+				buttonImage = this._get(inst, "buttonImage");
+				inst.trigger = $(this._get(inst, "buttonImageOnly") ?
+					$("<img/>").addClass(this._triggerClass).
+						attr({ src: buttonImage, alt: buttonText, title: buttonText }) :
+					$("<button type='button'></button>").addClass(this._triggerClass).
+						html(!buttonImage ? buttonText : $("<img/>").attr(
+						{ src:buttonImage, alt:buttonText, title:buttonText })));
+				input[isRTL ? "before" : "after"](inst.trigger);
 				inst.trigger.click(function() {
-					if ($.monthpicker._monthpickerShowing && $.monthpicker._lastInput == input[0])
+					if ($.monthpicker._monthpickerShowing && $.monthpicker._lastInput === input[0]) {
 						$.monthpicker._hideMonthpicker();
-					else
+					} else if ($.monthpicker._monthpickerShowing && $.monthpicker._lastInput !== input[0]) {
+						$.monthpicker._hideMonthpicker();
 						$.monthpicker._showMonthpicker(input[0]);
+					} else {
+						$.monthpicker._showMonthpicker(input[0]);
+					}
 					return false;
 				});
 			}
@@ -238,9 +255,9 @@
 		},
 
 		/* Pop-up the month picker for a given input field.
-		   If false returned from beforeShow event handler do not show. 
+		   If false returned from beforeShow event handler do not show.
 		   @param  input  element - the input field attached to the date picker or
-						  event - if triggered by focus */
+						          event - if triggered by focus */
 		_showMonthpicker: function(input) {
 			input = input.target || input;
 			if (input.nodeName.toLowerCase() != 'input') // find from button/image trigger
@@ -275,7 +292,7 @@
 				isFixed |= $(this).css('position') == 'fixed';
 				return !isFixed;
 			});
-			if (isFixed && /opera/.test(navigator.userAgent.toLowerCase())) { // correction for Opera when fixed and scrolled
+			if (isFixed && $.browser.opera) { // correction for Opera when fixed and scrolled
 				$.monthpicker._pos[0] -= document.documentElement.scrollLeft;
 				$.monthpicker._pos[1] -= document.documentElement.scrollTop;
 			}
@@ -302,10 +319,10 @@
 						width: inst.dpDiv.outerWidth(), height: inst.dpDiv.outerHeight()});
 				}
 			};
-			inst.dpDiv.zIndex($(input).zIndex()+1);
+			$.monthpicker._zIndex(inst.dpDiv, $.monthpicker._zIndex(input)+1);
 			$.monthpicker._monthpickerShowing = true;
 
-			if ($.effects && $.effects[showAnim])
+			if ($.effects && $.effects.effect[showAnim])
 				inst.dpDiv.show(showAnim, $.monthpicker._get(inst, 'showOptions'), duration, postProcess);
 			else
 				inst.dpDiv[showAnim || 'show']((showAnim ? duration : null), postProcess);
@@ -316,6 +333,41 @@
 			$.monthpicker._curInst = inst;
 		},
 
+		_zIndex: function(el, zIndex) {
+			var $el = $(el);
+
+			if (zIndex !== undefined) {
+				return $el.css('zIndex', zIndex);
+			}
+
+			if ($el.length) {
+				var elem = $($el[0]), position, value;
+				while (elem.length && elem[0] !== document) {
+
+					// Ignore z-index if position is set to a value where z-index is ignored by the browser
+					// This makes behavior of this function consistent across browsers
+					// WebKit always returns auto if the element is positioned
+					position = elem.css('position');
+
+					if (position === 'absolute' || position === 'relative' || position === 'fixed') {
+
+						// IE returns 0 when zIndex is not specified
+						// other browsers return a string
+						// we ignore the case of nested elements with an explicit value of 0
+						// <div style="z-index: -10;"><div style="z-index: 0;"></div></div>
+						value = parseInt(elem.css('zIndex'), 10);
+						if (!isNaN(value) && value !== 0) {
+							return value;
+						}
+					}
+
+					elem = elem.parent();
+				}
+			}
+
+			return 0;
+		},
+
 		/* Generate the date picker content. */
 		_updateMonthpicker: function(inst) {
 		
@@ -324,6 +376,7 @@
 			var borders = $.monthpicker._getBorders(inst.dpDiv);
 			instActive = inst; // for delegate hover events
 			inst.dpDiv.empty().append(this._generateHTML(inst));
+			this._attachHandlers(inst);
 			var cover = inst.dpDiv.find('iframe.ui-monthpicker-cover'); // IE6- only
 			if( !!cover.length ){ //avoid call to outerXXXX() when not in IE6
 				cover.css({left: -borders[0], top: -borders[1], width: inst.dpDiv.outerWidth(), height: inst.dpDiv.outerHeight()})
@@ -335,7 +388,7 @@
 					// this breaks the change event in IE
 					inst.input.is(':visible') && !inst.input.is(':disabled') && inst.input[0] != document.activeElement)
 				inst.input.focus();
-			// deffered render of the years select (to avoid flashes on Firefox) 
+			// deffered render of the years select (to avoid flashes on Firefox)
 			if( inst.yearshtml ){
 				var origyearshtml = inst.yearshtml;
 				setTimeout(function(){
@@ -353,7 +406,7 @@
 			var onClose = this._get(inst, 'onClose');
 			if (onClose)
 				onClose.apply((inst.input ? inst.input[0] : null),
-							  [(inst.input ? inst.input.val() : ''), inst]);
+								[(inst.input ? inst.input.val() : ''), inst]);
 		},
 
 		/* Hide the month picker from view.
@@ -367,10 +420,10 @@
 				var duration = this._get(inst, 'duration');
 				var postProcess = function() {
 					$.monthpicker._tidyDialog(inst);
-					this._curInst = null;
+					$.monthpicker._curInst = null;
 				};
 
-				if ( $.effects && $.effects[ showAnim ] )
+				if ( $.effects && $.effects.effect[ showAnim ] )
 					inst.dpDiv.hide(showAnim, $.monthpicker._get(inst, 'showOptions'), duration, postProcess);
 				else
 					inst.dpDiv[(showAnim == 'slideDown' ? 'slideUp' :
@@ -390,6 +443,105 @@
 				this._inDialog = false;
 			}
 		},
+
+	/* Handle keystrokes. */
+	_doKeyDown: function(event) {
+		var onSelect, dateStr, sel,
+			inst = $.monthpicker._getInst(event.target),
+			handled = true,
+			isRTL = inst.dpDiv.is(".ui-datepicker-rtl");
+
+		inst._keyEvent = true;
+		if ($.monthpicker._monthpickerShowing) {
+			switch (event.keyCode) {
+				case 9: $.monthpicker._hideMonthpicker();
+						handled = false;
+						break; // hide on tab out
+				case 13: sel = $("td." + $.monthpicker._dayOverClass + ":not(." +
+									$.monthpicker._currentClass + ")", inst.dpDiv);
+
+						if (sel[0]) {
+							$.monthpicker._selectMonth(event.target, inst.selectedYear, inst.selectedMonth, sel[0]);
+						}
+
+						onSelect = $.monthpicker._get(inst, "onSelect");
+						if (onSelect) {
+							dateStr = $.monthpicker._formatDate(inst);
+
+							// trigger custom callback
+							onSelect.apply((inst.input ? inst.input[0] : null), [dateStr, inst]);
+						} else {
+							$.monthpicker._hideMonthpicker();
+						}
+
+						return false; // don't submit the form
+				case 27: $.monthpicker._hideMonthpicker();
+						break; // hide on escape
+				case 33: $.monthpicker._adjustDate(event.target, (event.ctrlKey ?
+							-$.monthpicker._get(inst, "stepBigYears") :
+							-$.monthpicker._get(inst, "stepYears")), "Y");
+						break; // previous year on page up/+ ctrl
+				case 34: $.monthpicker._adjustDate(event.target, (event.ctrlKey ?
+							+$.monthpicker._get(inst, "stepBigYears") :
+							+$.monthpicker._get(inst, "stepYears")), "Y");
+						break; // next year on page down/+ ctrl
+				case 35: if (event.ctrlKey || event.metaKey) {
+							$.monthpicker._clearDate(event.target);
+						}
+						handled = event.ctrlKey || event.metaKey;
+						break; // clear on ctrl or command +end
+				case 36: if (event.ctrlKey || event.metaKey) {
+							$.monthpicker._gotoCurrent(event.target);
+						}
+						handled = event.ctrlKey || event.metaKey;
+						break; // current on ctrl or command +home
+				case 37: if (event.ctrlKey || event.metaKey) {
+							$.monthpicker._adjustDate(event.target, (isRTL ? +1 : -1), "M");
+						}
+						handled = event.ctrlKey || event.metaKey;
+						// -1 month on ctrl or command +left
+						if (event.originalEvent.altKey) {
+							$.monthpicker._adjustDate(event.target, (event.ctrlKey ?
+								-$.monthpicker._get(inst, "stepBigYears") :
+								-$.monthpicker._get(inst, "stepYears")), "Y");
+						}
+						// next year on alt +left on Mac
+						break;
+				case 38: if (event.ctrlKey || event.metaKey) {
+							$.monthpicker._adjustDate(event.target, -3, "M");
+						}
+						handled = event.ctrlKey || event.metaKey;
+						break; // -1 quarter on ctrl or command +up
+				case 39: if (event.ctrlKey || event.metaKey) {
+							$.monthpicker._adjustDate(event.target, (isRTL ? -1 : +1), "M");
+						}
+						handled = event.ctrlKey || event.metaKey;
+						// +1 month on ctrl or command +right
+						if (event.originalEvent.altKey) {
+							$.monthpicker._adjustDate(event.target, (event.ctrlKey ?
+								+$.monthpicker._get(inst, "stepBigYears") :
+								+$.monthpicker._get(inst, "stepYears")), "Y");
+						}
+						// next year on alt +right
+						break;
+				case 40: if (event.ctrlKey || event.metaKey) {
+							$.monthpicker._adjustDate(event.target, +3, "M");
+						}
+						handled = event.ctrlKey || event.metaKey;
+						break; // +1 quarter on ctrl or command +down
+				default: handled = false;
+			}
+		} else if (event.keyCode === 36 && event.ctrlKey) { // display the date picker on ctrl+home
+			$.monthpicker._showMonthpicker(this);
+		} else {
+			handled = false;
+		}
+
+		if (handled) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+	},
 		
 		/* Is the first field in a jQuery collection disabled as a monthpicker?
 		   @param  target    element - the target input field or division or span
@@ -466,22 +618,46 @@
 		/* Adjust one of the date sub-fields. */
 		_adjustInstDate: function(inst, offset, period) {
 			var year = inst.drawYear + (period == 'Y' ? offset : 0);
-			var month = inst.drawMonth + (period == 'M' ? offset : 0);
-			var day = 1;
-			var date = this._restrictMinMax(inst,
-				this._daylightSavingAdjust(new Date(year, month, day)));
-			inst.drawMonth = inst.selectedMonth = date.getMonth();
+			var month = Math.min(inst.selectedMonth, 12) + (period === "M" ? offset : 0);
+			var date = this._restrictMinMax(inst, new Date(year, month, 1));
 			inst.drawYear = inst.selectedYear = date.getFullYear();
-			if (period == 'M' || period == 'Y')
+			inst.selectedMonth = date.getMonth();
+
+			if (period == 'Y') {
 				this._notifyChange(inst);
+			}
 		},
 		
 		/* Notify change of month/year. */
 		_notifyChange: function(inst) {
 			var onChange = this._get(inst, 'onChangeYear');
 			if (onChange)
-				onChange.apply((inst.input ? inst.input[0] : null),
-					[inst.selectedYear + 1, inst]);
+				onChange.apply((inst.input ? inst.input[0] : null), [inst.selectedYear, inst]);
+		},
+		
+		/* Detach a datepicker from its control.
+		 * @param  target	element - the target input field or division or span
+		 */
+		_destroyMonthpicker: function(target) {
+			var nodeName,
+				$target = $(target),
+				inst = $.data(target, PROP_NAME);
+	
+			if (!$target.hasClass(this.markerClassName)) {
+				return;
+			}
+	
+			nodeName = target.nodeName.toLowerCase();
+			$.removeData(target, PROP_NAME);
+			if (nodeName === "input") {
+				inst.append.remove();
+				inst.trigger.remove();
+				$target.removeClass(this.markerClassName).
+					unbind("focus", this._showMonthpicker).
+					unbind("keydown", this._doKeyDown)
+			} else if (nodeName === "div" || nodeName === "span") {
+				$target.removeClass(this.markerClassName).empty();
+			}
 		},
 		
 		/* Enable the date picker to a jQuery selection.
@@ -525,11 +701,15 @@
 		
 		/* Generate the HTML for the current state of the date picker. */
 		_generateHTML: function(inst) {
+			var printDate, hideIfNoPrevNext, unselectable;
+
+			hideIfNoPrevNext = false;
 			var today = new Date();
-			today = this._daylightSavingAdjust(
-				new Date(today.getFullYear(), today.getMonth(), today.getDate())); // clear time
-			var currentDate = this._daylightSavingAdjust((!inst.currentMonth ? new Date(9999, 9, 9) :
-				new Date(inst.currentYear, inst.currentMonth, 1)));
+			today = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // clear time
+			var currentDate = (!inst.currentMonth ? new Date(9999, 9, 9) :
+				new Date(inst.currentYear, inst.currentMonth, 1));
+			var minDate = this._getMinMaxDate(inst, "min");
+			var maxDate = this._getMinMaxDate(inst, "max");
 			var html = '';
 			var year = currentDate && currentDate.year ? currentDate.year : 2011;
 			var prevText = this._get(inst, 'prevText');
@@ -538,69 +718,116 @@
 			var monthNames = this._get(inst, 'monthNames');
 			var monthNamesShort = this._get(inst, 'monthNamesShort');
 			var drawYear = inst.drawYear;
+			var showButtonPanel = this._get(inst, "showButtonPanel");
+			var isRTL = this._get(inst, "isRTL");
+			var defaultDate = this._getDefaultDate(inst);
+			var navigationAsDateFormat = this._get(inst, "navigationAsDateFormat");
+			defaultDate.setDate(1);
 
-				var prev = '<a class="ui-datepicker-prev ui-corner-all" onclick="MP_jQuery_' + dpuuid +
-					'.monthpicker._adjustDate(\'#' + inst.id + '\', -' + stepYears + ', \'Y\');"' +
-					' title="' + prevText + '"><span class="ui-icon ui-icon-circle-triangle-w">' + prevText + '</span></a>';
-				var next = '<a class="ui-datepicker-next ui-corner-all" onclick="MP_jQuery_' + dpuuid +
-					'.monthpicker._adjustDate(\'#' + inst.id + '\', +' + stepYears + ', \'Y\');"' +
-					' title="' + nextText + '"><span class="ui-icon ui-icon-circle-triangle-e">' + nextText + '</span></a>';
+			prevText = (!navigationAsDateFormat ? prevText : this.formatDate(prevText,
+				new Date(drawYear - stepYears, 1, 1),
+				this._getFormatConfig(inst)));
+			nextText = (!navigationAsDateFormat ? nextText : this.formatDate(nextText,
+				new Date(drawYear + stepYears, 1, 1),
+				this._getFormatConfig(inst)));
 
-				html += '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">' +
-					prev + next + 
-					this._generateYearHeader(inst, drawYear, monthNames, monthNamesShort) + // draw month headers
-					'</div><table class="ui-datepicker-calendar"><tbody>';
+			var prev = (this._canAdjustYear(inst, -1, drawYear) ?
+				"<a class='ui-datepicker-prev ui-corner-all' data-handler='prev' data-event='click'" +
+				" title='" + prevText + "'><span class='ui-icon ui-icon-circle-triangle-" + ( isRTL ? "e" : "w") + "'>" + prevText + "</span></a>" :
+				(hideIfNoPrevNext ? "" : "<a class='ui-datepicker-prev ui-corner-all ui-state-disabled' title='"+ prevText +"'><span class='ui-icon ui-icon-circle-triangle-" + ( isRTL ? "e" : "w") + "'>" + prevText + "</span></a>"));
+
+			var next = (this._canAdjustYear(inst, +1, drawYear) ?
+				"<a class='ui-datepicker-next ui-corner-all' data-handler='next' data-event='click'" +
+				" title='" + nextText + "'><span class='ui-icon ui-icon-circle-triangle-" + ( isRTL ? "w" : "e") + "'>" + nextText + "</span></a>" :
+				(hideIfNoPrevNext ? "" : "<a class='ui-datepicker-next ui-corner-all ui-state-disabled' title='"+ nextText + "'><span class='ui-icon ui-icon-circle-triangle-" + ( isRTL ? "w" : "e") + "'>" + nextText + "</span></a>"));
+
+			html += '<div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">' +
+				prev + next + this._generateYearHeader(inst, drawYear, minDate, maxDate) + // draw year header
+				'</div><table class="ui-datepicker-calendar"><tbody>';
 			
-			// mount months table
-			for(var i=0; i<=11; i++){
-				if (i % 3 === 0) {
+			// draw months table
+			for(var month = 0; month <= 11; month++) {
+				if (month % 3 === 0) {
 					html += '<tr>';
 				}
+
+				printDate = new Date(drawYear, month, 1);
+				unselectable = (minDate && printDate < minDate) || (maxDate && printDate > maxDate);
+				var selectedDate = new Date(drawYear, inst.selectedMonth, 1);
+
+				html += '<td class="'
+					+ (drawYear == inst.currentYear && month == inst.currentMonth ? " " + this._currentClass : "") // highlight selected month
+					+ (unselectable ? " " + this._unselectableClass + " ui-state-disabled": "")  // highlight unselectable months
+					+ ((month === inst.selectedMonth && drawYear === inst.selectedYear && inst._keyEvent) || // user pressed key
+							(defaultDate.getTime() === printDate.getTime() && defaultDate.getTime() === selectedDate.getTime()) ?
+							// or defaultDate is current printedDate and defaultDate is selectedDate
+							" " + this._dayOverClass : "") // highlight selected day
+					+ '" data-month="' + month + '" data-year="' + drawYear + '" data-handler="selectMonth" data-event="click">'
+					+ '<a class="ui-state-default'
+					+ (drawYear == inst.currentYear && month == inst.currentMonth ? ' ui-state-active' : '') // highlight selected month
+					+ (drawYear == today.getFullYear() && month == today.getMonth() ? ' ui-state-highlight' : '') // highlight today (if different)
+					+ '" href="#">' + (inst.settings && inst.settings.monthNamesShort ? inst.settings.monthNamesShort[month] : this._defaults.monthNamesShort[month]) + '</a>' + '</td>'; // display selectable date
 				
-				html += '<td style="padding:1px;cursor:default;" data-month=' + i + '>'
-					+ '<a  style="text-align: center;" class="ui-state-default'
-					+ (drawYear == inst.currentYear && i == inst.currentMonth ? ' ui-state-active' : '') // highlight selected month
-					+ (drawYear == today.getFullYear() && i == today.getMonth() ? ' ui-state-highlight' : '') // highlight today (if different)
-					+ '" onclick="MP_jQuery_' + dpuuid + '.monthpicker._selectMonth(\'#'
-					+ inst.id + '\',' + drawYear + ', ' + i + ');return false;" actionshref="#">' + (inst.settings && inst.settings.monthNamesShort ? inst.settings.monthNamesShort[i] : this._defaults.monthNamesShort[i]) + '</a>' + '</td>'; // display selectable date
-				
-				if (i % 3 === 2) {
+				if (month % 3 === 2) {
 					html += '</tr>';
 				}
 			}
 			html += '</tbody></table>';
 
+			var controls = "<button type='button' class='ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all' data-handler='hide' data-event='click'>" +
+				this._get(inst, "closeText") + "</button>";
+
+			var currentText = this._get(inst, "currentText");
+			var gotoDate = (this._get(inst, "gotoCurrent") && inst.currentMonth ? currentDate : today);
+			currentText = (!navigationAsDateFormat ? currentText :
+				this.formatDate(currentText, gotoDate, this._getFormatConfig(inst)));
+
+			var buttonPanel = (showButtonPanel) ? "<div class='ui-datepicker-buttonpane ui-widget-content'>" + (isRTL ? controls : "") +
+				 "<button type='button' class='ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all' data-handler='current' data-event='click'" +
+				 ">" + currentText + "</button>" + (isRTL ? "" : controls) + "</div>" : "";
+
+			html += buttonPanel;
+
 			return html;
 		},
 			
-		/* Generate the month and year header. */
-		_generateYearHeader: function(inst, drawYear, monthNames, monthNamesShort) {
+		/* Generate the year header. */
+		_generateYearHeader: function(inst, drawYear, minDate, maxDate) {
+			var inMinYear, inMaxYear;
 			var changeYear = this._get(inst, 'changeYear');
 			var html = '<div class="ui-datepicker-title">';
 			// year selection
 			if ( !inst.yearshtml ) {
 				inst.yearshtml = '';
-				// determine range of years to display
-				var years = this._get(inst, 'yearRange').split(':');
-				var thisYear = new Date().getFullYear();
-				var determineYear = function(value) {
-					var year = (value.match(/c[+-].*/) ? drawYear + parseInt(value.substring(1), 10) :
-						(value.match(/[+-].*/) ? thisYear + parseInt(value, 10) :
-						parseInt(value, 10)));
-					return (isNaN(year) ? thisYear : year);
-				};
-				var year = determineYear(years[0]);
-				var endYear = Math.max(year, determineYear(years[1] || ''));
-				
-				inst.yearshtml += '<select class="ui-datepicker-year" ' +
-					'onchange="MP_jQuery_' + dpuuid + '.monthpicker._selectYear(\'#' + inst.id + '\', this, \'Y\');" ' +
-					'>';
-				for (; year <= endYear; year++) {
-					inst.yearshtml += '<option value="' + year + '"' +
-						(year == drawYear ? ' selected="selected"' : '') +
-						'>' + year + '</option>';
+
+				if (changeYear) {
+					// determine range of years to display
+					var years = this._get(inst, 'yearRange').split(':');
+					var thisYear = new Date().getFullYear();
+					var determineYear = function(value) {
+						var year = (value.match(/c[+-].*/) ? drawYear + parseInt(value.substring(1), 10) :
+							(value.match(/[+-].*/) ? thisYear + parseInt(value, 10) :
+							parseInt(value, 10)));
+						return (isNaN(year) ? thisYear : year);
+					};
+					var year = determineYear(years[0]);
+					var endYear = Math.max(year, determineYear(years[1] || ''));
+
+					year = (minDate ? Math.max(year, minDate.getFullYear()) : year);
+					endYear = (maxDate ? Math.min(endYear, maxDate.getFullYear()) : endYear);
+					
+					inst.yearshtml += '<select class="ui-datepicker-year" ' +
+						"data-handler='selectYear' data-event='change'>";
+
+					for (; year <= endYear; year++) {
+						inst.yearshtml += '<option value="' + year + '"' +
+							(year == drawYear ? ' selected="selected"' : '') +
+							'>' + year + '</option>';
+					}
+					inst.yearshtml += '</select>';
+				} else {
+					inst.yearshtml += '<span class="ui-datepicker-year">' + drawYear + '</span>';
 				}
-				inst.yearshtml += '</select>';
 				
 				html += inst.yearshtml;
 				inst.yearshtml = null;
@@ -653,7 +880,8 @@
 		_determineDate: function(inst, date, defaultDate) {
 			var offsetNumeric = function(offset) {
 				var date = new Date();
-				date.setDate(date.getDate() + offset);
+				date.setDate(1);
+				date.setMonth(date.getMonth() + offset);
 				return date;
 			};
 			var offsetString = function(offset) {
@@ -668,22 +896,18 @@
 					$.monthpicker._getDate(inst) : null) || new Date();
 				var year = date.getFullYear();
 				var month = date.getMonth();
-				var day = date.getDate();
-				var pattern = /([+-]?[0-9]+)\s*(d|D|w|W|m|M|y|Y)?/g;
+				var day = 1;
+				var pattern = /([+-]?[0-9]+)\s*(m|M|y|Y)?/g;
 				var matches = pattern.exec(offset);
 				while (matches) {
-					switch (matches[2] || 'd') {
-						case 'd' : case 'D' :
-							day += parseInt(matches[1],10); break;
-						case 'w' : case 'W' :
-							day += parseInt(matches[1],10) * 7; break;
+					switch (matches[2] || 'm') {
 						case 'm' : case 'M' :
 							month += parseInt(matches[1],10);
-							day = Math.min(day, $.monthpicker._getDaysInMonth(year, month));
+							day = 1
 							break;
 						case 'y': case 'Y' :
 							year += parseInt(matches[1],10);
-							day = Math.min(day, $.monthpicker._getDaysInMonth(year, month));
+							day = 1
 							break;
 					}
 					matches = pattern.exec(offset);
@@ -699,19 +923,7 @@
 				newDate.setSeconds(0);
 				newDate.setMilliseconds(0);
 			}
-			return this._daylightSavingAdjust(newDate);
-		},
-		
-		/* Handle switch to/from daylight saving.
-		   Hours may be non-zero on daylight saving cut-over:
-		   > 12 when midnight changeover, but then cannot generate
-		   midnight datetime, so jump to 1AM, otherwise reset.
-		   @param  date  (Date) the date to check
-		   @return  (Date) the corrected date */
-		_daylightSavingAdjust: function(date) {
-			if (!date) return null;
-			date.setHours(date.getHours() > 12 ? date.getHours() + 2 : 0);
-			return date;
+			return newDate;
 		},
 		
 		/* Determine the current maximum date - ensure no time components are set. */
@@ -727,6 +939,40 @@
 			newDate = (maxDate && newDate > maxDate ? maxDate : newDate);
 			return newDate;
 		},
+
+		/* Determines if we should allow a "next/prev" year display change. */
+		_canAdjustYear: function(inst, offset, curYear) {
+			var firstMonth = new Date(curYear + offset,  0, 1);
+			var lastMonth  = new Date(curYear + offset, 11, 1);
+			return this._isInRange(inst, firstMonth) || this._isInRange(inst, lastMonth);
+		},
+
+		/* Is the given date in the accepted range? */
+		_isInRange: function(inst, date) {
+			var yearSplit, currentYear,
+				minDate = this._getMinMaxDate(inst, "min"),
+				maxDate = this._getMinMaxDate(inst, "max"),
+				minYear = null,
+				maxYear = null,
+				years = this._get(inst, "yearRange");
+				if (years){
+					yearSplit = years.split(":");
+					currentYear = new Date().getFullYear();
+					minYear = parseInt(yearSplit[0], 10);
+					maxYear = parseInt(yearSplit[1], 10);
+					if ( yearSplit[0].match(/[+\-].*/) ) {
+						minYear += currentYear;
+					}
+					if ( yearSplit[1].match(/[+\-].*/) ) {
+						maxYear += currentYear;
+					}
+				}
+
+			return ((!minDate || date.getTime() >= minDate.getTime()) &&
+				(!maxDate || date.getTime() <= maxDate.getTime()) &&
+				(!minYear || date.getFullYear() >= minYear) &&
+				(!maxYear || date.getFullYear() <= maxYear));
+		},
 		
 		/* Action for selecting a new month/year. */
 		_selectYear: function(id, select, period) {
@@ -739,10 +985,35 @@
 			this._adjustDate(target);
 		},
 
+		/* Action for current link. */
+		_gotoCurrent: function(id) {
+			var date,
+				target = $(id),
+				inst = this._getInst(target[0]);
+
+			if (this._get(inst, "gotoCurrent") && inst.currentYear) {
+				inst.selectedDay = inst.currentDay;
+				inst.drawMonth = inst.selectedMonth = inst.currentMonth;
+				inst.drawYear = inst.selectedYear = inst.currentYear;
+			} else {
+				date = new Date();
+				inst.selectedDay = date.getDate();
+				inst.drawMonth = inst.selectedMonth = date.getMonth();
+				inst.drawYear = inst.selectedYear = date.getFullYear();
+			}
+			this._notifyChange(inst);
+			this._adjustDate(target);
+		},
+
 		/* Action for selecting a month. */
-		_selectMonth: function(id, year, month) {
+		_selectMonth: function(id, year, month, td) {
 			var target = $(id);
 			var inst = this._getInst(target[0]);
+
+			if ($(td).hasClass(this._unselectableClass) || this._isDisabledMonthpicker(target[0])) {
+				return;
+			}
+
 			inst.selectedMonth = inst.currentMonth = month;
 			inst.selectedYear = inst.currentYear = year;
 			this._selectDate(id, this._formatDate(inst, inst.currentMonth, inst.currentYear));
@@ -865,7 +1136,7 @@
 			else if (year < 100)
 				year += new Date().getFullYear() - new Date().getFullYear() % 100 +
 					(year <= shortYearCutoff ? 0 : -100);
-			var date = this._daylightSavingAdjust(new Date(year, month - 1, 1));
+			var date = new Date(year, month - 1, 1);
 			if (date.getFullYear() != year || date.getMonth() + 1 != month || date.getDate() != 1)
 				throw 'Invalid date'; // E.g. 31/02/00
 			return date;
@@ -965,8 +1236,7 @@
 		/* Erase the input field and hide the date picker. */
 		_clearDate: function(id) {
 			var target = $(id);
-			var inst = this._getInst(target[0]);
-			this._selectDate(target, '');
+			this._selectDate(target, "");
 		},
 
 		/* Update the input field with the selected date. */
@@ -999,6 +1269,145 @@
 				$(altField).each(function() { $(this).val(dateStr); });
 			}
 		},
+
+		/* Set the date(s) directly. */
+		_setDate: function(inst, date, noChange) {
+			var clear = !date,
+				origMonth = inst.selectedMonth,
+				origYear = inst.selectedYear,
+				newDate = this._restrictMinMax(inst, this._determineDate(inst, date, new Date()));
+
+			inst.drawMonth = inst.selectedMonth = inst.currentMonth = newDate.getMonth();
+			inst.drawYear = inst.selectedYear = inst.currentYear = newDate.getFullYear();
+			if ((origYear !== inst.selectedYear) && !noChange) {
+				this._notifyChange(inst);
+			}
+			this._adjustInstDate(inst);
+			if (inst.input) {
+				inst.input.val(clear ? "" : this._formatDate(inst));
+			}
+		},
+
+		/* Set the dates for a jQuery selection.
+		 * @param  target element - the target input field or division or span
+		 * @param  date	Date - the new date
+		 */
+		_setDateMonthpicker: function(target, date) {
+			var inst = this._getInst(target);
+			if (inst) {
+				this._setDate(inst, date);
+				this._updateMonthpicker(inst);
+				this._updateAlternate(inst);
+			}
+		},
+
+		_getDate: function(inst) {
+			var date = (!inst.currentYear || (inst.input && inst.input.val() === "") ? null : 
+				new Date(inst.currentYear, inst.currentMonth, 1));
+
+			return date;
+		},
+
+		/* Attach the onxxx handlers.  These are declared statically so
+		 * they work with static code transformers like Caja.
+		 */
+		_attachHandlers: function(inst) {
+			var stepYears = this._get(inst, "stepYears"),
+			id = "#" + inst.id.replace( /\\\\/g, "\\" );
+			inst.dpDiv.find("[data-handler]").map(function () {
+				var handler = {
+					prev: function () {
+						$.monthpicker._adjustDate(id, -stepYears, "Y");
+					},
+					next: function () {
+						$.monthpicker._adjustDate(id, +stepYears, "Y");
+					},
+					hide: function () {
+						$.monthpicker._hideMonthpicker();
+					},
+					current: function () {
+						$.monthpicker._gotoCurrent(id);
+					},
+					selectMonth: function () {
+						$.monthpicker._selectMonth(id, +this.getAttribute("data-year"), +this.getAttribute("data-month"), this);
+						return false;
+					},
+					selectYear: function () {
+						$.monthpicker._selectYear(id, this, "Y");
+						return false;
+					}
+				};
+				$(this).bind(this.getAttribute("data-event"), handler[this.getAttribute("data-handler")]);
+			});
+		},
+
+		/* Update or retrieve the settings for a month picker attached to an input field or division.
+		 * @param  target  element - the target input field or division or span
+		 * @param  name	object - the new settings to update or
+		 *				string - the name of the setting to change or retrieve,
+		 *				when retrieving also "all" for all instance settings or
+		 *				"defaults" for all global defaults
+		 * @param  value   any - the new value for the setting
+		 *				(omit if above is an object or to retrieve a value)
+		 */
+		_optionMonthpicker: function(target, name, value) {
+			var settings, date, minDate, maxDate,
+				inst = this._getInst(target);
+
+			if (arguments.length === 2 && typeof name === "string") {
+				return (name === "defaults" ? $.extend({}, $.monthpicker._defaults) :
+					(inst ? (name === "all" ? $.extend({}, inst.settings) :
+					this._get(inst, name)) : null));
+			}
+
+			settings = name || {};
+			if (typeof name === "string") {
+				settings = {};
+				settings[name] = value;
+			}
+
+			if (inst) {
+				if (this._curInst === inst) {
+					this._hideMonthpicker();
+				}
+
+				date = this._getDateMonthpicker(target, true);
+				minDate = this._getMinMaxDate(inst, "min");
+				maxDate = this._getMinMaxDate(inst, "max");
+				extendRemove(inst.settings, settings);
+				// reformat the old minDate/maxDate values if dateFormat changes and a new minDate/maxDate isn't provided
+				if (minDate !== null && settings.dateFormat !== undefined && settings.minDate === undefined) {
+					inst.settings.minDate = this._formatDate(inst, minDate);
+				}
+				if (maxDate !== null && settings.dateFormat !== undefined && settings.maxDate === undefined) {
+					inst.settings.maxDate = this._formatDate(inst, maxDate);
+				}
+				if ( "disabled" in settings ) {
+					if ( settings.disabled ) {
+						this._disableMonthpicker(target);
+					} else {
+						this._enableMonthpicker(target);
+					}
+				}
+				this._attachments($(target), inst);
+				this._setDate(inst, date);
+				this._updateAlternate(inst);
+				this._updateMonthpicker(inst);
+			}
+		},
+		
+
+		/* Get the date(s) for the first entry in a jQuery selection.
+		 * @param  target element - the target input field or division or span
+		 * @return Date - the current date
+		 */
+		_getDateMonthpicker: function(target, noDefault) {
+			var inst = this._getInst(target);
+			if (inst && !inst.inline) {
+				this._setDateFromField(inst, noDefault);
+			}
+			return (inst ? this._getDate(inst) : null);
+		},
 		
 		/* Format the given date for display. */
 		_formatDate: function(inst, month, year) {
@@ -1007,8 +1416,8 @@
 				inst.currentYear = inst.selectedYear;
 			}
 			var date = (month ? (typeof month == 'object' ? month :
-				this._daylightSavingAdjust(new Date(year, month, 1))) :
-				this._daylightSavingAdjust(new Date(inst.currentYear, inst.currentMonth, 1)));
+				new Date(year, month, 1)) :
+				new Date(inst.currentYear, inst.currentMonth, 1));
 			return this.formatDate(this._get(inst, 'dateFormat'), date, this._getFormatConfig(inst));
 		}
 	});
@@ -1026,7 +1435,7 @@
 	 * Bind hover events for monthpicker elements.
 	 * Done via delegate so the binding only occurs once in the lifetime of the parent div.
 	 * Global instActive, set by _updateMonthpicker allows the handlers to find their way back to the active picker.
-	 */ 
+	 */
 	function bindHover(dpDiv) {
 		var selector = '.ui-datepicker-prev, .ui-datepicker-next, .ui-datepicker-calendar td a';
 		return dpDiv.delegate(selector, 'mouseout', function() {
@@ -1062,8 +1471,17 @@
 		}
 
 		var otherArgs = Array.prototype.slice.call(arguments, 1);
+		if (typeof options === "string" && (options === "isDisabled" || options === "getDate" || options === "widget")) {
+			return $.monthpicker["_" + options + "Monthpicker"].
+				apply($.monthpicker, [this[0]].concat(otherArgs));
+		}
+		if (options === "option" && arguments.length === 2 && typeof arguments[1] === "string") {
+			return $.monthpicker["_" + options + "Monthpicker"].
+				apply($.monthpicker, [this[0]].concat(otherArgs));
+		}
+
 		return this.each(function() {
-			typeof options == 'string' ?
+			typeof options === 'string' ?
 				$.monthpicker['_' + options + 'Monthpicker'].
 					apply($.monthpicker, [this].concat(otherArgs)) :
 				$.monthpicker._attachMonthpicker(this, options);
@@ -1072,7 +1490,5 @@
 	
 	$.monthpicker = new Monthpicker(); // singleton instance
 	$.monthpicker.initialized = false;
-	
-	// Add another global to avoid noConflict issues with inline event handlers
-	window['MP_jQuery_' + dpuuid] = $;
+
 })(jQuery);

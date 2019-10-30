@@ -14,10 +14,10 @@ public final class BootstrapDropDownJavaScriptResourceReference extends WebjarsJ
 	private static final long serialVersionUID = -1442288640907214154L;
 
 	private static final SerializableSupplier2<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
-			PopperJavaScriptResourceReference.get(),
-			BootstrapUtilJavaScriptResourceReference.get()
+		PopperJavaScriptResourceReference.get(),
+		BootstrapUtilJavaScriptResourceReference.get()
 	);
-	
+
 	private static final BootstrapDropDownJavaScriptResourceReference INSTANCE = new BootstrapDropDownJavaScriptResourceReference();
 
 	private BootstrapDropDownJavaScriptResourceReference() {
@@ -26,7 +26,9 @@ public final class BootstrapDropDownJavaScriptResourceReference extends WebjarsJ
 
 	@Override
 	public List<HeaderItem> getDependencies() {
-		return DEPENDENCIES.get();
+		List<HeaderItem> dependencies = super.getDependencies();
+		dependencies.addAll(DEPENDENCIES.get());
+		return dependencies;
 	}
 
 	public static BootstrapDropDownJavaScriptResourceReference get() {

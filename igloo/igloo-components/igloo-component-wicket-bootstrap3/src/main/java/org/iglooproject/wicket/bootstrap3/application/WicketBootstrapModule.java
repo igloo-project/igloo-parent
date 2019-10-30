@@ -9,9 +9,8 @@ import org.apache.wicket.settings.ResourceSettings;
 import org.iglooproject.wicket.bootstrap3.console.resources.CoreWicketConsoleResources;
 import org.iglooproject.wicket.bootstrap3.console.template.style.CoreConsoleCssScope;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.CoreBootstrap3CssScope;
-import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.fontawesome.CoreFontAwesome4CssScope;
-import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.jqueryui.JQueryUiCssResourceReference;
-import org.iglooproject.wicket.bootstrap3.markup.html.template.js.jqueryui.JQueryUIJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap3.markup.html.template.css.fontawesome.CoreFontAwesome4CssScope;
+import org.iglooproject.wicket.bootstrap3.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.js.select2.Select2JavaScriptResourceReference;
 import org.iglooproject.wicket.more.application.CoreWicketApplication;
 import org.iglooproject.wicket.more.application.IWicketModule;
@@ -49,25 +48,24 @@ public class WicketBootstrapModule implements IWicketModule {
 
 	@Override
 	public void addResourceReplacements(CoreWicketApplication application) {
-		application.addResourceReplacement(org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference.get(), JQueryUIJavaScriptResourceReference.get());
 		application.addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
 	}
 
 	@Override
 	public List<StaticResourceMapper> listStaticResources() {
 		return ImmutableList.of(
-				staticResourceMapper("/common", AbstractWebPageTemplate.class),
-				staticResourceMapper("/font-awesome", CoreFontAwesome4CssScope.class)
+			staticResourceMapper("/common", AbstractWebPageTemplate.class),
+			staticResourceMapper("/font-awesome", CoreFontAwesome4CssScope.class)
 		);
 	}
 
 	@Override
 	public void updateResourceSettings(ResourceSettings resourceSettings) {
 		resourceSettings.getStringResourceLoaders().addAll(
-				0, // Override the keys in existing resource loaders with the following
-				ImmutableList.of(
-						new ClassStringResourceLoader(CoreWicketConsoleResources.class)
-				)
+			0, // Override the keys in existing resource loaders with the following
+			ImmutableList.of(
+				new ClassStringResourceLoader(CoreWicketConsoleResources.class)
+			)
 		);
 	}
 

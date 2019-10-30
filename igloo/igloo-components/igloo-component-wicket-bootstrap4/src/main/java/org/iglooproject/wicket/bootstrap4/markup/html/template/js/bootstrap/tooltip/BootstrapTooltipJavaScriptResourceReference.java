@@ -14,8 +14,8 @@ public final class BootstrapTooltipJavaScriptResourceReference extends WebjarsJQ
 	private static final long serialVersionUID = 1302122786281225341L;
 
 	private static final SerializableSupplier2<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
-			PopperJavaScriptResourceReference.get(),
-			BootstrapUtilJavaScriptResourceReference.get()
+		PopperJavaScriptResourceReference.get(),
+		BootstrapUtilJavaScriptResourceReference.get()
 	);
 
 	private static final BootstrapTooltipJavaScriptResourceReference INSTANCE = new BootstrapTooltipJavaScriptResourceReference();
@@ -26,7 +26,9 @@ public final class BootstrapTooltipJavaScriptResourceReference extends WebjarsJQ
 
 	@Override
 	public List<HeaderItem> getDependencies() {
-		return DEPENDENCIES.get();
+		List<HeaderItem> dependencies = super.getDependencies();
+		dependencies.addAll(DEPENDENCIES.get());
+		return dependencies;
 	}
 
 	public static BootstrapTooltipJavaScriptResourceReference get() {

@@ -26,8 +26,6 @@ import org.iglooproject.wicket.more.markup.html.model.PercentageFloatToBigDecima
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.clipboard.ClipboardBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.listfilter.ListFilterOptions;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.rendering.CoreRenderers;
 import org.iglooproject.wicket.more.rendering.ShortenedJavaNameRenderer;
@@ -60,7 +58,6 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 			@Override
 			protected void populateItem(final ListItem<CacheManager> item) {
 				item.setOutputMarkupId(true);
-				item.add(new ListFilterBehavior(getListFilterInitOptions()));
 				
 				item.add(new Label("cacheManagerName", item.getModelObject().getName()));
 				
@@ -198,16 +195,9 @@ public class EhCacheCachePortfolioPanel extends GenericPanel<List<CacheManager>>
 				};
 				item.add(cacheList);
 			}
-
+		
 		};
 		add(cacheManagerList);
 	}
-	
-	private ListFilterOptions getListFilterInitOptions() {
-		ListFilterOptions options = new ListFilterOptions();
-		
-		options.setScanSelector(".cache-name");
-		
-		return options;
-	}
+
 }

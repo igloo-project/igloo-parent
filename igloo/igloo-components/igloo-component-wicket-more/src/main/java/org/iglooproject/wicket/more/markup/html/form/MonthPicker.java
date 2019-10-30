@@ -14,7 +14,6 @@ import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.month
 import org.iglooproject.wicket.more.util.DatePattern;
 import org.iglooproject.wicket.more.util.convert.converters.PatternDateConverter;
 import org.wicketstuff.wiquery.core.javascript.JsQuery;
-import org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference;
 import org.wicketstuff.wiquery.ui.datepicker.DateOption;
 
 public class MonthPicker extends TextField<Date> {
@@ -33,8 +32,12 @@ public class MonthPicker extends TextField<Date> {
 		this.monthPattern = monthPattern;
 		this.options = new MonthPickerOptions(this);
 		
+		setChangeYear(true);
+		
 		setPrevText("");
 		setNextText("");
+		
+		setShowButtonPanel(true);
 	}
 
 	@Override
@@ -58,6 +61,11 @@ public class MonthPicker extends TextField<Date> {
 
 	public MonthPicker setDateFormat(String dateFormat) {
 		options.setDateFormat(dateFormat);
+		return this;
+	}
+	
+	public MonthPicker setChangeYear(boolean changeYear) {
+		options.setChangeYear(changeYear);
 		return this;
 	}
 	
@@ -86,6 +94,11 @@ public class MonthPicker extends TextField<Date> {
 		return this;
 	}
 
+	public MonthPicker setShowButtonPanel(boolean showButtonPanel) {
+		options.setShowButtonPanel(showButtonPanel);
+		return this;
+	}
+
 	@Override
 	protected void detachModel() {
 		super.detachModel();
@@ -95,7 +108,6 @@ public class MonthPicker extends TextField<Date> {
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
-		response.render(JavaScriptHeaderItem.forReference(JQueryUIJavaScriptResourceReference.get()));
 		response.render(JavaScriptHeaderItem.forReference(MonthPickerJavaScriptResourceReference.get()));
 		
 		MonthPickerLanguageResourceReference mpl = MonthPickerLanguageResourceReference.get(getLocale());

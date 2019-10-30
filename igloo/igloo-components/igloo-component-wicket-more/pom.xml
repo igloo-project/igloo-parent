@@ -92,21 +92,17 @@
 			<artifactId>clipboard</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>jquery-ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>jquery-mask-plugin</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>bootstrap-override</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.webjars</groupId>
-			<artifactId>jquery.json</artifactId>
-			<version>${project.version}</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.webjars</groupId>
-			<artifactId>jquery.carouFredSel</artifactId>
-			<version>${project.version}</version>
-			<optional>true</optional>
 		</dependency>
 		
 		<dependency>

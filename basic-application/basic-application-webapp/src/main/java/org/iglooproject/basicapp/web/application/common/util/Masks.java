@@ -9,15 +9,15 @@ public class Masks {
 
 	public static MaskOptions dateOptions() {
 		return new MaskOptions()
-				.addTranslation('r', "/[\\/]/", '/')
-				.setPlaceholder(new ResourceModel("date.format.shortDate.placeholder"));
+			.translation('r', "/[\\/]/", '/')
+			.placeholder(new ResourceModel("date.format.shortDate.placeholder"));
 	}
 
 	public static final String TIME = "00:00";
 
 	public static MaskOptions timeOptions() {
 		return new MaskOptions()
-			.setPlaceholder(new ResourceModel("date.format.time.placeholder"));
+			.placeholder(new ResourceModel("date.format.time.placeholder"));
 	}
 
 }

@@ -1,10 +1,5 @@
 package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop;
 
-import java.util.List;
-
-import org.apache.wicket.markup.head.HeaderItem;
-
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.easing.EasingJavaScriptResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
 public final class ScrollToTopJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
@@ -15,11 +10,6 @@ public final class ScrollToTopJavaScriptResourceReference extends AbstractCoreJQ
 
 	private ScrollToTopJavaScriptResourceReference() {
 		super(ScrollToTopJavaScriptResourceReference.class, "jquery.scrollToTop.js");
-	}
-
-	@Override
-	protected List<HeaderItem> getPluginDependencies() {
-		return forReferences(EasingJavaScriptResourceReference.get());
 	}
 
 	public static ScrollToTopJavaScriptResourceReference get() {
