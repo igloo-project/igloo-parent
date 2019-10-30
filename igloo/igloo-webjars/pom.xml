@@ -24,7 +24,6 @@
 	
 	<modules>
 		<module>bootstrap-override</module>
-		<module>jquery.json</module>
 	</modules>
 	
 	<build>

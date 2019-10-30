@@ -104,12 +104,6 @@
 			<artifactId>bootstrap-override</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.webjars</groupId>
-			<artifactId>jquery.json</artifactId>
-			<version>${project.version}</version>
-			<optional>true</optional>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
