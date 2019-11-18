@@ -163,7 +163,7 @@ public class Announcement extends GenericEntity<Long, Announcement> {
 
 	@Override
 	public String getDisplayName() {
-		return toString();
+		return getNameForToString();
 	}
 
 }
