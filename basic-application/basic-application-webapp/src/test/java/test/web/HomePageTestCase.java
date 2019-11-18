@@ -22,7 +22,6 @@ import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 import org.junit.Test;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 
 public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
@@ -194,7 +193,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		
 		public static List<NavbarItem> menu() {
 			return Arrays.stream(values())
-				.filter(Predicates2.compose(Predicates.isNull(), NavbarItem::getParent))
+				.filter(Predicates2.compose(Predicates2.isNull(), NavbarItem::getParent))
 				.sorted(Comparator.comparing(NavbarItem::getOrder))
 				.collect(ImmutableList.toImmutableList());
 		}
