@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.CollectionModel;
+import org.iglooproject.functional.Predicates2;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.IBootstrapTooltip;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.model.Models;
@@ -13,7 +14,6 @@ import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 import org.wicketstuff.wiquery.core.options.Options;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
 public class BootstrapTooltip implements IBootstrapTooltip {
@@ -314,7 +314,7 @@ public class BootstrapTooltip implements IBootstrapTooltip {
 		
 		Collection<? extends Trigger> trigger = Models.getObject(triggerModel);
 		if (trigger != null && !trigger.isEmpty()) {
-			options.put("trigger", JsUtils.quotes(trigger.stream().filter(Predicates.notNull()).map(Trigger::getValue).collect(Collectors.joining(" "))));
+			options.put("trigger", JsUtils.quotes(trigger.stream().filter(Predicates2.notNull()).map(Trigger::getValue).collect(Collectors.joining(" "))));
 		}
 		
 		String offset = Models.getObject(offsetModel);

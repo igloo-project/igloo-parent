@@ -10,6 +10,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.CollectionModel;
+import org.iglooproject.functional.Predicates2;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.SimpleOptions;
@@ -23,7 +24,6 @@ import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 import org.wicketstuff.wiquery.core.options.Options;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
@@ -409,7 +409,7 @@ public class BootstrapPopoverOptions extends SimpleOptions implements IBootstrap
 		
 		Collection<? extends Placement> placement = Models.getObject(placementModel);
 		if (placement != null && !placement.isEmpty()) {
-			options.put("placement", JsUtils.quotes(placement.stream().filter(Predicates.notNull()).map(Placement::getValue).collect(Collectors.joining(" "))));
+			options.put("placement", JsUtils.quotes(placement.stream().filter(Predicates2.notNull()).map(Placement::getValue).collect(Collectors.joining(" "))));
 		}
 		
 		String selector = Models.getObject(selectorModel);
@@ -448,7 +448,7 @@ public class BootstrapPopoverOptions extends SimpleOptions implements IBootstrap
 		
 		Collection<? extends Trigger> trigger = Models.getObject(triggerModel);
 		if (trigger != null && !trigger.isEmpty()) {
-			options.put("trigger", JsUtils.quotes(trigger.stream().filter(Predicates.notNull()).map(Trigger::getValue).collect(Collectors.joining(" "))));
+			options.put("trigger", JsUtils.quotes(trigger.stream().filter(Predicates2.notNull()).map(Trigger::getValue).collect(Collectors.joining(" "))));
 		}
 		
 		String offset = Models.getObject(offsetModel);

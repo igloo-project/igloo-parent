@@ -21,7 +21,6 @@ import org.javatuples.valueintf.IValue0;
 import org.javatuples.valueintf.IValue1;
 
 import com.google.common.base.Converter;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
 import com.google.common.collect.Table;
@@ -137,7 +136,7 @@ public final class Functions2 {
 	}
 
 	public static <T> SerializableFunction2<T, T> defaultValue(T valueIfInvalid) {
-		return defaultValue(Predicates.notNull(), constant(valueIfInvalid));
+		return defaultValue(Predicates2.notNull(), constant(valueIfInvalid));
 	}
 
 	public static <K> SerializableFunction2<Entry<? extends K, ?>, K> entryKey() {
