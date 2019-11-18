@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap3.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipMoreJavaScriptResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
 public final class BootstrapPopoverJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
@@ -20,7 +20,7 @@ public final class BootstrapPopoverJavaScriptResourceReference extends AbstractC
 	@Override
 	public List<HeaderItem> getDependencies() {
 		List<HeaderItem> dependencies = super.getDependencies();
-		dependencies.add(JavaScriptHeaderItem.forReference(BootstrapTooltipJavaScriptResourceReference.get()));
+		dependencies.add(JavaScriptHeaderItem.forReference(BootstrapTooltipMoreJavaScriptResourceReference.get()));
 		return dependencies;
 	}
 
