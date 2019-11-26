@@ -12,8 +12,12 @@ import org.springframework.context.annotation.PropertySource;
  * *${igloo.configurationLocations}* that is a list of resources paths.</p>
  */
 @Configuration
-@PropertySource(name = IglooPropertySourcePriority.BOOTSTRAP, value = "composite:${igloo.configurationLocations}",
-	factory = CompositePropertySourceFactory.class, ignoreResourceNotFound = true)
+@PropertySource(
+	name = IglooPropertySourcePriority.BOOTSTRAP,
+	value = "composite:${igloo.configurationLocations}",
+	factory = CompositePropertySourceFactory.class,
+	ignoreResourceNotFound = true
+)
 public class IglooBootstrapPropertySourcesConfig {
 
 }

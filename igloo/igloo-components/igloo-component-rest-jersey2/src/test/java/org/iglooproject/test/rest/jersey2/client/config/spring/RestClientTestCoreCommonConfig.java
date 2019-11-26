@@ -17,7 +17,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@PropertySource(name = IglooPropertySourcePriority.APPLICATION,
+@PropertySource(
+	name = IglooPropertySourcePriority.APPLICATION,
 	value = {
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JERSEY_MOCK_COMMON,
@@ -29,14 +30,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 	RestClientTestApplicationPropertyConfig.class
 })
 @ComponentScan(
-		basePackageClasses = { RestTestBusinessPackage.class, RestClientPackage.class },
-		excludeFilters = @Filter(Configuration.class)
+	basePackageClasses = { RestTestBusinessPackage.class, RestClientPackage.class },
+	excludeFilters = @Filter(Configuration.class)
 )
 @EnableTransactionManagement
 public class RestClientTestCoreCommonConfig extends AbstractApplicationConfig {
-	
+
 	@Bean
 	public AbstractMockServlet restServerTestResource(@Value("${jersey.mock.http.port}") Integer httpPort) {
 		return new MockServlet("http://localhost/", httpPort, "/api", "/rest");
 	}
+
 }

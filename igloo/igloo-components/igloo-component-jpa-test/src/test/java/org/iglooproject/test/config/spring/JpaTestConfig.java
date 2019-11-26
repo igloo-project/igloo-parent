@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource(name = IglooPropertySourcePriority.APPLICATION,
+@PropertySource(
+	name = IglooPropertySourcePriority.APPLICATION,
 	value = {
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
@@ -22,8 +23,8 @@ import org.springframework.context.annotation.PropertySource;
 	JpaTestApplicationPropertyConfig.class
 })
 @ComponentScan(
-		basePackageClasses = JpaTestBusinessPackage.class,
-		excludeFilters = @Filter(Configuration.class)
+	basePackageClasses = JpaTestBusinessPackage.class,
+	excludeFilters = @Filter(Configuration.class)
 )
 public class JpaTestConfig extends AbstractApplicationConfig {
 

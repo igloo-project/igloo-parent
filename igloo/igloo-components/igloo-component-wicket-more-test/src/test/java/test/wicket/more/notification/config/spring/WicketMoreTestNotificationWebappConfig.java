@@ -15,11 +15,14 @@ import test.wicket.more.notification.application.WicketMoreTestNotificationAppli
  * Stub.
  */
 @Configuration
+@PropertySource(
+	name = IglooPropertySourcePriority.OVERRIDES,
+	value = "classpath:notification-test.properties"
+)
 @Import({
 	WicketMoreTestCoreCommonConfig.class,
 	NotificationTestConfig.class
 })
-@PropertySource(name = IglooPropertySourcePriority.OVERRIDES, value = "classpath:notification-test.properties")
 public class WicketMoreTestNotificationWebappConfig extends AbstractWebappConfig {
 
 	@Override

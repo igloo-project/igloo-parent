@@ -23,10 +23,11 @@ import test.wicket.more.business.WicketMoreTestBusinessPackage;
 	WicketTestApplicationPropertyConfig.class
 })
 @ComponentScan(
-		basePackageClasses = WicketMoreTestBusinessPackage.class,
-		excludeFilters = @Filter(Configuration.class)
+	basePackageClasses = WicketMoreTestBusinessPackage.class,
+	excludeFilters = @Filter(Configuration.class)
 )
 // fonctionnement de l'annotation @Transactional
 @EnableTransactionManagement
 public class WicketMoreTestCoreCommonConfig extends AbstractApplicationConfig {
+
 }

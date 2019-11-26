@@ -15,13 +15,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource(name = IglooPropertySourcePriority.APPLICATION,
-value = {
+@PropertySource(
+	name = IglooPropertySourcePriority.APPLICATION,
+	value = {
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
 		"classpath:igloo-jpa.properties",
 		"classpath:igloo-jpa-search.properties",
-}
+	}
 )
 @Import({
 	JpaSearchJpaTestConfig.class,

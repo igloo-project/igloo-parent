@@ -55,11 +55,26 @@ import org.springframework.context.annotation.PropertySource;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@PropertySource(name = IglooPropertySourcePriority.COMPONENT, value = "classpath:igloo-placeholder.properties")
-@PropertySource(name = IglooPropertySourcePriority.FRAMEWORK, value = "classpath:igloo-placeholder.properties")
-@PropertySource(name = IglooPropertySourcePriority.APPLICATION, value = "classpath:igloo-placeholder.properties")
-@PropertySource(name = IglooPropertySourcePriority.BOOTSTRAP, value = "classpath:igloo-placeholder.properties")
-@PropertySource(name = IglooPropertySourcePriority.OVERRIDES, value = "classpath:igloo-placeholder.properties")
+@PropertySource(
+	name = IglooPropertySourcePriority.COMPONENT,
+	value = "classpath:igloo-placeholder.properties"
+)
+@PropertySource(
+	name = IglooPropertySourcePriority.FRAMEWORK,
+	value = "classpath:igloo-placeholder.properties"
+)
+@PropertySource(
+	name = IglooPropertySourcePriority.APPLICATION,
+	value = "classpath:igloo-placeholder.properties"
+)
+@PropertySource(
+	name = IglooPropertySourcePriority.BOOTSTRAP,
+	value = "classpath:igloo-placeholder.properties"
+)
+@PropertySource(
+	name = IglooPropertySourcePriority.OVERRIDES,
+	value = "classpath:igloo-placeholder.properties"
+)
 public @interface IglooPropertySourcesLevels {
 
 }

@@ -16,7 +16,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import test.jpa.more.business.JpaMoreTestBusinessPackage;
 
 @Configuration
-@PropertySource(name = IglooPropertySourcePriority.APPLICATION,
+@PropertySource(
+	name = IglooPropertySourcePriority.APPLICATION,
 	value = {
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
@@ -25,8 +26,8 @@ import test.jpa.more.business.JpaMoreTestBusinessPackage;
 	}
 )
 @Import({
-		JpaMoreTestJpaConfig.class,
-		JpaMoreTestApplicationPropertyConfig.class
+	JpaMoreTestJpaConfig.class,
+	JpaMoreTestApplicationPropertyConfig.class
 })
 @ComponentScan(basePackageClasses = { JpaMoreTestBusinessPackage.class })
 @EnableAspectJAutoProxy

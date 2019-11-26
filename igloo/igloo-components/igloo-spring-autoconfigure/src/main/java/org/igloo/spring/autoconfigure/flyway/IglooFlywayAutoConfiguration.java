@@ -31,12 +31,12 @@ import com.google.common.collect.Maps;
 @Configuration
 @ConditionalOnProperty(name = "igloo-ac.flyway.disabled", havingValue = "false", matchIfMissing = true)
 @ConditionalOnClass(Flyway.class)
-@Import({ FlywayPropertyRegistryConfig.class })
 @AutoConfigureAfter(IglooPropertyAutoConfiguration.class)
 @PropertySource(
 	name = IglooPropertySourcePriority.COMPONENT,
 	value = "classpath:/configuration/flyway-common.properties"
 )
+@Import({ FlywayPropertyRegistryConfig.class })
 public class IglooFlywayAutoConfiguration {
 
 	@Bean(initMethod = "migrate", value = { "flyway", "databaseInitialization" })

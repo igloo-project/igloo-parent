@@ -13,4 +13,5 @@ import org.springframework.context.annotation.PropertySource;
 	value = "classpath:notification-test-filtered.properties"
 )
 public class TestFilteredConfig {
+
 }

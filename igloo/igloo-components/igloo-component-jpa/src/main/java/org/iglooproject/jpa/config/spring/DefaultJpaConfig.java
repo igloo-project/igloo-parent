@@ -14,7 +14,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource(name = IglooPropertySourcePriority.COMPONENT, value = "classpath:igloo-component-jpa.properties")
+@PropertySource(
+	name = IglooPropertySourcePriority.COMPONENT,
+	value = "classpath:igloo-component-jpa.properties"
+)
 public class DefaultJpaConfig {
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(DefaultJpaConfig.class);

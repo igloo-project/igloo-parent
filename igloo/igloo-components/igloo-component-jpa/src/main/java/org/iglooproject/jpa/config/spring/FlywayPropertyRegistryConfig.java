@@ -17,9 +17,12 @@ import org.springframework.context.annotation.PropertySource;
 import com.google.common.base.Converter;
 
 @Configuration
-@PropertySource(name = IglooPropertySourcePriority.COMPONENT, value = "classpath:flyway-placeholders.properties")
+@PropertySource(
+	name = IglooPropertySourcePriority.COMPONENT,
+	value = "classpath:flyway-placeholders.properties"
+)
 public class FlywayPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
-	
+
 	@Override
 	public void register(IPropertyRegistry registry) {
 		registry.register(FLYWAY_PLACEHOLDERS_PROPERTIES, new StringCollectionConverter<String, Set<String>>(Converter.identity(), Suppliers2.hashSet()).separator(","), Collections.emptySet());

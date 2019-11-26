@@ -28,8 +28,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 	RestServerTestApplicationPropertyConfig.class
 })
 @ComponentScan(
-		basePackageClasses = { RestTestBusinessPackage.class, RestServerPackage.class },
-		excludeFilters = @Filter(Configuration.class)
+	basePackageClasses = { RestTestBusinessPackage.class, RestServerPackage.class },
+	excludeFilters = @Filter(Configuration.class)
 )
 // fonctionnement de l'annotation @Transactional
 @EnableTransactionManagement

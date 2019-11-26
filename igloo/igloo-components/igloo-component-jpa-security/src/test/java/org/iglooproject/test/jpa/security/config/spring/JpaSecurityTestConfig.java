@@ -13,7 +13,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource(name = IglooPropertySourcePriority.APPLICATION,
+@PropertySource(
+	name = IglooPropertySourcePriority.APPLICATION,
 	value = {
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JPA_SECURITY_COMMON,

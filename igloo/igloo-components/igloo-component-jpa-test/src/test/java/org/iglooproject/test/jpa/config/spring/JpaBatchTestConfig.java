@@ -8,7 +8,10 @@ import org.springframework.context.annotation.PropertySource;
  * Added configuration to override some properties
  */
 @Configuration
-@PropertySource(name = IglooPropertySourcePriority.APPLICATION, value = "classpath:/igloo-jpa-batch.properties")
+@PropertySource(
+	name = IglooPropertySourcePriority.APPLICATION,
+	value = "classpath:/igloo-jpa-batch.properties"
+)
 public class JpaBatchTestConfig {
 
 }

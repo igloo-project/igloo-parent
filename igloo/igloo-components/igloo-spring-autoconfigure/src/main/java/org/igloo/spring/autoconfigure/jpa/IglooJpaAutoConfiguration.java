@@ -42,21 +42,21 @@ import org.springframework.transaction.PlatformTransactionManager;
 @ConditionalOnProperty(name = "igloo-ac.jpa.disabled", havingValue = "false", matchIfMissing = true)
 @ConditionalOnClass({ LocalContainerEntityManagerFactoryBean.class, EntityManager.class })
 @AutoConfigureAfter({ IglooFlywayAutoConfiguration.class })
-@Import({ DefaultJpaConfig.class })
-@ComponentScan(
-	basePackageClasses = {
-			CoreJpaBatchPackage.class,
-			CoreJpaBusinessGenericPackage.class,
-			CoreJpaUtilPackage.class
-	},
-	excludeFilters = @Filter(Configuration.class)
-)
 @PropertySource(
 	name = IglooPropertySourcePriority.COMPONENT,
 	value = {
 		IglooJpaAutoConfiguration.PROPERTIES_COMPONENT_JPA,
 		"classpath:/configuration/jpa-common.properties"
 	}
+)
+@Import({ DefaultJpaConfig.class })
+@ComponentScan(
+	basePackageClasses = {
+		CoreJpaBatchPackage.class,
+		CoreJpaBusinessGenericPackage.class,
+		CoreJpaUtilPackage.class
+	},
+	excludeFilters = @Filter(Configuration.class)
 )
 public class IglooJpaAutoConfiguration {
 
