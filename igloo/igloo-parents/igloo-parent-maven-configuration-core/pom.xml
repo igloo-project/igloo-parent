@@ -62,7 +62,8 @@
 		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
 		<igloo.hikaricp.version>3.4.1</igloo.hikaricp.version>
 		<!-- https://jira.terracotta.org/jira/browse/EHC/fixforversion/13000/?selectedTab=com.atlassian.jira.jira-projects-plugin:version-summary-panel -->
-		<igloo.ehcache.version>2.10.6.5.1</igloo.ehcache.version>
+		<!-- terracotta maven repository cannot be managed efficiently; use central dependency -->
+		<igloo.ehcache.version>2.10.6</igloo.ehcache.version>
 		<!-- https://github.com/querydsl/querydsl/issues?utf8=%E2%9C%93&q=milestone%3A4.2.1 -->
 		<igloo.querydsl.version>4.2.2</igloo.querydsl.version>
 

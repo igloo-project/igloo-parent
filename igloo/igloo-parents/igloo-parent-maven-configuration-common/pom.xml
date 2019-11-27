@@ -765,24 +765,6 @@
 				<enabled>false</enabled>
 			</releases>
 		</repository>
-
-		<!--
-		  for repository exhaustivity, and for owasp plugin, declaration of
-		  ehcache 2 related repository, for terracotta statistics dependency.
-
-		  (owasp needs to lookup all dependencies, and does not seem to extract
-		  repository from dependency's pom).
-		-->
-		<repository>
-			<id>terracotta-releases</id>
-			<url>http://repo.terracotta.org/maven2/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
 	</repositories>
 	
 	<pluginRepositories>
