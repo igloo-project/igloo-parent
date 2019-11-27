@@ -11,6 +11,7 @@ import org.iglooproject.wicket.bootstrap3.console.template.style.CoreConsoleCssS
 import org.iglooproject.wicket.bootstrap3.markup.html.template.css.bootstrap.CoreBootstrap3CssScope;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.css.fontawesome.CoreFontAwesome4CssScope;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
+import org.iglooproject.wicket.bootstrap3.markup.html.template.js.jqueryui.JQueryUIJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap3.markup.html.template.js.select2.Select2JavaScriptResourceReference;
 import org.iglooproject.wicket.more.application.CoreWicketApplication;
 import org.iglooproject.wicket.more.application.IWicketModule;
@@ -20,7 +21,6 @@ import org.iglooproject.wicket.request.mapper.StaticResourceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wicketstuff.select2.ApplicationSettings;
-import org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 
 import com.google.common.collect.ImmutableList;
 
@@ -48,7 +48,8 @@ public class WicketBootstrapModule implements IWicketModule {
 
 	@Override
 	public void addResourceReplacements(CoreWicketApplication application) {
-		application.addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
+		application.addResourceReplacement(org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference.get(), JQueryUIJavaScriptResourceReference.get());
+		application.addResourceReplacement(org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
 	}
 
 	@Override

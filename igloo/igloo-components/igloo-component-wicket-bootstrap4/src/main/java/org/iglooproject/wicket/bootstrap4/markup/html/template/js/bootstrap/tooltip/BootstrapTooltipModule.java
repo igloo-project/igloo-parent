@@ -10,7 +10,7 @@ public class BootstrapTooltipModule implements IBootstrapTooltipModule {
 
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
-		response.render(JavaScriptHeaderItem.forReference(BootstrapTooltipMoreJavaScriptResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapTooltipJavaScriptResourceReference.get()));
 	}
 
 }
