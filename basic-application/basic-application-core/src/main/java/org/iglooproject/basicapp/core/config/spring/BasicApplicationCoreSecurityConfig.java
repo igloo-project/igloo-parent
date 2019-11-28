@@ -26,9 +26,9 @@ import org.springframework.security.acls.domain.PermissionFactory;
 @Configuration
 public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecuredConfig {
 
-	@Override
 	@Bean
 	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
+	@Override
 	public ICorePermissionEvaluator permissionEvaluator() {
 		return new BasicApplicationPermissionEvaluator();
 	}
@@ -57,6 +57,7 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecur
 		return defaultPermissionHierarchyAsString();
 	}
 
+	@Bean
 	@Override
 	public PermissionFactory permissionFactory() {
 		return new NamedPermissionFactory(BasicApplicationPermission.ALL);
