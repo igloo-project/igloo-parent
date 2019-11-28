@@ -87,9 +87,9 @@ public abstract class AbstractJpaSecurityConfig {
 	
 	@Bean
 	public UserDetailsService userDetailsService() {
-		CoreJpaUserDetailsServiceImpl detailsService = new CoreJpaUserDetailsServiceImpl();
-		detailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
-		return detailsService;
+		CoreJpaUserDetailsServiceImpl userDetailsService = new CoreJpaUserDetailsServiceImpl();
+		userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
+		return userDetailsService;
 	}
 	
 	@Bean

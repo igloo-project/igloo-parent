@@ -42,9 +42,9 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecur
 	@Bean
 	@Override
 	public IBasicApplicationUserDetailsService userDetailsService() {
-		BasicApplicationUserDetailsService detailsService = new BasicApplicationUserDetailsService();
-		detailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
-		return detailsService;
+		BasicApplicationUserDetailsService userDetailsService = new BasicApplicationUserDetailsService();
+		userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
+		return userDetailsService;
 	}
 
 	@Override
@@ -100,7 +100,6 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecur
 			.setDefaultOptions(
 				SecurityOptions.DEFAULT
 			);
-		
 		return securityManagementService;
 	}
 
