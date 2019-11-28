@@ -13,9 +13,9 @@ public final class BootstrapPopoverJavaScriptResourceReference extends WebjarsJQ
 	private static final long serialVersionUID = -1442288640907214154L;
 
 	private static final SerializableSupplier2<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
-			BootstrapTooltipJavaScriptResourceReference.get()
+		BootstrapTooltipJavaScriptResourceReference.get()
 	);
-	
+
 	private static final BootstrapPopoverJavaScriptResourceReference INSTANCE = new BootstrapPopoverJavaScriptResourceReference();
 
 	private BootstrapPopoverJavaScriptResourceReference() {
@@ -24,7 +24,9 @@ public final class BootstrapPopoverJavaScriptResourceReference extends WebjarsJQ
 
 	@Override
 	public List<HeaderItem> getDependencies() {
-		return DEPENDENCIES.get();
+		List<HeaderItem> dependencies = super.getDependencies();
+		dependencies.addAll(DEPENDENCIES.get());
+		return dependencies;
 	}
 
 	public static BootstrapPopoverJavaScriptResourceReference get() {

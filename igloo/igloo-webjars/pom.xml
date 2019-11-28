@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>1.3.2</version>
+		<version>1.4.0</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 
@@ -24,9 +24,6 @@
 	
 	<modules>
 		<module>bootstrap-override</module>
-		<module>jquery.json</module>
-		<module>jquery.carouFredSel</module>
-		<module>jquery.fancybox</module>
 	</modules>
 	
 	<build>

@@ -1,14 +1,16 @@
 package org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component;
 
+import java.util.List;
+
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.IBootstrapConfirmModule;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.behavior.ConfirmContentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.statement.BootstrapConfirmEvent;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.statement.BootstrapConfirmStatement;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.modal.ModalJavaScriptResourceReference;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
@@ -16,6 +18,9 @@ import org.wicketstuff.wiquery.core.javascript.JsStatement;
 public class ConfirmButton extends Button {
 
 	private static final long serialVersionUID = -4124927130129944090L;
+
+	@SpringBean
+	private List<IBootstrapConfirmModule> modules;
 
 	public ConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel, IModel<String> yesLabelModel,
 			IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,
@@ -35,7 +40,8 @@ public class ConfirmButton extends Button {
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		response.render(JavaScriptHeaderItem.forReference(ModalJavaScriptResourceReference.get()));
+		modules.forEach(module -> module.renderHead(this, response));
+		
 		Event confirmEvent = new Event(BootstrapConfirmEvent.CONFIRM) {
 			private static final long serialVersionUID = 6466300052232971891L;
 			

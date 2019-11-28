@@ -27,7 +27,6 @@ import org.iglooproject.wicket.more.markup.html.action.IAction;
 import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.ConfirmLink;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.autosize.AutosizeBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,8 +89,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 				
 				idsTextArea
 					.setLabel(new ResourceModel("console.maintenance.search.reindex.partial.form.ids"))
-					.add(new AttributeModifier("placeholder", new ResourceModel("console.maintenance.search.reindex.partial.form.ids.placeholder")))
-					.add(new AutosizeBehavior()),
+					.add(new AttributeModifier("placeholder", new ResourceModel("console.maintenance.search.reindex.partial.form.ids.placeholder"))),
 				
 				AjaxConfirmLink.<Void>build()
 					.title(new ResourceModel("common.action.confirm.title"))

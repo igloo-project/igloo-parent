@@ -4,10 +4,8 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.HeaderItem;
-import org.iglooproject.wicket.bootstrap4.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.more.css.scss.ScssResourceReference;
-
-import com.google.common.collect.ImmutableList;
+import org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 
 public final class ConsoleAccessScssResourceReference extends ScssResourceReference {
 
@@ -21,9 +19,9 @@ public final class ConsoleAccessScssResourceReference extends ScssResourceRefere
 
 	@Override
 	public List<HeaderItem> getDependencies() {
-		return ImmutableList.of(
-			CssHeaderItem.forReference(JQueryUiCssResourceReference.get())
-		);
+		List<HeaderItem> dependencies = super.getDependencies();
+		dependencies.add(CssHeaderItem.forReference(WiQueryCoreThemeResourceReference.get()));
+		return dependencies;
 	}
 
 	public static ConsoleAccessScssResourceReference get() {

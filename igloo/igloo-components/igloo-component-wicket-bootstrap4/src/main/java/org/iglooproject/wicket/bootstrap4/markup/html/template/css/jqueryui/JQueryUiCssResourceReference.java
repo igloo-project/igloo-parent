@@ -4,7 +4,7 @@ import org.apache.wicket.request.resource.CssResourceReference;
 
 public final class JQueryUiCssResourceReference extends CssResourceReference {
 
-	private static final long serialVersionUID = -4192693085575758769L;
+	private static final long serialVersionUID = -3914656103299973526L;
 
 	private static final JQueryUiCssResourceReference INSTANCE = new JQueryUiCssResourceReference();
 

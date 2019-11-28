@@ -21,7 +21,6 @@ import org.iglooproject.wicket.request.mapper.StaticResourceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wicketstuff.select2.ApplicationSettings;
-import org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference;
 
 import com.google.common.collect.ImmutableList;
 
@@ -50,24 +49,24 @@ public class WicketBootstrapModule implements IWicketModule {
 	@Override
 	public void addResourceReplacements(CoreWicketApplication application) {
 		application.addResourceReplacement(org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference.get(), JQueryUIJavaScriptResourceReference.get());
-		application.addResourceReplacement(WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
+		application.addResourceReplacement(org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
 	}
 
 	@Override
 	public List<StaticResourceMapper> listStaticResources() {
 		return ImmutableList.of(
-				staticResourceMapper("/common", AbstractWebPageTemplate.class),
-				staticResourceMapper("/font-awesome", CoreFontAwesome5CssScope.class)
+			staticResourceMapper("/common", AbstractWebPageTemplate.class),
+			staticResourceMapper("/font-awesome", CoreFontAwesome5CssScope.class)
 		);
 	}
 
 	@Override
 	public void updateResourceSettings(ResourceSettings resourceSettings) {
 		resourceSettings.getStringResourceLoaders().addAll(
-				0, // Override the keys in existing resource loaders with the following
-				ImmutableList.of(
-						new ClassStringResourceLoader(CoreWicketConsoleResources.class)
-				)
+			0, // Override the keys in existing resource loaders with the following
+			ImmutableList.of(
+				new ClassStringResourceLoader(CoreWicketConsoleResources.class)
+			)
 		);
 	}
 

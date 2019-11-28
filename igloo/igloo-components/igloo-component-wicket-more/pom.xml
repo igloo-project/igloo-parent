@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>1.3.2</version>
+		<version>1.4.0</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-more</artifactId>
@@ -92,21 +92,13 @@
 			<artifactId>clipboard</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>jquery-mask-plugin</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>bootstrap-override</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.webjars</groupId>
-			<artifactId>jquery.json</artifactId>
-			<version>${project.version}</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.webjars</groupId>
-			<artifactId>jquery.carouFredSel</artifactId>
-			<version>${project.version}</version>
-			<optional>true</optional>
 		</dependency>
 		
 		<dependency>

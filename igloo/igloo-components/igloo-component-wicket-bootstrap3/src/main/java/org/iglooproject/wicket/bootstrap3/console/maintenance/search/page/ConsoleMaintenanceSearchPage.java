@@ -22,7 +22,6 @@ import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.bootstrap3.console.common.component.JavaClassesListMultipleChoice;
 import org.iglooproject.wicket.bootstrap3.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.bootstrap3.console.template.ConsoleTemplate;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.autosize.AutosizeBehavior;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +75,6 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 			idsTextArea.setLabel(new ResourceModel("console.maintenance.search.reindex.partial.form.ids"));
 			idsTextArea.add(new AttributeModifier("placeholder",
 					new ResourceModel("console.maintenance.search.reindex.partial.form.ids.placeholder")));
-			idsTextArea.add(new AutosizeBehavior());
 			reindexClassesForm.add(idsTextArea);
 			
 			reindexClassesForm.add(new SubmitLink("reindexClassesLink", reindexClassesForm) {

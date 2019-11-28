@@ -33,7 +33,6 @@ import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.autosize.AutosizeBehavior;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
@@ -82,8 +81,7 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 				new RequiredTextField<String>("name", BindingModel.of(getModel(), Bindings.userGroup().name()))
 					.setLabel(new ResourceModel("business.userGroup.name")),
 				new TextArea<String>("description", BindingModel.of(getModel(), Bindings.userGroup().description()))
-					.setLabel(new ResourceModel("business.userGroup.description"))
-					.add(new AutosizeBehavior()),
+					.setLabel(new ResourceModel("business.userGroup.description")),
 				new CheckGroup<Authority>("authorities",
 					BindingModel.of(getModel(), Bindings.userGroup().authorities()),
 					Suppliers2.<Authority>hashSet()

@@ -7,6 +7,11 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
+/**
+ * @deprecated This old JQuery plugin doesn't work well within BS4 modal and will be removed in a upcoming release.
+ * Use HTML {@code <textarea>} {@code rows} attribute instead. No more autosize, just a default relevant height.
+ */
+@Deprecated
 public class AutosizeBehavior extends Behavior {
 
 	private static final long serialVersionUID = 6155882407495564466L;

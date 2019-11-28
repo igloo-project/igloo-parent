@@ -13,9 +13,9 @@ public final class BootstrapTabJavaScriptResourceReference extends WebjarsJQuery
 	private static final long serialVersionUID = -1442288640907214154L;
 
 	private static final SerializableSupplier2<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
-			BootstrapUtilJavaScriptResourceReference.get()
+		BootstrapUtilJavaScriptResourceReference.get()
 	);
-	
+
 	private static final BootstrapTabJavaScriptResourceReference INSTANCE = new BootstrapTabJavaScriptResourceReference();
 
 	private BootstrapTabJavaScriptResourceReference() {
@@ -24,7 +24,9 @@ public final class BootstrapTabJavaScriptResourceReference extends WebjarsJQuery
 
 	@Override
 	public List<HeaderItem> getDependencies() {
-		return DEPENDENCIES.get();
+		List<HeaderItem> dependencies = super.getDependencies();
+		dependencies.addAll(DEPENDENCIES.get());
+		return dependencies;
 	}
 
 	public static BootstrapTabJavaScriptResourceReference get() {

@@ -13,7 +13,7 @@ public final class BootstrapModalJavaScriptResourceReference extends WebjarsJQue
 	private static final long serialVersionUID = -8799742276479282371L;
 
 	private static final SerializableSupplier2<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
-			BootstrapUtilJavaScriptResourceReference.get()
+		BootstrapUtilJavaScriptResourceReference.get()
 	);
 
 	private static final BootstrapModalJavaScriptResourceReference INSTANCE = new BootstrapModalJavaScriptResourceReference();
@@ -24,7 +24,9 @@ public final class BootstrapModalJavaScriptResourceReference extends WebjarsJQue
 
 	@Override
 	public List<HeaderItem> getDependencies() {
-		return DEPENDENCIES.get();
+		List<HeaderItem> dependencies = super.getDependencies();
+		dependencies.addAll(DEPENDENCIES.get());
+		return dependencies;
 	}
 
 	public static BootstrapModalJavaScriptResourceReference get() {
