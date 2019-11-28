@@ -8,6 +8,8 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.model.BasicApplicationPermission;
 import org.iglooproject.basicapp.core.security.model.SecurityOptions;
 import org.iglooproject.basicapp.core.security.service.BasicApplicationPermissionEvaluator;
+import org.iglooproject.basicapp.core.security.service.BasicApplicationUserDetailsService;
+import org.iglooproject.basicapp.core.security.service.IBasicApplicationUserDetailsService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.core.security.service.SecurityManagementServiceImpl;
 import org.iglooproject.jpa.security.config.spring.AbstractJpaSecuritySecuredConfig;
@@ -35,6 +37,14 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecur
 	@Override
 	public AuthenticationUsernameComparison authenticationUsernameComparison() {
 		return AuthenticationUsernameComparison.CASE_SENSITIVE;
+	}
+
+	@Bean
+	@Override
+	public IBasicApplicationUserDetailsService userDetailsService() {
+		BasicApplicationUserDetailsService detailsService = new BasicApplicationUserDetailsService();
+		detailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
+		return detailsService;
 	}
 
 	@Override

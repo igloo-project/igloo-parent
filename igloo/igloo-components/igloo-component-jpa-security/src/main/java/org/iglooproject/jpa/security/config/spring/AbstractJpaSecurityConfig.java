@@ -71,8 +71,7 @@ public abstract class AbstractJpaSecurityConfig {
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		PasswordEncoder passwordEncoder =
-			    PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 		return passwordEncoder;
 	}
 
