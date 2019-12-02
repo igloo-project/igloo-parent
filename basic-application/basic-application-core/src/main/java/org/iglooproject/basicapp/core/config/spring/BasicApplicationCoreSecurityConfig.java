@@ -8,7 +8,7 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.model.BasicApplicationPermission;
 import org.iglooproject.basicapp.core.security.model.SecurityOptions;
 import org.iglooproject.basicapp.core.security.service.BasicApplicationPermissionEvaluator;
-import org.iglooproject.basicapp.core.security.service.BasicApplicationUserDetailsService;
+import org.iglooproject.basicapp.core.security.service.BasicApplicationUserDetailsServiceImpl;
 import org.iglooproject.basicapp.core.security.service.IBasicApplicationUserDetailsService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.core.security.service.SecurityManagementServiceImpl;
@@ -52,7 +52,7 @@ public class BasicApplicationCoreSecurityConfig {
 
 	@Bean
 	public IBasicApplicationUserDetailsService userDetailsService() {
-		BasicApplicationUserDetailsService userDetailsService = new BasicApplicationUserDetailsService();
+		BasicApplicationUserDetailsServiceImpl userDetailsService = new BasicApplicationUserDetailsServiceImpl();
 		userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
 		return userDetailsService;
 	}
