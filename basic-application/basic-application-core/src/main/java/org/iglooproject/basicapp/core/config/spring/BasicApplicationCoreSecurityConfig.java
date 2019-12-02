@@ -2,7 +2,6 @@ package org.iglooproject.basicapp.core.config.spring;
 
 import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
 
-import org.igloo.spring.autoconfigure.security.util.SecurityUtils;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -36,7 +35,7 @@ public class BasicApplicationCoreSecurityConfig {
 
 	@Autowired
 	protected DefaultJpaSecurityConfig defaultJpaSecurityConfig;
-	
+
 	@Autowired
 	protected IPropertyService propertyService;
 
@@ -56,10 +55,6 @@ public class BasicApplicationCoreSecurityConfig {
 		BasicApplicationUserDetailsService userDetailsService = new BasicApplicationUserDetailsService();
 		userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
 		return userDetailsService;
-	}
-
-	public String permissionHierarchyAsString() {
-		return SecurityUtils.defaultPermissionHierarchyAsString();
 	}
 
 	@Bean
