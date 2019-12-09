@@ -40,8 +40,8 @@ public class InterceptorAwareHibernatePersistenceProvider extends HibernatePersi
 	public EntityManagerFactory createContainerEntityManagerFactory(PersistenceUnitInfo info, Map properties) {
 		return new EntityManagerFactoryBuilderImpl(new PersistenceUnitInfoDescriptor(info), properties) {
 			@Override
-			protected void populate(SessionFactoryBuilder sfBuilder, StandardServiceRegistry ssr) {
-				super.populate(sfBuilder, ssr);
+			protected void populateSfBuilder(SessionFactoryBuilder sfBuilder, StandardServiceRegistry ssr) {
+				super.populateSfBuilder(sfBuilder, ssr);
 				
 				if (InterceptorAwareHibernatePersistenceProvider.this.interceptor != null) {
 					LOGGER.warn("Installing our Spring managed interceptor.");
