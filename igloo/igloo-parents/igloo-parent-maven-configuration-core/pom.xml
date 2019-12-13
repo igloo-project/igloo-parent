@@ -220,7 +220,7 @@
 		<igloo.wiquery.version>8.1.1</igloo.wiquery.version>
 		<igloo.wicketstuff-select2.version>8.6.0</igloo.wicketstuff-select2.version>
 		<!-- https://github.com/l0rdn1kk0n/wicket-webjars (0.5.x -> wicket 7, 2.0.x -> wicket 8) -->
-		<igloo.wicket-webjars.version>2.0.16</igloo.wicket-webjars.version>
+		<igloo.wicket-webjars.version>2.0.10</igloo.wicket-webjars.version>
 		<igloo.webjars-locator-core.version>0.43</igloo.webjars-locator-core.version>
 		<igloo.wqplot.version>7.1.0.owsi1</igloo.wqplot.version>
 
