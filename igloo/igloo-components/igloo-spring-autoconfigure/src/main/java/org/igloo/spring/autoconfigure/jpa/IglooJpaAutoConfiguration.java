@@ -6,6 +6,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
 import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
 import org.iglooproject.jpa.config.spring.DefaultJpaConfig;
@@ -17,7 +18,6 @@ import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
 import org.iglooproject.jpa.util.CoreJpaUtilPackage;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.springframework.aop.Advisor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
@@ -25,6 +25,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -38,21 +39,25 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
+@ConditionalOnProperty(name = "igloo-ac.jpa.disabled", havingValue = "false", matchIfMissing = true)
 @ConditionalOnClass({ LocalContainerEntityManagerFactoryBean.class, EntityManager.class })
 @AutoConfigureAfter({ IglooFlywayAutoConfiguration.class })
+@PropertySource(
+	name = IglooPropertySourcePriority.COMPONENT,
+	value = {
+		IglooJpaAutoConfiguration.PROPERTIES_COMPONENT_JPA,
+		"classpath:/configuration/jpa-common.properties"
+	}
+)
 @Import({ DefaultJpaConfig.class })
 @ComponentScan(
 	basePackageClasses = {
-			CoreJpaBatchPackage.class,
-			CoreJpaBusinessGenericPackage.class,
-			CoreJpaUtilPackage.class
+		CoreJpaBatchPackage.class,
+		CoreJpaBusinessGenericPackage.class,
+		CoreJpaUtilPackage.class
 	},
 	excludeFilters = @Filter(Configuration.class)
 )
-@PropertySource({
-	IglooJpaAutoConfiguration.PROPERTIES_COMPONENT_JPA,
-	ConfigurationPropertiesUrlConstants.JPA_COMMON
-})
 public class IglooJpaAutoConfiguration {
 
 	/**

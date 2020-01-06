@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-public class BasicApplicationUserDetailsService extends CoreJpaUserDetailsServiceImpl implements IBasicApplicationUserDetailsService {
+public class BasicApplicationUserDetailsServiceImpl extends CoreJpaUserDetailsServiceImpl implements IBasicApplicationUserDetailsService {
 
 	private static final Multimap<String, String> PERMISSIONS_BY_ROLE = ImmutableMultimap.<String, String>builder()
 		.build();

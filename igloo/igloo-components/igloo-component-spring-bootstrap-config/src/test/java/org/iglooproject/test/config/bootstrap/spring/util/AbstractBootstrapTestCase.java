@@ -1,6 +1,5 @@
 package org.iglooproject.test.config.bootstrap.spring.util;
 
-import org.iglooproject.config.bootstrap.spring.ApplicationConfigurerBeanFactoryPostProcessor;
 import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.springframework.test.context.ContextConfiguration;
 

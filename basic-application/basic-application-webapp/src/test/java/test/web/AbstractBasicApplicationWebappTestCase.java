@@ -27,12 +27,14 @@ import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 
 import com.google.common.collect.ImmutableSet;
 
 import test.web.config.spring.BasicApplicationWebappTestCommonConfig;
 
 @ContextConfiguration(classes = BasicApplicationWebappTestCommonConfig.class)
+@TestPropertySource(properties = "igloo.profile=test")
 public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWicketTestCase<BasicApplicationWicketTester> {
 
 	protected static final String USER_PASSWORD = "kobalt";

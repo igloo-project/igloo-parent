@@ -8,7 +8,6 @@ import org.iglooproject.basicapp.core.business.referencedata.search.IBasicRefere
 import org.iglooproject.basicapp.core.config.hibernate.HibernateConfigPackage;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.jpa.security.config.spring.AbstractConfiguredJpaSecurityJpaConfig;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +16,11 @@ import org.springframework.context.annotation.Scope;
 
 @Configuration
 @EnableAspectJAutoProxy
-public class BasicApplicationCoreCommonJpaConfig extends AbstractConfiguredJpaSecurityJpaConfig {
+public class BasicApplicationCoreCommonJpaConfig {
 
 	/**
 	 * Déclaration des packages de scan pour l'application.
 	 */
-	@Override
 	@Bean
 	public JpaPackageScanProvider applicationJpaPackageScanProvider() {
 		return new JpaPackageScanProvider(

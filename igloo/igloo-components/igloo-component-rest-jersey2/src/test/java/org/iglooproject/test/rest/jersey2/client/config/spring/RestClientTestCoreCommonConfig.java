@@ -1,8 +1,7 @@
 package org.iglooproject.test.rest.jersey2.client.config.spring;
 
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.spring.config.spring.AbstractApplicationConfig;
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
-import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.test.config.spring.ConfigurationPropertiesUrlConstants;
 import org.iglooproject.test.rest.jersey2.business.RestTestBusinessPackage;
 import org.iglooproject.test.rest.jersey2.client.RestClientPackage;
@@ -14,29 +13,32 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ApplicationDescription(name = "rest-test-client")
-@ConfigurationLocations(locations = {
-		"classpath:igloo-component-jpa.properties",
+@PropertySource(
+	name = IglooPropertySourcePriority.APPLICATION,
+	value = {
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JERSEY_MOCK_COMMON,
 		"classpath:rest-client.properties"
-})
+	}
+)
 @Import({
 	RestClientTestJpaConfig.class,
 	RestClientTestApplicationPropertyConfig.class
 })
 @ComponentScan(
-		basePackageClasses = { RestTestBusinessPackage.class, RestClientPackage.class },
-		excludeFilters = @Filter(Configuration.class)
+	basePackageClasses = { RestTestBusinessPackage.class, RestClientPackage.class },
+	excludeFilters = @Filter(Configuration.class)
 )
 @EnableTransactionManagement
 public class RestClientTestCoreCommonConfig extends AbstractApplicationConfig {
-	
+
 	@Bean
 	public AbstractMockServlet restServerTestResource(@Value("${jersey.mock.http.port}") Integer httpPort) {
 		return new MockServlet("http://localhost/", httpPort, "/api", "/rest");
 	}
+
 }

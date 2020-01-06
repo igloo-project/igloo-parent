@@ -2,7 +2,6 @@ package test.wicket.more.notification.config.spring;
 
 import java.util.concurrent.Callable;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.jpa.security.service.IRunAsSystemService;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.mockito.Mockito;
@@ -14,8 +13,11 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 import test.wicket.more.notification.service.NotificationContentDescriptorFactoryImpl;
 
+/**
+ * This configuration relies on notification-test.properties loading by configuration-bootstrap. This is done
+ * with a custom test-notification igloo profile.
+ */
 @Configuration
-@ConfigurationLocations(locations = { "classpath:notification-test.properties" })
 public class NotificationTestConfig {
 
 	@Bean

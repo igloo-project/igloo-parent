@@ -8,23 +8,29 @@ import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
 import org.iglooproject.jpa.more.business.task.dao.IQueuedTaskHolderDao;
 import org.iglooproject.jpa.more.business.task.dao.QueuedTaskHolderDaoImpl;
 import org.iglooproject.jpa.more.business.task.model.IQueueId;
+import org.iglooproject.jpa.more.business.task.search.IQueuedTaskHolderSearchQuery;
+import org.iglooproject.jpa.more.business.task.search.QueuedTaskHolderSearchQueryImpl;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderManagerImpl;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderServiceImpl;
 import org.iglooproject.jpa.more.config.spring.JpaMoreTaskApplicationPropertyRegistryConfig;
 import org.iglooproject.jpa.more.util.transaction.CoreJpaMoreUtilTransactionPackage;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Scope;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 
 @Configuration
+@ConditionalOnProperty(name = "igloo-ac.tasks.disabled", havingValue = "false", matchIfMissing = true)
 @ComponentScan(
 		basePackageClasses = { CoreJpaMoreBusinessPackage.class, CoreJpaMoreUtilTransactionPackage.class }
 )
@@ -53,12 +59,20 @@ public class IglooTaskManagementAutoConfiguration {
 	public IQueuedTaskHolderManager queuedTaskHolderManager() {
 		return new QueuedTaskHolderManagerImpl();
 	}
+	
+	@Bean
+	@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	public IQueuedTaskHolderSearchQuery queuedTaskHolderSearchQuery() {
+		return new QueuedTaskHolderSearchQueryImpl();
+	}
 
 	/**
 	 * Must return all the {@link IQueueId queue IDs} that are valid in this application.
 	 */
 	@Bean
 	@ConditionalOnMissingBean
+	// TODO fixme - this method only defines a bean of type Collection ; this may conflict with any other
+	// Collection bean
 	public Collection<? extends IQueueId> queueIds() {
 		return EnumUtils.getEnumList(StubQueueId.class);
 	}

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.function.Function;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
@@ -52,6 +53,13 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	private static final long serialVersionUID = -3988499137919577054L;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GenericEntity.class);
+
+	/**
+	 * This function allows to implement different behaviors based on Hibernate availability on classpath.
+	 * {@link Hibernate}.getClass(Object) is needed when we want to compare entity proxies.
+	 */
+	private static final Function<Object, Class<?>> GET_CLASS_FUNCTION;
+	public static final GenericEntityImplementation IMPLEMENTATION;
 
 	public static final String ID_SORT = "idSort";
 
@@ -102,7 +110,6 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 		return getId() == null;
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object object) {
@@ -113,8 +120,8 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 			return true;
 		}
 		
-		// l'objet peut être proxyfié donc on utilise Hibernate.getClass() pour sortir la vraie classe
-		if (Hibernate.getClass(object) != Hibernate.getClass(this)) {
+		// process class comparison; uses Hibernate for proxy handling if available
+		if (GET_CLASS_FUNCTION.apply(object) != GET_CLASS_FUNCTION.apply(this)) {
 			return false;
 		}
 
@@ -155,7 +162,7 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("entity.");
-		builder.append(Hibernate.getClass(this).getSimpleName());
+		builder.append(GET_CLASS_FUNCTION.apply(this).getSimpleName());
 		builder.append("<");
 		builder.append(getId());
 		builder.append("-");
@@ -195,6 +202,28 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 			);
 		}
 		out.defaultWriteObject();
+	}
+
+	static {
+		boolean hibernateAvailable = false;
+		try {
+			Class.forName("org.hibernate.Hibernate");
+			hibernateAvailable = true;
+		} catch (ClassNotFoundException e) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("GenericEntity.equals will not be hibernate aware");
+			}
+			if (LOGGER.isTraceEnabled()) {
+				LOGGER.debug("org.hibernate.Hibernate loading failed", e);
+			}
+		}
+		if (hibernateAvailable) {
+			GET_CLASS_FUNCTION = Hibernate::getClass;
+			IMPLEMENTATION = GenericEntityImplementation.HIBERNATE;
+		} else {
+			GET_CLASS_FUNCTION = i -> i.getClass();
+			IMPLEMENTATION = GenericEntityImplementation.SIMPLE;
+		}
 	}
 
 }

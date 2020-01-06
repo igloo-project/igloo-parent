@@ -15,7 +15,8 @@
 			@include border-radius(0);
 			border: 0;
 			margin: 0;
-			padding-right: ($close-font-size + $alert-padding-x * 2);
+			padding-right: $close-font-size + 2 * $alert-padding-x;
+			min-height: $close-font-size + 2 * $alert-padding-y;
 			
 			> ul.feedbackPanel {
 				@include list-unstyled;

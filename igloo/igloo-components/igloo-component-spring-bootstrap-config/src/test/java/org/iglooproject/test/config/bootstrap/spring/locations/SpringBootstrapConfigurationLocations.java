@@ -11,7 +11,8 @@ import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(inheritProperties = true, properties = {
 	"igloo.profile=development",
-	"user.name=username"
+	"user.name=username",
+	"igloo.applicationName=application-test"
 })
 @ContextConfiguration(
 		inheritLocations = true,

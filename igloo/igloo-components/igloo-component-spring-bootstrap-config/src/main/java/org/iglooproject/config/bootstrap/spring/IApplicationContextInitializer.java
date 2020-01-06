@@ -1,7 +1,5 @@
 package org.iglooproject.config.bootstrap.spring;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
-
 public interface IApplicationContextInitializer {
 
 	public static final String IGLOO_CONFIGURATION_LOGGER_NAME = "igloo@config";

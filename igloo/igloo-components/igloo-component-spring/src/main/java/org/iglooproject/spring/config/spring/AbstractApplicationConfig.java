@@ -1,7 +1,5 @@
 package org.iglooproject.spring.config.spring;
 
-import org.iglooproject.config.bootstrap.spring.annotations.ApplicationDescription;
-import org.iglooproject.config.bootstrap.spring.annotations.ConfigurationLocations;
 import org.iglooproject.spring.config.CorePropertyPlaceholderConfigurer;
 import org.iglooproject.spring.config.spring.annotation.CoreConfigurationLocationsAnnotationConfig;
 import org.iglooproject.spring.util.ConfigurationLogger;
@@ -10,15 +8,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
  * Classe à implémenter avec une méthode statique fournissant un {@link PropertySourcesPlaceholderConfigurer} vide.
- * Les annotations {@link ApplicationDescription} et {@link ConfigurationLocations} permettent de charger la
- * configuration.
+ * L'annotation {@link ApplicationDescription} permet de configurer le nom de l'application.
+ * 
+ * L'annotation {@link ConfigurationLocations} est dépréciée en faveur de l'annotation standard {@link PropertySource}
  * 
  * @see ApplicationDescription
- * @see ConfigurationLocations
  */
 @Import({
 	CoreConfigurationLocationsAnnotationConfig.class,

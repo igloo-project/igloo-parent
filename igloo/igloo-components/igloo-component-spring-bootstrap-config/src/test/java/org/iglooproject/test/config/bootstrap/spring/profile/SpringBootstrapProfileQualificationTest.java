@@ -15,9 +15,11 @@ import org.springframework.test.context.TestPropertySource;
  * <p><b>user.name<b> is overriden with <em>username<em></p>
  */
 @TestPropertySource(inheritProperties = true, properties = {
-	"igloo.profile=qualification"
+	"igloo.profile=qualification",
+	// needed as default configuration-default-bootstrap.properties references it
+	"igloo.applicationName=igloo-component-spring-bootstrap-config"
 })
-public class SpringBoostrapProfileQualificationTest extends AbstractSpringBoostrapProfileTest {
+public class SpringBootstrapProfileQualificationTest extends AbstractSpringBoostrapProfileTest {
 
 	/**
 	 * <p>Test override precedence. default -&gt; preproduction</p>

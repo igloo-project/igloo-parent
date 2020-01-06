@@ -8,25 +8,37 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.model.BasicApplicationPermission;
 import org.iglooproject.basicapp.core.security.model.SecurityOptions;
 import org.iglooproject.basicapp.core.security.service.BasicApplicationPermissionEvaluator;
-import org.iglooproject.basicapp.core.security.service.BasicApplicationUserDetailsService;
+import org.iglooproject.basicapp.core.security.service.BasicApplicationUserDetailsServiceImpl;
 import org.iglooproject.basicapp.core.security.service.IBasicApplicationUserDetailsService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.core.security.service.SecurityManagementServiceImpl;
-import org.iglooproject.jpa.security.config.spring.AbstractJpaSecuritySecuredConfig;
+import org.iglooproject.jpa.security.config.spring.DefaultJpaSecurityConfig;
 import org.iglooproject.jpa.security.password.rule.SecurityPasswordRulesBuilder;
+import org.iglooproject.jpa.security.runas.CoreRunAsManagerImpl;
 import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
 import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
 import org.iglooproject.jpa.security.service.NamedPermissionFactory;
+import org.iglooproject.spring.property.service.IPropertyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.access.intercept.RunAsImplAuthenticationProvider;
+import org.springframework.security.access.intercept.RunAsManager;
 import org.springframework.security.acls.domain.PermissionFactory;
 
 @Configuration
-public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecuredConfig {
+@Import(DefaultJpaSecurityConfig.class)
+public class BasicApplicationCoreSecurityConfig {
 
-	@Override
+	@Autowired
+	protected DefaultJpaSecurityConfig defaultJpaSecurityConfig;
+
+	@Autowired
+	protected IPropertyService propertyService;
+
 	@Bean
 	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 	public ICorePermissionEvaluator permissionEvaluator() {
@@ -34,32 +46,34 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecur
 	}
 
 	@Bean
-	@Override
 	public AuthenticationUsernameComparison authenticationUsernameComparison() {
 		return AuthenticationUsernameComparison.CASE_SENSITIVE;
 	}
 
 	@Bean
-	@Override
 	public IBasicApplicationUserDetailsService userDetailsService() {
-		BasicApplicationUserDetailsService detailsService = new BasicApplicationUserDetailsService();
-		detailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
-		return detailsService;
+		BasicApplicationUserDetailsServiceImpl userDetailsService = new BasicApplicationUserDetailsServiceImpl();
+		userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
+		return userDetailsService;
 	}
 
-	@Override
-	public String roleHierarchyAsString() {
-		return defaultRoleHierarchyAsString();
-	}
-
-	@Override
-	public String permissionHierarchyAsString() {
-		return defaultPermissionHierarchyAsString();
-	}
-
-	@Override
+	@Bean
 	public PermissionFactory permissionFactory() {
 		return new NamedPermissionFactory(BasicApplicationPermission.ALL);
+	}
+
+	@Bean
+	public RunAsManager runAsManager() {
+		CoreRunAsManagerImpl runAsManager = new CoreRunAsManagerImpl();
+		runAsManager.setKey(defaultJpaSecurityConfig.getRunAsKey());
+		return runAsManager;
+	}
+
+	@Bean
+	public RunAsImplAuthenticationProvider runAsAuthenticationProvider() {
+		RunAsImplAuthenticationProvider runAsAuthenticationProvider = new RunAsImplAuthenticationProvider();
+		runAsAuthenticationProvider.setKey(defaultJpaSecurityConfig.getRunAsKey());
+		return runAsAuthenticationProvider;
 	}
 
 	@Bean
@@ -99,7 +113,6 @@ public class BasicApplicationCoreSecurityConfig extends AbstractJpaSecuritySecur
 			.setDefaultOptions(
 				SecurityOptions.DEFAULT
 			);
-		
 		return securityManagementService;
 	}
 

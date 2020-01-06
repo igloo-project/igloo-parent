@@ -14,6 +14,31 @@
 		<gav regex="true">^org\.springframework\.security:spring-security-acl:.*$</gav>
 		<cve>CVE-2018-1258</cve>
 	</suppress>
+	
+	<!-- We explicitly declare jquery's version in wicket to 3, we never use jquery 1.X or 2.X -->
+	<suppress>
+		<notes><![CDATA[file name: wicket-core-8.6.1.jar: jquery-1.12.4.min.js]]></notes>
+		<packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+		<cve>CVE-2015-9251</cve>
+	</suppress>
+	
+	<suppress>
+		<notes><![CDATA[file name: wicket-core-8.6.1.jar: jquery-1.12.4.js]]></notes>
+		<packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+		<cve>CVE-2015-9251</cve>
+	</suppress>
+
+	<suppress>
+		<notes><![CDATA[file name: wicket-core-8.6.1.jar: jquery-2.2.4.min.js]]></notes>
+		<packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+		<cve>CVE-2015-9251</cve>
+	</suppress>
+
+	<suppress>
+		<notes><![CDATA[file name: wicket-core-8.6.1.jar: jquery-2.2.4.js]]></notes>
+		<packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
+		<cve>CVE-2015-9251</cve>
+	</suppress>
 
 	<!-- This vulnerability isn't for protobuff but for node's merge-object_project -->
 	<suppress>
