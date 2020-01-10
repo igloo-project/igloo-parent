@@ -3,7 +3,6 @@ package org.iglooproject.config.bootstrap.spring;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -110,7 +109,7 @@ public class ManifestPropertySourceBeanFactoryPostProcessor implements Applicati
 			}
 			
 			String propertySourceName = PROPERTY_SOURCE_NAME_PREFIX + clazz.getSimpleName();
-			((URLClassLoader) clazz.getClassLoader()).findResource("/MANIFEST.MF");
+			
 			PropertySource<?> existingPropertySource = applicationContext.getEnvironment().getPropertySources().remove(propertySourceName);
 			if (existingPropertySource != null) {
 				LOGGER.warn("{} already exists and is removed", propertySourceName);
