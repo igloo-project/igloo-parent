@@ -6,10 +6,10 @@ set -e
 script_directory=$(dirname $(readlink -f $0))
 artifact=$(basename ${script_directory})
 
-project_name=$1
-git_url=$2
+project_name="$1"
+git_url="$2"
 
-if [ "${project_name}" == "" || "${git_url}" == "" ]; then
+if [ "${project_name}" == "" -o "${git_url}" == "" ]; then
 	echo "Usage: $0 <project_name> <git_url>"
 	exit 1
 fi
