@@ -1,7 +1,6 @@
 package org.iglooproject.basicapp.web.application.security.password.page;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -21,8 +20,8 @@ import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 3082299089180143270L;
+
 	public static final ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, User, String> MAPPER = 
 		LinkDescriptorBuilder.start()
 			.model(User.class)
@@ -41,6 +40,10 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 			BasicApplicationSession.get().invalidate();
 		}
 		
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(
+			new ResourceModel("security.password.creation.pageTitle")
+		));
+		
 		final IModel<String> tokenModel = Model.of("");
 		
 		MAPPER.map(userModel, tokenModel).extractSafely(
@@ -50,13 +53,9 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 		);
 		
 		if (!tokenModel.getObject().equals(userModel.getObject().getPasswordRecoveryRequest().getToken())) {
-			Session.get().error(getString("security.password.creation.wrongToken"));
+			BasicApplicationSession.get().error(getString("security.password.creation.wrongToken"));
 			throw BasicApplicationApplication.get().getHomePageLinkDescriptor().newRestartResponseException();
 		}
-		
-		addHeadPageTitlePrependedElement(new BreadCrumbElement(
-			new ResourceModel("security.password.creation.pageTitle")
-		));
 	}
 
 	@Override

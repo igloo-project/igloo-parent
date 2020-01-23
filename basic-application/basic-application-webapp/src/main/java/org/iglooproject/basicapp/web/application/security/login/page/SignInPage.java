@@ -16,14 +16,15 @@ public class SignInPage extends ApplicationAccessTemplate {
 	private static final long serialVersionUID = 7361718534092594202L;
 	
 	public static ILinkDescriptor linkDescriptor() {
-		return LinkDescriptorBuilder.start().page(SignInPage.class);
+		return LinkDescriptorBuilder.start()
+			.page(SignInPage.class);
 	}
 
 	public SignInPage(PageParameters parameters) {
 		super(parameters);
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(
-				new ResourceModel("signIn.pageTitle")
+			new ResourceModel("signIn.pageTitle")
 		));
 	}
 
@@ -34,12 +35,12 @@ public class SignInPage extends ApplicationAccessTemplate {
 
 	@Override
 	protected Component getContentComponent(String wicketId) {
-		return new SignInContentPanel<>(wicketId);
+		return new SignInContentPanel(wicketId);
 	}
 
 	@Override
 	protected Component getFooterComponent(String wicketId) {
-		return new SignInFooterPanel<>(wicketId);
+		return new SignInFooterPanel(wicketId);
 	}
 
 }

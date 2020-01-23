@@ -16,7 +16,7 @@ public class MaintenancePage extends ApplicationAccessTemplate {
 		super(parameters);
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(
-				new ResourceModel("maintenance.pageTitle")
+			new ResourceModel("maintenance.pageTitle")
 		));
 	}
 

@@ -6,7 +6,7 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
 
-public class SignInFooterPanel<U extends User> extends Panel {
+public class SignInFooterPanel extends Panel {
 
 	private static final long serialVersionUID = -7042210777928535702L;
 	

@@ -23,8 +23,8 @@ import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = -5308279301239220694L;
+
 	public static final ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, User, String> MAPPER = 
 		LinkDescriptorBuilder.start()
 			.model(User.class)
@@ -46,6 +46,10 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 			BasicApplicationSession.get().invalidate();
 		}
 		
+		addHeadPageTitlePrependedElement(new BreadCrumbElement(
+			new ResourceModel("security.password.reset.pageTitle")
+		));
+		
 		final IModel<String> tokenModel = Model.of("");
 		
 		MAPPER.map(userModel, tokenModel).extractSafely(
@@ -62,13 +66,9 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 		}
 		
 		if (securityManagementService.isPasswordRecoveryRequestExpired(userModel.getObject())) {
-			Session.get().error(getString("security.password.reset.expired"));
+			BasicApplicationSession.get().error(getString("security.password.reset.expired"));
 			throw BasicApplicationApplication.get().getHomePageLinkDescriptor().newRestartResponseException();
 		}
-		
-		addHeadPageTitlePrependedElement(new BreadCrumbElement(
-				new ResourceModel("security.password.reset.pageTitle")
-		));
 	}
 
 	@Override

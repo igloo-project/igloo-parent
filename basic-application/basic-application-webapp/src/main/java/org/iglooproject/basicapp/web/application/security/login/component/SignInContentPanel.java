@@ -23,7 +23,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public class SignInContentPanel<U extends User> extends Panel {
+public class SignInContentPanel extends Panel {
 
 	private static final long serialVersionUID = 5503959273448832421L;
 
