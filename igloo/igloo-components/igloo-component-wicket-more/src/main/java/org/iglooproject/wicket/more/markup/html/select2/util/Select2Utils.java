@@ -9,9 +9,7 @@ public final class Select2Utils {
 	private static final int AJAX_DEFAULT_MINIMUM_INPUT_LENGTH = 2;
 	
 	public static void setDefaultSettings(Settings settings) {
-		settings.setWidth("auto");
-//		settings.setNoMatchesKey("common.select2.noChoice");
-//		settings.setInputTooShortKey("common.select2.inputTooShort");
+		settings.setWidth("style");
 		settings.setMinimumResultsForSearch(DEFAULT_MINIMUM_RESULTS_FOR_SEARCH);
 		settings.setPlaceholder("");
 		settings.setAllowClear(true);
