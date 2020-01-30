@@ -164,7 +164,7 @@ public abstract class AbstractReferenceDataListPanel<
 									getPopup().setUpAdd(getNewInstance());
 								}
 							})
-						.add(getAddCondition().thenShow())
+							.add(getAddCondition().thenShow())
 					)
 			);
 		}

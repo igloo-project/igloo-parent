@@ -98,7 +98,7 @@ public class BasicUserDetailGroupsPanel extends GenericPanel<BasicUser> {
 					.end()
 					.withClass("actions actions-1x")
 				.bootstrapCard()
-					.addIn(AddInPlacement.FOOTER_MAIN,  new AbstractParameterizedComponentFactory<Component, Component>() {
+					.addIn(AddInPlacement.FOOTER_MAIN, new AbstractParameterizedComponentFactory<Component, Component>() {
 						private static final long serialVersionUID = 1L;
 						@Override
 						public Component create(String wicketId, final Component table ) {
