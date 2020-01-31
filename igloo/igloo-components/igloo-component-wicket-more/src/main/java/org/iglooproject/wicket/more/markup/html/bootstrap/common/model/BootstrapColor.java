@@ -17,7 +17,8 @@ public enum BootstrapColor implements IBootstrapColor {
 	INFO("info"),
 	TODO("todo"),
 	WARNING("warning"),
-	WARNING_SEVERE("warning-severe"),
+	@Deprecated
+	WARNING_SEVERE("warning"),
 	DANGER("danger");
 
 	private final String cssClassSuffix;
