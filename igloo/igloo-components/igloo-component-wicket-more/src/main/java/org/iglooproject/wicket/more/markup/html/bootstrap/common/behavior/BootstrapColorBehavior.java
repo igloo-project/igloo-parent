@@ -23,7 +23,7 @@ public class BootstrapColorBehavior extends ClassAttributeAppender {
 	}
 	
 	public static BootstrapColorBehavior bg(IModel<IBootstrapColor> colorModel) {
-		return new BootstrapColorBehavior("bg bg-", colorModel);
+		return new BootstrapColorBehavior("bg-", colorModel);
 	}
 	
 	public static BootstrapColorBehavior btn(IModel<IBootstrapColor> colorModel) {
