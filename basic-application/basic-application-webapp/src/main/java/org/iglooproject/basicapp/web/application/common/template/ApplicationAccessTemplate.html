@@ -10,7 +10,7 @@
 		
 		<wicket:header-items />
 	</head>
-	<body wicket:id="bodyElement">
+	<body wicket:id="bodyElement" class="application-access">
 		<div class="body-container">
 			<header class="header-section">
 				<div wicket:id="environment" class="header-alert-section header-alert-dismissible environment-section" />
@@ -18,10 +18,10 @@
 			
 			<main class="main-section">
 				<div class="main-body">
-					<div class="container">
+					<div class="container-page">
 						<div class="card card-main-title-cascade">
 							<div class="card-img-top">
-								<img src="static/application/images/logo.png" alt="Logo" width="114" height="55" />
+								<img src="static/application/images/logo.png" class="img-fluid" alt="Logo" width="114" />
 							</div>
 							<div class="card-header card-main-title" wicket:id="title" />
 							<div wicket:id="content" />
