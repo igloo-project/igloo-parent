@@ -11,14 +11,14 @@
 		<div class="card-body">
 			<div class="alert" wicket:id="statusContainer"><wicket:container wicket:id="status" /></div>
 			<div class="alert alert-info"><wicket:container wicket:id="queueSize" /></div>
-			<a class="btn btn-danger btn-block" wicket:id="stop" >
+			<button wicket:id="stop" class="btn btn-danger btn-block" type="button">
 				<span class="fa fa-fw fa-stop" />
 				<wicket:message key="console.maintenance.task.manager.stop" />
-			</a>
-			<a class="btn btn-success btn-block" wicket:id="start" >
+			</button>
+			<button  wicket:id="start" class="btn btn-success btn-block" type="button">
 				<span class="fa fa-fw fa-play" />
 				<wicket:message key="console.maintenance.task.manager.start" />
-			</a>
+			</button>
 		</div>
 	</div>
 </wicket:panel>

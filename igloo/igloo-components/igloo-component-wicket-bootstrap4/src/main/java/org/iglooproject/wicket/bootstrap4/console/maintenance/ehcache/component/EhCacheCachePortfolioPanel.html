@@ -13,7 +13,7 @@
 						</div>
 						<div class="card-body">
 							<button wicket:id="cacheManagerPurgeLink" class="btn btn-danger" type="button">
-								<i class="fa fa-fw fa-trash"></i>
+								<span class="fa fa-fw fa-trash" />
 								<wicket:message key="console.maintenance.ehcache.cacheManager.purge.title" />
 							</button>
 						</div>
@@ -39,7 +39,7 @@
 											<div class="input-group input-group-sm">
 												<input wicket:id="cacheNameInput" class="form-control cache-name-input" type="text" />
 												<div class="input-group-append">
-													<button class="btn btn-outline-secondary" wicket:id="copy" wicket:message="title:console.maintenance.ehcache.portfolio.nom.copy">
+													<button wicket:id="copy" class="btn btn-outline-secondary" type="button" wicket:message="title:console.maintenance.ehcache.portfolio.nom.copy">
 														<span class="fa fa-fw fa-clipboard" />
 													</button>
 												</div>
@@ -55,14 +55,14 @@
 										<td rowspan="2" style="text-align: center; vertical-align:middle; white-space: nowrap;">
 											<div class="actions">
 												<button wicket:id="modifierCache" class="btn btn-table-row-action btn-primary" type="button"
-														wicket:message="title:console.maintenance.ehcache.cacheManager.cache.modification">
-													<i class="fa fa-fw fa-pencil-alt"></i>
+													wicket:message="title:console.maintenance.ehcache.cacheManager.cache.modification">
+													<span class="fa fa-fw fa-pencil-alt" />
 												</button>
 												<button wicket:id="viderCache" class="btn btn-table-row-action btn-danger" type="button"
-														wicket:message="title:console.maintenance.ehcache.portfolio.viderCache.button">
-													<i class="fa fa-fw fa-trash"></i>
+													wicket:message="title:console.maintenance.ehcache.portfolio.viderCache.button">
+													<span class="fa fa-fw fa-trash" />
 												</button>
-												<div wicket:id="modificationPanel"></div>
+												<div wicket:id="modificationPanel" />
 											</div>
 										</td>
 									</tr>
