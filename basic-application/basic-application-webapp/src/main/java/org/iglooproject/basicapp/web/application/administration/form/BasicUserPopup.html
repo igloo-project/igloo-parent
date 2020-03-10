@@ -47,7 +47,9 @@
 									</div>
 									<div class="col-sm-8">
 										<div class="input-group">
-											<span class="input-group-prepend"><span class="input-group-text"><span class="fa fa-fw fa-key" /></span></span>
+											<div class="input-group-prepend">
+												<span class="input-group-text"><span class="fa fa-fw fa-key" /></span>
+											</div>
 											<input class="form-control" wicket:id="password" type="password" autocomplete="off" />
 										</div>
 										<small wicket:id="passwordHelp" class="form-text text-muted" />
@@ -61,7 +63,9 @@
 									</div>
 									<div class="col-sm-8">
 										<div class="input-group">
-											<span class="input-group-prepend"><span class="input-group-text"><span class="fa fa-fw fa-key" /></span></span>
+											<div class="input-group-prepend">
+												<span class="input-group-text"><span class="fa fa-fw fa-key" /></span>
+											</div>
 											<input class="form-control" wicket:id="confirmPassword" type="password" autocomplete="off" />
 										</div>
 										<small class="form-text text-muted">
@@ -88,10 +92,7 @@
 								<label class="col-form-label form-label" wicket:for="email"><wicket:label /></label>
 							</div>
 							<div class="col-sm-8">
-								<div class="input-group">
-									<span class="input-group-prepend"><span class="input-group-text">@</span></span>
-									<input class="form-control" wicket:id="email" type="email" />
-								</div>
+								<input class="form-control" wicket:id="email" type="email" />
 							</div>
 						</div>
 					</div>
