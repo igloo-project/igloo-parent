@@ -1,10 +1,12 @@
+$sidebar-expand:										xl !default;
 $sidebar-width:											260px !default;
 $sidebar-zindex:										$zindex-fixed !default;
 $sidebar-border-width:									1px !default;
 $sidebar-border-color:									#E3E3E3 !default;
 $sidebar-bg:											$white !default;
 $sidebar-color:											#202124 !default;
-$sidebar-box-shadow:									 0 .5rem 1rem rgba($black, .5) !default;
+$sidebar-box-shadow:									0 .5rem 1rem rgba($black, .5) !default;
+$sidebar-box-shadow-light:								0px 0px 5px 0 rgba(0, 0, 0, .2) !default;
 $sidebar-body-padding-y:								$navbar-padding-y !default;
 
 $sidebar-backdrop-zindex:								$sidebar-zindex - 1 !default;

@@ -15,7 +15,7 @@
 				align-items: center;
 				justify-content: space-between;
 				
-				padding: 6px 15px 6px 12px;
+				padding: 5px 10px 5px 7px;
 				border-left: 3px solid transparent;
 				font-size: 1rem;
 				word-wrap: break-word;
@@ -25,12 +25,11 @@
 				&:hover, &:focus {
 					text-decoration: none;
 					outline: 0;
-					background-color: rgba(0, 0, 0, 0.06);
+					background-color: rgba(0, 0, 0, .06);
 				}
 				
 				> .sidenav-icon {
-					color: $gray-600;
-					margin-right: 10px;
+					margin-right: 7px;
 					line-height: 1.5;
 				}
 				
@@ -62,23 +61,33 @@
 			
 			&.active {
 				> a.sidenav-link {
-					background-color: rgba($primary, 0.15);
-					color: $primary;
+					background-color: rgba($brand-color, .15);
+					color: $brand-color;
 					font-weight: bold;
-					border-left: 3px solid $primary;
+					border-left: 3px solid $brand-color;
 					
 					> .sidenav-icon {
-						color: $primary;
+						color: $brand-color;
 					}
 					
 					> .sidenav-label {
-						color: $primary;
+						color: $brand-color;
 					}
 				}
 			}
 			
 			&.active-sub {
 				> a.sidenav-link {
+					color: $brand-color;
+					
+					> .sidenav-icon {
+						color: $brand-color;
+					}
+					
+					> .sidenav-label {
+						color: $brand-color;
+					}
+					
 					> .sidenav-label {
 						font-weight: bold;
 					}
@@ -86,13 +95,46 @@
 			}
 			
 			ul.sidenav-sub {
-				padding: 2px 0 0 0;
-				border-top: 1px solid rgba(0, 0, 0,.04);
+				padding: 2px 0;
+				background: rgba(0, 0, 0, .02);
+				background: linear-gradient(rgba(0, 0, 0, .06), rgba(0, 0, 0, .02) 8px);
+				border-top: 1px solid rgba(0, 0, 0, .08);
+				border-bottom: 1px solid rgba(0, 0, 0, .01);
+				
 				
 				> li.sidenav-item {
+					font-size: .95rem;
+					
 					> a.sidenav-link {
-						padding-left: 30px;
+						> .sidenav-sub-icon {
+							width: 1.16em;
+							color: rgba(0, 0, 0, .5);
+							text-align: center;
+							margin-right: 7px;
+						}
+						
+						> .sidenav-label {
+							
+						}
 					}
+					
+					&.active {
+						> a.sidenav-link {
+							> .sidenav-label {
+								&:before {
+									color: $brand-color;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		> li.sidenav-item {
+			> a.sidenav-link {
+				> .sidenav-label {
+					
 				}
 			}
 		}

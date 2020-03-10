@@ -124,17 +124,13 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				.subMenuForceOpen()
 				.subMenuItems(
 					AdministrationBasicUserListPage.linkDescriptor()
-						.navigationMenuItem(new ResourceModel("navigation.administration.user.basicUser"))
-						.iconClasses(Model.of("fa fa-fw fa-user-cog")),
+						.navigationMenuItem(new ResourceModel("navigation.administration.user.basicUser")),
 					AdministrationTechnicalUserListPage.linkDescriptor()
-						.navigationMenuItem(new ResourceModel("navigation.administration.user.technicalUser"))
-						.iconClasses(Model.of("fa fa-fw fa-user-shield")),
+						.navigationMenuItem(new ResourceModel("navigation.administration.user.technicalUser")),
 					AdministrationUserGroupListPage.linkDescriptor()
-						.navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
-						.iconClasses(Model.of("fa fa-fw fa-users-cog")),
+						.navigationMenuItem(new ResourceModel("navigation.administration.userGroup")),
 					AdministrationAnnouncementListPage.linkDescriptor()
 						.navigationMenuItem(new ResourceModel("navigation.administration.announcement"))
-						.iconClasses(Model.of("fa fa-fw fa-bullhorn"))
 				),
 			LinkDescriptorBuilder.start()
 				.validator(Condition.role(BasicApplicationAuthorityConstants.ROLE_ADMIN))

@@ -228,8 +228,9 @@ $grid-breakpoints: (
 	sm: 576px,
 	md: 768px,
 	lg: 992px,
-	xl: 1200px
-) !default; // bootstrap
+	xl: 1200px,
+	2xl: 1400px
+) !default; // bootstrap | bootstrap-override
 
 @include _assert-ascending($grid-breakpoints, "$grid-breakpoints"); // bootstrap
 @include _assert-starts-at-zero($grid-breakpoints, "$grid-breakpoints"); // bootstrap
@@ -243,8 +244,9 @@ $container-max-widths: (
 	sm: 540px,
 	md: 720px,
 	lg: 960px,
-	xl: 1140px
-) !default; // bootstrap
+	xl: 1140px,
+	2xl: 1320px
+) !default; // bootstrap | bootstrap-override
 
 @include _assert-ascending($container-max-widths, "$container-max-widths"); // bootstrap
 
@@ -1185,13 +1187,13 @@ $figure-caption-color:									$gray-600 !default; // bootstrap
 
 // Breadcrumbs
 
-$breadcrumb-padding-y:									.75rem !default; // bootstrap
-$breadcrumb-padding-x:									1rem !default; // bootstrap
+$breadcrumb-padding-y:									0 !default; // bootstrap | override
+$breadcrumb-padding-x:									0 !default; // bootstrap | override
 $breadcrumb-item-padding:								.5rem !default; // bootstrap
 
-$breadcrumb-margin-bottom:								1rem !default; // bootstrap
+$breadcrumb-margin-bottom:								.5rem !default; // bootstrap | override
 
-$breadcrumb-bg:											$gray-200 !default; // bootstrap
+$breadcrumb-bg:											transparent !default; // bootstrap | override
 $breadcrumb-divider-color:								$gray-600 !default; // bootstrap
 $breadcrumb-active-color:								$gray-600 !default; // bootstrap
 $breadcrumb-divider:									quote("/") !default; // bootstrap

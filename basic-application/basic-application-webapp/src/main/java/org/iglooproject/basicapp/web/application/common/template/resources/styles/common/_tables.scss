@@ -125,8 +125,8 @@ table {
 			&.table-row-disabled {
 				background: repeating-linear-gradient(
 					135deg,
-					#FFFFFF,
-					#FFFFFF 10px,
+					$white,
+					$white 10px,
 					#E6E7E8 10px,
 					#E6E7E8 20px
 				);
