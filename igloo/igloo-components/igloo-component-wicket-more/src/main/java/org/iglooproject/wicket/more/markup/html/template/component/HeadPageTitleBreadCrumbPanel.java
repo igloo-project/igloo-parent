@@ -15,27 +15,25 @@ public class HeadPageTitleBreadCrumbPanel extends GenericPanel<List<BreadCrumbEl
 	private static final long serialVersionUID = 3662301038397441921L;
 	
 	public HeadPageTitleBreadCrumbPanel(
-			String id,
-			IModel<List<BreadCrumbElement>> prependedElementsModel,
-			IModel<List<BreadCrumbElement>> headPageTitleElementsModel, IModel<List<BreadCrumbElement>> breadCrumbElementsModel,
-			IModel<String> dividerModel, IModel<String> dividerReversedModel,
-			IModel<Boolean> reverseModel
-			) {
-		super(
-				id,
-				new HtmlHeadPageTitleElementsModel(prependedElementsModel, headPageTitleElementsModel, breadCrumbElementsModel, reverseModel)
+		String id,
+		IModel<List<BreadCrumbElement>> prependedElementsModel,
+		IModel<List<BreadCrumbElement>> headPageTitleElementsModel, IModel<List<BreadCrumbElement>> breadCrumbElementsModel,
+		IModel<String> dividerModel, IModel<String> dividerReversedModel,
+		IModel<Boolean> reverseModel
+	) {
+		super(id, new HtmlHeadPageTitleElementsModel(prependedElementsModel, headPageTitleElementsModel, breadCrumbElementsModel, reverseModel));
+		
+		add(
+			new BreadCrumbListView(
+				"breadCrumbElementListView",
+				getModel(),
+				BreadCrumbMarkupTagRenderingBehavior.HTML_HEAD,
+				new DividerReversedIfNecessaryModel(dividerModel, dividerReversedModel, reverseModel)
+			)
 		);
 		
 		add(
-				new BreadCrumbListView(
-						"breadCrumbElementListView", getModel(),
-						BreadCrumbMarkupTagRenderingBehavior.HTML_HEAD,
-						new DividerReversedIfNecessaryModel(dividerModel, dividerReversedModel, reverseModel)
-				)
-		);
-		
-		add(
-				Condition.collectionModelNotEmpty(getModel()).thenShowInternal()
+			Condition.collectionModelNotEmpty(getModel()).thenShowInternal()
 		);
 	}
 
@@ -56,8 +54,8 @@ public class HeadPageTitleBreadCrumbPanel extends GenericPanel<List<BreadCrumbEl
 		@Override
 		public String getObject() {
 			return reverseModel.getObject()
-					? dividerReversedModel.getObject()
-					: dividerModel.getObject();
+				? dividerReversedModel.getObject()
+				: dividerModel.getObject();
 		}
 		
 		@Override
@@ -72,17 +70,18 @@ public class HeadPageTitleBreadCrumbPanel extends GenericPanel<List<BreadCrumbEl
 	private static class HtmlHeadPageTitleElementsModel implements IModel<List<BreadCrumbElement>> {
 		
 		private static final long serialVersionUID = -1809848796763995233L;
-
+		
 		private final IModel<List<BreadCrumbElement>> prependedElementsModel;
 		private final IModel<List<BreadCrumbElement>> headPageTitleElementsModel;
 		private final IModel<List<BreadCrumbElement>> breadCrumbElementsModel;
 		private final IModel<Boolean> reverseModel;
 		
 		public HtmlHeadPageTitleElementsModel(
-				IModel<List<BreadCrumbElement>> prependedElementsModel,
-				IModel<List<BreadCrumbElement>> headPageTitleElementsModel,
-				IModel<List<BreadCrumbElement>> breadCrumbElementsModel,
-				IModel<Boolean> reverseModel) {
+			IModel<List<BreadCrumbElement>> prependedElementsModel,
+			IModel<List<BreadCrumbElement>> headPageTitleElementsModel,
+			IModel<List<BreadCrumbElement>> breadCrumbElementsModel,
+			IModel<Boolean> reverseModel
+		) {
 			this.prependedElementsModel = prependedElementsModel;
 			this.headPageTitleElementsModel = headPageTitleElementsModel;
 			this.breadCrumbElementsModel = breadCrumbElementsModel;
@@ -92,14 +91,15 @@ public class HeadPageTitleBreadCrumbPanel extends GenericPanel<List<BreadCrumbEl
 		@Override
 		public List<BreadCrumbElement> getObject() {
 			List<BreadCrumbElement> elements = headPageTitleElementsModel.getObject();
+			
 			if (elements == null || elements.isEmpty()) {
 				elements = breadCrumbElementsModel.getObject();
 			}
 			
 			ImmutableList<BreadCrumbElement> list = ImmutableList.<BreadCrumbElement>builder()
-					.addAll(prependedElementsModel.getObject())
-					.addAll(elements)
-					.build();
+				.addAll(prependedElementsModel.getObject())
+				.addAll(elements)
+				.build();
 			
 			return reverseModel.getObject() ? list.reverse() : list;
 		}
