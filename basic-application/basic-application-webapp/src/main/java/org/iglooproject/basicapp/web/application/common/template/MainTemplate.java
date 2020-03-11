@@ -28,6 +28,7 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.basicapp.web.application.common.component.AnnouncementsPanel;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.theme.BasicApplicationApplicationTheme;
+import org.iglooproject.basicapp.web.application.common.template.theme.common.BootstrapBreakpointPanel;
 import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDataPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
 import org.iglooproject.functional.SerializableSupplier2;
@@ -98,6 +99,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		);
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback"));
+		
+		add(new BootstrapBreakpointPanel("bsBreakpoint"));
 		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		
