@@ -64,6 +64,7 @@ public class IglooWicketAutoConfiguration {
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean(IHtmlNotificationCssService.class)
 	public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
 		return new PhlocCssHtmlNotificationCssServiceImpl();
 	}
