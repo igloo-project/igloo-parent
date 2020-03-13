@@ -818,7 +818,8 @@ $.extend( Datepicker.prototype, {
 		}
 		if ( !$.datepicker._pos ) { // position below input
 			$.datepicker._pos = $.datepicker._findPos( input );
-			$.datepicker._pos[ 1 ] += input.offsetHeight; // add the height
+			// See https://bugs.jqueryui.com/ticket/15316
+			$.datepicker._pos[ 1 ] += $( input ).outerHeight(); // add the height
 		}
 
 		isFixed = false;
