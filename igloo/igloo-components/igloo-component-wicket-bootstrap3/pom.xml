@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>1.6.0</version>
+		<version>1.7.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-bootstrap3</artifactId>
