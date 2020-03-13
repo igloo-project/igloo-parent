@@ -2,6 +2,24 @@ body {
 	@include overflow-wrap();
 }
 
+.beautiful-scroll::-webkit-scrollbar {
+	width: 6px;
+}
+ 
+.beautiful-scroll::-webkit-scrollbar-track {
+	background: transparent;
+	border-radius: 4px;
+}
+ 
+.beautiful-scroll::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, .15);
+	border-radius: 4px;
+}
+
+.beautiful-scroll::-webkit-scrollbar-thumb:hover {
+	background: rgba(0, 0, 0, .2);
+}
+
 .bs-breakpoint:before{
 	position: fixed;
 	top: 10px;
