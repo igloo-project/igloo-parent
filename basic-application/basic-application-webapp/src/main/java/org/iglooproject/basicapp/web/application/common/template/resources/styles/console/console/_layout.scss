@@ -1,11 +1,11 @@
 html {
 	height: 100%;
 	font-size: $font-size-root;
-	color: rgba(0, 0, 0, 0.87);
+	color: rgba(0, 0, 0, .87);
 }
 
 body {
-	background-color: #F5F5F5;
+	background-color: #FBFBFB;
 	min-height: 100vh;
 	height: 100%;
 }
@@ -23,13 +23,10 @@ body {
 		flex: 1 0 auto;
 		
 		> .main-body {
-			> .content-container {
-				display: flex;
-				flex-direction: column;
-				
-				> .content-header-section {
+			.content-container {
+				.content-header-section {
 					background-color: $white;
-					border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+					border-bottom: 1px solid rgba(0, 0, 0, .09);
 					
 					> .content-header-container {
 						@include make-container();
@@ -54,23 +51,37 @@ body {
 					}
 				}
 				
-				> .content-header-section.content-header-section-tabs {
-					background-color: #FBFBFB;
+				.content-lead-section {
+					background-color: #F5F8FA;
+					border-bottom: 1px solid rgba(0, 0, 0, .09);
 					
-					> .content-header-container {
-						padding-top: 10px;
-						padding-bottom: 10px;
+					> .content-lead-container {
+						@include make-container();
+						@include make-container-max-widths();
+						
+						padding: 15px $layout-container-padding-x;
 					}
 				}
 				
-				> .content-body-section {
-					flex: 1 0 auto;
+				.content-tabs-section {
+					background-color: #FDFDFD;
+					border-bottom: 1px solid rgba(0, 0, 0, .09);
 					
+					
+					> .content-tabs-container {
+						@include make-container();
+						@include make-container-max-widths();
+						
+						padding: 10px $layout-container-padding-x;
+					}
+				}
+				
+				.content-body-section {
 					> .content-body-container {
 						@include make-container();
 						@include make-container-max-widths();
 						
-						padding: 25px $layout-container-padding-x;
+						padding: 20px $layout-container-padding-x;
 					}
 				}
 			}
@@ -79,12 +90,11 @@ body {
 	
 	> .footer-section {
 		flex: 0 0 auto;
-		
 		background-color: #21212E;
 		border-top: 1px solid #03FFB0;
-		color: #FFFFFF;
+		color: $white;
 		
-		> .footer-container {
+		.footer-container {
 			@include make-container();
 			@include make-container-max-widths();
 			
@@ -98,7 +108,7 @@ body {
 			}
 			
 			.footer-link {
-				color: #FFFFFF;
+				color: $white;
 			}
 			
 			.footer-description {

@@ -20,7 +20,7 @@
 									<div class="row row-xs align-items-center">
 										<div wicket:enclosure-component="add" class="col-auto">
 											<button wicket:id="add" class="btn btn-primary" type="button">
-												<span class="fa fa-fw fa-plus"></span>
+												<span class="fa fa-fw fa-plus" />
 												<wicket:message key="common.action.create" />
 											</button>
 										</div>
@@ -35,11 +35,7 @@
 			<div class="content-body-section">
 				<div class="content-body-container">
 					<div class="content-body">
-						<div class="row row-md">
-							<div class="col-12">
-								<div class="card card-page" wicket:id="results" />
-							</div>
-						</div>
+						<div wicket:id="results" class="card card-page" />
 					</div>
 				</div>
 			</div>

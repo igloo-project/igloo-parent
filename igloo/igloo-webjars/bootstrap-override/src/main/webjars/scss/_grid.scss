@@ -78,7 +78,7 @@
 			margin-bottom: 0;
 		}
 		
-		@include make-row-grid(map-get($grid-gutters, sm));
+		@include make-row-grid(map-get($grid-gutters, xs));
 	}
 	
 	&.row-form-group {
@@ -97,7 +97,7 @@
 		}
 		
 		+ .row-description {
-			margin-top: 0.75rem;
+			margin-top: .75rem;
 		}
 	}
 	

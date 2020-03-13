@@ -2,6 +2,26 @@ body {
 	@include overflow-wrap();
 }
 
+.bs-breakpoint:before{
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	padding: .3rem;
+	color: $black;
+	background-color: $white;
+	border: 1px solid $black;
+	border-radius: .25em;
+	line-height: 1;
+	opacity: .7;
+	z-index: 1000000;
+	
+	@each $breakpoint in map-keys($grid-breakpoints){
+		@include media-breakpoint-up($breakpoint){
+			content: to-upper-case("#{$breakpoint}");
+		}
+	}
+}
+
 .header-alert-section {
 	@include bg($light);
 	

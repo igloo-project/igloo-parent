@@ -104,12 +104,7 @@ public class SidebarMenuPanel extends Panel {
 									
 									item.add(navLink);
 									
-									navLink.add(
-										new EnclosureContainer("icon")
-											.condition(Condition.hasText(navItem.getIconClassesModel()))
-											.add(new ClassAttributeAppender(navItem.getIconClassesModel())),
-										new CoreLabel("label", navItem.getLabelModel())
-									);
+									navLink.add(new CoreLabel("label", navItem.getLabelModel()));
 									
 									item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
 									

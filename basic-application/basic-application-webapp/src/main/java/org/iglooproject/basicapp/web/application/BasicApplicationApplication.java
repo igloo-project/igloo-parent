@@ -161,17 +161,14 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountParameterizedPage("/security/password/reset/", SecurityPasswordResetPage.class);
 		mountParameterizedPage("/security/password/creation/", SecurityPasswordCreationPage.class);
 		
-		// Console sign in
-		mountPage("/console/login/", ConsoleSignInPage.class);
-		mountPage("/console/login/failure/", ConsoleLoginFailurePage.class);
-		mountPage("/console/login/success/", ConsoleLoginSuccessPage.class);
-		mountPage("/console/access-denied/", ConsoleAccessDeniedPage.class);
+		// Maintenance
+		mountPage("/maintenance/", MaintenancePage.class);
 		
 		// Profile
 		mountPage("/profile/", ProfilePage.class);
 		
-		// Maintenance
-		mountPage("/maintenance/", MaintenancePage.class);
+		// Reference data
+		mountPage("/reference-data/", ReferenceDataPage.class);
 		
 		// Administration
 		mountPage("/administration/basic-user/", AdministrationBasicUserListPage.class);
@@ -182,8 +179,11 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountParameterizedPage("/administration/user-group/${" + CommonParameters.ID + "}/", AdministrationUserGroupDetailPage.class);
 		mountPage("/administration/announcement/", AdministrationAnnouncementListPage.class);
 		
-		// Reference data
-		mountPage("/reference-data/", ReferenceDataPage.class);
+		// Console sign in
+		mountPage("/console/login/", ConsoleSignInPage.class);
+		mountPage("/console/login/failure/", ConsoleLoginFailurePage.class);
+		mountPage("/console/login/success/", ConsoleLoginSuccessPage.class);
+		mountPage("/console/access-denied/", ConsoleAccessDeniedPage.class);
 		
 		// Console
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console", propertyService);
@@ -216,7 +216,6 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 				}
 			}
 		);
-		consoleConfiguration.mountPages(this);
 		
 		ConsoleMenuSection notificationMenuSection = new ConsoleMenuSection(
 			"notificationsMenuSection",
@@ -226,7 +225,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		);
 		consoleConfiguration.addMenuSection(notificationMenuSection);
 		
-		mountPage("/console/notifications/", ConsoleNotificationDemoIndexPage.class);
+		consoleConfiguration.mountPages(this);
 		
 		// Monitoring
 		mountPage("/monitoring/db-access/", DatabaseMonitoringPage.class);

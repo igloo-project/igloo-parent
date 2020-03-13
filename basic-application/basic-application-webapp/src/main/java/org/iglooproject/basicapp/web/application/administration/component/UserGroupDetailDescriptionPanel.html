@@ -39,11 +39,9 @@
 							<div class="col-md-8">
 								<div class="description-value">
 									<ul class="list-unstyled m-0">
-										<li wicket:id="authorities" class="media">
-											<span wicket:id="authorityCheck" class="mr-3" />
-											<div class="media-body">
-												<span wicket:id="authorityName" />
-											</div>
+										<li wicket:id="authorities" class="d-flex align-items-baseline flex-overflow-wrap">
+											<span wicket:id="authorityCheck" class="flex-shrink-0 mr-1" />
+											<span wicket:id="authorityName" class="flex-grow-1" />
 										</li>
 									</ul>
 								</div>
@@ -55,7 +53,7 @@
 				<div class="card-action">
 					<div class="row row-action justify-content-end">
 						<div wicket:enclosure-component="edit" class="col-auto">
-							<button type="button" wicket:id="edit" class="btn btn-primary">
+							<button wicket:id="edit" class="btn btn-primary" type="button">
 								<span class="fa fa-fw fa-pencil-alt" />
 								<wicket:message key="common.action.update" />
 							</button>

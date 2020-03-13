@@ -19,15 +19,16 @@
 							<div class="row row-xs align-items-center">
 								<div wicket:id="actionsContainer" class="col-auto ml-auto">
 									<div class="row row-xs align-items-center">
-										<div wicket:enclosure-component="add" class="col-auto">
-											<button wicket:id="add" class="btn btn-primary" type="button">
-												<span class="fa fa-fw fa-plus"></span>
-												<wicket:message key="common.action.create" />
+										<div wicket:enclosure-component="exportExcel" class="col-auto">
+											<button wicket:id="exportExcel" class="btn btn-outline-secondary" type="button"
+												wicket:message="title:common.action.export.excel">
+												<span class="fa fa-fw fa-download" />
 											</button>
 										</div>
-										<div wicket:enclosure-component="exportExcel" class="col-auto">
-											<button wicket:id="exportExcel" class="btn btn-secondary" type="button" wicket:message="title:common.action.export.excel">
-												<span class="fa fa-fw fa-download"></span>
+										<div wicket:enclosure-component="add" class="col-auto">
+											<button wicket:id="add" class="btn btn-primary" type="button">
+												<span class="fa fa-fw fa-plus" />
+												<wicket:message key="common.action.create" />
 											</button>
 										</div>
 									</div>
@@ -38,21 +39,16 @@
 				</div>
 			</div>
 			
+			<div class="content-lead-section">
+				<div class="content-lead-container">
+					<div wicket:id="search" />
+				</div>
+			</div>
+			
 			<div class="content-body-section">
 				<div class="content-body-container">
 					<div class="content-body">
-						<div class="row row-md">
-							<div class="col-12">
-								<div class="card card-page">
-									<div class="card-body">
-										<div wicket:id="search" />
-									</div>
-								</div>
-							</div>
-							<div class="col-12">
-								<div class="card card-page" wicket:id="results" />
-							</div>
-						</div>
+						<div wicket:id="results" class="card card-page" />
 					</div>
 				</div>
 			</div>
