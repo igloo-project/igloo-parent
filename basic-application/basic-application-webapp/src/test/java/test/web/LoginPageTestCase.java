@@ -37,7 +37,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
-		tester.startComponentInPage(new SignInContentPanel<>("content"));
+		tester.startComponentInPage(new SignInContentPanel("content"));
 		tester.assertRequired("content:form:username");
 		tester.assertRequired("content:form:password");
 		
@@ -56,7 +56,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
-		tester.startComponentInPage(new SignInContentPanel<>("content"));
+		tester.startComponentInPage(new SignInContentPanel("content"));
 		tester.assertRequired("content:form:username");
 		tester.assertRequired("content:form:password");
 		

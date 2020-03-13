@@ -10,41 +10,52 @@ body {
 	background-color: $gray-100;
 }
 
-.body-container {
-	> .main-section {
-		margin: 60px 0;
+.application-access {
+	.container-page {
+		.card {
+			border-top: 0;
+			border-left: 0;
+			border-right: 0;
+			
+			.card-img-top {
+				padding: $card-spacer-y $card-spacer-x;
+			}
+			
+			.card-header {
+				&.card-main-title {
+					@include bg($brand-color);
+					font-size: $h4-font-size;
+				}
+			}
+		}
+	}
+}
+
+@include media-breakpoint-up(breakpoint-next(xs)) {
+	.application-access {
+		> .body-container {
+			> .main-section {
+				margin: 60px 0;
+			}
+		}
 		
-		> .main-body {
-			.container {
-				max-width: map-get($grid-breakpoints, sm) - $grid-gutter-width;
-				margin-left: auto;
-				margin-right: auto;
+		.container-page {
+			@include make-container();
+			
+			max-width: $container-page-md;
+			
+			.card {
+				border: 0;
+				box-shadow: $shadow-md;
 				
-				.card {
-					border: 0;
-					box-shadow: $shadow-md;
-					
-					.card-img-top {
-						padding: $card-spacer-y $card-spacer-x;
-					}
+				&.card-main-title-cascade {
+					margin: 0 10px;
 					
 					.card-header {
 						&.card-main-title {
-							@include bg($brand-color);
-							border-top: $card-border-width solid $card-border-color;
-							font-size: $h4-font-size;
-						}
-					}
-					
-					&.card-main-title-cascade {
-						margin: 0 10px;
-						
-						.card-header {
-							&.card-main-title {
-								margin: 0 -10px;
-								border-radius: 0.15rem;
-								box-shadow: $shadow-md;
-							}
+							margin: 0 -10px;
+							border-radius: .15rem;
+							box-shadow: $shadow-md;
 						}
 					}
 				}
@@ -53,38 +64,24 @@ body {
 	}
 }
 
+@include media-breakpoint-up(lg) {
+	.application-access {
+		&.application-access-lg {
+			.container-page {
+				max-width: $container-page-lg;
+			}
+		}
+	}
+}
+
 @include media-breakpoint-down(xs) {
-	.body-container {
-		> .main-section {
-			margin: 0;
-			
-			> .main-body {
-				.container {
-					max-width: 100%;
-					margin: 0;
-					padding: 0;
-					
-					.card {
-						border-bottom: $card-border-width solid $card-border-color;
-						border-radius: 0;
-						box-shadow: none;
-						
-						[class*="card-"] {
-							border-radius: 0;
-						}
-						
-						&.card-main-title-cascade {
-							margin: 0;
-							
-							.card-header {
-								&.card-main-title {
-									margin: 0;
-									border-radius: 0;
-									box-shadow: none;
-								}
-							}
-						}
-					}
+	.application-access {
+		.container-page {
+			.card {
+				border-radius: 0;
+				
+				[class*="card-"] {
+					border-radius: 0;
 				}
 			}
 		}

@@ -2,15 +2,15 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" wicket:id="htmlElement">
 	<head>
-		<title wicket:id="headPageTitle"></title>
+		<title wicket:id="headPageTitle" />
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		
-		<wicket:header-items/>
+		<wicket:header-items />
 	</head>
-	<body>
+	<body class="application-access">
 		<div class="body-container">
 			<header class="header-section">
 				<wicket:container wicket:id="headerAdditionalContent" />
@@ -18,14 +18,14 @@
 			
 			<main class="main-section">
 				<div class="main-body">
-					<div class="container">
+					<div class="container-page">
 						<div class="card card-main-title-cascade">
 							<div class="card-img-top">
-								<img src="static/common/images/logo-kobalt.png" alt="Logo Kobalt" width="114" height="55" />
+								<img src="static/common/images/logo-kobalt.png" class="img-fluid" alt="Logo" width="114" />
 							</div>
 							<div class="card-header card-main-title" wicket:id="title" />
 							<div wicket:id="content" />
-							<wicket:child/>
+							<wicket:child />
 							<div class="card-footer" wicket:id="footer" />
 						</div>
 					</div>
@@ -35,4 +35,4 @@
 		
 		<div wicket:id="feedback" data-placement="bottom" />
 	</body>
-</html>	
+</html>

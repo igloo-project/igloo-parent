@@ -16,6 +16,11 @@ public abstract class CoreActionColumnElementPanel<T> extends Panel {
 		Component link = getLink("link", rowModel);
 		add(link);
 		add(getPlaceholder("placeholder", rowModel).condition(Condition.componentVisible(link)));
+		
+		add(
+			Condition.anyChildVisible(this)
+				.thenShow()
+		);
 	}
 
 	protected abstract Component getLink(String string, IModel<T> rowModel);

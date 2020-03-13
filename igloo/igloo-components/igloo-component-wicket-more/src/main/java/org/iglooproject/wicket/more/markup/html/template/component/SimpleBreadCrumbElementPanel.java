@@ -13,8 +13,8 @@ public class SimpleBreadCrumbElementPanel extends GenericPanel<String> {
 		super(id, breadCrumbElement.getLabelModel());
 		
 		add(
-				new CoreLabel("breadCrumbElementLabel", getModel())
-						.add(renderingBehavior)
+			new CoreLabel("breadCrumbElementLabel", getModel())
+				.add(renderingBehavior)
 		);
 	}
 

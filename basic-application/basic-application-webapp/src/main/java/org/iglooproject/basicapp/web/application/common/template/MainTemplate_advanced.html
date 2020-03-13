@@ -2,20 +2,20 @@
 <!doctype html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" wicket:id="htmlElement">
 	<head>
-		<title wicket:id="headPageTitle"></title>
+		<title wicket:id="headPageTitle" />
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-		<link rel="manifest" href="manifest.json">
-		<link rel="mask-icon" href="safari-pinned-tab.svg" color="#1b0fa4">
-		<meta name="theme-color" content="#1b0fa4">
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="manifest" href="manifest.json" />
+		<link rel="mask-icon" href="safari-pinned-tab.svg" color="#1b0fa4" />
+		<meta name="theme-color" content="#1b0fa4" />
 		
-		<wicket:header-items/>
+		<wicket:header-items />
 	</head>
 	<body wicket:id="bodyElement">
 		<aside wicket:id="sidebar" class="sidebar" />
@@ -27,7 +27,7 @@
 			</header>
 			
 			<main class="main-section">
-				<div class="main-header">
+				<div wicket:enclosure-component="announcements" class="main-header">
 					<div wicket:id="announcements" class="header-alert-section header-alert-dismissible announcements-section" />
 				</div>
 				<div class="main-body">
@@ -37,5 +37,7 @@
 		</div>
 		
 		<div wicket:id="feedback" data-placement="bottom" />
+		
+		<div wicket:id="bsBreakpoint" class="bs-breakpoint" />
 	</body>
 </html>

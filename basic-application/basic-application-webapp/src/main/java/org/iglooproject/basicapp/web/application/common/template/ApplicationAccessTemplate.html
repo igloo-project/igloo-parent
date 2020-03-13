@@ -2,15 +2,15 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" wicket:id="htmlElement">
 	<head>
-		<title wicket:id="headPageTitle"></title>
+		<title wicket:id="headPageTitle" />
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 		
-		<wicket:header-items/>
+		<wicket:header-items />
 	</head>
-	<body wicket:id="bodyElement">
+	<body wicket:id="bodyElement" class="application-access">
 		<div class="body-container">
 			<header class="header-section">
 				<div wicket:id="environment" class="header-alert-section header-alert-dismissible environment-section" />
@@ -18,14 +18,14 @@
 			
 			<main class="main-section">
 				<div class="main-body">
-					<div class="container">
+					<div class="container-page">
 						<div class="card card-main-title-cascade">
 							<div class="card-img-top">
-								<img src="static/application/images/logo.png" alt="Logo" width="114" height="55" />
+								<img src="static/application/images/logo.png" class="img-fluid" alt="Logo" width="114" />
 							</div>
 							<div class="card-header card-main-title" wicket:id="title" />
 							<div wicket:id="content" />
-							<wicket:child/>
+							<wicket:child />
 							<div class="card-footer" wicket:id="footer" />
 						</div>
 					</div>

@@ -144,7 +144,7 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 								}
 							}
 						})
-						.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
+					.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
 					.end()
 					.withClass("actions actions-2x")
 				.rows()

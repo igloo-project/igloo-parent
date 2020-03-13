@@ -14,14 +14,17 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbMarkupT
 public class BreadCrumbListView extends ListView<BreadCrumbElement> {
 
 	private static final long serialVersionUID = -6354654324654295238L;
-	
+
 	private final BreadCrumbMarkupTagRenderingBehavior renderingBehavior;
-	
+
 	private final IModel<String> dividerModel;
 
-	public BreadCrumbListView(String id, IModel<List<BreadCrumbElement>> breadCrumb,
-			BreadCrumbMarkupTagRenderingBehavior renderingBehavior,
-			IModel<String> dividerModel) {
+	public BreadCrumbListView(
+		String id,
+		IModel<List<BreadCrumbElement>> breadCrumb,
+		BreadCrumbMarkupTagRenderingBehavior renderingBehavior,
+		IModel<String> dividerModel
+	) {
 		super(id, breadCrumb);
 		this.renderingBehavior = renderingBehavior;
 		this.dividerModel = dividerModel;
@@ -36,5 +39,5 @@ public class BreadCrumbListView extends ListView<BreadCrumbElement> {
 		
 		item.add(Condition.componentVisible(breadCrumbLink).thenShow());
 	}
-	
+
 }

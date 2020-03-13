@@ -84,6 +84,15 @@ public class AdministrationTechnicalUserListPage extends AdministrationUserListT
 				new EnclosureContainer("actionsContainer")
 					.anyChildVisible()
 					.add(
+						new AbstractExcelExportAjaxLink("exportExcel", loadingPopup, "export-users-") {
+							private static final long serialVersionUID = 1L;
+							
+							@Override
+							protected Workbook generateWorkbook() {
+								UserExcelTableExport export = new UserExcelTableExport(this);
+								return export.generate(dataProvider);
+							}
+						},
 						new BlankLink("add")
 							.add(
 								new AjaxModalOpenBehavior(addPopup, MouseEvent.CLICK) {
@@ -93,17 +102,7 @@ public class AdministrationTechnicalUserListPage extends AdministrationUserListT
 										addPopup.setUpAdd(new TechnicalUser());
 									}
 								}
-							),
-						
-						new AbstractExcelExportAjaxLink("exportExcel", loadingPopup, "export-users-") {
-							private static final long serialVersionUID = 1L;
-							
-							@Override
-							protected Workbook generateWorkbook() {
-								UserExcelTableExport export = new UserExcelTableExport(this);
-								return export.generate(dataProvider);
-							}
-						}
+							)
 					)
 			);
 		

@@ -10,7 +10,7 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbMarkupT
 public class LinkGeneratorBreadCrumbElementPanel extends GenericPanel<String> {
 
 	private static final long serialVersionUID = 5385792712763242343L;
-	
+
 	public LinkGeneratorBreadCrumbElementPanel(String id, BreadCrumbElement breadCrumbElement, BreadCrumbMarkupTagRenderingBehavior renderingBehavior) {
 		super(id, breadCrumbElement.getLabelModel());
 		
@@ -20,8 +20,8 @@ public class LinkGeneratorBreadCrumbElementPanel extends GenericPanel<String> {
 		add(breadCrumbLink);
 		
 		add(
-				Condition.componentVisible(breadCrumbLink).thenShowInternal()
+			Condition.componentVisible(breadCrumbLink).thenShowInternal()
 		);
 	}
-	
+
 }

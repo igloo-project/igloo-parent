@@ -28,6 +28,7 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.basicapp.web.application.common.component.AnnouncementsPanel;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.theme.BasicApplicationApplicationTheme;
+import org.iglooproject.basicapp.web.application.common.template.theme.common.BootstrapBreakpointPanel;
 import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDataPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
 import org.iglooproject.functional.SerializableSupplier2;
@@ -99,6 +100,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		
+		add(new BootstrapBreakpointPanel("bsBreakpoint"));
+		
 		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
 		
 		add(new BootstrapDropdownBehavior());
@@ -124,17 +127,13 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 				.subMenuForceOpen()
 				.subMenuItems(
 					AdministrationBasicUserListPage.linkDescriptor()
-						.navigationMenuItem(new ResourceModel("navigation.administration.user.basicUser"))
-						.iconClasses(Model.of("fa fa-fw fa-user-cog")),
+						.navigationMenuItem(new ResourceModel("navigation.administration.user.basicUser")),
 					AdministrationTechnicalUserListPage.linkDescriptor()
-						.navigationMenuItem(new ResourceModel("navigation.administration.user.technicalUser"))
-						.iconClasses(Model.of("fa fa-fw fa-user-shield")),
+						.navigationMenuItem(new ResourceModel("navigation.administration.user.technicalUser")),
 					AdministrationUserGroupListPage.linkDescriptor()
-						.navigationMenuItem(new ResourceModel("navigation.administration.userGroup"))
-						.iconClasses(Model.of("fa fa-fw fa-users-cog")),
+						.navigationMenuItem(new ResourceModel("navigation.administration.userGroup")),
 					AdministrationAnnouncementListPage.linkDescriptor()
 						.navigationMenuItem(new ResourceModel("navigation.administration.announcement"))
-						.iconClasses(Model.of("fa fa-fw fa-bullhorn"))
 				),
 			LinkDescriptorBuilder.start()
 				.validator(Condition.role(BasicApplicationAuthorityConstants.ROLE_ADMIN))
