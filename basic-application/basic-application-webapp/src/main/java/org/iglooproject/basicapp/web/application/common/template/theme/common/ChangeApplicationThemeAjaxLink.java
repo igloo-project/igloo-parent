@@ -3,12 +3,10 @@ package org.iglooproject.basicapp.web.application.common.template.theme.common;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.basicapp.core.security.model.BasicApplicationAuthorityConstants;
 import org.iglooproject.basicapp.web.application.common.template.theme.BasicApplicationApplicationTheme;
 import org.iglooproject.basicapp.web.application.navigation.page.HomePage;
 import org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.more.condition.Condition;
 
 public class ChangeApplicationThemeAjaxLink extends AjaxLink<Void> {
 
@@ -19,8 +17,6 @@ public class ChangeApplicationThemeAjaxLink extends AjaxLink<Void> {
 
 	public ChangeApplicationThemeAjaxLink(String id) {
 		super(id);
-		
-		add(Condition.role(BasicApplicationAuthorityConstants.ROLE_ADMIN).thenShow());
 	}
 
 	@Override
