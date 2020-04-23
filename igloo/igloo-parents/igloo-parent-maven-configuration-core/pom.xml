@@ -178,7 +178,7 @@
 		<igloo.json-lib.version>2.3</igloo.json-lib.version>
 		<!-- https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.9 -->
 		<igloo.jackson2-core.version>2.9.10</igloo.jackson2-core.version>
-		<igloo.jackson2-databind.version>2.9.10.1</igloo.jackson2-databind.version>
+		<igloo.jackson2-databind.version>2.9.10.4</igloo.jackson2-databind.version>
 		<!-- https://github.com/FasterXML/jackson-databind/issues/2478
 			 Resync jackson versions when performing update to 2.9.11 -->
 		<igloo.jackson2-annotations.version>${igloo.jackson2-core.version}</igloo.jackson2-annotations.version>
