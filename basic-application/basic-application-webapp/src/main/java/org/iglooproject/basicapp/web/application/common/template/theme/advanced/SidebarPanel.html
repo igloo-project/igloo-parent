@@ -4,7 +4,7 @@
 <wicket:panel>
 	<div class="sidebar-container">
 		<nav wicket:id="navbar" class="navbar navbar-sidebar navbar-expand navbar-main" />
-		<div class="sidebar-body-scrollable">
+		<div class="sidebar-body-scrollable beautiful-scroll">
 			<div class="sidebar-body">
 				<div class="sidebar-body-content">
 					<div wicket:id="header" class="sidebar-section" />
@@ -12,7 +12,7 @@
 					<div wicket:id="quickSearch" class="sidebar-section" />
 					<div wicket:id="menu" class="sidebar-section" />
 					<div class="sidebar-section">
-						<div class="sidebar-section-content">
+						<div wicket:enclosure-component="changeTheme" class="sidebar-section-content">
 							<button wicket:id="changeTheme" class="btn btn-warning btn-sm" type="button">
 								<span class="fa fa-fw fa-drafting-compass" />
 							</button>

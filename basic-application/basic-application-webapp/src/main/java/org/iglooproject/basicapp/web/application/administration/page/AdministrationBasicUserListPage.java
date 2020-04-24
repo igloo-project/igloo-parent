@@ -143,7 +143,6 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 			.rows()
 				.withClass(itemModel -> Condition.predicate(itemModel, UserPredicates.inactive()).then(TABLE_ROW_DISABLED).otherwise(""))
 				.end()
-			.withNoRecordsResourceKey("administration.user.list.count.zero")
 			.bootstrapCard()
 				.ajaxPagers()
 				.count("administration.user.list.count")

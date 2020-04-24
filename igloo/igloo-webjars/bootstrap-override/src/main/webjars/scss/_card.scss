@@ -21,9 +21,6 @@
 		&.card-#{$color} {
 			@include card-variant($value);
 		}
-		&.card-#{$color}-full {
-			@include card-variant-full($value);
-		}
 	}
 }
 

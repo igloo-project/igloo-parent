@@ -6,9 +6,3 @@
 		background-color: $bg;
 	}
 }
-
-@mixin card-variant-full($bg) {
-	color: color-yiq($bg);
-	border-color: $bg;
-	background-color: $bg;
-}
