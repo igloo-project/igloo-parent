@@ -3,6 +3,7 @@ package org.iglooproject.wicket.more.markup.html.select2;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableSupplier2;
@@ -95,6 +96,12 @@ public class GenericSelect2DropDownMultipleChoice<T> extends ListMultipleChoice<
 	public GenericSelect2DropDownMultipleChoice<T> setSelectedObjectForcedInChoices(boolean selectedObjectForcedInChoices) {
 		choicesWrapperModel.setSelectedObjectForcedInChoices(selectedObjectForcedInChoices);
 		return this;
+	}
+
+	@Override
+	protected void onComponentTag(ComponentTag tag) {
+		super.onComponentTag(tag);
+		tag.put("size", 1);
 	}
 
 	@Override
