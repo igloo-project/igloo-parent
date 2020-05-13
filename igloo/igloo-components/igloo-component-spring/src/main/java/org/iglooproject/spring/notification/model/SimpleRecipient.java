@@ -38,6 +38,11 @@ public class SimpleRecipient implements INotificationRecipient {
 
 	@Override
 	public boolean isNotificationEnabled() {
+		return isActive();
+	}
+
+	@Override
+	public boolean isActive() {
 		return true;
 	}
 	
