@@ -131,6 +131,8 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	private Charset charset;
 	
+	private boolean bypassDisabledRecipients = false;
+	
 	protected NotificationBuilder() {
 		this(DEFAULT_MAIL_CHARSET);
 	}
@@ -233,6 +235,12 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	@Override
 	public INotificationBuilderBuildState to(Collection<? extends INotificationRecipient> to) {
 		addRecipients(toByAddress, to);
+		return this;
+	}
+
+	@Override
+	public INotificationBuilderBuildState bypassDisabledRecipients() {
+		this.bypassDisabledRecipients = true;
 		return this;
 	}
 	
@@ -606,7 +614,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	private void addRecipient(Map<NotificationTarget, INotificationRecipient> recipientsByTarget,
 			INotificationRecipient recipient) {
-		if (recipient.isNotificationEnabled() && StringUtils.hasText(recipient.getEmail())) {
+		if ((recipient.isNotificationEnabled() || bypassDisabledRecipients) && recipient.isActive() && StringUtils.hasText(recipient.getEmail())) {
 			addRecipientUnsafe(
 					recipientsByTarget,
 					NotificationTarget.of(recipient, charset), recipient
