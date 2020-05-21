@@ -150,7 +150,7 @@
 		<igloo.commons-collections4.version>4.4</igloo.commons-collections4.version>
 		<igloo.commons-beanutils.version>1.9.4</igloo.commons-beanutils.version>
 		<igloo.commons-fileupload.version>1.4</igloo.commons-fileupload.version>
-		<igloo.commons-configuration.version>2.6</igloo.commons-configuration.version>
+		<igloo.commons-configuration.version>2.7</igloo.commons-configuration.version>
 
 		<igloo.jta.version>1.1</igloo.jta.version>
 		<igloo.javax-mail.version>1.6.2</igloo.javax-mail.version>
