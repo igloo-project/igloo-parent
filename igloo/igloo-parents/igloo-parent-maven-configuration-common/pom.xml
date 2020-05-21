@@ -49,7 +49,7 @@
 		<igloo.maven-install-plugin.version>3.0.0-M1</igloo.maven-install-plugin.version>
 		<igloo.maven-war-plugin.version>3.2.3</igloo.maven-war-plugin.version>
 		<igloo.maven-assembly-plugin.version>3.3.0</igloo.maven-assembly-plugin.version>
-		<igloo.maven-jar-plugin.version>3.1.1</igloo.maven-jar-plugin.version>
+		<igloo.maven-jar-plugin.version>3.2.0</igloo.maven-jar-plugin.version>
 		<igloo.maven-deploy-plugin.version>3.0.0-M1</igloo.maven-deploy-plugin.version>
 		<igloo.maven-source-plugin.version>3.2.1</igloo.maven-source-plugin.version>
 		<igloo.maven-javadoc-plugin.version>3.1.1</igloo.maven-javadoc-plugin.version>
@@ -295,6 +295,7 @@
 							<manifestEntries>
 								<Implementation-Build>${buildNumber}</Implementation-Build>
 								<Built-Date>${timestamp}</Built-Date>
+								<Built-By>${user.name}</Built-By>
 							</manifestEntries>
 						</archive>
 					</configuration>
