@@ -63,23 +63,4 @@
 		<packageUrl regex="true">^pkg:javascript/jquery@.*$</packageUrl>
 		<vulnerabilityName>Regex in its jQuery.htmlPrefilter  sometimes may introduce XSS</vulnerabilityName>
 	</suppress>
-
-	<!-- This vulnerability isn't for protobuff but for node's merge-object_project -->
-	<suppress>
-		<notes><![CDATA[file name: java-object-diff-0.95.jar]]></notes>
-		<gav regex="true">^de\.danielbechler:java-object-diff:.*$</gav>
-		<cpe>cpe:/a:merge-object_project:merge-object</cpe>
-	</suppress>
-
-	<suppress>
-		<notes><![CDATA[file name: clipboard-2.0.4.jar]]></notes>
-		<gav regex="true">^org\.webjars\.npm:clipboard:.*$</gav>
-		<cpe>cpe:/a:clipboard_project:clipboard</cpe>
-	</suppress>
-
-	<suppress>
-		<notes><![CDATA[file name: delegate-3.2.0.jar]]></notes>
-		<gav regex="true">^org\.webjars\.npm:delegate:.*$</gav>
-		<cpe>cpe:/a:delegate:delegate</cpe>
-	</suppress>
 </suppressions>
