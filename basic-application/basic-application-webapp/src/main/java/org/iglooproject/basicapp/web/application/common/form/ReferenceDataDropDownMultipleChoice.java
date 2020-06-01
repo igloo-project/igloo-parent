@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
+import org.iglooproject.basicapp.core.business.referencedata.model.comparator.ReferenceDataComparator;
 import org.iglooproject.basicapp.web.application.common.renderer.ReferenceDataRenderer;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
@@ -25,7 +26,7 @@ public class ReferenceDataDropDownMultipleChoice<T extends ReferenceData<? super
 			id,
 			model,
 			collectionSupplier,
-			new GenericReferenceDataModel<T>(clazz, EnabledFilter.ENABLED_ONLY)
+			new GenericReferenceDataModel<T>(clazz, ReferenceDataComparator.get(), EnabledFilter.ENABLED_ONLY)
 		);
 	}
 
