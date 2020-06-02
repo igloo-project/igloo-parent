@@ -3,8 +3,7 @@ package org.iglooproject.jpa.business.generic.model.migration;
 import java.io.Serializable;
 
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
-
-import org.iglooproject.jpa.hibernate.dialect.PerTableSequenceStyleGenerator;
+import org.iglooproject.jpa.business.generic.model.PredefinedIdSequenceGenerator;
 
 /**
  * Sequence generator used to define the new id from the id used in an old application.
@@ -19,7 +18,7 @@ import org.iglooproject.jpa.hibernate.dialect.PerTableSequenceStyleGenerator;
  * }
  * </pre>
  */
-public class MigratedFromOldApplicationSequenceGenerator extends PerTableSequenceStyleGenerator {
+public class MigratedFromOldApplicationSequenceGenerator extends PredefinedIdSequenceGenerator {
 	
 	public static final String CLASS_NAME = "org.iglooproject.jpa.business.generic.model.migration.MigratedFromOldApplicationSequenceGenerator";
 	
@@ -27,7 +26,7 @@ public class MigratedFromOldApplicationSequenceGenerator extends PerTableSequenc
 	public Serializable generate(SharedSessionContractImplementor session, Object obj) {
 		if (obj instanceof IMigratedFromOldApplicationEntity) {
 			IMigratedFromOldApplicationEntity<?> migratedEntity = (IMigratedFromOldApplicationEntity<?>) obj;
-			Serializable oldApplicationId = migratedEntity.getOldApplicationId();
+			Serializable oldApplicationId = migratedEntity.getPredefinedId();
 			if (oldApplicationId != null) {
 				migratedEntity.setMigrated(true);
 				return oldApplicationId;

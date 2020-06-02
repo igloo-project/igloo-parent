@@ -4,9 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.business.generic.model.PredefinedIdGenericEntity;
 
 /**
  * This class should only be used as a temporary measure to migrate entities from an old application
@@ -17,25 +16,13 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
  * @see MigratedFromOldApplicationSequenceGenerator
  */
 @MappedSuperclass
-public abstract class MigratedFromOldApplicationGenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
-		extends GenericEntity<K, E> implements IMigratedFromOldApplicationEntity<K> {
+public abstract class MigratedFromOldApplicationGenericEntity<K extends Serializable & Comparable<K>, E extends PredefinedIdGenericEntity<K, E>>
+		extends PredefinedIdGenericEntity<K, E> implements IMigratedFromOldApplicationEntity<K> {
 
 	private static final long serialVersionUID = 2034570162020079499L;
 	
-	@Transient
-	private K oldApplicationId;
-	
 	@Column(nullable = false)
 	private boolean migrated = false;
-
-	@Override
-	public K getOldApplicationId() {
-		return oldApplicationId;
-	}
-
-	public void setOldApplicationId(K oldApplicationId) {
-		this.oldApplicationId = oldApplicationId;
-	}
 
 	@Override
 	public boolean isMigrated() {
