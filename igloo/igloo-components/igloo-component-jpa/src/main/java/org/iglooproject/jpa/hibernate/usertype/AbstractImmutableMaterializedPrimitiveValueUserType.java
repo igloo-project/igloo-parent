@@ -19,7 +19,7 @@ import org.hibernate.usertype.UserType;
  * your {@link AbstractMaterializedPrimitiveValue} using {@link TypeDef} or add the {@link Type} annotation to the
  * entity properties.
  */
-abstract class AbstractImmutableMaterializedPrimitiveValueUserType<P extends Comparable<P>, T extends AbstractMaterializedPrimitiveValue<P, T>>
+public abstract class AbstractImmutableMaterializedPrimitiveValueUserType<P extends Comparable<P>, T extends AbstractMaterializedPrimitiveValue<P, T>>
 		implements UserType {
 	
 	private final SingleColumnType<P> delegateType;

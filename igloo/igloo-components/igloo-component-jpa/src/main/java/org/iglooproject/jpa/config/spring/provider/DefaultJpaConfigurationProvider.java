@@ -15,6 +15,7 @@ import org.hibernate.cache.spi.RegionFactory;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.integrator.spi.Integrator;
 import org.hibernate.jpa.boot.spi.IntegratorProvider;
+import org.hibernate.jpa.spi.IdentifierGeneratorStrategyProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -76,6 +77,9 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 
 	@Value("${hibernate.physical_naming_strategy}")
 	private Class<PhysicalNamingStrategy> physicalNamingStrategy;
+	
+	@Value("${hibernate.identifier_generator_strategy_provider:}") // Defaults to null
+	private Class<IdentifierGeneratorStrategyProvider> identifierGeneratorStrategyProvider;
 	
 	@Value("${hibernate.id.new_generator_mappings}")
 	private Boolean isNewGeneratorMappingsEnabled;
@@ -189,6 +193,11 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Override
 	public Class<? extends PhysicalNamingStrategy> getPhysicalNamingStrategy() {
 		return physicalNamingStrategy;
+	}
+
+	@Override
+	public Class<? extends IdentifierGeneratorStrategyProvider> getIdentifierGeneratorStrategyProvider() {
+		return identifierGeneratorStrategyProvider;
 	}
 
 	@Override

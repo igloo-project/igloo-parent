@@ -109,4 +109,24 @@ public class TestWicketNotification extends AbstractTestWicketNotification {
 		mockitoSend(Mockito.times(2));
 	}
 
+	/**
+	 * Check that locale=fr_FR and locale=en_EN are splitted as they collapsed to different
+	 * available locales.
+	 */
+	@Test
+	public void testWicketNotificationBypassDisabledRecipient() throws ServiceException {
+		INotificationBuilderBaseState builder = createNotificationBuilder();
+		builder
+			.bypassDisabledRecipients()
+			.to(
+				new SimpleRecipient(Locale.FRANCE, "test-1@example.com", "Recipient 1") {
+					@Override
+					public boolean isNotificationEnabled() {
+						return false;
+					}
+				}
+			).content(notificationContentDescriptorFactory.simpleContent("my content")).send();
+		mockitoSend(Mockito.times(1));
+	}
+
 }

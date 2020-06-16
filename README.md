@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://www.kobalt.fr/static/application/images/igloo.png" title="Igloo Logo" width="700px" />
+</p>
+
 Igloo toolbox
 ===================
 

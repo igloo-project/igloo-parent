@@ -4,7 +4,7 @@
 	
 	<groupId>org.iglooproject</groupId>
 	<artifactId>igloo-parent</artifactId>
-	<version>1.6.1</version>
+	<version>1.7.0</version>
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Parent</name>
@@ -25,7 +25,7 @@
 
 		<igloo.allure.version>2.8.1</igloo.allure.version>
 		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
-		<igloo.owasp-maven-plugin.version>5.2.4</igloo.owasp-maven-plugin.version>
+		<igloo.owasp-maven-plugin.version>5.3.2</igloo.owasp-maven-plugin.version>
 	</properties>
 	
 	<profiles>

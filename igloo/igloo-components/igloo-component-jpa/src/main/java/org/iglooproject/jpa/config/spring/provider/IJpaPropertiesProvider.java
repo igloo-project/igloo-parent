@@ -8,6 +8,7 @@ import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.cache.spi.RegionFactory;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.jpa.boot.spi.IntegratorProvider;
+import org.hibernate.jpa.spi.IdentifierGeneratorStrategyProvider;
 
 public interface IJpaPropertiesProvider {
 
@@ -42,6 +43,8 @@ public interface IJpaPropertiesProvider {
 	Class<? extends ImplicitNamingStrategy> getImplicitNamingStrategy();
 
 	Class<? extends PhysicalNamingStrategy> getPhysicalNamingStrategy();
+
+	Class<? extends IdentifierGeneratorStrategyProvider> getIdentifierGeneratorStrategyProvider();
 
 	Boolean isNewGeneratorMappingsEnabled();
 

@@ -2,10 +2,10 @@ package org.iglooproject.jpa.business.generic.model.migration;
 
 import java.io.Serializable;
 
-public interface IMigratedFromOldApplicationEntity<K extends Serializable & Comparable<K>> {
+import org.iglooproject.jpa.business.generic.model.IPredefinedIdEntity;
 
-	K getOldApplicationId();
-	
+public interface IMigratedFromOldApplicationEntity<K extends Serializable & Comparable<K>> extends IPredefinedIdEntity<K> {
+
 	boolean isMigrated();
 	
 	void setMigrated(boolean migrated);

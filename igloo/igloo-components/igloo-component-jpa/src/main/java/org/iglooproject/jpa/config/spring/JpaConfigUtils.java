@@ -22,6 +22,7 @@ import org.hibernate.cache.ehcache.ConfigSettings;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
+import org.hibernate.jpa.spi.IdentifierGeneratorStrategyProvider;
 import org.hibernate.loader.BatchFetchStyle;
 import org.hibernate.search.elasticsearch.cfg.ElasticsearchEnvironment;
 import org.hibernate.search.store.impl.FSDirectoryProvider;
@@ -173,9 +174,13 @@ public final class JpaConfigUtils {
 			properties.setProperty(AvailableSettings.JPA_VALIDATION_MODE, validationMode);
 		}
 		
-		// custom generator strategy provider that handles one sequence by entity
+		Class<? extends IdentifierGeneratorStrategyProvider> identifierGeneratorStategyProvider =
+				configuration.getIdentifierGeneratorStrategyProvider();
+		// Using PerTableSequence by default
+		String identifierGeneratorStrategyProviderName = identifierGeneratorStategyProvider != null ?
+				identifierGeneratorStategyProvider.getName() : PerTableSequenceStrategyProvider.class.getName();
 		properties.setProperty(org.hibernate.jpa.AvailableSettings.IDENTIFIER_GENERATOR_STRATEGY_PROVIDER,
-				PerTableSequenceStrategyProvider.class.getName());
+				identifierGeneratorStrategyProviderName);
 		
 		Class<? extends ImplicitNamingStrategy> implicitNamingStrategy = configuration.getImplicitNamingStrategy();
 		if (implicitNamingStrategy != null) {

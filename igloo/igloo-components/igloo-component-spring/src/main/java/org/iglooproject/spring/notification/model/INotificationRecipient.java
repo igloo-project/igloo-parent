@@ -16,4 +16,6 @@ public interface INotificationRecipient {
 	 * @return true si le recipient lié doit recevoir les notifications.
 	 */
 	boolean isNotificationEnabled();
+
+	boolean isActive();
 }

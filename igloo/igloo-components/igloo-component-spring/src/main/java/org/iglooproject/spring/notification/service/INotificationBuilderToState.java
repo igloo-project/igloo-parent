@@ -14,4 +14,5 @@ public interface INotificationBuilderToState {
 
 	INotificationBuilderBuildState to(Collection<? extends INotificationRecipient> to);
 
+	INotificationBuilderBuildState bypassDisabledRecipients();
 }
