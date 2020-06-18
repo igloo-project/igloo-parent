@@ -120,9 +120,10 @@ public class IglooJpaSecurityAutoConfiguration {
 		detailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
 		return detailsService;
 	}
-	
-	@Bean
-	public AuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService,
+
+	@Bean(name = "mainAuthenticationProvider")
+	@ConditionalOnMissingBean(name = "mainAuthenticationProvider")
+	public AuthenticationProvider mainAuthenticationProvider(UserDetailsService userDetailsService,
 			PasswordEncoder passwordEncoder) {
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 		provider.setUserDetailsService(userDetailsService);
