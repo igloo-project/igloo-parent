@@ -2,8 +2,6 @@ package org.iglooproject.jpa.business.generic.service;
 
 import java.util.concurrent.Callable;
 
-import org.iglooproject.jpa.business.generic.service.ITransactionalAspectAwareService;
-
 /**
  * This service must inherit from {@link ITransactionalAspectAwareService} for everything to work correctly even
  * if we are not in a transaction.
