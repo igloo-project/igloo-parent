@@ -31,13 +31,11 @@
 								<label class="col-form-label form-label pt-0"><wicket:message key="business.userGroup.authorities" /></label>
 							</div>
 							<div class="col-sm-8">
-								<div wicket:id="authorities">
-									<wicket:container wicket:id="authorities">
-										<div class="custom-control custom-checkbox form-control-plaintext">
-											<input type="checkbox" class="custom-control-input" wicket:id="authority">
-											<label class="custom-control-label" wicket:for="authority"><wicket:label /></label>
-										</div>
-									</wicket:container>
+								<div wicket:id="authorities" class="form-control-plaintext">
+									<div wicket:id="authorities" class="custom-control custom-checkbox">
+										<input wicket:id="authority" class="custom-control-input" type="checkbox" />
+										<label wicket:for="authority" class="custom-control-label"><wicket:label /></label>
+									</div>
 								</div>
 							</div>
 						</div>
