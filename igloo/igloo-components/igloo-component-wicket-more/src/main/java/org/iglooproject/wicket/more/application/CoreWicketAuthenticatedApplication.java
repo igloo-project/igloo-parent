@@ -57,7 +57,7 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
 		super();
 		
 		// Get web session class to instantiate
-		webSessionClassRef = new WeakReference<Class<? extends AuthenticatedWebSession>>(getWebSessionClass());
+		webSessionClassRef = new WeakReference<>(getWebSessionClass());
 	}
 	
 	@Override

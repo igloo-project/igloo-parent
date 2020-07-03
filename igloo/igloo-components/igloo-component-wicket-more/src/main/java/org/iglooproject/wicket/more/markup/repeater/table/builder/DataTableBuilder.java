@@ -105,7 +105,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 				ISequenceProvider<T> sequenceProvider,
 				List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
 				long rowsPerPage) {
-			return new CoreDataTable<T, S>(id, columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage);
+			return new CoreDataTable<>(id, columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage);
 		}
 	};
 
@@ -124,11 +124,11 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 
 	public static <T, S extends ISort<?>> DataTableBuilder<T, S> start(ISequenceProvider<T> sequenceProvider) {
-		return new DataTableBuilder<T, S>(sequenceProvider, new CompositeSortModel<S>(CompositingStrategy.LAST_ONLY));
+		return new DataTableBuilder<>(sequenceProvider, new CompositeSortModel<S>(CompositingStrategy.LAST_ONLY));
 	}
 
 	public static <T, S extends ISort<?>> DataTableBuilder<T, S> start(ISequenceProvider<T> sequenceProvider, CompositeSortModel<S> sortModel) {
-		return new DataTableBuilder<T, S>(sequenceProvider, sortModel);
+		return new DataTableBuilder<>(sequenceProvider, sortModel);
 	}
 
 	@Override
@@ -287,17 +287,17 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
 			final ICoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
-		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<T, S, C>(headerModel, binding, renderer);
+		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<>(headerModel, binding, renderer);
 		columns.put(column, null);
-		return new AddedBootstrapBadgeColumnState<C>(column);
+		return new AddedBootstrapBadgeColumnState<>(column);
 	}
 	
 	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
 			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
-		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<T, S, C>(headerModel, function, renderer);
+		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<>(headerModel, function, renderer);
 		columns.put(column, null);
-		return new AddedBootstrapBadgeColumnState<C>(column);
+		return new AddedBootstrapBadgeColumnState<>(column);
 	}
 	
 	/**
@@ -321,23 +321,23 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
-	public <C> IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
+	public IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
 			final ICoreBinding<? super T, Boolean> binding) {
-		CoreBooleanLabelColumn<T, S> column = new CoreBooleanLabelColumn<T, S>(headerModel, binding);
+		CoreBooleanLabelColumn<T, S> column = new CoreBooleanLabelColumn<>(headerModel, binding);
 		columns.put(column, null);
 		return new AddedBooleanLabelColumnState(column);
 	}
 	
 	@Override
 	public CustomizableToolbarBuilder<T, S> addTopToolbar() {
-		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<T, S>(this);
+		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<>(this);
 		topToolbarBuilders.add(builder);
 		return builder;
 	}
 	
 	@Override
 	public CustomizableToolbarBuilder<T, S> addBottomToolbar() {
-		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<T, S>(this);
+		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<>(this);
 		bottomToolbarBuilders.add(builder);
 		return builder;
 	}
@@ -532,7 +532,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 		
 		@Override
-		public <C> IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
+		public IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
 				final ICoreBinding<? super T, Boolean> binding) {
 			return DataTableBuilder.this.addBooleanLabelColumn(headerModel, binding);
 		}
@@ -1106,7 +1106,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
-			DecoratedCoreDataTablePanel<T, S> panel = new DecoratedCoreDataTablePanel<T, S>(
+			DecoratedCoreDataTablePanel<T, S> panel = new DecoratedCoreDataTablePanel<>(
 					id,
 					factory,
 					columns,
@@ -1141,7 +1141,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
-			BootstrapCardCoreDataTablePanel<T, S> panel = new BootstrapCardCoreDataTablePanel<T, S>(id, factory,
+			BootstrapCardCoreDataTablePanel<T, S> panel = new BootstrapCardCoreDataTablePanel<>(id, factory,
 					columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage, addInComponentFactories,
 					responsiveCondition);
 			if (noRecordsResourceKey == null && countResourceKey != null) {
@@ -1170,7 +1170,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
-			BootstrapPanelCoreDataTablePanel<T, S> panel = new BootstrapPanelCoreDataTablePanel<T, S>(id, factory,
+			BootstrapPanelCoreDataTablePanel<T, S> panel = new BootstrapPanelCoreDataTablePanel<>(id, factory,
 					columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage, addInComponentFactories, responsiveCondition);
 			if (noRecordsResourceKey == null && countResourceKey != null) {
 				withNoRecordsResourceKey(countResourceKey + ".zero");

@@ -14,7 +14,7 @@ public final class Queries {
 	 * <p>The resulting query is not thread-safe.
 	 */
 	public static <T> IQuery<T> fromQueryDsl(FetchableQueryBase<T, ?> fetchableQuery) {
-		return new QueryDslSearchQuery<T>(fetchableQuery);
+		return new QueryDslSearchQuery<>(fetchableQuery);
 	}
 
 	private static class QueryDslSearchQuery<T> implements IQuery<T> {

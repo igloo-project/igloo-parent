@@ -11,8 +11,6 @@ import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizat
 import org.iglooproject.jpa.more.util.transaction.model.TransactionSynchronizationTasks;
 import org.iglooproject.jpa.more.util.transaction.util.ITransactionSynchronizationTaskMerger;
 import org.iglooproject.jpa.util.EntityManagerUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -30,15 +28,12 @@ import com.google.common.collect.Lists;
 public class TransactionSynchronizationTaskManagerServiceImpl
 		implements ITransactionSynchronizationTaskManagerService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionSynchronizationTaskManagerServiceImpl.class);
-
 	private static final Class<?> TASKS_RESOURCE_KEY = TransactionSynchronizationTaskManagerServiceImpl.class;
 
 	public static final String EXCEPTION_MESSAGE_NO_ACTUAL_TRANSACTION_ACTIVE = "No actual transaction active.";
 
 	@Autowired(required = false)
-	private Collection<ITransactionSynchronizationTaskMerger> transactionSynchronizationTaskMergers
-			= ImmutableList.of();
+	private Collection<ITransactionSynchronizationTaskMerger> transactionSynchronizationTaskMergers = ImmutableList.of();
 
 	@Autowired
 	private ConfigurableApplicationContext configurableApplicationContext;

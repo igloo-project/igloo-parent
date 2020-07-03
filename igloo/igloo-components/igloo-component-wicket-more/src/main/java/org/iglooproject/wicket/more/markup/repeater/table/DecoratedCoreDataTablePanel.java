@@ -209,7 +209,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		
 		@Override
 		public Component create(String wicketId) {
-			IModel<Integer> countModel = new PropertyModel<Integer>(sequenceProvider,
+			IModel<Integer> countModel = new PropertyModel<>(sequenceProvider,
 					CoreWicketMoreBindings.iBindableDataProvider().size().getPath());
 			return new CountLabel(wicketId, countResourceKey, countModel);
 		}

@@ -42,7 +42,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 		
 		QQueuedTaskHolder qQueuedTask = QQueuedTaskHolder.queuedTaskHolder;
 		
-		JPQLQuery<QueuedTaskHolder> query = new JPAQuery<QueuedTaskHolder>(getEntityManager());
+		JPQLQuery<QueuedTaskHolder> query = new JPAQuery<>(getEntityManager());
 		
 		query.from(qQueuedTask)
 				.where(qQueuedTask.taskType.eq(taskType)
@@ -67,7 +67,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 		
 		QQueuedTaskHolder qQueuedTask = QQueuedTaskHolder.queuedTaskHolder;
 		
-		JPQLQuery<QueuedTaskHolder> query = new JPAQuery<QueuedTaskHolder>(getEntityManager());
+		JPQLQuery<QueuedTaskHolder> query = new JPAQuery<>(getEntityManager());
 		
 		query.from(qQueuedTask)
 				.where(qQueuedTask.startDate.isNotNull()
@@ -105,7 +105,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 	 * @return
 	 */
 	private JPQLQuery<QueuedTaskHolder> getConsumableBaseQuery() {
-		JPQLQuery<QueuedTaskHolder> query = new JPAQuery<QueuedTaskHolder>(getEntityManager());
+		JPQLQuery<QueuedTaskHolder> query = new JPAQuery<>(getEntityManager());
 		
 		query.from(qQueuedTaskHolder)
 				.where(qQueuedTaskHolder.status.in(TaskStatus.CONSUMABLE_TASK_STATUS))
@@ -115,7 +115,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 	
 	@Override
 	public List<String> listTypes() {
-		JPQLQuery<String> query = new JPAQuery<String>(getEntityManager());
+		JPQLQuery<String> query = new JPAQuery<>(getEntityManager());
 
 		query.select(qQueuedTaskHolder.taskType)
 				.from(qQueuedTaskHolder)

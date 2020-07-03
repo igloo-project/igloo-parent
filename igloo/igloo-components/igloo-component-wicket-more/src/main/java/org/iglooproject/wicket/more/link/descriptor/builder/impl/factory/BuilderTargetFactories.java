@@ -19,9 +19,7 @@ public class BuilderTargetFactories
 	public static BuilderTargetFactories<
 			IPageLinkDescriptor, IResourceLinkDescriptor, IImageResourceLinkDescriptor
 			> late() {
-		return new BuilderTargetFactories<
-				IPageLinkDescriptor, IResourceLinkDescriptor, IImageResourceLinkDescriptor
-				>(
+		return new BuilderTargetFactories<>(
 				BuilderLinkDescriptorFactory.page(),
 				BuilderLinkDescriptorFactory.resource(),
 				BuilderLinkDescriptorFactory.imageResource()

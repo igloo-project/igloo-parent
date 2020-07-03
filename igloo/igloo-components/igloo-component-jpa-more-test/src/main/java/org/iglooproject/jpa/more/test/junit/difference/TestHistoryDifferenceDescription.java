@@ -98,15 +98,15 @@ public final class TestHistoryDifferenceDescription {
 		}
 
 		public ContainedBuilder<T> putComposite(FieldPath path, HistoryDifferenceEventType action) {
-			return new ContainedBuilder<T>(thisAsT(), path, null, action);
+			return new ContainedBuilder<>(thisAsT(), path, null, action);
 		}
 		
 		public ContainedBuilder<T> putItemComposite(FieldPath path, Object key, HistoryDifferenceEventType action) {
-			return new ContainedBuilder<T>(thisAsT(), toItem(path), key, action);
+			return new ContainedBuilder<>(thisAsT(), toItem(path), key, action);
 		}
 		
 		public ContainedBuilder<T> putComposite(Binding<?> binding, HistoryDifferenceEventType action) {
-			return new ContainedBuilder<T>(thisAsT(), FieldPath.fromBinding(binding), null, action);
+			return new ContainedBuilder<>(thisAsT(), FieldPath.fromBinding(binding), null, action);
 		}
 		
 		public ContainedBuilder<T> putItemComposite(Binding<?> binding, Object key, HistoryDifferenceEventType action) {

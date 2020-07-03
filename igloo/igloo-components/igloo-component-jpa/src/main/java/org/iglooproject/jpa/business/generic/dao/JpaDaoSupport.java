@@ -77,7 +77,7 @@ public class JpaDaoSupport {
 	}
 
 	public <T> List<T> listEntity(Class<T> objectClass) {
-		PathBuilder<T> pathBuilder = new PathBuilder<T>(objectClass, "rootAlias");
+		PathBuilder<T> pathBuilder = new PathBuilder<>(objectClass, "rootAlias");
 		OrderSpecifier<?> order = null;
 		if (GenericEntity.class.isAssignableFrom(objectClass)) {
 			// cast possible puisqu'on vient de vérifier le type de objectclass
@@ -90,7 +90,7 @@ public class JpaDaoSupport {
 	}
 
 	protected <T> Long countEntity(Class<T> clazz) {
-		PathBuilder<T> entityPath = new PathBuilder<T>(clazz, "rootAlias");
+		PathBuilder<T> entityPath = new PathBuilder<>(clazz, "rootAlias");
 		return queryByPredicate(entityPath, null).distinct().fetchCount();
 	}
 

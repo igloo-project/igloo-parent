@@ -23,11 +23,11 @@ public class CoreRunAsManagerImpl extends RunAsManagerImpl {
 	@Override
 	public Authentication buildRunAs(Authentication authentication,
 			Object object, Collection<ConfigAttribute> attributes) {
-		List<GrantedAuthority> newAuthorities = new ArrayList<GrantedAuthority>();
+		List<GrantedAuthority> newAuthorities = new ArrayList<>();
 
 		for (ConfigAttribute attribute : attributes) {
 			if (this.supports(attribute)) {
-				List<GrantedAuthority> extraAuthorities = new ArrayList<GrantedAuthority>();
+				List<GrantedAuthority> extraAuthorities = new ArrayList<>();
 				extraAuthorities.add(new SimpleGrantedAuthority(getRolePrefix()
 						+ attribute.getAttribute().replaceFirst(RUN_AS_PREFIX, "")));
 				newAuthorities.addAll(roleHierarchy.getReachableGrantedAuthorities(extraAuthorities));

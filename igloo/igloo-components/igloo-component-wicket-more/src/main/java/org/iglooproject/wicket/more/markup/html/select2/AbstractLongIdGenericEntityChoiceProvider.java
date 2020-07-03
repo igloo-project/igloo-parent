@@ -21,7 +21,7 @@ public abstract class AbstractLongIdGenericEntityChoiceProvider<T extends Generi
 
 	public AbstractLongIdGenericEntityChoiceProvider(Class<T> clazz, IChoiceRenderer<? super T> choiceRenderer) {
 		super(choiceRenderer);
-		this.entityConverter = new LongIdGenericEntityConverter<T>(clazz);
+		this.entityConverter = new LongIdGenericEntityConverter<>(clazz);
 	}
 
 	@Override

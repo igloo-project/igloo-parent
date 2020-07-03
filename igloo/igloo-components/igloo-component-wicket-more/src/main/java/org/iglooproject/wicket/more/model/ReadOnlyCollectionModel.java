@@ -28,7 +28,7 @@ public class ReadOnlyCollectionModel<T, C extends Collection<T>>
 	
 	public static <T, C extends Collection<T>> ReadOnlyCollectionModel<T, C> of(
 			IModel<? extends C> model, SerializableFunction2<? super T, ? extends IModel<T>> keyFactory) {
-		return new ReadOnlyCollectionModel<T, C>(model, keyFactory);
+		return new ReadOnlyCollectionModel<>(model, keyFactory);
 	}
 
 	protected ReadOnlyCollectionModel(IModel<? extends C> readModel, SerializableFunction2<? super T, ? extends IModel<T>> keyFactory) {

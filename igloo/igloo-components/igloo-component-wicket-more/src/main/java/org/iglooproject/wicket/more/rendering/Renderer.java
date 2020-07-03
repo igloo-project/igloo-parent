@@ -202,7 +202,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	}
 
 	public <F> Renderer<F> onResultOf(SerializableFunction2<? super F, ? extends T> function) {
-		return new ByFunctionRenderer<F, T>(function, this);
+		return new ByFunctionRenderer<>(function, this);
 	}
 	
 	private static class ByFunctionRenderer<F, T> extends Renderer<F> {
@@ -231,7 +231,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	}
 
 	public Renderer<T> compose(SerializableFunction2<? super String, ? extends String> function) {
-		return new ComposeRenderer<T>(function, this);
+		return new ComposeRenderer<>(function, this);
 	}
 	
 	private static class ComposeRenderer<T> extends Renderer<T> {
@@ -447,7 +447,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	protected static <T> Renderer<T> fromFormat(Format format) {
 		checkNotNull(format);
 		final Format copiedFormat = (Format) format.clone(); // Ignore changes on 'format'
-		return new FormatRenderer<T>(locale -> (Format) copiedFormat.clone());
+		return new FormatRenderer<>(locale -> (Format) copiedFormat.clone());
 	}
 	
 	protected static <T> Renderer<T> fromFormat(SerializableFunction2<? super Locale, ? extends Format> formatFunction) {
@@ -477,7 +477,7 @@ public abstract class Renderer<T> implements IConverter<T>, IRenderer<T> {
 	}
 	
 	public static <T> Renderer<Iterable<? extends T>> fromJoiner(SerializableFunction2<? super Locale, ? extends Joiner> joinerFunction, Renderer<T> itemRenderer) {
-		return new IterableJoinerRenderer<T>(joinerFunction, itemRenderer);
+		return new IterableJoinerRenderer<>(joinerFunction, itemRenderer);
 	}
 	
 	private static class IterableJoinerRenderer<T> extends Renderer<Iterable<? extends T>> {

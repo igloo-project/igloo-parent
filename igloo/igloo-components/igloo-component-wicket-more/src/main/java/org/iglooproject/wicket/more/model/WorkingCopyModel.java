@@ -12,7 +12,7 @@ public class WorkingCopyModel<T> implements IModel<T> {
 	private final IModel<T> workingCopy;
 	
 	public static <T> WorkingCopyModel<T> of(IModel<T> reference, IModel<T> workingCopy) {
-		return new WorkingCopyModel<T>(reference, workingCopy);
+		return new WorkingCopyModel<>(reference, workingCopy);
 	}
 	
 	public WorkingCopyModel(IModel<T> reference, IModel<T> workingCopy) {

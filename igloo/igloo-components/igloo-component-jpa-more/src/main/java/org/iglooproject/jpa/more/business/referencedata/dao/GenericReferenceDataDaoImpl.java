@@ -57,7 +57,7 @@ public class GenericReferenceDataDaoImpl extends AbstractEntityDaoImpl<GenericRe
 
 	@Override
 	public <E extends GenericReferenceData<?, ?>> Long count(Class<E> clazz, EnabledFilter enabledFilter) {
-		PathBuilder<GenericReferenceData<?, ?>> pathBuilder = new PathBuilder<GenericReferenceData<?, ?>>(clazz, "rootAlias");
+		PathBuilder<GenericReferenceData<?, ?>> pathBuilder = new PathBuilder<>(clazz, "rootAlias");
 		QGenericReferenceData entityPath = new QGenericReferenceData(pathBuilder);
 		
 		JPAQuery<GenericReferenceData<?, ?>> query;
@@ -72,12 +72,12 @@ public class GenericReferenceDataDaoImpl extends AbstractEntityDaoImpl<GenericRe
 
 	@Override
 	public <E extends GenericReferenceData<?, ?>> Long count(Class<E> clazz) {
-		PathBuilder<GenericReferenceData<?, ?>> path = new PathBuilder<GenericReferenceData<?, ?>>(clazz, "rootAlias");
+		PathBuilder<GenericReferenceData<?, ?>> path = new PathBuilder<>(clazz, "rootAlias");
 		return count(path);
 	}
 
 	@Override
-	public <V extends Comparable<?>> Long count(EntityPath<? extends GenericReferenceData<?, ?>> entityPath) {
+	public Long count(EntityPath<? extends GenericReferenceData<?, ?>> entityPath) {
 		return super.count(entityPath);
 	}
 
@@ -93,7 +93,7 @@ public class GenericReferenceDataDaoImpl extends AbstractEntityDaoImpl<GenericRe
 
 	@Override
 	public <E extends GenericReferenceData<?, ?>> List<E> list(Class<E> clazz, EnabledFilter enabledFilter, Comparator<? super E> comparator) {
-		PathBuilder<GenericReferenceData<?, ?>> pathBuilder = new PathBuilder<GenericReferenceData<?, ?>>(clazz, "rootAlias");
+		PathBuilder<GenericReferenceData<?, ?>> pathBuilder = new PathBuilder<>(clazz, "rootAlias");
 		QGenericReferenceData entityPath = new QGenericReferenceData(pathBuilder);
 		
 		JPAQuery<GenericReferenceData<?, ?>> query;

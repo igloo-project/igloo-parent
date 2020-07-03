@@ -90,17 +90,17 @@ public class ThreadedProcessor {
 		this.progressLogger = progressLogger;
 	}
 
-	public <T> void runWithoutTransaction(String loggerContext, Collection<? extends Runnable> runnables)
+	public void runWithoutTransaction(String loggerContext, Collection<? extends Runnable> runnables)
 			throws ExecutionException {
 		runWithoutTransaction(loggerContext, runnables, null);
 	}
 
-	public <T> void runWithoutTransaction(String loggerContext, Collection<? extends Runnable> runnables,
+	public void runWithoutTransaction(String loggerContext, Collection<? extends Runnable> runnables,
 			Integer totalItems) throws ExecutionException {
 		runWithTransaction(loggerContext, runnables, null, totalItems);
 	}
 
-	public <T> void runWithTransaction(final String loggerContext, Collection<? extends Runnable> runnables,
+	public void runWithTransaction(final String loggerContext, Collection<? extends Runnable> runnables,
 			TransactionOperations TransactionOperations, Integer totalItems) throws ExecutionException {
 		callWithTransaction(loggerContext, runnables.stream().map(RUNNABLE_TO_CALLABLE).collect(Collectors.toList()),
 				TransactionOperations, totalItems);
@@ -121,7 +121,7 @@ public class ThreadedProcessor {
 		List<ListenableFuture<T>> futures = Lists.newArrayList();
 		
 		// ThreadedPoolExecutor cannot be reused after shutdown, so we must instantiate it on each call.
-		BlockingQueue<Runnable> workingQueue = new LinkedBlockingQueue<Runnable>();
+		BlockingQueue<Runnable> workingQueue = new LinkedBlockingQueue<>();
 		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
 				threadPoolSize, threadPoolSize, keepAliveTime, keepAliveTimeUnit,
 				workingQueue, THROW_EXCEPTION_ON_REJECTED_EXECUTION);
@@ -345,7 +345,7 @@ public class ThreadedProcessor {
 			executor.shutdown();
 			
 			// Remove all tasks that were not already executed
-			List<Runnable> nonExecutedTasks = new ArrayList<Runnable>();
+			List<Runnable> nonExecutedTasks = new ArrayList<>();
 			executor.getQueue().drainTo(nonExecutedTasks);
 			
 			// Cancel these tasks (if relevant)

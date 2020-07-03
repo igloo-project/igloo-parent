@@ -815,7 +815,7 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected void resizeMergedColumns(Sheet sheet, Collection<ColumnInformation> columns) {
 		if (sheet.getNumMergedRegions() > 0) {
-			List<ColumnInformation> columnsInfo = new ArrayList<ColumnInformation>(columns);
+			List<ColumnInformation> columnsInfo = new ArrayList<>(columns);
 			
 			for (int i = 0; i < sheet.getNumMergedRegions(); i++) {
 				CellRangeAddress mergedRegion = sheet.getMergedRegion(i);

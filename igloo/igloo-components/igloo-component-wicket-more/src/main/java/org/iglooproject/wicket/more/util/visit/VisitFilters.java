@@ -86,7 +86,7 @@ public class VisitFilters {
 		return including(clazz, Predicates2.alwaysTrue());
 	}
 	
-	public static <T> IVisitFilter excluding(Class<?> clazz) {
+	public static IVisitFilter excluding(Class<?> clazz) {
 		return excluding(clazz, Predicates2.alwaysTrue());
 	}
 

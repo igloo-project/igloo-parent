@@ -61,7 +61,7 @@ public final class LinkUtils {
 	@Deprecated
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> IModel<E> extractGenericEntityModelParameter(
 			IGenericEntityService<K, E> entityService, PageParameters parameters, Class<K> keyClass) {
-		return new GenericEntityModel<K, E>(extractGenericEntitySpecifiedParameter(entityService, parameters,
+		return new GenericEntityModel<>(extractGenericEntitySpecifiedParameter(entityService, parameters,
 				LinkUtils.ID_PARAMETER, keyClass));
 	}
 

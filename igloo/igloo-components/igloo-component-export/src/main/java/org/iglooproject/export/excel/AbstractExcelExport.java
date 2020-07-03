@@ -57,17 +57,17 @@ public abstract class AbstractExcelExport {
 	/**
 	 * Registre des styles.
 	 */
-	protected Map<String, CellStyle> styleRegistry = new HashMap<String, CellStyle>();
+	protected Map<String, CellStyle> styleRegistry = new HashMap<>();
 	
 	/**
 	 * Registre des couleurs
 	 */
-	protected Map<Short, Color> colorRegistry = new HashMap<Short, Color>();
+	protected Map<Short, Color> colorRegistry = new HashMap<>();
 	
 	/**
 	 * Registre des polices
 	 */
-	protected Map<String, Font> fontRegistry = new HashMap<String, Font>();
+	protected Map<String, Font> fontRegistry = new HashMap<>();
 
 	/**
 	 * Composant d'instantiation indépendant du format HSSF/XSSF

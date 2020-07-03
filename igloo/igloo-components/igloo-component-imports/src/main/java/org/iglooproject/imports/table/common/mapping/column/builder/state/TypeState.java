@@ -70,11 +70,11 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
 		}
 
 		private <T2> TypeStateSwitcher<T2> newSwitcher(Function2<? super T, ? extends T2> function2) {
-			return new TypeStateSwitcher<T2>(Functions2.compose(function2, function));
+			return new TypeStateSwitcher<>(Functions2.compose(function2, function));
 		}
 
 		private <T2> TypeStateSwitcher<T2> newSwitcher(Function2<? super T, ? extends T2> function2, Predicate2<? super T2> mandatoryValuePredicate) {
-			return new TypeStateSwitcher<T2>(Functions2.compose(function2, function), mandatoryValuePredicate);
+			return new TypeStateSwitcher<>(Functions2.compose(function2, function), mandatoryValuePredicate);
 		}
 
 		@Override
@@ -167,7 +167,7 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
 
 		@Override
 		public AbstractTableImportColumnSet<TTable, TRow, TCell, TCellReference>.Column<T> build() {
-			return columnSet.new Column<T>(columnMapper, function, mandatoryValuePredicate);
+			return columnSet.new Column<>(columnMapper, function, mandatoryValuePredicate);
 		}
 	}
 }

@@ -394,7 +394,7 @@ public class BindableModel<E> implements IBindableModel<E> {
 		final String propertyExpression = StringUtils.trimLeadingCharacter(
 				path.toString(), FieldPathPropertyComponent.PROPERTY_SEPARATOR_CHAR
 		);
-		return new PropertyModel<T>(delegateModel, propertyExpression);
+		return new PropertyModel<>(delegateModel, propertyExpression);
 	}
 
 	@Override

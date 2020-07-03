@@ -31,7 +31,7 @@ public class ReadOnlyMapModel<K, V, M extends Map<K, V>>
 	
 	public static <K, V, M extends Map<K, V>> ReadOnlyMapModel<K, V, M> of(
 			IModel<? extends M> model, SerializableFunction2<? super K, ? extends IModel<K>> keyFactory) {
-		return new ReadOnlyMapModel<K, V, M>(model, keyFactory);
+		return new ReadOnlyMapModel<>(model, keyFactory);
 	}
 
 	protected ReadOnlyMapModel(IModel<? extends M> readModel, SerializableFunction2<? super K, ? extends IModel<K>> keyModelFactory) {

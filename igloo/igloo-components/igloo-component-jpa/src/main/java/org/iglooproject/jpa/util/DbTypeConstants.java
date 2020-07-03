@@ -21,7 +21,11 @@ public final class DbTypeConstants {
 	public static final String DB_TYPE_SQLSERVER = "sqlserver";
 	
 	public static final Set<String> FAMILY_POSTGRESQL = ImmutableSet.<String>builder()
-			.add(DB_TYPE_POSTGRESQL)
-			.add(DB_TYPE_PGSQL).build();
+		.add(DB_TYPE_POSTGRESQL)
+		.add(DB_TYPE_PGSQL)
+		.build();
+
+	private DbTypeConstants() {
+	}
 
 }

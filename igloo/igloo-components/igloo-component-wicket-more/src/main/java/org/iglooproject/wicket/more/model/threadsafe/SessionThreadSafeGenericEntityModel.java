@@ -55,7 +55,7 @@ public class SessionThreadSafeGenericEntityModel<K extends Serializable & Compar
 
 	@Override
 	protected SerializableState<K, E> makeSerializable(E currentObject) {
-		return new SerializableState<K, E>(currentObject);
+		return new SerializableState<>(currentObject);
 	}
 	
 	@Override

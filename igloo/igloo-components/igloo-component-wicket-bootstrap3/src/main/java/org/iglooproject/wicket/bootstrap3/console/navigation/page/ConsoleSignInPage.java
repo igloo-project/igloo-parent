@@ -75,7 +75,7 @@ public class ConsoleSignInPage extends CoreWebPage {
 		};
 		add(signInForm);
 		
-		usernameField = new RequiredTextField<String>("username", Model.of(""));
+		usernameField = new RequiredTextField<>("username", Model.of(""));
 		usernameField.setLabel(new ResourceModel("console.signIn.username"));
 		usernameField.add(new LabelPlaceholderBehavior());
 		usernameField.setOutputMarkupId(true);

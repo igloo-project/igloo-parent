@@ -22,11 +22,11 @@ public class BatchReportBeanModel<B extends BatchReportBean> extends LoadableDet
 	private static final Logger LOGGER = LoggerFactory.getLogger(BatchReportBeanModel.class);
 	
 	public static BatchReportBeanModel<BatchReportBean> fromString(IModel<String> reportModel) {
-		return new BatchReportBeanModel<BatchReportBean>(BatchReportBean.class, reportModel);
+		return new BatchReportBeanModel<>(BatchReportBean.class, reportModel);
 	}
 	
 	public static BatchReportBeanModel<BatchReportBean> fromTask(IModel<QueuedTaskHolder> queuedTaskHolderModel) {
-		return new TaskBatchReportBeanModel<BatchReportBean>(BatchReportBean.class, queuedTaskHolderModel);
+		return new TaskBatchReportBeanModel<>(BatchReportBean.class, queuedTaskHolderModel);
 	}
 	
 	@SpringBean(name = AbstractTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)

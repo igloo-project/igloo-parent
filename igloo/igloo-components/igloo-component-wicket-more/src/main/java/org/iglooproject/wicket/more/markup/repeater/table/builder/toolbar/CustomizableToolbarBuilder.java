@@ -130,7 +130,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 
 	@Override
 	public IAddedToolbarLabelElementState<T, S> addLabel(final IModel<String> model) {
-		CustomizableToolbarElementBuilder<T, S> elementBuilder = new CustomizableToolbarElementBuilder<T, S>(
+		CustomizableToolbarElementBuilder<T, S> elementBuilder = new CustomizableToolbarElementBuilder<>(
 				getPreviousColspan(builders.size()),
 				new CustomizableToolbarLabelElementDelegateFactory<T, S>(model)
 		);
@@ -163,7 +163,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 
 	@Override
 	public IAddedToolbarCoreElementState<T, S> addComponent(IOneParameterComponentFactory<Component, CoreDataTable<T, S>> delegateFactory) {
-		CustomizableToolbarElementBuilder<T, S> elementBuilder = new CustomizableToolbarElementBuilder<T, S>(
+		CustomizableToolbarElementBuilder<T, S> elementBuilder = new CustomizableToolbarElementBuilder<>(
 				getPreviousColspan(builders.size()), delegateFactory
 		);
 		builders.add(elementBuilder);
@@ -182,7 +182,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 	}
 
 	public CoreCustomizableToolbar<T, S> build(final CoreDataTable<T, S> table) {
-		CoreCustomizableToolbar<T, S> component = new CoreCustomizableToolbar<T, S>(table, builders);
+		CoreCustomizableToolbar<T, S> component = new CoreCustomizableToolbar<>(table, builders);
 		if (hideIfEmpty) {
 			component.add(
 					Condition.isNotEmpty(table.getSequenceProvider()).thenShow()

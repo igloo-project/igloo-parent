@@ -83,12 +83,12 @@ public class GenericEntityModel<K extends Serializable & Comparable<K>, E extend
 	private E notYetPersistedEntity;
 	
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> GenericEntityModel<K, E> of(E entity) {
-		return new GenericEntityModel<K, E>(entity);
+		return new GenericEntityModel<>(entity);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <E extends GenericEntity<?, ?>> GenericEntityModel<?, E> ofUnknownIdType(E entity) {
-		return (GenericEntityModel<?, E>)new GenericEntityModel(entity);
+		return new GenericEntityModel(entity);
 	}
 	
 	/**

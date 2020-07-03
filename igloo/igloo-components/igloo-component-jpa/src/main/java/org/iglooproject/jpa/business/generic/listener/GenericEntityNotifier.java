@@ -10,7 +10,7 @@ import org.iglooproject.jpa.exception.ServiceException;
 
 public class GenericEntityNotifier<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>, L extends GenericEntityListener<K, E>> {
 
-	protected Set<L> listeners = new HashSet<L>();
+	protected Set<L> listeners = new HashSet<>();
 
 	public void subscribe(L listener) {
 		this.listeners.add(listener);

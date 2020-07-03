@@ -55,7 +55,7 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public BindingModel<T, U> create(IModel<T> parameter) {
-				return new BindingModel<T, U>(parameter, propertyExpression);
+				return new BindingModel<>(parameter, propertyExpression);
 			}
 			@Override
 			public String toString() {
@@ -82,7 +82,7 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 	 * @return binding model for {@code binding}
 	 */
 	public static <R, T> BindingModel<R, T> of(IModel<? extends R> root, BindingRoot<R, T> binding) {
-		return new BindingModel<R, T>(root, binding.getPath());
+		return new BindingModel<>(root, binding.getPath());
 	}
 	
 	/**
@@ -94,7 +94,7 @@ public class BindingModel<R, T> extends AbstractPropertyModel<T> {
 	 * @return binding model for {@code binding}
 	 */
 	public static <R, T> BindingModel<R, T> of(IDataProvider<?> root, BindingRoot<R, T> binding) {
-		return new BindingModel<R, T>(root, binding.getPath());
+		return new BindingModel<>(root, binding.getPath());
 	}
 
 	@Override

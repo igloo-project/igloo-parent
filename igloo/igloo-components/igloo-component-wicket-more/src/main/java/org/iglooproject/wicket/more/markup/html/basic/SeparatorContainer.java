@@ -15,7 +15,7 @@ public class SeparatorContainer extends WebMarkupContainer {
 	}
 	
 	public SeparatorContainer components(Component component1, Component component2) {
-		components = new Pair<Component, Component>(component1, component2);
+		components = new Pair<>(component1, component2);
 		
 		return this;
 	}

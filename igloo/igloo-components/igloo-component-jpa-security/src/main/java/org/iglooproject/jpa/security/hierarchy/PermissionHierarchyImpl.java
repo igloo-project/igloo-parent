@@ -138,10 +138,10 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
     @Override
     public List<Permission> getAcceptablePermissions(Collection<Permission> permissions) {
         if (permissions == null || permissions.size() == 0) {
-            return new ArrayList<Permission>(0);
+            return new ArrayList<>(0);
         }
 
-        Set<Permission> acceptablePermissions = new HashSet<Permission>();
+        Set<Permission> acceptablePermissions = new HashSet<>();
 
         for (Permission permission : permissions) {
             acceptablePermissions.add(permission);
@@ -156,7 +156,7 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
                     + " one can accept any of " + acceptablePermissions);
         }
 
-        return new ArrayList<Permission>(acceptablePermissions);
+        return new ArrayList<>(acceptablePermissions);
     }
     
     @Override
@@ -167,10 +167,10 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
     @Override
     public List<Permission> getReachablePermissions(Collection<Permission> permissions) {
         if (permissions == null || permissions.size() == 0) {
-            return new ArrayList<Permission>(0);
+            return new ArrayList<>(0);
         }
 
-        Set<Permission> reachablePermissions = new HashSet<Permission>();
+        Set<Permission> reachablePermissions = new HashSet<>();
 
         for (Permission permission : permissions) {
             reachablePermissions.add(permission);
@@ -185,7 +185,7 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
                     + " one can reach " + reachablePermissions + " in zero or more steps.");
         }
 
-        return new ArrayList<Permission>(reachablePermissions);
+        return new ArrayList<>(reachablePermissions);
     }
 
     /**
@@ -230,13 +230,13 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
 
         while (permissionIterator.hasNext()) {
             Permission permission = (Permission) permissionIterator.next();
-            Set<Permission> permissionsToVisitSet = new HashSet<Permission>();
+            Set<Permission> permissionsToVisitSet = new HashSet<>();
 
             if (oneStepRelations.containsKey(permission)) {
                 permissionsToVisitSet.addAll(oneStepRelations.get(permission));
             }
 
-            Set<Permission> visitedPermissionsSet = new HashSet<Permission>();
+            Set<Permission> visitedPermissionsSet = new HashSet<>();
 
             while (!permissionsToVisitSet.isEmpty()) {
                 // take a permission from the permissionsToVisit set
@@ -244,7 +244,7 @@ public class PermissionHierarchyImpl implements IPermissionHierarchy, Serializab
                 permissionsToVisitSet.remove(aPermission);
                 visitedPermissionsSet.add(aPermission);
                 if (closures.containsKey(aPermission)) {
-                    Set<Permission> newClosure = (Set<Permission>) closures.get(aPermission);
+                    Set<Permission> newClosure = closures.get(aPermission);
 
                     // definition of a cycle: you can reach the permission you are starting from
                     if (permissionsToVisitSet.contains(permission) || visitedPermissionsSet.contains(permission)) {

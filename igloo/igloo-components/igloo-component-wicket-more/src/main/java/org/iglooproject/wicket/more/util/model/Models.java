@@ -102,7 +102,7 @@ public final class Models {
 	 * A static model of <code>Map<String, Object></code>. Useful as a data model for {@link StringResourceModel}.
 	 */
 	public static MapModelBuilder<String, Object> dataMap() {
-		return new MapModelBuilder<String, Object>();
+		return new MapModelBuilder<>();
 	}
 	
 	public static class MapModelBuilder<K, V> {
@@ -188,7 +188,7 @@ public final class Models {
 			IItemModelAwareCollectionModel<T, ? extends Collection<T>, M> unfiltered,
 			SerializablePredicate2<M> modelPredicate,
 			SerializableSupplier2<? extends C> collectionSupplier) {
-		return new FilterByModelItemModelAwareCollectionModel<T, C, M>(
+		return new FilterByModelItemModelAwareCollectionModel<>(
 				unfiltered, modelPredicate, collectionSupplier
 		);
 	}

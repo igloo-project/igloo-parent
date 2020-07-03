@@ -38,7 +38,7 @@ public interface IPropertyService {
 	 * @throws ServiceException If an error occurred in the underlying data store.
 	 * @throws SecurityServiceException If an error occurred in the underlying data store.
 	 */
-	<T> void setAll(IMutablePropertyValueMap valueMap) throws ServiceException, SecurityServiceException;
+	void setAll(IMutablePropertyValueMap valueMap) throws ServiceException, SecurityServiceException;
 
 	/**
 	 * Alter the value of a property.

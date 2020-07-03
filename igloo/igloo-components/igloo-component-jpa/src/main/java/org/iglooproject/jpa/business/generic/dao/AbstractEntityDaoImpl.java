@@ -45,7 +45,7 @@ public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
 		return queryByPredicateOrdered(entityPath, eqOrIsNull(field, fieldValue), limit, offset, orderSpecifiers).fetch();
 	}
 
-	protected <V extends Comparable<?>> Long count(EntityPath<? extends E> entityPath) {
+	protected Long count(EntityPath<? extends E> entityPath) {
 		return queryByPredicate(entityPath, null).distinct().fetchCount();
 	}
 
@@ -57,7 +57,7 @@ public abstract class AbstractEntityDaoImpl<E> extends JpaDaoSupport {
 		return fieldValue != null ? field.eq(fieldValue) : field.isNull() ;
 	}
 
-	private static <V extends Comparable<?>> Predicate eqIgnoreCaseOrIsNull(StringExpression field, String fieldValue) {
+	private static Predicate eqIgnoreCaseOrIsNull(StringExpression field, String fieldValue) {
 		return fieldValue != null ? field.equalsIgnoreCase(fieldValue) : field.isNull();
 	}
 }

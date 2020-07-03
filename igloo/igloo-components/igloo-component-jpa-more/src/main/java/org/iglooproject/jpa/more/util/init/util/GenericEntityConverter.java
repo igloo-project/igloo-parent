@@ -45,7 +45,7 @@ public class GenericEntityConverter implements GenericConverter {
 
 	@Override
 	public Set<ConvertiblePair> getConvertibleTypes() {
-		Set<ConvertiblePair> convertibleTypes = new LinkedHashSet<ConvertiblePair>();
+		Set<ConvertiblePair> convertibleTypes = new LinkedHashSet<>();
 		
 		convertibleTypes.add(new ConvertiblePair(String.class, GenericEntity.class));
 		

@@ -20,7 +20,7 @@ public class ApplicationPropertyModel<T> extends LoadableDetachableModel<T> {
 
 	public static <T> ApplicationPropertyModel<T> of(PropertyId<T> propertyId) {
 		Preconditions.checkNotNull(propertyId);
-		return new ApplicationPropertyModel<T>(propertyId);
+		return new ApplicationPropertyModel<>(propertyId);
 	}
 
 	private ApplicationPropertyModel(PropertyId<T> propertyId) {

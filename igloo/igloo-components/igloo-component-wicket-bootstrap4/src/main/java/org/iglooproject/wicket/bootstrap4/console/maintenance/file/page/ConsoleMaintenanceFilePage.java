@@ -22,11 +22,11 @@ public class ConsoleMaintenanceFilePage extends ConsoleMaintenanceTemplate {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceFilePage.class);
 
-	private final IModel<Integer> hashTableByteSizeModel = new Model<Integer>(1);
-	private final IModel<String> fileKeyModel = new Model<String>();
-	private final IModel<String> extensionModel = new Model<String>();
+	private final IModel<Integer> hashTableByteSizeModel = new Model<>(1);
+	private final IModel<String> fileKeyModel = new Model<>();
+	private final IModel<String> extensionModel = new Model<>();
 	
-	private final IModel<String> pathModel = new Model<String>();
+	private final IModel<String> pathModel = new Model<>();
 	
 	public ConsoleMaintenanceFilePage(PageParameters parameters) {
 		super(parameters);

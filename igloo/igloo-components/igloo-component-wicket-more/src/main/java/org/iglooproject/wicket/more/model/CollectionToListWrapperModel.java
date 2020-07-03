@@ -31,11 +31,11 @@ public class CollectionToListWrapperModel<T> implements IModel<List<T>> {
 	private final IModel<? extends Collection<? extends T>> wrappedModel;
 	
 	public static <T> CollectionToListWrapperModel<T> of(IModel<? extends Collection<? extends T>> model) {
-		return new CollectionToListWrapperModel<T>(model);
+		return new CollectionToListWrapperModel<>(model);
 	}
 
 	public static <T> CollectionToListWrapperModel<T> of(Collection<T> object) {
-		return new CollectionToListWrapperModel<T>(Model.of(object));
+		return new CollectionToListWrapperModel<>(Model.of(object));
 	}
 
 	public CollectionToListWrapperModel(IModel<? extends Collection<? extends T>> wrappedModel) {

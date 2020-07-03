@@ -55,7 +55,7 @@ public abstract class SessionThreadSafeDerivedSerializableStateLoadableDetachabl
 	/**
 	 * The serializable form of the model object, shared among all threads.
 	 */
-	private final AtomicReference<S> sharedSerializableState = new AtomicReference<S>();
+	private final AtomicReference<S> sharedSerializableState = new AtomicReference<>();
 	
 	public SessionThreadSafeDerivedSerializableStateLoadableDetachableModel() { }
 

@@ -52,7 +52,7 @@ public class JoinerModel extends LoadableDetachableModel<String> {
 	}
 
 	@SafeVarargs
-	public final <T> JoinerModel join(Condition condition, IModel<?> firstModel, IModel<?>... otherModels) {
+	public final JoinerModel join(Condition condition, IModel<?> firstModel, IModel<?>... otherModels) {
 		for (IModel<?> model : Lists.asList(firstModel, otherModels)) {
 			join(condition, model);
 		}

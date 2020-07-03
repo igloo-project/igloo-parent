@@ -31,7 +31,7 @@ public final class Expressions2 {
 	private Expressions2() {
 	}
 	
-	public static <T> NumberExpression<Integer> countIf(BooleanExpression condition) {
+	public static NumberExpression<Integer> countIf(BooleanExpression condition) {
 		/**
 		 * We use Expressions.* rather than constants, in order to avoid introducing request parameters.
 		 * Otherwise, Hibernate would freak out because it can't guess the CASE expression data type
@@ -40,7 +40,7 @@ public final class Expressions2 {
 		return new CaseBuilder().when(condition).then(Expressions.ONE).otherwise(Expressions.ZERO).sum();
 	}
 	
-	public static <T> NumberExpression<Integer> sumIf(NumberExpression<Integer> expression, BooleanExpression condition) {
+	public static NumberExpression<Integer> sumIf(NumberExpression<Integer> expression, BooleanExpression condition) {
 		if (condition == null) {
 			return expression.sum();
 		} else {

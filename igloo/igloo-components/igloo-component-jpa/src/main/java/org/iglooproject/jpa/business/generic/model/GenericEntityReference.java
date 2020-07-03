@@ -41,17 +41,17 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 
 	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
 			GenericEntityReference<K, E> of(E entity) {
-		return entity == null || entity.isNew() ? null : new GenericEntityReference<K, E>(entity);
+		return entity == null || entity.isNew() ? null : new GenericEntityReference<>(entity);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <E extends GenericEntity<?, ?>> GenericEntityReference<?, E> ofUnknownIdType(E entity) {
-		return entity == null || entity.isNew() ? null : (GenericEntityReference<?, E>) new GenericEntityReference(entity);
+		return entity == null || entity.isNew() ? null : new GenericEntityReference(entity);
 	}
 
 	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>> GenericEntityReference<K, E>
 			of(Class<? extends E> entityClass, K entityId) {
-		return new GenericEntityReference<K, E>(entityClass, entityId);
+		return new GenericEntityReference<>(entityClass, entityId);
 	}
 	
 	protected GenericEntityReference() { } // Pour Hibernate

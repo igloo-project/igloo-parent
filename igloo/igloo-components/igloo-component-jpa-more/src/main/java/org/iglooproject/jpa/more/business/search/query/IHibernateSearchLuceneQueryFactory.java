@@ -111,7 +111,7 @@ public interface IHibernateSearchLuceneQueryFactory {
 
 	Query matchIfTrue(QueryBuilder builder, BindingRoot<?, Boolean> binding, boolean value, Boolean mustMatch);
 
-	<P> Query matchIfTrue(String fieldPath, boolean value, Boolean mustMatch);
+	Query matchIfTrue(String fieldPath, boolean value, Boolean mustMatch);
 
 	Query matchIfTrue(QueryBuilder builder, String fieldPath, boolean value, Boolean mustMatch);
 

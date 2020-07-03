@@ -38,22 +38,20 @@ public final class FileUtils {
 		if (directory == null) {
 			throw new IllegalArgumentException(String.format("Null directory is not allowed (filter: %s)", filter));
 		}
-		List<File> files = new ArrayList<File>();
+		List<File> files = new ArrayList<>();
 		
-		if (directory != null) {
-			String[] filesPaths = directory.list(filter);
-			if (filesPaths != null) {
-				Arrays.sort(filesPaths);
-				for (int i = 0; i < filesPaths.length; i++) {
-					TFile file = new TFile(FilenameUtils.concat(directory.getAbsolutePath(), filesPaths[i]));
-					if (file.canRead()) {
-						files.add(file);
-					}
+		String[] filesPaths = directory.list(filter);
+		if (filesPaths != null) {
+			Arrays.sort(filesPaths);
+			for (int i = 0; i < filesPaths.length; i++) {
+				TFile file = new TFile(FilenameUtils.concat(directory.getAbsolutePath(), filesPaths[i]));
+				if (file.canRead()) {
+					files.add(file);
 				}
-			} else {
-				// le résultat filesPaths est null si et seulement si il y a un problème avec la lecture du répertoire
-				throw new IllegalStateException("Error reading directory: " + directory.getPath());
 			}
+		} else {
+			// le résultat filesPaths est null si et seulement si il y a un problème avec la lecture du répertoire
+			throw new IllegalStateException("Error reading directory: " + directory.getPath());
 		}
 		
 		return files;
@@ -63,22 +61,20 @@ public final class FileUtils {
 		if (directory == null) {
 			throw new IllegalArgumentException(String.format("Null directory is not allowed (filter: %s)", filter));
 		}
-		List<File> files = new ArrayList<File>();
+		List<File> files = new ArrayList<>();
 		
-		if (directory != null) {
-			File[] filesArray = directory.listFiles(filter);
-			if (filesArray != null) {
-				Arrays.sort(filesArray);
-				for (int i = 0; i < filesArray.length; i++) {
-					File file = filesArray[i];
-					if (file.canRead()) {
-						files.add(file);
-					}
+		File[] filesArray = directory.listFiles(filter);
+		if (filesArray != null) {
+			Arrays.sort(filesArray);
+			for (int i = 0; i < filesArray.length; i++) {
+				File file = filesArray[i];
+				if (file.canRead()) {
+					files.add(file);
 				}
-			} else {
-				// le résultat filesPaths est null si et seulement si il y a un problème avec la lecture du répertoire
-				throw new IllegalStateException("Error reading directory: " + directory.getPath());
 			}
+		} else {
+			// le résultat filesPaths est null si et seulement si il y a un problème avec la lecture du répertoire
+			throw new IllegalStateException("Error reading directory: " + directory.getPath());
 		}
 		
 		return files;

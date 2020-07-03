@@ -74,13 +74,13 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 				.create("reindexContent")
 		);
 		
-		Form<?> reindexClassesForm = new Form<Void>("reindexClassesForm");
+		Form<?> reindexClassesForm = new Form<>("reindexClassesForm");
 		add(reindexClassesForm);
 		
 		try {
-			final IModel<List<Class<?>>> classesModel = new ListModel<Class<?>>(new ArrayList<Class<?>>());
+			final IModel<List<Class<?>>> classesModel = new ListModel<>(new ArrayList<Class<?>>());
 			
-			final TextArea<String> idsTextArea = new TextArea<String>("ids", new Model<String>(""));
+			final TextArea<String> idsTextArea = new TextArea<>("ids", new Model<String>(""));
 			
 			reindexClassesForm.add(
 				new JavaClassesListMultipleChoice("classes", classesModel, hibernateSearchService.getIndexedRootEntities())

@@ -98,7 +98,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@JsonIgnore
 	@ManyToMany
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-	private Set<Authority> authorities = new LinkedHashSet<Authority>();
+	private Set<Authority> authorities = new LinkedHashSet<>();
 	
 	@ManyToMany
 	@JoinTable(uniqueConstraints = { @UniqueConstraint(columnNames = { "persons_id", "groups_id" }) })

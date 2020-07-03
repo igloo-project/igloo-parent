@@ -119,7 +119,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		public IMappedExcelImportColumnDefinition<TTable, TRow, TCell, TCellReference, TValue> map(TTable sheet, ITableImportNavigator<TTable, TRow, TCell, TCellReference> navigator,
 				ITableImportEventHandler eventHandler) throws TableImportMappingException {
 			Function2<? super TRow, ? extends TCellReference> rowToCellReferenceFunction = mapper.tryMap(sheet, navigator, eventHandler);
-			return new MappedTableImportColumnDefinitionImpl<TTable, TRow, TCell, TCellReference, TValue>(sheet, rowToCellReferenceFunction, navigator, cellToValueFunction, mandatoryValuePredicate);
+			return new MappedTableImportColumnDefinitionImpl<>(sheet, rowToCellReferenceFunction, navigator, cellToValueFunction, mandatoryValuePredicate);
 		}
 	}
 	
@@ -192,7 +192,7 @@ public abstract class AbstractTableImportColumnSet<TTable, TRow, TCell, TCellRef
 		}
 		
 		public <TValue> ColumnContext<TValue> column(Column<TValue> columnDefinition) {
-			return new ColumnContext<TValue>(this, columnDefinition);
+			return new ColumnContext<>(this, columnDefinition);
 		}
 		
 		public <TValue> CellContext<TValue> cell(TRow row, Column<TValue> columnDefinition) {

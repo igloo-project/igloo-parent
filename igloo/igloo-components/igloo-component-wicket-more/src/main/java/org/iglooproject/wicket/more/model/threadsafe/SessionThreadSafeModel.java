@@ -21,7 +21,7 @@ public class SessionThreadSafeModel<T extends Serializable> implements IModel<T>
 	
 	private static final long serialVersionUID = 4954375223101982404L;
 	
-	private final AtomicReference<T> objectReference = new AtomicReference<T>();
+	private final AtomicReference<T> objectReference = new AtomicReference<>();
 
 	public SessionThreadSafeModel() { }
 	

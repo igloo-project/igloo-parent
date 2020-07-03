@@ -70,7 +70,7 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 			Class<? extends Page> pageClass,
 			PageParameters parameters,
 			boolean isVisible) {
-		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(name + "MenuLink", pageClass, parameters);
+		BookmarkablePageLink<Void> link = new BookmarkablePageLink<>(name + "MenuLink", pageClass, parameters);
 		link.setVisible(isVisible && isPageAccessible(pageClass));
 		
 		MarkupContainer container = new WebMarkupContainer(name + "MenuLinkContainer");
@@ -87,7 +87,7 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 	protected abstract Class<? extends WebPage> getSecondMenuPage();
 	
 	private static IModel<List<BreadCrumbElement>> newBreadCrumbListModel() {
-		return new ListModel<BreadCrumbElement>(new ArrayList<BreadCrumbElement>());
+		return new ListModel<>(new ArrayList<BreadCrumbElement>());
 	}
 	
 	/** Add a breadcrumb element to be preprended to HTML head title only (not to HTML body breadcrumb)

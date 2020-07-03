@@ -76,7 +76,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@OrderBy("name")
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private Set<Authority> authorities = new LinkedHashSet<Authority>();
+	private Set<Authority> authorities = new LinkedHashSet<>();
 	
 	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
 	private String description;

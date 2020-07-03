@@ -28,7 +28,7 @@ public final class TFileRegistry {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TFileRegistry.class);
 	
-	private static final ThreadLocal<TFileRegistryImpl> THREAD_LOCAL = new ThreadLocal<TFileRegistryImpl>();
+	private static final ThreadLocal<TFileRegistryImpl> THREAD_LOCAL = new ThreadLocal<>();
 	
 	private TFileRegistry() { }
 	

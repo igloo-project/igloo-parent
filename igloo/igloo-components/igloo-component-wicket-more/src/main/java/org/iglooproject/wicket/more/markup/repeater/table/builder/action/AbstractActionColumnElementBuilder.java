@@ -129,7 +129,7 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 	}
 
 	private Component getLabelComponent(String id, IBootstrapRendererModel rendererModel) {
-		return new CoreLabel("label", rendererModel)
+		return new CoreLabel(id, rendererModel)
 				.add(
 						Condition.predicate(rendererModel, Predicates2.hasText())
 								.and(showLabelCondition)

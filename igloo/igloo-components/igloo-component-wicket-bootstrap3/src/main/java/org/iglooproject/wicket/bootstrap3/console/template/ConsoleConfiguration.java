@@ -97,9 +97,9 @@ public final class ConsoleConfiguration {
 	
 	public Link<Void> getConsoleLink(String wicketId) {
 		if (!menuSections.isEmpty()) {
-			return new BookmarkablePageLink<Void>(wicketId, menuSections.get(0).getPageClass());
+			return new BookmarkablePageLink<>(wicketId, menuSections.get(0).getPageClass());
 		} else {
-			return new InvisibleLink<Void>(wicketId);
+			return new InvisibleLink<>(wicketId);
 		}
 	}
 	

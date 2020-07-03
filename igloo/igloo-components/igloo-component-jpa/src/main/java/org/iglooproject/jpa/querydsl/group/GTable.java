@@ -102,10 +102,10 @@ abstract class GTable<R, C, V, T extends Table<R, C, V>> extends AbstractGroupEx
 			private final GroupCollector<Triplet<R2, C2, V2>, T> groupCollector;
 
 			private final Map<R, GroupCollector<R, R2>> rowCollectors =
-					new LinkedHashMap<R, GroupCollector<R, R2>>();
+					new LinkedHashMap<>();
 
 			private final Map<C, GroupCollector<C, C2>> columnCollectors =
-					new LinkedHashMap<C, GroupCollector<C, C2>>();
+					new LinkedHashMap<>();
 
 			private final Table<GroupCollector<R, R2>, GroupCollector<C, C2>, GroupCollector<V, V2>> valueCollectors =
 					HashBasedTable.create();

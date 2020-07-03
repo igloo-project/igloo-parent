@@ -49,8 +49,8 @@ public class EhCacheCacheModificationPanel extends AbstractAjaxModalPopupPanel<E
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, EhCacheCacheModificationPanel.class);
 		
-		cacheForm = new Form<Cache>("cacheForm");
-		maxSizeField = new TextField<Long>("maxSize", BindingModel.of(getModel(),
+		cacheForm = new Form<>("cacheForm");
+		maxSizeField = new TextField<>("maxSize", BindingModel.of(getModel(),
 				CoreWicketMoreBindings.ehCacheCacheInformation().maxElementsInMemory()));
 		maxSizeField.setLabel(new ResourceModel("console.maintenance.ehcache.portfolio.max"));
 		cacheForm.add(maxSizeField);

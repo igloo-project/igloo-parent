@@ -75,7 +75,7 @@ public abstract class AbstractRestServiceImpl {
 	}
 	
 	protected Map<String, File> getFileMapFromFormDataBodyPartList(List<FormDataBodyPart> parts) {
-		Map<String, File> files = new LinkedHashMap<String, File>();
+		Map<String, File> files = new LinkedHashMap<>();
 		
 		if (parts != null) {
 			for (FormDataBodyPart part : parts) {

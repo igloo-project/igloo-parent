@@ -100,7 +100,7 @@ public abstract class AbstractMigrationService {
 	}
 
 	public final <E extends GenericEntity<Long, ?>> List<E> listEntitiesByIds(Class<E> clazz, Collection<Long> entityIds) {
-		PathBuilder<E> path = new PathBuilder<E>(clazz, clazz.getSimpleName());
+		PathBuilder<E> path = new PathBuilder<>(clazz, clazz.getSimpleName());
 		QGenericEntity qGenericEntity = new QGenericEntity(path);
 		
 		return new JPAQuery<E>(entityManagerUtils.getEntityManager()).select(path)

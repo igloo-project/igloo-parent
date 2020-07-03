@@ -11,7 +11,7 @@ public class PageModel<P extends Page> extends LoadableDetachableModel<P> {
 	private PageReference pageReference;
 	
 	public static <P extends Page> PageModel<P> of(P page) {
-		return new PageModel<P>(page);
+		return new PageModel<>(page);
 	}
 
 	public PageModel() { }

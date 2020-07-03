@@ -71,7 +71,7 @@ public class ConsoleMaintenanceTaskDescriptionPage extends ConsoleMaintenanceTem
 		super(parameters);
 		setOutputMarkupId(true);
 		
-		final IModel<QueuedTaskHolder> queuedTaskHolderModel = new GenericEntityModel<Long, QueuedTaskHolder>(null);
+		final IModel<QueuedTaskHolder> queuedTaskHolderModel = new GenericEntityModel<>(null);
 		MAPPER.map(queuedTaskHolderModel).extractSafely(parameters, ConsoleMaintenanceTaskListPage.linkDescriptor(),
 				getString("common.notExists"));
 		

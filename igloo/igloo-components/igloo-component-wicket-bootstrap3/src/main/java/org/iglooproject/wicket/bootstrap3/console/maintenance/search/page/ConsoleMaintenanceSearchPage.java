@@ -59,11 +59,11 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 		});
 		
 		// Réindexation partielle
-		Form<?> reindexClassesForm = new Form<Void>("reindexClassesForm");
+		Form<?> reindexClassesForm = new Form<>("reindexClassesForm");
 		add(reindexClassesForm);
 		
 		try {
-			final IModel<List<Class<?>>> classesModel = new ListModel<Class<?>>(new ArrayList<Class<?>>());
+			final IModel<List<Class<?>>> classesModel = new ListModel<>(new ArrayList<Class<?>>());
 			
 			JavaClassesListMultipleChoice classesChoice = new JavaClassesListMultipleChoice("classes", classesModel,
 					hibernateSearchService.getIndexedRootEntities());
@@ -71,7 +71,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 			classesChoice.setRequired(true);
 			reindexClassesForm.add(classesChoice);
 			
-			final TextArea<String> idsTextArea = new TextArea<String>("ids", new Model<String>(""));
+			final TextArea<String> idsTextArea = new TextArea<>("ids", new Model<String>(""));
 			idsTextArea.setLabel(new ResourceModel("console.maintenance.search.reindex.partial.form.ids"));
 			idsTextArea.add(new AttributeModifier("placeholder",
 					new ResourceModel("console.maintenance.search.reindex.partial.form.ids.placeholder")));

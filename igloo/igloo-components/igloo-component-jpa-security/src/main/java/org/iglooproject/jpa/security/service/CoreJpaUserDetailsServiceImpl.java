@@ -119,7 +119,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 			permissions.addAll(personGroup.getPermissions());
 		}
 		
-		return new ImmutablePair<Set<GrantedAuthority>, Set<Permission>>(grantedAuthorities, permissions);
+		return new ImmutablePair<>(grantedAuthorities, permissions);
 	}
 	
 	protected void addAuthorities(Set<GrantedAuthority> grantedAuthorities, Set<Authority> authorities) {

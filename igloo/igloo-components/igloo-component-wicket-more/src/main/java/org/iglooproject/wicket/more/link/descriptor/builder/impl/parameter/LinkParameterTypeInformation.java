@@ -18,7 +18,7 @@ public class LinkParameterTypeInformation<T> {
 	private final SerializableSupplier2<? extends T> emptyValueSupplier;
 	
 	public static <T> LinkParameterTypeInformation<T> valueOf(final Class<T> clazz) {
-		return new LinkParameterTypeInformation<T>(
+		return new LinkParameterTypeInformation<>(
 				() -> TypeDescriptor.valueOf(clazz),
 				null
 		);
@@ -26,7 +26,7 @@ public class LinkParameterTypeInformation<T> {
 	
 	public static <T extends Collection<TElement>, TElement> LinkParameterTypeInformation<T> collection(
 			final Class<? super T> clazz, final Class<TElement> elementType) {
-		return new LinkParameterTypeInformation<T>(
+		return new LinkParameterTypeInformation<>(
 				() -> TypeDescriptor.collection(clazz, TypeDescriptor.valueOf(elementType)),
 				null
 		);
@@ -34,7 +34,7 @@ public class LinkParameterTypeInformation<T> {
 	
 	public static <T extends Collection<?>> LinkParameterTypeInformation<T> collection(
 			final Class<? super T> clazz, final TypeDescriptor elementType) {
-		return new LinkParameterTypeInformation<T>(
+		return new LinkParameterTypeInformation<>(
 				() -> TypeDescriptor.collection(clazz, elementType),
 				null
 		);
@@ -42,7 +42,7 @@ public class LinkParameterTypeInformation<T> {
 	
 	public static <T extends Collection<?>> LinkParameterTypeInformation<T> collection(
 			final Class<? super T> clazz, final TypeDescriptor elementType, SerializableSupplier2<? extends T> emptyValueSupplier) {
-		return new LinkParameterTypeInformation<T>(
+		return new LinkParameterTypeInformation<>(
 				() -> TypeDescriptor.collection(clazz, elementType),
 				emptyValueSupplier
 		);

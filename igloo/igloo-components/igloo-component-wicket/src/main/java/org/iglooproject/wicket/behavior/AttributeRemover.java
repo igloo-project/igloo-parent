@@ -72,7 +72,7 @@ public class AttributeRemover extends Behavior {
 		if (removeModel != null && removeModel.getObject() != null) {
 			return Arrays.asList(removeModel.getObject().toString().split(separator));
 		}
-		return new ArrayList<String>();
+		return new ArrayList<>();
 	}
 
 	@Override

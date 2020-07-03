@@ -105,7 +105,7 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	@Override
 	public List<GrantedAuthority> getAuthorities(Authentication authentication) {
 		if (authentication != null) {
-			return new ArrayList<GrantedAuthority>(authentication.getAuthorities());
+			return new ArrayList<>(authentication.getAuthorities());
 		} else {
 			return Collections.emptyList();
 		}

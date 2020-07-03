@@ -13,7 +13,7 @@ public class SessionThreadSafeGenericEntityHashSetModel<K extends Serializable &
 
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 			SessionThreadSafeGenericEntityHashSetModel<K, E> of(Class<E> clazz) {
-		return new SessionThreadSafeGenericEntityHashSetModel<K, E>(clazz);
+		return new SessionThreadSafeGenericEntityHashSetModel<>(clazz);
 	}
 
 	public SessionThreadSafeGenericEntityHashSetModel(Class<E> clazz) {

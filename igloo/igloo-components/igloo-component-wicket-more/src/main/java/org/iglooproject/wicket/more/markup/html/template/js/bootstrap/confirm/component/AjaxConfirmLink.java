@@ -31,7 +31,7 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 	private List<IBootstrapConfirmModule> modules;
 
 	public static <O> IConfirmLinkBuilderStepStart<AjaxConfirmLink<O>, O> build() {
-		return new AjaxConfirmLinkBuilder<O>();
+		return new AjaxConfirmLinkBuilder<>();
 	}
 
 	private final Form<?> form;

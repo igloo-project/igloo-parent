@@ -35,7 +35,7 @@ public interface IPersonDao extends IGenericEntityDao<Long, Person> {
 	<T extends Person, V extends Comparable<?>> List<T> listByField(EntityPath<T> entityPath,
 			SimpleExpression<V> field, V fieldValue, OrderSpecifier<?> orderSpecifier);
 
-	<V extends Comparable<?>> Long count(EntityPath<? extends Person> entityPath);
+	Long count(EntityPath<? extends Person> entityPath);
 
 	<V extends Comparable<?>> Long countByField(EntityPath<? extends Person> entityPath, SimpleExpression<V> field, V fieldValue);
 

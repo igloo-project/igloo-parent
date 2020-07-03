@@ -132,7 +132,7 @@ abstract class AbstractMainStateImpl
 	
 	protected final <TTuple extends Tuple> IAddedParameterMappingState<TSelf>
 			doMap(final ILinkParameterMappingEntryFactory<TTuple> factory, List<Integer> parameterIndices) {
-		LinkParameterMappingEntryBuilder<TTuple> builder = new LinkParameterMappingEntryBuilder<TTuple>(factory);
+		LinkParameterMappingEntryBuilder<TTuple> builder = new LinkParameterMappingEntryBuilder<>(factory);
 		mappingEntryBuilders.put(builder, parameterIndices);
 		return new AbstractCoreAddedParameterMapperStateImpl<TSelf, TTuple>(builder) {
 			@Override

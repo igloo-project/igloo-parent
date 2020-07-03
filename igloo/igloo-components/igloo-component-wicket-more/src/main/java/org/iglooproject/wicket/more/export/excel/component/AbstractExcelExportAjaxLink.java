@@ -40,9 +40,9 @@ public abstract class AbstractExcelExportAjaxLink extends AjaxLink<Void> {
 	
 	private final FileDeferredDownloadBehavior ajaxDownload;
 	
-	private final IModel<File> tempFileModel = new Model<File>();
+	private final IModel<File> tempFileModel = new Model<>();
 	
-	private final IModel<MediaType> mediaTypeModel = new Model<MediaType>();
+	private final IModel<MediaType> mediaTypeModel = new Model<>();
 	
 	public AbstractExcelExportAjaxLink(String id, WorkInProgressPopup loadingPopup, String fileNamePrefix) {
 		this(id, loadingPopup, Model.of(fileNamePrefix));

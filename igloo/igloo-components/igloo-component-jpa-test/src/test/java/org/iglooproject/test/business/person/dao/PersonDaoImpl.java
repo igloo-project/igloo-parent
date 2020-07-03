@@ -19,14 +19,13 @@ package org.iglooproject.test.business.person.dao;
 
 import java.util.List;
 
+import org.iglooproject.jpa.business.generic.dao.GenericEntityDaoImpl;
+import org.iglooproject.test.business.person.model.Person;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.SimpleExpression;
-
-import org.iglooproject.jpa.business.generic.dao.GenericEntityDaoImpl;
-import org.iglooproject.test.business.person.model.Person;
 
 @Repository("personDao")
 public class PersonDaoImpl extends GenericEntityDaoImpl<Long, Person> implements IPersonDao {
@@ -53,7 +52,7 @@ public class PersonDaoImpl extends GenericEntityDaoImpl<Long, Person> implements
 	}
 
 	@Override
-	public <V extends Comparable<?>> Long count(EntityPath<? extends Person> entityPath) {
+	public Long count(EntityPath<? extends Person> entityPath) {
 		return super.count(entityPath);
 	}
 

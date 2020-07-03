@@ -54,7 +54,7 @@ public class ConsoleSignInPage extends ConsoleAccessTemplate {
 		public ContentFragment(String id) {
 			super(id, "content", ConsoleSignInPage.this);
 			
-			FormComponent<String> usernameField = new RequiredTextField<String>("username", Model.of(""));
+			FormComponent<String> usernameField = new RequiredTextField<>("username", Model.of(""));
 			FormComponent<String> passwordField = new PasswordTextField("password", Model.of(""));
 			
 			Form<Void> form = new Form<Void>("form") {

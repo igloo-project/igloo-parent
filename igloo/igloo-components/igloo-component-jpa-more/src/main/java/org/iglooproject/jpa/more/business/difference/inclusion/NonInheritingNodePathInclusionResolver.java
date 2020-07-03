@@ -15,7 +15,7 @@ import de.danielbechler.diff.path.NodePath;
  * <p>See the "MODIFIED HERE" comment for what was modified exactly.
  */
 public class NonInheritingNodePathInclusionResolver implements InclusionResolver {
-	private final ValueNode<Inclusion> inclusions = new ValueNode<Inclusion>();
+	private final ValueNode<Inclusion> inclusions = new ValueNode<>();
 	private boolean containsIncluded;
 	private boolean containsExcluded;
 
