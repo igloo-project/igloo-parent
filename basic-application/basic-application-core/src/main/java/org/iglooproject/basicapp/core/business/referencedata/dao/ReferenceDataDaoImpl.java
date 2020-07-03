@@ -66,7 +66,7 @@ public class ReferenceDataDaoImpl implements IReferenceDataDao {
 	}
 
 	@Override
-	public <V extends Comparable<?>> Long count(EntityPath<? extends GenericReferenceData<?, ?>> entityPath) {
+	public Long count(EntityPath<? extends GenericReferenceData<?, ?>> entityPath) {
 		return genericReferenceDataDao.count(entityPath);
 	}
 

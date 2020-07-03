@@ -78,7 +78,7 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserPasswordEditPopup.class);
 		
-		form = new ModelValidatingForm<Void>("form");
+		form = new ModelValidatingForm<>("form");
 		body.add(form);
 		
 		TextField<String> oldPasswordField = new PasswordTextField("oldPassword", oldPasswordModel);

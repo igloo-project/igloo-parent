@@ -30,7 +30,7 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 			.pickSecond().map(CommonParameters.TOKEN).mandatory()
 			.page(SecurityPasswordCreationPage.class);
 
-	private final IModel<User> userModel = new GenericEntityModel<Long, User>();
+	private final IModel<User> userModel = new GenericEntityModel<>();
 
 	public SecurityPasswordCreationPage(PageParameters parameters) {
 		super(parameters);

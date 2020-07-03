@@ -20,4 +20,7 @@ public class Masks {
 			.placeholder(new ResourceModel("date.format.time.placeholder"));
 	}
 
+	private Masks() {
+	}
+
 }

@@ -42,7 +42,7 @@ public class SecurityPasswordRecoveryContentPanel extends Panel {
 	public SecurityPasswordRecoveryContentPanel(String wicketId) {
 		super(wicketId);
 		
-		Form<?> form = new Form<Void>("form");
+		Form<?> form = new Form<>("form");
 		add(form);
 		
 		form.add(

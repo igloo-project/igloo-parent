@@ -30,9 +30,9 @@ public abstract class CityPopup extends AbstractReferenceDataPopup<City> {
 		
 		form = new Form<City>("form", model);
 		
-		TextField<String> labelFr = new TextField<String>("labelFr", BindingModel.of(model, Bindings.city().label().fr()));
-		TextField<String> labelEn = new TextField<String>("labelEn", BindingModel.of(model, Bindings.city().label().en()));
-		TextField<PostalCode> postalCode = new TextField<PostalCode>("postalCode", BindingModel.of(model, Bindings.city().postalCode()), PostalCode.class);
+		TextField<String> labelFr = new TextField<>("labelFr", BindingModel.of(model, Bindings.city().label().fr()));
+		TextField<String> labelEn = new TextField<>("labelEn", BindingModel.of(model, Bindings.city().label().en()));
+		TextField<PostalCode> postalCode = new TextField<>("postalCode", BindingModel.of(model, Bindings.city().postalCode()), PostalCode.class);
 		
 		body.add(
 			form

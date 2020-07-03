@@ -80,7 +80,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 		
 		Condition typeServiceInterruptionCondition = Condition.predicate(getModel(), AnnouncementPredicates.type(AnnouncementType.SERVICE_INTERRUPTION));
 		
-		form = new CacheWritingForm<Announcement>("form", bindableModel);
+		form = new CacheWritingForm<>("form", bindableModel);
 		body.add(form);
 		
 		WebMarkupContainer formContainer = new WebMarkupContainer("formContainer");

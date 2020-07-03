@@ -23,7 +23,7 @@ public class BasicApplicationAuthorityUtils {
 	private IAuthorityService authorityService;
 
 	public List<Authority> getPublicAuthorities() {
-		List<Authority> publicAuthorities = new ArrayList<Authority>();
+		List<Authority> publicAuthorities = new ArrayList<>();
 		
 		for (String authorityName : PUBLIC_AUTHORITIES) {
 			Authority authority = authorityService.getByName(authorityName);

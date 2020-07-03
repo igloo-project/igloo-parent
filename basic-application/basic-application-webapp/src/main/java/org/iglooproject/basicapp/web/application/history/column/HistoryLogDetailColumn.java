@@ -78,9 +78,8 @@ public class HistoryLogDetailColumn extends AbstractCoreColumn<HistoryLog, Histo
 		if (!fieldsWhiteList.isEmpty()) {
 			GenericEntityReference<?, ?> mainObjectEntityReference = rowModel.getObject().getMainObject().getReference();
 			if (mainObjectEntityReference != null) {
-				Collection<FieldPath> whiteList = fieldsWhiteList.get(mainObjectEntityReference.getType());
 				// com.google.common.collect.AbstractMapBasedMultimap$WrappedSet is not serializable...
-				whiteList = Sets.newHashSet(fieldsWhiteList.get(mainObjectEntityReference.getType()));
+				Collection<FieldPath> whiteList = Sets.newHashSet(fieldsWhiteList.get(mainObjectEntityReference.getType()));
 				filter = Predicates2.compose(Predicates2.in(whiteList), Bindings.historyDifference().path().path());
 			}
 		}
