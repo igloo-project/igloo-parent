@@ -233,7 +233,7 @@
 
 		<igloo.webjars.bootstrap.version>4.3.1</igloo.webjars.bootstrap.version>
 		<igloo.webjars.popper.version>1.16.1-lts</igloo.webjars.popper.version>
-		<igloo.webjars.clipboard.version>2.0.4</igloo.webjars.clipboard.version>
+		<igloo.webjars.clipboard.version>2.0.6</igloo.webjars.clipboard.version>
 		<igloo.webjars.jquery-mask-plugin.version>1.14.16</igloo.webjars.jquery-mask-plugin.version>
 
 		<!-- autoprefixer plugin; experimental, do not reuse without notice -->
