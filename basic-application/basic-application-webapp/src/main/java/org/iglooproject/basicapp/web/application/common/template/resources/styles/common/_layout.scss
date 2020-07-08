@@ -22,7 +22,7 @@
 			font-size: 30px;
 		}
 	}
-
+	
 	@include media-breakpoint-down(xs) {
 		display: none !important;
 	}
