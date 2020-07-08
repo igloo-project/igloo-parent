@@ -1,0 +1,33 @@
+.nav-pills {
+	&.nav-page {
+		margin: -3px;
+		
+		.nav-item {
+			padding: 3px;
+			
+			.nav-link {
+				border: $nav-pills-page-link-border-width solid $nav-pills-page-link-border-color;
+				background-color: $nav-pills-page-link-bg;
+				
+				@include hover-focus() {
+					background-color: $nav-pills-page-link-hover-bg;
+				}
+				
+				&:active {
+					background-color: $nav-pills-page-link-action-active-bg;
+				}
+				
+				&.disabled {
+					color: $nav-pills-page-link-disabled-color;
+					background-color: $nav-pills-page-link-disabled-bg;
+				}
+			}
+			
+			.nav-link.active,
+			.show > .nav-link {
+				color: $nav-pills-page-link-active-color;
+				background-color: $nav-pills-page-link-active-bg;
+			}
+		}
+	}
+}

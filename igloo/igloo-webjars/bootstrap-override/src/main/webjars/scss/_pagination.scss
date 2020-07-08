@@ -1,23 +1,3 @@
 .pagination {
 	flex-wrap: wrap; // Avoid overflow pagination with wrapping on elements. Need a better responsive solution.
-	
-	.page-item + .page-item {
-		margin-left: 1px;
-	}
-}
-
-.page-link {
-	@include border-radius($border-radius);
-	
-	&:hover {
-		box-shadow: $pagination-hover-box-shadow;
-		z-index: 2;
-	}
-	
-	&:focus {
-		color: $pagination-focus-color;
-		text-decoration: none;
-		background-color: $pagination-focus-bg;
-		border-color: $pagination-focus-border-color;
-	}
 }
