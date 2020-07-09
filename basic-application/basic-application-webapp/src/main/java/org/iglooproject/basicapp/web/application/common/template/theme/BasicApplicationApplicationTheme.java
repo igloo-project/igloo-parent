@@ -9,6 +9,7 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
+import org.iglooproject.basicapp.web.application.common.component.ApplicationEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -43,6 +44,8 @@ public enum BasicApplicationApplicationTheme {
 					firstMenuPageSupplier,
 					secondMenuPageSupplier
 				),
+				
+				new ApplicationEnvironmentPanel("environment"),
 				
 				new org.iglooproject.basicapp.web.application.common.template.theme.basic.FooterPanel("footer"),
 				

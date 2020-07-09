@@ -26,7 +26,6 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserListPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupListPage;
 import org.iglooproject.basicapp.web.application.common.component.AnnouncementsPanel;
-import org.iglooproject.basicapp.web.application.common.component.ApplicationEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.theme.BasicApplicationApplicationTheme;
 import org.iglooproject.basicapp.web.application.common.template.theme.common.BootstrapBreakpointPanel;
 import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDataPage;
@@ -88,8 +87,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
 		add(createHeadPageTitle("headPageTitle"));
-		
-		add(new ApplicationEnvironmentPanel("environment"));
 		
 		add(new AnnouncementsPanel("announcements"));
 		
