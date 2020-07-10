@@ -51,3 +51,32 @@
 		}
 	}
 }
+
+.table-row-disabled {
+	background-color: transparent !important;
+	background: repeating-linear-gradient(
+		135deg,
+		$white,
+		$white 10px,
+		#E6E7E8 10px,
+		#E6E7E8 20px
+	);
+	
+	> td {
+		background-color: transparent;
+	}
+}
+
+.table-hover {
+	.table-row-disabled {
+		@include hover() {
+			background: repeating-linear-gradient(
+				135deg,
+				darken($white, 5%),
+				darken($white, 5%) 10px,
+				darken(#E6E7E8, 5%) 10px,
+				darken(#E6E7E8, 5%) 20px
+			);
+		}
+	}
+}
