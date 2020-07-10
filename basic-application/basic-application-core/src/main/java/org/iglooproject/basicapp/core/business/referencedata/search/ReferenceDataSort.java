@@ -68,7 +68,7 @@ public enum ReferenceDataSort implements ISort<SortField> {
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
 				SortUtils.luceneSortField(
-					this, sortOrder, SortField.Type.INT,
+					this, sortOrder, SortField.Type.STRING,
 					ReferenceData.LABEL_FR_SORT
 				)
 			);
@@ -84,7 +84,7 @@ public enum ReferenceDataSort implements ISort<SortField> {
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
 				SortUtils.luceneSortField(
-					this, sortOrder, SortField.Type.INT,
+					this, sortOrder, SortField.Type.STRING,
 					ReferenceData.LABEL_EN_SORT
 				)
 			);
