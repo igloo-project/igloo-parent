@@ -129,16 +129,14 @@ public interface IPageLinkGenerator extends ILinkGenerator, IDetachable  {
 	PageProvider newPageProvider() throws LinkInvalidTargetRuntimeException, LinkParameterValidationRuntimeException;
 
 	/**
-	 * Provided as a backward compatibility workaround for application that relies on the fact that fullUrl
-	 * bypasses permissions. This method disables permission checking for this generator.
-	 * 
-	 * Not available on newer implementations (>= 0.12) as no backward compatibility is needed.
+	 * This method disables permission checking for this generator. Provides a workaround for full url generation
+	 * without being limited by permissions issues depending on the user logged in. May be useful in mail notifications
+	 * context for instance.
 	 * 
 	 * {@link IPageLinkGenerator#isAccessible()} keeps permission processing even if bypassPermissions is called.
 	 * 
 	 * @return this (chainable method)
 	 */
-	@Deprecated
 	IPageLinkGenerator bypassPermissions();
 
 }
