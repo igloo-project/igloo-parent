@@ -1,4 +1,0 @@
-Intégration de bootstrap-modal 2.1 (20130131)
-
-bootstrap-modal.css doit être intégré avec les css du core (pour respecter
-l'ordre de chargement).

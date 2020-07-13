@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
-import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -35,8 +34,7 @@ public class JpaSecurityAutoConfigurationTestCase {
 	}
 	
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class,
-			IglooApplicationConfigAutoConfiguration.class})
+	@EnableIglooAutoConfiguration(exclude = {IglooApplicationConfigAutoConfiguration.class})
 	public static class TestConfig {}
 
 }

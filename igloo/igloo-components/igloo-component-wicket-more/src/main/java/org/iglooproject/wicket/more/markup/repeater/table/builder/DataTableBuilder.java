@@ -36,7 +36,6 @@ import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import org.iglooproject.wicket.more.markup.repeater.table.BootstrapCardCoreDataTablePanel;
-import org.iglooproject.wicket.more.markup.repeater.table.BootstrapPanelCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
@@ -62,7 +61,6 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.toolbar.Custom
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreActionColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreBooleanLabelColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreBootstrapBadgeColumn;
-import org.iglooproject.wicket.more.markup.repeater.table.column.CoreBootstrapLabelColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.column.ICoreColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.toolbar.CoreHeadersToolbar;
@@ -300,26 +298,6 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		return new AddedBootstrapBadgeColumnState<>(column);
 	}
 	
-	/**
-	 * @deprecated Bootstrap Labels no longer exist in Bootstrap 4 and are replaced by Bootstrap Badge instead.
-	 */
-	@Deprecated
-	@Override
-	public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-			final ICoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
-		return addColumn(new CoreBootstrapLabelColumn<T, S, C>(headerModel, binding, renderer));
-	}
-	
-	/**
-	 * @deprecated Bootstrap Labels no longer exist in Bootstrap 4 and are replaced by Bootstrap Badge instead.
-	 */
-	@Deprecated
-	@Override
-	public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
-		return addColumn(new CoreBootstrapLabelColumn<T, S, C>(headerModel, function, renderer));
-	}
-	
 	@Override
 	public IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
 			final ICoreBinding<? super T, Boolean> binding) {
@@ -443,15 +421,6 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	public IDecoratedBuildState<T, S> bootstrapCard() {
 		return new BootstrapCardBuildState();
 	}
-	
-	/**
-	 * @deprecated Use {@link #bootstrapCard()} instead with Bootstrap 4.
-	 */
-	@Deprecated
-	@Override
-	public IDecoratedBuildState<T, S> bootstrapPanel() {
-		return new BootstrapPanelBuildState();
-	}
 
 	private abstract class DataTableBuilderWrapper implements IColumnState<T, S> {
 
@@ -501,22 +470,6 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, ICoreBinding<? super T, ? extends Date> binding,
 				IDatePattern datePattern) {
 			return DataTableBuilder.this.addLabelColumn(headerModel, binding, datePattern);
-		}
-
-		/**
-		 * @deprecated Bootstrap Labels no longer exist in Bootstrap 4. Use Bootstrap 4 Badges instead.
-		 */
-		@Deprecated
-		@Override
-		public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel, ICoreBinding<? super T, C> binding,
-				BootstrapRenderer<? super C> renderer) {
-			return DataTableBuilder.this.addBootstrapLabelColumn(headerModel, binding, renderer);
-		}
-
-		@Override
-		public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-				SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
-			return DataTableBuilder.this.addBootstrapLabelColumn(headerModel, function, renderer);
 		}
 
 		@Override
@@ -600,15 +553,6 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public IDecoratedBuildState<T, S> bootstrapCard() {
 			return DataTableBuilder.this.bootstrapCard();
-		}
-		
-		/**
-		 * @deprecated Use {@link #bootstrapCard()} instead with Boostrap 4.
-		 */
-		@Deprecated
-		@Override
-		public IDecoratedBuildState<T, S> bootstrapPanel() {
-			return DataTableBuilder.this.bootstrapPanel();
 		}
 	}
 
@@ -1152,34 +1096,6 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 	}
 
-	/**
-	 * @deprecated Use {@link BootstrapCardCoreDataTablePanel} instead with Bootstrap 4.
-	 */
-	@Deprecated
-	private class BootstrapPanelBuildState extends DecoratedBuildState {
-		
-		@Override
-		protected String getTitleCssClass() {
-			return "panel-title";
-		}
-		
-		@Override
-		protected String getPaginationCssClass() {
-			return "add-in-pagination add-in-pagination-panel";
-		}
-		
-		@Override
-		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
-			BootstrapPanelCoreDataTablePanel<T, S> panel = new BootstrapPanelCoreDataTablePanel<>(id, factory,
-					columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage, addInComponentFactories, responsiveCondition);
-			if (noRecordsResourceKey == null && countResourceKey != null) {
-				withNoRecordsResourceKey(countResourceKey + ".zero");
-			}
-			DataTableBuilder.this.finalizeBuild(panel.getDataTable());
-			return panel;
-		}
-	}
-	
 	private static class ClassAttributeAppenderDecoratingParameterizedComponentFactory<C extends Component, P>
 			extends AbstractDecoratingParameterizedComponentFactory<C, P> {
 		

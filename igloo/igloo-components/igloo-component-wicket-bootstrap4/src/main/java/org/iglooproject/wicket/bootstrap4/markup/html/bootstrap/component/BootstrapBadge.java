@@ -14,9 +14,8 @@ import org.iglooproject.wicket.more.markup.html.bootstrap.common.behavior.Bootst
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.IBootstrapRendererModel;
 import org.iglooproject.wicket.more.markup.html.bootstrap.component.IBootstrapBadge;
-import org.iglooproject.wicket.more.markup.html.bootstrap.component.IBootstrapLabel;
 
-public class BootstrapBadge<T> extends GenericPanel<T> implements IBootstrapBadge<T, BootstrapBadge<T>>, IBootstrapLabel<T, BootstrapBadge<T>> {
+public class BootstrapBadge<T> extends GenericPanel<T> implements IBootstrapBadge<T, BootstrapBadge<T>> {
 
 	private static final long serialVersionUID = -7040646675697285281L;
 

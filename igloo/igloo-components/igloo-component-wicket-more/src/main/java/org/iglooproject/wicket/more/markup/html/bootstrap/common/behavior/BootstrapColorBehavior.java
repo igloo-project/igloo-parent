@@ -9,11 +9,6 @@ public class BootstrapColorBehavior extends ClassAttributeAppender {
 
 	private static final long serialVersionUID = 7272137227196691195L;
 	
-	@Deprecated
-	public static BootstrapColorBehavior label(IModel<IBootstrapColor> colorModel) {
-		return new BootstrapColorBehavior("label label-", colorModel);
-	}
-	
 	public static BootstrapColorBehavior badge(IModel<IBootstrapColor> colorModel) {
 		return new BootstrapColorBehavior("badge badge-", colorModel);
 	}

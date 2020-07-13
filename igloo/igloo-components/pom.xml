@@ -52,7 +52,6 @@
 		<module>igloo-component-wicket-test</module>
 		<module>igloo-component-wicket-more</module>
 		<module>igloo-component-wicket-more-test</module>
-		<module>igloo-component-wicket-bootstrap3</module>
 		<module>igloo-component-wicket-bootstrap4</module>
 		<module>igloo-component-wicket-more-jqplot</module>
 		

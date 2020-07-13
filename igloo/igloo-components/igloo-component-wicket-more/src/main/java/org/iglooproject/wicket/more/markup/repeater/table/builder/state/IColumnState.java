@@ -44,20 +44,6 @@ public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 	<C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
 			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer);
 
-	/**
-	 * @deprecated Bootstrap Labels no longer exist in Bootstrap 4 and are replaced by Bootstrap Badge instead.
-	 */
-	@Deprecated
-	<C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-			ICoreBinding<? super T, C> binding, BootstrapRenderer<? super C> renderer);
-
-	/**
-	 * @deprecated Bootstrap Labels no longer exist in Bootstrap 4 and are replaced by Bootstrap Badge instead.
-	 */
-	@Deprecated
-	<C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer);
-
 	IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
 			ICoreBinding<? super T, Boolean> binding);
 
