@@ -242,7 +242,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 		if(this.equals(user)) {
 			return 0;
 		}
-		return DEFAULT_STRING_COLLATOR.compare(this.getUsername(), user.getUsername());
+		return STRING_COLLATOR_FRENCH.compare(this.getUsername(), user.getUsername());
 	}
 
 	@Override

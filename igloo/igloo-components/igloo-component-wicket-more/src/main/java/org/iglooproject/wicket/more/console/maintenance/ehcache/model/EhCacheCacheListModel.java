@@ -29,7 +29,7 @@ public class EhCacheCacheListModel extends LoadableDetachableModel<List<Cache>> 
 		List<Cache> caches = Lists.newArrayList();
 		for (CacheManager cacheManager : CacheManager.ALL_CACHE_MANAGERS) {
 			if (cacheManager.getName().equals(cacheManagerName)) {
-				Set<String> cacheNames = Sets.newTreeSet(GenericEntity.DEFAULT_STRING_COLLATOR);
+				Set<String> cacheNames = Sets.newTreeSet(GenericEntity.STRING_COLLATOR_FRENCH);
 				cacheNames.addAll(Arrays.asList(cacheManager.getCacheNames()));
 				
 				for (String cacheName : cacheNames) {

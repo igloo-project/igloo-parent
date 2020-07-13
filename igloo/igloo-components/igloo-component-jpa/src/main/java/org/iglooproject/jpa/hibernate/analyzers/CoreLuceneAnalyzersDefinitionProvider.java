@@ -54,19 +54,6 @@ public class CoreLuceneAnalyzersDefinitionProvider implements LuceneAnalysisDefi
 				.tokenFilter(LowerCaseFilterFactory.class)
 				.tokenFilter(CoreFrenchMinimalStemFilterFactory.class);
 		
-		builder.analyzer(prefix + HibernateSearchAnalyzer.TEXT_SORT).tokenizer(KeywordTokenizerFactory.class)
-				.tokenFilter(ASCIIFoldingFilterFactory.class)
-				.tokenFilter(LowerCaseFilterFactory.class)
-				.tokenFilter(PatternReplaceFilterFactory.class)
-						.param("pattern", "('-&\\.,\\(\\))")
-						.param("replacement", " ")
-						.param("replace", "all")
-				.tokenFilter(PatternReplaceFilterFactory.class)
-						.param("pattern", "([^0-9\\p{L} ])")
-						.param("replacement", "")
-						.param("replace", "all")
-				.tokenFilter(TrimFilterFactory.class);
-		
 		builder.normalizer(prefix + HibernateSearchNormalizer.KEYWORD);
 		
 		builder.normalizer(prefix + HibernateSearchNormalizer.KEYWORD_CLEAN)

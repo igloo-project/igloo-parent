@@ -31,7 +31,7 @@ public class EhCacheCacheManagerListModel extends LoadableDetachableModel<List<C
 		
 		@Override
 		public int compare(CacheManager o1, CacheManager o2) {
-			return GenericEntity.DEFAULT_STRING_COLLATOR.compare(o1.getName(), o2.getName());
+			return GenericEntity.STRING_COLLATOR_FRENCH.compare(o1.getName(), o2.getName());
 		}
 		
 	}

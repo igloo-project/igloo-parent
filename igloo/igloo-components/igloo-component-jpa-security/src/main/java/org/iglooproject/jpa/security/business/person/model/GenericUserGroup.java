@@ -161,7 +161,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 		if(this == group) {
 			return 0;
 		}
-		return DEFAULT_STRING_COLLATOR.compare(this.getName(), group.getName());
+		return STRING_COLLATOR_FRENCH.compare(this.getName(), group.getName());
 	}
 
 	@Override

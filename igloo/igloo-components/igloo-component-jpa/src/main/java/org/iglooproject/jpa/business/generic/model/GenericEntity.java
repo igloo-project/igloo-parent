@@ -70,9 +70,6 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	public static final Ordering<String> STRING_COLLATOR_ENGLISH = LocaleUtils.initCollator(Locale.ENGLISH);
 	public static final Ordering<String> STRING_COLLATOR_ROOT = LocaleUtils.initCollator(Locale.ROOT);
 
-	@Deprecated
-	public static final Ordering<String> DEFAULT_STRING_COLLATOR = STRING_COLLATOR_FRENCH; // French should not be considered as default locale.
-
 	@Override
 	@Transient
 	@SuppressWarnings("unchecked")

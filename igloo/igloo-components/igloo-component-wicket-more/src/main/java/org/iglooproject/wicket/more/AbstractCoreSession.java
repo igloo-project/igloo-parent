@@ -268,16 +268,6 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	}
 
 	/**
-	 * @deprecated since Wicket 8, this method is an alias for invalidate().
-	 * Use directly {@link Session#invalidate()} instead.
-	 */
-	@Deprecated
-	@Override
-	public void signOut() {
-		invalidate();
-	}
-
-	/**
 	 * Sign out the user and triggers a redirection to the current page.
 	 */
 	@Override
