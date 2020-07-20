@@ -378,9 +378,14 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected Cell addTextCell(Row row, int columnIndex, String text) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellStyle(getRowStyle(STYLE_STANDARD_NAME, row.getRowNum()));
-		cell.setCellType(CellType.STRING);
-		cell.setCellValue(creationHelper.createRichTextString(normalizeLineBreaks(text == null ? "" : text)));
-
+		
+		if (text != null) {
+			cell.setCellType(CellType.STRING);
+			cell.setCellValue(creationHelper.createRichTextString(normalizeLineBreaks(text)));
+		} else {
+			cell.setBlank();
+		}
+		
 		return cell;
 	}
 
@@ -397,7 +402,6 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		cell.setCellStyle(getRowStyle(STYLE_STANDARD_NAME, row.getRowNum()));
 		cell.setCellType(CellType.FORMULA);
 		cell.setCellFormula(formula);
-
 		return cell;
 	}
 	
@@ -412,9 +416,14 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected Cell addHeaderCell(Row row, int columnIndex, String text) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellStyle(getStyle(STYLE_HEADER_NAME));
-		cell.setCellType(CellType.STRING);
-		cell.setCellValue(creationHelper.createRichTextString(normalizeLineBreaks(text == null ? "" : text)));
-
+		
+		if (text != null) {
+			cell.setCellType(CellType.STRING);
+			cell.setCellValue(creationHelper.createRichTextString(normalizeLineBreaks(text)));
+		} else {
+			cell.setBlank();
+		}
+		
 		return cell;
 	}
 	
@@ -439,10 +448,13 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected Cell addDateCell(Row row, int columnIndex, Date date) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellStyle(getRowStyle(STYLE_DATE_NAME, row.getRowNum()));
+		
 		if (date != null) {
 			cell.setCellValue(date);
+		} else {
+			cell.setBlank();
 		}
-
+		
 		return cell;
 	}
 	
@@ -457,10 +469,13 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected Cell addDateTimeCell(Row row, int columnIndex, Date date) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellStyle(getRowStyle(STYLE_DATE_TIME_NAME, row.getRowNum()));
+		
 		if (date != null) {
 			cell.setCellValue(date);
+		} else {
+			cell.setBlank();
 		}
-
+		
 		return cell;
 	}
 
@@ -474,13 +489,15 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addIntegerCell(Row row, int columnIndex, Number number) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellType(CellType.NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_INTEGER_NAME, row.getRowNum()));
 		
 		if (number != null) {
+			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(number.doubleValue());
+		} else {
+			cell.setBlank();
 		}
-
+		
 		return cell;
 	}
 	
@@ -494,13 +511,15 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addDecimalCell(Row row, int columnIndex, Number number) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellType(CellType.NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_DECIMAL_NAME, row.getRowNum()));
-
+		
 		if (number != null) {
+			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(number.doubleValue());
+		} else {
+			cell.setBlank();
 		}
-
+		
 		return cell;
 	}
 
@@ -514,13 +533,15 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addPercentCell(Row row, int columnIndex, Number number) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellType(CellType.NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_PERCENT_NAME, row.getRowNum()));
 		
 		if (number != null) {
+			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(number.doubleValue());
+		} else {
+			cell.setBlank();
 		}
-
+		
 		return cell;
 	}
 
@@ -534,13 +555,15 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addPercentRelativeCell(Row row, int columnIndex, Number number) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellType(CellType.NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_PERCENT_RELATIVE_NAME, row.getRowNum()));
 		
 		if (number != null) {
+			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(number.doubleValue());
+		} else {
+			cell.setBlank();
 		}
-
+		
 		return cell;
 	}
 
@@ -568,11 +591,13 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	 */
 	protected Cell addFileSizeCell(Row row, int columnIndex, Long fileSizeInBytes) {
 		Cell cell = row.createCell(columnIndex);
-		cell.setCellType(CellType.NUMERIC);
 		cell.setCellStyle(getRowStyle(STYLE_FILE_SIZE_NAME, row.getRowNum()));
 		
 		if (fileSizeInBytes != null) {
+			cell.setCellType(CellType.NUMERIC);
 			cell.setCellValue(fileSizeInBytes);
+		} else {
+			cell.setBlank();
 		}
 		
 		return cell;
