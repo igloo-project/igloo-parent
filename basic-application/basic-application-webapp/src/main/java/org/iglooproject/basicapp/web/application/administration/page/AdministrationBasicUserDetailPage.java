@@ -1,10 +1,12 @@
 package org.iglooproject.basicapp.web.application.administration.page;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -55,6 +57,11 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 
 	public AdministrationBasicUserDetailPage(PageParameters parameters) {
 		super(parameters);
+		
+		WebMarkupContainer tabMainInformationLink = BootstrapTabsUtils.buildTabLink("mainInformationTabLink", ANCHOR_TAB_MAIN_INFORMATION);
+		WebMarkupContainer tabSecurityTabLink = BootstrapTabsUtils.buildTabLink("securityTabLink", ANCHOR_TAB_SECURITY);
+		AdministrationBasicUserDetailTabMainInformationPanel tabMainInformationPanel = new AdministrationBasicUserDetailTabMainInformationPanel("mainInformation", userModel);
+		AdministrationBasicUserDetailTabSecurityPanel tabSecurityPanel = new AdministrationBasicUserDetailTabSecurityPanel("security", userModel);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
 			new ResourceModel("navigation.administration.user.basicUser"),
@@ -198,11 +205,27 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 			);
 		
 		add(
-			BootstrapTabsUtils.buildTabLink("mainInformationTabLink", ANCHOR_TAB_MAIN_INFORMATION),
-			new AdministrationBasicUserDetailTabMainInformationPanel("mainInformation", userModel),
+			tabMainInformationLink
+				.setOutputMarkupId(true)
+				.add(
+					new AttributeModifier("aria-controls", tabMainInformationPanel::getMarkupId)
+				),
+			tabMainInformationPanel
+				.setOutputMarkupId(true)
+				.add(
+					new AttributeModifier("aria-labelledby", tabMainInformationLink::getMarkupId)
+				),
 			
-			BootstrapTabsUtils.buildTabLink("securityTabLink", ANCHOR_TAB_SECURITY),
-			new AdministrationBasicUserDetailTabSecurityPanel("security", userModel)
+			tabSecurityTabLink
+				.setOutputMarkupId(true)
+				.add(
+					new AttributeModifier("aria-controls", tabSecurityPanel::getMarkupId)
+				),
+			tabSecurityPanel
+				.setOutputMarkupId(true)
+				.add(
+					new AttributeModifier("aria-labelledby", tabSecurityTabLink::getMarkupId)
+				)
 		);
 		
 		add(new BootstrapTabBehavior());
