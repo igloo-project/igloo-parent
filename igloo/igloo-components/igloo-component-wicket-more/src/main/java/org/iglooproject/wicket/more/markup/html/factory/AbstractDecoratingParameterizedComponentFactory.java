@@ -2,10 +2,10 @@ package org.iglooproject.wicket.more.markup.html.factory;
 
 import org.apache.wicket.Component;
 
-public abstract class AbstractDecoratingParameterizedComponentFactory<C extends Component, P> extends AbstractParameterizedComponentFactory<C, P> {
-	
+public abstract class AbstractDecoratingParameterizedComponentFactory<C extends Component, P> implements IOneParameterComponentFactory<C, P> {
+
 	private static final long serialVersionUID = -6411443989774223672L;
-	
+
 	private final IOneParameterComponentFactory<? extends C, ? super P> delegate;
 
 	public AbstractDecoratingParameterizedComponentFactory(IOneParameterComponentFactory<? extends C, ? super P> delegate) {

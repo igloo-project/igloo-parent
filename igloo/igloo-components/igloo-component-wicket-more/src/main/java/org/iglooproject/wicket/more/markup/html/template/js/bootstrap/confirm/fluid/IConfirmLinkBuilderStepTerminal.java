@@ -7,4 +7,10 @@ import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFa
 
 public interface IConfirmLinkBuilderStepTerminal<L extends AbstractLink, O> extends IComponentFactory<L>, IOneParameterComponentFactory<L, IModel<O>> {
 
+	@Override
+	default void detach() {
+		IComponentFactory.super.detach();
+		IOneParameterComponentFactory.super.detach();
+	}
+
 }

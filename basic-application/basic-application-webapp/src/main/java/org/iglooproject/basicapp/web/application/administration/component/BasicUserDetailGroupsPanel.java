@@ -2,7 +2,6 @@ package org.iglooproject.basicapp.web.application.administration.component;
 
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -23,10 +22,8 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
@@ -98,14 +95,7 @@ public class BasicUserDetailGroupsPanel extends GenericPanel<BasicUser> {
 					.end()
 					.withClass("actions actions-1x")
 				.bootstrapCard()
-					.addIn(AddInPlacement.FOOTER_MAIN, new AbstractParameterizedComponentFactory<Component, Component>() {
-						private static final long serialVersionUID = 1L;
-						@Override
-						public Component create(String wicketId, final Component table ) {
-							return new UserGroupAddFragment(wicketId, userModel)
-								.add(new ClassAttributeAppender("add-in-quick-add"));
-						}
-					})
+					.addIn(AddInPlacement.FOOTER_MAIN, (wicketId, table) -> new UserGroupAddFragment(wicketId, userModel))
 					.ajaxPager(AddInPlacement.HEADING_RIGHT)
 					.count("administration.user.detail.groups.count")
 				.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION))

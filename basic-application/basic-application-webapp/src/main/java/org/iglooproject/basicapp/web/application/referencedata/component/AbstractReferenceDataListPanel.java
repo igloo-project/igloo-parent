@@ -19,7 +19,6 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.action.OneParameterModalOpenAjaxAction;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
@@ -121,26 +120,14 @@ public abstract class AbstractReferenceDataListPanel<
 
 	protected IDecoratedBuildState<T, S> addIn(IDecoratedBuildState<T, S> builder) {
 		return builder
-			.addIn(AddInPlacement.HEADING_MAIN, new AbstractParameterizedComponentFactory<Component, DecoratedCoreDataTablePanel<T, S>>() {
-				private static final long serialVersionUID = 1L;
-				@Override
-				public Component create(String wicketId, final DecoratedCoreDataTablePanel<T, S> table) {
-					return createSearchForm(wicketId, getDataProvider(), table);
-				}
-			});
+			.addIn(AddInPlacement.HEADING_MAIN, (wicketId, table) -> createSearchForm(wicketId, getDataProvider(), table));
 	}
 
 	protected abstract Component createSearchForm(String wicketId, D dataProvider, DecoratedCoreDataTablePanel<T, S> table);
 
 	protected IDecoratedBuildState<T, S> addInHeadingRight(IDecoratedBuildState<T, S> builder) {
 		return builder
-			.addIn(AddInPlacement.HEADING_RIGHT, new AbstractParameterizedComponentFactory<Component, Component>() {
-				private static final long serialVersionUID = 1L;
-				@Override
-				public Component create(String wicketId, final Component table) {
-					return new GlobalActionsFragment(wicketId);
-				}
-			});
+			.addIn(AddInPlacement.HEADING_RIGHT, GlobalActionsFragment::new);
 	}
 
 	private class GlobalActionsFragment extends Fragment {

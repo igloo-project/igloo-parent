@@ -7,12 +7,14 @@ import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 
 public final class ComponentFactories {
-	
+
 	private ComponentFactories() {
 	}
-	
-	public static <C extends Component, P> IOneParameterComponentFactory<C, P> ignoreParameter(final IComponentFactory<? extends C> factory) {
-		return new AbstractParameterizedComponentFactory<C, P>() {
+
+	public static <C extends Component, P> IOneParameterComponentFactory<C, P> ignoreParameter(
+		final IComponentFactory<? extends C> factory
+	) {
+		return new IOneParameterComponentFactory<C, P>() {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public C create(String wicketId, P parameter) {
@@ -20,22 +22,20 @@ public final class ComponentFactories {
 			}
 			@Override
 			public void detach() {
-				super.detach();
 				factory.detach();
 			}
 		};
 	}
-	
-	public static <T> IOneParameterComponentFactory<AbstractDynamicBookmarkableLink, IModel<T>>
-			fromLinkDescriptorMapper(final ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
+
+	public static <T> IOneParameterComponentFactory<AbstractDynamicBookmarkableLink, IModel<T>> fromLinkDescriptorMapper(
+		final ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper
+	) {
 		return new IOneParameterComponentFactory<AbstractDynamicBookmarkableLink, IModel<T>>() {
 			private static final long serialVersionUID = 1L;
-			
 			@Override
 			public AbstractDynamicBookmarkableLink create(String wicketId, IModel<T> parameter) {
 				return mapper.map(parameter).link(wicketId);
 			}
-			
 			@Override
 			public void detach() {
 				mapper.detach();

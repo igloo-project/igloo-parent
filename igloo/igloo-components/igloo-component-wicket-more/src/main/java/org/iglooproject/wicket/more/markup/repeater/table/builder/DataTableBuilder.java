@@ -23,7 +23,6 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.FunctionOneParameterL
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.basic.TargetBlankBehavior;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.ComponentFactories;
 import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;
@@ -917,15 +916,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 				@Override
 				protected IDecoratedBuildState<T, S> onEnd(List<AbstractActionColumnElementBuilder<Void, ?, ?>> builders) {
 					for (final IOneParameterComponentFactory<?, IModel<Void>> builder : builders) {
-						addIn(placement, ComponentFactories.ignoreParameter(
-								new AbstractComponentFactory<Component>() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public Component create(String wicketId) {
-										return builder.create(wicketId, null);
-									}
-								}
-						));
+						addIn(placement, wicketId -> builder.create(wicketId, null));
 					}
 					return DecoratedBuildState.this;
 				}
@@ -938,15 +929,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 				@Override
 				protected IDecoratedBuildState<T, S> onEnd(List<AbstractActionColumnElementBuilder<Z, ?, ?>> builders) {
 					for (final IOneParameterComponentFactory<?, IModel<Z>> builder : builders) {
-						addIn(placement, ComponentFactories.ignoreParameter(
-								new AbstractComponentFactory<Component>() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public Component create(String wicketId) {
-										return builder.create(wicketId, model);
-									}
-								}
-						));
+						addIn(placement, wicketId -> builder.create(wicketId, model));
 					}
 					return DecoratedBuildState.this;
 				}
@@ -965,7 +948,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public IDecoratedBuildState<T, S> title(IComponentFactory<?> addInComponentFactory) {
-			return addIn(AddInPlacement.HEADING_LEFT, ComponentFactories.ignoreParameter(addInComponentFactory), getTitleCssClass());
+			return addIn(AddInPlacement.HEADING_LEFT, addInComponentFactory, getTitleCssClass());
 		}
 		
 		@Override
