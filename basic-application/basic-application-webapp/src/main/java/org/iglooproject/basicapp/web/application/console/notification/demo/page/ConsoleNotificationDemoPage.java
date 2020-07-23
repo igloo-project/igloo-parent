@@ -79,22 +79,25 @@ public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate
 			}
 		};
 		
-		Form<?> form = new Form<>("form");
-		add(form);
-		
-		form.add(
-				new UserAjaxDropDownSingleChoice<>("recipient", recipientModel, User.class)
-					.setLabel(new ResourceModel("console.notifications.demo.recipient"))
-					.setRequired(true)
-					.add(
+		add(
+			new Form<>("form")
+				.add(
+					new UserAjaxDropDownSingleChoice<>("recipient", recipientModel, User.class)
+						.setLabel(new ResourceModel("console.notifications.demo.recipient"))
+						.setRequired(true)
+						.add(
 							new UpdateOnChangeAjaxEventBehavior()
-									.onChange(AjaxListeners.refreshPage())
-					),
-				
-				new CoreLabel("subject", subjectModel),
-				
-				new CoreLabel("body", bodyModel)
-					.setEscapeModelStrings(false)
+								.onChange(AjaxListeners.refreshPage())
+						)
+				)
+		);
+		
+		add(
+			new CoreLabel("subject", subjectModel)
+				.hideIfEmpty(),
+			new CoreLabel("body", bodyModel)
+				.showPlaceholder()
+				.setEscapeModelStrings(false)
 		);
 	}
 

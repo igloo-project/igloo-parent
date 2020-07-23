@@ -811,15 +811,12 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 			String newLine = MailFormat.HTML.equals(mailFormat) ? NEW_LINE_HTML : NEW_LINE_TEXT_PLAIN;
 			
 			StringBuffer newBody = new StringBuffer();
-			newBody.append("#############").append(newLine);
-			newBody.append("#").append(newLine);
-			newBody.append("# To: ").append(renderAddressesForDebug(to, mailFormat)).append(newLine);
-			newBody.append("# Cc: ").append(renderAddressesForDebug(cc, mailFormat)).append(newLine);
-			newBody.append("# Bcc: ").append(renderAddressesForDebug(bcc, mailFormat)).append(newLine);
-			newBody.append("#").append(newLine);
-			newBody.append("# Encoding: ").append(encoding).append(newLine);
-			newBody.append("#").append(newLine);
-			newBody.append("#############").append(newLine).append(newLine).append(newLine);
+			newBody.append("═════════════════════").append(newLine);
+			newBody.append("<b>To:</b> ").append(renderAddressesForDebug(to, mailFormat)).append(newLine);
+			newBody.append("<b>Cc:</b> ").append(renderAddressesForDebug(cc, mailFormat)).append(newLine);
+			newBody.append("<b>Bcc:</b> ").append(renderAddressesForDebug(bcc, mailFormat)).append(newLine);
+			newBody.append("Encoding: ").append(encoding).append(newLine);
+			newBody.append("═════════════════════").append(newLine).append(newLine).append(newLine);
 			
 			return newBody.toString();
 		}
