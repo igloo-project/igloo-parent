@@ -121,4 +121,8 @@ body {
 	&.divider-middle {
 		width: 60%;
 	}
+	
+	&.divider-light {
+		border-style: dotted;
+	}
 }
