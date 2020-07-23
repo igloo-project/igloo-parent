@@ -2,6 +2,7 @@ package org.iglooproject.basicapp.web.application.administration.form;
 
 import java.util.Map;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -77,6 +78,10 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 	@Override
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, getClass());
+		CoreLabel interruptionStartDateTitle = new CoreLabel("interruptionStartDateTitle", new ResourceModel("business.announcement.interruption.startDateTime"));
+		CoreLabel interruptionEndDateTitle = new CoreLabel("interruptionEndDateTitle", new ResourceModel("business.announcement.interruption.endDateTime"));
+		CoreLabel publicationStartDateTitle = new CoreLabel("publicationStartDateTitle", new ResourceModel("business.announcement.publication.startDateTime"));
+		CoreLabel publicationEndDateTitle = new CoreLabel("publicationEndDateTitle", new ResourceModel("business.announcement.publication.endDateTime"));
 		
 		Condition typeServiceInterruptionCondition = Condition.predicate(getModel(), AnnouncementPredicates.type(AnnouncementType.SERVICE_INTERRUPTION));
 		
@@ -110,26 +115,40 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 			new EnclosureContainer("interruptionContainer")
 				.condition(typeServiceInterruptionCondition)
 				.add(
-					new CoreLabel("interruptionStartDateTitle", new ResourceModel("business.announcement.interruption.startDateTime")),
+					interruptionStartDateTitle
+						.setOutputMarkupId(true),
 					new DatePicker("interruptionStartDate", bindableModel.bind(Bindings.announcement().interruption().startDateTime()), DatePattern.SHORT_DATE)
 						.setLabel(new ResourceModel("business.announcement.interruption.startDateTime.date"))
 						.setRequired(true)
 						.add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
-						.add(new UpdateOnChangeAjaxEventBehavior()),
+						.add(new UpdateOnChangeAjaxEventBehavior())
+						.add(
+							new AttributeModifier("aria-labelledby", interruptionStartDateTitle::getMarkupId)
+						),
 					new TimeField("interruptionStartTime", bindableModel.getInterruptionStartTimeModel(), DatePattern.TIME)
 						.setLabel(new ResourceModel("business.announcement.interruption.startDateTime.time"))
 						.setRequired(true)
-						.add(new UpdateOnChangeAjaxEventBehavior()),
-					new CoreLabel("interruptionEndDateTitle", new ResourceModel("business.announcement.interruption.endDateTime")),
-					new DatePicker("interruptionEndDate", bindableModel.bind(Bindings.announcement().interruption().endDateTime()), DatePattern.SHORT_DATE)
+						.add(new UpdateOnChangeAjaxEventBehavior())
+						.add(
+								new AttributeModifier("aria-labelledby", interruptionStartDateTitle::getMarkupId)
+						),
+					interruptionEndDateTitle
+						.setOutputMarkupId(true),
+						new DatePicker("interruptionEndDate", bindableModel.bind(Bindings.announcement().interruption().endDateTime()), DatePattern.SHORT_DATE)
 						.setLabel(new ResourceModel("business.announcement.interruption.endDateTime.date"))
 						.setRequired(true)
 						.add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
-						.add(new UpdateOnChangeAjaxEventBehavior()),
+						.add(new UpdateOnChangeAjaxEventBehavior())
+						.add(
+							new AttributeModifier("aria-labelledby", interruptionEndDateTitle::getMarkupId)
+						),
 					new TimeField("interruptionEndTime", bindableModel.getInterruptionEndTimeModel(), DatePattern.TIME)
 						.setLabel(new ResourceModel("business.announcement.interruption.endDateTime.time"))
 						.setRequired(true)
 						.add(new UpdateOnChangeAjaxEventBehavior())
+						.add(
+							new AttributeModifier("aria-labelledby", interruptionEndDateTitle::getMarkupId)
+						)
 				),
 			new EnclosureContainer("descriptionContainer")
 				.condition(typeServiceInterruptionCondition.negate())
@@ -149,26 +168,41 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 						.setLabel(new ResourceModel("business.announcement.description.en"))
 						.add(new UpdateOnChangeAjaxEventBehavior())
 				),
-			new CoreLabel("publicationStartDateTitle", new ResourceModel("business.announcement.publication.startDateTime")),
+			publicationStartDateTitle
+				.setOutputMarkupId(true),
 			new DatePicker("publicationStartDate", bindableModel.bind(Bindings.announcement().publication().startDateTime()), DatePattern.SHORT_DATE)
 				.setLabel(new ResourceModel("business.announcement.publication.startDateTime.date"))
 				.setRequired(true)
 				.add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
-				.add(new UpdateOnChangeAjaxEventBehavior()),
+				.add(new UpdateOnChangeAjaxEventBehavior())
+				.add(
+					new AttributeModifier("aria-labelledby", publicationStartDateTitle::getMarkupId)
+				),
 			new TimeField("publicationStartTime", bindableModel.getPublicationStartTimeModel(), DatePattern.TIME)
 				.setLabel(new ResourceModel("business.announcement.publication.startDateTime.time"))
 				.setRequired(true)
-				.add(new UpdateOnChangeAjaxEventBehavior()),
-			new CoreLabel("publicationEndDateTitle", new ResourceModel("business.announcement.publication.endDateTime")),
+				.add(new UpdateOnChangeAjaxEventBehavior())
+				.add(
+					new AttributeModifier("aria-labelledby", publicationStartDateTitle::getMarkupId)
+				),
+				
+			publicationEndDateTitle
+				.setOutputMarkupId(true),
 			new DatePicker("publicationEndDate", bindableModel.bind(Bindings.announcement().publication().endDateTime()), DatePattern.SHORT_DATE)
 				.setLabel(new ResourceModel("business.announcement.publication.endDateTime.date"))
 				.setRequired(true)
 				.add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
-				.add(new UpdateOnChangeAjaxEventBehavior()),
+				.add(new UpdateOnChangeAjaxEventBehavior())
+				.add(
+					new AttributeModifier("aria-labelledby", publicationEndDateTitle::getMarkupId)
+				),
 			new TimeField("publicationEndTime", bindableModel.getPublicationEndTimeModel(), DatePattern.TIME)
 				.setLabel(new ResourceModel("business.announcement.publication.endDateTime.time"))
 				.setRequired(true)
-				.add(new UpdateOnChangeAjaxEventBehavior()),
+				.add(new UpdateOnChangeAjaxEventBehavior())
+				.add(
+					new AttributeModifier("aria-labelledby", publicationEndDateTitle::getMarkupId)
+				),
 			new CheckBox("active", bindableModel.bind(Bindings.announcement().active()))
 				.setLabel(new ResourceModel("business.announcement.active"))
 				.setOutputMarkupId(true)
