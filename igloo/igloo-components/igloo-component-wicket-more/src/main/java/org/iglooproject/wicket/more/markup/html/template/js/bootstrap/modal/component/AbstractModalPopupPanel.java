@@ -50,14 +50,14 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		dialog = new WebMarkupContainer("dialog");
 		
 		add(
-				container
-						.add(
-								dialog
-										.add(new ClassAttributeAppender(getModalDialogCssClassModel()))
-						)
-						.add(new ClassAttributeAppender(getModalCssClassModel()))
-						.add(new AttributeAppender("tabindex", Model.of("-1")))
-						.setOutputMarkupId(true)
+			container
+				.add(
+					dialog
+						.add(new ClassAttributeAppender(getModalDialogCssClassModel()))
+				)
+				.add(new ClassAttributeAppender(getModalCssClassModel()))
+				.add(new AttributeAppender("tabindex", Model.of("-1")))
+				.setOutputMarkupId(true)
 		);
 	}
 
@@ -95,9 +95,15 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	protected void onInitialize() {
 		super.onInitialize();
 		
-		dialog.add(createHeader(HEADER_WICKET_ID));
+		Component header = createHeader(HEADER_WICKET_ID)
+			.setOutputMarkupId(true);
+		
+		dialog.add(header);
 		dialog.add(createBody(BODY_WICKET_ID));
 		dialog.add(createFooter(FOOTER_WICKET_ID));
+		
+		container
+			.add(new AttributeModifier("aria-labelledby", header::getMarkupId));
 	}
 
 	protected abstract Component createHeader(String wicketId);
