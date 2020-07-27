@@ -191,7 +191,8 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 										User currentUser = BasicApplicationSession.get().getUser();
 										return !user.equals(currentUser) && user.isActive();
 									}
-								}.thenShow()
+								}
+									.thenShow()
 							)
 					)
 			);

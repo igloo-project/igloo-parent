@@ -24,7 +24,6 @@ import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
@@ -61,14 +60,10 @@ public class TechnicalUserDetailGroupsPanel extends GenericPanel<TechnicalUser> 
 				.addActionColumn()
 					.addConfirmAction(ActionRenderers.remove())
 						.title(new ResourceModel("administration.userGroup.detail.users.action.remove.confirmation.title"))
-						.content(new IDetachableFactory<IModel<UserGroup>, IModel<String>>() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public IModel<String> create(IModel<UserGroup> parameter) {
-								return new StringResourceModel("administration.userGroup.detail.users.action.remove.confirmation.content")
-									.setParameters(userModel.getObject().getFullName(), parameter.getObject().getName());
-							}
-						})
+						.content(parameter ->
+							new StringResourceModel("administration.userGroup.detail.users.action.remove.confirmation.content")
+								.setParameters(userModel.getObject().getFullName(), parameter.getObject().getName())
+						)
 						.confirm()
 						.onClick(new IOneParameterAjaxAction<IModel<UserGroup>>() {
 							private static final long serialVersionUID = 1L;

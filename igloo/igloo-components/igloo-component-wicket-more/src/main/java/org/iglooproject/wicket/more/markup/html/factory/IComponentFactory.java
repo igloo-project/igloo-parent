@@ -10,6 +10,7 @@ public interface IComponentFactory<C extends Component> extends IDetachable {
 
 	@Override
 	default void detach() {
+		// nothing to do
 	}
 
 }

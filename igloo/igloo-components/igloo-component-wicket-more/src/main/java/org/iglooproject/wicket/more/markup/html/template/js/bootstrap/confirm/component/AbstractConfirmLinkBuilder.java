@@ -93,16 +93,12 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	public IConfirmLinkBuilderStepOnclick<L, O> deleteConfirmation() {
 		confirm();
 		title(new ResourceModel("common.action.confirm.title"));
-		content(new IDetachableFactory<IModel<O>, IModel<String>>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public IModel<String> create(IModel<O> parameter) {
-				if (parameter != null && parameter.getObject() instanceof GenericEntity<?, ?>) {
-					GenericEntity<?, ?> genericEntity = (GenericEntity<?, ?>) parameter.getObject();
-					return new StringResourceModel("common.action.delete.confirm.content.object").setParameters(genericEntity.getDisplayName());
-				} else {
-					return new ResourceModel("common.action.delete.confirm.content");
-				}
+		content(parameter -> {
+			if (parameter != null && parameter.getObject() instanceof GenericEntity<?, ?>) {
+				GenericEntity<?, ?> genericEntity = (GenericEntity<?, ?>) parameter.getObject();
+				return new StringResourceModel("common.action.delete.confirm.content.object").setParameters(genericEntity.getDisplayName());
+			} else {
+				return new ResourceModel("common.action.delete.confirm.content");
 			}
 		});
 		return this;
