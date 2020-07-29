@@ -20,14 +20,4 @@ public class TestEntity extends GenericEntity<Long, TestEntity> {
 		this.id = id;
 	}
 
-	@Override
-	public String getNameForToString() {
-		return String.valueOf(id);
-	}
-
-	@Override
-	public String getDisplayName() {
-		return getNameForToString();
-	}
-	
 }

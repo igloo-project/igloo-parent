@@ -17,17 +17,16 @@
 
 package org.iglooproject.test.generic;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.service.IPersonService;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestGenericEntity extends AbstractJpaCoreTestCase {
 
@@ -65,8 +64,8 @@ public class TestGenericEntity extends AbstractJpaCoreTestCase {
 		Assert.assertFalse(person.compareTo(person1) == 0);
 		Assert.assertTrue(person.compareTo(person4) == 0);
 
-		Assert.assertEquals("LastName FirstName", person.getDisplayName());
-		Assert.assertEquals("LastName FirstName", person.getNameForToString());
+		Assert.assertEquals("LastName", person.getLastName());
+		Assert.assertEquals("FirstName", person.getFirstName());
 	}
 	
 	@Before

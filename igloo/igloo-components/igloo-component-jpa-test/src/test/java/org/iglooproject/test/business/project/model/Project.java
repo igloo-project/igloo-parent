@@ -73,11 +73,6 @@ public class Project extends GenericEntity<Long, Project> {
 	}
 
 	@Override
-	public String getNameForToString() {
-		return getName();
-	}
-	
-	@Override
 	public int compareTo(Project project) {
 		if (this == project) {
 			return 0;
@@ -85,8 +80,4 @@ public class Project extends GenericEntity<Long, Project> {
 		return StringUtils.removeAccents(this.getName()).compareToIgnoreCase(StringUtils.removeAccents(project.getName()));
 	}
 
-	@Override
-	public String getDisplayName() {
-		return getName();
-	}
 }

@@ -26,16 +26,17 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.SortableField;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+
+import com.google.common.base.MoreObjects.ToStringHelper;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @Bindable
 @SuppressFBWarnings("squid:S00107")
@@ -147,17 +148,7 @@ public abstract class AbstractHistoryLog<
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	@Override
-	public String getNameForToString() {
-		return object1 == null ? null : object1.getLabel();
-	}
-	
-	@Override
-	public String getDisplayName() {
-		return toString();
-	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	@Transient
@@ -272,6 +263,12 @@ public abstract class AbstractHistoryLog<
 	@Field(name = HAS_DIFFERENCES, analyze = Analyze.NO)
 	public boolean isDifferencesNonEmpty() {
 		return !differences.isEmpty();
+	}
+
+	@Override
+	protected ToStringHelper toStringHelper() {
+		return super.toStringHelper()
+			.add("object1", object1.getLabel());
 	}
 
 }

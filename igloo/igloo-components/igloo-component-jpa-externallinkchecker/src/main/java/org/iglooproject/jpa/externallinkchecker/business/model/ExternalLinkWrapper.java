@@ -15,13 +15,12 @@ import javax.persistence.Transient;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.DocumentId;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.Maps;
-
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.externallinkchecker.util.binding.CoreJpaExternalLinkCheckerBindings;
+
+import com.google.common.base.MoreObjects.ToStringHelper;
+import com.google.common.collect.Maps;
 
 @Bindable
 @Cacheable
@@ -144,17 +143,11 @@ public class ExternalLinkWrapper extends GenericEntity<Long, ExternalLinkWrapper
 	}
 
 	@Override
-	@JsonIgnore
-	public String getNameForToString() {
-		return url;
+	protected ToStringHelper toStringHelper() {
+		return super.toStringHelper()
+			.add("url", getUrl());
 	}
 
-	@Override
-	@JsonIgnore
-	public String getDisplayName() {
-		return url;
-	}
-	
 	@Override
 	public int compareTo(ExternalLinkWrapper other) {
 		if (this.equals(other)) {

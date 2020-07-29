@@ -246,11 +246,6 @@ public class Company extends GenericEntity<Long, Company> {
 		this.projects.remove(project);
 		project.setCompany(null);
 	}
-	
-	@Override
-	public String getNameForToString() {
-		return getName();
-	}
 
 	@Override
 	public int compareTo(Company company) {
@@ -260,8 +255,4 @@ public class Company extends GenericEntity<Long, Company> {
 		return this.getName().compareToIgnoreCase(company.getName());
 	}
 
-	@Override
-	public String getDisplayName() {
-		return getName();
-	}
 }

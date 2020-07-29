@@ -65,14 +65,4 @@ public class Person extends GenericEntity<Long, Person> {
 		this.creationDate = creationDate;
 	}
 
-	@Override
-	public String getNameForToString() {
-		return getDisplayName();
-	}
-
-	@Override
-	public String getDisplayName() {
-		return getLastName() + " " + getFirstName();
-	}
-	
 }

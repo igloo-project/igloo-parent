@@ -61,14 +61,4 @@ public class EntityNullable extends GenericEntity<Long, EntityNullable> {
 		this.overridesSection = overridesSection;
 	}
 
-	@Override
-	public String getNameForToString() {
-		return id != null ? id.toString() : null;
-	}
-
-	@Override
-	public String getDisplayName() {
-		return id != null ? id.toString() : null;
-	}
-
 }

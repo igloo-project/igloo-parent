@@ -18,6 +18,8 @@ import org.hibernate.annotations.Type;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
+import com.google.common.base.MoreObjects.ToStringHelper;
+
 @MappedSuperclass
 @Bindable
 @Table(
@@ -134,12 +136,9 @@ public abstract class AbstractExecution<E extends GenericEntity<Long, E>, ET ext
 	}
 
 	@Override
-	public String getNameForToString() {
-		return executionType != null ? executionType.toString() : "";
+	protected ToStringHelper toStringHelper() {
+		return super.toStringHelper()
+			.add("executionType", getExecutionType());
 	}
 
-	@Override
-	public String getDisplayName() {
-		return getNameForToString();
-	}
 }

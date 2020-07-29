@@ -14,6 +14,8 @@ import org.hibernate.annotations.NaturalId;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
+import com.google.common.base.MoreObjects.ToStringHelper;
+
 @Entity
 @Bindable
 public class DataUpgradeRecord extends GenericEntity<Long, DataUpgradeRecord> {
@@ -81,12 +83,9 @@ public class DataUpgradeRecord extends GenericEntity<Long, DataUpgradeRecord> {
 	}
 
 	@Override
-	public String getNameForToString() {
-		return name;
+	protected ToStringHelper toStringHelper() {
+		return super.toStringHelper()
+			.add("name", getName());
 	}
 
-	@Override
-	public String getDisplayName() {
-		return getNameForToString();
-	}
 }

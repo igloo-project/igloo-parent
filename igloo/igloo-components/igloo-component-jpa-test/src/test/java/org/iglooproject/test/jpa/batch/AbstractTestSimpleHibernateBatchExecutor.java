@@ -47,7 +47,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 		executor.run(Person.class, toExecute, new ReadWriteBatchRunnable<Person>() {
 			@Override
 			public void executeUnit(Person unit) {
-				LOGGER.warn("Executing: " + unit.getDisplayName());
+				LOGGER.warn("Executing: " + unit);
 				unit.setLastName(NEW_LASTNAME_VALUE);
 				try {
 					personService.update(unit);
@@ -83,7 +83,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 		executor.run(Person.class, toExecute, new ReadOnlyBatchRunnable<Person>() {
 			@Override
 			public void executeUnit(Person unit) {
-				LOGGER.warn("Executing: " + unit.getDisplayName());
+				LOGGER.warn("Executing: " + unit);
 				unit.setLastName(NEW_LASTNAME_VALUE);
 				try {
 					personService.update(unit);
@@ -128,7 +128,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 		executor.runNonConsuming("Person query", query, new ReadOnlyBatchRunnable<Person>() {
 			@Override
 			public void executeUnit(Person unit) {
-				LOGGER.warn("Executing: " + unit.getDisplayName());
+				LOGGER.warn("Executing: " + unit);
 				executed.add(unit.getId());
 			}
 		});
@@ -157,7 +157,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 		executor.runConsuming("Person query", query, new ReadWriteBatchRunnable<Person>() {
 			@Override
 			public void executeUnit(Person unit) {
-				LOGGER.warn("Executing: " + unit.getDisplayName());
+				LOGGER.warn("Executing: " + unit);
 				
 				/* Remove the "Lastname" prefix, which "consumes" this element
 				 * (e.g. it removes this element from the query's results)

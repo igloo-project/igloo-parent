@@ -113,11 +113,6 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 	}
 	
 	@Override
-	public String getDisplayName() {
-		return this.getName();
-	}
-	
-	@Override
 	public Set<Authority> getAuthorities() {
 		return Collections.unmodifiableSet(authorities);
 	}
@@ -162,11 +157,6 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 			return 0;
 		}
 		return STRING_COLLATOR_FRENCH.compare(this.getName(), group.getName());
-	}
-
-	@Override
-	public String getNameForToString() {
-		return getName();
 	}
 
 }

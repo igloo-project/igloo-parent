@@ -8,7 +8,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.wicket.more.markup.html.action.Actions;
 import org.iglooproject.wicket.more.markup.html.action.AjaxActions;
 import org.iglooproject.wicket.more.markup.html.action.IAction;
@@ -94,9 +93,8 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		confirm();
 		title(new ResourceModel("common.action.confirm.title"));
 		content(parameter -> {
-			if (parameter != null && parameter.getObject() instanceof GenericEntity<?, ?>) {
-				GenericEntity<?, ?> genericEntity = (GenericEntity<?, ?>) parameter.getObject();
-				return new StringResourceModel("common.action.delete.confirm.content.object").setParameters(genericEntity.getDisplayName());
+			if (parameter != null) {
+				return new StringResourceModel("common.action.delete.confirm.content.object", parameter);
 			} else {
 				return new ResourceModel("common.action.delete.confirm.content");
 			}

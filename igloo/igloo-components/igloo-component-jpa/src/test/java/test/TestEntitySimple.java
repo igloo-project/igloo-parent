@@ -20,16 +20,6 @@ public class TestEntitySimple extends GenericEntity<Long, TestEntitySimple> {
 		this.id = id;
 	}
 
-	@Override
-	public String getNameForToString() {
-		return String.valueOf(id);
-	}
-
-	@Override
-	public String getDisplayName() {
-		return getNameForToString();
-	}
-
 	/**
 	 * This method is the old equals implementation from GenericEntity, without lambda static switching.
 	 */

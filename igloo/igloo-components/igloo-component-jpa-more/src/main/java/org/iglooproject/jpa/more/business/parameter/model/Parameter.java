@@ -13,6 +13,8 @@ import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
+import com.google.common.base.MoreObjects.ToStringHelper;
+
 @Entity
 @Bindable
 //Needed to trigger LuceneEmbeddedIndexManagerType.INSTANCE for registry
@@ -72,18 +74,10 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 	}
 
 	@Override
-	public String getDisplayName() {
-		StringBuilder displayName = new StringBuilder();
-		displayName.append(name);
-		displayName.append(':');
-		displayName.append(getStringValue());
-
-		return displayName.toString();
-	}
-
-	@Override
-	public String getNameForToString() {
-		return name;
+	protected ToStringHelper toStringHelper() {
+		return super.toStringHelper()
+			.add("name", getName())
+			.add("value", getStringValue());
 	}
 
 }
