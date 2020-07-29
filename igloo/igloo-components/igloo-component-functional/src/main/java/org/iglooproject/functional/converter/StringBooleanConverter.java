@@ -11,9 +11,9 @@ public class StringBooleanConverter extends SerializableConverter2<String, Boole
 
 	private static final StringBooleanConverter INSTANCE = new StringBooleanConverter();
 
-	private static final Set<String> trueValues = new HashSet<String>(4);
+	private static final Set<String> trueValues = new HashSet<>(4);
 
-	private static final Set<String> falseValues = new HashSet<String>(4);
+	private static final Set<String> falseValues = new HashSet<>(4);
 
 	static {
 		trueValues.add("true");

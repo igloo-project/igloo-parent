@@ -11,6 +11,7 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 import org.iglooproject.spring.notification.model.INotificationRecipient;
@@ -144,10 +145,10 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 			return 0;
 		}
 		
-		if(DEFAULT_STRING_COLLATOR.compare(this.getLastName(), user.getLastName()) == 0) {
-			return DEFAULT_STRING_COLLATOR.compare(this.getFirstName(), user.getFirstName());
+		if(GenericEntity.STRING_COLLATOR_FRENCH.compare(this.getLastName(), user.getLastName()) == 0) {
+			return STRING_COLLATOR_FRENCH.compare(this.getFirstName(), user.getFirstName());
 		}
-		return DEFAULT_STRING_COLLATOR.compare(this.getLastName(), user.getLastName());
+		return STRING_COLLATOR_FRENCH.compare(this.getLastName(), user.getLastName());
 	}
 
 	@Override

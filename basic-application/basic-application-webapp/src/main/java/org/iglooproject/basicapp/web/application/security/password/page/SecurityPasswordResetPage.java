@@ -33,7 +33,7 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 			.pickSecond().map(CommonParameters.TOKEN).mandatory()
 			.page(SecurityPasswordResetPage.class);
 
-	private final IModel<User> userModel = new GenericEntityModel<Long, User>();
+	private final IModel<User> userModel = new GenericEntityModel<>();
 
 	@SpringBean
 	private ISecurityManagementService securityManagementService;

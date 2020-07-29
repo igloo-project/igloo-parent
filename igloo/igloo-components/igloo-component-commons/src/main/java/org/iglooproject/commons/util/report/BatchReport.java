@@ -83,7 +83,7 @@ public class BatchReport implements Serializable {
 		if (items.containsKey(context)) {
 			return items.get(context);
 		} else {
-			return new ArrayList<BatchReportItem>(0);
+			return new ArrayList<>(0);
 		}
 	}
 

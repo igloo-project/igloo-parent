@@ -6,8 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 @Entity
@@ -44,18 +42,6 @@ public class PersonReference extends GenericEntity<Long, PersonReference> {
 
 	public void setPerson(Person person) {
 		this.person = person;
-	}
-
-	@Override
-	@JsonIgnore
-	public String getNameForToString() {
-		return null;
-	}
-
-	@Override
-	@JsonIgnore
-	public String getDisplayName() {
-		return toString();
 	}
 
 }

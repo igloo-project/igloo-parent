@@ -20,15 +20,15 @@ import javax.persistence.OrderColumn;
 import javax.persistence.Transient;
 
 import org.bindgen.Bindable;
-
-import com.google.common.collect.Lists;
-import com.querydsl.core.annotations.QueryInit;
-
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.more.business.history.model.atomic.HistoryDifferenceEventType;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryDifferencePath;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
+
+import com.google.common.base.MoreObjects.ToStringHelper;
+import com.google.common.collect.Lists;
+import com.querydsl.core.annotations.QueryInit;
 
 @MappedSuperclass
 @Bindable
@@ -90,16 +90,6 @@ public abstract class AbstractHistoryDifference<HD extends AbstractHistoryDiffer
 	@Override
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	@Override
-	public String getNameForToString() {
-		return String.valueOf(path);
-	}
-
-	@Override
-	public String getDisplayName() {
-		return toString();
 	}
 
 	@Override
@@ -168,6 +158,12 @@ public abstract class AbstractHistoryDifference<HD extends AbstractHistoryDiffer
 	
 	public void setDifferences(List<HD> differences) {
 		CollectionUtils.replaceAll(this.differences, differences);
+	}
+
+	@Override
+	protected ToStringHelper toStringHelper() {
+		return super.toStringHelper()
+			.add("path", getPath());
 	}
 
 }

@@ -26,7 +26,7 @@ public class ConsoleMenuSection implements Serializable {
 		this.displayStringKey = displayStringKey;
 		this.urlFragment = UrlUtils.normalizePath(urlFragment);
 		this.pageClass = pageClass;
-		this.menuItems = new ArrayList<ConsoleMenuItem>();
+		this.menuItems = new ArrayList<>();
 	}
 	
 	public String getName() {

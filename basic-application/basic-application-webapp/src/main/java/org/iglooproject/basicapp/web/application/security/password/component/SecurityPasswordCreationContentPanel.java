@@ -48,7 +48,7 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 		
 		userTypeDescriptorModel = UserTypeDescriptorModel.fromUser(getModel());
 		
-		ModelValidatingForm<?> form = new ModelValidatingForm<Void>("form");
+		ModelValidatingForm<?> form = new ModelValidatingForm<>("form");
 		add(form);
 		
 		TextField<String> passwordField = new PasswordTextField("password", passwordModel);

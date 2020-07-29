@@ -4,13 +4,16 @@
 	<wicket:panel>
 		<body>
 			<div class="container">
-				<h1 class="main-title">
-					<wicket:message key="common.rootPageTitle" />
-				</h1>
-				
-				<wicket:child />
-				
-				<div class="footer">
+				<div class="card">
+					<h1 class="card-header card-header-main">
+						<wicket:message key="common.rootPageTitle" />
+					</h1>
+					
+					<wicket:child />
+					
+					<div class="card-footer text-right">
+						<a wicket:id="homePageLink"><wicket:message key="common.rootPageTitle" /></a>
+					</div>
 				</div>
 			</div>
 		</body>

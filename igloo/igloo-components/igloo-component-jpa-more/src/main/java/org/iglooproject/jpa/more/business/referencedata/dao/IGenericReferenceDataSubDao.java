@@ -31,7 +31,7 @@ public interface IGenericReferenceDataSubDao {
 
 	<E extends GenericReferenceData<?, ?>> Long count(Class<E> clazz);
 
-	<V extends Comparable<?>> Long count(EntityPath<? extends GenericReferenceData<?, ?>> entityPath);
+	Long count(EntityPath<? extends GenericReferenceData<?, ?>> entityPath);
 
 	<V extends Comparable<?>> Long countByField(EntityPath<? extends GenericReferenceData<?, ?>> entityPath, SimpleExpression<V> field, V fieldValue);
 

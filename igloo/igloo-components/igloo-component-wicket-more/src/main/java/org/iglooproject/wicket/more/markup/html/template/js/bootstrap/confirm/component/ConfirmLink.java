@@ -26,7 +26,7 @@ public abstract class ConfirmLink<O> extends Link<O> {
 	private List<IBootstrapConfirmModule> modules;
 
 	public static <O> IConfirmLinkBuilderStepStart<ConfirmLink<O>, O> build() {
-		return new ConfirmLinkBuilder<O>();
+		return new ConfirmLinkBuilder<>();
 	}
 
 	protected ConfirmLink(String id, IModel<O> model, IModel<String> titleModel, IModel<String> textModel,

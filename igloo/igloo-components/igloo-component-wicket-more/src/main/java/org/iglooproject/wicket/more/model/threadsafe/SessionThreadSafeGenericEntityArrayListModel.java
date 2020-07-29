@@ -13,7 +13,7 @@ public class SessionThreadSafeGenericEntityArrayListModel<K extends Serializable
 
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 			SessionThreadSafeGenericEntityArrayListModel<K, E> of(Class<E> clazz) {
-		return new SessionThreadSafeGenericEntityArrayListModel<K, E>(clazz);
+		return new SessionThreadSafeGenericEntityArrayListModel<>(clazz);
 	}
 
 	public SessionThreadSafeGenericEntityArrayListModel(Class<E> clazz) {

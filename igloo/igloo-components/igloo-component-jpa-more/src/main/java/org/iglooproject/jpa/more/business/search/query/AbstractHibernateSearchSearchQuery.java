@@ -412,7 +412,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		return getFactory().matchIfTrue(builder, binding, value, mustMatch);
 	}
 	
-	protected <P> Query matchIfTrue(String fieldPath, boolean value, Boolean mustMatch) {
+	protected Query matchIfTrue(String fieldPath, boolean value, Boolean mustMatch) {
 		return getFactory().matchIfTrue(fieldPath, value, mustMatch);
 	}
 	

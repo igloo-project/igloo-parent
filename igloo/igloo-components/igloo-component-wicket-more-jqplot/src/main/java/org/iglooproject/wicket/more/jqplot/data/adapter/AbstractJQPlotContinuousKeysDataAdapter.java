@@ -52,7 +52,7 @@ public abstract class AbstractJQPlotContinuousKeysDataAdapter<S, K, V extends Nu
 	}
 	
 	private BaseSeries<K, V> createSeriesData(S series, Iterable<? extends K> keys) {
-		BaseSeries<K, V> seriesData = new BaseSeries<K, V>();
+		BaseSeries<K, V> seriesData = new BaseSeries<>();
 		for (K key : keys) {
 			V value = getValue(series, key);
 			if (value != null) {

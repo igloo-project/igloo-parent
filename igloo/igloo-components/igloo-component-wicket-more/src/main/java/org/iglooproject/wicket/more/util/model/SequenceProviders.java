@@ -90,7 +90,7 @@ public final class SequenceProviders {
 	}
 	
 	public static <T> ISequenceProvider<T> forDataProvider(IDataProvider<T> dataProvider) {
-		return new DataProviderSequenceProviderAdapter<T>(dataProvider);
+		return new DataProviderSequenceProviderAdapter<>(dataProvider);
 	}
 	
 	public static class DataProviderSequenceProviderAdapter<T> implements ISequenceProvider<T> {

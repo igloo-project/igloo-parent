@@ -111,7 +111,7 @@ public abstract class GenericEntityDaoImpl<K extends Serializable & Comparable<K
 	
 	@Override
 	public List<E> list(Long limit, Long offset) {
-		PathBuilder<E> pathBuilder = new PathBuilder<E>(getObjectClass(), "rootAlias");
+		PathBuilder<E> pathBuilder = new PathBuilder<>(getObjectClass(), "rootAlias");
 		return super.list(pathBuilder, limit, offset);
 	}
 	

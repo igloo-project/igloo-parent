@@ -36,7 +36,7 @@ public class CoreHeadersToolbar<S extends ISort<?>> extends AbstractCoreToolbar 
 			
 			@Override
 			protected Iterator<IModel<IColumn<T, S>>> getItemModels() {
-				List<IModel<IColumn<T, S>>> columnsModels = new LinkedList<IModel<IColumn<T, S>>>();
+				List<IModel<IColumn<T, S>>> columnsModels = new LinkedList<>();
 				
 				for (IColumn<T, S> column : table.getDisplayedColumns()) {
 					columnsModels.add(Model.of(column));

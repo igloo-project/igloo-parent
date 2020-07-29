@@ -28,7 +28,6 @@ import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import org.iglooproject.wicket.more.link.model.ComponentPageModel;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
@@ -98,26 +97,18 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 					.withClass(CssClassConstants.CELL_HIDDEN_SM_AND_LESS)
 				.addActionColumn()
 					.addConfirmAction(ActionRenderers.delete())
-						.title(new IDetachableFactory<IModel<UserGroup>, IModel<String>>() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public IModel<String> create(IModel<UserGroup> parameter) {
-								return new StringResourceModel(
-										"administration.userGroup.action.delete.confirmation.title",
-										BindingModel.of(parameter, Bindings.userGroup().name())
-								);
-							}
-						})
-						.content(new IDetachableFactory<IModel<UserGroup>, IModel<String>>() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public IModel<String> create(IModel<UserGroup> parameter) {
-								return new StringResourceModel(
-										"administration.userGroup.action.delete.confirmation.content",
-										BindingModel.of(parameter, Bindings.userGroup().name())
-								);
-							}
-						})
+						.title(parameter ->
+							new StringResourceModel(
+								"administration.userGroup.action.delete.confirmation.title",
+								BindingModel.of(parameter, Bindings.userGroup().name())
+							)
+						)
+						.content(parameter ->
+							new StringResourceModel(
+								"administration.userGroup.action.delete.confirmation.content",
+								BindingModel.of(parameter, Bindings.userGroup().name())
+							)
+						)
 						.confirm()
 						.onClick(new IOneParameterAjaxAction<IModel<UserGroup>>() {
 							private static final long serialVersionUID = 1L;

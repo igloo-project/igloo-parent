@@ -7,7 +7,6 @@ import javax.persistence.EntityManagerFactory;
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
-import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaMoreAutoConfiguration;
@@ -40,9 +39,6 @@ public class JpaAutoConfigurationTestCase {
 	public void testIglooJpaAutoConfigure() {
 		new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-			.withPropertyValues(String.format("%s=%s",
-					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
-					IglooBootstrap3AutoConfiguration.class.getName()))
 			.run(
 				(context) -> { assertThat(context).hasSingleBean(EntityManagerFactory.class); }
 			);
@@ -74,7 +70,7 @@ public class JpaAutoConfigurationTestCase {
 	}
 
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {IglooBootstrap3AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class,
+	@EnableIglooAutoConfiguration(exclude = {IglooJpaSecurityAutoConfiguration.class,
 			IglooApplicationConfigAutoConfiguration.class})
 	public static class TestConfig {}
 

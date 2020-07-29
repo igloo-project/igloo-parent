@@ -98,6 +98,7 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 							}
 						}
 					)
+					.setRenderBodyOnly(false)
 			);
 		
 		return body;

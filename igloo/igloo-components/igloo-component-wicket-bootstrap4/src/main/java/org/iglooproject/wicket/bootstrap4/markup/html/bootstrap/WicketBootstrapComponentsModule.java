@@ -14,10 +14,4 @@ public class WicketBootstrapComponentsModule implements IWicketBootstrapComponen
 		return () -> new BootstrapBadge<>(id, model, renderer);
 	}
 
-	@Deprecated
-	@Override
-	public <T> SerializableSupplier2<BootstrapBadge<T>> labelSupplier(String id, IModel<T> model, BootstrapRenderer<? super T> renderer) {
-		return () -> new BootstrapBadge<>(id, model, renderer);
-	}
-
 }

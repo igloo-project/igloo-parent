@@ -30,7 +30,7 @@ public final class ReflectionUtils {
 		scanner.addIncludeFilter(filter);
 		
 		Set<BeanDefinition> beanDefinitions = scanner.findCandidateComponents(rootPackage);
-		Set<Class<? extends T>> classes = new LinkedHashSet<Class<? extends T>>();
+		Set<Class<? extends T>> classes = new LinkedHashSet<>();
 		
 		for (BeanDefinition beanDefinition : beanDefinitions) {
 			try {

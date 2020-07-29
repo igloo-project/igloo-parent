@@ -9,7 +9,7 @@ public class CoreHeaderItemSpecificOrder implements IHeaderItemSpecificOrder {
 
 	private static final CoreHeaderItemSpecificOrder INSTANCE = new CoreHeaderItemSpecificOrder();
 
-	protected static enum HeaderItemOrder {
+	protected enum HeaderItemOrder {
 		
 		;
 		// Add top priority resource references here.

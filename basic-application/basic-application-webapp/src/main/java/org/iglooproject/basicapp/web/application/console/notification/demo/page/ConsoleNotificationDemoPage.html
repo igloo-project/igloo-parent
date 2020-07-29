@@ -17,26 +17,30 @@
 			<div class="content-body-section">
 				<div class="content-body-container">
 					<div class="content-body">
-						<div class="card card-page">
-							<div class="card-body">
-								<form wicket:id="form">
-									<div class="row row-form">
-										<div class="form-group col-12">
-											<label wicket:for="recipient"><wicket:label /></label>
-											<select wicket:id="recipient" class="form-control"></select>
-										</div>
-										<div class="form-group col-12">
-											<label><wicket:message key="console.notifications.demo.subject" /></label>
-											<div class="form-control-plaintext">
-												<pre class="mb-0"><wicket:container wicket:id="subject" /></pre>
+						<div class="row row-md">
+							<div class="col-12">
+								<div class="card card-page">
+									<div class="card-body">
+										<form wicket:id="form">
+											<div class="row row-form">
+												<div class="col-12">
+													<div class="row row-form-group form-group">
+														<div class="col-md-4 col-lg-3">
+															<label wicket:for="recipient" class="col-form-label form-label"><wicket:label /></label>
+														</div>
+														<div class="col-md-8 col-lg-6">
+															<select wicket:id="recipient" class="form-control" />
+														</div>
+													</div>
+												</div>
 											</div>
-										</div>
-										<div class="form-group col-12">
-											<label><wicket:message key="console.notifications.demo.body" /></label>
-											<div id="body-container" wicket:id="body" />
-										</div>
+										</form>
 									</div>
-								</form>
+									<div wicket:id="subject" class="card-body text-monospace" />
+									<div class="card-body">
+										<div wicket:id="body" id="notification-body-container" />
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -44,7 +48,7 @@
 			</div>
 		</div>
 		<script>
-			$('#body-container *').removeAttr('class');
+			$('#notification-body-container  *').removeAttr('class');
 			$('body').removeAttr('style');
 		</script>
 	</wicket:extend>

@@ -140,13 +140,8 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 		modules.forEach(module -> module.renderHead(this, response));
 	}
 
-	@Deprecated
-	protected IModel<String> getCssClassNamesModel() {
-		return Model.of();
-	}
-
 	public IModel<String> getModalCssClassModel() {
-		return getCssClassNamesModel();
+		return Model.of();
 	}
 
 	public IModel<String> getModalDialogCssClassModel() {

@@ -114,7 +114,7 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 		// Customized initializations
 		Iterables.addAll(initializers, initializeInitializers());
 		
-		this.proxyInitializer = new CompositeProxyInitializer<T>(initializers);
+		this.proxyInitializer = new CompositeProxyInitializer<>(initializers);
 
 		// Customized creation of the HistoryDifference items
 		ImmutableMultimap.Builder<FieldPath, IHistoryDifferenceFactory<T>> factoriesMapBuilder = ImmutableMultimap.builder();
@@ -276,7 +276,7 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 	private abstract class AbstractDifferenceFromReferenceGenerator implements IDifferenceFromReferenceGenerator<T> {
 		@Override
 		public Difference<T> diff(T modified, T reference) {
-			return new Difference<T>(reference, modified, createDiffer().compare(modified, reference));
+			return new Difference<>(reference, modified, createDiffer().compare(modified, reference));
 		}
 
 		/**

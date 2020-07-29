@@ -18,8 +18,7 @@ import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.basic.CountLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractComponentFactory;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
+import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.html.navigation.paging.HideableAjaxPagingNavigator;
@@ -179,7 +178,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		dataTable.setItemsPerPage(arg0);
 	}
 	
-	public static class LabelAddInComponentFactory extends AbstractComponentFactory<Component> {
+	public static class LabelAddInComponentFactory implements IComponentFactory<Component> {
 		private static final long serialVersionUID = 7358590231263113101L;
 		
 		private final IModel<?> labelModel;
@@ -195,7 +194,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		}
 	}
 	
-	public static class CountAddInComponentFactory extends AbstractComponentFactory<Component> {
+	public static class CountAddInComponentFactory implements IComponentFactory<Component> {
 		private static final long serialVersionUID = 7358590231263113101L;
 		
 		private final ISequenceProvider<?> sequenceProvider;
@@ -209,13 +208,13 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		
 		@Override
 		public Component create(String wicketId) {
-			IModel<Integer> countModel = new PropertyModel<Integer>(sequenceProvider,
+			IModel<Integer> countModel = new PropertyModel<>(sequenceProvider,
 					CoreWicketMoreBindings.iBindableDataProvider().size().getPath());
 			return new CountLabel(wicketId, countResourceKey, countModel);
 		}
 	}
 	
-	public static class AjaxPagerAddInComponentFactory extends AbstractParameterizedComponentFactory<Component, DecoratedCoreDataTablePanel<?, ?>> {
+	public static class AjaxPagerAddInComponentFactory implements IOneParameterComponentFactory<Component, DecoratedCoreDataTablePanel<?, ?>> {
 		private static final long serialVersionUID = 7358590231263113101L;
 		
 		private final int viewSize;
@@ -233,7 +232,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		}
 	}
 	
-	public static class PagerAddInComponentFactory extends AbstractParameterizedComponentFactory<Component, IPageable> {
+	public static class PagerAddInComponentFactory implements IOneParameterComponentFactory<Component, IPageable> {
 		private static final long serialVersionUID = 7358590231263113101L;
 		
 		private final int viewSize;

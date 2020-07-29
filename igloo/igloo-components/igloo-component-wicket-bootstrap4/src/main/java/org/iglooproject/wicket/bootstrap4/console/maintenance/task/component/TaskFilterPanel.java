@@ -57,7 +57,7 @@ public class TaskFilterPanel extends Panel {
 		};
 		add(filterForm);
 
-		FormComponent<String> name = new TextField<String>("name", queuedTaskHolderDataProvider.getNameModel());
+		FormComponent<String> name = new TextField<>("name", queuedTaskHolderDataProvider.getNameModel());
 		name.setLabel(new ResourceModel("console.maintenance.task.common.name"));
 		name.add(new LabelPlaceholderBehavior());
 		filterForm.add(name);

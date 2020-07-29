@@ -155,7 +155,7 @@ public class ImageServiceImpl implements IImageService {
 			commandLine.addArgument("${originalFilePath}");
 			commandLine.addArgument("${targetFilePath}");
 			
-			Map<String, String> parameters = new HashMap<String, String>();
+			Map<String, String> parameters = new HashMap<>();
 			parameters.put("width", String.valueOf(thumbnailFormat.getWidth()));
 			parameters.put("height", String.valueOf(thumbnailFormat.getHeight()));
 			parameters.put("quality", String.valueOf(thumbnailFormat.getQuality()));

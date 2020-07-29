@@ -109,7 +109,7 @@ public class JQPlotDiscreteKeysDataAdapter<S, K, V extends Number> extends Abstr
 	}
 	
 	private NumberSeries<Integer, V> createSeriesData(S series, Iterable<? extends K> keys) {
-		NumberSeries<Integer, V> seriesData = new NumberSeries<Integer, V>();
+		NumberSeries<Integer, V> seriesData = new NumberSeries<>();
 		int index = 1; // Categories index starts at 1 for jqPlot
 		for (K key : keys) {
 			V value = getValue(series, key);

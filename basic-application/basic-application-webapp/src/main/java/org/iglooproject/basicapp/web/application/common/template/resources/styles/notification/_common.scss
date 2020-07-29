@@ -8,52 +8,41 @@
 
 .container {
 	width: 550px;
-	margin: 20px auto;
-	border: 1px solid #CCCCCC;
-	border-radius: $border-radius;
+	margin: 15px auto;
 }
 
-.main-title {
-	margin: 0;
-	padding: 15px;
-	background: $primary;
-	color: $white;
-	border-bottom: 1px solid darken($primary, 5%);
-	border-radius: $border-radius $border-radius 0 0;
+.card {
+	min-width: 0;
+	height: $card-height;
+	word-wrap: break-word;
+	background-color: #FFFFFF;
+	border: $card-border-width solid #DFDFDF;
 }
 
-.title {
-	margin: 0;
-	padding: 10px 15px;
-	background: #EEEEEE;
-	color: #666;
-	border-bottom: 1px solid #CCCCCC;
+.card-header {
+	padding: $card-spacer-y $card-spacer-x;
+	margin-bottom: 0;
+	color: $card-cap-color;
+	background-color: #F7F7F7;
+	border-bottom: $card-border-width solid #D8D8D8;
+	
+	&.card-header-main {
+		padding: add($card-spacer-y, .25rem);
+		background-color: #007BFF;
+		border-bottom: $card-border-width solid #006CDF;
+		color: color-yiq($primary);
+	}
 }
 
-.content {
-	padding: 15px;
-	background: $white;
+.card-body {
+	padding: $card-spacer-x;
+	color: $card-color;
 	min-height: 120px;
 }
 
-.main-link-container {
-	text-align: center;
-	margin-top: 5px;
-}
-
-.footer {
-	padding: 10px 15px;
-	background-color: $secondary;
-	border-top: 1px solid #CCCCCC;
-	border-radius: 0 0 $border-radius $border-radius;
-}
-
-.intro {
-	margin-top: 0;
-	@extend .alert;
-	@extend .alert-info;
-}
-
-.help {
-	color: #6c757d;
+.card-footer {
+	padding: $card-spacer-y $card-spacer-x;
+	color: $card-cap-color;
+	background-color: #F7F7F7;
+	border-top: $card-border-width solid #D8D8D8;
 }

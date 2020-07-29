@@ -3,7 +3,6 @@ package org.iglooproject.basicapp.web.application;
 import java.util.Locale;
 
 import org.apache.wicket.Application;
-import org.apache.wicket.Component;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
@@ -67,7 +66,6 @@ import org.iglooproject.wicket.bootstrap4.console.template.ConsoleConfiguration;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractComponentFactory;
 import org.iglooproject.wicket.more.markup.html.pages.monitoring.DatabaseMonitoringPage;
 import org.iglooproject.wicket.more.rendering.BooleanRenderer;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;
@@ -189,33 +187,9 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console", propertyService);
 		consoleConfiguration.addCssResourceReference(ConsoleScssResourceReference.get());
 		consoleConfiguration.addConsoleAccessCssResourceReference(ConsoleAccessScssResourceReference.get());
-		consoleConfiguration.setConsoleAccessHeaderAdditionalContentComponentFactory(
-			new AbstractComponentFactory<Component>() {
-				private static final long serialVersionUID = 1L;
-				@Override
-				public Component create(String wicketId) {
-					return new ConsoleAccessHeaderAdditionalContentPanel(wicketId);
-				}
-			}
-		);
-		consoleConfiguration.setConsoleHeaderEnvironmentComponentFactory(
-			new AbstractComponentFactory<Component>() {
-				private static final long serialVersionUID = 1L;
-				@Override
-				public Component create(String wicketId) {
-					return new ConsoleHeaderEnvironmentPanel(wicketId);
-				}
-			}
-		);
-		consoleConfiguration.setConsoleHeaderAdditionalContentComponentFactory(
-			new AbstractComponentFactory<Component>() {
-				private static final long serialVersionUID = 1L;
-				@Override
-				public Component create(String wicketId) {
-					return new ConsoleHeaderAdditionalContentPanel(wicketId);
-				}
-			}
-		);
+		consoleConfiguration.setConsoleAccessHeaderAdditionalContentComponentFactory(ConsoleAccessHeaderAdditionalContentPanel::new);
+		consoleConfiguration.setConsoleHeaderEnvironmentComponentFactory(ConsoleHeaderEnvironmentPanel::new);
+		consoleConfiguration.setConsoleHeaderAdditionalContentComponentFactory(ConsoleHeaderAdditionalContentPanel::new);
 		
 		ConsoleMenuSection notificationMenuSection = new ConsoleMenuSection(
 			"notificationsMenuSection",

@@ -36,7 +36,7 @@ public enum TaskStatus {
 	
 	public static List<String> getValuesAsStringList() {
 		List<TaskStatus> taskStatusList = Arrays.asList(values());
-		List<String> taskStatusStringList = new ArrayList<String>();
+		List<String> taskStatusStringList = new ArrayList<>();
 
 		for (TaskStatus taskStatus : taskStatusList) {
 			taskStatusStringList.add(taskStatus.toString());

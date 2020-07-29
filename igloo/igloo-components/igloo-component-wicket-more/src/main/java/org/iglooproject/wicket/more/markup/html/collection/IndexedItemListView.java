@@ -35,7 +35,7 @@ public abstract class IndexedItemListView<T>
 	}
 	
 	private ListItemModel<T> newItemModel(int index) {
-		return new ListItemModel<T>(getModel(), index);
+		return new ListItemModel<>(getModel(), index);
 	}
 
 	@Override

@@ -73,7 +73,7 @@ public final class CollectionUtils {
 	 * @return A list containing the elements of source that are not in filter, using <code>equivalence</code> to distinguish different elements.
 	 */
 	public static <T> List<T> difference(Iterable<? extends T> source, Iterable<? extends T> filter, Equivalence<? super T> equivalence) {
-		final List<T> result = new LinkedList<T>();
+		final List<T> result = new LinkedList<>();
 		if (source != null && filter != null) {
 			sourceLoop: for (T sourceElement : source) {
 				for (T filterElement : filter) {
@@ -94,7 +94,7 @@ public final class CollectionUtils {
 	 * @return A list containing the elements of source that are also in filter, using <code>equivalence</code> to distinguish different elements.
 	 */
 	public static <T> List<T> intersection(Iterable<? extends T> source, Iterable<? extends T> filter, Equivalence<? super T> equivalence) {
-		final List<T> result = new LinkedList<T>();
+		final List<T> result = new LinkedList<>();
 		if (source != null && filter != null) {
 			sourceLoop: for (T sourceElement : source) {
 				for (T filterElement : filter) {

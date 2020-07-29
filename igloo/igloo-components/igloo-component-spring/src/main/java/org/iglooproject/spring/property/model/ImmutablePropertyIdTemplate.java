@@ -15,7 +15,7 @@ public final class ImmutablePropertyIdTemplate<T> extends PropertyIdTemplate<T, 
 
 	@Override
 	protected ImmutablePropertyId<T> create(String key) {
-		return new ImmutablePropertyId<T>(this, key);
+		return new ImmutablePropertyId<>(this, key);
 	}
 
 }

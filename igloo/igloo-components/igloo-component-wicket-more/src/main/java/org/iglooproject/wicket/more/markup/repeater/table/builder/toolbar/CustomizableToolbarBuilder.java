@@ -4,14 +4,9 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
-
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Lists;
-
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
@@ -21,6 +16,9 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.toolbar.state.
 import org.iglooproject.wicket.more.markup.repeater.table.builder.toolbar.state.IToolbarElementState;
 import org.iglooproject.wicket.more.markup.repeater.table.toolbar.CoreCustomizableToolbar;
 import org.iglooproject.wicket.more.util.model.Detachables;
+
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
 
 public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolbarElementState<T, S> {
 
@@ -130,7 +128,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 
 	@Override
 	public IAddedToolbarLabelElementState<T, S> addLabel(final IModel<String> model) {
-		CustomizableToolbarElementBuilder<T, S> elementBuilder = new CustomizableToolbarElementBuilder<T, S>(
+		CustomizableToolbarElementBuilder<T, S> elementBuilder = new CustomizableToolbarElementBuilder<>(
 				getPreviousColspan(builders.size()),
 				new CustomizableToolbarLabelElementDelegateFactory<T, S>(model)
 		);
@@ -139,7 +137,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 	}
 
 	public static class CustomizableToolbarLabelElementDelegateFactory<T, S extends ISort<?>>
-			extends AbstractParameterizedComponentFactory<Component, CoreDataTable<T, S>> {
+			implements IOneParameterComponentFactory<Component, CoreDataTable<T, S>> {
 		private static final long serialVersionUID = 1L;
 		
 		private final IModel<String> model;
@@ -156,14 +154,13 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 		
 		@Override
 		public void detach() {
-			super.detach();
 			Detachables.detach(model);
 		}
 	}
 
 	@Override
 	public IAddedToolbarCoreElementState<T, S> addComponent(IOneParameterComponentFactory<Component, CoreDataTable<T, S>> delegateFactory) {
-		CustomizableToolbarElementBuilder<T, S> elementBuilder = new CustomizableToolbarElementBuilder<T, S>(
+		CustomizableToolbarElementBuilder<T, S> elementBuilder = new CustomizableToolbarElementBuilder<>(
 				getPreviousColspan(builders.size()), delegateFactory
 		);
 		builders.add(elementBuilder);
@@ -182,7 +179,7 @@ public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolb
 	}
 
 	public CoreCustomizableToolbar<T, S> build(final CoreDataTable<T, S> table) {
-		CoreCustomizableToolbar<T, S> component = new CoreCustomizableToolbar<T, S>(table, builders);
+		CoreCustomizableToolbar<T, S> component = new CoreCustomizableToolbar<>(table, builders);
 		if (hideIfEmpty) {
 			component.add(
 					Condition.isNotEmpty(table.getSequenceProvider()).thenShow()

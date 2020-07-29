@@ -12,7 +12,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.util.tester.TagTester;
 import org.apache.wicket.util.visit.IVisitor;
-import org.iglooproject.basicapp.web.application.common.template.theme.basic.NavbarPanel;
+import org.iglooproject.basicapp.web.application.common.template.theme.advanced.SidebarMenuPanel;
 import org.iglooproject.basicapp.web.application.navigation.page.HomePage;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -66,37 +66,37 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
 		
-		TagTester tagTester = TagTester.createTagByAttribute(tester.getLastResponse().getDocument(), "class", "footer-section");
+		TagTester tagTester = TagTester.createTagByAttribute(tester.getLastResponse().getDocument(), "class", "sidebar-footer");
 		assertEquals("Logo Igloo", tagTester.getChild("img").getAttribute("alt"));
 	}
 
 	@Test
-	public void navbarUserAuthenticated() throws ServiceException, SecurityServiceException {
+	public void sidebarMenuUserAuthenticated() throws ServiceException, SecurityServiceException {
 		authenticateUser(basicUser);
 		
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
 		
-		navBar(1);
+		sidebarMenu(1);
 	}
 
 	@Test
-	public void navbarUserAdmin() throws ServiceException, SecurityServiceException {
+	public void sidebarMenuUserAdmin() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
 		
-		navBar(8);
+		sidebarMenu(8);
 	}
 
-	private void navBar(int nbExpectedItems) {
-		tester.assertVisible("navbar", NavbarPanel.class);
+	private void sidebarMenu(int nbExpectedItems) {
+		tester.assertVisible("sidebar:menu", SidebarMenuPanel.class);
 		
 		final MutableInt countVisibleItems = new MutableInt(0);
-		tester.assertVisible("navbar:navbarNavContainer:navbarNavItems", ListView.class);
+		tester.assertVisible("sidebar:menu:sidenavContainer:sidenavItems", ListView.class);
 		@SuppressWarnings("unchecked")
-		ListView<NavigationMenuItem> menuItems = (ListView<NavigationMenuItem>) tester.getComponentFromLastRenderedPage("navbar:navbarNavContainer:navbarNavItems");
+		ListView<NavigationMenuItem> menuItems = (ListView<NavigationMenuItem>) tester.getComponentFromLastRenderedPage("sidebar:menu:sidenavContainer:sidenavItems");
 		
 		menuItems.visitChildren(ListItem.class, (IVisitor<ListItem<NavigationMenuItem>, Void>) (object, visit) -> {
 			if (!(object.getModelObject() instanceof NavigationMenuItem)) {
@@ -112,12 +112,12 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 			}
 		});
 		
-		int countAccessibleItems = navBarComponents(NavbarItem.menu(), "navbar:navbarNavContainer:navbarNavItems");
+		int countAccessibleItems = sidebarMenuComponents(NavbarItem.menu(), "sidebar:menu:sidenavContainer:sidenavItems");
 		assertEquals(nbExpectedItems, countAccessibleItems);
 		assertEquals(nbExpectedItems, countVisibleItems.getValue().intValue());
 	}
 
-	private int navBarComponents(List<NavbarItem> menu, String pathToMenu) {
+	private int sidebarMenuComponents(List<NavbarItem> menu, String pathToMenu) {
 		int nbItems = 0;
 		int itemIndex = 0;
 		
@@ -137,8 +137,8 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 				++nbItems;
 				
 				// SubMenu
-				String subMenuPath = pathToMenu + ":" + itemIndex + ":navbarNavSubContainer:navbarNavSubItems";
-				nbItems += navBarComponents(NavbarItem.submenu(menuItem), subMenuPath);
+				String subMenuPath = pathToMenu + ":" + itemIndex + ":sidenavSubContainer:sidenavSubItems";
+				nbItems += sidebarMenuComponents(NavbarItem.submenu(menuItem), subMenuPath);
 				
 				++itemIndex;
 			}

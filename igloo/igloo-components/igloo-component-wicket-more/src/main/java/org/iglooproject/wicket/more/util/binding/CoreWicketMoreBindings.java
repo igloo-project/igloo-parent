@@ -15,7 +15,7 @@ public final class CoreWicketMoreBindings {
 
 	private static final IBindableDataProviderBinding IBINDABLE_DATA_PROVIDER = new IBindableDataProviderBinding();
 
-	private static final ListBinding<?> LIST = new ListBinding<Void>();
+	private static final ListBinding<?> LIST = new ListBinding<>();
 
 	private static final MediaTypeBinding MEDIA_TYPE = new MediaTypeBinding();
 

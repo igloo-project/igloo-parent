@@ -42,4 +42,8 @@ public class SecurityUtils {
 		}
 		return builder.toString();
 	}
+
+	private SecurityUtils() {
+	}
+
 }

@@ -40,13 +40,13 @@ public class ExtendedCollectionDiffer extends AbstractContainerDiffer {
 		);
 	}
 	
-	public <T> ExtendedCollectionDiffer addIndexStrategy(
+	public ExtendedCollectionDiffer addIndexStrategy(
 			Predicate2<? super DiffNode> predicate) {
 		addIndexStrategy(predicate, ItemContentComparisonStrategy.deep());
 		return this;
 	}
 	
-	public <T> ExtendedCollectionDiffer addIndexStrategy(
+	public ExtendedCollectionDiffer addIndexStrategy(
 			Predicate2<? super DiffNode> predicate, ItemContentComparisonStrategy itemContentComparisonStrategy) {
 		addStrategy(predicate, new CollectionDifferIndexStrategy<>(itemContentComparisonStrategy));
 		return this;

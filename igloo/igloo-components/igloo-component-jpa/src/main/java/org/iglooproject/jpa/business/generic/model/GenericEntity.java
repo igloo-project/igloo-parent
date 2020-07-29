@@ -35,17 +35,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.MoreObjects.ToStringHelper;
 import com.google.common.collect.Ordering;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryType;
 
-/**
- * <p>Entité racine pour la persistence des objets via JPA.</p>
- *
- * @author Open Wide
- *
- * @param <E> type de l'entité
- */
 @MappedSuperclass
 public abstract class GenericEntity<K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
 		implements Serializable, Comparable<E>, IReferenceable<E>, IGenericEntityBindingInterface {
@@ -70,39 +65,21 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	public static final Ordering<String> STRING_COLLATOR_ENGLISH = LocaleUtils.initCollator(Locale.ENGLISH);
 	public static final Ordering<String> STRING_COLLATOR_ROOT = LocaleUtils.initCollator(Locale.ROOT);
 
-	@Deprecated
-	public static final Ordering<String> DEFAULT_STRING_COLLATOR = STRING_COLLATOR_FRENCH; // French should not be considered as default locale.
-
 	@Override
 	@Transient
 	@SuppressWarnings("unchecked")
 	public GenericEntityReference<K, E> asReference() {
-		return GenericEntityReference.of((E)this);
+		return GenericEntityReference.of((E) this);
 	}
 
-	/**
-	 * Retourne la valeur de l'identifiant unique.
-	 * 
-	 * @return id
-	 */
 	@Override
 	@QueryType(PropertyType.COMPARABLE)
 	@Field(name = ID_SORT, analyze = Analyze.NO)
 	@SortableField(forField = ID_SORT)
 	public abstract K getId();
 
-	/**
-	 * Définit la valeur de l'identifiant unique.
-	 * 
-	 * @param id id
-	 */
 	public abstract void setId(K id);
-	
-	/**
-	 * Indique si l'objet a déjà été persisté ou non
-	 * 
-	 * @return vrai si l'objet n'a pas encore été persisté
-	 */
+
 	@Override
 	@JsonIgnore
 	@Transient
@@ -124,14 +101,14 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 		if (GET_CLASS_FUNCTION.apply(object) != GET_CLASS_FUNCTION.apply(this)) {
 			return false;
 		}
-
-		GenericEntity<K, E> entity = (GenericEntity<K, E>) object; // NOSONAR : traité au-dessus mais wrapper Hibernate 
+		
+		GenericEntity<K, E> entity = (GenericEntity<K, E>) object; // NOSONAR
 		K id = getId();
-
+		
 		if (id == null) {
 			return false;
 		}
-
+		
 		return id.equals(entity.getId());
 	}
 
@@ -141,7 +118,7 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 		
 		K id = getId();
 		hash = 31 * hash + ((id == null) ? 0 : id.hashCode());
-
+		
 		return hash;
 	}
 
@@ -150,45 +127,32 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 		if (this == right) {
 			return 0;
 		}
+		
 		K leftId = getId();
 		K rightId = right.getId();
+		
 		if (leftId == null && rightId == null) {
 			throw new IllegalArgumentException("Cannot compare two different entities with null IDs");
 		}
+		
 		return DEFAULT_KEY_ORDERING.compare(leftId, rightId);
 	}
 
+	/**
+	 * DO NOT OVERRIDE THIS METHOD UNLESS YOU HAVE A VERY GOOD REASON FOR IT.
+	 * Override {@link #toStringHelper()} instead.
+	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("entity.");
-		builder.append(GET_CLASS_FUNCTION.apply(this).getSimpleName());
-		builder.append("<");
-		builder.append(getId());
-		builder.append("-");
-		builder.append(getNameForToString());
-		builder.append(">");
-		
-		return builder.toString();
+		return toStringHelper().toString();
 	}
-	
-	/**
-	 * Retourne l'élément de chaîne qui va être injecté dans le toString() de l'objet : faire en sorte que cela permette
-	 * de l'identifier.
-	 *  
-	 * @return chaîne à injecter dans le toString()
-	 */
-	@JsonIgnore
-	public abstract String getNameForToString();
 
-	/**
-	 * Retourne le nom à afficher.
-	 * 
-	 * @return nom à afficher
-	 */
 	@JsonIgnore
-	public abstract String getDisplayName();
-	
+	protected ToStringHelper toStringHelper() {
+		return MoreObjects.toStringHelper(GET_CLASS_FUNCTION.apply(this).getSimpleName())
+			.add("id", getId());
+	}
+
 	/**
 	 * Add a simple way to track unwanted entity serializations.
 	 * <p>Note that, in some cases we <strong>do</strong> want to serialize persisted entities, for instance
@@ -206,6 +170,7 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 
 	static {
 		boolean hibernateAvailable = false;
+		
 		try {
 			Class.forName("org.hibernate.Hibernate");
 			hibernateAvailable = true;
@@ -217,6 +182,7 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 				LOGGER.debug("org.hibernate.Hibernate loading failed", e);
 			}
 		}
+		
 		if (hibernateAvailable) {
 			GET_CLASS_FUNCTION = Hibernate::getClass;
 			IMPLEMENTATION = GenericEntityImplementation.HIBERNATE;

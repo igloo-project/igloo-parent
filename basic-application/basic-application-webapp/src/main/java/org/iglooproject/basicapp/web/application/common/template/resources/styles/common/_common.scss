@@ -115,11 +115,14 @@ body {
 	&.announcements-section {
 		@include bg($warning);
 	}
-
 }
 
 .divider {
 	&.divider-middle {
 		width: 60%;
+	}
+	
+	&.divider-light {
+		border-style: dotted;
 	}
 }

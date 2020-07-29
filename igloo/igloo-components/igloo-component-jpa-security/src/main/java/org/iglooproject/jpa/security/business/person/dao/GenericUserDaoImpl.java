@@ -28,14 +28,14 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 	
 	protected BeanPath<U> getEntityPath() {
 		// obtention d'un mapper querydsl branché à l'implémentation concrète
-		return new BeanPath<U>(getObjectClass(), QGenericUser.genericUser.getMetadata());
+		return new BeanPath<>(getObjectClass(), QGenericUser.genericUser.getMetadata());
 	}
 	
 	@Override
 	public List<String> listActiveUsernames() {
 		QGenericUser qUser = new QGenericUser(getEntityPath());
 		
-		JPQLQuery<String> query = new JPAQuery<String>(getEntityManager());
+		JPQLQuery<String> query = new JPAQuery<>(getEntityManager());
 		
 		query.select(qUser.username)
 				.from(qUser)
@@ -47,7 +47,7 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
 	
 	@Override
 	public Long countActive() {
-		PathBuilder<U> qEntity = new PathBuilder<U>(getObjectClass(), "rootAlias");
+		PathBuilder<U> qEntity = new PathBuilder<>(getObjectClass(), "rootAlias");
 		QGenericUser qEntityAsGenericUser = new QGenericUser(qEntity);
 		return countByField(qEntity, qEntityAsGenericUser.active, true);
 	}

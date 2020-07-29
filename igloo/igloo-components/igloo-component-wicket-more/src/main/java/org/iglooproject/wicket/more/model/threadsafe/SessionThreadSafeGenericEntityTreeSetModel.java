@@ -16,12 +16,12 @@ public class SessionThreadSafeGenericEntityTreeSetModel<K extends Serializable &
 
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 			SessionThreadSafeGenericEntityTreeSetModel<K, E> of(Class<E> clazz) {
-		return new SessionThreadSafeGenericEntityTreeSetModel<K, E>(clazz, Suppliers2.<E>treeSet());
+		return new SessionThreadSafeGenericEntityTreeSetModel<>(clazz, Suppliers2.<E>treeSet());
 	}
 
 	public static <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>>
 			SessionThreadSafeGenericEntityTreeSetModel<K, E> of(Class<E> clazz, Comparator<? super E> comparator) {
-		return new SessionThreadSafeGenericEntityTreeSetModel<K, E>(clazz, Suppliers2.<E>treeSet(comparator));
+		return new SessionThreadSafeGenericEntityTreeSetModel<>(clazz, Suppliers2.<E>treeSet(comparator));
 	}
 
 	public SessionThreadSafeGenericEntityTreeSetModel(Class<E> clazz, SerializableSupplier2<? extends TreeSet<E>> newCollectionSupplier) {

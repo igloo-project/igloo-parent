@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,8 @@ import org.iglooproject.sass.jsass.JSassClassPathImporter;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Stopwatch;
 
 import io.bit3.jsass.CompilationException;
 import io.bit3.jsass.Compiler;
@@ -63,7 +66,11 @@ public class ScssServiceImpl implements IScssService {
 			String compiledOutput = output.getCss();
 			
 			if (configurationProvider.isAutoprefixerEnabled()) {
+				LOGGER.debug("Autoprefixer start for {} ({})", scope, path);
+				Stopwatch stopwatch = Stopwatch.createStarted();
 				compiledOutput = Autoprefixer.simple().process(compiledOutput);
+				stopwatch.stop();
+				LOGGER.debug("Autoprefixer end for {} ({}) : {} ms", scope, path, stopwatch.elapsed(TimeUnit.MILLISECONDS));
 			}
 			
 			// Write result

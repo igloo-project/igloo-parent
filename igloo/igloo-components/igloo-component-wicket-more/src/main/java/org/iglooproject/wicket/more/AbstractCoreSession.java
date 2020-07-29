@@ -56,7 +56,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	@SpringBean(name="propertyService")
 	protected IPropertyService propertyService;
 	
-	private final IModel<U> userModel = new SessionThreadSafeGenericEntityModel<Long, U>();
+	private final IModel<U> userModel = new SessionThreadSafeGenericEntityModel<>();
 	
 	private final IModel<Locale> localeModel = new IModel<Locale>() {
 		private static final long serialVersionUID = -4356509005738585888L;
@@ -265,16 +265,6 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 			isSuperUserInitialized = true;
 		}
 		return isSuperUser;
-	}
-
-	/**
-	 * @deprecated since Wicket 8, this method is an alias for invalidate().
-	 * Use directly {@link Session#invalidate()} instead.
-	 */
-	@Deprecated
-	@Override
-	public void signOut() {
-		invalidate();
 	}
 
 	/**

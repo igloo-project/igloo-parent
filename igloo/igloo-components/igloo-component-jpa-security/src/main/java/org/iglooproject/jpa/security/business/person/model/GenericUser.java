@@ -37,6 +37,7 @@ import org.iglooproject.jpa.security.business.person.util.AbstractPersonGroupCom
 import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.MoreObjects.ToStringHelper;
 import com.google.common.collect.Sets;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryType;
@@ -98,7 +99,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@JsonIgnore
 	@ManyToMany
 	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-	private Set<Authority> authorities = new LinkedHashSet<Authority>();
+	private Set<Authority> authorities = new LinkedHashSet<>();
 	
 	@ManyToMany
 	@JoinTable(uniqueConstraints = { @UniqueConstraint(columnNames = { "persons_id", "groups_id" }) })
@@ -242,16 +243,13 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 		if(this.equals(user)) {
 			return 0;
 		}
-		return DEFAULT_STRING_COLLATOR.compare(this.getUsername(), user.getUsername());
+		return STRING_COLLATOR_FRENCH.compare(this.getUsername(), user.getUsername());
 	}
 
 	@Override
-	public String getNameForToString() {
-		return getUsername();
+	protected ToStringHelper toStringHelper() {
+		return super.toStringHelper()
+			.add("username", getUsername());
 	}
 
-	@Override
-	public String getDisplayName() {
-		return getUsername();
-	}
 }

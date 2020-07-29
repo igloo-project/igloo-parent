@@ -147,7 +147,7 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 			List<String> ignoredConfigurations = Lists.newArrayList();
 			MutablePropertySources sources = new MutablePropertySources();
 			boolean hasSource = false;
-			List<String> propertyNames = new ArrayList<String>();
+			List<String> propertyNames = new ArrayList<>();
 			for (String location : log4jLocations) {
 				if (applicationContext.getResource(location).exists()) {
 					loadedConfigurations.add(location);

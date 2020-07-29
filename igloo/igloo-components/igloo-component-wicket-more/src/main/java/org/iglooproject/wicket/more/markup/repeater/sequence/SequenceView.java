@@ -37,7 +37,7 @@ public abstract class SequenceView<T> extends AbstractPageableView<T> implements
 	
 	@Override
 	protected Iterator<IModel<T>> getItemModels(long offset, long size) {
-		return new ExactTypeIterator<IModel<T>>(sequenceProvider.iterator(offset, size));
+		return new ExactTypeIterator<>(sequenceProvider.iterator(offset, size));
 	}
 	
 	private static class ExactTypeIterator<T> implements Iterator<T>  {

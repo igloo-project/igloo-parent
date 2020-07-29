@@ -17,5 +17,4 @@ public interface IConfirmLinkBuilderStepOnclick<L extends AbstractLink, O> {
 
 	IConfirmLinkBuilderStepTerminal<L, O> onClick(IAction onClick);
 
-
 }

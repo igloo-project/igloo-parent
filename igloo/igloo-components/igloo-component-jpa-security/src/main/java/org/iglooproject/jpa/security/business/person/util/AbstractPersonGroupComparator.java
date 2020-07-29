@@ -16,7 +16,7 @@ public class AbstractPersonGroupComparator extends AbstractGenericEntityComparat
 	
 	@Override
 	protected int compareNotNullObjects(GenericUserGroup<?, ?> left, GenericUserGroup<?, ?> right) {
-		int order = GenericEntity.DEFAULT_STRING_COLLATOR.compare(left.getName(), right.getName());
+		int order = GenericEntity.STRING_COLLATOR_FRENCH.compare(left.getName(), right.getName());
 		if (order == 0) {
 			order = super.compareNotNullObjects(left, right);
 		}

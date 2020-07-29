@@ -13,8 +13,7 @@ import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.base.MoreObjects;
+import com.google.common.base.MoreObjects.ToStringHelper;
 
 @MappedSuperclass
 @Bindable
@@ -125,17 +124,9 @@ public abstract class GenericReferenceData<E extends GenericReferenceData<?, ?>,
 	}
 
 	@Override
-	@JsonIgnore
-	public String getNameForToString() {
-		return MoreObjects.toStringHelper(this)
-				.add("label", getLabel())
-				.toString();
-	}
-
-	@Override
-	@JsonIgnore
-	public String getDisplayName() {
-		return toString();
+	protected ToStringHelper toStringHelper() {
+		return super.toStringHelper()
+			.add("label", getLabel());
 	}
 
 }

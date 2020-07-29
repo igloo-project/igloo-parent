@@ -1,47 +1,22 @@
 /*
  * CAUTION: this stylesheet is intended for integration to an e-mail notification through the use of
- *          IHtmlNotificationCssService. This service only offers PARTIAL support of the CSS syntax.
- *          Please only use simple CSS selectors, such as 'a.btn#theonebutton'. In particular, combinators
- *          such as ' ', '>', '+' are NOT supported. Pseudo-classes and pseudo-elements (:first-child, ::after)
- *          are not supported either.
+ *					IHtmlNotificationCssService. This service only offers PARTIAL support of the CSS syntax.
+ *					Please only use simple CSS selectors, such as 'a.btn#theonebutton'. In particular, combinators
+ *					such as ' ', '>', '+' are NOT supported. Pseudo-classes and pseudo-elements (:first-child, ::after)
+ *					are not supported either.
  */
 
 table {
 	width: 100%;
-	border-right: 1px solid $table-border-color;
-	border-bottom: 1px solid $table-border-color;
+	margin-bottom: $spacer;
+	color: $table-color;
 	background-color: $table-bg;
-	border-spacing: 0;
-	border-collapse: separate;
+	border: $table-border-width solid $table-border-color;
 }
 
-// Baseline styles
-
-td, th {
-	font-family: $font-family-base;
-	font-size: $font-size-base;
-	line-height: $line-height-base;
-	
-	border-left: 1px solid $table-border-color;
-	border-top: 1px solid $table-border-color;
+th,
+td {
 	padding: $table-cell-padding;
 	vertical-align: top;
-	text-align: left;
-	
-	&.top-left {
-	}
-	
-	&.top-right {
-	}
-	
-	&.bottom-left {
-	}
-	
-	&.bottom-right {
-	}
-}
-
-th {
-	vertical-align: bottom;
-	font-weight: bold;
+	border: $table-border-width solid $table-border-color;
 }

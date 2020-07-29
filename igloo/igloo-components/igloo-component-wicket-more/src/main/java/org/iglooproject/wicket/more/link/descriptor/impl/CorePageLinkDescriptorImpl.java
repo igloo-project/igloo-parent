@@ -14,12 +14,6 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -35,6 +29,11 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkPara
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 import org.iglooproject.wicket.more.util.model.Models;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 
 public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameterizedLinkDescriptor implements IPageLinkDescriptor {
 	
@@ -62,7 +61,7 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 		if (pageClass == null) {
 			throw new LinkInvalidTargetRuntimeException("The target page of this ILinkDescriptor was null");
 		}
-		if (! bypassPermissions) {
+		if (!bypassPermissions) {
 			if (!Session.get().getAuthorizationStrategy().isInstantiationAuthorized(pageClass)) {
 				throw new LinkInvalidTargetRuntimeException("The instantiation of the target page class '" + pageClass
 						+ "' was not authorized when trying to render the URL.");
@@ -236,7 +235,6 @@ public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameter
 	/**
 	 * @see IPageLinkGenerator#bypassPermissions()
 	 */
-	@Deprecated
 	@Override
 	public IPageLinkGenerator bypassPermissions() {
 		bypassPermissions = true;

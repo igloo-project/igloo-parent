@@ -76,7 +76,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@OrderBy("name")
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-	private Set<Authority> authorities = new LinkedHashSet<Authority>();
+	private Set<Authority> authorities = new LinkedHashSet<>();
 	
 	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
 	private String description;
@@ -110,11 +110,6 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	@Override
-	public String getDisplayName() {
-		return this.getName();
 	}
 	
 	@Override
@@ -161,12 +156,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 		if(this == group) {
 			return 0;
 		}
-		return DEFAULT_STRING_COLLATOR.compare(this.getName(), group.getName());
-	}
-
-	@Override
-	public String getNameForToString() {
-		return getName();
+		return STRING_COLLATOR_FRENCH.compare(this.getName(), group.getName());
 	}
 
 }

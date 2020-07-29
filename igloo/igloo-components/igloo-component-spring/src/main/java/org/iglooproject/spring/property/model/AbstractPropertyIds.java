@@ -19,28 +19,28 @@ public abstract class AbstractPropertyIds {
 	
 	public static <T> ImmutablePropertyId<T> immutable(String key) {
 		PropertyRegistryKeyClassDeclaration declaration = getDeclaration();
-		ImmutablePropertyId<T> id = new ImmutablePropertyId<T>(declaration, key);
+		ImmutablePropertyId<T> id = new ImmutablePropertyId<>(declaration, key);
 		declaration.addKey(id);
 		return id;
 	}
 	
 	public static <T> MutablePropertyId<T> mutable(String key) {
 		PropertyRegistryKeyClassDeclaration declaration = getDeclaration();
-		MutablePropertyId<T> id = new MutablePropertyId<T>(declaration, key);
+		MutablePropertyId<T> id = new MutablePropertyId<>(declaration, key);
 		declaration.addKey(id);
 		return id;
 	}
 	
 	public static <T> ImmutablePropertyIdTemplate<T> immutableTemplate(String key) {
 		PropertyRegistryKeyClassDeclaration declaration = getDeclaration();
-		ImmutablePropertyIdTemplate<T> template = new ImmutablePropertyIdTemplate<T>(declaration, key);
+		ImmutablePropertyIdTemplate<T> template = new ImmutablePropertyIdTemplate<>(declaration, key);
 		declaration.addKey(template);
 		return template;
 	}
 	
 	public static <T> MutablePropertyIdTemplate<T> mutableTemplate(String key) {
 		PropertyRegistryKeyClassDeclaration declaration = getDeclaration();
-		MutablePropertyIdTemplate<T> template = new MutablePropertyIdTemplate<T>(declaration, key);
+		MutablePropertyIdTemplate<T> template = new MutablePropertyIdTemplate<>(declaration, key);
 		declaration.addKey(template);
 		return template;
 	}

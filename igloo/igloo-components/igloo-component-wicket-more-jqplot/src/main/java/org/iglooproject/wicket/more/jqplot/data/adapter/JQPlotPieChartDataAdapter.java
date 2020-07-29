@@ -63,7 +63,7 @@ public class JQPlotPieChartDataAdapter<S, K, V extends Number & Comparable<V>>
 	}
 	
 	private StringNumberSeries<V> createSeriesData(Locale locale, S series, Iterable<? extends K> keys) {
-		StringNumberSeries<V> seriesData = new StringNumberSeries<V>();
+		StringNumberSeries<V> seriesData = new StringNumberSeries<>();
 		for (K key : keys) {
 			V value = getValue(series, key);
 			seriesData.addEntry(keyRenderer.render(key, locale), value);

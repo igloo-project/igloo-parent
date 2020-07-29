@@ -16,7 +16,7 @@ public abstract class OddEvenListView<T> extends ListView<T> {
 
 	@Override
 	protected ListItem<T> newItem(final int index, IModel<T> itemModel) {
-		return new OddEvenListItem<T>(index, itemModel);
+		return new OddEvenListItem<>(index, itemModel);
 	}
 
 }

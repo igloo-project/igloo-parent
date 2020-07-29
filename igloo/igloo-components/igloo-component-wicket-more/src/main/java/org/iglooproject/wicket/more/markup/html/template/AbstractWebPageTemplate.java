@@ -23,8 +23,6 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 
 	private static final long serialVersionUID = -5598937641577320345L;
 	
-	@Deprecated
-	public static final String BOOTSTRAP3_VARIATION = "bs3";
 	public static final String BOOTSTRAP4_VARIATION = "bs4";
 	
 	protected static final String DEFAULT_HEAD_PAGE_TITLE_SEPARATOR = " › ";
@@ -70,7 +68,7 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 			Class<? extends Page> pageClass,
 			PageParameters parameters,
 			boolean isVisible) {
-		BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>(name + "MenuLink", pageClass, parameters);
+		BookmarkablePageLink<Void> link = new BookmarkablePageLink<>(name + "MenuLink", pageClass, parameters);
 		link.setVisible(isVisible && isPageAccessible(pageClass));
 		
 		MarkupContainer container = new WebMarkupContainer(name + "MenuLinkContainer");
@@ -87,7 +85,7 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 	protected abstract Class<? extends WebPage> getSecondMenuPage();
 	
 	private static IModel<List<BreadCrumbElement>> newBreadCrumbListModel() {
-		return new ListModel<BreadCrumbElement>(new ArrayList<BreadCrumbElement>());
+		return new ListModel<>(new ArrayList<BreadCrumbElement>());
 	}
 	
 	/** Add a breadcrumb element to be preprended to HTML head title only (not to HTML body breadcrumb)

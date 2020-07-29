@@ -2,58 +2,48 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<h2 class="title">
+		<h2 class="card-header">
 			<wicket:message key="notification.panel.example.title" />
 		</h2>
 		
-		<div class="content">
-			<p wicket:id="intro" class="intro" />
+		<div class="card-body">
+			<div wicket:id="intro" class="alert alert-warning">
+				<wicket:message key="notification.panel.example.intro">
+					<span wicket:id="user" class="font-weight-bold" />
+					<span wicket:id="date" class="font-weight-bold" />
+					<span wicket:id="time" class="font-weight-bold" />
+				</wicket:message>
+			</div>
 			
-			<wicket:message key="notification.panel.example.text" />
+			<p><wicket:message key="notification.panel.example.text" /></p>
 			
-			<p class="main-link-container">
+			<p class="text-center">
 				<a wicket:id="mainLink" class="btn btn-primary">
 					<wicket:message key="notification.panel.example.link.label" />
 				</a>
 			</p>
 			
-			<table class="table table-bordered" wicket:id="propertiesTable">
+			<table class="mb-0">
 				<tbody>
 					<tr>
-						<th wicket:id="username">
-							<wicket:message key="business.user.username" />
-						</th>
-						<td wicket:id="usernameValue">
-							<a wicket:id="userLink" />
-						</td>
+						<th><wicket:message key="business.user.username" /></th>
+						<td><a wicket:id="userLink" /></td>
 					</tr>
-					
 					<tr>
-						<th wicket:id="lastname">
-							<wicket:message key="business.user.lastName" />
-						</th>
-						<td wicket:id="lastnameValue" />
+						<th><wicket:message key="business.user.lastName" /></th>
+						<td><span wicket:id="lastname" /></td>
 					</tr>
-					
 					<tr>
-						<th wicket:id="firstname">
-							<wicket:message key="business.user.firstName" />
-						</th>
-						<td wicket:id="firstnameValue" />
+						<th><wicket:message key="business.user.firstName" /></th>
+						<td><span wicket:id="firstname" /></td>
 					</tr>
-					
 					<tr>
-						<th wicket:id="email">
-							<wicket:message key="business.user.email" />
-						</th>
-						<td wicket:id="emailValue" />
+						<th><wicket:message key="business.user.email" /></th>
+						<td><span wicket:id="email" /></td>
 					</tr>
-					
 					<tr>
-						<th wicket:id="lastLoginDate">
-							<wicket:message key="business.user.lastLoginDate" />
-						</th>
-						<td wicket:id="lastLoginDateValue" />
+						<th><wicket:message key="business.user.lastLoginDate" /></th>
+						<td><span wicket:id="lastLoginDate" /></td>
 					</tr>
 				</tbody>
 			</table>

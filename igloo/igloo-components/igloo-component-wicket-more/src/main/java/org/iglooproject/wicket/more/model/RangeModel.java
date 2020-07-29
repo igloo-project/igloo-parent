@@ -16,7 +16,7 @@ public class RangeModel<C extends Comparable<?>> implements IModel<Range<C>> {
 	 * <p>Returns a point, represented by a closed range model in which the lower and the upper bounds are equal.
 	 */
 	public static <C extends Comparable<?>> RangeModel<C> singleton(IModel<? extends C> pointModel) {
-		return new RangeModel<C>(pointModel, pointModel);
+		return new RangeModel<>(pointModel, pointModel);
 	}
 	
 	/**
@@ -27,7 +27,7 @@ public class RangeModel<C extends Comparable<?>> implements IModel<Range<C>> {
 	 *           if the value of {@code lowerBoundModel} is greater than the value of {@code upperBoundModel}
 	 */
 	public static <C extends Comparable<?>> RangeModel<C> closed(IModel<? extends C> lowerBoundModel, IModel<? extends C> upperBoundModel) {
-		return new RangeModel<C>(lowerBoundModel, upperBoundModel);
+		return new RangeModel<>(lowerBoundModel, upperBoundModel);
 	}
 	
 	/**
@@ -35,7 +35,7 @@ public class RangeModel<C extends Comparable<?>> implements IModel<Range<C>> {
 	 * {@code upperBoundModel}.
 	 */
 	public static <C extends Comparable<?>> RangeModel<C> atMost(IModel<? extends C> upperBoundModel) {
-		return new RangeModel<C>(null, upperBoundModel);
+		return new RangeModel<>(null, upperBoundModel);
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class RangeModel<C extends Comparable<?>> implements IModel<Range<C>> {
 	 * {@code lowerBoundModel}.
 	 */
 	public static <C extends Comparable<?>> RangeModel<C> atLeast(IModel<? extends C> lowerBoundModel) {
-		return new RangeModel<C>(lowerBoundModel, null);
+		return new RangeModel<>(lowerBoundModel, null);
 	}
 	
 	private final IModel<? extends C> lowerBoundModel;

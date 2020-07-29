@@ -15,7 +15,7 @@ public class BasicApplicationWebappApplicationPropertyRegistryConfig extends Abs
 
 	@Override
 	public void register(IPropertyRegistry registry) {
-		registry.registerEnum(APPLICATION_THEME, BasicApplicationApplicationTheme.class, BasicApplicationApplicationTheme.BASIC);
+		registry.registerEnum(APPLICATION_THEME, BasicApplicationApplicationTheme.class, BasicApplicationApplicationTheme.ADVANCED);
 		
 		registry.registerInteger(PORTFOLIO_ITEMS_PER_PAGE, 20);
 		registry.registerInteger(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION, 20);

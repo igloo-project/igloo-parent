@@ -19,7 +19,7 @@ import org.iglooproject.jpa.security.model.NamedPermission;
  */
 public class NamedPermissionFactory implements PermissionFactory {
 
-	private final Map<String, NamedPermission> registeredPermissionsByName = new HashMap<String, NamedPermission>();
+	private final Map<String, NamedPermission> registeredPermissionsByName = new HashMap<>();
 
 	public NamedPermissionFactory() {
 		registerPublicPermissions(NamedPermission.class);
@@ -84,7 +84,7 @@ public class NamedPermissionFactory implements PermissionFactory {
 		if ((names == null) || (names.size() == 0)) {
 			return Collections.emptyList();
 		}
-		List<Permission> permissions = new ArrayList<Permission>(names.size());
+		List<Permission> permissions = new ArrayList<>(names.size());
 		for (String name : names) {
 			permissions.add(buildFromName(name));
 		}

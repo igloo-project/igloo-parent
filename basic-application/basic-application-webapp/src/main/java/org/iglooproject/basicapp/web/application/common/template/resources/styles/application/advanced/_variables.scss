@@ -11,4 +11,4 @@ $sidebar-body-padding-y:								$navbar-padding-y !default;
 
 $sidebar-backdrop-zindex:								$sidebar-zindex - 1 !default;
 $sidebar-backdrop-bg:									$modal-backdrop-bg !default;
-$sidebar-backdrop-opacity:								1 !default;
+$sidebar-backdrop-opacity:								$modal-backdrop-opacity !default;

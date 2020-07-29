@@ -86,7 +86,7 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 					+ "expected one of " + Joiner.on(", ").join(expectedPageClassModels.stream().map(GET_NAME_FROM_CLASS_MODEL_FUNCTION).iterator()));
 		}
 		
-		if (! bypassPermissions) {
+		if (!bypassPermissions) {
 			if (!Session.get().getAuthorizationStrategy().isActionAuthorized(pageInstance, Page.RENDER)) {
 				throw new LinkInvalidTargetRuntimeException("The rendering of the target page instance '" + pageInstance
 						+ "' was not authorized.");
@@ -227,7 +227,6 @@ public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 	/**
 	 * @see IPageLinkGenerator#bypassPermissions()
 	 */
-	@Deprecated
 	@Override
 	public IPageLinkGenerator bypassPermissions() {
 		bypassPermissions = true;

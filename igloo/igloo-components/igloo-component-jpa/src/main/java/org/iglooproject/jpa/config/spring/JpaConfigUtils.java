@@ -87,8 +87,7 @@ public final class JpaConfigUtils {
 		properties.setProperty(Environment.FORMAT_SQL, Boolean.FALSE.toString());
 		properties.setProperty(Environment.GENERATE_STATISTICS, Boolean.FALSE.toString());
 		properties.setProperty(Environment.USE_REFLECTION_OPTIMIZER, Boolean.TRUE.toString());
-		properties.setProperty(Environment.CREATE_EMPTY_COMPOSITES_ENABLED,
-				Boolean.valueOf(configuration.isCreateEmptyCompositesEnabled()).toString());
+		properties.setProperty(Environment.CREATE_EMPTY_COMPOSITES_ENABLED, Boolean.toString(configuration.isCreateEmptyCompositesEnabled()));
 		
 		properties.setProperty(AvailableSettings.JPAQL_STRICT_COMPLIANCE, Boolean.TRUE.toString());
 		
@@ -308,7 +307,7 @@ public final class JpaConfigUtils {
 	}
 
 	private static String[] getPackagesToScan(List<JpaPackageScanProvider> jpaPackageScanProviders) {
-		Set<String> packagesToScan = new HashSet<String>();
+		Set<String> packagesToScan = new HashSet<>();
 		for (JpaPackageScanProvider jpaPackageScanProvider : jpaPackageScanProviders) {
 			for (Package packageToScan : jpaPackageScanProvider.getPackages()) {
 				packagesToScan.add(packageToScan.getName());

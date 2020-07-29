@@ -86,7 +86,7 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	}
 	
 	public static List<String> splitAsList(String str, String separatorChar) {
-		return new ArrayList<String>(Arrays.asList(delimitedListToStringArray(str, separatorChar)));
+		return new ArrayList<>(Arrays.asList(delimitedListToStringArray(str, separatorChar)));
 	}
 	
 	/**

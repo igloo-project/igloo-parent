@@ -122,7 +122,7 @@ public class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchEx
 						person.setLastName(NEW_LASTNAME_VALUE);
 						try {
 							personService.update(person);
-							LOGGER.warn("Updated: " + person.getDisplayName());
+							LOGGER.warn("Updated: " + person);
 						} catch (ServiceException | SecurityServiceException e) {
 							throw new IllegalStateException(e);
 						}

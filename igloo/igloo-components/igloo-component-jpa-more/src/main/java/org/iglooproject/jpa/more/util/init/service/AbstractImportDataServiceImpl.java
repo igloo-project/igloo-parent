@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
 
@@ -69,9 +70,9 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	private static final String PASSWORD_HASH_FIELD_NAME = "passwordHash";
 	
-	private static final Map<Class<?>, List<Class<?>>> ADDITIONAL_CLASS_MAPPINGS = new HashMap<Class<?>, List<Class<?>>>();
+	private static final Map<Class<?>, List<Class<?>>> ADDITIONAL_CLASS_MAPPINGS = new HashMap<>();
 	
-	private static final Map<Class<?>, String> SHEET_NAME_MAPPING = new HashMap<Class<?>, String>();
+	private static final Map<Class<?>, String> SHEET_NAME_MAPPING = new HashMap<>();
 	
 	@Autowired
 	private IImportDataDao importDataDao;
@@ -84,7 +85,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	@Override
 	public void importDirectory(File directory) throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
-		Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping = new HashMap<String, Map<String, GenericEntity<Long, ?>>>();
+		Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping = new HashMap<>();
 		
 		importBeforeReferenceData(directory, idsMapping);
 		
@@ -123,7 +124,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 			.stream()
 			.sorted(Comparator.comparing(File::getName, Ordering.explicit(fileNames).nullsLast()))
 			.findFirst()
-			.get();
+			.orElseThrow(NoSuchElementException::new);
 	}
 	
 	protected Workbook getWorkbook(File file) throws FileNotFoundException, IOException {
@@ -201,7 +202,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 			
 			Map<String, GenericEntity<Long, ?>> idsMappingForClass = idsMapping.get(clazz.getName());
 			if (idsMappingForClass == null) {
-				idsMappingForClass = new HashMap<String, GenericEntity<Long, ?>>();
+				idsMappingForClass = new HashMap<>();
 				idsMapping.put(clazz.getName(), idsMappingForClass);
 			}
 			
@@ -265,7 +266,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		if (ADDITIONAL_CLASS_MAPPINGS.containsKey(sourceClass)) {
 			return ADDITIONAL_CLASS_MAPPINGS.get(sourceClass);
 		} else {
-			return new ArrayList<Class<?>>(0);
+			return new ArrayList<>(0);
 		}
 	}
 	

@@ -15,7 +15,7 @@ public final class MutablePropertyIdTemplate<T> extends PropertyIdTemplate<T, Mu
 
 	@Override
 	protected MutablePropertyId<T> create(String key) {
-		return new MutablePropertyId<T>(this, key);
+		return new MutablePropertyId<>(this, key);
 	}
 
 }

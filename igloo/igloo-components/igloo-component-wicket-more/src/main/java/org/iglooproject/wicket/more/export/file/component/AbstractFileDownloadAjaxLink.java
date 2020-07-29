@@ -30,7 +30,7 @@ public abstract class AbstractFileDownloadAjaxLink extends AjaxLink<Void> {
 	public AbstractFileDownloadAjaxLink(String id, WorkInProgressPopup loadingPopup) {
 		super(id);
 		this.loadingPopup = loadingPopup;
-		this.tempFileInformationModel = new Model<LabelValue<String, File>>();
+		this.tempFileInformationModel = new Model<>();
 		
 		this.ajaxDownload = new FileDeferredDownloadBehavior(tempFileInformationModel);
 		

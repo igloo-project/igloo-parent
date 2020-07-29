@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
-
 import org.iglooproject.wicket.more.condition.Condition;
 
 public class AjaxActions {
@@ -30,6 +29,9 @@ public class AjaxActions {
 				return action.getActionAvailableCondition();
 			}
 		};
+	}
+
+	private AjaxActions() {
 	}
 
 }

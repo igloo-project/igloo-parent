@@ -92,14 +92,6 @@ public class NavigationMenuItem implements IDetachable {
 		return this;
 	}
 
-	/**
-	 * @deprecated Use {@link #label(IModel)} instead.
-	 */
-	@Deprecated
-	public NavigationMenuItem setLabelModel(IModel<String> labelModel) {
-		return label(labelModel);
-	}
-
 	public IPageLinkGenerator getPageLinkGenerator() {
 		return pageLinkGenerator;
 	}
@@ -122,16 +114,6 @@ public class NavigationMenuItem implements IDetachable {
 		return this;
 	}
 
-	/**
-	 * @deprecated Use {@link #cssClasses(IModel)} instead.
-	 * @param cssClassesModel
-	 * @return
-	 */
-	@Deprecated
-	public NavigationMenuItem setCssClassesModel(IModel<String> cssClassesModel) {
-		return cssClasses(cssClassesModel);
-	}
-
 	public IModel<String> getIconClassesModel() {
 		return iconClassesModel;
 	}
@@ -143,14 +125,6 @@ public class NavigationMenuItem implements IDetachable {
 	public NavigationMenuItem iconClasses(IModel<String> iconClassesModel) {
 		this.iconClassesModel = iconClassesModel;
 		return this;
-	}
-
-	/**
-	 * @deprecated Use {@link #iconClasses(IModel)} instead.
-	 */
-	@Deprecated
-	public NavigationMenuItem setIconClassesModel(IModel<String> iconClassesModel) {
-		return iconClasses(iconClassesModel);
 	}
 
 	public IModel<Boolean> getSubMenuForceOpenModel() {
@@ -170,14 +144,6 @@ public class NavigationMenuItem implements IDetachable {
 		return this;
 	}
 
-	/**
-	 * @deprecated Use {@link #subMenuForceOpen(IModel)} instead.
-	 */
-	@Deprecated
-	public NavigationMenuItem setSubMenuForceOpenModel(IModel<Boolean> subMenuForceOpenModel) {
-		return subMenuForceOpen(subMenuForceOpenModel);
-	}
-
 	public List<NavigationMenuItem> getSubMenuItems() {
 		return Collections.unmodifiableList(subMenuItems);
 	}
@@ -189,14 +155,6 @@ public class NavigationMenuItem implements IDetachable {
 	public NavigationMenuItem subMenuItems(Collection<NavigationMenuItem> subMenuItems) {
 		CollectionUtils.replaceAll(this.subMenuItems, subMenuItems);
 		return this;
-	}
-
-	/**
-	 * @deprecated {@link #subMenuItem(Collection)} instead.
-	 */
-	@Deprecated
-	public NavigationMenuItem setSubMenuItems(Collection<NavigationMenuItem> subMenuItems) {
-		return subMenuItems(subMenuItems);
 	}
 
 	@Override

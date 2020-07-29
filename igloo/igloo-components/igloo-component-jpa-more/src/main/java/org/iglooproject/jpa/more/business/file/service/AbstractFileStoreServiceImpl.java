@@ -18,7 +18,7 @@ public class AbstractFileStoreServiceImpl {
 	@Autowired
 	private ApplicationContext applicationContext;
 	
-	private Map<String, IFileStore> fileStores = new HashMap<String, IFileStore>();
+	private Map<String, IFileStore> fileStores = new HashMap<>();
 	
 	protected void registerFileStore(IFileStore fileStore) {
 		try {

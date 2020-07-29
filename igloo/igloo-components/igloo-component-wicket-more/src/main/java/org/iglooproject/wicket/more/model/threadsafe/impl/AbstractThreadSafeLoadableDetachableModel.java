@@ -43,7 +43,7 @@ public abstract class AbstractThreadSafeLoadableDetachableModel<T, TThreadContex
 	 * The loading context, local to each thread.
 	 * <p>Will be null if the model is not currently attached.
 	 */
-	private transient ThreadLocal<TThreadContext> threadLocal = new ThreadLocal<TThreadContext>();
+	private transient ThreadLocal<TThreadContext> threadLocal = new ThreadLocal<>();
 	
 	public AbstractThreadSafeLoadableDetachableModel() {
 		if (EXTENDED_DEBUG_INFO) {

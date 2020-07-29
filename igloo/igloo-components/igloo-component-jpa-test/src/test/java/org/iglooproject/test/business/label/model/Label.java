@@ -41,14 +41,4 @@ public class Label extends GenericEntity<String, Label> {
 		this.value = value;
 	}
 
-	@Override
-	public String getNameForToString() {
-		return id;
-	}
-
-	@Override
-	public String getDisplayName() {
-		return value;
-	}
-
 }

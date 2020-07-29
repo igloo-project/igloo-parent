@@ -79,9 +79,9 @@ public enum MediaType {
 	
 	private List<String> additionalExtensions = Lists.newArrayListWithExpectedSize(2);
 	
-	private static final Map<String, MediaType> MIME_TYPE_MAPPING = new HashMap<String, MediaType>();
+	private static final Map<String, MediaType> MIME_TYPE_MAPPING = new HashMap<>();
 	
-	private static final Map<String, MediaType> EXTENSION_MAPPING = new HashMap<String, MediaType>();
+	private static final Map<String, MediaType> EXTENSION_MAPPING = new HashMap<>();
 	
 	static {
 		for (MediaType mimeType : values()) {

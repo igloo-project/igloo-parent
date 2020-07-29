@@ -10,11 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.bindgen.Bindable;
-
-import com.google.common.collect.Sets;
-
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
+
+import com.google.common.base.MoreObjects.ToStringHelper;
+import com.google.common.collect.Sets;
 
 @Entity
 @Bindable
@@ -82,12 +82,9 @@ public class Authority extends GenericEntity<Long, Authority> {
 	}
 
 	@Override
-	public String getNameForToString() {
-		return getName();
+	protected ToStringHelper toStringHelper() {
+		return super.toStringHelper()
+			.add("name", getName());
 	}
-	
-	@Override
-	public String getDisplayName() {
-		return getName();
-	}
+
 }

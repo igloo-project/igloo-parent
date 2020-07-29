@@ -12,4 +12,7 @@ public final class JdbcDatabaseMetaDataConstants {
 	public static final String REL_TYPE_TABLE = "TABLE";
 	public static final String REL_TYPE_SEQUENCE = "SEQUENCE";
 
+	private JdbcDatabaseMetaDataConstants() {
+	}
+
 }

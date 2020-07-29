@@ -55,7 +55,7 @@ public class EntityDaoImpl implements IEntityDao {
 			return Lists.newArrayListWithCapacity(0);
 		}
 		
-		PathBuilder<E> path = new PathBuilder<E>(clazz, clazz.getSimpleName());
+		PathBuilder<E> path = new PathBuilder<>(clazz, clazz.getSimpleName());
 		QGenericEntity qGenericEntity = new QGenericEntity(path);
 		
 		return new JPAQuery<E>(entityManager).select(path)

@@ -32,7 +32,7 @@ public abstract class AbstractFeedbackPanel extends Panel {
 		"UNDEFINED"
 	};
 	
-	private List<FeedbackPanel> feedbackPanels = new ArrayList<FeedbackPanel>();
+	private List<FeedbackPanel> feedbackPanels = new ArrayList<>();
 
 	public AbstractFeedbackPanel(String id, MarkupContainer container) {
 		super(id);

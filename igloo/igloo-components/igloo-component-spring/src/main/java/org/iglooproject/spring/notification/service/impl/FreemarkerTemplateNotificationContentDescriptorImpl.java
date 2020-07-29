@@ -38,7 +38,7 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl implements INot
 	
 	private final String templateKey;
 	
-	private final Map<Locale, HashMap<String, Object>> templateVariablesByLocale = new HashMap<Locale, HashMap<String,Object>>();
+	private final Map<Locale, HashMap<String, Object>> templateVariablesByLocale = new HashMap<>();
 	
 	private final Collection<LabelValue<String, File>> attachments;
 	

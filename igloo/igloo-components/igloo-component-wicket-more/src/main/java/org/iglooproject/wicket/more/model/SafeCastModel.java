@@ -12,7 +12,7 @@ public class SafeCastModel<T> implements IModel<T> {
 	private final IModel<?> wrappedModel;
 	
 	public static <T> SafeCastModel<T> of(Class<T> targetClass, IModel<?> model) {
-		return new SafeCastModel<T>(targetClass, model);
+		return new SafeCastModel<>(targetClass, model);
 	}
 
 	protected SafeCastModel(Class<T> targetClass, IModel<?> wrappedModel) {

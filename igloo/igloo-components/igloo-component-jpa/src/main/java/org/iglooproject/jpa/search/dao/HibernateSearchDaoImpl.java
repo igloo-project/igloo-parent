@@ -186,7 +186,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	public Set<Class<?>> getIndexedRootEntities(Class<?>... selection) {
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		
-		Set<Class<?>> indexedEntityClasses = new TreeSet<Class<?>>(new Comparator<Class<?>>() {
+		Set<Class<?>> indexedEntityClasses = new TreeSet<>(new Comparator<Class<?>>() {
 			@Override
 			public int compare(Class<?> o1, Class<?> o2) {
 				// Legacy. French should not be considered as default locale.
@@ -212,7 +212,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	protected Set<Class<?>> getIndexedRootEntities(SearchFactory searchFactory, Class<?>... selection) {
 		ExtendedSearchIntegrator searchIntegrator = searchFactory.unwrap(ExtendedSearchIntegrator.class);
 		
-		Set<Class<?>> entities = new HashSet<Class<?>>();
+		Set<Class<?>> entities = new HashSet<>();
 		
 		// first build the "entities" set containing all indexed subtypes of "selection".
 		for (Class<?> entityType : selection) {
@@ -224,8 +224,8 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			entities.addAll(targetedClasses.toPojosSet());
 		}
 		
-		Set<Class<?>> cleaned = new HashSet<Class<?>>();
-		Set<Class<?>> toRemove = new HashSet<Class<?>>();
+		Set<Class<?>> cleaned = new HashSet<>();
+		Set<Class<?>> toRemove = new HashSet<>();
 		
 		//now remove all repeated types to avoid duplicate loading by polymorphic query loading
 		for (Class<?> type : entities) {

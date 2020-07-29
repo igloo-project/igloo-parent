@@ -31,22 +31,22 @@ public abstract class AdministrationUserDetailTemplate<U extends User> extends A
 
 	protected static final <U extends User> ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, U, Page> mapper(Class<U> clazz) {
 		return LinkDescriptorBuilder.start()
-				.model(clazz)
-				.model(Page.class)
-				.pickFirst().map(CommonParameters.ID).mandatory()
-				.pickSecond().map(CommonParameters.SOURCE_PAGE_ID).optional()
-				.pickFirst().page(DetachableFactories.forUnit(
-					ReadOnlyModel.factory(
-						u -> {
-							if (u instanceof BasicUser) {
-								return AdministrationBasicUserDetailPage.class;
-							} else if (u instanceof TechnicalUser) {
-								return AdministrationTechnicalUserDetailPage.class;
-							}
-							return null;
+			.model(clazz)
+			.model(Page.class)
+			.pickFirst().map(CommonParameters.ID).mandatory()
+			.pickSecond().map(CommonParameters.SOURCE_PAGE_ID).optional()
+			.pickFirst().page(DetachableFactories.forUnit(
+				ReadOnlyModel.factory(
+					u -> {
+						if (u instanceof BasicUser) {
+							return AdministrationBasicUserDetailPage.class;
+						} else if (u instanceof TechnicalUser) {
+							return AdministrationTechnicalUserDetailPage.class;
 						}
-					)
-				));
+						return null;
+					}
+				)
+			));
 	}
 
 	@SpringBean

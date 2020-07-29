@@ -12,7 +12,7 @@ public class AjaxConfirmLinkBuilder<O> extends AbstractConfirmLinkBuilder<AjaxCo
 		if (onAjaxClick == null) {
 			throw new IllegalStateException(String.format("%s must be used with a %s", getClass().getName(), IAjaxAction.class.getName()));
 		}
-		AjaxConfirmLink<O> ajaxConfirmLink = new FunctionalAjaxConfirmLink<O>(
+		AjaxConfirmLink<O> ajaxConfirmLink = new FunctionalAjaxConfirmLink<>(
 				wicketId, model, form, titleModelFactory, contentModelFactory,
 				yesLabelModel, noLabelModel, yesIconModel, noIconModel, yesButtonModel, noButtonModel,
 				cssClassNamesModel, keepMarkup, onAjaxClick

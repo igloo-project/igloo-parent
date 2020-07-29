@@ -40,7 +40,7 @@ public final class ExecutionContexts {
 	}
 	
 	public static class CompositeExecutionContextBuilder {
-		private final Collection<IExecutionContext> components = new ArrayList<IExecutionContext>();
+		private final Collection<IExecutionContext> components = new ArrayList<>();
 		
 		private CompositeExecutionContextBuilder() {
 		}

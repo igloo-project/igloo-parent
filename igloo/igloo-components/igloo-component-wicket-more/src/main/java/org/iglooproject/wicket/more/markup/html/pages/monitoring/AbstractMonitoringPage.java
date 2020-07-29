@@ -24,7 +24,7 @@ public abstract class AbstractMonitoringPage extends Page {
 	
 	private boolean success;
 
-	private List<String> details = new ArrayList<String>();
+	private List<String> details = new ArrayList<>();
 
 	private String message;
 

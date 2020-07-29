@@ -11,7 +11,7 @@ public class PersonComparator extends AbstractGenericEntityComparator<Long, Pers
 	
 	private static final PersonComparator INSTANCE = new PersonComparator();
 	
-	private static final Ordering<String> STRING_COMPARATOR = GenericEntity.DEFAULT_STRING_COLLATOR;
+	private static final Ordering<String> STRING_COMPARATOR = GenericEntity.STRING_COLLATOR_FRENCH;
 	
 	public static PersonComparator get() {
 		return INSTANCE;

@@ -1,0 +1,5 @@
+#notification-body-container {
+	overflow-x: auto;
+	border: 1px dotted rgba($black, .125);
+	@include border-radius($border-radius);
+}

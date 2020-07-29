@@ -58,9 +58,9 @@ public class BooleanIcon extends WebMarkupContainer {
 	private String getTrueIconClass() {
 		if (trueIconClassModel == null) {
 			if (hideIfNullOrFalse) {
-				trueIconClassModel = new Model<String>(DEFAULT_TRUE_HIDE_IF_NULL_OR_FALSE_ICON_CLASS);
+				trueIconClassModel = new Model<>(DEFAULT_TRUE_HIDE_IF_NULL_OR_FALSE_ICON_CLASS);
 			} else {
-				trueIconClassModel = new Model<String>(DEFAULT_TRUE_ICON_CLASS);
+				trueIconClassModel = new Model<>(DEFAULT_TRUE_ICON_CLASS);
 			}
 		}
 		return trueIconClassModel.getObject();
@@ -68,7 +68,7 @@ public class BooleanIcon extends WebMarkupContainer {
 	
 	private String getFalseIconClass() {
 		if (falseIconClassModel == null) {
-			falseIconClassModel = new Model<String>(DEFAULT_FALSE_ICON_CLASS);
+			falseIconClassModel = new Model<>(DEFAULT_FALSE_ICON_CLASS);
 		}
 		return falseIconClassModel.getObject();
 	}

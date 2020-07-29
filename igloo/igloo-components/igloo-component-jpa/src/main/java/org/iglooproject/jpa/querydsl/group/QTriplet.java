@@ -17,7 +17,7 @@ import com.querydsl.core.types.Expression;
     private static final long serialVersionUID = -1943990903548916056L;
 
     public static <R, C, V> QTriplet<R, C, V> create(Expression<R> row, Expression<C> column, Expression<V> value) {
-        return new QTriplet<R, C, V>(row, column, value);
+        return new QTriplet<>(row, column, value);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes" })

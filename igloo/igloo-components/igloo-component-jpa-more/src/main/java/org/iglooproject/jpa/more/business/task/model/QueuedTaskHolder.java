@@ -25,11 +25,11 @@ import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
-import org.springframework.core.style.ToStringCreator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.MoreObjects.ToStringHelper;
 
 @Entity
 @Bindable
@@ -264,19 +264,13 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	}
 
 	@Override
-	public String getNameForToString() {
+	protected ToStringHelper toStringHelper() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss z");
-		return new ToStringCreator(this)
-				.append("id", getId())
-				.append("name", getName())
-				.append("creationDate", (getCreationDate() != null) ? dateFormat.format(getCreationDate()) : null)
-				.append("startDate", (getStartDate() != null) ? dateFormat.format(getStartDate()) : null)
-				.append("completionDate", (getEndDate() != null) ? dateFormat.format(getEndDate()) : null)
-				.toString();
+		return super.toStringHelper()
+			.add("name", getName())
+			.add("creationDate", getCreationDate() != null ? dateFormat.format(getCreationDate()) : null)
+			.add("startDate", getStartDate() != null ? dateFormat.format(getStartDate()) : null)
+			.add("completionDate", getEndDate() != null ? dateFormat.format(getEndDate()) : null);
 	}
 
-	@Override
-	public String getDisplayName() {
-		return getName();
-	}
 }

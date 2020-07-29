@@ -20,7 +20,7 @@ public class DatabaseMonitoringPage extends AbstractMonitoringPage {
 
 	private boolean success;
 
-	private List<String> details = new ArrayList<String>();
+	private List<String> details = new ArrayList<>();
 
 	private String message;
 

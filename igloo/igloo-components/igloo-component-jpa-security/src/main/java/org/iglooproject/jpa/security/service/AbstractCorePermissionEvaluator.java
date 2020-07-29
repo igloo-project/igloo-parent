@@ -166,7 +166,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 		} else if (permission instanceof String) {
 			String permString = (String) permission;
 			String[] split = permString.split("\\|");
-			List<Permission> result = new ArrayList<Permission>();
+			List<Permission> result = new ArrayList<>();
 			for (String perm : split) {
 				Permission resolvedPermission = resolvePermissionByName(perm);
 				if (!result.contains(resolvedPermission)) {

@@ -37,7 +37,7 @@ public final class DiffUtils {
 	}
 	
 	public static <T> Difference<T> diff(T before, T after, ObjectDiffer differ) {
-		return new Difference<T>(
+		return new Difference<>(
 				before, after,
 				differ.compare(after, before)
 		);

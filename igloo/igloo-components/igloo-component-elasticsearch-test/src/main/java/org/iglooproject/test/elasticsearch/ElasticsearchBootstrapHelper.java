@@ -40,4 +40,7 @@ public final class ElasticsearchBootstrapHelper {
 		}
 	}
 
+	private ElasticsearchBootstrapHelper() {
+	}
+
 }

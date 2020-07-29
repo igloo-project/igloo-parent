@@ -234,14 +234,14 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 			@Override
 			<T> ExecutionStrategy<T> create(SimpleHibernateBatchExecutor executor, IQuery<T> query,
 					IBatchRunnable<T> runnable) {
-				return new CommitOnStepExecutionStrategy<T>(executor, query, runnable);
+				return new CommitOnStepExecutionStrategy<>(executor, query, runnable);
 			}
 		},
 		COMMIT_ON_END {
 			@Override
 			<T> ExecutionStrategy<T> create(SimpleHibernateBatchExecutor executor, IQuery<T> query,
 					IBatchRunnable<T> runnable) {
-				return new CommitOnEndExecutionStrategy<T>(executor, query, runnable);
+				return new CommitOnEndExecutionStrategy<>(executor, query, runnable);
 			}
 		};
 

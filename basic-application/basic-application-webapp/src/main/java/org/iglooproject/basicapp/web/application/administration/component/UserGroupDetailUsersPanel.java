@@ -2,7 +2,6 @@ package org.iglooproject.basicapp.web.application.administration.component;
 
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -25,8 +24,6 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.link.model.ComponentPageModel;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractParameterizedComponentFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
@@ -65,14 +62,10 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 				.addActionColumn()
 					.addConfirmAction(ActionRenderers.remove())
 						.title(new ResourceModel("administration.userGroup.detail.users.action.remove.confirmation.title"))
-						.content(new IDetachableFactory<IModel<User>, IModel<String>>() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public IModel<String> create(IModel<User> userModel) {
-								return new StringResourceModel("administration.userGroup.detail.users.action.remove.confirmation.content")
-									.setParameters(userModel.getObject().getFullName(), UserGroupDetailUsersPanel.this.getModelObject().getName());
-							}
-						})
+						.content(parameter ->
+							new StringResourceModel("administration.userGroup.detail.users.action.remove.confirmation.content")
+								.setParameters(parameter.getObject().getFullName(), UserGroupDetailUsersPanel.this.getModelObject().getName())
+						)
 						.confirm()
 						.onClick(new IOneParameterAjaxAction<IModel<User>>() {
 							private static final long serialVersionUID = 1L;
@@ -99,13 +92,7 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 					.end()
 					.withClass("actions actions-1x")
 				.bootstrapCard()
-					.addIn(AddInPlacement.FOOTER_MAIN, new AbstractParameterizedComponentFactory<Component, Component>() {
-						private static final long serialVersionUID = 1L;
-						@Override
-						public Component create(String wicketId, final Component table ) {
-							return new UserGroupAddUserFragment(wicketId);
-						}
-					})
+					.addIn(AddInPlacement.FOOTER_MAIN, UserGroupAddUserFragment::new)
 					.ajaxPager(AddInPlacement.HEADING_RIGHT)
 					.count("administration.userGroup.detail.users.count")
 				.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION))

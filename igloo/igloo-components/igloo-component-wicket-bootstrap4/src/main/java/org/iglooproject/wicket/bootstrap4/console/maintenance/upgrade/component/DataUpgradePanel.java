@@ -65,7 +65,7 @@ public class DataUpgradePanel extends Panel {
 				DataUpgradeRecord record = dataUpgradeRecordService.getByDataUpgrade(item.getModelObject());
 				
 				IModel<DataUpgradeRecord> recordModel = GenericEntityModel.of(record);
-				IModel<Boolean> doneModel = new PropertyModel<Boolean>(recordModel, "done");
+				IModel<Boolean> doneModel = new PropertyModel<>(recordModel, "done");
 				
 				item.add(
 						new CoreLabel("name", new PropertyModel<String>(item.getModel(), "name")),

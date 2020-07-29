@@ -52,8 +52,8 @@ public final class WorkbookUtils {
 	public static List<Map<String, Object>> getSheetContent(Sheet sheet) {
 		FormulaEvaluator formulaEvaluator = sheet.getWorkbook().getCreationHelper().createFormulaEvaluator();
 		
-		List<Map<String, Object>> content = new ArrayList<Map<String, Object>>();
-		Map<Integer, String> header = new HashMap<Integer, String>();
+		List<Map<String, Object>> content = new ArrayList<>();
+		Map<Integer, String> header = new HashMap<>();
 		
 		for (Row row : sheet) {
 			if (row.getRowNum() == 0) {
@@ -62,7 +62,7 @@ public final class WorkbookUtils {
 					header.put(cell.getColumnIndex(), String.format("%s", getCellValue(formulaEvaluator, cell)));
 				}
 			} else {
-				Map<String, Object> line = new HashMap<String, Object>();
+				Map<String, Object> line = new HashMap<>();
 				for (Cell cell : row) {
 					Object cellValue = getCellValue(formulaEvaluator, cell);
 					if (cellValue != null) {

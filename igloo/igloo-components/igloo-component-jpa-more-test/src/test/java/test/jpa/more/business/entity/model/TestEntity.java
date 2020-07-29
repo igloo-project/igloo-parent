@@ -76,16 +76,6 @@ public class TestEntity extends GenericEntity<Long, TestEntity> {
 		this.label = label;
 	}
 
-	@Override
-	public String getNameForToString() {
-		return label;
-	}
-
-	@Override
-	public String getDisplayName() {
-		return label;
-	}
-
 	public String getSimplePropertyUpdate() {
 		return simplePropertyUpdate;
 	}

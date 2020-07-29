@@ -41,9 +41,9 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	
 	private final FileDeferredDownloadBehavior ajaxDownload;
 	
-	private final IModel<File> tempFileModel = new Model<File>();
+	private final IModel<File> tempFileModel = new Model<>();
 	
-	private final IModel<MediaType> mediaTypeModel = new Model<MediaType>();
+	private final IModel<MediaType> mediaTypeModel = new Model<>();
 	
 	public AbstractExcelExportAjaxSubmitLink(String id, Form<?> form, WorkInProgressPopup loadingPopup, String fileNamePrefix) {
 		this(id, form, loadingPopup, Model.of(fileNamePrefix));

@@ -3,7 +3,7 @@ package org.iglooproject.spring.notification.util;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.iglooproject.spring.notification.model.INotificationRecipient;
 
-public interface INotificationContextWrapper<C> {
+public interface INotificationContextWrapper {
 	
 	/**
 	 * @param recipient The notification recipient.

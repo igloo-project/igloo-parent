@@ -23,7 +23,6 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.FunctionOneParameterL
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.basic.TargetBlankBehavior;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.ComponentFactories;
 import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;
@@ -36,7 +35,6 @@ import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import org.iglooproject.wicket.more.markup.repeater.table.BootstrapCardCoreDataTablePanel;
-import org.iglooproject.wicket.more.markup.repeater.table.BootstrapPanelCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
@@ -62,7 +60,6 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.toolbar.Custom
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreActionColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreBooleanLabelColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreBootstrapBadgeColumn;
-import org.iglooproject.wicket.more.markup.repeater.table.column.CoreBootstrapLabelColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.column.ICoreColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.toolbar.CoreHeadersToolbar;
@@ -105,7 +102,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 				ISequenceProvider<T> sequenceProvider,
 				List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
 				long rowsPerPage) {
-			return new CoreDataTable<T, S>(id, columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage);
+			return new CoreDataTable<>(id, columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage);
 		}
 	};
 
@@ -124,11 +121,11 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 
 	public static <T, S extends ISort<?>> DataTableBuilder<T, S> start(ISequenceProvider<T> sequenceProvider) {
-		return new DataTableBuilder<T, S>(sequenceProvider, new CompositeSortModel<S>(CompositingStrategy.LAST_ONLY));
+		return new DataTableBuilder<>(sequenceProvider, new CompositeSortModel<S>(CompositingStrategy.LAST_ONLY));
 	}
 
 	public static <T, S extends ISort<?>> DataTableBuilder<T, S> start(ISequenceProvider<T> sequenceProvider, CompositeSortModel<S> sortModel) {
-		return new DataTableBuilder<T, S>(sequenceProvider, sortModel);
+		return new DataTableBuilder<>(sequenceProvider, sortModel);
 	}
 
 	@Override
@@ -287,57 +284,37 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
 			final ICoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
-		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<T, S, C>(headerModel, binding, renderer);
+		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<>(headerModel, binding, renderer);
 		columns.put(column, null);
-		return new AddedBootstrapBadgeColumnState<C>(column);
+		return new AddedBootstrapBadgeColumnState<>(column);
 	}
 	
 	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
 			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
-		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<T, S, C>(headerModel, function, renderer);
+		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<>(headerModel, function, renderer);
 		columns.put(column, null);
-		return new AddedBootstrapBadgeColumnState<C>(column);
-	}
-	
-	/**
-	 * @deprecated Bootstrap Labels no longer exist in Bootstrap 4 and are replaced by Bootstrap Badge instead.
-	 */
-	@Deprecated
-	@Override
-	public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-			final ICoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
-		return addColumn(new CoreBootstrapLabelColumn<T, S, C>(headerModel, binding, renderer));
-	}
-	
-	/**
-	 * @deprecated Bootstrap Labels no longer exist in Bootstrap 4 and are replaced by Bootstrap Badge instead.
-	 */
-	@Deprecated
-	@Override
-	public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
-		return addColumn(new CoreBootstrapLabelColumn<T, S, C>(headerModel, function, renderer));
+		return new AddedBootstrapBadgeColumnState<>(column);
 	}
 	
 	@Override
-	public <C> IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
+	public IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
 			final ICoreBinding<? super T, Boolean> binding) {
-		CoreBooleanLabelColumn<T, S> column = new CoreBooleanLabelColumn<T, S>(headerModel, binding);
+		CoreBooleanLabelColumn<T, S> column = new CoreBooleanLabelColumn<>(headerModel, binding);
 		columns.put(column, null);
 		return new AddedBooleanLabelColumnState(column);
 	}
 	
 	@Override
 	public CustomizableToolbarBuilder<T, S> addTopToolbar() {
-		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<T, S>(this);
+		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<>(this);
 		topToolbarBuilders.add(builder);
 		return builder;
 	}
 	
 	@Override
 	public CustomizableToolbarBuilder<T, S> addBottomToolbar() {
-		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<T, S>(this);
+		CustomizableToolbarBuilder<T, S> builder = new CustomizableToolbarBuilder<>(this);
 		bottomToolbarBuilders.add(builder);
 		return builder;
 	}
@@ -443,15 +420,6 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	public IDecoratedBuildState<T, S> bootstrapCard() {
 		return new BootstrapCardBuildState();
 	}
-	
-	/**
-	 * @deprecated Use {@link #bootstrapCard()} instead with Bootstrap 4.
-	 */
-	@Deprecated
-	@Override
-	public IDecoratedBuildState<T, S> bootstrapPanel() {
-		return new BootstrapPanelBuildState();
-	}
 
 	private abstract class DataTableBuilderWrapper implements IColumnState<T, S> {
 
@@ -503,22 +471,6 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 			return DataTableBuilder.this.addLabelColumn(headerModel, binding, datePattern);
 		}
 
-		/**
-		 * @deprecated Bootstrap Labels no longer exist in Bootstrap 4. Use Bootstrap 4 Badges instead.
-		 */
-		@Deprecated
-		@Override
-		public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel, ICoreBinding<? super T, C> binding,
-				BootstrapRenderer<? super C> renderer) {
-			return DataTableBuilder.this.addBootstrapLabelColumn(headerModel, binding, renderer);
-		}
-
-		@Override
-		public <C> IAddedCoreColumnState<T, S> addBootstrapLabelColumn(IModel<String> headerModel,
-				SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
-			return DataTableBuilder.this.addBootstrapLabelColumn(headerModel, function, renderer);
-		}
-
 		@Override
 		public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel, ICoreBinding<? super T, C> binding,
 				BootstrapRenderer<? super C> renderer) {
@@ -532,7 +484,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 		
 		@Override
-		public <C> IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
+		public IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
 				final ICoreBinding<? super T, Boolean> binding) {
 			return DataTableBuilder.this.addBooleanLabelColumn(headerModel, binding);
 		}
@@ -600,15 +552,6 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public IDecoratedBuildState<T, S> bootstrapCard() {
 			return DataTableBuilder.this.bootstrapCard();
-		}
-		
-		/**
-		 * @deprecated Use {@link #bootstrapCard()} instead with Boostrap 4.
-		 */
-		@Deprecated
-		@Override
-		public IDecoratedBuildState<T, S> bootstrapPanel() {
-			return DataTableBuilder.this.bootstrapPanel();
 		}
 	}
 
@@ -973,15 +916,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 				@Override
 				protected IDecoratedBuildState<T, S> onEnd(List<AbstractActionColumnElementBuilder<Void, ?, ?>> builders) {
 					for (final IOneParameterComponentFactory<?, IModel<Void>> builder : builders) {
-						addIn(placement, ComponentFactories.ignoreParameter(
-								new AbstractComponentFactory<Component>() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public Component create(String wicketId) {
-										return builder.create(wicketId, null);
-									}
-								}
-						));
+						addIn(placement, wicketId -> builder.create(wicketId, null));
 					}
 					return DecoratedBuildState.this;
 				}
@@ -994,15 +929,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 				@Override
 				protected IDecoratedBuildState<T, S> onEnd(List<AbstractActionColumnElementBuilder<Z, ?, ?>> builders) {
 					for (final IOneParameterComponentFactory<?, IModel<Z>> builder : builders) {
-						addIn(placement, ComponentFactories.ignoreParameter(
-								new AbstractComponentFactory<Component>() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public Component create(String wicketId) {
-										return builder.create(wicketId, model);
-									}
-								}
-						));
+						addIn(placement, wicketId -> builder.create(wicketId, model));
 					}
 					return DecoratedBuildState.this;
 				}
@@ -1021,7 +948,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public IDecoratedBuildState<T, S> title(IComponentFactory<?> addInComponentFactory) {
-			return addIn(AddInPlacement.HEADING_LEFT, ComponentFactories.ignoreParameter(addInComponentFactory), getTitleCssClass());
+			return addIn(AddInPlacement.HEADING_LEFT, addInComponentFactory, getTitleCssClass());
 		}
 		
 		@Override
@@ -1106,7 +1033,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
-			DecoratedCoreDataTablePanel<T, S> panel = new DecoratedCoreDataTablePanel<T, S>(
+			DecoratedCoreDataTablePanel<T, S> panel = new DecoratedCoreDataTablePanel<>(
 					id,
 					factory,
 					columns,
@@ -1141,7 +1068,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
-			BootstrapCardCoreDataTablePanel<T, S> panel = new BootstrapCardCoreDataTablePanel<T, S>(id, factory,
+			BootstrapCardCoreDataTablePanel<T, S> panel = new BootstrapCardCoreDataTablePanel<>(id, factory,
 					columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage, addInComponentFactories,
 					responsiveCondition);
 			if (noRecordsResourceKey == null && countResourceKey != null) {
@@ -1152,34 +1079,6 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		}
 	}
 
-	/**
-	 * @deprecated Use {@link BootstrapCardCoreDataTablePanel} instead with Bootstrap 4.
-	 */
-	@Deprecated
-	private class BootstrapPanelBuildState extends DecoratedBuildState {
-		
-		@Override
-		protected String getTitleCssClass() {
-			return "panel-title";
-		}
-		
-		@Override
-		protected String getPaginationCssClass() {
-			return "add-in-pagination add-in-pagination-panel";
-		}
-		
-		@Override
-		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
-			BootstrapPanelCoreDataTablePanel<T, S> panel = new BootstrapPanelCoreDataTablePanel<T, S>(id, factory,
-					columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage, addInComponentFactories, responsiveCondition);
-			if (noRecordsResourceKey == null && countResourceKey != null) {
-				withNoRecordsResourceKey(countResourceKey + ".zero");
-			}
-			DataTableBuilder.this.finalizeBuild(panel.getDataTable());
-			return panel;
-		}
-	}
-	
 	private static class ClassAttributeAppenderDecoratingParameterizedComponentFactory<C extends Component, P>
 			extends AbstractDecoratingParameterizedComponentFactory<C, P> {
 		

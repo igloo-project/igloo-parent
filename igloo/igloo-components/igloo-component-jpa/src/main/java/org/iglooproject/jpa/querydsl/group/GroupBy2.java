@@ -89,7 +89,7 @@ public final class GroupBy2 {
 	 */
 	public static <R, C, V, R2, C2, V2> AbstractGroupExpression<Triplet<R, C, V>, Table<R2, C2, V2>> table(
 			GroupExpression<R, R2> row, GroupExpression<C, C2> column, GroupExpression<V, V2> value) {
-		return new GTable.Mixin<R, C, V, R2, C2, V2, Table<R2, C2, V2>>(
+		return new GTable.Mixin<>(
 				row, column, value,
 				GTable.createLinked(QTriplet.create(row, column, value))
 		);
@@ -172,7 +172,7 @@ public final class GroupBy2 {
 	public static <R, C, V, R2 extends Comparable<? super R2>, C2 extends Comparable<? super C2>, V2>
 			AbstractGroupExpression<Triplet<R, C, V>, RowSortedTable<R2, C2, V2>> sortedTable(
 			GroupExpression<R, R2> row, GroupExpression<C, C2> column, GroupExpression<V, V2> value) {
-		return new GTable.Mixin<R, C, V, R2, C2, V2, RowSortedTable<R2, C2, V2>>(
+		return new GTable.Mixin<>(
 				row, column, value,
 				GTable.createSorted(QTriplet.create(row, column, value))
 		);
@@ -261,7 +261,7 @@ public final class GroupBy2 {
 	public static <R, C, V, R2, C2, V2> AbstractGroupExpression<Triplet<R, C, V>, RowSortedTable<R2, C2, V2>> sortedTable(
 			GroupExpression<R, R2> row, GroupExpression<C, C2> column, GroupExpression<V, V2> value,
 			Comparator<? super R2> rowComparator, Comparator<? super C2> columnComparator) {
-		return new GTable.Mixin<R, C, V, R2, C2, V2, RowSortedTable<R2, C2, V2>>(
+		return new GTable.Mixin<>(
 				row, column, value,
 				GTable.createSorted(QTriplet.create(row, column, value), rowComparator, columnComparator)
 		);

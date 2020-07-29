@@ -19,7 +19,7 @@ public abstract class AbstractExecutionDaoImpl<E extends AbstractExecution<E, ?>
 
 	@Override
 	public List<E> list() {
-		Path<E> path = new EntityPathBase<E>(getObjectClass(), QAbstractExecution.abstractExecution.getMetadata());
+		Path<E> path = new EntityPathBase<>(getObjectClass(), QAbstractExecution.abstractExecution.getMetadata());
 		QAbstractExecution qAbstractExecution = new QAbstractExecution(path);
 		
 		return new JPAQuery<E>(getEntityManager())
@@ -32,7 +32,7 @@ public abstract class AbstractExecutionDaoImpl<E extends AbstractExecution<E, ?>
 	@Override
 	public List<E> listOrderedByDateTypeStatus(Date startDate, Date endDate, IExecutionType executionType, ExecutionStatus executionStatus,
 			Integer limit, Integer offset) {
-		Path<E> path = new EntityPathBase<E>(getObjectClass(), QAbstractExecution.abstractExecution.getMetadata());
+		Path<E> path = new EntityPathBase<>(getObjectClass(), QAbstractExecution.abstractExecution.getMetadata());
 		QAbstractExecution qAbstractExecution = new QAbstractExecution(path);
 		
 		BooleanBuilder builder = new BooleanBuilder();

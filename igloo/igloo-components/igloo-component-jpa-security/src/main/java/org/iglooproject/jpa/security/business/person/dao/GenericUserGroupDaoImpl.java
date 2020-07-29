@@ -16,7 +16,7 @@ public abstract class GenericUserGroupDaoImpl<G extends GenericUserGroup<G, U>, 
 
 	@Override
 	public G getByName(String name) {
-		PathBuilder<G> qEntity = new PathBuilder<G>(getObjectClass(), "rootAlias");
+		PathBuilder<G> qEntity = new PathBuilder<>(getObjectClass(), "rootAlias");
 		QGenericUserGroup qEntityAsGenericUserGroup = new QGenericUserGroup(qEntity);
 		return super.getByField(qEntity, qEntityAsGenericUserGroup.name, name);
 	}

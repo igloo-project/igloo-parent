@@ -46,7 +46,7 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	
 	private FullTextEntityManager fullTextEntityManager;
 	
-	private Map<Class<?>, QueryBuilder> queryBuilderCache = new HashMap<Class<?>, QueryBuilder>();
+	private Map<Class<?>, QueryBuilder> queryBuilderCache = new HashMap<>();
 	private Map<Class<?>, Analyzer> analyzerCache = Maps.newHashMap();
 	
 	private Class<?> defaultClass;
@@ -416,7 +416,7 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	}
 	
 	@Override
-	public final <P> Query matchIfTrue(String fieldPath, boolean value, Boolean mustMatch) {
+	public final Query matchIfTrue(String fieldPath, boolean value, Boolean mustMatch) {
 		return matchIfTrue(getDefaultQueryBuilder(), fieldPath, value, mustMatch);
 	}
 	

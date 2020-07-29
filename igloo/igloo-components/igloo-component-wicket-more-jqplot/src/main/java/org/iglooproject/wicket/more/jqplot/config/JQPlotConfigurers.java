@@ -48,7 +48,7 @@ public final class JQPlotConfigurers {
 	}
 	
 	public static <K> IJQPlotConfigurer<Object, K> keysColors(SerializableFunction2<? super K, ? extends Color> seriesColorFunction, SerializableFunction2<? super K, ? extends Color> negativeSeriesColorFunction) {
-		return new KeysColorsFunctionJQPlotConfigurer<K>(seriesColorFunction, negativeSeriesColorFunction);
+		return new KeysColorsFunctionJQPlotConfigurer<>(seriesColorFunction, negativeSeriesColorFunction);
 	}
 	private static class KeysColorsFunctionJQPlotConfigurer<K> extends AbstractJQPlotConfigurer<Object, K> {
 		private static final long serialVersionUID = -7455227724829756556L;
@@ -83,7 +83,7 @@ public final class JQPlotConfigurers {
 	
 	public static <S> IJQPlotConfigurer<S, Object> seriesColors(SerializableFunction2<? super S, ? extends Color> seriesColorFunction,
 			SerializableFunction2<? super S, ? extends Color> negativeSeriesColorFunction) {
-		return new SeriesColorsFunctionJQPlotConfigurer<S>(seriesColorFunction, negativeSeriesColorFunction);
+		return new SeriesColorsFunctionJQPlotConfigurer<>(seriesColorFunction, negativeSeriesColorFunction);
 	}
 	private static class SeriesColorsFunctionJQPlotConfigurer<S> extends AbstractJQPlotConfigurer<S, Object> {
 		private static final long serialVersionUID = -7455227724829756556L;
@@ -163,7 +163,7 @@ public final class JQPlotConfigurers {
 	};
 
 	public static <S> IJQPlotConfigurer<S, Object> seriesLabels(IConverter<? super S> serieLabelConverter) {
-		return new SeriesLabelsJQPlotConfigurer<S>(serieLabelConverter);
+		return new SeriesLabelsJQPlotConfigurer<>(serieLabelConverter);
 	}
 	private static class SeriesLabelsJQPlotConfigurer<S> extends AbstractJQPlotConfigurer<S, Object> {
 		private static final long serialVersionUID = -7455227724829756556L;

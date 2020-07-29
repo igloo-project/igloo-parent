@@ -9,11 +9,13 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.EnumLabel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.cookies.CookieUtils;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.config.util.Environment;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.ajax.AjaxListeners;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -31,6 +33,8 @@ public class EnvironmentPanel extends GenericPanel<Environment> {
 	private static final CookieUtils COOKIE_UTILS = new CookieUtils();
 
 	private static final String COOKIE_CLOSE_NAME = "environmentAlertClose";
+
+	private final IModel<Boolean> compactModel = Model.of(Boolean.FALSE);
 
 	private final IModel<Boolean> closeModel = Model.of(Boolean.FALSE);
 
@@ -63,7 +67,12 @@ public class EnvironmentPanel extends GenericPanel<Environment> {
 				.add(
 					new EnclosureContainer("container")
 						.condition(Condition.isFalse(closeModel))
-						.add(new EnumLabel<>("environment", environmentModel))
+						.add(
+							new CoreLabel("intro", new ResourceModel("environment.explanation"))
+								.setEscapeModelStrings(false)
+								.add(Condition.isTrue(compactModel).thenHide()),
+							new EnumLabel<>("environment", environmentModel)
+						)
 				)
 		);
 		
@@ -71,6 +80,11 @@ public class EnvironmentPanel extends GenericPanel<Environment> {
 			new ClassAttributeAppender(environmentModel),
 			new ClassAttributeAppender(Condition.isTrue(closeModel).then("header-alert-section-dismissed").otherwise(""))
 		);
+	}
+
+	public EnvironmentPanel compact() {
+		compactModel.setObject(Boolean.TRUE);
+		return this;
 	}
 
 	@Override
@@ -95,7 +109,7 @@ public class EnvironmentPanel extends GenericPanel<Environment> {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		Detachables.detach(closeModel);
+		Detachables.detach(compactModel, closeModel);
 	}
 
 }

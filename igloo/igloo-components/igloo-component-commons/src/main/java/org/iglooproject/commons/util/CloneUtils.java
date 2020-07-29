@@ -83,7 +83,7 @@ public final class CloneUtils {
 		if (list == null) {
 			return null;
 		} else {
-			return new ArrayList<T>(list);
+			return new ArrayList<>(list);
 		}
 	}
 	

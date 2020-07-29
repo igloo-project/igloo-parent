@@ -23,7 +23,7 @@ public abstract class ChoiceProvider<T> extends org.wicketstuff.select2.ChoicePr
 		
 		if (response.size() > 0 && response.size() > pageSize) {
 			response.setHasMore(true);
-			response.setResults(response.getResults().stream().limit(response.size() - 1).collect(ImmutableList.toImmutableList()));
+			response.setResults(response.getResults().stream().limit(response.size() - 1L).collect(ImmutableList.toImmutableList()));
 		}
 	}
 

@@ -1,6 +1,0 @@
-.breadcrumb-item {
-	+ .breadcrumb-item::before {
-		@include fa-mixin-icon($fa-var-chevron-right);
-		font-size: .875em;
-	}
-}

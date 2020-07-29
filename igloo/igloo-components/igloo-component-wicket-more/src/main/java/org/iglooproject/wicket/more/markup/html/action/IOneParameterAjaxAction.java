@@ -5,20 +5,21 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.model.IDetachable;
 import org.iglooproject.wicket.more.condition.Condition;
 
+@FunctionalInterface
 public interface IOneParameterAjaxAction<T> extends IDetachable {
 
 	void execute(AjaxRequestTarget target, T parameter);
 
-	default public void updateAjaxAttributes(AjaxRequestAttributes attributes, T model) {
+	default void updateAjaxAttributes(AjaxRequestAttributes attributes, T model) {
 		// nothing to do
 	}
 
-	default public Condition getActionAvailableCondition(T parameter) {
+	default Condition getActionAvailableCondition(T parameter) {
 		return Condition.alwaysTrue();
 	}
 
 	@Override
-	default public void detach() {
+	default void detach() {
 		// nothing to do
 	}
 

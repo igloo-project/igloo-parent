@@ -453,7 +453,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	}
 
 	private void interruptQueueProcesses(TaskQueue queue) {
-		List<Long> queuedTaskHolderIds = new LinkedList<Long>();
+		List<Long> queuedTaskHolderIds = new LinkedList<>();
 		queue.drainTo(queuedTaskHolderIds);
 		
 		for (Long queuedTaskHolderId : queuedTaskHolderIds) {

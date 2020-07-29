@@ -57,9 +57,6 @@ public class CoreElasticSearchAnalyzersDefinitionProvider implements Elasticsear
 		builder.analyzer(HibernateSearchAnalyzer.TEXT_STEMMING).withTokenizer(WHITESPACETOKENIZER)
 				.withTokenFilters(ASCIIFOLDINGFILTER, WORDDELIMITERFILTER, LOWERCASEFILTER, ELASTICSEARCHTOKENFILTER);
 		
-		builder.analyzer(HibernateSearchAnalyzer.TEXT_SORT).withTokenizer(KEYWORDTOKENIZER)
-				.withTokenFilters(ASCIIFOLDINGFILTER, LOWERCASEFILTER, PATTERNREPLACEFILTERPUNCTUATION, PATTERNREPLACEFILTERNUMBER, TRIMFILTER);
-		
 		builder.normalizer(HibernateSearchNormalizer.KEYWORD);
 		
 		builder.normalizer(HibernateSearchNormalizer.KEYWORD_CLEAN)

@@ -28,7 +28,7 @@ public class ReadOnlyModel<F, T> implements IComponentAssignedModel<T> {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public IModel<T> create(IModel<F> parameter) {
-				return new ReadOnlyModel<F, T>(parameter, function);
+				return new ReadOnlyModel<>(parameter, function);
 			}
 			@Override
 			public String toString() {
@@ -38,19 +38,19 @@ public class ReadOnlyModel<F, T> implements IComponentAssignedModel<T> {
 	}
 
 	public static <T> ReadOnlyModel<T, T> of(IModel<? extends T> model) {
-		return new ReadOnlyModel<T, T>(model, Functions2.<T>identity());
+		return new ReadOnlyModel<>(model, Functions2.<T>identity());
 	}
 
 	public static <T extends Serializable> ReadOnlyModel<T, T> of(T object) {
-		return new ReadOnlyModel<T, T>(Model.of(object), Functions2.<T>identity());
+		return new ReadOnlyModel<>(Model.of(object), Functions2.<T>identity());
 	}
 
 	public static <F, T> ReadOnlyModel<F, T> of(IModel<F> model, SerializableFunction2<? super F, ? extends T> function) {
-		return new ReadOnlyModel<F, T>(model, function);
+		return new ReadOnlyModel<>(model, function);
 	}
 
 	public static <F extends Serializable, T> ReadOnlyModel<F, T> of(F object, SerializableFunction2<? super F, ? extends T> function) {
-		return new ReadOnlyModel<F, T>(Model.of(object), function);
+		return new ReadOnlyModel<>(Model.of(object), function);
 	}
 
 	protected ReadOnlyModel(IModel<? extends F> readModel, SerializableFunction2<? super F, ? extends T> function) {

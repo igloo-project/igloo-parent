@@ -23,7 +23,6 @@ import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;
 import org.iglooproject.wicket.more.markup.html.link.InvisibleLink;
 import org.springframework.util.StringUtils;
@@ -45,29 +44,11 @@ public final class ConsoleConfiguration {
 	
 	private Set<ResourceReference> consoleAccessCssResourcesReferences = Sets.newLinkedHashSet();
 	
-	private IComponentFactory<Component> consoleAccessHeaderAdditionalContentComponentFactory = new AbstractComponentFactory<Component>() {
-		private static final long serialVersionUID = 1L;
-		@Override
-		public Component create(String wicketId) {
-			return new InvisiblePanel(wicketId);
-		}
-	};
+	private IComponentFactory<Component> consoleAccessHeaderAdditionalContentComponentFactory = InvisiblePanel::new;
 	
-	private IComponentFactory<Component> consoleHeaderEnvironmentComponentFactory = new AbstractComponentFactory<Component>() {
-		private static final long serialVersionUID = 1L;
-		@Override
-		public Component create(String wicketId) {
-			return new InvisiblePanel(wicketId);
-		}
-	};
+	private IComponentFactory<Component> consoleHeaderEnvironmentComponentFactory = InvisiblePanel::new;
 	
-	private IComponentFactory<Component> consoleHeaderAdditionalContentComponentFactory = new AbstractComponentFactory<Component>() {
-		private static final long serialVersionUID = 1L;
-		@Override
-		public Component create(String wicketId) {
-			return new InvisiblePanel(wicketId);
-		}
-	};
+	private IComponentFactory<Component> consoleHeaderAdditionalContentComponentFactory = InvisiblePanel::new;
 	
 	public static ConsoleConfiguration get() {
 		if (!StringUtils.hasText(INSTANCE.baseUrl)) {
@@ -125,9 +106,9 @@ public final class ConsoleConfiguration {
 	
 	public Link<Void> getConsoleLink(String wicketId) {
 		if (!menuSections.isEmpty()) {
-			return new BookmarkablePageLink<Void>(wicketId, menuSections.get(0).getPageClass());
+			return new BookmarkablePageLink<>(wicketId, menuSections.get(0).getPageClass());
 		} else {
-			return new InvisibleLink<Void>(wicketId);
+			return new InvisibleLink<>(wicketId);
 		}
 	}
 	

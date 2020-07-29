@@ -48,7 +48,7 @@ public class SecurityPasswordResetContentPanel extends GenericPanel<User> {
 		
 		userTypeDescriptorModel = UserTypeDescriptorModel.fromUser(getModel());
 		
-		ModelValidatingForm<?> form = new ModelValidatingForm<Void>("form");
+		ModelValidatingForm<?> form = new ModelValidatingForm<>("form");
 		add(form);
 		
 		TextField<String> newPasswordField = new PasswordTextField("newPassword", newPasswordModel);

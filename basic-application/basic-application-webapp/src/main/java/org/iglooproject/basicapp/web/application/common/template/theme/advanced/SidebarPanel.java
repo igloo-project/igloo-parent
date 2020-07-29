@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.apache.wicket.markup.html.WebPage;
+import org.iglooproject.basicapp.web.application.common.component.ApplicationEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.theme.common.AbstractNavbarPanel;
 import org.iglooproject.basicapp.web.application.common.template.theme.common.ChangeApplicationThemeAjaxLink;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.sidebar.SidebarBehavior;
@@ -22,7 +23,9 @@ public class SidebarPanel extends AbstractNavbarPanel {
 		super(id);
 		
 		add(
-			new SidebarNavbarPanel("navbar")
+			new SidebarNavbarPanel("navbar"),
+			new ApplicationEnvironmentPanel("environment")
+				.compact()
 		);
 		
 		add(

@@ -8,7 +8,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
-import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap3AutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
@@ -41,7 +40,6 @@ import org.springframework.context.annotation.Import;
  * <li>igloo-ac.hsearch.disabled: {@link IglooHibernateSearchAutoConfiguration}</li>
  * <li>igloo-ac.property.disabled: {@link IglooPropertyAutoConfiguration}</li>
  * <li>igloo-ac.application.disabled: {@link IglooApplicationConfigAutoConfiguration}</li>
- * <li>igloo-ac.bootstrap3.disabled: {@link IglooBootstrap3AutoConfiguration}</li>
  * <li>igloo-ac.bootstrap4.disabled: {@link IglooBootstrap4AutoConfiguration}</li>
  * <li>igloo-ac.wicket.disabled: {@link IglooWicketAutoConfiguration}</li>
  * </ul>
