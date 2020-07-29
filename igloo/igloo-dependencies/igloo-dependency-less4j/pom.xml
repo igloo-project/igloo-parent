@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>igloo-dependencies</artifactId>
 		<groupId>org.iglooproject.dependencies</groupId>
-		<version>1.8.0-SNAPSHOT</version>
+		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>igloo-dependency-less4j</artifactId>
