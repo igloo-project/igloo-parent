@@ -19,7 +19,7 @@ import org.iglooproject.basicapp.core.business.common.model.embeddable.Localized
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventSummary;
 
-import com.google.common.base.MoreObjects;
+import com.google.common.base.MoreObjects.ToStringHelper;
 
 @Entity
 @Bindable
@@ -153,17 +153,11 @@ public class Announcement extends GenericEntity<Long, Announcement> {
 	}
 
 	@Override
-	public String getNameForToString() {
-		return MoreObjects.toStringHelper(this)
+	protected ToStringHelper toStringHelper() {
+		return super.toStringHelper()
 			.add("type", getType())
 			.add("publicationStartDateTime", getPublication().getStartDateTime())
-			.add("publicationEndDateTime", getPublication().getEndDateTime())
-			.toString();
-	}
-
-	@Override
-	public String getDisplayName() {
-		return getNameForToString();
+			.add("publicationEndDateTime", getPublication().getEndDateTime());
 	}
 
 }

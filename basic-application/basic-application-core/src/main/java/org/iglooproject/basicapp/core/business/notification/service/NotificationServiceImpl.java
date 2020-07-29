@@ -58,7 +58,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 			builder()
 				.sender("no-reply@basicapp.org")
 				.from(from)
-				.to(new SimpleRecipient(Locale.FRANCE, userTo.getEmail(), userTo.getDisplayName()))
+				.to(new SimpleRecipient(Locale.FRANCE, userTo.getEmail(), userTo.getFullName()))
 				.content(contentDescriptorFactory.example(userTo, date))
 				.send();
 		} catch (RuntimeException | ServiceException e) {
