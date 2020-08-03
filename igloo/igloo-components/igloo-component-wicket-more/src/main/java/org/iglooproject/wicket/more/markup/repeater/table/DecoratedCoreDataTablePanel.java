@@ -3,6 +3,7 @@ package org.iglooproject.wicket.more.markup.repeater.table;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -18,7 +19,6 @@ import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.basic.CountLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
-import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.html.navigation.paging.HideableAjaxPagingNavigator;
@@ -178,39 +178,50 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		dataTable.setItemsPerPage(arg0);
 	}
 	
-	public static class LabelAddInComponentFactory implements IComponentFactory<Component> {
+	public static class TitleLabelAddInComponentFactory<T, S extends ISort<?>> implements IOneParameterComponentFactory<Component, DecoratedCoreDataTablePanel<T, S>> {
 		private static final long serialVersionUID = 7358590231263113101L;
 		
 		private final IModel<?> labelModel;
 		
-		public LabelAddInComponentFactory(IModel<?> labelModel) {
+		public TitleLabelAddInComponentFactory(IModel<?> labelModel) {
 			super();
 			this.labelModel = labelModel;
 		}
 		
 		@Override
-		public Component create(String wicketId) {
-			return new CoreLabel(wicketId, labelModel);
+		public Component create(String wicketId, DecoratedCoreDataTablePanel<T, S> parameter) {
+			Component label = new CoreLabel(wicketId, labelModel)
+					.setOutputMarkupId(true);
+			
+			parameter.getDataTable().add(new AttributeModifier("aria-labelledby", label.getMarkupId()));
+			
+			return label;
 		}
 	}
 	
-	public static class CountAddInComponentFactory implements IComponentFactory<Component> {
+	public static class TitleCountAddInComponentFactory<T, S extends ISort<?>> implements IOneParameterComponentFactory<Component, DecoratedCoreDataTablePanel<T, S>> {
 		private static final long serialVersionUID = 7358590231263113101L;
 		
 		private final ISequenceProvider<?> sequenceProvider;
 		private final String countResourceKey;
 		
-		public CountAddInComponentFactory(ISequenceProvider<?> sequenceProvider, String countResourceKey) {
+		public TitleCountAddInComponentFactory(ISequenceProvider<?> sequenceProvider, String countResourceKey) {
 			super();
 			this.sequenceProvider = sequenceProvider;
 			this.countResourceKey = countResourceKey;
 		}
 		
 		@Override
-		public Component create(String wicketId) {
+		public Component create(String wicketId, DecoratedCoreDataTablePanel<T, S> parameter) {
 			IModel<Integer> countModel = new PropertyModel<>(sequenceProvider,
 					CoreWicketMoreBindings.iBindableDataProvider().size().getPath());
-			return new CountLabel(wicketId, countResourceKey, countModel);
+			
+			Component count = new CountLabel(wicketId, countResourceKey, countModel)
+					.setOutputMarkupId(true);
+			
+			parameter.getDataTable().add(new AttributeModifier("aria-labelledby", count.getMarkupId()));
+			
+			return count;
 		}
 	}
 	

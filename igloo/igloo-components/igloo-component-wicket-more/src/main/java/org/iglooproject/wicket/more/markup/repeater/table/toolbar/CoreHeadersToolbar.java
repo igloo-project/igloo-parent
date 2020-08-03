@@ -74,6 +74,7 @@ public class CoreHeadersToolbar<S extends ISort<?>> extends AbstractCoreToolbar 
 				item.add(header);
 				item.setRenderBodyOnly(true);
 				header.add(column.getHeader("label"));
+				header.setOutputMarkupId(true);
 			}
 		};
 		add(headers);

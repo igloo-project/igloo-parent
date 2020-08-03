@@ -39,9 +39,9 @@ import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AjaxPagerAddInComponentFactory;
-import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.CountAddInComponentFactory;
-import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.LabelAddInComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.PagerAddInComponentFactory;
+import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.TitleCountAddInComponentFactory;
+import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.TitleLabelAddInComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.AbstractActionColumnElementBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.ActionColumnBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnBuildState;
@@ -938,12 +938,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public IDecoratedBuildState<T, S> title(String resourceKey) {
-			return addIn(AddInPlacement.HEADING_LEFT, new LabelAddInComponentFactory(new ResourceModel(resourceKey)), getTitleCssClass());
+			return addIn(AddInPlacement.HEADING_LEFT, new TitleLabelAddInComponentFactory(new ResourceModel(resourceKey)), getTitleCssClass());
 		}
 		
 		@Override
 		public IDecoratedBuildState<T, S> title(IModel<?> model) {
-			return addIn(AddInPlacement.HEADING_LEFT, new LabelAddInComponentFactory(model), getTitleCssClass());
+			return addIn(AddInPlacement.HEADING_LEFT, new TitleLabelAddInComponentFactory(model), getTitleCssClass());
 		}
 		
 		@Override
@@ -959,7 +959,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public IDecoratedBuildState<T, S> count(AddInPlacement placement, String countResourceKey) {
 			this.countResourceKey = countResourceKey;
-			return addIn(placement, new CountAddInComponentFactory(sequenceProvider, countResourceKey), getTitleCssClass());
+			return addIn(placement, new TitleCountAddInComponentFactory<>(sequenceProvider, countResourceKey), getTitleCssClass());
 		}
 		
 		@Override

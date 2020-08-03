@@ -20,6 +20,7 @@ public class CoreCustomizableToolbar<T, S extends ISort<?>> extends AbstractCore
 
 		FactoryRepeatingView headers = new FactoryRepeatingView("header");
 		headers.addAll(factories, dataTable);
+		headers.setOutputMarkupId(true);
 		add(headers);
 	}
 
