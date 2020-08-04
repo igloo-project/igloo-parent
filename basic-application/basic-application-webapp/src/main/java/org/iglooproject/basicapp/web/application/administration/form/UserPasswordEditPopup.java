@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.form;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -84,6 +85,11 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 		TextField<String> oldPasswordField = new PasswordTextField("oldPassword", oldPasswordModel);
 		TextField<String> newPasswordField = new PasswordTextField("newPassword", newPasswordModel);
 		TextField<String> confirmPasswordField = new PasswordTextField("confirmPassword", Model.of(""));
+		CoreLabel passwordHelp = new CoreLabel("passwordHelp",
+				new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
+				.setDefaultValue(new ResourceModel("security.user.password.help"))
+		);
+		CoreLabel confirmPasswordHelp = new CoreLabel("confirmPasswordHelp", new ResourceModel("security.user.confirmPassword.help"));
 		
 		form
 			.add(
@@ -93,14 +99,20 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 					.add(isOldPasswordRequired.thenShow()),
 				newPasswordField
 					.setLabel(new ResourceModel("business.user.newPassword"))
-					.setRequired(true),
-				new CoreLabel("passwordHelp",
-					new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
-						.setDefaultValue(new ResourceModel("security.user.password.help"))
-				),
+					.setRequired(true)
+					.add(
+						new AttributeModifier("aria-describedby", passwordHelp::getMarkupId)
+					),
+				passwordHelp
+					.setOutputMarkupId(true),
 				confirmPasswordField
 					.setLabel(new ResourceModel("business.user.confirmPassword"))
 					.setRequired(true)
+					.add(
+						new AttributeModifier("aria-describedby", confirmPasswordHelp::getMarkupId)
+					),
+				confirmPasswordHelp
+					.setOutputMarkupId(true)
 			);
 		
 		form.add(

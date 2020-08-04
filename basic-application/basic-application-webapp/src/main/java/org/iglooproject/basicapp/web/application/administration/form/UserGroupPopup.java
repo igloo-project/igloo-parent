@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.form;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -72,6 +73,7 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 	@Override
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserGroupPopup.class);
+		CoreLabel rolesLabel = new CoreLabel("rolesLabel", new ResourceModel("business.userGroup.authorities"));
 		
 		form = new Form<>("form", getModel());
 		body.add(form);
@@ -82,6 +84,8 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 					.setLabel(new ResourceModel("business.userGroup.name")),
 				new TextArea<String>("description", BindingModel.of(getModel(), Bindings.userGroup().description()))
 					.setLabel(new ResourceModel("business.userGroup.description")),
+				rolesLabel
+					.setOutputMarkupId(true),
 				new CheckGroup<Authority>("authorities",
 					BindingModel.of(getModel(), Bindings.userGroup().authorities()),
 					Suppliers2.<Authority>hashSet()
@@ -99,6 +103,9 @@ public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 						}
 					)
 					.setRenderBodyOnly(false)
+					.add(
+						new AttributeModifier("aria-labelledby", rolesLabel::getMarkupId)
+					)
 			);
 		
 		return body;

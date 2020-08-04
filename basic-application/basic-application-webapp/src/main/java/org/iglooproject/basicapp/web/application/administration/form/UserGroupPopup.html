@@ -28,10 +28,10 @@
 					<div class="col-12">
 						<div class="row row-form-group form-group">
 							<div class="col-md-4">
-								<label class="col-form-label form-label pt-0"><wicket:message key="business.userGroup.authorities" /></label>
+								<label wicket:id="rolesLabel" class="col-form-label form-label pt-0"></label>
 							</div>
 							<div class="col-md-8">
-								<div wicket:id="authorities" class="form-control-plaintext">
+								<div wicket:id="authorities" class="form-control-plaintext" role="group">
 									<div wicket:id="authorities" class="custom-control custom-checkbox">
 										<input wicket:id="authority" class="custom-control-input" type="checkbox" />
 										<label wicket:for="authority" class="custom-control-label"><wicket:label /></label>

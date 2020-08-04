@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.form;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.EmailTextField;
@@ -44,6 +45,12 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 	@Override
 	protected Component createBody(String wicketId) {
 		DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, getClass());
+		CoreLabel usernameHelp = new CoreLabel("usernameHelp", new ResourceModel("administration.user.form.username.help"));
+		CoreLabel passwordHelp = new CoreLabel("passwordHelp",
+			new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
+				.setDefaultValue(new ResourceModel("security.user.password.help"))
+		);
+		CoreLabel confirmPasswordHelp = new CoreLabel("confirmPasswordHelp", new ResourceModel("security.user.confirmPassword.help"));
 		
 		form = new ModelValidatingForm<>("form", getModel());
 		body.add(form);
@@ -67,7 +74,12 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 					.setLabel(new ResourceModel("business.user.username"))
 					.setRequired(true)
 					.add(USERNAME_PATTERN_VALIDATOR)
-					.add(new UsernameUnicityValidator(getModel())),
+					.add(new UsernameUnicityValidator(getModel()))
+					.add(
+						new AttributeModifier("aria-describedby", usernameHelp::getMarkupId)
+					),
+					usernameHelp
+					.setOutputMarkupId(true),
 				new EnclosureContainer("addContainer")
 					.condition(addModeCondition())
 					.add(
@@ -76,14 +88,20 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 							.add(
 								passwordField
 									.setLabel(new ResourceModel("business.user.password"))
-									.setRequired(passwordRequired),
-								new CoreLabel("passwordHelp",
-									new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
-										.setDefaultValue(new ResourceModel("security.user.password.help"))
-								),
+									.setRequired(passwordRequired)
+									.add(
+										new AttributeModifier("aria-describedby", passwordHelp::getMarkupId)
+									),
+								passwordHelp
+									.setOutputMarkupId(true),
 								confirmPasswordField
 									.setLabel(new ResourceModel("business.user.confirmPassword"))
 									.setRequired(passwordRequired)
+									.add(
+										new AttributeModifier("aria-describedby", confirmPasswordHelp::getMarkupId)
+									),
+								confirmPasswordHelp
+									.setOutputMarkupId(true)
 							),
 						
 						new CheckBox("active", BindingModel.of(getModel(), Bindings.user().active()))
