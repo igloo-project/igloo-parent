@@ -20,31 +20,35 @@
 	</head>
 	<body wicket:id="bodyElement">
 		<div class="body-container">
-			<header class="header-section">
+			<header class="header-section" id="header" tabindex="-1">
+				<a href="#main" class="sr-only sr-only-focusable">
+					<wicket:message key="accessibility.nav.main" />
+				</a>
 				<nav wicket:id="navbar" class="navbar navbar-app navbar-main navbar-expand-lg" />
 				<div wicket:id="environment" class="header-alert-section header-alert-dismissible environment-section" />
 			</header>
 			
-			<main class="main-section">
+			<main class="main-section" id="main" tabindex="-1">
 				<div wicket:enclosure-component="announcements" class="main-header">
 					<div wicket:id="announcements" class="header-alert-section header-alert-dismissible announcements-section" />
 				</div>
 				<div class="main-body">
 					<wicket:child />
 				</div>
+				<div wicket:id="scrollToTop" class="scroll-to-top">
+					<a class="scroll-to-top-btn" href="#header" >
+						<span class="fa fa-fw fa-arrow-up scroll-to-top-icon" aria-hidden="true" />
+						<span class="sr-only">
+							<wicket:message key="accessibility.nav.top" />
+						</span>
+					</a>
+				</div>
 			</main>
-			
 			<footer wicket:id="footer" class="footer-section" />
 		</div>
 		
 		<div wicket:id="feedback" data-placement="bottom" />
 		
 		<div wicket:id="bsBreakpoint" class="bs-breakpoint" />
-		
-		<div wicket:id="scrollToTop" class="scroll-to-top">
-			<button class="scroll-to-top-btn" type="button">
-				<span class="fa fa-fw fa-arrow-up scroll-to-top-icon" />
-			</button>
-		</div>
 	</body>
 </html>
