@@ -96,10 +96,12 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 				oldPasswordField
 					.setLabel(new ResourceModel("business.user.oldPassword"))
 					.setRequired(true)
+					.add(new AttributeModifier("aria-required", true))
 					.add(isOldPasswordRequired.thenShow()),
 				newPasswordField
 					.setLabel(new ResourceModel("business.user.newPassword"))
 					.setRequired(true)
+					.add(new AttributeModifier("aria-required", true))
 					.add(
 						new AttributeModifier("aria-describedby", passwordHelp::getMarkupId)
 					),
@@ -108,6 +110,7 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 				confirmPasswordField
 					.setLabel(new ResourceModel("business.user.confirmPassword"))
 					.setRequired(true)
+					.add(new AttributeModifier("aria-required", true))
 					.add(
 						new AttributeModifier("aria-describedby", confirmPasswordHelp::getMarkupId)
 					),

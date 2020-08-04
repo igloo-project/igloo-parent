@@ -98,6 +98,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 			new EnumDropDownSingleChoice<>("type", bindableModel.bind(Bindings.announcement().type()), AnnouncementType.class)
 				.setLabel(new ResourceModel("business.announcement.type"))
 				.setRequired(true)
+				.add(new AttributeModifier("aria-required", true))
 				.add(
 					new UpdateOnChangeAjaxEventBehavior()
 						.onChange(new SerializableListener() {
@@ -120,6 +121,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 					new DatePicker("interruptionStartDate", bindableModel.bind(Bindings.announcement().interruption().startDateTime()), DatePattern.SHORT_DATE)
 						.setLabel(new ResourceModel("business.announcement.interruption.startDateTime.date"))
 						.setRequired(true)
+						.add(new AttributeModifier("aria-required", true))
 						.add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
 						.add(new UpdateOnChangeAjaxEventBehavior())
 						.add(
@@ -128,6 +130,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 					new TimeField("interruptionStartTime", bindableModel.getInterruptionStartTimeModel(), DatePattern.TIME)
 						.setLabel(new ResourceModel("business.announcement.interruption.startDateTime.time"))
 						.setRequired(true)
+						.add(new AttributeModifier("aria-required", true))
 						.add(new UpdateOnChangeAjaxEventBehavior())
 						.add(
 								new AttributeModifier("aria-labelledby", interruptionStartDateTitle::getMarkupId)
@@ -137,6 +140,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 						new DatePicker("interruptionEndDate", bindableModel.bind(Bindings.announcement().interruption().endDateTime()), DatePattern.SHORT_DATE)
 						.setLabel(new ResourceModel("business.announcement.interruption.endDateTime.date"))
 						.setRequired(true)
+						.add(new AttributeModifier("aria-required", true))
 						.add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
 						.add(new UpdateOnChangeAjaxEventBehavior())
 						.add(
@@ -145,6 +149,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 					new TimeField("interruptionEndTime", bindableModel.getInterruptionEndTimeModel(), DatePattern.TIME)
 						.setLabel(new ResourceModel("business.announcement.interruption.endDateTime.time"))
 						.setRequired(true)
+						.add(new AttributeModifier("aria-required", true))
 						.add(new UpdateOnChangeAjaxEventBehavior())
 						.add(
 							new AttributeModifier("aria-labelledby", interruptionEndDateTitle::getMarkupId)
@@ -173,6 +178,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 			new DatePicker("publicationStartDate", bindableModel.bind(Bindings.announcement().publication().startDateTime()), DatePattern.SHORT_DATE)
 				.setLabel(new ResourceModel("business.announcement.publication.startDateTime.date"))
 				.setRequired(true)
+				.add(new AttributeModifier("aria-required", true))
 				.add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
 				.add(new UpdateOnChangeAjaxEventBehavior())
 				.add(
@@ -181,6 +187,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 			new TimeField("publicationStartTime", bindableModel.getPublicationStartTimeModel(), DatePattern.TIME)
 				.setLabel(new ResourceModel("business.announcement.publication.startDateTime.time"))
 				.setRequired(true)
+				.add(new AttributeModifier("aria-required", true))
 				.add(new UpdateOnChangeAjaxEventBehavior())
 				.add(
 					new AttributeModifier("aria-labelledby", publicationStartDateTitle::getMarkupId)
@@ -191,6 +198,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 			new DatePicker("publicationEndDate", bindableModel.bind(Bindings.announcement().publication().endDateTime()), DatePattern.SHORT_DATE)
 				.setLabel(new ResourceModel("business.announcement.publication.endDateTime.date"))
 				.setRequired(true)
+				.add(new AttributeModifier("aria-required", true))
 				.add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
 				.add(new UpdateOnChangeAjaxEventBehavior())
 				.add(
@@ -199,6 +207,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 			new TimeField("publicationEndTime", bindableModel.getPublicationEndTimeModel(), DatePattern.TIME)
 				.setLabel(new ResourceModel("business.announcement.publication.endDateTime.time"))
 				.setRequired(true)
+				.add(new AttributeModifier("aria-required", true))
 				.add(new UpdateOnChangeAjaxEventBehavior())
 				.add(
 					new AttributeModifier("aria-labelledby", publicationEndDateTitle::getMarkupId)

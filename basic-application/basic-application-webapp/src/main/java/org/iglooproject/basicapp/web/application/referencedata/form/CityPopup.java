@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.web.application.referencedata.form;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
@@ -39,13 +40,16 @@ public abstract class CityPopup extends AbstractReferenceDataPopup<City> {
 				.add(
 					labelFr
 						.setLabel(new ResourceModel("business.referenceData.label.fr"))
-						.setRequired(true),
+						.setRequired(true)
+						.add(new AttributeModifier("aria-required", true)),
 					labelEn
 						.setLabel(new ResourceModel("business.referenceData.label.en"))
-						.setRequired(true),
+						.setRequired(true)
+						.add(new AttributeModifier("aria-required", true)),
 					postalCode
 						.setLabel(new ResourceModel("business.city.postalCode"))
-						.setRequired(true),
+						.setRequired(true)
+						.add(new AttributeModifier("aria-required", true)),
 					new CheckBox("enabled", BindingModel.of(model, Bindings.city().enabled()))
 						.setLabel(new ResourceModel("business.referenceData.enabled"))
 						.add(Condition.isTrue(BindingModel.of(model, Bindings.city().disableable())).thenEnable())

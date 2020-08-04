@@ -66,15 +66,18 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 			.add(
 				new TextField<String>("firstName", BindingModel.of(getModel(), Bindings.user().firstName()))
 					.setLabel(new ResourceModel("business.user.firstName"))
-					.setRequired(true),
+					.setRequired(true)
+					.add(new AttributeModifier("aria-required", true)),
 				new TextField<String>("lastName", BindingModel.of(getModel(), Bindings.user().lastName()))
 					.setLabel(new ResourceModel("business.user.lastName"))
-					.setRequired(true),
+					.setRequired(true)
+					.add(new AttributeModifier("aria-required", true)),
 				new TextField<String>("username", BindingModel.of(getModel(), Bindings.user().username()))
 					.setLabel(new ResourceModel("business.user.username"))
 					.setRequired(true)
 					.add(USERNAME_PATTERN_VALIDATOR)
 					.add(new UsernameUnicityValidator(getModel()))
+					.add(new AttributeModifier("aria-required", true))
 					.add(
 						new AttributeModifier("aria-describedby", usernameHelp::getMarkupId)
 					),
@@ -89,6 +92,7 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 								passwordField
 									.setLabel(new ResourceModel("business.user.password"))
 									.setRequired(passwordRequired)
+									.add(new AttributeModifier("aria-required", true))
 									.add(
 										new AttributeModifier("aria-describedby", passwordHelp::getMarkupId)
 									),
@@ -97,6 +101,7 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 								confirmPasswordField
 									.setLabel(new ResourceModel("business.user.confirmPassword"))
 									.setRequired(passwordRequired)
+									.add(new AttributeModifier("aria-required", true))
 									.add(
 										new AttributeModifier("aria-describedby", confirmPasswordHelp::getMarkupId)
 									),
@@ -115,6 +120,7 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 				new LocaleDropDownChoice("locale", BindingModel.of(getModel(), Bindings.user().locale()))
 					.setLabel(new ResourceModel("business.user.locale"))
 					.setRequired(true)
+					.add(new AttributeModifier("aria-required", true))
 			);
 		
 		form.add(new EqualPasswordInputValidator(passwordField, confirmPasswordField));
