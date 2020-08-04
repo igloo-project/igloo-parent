@@ -5,41 +5,41 @@
 		<wicket:panel>
 			<div class="feedback-container">
 				<div class="feedback-panel">
-					<button wicket:id="closeTrigger" class="close" type="button">
-						<span>&times;</span>
+					<button wicket:id="closeTrigger" class="close" type="button" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
 					</button>
 					<wicket:enclosure child="FATALfeedbackPanel">
-						<div class="alert alert-danger">
+						<div class="alert alert-danger" role="alert">
 							<wicket:container wicket:id="FATALfeedbackPanel" />
 						</div>
 					</wicket:enclosure>
 					<wicket:enclosure child="ERRORfeedbackPanel">
-						<div class="alert alert-danger">
+						<div class="alert alert-danger" role="alert">
 							<wicket:container wicket:id="ERRORfeedbackPanel" />
 						</div>
 					</wicket:enclosure>
 					<wicket:enclosure child="WARNINGfeedbackPanel">
-						<div class="alert alert-warning">
+						<div class="alert alert-warning" role="alert">
 							<wicket:container wicket:id="WARNINGfeedbackPanel" />
 						</div>
 					</wicket:enclosure>
 					<wicket:enclosure child="SUCCESSfeedbackPanel">
-						<div class="alert alert-success">
+						<div class="alert alert-success" role="status">
 							<wicket:container wicket:id="SUCCESSfeedbackPanel" />
 						</div>
 					</wicket:enclosure>
 					<wicket:enclosure child="INFOfeedbackPanel">
-						<div class="alert alert-info">
+						<div class="alert alert-info" role="status">
 							<wicket:container wicket:id="INFOfeedbackPanel" />
 						</div>
 					</wicket:enclosure>
 					<wicket:enclosure child="DEBUGfeedbackPanel">
-						<div class="alert alert-info">
+						<div class="alert alert-info" role="alert">
 							<wicket:container wicket:id="DEBUGfeedbackPanel" />
 						</div>
 					</wicket:enclosure>
 					<wicket:enclosure child="UNDEFINEDfeedbackPanel">
-						<div class="alert alert-secondary">
+						<div class="alert alert-secondary" role="alert">
 							<wicket:container wicket:id="UNDEFINEDfeedbackPanel" />
 						</div>
 					</wicket:enclosure>
