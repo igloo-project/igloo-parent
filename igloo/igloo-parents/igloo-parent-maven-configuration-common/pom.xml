@@ -14,10 +14,10 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
 		
-		<jdk.version>1.11</jdk.version>
+		<jdk.version>1.8</jdk.version>
 		<!-- used for generation; version numbers are not compatible; keep it in sync with jdk.version -->
-		<jdk.release.version>11</jdk.release.version>
-		<minimal.jdk.version>1.11</minimal.jdk.version>
+		<jdk.release.version>8</jdk.release.version>
+		<minimal.jdk.version>1.8</minimal.jdk.version>
 		
 		<!-- ipv6 local network not available on travis - https://github.com/travis-ci/travis-ci/issues/4964 -->
 		<test.argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true</test.argLine>

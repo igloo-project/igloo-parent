@@ -184,7 +184,7 @@
 		<igloo.galimatias.version>0.2.1</igloo.galimatias.version>
 
 		<igloo.jersey.version>1.19.4</igloo.jersey.version>
-		<igloo.jersey2.version>2.31</igloo.jersey2.version>
+		<igloo.jersey2.version>2.25.1</igloo.jersey2.version>
 		<igloo.glassfish-asm-all-repackaged.version>2.5.0-b60</igloo.glassfish-asm-all-repackaged.version>
 
 		<igloo.jstl.version>1.2</igloo.jstl.version>
@@ -1189,7 +1189,7 @@
 
 			<dependency>
 				<groupId>org.glassfish.jersey.ext</groupId>
-				<artifactId>jersey-spring5</artifactId>
+				<artifactId>jersey-spring3</artifactId>
 				<version>${igloo.jersey2.version}</version>
 				<exclusions>
 					<exclusion>
