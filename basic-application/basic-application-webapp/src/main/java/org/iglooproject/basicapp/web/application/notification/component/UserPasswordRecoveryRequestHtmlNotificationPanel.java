@@ -2,6 +2,7 @@ package org.iglooproject.basicapp.web.application.notification.component;
 
 import java.util.Date;
 
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -30,47 +31,31 @@ public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> ex
 		super(id, objectModel);
 		
 		// Intro
-		StringResourceModel descriptionTextModel = 
-			new StringResourceModel(
-					resourceKeyGenerator.resourceKey("text"),
-					objectModel
-			)
-				.setParameters(dateModel, authorModel)
-				.setDefaultValue(
-					new StringResourceModel(
-						defaultResourceKeyGenerator.resourceKey("text"),
-						objectModel
-					)
-						.setParameters(dateModel, authorModel)
-				);
-		add(new CoreLabel("description", descriptionTextModel).setEscapeModelStrings(false));
+		StringResourceModel descriptionTextModel = new StringResourceModel(resourceKeyGenerator.resourceKey("text"), objectModel)
+			.setParameters(dateModel, authorModel)
+			.setDefaultValue(
+				new StringResourceModel(defaultResourceKeyGenerator.resourceKey("intro"), objectModel)
+					.setParameters(dateModel, authorModel)
+			);
+		
+		add(new CoreLabel("intro", descriptionTextModel).setEscapeModelStrings(false));
 		
 		// Main link
 		if (linkGenerator != null) {
-			StringResourceModel linkIntroModel = new StringResourceModel(
-				resourceKeyGenerator.resourceKey("link.intro"),
-				objectModel
-			)
+			StringResourceModel linkIntroModel = new StringResourceModel(resourceKeyGenerator.resourceKey("link.intro"), objectModel)
 				.setParameters(dateModel, authorModel)
 				.setDefaultValue(
-					new StringResourceModel(
-						defaultResourceKeyGenerator.resourceKey("link.intro"),
-						objectModel
-					)
+					new StringResourceModel(defaultResourceKeyGenerator.resourceKey("link.intro"), objectModel)
 						.setParameters(dateModel, authorModel)
 				);
-			StringResourceModel linkLabelModel = new StringResourceModel(
-				resourceKeyGenerator.resourceKey("link.label"),
-				objectModel
-			)
+			
+			StringResourceModel linkLabelModel = new StringResourceModel(resourceKeyGenerator.resourceKey("link.label"), objectModel)
 				.setParameters(dateModel, authorModel)
 				.setDefaultValue(
-					new StringResourceModel(
-						defaultResourceKeyGenerator.resourceKey("link.label"),
-						objectModel
-					)
+					new StringResourceModel(defaultResourceKeyGenerator.resourceKey("link.label"), objectModel)
 						.setParameters(dateModel, authorModel)
 				);
+			
 			add(
 				new CoreLabel("linkIntro", linkIntroModel),
 				linkGenerator.link("mainLink")
@@ -82,11 +67,10 @@ public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> ex
 		}
 		
 		add(
-			new CoreLabel(
-				"helpUsername",
-				new StringResourceModel("notification.panel.user.password.recovery.request.help.username", BindingModel.of(objectModel, Bindings.user().username()))
-			)
-				.setEscapeModelStrings(false)
+			new WebMarkupContainer("helpUsername")
+				.add(
+					new CoreLabel("username", BindingModel.of(objectModel, Bindings.user().username()))
+				)
 		);
 	}
 
