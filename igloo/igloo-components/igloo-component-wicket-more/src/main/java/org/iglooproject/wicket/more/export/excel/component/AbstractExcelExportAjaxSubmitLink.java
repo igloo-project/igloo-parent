@@ -60,7 +60,9 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 	protected MediaType getMediaType(Workbook workbook) {
 		if (workbook instanceof HSSFWorkbook) {
 			return MediaType.APPLICATION_MS_EXCEL;
-		} else if (workbook instanceof XSSFWorkbook) {
+		} else if (workbook instanceof XSSFWorkbook && ((XSSFWorkbook) workbook).isMacroEnabled()) {
+			return MediaType.APPLICATION_MS_EXCEL_MACRO;
+		} else if (workbook instanceof XSSFWorkbook && !((XSSFWorkbook) workbook).isMacroEnabled()) {
 			return MediaType.APPLICATION_OPENXML_EXCEL;
 		} else if (workbook instanceof SXSSFWorkbook) {
 			return MediaType.APPLICATION_OPENXML_EXCEL;

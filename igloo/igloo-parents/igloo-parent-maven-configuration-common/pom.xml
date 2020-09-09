@@ -4,7 +4,7 @@
 	
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>2.0.0</version>
+	<version>2.1.0</version>
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Parent - Maven configuration - Common</name>
@@ -172,45 +172,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-
-			<!-- Enforce code compatibility with the target JRE, even when building with a newer JDK.
-				This ensures that none of the newer classes or methods that were not yet defined in the
-				target JRE are referenced in this project.
-				See https://maven.apache.org/guides/mini/guide-building-jdk14-on-jdk15.html
-				
-				Please be aware that code generation tools may be affected by the JDK used to compile, and thus
-				may trigger a failure (because they automatically reference newer classes or methods). In this case,
-				the only way to make things work is to use the proper JDK (use maven toolchains plugin).
-			-->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>animal-sniffer-maven-plugin</artifactId>
-				<version>${igloo.animal-sniffer-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>check-java-version</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-						<configuration>
-							<signature>
-								<groupId>${jdk.signature.groupId}</groupId>
-								<artifactId>${jdk.signature.artifactId}</artifactId>
-								<version>${jdk.signature.version}</version>
-							</signature>
-						</configuration>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>${jdk.signature.groupId}</groupId>
-						<artifactId>${jdk.signature.artifactId}</artifactId>
-						<version>${jdk.signature.version}</version>
-						<type>signature</type>
-					</dependency>
-				</dependencies>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -498,6 +459,54 @@
 	</build>
 	
 	<profiles>
+		<profile>
+			<id>animal-sniffer</id>
+			<activation>
+				<jdk>(,1.8]</jdk>
+			</activation>
+			<build>
+				<plugins>
+					<!-- Enforce code compatibility with the target JRE, even when building with a newer JDK.
+						This ensures that none of the newer classes or methods that were not yet defined in the
+						target JRE are referenced in this project.
+						See https://maven.apache.org/guides/mini/guide-building-jdk14-on-jdk15.html
+						
+						Please be aware that code generation tools may be affected by the JDK used to compile, and thus
+						may trigger a failure (because they automatically reference newer classes or methods). In this case,
+						the only way to make things work is to use the proper JDK (use maven toolchains plugin).
+					-->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>animal-sniffer-maven-plugin</artifactId>
+						<version>${igloo.animal-sniffer-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>check-java-version</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>check</goal>
+								</goals>
+								<configuration>
+									<signature>
+										<groupId>${jdk.signature.groupId}</groupId>
+										<artifactId>${jdk.signature.artifactId}</artifactId>
+										<version>${jdk.signature.version}</version>
+									</signature>
+								</configuration>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>${jdk.signature.groupId}</groupId>
+								<artifactId>${jdk.signature.artifactId}</artifactId>
+								<version>${jdk.signature.version}</version>
+								<type>signature</type>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>sonar-branch</id>
 			<activation>
