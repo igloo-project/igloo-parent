@@ -400,7 +400,6 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 	protected Cell addFormulaCell(Row row, int columnIndex, String formula) {
 		Cell cell = row.createCell(columnIndex);
 		cell.setCellStyle(getRowStyle(STYLE_STANDARD_NAME, row.getRowNum()));
-		cell.setCellType(CellType.FORMULA);
 		cell.setCellFormula(formula);
 		return cell;
 	}
