@@ -26,6 +26,7 @@ public class HibernateSearchAutoConfigurationTestCase {
 	@Test
 	public void testIglooHibernateSearchAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.run(
 				(context) -> { assertThat(context).hasSingleBean(IHibernateSearchService.class); }

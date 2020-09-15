@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -35,16 +36,17 @@
 		<!-- 5.2.0: https://github.com/spring-projects/spring-framework/wiki/What's-New-in-Spring-Framework-5.x#whats-new-in-version-52 -->
 		<!-- 5.2.2: https://github.com/spring-projects/spring-framework/releases/tag/v5.2.2.RELEASE -->
 		<!-- 5.2.6: https://github.com/spring-projects/spring-framework/releases/tag/v5.2.6.RELEASE -->
-		<igloo.spring.version>5.2.6.RELEASE</igloo.spring.version>
-		<igloo.spring-boot.version>2.2.7.RELEASE</igloo.spring-boot.version>
-		<!-- https://www.eclipse.org/aspectj/doc/released/README-194.html -->
-		<igloo.aspectj.version>1.9.5</igloo.aspectj.version>
+		<!-- 5.2.8: https://github.com/spring-projects/spring-framework/releases/tag/v5.2.8.RELEASE -->
+		<igloo.spring.version>5.2.9.RELEASE</igloo.spring.version>
+		<igloo.spring-boot.version>2.3.4.RELEASE</igloo.spring-boot.version>
+		<!-- https://www.eclipse.org/aspectj/doc/released/README-196.html -->
+		<igloo.aspectj.version>1.9.6</igloo.aspectj.version>
 
 		<!-- http://hibernate.org/orm/releases/5.3/ -->
 		<!-- https://hibernate.atlassian.net/browse/HHH-12932?jql=project%20%3D%20HHH%20AND%20fixVersion%20in%20(5.3.6)%20ORDER%20BY%20updated -->
 		<!-- https://hibernate.atlassian.net/browse/HHH-12784?jql=project%20%3D%20HHH%20AND%20fixVersion%20%3D%205.3.7%20ORDER%20BY%20updated -->
 		<!-- http://hibernate.org/orm/releases/5.4/ -->
-		<igloo.hibernate.version>5.4.16.Final</igloo.hibernate.version>
+		<igloo.hibernate.version>5.4.21.Final</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.3.Final</igloo.hibernate-validator.version>
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
 		<igloo.byte-buddy.version>1.10.10</igloo.byte-buddy.version>
@@ -72,14 +74,13 @@
 		<igloo.guava.version>29.0-jre</igloo.guava.version>
 
 		<!-- https://jdbc.postgresql.org/documentation/changelog.html -->
-		<igloo.postgresql.version>42.2.12</igloo.postgresql.version>
+		<igloo.postgresql.version>42.2.14</igloo.postgresql.version>
 		<igloo.oracle10g.version>10.2.0.5</igloo.oracle10g.version>
 		<igloo.mysql.version>5.1.14</igloo.mysql.version>
 
 		<igloo.bindgen.version>4.0.2</igloo.bindgen.version>
 		<igloo.bindgen-java.version>1.0.0</igloo.bindgen-java.version>
 		<igloo.bindgen-bindings-java.version>1.1</igloo.bindgen-bindings-java.version>
-
 		<!-- 5.0.4: https://github.com/spring-projects/spring-security/milestone/112?closed=1 -->
 		<!-- 5.0.5: https://github.com/spring-projects/spring-security/milestone/114?closed=1 -->
 		<!-- 5.0.6: https://github.com/spring-projects/spring-security/milestone/116?closed=1 -->
@@ -94,9 +95,10 @@
 		<!-- 5.2.0: https://docs.spring.io/spring-security/site/docs/5.2.0.RELEASE/reference/htmlsingle/#new -->
 		<!-- 5.3.0: https://github.com/spring-projects/spring-security/releases/tag/5.3.0.RELEASE -->
 		<!-- 5.3.2: https://github.com/spring-projects/spring-security/releases/tag/5.3.2.RELEASE -->
-		<igloo.spring-security.version>5.3.2.RELEASE</igloo.spring-security.version>
+		<!-- 5.3.4: https://github.com/spring-projects/spring-security/releases/tag/5.3.4.RELEASE -->
+		<igloo.spring-security.version>5.4.0</igloo.spring-security.version>
 
-		<igloo.spring-ldap.version>2.3.2.RELEASE</igloo.spring-ldap.version>
+		<igloo.spring-ldap.version>2.3.3.RELEASE</igloo.spring-ldap.version>
 
 		<!-- http://in.relation.to/2018/09/13/hibernate-search-5-10-4-Final-5-9-3-Final-5-6-6-Final/ -->
 		<!-- http://in.relation.to/2018/12/20/hibernate-search-5-11-0-Final/ -->
@@ -104,7 +106,7 @@
 		<!-- https://in.relation.to/2019/06/18/hibernate-search-5-11-2-Final-and-5-10-6-Final/ -->
 		<!-- https://in.relation.to/2019/09/19/hibernate-search-5-11-3-Final/ -->
 		<!-- https://in.relation.to/2019/11/22/hibernate-search-5-11-4-Final-and-5-10-8-Final/ -->
-		<igloo.hibernate-search.version>5.11.4.Final</igloo.hibernate-search.version>
+		<igloo.hibernate-search.version>5.11.5.Final</igloo.hibernate-search.version>
 		<!-- both needed by less4j and hibernate-search ; we keep hibernate-search version -->
 		<igloo.gson.version>2.8.6</igloo.gson.version>
 		<!-- overriden in some modules, when we are in a elasticsearch context -->
@@ -123,18 +125,17 @@
 		<igloo.commons-io.version>2.4</igloo.commons-io.version>
 
 		<igloo.commons-lang.version>2.6</igloo.commons-lang.version>
-		<!-- https://commons.apache.org/proper/commons-lang/release-notes/RELEASE-NOTES-3.9.txt -->
 		<!-- https://commons.apache.org/proper/commons-lang/release-notes/RELEASE-NOTES-3.10.txt -->
-		<igloo.commons-lang3.version>3.10</igloo.commons-lang3.version>
+		<igloo.commons-lang3.version>3.11</igloo.commons-lang3.version>
 		<!-- https://commons.apache.org/proper/commons-text/RELEASE-NOTES.txt -->
-		<igloo.commons-text.version>1.8</igloo.commons-text.version>
+		<igloo.commons-text.version>1.9</igloo.commons-text.version>
 		<igloo.commons-math3.version>3.6.1</igloo.commons-math3.version>
 		<igloo.commons-cli.version>1.4</igloo.commons-cli.version>
-		<igloo.commons-codec.version>1.14</igloo.commons-codec.version>
+		<igloo.commons-codec.version>1.15</igloo.commons-codec.version>
 		<igloo.commons-exec.version>1.3</igloo.commons-exec.version>
 		<!-- https://commons.apache.org/proper/commons-compress/ -->
 		<igloo.commons-compress.version>1.20</igloo.commons-compress.version>
-		<igloo.commons-validator.version>1.6</igloo.commons-validator.version>
+		<igloo.commons-validator.version>1.7</igloo.commons-validator.version>
 		<igloo.commons-collections.version>3.2.2</igloo.commons-collections.version>
 		<igloo.commons-collections4.version>4.4</igloo.commons-collections4.version>
 		<igloo.commons-beanutils.version>1.9.4</igloo.commons-beanutils.version>
@@ -160,7 +161,7 @@
 
 		<igloo.json-lib.version>2.3</igloo.json-lib.version>
 		<!-- https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.10 -->
-		<igloo.jackson2-core.version>2.10.4</igloo.jackson2-core.version>
+		<igloo.jackson2-core.version>2.11.2</igloo.jackson2-core.version>
 		<igloo.jackson2-databind.version>${igloo.jackson2-core.version}</igloo.jackson2-databind.version>
 		<!-- https://github.com/FasterXML/jackson-databind/issues/2478 Resync jackson versions when performing update to 2.9.11 -->
 		<igloo.jackson2-annotations.version>${igloo.jackson2-core.version}</igloo.jackson2-annotations.version>
@@ -170,9 +171,9 @@
 		<!-- See comments on property igloo.commons-io.version -->
 		<igloo.truezip.version>7.7.10</igloo.truezip.version>
 		<igloo.bouncycastle.version>2.55</igloo.bouncycastle.version>
-		<igloo.bouncycastle-jdk15on.version>1.65</igloo.bouncycastle-jdk15on.version>
+		<igloo.bouncycastle-jdk15on.version>1.66</igloo.bouncycastle-jdk15on.version>
 
-		<igloo.flying-saucer.version>9.1.19</igloo.flying-saucer.version>
+		<igloo.flying-saucer.version>9.1.20</igloo.flying-saucer.version>
 		<igloo.imageinfo.version>1.9</igloo.imageinfo.version>
 		<igloo.jsoup.version>1.13.1</igloo.jsoup.version>
 		<!-- https://hc.apache.org/news.html -->
@@ -197,12 +198,12 @@
 		<igloo.javax-activation.version>1.1.1</igloo.javax-activation.version>
 		<igloo.javax-validation-api.version>1.1.0.Final</igloo.javax-validation-api.version>
 
-		<igloo.wicket.version>8.8.0</igloo.wicket.version>
+		<igloo.wicket.version>8.9.0</igloo.wicket.version>
 		<igloo.wiquery.version>8.1.1</igloo.wiquery.version>
 		<igloo.wicketstuff-select2.version>8.8.0</igloo.wicketstuff-select2.version>
 		<!-- https://github.com/l0rdn1kk0n/wicket-webjars (0.5.x -> wicket 7, 2.0.x -> wicket 8) -->
 		<igloo.wicket-webjars.version>2.0.10</igloo.wicket-webjars.version>
-		<igloo.webjars-locator-core.version>0.45</igloo.webjars-locator-core.version>
+		<igloo.webjars-locator-core.version>0.46</igloo.webjars-locator-core.version>
 		<igloo.wqplot.version>7.1.0.owsi1</igloo.wqplot.version>
 
 		<igloo.less4j.version>1.17.2</igloo.less4j.version>
@@ -213,8 +214,8 @@
 
 		<igloo.junit.version>4.13</igloo.junit.version>
 		<igloo.h2.version>1.4.200</igloo.h2.version>
-		<igloo.mockito.version>3.3.3</igloo.mockito.version>
-		<igloo.assertj.version>3.16.1</igloo.assertj.version>
+		<igloo.mockito.version>3.5.10</igloo.mockito.version>
+		<igloo.assertj.version>3.17.2</igloo.assertj.version>
 		<igloo.assertj-guava.version>3.4.0</igloo.assertj-guava.version>
 		<igloo.grizzly.version>1.9.65</igloo.grizzly.version>
 		<igloo.findbugs-annotations.version>3.0.1u2</igloo.findbugs-annotations.version>

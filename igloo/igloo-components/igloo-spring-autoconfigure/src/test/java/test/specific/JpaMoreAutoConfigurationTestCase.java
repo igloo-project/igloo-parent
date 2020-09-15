@@ -38,6 +38,7 @@ public class JpaMoreAutoConfigurationTestCase {
 	@Test
 	public void testIglooJpaAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.run(
 				(context) -> {
@@ -55,6 +56,7 @@ public class JpaMoreAutoConfigurationTestCase {
 	@Test
 	public void testIglooJpaLessAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestJpaLessConfig.class))
 			.run(
 				(context) -> {

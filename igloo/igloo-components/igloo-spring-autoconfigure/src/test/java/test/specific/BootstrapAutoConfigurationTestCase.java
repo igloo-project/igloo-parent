@@ -27,6 +27,7 @@ public class BootstrapAutoConfigurationTestCase {
 	@Test
 	public void testIglooBootstrap4AutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.run(
 				(context) -> { 
