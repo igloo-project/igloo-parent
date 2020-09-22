@@ -8,6 +8,11 @@ import org.flywaydb.core.api.configuration.Configuration;
 import org.flywaydb.core.api.executor.Context;
 import org.flywaydb.core.api.executor.MigrationExecutor;
 
+/**
+ * 
+ * Specific migration executor used to manage our customs @IIglooMigration
+ *
+ */
 public class IglooMigrationExecutor implements MigrationExecutor {
 
 	private final IIglooMigration migration;
@@ -39,6 +44,7 @@ public class IglooMigrationExecutor implements MigrationExecutor {
 
 	@Override
 	public boolean canExecuteInTransaction() {
-		return true;
+		return migration.canExecuteInTransaction();
 	}
+
 }

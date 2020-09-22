@@ -1,63 +1,51 @@
 package org.iglooproject.jpa.migration;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.flywaydb.core.api.MigrationType;
+import org.flywaydb.core.api.ClassProvider;
 import org.flywaydb.core.api.configuration.Configuration;
 import org.flywaydb.core.api.resolver.Context;
+import org.flywaydb.core.api.resolver.MigrationResolver;
 import org.flywaydb.core.api.resolver.ResolvedMigration;
-import org.flywaydb.core.internal.clazz.ClassProvider;
-import org.flywaydb.core.internal.resolver.AbstractJavaMigrationResolver;
-import org.flywaydb.core.internal.resolver.ResolvedMigrationImpl;
+import org.flywaydb.core.internal.resolver.ResolvedMigrationComparator;
+import org.flywaydb.core.internal.util.ClassUtils;
 import org.springframework.context.ConfigurableApplicationContext;
 
-public class IglooMigrationResolver extends AbstractJavaMigrationResolver<IIglooMigration, IglooMigrationExecutor> {
+/**
+ * 
+ * Specific migration resolver that supports java migrations with Spring dependency injection
+ *
+ */
+public class IglooMigrationResolver implements MigrationResolver {
+
+	private ClassProvider<IIglooMigration> scanner;
 
 	private ConfigurableApplicationContext applicationContext;
 
-	public IglooMigrationResolver(ClassProvider classProvider, Configuration configuration, ConfigurableApplicationContext applicationContext) {
-		super(classProvider, configuration);
+	private Configuration configuration;
+
+	public IglooMigrationResolver(ClassProvider<IIglooMigration> scanner, Configuration configuration, ConfigurableApplicationContext applicationContext) {
+		this.scanner = scanner;
 		this.applicationContext = applicationContext;
+		this.configuration = configuration;
 	}
 
 	@Override
 	public List<ResolvedMigration> resolveMigrations(Context context) {
-		List<ResolvedMigration> resolvedMigrations =  super.resolveMigrations(context);
+		List<ResolvedMigration> migrations = new ArrayList<>();
 		
-		for (ResolvedMigration resolvedMigration : resolvedMigrations) {
-			applicationContext.getAutowireCapableBeanFactory().autowireBean(resolvedMigration);
+		for (Class<?> clazz : scanner.getClasses()) {
+			IIglooMigration javaMigration = ClassUtils.instantiate(clazz.getName(), configuration.getClassLoader());
+			applicationContext.getAutowireCapableBeanFactory().autowireBean(javaMigration);
+			
+			ResolvedMigration resolvedMigration = new ResolvedIglooMigration(javaMigration, new IglooMigrationExecutor(javaMigration));
+			migrations.add(resolvedMigration);
 		}
 		
-		return resolvedMigrations;
-	}
-
-	@Override
-	protected IglooMigrationExecutor createExecutor(IIglooMigration migration) {
-		// Autowire migration bean
-		applicationContext.getAutowireCapableBeanFactory().autowireBean(migration);
-		
-		return new IglooMigrationExecutor(migration);
-	}
-
-	@Override
-	public ResolvedMigrationImpl extractMigrationInfo(IIglooMigration migration) {
-		ResolvedMigrationImpl resolvedMigration = super.extractMigrationInfo(migration);
-		resolvedMigration.setChecksum(migration.getChecksum());
-		return resolvedMigration;
-	}
-
-	@Override
-	protected String getMigrationTypeStr() {
-		return "JDBC";
-	}
-
-	@Override
-	protected Class<IIglooMigration> getImplementedInterface() {
-		return IIglooMigration.class;
-	}
-
-	@Override
-	protected MigrationType getMigrationType() {
-		return MigrationType.JDBC;
+		Collections.sort(migrations, new ResolvedMigrationComparator());
+		return migrations;
 	}
 }
+

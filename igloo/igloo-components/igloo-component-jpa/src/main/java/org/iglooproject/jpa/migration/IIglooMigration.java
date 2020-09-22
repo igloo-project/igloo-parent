@@ -9,7 +9,13 @@ public interface IIglooMigration {
 
 	public Integer getChecksum();
 
+	public Integer getEquivalentChecksum();
+
 	public MigrationVersion getVersion();
 
 	public String getDescription();
+
+	boolean isUndo();
+
+	boolean canExecuteInTransaction();
 }

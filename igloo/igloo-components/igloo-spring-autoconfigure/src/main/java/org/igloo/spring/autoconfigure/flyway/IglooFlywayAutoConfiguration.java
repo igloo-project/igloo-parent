@@ -9,10 +9,13 @@ import javax.sql.DataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
+import org.flywaydb.core.internal.scanner.LocationScannerCache;
+import org.flywaydb.core.internal.scanner.ResourceNameCache;
 import org.flywaydb.core.internal.scanner.Scanner;
 import org.igloo.spring.autoconfigure.property.IglooPropertyAutoConfiguration;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.config.spring.FlywayPropertyRegistryConfig;
+import org.iglooproject.jpa.migration.IIglooMigration;
 import org.iglooproject.jpa.migration.IglooMigrationResolver;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.iglooproject.jpa.property.FlywayPropertyIds;
@@ -61,11 +64,14 @@ public class IglooFlywayAutoConfiguration {
 		configuration.placeholders(placeholders);
 		
 		// Custom Spring-autowiring migration resolver
-		Scanner scanner = new Scanner(
-			Arrays.asList(configuration.getLocations()),
-			configuration.getClassLoader(),
-			configuration.getEncoding()
-		);
+		Scanner<IIglooMigration> scanner = new Scanner<>(
+				IIglooMigration.class,
+				Arrays.asList(configuration.getLocations()),
+				configuration.getClassLoader(),
+				configuration.getEncoding(),
+				new ResourceNameCache(),
+				new LocationScannerCache()
+			);
 		
 		configuration.resolvers(new IglooMigrationResolver(scanner, configuration, applicationContext));
 		
