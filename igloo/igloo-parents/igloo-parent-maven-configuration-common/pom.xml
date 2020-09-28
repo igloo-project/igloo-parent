@@ -54,7 +54,7 @@
 		<igloo.maven-enforcer-plugin.version>3.0.0-M3</igloo.maven-enforcer-plugin.version>
 		<igloo.maven-dependency-plugin.version>3.1.2</igloo.maven-dependency-plugin.version>
 		<igloo.maven-antrun-plugin.version>3.0.0</igloo.maven-antrun-plugin.version>
-		<igloo.animal-sniffer-maven-plugin.version>1.19</igloo.animal-sniffer-maven-plugin.version>
+		<igloo.animal-sniffer-maven-plugin.version>1.18</igloo.animal-sniffer-maven-plugin.version>
 		<igloo.exec-maven-plugin.version>3.0.0</igloo.exec-maven-plugin.version>
 		<igloo.maven-clean-plugin.version>3.1.0</igloo.maven-clean-plugin.version>
 		<igloo.maven-site-plugin.version>3.8.2</igloo.maven-site-plugin.version>
