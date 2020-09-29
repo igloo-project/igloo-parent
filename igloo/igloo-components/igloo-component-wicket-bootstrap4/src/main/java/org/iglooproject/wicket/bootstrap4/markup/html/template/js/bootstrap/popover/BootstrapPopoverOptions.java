@@ -473,18 +473,7 @@ public class BootstrapPopoverOptions extends SimpleOptions implements IBootstrap
 					scopeContext
 							.append("var titleHtml = " + titleComponentStatement.render())
 							.append("titleHtml = titleHtml.concat(")
-							.append(
-									JsUtils.quotes(
-											"<a class=\"close\""
-											// Note : c'est moche, mais au moins ça marche. On renvoie bien du *html* ici,
-											// ajouter des bindings jquery n'aura aucun effet.
-											+ " onclick=\"new function() {"
-											+ new JsStatement().$(component).chain("popover", "'hide'").render() + " return false;"
-											+ "}\""
-											+ ">&times;</a>",
-											true
-									)
-							)
+							.append(JsUtils.quotes("<a href=\"#\" class=\"popover-dismiss close\">&times;</a>", true))
 							.append(");");
 				}
 				scopeContext.append("return titleHtml;");
