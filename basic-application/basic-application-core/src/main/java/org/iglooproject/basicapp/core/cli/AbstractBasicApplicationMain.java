@@ -1,4 +1,4 @@
-package org.iglooproject.basicapp.init;
+package org.iglooproject.basicapp.core.cli;
 
 import java.util.Map;
 

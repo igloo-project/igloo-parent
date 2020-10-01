@@ -17,7 +17,6 @@
 	
 	<modules>
 		<module>basic-application-core</module>
-		<module>basic-application-init</module>
 		<module>basic-application-webapp</module>
 	</modules>
 	

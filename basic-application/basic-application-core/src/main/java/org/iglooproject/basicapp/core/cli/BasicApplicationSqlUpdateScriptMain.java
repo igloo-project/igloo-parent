@@ -1,6 +1,6 @@
-package org.iglooproject.basicapp.init;
+package org.iglooproject.basicapp.core.cli;
 
-import org.iglooproject.basicapp.init.config.spring.BasicApplicationInitConfig;
+import org.iglooproject.basicapp.core.config.spring.BasicApplicationCoreHeadlessConfig;
 import org.iglooproject.jpa.migration.SqlUpdateScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ public final class BasicApplicationSqlUpdateScriptMain extends AbstractBasicAppl
 	 * in the database or the differences between the jpa model and the existing database.
 	 */
 	protected void run(String[] args) {
-		try (AnnotationConfigApplicationContext context = startContext("development", BasicApplicationInitConfig.class)) {
+		try (AnnotationConfigApplicationContext context = startContext("development", BasicApplicationCoreHeadlessConfig.class)) {
 			String fileName;
 			String action;
 			
