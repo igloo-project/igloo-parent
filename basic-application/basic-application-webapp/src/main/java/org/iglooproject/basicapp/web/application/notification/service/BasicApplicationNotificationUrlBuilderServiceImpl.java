@@ -2,7 +2,7 @@ package org.iglooproject.basicapp.web.application.notification.service;
 
 import java.util.concurrent.Callable;
 
-import org.iglooproject.basicapp.core.business.notification.service.INotificationUserProfileUrlBuilderService;
+import org.iglooproject.basicapp.core.business.notification.service.IBasicApplicationNotificationUrlBuilderService;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  */
 @Service("basicApplicationNotificationUrlBuilderService")
 public class BasicApplicationNotificationUrlBuilderServiceImpl extends AbstractNotificationUrlBuilderServiceImpl
-		implements INotificationUserProfileUrlBuilderService {
+		implements IBasicApplicationNotificationUrlBuilderService {
 
 	@Autowired
 	public BasicApplicationNotificationUrlBuilderServiceImpl(IWicketContextProvider contextProvider) {

@@ -4,7 +4,7 @@ import org.iglooproject.basicapp.core.BasicApplicationCorePackage;
 import org.iglooproject.basicapp.core.business.notification.service.EmptyNotificationContentDescriptorFactoryImpl;
 import org.iglooproject.basicapp.core.business.notification.service.EmptyNotificationUrlBuilderServiceImpl;
 import org.iglooproject.basicapp.core.business.notification.service.IBasicApplicationNotificationContentDescriptorFactory;
-import org.iglooproject.basicapp.core.business.notification.service.INotificationUserProfileUrlBuilderService;
+import org.iglooproject.basicapp.core.business.notification.service.IBasicApplicationNotificationUrlBuilderService;
 import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +34,7 @@ public class BasicApplicationCoreHeadlessConfig {
 	}
 
 	@Bean
-	public INotificationUserProfileUrlBuilderService notificationUrlBuilderService() {
+	public IBasicApplicationNotificationUrlBuilderService notificationUrlBuilderService() {
 		return new EmptyNotificationUrlBuilderServiceImpl();
 	}
 
