@@ -57,13 +57,6 @@
 			<artifactId>guava</artifactId>
 		</dependency>
 		
-		<!-- Utils -->
-		
-		<dependency>
-			<groupId>org.javatuples</groupId>
-			<artifactId>javatuples</artifactId>
-		</dependency>
-		
 		<!-- Bindgen -->
 		
 		<dependency>
