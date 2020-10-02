@@ -93,8 +93,6 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 			DataTableBuilder.start(ReadOnlyCollectionModel.of(userGroupListModel, GenericEntityModel.factory()))
 				.addLabelColumn(new ResourceModel("business.userGroup.name"), Bindings.userGroup().name())
 					.withLink(AdministrationUserGroupDetailPage.MAPPER_SOURCE.setParameter2(new ComponentPageModel(this)))
-				.addLabelColumn(new ResourceModel("business.userGroup.description"), Bindings.userGroup().description())
-					.withClass(CssClassConstants.CELL_HIDDEN_SM_AND_LESS)
 				.addActionColumn()
 					.addConfirmAction(ActionRenderers.delete())
 						.title(parameter ->
