@@ -14,12 +14,12 @@ import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.business.user.typedescriptor.UserTypeDescriptor;
 import org.iglooproject.basicapp.core.security.model.BasicApplicationAuthorityConstants;
+import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenticationService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.test.wicket.core.AbstractWicketTestCase;
 import org.iglooproject.wicket.more.AbstractCoreSession;
@@ -57,7 +57,7 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 	protected IAuthorityService authorityService;
 
 	@Autowired
-	protected IAuthenticationService authenticationService;
+	protected IBasicApplicationAuthenticationService authenticationService;
 
 	@Autowired
 	protected IHistoryLogService historyLogService;

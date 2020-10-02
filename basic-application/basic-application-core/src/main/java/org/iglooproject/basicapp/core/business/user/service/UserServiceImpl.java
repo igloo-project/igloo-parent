@@ -7,10 +7,10 @@ import org.iglooproject.basicapp.core.business.history.model.bean.HistoryLogAddi
 import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
 import org.iglooproject.basicapp.core.business.user.dao.IUserDao;
 import org.iglooproject.basicapp.core.business.user.model.User;
+import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenticationService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
-import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -25,7 +25,7 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	private IUserDao userDao;
 
 	@Autowired
-	private IAuthenticationService authenticationService;
+	private IBasicApplicationAuthenticationService authenticationService;
 
 	@Autowired
 	private IHistoryLogService historyLogService;

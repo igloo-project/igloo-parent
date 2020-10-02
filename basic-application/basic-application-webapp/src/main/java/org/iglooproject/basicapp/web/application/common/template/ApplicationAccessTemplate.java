@@ -14,10 +14,10 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenticationService;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationAccessEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.applicationaccess.ApplicationAccessScssResourceReference;
-import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
@@ -37,7 +37,7 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 	private IPropertyService propertyService;
 
 	@SpringBean
-	private IAuthenticationService authenticationService;
+	private IBasicApplicationAuthenticationService authenticationService;
 
 	public ApplicationAccessTemplate(PageParameters parameters) {
 		super(parameters);

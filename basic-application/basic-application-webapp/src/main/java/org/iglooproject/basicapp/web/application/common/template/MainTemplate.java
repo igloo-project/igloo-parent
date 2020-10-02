@@ -18,6 +18,7 @@ import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.security.model.BasicApplicationAuthorityConstants;
+import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenticationService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
@@ -31,7 +32,6 @@ import org.iglooproject.basicapp.web.application.common.template.theme.common.Bo
 import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDataPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
 import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
@@ -60,7 +60,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	private ISecurityManagementService securityManagementService;
 
 	@SpringBean
-	private IAuthenticationService authenticationService;
+	private IBasicApplicationAuthenticationService authenticationService;
 
 	private final IModel<BasicApplicationApplicationTheme> applicationThemeModel = ApplicationPropertyModel.of(APPLICATION_THEME);
 

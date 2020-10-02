@@ -16,8 +16,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
+import org.iglooproject.basicapp.core.security.model.BasicApplicationPermissionConstants;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
-import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.administration.form.UserGroupPopup;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserGroupTemplate;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
@@ -125,7 +125,7 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 								}
 							}
 						})
-						.whenPredicate(userGroup -> (BasicApplicationSession.get().hasRoleAdmin() && !userGroup.isLocked()))
+						.whenPermission(BasicApplicationPermissionConstants.DELETE)
 						.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
 					.end()
 					.withClass("actions actions-1x")

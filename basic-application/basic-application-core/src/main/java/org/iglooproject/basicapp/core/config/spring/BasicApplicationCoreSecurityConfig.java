@@ -7,8 +7,12 @@ import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.model.BasicApplicationPermission;
 import org.iglooproject.basicapp.core.security.model.SecurityOptions;
+import org.iglooproject.basicapp.core.security.service.BasicApplicationAuthenticationServiceImpl;
 import org.iglooproject.basicapp.core.security.service.BasicApplicationPermissionEvaluator;
+import org.iglooproject.basicapp.core.security.service.BasicApplicationSecurityServiceImpl;
 import org.iglooproject.basicapp.core.security.service.BasicApplicationUserDetailsServiceImpl;
+import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenticationService;
+import org.iglooproject.basicapp.core.security.service.IBasicApplicationSecurityService;
 import org.iglooproject.basicapp.core.security.service.IBasicApplicationUserDetailsService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.core.security.service.SecurityManagementServiceImpl;
@@ -43,6 +47,16 @@ public class BasicApplicationCoreSecurityConfig {
 	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 	public ICorePermissionEvaluator permissionEvaluator() {
 		return new BasicApplicationPermissionEvaluator();
+	}
+
+	@Bean
+	public IBasicApplicationAuthenticationService authenticationService() {
+		return new BasicApplicationAuthenticationServiceImpl();
+	}
+
+	@Bean
+	public IBasicApplicationSecurityService securityService() {
+		return new BasicApplicationSecurityServiceImpl();
 	}
 
 	@Bean

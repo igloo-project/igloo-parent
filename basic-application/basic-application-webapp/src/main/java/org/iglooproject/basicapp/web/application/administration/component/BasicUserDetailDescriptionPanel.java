@@ -13,6 +13,7 @@ import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.markup.html.basic.DefaultPlaceholderPanel;
+import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
@@ -36,17 +37,6 @@ public class BasicUserDetailDescriptionPanel extends GenericPanel<BasicUser> {
 		IModel<String> emailModel = BindingModel.of(userModel, Bindings.user().email());
 		
 		add(
-			new BlankLink("edit")
-				.add(new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK) {
-					private static final long serialVersionUID = 1L;
-					@Override
-					protected void onShow(AjaxRequestTarget target) {
-						editPopup.setUpEdit(getModelObject());
-					}
-				})
-		);
-		
-		add(
 			new CoreLabel("username", BindingModel.of(userModel, Bindings.user().username()))
 				.showPlaceholder(),
 			new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())),
@@ -60,6 +50,23 @@ public class BasicUserDetailDescriptionPanel extends GenericPanel<BasicUser> {
 				.showPlaceholder(),
 			new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()), DatePattern.SHORT_DATETIME)
 				.showPlaceholder()
+		);
+		
+		add(
+			new EnclosureContainer("actionsContainer")
+				.anyChildVisible()
+				.add(
+					new BlankLink("edit")
+						.add(
+							new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK) {
+								private static final long serialVersionUID = 1L;
+								@Override
+								protected void onShow(AjaxRequestTarget target) {
+									editPopup.setUpEdit(getModelObject());
+								}
+							}
+						)
+				)
 		);
 	}
 
