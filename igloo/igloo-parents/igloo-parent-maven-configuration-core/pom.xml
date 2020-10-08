@@ -46,7 +46,7 @@
 		<!-- https://hibernate.atlassian.net/browse/HHH-12932?jql=project%20%3D%20HHH%20AND%20fixVersion%20in%20(5.3.6)%20ORDER%20BY%20updated -->
 		<!-- https://hibernate.atlassian.net/browse/HHH-12784?jql=project%20%3D%20HHH%20AND%20fixVersion%20%3D%205.3.7%20ORDER%20BY%20updated -->
 		<!-- http://hibernate.org/orm/releases/5.4/ -->
-		<igloo.hibernate.version>5.4.21.Final</igloo.hibernate.version>
+		<igloo.hibernate.version>5.4.22.Final</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.3.Final</igloo.hibernate-validator.version>
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
 		<igloo.byte-buddy.version>1.10.10</igloo.byte-buddy.version>
@@ -68,7 +68,7 @@
 		<!-- terracotta maven repository cannot be managed efficiently; use central dependency -->
 		<igloo.ehcache.version>2.10.6</igloo.ehcache.version>
 		<!-- https://github.com/querydsl/querydsl/issues?utf8=%E2%9C%93&q=milestone%3A4.2.1 -->
-		<igloo.querydsl.version>4.3.1</igloo.querydsl.version>
+		<igloo.querydsl.version>4.4.0</igloo.querydsl.version>
 
 		<!--https://github.com/google/guava/releases/ -->
 		<igloo.guava.version>29.0-jre</igloo.guava.version>
@@ -96,7 +96,7 @@
 		<!-- 5.3.0: https://github.com/spring-projects/spring-security/releases/tag/5.3.0.RELEASE -->
 		<!-- 5.3.2: https://github.com/spring-projects/spring-security/releases/tag/5.3.2.RELEASE -->
 		<!-- 5.3.4: https://github.com/spring-projects/spring-security/releases/tag/5.3.4.RELEASE -->
-		<igloo.spring-security.version>5.4.0</igloo.spring-security.version>
+		<igloo.spring-security.version>5.4.1</igloo.spring-security.version>
 
 		<igloo.spring-ldap.version>2.3.3.RELEASE</igloo.spring-ldap.version>
 
@@ -161,7 +161,7 @@
 
 		<igloo.json-lib.version>2.3</igloo.json-lib.version>
 		<!-- https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.10 -->
-		<igloo.jackson2-core.version>2.11.2</igloo.jackson2-core.version>
+		<igloo.jackson2-core.version>2.11.3</igloo.jackson2-core.version>
 		<igloo.jackson2-databind.version>${igloo.jackson2-core.version}</igloo.jackson2-databind.version>
 		<!-- https://github.com/FasterXML/jackson-databind/issues/2478 Resync jackson versions when performing update to 2.9.11 -->
 		<igloo.jackson2-annotations.version>${igloo.jackson2-core.version}</igloo.jackson2-annotations.version>
@@ -178,9 +178,9 @@
 		<igloo.jsoup.version>1.13.1</igloo.jsoup.version>
 		<!-- https://hc.apache.org/news.html -->
 		<!-- Since 4.5.8 we have to use setNormalizeUri(false) on links, otherwise URIUtils.rewriteURI will try to parse the path and will return broke paths if your path doesn't respect the ASCII standard -->
-		<igloo.httpclient.version>4.5.12</igloo.httpclient.version>
+		<igloo.httpclient.version>4.5.13</igloo.httpclient.version>
 		<igloo.httpcore.version>4.4.13</igloo.httpcore.version>
-		<igloo.prettytime.version>4.0.5.Final</igloo.prettytime.version>
+		<igloo.prettytime.version>4.0.6.Final</igloo.prettytime.version>
 		<igloo.ph-css.version>6.2.3</igloo.ph-css.version>
 		<igloo.galimatias.version>0.2.1</igloo.galimatias.version>
 
@@ -200,7 +200,7 @@
 
 		<igloo.wicket.version>8.9.0</igloo.wicket.version>
 		<igloo.wiquery.version>8.1.1</igloo.wiquery.version>
-		<igloo.wicketstuff-select2.version>8.8.0</igloo.wicketstuff-select2.version>
+		<igloo.wicketstuff-select2.version>8.9.0</igloo.wicketstuff-select2.version>
 		<!-- https://github.com/l0rdn1kk0n/wicket-webjars (0.5.x -> wicket 7, 2.0.x -> wicket 8) -->
 		<igloo.wicket-webjars.version>2.0.10</igloo.wicket-webjars.version>
 		<igloo.webjars-locator-core.version>0.46</igloo.webjars-locator-core.version>
@@ -214,7 +214,7 @@
 
 		<igloo.junit.version>4.13</igloo.junit.version>
 		<igloo.h2.version>1.4.200</igloo.h2.version>
-		<igloo.mockito.version>3.5.10</igloo.mockito.version>
+		<igloo.mockito.version>3.5.13</igloo.mockito.version>
 		<igloo.assertj.version>3.17.2</igloo.assertj.version>
 		<igloo.assertj-guava.version>3.4.0</igloo.assertj-guava.version>
 		<igloo.grizzly.version>1.9.65</igloo.grizzly.version>
