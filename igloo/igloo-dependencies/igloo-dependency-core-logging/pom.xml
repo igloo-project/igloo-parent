@@ -11,35 +11,15 @@
 	<artifactId>igloo-dependency-core-logging</artifactId>
 	<packaging>pom</packaging>
 	
-	<name>Igloo - Dependency - Core - Logging</name>
+	<name>Igloo - Dependency - Core - Logging - Deprecated</name>
 	
 	<dependencies>
 		
-		<!-- Logging dependencies -->
-		
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jul-to-slf4j</artifactId>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-core-logging-log4j</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
 		</dependency>
 		
 	</dependencies>
