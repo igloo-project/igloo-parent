@@ -43,7 +43,7 @@ fi
 pushd "${temp_directory}/basic_application"
 
 	# fix the version in the archetype.properties file
-	version=$(grep -m 1 'version' pom.xml | sed -r 's/.*>(.*)<.*/\1/')
+	version=$(grep -m 1 '<version>' pom.xml | sed -r 's/.*>(.*)<\/.*/\1/')
 	sed -i "s/^archetype.version=.*$/archetype.version=${version}/" archetype.properties
 	
 	# remove files that are only needed to build the archetype
