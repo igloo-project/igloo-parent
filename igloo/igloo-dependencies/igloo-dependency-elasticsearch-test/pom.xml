@@ -16,6 +16,8 @@
 	<properties>
 		<!-- elasticsearch do not use same lucene version than hibernate-search -->
 		<igloo.lucene.version>6.6.1</igloo.lucene.version>
+		<!-- we do not need to uses enforcer plugin on test modules -->
+		<enforcer.skip>true</enforcer.skip>
 	</properties>
 	
 	<dependencies>
