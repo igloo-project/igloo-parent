@@ -210,7 +210,7 @@
 		<!-- http://jsass.readthedocs.io/en/latest/changelog.html -->
 		<igloo.jsass.version>5.10.3</igloo.jsass.version>
 
-		<igloo.flywaydb.version>6.5.7</igloo.flywaydb.version>
+		<igloo.flywaydb.version>7.0.2</igloo.flywaydb.version>
 
 		<igloo.junit.version>4.13</igloo.junit.version>
 		<igloo.h2.version>1.4.200</igloo.h2.version>
