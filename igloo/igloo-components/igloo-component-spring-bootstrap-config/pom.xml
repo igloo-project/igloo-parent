@@ -20,6 +20,29 @@
 			<artifactId>igloo-dependency-core-spring</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
+			<exclusions>
+				<exclusion>
+					<groupId>org.iglooproject.dependencies</groupId>
+					<artifactId>igloo-dependency-core-logging-log4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- SLF4J implementation ; choice is left to project -->
+		<dependency>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-core-logging-log4j2</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<type>pom</type>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-core-logging-log4j1</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+			<type>pom</type>
 		</dependency>
 		
 		<dependency>
@@ -51,6 +74,19 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<!-- tests are launched with log4j2 ; exclusion of log4j12 bindings -->
+					<classpathDependencyExcludes>
+						<classpathDependencyExclude>org.slf4j:slf4j-log4j12</classpathDependencyExclude>
+					</classpathDependencyExcludes>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 	
 </project>

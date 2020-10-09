@@ -18,7 +18,7 @@
 	<modules>
 		<module>igloo-dependency-core-spring</module>
 		<module>igloo-dependency-core-logging</module>
-		<module>igloo-dependency-core-logging-log4j</module>
+		<module>igloo-dependency-core-logging-log4j1</module>
 		<module>igloo-dependency-core-logging-log4j2</module>
 		<module>igloo-dependency-core-spring-security</module>
 		<module>igloo-dependency-web-spring-security</module>

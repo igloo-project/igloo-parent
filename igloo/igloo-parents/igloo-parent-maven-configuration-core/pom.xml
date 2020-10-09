@@ -18,6 +18,9 @@
 	<properties>
 		<igloo.version>${project.version}</igloo.version>
 
+		<igloo.log4j.major-version>2</igloo.log4j.major-version>
+		<igloo.logging.artifact>igloo-component-core-logging-log4j${igloo.log4j.major-version}</igloo.logging.artifact>
+
 		<!-- https://spring.io/blog/2018/04/03/spring-framework-5-0-5-and-4-3-15-available-now -->
 		<!-- 5.0.5: https://jira.spring.io/secure/ReleaseNote.jspa?projectId=10000&version=16634 -->
 		<!-- 5.0.6: https://jira.spring.io/secure/ReleaseNote.jspa?projectId=10000&version=16720 -->
