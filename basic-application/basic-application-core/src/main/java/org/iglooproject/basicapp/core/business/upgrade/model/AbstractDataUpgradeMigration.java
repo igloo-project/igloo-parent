@@ -19,6 +19,7 @@ public abstract class AbstractDataUpgradeMigration extends IglooMigration {
 
 	@Override
 	public void migrate(Context context) throws Exception {
+		
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(new SingleConnectionDataSource(context.getConnection(), true));
 		
 		final Integer id = jdbcTemplate.queryForObject(
@@ -47,6 +48,11 @@ public abstract class AbstractDataUpgradeMigration extends IglooMigration {
 	@Override
 	public Integer getChecksum(){
 		return getDataUpgradeClass().getSimpleName().hashCode() * 23;
+	}
+
+	@Override
+	public Integer getEquivalentChecksum(){
+		return getChecksum();
 	}
 
 }

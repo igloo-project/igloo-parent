@@ -13,6 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.BooleanQuery;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
+import org.flywaydb.core.internal.scanner.LocationScannerCache;
+import org.flywaydb.core.internal.scanner.ResourceNameCache;
 import org.flywaydb.core.internal.scanner.Scanner;
 import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
 import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
@@ -20,6 +22,7 @@ import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionConfigurat
 import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
+import org.iglooproject.jpa.migration.IIglooMigration;
 import org.iglooproject.jpa.migration.IglooMigrationResolver;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.iglooproject.jpa.property.FlywayPropertyIds;
@@ -104,10 +107,15 @@ public abstract class AbstractJpaConfig {
 		configuration.placeholders(placeholders);
 		
 		// Custom Spring-autowiring migration resolver
-		Scanner scanner = new Scanner(
+		Scanner<IIglooMigration> scanner = new Scanner<>(
+			IIglooMigration.class,
 			Arrays.asList(configuration.getLocations()),
 			configuration.getClassLoader(),
-			configuration.getEncoding()
+			configuration.getEncoding(),
+			//this boolean has been added since flyway 7.0.0 and is unused in flyway 7.0.2, be carefull when updating flyway
+			false,
+			new ResourceNameCache(),
+			new LocationScannerCache()
 		);
 		
 		configuration.resolvers(new IglooMigrationResolver(scanner, configuration, applicationContext));

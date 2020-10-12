@@ -40,6 +40,7 @@ public class IglooAutoConfigurationBehaviorTestCase {
 	@Test
 	public void testBothSpringBootIglooAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withPropertyValues("spring.mail.host=localhost")
 			.withConfiguration(AutoConfigurations.of(TestBothSpringBootIglooConfig.class))
 			.run(
@@ -54,6 +55,7 @@ public class IglooAutoConfigurationBehaviorTestCase {
 	@Test
 	public void testSpringBootAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withPropertyValues("spring.mail.host=localhost")
 			.withConfiguration(AutoConfigurations.of(TestSpringBootConfig.class))
 			.run(
@@ -68,6 +70,7 @@ public class IglooAutoConfigurationBehaviorTestCase {
 	@Test
 	public void testIglooAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withPropertyValues("spring.mail.host=localhost")
 			.withConfiguration(AutoConfigurations.of(TestIglooConfig.class))
 			.run(

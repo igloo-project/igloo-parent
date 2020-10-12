@@ -1,87 +1,85 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
 	<version>2.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	
+
 	<name>Igloo - Parent - Maven configuration - Common</name>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
-		
+
 		<jdk.version>1.8</jdk.version>
 		<!-- used for generation; version numbers are not compatible; keep it in sync with jdk.version -->
 		<jdk.release.version>8</jdk.release.version>
 		<minimal.jdk.version>1.8</minimal.jdk.version>
-		
+
 		<!-- ipv6 local network not available on travis - https://github.com/travis-ci/travis-ci/issues/4964 -->
 		<test.argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true</test.argLine>
 		<!-- note: this can be modified by jacoco plugin that appends its own java-agent if profile is activated -->
 		<argLine>${test.argLine} ${allure.argLine}</argLine>
-		
+
 		<!-- conditionally overridden by allure profile -->
 		<allure.argLine />
-		
-		<!--
-			Should be a valid artifact of type "signature"
-			See http://search.maven.org/#search|ga|1|g%3A%22org.codehaus.mojo.signature%22
-		 -->
+
+		<!-- Should be a valid artifact of type "signature" See http://search.maven.org/#search|ga|1|g%3A%22org.codehaus.mojo.signature%22 -->
 		<jdk.signature.groupId>org.codehaus.mojo.signature</jdk.signature.groupId>
 		<jdk.signature.artifactId>java18</jdk.signature.artifactId>
 		<jdk.signature.version>1.0</jdk.signature.version>
-		
+
 		<minimal.maven.version>3.5.0</minimal.maven.version>
-		
+
 		<generated-sources.directory>target/generated-sources/apt</generated-sources.directory>
 		<generated-sources-test.directory>target/generated-sources-test/apt</generated-sources-test.directory>
-		
+
 		<igloo.maven-toolchains-plugin.version>3.0.0</igloo.maven-toolchains-plugin.version>
 		<igloo.maven-jgitflow-plugin.version>1.0-m5.1</igloo.maven-jgitflow-plugin.version>
 		<igloo.jsch.version>0.1.55</igloo.jsch.version>
 		<igloo.maven-compiler-plugin.version>3.8.1</igloo.maven-compiler-plugin.version>
-		<igloo.maven-resources-plugin.version>3.1.0</igloo.maven-resources-plugin.version>
-		<igloo.maven-surefire-plugin.version>3.0.0-M4</igloo.maven-surefire-plugin.version>
+		<igloo.maven-resources-plugin.version>3.2.0</igloo.maven-resources-plugin.version>
+		<igloo.maven-surefire-plugin.version>3.0.0-M5</igloo.maven-surefire-plugin.version>
 		<igloo.maven-install-plugin.version>3.0.0-M1</igloo.maven-install-plugin.version>
-		<igloo.maven-war-plugin.version>3.2.3</igloo.maven-war-plugin.version>
+		<igloo.maven-war-plugin.version>3.3.1</igloo.maven-war-plugin.version>
 		<igloo.maven-assembly-plugin.version>3.3.0</igloo.maven-assembly-plugin.version>
 		<igloo.maven-jar-plugin.version>3.2.0</igloo.maven-jar-plugin.version>
 		<igloo.maven-deploy-plugin.version>3.0.0-M1</igloo.maven-deploy-plugin.version>
 		<igloo.maven-source-plugin.version>3.2.1</igloo.maven-source-plugin.version>
-		<igloo.maven-javadoc-plugin.version>3.1.1</igloo.maven-javadoc-plugin.version>
+		<igloo.maven-javadoc-plugin.version>3.2.0</igloo.maven-javadoc-plugin.version>
 		<igloo.maven-enforcer-plugin.version>3.0.0-M3</igloo.maven-enforcer-plugin.version>
 		<igloo.maven-dependency-plugin.version>3.1.2</igloo.maven-dependency-plugin.version>
 		<igloo.maven-antrun-plugin.version>3.0.0</igloo.maven-antrun-plugin.version>
 		<igloo.animal-sniffer-maven-plugin.version>1.18</igloo.animal-sniffer-maven-plugin.version>
-		<igloo.exec-maven-plugin.version>1.6.0</igloo.exec-maven-plugin.version>
+		<igloo.exec-maven-plugin.version>3.0.0</igloo.exec-maven-plugin.version>
 		<igloo.maven-clean-plugin.version>3.1.0</igloo.maven-clean-plugin.version>
 		<igloo.maven-site-plugin.version>3.8.2</igloo.maven-site-plugin.version>
-		<igloo.maven-project-info-reports-plugin.version>3.0.0</igloo.maven-project-info-reports-plugin.version>
-		<igloo.maven-failsafe-plugin.version>3.0.0-M4</igloo.maven-failsafe-plugin.version>
-		<igloo.jacoco-maven-plugin.version>0.8.5</igloo.jacoco-maven-plugin.version>
+		<igloo.maven-project-info-reports-plugin.version>3.1.1</igloo.maven-project-info-reports-plugin.version>
+		<igloo.maven-failsafe-plugin.version>3.0.0-M5</igloo.maven-failsafe-plugin.version>
+		<igloo.jacoco-maven-plugin.version>0.8.6</igloo.jacoco-maven-plugin.version>
 		<igloo.buildnumber-maven-plugin.version>1.4</igloo.buildnumber-maven-plugin.version>
-		
+
 		<igloo.wagon-maven-plugin.version>2.0.0</igloo.wagon-maven-plugin.version>
-		<igloo.wagon-ssh-external-plugin.version>3.3.4</igloo.wagon-ssh-external-plugin.version>
-		
-		<igloo.maven-processor-plugin.version>3.3.3</igloo.maven-processor-plugin.version>
+		<igloo.wagon-ssh-external-plugin.version>3.4.1</igloo.wagon-ssh-external-plugin.version>
+
+		<igloo.maven-processor-plugin.version>4.2-jdk8</igloo.maven-processor-plugin.version>
 		<igloo.aspectj-maven-plugin.version>1.8</igloo.aspectj-maven-plugin.version>
 		<igloo.build-helper-maven-plugin.version>3.0.0</igloo.build-helper-maven-plugin.version>
-		
+
 		<!-- aspectj is used by allure -->
 		<igloo.allure-aspectj.version>1.8.13</igloo.allure-aspectj.version>
 		<igloo.allure-maven.version>2.10.0</igloo.allure-maven.version>
 		<igloo.allure.version>2.8.1</igloo.allure.version>
 		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
-		<igloo.allure-junit4.version>2.13.3</igloo.allure-junit4.version>
+		<igloo.allure-junit4.version>2.13.6</igloo.allure-junit4.version>
 		<igloo.junit-dataprovider.version>1.13.1</igloo.junit-dataprovider.version>
 		<igloo.owasp-maven-plugin.version>5.3.2</igloo.owasp-maven-plugin.version>
 	</properties>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -104,7 +102,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -204,12 +202,8 @@
 					<artifactId>maven-resources-plugin</artifactId>
 					<version>${igloo.maven-resources-plugin.version}</version>
 					<configuration>
-						<!--
-						Par défaut, @ est utilisé comme délimiteur et ne peut pas être
-						échappé correctement. Historiquement, nous n'avons jamais utilisé
-						ces placeholders ; on les supprime donc de la configuration
-						Voir MRESOURCES-141
-						-->
+						<!-- Par défaut, @ est utilisé comme délimiteur et ne peut pas être échappé correctement. Historiquement, nous n'avons jamais utilisé ces placeholders ; on les supprime donc de la configuration Voir 
+							MRESOURCES-141 -->
 						<delimiters>
 							<delimiter>${*}</delimiter>
 						</delimiters>
@@ -325,7 +319,7 @@
 							<artifactId>wagon-ssh-external</artifactId>
 							<version>${igloo.wagon-ssh-external-plugin.version}</version>
 						</dependency>
-					</dependencies>	
+					</dependencies>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -344,12 +338,9 @@
 						</dependency>
 					</dependencies>
 				</plugin>
-				
-				<!--
-				This plugin's configuration is used to skip plugin executions in Eclipse m2e only.
-				It has no influence on the Maven build itself.
-				It has no influence when running goals explicitely (as a Run Configuration) from Eclipse, either.
-				-->
+
+				<!-- This plugin's configuration is used to skip plugin executions in Eclipse m2e only. It has no influence on the Maven build itself. It has no influence when running goals explicitely (as a Run Configuration) 
+					from Eclipse, either. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -457,7 +448,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 	<profiles>
 		<profile>
 			<id>animal-sniffer</id>
@@ -466,15 +457,9 @@
 			</activation>
 			<build>
 				<plugins>
-					<!-- Enforce code compatibility with the target JRE, even when building with a newer JDK.
-						This ensures that none of the newer classes or methods that were not yet defined in the
-						target JRE are referenced in this project.
-						See https://maven.apache.org/guides/mini/guide-building-jdk14-on-jdk15.html
-						
-						Please be aware that code generation tools may be affected by the JDK used to compile, and thus
-						may trigger a failure (because they automatically reference newer classes or methods). In this case,
-						the only way to make things work is to use the proper JDK (use maven toolchains plugin).
-					-->
+					<!-- Enforce code compatibility with the target JRE, even when building with a newer JDK. This ensures that none of the newer classes or methods that were not yet defined in the target JRE are referenced 
+						in this project. See https://maven.apache.org/guides/mini/guide-building-jdk14-on-jdk15.html Please be aware that code generation tools may be affected by the JDK used to compile, and thus may trigger 
+						a failure (because they automatically reference newer classes or methods). In this case, the only way to make things work is to use the proper JDK (use maven toolchains plugin). -->
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>animal-sniffer-maven-plugin</artifactId>
@@ -688,7 +673,7 @@
 				</plugins>
 			</reporting>
 		</profile>
-		
+
 		<profile>
 			<id>update-report</id>
 			<activation>
@@ -731,7 +716,7 @@
 				</plugins>
 			</reporting>
 		</profile>
-		
+
 		<profile>
 			<id>jacoco</id>
 			<activation>
@@ -753,7 +738,7 @@
 			</build>
 		</profile>
 	</profiles>
-	
+
 	<repositories>
 		<repository>
 			<id>nexus-igloo-releases</id>
@@ -763,7 +748,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		
+
 		<repository>
 			<id>nexus-igloo-snapshots</id>
 			<name>Nexus Igloo Snapshots</name>
@@ -776,7 +761,7 @@
 			</releases>
 		</repository>
 	</repositories>
-	
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>nexus-igloo-releases</id>
@@ -786,7 +771,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
-		
+
 		<pluginRepository>
 			<id>nexus-igloo-snapshots</id>
 			<name>Nexus Igloo Snapshots</name>
@@ -799,7 +784,7 @@
 			</releases>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
 	<distributionManagement>
 		<site>
 			<id>igloo</id>
@@ -817,16 +802,16 @@
 			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-	
+
 	<organization>
 		<name>Kobalt</name>
 		<url>https://www.kobalt.fr/</url>
 	</organization>
-	
+
 	<scm>
 		<developerConnection>scm:git:git@github.com:igloo-project/igloo-parent.git</developerConnection>
 		<url>https://github.com/igloo-project/igloo-parent</url>
 		<tag>HEAD</tag>
 	</scm>
-	
+
 </project>

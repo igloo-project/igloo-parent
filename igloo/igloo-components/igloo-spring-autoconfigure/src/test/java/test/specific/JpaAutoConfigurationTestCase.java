@@ -38,6 +38,7 @@ public class JpaAutoConfigurationTestCase {
 	@Test
 	public void testIglooJpaAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.run(
 				(context) -> { assertThat(context).hasSingleBean(EntityManagerFactory.class); }
@@ -51,6 +52,7 @@ public class JpaAutoConfigurationTestCase {
 	@Test
 	public void testIglooJpaNoPropertyAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.withPropertyValues(String.format("%s=%s",
 					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,

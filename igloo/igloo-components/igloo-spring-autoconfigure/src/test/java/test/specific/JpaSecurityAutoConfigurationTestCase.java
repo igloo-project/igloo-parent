@@ -26,6 +26,7 @@ public class JpaSecurityAutoConfigurationTestCase {
 	@Test
 	public void testIglooJpaSecurityAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.withPropertyValues("security.runAsKey=aaa")
 			.run(

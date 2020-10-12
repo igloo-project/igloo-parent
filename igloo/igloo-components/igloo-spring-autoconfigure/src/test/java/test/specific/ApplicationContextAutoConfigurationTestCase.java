@@ -27,6 +27,7 @@ public class ApplicationContextAutoConfigurationTestCase {
 	@Test
 	public void testIglooApplicationConfigAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.withInitializer(new ExtendedTestApplicationContextInitializer())
 			.withPropertyValues("igloo.profile=test")

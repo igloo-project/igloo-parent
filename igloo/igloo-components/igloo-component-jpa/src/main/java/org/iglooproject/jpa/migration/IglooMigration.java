@@ -4,7 +4,6 @@ import org.flywaydb.core.api.FlywayException;
 import org.flywaydb.core.api.MigrationVersion;
 import org.flywaydb.core.api.migration.BaseJavaMigration;
 import org.flywaydb.core.internal.resolver.MigrationInfoHelper;
-import org.flywaydb.core.internal.util.ClassUtils;
 import org.flywaydb.core.internal.util.Pair;
 
 /**
@@ -19,7 +18,7 @@ public abstract class IglooMigration implements IIglooMigration {
 	private final String description;
 
 	public IglooMigration() {
-		String shortName = ClassUtils.getShortName(getClass());
+		String shortName = getClass().getSimpleName();
 		String prefix;
 		
 		boolean repeatable = shortName.startsWith("R");
@@ -47,4 +46,15 @@ public abstract class IglooMigration implements IIglooMigration {
 	public String getDescription() {
 		return description;
 	}
+
+	@Override
+	public boolean isUndo() {
+		return false;
+	}
+
+	@Override
+	public boolean canExecuteInTransaction() {
+		return true;
+	}
+
 }
