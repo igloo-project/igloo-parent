@@ -54,6 +54,6 @@
 	$.fn.multivaluedExpand.Constructor = MultivaluedExpand;
 	
 	$.fn.multivaluedExpand.defaults = {
-			toggleButtonHtml : '<a><span class="fa fa-plus-circle" /><span class="fa fa-minus-circle" /></a>'
+			toggleButtonHtml : '<span><span class="fa fa-fw fa-plus-circle"></span><span class="fa fa-fw fa-minus-circle"></span></span>'
 	};
 }(window.jQuery, window, document);
