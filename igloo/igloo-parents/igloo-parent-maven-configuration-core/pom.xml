@@ -212,7 +212,7 @@
 
 		<igloo.flywaydb.version>7.0.2</igloo.flywaydb.version>
 
-		<igloo.junit.version>4.13</igloo.junit.version>
+		<igloo.junit.version>4.13.1</igloo.junit.version>
 		<igloo.h2.version>1.4.200</igloo.h2.version>
 		<igloo.mockito.version>3.5.13</igloo.mockito.version>
 		<igloo.assertj.version>3.17.2</igloo.assertj.version>
