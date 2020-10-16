@@ -211,14 +211,15 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		
 		// See favicon generator https://realfavicongenerator.net/
 		mountResource("/android-chrome-192x192.png", new PackageResourceReference(ApplicationFaviconPackage.class, "android-chrome-192x192.png"));
+		mountResource("/android-chrome-256x256.png", new PackageResourceReference(ApplicationFaviconPackage.class, "android-chrome-256x256.png"));
 		mountResource("/apple-touch-icon.png", new PackageResourceReference(ApplicationFaviconPackage.class, "apple-touch-icon.png"));
 		mountResource("/browserconfig.xml", new PackageResourceReference(ApplicationFaviconPackage.class, "browserconfig.xml"));
+		mountResource("/favicon.ico", new PackageResourceReference(ApplicationFaviconPackage.class, "favicon.ico"));
 		mountResource("/favicon-16x16.png", new PackageResourceReference(ApplicationFaviconPackage.class, "favicon-16x16.png"));
 		mountResource("/favicon-32x32.png", new PackageResourceReference(ApplicationFaviconPackage.class, "favicon-32x32.png"));
-		mountResource("/favicon.ico", new PackageResourceReference(ApplicationFaviconPackage.class, "favicon.ico"));
-		mountResource("/manifest.json", new PackageResourceReference(ApplicationFaviconPackage.class, "manifest.json"));
 		mountResource("/mstile-150x150.png", new PackageResourceReference(ApplicationFaviconPackage.class, "mstile-150x150.png"));
 		mountResource("/safari-pinned-tab.svg", new PackageResourceReference(ApplicationFaviconPackage.class, "safari-pinned-tab.svg"));
+		mountResource("/site.webmanifest", new PackageResourceReference(ApplicationFaviconPackage.class, "site.webmanifest"));
 	}
 
 	@Override
