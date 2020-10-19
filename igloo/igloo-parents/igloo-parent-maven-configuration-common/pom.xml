@@ -65,12 +65,12 @@
 		<igloo.wagon-maven-plugin.version>2.0.0</igloo.wagon-maven-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.4.1</igloo.wagon-ssh-external-plugin.version>
 
-		<igloo.maven-processor-plugin.version>4.2-jdk8</igloo.maven-processor-plugin.version>
+		<igloo.maven-processor-plugin.version>4.4</igloo.maven-processor-plugin.version>
 		<igloo.aspectj-maven-plugin.version>1.8</igloo.aspectj-maven-plugin.version>
 		<igloo.build-helper-maven-plugin.version>3.0.0</igloo.build-helper-maven-plugin.version>
 
 		<!-- aspectj is used by allure -->
-		<igloo.allure-aspectj.version>1.8.13</igloo.allure-aspectj.version>
+		<igloo.allure-aspectj.version>1.9.6</igloo.allure-aspectj.version>
 		<igloo.allure-maven.version>2.10.0</igloo.allure-maven.version>
 		<igloo.allure.version>2.8.1</igloo.allure.version>
 		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
