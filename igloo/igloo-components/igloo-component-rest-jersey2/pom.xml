@@ -32,6 +32,30 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-server</artifactId>
+			<exclusions>
+				<exclusion>
+					<!-- manual resolution of conflict 2.3.2 and 2.3.3
+					due to jersey-server and jackson-module-jaxb-annotations
+					dependency mismatch -->
+					<groupId>jakarta.xml.bind</groupId>
+					<artifactId>jakarta.xml.bind-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<!-- manual resolution of conflict 1.2.2 and 1.2.1
+					due to jersey-server and jackson-module-jaxb-annotations
+					dependency mismatch -->
+					<groupId>jakarta.activation</groupId>
+					<artifactId>jakarta.activation-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<!-- manual resolution of conflict 1.3.5 and 1.3.4
+					due to jersey-common/server and hk2-utils/runlevel
+					dependency mismatch -->
+					<groupId>jakarta.annotation</groupId>
+					<artifactId>jakarta.annotation-api</artifactId>
+				</exclusion>
+			</exclusions>
+			
 		</dependency>
 		
 		<dependency>
@@ -61,6 +85,13 @@
 					<groupId>org.hibernate</groupId>
 					<artifactId>hibernate-validator</artifactId>
 				</exclusion>
+				<exclusion>
+					<!-- manual resolution of conflict 1.3.5 and 1.3.4
+					due to jersey-common/server and hk2-utils/runlevel
+					dependency mismatch -->
+					<groupId>jakarta.annotation</groupId>
+					<artifactId>jakarta.annotation-api</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
@@ -77,6 +108,36 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.jaxrs</groupId>
 			<artifactId>jackson-jaxrs-json-provider</artifactId>
+			<exclusions>
+				<exclusion>
+					<!-- manual resolution of conflict 2.3.2 and 2.3.3
+					due to jersey-server and jackson-module-jaxb-annotations
+					dependency mismatch -->
+					<groupId>jakarta.xml.bind</groupId>
+					<artifactId>jakarta.xml.bind-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<!-- manual resolution of conflict 1.2.2 and 1.2.1
+					due to jersey-server and jackson-module-jaxb-annotations
+					dependency mismatch -->
+					<groupId>jakarta.activation</groupId>
+					<artifactId>jakarta.activation-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- manual resolution for dependency version conflict -->
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.activation</groupId>
+			<artifactId>jakarta.activation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
 		</dependency>
 		
 		<!-- Test -->
