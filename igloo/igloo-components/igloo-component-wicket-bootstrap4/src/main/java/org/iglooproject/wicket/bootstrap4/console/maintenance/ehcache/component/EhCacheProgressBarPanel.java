@@ -6,51 +6,56 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 
-public class EhCacheProgressBarComponent extends GenericPanel<Float> {
+public class EhCacheProgressBarPanel extends GenericPanel<Float> {
+
 	private static final long serialVersionUID = 3992803188589160149L;
-	
+
 	private static final String CLASS_PROGRESS_SUCCESS = "bg-success";
-	
 	private static final String CLASS_PROGRESS_WARNING = "bg-warning";
-	
 	private static final String CLASS_PROGRESS_DANGER = "bg-danger";
-	
-	public EhCacheProgressBarComponent(String id, IModel<Float> value, boolean sign, float low, float high) {
-		super(id, value);
+
+	public EhCacheProgressBarPanel(String id, IModel<Float> valueModel, boolean sign, float low, float high) {
+		super(id, valueModel);
 		
 		if (low > high) {
 			throw new IllegalArgumentException("low threshold has to be less lower than high threshold");
 		}
 		
-		WebMarkupContainer progressBarWidth = new WebMarkupContainer("progressBarWidth");
-		add(progressBarWidth);
+		IModel<Double> widthModel = () -> {
+			Float value = valueModel.getObject();
+			return value != null ? Math.ceil(value * 100) : 0;
+		};
 		
-		double width = 0;
-		
-		if (getModelObject() != null) {
-			width = Math.ceil(getModelObject() * 100);
+		IModel<String> colorModel = () -> {
+			Float value = valueModel.getObject();
 			
-			String className;
+			if (value == null) {
+				return null;
+			}
+			
 			if (sign) {
 				if (getModelObject() < low) {
-					className = CLASS_PROGRESS_SUCCESS;
+					return CLASS_PROGRESS_SUCCESS;
 				} else if (getModelObject() < high) {
-					className = CLASS_PROGRESS_WARNING;
+					return CLASS_PROGRESS_WARNING;
 				} else {
-					className = CLASS_PROGRESS_DANGER;
+					return CLASS_PROGRESS_DANGER;
 				}
 			} else {
 				if (getModelObject() < low) {
-					className = CLASS_PROGRESS_DANGER;
+					return CLASS_PROGRESS_DANGER;
 				} else if (getModelObject() < high) {
-					className = CLASS_PROGRESS_WARNING;
+					return CLASS_PROGRESS_WARNING;
 				} else {
-					className = CLASS_PROGRESS_SUCCESS;
+					return CLASS_PROGRESS_SUCCESS;
 				}
 			}
-			progressBarWidth.add(new ClassAttributeAppender(className));
-		}
+		};
 		
-		progressBarWidth.add(new AttributeModifier("style", "width:" + width + "%;"));
+		add(
+			new WebMarkupContainer("progressBar")
+				.add(new AttributeModifier("style", () -> "width:" + widthModel.getObject() + "%;"))
+				.add(new ClassAttributeAppender(colorModel))
+		);
 	}
 }

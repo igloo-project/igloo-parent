@@ -11,13 +11,13 @@ import org.apache.wicket.request.UrlUtils;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.authentication.page.ConsoleMaintenanceAuthenticationPage;
+import org.iglooproject.wicket.bootstrap4.console.maintenance.data.page.ConsoleMaintenanceDataPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.file.page.ConsoleMaintenanceFilePage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.gestion.page.ConsoleMaintenanceGestionPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.upgrade.page.ConsoleMaintenanceDonneesPage;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
@@ -82,9 +82,9 @@ public final class ConsoleConfiguration {
 			ConsoleMenuItem maintenanceEhcacheMenuItem = new ConsoleMenuItem("maintenanceEhcacheMenuItem",
 					"console.maintenance.ehcache", "ehcache", ConsoleMaintenanceEhCachePage.class);
 			maintenanceMenuSection.addMenuItem(maintenanceEhcacheMenuItem);
-			ConsoleMenuItem maintenanceDonneesMenuItem = new ConsoleMenuItem("maintenanceDonneesMenuItem",
-					"console.maintenance.donnees", "donnees", ConsoleMaintenanceDonneesPage.class);
-			maintenanceMenuSection.addMenuItem(maintenanceDonneesMenuItem);
+			ConsoleMenuItem maintenanceDataMenuItem = new ConsoleMenuItem("maintenanceDataMenuItem",
+					"console.maintenance.data", "data", ConsoleMaintenanceDataPage.class);
+			maintenanceMenuSection.addMenuItem(maintenanceDataMenuItem);
 			ConsoleMenuItem authenticationMenuItem = new ConsoleMenuItem("signInAsMenuItem",
 					"console.maintenance.authentication", "authentication", ConsoleMaintenanceAuthenticationPage.class);
 			maintenanceMenuSection.addMenuItem(authenticationMenuItem);

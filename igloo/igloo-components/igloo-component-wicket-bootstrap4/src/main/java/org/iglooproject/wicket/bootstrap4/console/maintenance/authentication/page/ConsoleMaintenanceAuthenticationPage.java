@@ -2,8 +2,8 @@ package org.iglooproject.wicket.bootstrap4.console.maintenance.authentication.pa
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -19,6 +19,7 @@ import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.springframework.security.authentication.DisabledException;
 
 public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> extends ConsoleMaintenanceTemplate {
@@ -30,50 +31,64 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> e
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()
-				.page(ConsoleMaintenanceAuthenticationPage.class);
+			.page(ConsoleMaintenanceAuthenticationPage.class);
 	}
 	
-	private FormComponent<String> usernameField;
+	private final IModel<String> usernameModel = new Model<>();
 	
 	public ConsoleMaintenanceAuthenticationPage(PageParameters parameters) {
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.authentication")));
 		
-		Form<Void> signInForm = new Form<Void>("signInForm") {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void onSubmit() {
-				if (StringUtils.hasText(usernameField.getModelObject())) {
-					U genericUser = genericUserService.getByUsername(usernameField.getModelObject());
+		add(
+			new Form<Void>("form") {
+				private static final long serialVersionUID = 1L;
+				@Override
+				protected void onSubmit() {
+					String username = usernameModel.getObject();
 					
-					if (genericUser != null) {
-						try {
-							AbstractCoreSession.get().signInAs(usernameField.getModelObject());
-							AbstractCoreSession.get().success(new StringResourceModel("console.maintenance.authentication.success")
-									.setParameters(usernameField.getModelObject()).getObject());
-							
-							throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
-						} catch (DisabledException e) {
-							AbstractCoreSession.get().error(getString("console.maintenance.authentication.userDisabled"));
-						}
-					} else {
-						AbstractCoreSession.get().error(getString("console.maintenance.authentication.userUnknown"));
+					if (!StringUtils.hasText(username)) {
+						AbstractCoreSession.get().error(getString("console.maintenance.authentication.signInAs.error.userUnknown"));
+						throw linkDescriptor().newRestartResponseException();
 					}
-				} else {
-					AbstractCoreSession.get().error(getString("console.maintenance.authentication.userUnknown"));
+					
+					U user = genericUserService.getByUsername(username);
+					
+					if (user == null) {
+						AbstractCoreSession.get().error(getString("console.maintenance.authentication.signInAs.error.userUnknown"));
+						throw linkDescriptor().newRestartResponseException();
+					}
+					
+					try {
+						AbstractCoreSession.get().signInAs(username);
+						AbstractCoreSession.get().success(
+							new StringResourceModel("console.maintenance.authentication.signInAs.success")
+								.setParameters(username)
+								.getObject()
+						);
+						
+						throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
+					} catch (DisabledException e) {
+						AbstractCoreSession.get().error(getString("console.maintenance.authentication.signInAs.error.userDisabled"));
+					}
+					
+					throw linkDescriptor().newRestartResponseException();
 				}
-				throw linkDescriptor().newRestartResponseException();
 			}
-		};
-		add(signInForm);
-		
-		usernameField = new RequiredTextField<>("username", Model.of(""));
-		usernameField.setLabel(new ResourceModel("console.signIn.username"));
-		usernameField.add(new LabelPlaceholderBehavior());
-		usernameField.setOutputMarkupId(true);
-		signInForm.add(usernameField);
+				.add(
+					new TextField<>("username", usernameModel)
+						.setRequired(true)
+						.setLabel(new ResourceModel("console.signIn.username"))
+						.add(new LabelPlaceholderBehavior())
+				)
+		);
+	}
+
+	@Override
+	protected void onDetach() {
+		super.onDetach();
+		Detachables.detach(usernameModel);
 	}
 
 	@Override

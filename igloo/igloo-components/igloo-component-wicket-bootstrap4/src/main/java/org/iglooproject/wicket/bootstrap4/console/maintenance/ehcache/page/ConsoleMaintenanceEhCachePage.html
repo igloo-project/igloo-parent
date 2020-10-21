@@ -18,7 +18,101 @@
 			<div class="content-body-section">
 				<div class="content-body-container">
 					<div class="content-body">
-						<div wicket:id="portfolio" class="cache-portfolio" />
+						<div class="row row-md">
+							<div class="col-12" wicket:id="cacheManagers">
+								<div class="card card-page">
+									<div class="card-header">
+										<h5 class="card-header-title">
+											<wicket:container wicket:id="name" />
+										</h5>
+									</div>
+									<div class="card-body">
+										<div class="row row-sm">
+											<div class="col-lg-5 col-xl-4 mr-auto">
+												<input wicket:id="filter" class="form-control" />
+											</div>
+											<div class="col-auto">
+												<button wicket:id="purge" class="btn btn-danger" type="button">
+													<span class="fa fa-fw fa-trash" />
+													<wicket:message key="console.maintenance.ehcache.cacheManager.purge" />
+												</button>
+											</div>
+										</div>
+									</div>
+									<div wicket:id="cachesContainer" class="card-body card-body-table">
+										<div class="table-responsive">
+											<table class="table table-bordered-inner table-card-body table-layout-fixed">
+												<thead class="thead-light">
+													<tr>
+														<th class="text text-xl"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.nom" /></th>
+														<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.evictionCount" /></th>
+														<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.cacheHits" /></th>
+														<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.cacheMisses" /></th>
+														<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.hitRatio" /></th>
+														<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.memoryStoreObjectCount" /></th>
+														<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.maxElementsInMemory" /></th>
+														<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.cacheFillRatio" /></th>
+														<th class="actions actions-2x"></th>
+													</tr>
+												</thead>
+												<tbody wicket:id="caches">
+													<tr>
+														<td rowspan="2" class="text text-xl">
+															<span wicket:id="name" />
+															<div class="input-group input-group-sm">
+																<input wicket:id="nameInput" class="form-control cache-name-input" type="text" />
+																<div class="input-group-append">
+																	<button wicket:id="copy" class="btn btn-outline-secondary" type="button" wicket:message="title:console.maintenance.ehcache.cacheManager.cache.nom.copy">
+																		<span class="fa fa-fw fa-clipboard" />
+																	</button>
+																</div>
+															</div>
+														</td>
+														<td class="text-right" rowspan="2"><span wicket:id="evictionCount"></span></td>
+														<td class="text-right"><span wicket:id="cacheHits"></span></td>
+														<td class="text-right"><span wicket:id="cacheMisses"></span></td>
+														<td class="text-right"><span wicket:id="hitRatio"></span></td>
+														<td class="text-right"><span wicket:id="memoryStoreObjectCount"></span></td>
+														<td class="text-right"><span wicket:id="maxElementsInMemory"></span></td>
+														<td class="text-right"><span wicket:id="cacheFillRatio"></span></td>
+														<td class="actions actions-2x" rowspan="2">
+															<div wicket:id="editPopup" />
+															<div class="row row-table-action">
+																<div class="col-table-action">
+																	<button wicket:id="edit" class="btn btn-table-row-action btn-primary" type="button"
+																		wicket:message="title:common.action.edit">
+																		<span class="fa fa-fw fa-pencil-alt" />
+																	</button>
+																</div>
+																<div class="col-table-action">
+																	<button wicket:id="clear" class="btn btn-table-row-action btn-danger" type="button"
+																		wicket:message="title:console.maintenance.ehcache.cacheManager.cache.clear">
+																		<span class="fa fa-fw fa-trash" />
+																	</button>
+																</div>
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td colspan="3">
+															<wicket:container wicket:id="progressBarHit"></wicket:container>
+														</td>
+														<td colspan="3">
+															<wicket:container wicket:id="progressBarObject"></wicket:container>
+														</td>
+													</tr>
+												</tbody>
+												<tbody wicket:id="emptyList">
+													<tr class="empty-list">
+														<td colspan="9"><wicket:message key="common.list.empty" /></td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

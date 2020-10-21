@@ -23,7 +23,7 @@ public class EhCacheCacheManagerListModel extends LoadableDetachableModel<List<C
 		Collections.sort(cacheManagers, EhcacheCacheManagerComparator.INSTANCE);
 		return cacheManagers;
 	}
-	
+
 	private static final class EhcacheCacheManagerComparator implements Comparator<CacheManager>, Serializable {
 		private static final long serialVersionUID = 1L;
 		
@@ -33,7 +33,6 @@ public class EhCacheCacheManagerListModel extends LoadableDetachableModel<List<C
 		public int compare(CacheManager o1, CacheManager o2) {
 			return GenericEntity.STRING_COLLATOR_FRENCH.compare(o1.getName(), o2.getName());
 		}
-		
 	}
 
 }

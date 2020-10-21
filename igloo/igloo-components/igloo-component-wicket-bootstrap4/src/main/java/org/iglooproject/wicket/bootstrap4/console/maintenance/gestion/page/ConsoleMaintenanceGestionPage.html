@@ -18,28 +18,29 @@
 			<div class="content-body-section">
 				<div class="content-body-container">
 					<div class="content-body">
-						<div wicket:id="container" class="card card-page">
-							<div class="card-header">
-								<h5 class="card-header-title">
-									<wicket:message key="console.maintenance.gestion.title" />
-								</h5>
-							</div>
-							<div class="card-body">
-								<div wicket:id="introMaintenanceActivee" class="alert alert-danger">
-									<wicket:message key="console.maintenance.gestion.maintenance.intro.activee" />
+						<div class="row row-md">
+							<div class="col-xl-8">
+								<div wicket:id="card" class="card card-page">
+									<div class="card-header">
+										<h5 class="card-header-title">
+											<wicket:message key="console.maintenance.gestion.title" />
+										</h5>
+									</div>
+									<div class="card-body">
+										<div wicket:id="maintenanceActiveeContainer" class="alert alert-danger m-0">
+											<div><wicket:message key="console.maintenance.gestion.maintenance.intro.activee" /></div>
+											<button wicket:id="desactiver" class="btn btn-success mt-3" type="button">
+												<wicket:message key="console.maintenance.gestion.maintenance.desactiver" />
+											</button>
+										</div>
+										<div wicket:id="maintenanceDesactiveeContainer" class="alert alert-success m-0">
+											<div><wicket:message key="console.maintenance.gestion.maintenance.intro.desactivee" /></div>
+											<button wicket:id="activer" class="btn btn-danger mt-3" type="button">
+												<wicket:message key="console.maintenance.gestion.maintenance.activer" />
+											</button>
+										</div>
+									</div>
 								</div>
-								
-								<div wicket:id="introMaintenanceDesactivee" class="alert alert-success">
-									<wicket:message key="console.maintenance.gestion.maintenance.intro.desactivee" />
-								</div>
-								
-								<button wicket:id="activerMaintenance" class="btn btn-danger" type="button">
-									<wicket:message key="console.maintenance.gestion.maintenance.activer" />
-								</button>
-								
-								<button wicket:id="desactiverMaintenance" class="btn btn-success" type="button">
-									<wicket:message key="console.maintenance.gestion.maintenance.desactiver" />
-								</button>
 							</div>
 						</div>
 					</div>

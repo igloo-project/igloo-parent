@@ -23,18 +23,28 @@
 								<div class="card card-page">
 									<div class="card-header">
 										<h5 class="card-header-title">
-											<wicket:message key="console.maintenance.authentication.description" />
+											<wicket:message key="console.maintenance.authentication.signInAs.title" />
 										</h5>
 									</div>
 									<div class="card-body">
-										<form wicket:id="signInForm">
-											<div class="form-group">
-												<input class="form-control" wicket:id="username" type="text" />
+										<form wicket:id="form">
+											<div class="row row-form">
+												<div class="col-12">
+													<div class="row row-form-group form-group">
+														<div class="col-12">
+															<div class="input-group">
+																<div class="input-group-prepend">
+																	<span class="input-group-text"><span class="fa fa-fw fa-user" /></span>
+																</div>
+																<input wicket:id="username" class="form-control" />
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
-											
-											<button class="btn btn-success" type="submit">
+											<button class="btn btn-success mt-3" type="submit">
 												<span class="fa fa-fw fa-lock" />
-												<wicket:message key="console.signIn.action.signIn" />
+												<wicket:message key="console.maintenance.authentication.signInAs.signIn" />
 											</button>
 										</form>
 									</div>

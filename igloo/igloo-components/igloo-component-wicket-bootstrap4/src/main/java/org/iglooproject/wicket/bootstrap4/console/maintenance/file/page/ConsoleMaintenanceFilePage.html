@@ -23,12 +23,12 @@
 								<div class="card card-page">
 									<div class="card-header">
 										<h5 class="card-header-title">
-											<wicket:message key="console.maintenance.file.title" />
+											<wicket:message key="console.maintenance.file.pathGeneration.title" />
 										</h5>
 									</div>
 									<div class="card-body">
 										<div class="alert alert-info">
-											<wicket:message key="console.maintenance.file.description" />
+											<wicket:message key="console.maintenance.file.pathGeneration.help" />
 										</div>
 										
 										<form wicket:id="form">
@@ -63,21 +63,30 @@
 														</div>
 													</div>
 												</div>
-												<div class="col-12">
-													<button class="btn btn-success" type="submit">
-														<span class="fa fa-fw fa-paw" />
-														<wicket:message key="console.maintenance.file.generatePath" />
-													</button>
-												</div>
-												<wicket:enclosure child="path">
+											</div>
+											<button class="btn btn-success mt-3" type="submit">
+												<span class="fa fa-fw fa-paw" />
+												<wicket:message key="console.maintenance.file.pathGeneration.generate" />
+											</button>
+											<wicket:enclosure child="path">
+												<hr />
+												<div class="row row-form">
 													<div class="col-12">
-														<label><strong><wicket:message key="console.maintenance.file.path" /></strong></label>
-														<div>
-															<kbd wicket:id="path" />
+														<div class="row row-form-group form-group">
+															<div class="col-md-4">
+																<label class="col-form-label form-label font-weight-bold">
+																	<wicket:message key="console.maintenance.file.pathGeneration.path" />
+																</label>
+															</div>
+															<div class="col-md-8">
+																<div class="form-control-plaintext">
+																	<kbd wicket:id="path" />
+																</div>
+															</div>
 														</div>
 													</div>
-												</wicket:enclosure>
-											</div>
+												</div>
+											</wicket:enclosure>
 										</form>
 									</div>
 								</div>
