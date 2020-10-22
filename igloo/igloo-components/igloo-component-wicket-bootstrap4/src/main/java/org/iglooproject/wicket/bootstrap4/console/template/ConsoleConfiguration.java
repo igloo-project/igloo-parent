@@ -16,7 +16,7 @@ import org.iglooproject.wicket.bootstrap4.console.maintenance.ehcache.page.Conso
 import org.iglooproject.wicket.bootstrap4.console.maintenance.file.page.ConsoleMaintenanceFilePage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.gestion.page.ConsoleMaintenanceGestionPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.task.page.ConsoleMaintenanceTaskDescriptionPage;
+import org.iglooproject.wicket.bootstrap4.console.maintenance.task.page.ConsoleMaintenanceTaskDetailPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.page.ConsoleMaintenanceTaskListPage;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
@@ -85,18 +85,18 @@ public final class ConsoleConfiguration {
 			ConsoleMenuItem maintenanceDataMenuItem = new ConsoleMenuItem("maintenanceDataMenuItem",
 					"console.maintenance.data", "data", ConsoleMaintenanceDataPage.class);
 			maintenanceMenuSection.addMenuItem(maintenanceDataMenuItem);
-			ConsoleMenuItem authenticationMenuItem = new ConsoleMenuItem("signInAsMenuItem",
+			ConsoleMenuItem maintenanceAuthenticationMenuItem = new ConsoleMenuItem("maintenanceAuthenticationMenuItem",
 					"console.maintenance.authentication", "authentication", ConsoleMaintenanceAuthenticationPage.class);
-			maintenanceMenuSection.addMenuItem(authenticationMenuItem);
-			ConsoleMenuItem maintenanceTasksMenuItem = new ConsoleMenuItem("maintenanceTasksMenuItem",
-					"console.maintenance.tasks", "tasks", ConsoleMaintenanceTaskListPage.class);
-			ConsoleMenuItemRelatedPage maintenanceTaskDetailsPage = new ConsoleMenuItemRelatedPage(
-					"${" + CommonParameters.ID + "}/", ConsoleMaintenanceTaskDescriptionPage.class);
-			maintenanceTasksMenuItem.addRelatedPage(maintenanceTaskDetailsPage);
-			maintenanceMenuSection.addMenuItem(maintenanceTasksMenuItem);
-			ConsoleMenuItem fileMenuItem = new ConsoleMenuItem("fileMenuItem",
+			maintenanceMenuSection.addMenuItem(maintenanceAuthenticationMenuItem);
+			ConsoleMenuItem maintenanceTaskMenuItem = new ConsoleMenuItem("maintenanceTaskMenuItem",
+					"console.maintenance.tasks", "task", ConsoleMaintenanceTaskListPage.class);
+			ConsoleMenuItemRelatedPage maintenanceTaskDetailPage = new ConsoleMenuItemRelatedPage(
+					"${" + CommonParameters.ID + "}/", ConsoleMaintenanceTaskDetailPage.class);
+			maintenanceTaskMenuItem.addRelatedPage(maintenanceTaskDetailPage);
+			maintenanceMenuSection.addMenuItem(maintenanceTaskMenuItem);
+			ConsoleMenuItem maintenanceFileMenuItem = new ConsoleMenuItem("maintenanceFileMenuItem",
 					"console.maintenance.file", "file", ConsoleMaintenanceFilePage.class);
-			maintenanceMenuSection.addMenuItem(fileMenuItem);
+			maintenanceMenuSection.addMenuItem(maintenanceFileMenuItem);
 			
 			INSTANCE.addMenuSection(maintenanceMenuSection);
 		}

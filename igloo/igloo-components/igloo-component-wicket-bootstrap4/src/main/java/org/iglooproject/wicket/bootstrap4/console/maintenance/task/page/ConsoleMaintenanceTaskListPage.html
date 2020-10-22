@@ -14,24 +14,20 @@
 					</div>
 				</div>
 			</div>
+			
+			<div class="content-lead-section">
+				<div class="content-lead-container">
+					<div class="row row-md">
+						<div wicket:id="taskManager" class="col-lg-5" />
+						<div wicket:id="search" class="col-lg-7" />
+					</div>
+				</div>
+			</div>
+			
 			<div class="content-body-section">
 				<div class="content-body-container">
 					<div class="content-body">
-						<div class="row row-md">
-							<div class="col-md-4 col-lg-3">
-								<div class="row row-md">
-									<div class="col-12">
-										<div wicket:id="taskManagerInformationPanel" />
-									</div>
-									<div class="col-12">
-										<div wicket:id="filterPanel" />
-									</div>
-								</div>
-							</div>
-							<div class="col-md-8 col-lg-9">
-								<wicket:container wicket:id="resultsPanel" />
-							</div>
-						</div>
+						<div wicket:id="results" class="card card-page" />
 					</div>
 				</div>
 			</div>
