@@ -3,14 +3,10 @@ package org.iglooproject.wicket.bootstrap4.console.maintenance.task.page;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
-import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import org.iglooproject.jpa.more.util.binding.CoreJpaMoreBindings;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.component.ConsoleMaintenanceTaskSearchPanel;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.task.component.ConsoleMaintenanceTaskTaskManagerPanel;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.task.renderer.TaskResultRenderer;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.task.renderer.TaskStatusRenderer;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.more.console.maintenance.task.model.QueuedTaskHolderDataProvider;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -18,14 +14,13 @@ import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
+import org.iglooproject.wicket.more.rendering.TaskResultRenderer;
+import org.iglooproject.wicket.more.rendering.TaskStatusRenderer;
 import org.iglooproject.wicket.more.util.DatePattern;
 
 public class ConsoleMaintenanceTaskListPage extends ConsoleMaintenanceTemplate {
 
 	private static final long serialVersionUID = -4085517848301335018L;
-
-	@SpringBean
-	private IQueuedTaskHolderManager queuedTaskHolderManager;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()

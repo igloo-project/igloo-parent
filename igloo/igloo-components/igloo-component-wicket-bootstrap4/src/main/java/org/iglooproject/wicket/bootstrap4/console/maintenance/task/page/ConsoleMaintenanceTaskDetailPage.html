@@ -160,28 +160,24 @@
 											<wicket:message key="console.maintenance.task.detail.serializedTask" />
 										</h5>
 									</div>
-									<div class="card-body">
-										<div class="bg-light"><pre class="pre-scrollable mb-0"><wicket:container wicket:id="serializedTask" /></pre></div>
-									</div>
+									<pre wicket:id="serializedTask" class="card-body bg-light pre-scrollable m-0" />
 								</div>
 							</div>
 							
 							<wicket:enclosure child="stackTrace">
 								<div class="col-12">
-									<div class="card card-page">
+									<div class="card card-danger">
 										<div class="card-header">
 											<h5 class="card-header-title">
 												<wicket:message key="console.maintenance.task.detail.mainInformation.stackTrace" />
 											</h5>
 										</div>
-										<div class="card-body">
-											<pre wicket:id="stackTrace" class="stack-trace pre-scrollable" />
-										</div>
+										<pre wicket:id="stackTrace" class="card-body bg-light pre-scrollable m-0" />
 									</div>
 								</div>
 							</wicket:enclosure>
 							
-							<div wicket:id="executionResult" class="col-12" />
+							<div wicket:id="batchReport" class="col-12" />
 						</div>
 					</div>
 				</div>

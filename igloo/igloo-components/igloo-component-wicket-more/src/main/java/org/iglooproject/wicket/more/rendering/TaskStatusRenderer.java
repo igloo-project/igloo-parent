@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap4.console.maintenance.task.renderer;
+package org.iglooproject.wicket.more.rendering;
 
 import java.util.Locale;
 
@@ -7,11 +7,10 @@ import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.Bootstrap
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation.Builder;
-import org.iglooproject.wicket.more.rendering.EnumRenderer;
 
 public class TaskStatusRenderer extends BootstrapRenderer<TaskStatus> {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4070371618711797908L;
 
 	private static final TaskStatusRenderer INSTANCE = new TaskStatusRenderer();
 
@@ -42,17 +41,17 @@ public class TaskStatusRenderer extends BootstrapRenderer<TaskStatus> {
 		case COMPLETED:
 			return builder
 				.color(BootstrapColor.SUCCESS)
-				.icon("fa fa-fw fa-check-circle")
+				.icon("fa fa-fw fa-check")
 				.build();
 		case FAILED:
 			return builder
 				.color(BootstrapColor.DANGER)
-				.icon("fa fa-fw fa-times-circle")
+				.icon("fa fa-fw fa-times")
 				.build();
 		case INTERRUPTED:
 			return builder
 				.color(BootstrapColor.DANGER)
-				.icon("fa fa-fw fa-pause-circle")
+				.icon("fa fa-fw fa-pause")
 				.build();
 		case CANCELLED:
 			return builder

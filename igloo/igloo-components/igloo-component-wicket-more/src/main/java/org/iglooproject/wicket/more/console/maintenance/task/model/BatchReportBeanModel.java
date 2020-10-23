@@ -16,26 +16,26 @@ import org.springframework.util.StringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BatchReportBeanModel<B extends BatchReportBean> extends LoadableDetachableModel<B> {
-	
+
 	private static final long serialVersionUID = 1226667856014694255L;
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(BatchReportBeanModel.class);
-	
+
 	public static BatchReportBeanModel<BatchReportBean> fromString(IModel<String> reportModel) {
 		return new BatchReportBeanModel<>(BatchReportBean.class, reportModel);
 	}
-	
+
 	public static BatchReportBeanModel<BatchReportBean> fromTask(IModel<QueuedTaskHolder> queuedTaskHolderModel) {
 		return new TaskBatchReportBeanModel<>(BatchReportBean.class, queuedTaskHolderModel);
 	}
-	
+
 	@SpringBean(name = AbstractTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
 	private ObjectMapper queuedTaskHolderObjectMapper;
-	
+
 	private final Class<B> clazz;
-	
+
 	private final IModel<String> reportModel;
-	
+
 	public BatchReportBeanModel(Class<B> clazz, IModel<String> reportModel) {
 		super();
 		this.clazz = clazz;
@@ -43,13 +43,13 @@ public class BatchReportBeanModel<B extends BatchReportBean> extends LoadableDet
 		
 		Injector.get().inject(this);
 	}
-	
+
 	@Override
 	protected void onDetach() {
 		super.onDetach();
 		reportModel.detach();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected B load() {
@@ -67,4 +67,5 @@ public class BatchReportBeanModel<B extends BatchReportBean> extends LoadableDet
 		}
 		return null;
 	}
+
 }

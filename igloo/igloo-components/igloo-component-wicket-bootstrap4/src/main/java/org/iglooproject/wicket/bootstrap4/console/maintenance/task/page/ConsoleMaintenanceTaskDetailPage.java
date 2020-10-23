@@ -18,9 +18,7 @@ import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
 import org.iglooproject.jpa.more.util.binding.CoreJpaMoreBindings;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.task.component.TaskExecutionResultPanel;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.task.renderer.TaskResultRenderer;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.task.renderer.TaskStatusRenderer;
+import org.iglooproject.wicket.bootstrap4.console.maintenance.task.component.ConsoleMaintenanceTaskBatchReportPanel;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.bootstrap4.markup.html.bootstrap.component.BootstrapBadge;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
@@ -43,6 +41,8 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;
+import org.iglooproject.wicket.more.rendering.TaskResultRenderer;
+import org.iglooproject.wicket.more.rendering.TaskStatusRenderer;
 import org.iglooproject.wicket.more.util.DatePattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,10 +66,10 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate
 			.model(QueuedTaskHolder.class)
 			.map(CommonParameters.ID).mandatory()
 			.page(ConsoleMaintenanceTaskDetailPage.class);
-	
+
 	@SpringBean
 	private IQueuedTaskHolderManager queuedTaskHolderManager;
-	
+
 	@SpringBean
 	private IQueuedTaskHolderService queuedTaskHolderService;
 
@@ -252,7 +252,7 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate
 		);
 		
 		add(
-			new TaskExecutionResultPanel("executionResult", queuedTaskHolderModel)
+			new ConsoleMaintenanceTaskBatchReportPanel("batchReport", queuedTaskHolderModel)
 		);
 	}
 
