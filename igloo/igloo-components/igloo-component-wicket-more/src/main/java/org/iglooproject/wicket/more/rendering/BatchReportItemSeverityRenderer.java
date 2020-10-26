@@ -41,7 +41,7 @@ public class BatchReportItemSeverityRenderer extends BootstrapRenderer<BatchRepo
 		case INFO:
 			return builder
 				.color(BootstrapColor.SUCCESS)
-				.icon("fa fa-fw fa-check")
+				.icon("fa fa-fw fa-chevron-right")
 				.build();
 		case WARN:
 			return builder
