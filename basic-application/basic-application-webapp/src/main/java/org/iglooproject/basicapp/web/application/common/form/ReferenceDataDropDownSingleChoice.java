@@ -19,7 +19,7 @@ public class ReferenceDataDropDownSingleChoice<T extends ReferenceData<? super T
 		this(
 			id,
 			model,
-			new GenericReferenceDataModel<T>(clazz, ReferenceDataComparator.get(), EnabledFilter.ENABLED_ONLY)
+			new GenericReferenceDataModel<>(clazz, ReferenceDataComparator.get(), EnabledFilter.ENABLED_ONLY)
 		);
 	}
 

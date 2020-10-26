@@ -26,7 +26,7 @@ public class ReferenceDataDropDownMultipleChoice<T extends ReferenceData<? super
 			id,
 			model,
 			collectionSupplier,
-			new GenericReferenceDataModel<T>(clazz, ReferenceDataComparator.get(), EnabledFilter.ENABLED_ONLY)
+			new GenericReferenceDataModel<>(clazz, ReferenceDataComparator.get(), EnabledFilter.ENABLED_ONLY)
 		);
 	}
 
