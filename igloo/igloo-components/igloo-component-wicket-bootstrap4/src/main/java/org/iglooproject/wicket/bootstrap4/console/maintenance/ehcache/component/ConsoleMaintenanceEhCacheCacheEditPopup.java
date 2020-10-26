@@ -21,17 +21,17 @@ import org.slf4j.LoggerFactory;
 
 import net.sf.ehcache.Cache;
 
-public class EhCacheCacheEditPopup extends AbstractAjaxModalPopupPanel<EhCacheCacheInformation> {
+public class ConsoleMaintenanceEhCacheCacheEditPopup extends AbstractAjaxModalPopupPanel<EhCacheCacheInformation> {
 
 	private static final long serialVersionUID = 2798613803910080178L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EhCacheCacheEditPopup.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceEhCacheCacheEditPopup.class);
 
 	private Component parent;
 
 	private Form<Cache> form;
 
-	public EhCacheCacheEditPopup(String id, IModel<EhCacheCacheInformation> cacheModel, Component parent) {
+	public ConsoleMaintenanceEhCacheCacheEditPopup(String id, IModel<EhCacheCacheInformation> cacheModel, Component parent) {
 		super(id, cacheModel);
 		this.parent = parent;
 	}
@@ -47,7 +47,7 @@ public class EhCacheCacheEditPopup extends AbstractAjaxModalPopupPanel<EhCacheCa
 		
 		form = new Form<>("form");
 		body.add(form);
-
+		
 		form.add(
 			new TextField<>("maxElementsInMemory", BindingModel.of(getModel(), CoreWicketMoreBindings.ehCacheCacheInformation().maxElementsInMemory()))
 				.setRequired(true)

@@ -19,8 +19,8 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.ehcache.component.EhCacheCacheEditPopup;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.ehcache.component.EhCacheProgressBarPanel;
+import org.iglooproject.wicket.bootstrap4.console.maintenance.ehcache.component.ConsoleMaintenanceEhCacheCacheEditPopup;
+import org.iglooproject.wicket.bootstrap4.console.maintenance.ehcache.component.ConsoleMaintenanceEhCacheProgressBarPanel;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -89,7 +89,7 @@ public class ConsoleMaintenanceEhCachePage extends ConsoleMaintenanceTemplate {
 								return caches.stream()
 									.filter(
 										Predicates2.compose(
-											Predicates2.contains(Pattern.compile("^.*" + filter + ".*$")),
+											Predicates2.contains(Pattern.compile("(?i)^.*" + filter + ".*$")),
 											Cache::getName
 										)
 									)
@@ -181,18 +181,18 @@ public class ConsoleMaintenanceEhCachePage extends ConsoleMaintenanceTemplate {
 										);
 										
 										item.add(
-											new EhCacheProgressBarPanel("progressBarObject",
+											new ConsoleMaintenanceEhCacheProgressBarPanel("progressBarObject",
 												BindingModel.of(cacheInformationModel,
 												CoreWicketMoreBindings.ehCacheCacheInformation().cacheFillRatio()),
 												true, 0.7f, 0.9f
 											),
-											new EhCacheProgressBarPanel("progressBarHit", 
+											new ConsoleMaintenanceEhCacheProgressBarPanel("progressBarHit", 
 												BindingModel.of(cacheInformationModel, CoreWicketMoreBindings.ehCacheCacheInformation().hitRatio()),
 												false, 0.2f, 0.6f
 											)
 										);
 										
-										EhCacheCacheEditPopup editPopup = new EhCacheCacheEditPopup("editPopup", cacheInformationModel, item);
+										ConsoleMaintenanceEhCacheCacheEditPopup editPopup = new ConsoleMaintenanceEhCacheCacheEditPopup("editPopup", cacheInformationModel, item);
 										item.add(
 											editPopup,
 											new BlankLink("edit")
