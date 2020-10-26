@@ -85,18 +85,18 @@ public class ConsoleMaintenanceEhCachePage extends ConsoleMaintenanceTemplate {
 							List<Cache> caches = new EhCacheCacheListModel(cacheManagerNameModel).getObject();
 							String filter = filterModel.getObject();
 							
-							if (StringUtils.hasText(filter)) {
-								return caches.stream()
-									.filter(
-										Predicates2.compose(
-											Predicates2.contains(Pattern.compile("(?i)^.*" + filter + ".*$")),
-											Cache::getName
-										)
-									)
-									.collect(ImmutableList.toImmutableList());
-							} else {
+							if (!StringUtils.hasText(filter)) {
 								return caches;
 							}
+							
+							return caches.stream()
+								.filter(
+									Predicates2.compose(
+										Predicates2.contains(Pattern.compile("(?i)^.*" + filter + ".*$")),
+										Cache::getName
+									)
+								)
+								.collect(ImmutableList.toImmutableList());
 						}
 					};
 					
