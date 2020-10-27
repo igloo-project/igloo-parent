@@ -22,6 +22,14 @@
 			<type>pom</type>
 		</dependency>
 		
+		<!-- Logging backend -->
+		<dependency>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-core-logging-log4j2</artifactId>
+			<version>${igloo.version}</version>
+			<type>pom</type>
+		</dependency>
+		
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>

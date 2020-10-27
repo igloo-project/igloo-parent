@@ -30,6 +30,12 @@
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
@@ -41,6 +47,13 @@
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-test</artifactId>
 			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-core-logging-log4j2</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>

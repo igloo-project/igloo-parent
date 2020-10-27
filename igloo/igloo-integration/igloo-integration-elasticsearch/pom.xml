@@ -15,6 +15,8 @@
 	<properties>
 		<!-- elasticsearch do not use same lucene version than hibernate-search -->
 		<igloo.lucene.version>6.6.1</igloo.lucene.version>
+		<!-- we do not need to uses enforcer plugin on integration modules -->
+		<enforcer.skip>true</enforcer.skip>
 	</properties>
 
 	<dependencies>
@@ -54,6 +56,13 @@
 			<version>${project.version}</version>
 			<scope>test</scope>
 			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.dependencies</groupId>
+			<artifactId>igloo-dependency-core-logging-log4j2</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+			<scope>test</scope>
 		</dependency>
 		
 		<!-- used to load configuration with environment variable fallback without spring -->
