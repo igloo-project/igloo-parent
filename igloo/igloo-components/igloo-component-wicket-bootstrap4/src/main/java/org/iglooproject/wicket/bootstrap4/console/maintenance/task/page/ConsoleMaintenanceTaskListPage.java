@@ -70,8 +70,6 @@ public class ConsoleMaintenanceTaskListPage extends ConsoleMaintenanceTemplate {
 			new ConsoleMaintenanceTaskSearchPanel("search", results, dataProvider),
 			results
 		);
-		
-		add();
 	}
 
 	@Override
