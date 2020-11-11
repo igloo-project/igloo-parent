@@ -136,7 +136,7 @@ public class IglooJpaSecurityAutoConfiguration {
 	 * with a new method name, an alias for <em>authenticationManager</em> and a @{@link Primary} annotation.
 	 */
 	@Bean
-	@ConditionalOnMissingBean
+	@ConditionalOnMissingBean(name = "authenticationManager")
 	public AuthenticationManager authenticationManager(List<AuthenticationProvider> authenticationProviders) {
 		List<AuthenticationProvider> providers = Lists.newArrayList();
 		providers.addAll(authenticationProviders);
