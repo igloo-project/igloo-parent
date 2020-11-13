@@ -60,6 +60,7 @@ public class IglooWicketAutoConfiguration {
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean
 	public ILinkParameterConversionService linkParameterConversionService() {
 		return new DefaultLinkParameterConversionService();
 	}
