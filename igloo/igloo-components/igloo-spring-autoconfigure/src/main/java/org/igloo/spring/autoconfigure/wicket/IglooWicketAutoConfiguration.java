@@ -54,6 +54,7 @@ public class IglooWicketAutoConfiguration {
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean
 	public IRendererService rendererService(IWicketContextProvider wicketContextProvider) {
 		return new RendererServiceImpl(wicketContextProvider);
 	}
