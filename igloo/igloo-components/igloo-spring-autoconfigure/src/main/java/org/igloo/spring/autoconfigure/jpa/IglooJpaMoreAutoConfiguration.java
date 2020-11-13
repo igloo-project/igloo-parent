@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,7 @@ public class IglooJpaMoreAutoConfiguration {
 	protected IJpaConfigurationProvider jpaConfigurationProvider;
 
 	@Bean
+	@ConditionalOnMissingBean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		return JpaConfigUtils.entityManagerFactory(jpaConfigurationProvider);
 	}
@@ -49,6 +51,7 @@ public class IglooJpaMoreAutoConfiguration {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public IHibernateSearchLuceneQueryFactory hibernateSearchLuceneQueryFactory() {
 		return new HibernateSearchLuceneQueryFactoryImpl();
