@@ -11,9 +11,9 @@ import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.NotificationScssResourceReference;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
-import org.iglooproject.wicket.bootstrap4.config.spring.AbstractBootstrapWebappConfig;
 import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssService;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
+import org.iglooproject.wicket.more.notification.service.PhlocCssHtmlNotificationCssServiceImpl;
 import org.iglooproject.wicket.more.rendering.BooleanRenderer;
 import org.iglooproject.wicket.more.rendering.Renderer;
 import org.iglooproject.wicket.more.rendering.service.RendererServiceImpl;
@@ -37,15 +37,14 @@ import org.springframework.context.annotation.Import;
 	},
 	excludeFilters = @Filter(Configuration.class)
 )
-public class BasicApplicationWebappConfig extends AbstractBootstrapWebappConfig {
+public class BasicApplicationWebappConfig {
 
-	@Override
 	@Bean(name = { "BasicApplicationApplication", "application" })
 	public BasicApplicationApplication application() {
 		return new BasicApplicationApplication();
 	}
 
-	@Override
+	@Bean
 	public IRendererService rendererService(IWicketContextProvider wicketContextProvider) {
 		RendererServiceImpl rendererService = new RendererServiceImpl(wicketContextProvider);
 		
@@ -66,10 +65,9 @@ public class BasicApplicationWebappConfig extends AbstractBootstrapWebappConfig 
 	/**
 	 * Override parent bean declaration so that we add our custom styles.
 	 */
-	@Override
 	@Bean
 	public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
-		IHtmlNotificationCssService service = super.htmlNotificationCssService();
+		IHtmlNotificationCssService service = new PhlocCssHtmlNotificationCssServiceImpl();
 		service.registerDefaultStyles(NotificationScssResourceReference.get());
 		return service;
 	}
