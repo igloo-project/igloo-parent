@@ -115,6 +115,7 @@ public class IglooJpaAutoConfiguration {
 	 * @see #databaseInitialization()
 	 */
 	@Bean
+	@ConditionalOnMissingBean
 	@DependsOn("databaseInitialization")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DefaultJpaConfigurationProvider defaultJpaCoreConfigurationProvider) {
 		return JpaConfigUtils.entityManagerFactory(defaultJpaCoreConfigurationProvider);
