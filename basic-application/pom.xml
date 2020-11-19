@@ -16,7 +16,7 @@
 	<name>${archetypeFullApplicationName}</name>
 
 	<properties>
-		<empty.property></empty.property><!-- KEEPME: archetype igloo.version -->
+		<empty.property /><!-- KEEPME: archetype igloo.version -->
 	</properties>
 	
 	<modules>
