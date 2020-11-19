@@ -54,11 +54,13 @@ public class IglooWicketAutoConfiguration {
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean
 	public IRendererService rendererService(IWicketContextProvider wicketContextProvider) {
 		return new RendererServiceImpl(wicketContextProvider);
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean
 	public ILinkParameterConversionService linkParameterConversionService() {
 		return new DefaultLinkParameterConversionService();
 	}

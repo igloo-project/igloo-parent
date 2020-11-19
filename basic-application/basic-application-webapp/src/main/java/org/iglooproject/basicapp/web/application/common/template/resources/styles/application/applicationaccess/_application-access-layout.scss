@@ -17,10 +17,6 @@ body {
 			border-left: 0;
 			border-right: 0;
 			
-			.card-img-top {
-				padding: $card-spacer-y $card-spacer-x;
-			}
-			
 			.card-header {
 				&.card-main-title {
 					@include bg($brand-color);

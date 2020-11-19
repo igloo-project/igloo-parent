@@ -26,6 +26,7 @@ public class TaskManagementAutoConfigurationTestCase {
 	@Test
 	public void testIglooTaskManagementAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.run(
 				(context) -> { assertThat(context).hasSingleBean(QueuedTaskHolderManagerImpl.class); }

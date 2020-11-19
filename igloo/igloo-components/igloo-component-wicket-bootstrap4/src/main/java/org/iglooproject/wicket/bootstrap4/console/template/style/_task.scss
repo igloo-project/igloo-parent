@@ -1,36 +1,8 @@
-.execution-result {
-	.batch-report {
-		display: block;
-		padding: 1rem;
-		word-break: break-all;
-		word-wrap: break-word;
-		font-size: $font-size-sm;
-		line-height: 1;
-		color: $pre-color;
-		background-color: $gray-100;
-		border: 1px solid $gray-200;
-		border-radius: $border-radius;
-		font-family: $font-family-monospace;
-		
-		> .batch-report-context-container {
-			
-			+ .batch-report-context-container {
-				margin-top: .75rem;
-			}
-			
-			> .batch-report-items {
-				> .batch-report-item {
-					@include clearfix;
-					
-					.batch-report-item-icon {
-						float: left;
-					}
-					
-					.batch-report-item-message {
-						margin-left: 1.25rem;
-					}
-				}
-			}
-		}
-	}
+.batch-report-container {
+	max-height: 1337px;
+	overflow-y: auto;
+}
+
+.batch-report-item {
+	line-height: 1.15;
 }

@@ -26,6 +26,7 @@ public class WicketAutoConfigurationTestCase {
 	@Test
 	public void testIglooWicketAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.run(
 				(context) -> { assertThat(context).hasSingleBean(WebApplication.class); }

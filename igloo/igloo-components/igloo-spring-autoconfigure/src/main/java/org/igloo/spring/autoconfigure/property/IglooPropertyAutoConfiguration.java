@@ -34,6 +34,7 @@ public class IglooPropertyAutoConfiguration {
 		return new ImmutablePropertyDaoImpl();
 	}
 
+	@ConditionalOnMissingBean
 	@Bean
 	public IPropertyService propertyService() {
 		return new PropertyServiceImpl();

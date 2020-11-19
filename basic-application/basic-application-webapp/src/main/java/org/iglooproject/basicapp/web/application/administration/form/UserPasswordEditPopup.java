@@ -16,12 +16,12 @@ import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.business.user.typedescriptor.UserTypeDescriptor;
+import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenticationService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.model.UserTypeDescriptorModel;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -43,7 +43,7 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 	private IUserService userService;
 
 	@SpringBean
-	private IAuthenticationService authenticationService;
+	private IBasicApplicationAuthenticationService authenticationService;
 	
 	@SpringBean
 	private ISecurityManagementService securityManagementService;

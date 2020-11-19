@@ -8,23 +8,27 @@ import org.iglooproject.wicket.more.util.model.Detachables;
 public class BootstrapColorBehavior extends ClassAttributeAppender {
 
 	private static final long serialVersionUID = 7272137227196691195L;
-	
+
+	public static BootstrapColorBehavior text(IModel<IBootstrapColor> colorModel) {
+		return new BootstrapColorBehavior("text-", colorModel);
+	}
+
 	public static BootstrapColorBehavior badge(IModel<IBootstrapColor> colorModel) {
 		return new BootstrapColorBehavior("badge badge-", colorModel);
 	}
-	
+
 	public static BootstrapColorBehavior alert(IModel<IBootstrapColor> colorModel) {
 		return new BootstrapColorBehavior("alert alert-", colorModel);
 	}
-	
+
 	public static BootstrapColorBehavior bg(IModel<IBootstrapColor> colorModel) {
 		return new BootstrapColorBehavior("bg-", colorModel);
 	}
-	
+
 	public static BootstrapColorBehavior btn(IModel<IBootstrapColor> colorModel) {
 		return new BootstrapColorBehavior("btn btn-", colorModel);
 	}
-	
+
 	public static BootstrapColorBehavior btnOutline(IModel<IBootstrapColor> colorModel) {
 		return new BootstrapColorBehavior("btn btn-outline-", colorModel);
 	}

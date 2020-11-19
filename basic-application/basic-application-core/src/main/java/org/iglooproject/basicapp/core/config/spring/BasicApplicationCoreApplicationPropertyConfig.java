@@ -13,7 +13,7 @@ import org.iglooproject.basicapp.core.config.util.Environment;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.functional.converter.StringCollectionConverter;
 import org.iglooproject.jpa.more.business.parameter.dao.ParameterDaoImpl;
-import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
+import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +24,7 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Longs;
 
 @Configuration
-public class BasicApplicationCoreApplicationPropertyConfig extends AbstractApplicationPropertyRegistryConfig {
+public class BasicApplicationCoreApplicationPropertyConfig implements IPropertyRegistryConfig {
 
 	@Override
 	public void register(IPropertyRegistry registry) {

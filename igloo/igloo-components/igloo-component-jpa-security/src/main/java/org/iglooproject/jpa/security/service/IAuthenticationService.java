@@ -22,7 +22,11 @@ public interface IAuthenticationService {
 	
 	boolean hasRole(String role);
 	
+	public boolean hasPermission(Object securedObject, String permission);
+	
 	boolean hasPermission(Object securedObject, Permission permission);
+	
+	boolean hasPermission(String permission);
 	
 	boolean hasPermission(Permission permission);
 	

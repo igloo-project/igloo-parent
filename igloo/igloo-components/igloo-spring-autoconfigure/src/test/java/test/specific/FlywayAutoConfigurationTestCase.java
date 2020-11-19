@@ -26,6 +26,7 @@ public class FlywayAutoConfigurationTestCase {
 	@Test
 	public void testIglooFlywayAutoConfigure() {
 		new ApplicationContextRunner()
+			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.run(
 				(context) -> { assertThat(context).hasSingleBean(FlywayConfiguration.class); }

@@ -7,49 +7,48 @@ import org.bindgen.Bindable;
 
 @Bindable
 public class EhCacheCacheInformation {
-	
+
 	private Cache cache;
-	
+
 	public EhCacheCacheInformation(Cache cache) {
 		this.cache = cache;
 	}
-	
+
 	public String getName() {
 		return cache.getName();
 	}
-	
+
 	public CacheStatus getStatus() {
 		return CacheStatus.from(cache.getStatus());
 	}
-	
+
 	public long getMemoryStoreObjectCount() {
 		return cache.getStatistics().getLocalHeapSize();
 	}
-	
+
 	public long getMaxElementsInMemory() {
 		return cache.getCacheConfiguration().getMaxEntriesLocalHeap();
 	}
-	
+
 	public void setMaxElementsInMemory(long maxElementsInMemory) {
 		cache.getCacheConfiguration().setMaxEntriesLocalHeap(maxElementsInMemory);
 	}
-	
+
 	public Float getCacheFillRatio() {
 		if (getMaxElementsInMemory() + getMemoryStoreObjectCount() == 0) {
 			return null;
 		}
-		
 		return getMemoryStoreObjectCount() / (getMaxElementsInMemory() + 0F);
 	}
-	
+
 	public long getCacheHits() {
 		return cache.getStatistics().cacheHitCount();
 	}
-	
+
 	public long getCacheMisses() {
 		return cache.getStatistics().cacheMissCount();
 	}
-	
+
 	public Float getHitRatio() {
 		if (getCacheHits() + getCacheMisses() == 0) {
 			return null;
@@ -57,15 +56,15 @@ public class EhCacheCacheInformation {
 		
 		return getCacheHits() / (getCacheHits() + getCacheMisses() + 0F);
 	}
-	
+
 	public long getEvictionCount() {
 		return cache.getStatistics().cacheEvictedCount();
 	}
-	
+
 	public Cache getCache() {
 		return cache;
 	}
-	
+
 	public enum CacheStatus {
 		UNINITIALISED,
 		ALIVE,

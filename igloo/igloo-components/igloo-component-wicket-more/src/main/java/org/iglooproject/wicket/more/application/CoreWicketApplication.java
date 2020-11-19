@@ -114,6 +114,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 		packageResourceGuard.addPattern("+*.less");
 		packageResourceGuard.addPattern("+*.scss");
 		packageResourceGuard.addPattern("+*.json");
+		packageResourceGuard.addPattern("+*.webmanifest");
 		
 		// la compression se fait au build quand c'est nécessaire ; on n'utilise pas la compression Wicket
 		getResourceSettings().setJavaScriptCompressor(new NoOpTextCompressor());

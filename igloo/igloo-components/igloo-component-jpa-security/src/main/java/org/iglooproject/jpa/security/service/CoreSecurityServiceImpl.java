@@ -59,12 +59,12 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public boolean hasRole(IUser person, String role) {
-		if (person == null) {
+	public boolean hasRole(IUser user, String role) {
+		if (user == null) {
 			return false;
 		}
 
-		return hasRole(getAuthentication(person), role);
+		return hasRole(getAuthentication(user), role);
 	}
 
 	@Override
@@ -73,8 +73,8 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public boolean hasSystemRole(IUser person) {
-		return hasRole(person, CoreAuthorityConstants.ROLE_SYSTEM);
+	public boolean hasSystemRole(IUser user) {
+		return hasRole(user, CoreAuthorityConstants.ROLE_SYSTEM);
 	}
 
 	@Override
@@ -83,8 +83,8 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public boolean hasAdminRole(IUser person) {
-		return hasRole(person, CoreAuthorityConstants.ROLE_ADMIN);
+	public boolean hasAdminRole(IUser user) {
+		return hasRole(user, CoreAuthorityConstants.ROLE_ADMIN);
 	}
 
 	@Override
@@ -93,8 +93,8 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public boolean hasAuthenticatedRole(IUser person) {
-		return hasRole(person, CoreAuthorityConstants.ROLE_AUTHENTICATED);
+	public boolean hasAuthenticatedRole(IUser user) {
+		return hasRole(user, CoreAuthorityConstants.ROLE_AUTHENTICATED);
 	}
 
 	@Override
@@ -112,8 +112,8 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public List<GrantedAuthority> getAuthorities(IUser person) {
-		return getAuthorities(getAuthentication(person));
+	public List<GrantedAuthority> getAuthorities(IUser user) {
+		return getAuthorities(getAuthentication(user));
 	}
 
 	@Override
@@ -200,8 +200,8 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 		}
 	}
 
-	protected Authentication getAuthentication(IUser person) {
-		return getAuthentication(person.getUsername());
+	protected Authentication getAuthentication(IUser user) {
+		return getAuthentication(user.getUsername());
 	}
 
 	protected Authentication getAuthentication(String username) {
@@ -235,8 +235,8 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public boolean hasPermission(IUser person, Object securedObject, Permission requirePermission) {
-		return hasPermission(getAuthentication(person), securedObject, requirePermission);
+	public boolean hasPermission(IUser user, Object securedObject, Permission requirePermission) {
+		return hasPermission(getAuthentication(user), securedObject, requirePermission);
 	}
 
 	@Override
@@ -245,8 +245,8 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 	
 	@Override
-	public boolean hasPermission(IUser person, Permission permission) {
-		return hasPermission(getAuthentication(person), permission);
+	public boolean hasPermission(IUser user, Permission permission) {
+		return hasPermission(getAuthentication(user), permission);
 	}
 	
 	@Override

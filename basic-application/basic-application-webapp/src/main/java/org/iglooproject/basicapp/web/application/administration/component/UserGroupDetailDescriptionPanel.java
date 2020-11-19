@@ -1,5 +1,7 @@
 package org.iglooproject.basicapp.web.application.administration.component;
 
+import static org.iglooproject.jpa.security.model.CorePermissionConstants.WRITE;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
@@ -32,6 +34,7 @@ public class UserGroupDetailDescriptionPanel extends GenericPanel<UserGroup> {
 		super(id, userGroupModel);
 		
 		UserGroupPopup editPopup = new UserGroupPopup("editPopup");
+		add(editPopup);
 		
 		add(
 			new EnclosureContainer("lockedWarningContainer")
@@ -56,17 +59,28 @@ public class UserGroupDetailDescriptionPanel extends GenericPanel<UserGroup> {
 						)
 					);
 				}
-			},
-			
-			editPopup,
-			new BlankLink("edit")
-				.add(new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK) {
-					private static final long serialVersionUID = 1L;
-					@Override
-					protected void onShow(AjaxRequestTarget target) {
-						editPopup.setUpEdit(getModelObject());
-					}
-				})
+			}
+		);
+		
+		add(
+			new EnclosureContainer("actionsContainer")
+				.anyChildVisible()
+				.add(
+					new BlankLink("edit")
+						.add(
+							new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK) {
+								private static final long serialVersionUID = 1L;
+								@Override
+								protected void onShow(AjaxRequestTarget target) {
+									editPopup.setUpEdit(getModelObject());
+								}
+							}
+						)
+						.add(
+							Condition.permission(userGroupModel, WRITE)
+								.thenShow()
+						)
+				)
 		);
 	}
 

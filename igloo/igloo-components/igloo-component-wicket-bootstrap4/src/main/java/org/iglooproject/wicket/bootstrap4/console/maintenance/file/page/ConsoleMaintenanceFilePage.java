@@ -13,6 +13,7 @@ import org.iglooproject.jpa.more.business.file.model.path.HashTableFileStorePath
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
+import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,55 +34,56 @@ public class ConsoleMaintenanceFilePage extends ConsoleMaintenanceTemplate {
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.file")));
 		
-		Form<Void> form = new Form<Void>("form") {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			protected void onSubmit() {
-				try {
-					HashTableFileStorePathGeneratorImpl pathGenerator = new HashTableFileStorePathGeneratorImpl(hashTableByteSizeModel.getObject());
-					pathModel.setObject(pathGenerator.getFilePath(fileKeyModel.getObject(), extensionModel.getObject()));
-					pathModel.detach();
-				} catch (Exception e) {
-					LOGGER.error("Unexpected error while generating file path through hashtable.");
+		add(
+			new Form<Void>("form") {
+				private static final long serialVersionUID = 1L;
+				@Override
+				protected void onSubmit() {
+					try {
+						HashTableFileStorePathGeneratorImpl pathGenerator = new HashTableFileStorePathGeneratorImpl(hashTableByteSizeModel.getObject());
+						pathModel.setObject(pathGenerator.getFilePath(fileKeyModel.getObject(), extensionModel.getObject()));
+						pathModel.detach();
+					} catch (Exception e) {
+						LOGGER.error("Unexpected error while generating file path through hashtable.");
+						pathModel.setObject(null);
+						Session.get().error(getString("common.error.unexpected"));
+					}
+				}
+				@Override
+				protected void onError() {
 					pathModel.setObject(null);
-					Session.get().error(getString("common.error.unexpected"));
 				}
 			}
-			
-			@Override
-			protected void onError() {
-				pathModel.setObject(null);
-			}
-		};
-		add(form);
-		
-		form.add(
-				new TextField<Integer>("hashTableByteSize", hashTableByteSizeModel, Integer.class)
+				.add(
+					new TextField<>("hashTableByteSize", hashTableByteSizeModel, Integer.class)
 						.setRequired(true)
-						.setLabel(new ResourceModel("console.maintenance.file.hashTableByteSize"))
+						.setLabel(new ResourceModel("console.maintenance.file.pathGeneration.hashTableByteSize"))
 						.add(
-								new RangeValidator<Integer>(
-										HashTableFileStorePathGeneratorImpl.MIN_HASH_TABLE_BYTE_SIZE,
-										HashTableFileStorePathGeneratorImpl.MAX_HASH_TABLE_BYTE_SIZE)
+							new RangeValidator<>(
+								HashTableFileStorePathGeneratorImpl.MIN_HASH_TABLE_BYTE_SIZE,
+								HashTableFileStorePathGeneratorImpl.MAX_HASH_TABLE_BYTE_SIZE
+							)
 						),
-				new TextField<String>("fileKey", fileKeyModel)
+					new TextField<>("fileKey", fileKeyModel)
 						.setRequired(true)
-						.setLabel(new ResourceModel("console.maintenance.file.fileKey")),
-				new TextField<String>("extension", extensionModel)
-						.setLabel(new ResourceModel("console.maintenance.file.extension")),
-				
-				new CoreLabel("path", pathModel).hideIfEmpty()
+						.setLabel(new ResourceModel("console.maintenance.file.pathGeneration.fileKey")),
+					new TextField<>("extension", extensionModel)
+						.setLabel(new ResourceModel("console.maintenance.file.pathGeneration.extension")),
+					
+					new CoreLabel("path", pathModel).hideIfEmpty()
+				)
 		);
 	}
-	
+
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		hashTableByteSizeModel.detach();
-		fileKeyModel.detach();
-		extensionModel.detach();
-		pathModel.detach();
+		Detachables.detach(
+			hashTableByteSizeModel,
+			fileKeyModel,
+			extensionModel,
+			pathModel
+		);
 	}
 
 	@Override

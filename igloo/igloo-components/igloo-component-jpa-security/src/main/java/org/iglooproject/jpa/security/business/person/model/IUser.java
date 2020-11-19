@@ -8,9 +8,9 @@ import org.springframework.security.acls.model.Permission;
 
 @Bindable
 public interface IUser {
-	
+
 	Long getId();
-	
+
 	String getUsername();
 
 	Set<Authority> getAuthorities();

@@ -3,7 +3,7 @@ package org.iglooproject.wicket.bootstrap4.console.maintenance.gestion.page;
 import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
 
 import org.apache.wicket.Session;
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -34,54 +34,55 @@ public class ConsoleMaintenanceGestionPage extends ConsoleMaintenanceTemplate {
 		Condition maintenanceCondition = Condition.isTrue(maintenanceModel);
 		
 		add(
-				new WebMarkupContainer("container")
-						.add(
-								new EnclosureContainer("introMaintenanceActivee")
-										.condition(maintenanceCondition),
-								new EnclosureContainer("introMaintenanceDesactivee")
-										.condition(maintenanceCondition.negate()),
-								
-								ConfirmLink.<Void>build()
-										.title(new ResourceModel("common.action.confirm.title"))
-										.content(new ResourceModel("common.action.confirm.content"))
-										.confirm()
-										.onClick(new IAction() {
-											private static final long serialVersionUID = 1L;
-											@Override
-											public void execute() {
-												try {
-													propertyService.set(MAINTENANCE, true);
-													Session.get().success(getString("console.maintenance.gestion.maintenance.activer.success"));
-												} catch (Exception e) {
-													LOGGER.error("Erreur lors de l'activation du mode maintenance.", e);
-													Session.get().error(getString("common.error.unexpected"));
-												}
-											}
-										})
-										.create("activerMaintenance")
-										.add(maintenanceCondition.negate().thenShow()),
-								
-								ConfirmLink.<Void>build()
-										.title(new ResourceModel("common.action.confirm.title"))
-										.content(new ResourceModel("common.action.confirm.content"))
-										.confirm()
-										.onClick(new IAction() {
-											private static final long serialVersionUID = 1L;
-											@Override
-											public void execute() {
-												try {
-													propertyService.set(MAINTENANCE, false);
-													Session.get().success(getString("console.maintenance.gestion.maintenance.desactiver.success"));
-												} catch (Exception e) {
-													LOGGER.error("Erreur lors de la désactivation du mode maintenance.", e);
-													Session.get().error(getString("common.error.unexpected"));
-												}
-											}
-										})
-										.create("desactiverMaintenance")
-										.add(maintenanceCondition.thenShow())
-						)
-						.add(new ClassAttributeAppender(maintenanceCondition.then("card-danger").otherwise("card-success")))
+			new TransparentWebMarkupContainer("card")
+				.add(new ClassAttributeAppender(maintenanceCondition.then("card-danger").otherwise("card-success")))
+		);
+		
+		add(
+			new EnclosureContainer("maintenanceActiveeContainer")
+				.condition(maintenanceCondition)
+				.add(
+					ConfirmLink.<Void>build()
+						.title(new ResourceModel("common.action.confirm.title"))
+						.content(new ResourceModel("common.action.confirm.content"))
+						.confirm()
+						.onClick(new IAction() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void execute() {
+								try {
+									propertyService.set(MAINTENANCE, false);
+									Session.get().success(getString("common.success"));
+								} catch (Exception e) {
+									LOGGER.error("Erreur lors de la désactivation du mode maintenance.", e);
+									Session.get().error(getString("common.error.unexpected"));
+								}
+							}
+						})
+						.create("desactiver")
+				),
+			new EnclosureContainer("maintenanceDesactiveeContainer")
+				.condition(maintenanceCondition.negate())
+				.add(
+					ConfirmLink.<Void>build()
+						.title(new ResourceModel("common.action.confirm.title"))
+						.content(new ResourceModel("common.action.confirm.content"))
+						.confirm()
+						.onClick(new IAction() {
+							private static final long serialVersionUID = 1L;
+							@Override
+							public void execute() {
+								try {
+									propertyService.set(MAINTENANCE, true);
+									Session.get().success(getString("common.success"));
+								} catch (Exception e) {
+									LOGGER.error("Erreur lors de l'activation du mode maintenance.", e);
+									Session.get().error(getString("common.error.unexpected"));
+								}
+							}
+						})
+						.create("activer")
+				)
 		);
 	}
 

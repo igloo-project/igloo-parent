@@ -11,6 +11,7 @@ public class BootstrapTabModule implements IBootstrapTabModule {
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(BootstrapTabJavaScriptResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapTabMoreJavaScriptResourceReference.get()));
 	}
 
 }

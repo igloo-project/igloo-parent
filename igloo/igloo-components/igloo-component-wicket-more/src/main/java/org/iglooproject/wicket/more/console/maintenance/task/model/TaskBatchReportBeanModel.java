@@ -7,10 +7,11 @@ import org.iglooproject.jpa.more.util.binding.CoreJpaMoreBindings;
 import org.iglooproject.wicket.more.model.BindingModel;
 
 public class TaskBatchReportBeanModel<B extends BatchReportBean> extends BatchReportBeanModel<B> {
-	
+
 	private static final long serialVersionUID = 421890607339627456L;
-	
+
 	public TaskBatchReportBeanModel(Class<B> clazz, IModel<QueuedTaskHolder> queuedTaskHolderModel) {
 		super(clazz, BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().report()));
 	}
+
 }

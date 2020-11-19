@@ -3,7 +3,7 @@
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-			http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security-5.3.xsd">
+			http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security-5.4.xsd">
 	
 	<security:http pattern="/static/**" security="none" />
 	<security:http pattern="/monitoring/**" security="none" />
@@ -14,14 +14,15 @@
 		See BasicApplicationApplication#mountApplicationResources()
 	 -->
 	<security:http pattern="/android-chrome-192x192.png" security="none" />
+	<security:http pattern="/android-chrome-256x256.png" security="none" />
 	<security:http pattern="/apple-touch-icon.png" security="none" />
 	<security:http pattern="/browserconfig.xml" security="none" />
+	<security:http pattern="/favicon.ico" security="none" />
 	<security:http pattern="/favicon-16x16.png" security="none" />
 	<security:http pattern="/favicon-32x32.png" security="none" />
-	<security:http pattern="/favicon.ico" security="none" />
-	<security:http pattern="/manifest.json" security="none" />
 	<security:http pattern="/mstile-150x150.png" security="none" />
 	<security:http pattern="/safari-pinned-tab.svg" security="none" />
+	<security:http pattern="/site.webmanifest" security="none" />
 	
 	<!-- An entry point to respond with a 403 error if Spring Security wants the user to log in.
 		Useful in situations where loging in is not an option, such as when serving CSS.

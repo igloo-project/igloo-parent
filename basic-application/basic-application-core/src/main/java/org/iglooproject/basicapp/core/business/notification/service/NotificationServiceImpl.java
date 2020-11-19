@@ -16,7 +16,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 	private static final String ERROR_EXCEPTION_MESSAGE = "Error during send mail process (to: %s, subject: %s)";
 
 	@Autowired
-	private INotificationUserProfileUrlBuilderService notificationUrlBuilderService;
+	private IBasicApplicationNotificationUrlBuilderService notificationUrlBuilderService;
 
 	@Autowired
 	private IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory;

@@ -10,7 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.MDC;
+import org.slf4j.MDC;
 
 public class Log4jUrlFilter implements Filter {
 
