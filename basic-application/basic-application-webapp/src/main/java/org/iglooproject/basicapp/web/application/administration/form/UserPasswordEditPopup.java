@@ -60,13 +60,13 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 	public UserPasswordEditPopup(String id, IModel<U> userModel) {
 		super(id, userModel);
 		
-		userTypeDescriptorModel = UserTypeDescriptorModel.fromUser(getModel());
+		this.userTypeDescriptorModel = UserTypeDescriptorModel.fromUser(getModel());
 		
-		this.isOldPasswordRequired =
-			Condition.or(
-				Condition.isEqual(userModel.map(User::getClass), Model.of(TechnicalUser.class)),
-				Condition.role(CoreAuthorityConstants.ROLE_ADMIN)
-			).negate();
+		this.isOldPasswordRequired = Condition.or(
+			Condition.isEqual(userModel.map(User::getClass), Model.of(TechnicalUser.class)),
+			Condition.role(CoreAuthorityConstants.ROLE_ADMIN)
+		)
+			.negate();
 	}
 
 	@Override
