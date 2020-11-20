@@ -39,7 +39,10 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> e
 	public ConsoleMaintenanceAuthenticationPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.authentication")));
+		addBreadCrumbElement(new BreadCrumbElement(
+			new ResourceModel("console.maintenance.authentication"),
+			ConsoleMaintenanceAuthenticationPage.linkDescriptor()
+		));
 		
 		add(
 			new Form<Void>("form") {

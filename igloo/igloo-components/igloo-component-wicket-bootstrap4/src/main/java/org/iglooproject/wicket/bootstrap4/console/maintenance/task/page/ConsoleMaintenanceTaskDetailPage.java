@@ -84,7 +84,9 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate
 			ConsoleMaintenanceTaskListPage.linkDescriptor()
 		));
 		addBreadCrumbElement(new BreadCrumbElement(
-			new ResourceModel("console.maintenance.task.common.task")
+			new ResourceModel("console.maintenance.task.common.task"),
+			ConsoleMaintenanceTaskDetailPage.MAPPER
+				.map(queuedTaskHolderModel)
 		));
 		
 		MAPPER

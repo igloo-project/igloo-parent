@@ -23,6 +23,8 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
+import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAction;
 import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
@@ -52,6 +54,11 @@ public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
 	@SpringBean
 	private IAbstractDataUpgradeService dataUpgradeService;
 
+	public static final IPageLinkDescriptor linkDescriptor() {
+		return LinkDescriptorBuilder.start()
+			.page(ConsoleMaintenanceDataPage.class);
+	}
+
 	public ConsoleMaintenanceDataPage(PageParameters parameters) {
 		super(parameters);
 		
@@ -59,7 +66,10 @@ public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
 			throw new RestartResponseException(getFirstMenuPage());
 		}
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.data")));
+		addBreadCrumbElement(new BreadCrumbElement(
+			new ResourceModel("console.maintenance.data"),
+			ConsoleMaintenanceDataPage.linkDescriptor()
+		));
 		
 		IModel<List<IDataUpgrade>> dataUpgrades = new LoadableDetachableModel<List<IDataUpgrade>>() {
 			private static final long serialVersionUID = 1L;

@@ -62,7 +62,10 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 	public ConsoleMaintenanceSearchPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.search")));
+		addBreadCrumbElement(new BreadCrumbElement(
+			new ResourceModel("console.maintenance.search"),
+			ConsoleMaintenanceSearchPage.linkDescriptor()
+		));
 		
 		add(
 			ConfirmLink.<Void>build()

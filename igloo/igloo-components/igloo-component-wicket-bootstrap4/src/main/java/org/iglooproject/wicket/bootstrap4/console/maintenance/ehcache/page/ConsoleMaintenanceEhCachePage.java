@@ -27,6 +27,8 @@ import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformationModel;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheListModel;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheManagerListModel;
+import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
+import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -57,10 +59,18 @@ public class ConsoleMaintenanceEhCachePage extends ConsoleMaintenanceTemplate {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceEhCachePage.class);
 
+	public static final IPageLinkDescriptor linkDescriptor() {
+		return LinkDescriptorBuilder.start()
+			.page(ConsoleMaintenanceEhCachePage.class);
+	}
+
 	public ConsoleMaintenanceEhCachePage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.ehcache")));
+		addBreadCrumbElement(new BreadCrumbElement(
+			new ResourceModel("console.maintenance.ehcache"),
+			ConsoleMaintenanceEhCachePage.linkDescriptor()
+		));
 		
 		add(new ClipboardBehavior());
 		

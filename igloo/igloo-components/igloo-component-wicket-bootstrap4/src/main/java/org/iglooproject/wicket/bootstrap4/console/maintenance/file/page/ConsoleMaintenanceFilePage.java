@@ -12,6 +12,8 @@ import org.apache.wicket.validation.validator.RangeValidator;
 import org.iglooproject.jpa.more.business.file.model.path.HashTableFileStorePathGeneratorImpl;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
+import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
@@ -23,6 +25,11 @@ public class ConsoleMaintenanceFilePage extends ConsoleMaintenanceTemplate {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceFilePage.class);
 
+	public static final IPageLinkDescriptor linkDescriptor() {
+		return LinkDescriptorBuilder.start()
+			.page(ConsoleMaintenanceFilePage.class);
+	}
+
 	private final IModel<Integer> hashTableByteSizeModel = new Model<>(1);
 	private final IModel<String> fileKeyModel = new Model<>();
 	private final IModel<String> extensionModel = new Model<>();
@@ -32,7 +39,10 @@ public class ConsoleMaintenanceFilePage extends ConsoleMaintenanceTemplate {
 	public ConsoleMaintenanceFilePage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.file")));
+		addBreadCrumbElement(new BreadCrumbElement(
+			new ResourceModel("console.maintenance.file"),
+			ConsoleMaintenanceFilePage.linkDescriptor()
+		));
 		
 		add(
 			new Form<Void>("form") {

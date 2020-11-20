@@ -11,6 +11,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
+import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.action.IAction;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.ConfirmLink;
@@ -25,10 +27,18 @@ public class ConsoleMaintenanceGestionPage extends ConsoleMaintenanceTemplate {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceGestionPage.class);
 
+	public static final IPageLinkDescriptor linkDescriptor() {
+		return LinkDescriptorBuilder.start()
+			.page(ConsoleMaintenanceGestionPage.class);
+	}
+
 	public ConsoleMaintenanceGestionPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.gestion")));
+		addBreadCrumbElement(new BreadCrumbElement(
+			new ResourceModel("console.maintenance.gestion"),
+			ConsoleMaintenanceGestionPage.linkDescriptor()
+		));
 		
 		IModel<Boolean> maintenanceModel = ApplicationPropertyModel.of(MAINTENANCE);
 		Condition maintenanceCondition = Condition.isTrue(maintenanceModel);

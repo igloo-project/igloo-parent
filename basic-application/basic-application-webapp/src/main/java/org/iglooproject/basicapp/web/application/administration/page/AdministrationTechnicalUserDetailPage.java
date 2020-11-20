@@ -61,7 +61,9 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 			AdministrationTechnicalUserListPage.linkDescriptor()
 		));
 		addBreadCrumbElement(new BreadCrumbElement(
-			BindingModel.of(userModel, Bindings.user().fullName())
+			BindingModel.of(userModel, Bindings.user().fullName()),
+			AdministrationTechnicalUserDetailPage.MAPPER
+				.map(userModel, sourcePageModel)
 		));
 		
 		MAPPER

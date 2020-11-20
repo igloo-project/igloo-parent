@@ -50,7 +50,10 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 	public ConsoleNotificationDemoIndexPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.notifications")));
+		addBreadCrumbElement(new BreadCrumbElement(
+			new ResourceModel("console.notifications"),
+			ConsoleNotificationDemoIndexPage.linkDescriptor()
+		));
 		
 		add(new Link<Void>("sendExample") {
 			private static final long serialVersionUID = 1L;

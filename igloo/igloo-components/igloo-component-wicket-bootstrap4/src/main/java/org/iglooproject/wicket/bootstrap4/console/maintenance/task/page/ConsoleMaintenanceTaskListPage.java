@@ -30,7 +30,10 @@ public class ConsoleMaintenanceTaskListPage extends ConsoleMaintenanceTemplate {
 	public ConsoleMaintenanceTaskListPage(PageParameters parameters) {
 		super(parameters);
 		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.tasks")));
+		addBreadCrumbElement(new BreadCrumbElement(
+			new ResourceModel("console.maintenance.tasks"),
+			ConsoleMaintenanceTaskListPage.linkDescriptor()
+		));
 		
 		add(new ConsoleMaintenanceTaskTaskManagerPanel("taskManager"));
 		

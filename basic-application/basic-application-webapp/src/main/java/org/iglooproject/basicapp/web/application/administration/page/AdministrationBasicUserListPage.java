@@ -65,7 +65,8 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-			new ResourceModel("navigation.administration.user.basicUser")
+			new ResourceModel("navigation.administration.user.basicUser"),
+			AdministrationBasicUserListPage.linkDescriptor()
 		));
 		
 		BasicUserDataProvider dataProvider = new BasicUserDataProvider();

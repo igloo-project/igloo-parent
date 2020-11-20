@@ -235,11 +235,8 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 
 	@Override
 	protected Component createBodyBreadCrumb(String wicketId) {
-		// By default, we remove one element from the breadcrumb as it is usually also used to generate the page title.
-		// The last element is usually the title of the current page and shouldn't be displayed in the breadcrumb.
-		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel, 1)
-			.setDividerModel(Model.of(""))
-			.setTrailingSeparator(true);
+		return new BodyBreadCrumbPanel(wicketId, bodyBreadCrumbPrependedElementsModel, breadCrumbElementsModel)
+			.setDividerModel(Model.of(""));
 	}
 
 	protected Condition displayBreadcrumb() {

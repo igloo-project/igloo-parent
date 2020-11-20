@@ -65,7 +65,8 @@ public class AdministrationTechnicalUserListPage extends AdministrationUserListT
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-			new ResourceModel("navigation.administration.user.technicalUser")
+			new ResourceModel("navigation.administration.user.technicalUser"),
+			AdministrationTechnicalUserListPage.linkDescriptor()
 		));
 		
 		TechnicalUserDataProvider dataProvider = new TechnicalUserDataProvider();

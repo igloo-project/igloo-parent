@@ -58,7 +58,8 @@ public class AdministrationUserGroupDetailPage extends AdministrationUserGroupTe
 			);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-			BindingModel.of(userGroupModel, Bindings.userGroup().name())
+			BindingModel.of(userGroupModel, Bindings.userGroup().name()),
+			AdministrationUserGroupDetailPage.linkDescriptor(userGroupModel, sourcePageModel)
 		));
 		
 		Component backToSourcePage =

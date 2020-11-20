@@ -20,7 +20,7 @@ public class ProfilePage extends ProfileTemplate {
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()
-				.page(ProfilePage.class);
+			.page(ProfilePage.class);
 	}
 
 	protected final IModel<User> userModel = BasicApplicationSession.get().getUserModel();
@@ -29,7 +29,8 @@ public class ProfilePage extends ProfileTemplate {
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-			BindingModel.of(userModel, Bindings.user().fullName())
+			BindingModel.of(userModel, Bindings.user().fullName()),
+			ProfilePage.linkDescriptor()
 		));
 		
 		add(
