@@ -75,13 +75,13 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 		boolean hasRoleAnonymous = false;
 		
 		for (GrantedAuthority grantedAuthority : grantedAuthorities) {
-			if(CoreAuthorityConstants.ROLE_SYSTEM.equals(grantedAuthority.getAuthority())) {
+			if (CoreAuthorityConstants.ROLE_SYSTEM.equals(grantedAuthority.getAuthority())) {
 				hasRoleSystem = true;
-			} else if(CoreAuthorityConstants.ROLE_ADMIN.equals(grantedAuthority.getAuthority())) {
+			} else if (CoreAuthorityConstants.ROLE_ADMIN.equals(grantedAuthority.getAuthority())) {
 				hasRoleAdmin = true;
-			} else if(CoreAuthorityConstants.ROLE_AUTHENTICATED.equals(grantedAuthority.getAuthority())) {
+			} else if (CoreAuthorityConstants.ROLE_AUTHENTICATED.equals(grantedAuthority.getAuthority())) {
 				hasRoleAuthenticated = true;
-			} else if(CoreAuthorityConstants.ROLE_ANONYMOUS.equals(grantedAuthority.getAuthority())) {
+			} else if (CoreAuthorityConstants.ROLE_ANONYMOUS.equals(grantedAuthority.getAuthority())) {
 				hasRoleAnonymous = true;
 			}
 		}

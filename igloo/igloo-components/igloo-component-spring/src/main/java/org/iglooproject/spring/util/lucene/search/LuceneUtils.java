@@ -53,7 +53,7 @@ public final class LuceneUtils {
 	public static Query getAutocompleteQuery(Iterable<String> fieldNames, Analyzer analyzer,
 			String searchPattern, int enableWildcardMinChars) {
 		Map<String, Float> fields = Maps.newHashMap();
-		for(String fieldName : fieldNames) {
+		for (String fieldName : fieldNames) {
 			fields.put(fieldName, 1.0f);
 		}
 		SimpleQueryParser queryParser = new SimpleQueryParser(analyzer, fields);
@@ -80,7 +80,7 @@ public final class LuceneUtils {
 	public static String getAutocompleteQuery(String searchPattern, int enableWildcardMinChars, Operator operator) {
 		String cleanSearchPattern = StringUtils.clean(searchPattern);
 		
-		if(StringUtils.hasText(cleanSearchPattern) && cleanSearchPattern.length() >= enableWildcardMinChars) {
+		if (StringUtils.hasText(cleanSearchPattern) && cleanSearchPattern.length() >= enableWildcardMinChars) {
 			List<String> searchPatternFragments = getSearchPatternFragments(cleanSearchPattern);
 			
 			StringBuilder autocompleteQuery = new StringBuilder();
@@ -110,7 +110,7 @@ public final class LuceneUtils {
 	public static Query getSimilarityQuery(Iterable<String> fieldNames, Analyzer analyzer, String searchPattern, 
 			Integer maxEditDistance) {
 		Map<String, Float> fields = Maps.newHashMap();
-		for(String fieldName : fieldNames) {
+		for (String fieldName : fieldNames) {
 			fields.put(fieldName, 1.0f);
 		}
 		SimpleQueryParser queryParser = new SimpleQueryParser(analyzer, fields);
@@ -181,7 +181,7 @@ public final class LuceneUtils {
 	public static String getQuery(String searchPattern, Operator operator) {
 		String cleanSearchPattern = StringUtils.cleanForQuery(searchPattern);
 		
-		if(StringUtils.hasText(cleanSearchPattern)) {
+		if (StringUtils.hasText(cleanSearchPattern)) {
 			List<String> searchPatternFragments = getSearchPatternFragments(cleanSearchPattern);
 			
 			StringBuilder query = new StringBuilder();
@@ -208,7 +208,7 @@ public final class LuceneUtils {
 	private static List<String> getSearchPatternFragments(String searchPattern) {
 		List<String> searchPatternFragments = Lists.newArrayList();
 		
-		if(StringUtils.hasText(searchPattern)) {
+		if (StringUtils.hasText(searchPattern)) {
 			searchPatternFragments = Splitter.on(CharMatcher.whitespace().or(CharMatcher.is('-')))
 					.trimResults().omitEmptyStrings().splitToList(searchPattern);
 		}

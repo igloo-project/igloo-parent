@@ -240,7 +240,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 
 	@Override
 	public int compareTo(U user) {
-		if(this.equals(user)) {
+		if (this.equals(user)) {
 			return 0;
 		}
 		return STRING_COLLATOR_FRENCH.compare(this.getUsername(), user.getUsername());

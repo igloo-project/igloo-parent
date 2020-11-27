@@ -153,7 +153,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 
 	@Override
 	public int compareTo(G group) {
-		if(this == group) {
+		if (this == group) {
 			return 0;
 		}
 		return STRING_COLLATOR_FRENCH.compare(this.getName(), group.getName());
