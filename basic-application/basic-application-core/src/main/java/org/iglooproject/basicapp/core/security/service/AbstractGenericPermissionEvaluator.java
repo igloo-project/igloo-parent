@@ -4,14 +4,13 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.security.business.person.model.IUser;
 import org.iglooproject.jpa.security.service.IGenericPermissionEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 
-public abstract class AbstractGenericPermissionEvaluator<E extends GenericEntity<Long, ?>> implements IGenericPermissionEvaluator<User, E> {
+public abstract class AbstractGenericPermissionEvaluator<T> implements IGenericPermissionEvaluator<User, T> {
 
 	@Autowired
 	protected IBasicApplicationSecurityService securityService;
