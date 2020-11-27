@@ -4,9 +4,9 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordRecoveryContentPanel;
 import org.iglooproject.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -23,11 +23,6 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 	public SecurityPasswordRecoveryPage(PageParameters parameters) {
 		super(parameters);
 		
-		// Being connected here doesn't make any sense
-		if (BasicApplicationSession.get().isSignedIn()) {
-			BasicApplicationSession.get().invalidate();
-		}
-		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(
 			new ResourceModel("security.password.recovery.pageTitle")
 		));
@@ -41,6 +36,11 @@ public class SecurityPasswordRecoveryPage extends SecurityPasswordTemplate {
 	@Override
 	protected Component getContentComponent(String wicketId) {
 		return new SecurityPasswordRecoveryContentPanel(wicketId);
+	}
+
+	@Override
+	public Condition keepSignedIn() {
+		return Condition.alwaysFalse();
 	}
 
 }
