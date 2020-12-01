@@ -13,13 +13,11 @@ import org.iglooproject.commons.util.report.BatchReportItem;
 import org.iglooproject.commons.util.report.BatchReportItemSeverity;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.more.business.task.model.BatchReportBean;
-import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.util.binding.CoreJpaMoreBindings;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.console.maintenance.task.model.BatchReportBeanModel;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.behavior.BootstrapColorBehavior;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.IBootstrapRendererModel;
@@ -28,21 +26,16 @@ import org.iglooproject.wicket.more.markup.repeater.map.MapItem;
 import org.iglooproject.wicket.more.markup.repeater.map.MapView;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.rendering.BatchReportItemSeverityRenderer;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.model.Models;
 
 import com.google.common.collect.Range;
 
-public class ConsoleMaintenanceTaskBatchReportPanel extends GenericPanel<QueuedTaskHolder> {
+public class ConsoleMaintenanceTaskBatchReportPanel extends GenericPanel<BatchReportBean> {
 
 	private static final long serialVersionUID = 9034827159987928421L;
 
-	private final IModel<BatchReportBean> batchReportBeanModel;
-
-	public ConsoleMaintenanceTaskBatchReportPanel(String id, final IModel<QueuedTaskHolder> queuedTaskHolderModel) {
-		super(id, queuedTaskHolderModel);
-		
-		batchReportBeanModel = BatchReportBeanModel.fromTask(queuedTaskHolderModel);
+	public ConsoleMaintenanceTaskBatchReportPanel(String id, final IModel<BatchReportBean> batchReportBeanModel) {
+		super(id, batchReportBeanModel);
 		
 		Condition batchReportNotEmptyCondition = Condition.mapModelNotEmpty(BindingModel.of(batchReportBeanModel, CoreJpaMoreBindings.batchReportBean().items()));
 		
@@ -112,12 +105,6 @@ public class ConsoleMaintenanceTaskBatchReportPanel extends GenericPanel<QueuedT
 			new PlaceholderContainer("emptyList")
 				.condition(batchReportNotEmptyCondition)
 		);
-	}
-
-	@Override
-	protected void onDetach() {
-		super.onDetach();
-		Detachables.detach(batchReportBeanModel);
 	}
 
 }

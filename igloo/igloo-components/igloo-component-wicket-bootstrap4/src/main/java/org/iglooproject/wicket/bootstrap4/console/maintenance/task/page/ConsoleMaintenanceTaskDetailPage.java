@@ -23,6 +23,7 @@ import org.iglooproject.wicket.bootstrap4.console.maintenance.template.ConsoleMa
 import org.iglooproject.wicket.bootstrap4.markup.html.bootstrap.component.BootstrapBadge;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.more.console.maintenance.task.model.BatchReportBeanModel;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
@@ -252,7 +253,7 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate
 		);
 		
 		add(
-			new ConsoleMaintenanceTaskBatchReportPanel("batchReport", queuedTaskHolderModel)
+			new ConsoleMaintenanceTaskBatchReportPanel("batchReport", BatchReportBeanModel.fromTask(queuedTaskHolderModel))
 		);
 	}
 
