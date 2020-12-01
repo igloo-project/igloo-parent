@@ -12,6 +12,7 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.authentication.page.ConsoleMaintenanceAuthenticationPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.data.page.ConsoleMaintenanceDataPage;
+import org.iglooproject.wicket.bootstrap4.console.maintenance.properties.page.ConsoleMaintenancePropertiesPage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.file.page.ConsoleMaintenanceFilePage;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.gestion.page.ConsoleMaintenanceGestionPage;
@@ -85,6 +86,9 @@ public final class ConsoleConfiguration {
 			ConsoleMenuItem maintenanceDataMenuItem = new ConsoleMenuItem("maintenanceDataMenuItem",
 					"console.maintenance.data", "data", ConsoleMaintenanceDataPage.class);
 			maintenanceMenuSection.addMenuItem(maintenanceDataMenuItem);
+			ConsoleMenuItem maintenancePropertiesMenuItem = new ConsoleMenuItem("maintenancePropertiesMenuItem",
+					"console.maintenance.properties", "properties", ConsoleMaintenancePropertiesPage.class);
+			maintenanceMenuSection.addMenuItem(maintenancePropertiesMenuItem);
 			ConsoleMenuItem maintenanceAuthenticationMenuItem = new ConsoleMenuItem("maintenanceAuthenticationMenuItem",
 					"console.maintenance.authentication", "authentication", ConsoleMaintenanceAuthenticationPage.class);
 			maintenanceMenuSection.addMenuItem(maintenanceAuthenticationMenuItem);

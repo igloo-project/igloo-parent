@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import org.iglooproject.spring.config.CorePropertyPlaceholderConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -46,6 +47,9 @@ public class PropertySourceLogger implements ApplicationListener<ContextRefreshe
 	private static final String PROPERTY_IGLOO_PROPERTY_SOURCE_OUTPUT_FILE_NAME = "igloo.propertySource.outputFileName";
 	private static final Logger LOGGER = LoggerFactory.getLogger(PropertySourceLogger.class);
 	
+	@Autowired
+	private ApplicationContext applicationContext;
+	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent refresh) {
 		// run only once by context
@@ -66,6 +70,19 @@ public class PropertySourceLogger implements ApplicationListener<ContextRefreshe
 						PROPERTY_IGLOO_PROPERTY_SOURCE_OUTPUT_FILE_NAME);
 			}
 		}
+	}
+
+	public Properties listProperties() {
+		// store computed properties
+		Properties properties = new OrderedProperties();
+		// log text comment for not extracted properties
+		final StringBuilder skippedProperties = new StringBuilder();
+		// property names list, used for consistent ordering
+		Set<String> propertyNames = Sets.newTreeSet();
+		computeOrderedPropertyNames(applicationContext, skippedProperties, propertyNames);
+		populateProperties(applicationContext, propertyNames, properties, skippedProperties);
+		
+		return properties;
 	}
 
 	/**
