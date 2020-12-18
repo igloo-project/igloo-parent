@@ -13,6 +13,7 @@ import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordResetContentPanel;
 import org.iglooproject.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
+import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
@@ -40,11 +41,6 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 
 	public SecurityPasswordResetPage(PageParameters parameters) {
 		super(parameters);
-		
-		// Being connected here doesn't make any sense
-		if (BasicApplicationSession.get().isSignedIn()) {
-			BasicApplicationSession.get().invalidate();
-		}
 		
 		addHeadPageTitlePrependedElement(new BreadCrumbElement(
 			new ResourceModel("security.password.reset.pageTitle")
@@ -79,6 +75,11 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 	@Override
 	protected Component getContentComponent(String wicketId) {
 		return new SecurityPasswordResetContentPanel(wicketId, userModel);
+	}
+
+	@Override
+	public Condition keepSignedIn() {
+		return Condition.alwaysFalse();
 	}
 
 	@Override

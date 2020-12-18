@@ -50,7 +50,7 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl imple
 			int missed = 0;
 			for (DataUpgradeRecord record : records) {
 				boolean success = performDataUpgradeRecord(record);
-				if(!success) {
+				if (!success) {
 					missed++;
 				}
 			}

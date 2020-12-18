@@ -26,7 +26,7 @@ public final class BasicApplicationSqlUpdateScriptMain extends AbstractBasicAppl
 			String fileName;
 			String action;
 			
-			if(args.length == 2) {
+			if (args.length == 2) {
 				fileName = args[1];
 				action = args[0];
 			} else {

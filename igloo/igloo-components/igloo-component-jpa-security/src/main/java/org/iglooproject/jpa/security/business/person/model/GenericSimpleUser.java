@@ -96,11 +96,11 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 	@Override
 	public String getFullName() {
 		StringBuilder builder = new StringBuilder();
-		if(firstName != null) {
+		if (firstName != null) {
 			builder.append(firstName);
 			builder.append(" ");
 		}
-		if(lastName != null && !lastName.equalsIgnoreCase(firstName)) {
+		if (lastName != null && !lastName.equalsIgnoreCase(firstName)) {
 			builder.append(lastName);
 		}
 		return builder.toString().trim();
@@ -141,11 +141,11 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 
 	@Override
 	public int compareTo(U user) {
-		if(this.equals(user)) {
+		if (this.equals(user)) {
 			return 0;
 		}
 		
-		if(GenericEntity.STRING_COLLATOR_FRENCH.compare(this.getLastName(), user.getLastName()) == 0) {
+		if (GenericEntity.STRING_COLLATOR_FRENCH.compare(this.getLastName(), user.getLastName()) == 0) {
 			return STRING_COLLATOR_FRENCH.compare(this.getFirstName(), user.getFirstName());
 		}
 		return STRING_COLLATOR_FRENCH.compare(this.getLastName(), user.getLastName());

@@ -192,7 +192,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	public boolean isTaskQueueActive(String queueId){
 		TaskQueue queue = queuesById.get(queueId);
 		Collection<TaskConsumer> consumers= consumersByQueue.get(queue);
-		if(consumers.isEmpty()){
+		if (consumers.isEmpty()){
 			return false;
 		}
 		return consumers.iterator().next().isActive();
