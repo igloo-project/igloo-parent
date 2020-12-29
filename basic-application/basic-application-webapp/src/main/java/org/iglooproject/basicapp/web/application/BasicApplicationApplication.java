@@ -53,7 +53,8 @@ import org.iglooproject.basicapp.web.application.resources.notifications.BasicAp
 import org.iglooproject.basicapp.web.application.security.login.page.SignInPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordCreationPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
-import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
+import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryRequestCreationPage;
+import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryRequestResetPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
@@ -154,10 +155,11 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountPage("/login/failure/", LoginFailurePage.class);
 		mountPage("/login/success/", LoginSuccessPage.class);
 		
-		mountPage("/security/password/recovery/", SecurityPasswordRecoveryPage.class);
+		mountPage("/security/password/recovery/request/creation/", SecurityPasswordRecoveryRequestCreationPage.class);
+		mountPage("/security/password/recovery/request/reset/", SecurityPasswordRecoveryRequestResetPage.class);
 		mountPage("/security/password/expiration/", SecurityPasswordExpirationPage.class);
-		mountParameterizedPage("/security/password/reset/", SecurityPasswordResetPage.class);
 		mountParameterizedPage("/security/password/creation/", SecurityPasswordCreationPage.class);
+		mountParameterizedPage("/security/password/reset/", SecurityPasswordResetPage.class);
 		
 		// Maintenance
 		mountPage("/maintenance/", MaintenancePage.class);

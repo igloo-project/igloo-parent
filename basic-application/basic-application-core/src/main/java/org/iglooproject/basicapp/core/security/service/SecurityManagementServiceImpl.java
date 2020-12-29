@@ -100,7 +100,8 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	public void initiatePasswordRecoveryRequest(
 		User user,
 		UserPasswordRecoveryRequestType type,
-		UserPasswordRecoveryRequestInitiator initiator, User author
+		UserPasswordRecoveryRequestInitiator initiator,
+		User author
 	) throws ServiceException, SecurityServiceException {
 		Date now = new Date();
 		

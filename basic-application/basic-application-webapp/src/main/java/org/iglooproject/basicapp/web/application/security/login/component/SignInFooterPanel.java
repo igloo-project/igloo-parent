@@ -4,7 +4,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
-import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
+import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryRequestCreationPage;
+import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryRequestResetPage;
+import org.iglooproject.wicket.more.condition.Condition;
 
 public class SignInFooterPanel extends Panel {
 
@@ -17,8 +19,16 @@ public class SignInFooterPanel extends Panel {
 		super(wicketId);
 		
 		add(
-			SecurityPasswordRecoveryPage.linkDescriptor()
-				.link("passwordRecovery")
+			Condition.anyChildVisible(this)
+				.thenShow()
+		);
+		
+		add(
+			SecurityPasswordRecoveryRequestCreationPage.linkDescriptor()
+				.link("passwordRecoveryRequestCreation")
+				.setVisibilityAllowed(securityManagementService.getOptions(User.class).isPasswordUserRecoveryEnabled()),
+			SecurityPasswordRecoveryRequestResetPage.linkDescriptor()
+				.link("passwordRecoveryRequestReset")
 				.setVisibilityAllowed(securityManagementService.getOptions(User.class).isPasswordUserRecoveryEnabled())
 		);
 	}

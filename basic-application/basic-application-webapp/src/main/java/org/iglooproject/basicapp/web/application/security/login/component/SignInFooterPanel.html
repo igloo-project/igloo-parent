@@ -2,6 +2,13 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
-		<div class="text-right"><a wicket:id="passwordRecovery" class="btn btn-link btn-sm"><wicket:message key="signIn.forgotPassword" /></a></div>
+		<div class="row row-xs justify-content-end flex-wrap-reverse">
+			<div wicket:enclosure-component="passwordRecoveryRequestCreation" class="col-auto">
+				<a wicket:id="passwordRecoveryRequestCreation" class="btn btn-link btn-sm"><wicket:message key="signIn.password.request.creation" /></a>
+			</div>
+			<div wicket:enclosure-component="passwordRecoveryRequestReset" class="col-auto ml-auto">
+				<a wicket:id="passwordRecoveryRequestReset" class="btn btn-outline-primary btn-sm"><wicket:message key="signIn.password.request.reset" /></a>
+			</div>
+		</div>
 	</wicket:panel>
 </html>

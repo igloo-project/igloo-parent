@@ -75,9 +75,10 @@
 		<security:intercept-url pattern="/login/" access="permitAll" />
 		<security:intercept-url pattern="/login/failure/" access="permitAll" />
 		<security:intercept-url pattern="/access-denied/" access="permitAll" />
-		<security:intercept-url pattern="/security/password/recovery/" access="permitAll" />
-		<security:intercept-url pattern="/security/password/reset/" access="permitAll" />
+		<security:intercept-url pattern="/security/password/recovery/request/creation/" access="permitAll" />
+		<security:intercept-url pattern="/security/password/recovery/request/reset/" access="permitAll" />
 		<security:intercept-url pattern="/security/password/creation/" access="permitAll" />
+		<security:intercept-url pattern="/security/password/reset/" access="permitAll" />
 		<security:intercept-url pattern="/maintenance/" access="permitAll" />
 		
 		<security:intercept-url pattern="/**" access="hasRole('ROLE_AUTHENTICATED')" />
