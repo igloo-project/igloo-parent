@@ -58,7 +58,12 @@ public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> ex
 				.bypassPermissions()
 				.link("mainLink")
 				.setAbsolute(true)
-				.setBody(linkLabelModel)
+				.setBody(linkLabelModel),
+			linkGenerator
+				.bypassPermissions()
+				.link("url")
+				.setAbsolute(true)
+				.setBody(linkGenerator::fullUrl)
 		);
 		
 		add(

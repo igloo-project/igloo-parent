@@ -36,7 +36,12 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 			BasicApplicationApplication.get().getHomePageLinkDescriptor()
 				.bypassPermissions()
 				.link("mainLink")
+				.setAbsolute(true),
+			BasicApplicationApplication.get().getHomePageLinkDescriptor()
+				.bypassPermissions()
+				.link("url")
 				.setAbsolute(true)
+				.setBody(BasicApplicationApplication.get().getHomePageLinkDescriptor()::fullUrl)
 		);
 		
 		add(
