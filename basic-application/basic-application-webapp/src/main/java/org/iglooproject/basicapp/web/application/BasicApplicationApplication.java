@@ -47,9 +47,9 @@ import org.iglooproject.basicapp.web.application.resources.application.BasicAppl
 import org.iglooproject.basicapp.web.application.resources.business.BasicApplicationBusinessResources;
 import org.iglooproject.basicapp.web.application.resources.common.BasicApplicationCommonResources;
 import org.iglooproject.basicapp.web.application.resources.console.BasicApplicationConsoleResources;
-import org.iglooproject.basicapp.web.application.resources.enums.BasicApplicationEnumResources;
+import org.iglooproject.basicapp.web.application.resources.enums.BasicApplicationEnumsResources;
 import org.iglooproject.basicapp.web.application.resources.navigation.BasicApplicationNavigationResources;
-import org.iglooproject.basicapp.web.application.resources.notifications.BasicApplicationNotificationResources;
+import org.iglooproject.basicapp.web.application.resources.notification.BasicApplicationNotificationResources;
 import org.iglooproject.basicapp.web.application.security.login.page.SignInPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordCreationPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
@@ -117,7 +117,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 				new ClassStringResourceLoader(BasicApplicationBusinessResources.class),
 				new ClassStringResourceLoader(BasicApplicationCommonResources.class),
 				new ClassStringResourceLoader(BasicApplicationConsoleResources.class),
-				new ClassStringResourceLoader(BasicApplicationEnumResources.class),
+				new ClassStringResourceLoader(BasicApplicationEnumsResources.class),
 				new ClassStringResourceLoader(BasicApplicationNavigationResources.class),
 				new ClassStringResourceLoader(BasicApplicationNotificationResources.class)
 			)
