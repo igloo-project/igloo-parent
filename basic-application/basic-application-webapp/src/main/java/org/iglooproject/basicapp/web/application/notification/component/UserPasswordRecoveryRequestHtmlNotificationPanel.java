@@ -9,7 +9,7 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.ResourceKeyGenerator;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
+import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import org.iglooproject.wicket.more.model.BindingModel;
 
 public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> extends AbstractHtmlNotificationPanel<T> {
@@ -17,13 +17,13 @@ public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> ex
 	private static final long serialVersionUID = -6941290354402094613L;
 
 	public UserPasswordRecoveryRequestHtmlNotificationPanel(String id, ResourceKeyGenerator resourceKeyGenerator,
-			IModel<T> objectModel, IModel<User> authorModel, IModel<Date> dateModel, ILinkGenerator linkGenerator) {
+			IModel<T> objectModel, IModel<User> authorModel, IModel<Date> dateModel, IPageLinkGenerator linkGenerator) {
 		this(id, resourceKeyGenerator, resourceKeyGenerator, objectModel, authorModel, dateModel, linkGenerator);
 	}
 
 	public UserPasswordRecoveryRequestHtmlNotificationPanel(String id, ResourceKeyGenerator resourceKeyGenerator,
 			ResourceKeyGenerator defaultResourceKeyGenerator, IModel<T> objectModel, IModel<User> authorModel,
-			IModel<Date> dateModel, ILinkGenerator linkGenerator) {
+			IModel<Date> dateModel, IPageLinkGenerator linkGenerator) {
 		super(id, objectModel);
 		
 		StringResourceModel descriptionTextModel = new StringResourceModel(resourceKeyGenerator.resourceKey("text"), objectModel)
@@ -54,7 +54,9 @@ public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> ex
 		
 		add(
 			new CoreLabel("linkIntro", linkIntroModel),
-			linkGenerator.link("mainLink")
+			linkGenerator
+				.bypassPermissions()
+				.link("mainLink")
 				.setAbsolute(true)
 				.setBody(linkLabelModel)
 		);

@@ -18,6 +18,7 @@ public abstract class AbstractHtmlNotificationPanel<T> extends GenericPanel<T> {
 		add(
 			BasicApplicationApplication.get()
 				.getHomePageLinkDescriptor()
+				.bypassPermissions()
 				.link("homePageLink")
 				.setAbsolute(true)
 		);
