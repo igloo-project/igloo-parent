@@ -16,17 +16,14 @@ public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> ex
 
 	private static final long serialVersionUID = -6941290354402094613L;
 
-	public UserPasswordRecoveryRequestHtmlNotificationPanel(String id,
-			ResourceKeyGenerator resourceKeyGenerator,
-			final IModel<T> objectModel, final IModel<User> authorModel, final IModel<Date> dateModel,
-			ILinkGenerator linkGenerator) {
+	public UserPasswordRecoveryRequestHtmlNotificationPanel(String id, ResourceKeyGenerator resourceKeyGenerator,
+			IModel<T> objectModel, IModel<User> authorModel, IModel<Date> dateModel, ILinkGenerator linkGenerator) {
 		this(id, resourceKeyGenerator, resourceKeyGenerator, objectModel, authorModel, dateModel, linkGenerator);
 	}
 
-	public UserPasswordRecoveryRequestHtmlNotificationPanel(String id,
-			ResourceKeyGenerator resourceKeyGenerator, ResourceKeyGenerator defaultResourceKeyGenerator,
-			final IModel<T> objectModel, final IModel<User> authorModel, final IModel<Date> dateModel,
-			ILinkGenerator linkGenerator) {
+	public UserPasswordRecoveryRequestHtmlNotificationPanel(String id, ResourceKeyGenerator resourceKeyGenerator,
+			ResourceKeyGenerator defaultResourceKeyGenerator, IModel<T> objectModel, IModel<User> authorModel,
+			IModel<Date> dateModel, ILinkGenerator linkGenerator) {
 		super(id, objectModel);
 		
 		StringResourceModel descriptionTextModel = new StringResourceModel(resourceKeyGenerator.resourceKey("text"), objectModel)
@@ -36,7 +33,10 @@ public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> ex
 					.setParameters(dateModel, authorModel)
 			);
 		
-		add(new CoreLabel("intro", descriptionTextModel).setEscapeModelStrings(false));
+		add(
+			new CoreLabel("intro", descriptionTextModel)
+				.setEscapeModelStrings(false)
+		);
 		
 		StringResourceModel linkIntroModel = new StringResourceModel(resourceKeyGenerator.resourceKey("link.intro"), objectModel)
 			.setParameters(dateModel, authorModel)
