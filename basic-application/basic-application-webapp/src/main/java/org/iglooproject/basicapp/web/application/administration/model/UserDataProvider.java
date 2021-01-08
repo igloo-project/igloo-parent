@@ -18,4 +18,6 @@ public class UserDataProvider extends AbstractUserDataProvider<User> {
 		return (IUserSearchQuery<User>) CoreWicketApplication.get().getApplicationContext().getBean(IUserSearchQuery.class, User.class);
 	}
 
+	
+
 }

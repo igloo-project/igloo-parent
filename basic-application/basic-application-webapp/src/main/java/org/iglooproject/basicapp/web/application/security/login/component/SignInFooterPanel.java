@@ -26,10 +26,16 @@ public class SignInFooterPanel extends Panel {
 		add(
 			SecurityPasswordRecoveryRequestCreationPage.linkDescriptor()
 				.link("passwordRecoveryRequestCreation")
-				.setVisibilityAllowed(securityManagementService.getOptions(User.class).isPasswordUserRecoveryEnabled()),
+				.add(
+					Condition.isTrue(() -> securityManagementService.getSecurityOptions(User.class).isPasswordUserRecoveryEnabled())
+						.thenShow()
+				),
 			SecurityPasswordRecoveryRequestResetPage.linkDescriptor()
 				.link("passwordRecoveryRequestReset")
-				.setVisibilityAllowed(securityManagementService.getOptions(User.class).isPasswordUserRecoveryEnabled())
+				.add(
+					Condition.isTrue(() -> securityManagementService.getSecurityOptions(User.class).isPasswordUserRecoveryEnabled())
+						.thenShow()
+				)
 		);
 	}
 

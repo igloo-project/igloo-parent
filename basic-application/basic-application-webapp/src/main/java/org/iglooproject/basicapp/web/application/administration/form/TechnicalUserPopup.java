@@ -19,7 +19,6 @@ import org.iglooproject.basicapp.web.application.common.model.UserTypeDescriptor
 import org.iglooproject.basicapp.web.application.common.validator.EmailUnicityValidator;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
 import org.iglooproject.basicapp.web.application.common.validator.UsernameUnicityValidator;
-import org.iglooproject.functional.Predicates2;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
@@ -49,8 +48,8 @@ public class TechnicalUserPopup extends AbstractUserPopup<TechnicalUser> {
 		body.add(form);
 		
 		boolean passwordRequired =
-				securityManagementService.getOptions(TechnicalUser.class).isPasswordAdminUpdateEnabled()
-			&&	!securityManagementService.getOptions(TechnicalUser.class).isPasswordUserRecoveryEnabled();
+				securityManagementService.getSecurityOptions(TechnicalUser.class).isPasswordAdminUpdateEnabled()
+			&&	!securityManagementService.getSecurityOptions(TechnicalUser.class).isPasswordUserRecoveryEnabled();
 		
 		PasswordTextField passwordField = new PasswordTextField("password", passwordModel);
 		PasswordTextField confirmPasswordField = new PasswordTextField("confirmPassword", Model.of());
@@ -72,7 +71,7 @@ public class TechnicalUserPopup extends AbstractUserPopup<TechnicalUser> {
 					.condition(addModeCondition())
 					.add(
 						new EnclosureContainer("passwordContainer")
-							.condition(Condition.predicate(Model.of(securityManagementService.getOptions(TechnicalUser.class).isPasswordAdminUpdateEnabled()), Predicates2.isTrue()))
+							.condition(Condition.isTrue(() -> securityManagementService.getSecurityOptions(TechnicalUser.class).isPasswordAdminUpdateEnabled()))
 							.add(
 								passwordField
 									.setLabel(new ResourceModel("business.user.password"))

@@ -1,10 +1,10 @@
 package org.iglooproject.jpa.security.password.rule;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.passay.CharacterRule;
 import org.passay.DictionaryRule;
@@ -23,17 +23,21 @@ import org.passay.dictionary.WordListDictionary;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
-public class SecurityPasswordRulesBuilder implements Serializable {
+public final class SecurityPasswordRulesBuilder {
 
-	private static final long serialVersionUID = -2309617143631151956L;
-
-	public static final SecurityPasswordRulesBuilder start() {
-		return new SecurityPasswordRulesBuilder();
+	public static final Set<Rule> create(Consumer<SecurityPasswordRulesBuilder> consumer) {
+		SecurityPasswordRulesBuilder builder = new SecurityPasswordRulesBuilder();
+		consumer.accept(builder);
+		return builder.build();
 	}
 
-	private ImmutableSet.Builder<Rule> rules = ImmutableSet.builder();
+	private final ImmutableSet.Builder<Rule> rules = ImmutableSet.builder();
 
 	private SecurityPasswordRulesBuilder() {
+	}
+
+	private Set<Rule> build() {
+		return rules.build();
 	}
 
 	public SecurityPasswordRulesBuilder minLength(int min) {
@@ -161,10 +165,6 @@ public class SecurityPasswordRulesBuilder implements Serializable {
 		Objects.requireNonNull(rule);
 		rules.add(rule);
 		return this;
-	}
-
-	public Set<Rule> build() {
-		return rules.build();
 	}
 
 }

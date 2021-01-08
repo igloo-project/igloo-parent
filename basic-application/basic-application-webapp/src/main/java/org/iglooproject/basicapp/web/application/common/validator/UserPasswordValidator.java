@@ -88,7 +88,7 @@ public class UserPasswordValidator implements IFormModelValidator {
 		
 		PasswordData passwordData = new PasswordData(password);
 		
-		List<Rule> passwordRules = Lists.newArrayList(securityManagementService.getOptions(userClass).getPasswordRules());
+		List<Rule> passwordRules = Lists.newArrayList(securityManagementService.getSecurityOptions(userClass).getPasswordRules());
 		
 		if (StringUtils.hasText(username)) {
 			passwordData.setUsername(username);
@@ -114,7 +114,7 @@ public class UserPasswordValidator implements IFormModelValidator {
 		
 		if (
 				user != null
-			&&	securityManagementService.getOptions(user).isPasswordHistoryEnabled()
+			&&	securityManagementService.getSecurityOptions(user).isPasswordHistoryEnabled()
 			&&	user.getPasswordInformation().getHistory() != null
 			&&	!user.getPasswordInformation().getHistory().isEmpty()
 		) {

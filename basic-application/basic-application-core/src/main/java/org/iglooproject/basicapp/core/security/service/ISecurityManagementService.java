@@ -10,9 +10,11 @@ import org.iglooproject.jpa.exception.ServiceException;
 
 public interface ISecurityManagementService extends ITransactionalAspectAwareService {
 
-	SecurityOptions getOptions(Class<? extends User> clazz);
+	SecurityOptions getSecurityOptionsDefault();
 
-	SecurityOptions getOptions(User user);
+	SecurityOptions getSecurityOptions(Class<? extends User> clazz);
+
+	SecurityOptions getSecurityOptions(User user);
 
 	void initiatePasswordRecoveryRequest(
 		User user,

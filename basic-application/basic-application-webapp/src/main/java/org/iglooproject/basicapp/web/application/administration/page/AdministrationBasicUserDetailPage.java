@@ -111,7 +111,7 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 						new BlankLink("passwordEdit")
 							.add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
 							.add(
-								Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminUpdateEnabled()))
+								Condition.isTrue(() -> securityManagementService.getSecurityOptions(userModel.getObject()).isPasswordAdminUpdateEnabled())
 									.thenShow()
 							),
 						
@@ -141,7 +141,7 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 							})
 							.create("passwordReset", userModel)
 							.add(
-								Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminRecoveryEnabled()))
+								Condition.isTrue(Model.of(securityManagementService.getSecurityOptions(userModel.getObject()).isPasswordAdminRecoveryEnabled()))
 									.thenShow()
 							),
 						
