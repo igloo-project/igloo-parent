@@ -61,6 +61,8 @@
 		<module>igloo-component-elasticsearch-plugin</module>
 		
 		<module>igloo-spring-autoconfigure</module>
+		
+		<module>jpa-test-patterns</module>
 	</modules>
 
 </project>
