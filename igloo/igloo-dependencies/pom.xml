@@ -30,6 +30,7 @@
 		<module>igloo-dependency-opencsv</module>
 		
 		<module>igloo-dependency-test</module>
+		<module>igloo-dependency-junit5</module>
 		<module>igloo-dependency-elasticsearch-test</module>
 	</modules>
 	
