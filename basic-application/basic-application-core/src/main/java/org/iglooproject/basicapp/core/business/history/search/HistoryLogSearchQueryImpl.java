@@ -1,8 +1,8 @@
 package org.iglooproject.basicapp.core.business.history.search;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.hibernate.search.query.dsl.BooleanJunction;
@@ -25,22 +25,6 @@ public class HistoryLogSearchQueryImpl extends AbstractHibernateSearchSearchQuer
 
 	protected HistoryLogSearchQueryImpl() {
 		super(HistoryLog.class);
-	}
-
-	@Override
-	public IHistoryLogSearchQuery differencesMandatoryFor(Set<HistoryEventType> mandatoryDifferencesEventTypes) {
-		if (!mandatoryDifferencesEventTypes.isEmpty()) {
-			List<HistoryEventType> allowedWithoutDifferenceEventTypes = EnumUtils.getEnumList(HistoryEventType.class);
-			allowedWithoutDifferenceEventTypes.removeAll(mandatoryDifferencesEventTypes);
-			BooleanJunction<?> junction = getDefaultQueryBuilder().bool();
-			shouldIfNotNull(
-				junction,
-				matchOneIfGiven(Bindings.historyLog().eventType(), allowedWithoutDifferenceEventTypes),
-				matchIfGiven(AbstractHistoryLog.HAS_DIFFERENCES, true)
-			);
-			must(junction.createQuery());
-		}
-		return this;
 	}
 
 	@Override
@@ -86,6 +70,22 @@ public class HistoryLogSearchQueryImpl extends AbstractHibernateSearchSearchQuer
 	@Override
 	public IHistoryLogSearchQuery object4(GenericEntity<?, ?> object) {
 		must(matchIfGiven(AbstractHistoryLog.OBJECT4_REFERENCE, GenericEntityReference.of(object)));
+		return this;
+	}
+
+	@Override
+	public IHistoryLogSearchQuery mandatoryDifferencesEventTypes(Collection<HistoryEventType> mandatoryDifferencesEventTypes) {
+		if (!mandatoryDifferencesEventTypes.isEmpty()) {
+			List<HistoryEventType> allowedWithoutDifferencesEventTypes = EnumUtils.getEnumList(HistoryEventType.class);
+			allowedWithoutDifferencesEventTypes.removeAll(mandatoryDifferencesEventTypes);
+			BooleanJunction<?> junction = getDefaultQueryBuilder().bool();
+			shouldIfNotNull(
+				junction,
+				matchOneIfGiven(Bindings.historyLog().eventType(), allowedWithoutDifferencesEventTypes),
+				matchIfGiven(AbstractHistoryLog.HAS_DIFFERENCES, true)
+			);
+			must(junction.createQuery());
+		}
 		return this;
 	}
 

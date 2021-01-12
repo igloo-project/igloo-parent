@@ -1,7 +1,7 @@
 package org.iglooproject.basicapp.core.business.history.search;
 
+import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 import org.iglooproject.basicapp.core.business.history.model.HistoryLog;
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
@@ -26,6 +26,6 @@ public interface IHistoryLogSearchQuery extends ISearchQuery<HistoryLog, History
 
 	IHistoryLogSearchQuery object4(GenericEntity<?, ?> object);
 
-	IHistoryLogSearchQuery differencesMandatoryFor(Set<HistoryEventType> mandatoryDifferencesEventTypes);
+	IHistoryLogSearchQuery mandatoryDifferencesEventTypes(Collection<HistoryEventType> mandatoryDifferencesEventTypes);
 
 }
