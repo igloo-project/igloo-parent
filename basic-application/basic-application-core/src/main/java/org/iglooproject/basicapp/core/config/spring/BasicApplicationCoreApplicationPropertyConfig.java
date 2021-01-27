@@ -3,6 +3,8 @@ package org.iglooproject.basicapp.core.config.spring;
 import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.BUILD_DATE;
 import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.BUILD_SHA;
 import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.ENVIRONMENT;
+import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MAX;
+import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
 import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_VALIDATOR_ENABLED;
 
@@ -39,6 +41,8 @@ public class BasicApplicationCoreApplicationPropertyConfig implements IPropertyR
 		
 		registry.registerEnum(ENVIRONMENT, Environment.class, Environment.production);
 		
+		registry.registerInteger(SECURITY_PASSWORD_LENGTH_MIN, 8);
+		registry.registerInteger(SECURITY_PASSWORD_LENGTH_MAX, 64);
 		registry.registerBoolean(SECURITY_PASSWORD_VALIDATOR_ENABLED, true);
 		registry.register(
 			SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS,

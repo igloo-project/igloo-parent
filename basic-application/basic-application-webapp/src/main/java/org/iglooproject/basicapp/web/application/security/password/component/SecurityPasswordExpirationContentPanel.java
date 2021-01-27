@@ -1,5 +1,7 @@
 package org.iglooproject.basicapp.web.application.security.password.component;
 
+import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
+
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -23,6 +25,7 @@ import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
+import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
@@ -59,7 +62,11 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
 				.add(new LabelPlaceholderBehavior()),
 			new CoreLabel("passwordHelp",
 				new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
-					.setDefaultValue(new ResourceModel("security.user.password.help"))
+					.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
+					.setDefaultValue(
+						new StringResourceModel("security.user.password.help")
+							.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
+					)
 			),
 			confirmPasswordField
 				.setLabel(new ResourceModel("business.user.confirmPassword"))

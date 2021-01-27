@@ -1,5 +1,7 @@
 package org.iglooproject.basicapp.web.application.administration.form;
 
+import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.EmailTextField;
@@ -25,6 +27,7 @@ import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
@@ -78,7 +81,11 @@ public class TechnicalUserPopup extends AbstractUserPopup<TechnicalUser> {
 									.setRequired(passwordRequired),
 								new CoreLabel("passwordHelp",
 									new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
-										.setDefaultValue(new ResourceModel("security.user.password.help"))
+										.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
+										.setDefaultValue(
+											new StringResourceModel("security.user.password.help")
+												.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
+										)
 								),
 								confirmPasswordField
 									.setLabel(new ResourceModel("business.user.confirmPassword"))

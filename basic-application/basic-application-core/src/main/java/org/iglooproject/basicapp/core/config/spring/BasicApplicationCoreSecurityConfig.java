@@ -1,10 +1,11 @@
 package org.iglooproject.basicapp.core.config.spring;
 
+import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MAX;
+import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
 
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
-import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.model.BasicApplicationPermission;
 import org.iglooproject.basicapp.core.security.model.SecurityOptions;
 import org.iglooproject.basicapp.core.security.service.BasicApplicationAuthenticationServiceImpl;
@@ -94,13 +95,16 @@ public class BasicApplicationCoreSecurityConfig {
 
 	@Bean
 	public ISecurityManagementService securityManagementService() {
+		int passwordLengthMin = propertyService.get(SECURITY_PASSWORD_LENGTH_MIN);
+		int passwordLengthMax = propertyService.get(SECURITY_PASSWORD_LENGTH_MAX);
+		
 		return new SecurityManagementServiceImpl(
 			SecurityOptions.create(securityOptions -> securityOptions
 				.passwordUserRecovery()
 				.passwordUserUpdate()
 				.passwordRules(
 					rules -> rules
-						.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
+						.minMaxLength(passwordLengthMin, passwordLengthMax)
 						.forbiddenUsername()
 						.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
 				)
@@ -115,7 +119,7 @@ public class BasicApplicationCoreSecurityConfig {
 						.passwordUserUpdate()
 						.passwordRules(
 							rules -> rules
-								.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
+								.minMaxLength(passwordLengthMin, passwordLengthMax)
 								.forbiddenUsername()
 								.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
 							
@@ -131,7 +135,7 @@ public class BasicApplicationCoreSecurityConfig {
 						.passwordUserUpdate()
 						.passwordRules(
 							rules -> rules
-								.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
+								.minMaxLength(passwordLengthMin, passwordLengthMax)
 								.forbiddenUsername()
 								.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
 						)
