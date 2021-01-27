@@ -11,9 +11,9 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
-import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
+import org.iglooproject.basicapp.core.business.user.predicate.UserPredicates;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.administration.component.tab.AdministrationBasicUserDetailTabMainInformationPanel;
@@ -160,7 +160,10 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 								FeedbackUtils.refreshFeedback(target, getPage());
 							}
 						}
-							.add(Condition.isFalse(BindingModel.of(userModel, Bindings.user().active())).thenShow()),
+							.add(
+								Condition.predicate(userModel, UserPredicates.inactive())
+									.thenShow()
+							),
 						
 						AjaxConfirmLink.<BasicUser>build()
 							.title(new ResourceModel("administration.user.action.disable.confirmation.title"))
@@ -183,15 +186,10 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 							})
 							.create("disable", userModel)
 							.add(
-								new Condition() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public boolean applies() {
-										User user = userModel.getObject();
-										User currentUser = BasicApplicationSession.get().getUser();
-										return !user.equals(currentUser) && user.isActive();
-									}
-								}
+								Condition.and(
+									Condition.isEqual(BasicApplicationSession.get().getUserModel(), userModel).negate(),
+									Condition.predicate(userModel, UserPredicates.active())
+								)
 									.thenShow()
 							)
 					)
