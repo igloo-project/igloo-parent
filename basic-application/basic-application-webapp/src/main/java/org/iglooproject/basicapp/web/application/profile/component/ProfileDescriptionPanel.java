@@ -1,7 +1,6 @@
 package org.iglooproject.basicapp.web.application.profile.component;
 
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
@@ -40,7 +39,7 @@ public class ProfileDescriptionPanel extends GenericPanel<User> {
 			new BlankLink("passwordEdit")
 				.add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
 				.add(
-					Condition.isTrue(Model.of(securityManagementService.getOptions(BasicApplicationSession.get().getUser()).isPasswordUserUpdateEnabled()))
+					Condition.isTrue(() -> securityManagementService.getSecurityOptions(BasicApplicationSession.get().getUser()).isPasswordUserUpdateEnabled())
 						.thenShow()
 				),
 			

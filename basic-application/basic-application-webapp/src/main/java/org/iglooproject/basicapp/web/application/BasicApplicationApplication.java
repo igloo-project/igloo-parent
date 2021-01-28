@@ -47,13 +47,14 @@ import org.iglooproject.basicapp.web.application.resources.application.BasicAppl
 import org.iglooproject.basicapp.web.application.resources.business.BasicApplicationBusinessResources;
 import org.iglooproject.basicapp.web.application.resources.common.BasicApplicationCommonResources;
 import org.iglooproject.basicapp.web.application.resources.console.BasicApplicationConsoleResources;
-import org.iglooproject.basicapp.web.application.resources.enums.BasicApplicationEnumResources;
+import org.iglooproject.basicapp.web.application.resources.enums.BasicApplicationEnumsResources;
 import org.iglooproject.basicapp.web.application.resources.navigation.BasicApplicationNavigationResources;
-import org.iglooproject.basicapp.web.application.resources.notifications.BasicApplicationNotificationResources;
+import org.iglooproject.basicapp.web.application.resources.notification.BasicApplicationNotificationResources;
 import org.iglooproject.basicapp.web.application.security.login.page.SignInPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordCreationPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
-import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryPage;
+import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryRequestCreationPage;
+import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryRequestResetPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
@@ -116,7 +117,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 				new ClassStringResourceLoader(BasicApplicationBusinessResources.class),
 				new ClassStringResourceLoader(BasicApplicationCommonResources.class),
 				new ClassStringResourceLoader(BasicApplicationConsoleResources.class),
-				new ClassStringResourceLoader(BasicApplicationEnumResources.class),
+				new ClassStringResourceLoader(BasicApplicationEnumsResources.class),
 				new ClassStringResourceLoader(BasicApplicationNavigationResources.class),
 				new ClassStringResourceLoader(BasicApplicationNotificationResources.class)
 			)
@@ -154,10 +155,11 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountPage("/login/failure/", LoginFailurePage.class);
 		mountPage("/login/success/", LoginSuccessPage.class);
 		
-		mountPage("/security/password/recovery/", SecurityPasswordRecoveryPage.class);
+		mountPage("/security/password/recovery/request/creation/", SecurityPasswordRecoveryRequestCreationPage.class);
+		mountPage("/security/password/recovery/request/reset/", SecurityPasswordRecoveryRequestResetPage.class);
 		mountPage("/security/password/expiration/", SecurityPasswordExpirationPage.class);
-		mountParameterizedPage("/security/password/reset/", SecurityPasswordResetPage.class);
 		mountParameterizedPage("/security/password/creation/", SecurityPasswordCreationPage.class);
+		mountParameterizedPage("/security/password/reset/", SecurityPasswordResetPage.class);
 		
 		// Maintenance
 		mountPage("/maintenance/", MaintenancePage.class);

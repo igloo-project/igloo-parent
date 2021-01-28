@@ -1,9 +1,12 @@
 package org.iglooproject.jpa.security.business.person.model;
 
+import static org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl.EMPTY_PASSWORD_HASH;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -73,7 +76,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	private String username;
 	
 	@JsonIgnore
-	private String passwordHash = "*NO PASSWORD*";
+	private String passwordHash = EMPTY_PASSWORD_HASH;
 	
 	@Field(name = ACTIVE)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
@@ -181,7 +184,11 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	public void setPasswordHash(String passwordHash) {
 		this.passwordHash = passwordHash;
 	}
-	
+
+	public boolean hasPasswordHash() {
+		return !Objects.equals(getPasswordHash(), EMPTY_PASSWORD_HASH);
+	}
+
 	public void setActive(boolean active) {
 		this.active = active;
 	}
@@ -240,7 +247,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 
 	@Override
 	public int compareTo(U user) {
-		if(this.equals(user)) {
+		if (this.equals(user)) {
 			return 0;
 		}
 		return STRING_COLLATOR_FRENCH.compare(this.getUsername(), user.getUsername());

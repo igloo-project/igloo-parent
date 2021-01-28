@@ -28,8 +28,8 @@ import org.springframework.util.StringUtils;
 import com.google.common.collect.Sets;
 
 public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
-	
-	private static final String EMPTY_PASSWORD_HASH = "* NO PASSWORD *";
+
+	public static final String EMPTY_PASSWORD_HASH = "*NO PASSWORD*";
 
 	@Autowired
 	private ISecurityUserService<?> userService; 

@@ -34,14 +34,21 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		
 		add(
 			BasicApplicationApplication.get().getHomePageLinkDescriptor()
+				.bypassPermissions()
 				.link("mainLink")
+				.setAbsolute(true),
+			BasicApplicationApplication.get().getHomePageLinkDescriptor()
+				.bypassPermissions()
+				.link("url")
 				.setAbsolute(true)
+				.setBody(BasicApplicationApplication.get().getHomePageLinkDescriptor()::fullUrl)
 		);
 		
 		add(
 			AdministrationUserDetailTemplate.mapper()
 				.ignoreParameter2()
 				.map(userModel)
+				.bypassPermissions()
 				.link("userLink")
 				.setAbsolute(true)
 				.setBody(BindingModel.of(userModel, Bindings.user().username())),

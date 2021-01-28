@@ -38,7 +38,7 @@ public abstract class AbstractFeedbackPanel extends Panel {
 		super(id);
 		
 		int i = 0;
-		for(int level: ERROR_MESSAGE_LEVELS) {
+		for (int level: ERROR_MESSAGE_LEVELS) {
 			FeedbackPanel f = getFeedbackPanel(ERROR_MESSAGE_LEVEL_NAMES[i] + "feedbackPanel", level, container);
 			feedbackPanels.add(f);
 			add(f);

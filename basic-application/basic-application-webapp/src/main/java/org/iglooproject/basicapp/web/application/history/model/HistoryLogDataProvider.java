@@ -30,10 +30,10 @@ public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<Hist
 
 	private final IModel<? extends GenericEntity<?, ?>> objectModel;
 
+	private final Set<HistoryEventType> mandatoryDifferencesEventTypes = EnumSet.noneOf(HistoryEventType.class);
+
 	private final CompositeSortModel<HistoryLogSort> sortModel = new CompositeSortModel<>(CompositingStrategy.LAST_ONLY, HistoryLogSort.DATE);
 
-	private Set<HistoryEventType> mandatoryDifferencesEventTypes = EnumSet.noneOf(HistoryEventType.class);
-	
 	public static HistoryLogDataProvider subject(IModel<? extends User> subjectModel) {
 		return new HistoryLogDataProvider(subjectModel, new GenericEntityModel<>());
 	}
@@ -58,7 +58,7 @@ public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<Hist
 				.subject(subjectModel.getObject())
 				.date(dateMinModel.getObject(), dateMaxModel.getObject())
 				.object(objectModel.getObject())
-				.differencesMandatoryFor(mandatoryDifferencesEventTypes)
+				.mandatoryDifferencesEventTypes(mandatoryDifferencesEventTypes)
 				.sort(sortModel.getObject());
 	}
 
@@ -70,13 +70,13 @@ public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<Hist
 		return dateMaxModel;
 	}
 
-	public CompositeSortModel<HistoryLogSort> getSortModel() {
-		return sortModel;
-	}
-
-	public HistoryLogDataProvider addMandatoryDifferenceEventType(HistoryEventType eventType) {
+	public HistoryLogDataProvider addMandatoryDifferencesEventType(HistoryEventType eventType) {
 		mandatoryDifferencesEventTypes.add(eventType);
 		return this;
+	}
+
+	public CompositeSortModel<HistoryLogSort> getSortModel() {
+		return sortModel;
 	}
 
 	@Override

@@ -8,16 +8,17 @@ public abstract class AbstractHtmlNotificationPanel<T> extends GenericPanel<T> {
 
 	private static final long serialVersionUID = -3576134833190785445L;
 
-	public AbstractHtmlNotificationPanel(String id) {
+	protected AbstractHtmlNotificationPanel(String id) {
 		this(id, null);
 	}
 
-	public AbstractHtmlNotificationPanel(String id, IModel<T> model) {
+	protected AbstractHtmlNotificationPanel(String id, IModel<T> model) {
 		super(id, model);
 		
 		add(
 			BasicApplicationApplication.get()
 				.getHomePageLinkDescriptor()
+				.bypassPermissions()
 				.link("homePageLink")
 				.setAbsolute(true)
 		);

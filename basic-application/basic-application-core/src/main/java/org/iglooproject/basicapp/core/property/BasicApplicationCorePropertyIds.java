@@ -24,6 +24,8 @@ public final class BasicApplicationCorePropertyIds extends AbstractPropertyIds {
 
 	public static final ImmutablePropertyId<Environment> ENVIRONMENT = immutable("environment");
 
+	public static final ImmutablePropertyId<Integer> SECURITY_PASSWORD_LENGTH_MIN = immutable("security.password.length.min");
+	public static final ImmutablePropertyId<Integer> SECURITY_PASSWORD_LENGTH_MAX = immutable("security.password.length.max");
 	public static final ImmutablePropertyId<Boolean> SECURITY_PASSWORD_VALIDATOR_ENABLED = immutable("security.password.validator.enabled");
 	public static final ImmutablePropertyId<List<String>> SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS = immutable("security.password.user.forbiddenPasswords");
 

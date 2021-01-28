@@ -1,4 +1,4 @@
-package org.iglooproject.basicapp.web.application.resources.notifications;
+package org.iglooproject.basicapp.web.application.resources.notification;
 
 public class BasicApplicationNotificationResources {
 

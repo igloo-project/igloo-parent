@@ -75,7 +75,7 @@ public class Authority extends GenericEntity<Long, Authority> {
 
 	@Override
 	public int compareTo(Authority authority) {
-		if(this == authority) {
+		if (this == authority) {
 			return 0;
 		}
 		return this.getName().compareToIgnoreCase(authority.getName());

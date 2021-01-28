@@ -1,5 +1,7 @@
 package org.iglooproject.basicapp.web.application.administration.form;
 
+import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.EmailTextField;
@@ -19,13 +21,13 @@ import org.iglooproject.basicapp.web.application.common.model.UserTypeDescriptor
 import org.iglooproject.basicapp.web.application.common.validator.EmailUnicityValidator;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
 import org.iglooproject.basicapp.web.application.common.validator.UsernameUnicityValidator;
-import org.iglooproject.functional.Predicates2;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
@@ -49,8 +51,8 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 		body.add(form);
 		
 		boolean passwordRequired =
-				securityManagementService.getOptions(BasicUser.class).isPasswordAdminUpdateEnabled()
-			&&	!securityManagementService.getOptions(BasicUser.class).isPasswordUserRecoveryEnabled();
+				securityManagementService.getSecurityOptions(BasicUser.class).isPasswordAdminUpdateEnabled()
+			&&	!securityManagementService.getSecurityOptions(BasicUser.class).isPasswordUserRecoveryEnabled();
 		
 		PasswordTextField passwordField = new PasswordTextField("password", passwordModel);
 		PasswordTextField confirmPasswordField = new PasswordTextField("confirmPassword", Model.of());
@@ -72,14 +74,18 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 					.condition(addModeCondition())
 					.add(
 						new EnclosureContainer("passwordContainer")
-							.condition(Condition.predicate(Model.of(securityManagementService.getOptions(BasicUser.class).isPasswordAdminUpdateEnabled()), Predicates2.isTrue()))
+							.condition(Condition.isTrue(() -> securityManagementService.getSecurityOptions(BasicUser.class).isPasswordAdminUpdateEnabled()))
 							.add(
 								passwordField
 									.setLabel(new ResourceModel("business.user.password"))
 									.setRequired(passwordRequired),
 								new CoreLabel("passwordHelp",
 									new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
-										.setDefaultValue(new ResourceModel("security.user.password.help"))
+										.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
+										.setDefaultValue(
+											new StringResourceModel("security.user.password.help")
+												.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
+										)
 								),
 								confirmPasswordField
 									.setLabel(new ResourceModel("business.user.confirmPassword"))

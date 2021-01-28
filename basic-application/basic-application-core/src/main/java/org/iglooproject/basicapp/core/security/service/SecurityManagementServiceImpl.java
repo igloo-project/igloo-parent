@@ -1,6 +1,5 @@
 package org.iglooproject.basicapp.core.security.service;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_EXPIRATION_DAYS;
 import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_HISTORY_COUNT;
 import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES;
@@ -30,14 +29,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.EvictingQueue;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 public class SecurityManagementServiceImpl implements ISecurityManagementService {
-
-	private final Map<Class<? extends GenericUser<?, ?>>, SecurityOptions> optionsByUser = Maps.newHashMap();
-
-	private SecurityOptions defaultOptions = SecurityOptions.DEFAULT;
 
 	@Autowired
 	private IUserService userService;
@@ -47,44 +42,41 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 
 	@Autowired
 	private IPropertyService propertyService;
-	
+
 	@Autowired
 	private IHistoryLogService historyLogService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
-	public SecurityManagementServiceImpl setOptions(Class<? extends User> clazz, SecurityOptions options) {
-		checkNotNull(clazz);
-		checkNotNull(options);
-		
-		optionsByUser.put(clazz, options);
-		
-		return this;
-	}
 
-	public SecurityManagementServiceImpl setDefaultOptions(SecurityOptions options) {
-		checkNotNull(options);
-		
-		defaultOptions = options;
-		
-		return this;
+	private final SecurityOptions securityOptionsDefault;
+
+	private final Map<Class<? extends GenericUser<?, ?>>, SecurityOptions> securityOptionsUsers;
+
+	public SecurityManagementServiceImpl(SecurityOptions securityOptionsDefault, ImmutableMap<Class<? extends GenericUser<?, ?>>, SecurityOptions> securityOptionsUsers) {
+		this.securityOptionsDefault = securityOptionsDefault;
+		this.securityOptionsUsers = ImmutableMap.copyOf(securityOptionsUsers);
 	}
 
 	@Override
-	public SecurityOptions getOptions(Class<? extends User> clazz) {
-		if (optionsByUser.containsKey(clazz)) {
-			return optionsByUser.get(clazz);
+	public SecurityOptions getSecurityOptionsDefault() {
+		return securityOptionsDefault;
+	}
+
+	@Override
+	public SecurityOptions getSecurityOptions(Class<? extends User> clazz) {
+		if (securityOptionsUsers.containsKey(clazz)) {
+			return securityOptionsUsers.get(clazz);
 		}
-		return defaultOptions;
+		return getSecurityOptionsDefault();
 	}
 
 	@Override
-	public SecurityOptions getOptions(User user) {
+	public SecurityOptions getSecurityOptions(User user) {
 		if (user == null) {
-			return defaultOptions;
+			return getSecurityOptionsDefault();
 		}
-		return getOptions(HibernateUtils.unwrap(user).getClass());
+		return getSecurityOptions(HibernateUtils.unwrap(user).getClass());
 	}
 
 	@Override
@@ -100,7 +92,8 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	public void initiatePasswordRecoveryRequest(
 		User user,
 		UserPasswordRecoveryRequestType type,
-		UserPasswordRecoveryRequestInitiator initiator, User author
+		UserPasswordRecoveryRequestInitiator initiator,
+		User author
 	) throws ServiceException, SecurityServiceException {
 		Date now = new Date();
 		
@@ -129,7 +122,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 	public boolean isPasswordExpired(User user) {
 		if (user == null
 				|| user.getPasswordInformation().getLastUpdateDate() == null
-				|| !getOptions(user).isPasswordExpirationEnabled()) {
+				|| !getSecurityOptions(user).isPasswordExpirationEnabled()) {
 			return false;
 		}
 		
@@ -167,7 +160,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		userService.setPasswords(user, password);
 		user.getPasswordInformation().setLastUpdateDate(new Date());
 		
-		if (getOptions(user).isPasswordHistoryEnabled()) {
+		if (getSecurityOptions(user).isPasswordHistoryEnabled()) {
 			EvictingQueue<String> historyQueue = EvictingQueue.create(propertyService.get(PASSWORD_HISTORY_COUNT));
 			
 			for (String oldPassword : user.getPasswordInformation().getHistory()) {
@@ -175,7 +168,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			}
 			historyQueue.offer(user.getPasswordHash());
 			
-			user.getPasswordInformation().setHistory(Lists.newArrayList(historyQueue));
+			user.getPasswordInformation().setHistory(ImmutableList.copyOf(historyQueue));
 		}
 		
 		user.getPasswordRecoveryRequest().reset();

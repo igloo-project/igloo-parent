@@ -1,10 +1,11 @@
 package org.iglooproject.basicapp.core.config.spring;
 
+import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MAX;
+import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
 
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
-import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.model.BasicApplicationPermission;
 import org.iglooproject.basicapp.core.security.model.SecurityOptions;
 import org.iglooproject.basicapp.core.security.service.BasicApplicationAuthenticationServiceImpl;
@@ -16,8 +17,8 @@ import org.iglooproject.basicapp.core.security.service.IBasicApplicationSecurity
 import org.iglooproject.basicapp.core.security.service.IBasicApplicationUserDetailsService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.core.security.service.SecurityManagementServiceImpl;
+import org.iglooproject.jpa.security.business.person.model.GenericUser;
 import org.iglooproject.jpa.security.config.spring.DefaultJpaSecurityConfig;
-import org.iglooproject.jpa.security.password.rule.SecurityPasswordRulesBuilder;
 import org.iglooproject.jpa.security.runas.CoreRunAsManagerImpl;
 import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
 import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
@@ -32,6 +33,8 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.access.intercept.RunAsImplAuthenticationProvider;
 import org.springframework.security.access.intercept.RunAsManager;
 import org.springframework.security.acls.domain.PermissionFactory;
+
+import com.google.common.collect.ImmutableMap;
 
 @Configuration
 @Import(DefaultJpaSecurityConfig.class)
@@ -92,42 +95,54 @@ public class BasicApplicationCoreSecurityConfig {
 
 	@Bean
 	public ISecurityManagementService securityManagementService() {
-		SecurityManagementServiceImpl securityManagementService = new SecurityManagementServiceImpl();
-		securityManagementService
-			.setOptions(
-				TechnicalUser.class,
-				new SecurityOptions()
-					.passwordAdminRecovery()
-					.passwordAdminUpdate()
-					.passwordUserRecovery()
-					.passwordUserUpdate()
-					.passwordRules(
-						SecurityPasswordRulesBuilder.start()
-							.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
-							.forbiddenUsername()
-							.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
-							.build()
+		int passwordLengthMin = propertyService.get(SECURITY_PASSWORD_LENGTH_MIN);
+		int passwordLengthMax = propertyService.get(SECURITY_PASSWORD_LENGTH_MAX);
+		
+		return new SecurityManagementServiceImpl(
+			SecurityOptions.create(securityOptions -> securityOptions
+				.passwordUserRecovery()
+				.passwordUserUpdate()
+				.passwordRules(
+					rules -> rules
+						.minMaxLength(passwordLengthMin, passwordLengthMax)
+						.forbiddenUsername()
+						.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
+				)
+			),
+			ImmutableMap.<Class<? extends GenericUser<?, ?>>, SecurityOptions>builder()
+				.put(
+					TechnicalUser.class,
+					SecurityOptions.create(securityOptions -> securityOptions
+						.passwordAdminRecovery()
+						.passwordAdminUpdate()
+						.passwordUserRecovery()
+						.passwordUserUpdate()
+						.passwordRules(
+							rules -> rules
+								.minMaxLength(passwordLengthMin, passwordLengthMax)
+								.forbiddenUsername()
+								.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
+							
+						)
 					)
-			)
-			.setOptions(
-				BasicUser.class,
-				new SecurityOptions()
-					.passwordExpiration()
-					.passwordHistory()
-					.passwordUserRecovery()
-					.passwordUserUpdate()
-					.passwordRules(
-						SecurityPasswordRulesBuilder.start()
-							.minMaxLength(User.MIN_PASSWORD_LENGTH, User.MAX_PASSWORD_LENGTH)
-							.forbiddenUsername()
-							.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
-							.build()
+				)
+				.put(
+					BasicUser.class,
+					SecurityOptions.create(securityOptions -> securityOptions
+						.passwordExpiration()
+						.passwordHistory()
+						.passwordUserRecovery()
+						.passwordUserUpdate()
+						.passwordRules(
+							rules -> rules
+								.minMaxLength(passwordLengthMin, passwordLengthMax)
+								.forbiddenUsername()
+								.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
+						)
 					)
-			)
-			.setDefaultOptions(
-				SecurityOptions.DEFAULT
-			);
-		return securityManagementService;
+				)
+				.build()
+		);
 	}
 
 }

@@ -6,14 +6,13 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
-import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
+import org.iglooproject.basicapp.core.business.user.predicate.UserPredicates;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.administration.component.tab.AdministrationTechnicalUserDetailTabMainInformationPanel;
@@ -111,7 +110,7 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 						new BlankLink("passwordEdit")
 							.add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
 							.add(
-								Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminUpdateEnabled()))
+								Condition.isTrue(() -> securityManagementService.getSecurityOptions(userModel.getObject()).isPasswordAdminUpdateEnabled())
 									.thenShow()
 							),
 						
@@ -141,7 +140,7 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 							})
 							.create("passwordReset", userModel)
 							.add(
-								Condition.isTrue(Model.of(securityManagementService.getOptions(userModel.getObject()).isPasswordAdminRecoveryEnabled()))
+								Condition.isTrue(() -> securityManagementService.getSecurityOptions(userModel.getObject()).isPasswordAdminRecoveryEnabled())
 									.thenShow()
 							),
 						
@@ -160,7 +159,10 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 								FeedbackUtils.refreshFeedback(target, getPage());
 							}
 						}
-							.add(Condition.isFalse(BindingModel.of(userModel, Bindings.user().active())).thenShow()),
+							.add(
+								Condition.predicate(userModel, UserPredicates.inactive())
+									.thenShow()
+							),
 						
 						AjaxConfirmLink.<TechnicalUser>build()
 							.title(new ResourceModel("administration.user.action.disable.confirmation.title"))
@@ -183,15 +185,10 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 							})
 							.create("disable", userModel)
 							.add(
-								new Condition() {
-									private static final long serialVersionUID = 1L;
-									@Override
-									public boolean applies() {
-										User user = userModel.getObject();
-										User currentUser = BasicApplicationSession.get().getUser();
-										return !user.equals(currentUser) && user.isActive();
-									}
-								}
+								Condition.and(
+									Condition.isEqual(BasicApplicationSession.get().getUserModel(), userModel).negate(),
+									Condition.predicate(userModel, UserPredicates.active())
+								)
 									.thenShow()
 							)
 					)

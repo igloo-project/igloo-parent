@@ -25,11 +25,11 @@ import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SecurityPasswordRecoveryContentPanel extends Panel {
+public class SecurityPasswordRecoveryRequestCreationContentPanel extends Panel {
 
-	private static final long serialVersionUID = 547223775134254240L;
+	private static final long serialVersionUID = 5387181871353260812L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityPasswordRecoveryContentPanel.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityPasswordRecoveryRequestCreationContentPanel.class);
 
 	@SpringBean
 	private IUserService userService;
@@ -39,7 +39,7 @@ public class SecurityPasswordRecoveryContentPanel extends Panel {
 
 	private final IModel<String> emailModel = Model.of();
 
-	public SecurityPasswordRecoveryContentPanel(String wicketId) {
+	public SecurityPasswordRecoveryRequestCreationContentPanel(String wicketId) {
 		super(wicketId);
 		
 		Form<?> form = new Form<>("form");
@@ -62,19 +62,20 @@ public class SecurityPasswordRecoveryContentPanel extends Panel {
 				protected void onSubmit(AjaxRequestTarget target) {
 					try {
 						User user = userService.getByEmailCaseInsensitive(emailModel.getObject());
+						
 						securityManagementService.initiatePasswordRecoveryRequest(
 							user,
-							UserPasswordRecoveryRequestType.RESET,
+							user.hasPasswordHash() ? UserPasswordRecoveryRequestType.RESET : UserPasswordRecoveryRequestType.CREATION,
 							UserPasswordRecoveryRequestInitiator.USER
 						);
 						
-						Session.get().success(getString("security.password.recovery.validate.success"));
+						Session.get().success(getString("security.password.recovery.request.creation.validate.success"));
 						
 						throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor().newRestartResponseException();
 					} catch (RestartResponseException e) {
 						throw e;
 					} catch (Exception e) {
-						LOGGER.error("Error occurred while recovering password", e);
+						LOGGER.error("Error occurred while requesting password creation.", e);
 						Session.get().error(getString("common.error.unexpected"));
 					}
 					
@@ -92,9 +93,7 @@ public class SecurityPasswordRecoveryContentPanel extends Panel {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		Detachables.detach(
-			emailModel
-		);
+		Detachables.detach(emailModel);
 	}
 
 }

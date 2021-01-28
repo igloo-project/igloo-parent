@@ -20,7 +20,6 @@ $gray-900: #212529 !default; // bootstrap
 $black:    #000 !default; // bootstrap
 
 $grays: () !default; // bootstrap
-// stylelint-disable-next-line scss/dollar-variable-default
 $grays: map-merge(
   (
     "100": $gray-100,
@@ -34,7 +33,7 @@ $grays: map-merge(
     "900": $gray-900
   ),
   $grays
-);
+); // bootstrap
 
 $blue:    #007bff !default; // bootstrap
 $indigo:  #6610f2 !default; // bootstrap
@@ -48,7 +47,6 @@ $teal:    #20c997 !default; // bootstrap
 $cyan:    #17a2b8 !default; // bootstrap
 
 $colors: () !default; // bootstrap
-// stylelint-disable-next-line scss/dollar-variable-default
 $colors: map-merge(
   (
     "blue":       $blue,
@@ -66,7 +64,7 @@ $colors: map-merge(
     "gray-dark":  $gray-800
   ),
   $colors
-);
+); // bootstrap
 
 $primary:       $blue !default; // bootstrap
 $secondary:     $gray-600 !default; // bootstrap
@@ -78,7 +76,6 @@ $light:         $gray-100 !default; // bootstrap
 $dark:          $gray-800 !default; // bootstrap
 
 $theme-colors: () !default; // bootstrap
-// stylelint-disable-next-line scss/dollar-variable-default
 $theme-colors: map-merge(
   (
     "primary":    $primary,
@@ -91,7 +88,7 @@ $theme-colors: map-merge(
     "dark":       $dark
   ),
   $theme-colors
-);
+); // bootstrap
 
 $brand-color:      $primary !default; // bootstrap-override
 $brand-text-color: $white !default; // bootstrap-override
@@ -123,11 +120,11 @@ $yiq-text-light:            $white !default; // bootstrap
 
 // Characters which are escaped by the escape-svg function
 $escaped-characters: (
-  ("<","%3c"),
-  (">","%3e"),
-  ("#","%23"),
-  ("(","%28"),
-  (")","%29"),
+  ("<", "%3c"),
+  (">", "%3e"),
+  ("#", "%23"),
+  ("(", "%28"),
+  (")", "%29"),
 ) !default; // bootstrap
 
 
@@ -158,7 +155,6 @@ $enable-deprecation-messages:                 true !default; // bootstrap
 
 $spacer: 1rem !default; // bootstrap
 $spacers: () !default; // bootstrap
-// stylelint-disable-next-line scss/dollar-variable-default
 $spacers: map-merge(
   (
     0: 0,
@@ -169,11 +165,10 @@ $spacers: map-merge(
     5: ($spacer * 3)
   ),
   $spacers
-);
+); // bootstrap
 
 // This variable affects the `.h-*` and `.w-*` classes.
 $sizes: () !default; // bootstrap
-// stylelint-disable-next-line scss/dollar-variable-default
 $sizes: map-merge(
   (
     25: 25%,
@@ -183,7 +178,7 @@ $sizes: map-merge(
     auto: auto
   ),
   $sizes
-);
+); // bootstrap
 
 
 // Body
@@ -304,7 +299,6 @@ $transition-fade:             opacity .15s linear !default; // bootstrap
 $transition-collapse:         height .35s ease !default; // bootstrap
 
 $embed-responsive-aspect-ratios: () !default; // bootstrap
-// stylelint-disable-next-line scss/dollar-variable-default
 $embed-responsive-aspect-ratios: join(
   (
     (21 9),
@@ -313,7 +307,7 @@ $embed-responsive-aspect-ratios: join(
     (1 1),
   ),
   $embed-responsive-aspect-ratios
-);
+); // bootstrap
 
 
 // Shadows
@@ -454,6 +448,7 @@ $table-border-color:          $border-color !default; // bootstrap
 
 $table-head-bg:               $gray-200 !default; // bootstrap
 $table-head-color:            $gray-700 !default; // bootstrap
+$table-th-font-weight:        null !default; // bootstrap
 
 $table-dark-color:            $white !default; // bootstrap
 $table-dark-bg:               $gray-800 !default; // bootstrap
@@ -642,7 +637,7 @@ $custom-control-label-disabled-color:           $gray-600 !default; // bootstrap
 $custom-control-indicator-checked-color:        $component-active-color !default; // bootstrap
 $custom-control-indicator-checked-bg:           $component-active-bg !default; // bootstrap
 $custom-control-indicator-checked-disabled-bg:  rgba(theme-color("primary"), .5) !default; // bootstrap
-$custom-control-indicator-checked-box-shadow:   none !default; // bootstrap
+$custom-control-indicator-checked-box-shadow:   null !default; // bootstrap
 $custom-control-indicator-checked-border-color: $custom-control-indicator-checked-bg !default; // bootstrap
 
 $custom-control-indicator-focus-box-shadow:     $input-focus-box-shadow !default; // bootstrap
@@ -650,7 +645,7 @@ $custom-control-indicator-focus-border-color:   $input-focus-border-color !defau
 
 $custom-control-indicator-active-color:         $component-active-color !default; // bootstrap
 $custom-control-indicator-active-bg:            lighten($component-active-bg, 35%) !default; // bootstrap
-$custom-control-indicator-active-box-shadow:    none !default; // bootstrap
+$custom-control-indicator-active-box-shadow:    null !default; // bootstrap
 $custom-control-indicator-active-border-color:  $custom-control-indicator-active-bg !default; // bootstrap
 
 $custom-checkbox-indicator-border-radius:       $border-radius !default; // bootstrap
@@ -659,7 +654,7 @@ $custom-checkbox-indicator-icon-checked:        url("data:image/svg+xml,<svg xml
 $custom-checkbox-indicator-indeterminate-bg:           $component-active-bg !default; // bootstrap
 $custom-checkbox-indicator-indeterminate-color:        $custom-control-indicator-checked-color !default; // bootstrap
 $custom-checkbox-indicator-icon-indeterminate:         url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'><path stroke='#{$custom-checkbox-indicator-indeterminate-color}' d='M0 2h4'/></svg>") !default; // bootstrap
-$custom-checkbox-indicator-indeterminate-box-shadow:   none !default; // bootstrap
+$custom-checkbox-indicator-indeterminate-box-shadow:   null !default; // bootstrap
 $custom-checkbox-indicator-indeterminate-border-color: $custom-checkbox-indicator-indeterminate-bg !default; // bootstrap
 
 $custom-radio-indicator-border-radius:          50% !default; // bootstrap
@@ -764,7 +759,6 @@ $form-feedback-icon-invalid-color:  $form-feedback-invalid-color !default; // bo
 $form-feedback-icon-invalid:        url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='#{$form-feedback-icon-invalid-color}' viewBox='0 0 12 12'><circle cx='6' cy='6' r='4.5'/><path stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/><circle cx='6' cy='8.2' r='.6' fill='#{$form-feedback-icon-invalid-color}' stroke='none'/></svg>") !default; // bootstrap
 
 $form-validation-states: () !default; // bootstrap
-// stylelint-disable-next-line scss/dollar-variable-default
 $form-validation-states: map-merge(
   (
     "valid": (
@@ -777,7 +771,7 @@ $form-validation-states: map-merge(
     ),
   ),
   $form-validation-states
-);
+); // bootstrap
 
 // Z-index master list
 //
@@ -882,6 +876,7 @@ $navbar-dark-brand-hover-color:           $navbar-dark-active-color !default; //
 // Dropdown menu container and contents.
 
 $dropdown-min-width:                10rem !default; // bootstrap
+$dropdown-padding-x:                0 !default; // bootstrap
 $dropdown-padding-y:                .5rem !default; // bootstrap
 $dropdown-spacer:                   .125rem !default; // bootstrap
 $dropdown-font-size:                $font-size-base !default; // bootstrap
