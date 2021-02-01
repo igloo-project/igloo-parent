@@ -2,6 +2,8 @@ package org.iglooproject.wicket.bootstrap4.markup.html.bootstrap.component.popov
 
 import static org.iglooproject.wicket.more.condition.Condition.anyChildVisible;
 
+import java.util.Collection;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
@@ -67,6 +69,16 @@ public abstract class AbstractPopoverLinkContentPanel<T> extends GenericPanel<T>
 
 	public AbstractPopoverLinkContentPanel<T> container(Component container) {
 		options.container(container);
+		return this;
+	}
+
+	public AbstractPopoverLinkContentPanel<T> customClass(String customClass) {
+		options.customClass(customClass);
+		return this;
+	}
+
+	public AbstractPopoverLinkContentPanel<T> customClass(IModel<? extends Collection<String>> customClassModel) {
+		options.customClass(customClassModel);
 		return this;
 	}
 

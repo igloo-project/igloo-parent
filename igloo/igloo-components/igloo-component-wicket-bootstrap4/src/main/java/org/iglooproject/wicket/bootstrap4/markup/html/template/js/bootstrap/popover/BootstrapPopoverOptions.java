@@ -3,9 +3,7 @@ package org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.pop
 import java.util.Collection;
 import java.util.Locale;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.apache.commons.text.StringSubstitutor;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -24,6 +22,7 @@ import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 import org.wicketstuff.wiquery.core.options.Options;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
@@ -31,21 +30,10 @@ public class BootstrapPopoverOptions extends SimpleOptions implements IBootstrap
 
 	private static final long serialVersionUID = 680573363463468690L;
 
-	private static final String TEMPLATE_POPOVER_CSS_CLASS = "POPOVER-CSS-CLASS";
-
-	private static final String TEMPLATE = ""
-			+ "<div class=\"popover ${" + TEMPLATE_POPOVER_CSS_CLASS + "}\" role=\"tooltip\">"
-			+ 	"<div class=\"arrow\"></div>"
-			+ 	"<h3 class=\"popover-header\"></h3>"
-			+ 	"<div class=\"popover-body\"></div>"
-			+ "</div>";
-
 	private static final String POPOVER_CSS_CLASS_POPOVER_MODAL = "popover-modal";
 
 	// Igloo options
 	private IModel<Boolean> closableModel = Condition.alwaysTrue();
-
-	private IModel<String> cssClassModel;
 
 	// Bootstrap popover options
 	private IModel<Boolean> animationModel;
@@ -80,6 +68,8 @@ public class BootstrapPopoverOptions extends SimpleOptions implements IBootstrap
 
 	private IModel<String> offsetModel;
 
+	private IModel<? extends Collection<String>> customClassModel;
+
 	private IModel<String> boundaryModel;
 
 	public static final BootstrapPopoverOptions get() {
@@ -107,19 +97,6 @@ public class BootstrapPopoverOptions extends SimpleOptions implements IBootstrap
 
 	public BootstrapPopoverOptions closable(Boolean closable) {
 		return closable(Model.of(closable));
-	}
-
-	public IModel<String> getCssClassModel() {
-		return cssClassModel;
-	}
-
-	public BootstrapPopoverOptions cssClass(IModel<String> cssClassModel) {
-		this.cssClassModel = cssClassModel;
-		return this;
-	}
-
-	public BootstrapPopoverOptions cssClass(String cssClass) {
-		return cssClass(Model.of(cssClass));
 	}
 
 	public IModel<Boolean> getAnimationModel() {
@@ -339,6 +316,23 @@ public class BootstrapPopoverOptions extends SimpleOptions implements IBootstrap
 		return offsetNumber(Model.of(offsetNumber));
 	}
 
+	public IModel<? extends Collection<String>> getCustomClassModel() {
+		return customClassModel;
+	}
+
+	public BootstrapPopoverOptions customClass(IModel<? extends Collection<String>> customClassModel) {
+		this.customClassModel = customClassModel;
+		return this;
+	}
+
+	public BootstrapPopoverOptions customClass(Collection<String> customClass) {
+		return customClass(new CollectionModel<>(customClass));
+	}
+
+	public BootstrapPopoverOptions customClass(String firstCustomClass, String ... otherCustomClass) {
+		return customClass(Lists.asList(firstCustomClass, otherCustomClass));
+	}
+
 	public IModel<String> getBoundaryModel() {
 		return boundaryModel;
 	}
@@ -417,22 +411,6 @@ public class BootstrapPopoverOptions extends SimpleOptions implements IBootstrap
 			options.put("selector", JsUtils.quotes(selector));
 		}
 		
-		String cssClass = Stream.of(
-			cssClassModel != null ? cssClassModel.getObject() : null,
-			ComponentUtils.anyParentModal(component) ? POPOVER_CSS_CLASS_POPOVER_MODAL : null
-		)
-			.filter(StringUtils::hasText)
-			.collect(Collectors.joining(" "));
-		
-		options.put("template", JsUtils.quotes(
-			new StringSubstitutor(
-				ImmutableMap.<String, String>builder()
-					.put(TEMPLATE_POPOVER_CSS_CLASS, cssClass)
-					.build()
-			)
-				.replace(TEMPLATE)
-		));
-		
 		String title = Models.getObject(titleModel);
 		if (title != null) {
 			options.put("title", getTitleFunction(component, new JsStatement().append(JsUtils.quotes(title, true))));
@@ -454,6 +432,20 @@ public class BootstrapPopoverOptions extends SimpleOptions implements IBootstrap
 		String offset = Models.getObject(offsetModel);
 		if (offset != null) {
 			options.put("offset", JsUtils.quotes(offset));
+		}
+		
+		Collection<String> customClass = MoreObjects.firstNonNull(Models.getObject(customClassModel), Lists.newArrayList());
+		
+		if (ComponentUtils.anyParentModal(component)) {
+			customClass.add(POPOVER_CSS_CLASS_POPOVER_MODAL);
+		}
+		
+		String customClassAsString = customClass.stream()
+			.filter(Predicates2.notNull())
+			.collect(Collectors.joining(" "));
+		
+		if (StringUtils.hasText(customClassAsString)) {
+			options.put("customClass", JsUtils.quotes(customClassAsString));
 		}
 		
 		String boundary = Models.getObject(boundaryModel);
@@ -556,7 +548,6 @@ public class BootstrapPopoverOptions extends SimpleOptions implements IBootstrap
 	public void detach() {
 		Detachables.detach(
 			closableModel,
-			cssClassModel,
 			animationModel,
 			containerModel,
 			contentModel,
@@ -568,6 +559,7 @@ public class BootstrapPopoverOptions extends SimpleOptions implements IBootstrap
 			titleModel,
 			triggerModel,
 			offsetModel,
+			customClassModel,
 			boundaryModel
 		);
 	}
