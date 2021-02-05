@@ -37,7 +37,7 @@ import test.web.config.spring.BasicApplicationWebappTestCommonConfig;
 @TestPropertySource(properties = "igloo.profile=test")
 public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWicketTestCase<BasicApplicationWicketTester> {
 
-	protected static final String USER_PASSWORD = "kobalt";
+	protected static final String USER_PASSWORD = "USER_PASSWORD";
 
 	protected UserGroup users;
 
