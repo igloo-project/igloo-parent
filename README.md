@@ -29,8 +29,8 @@ Igloo is standing on the shoulders of giants:
 - Apache Wicket
 - Bootstrap
 - Font Awesome
-- jQuery
-- POI, XHTMLRenderer...
+- Apache POI
+- etc.
 
 Documentation
 -------------
