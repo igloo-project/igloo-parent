@@ -1,0 +1,146 @@
+html {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+	min-height: 100vh;
+}
+
+.body-container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	
+	> .header-section {
+		flex: 0 0 auto;
+	}
+	
+	> .main-section {
+		flex: 1 0 auto;
+		
+		> .main-body {
+			.content-container {
+				.content-pre-header-section {
+					background-color: $white;
+					border-bottom: 1px solid rgba(0, 0, 0, .09);
+					
+					> .content-pre-header-container {
+						@include make-container();
+						@include make-container-max-widths();
+						
+						padding: 7.5px $layout-container-padding-x;
+						
+						> .content-pre-header {
+							.breadcrumb {
+								margin: 0;
+							}
+						}
+					}
+				}
+				
+				.content-header-section {
+					background-color: $white;
+					border-bottom: 1px solid rgba(0, 0, 0, .09);
+					
+					> .content-header-container {
+						@include make-container();
+						@include make-container-max-widths();
+						
+						padding: 15px $layout-container-padding-x;
+						
+						> .content-header {
+							padding: 0;
+							
+							.content-header-title {
+								margin: 0;
+								padding: 0;
+							}
+							
+							> .content-header-elements-section {
+								margin-top: .75rem;
+								
+								&:first-child {
+									margin-top: 0;
+								}
+							}
+						}
+					}
+				}
+				
+				.content-lead-section {
+					background-color: #F5F8FA;
+					border-bottom: 1px solid rgba(0, 0, 0, .09);
+					
+					> .content-lead-container {
+						@include make-container();
+						@include make-container-max-widths();
+						
+						padding: 15px $layout-container-padding-x;
+					}
+				}
+				
+				.content-tabs-section {
+					background-color: #FDFDFD;
+					border-bottom: 1px solid rgba(0, 0, 0, .09);
+					
+					
+					> .content-tabs-container {
+						@include make-container();
+						@include make-container-max-widths();
+						
+						padding: 10px $layout-container-padding-x;
+					}
+				}
+				
+				.content-body-section {
+					> .content-body-container {
+						@include make-container();
+						@include make-container-max-widths();
+						
+						padding: 20px $layout-container-padding-x;
+					}
+				}
+			}
+		}
+	}
+	
+	> .footer-section {
+		flex: 0 0 auto;
+		background-color: #21212E;
+		border-top: 1px solid #03FFB0;
+		color: $white;
+		
+		.footer-container {
+			@include make-container();
+			@include make-container-max-widths();
+			
+			padding: 10px $layout-container-padding-x;
+			
+			.footer-title {
+				font-weight: bold;
+				font-size: 1rem;
+				margin-bottom: .15rem;
+			}
+			
+			.footer-link {
+				color: $white;
+			}
+			
+			.footer-description {
+				.footer-description-info {
+					max-width: 250px;
+					text-align: right;
+					
+					.footer-info-version {
+						font-size: .85rem;
+					}
+					
+					.footer-info-sha {
+						font-size: .5rem;
+					}
+				}
+			}
+		}
+	}
+}

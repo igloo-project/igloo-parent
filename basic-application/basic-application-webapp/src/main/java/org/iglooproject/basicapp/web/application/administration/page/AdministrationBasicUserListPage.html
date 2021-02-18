@@ -8,16 +8,16 @@
 		<div class="content-header-section">
 			<div class="content-header-container">
 				<div class="content-header">
-					<h4 class="content-header-title">
+					<h1 class="content-header-title">
 						<wicket:message key="administration.user.basicUser.list.title" />
-					</h4>
+					</h1>
 					
 					<div wicket:id="headerElementsSection" class="content-header-elements-section">
-						<div class="row row-xs align-items-center">
-							<div wicket:id="actionsContainer" class="col-auto ml-auto">
-								<div class="row row-xs align-items-center">
+						<div class="row g-2 align-items-center">
+							<div wicket:id="actionsContainer" class="col-auto ms-auto">
+								<div class="row g-2 align-items-center">
 									<div wicket:enclosure-component="exportExcel" class="col-auto">
-										<button wicket:id="exportExcel" class="btn btn-outline-secondary" type="button"
+										<button wicket:id="exportExcel" class="btn btn-secondary" type="button"
 											wicket:message="title:common.action.export.excel">
 											<span class="fa fa-fw fa-download" />
 										</button>
@@ -45,7 +45,7 @@
 		<div class="content-body-section">
 			<div class="content-body-container">
 				<div class="content-body">
-					<div wicket:id="results" class="card card-page" />
+					<div wicket:id="results" class="card card-main" />
 				</div>
 			</div>
 		</div>

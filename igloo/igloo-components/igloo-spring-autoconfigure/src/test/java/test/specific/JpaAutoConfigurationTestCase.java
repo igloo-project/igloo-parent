@@ -8,6 +8,7 @@ import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap5AutoConfiguration;
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaMoreAutoConfiguration;
 import org.igloo.spring.autoconfigure.property.IglooPropertyAutoConfiguration;
@@ -40,8 +41,12 @@ class JpaAutoConfigurationTestCase {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
+			.withPropertyValues(String.format("%s=%s",
+				IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
+				IglooBootstrap4AutoConfiguration.class.getName()
+			))
 			.run(
-				(context) -> { assertThat(context).hasSingleBean(EntityManagerFactory.class); }
+				context -> assertThat(context).hasSingleBean(EntityManagerFactory.class)
 			);
 	}
 	
@@ -55,16 +60,22 @@ class JpaAutoConfigurationTestCase {
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.withPropertyValues(String.format("%s=%s",
-					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
-					Joiner.on(",").join(IglooPropertyAutoConfiguration.class.getName(),
-							IglooFlywayAutoConfiguration.class.getName(),
-							IglooHibernateSearchAutoConfiguration.class.getName(),
-							IglooBootstrap4AutoConfiguration.class.getName(),
-							IglooWicketAutoConfiguration.class.getName(),
-							IglooTaskManagementAutoConfiguration.class.getName(),
-							IglooJpaMoreAutoConfiguration.class.getName())))
+				IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
+				IglooBootstrap4AutoConfiguration.class.getName()))
+			.withPropertyValues(String.format("%s=%s",
+				IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
+				Joiner.on(",").join(
+					IglooPropertyAutoConfiguration.class.getName(),
+					IglooFlywayAutoConfiguration.class.getName(),
+					IglooHibernateSearchAutoConfiguration.class.getName(),
+					IglooBootstrap5AutoConfiguration.class.getName(),
+					IglooWicketAutoConfiguration.class.getName(),
+					IglooTaskManagementAutoConfiguration.class.getName(),
+					IglooJpaMoreAutoConfiguration.class.getName()
+				)
+			))
 			.run(
-				(context) -> {
+				context -> {
 					assertThat(context).hasSingleBean(EntityManagerFactory.class);
 					assertThat(context).doesNotHaveBean(IPropertyService.class);
 				}
@@ -72,8 +83,13 @@ class JpaAutoConfigurationTestCase {
 	}
 
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {IglooJpaSecurityAutoConfiguration.class,
-			IglooApplicationConfigAutoConfiguration.class})
+	@EnableIglooAutoConfiguration(
+		exclude = {
+			IglooBootstrap4AutoConfiguration.class,
+			IglooJpaSecurityAutoConfiguration.class,
+			IglooApplicationConfigAutoConfiguration.class
+		}
+	)
 	public static class TestConfig {}
 
 }

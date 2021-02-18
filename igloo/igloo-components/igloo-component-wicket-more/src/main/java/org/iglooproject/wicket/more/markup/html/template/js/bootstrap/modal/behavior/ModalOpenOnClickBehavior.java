@@ -17,12 +17,14 @@ import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
+import com.google.common.collect.Lists;
+
 public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 
 	private static final long serialVersionUID = 8188257386595829052L;
 
-	@SpringBean
-	private List<IBootstrapModalModule> modules;
+	@SpringBean(required = false)
+	private List<IBootstrapModalModule> modules = Lists.newArrayList();
 
 	private final IModalPopupPanel modal;
 

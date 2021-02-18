@@ -8,8 +8,6 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -23,6 +21,7 @@ import org.iglooproject.basicapp.web.application.common.template.theme.common.Ab
 import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
@@ -92,22 +91,22 @@ public class NavbarPanel extends AbstractNavbarPanel {
 							new CoreLabel("label", navItem.getLabelModel())
 						);
 					
+					List<NavigationMenuItem> subMenuItems =
+						navItem.getSubMenuItems().stream()
+							.filter(subMenuItem -> Condition.visible(subMenuItem.linkHidingIfInvalid("navLink")).applies())
+							.collect(ImmutableList.toImmutableList());
+					
+					Condition isSubVisibleCondition = Condition.constant(!subMenuItems.isEmpty());
+					
+					IModel<Boolean> isSubActiveModel = Model.of(false);
+					Condition isSubActiveCondition = Condition.isTrue(isSubActiveModel);
+					
 					EnclosureContainer navbarNavSubContainer = new EnclosureContainer("navbarNavSubContainer");
 					item.add(
 						navbarNavSubContainer
 							.anyChildVisible()
 							.setOutputMarkupId(true)
 					);
-					
-					Condition isSubVisibleCondition = Condition.componentVisible(navbarNavSubContainer);
-					
-					IModel<Boolean> isSubActiveModel = Model.of(false);
-					Condition isSubActiveCondition = Condition.isTrue(isSubActiveModel);
-					
-					List<NavigationMenuItem> subMenuItems =
-						navItem.getSubMenuItems().stream()
-							.filter(subMenuItem -> Condition.visible(subMenuItem.linkHidingIfInvalid("navLink")).applies())
-							.collect(ImmutableList.toImmutableList());
 					
 					navbarNavSubContainer
 						.add(
@@ -143,30 +142,29 @@ public class NavbarPanel extends AbstractNavbarPanel {
 						item.add(isSubVisibleCondition.thenShow());
 					}
 					
-					navLink.add(
-						new ClassAttributeAppender(
-							isSubVisibleCondition
-								.then(Model.of("dropdown-toggle"))
-								.otherwise(Model.of(""))
-						)
-					);
-					
-					navLink.add(
-						new Behavior() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public void onComponentTag(Component component, ComponentTag tag) {
-								tag.put("data-toggle", "dropdown");
-								tag.put("data-hover", "dropdown");
-								tag.put("href", "#");
-								super.onComponentTag(component, tag);
-							}
-							@Override
-							public boolean isEnabled(Component component) {
-								return isSubVisibleCondition.applies();
-							}
-						}
-					);
+					navLink
+						.add(
+							new ClassAttributeAppender(
+								isSubVisibleCondition
+									.then(Model.of("dropdown-toggle"))
+									.otherwise(Model.of(""))
+							),
+							new BootstrapDropdownBehavior(navbarNavSubContainer) {
+								private static final long serialVersionUID = 1L;
+								@Override
+								public boolean isEnabled(Component component) {
+									return isSubVisibleCondition.applies();
+								}
+							},
+							new ClassAttributeAppender(
+								Condition.or(
+									isSubVisibleCondition.and(isSubActiveCondition),
+									Condition.isTrue(() -> navItem.isActive(firstMenuPageSupplier.get()))
+								)
+									.then(Model.of("active"))
+									.otherwise(Model.of())
+							)
+						);
 					
 					item.add(new ClassAttributeAppender(navItem.getCssClassesModel()));
 					
@@ -175,17 +173,6 @@ public class NavbarPanel extends AbstractNavbarPanel {
 							isSubVisibleCondition
 								.then(Model.of("dropdown"))
 								.otherwise(Model.of(""))
-						)
-					);
-					
-					item.add(
-						new ClassAttributeAppender(
-							Condition.or(
-								isSubVisibleCondition.and(isSubActiveCondition),
-								Condition.isTrue(() -> navItem.isActive(firstMenuPageSupplier.get()))
-							)
-								.then(Model.of("active"))
-								.otherwise(Model.of())
 						)
 					);
 				}

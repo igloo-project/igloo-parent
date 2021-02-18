@@ -7,6 +7,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
@@ -17,16 +18,16 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenticationService;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationAccessEnvironmentPanel;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.applicationaccess.ApplicationAccessScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationaccess.ApplicationAccessScssResourceReference;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.BootstrapJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipBehavior;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipOptions;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate {
@@ -65,9 +66,7 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		
-		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
-		
-		add(new BootstrapDropdownBehavior());
+		add(new BootstrapTooltipBehavior(getBootstrapTooltipOptionsModel()));
 	}
 	
 	@Override
@@ -100,17 +99,15 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 		return null;
 	}
 
-	protected BootstrapTooltip getBootstrapTooltip() {
-		return new BootstrapTooltip()
-			.selector("[title],[data-original-title]")
-			.animation(true)
-			.container("body");
+	protected IModel<BootstrapTooltipOptions> getBootstrapTooltipOptionsModel() {
+		return BootstrapTooltipOptions::get;
 	}
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.render(CssHeaderItem.forReference(ApplicationAccessScssResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapJavaScriptResourceReference.get()));
 	}
 
 }

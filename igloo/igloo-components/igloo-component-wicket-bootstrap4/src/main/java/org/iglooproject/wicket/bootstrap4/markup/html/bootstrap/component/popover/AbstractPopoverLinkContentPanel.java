@@ -7,10 +7,10 @@ import java.util.Collection;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.popover.BootstrapPopoverBehavior;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.popover.BootstrapPopoverOptions;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.popover.BootstrapPopoverBehavior;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
 public abstract class AbstractPopoverLinkContentPanel<T> extends GenericPanel<T> {

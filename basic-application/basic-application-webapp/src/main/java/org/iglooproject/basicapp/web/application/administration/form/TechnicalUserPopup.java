@@ -70,6 +70,13 @@ public class TechnicalUserPopup extends AbstractUserPopup<TechnicalUser> {
 					.setRequired(true)
 					.add(USERNAME_PATTERN_VALIDATOR)
 					.add(new UsernameUnicityValidator(getModel())),
+				new EmailTextField("email", BindingModel.of(getModel(), Bindings.user().email()))
+					.setLabel(new ResourceModel("business.user.email"))
+					.add(EmailAddressValidator.getInstance())
+					.add(new EmailUnicityValidator(getModel())),
+				new LocaleDropDownChoice("locale", BindingModel.of(getModel(), Bindings.user().locale()))
+					.setLabel(new ResourceModel("business.user.locale"))
+					.setRequired(true),
 				new EnclosureContainer("addContainer")
 					.condition(addModeCondition())
 					.add(
@@ -94,14 +101,7 @@ public class TechnicalUserPopup extends AbstractUserPopup<TechnicalUser> {
 						new CheckBox("enabled", BindingModel.of(getModel(), Bindings.user().enabled()))
 							.setLabel(new ResourceModel("business.user.enabled"))
 							.setOutputMarkupId(true)
-					),
-				new EmailTextField("email", BindingModel.of(getModel(), Bindings.user().email()))
-					.setLabel(new ResourceModel("business.user.email"))
-					.add(EmailAddressValidator.getInstance())
-					.add(new EmailUnicityValidator(getModel())),
-				new LocaleDropDownChoice("locale", BindingModel.of(getModel(), Bindings.user().locale()))
-					.setLabel(new ResourceModel("business.user.locale"))
-					.setRequired(true)
+					)
 			);
 		
 		form.add(new EqualPasswordInputValidator(passwordField, confirmPasswordField));

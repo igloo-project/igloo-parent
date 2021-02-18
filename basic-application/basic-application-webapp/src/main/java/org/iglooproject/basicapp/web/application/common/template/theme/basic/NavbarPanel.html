@@ -2,55 +2,56 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
-	<div class="navbar-header">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-			<span class="navbar-toggler-icon" />
-		</button>
-		
-		<a class="navbar-brand" wicket:id="home"><wicket:message key="common.rootPageTitle" /></a>
-	</div>
-	<div class="navbar-body collapse navbar-collapse" id="navbarSupportedContent">
-		<ul wicket:id="navbarNavContainer" class="navbar-nav">
-			<li wicket:id="navbarNavItems" class="nav-item">
-				<a wicket:id="navLink" class="nav-link">
-					<span wicket:id="icon" />
-					<span wicket:id="label" />
-				</a>
-				<div wicket:id="navbarNavSubContainer" class="dropdown-menu">
-					<wicket:container wicket:id="navbarNavSubItems">
-						<a wicket:id="navLink" class="dropdown-item">
-							<span wicket:id="icon" />
-							<span wicket:id="label" />
-						</a>
-					</wicket:container>
-				</div>
-			</li>
-		</ul>
-		
-		<ul class="navbar-nav ml-auto">
-			<li class="nav-item" wicket:id="profileLinkNavItem">
-				<a wicket:id="profileLink" class="nav-link" wicket:message="title:common.profile.tooltip">
-					<wicket:enclosure child="originalAuthentication">
-						<span class="fa fa-fw fa-user-secret" />
-						<span wicket:id="originalAuthentication" />
-					</wicket:enclosure>
-					<span class="fa fa-fw fa-user-circle" />
-					<wicket:container wicket:id="userFullName" />
-				</a>
-			</li>
-			<wicket:enclosure child="signInAsMe">
-				<li class="nav-item">
-					<button wicket:id="signInAsMe" class="btn btn-success" type="button" wicket:message="title:common.signInAsMe">
-						<span class="fa fa-fw fa-undo" />
-					</button>
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+				<span class="navbar-toggler-icon" />
+			</button>
+			<a class="navbar-brand" wicket:id="home"><wicket:message key="common.rootPageTitle" /></a>
+		</div>
+		<div class="navbar-body collapse navbar-collapse" id="navbarSupportedContent">
+			<ul wicket:id="navbarNavContainer" class="navbar-nav">
+				<li wicket:id="navbarNavItems" class="nav-item">
+					<a wicket:id="navLink" class="nav-link">
+						<span wicket:id="icon" />
+						<span wicket:id="label" />
+					</a>
+					<div wicket:id="navbarNavSubContainer">
+						<wicket:container wicket:id="navbarNavSubItems">
+							<a wicket:id="navLink" class="dropdown-item">
+								<span wicket:id="icon" />
+								<span wicket:id="label" />
+							</a>
+						</wicket:container>
+					</div>
 				</li>
-			</wicket:enclosure>
-			<li class="nav-item">
-				<a wicket:id="logout" class="btn btn-danger" wicket:message="title:common.logout">
-					<span class="fa fa-fw fa-power-off" />
-				</a>
-			</li>
-		</ul>
+			</ul>
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item" wicket:id="profileLinkNavItem">
+					<a wicket:id="profileLink" class="nav-link">
+						<wicket:enclosure child="originalAuthentication">
+							<span class="fa fa-fw fa-user-secret" />
+							<span wicket:id="originalAuthentication" />
+						</wicket:enclosure>
+						<span class="fa fa-fw fa-user-circle" />
+						<wicket:container wicket:id="userFullName" />
+					</a>
+				</li>
+				<wicket:enclosure child="signInAsMe">
+					<li class="nav-item">
+						<button wicket:id="signInAsMe" class="btn btn-success" type="button" wicket:message="title:common.signInAsMe">
+							<span class="fa fa-fw fa-undo" />
+						</button>
+					</li>
+				</wicket:enclosure>
+				<li class="nav-item">
+					<a wicket:id="logout" class="btn btn-danger" wicket:message="title:common.logout">
+						<span class="fa fa-fw fa-power-off" />
+						<span class="visually-hidden"><wicket:message key="common.logout" /></span>
+					</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 </wicket:panel>
 </html>

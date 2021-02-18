@@ -3,6 +3,7 @@ package test.specific;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
@@ -32,12 +33,17 @@ class ApplicationContextAutoConfigurationTestCase {
 			.withInitializer(new ExtendedTestApplicationContextInitializer())
 			.withPropertyValues("igloo.profile=test")
 			.run(
-				(context) -> { assertThat(context).hasSingleBean(ConfigurationLogger.class); }
+				context -> assertThat(context).hasSingleBean(ConfigurationLogger.class)
 			);
 	}
 	
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {IglooJpaSecurityAutoConfiguration.class})
+	@EnableIglooAutoConfiguration(
+		exclude = {
+			IglooBootstrap4AutoConfiguration.class,
+			IglooJpaSecurityAutoConfiguration.class
+		}
+	)
 	public static class TestConfig {}
 
 }

@@ -29,7 +29,7 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 		add(
 			new NavTabsPanel("tabs")
 				.add(
-					new NavTabsPanel.SimpleTabFactory("business.city") {
+					new NavTabsPanel.SimpleTabFactory("city", "business.city") {
 						private static final long serialVersionUID = 1L;
 						@Override
 						public Component createContent(String wicketId) {
@@ -38,7 +38,7 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 					}
 				)
 				.add(
-					new NavTabsPanel.SimpleTabFactory(Model.of("Reference data #2")) {
+					new NavTabsPanel.SimpleTabFactory("reference-data-2", Model.of("Item #2")) {
 						private static final long serialVersionUID = 1L;
 						@Override
 						public Component createContent(String wicketId) {
@@ -47,7 +47,7 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 					}
 				)
 				.add(
-					new NavTabsPanel.SimpleTabFactory(Model.of("Reference data #3")) {
+					new NavTabsPanel.SimpleTabFactory("reference-data-3", Model.of("Item #3")) {
 						private static final long serialVersionUID = 1L;
 						@Override
 						public Component createContent(String wicketId) {
@@ -56,16 +56,7 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 					}
 				)
 				.add(
-					new NavTabsPanel.SimpleTabFactory(Model.of("Reference data #4")) {
-						private static final long serialVersionUID = 1L;
-						@Override
-						public Component createContent(String wicketId) {
-							return new FeatureNotYetAvailablePanel(wicketId);
-						}
-					}
-				)
-				.add(
-					new NavTabsPanel.SimpleTabFactory(Model.of("Reference data #5")) {
+					new NavTabsPanel.SimpleTabFactory("reference-data-4", Model.of("Item #4")) {
 						private static final long serialVersionUID = 1L;
 						@Override
 						public Component createContent(String wicketId) {

@@ -15,12 +15,14 @@ import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
+import com.google.common.collect.Lists;
+
 public class ConfirmButton extends Button {
 
 	private static final long serialVersionUID = -4124927130129944090L;
 
-	@SpringBean
-	private List<IBootstrapConfirmModule> modules;
+	@SpringBean(required = false)
+	private List<IBootstrapConfirmModule> modules = Lists.newArrayList();
 
 	public ConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel, IModel<String> yesLabelModel,
 			IModel<String> noLabelModel, IModel<String> yesIconModel, IModel<String> noIconModel,

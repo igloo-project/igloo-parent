@@ -21,12 +21,14 @@ import org.wicketstuff.wiquery.core.events.WiQueryEventBehavior;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
 
+import com.google.common.collect.Lists;
+
 public abstract class AjaxConfirmButton extends AjaxButton {
 
 	private static final long serialVersionUID = -132330109149500197L;
 
-	@SpringBean
-	private List<IBootstrapConfirmModule> modules;
+	@SpringBean(required = false)
+	private List<IBootstrapConfirmModule> modules = Lists.newArrayList();
 
 	public AjaxConfirmButton(String id, IModel<String> titleModel, IModel<String> textModel,
 			IModel<String> yesLabelModel, IModel<String> noLabelModel,

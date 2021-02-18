@@ -1,0 +1,24 @@
+@import "../../common/fontawesome/fontawesome";
+
+@import "../../common/bootstrap/bootstrap-functions";
+@import "$(scope-core-console)common/bootstrap/bootstrap-variables";
+@import "../../common/bootstrap/bootstrap-mixins";
+@import "../../common/bootstrap/bootstrap-utilities";
+@import "../../common/bootstrap/bootstrap-root";
+@import "../../common/bootstrap/bootstrap-reboot";
+@import "../../common/bootstrap/bootstrap-core";
+
+@import "variables";
+@import "../common/variables";
+@import "../../common/variables";
+
+@import "../../common/common";
+@import "../../common/layout";
+@import "../../common/forms";
+
+@import "../common/common";
+
+@import "$(scope-core-console)console/layout";
+@import "$(scope-core-console)console/ehcache";
+@import "$(scope-core-console)console/task";
+@import "$(scope-core-console)console/notification";

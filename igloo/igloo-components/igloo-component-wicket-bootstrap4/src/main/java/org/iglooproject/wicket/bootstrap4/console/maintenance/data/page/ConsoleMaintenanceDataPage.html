@@ -26,18 +26,18 @@
 								<table class="table table-striped table-bordered-inner table-card-body">
 									<thead class="thead-light">
 										<tr>
-											<th class="text text-xl"><wicket:message key="console.maintenance.data.dataUpgrade.upgrade" /></th>
-											<th class="date date-md"><wicket:message key="console.maintenance.data.dataUpgrade.executionDate" /></th>
-											<th class="statut statut-sm"><wicket:message key="console.maintenance.data.dataUpgrade.autoPerform" /></th>
-											<th class="actions actions-1x"></th>
+											<th class="cell-w-400"><wicket:message key="console.maintenance.data.dataUpgrade.upgrade" /></th>
+											<th class="cell-w-150"><wicket:message key="console.maintenance.data.dataUpgrade.executionDate" /></th>
+											<th class="cell-w-60"><wicket:message key="console.maintenance.data.dataUpgrade.autoPerform" /></th>
+											<th class="cell-w-actions-1x"></th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr wicket:id="dataUpgrades">
-											<td class="text text-xl"><wicket:container wicket:id="name" /></td>
-											<td class="date date-md"><wicket:container wicket:id="executionDate" /></td>
-											<td class="statut statut-sm"><wicket:container wicket:id="autoPerform" /></td>
-											<td class="actions actions-1x">
+											<td class="cell-w-400"><wicket:container wicket:id="name" /></td>
+											<td class="cell-w-150"><wicket:container wicket:id="executionDate" /></td>
+											<td class="cell-w-60"><wicket:container wicket:id="autoPerform" /></td>
+											<td class="cell-w-actions-1x">
 												<div class="row row-table-action">
 													<div class="col-table-action">
 														<button wicket:id="execute" class="btn btn-primary btn-table-row-action" type="button">

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -45,7 +46,7 @@ class IglooAutoConfigurationBehaviorTestCase {
 			.withPropertyValues("spring.mail.host=localhost")
 			.withConfiguration(AutoConfigurations.of(TestBothSpringBootIglooConfig.class))
 			.run(
-				(context) -> { assertThat(context).hasSingleBean(JavaMailSenderImpl.class); }
+				context -> assertThat(context).hasSingleBean(JavaMailSenderImpl.class)
 			);
 	}
 
@@ -64,7 +65,7 @@ class IglooAutoConfigurationBehaviorTestCase {
 					"spring.jpa.hibernate.naming.physicalStrategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy")
 			.withConfiguration(AutoConfigurations.of(TestSpringBootConfig.class))
 			.run(
-				(context) -> { assertThat(context).hasSingleBean(JavaMailSenderImpl.class); }
+				context -> assertThat(context).hasSingleBean(JavaMailSenderImpl.class)
 			);
 	}
 
@@ -79,15 +80,19 @@ class IglooAutoConfigurationBehaviorTestCase {
 			.withPropertyValues("spring.mail.host=localhost")
 			.withConfiguration(AutoConfigurations.of(TestIglooConfig.class))
 			.run(
-				(context) -> { assertThat(context).doesNotHaveBean(JavaMailSenderImpl.class); }
+				context -> assertThat(context).doesNotHaveBean(JavaMailSenderImpl.class)
 			);
 	}
 
 	@Configuration
-	// our gson version is not compatible with spring-boot
 	@EnableAutoConfiguration(exclude = GsonAutoConfiguration.class)
-	@EnableIglooAutoConfiguration(exclude = {IglooJpaSecurityAutoConfiguration.class,
-			IglooApplicationConfigAutoConfiguration.class})
+	@EnableIglooAutoConfiguration(
+		exclude = {
+			IglooBootstrap4AutoConfiguration.class,
+			IglooJpaSecurityAutoConfiguration.class,
+			IglooApplicationConfigAutoConfiguration.class
+		}
+	)
 	public static class TestBothSpringBootIglooConfig {
 	}
 
@@ -98,8 +103,13 @@ class IglooAutoConfigurationBehaviorTestCase {
 	}
 
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {IglooJpaSecurityAutoConfiguration.class,
-			IglooApplicationConfigAutoConfiguration.class})
+	@EnableIglooAutoConfiguration(
+		exclude = {
+			IglooBootstrap4AutoConfiguration.class,
+			IglooJpaSecurityAutoConfiguration.class,
+			IglooApplicationConfigAutoConfiguration.class
+		}
+	)
 	public static class TestIglooConfig {
 	}
 }

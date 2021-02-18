@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div class="content-container">
+		<div class="content-header-section">
+			<div class="content-header-container">
+				<div class="content-header">
+					<h1 class="content-header-title">
+						<wicket:message key="console.maintenance.data" />
+					</h1>
+				</div>
+			</div>
+		</div>
+		<div class="content-body-section">
+			<div class="content-body-container">
+				<div class="content-body">
+					<div class="card card-main">
+						<div class="card-header">
+							<div class="card-header-title">
+								<wicket:message key="console.maintenance.data.dataUpgrade.title" />
+							</div>
+						</div>
+						<div class="card-body card-body-table">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th class="cell-w-400"><wicket:message key="console.maintenance.data.dataUpgrade.upgrade" /></th>
+											<th class="cell-w-150"><wicket:message key="console.maintenance.data.dataUpgrade.executionDate" /></th>
+											<th class="cell-w-60"><wicket:message key="console.maintenance.data.dataUpgrade.autoPerform" /></th>
+											<th class="cell-w-actions-1x"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr wicket:id="dataUpgrades">
+											<td class="cell-w-400"><wicket:container wicket:id="name" /></td>
+											<td class="cell-w-150"><wicket:container wicket:id="executionDate" /></td>
+											<td class="cell-w-60"><wicket:container wicket:id="autoPerform" /></td>
+											<td class="cell-w-actions-1x">
+												<div class="row row-table-action">
+													<div class="col-table-action">
+														<button wicket:id="execute" class="btn btn-primary btn-table-row-action" type="button">
+															<span class="fa fa-fw fa-play" />
+														</button>
+														<wicket:container wicket:id="alreadyExecutedContainer">
+															<span class="fa fa-fw fa-check" wicket:message="title:console.maintenance.data.dataUpgrade.alreadyExecuted" />
+														</wicket:container>
+													</div>
+												</div>
+											</td>
+										</tr>
+										<tr wicket:id="emptyList">
+											<td colspan="4"><wicket:message key="common.list.empty" /></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</wicket:extend>
+</html>

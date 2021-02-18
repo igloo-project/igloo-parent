@@ -4,52 +4,45 @@
 	<wicket:panel>
 		<div class="card-body">
 			<form wicket:id="form">
-				<div class="row row-form">
+				<div class="row g-3">
 					<div class="col-12">
 						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><span class="fa fa-fw fa-user" /></span>
+							<div class="row g-2">
+								<div class="col-auto align-self-center" aria-hidden="true">
+									<span class="fa fa-fw fa-user fa-2x text-secondary" />
 								</div>
-								<input class="form-control form-control-username" wicket:id="username" type="text" id="username" />
+								<div class="col">
+									<div class="form-floating">
+										<input wicket:id="username" id="username" class="form-control">
+										<label wicket:for="username"><wicket:label /></label>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="col-12">
 						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><span class="fa fa-fw fa-lock" /></span>
+							<div class="row g-2">
+								<div class="col-auto align-self-center" aria-hidden="true">
+									<span class="fa fa-fw fa-lock fa-2x text-secondary" />
 								</div>
-								<input class="form-control form-control-password" wicket:id="password" type="password" id="password" />
+								<div class="col">
+									<div class="form-floating">
+										<input wicket:id="password" id="password" class="form-control" type="password">
+										<label wicket:for="password"><wicket:label /></label>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				
-				<div class="card-action">
-					<div class="row row-action justify-content-end">
-						<div class="col-auto">
-							<button class="btn btn-success" type="submit">
-								<span class="fa fa-fw fa-sign-in-alt" />
-								<wicket:message key="signIn.action.signIn" />
-							</button>
-						</div>
+					<div class="col-auto ms-auto">
+						<button class="btn btn-success btn-lg" type="submit">
+							<span class="fa fa-fw fa-sign-in-alt" />
+							<wicket:message key="signIn.action.signIn" />
+						</button>
 					</div>
 				</div>
 			</form>
 		</div>
-		
-		<script type="text/javascript">
-			var usernameField = document.getElementById('username');
-			if (usernameField.value == "") {
-				usernameField.focus();
-			} else {
-				var passwordField = document.getElementById('password');
-				if (passwordField.value == "") {
-					passwordField.focus();
-				}
-			}
-		</script>
 	</wicket:panel>
 </html>

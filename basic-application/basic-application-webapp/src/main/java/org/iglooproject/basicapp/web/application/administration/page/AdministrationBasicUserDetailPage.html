@@ -7,7 +7,7 @@
 		<div class="content-header-section">
 			<div class="content-header-container">
 				<div class="content-header">
-					<div class="row row-xs align-items-center">
+					<div class="row g-2 align-items-center">
 						<div class="col-auto">
 							<a wicket:id="backToSourcePage" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
 								<span class="fa fa-fw fa-arrow-left" />
@@ -17,21 +17,21 @@
 							</a>
 						</div>
 						<div class="col-auto">
-							<h4 wicket:id="pageTitle" class="content-header-title" />
+							<h1 wicket:id="pageTitle" class="content-header-title" />
 						</div>
 					</div>
 					
 					<div wicket:id="headerElementsSection" class="content-header-elements-section">
-						<div class="row row-xs align-items-center">
+						<div class="row g-3 align-items-center">
 							<div wicket:id="informationContainer" class="col-auto">
-								<div class="row row-xs align-items-center">
+								<div class="row g-2 align-items-center">
 									<div class="col-auto">
-										<span wicket:id="enabled" class="badge-header" />
+										<span wicket:id="enabled" class="fs-6" />
 									</div>
 								</div>
 							</div>
-							<div wicket:id="actionsContainer" class="col-auto ml-auto">
-								<div class="row row-xs align-items-center">
+							<div wicket:id="actionsContainer" class="col-auto ms-auto">
+								<div class="row g-2 align-items-center">
 									<div wicket:enclosure-component="passwordEdit" class="col-auto">
 										<button wicket:id="passwordEdit" class="btn btn-primary" type="button">
 											<span class="fa fa-fw fa-key" />
@@ -66,16 +66,16 @@
 		
 		<div class="content-tabs-section">
 			<div class="content-tabs-container">
-				<ul class="nav nav-page nav-pills" role="tablist">
-					<li class="nav-item">
-						<a wicket:id="mainInformationTabLink" class="nav-link active show" role="tab" data-toggle="tab">
+				<ul class="nav nav-pills-outline hstack gap-2" role="tablist">
+					<li class="nav-item" role="presentation">
+						<button wicket:id="mainInformationTab" class="nav-link" type="button">
 							<wicket:message key="administration.user.detail.tab.mainInformation" />
-						</a>
+						</button>
 					</li>
-					<li class="nav-item">
-						<a wicket:id="securityTabLink" class="nav-link" role="tab" data-toggle="tab">
+					<li class="nav-item" role="presentation">
+						<button wicket:id="securityTab" class="nav-link" type="button">
 							<wicket:message key="administration.user.detail.tab.security" />
-						</a>
+						</button>
 					</li>
 				</ul>
 			</div>
@@ -85,8 +85,8 @@
 			<div class="content-body-container">
 				<div class="content-body">
 					<div class="tab-content">
-						<div id="tab-main-information" class="tab-pane fade show active" role="tabpanel"><div wicket:id="mainInformation" /></div>
-						<div id="tab-security" class="tab-pane fade" role="tabpanel"><div wicket:id="security" /></div>
+						<div wicket:id="mainInformation" class="tab-pane fade" />
+						<div wicket:id="security" class="tab-pane fade" />
 					</div>
 				</div>
 			</div>

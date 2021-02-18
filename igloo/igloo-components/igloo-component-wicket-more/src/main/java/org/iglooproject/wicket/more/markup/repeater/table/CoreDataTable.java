@@ -55,13 +55,25 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 
 	private MarkupContainer componentToRefresh;
 	
-	public CoreDataTable(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider,
-			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories, long rowsPerPage) {
-		this(id, columns, SequenceProviders.forDataProvider(dataProvider), rowsBehaviorFactories, rowsPerPage);
+	public CoreDataTable(
+		String id,
+		Map<IColumn<T, S>, Condition> columns,
+		IDataProvider<T> dataProvider,
+		List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
+		List<Behavior> tableBehaviors,
+		long rowsPerPage
+	) {
+		this(id, columns, SequenceProviders.forDataProvider(dataProvider), rowsBehaviorFactories, tableBehaviors, rowsPerPage);
 	}
 	
-	public CoreDataTable(String id, Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider, 
-			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories, long rowsPerPage) {
+	public CoreDataTable(
+		String id,
+		Map<IColumn<T, S>, Condition> columns,
+		ISequenceProvider<T> sequenceProvider,
+		List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
+		List<Behavior> tableBehaviors,
+		long rowsPerPage
+	) {
 		super(id);
 		this.columnToConditionMap = columns;
 		this.displayedColumns = Lists.newArrayList();
@@ -80,6 +92,8 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 		topToolbars = new CoreToolbarsContainer("topToolbars");
 		bottomToolbars = new CoreToolbarsContainer("bottomToolbars");
 		add(topToolbars, bottomToolbars);
+		
+		add(tableBehaviors.stream().toArray(Behavior[]::new));
 		
 		setComponentToRefresh(this);
 	}

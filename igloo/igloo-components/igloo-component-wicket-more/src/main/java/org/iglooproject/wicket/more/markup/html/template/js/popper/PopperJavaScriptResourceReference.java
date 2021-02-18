@@ -9,7 +9,7 @@ public final class PopperJavaScriptResourceReference extends WebjarsJavaScriptRe
 	private static final PopperJavaScriptResourceReference INSTANCE = new PopperJavaScriptResourceReference();
 
 	private PopperJavaScriptResourceReference() {
-		super("webjars/popper.js/current/dist/umd/popper.js");
+		super("webjars/popperjs__core/current/dist/umd/popper.js");
 	}
 
 	public static PopperJavaScriptResourceReference get() {

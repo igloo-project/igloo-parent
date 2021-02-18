@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.junit.jupiter.api.Test;
@@ -29,13 +30,18 @@ class FlywayAutoConfigurationTestCase {
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.run(
-				(context) -> { assertThat(context).hasSingleBean(FlywayConfiguration.class); }
+				context -> assertThat(context).hasSingleBean(FlywayConfiguration.class)
 			);
 	}
 	
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {IglooJpaSecurityAutoConfiguration.class,
-			IglooApplicationConfigAutoConfiguration.class})
+	@EnableIglooAutoConfiguration(
+		exclude = {
+			IglooBootstrap4AutoConfiguration.class,
+			IglooJpaSecurityAutoConfiguration.class,
+			IglooApplicationConfigAutoConfiguration.class
+		}
+	)
 	public static class TestConfig {}
 
 }

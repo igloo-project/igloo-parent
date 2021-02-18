@@ -69,11 +69,13 @@ public class SignInContentPanel extends Panel {
 				new TextField<>("username", usernameModel)
 					.setRequired(true)
 					.setLabel(new ResourceModel("signIn.username"))
-					.add(new LabelPlaceholderBehavior()),
+					.add(new LabelPlaceholderBehavior())
+					.setOutputMarkupId(true),
 				new PasswordTextField("password", passwordModel)
 					.setRequired(true)
 					.setLabel(new ResourceModel("signIn.password"))
 					.add(new LabelPlaceholderBehavior())
+					.setOutputMarkupId(true)
 			);
 	}
 

@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
@@ -34,15 +35,15 @@ import org.iglooproject.basicapp.web.application.security.password.page.Security
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
-import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
+import org.iglooproject.wicket.bootstrap5.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.BootstrapJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipBehavior;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipOptions;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
@@ -99,9 +100,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		
 		add(new BootstrapBreakpointPanel("bsBreakpoint"));
 		
-		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
-		
-		add(new BootstrapDropdownBehavior());
+		add(new BootstrapTooltipBehavior(getBootstrapTooltipOptionsModel()));
 		
 		getApplicationTheme().specificContent(
 			this,
@@ -158,11 +157,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		return Condition.alwaysTrue();
 	}
 
-	protected BootstrapTooltip getBootstrapTooltip() {
-		return new BootstrapTooltip()
-			.selector("[title],[data-original-title]")
-			.animation(true)
-			.container("body");
+	protected IModel<BootstrapTooltipOptions> getBootstrapTooltipOptionsModel() {
+		return BootstrapTooltipOptions::get;
 	}
 
 	protected BasicApplicationApplicationTheme getApplicationTheme() {
@@ -173,6 +169,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		getApplicationTheme().renderHead(response);
+		response.render(JavaScriptHeaderItem.forReference(BootstrapJavaScriptResourceReference.get()));
 	}
 
 	@Override

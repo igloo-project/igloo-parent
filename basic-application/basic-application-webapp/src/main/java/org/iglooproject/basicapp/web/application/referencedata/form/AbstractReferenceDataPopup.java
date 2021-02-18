@@ -43,7 +43,7 @@ public abstract class AbstractReferenceDataPopup<T extends GenericReferenceData<
 
 	@Override
 	protected Component createHeader(String wicketId) {
-		return new CoreLabel(wicketId, new StringResourceModel("referenceData.${}.title", formModeModel));
+		return new CoreLabel(wicketId, new StringResourceModel("referenceData.action.${}.title", formModeModel));
 	}
 
 	@Override
@@ -63,11 +63,10 @@ public abstract class AbstractReferenceDataPopup<T extends GenericReferenceData<
 					
 					if (addModeCondition().applies()) {
 						onSubmitAddMode(referenceData);
-						Session.get().success(getString("referenceData.ADD.success"));
 					} else {
 						onSubmitEditMode(referenceData);
-						Session.get().success(getString("referenceData.EDIT.success"));
 					}
+					Session.get().success(getString("common.success"));
 					closePopup(target);
 					refresh(target);
 				} catch (RestartResponseException e) { // NOSONAR

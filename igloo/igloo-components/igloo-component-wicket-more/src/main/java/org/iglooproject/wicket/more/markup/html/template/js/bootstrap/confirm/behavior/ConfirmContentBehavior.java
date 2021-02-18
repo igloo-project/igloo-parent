@@ -12,6 +12,8 @@ import org.apache.wicket.util.value.IValueMap;
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.IBootstrapConfirmModule;
 import org.iglooproject.wicket.more.util.model.Models;
 
+import com.google.common.collect.Lists;
+
 public class ConfirmContentBehavior extends Behavior {
 
 	private static final long serialVersionUID = -5357415707217228299L;
@@ -27,8 +29,8 @@ public class ConfirmContentBehavior extends Behavior {
 	private static final String ATTRIBUTE_TEXT_NO_ESCAPE = "data-modal-confirm-text-noescape";
 	private static final String ATTRIBUTE_CSS_CLASS_NAMES = "data-modal-confirm-css-class-names";
 
-	@SpringBean
-	private List<IBootstrapConfirmModule> modules;
+	@SpringBean(required = false)
+	private List<IBootstrapConfirmModule> modules = Lists.newArrayList();
 
 	private final IModel<String> titleModel;
 

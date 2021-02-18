@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" wicket:id="htmlElement">
+	<head>
+		<title wicket:id="headPageTitle" />
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta name="description" content="Console">
+		
+		<wicket:header-items />
+	</head>
+	<body>
+		<div class="body-container">
+			<header class="header-section">
+				<nav class="navbar navbar-app navbar-main navbar-expand-lg">
+					<div class="container-fluid">
+						<div class="navbar-header">
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+								<span class="navbar-toggler-icon" />
+							</button>
+							
+							<span class="navbar-brand"><wicket:message key="common.console" /></span>
+						</div>
+						
+						<div class="navbar-body collapse navbar-collapse" id="navbarSupportedContent">
+							<ul wicket:id="navbarNavContainer" class="navbar-nav">
+								<li class="nav-item">
+									<a wicket:id="applicationHomePageLink" class="nav-link">
+										<span class="fa fa-fw fa-home" />
+										<wicket:message key="common.application" />
+									</a>
+								</li>
+								<li wicket:id="navbarNavItems" class="nav-item">
+									<a wicket:id="navLink" class="nav-link">
+										<span wicket:id="label" />
+									</a>
+									<div wicket:id="navbarNavSubContainer" class="dropdown-menu">
+										<wicket:container wicket:id="navbarNavSubItems">
+											<a wicket:id="navLink" class="dropdown-item">
+												<span wicket:id="label" />
+											</a>
+										</wicket:container>
+									</div>
+								</li>
+							</ul>
+							
+							<ul class="navbar-nav ms-auto">
+								<li class="nav-item">
+									<span class="navbar-text">
+										<span class="fa fa-fw fa-user-circle" />
+										<wicket:container wicket:id="userFullName" />
+									</span>
+								</li>
+								<li class="nav-item">
+									<a wicket:id="logoutLink" class="btn btn-danger" wicket:message="title:common.logout">
+										<span class="fa fa-fw fa-power-off" />
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</nav>
+				
+				<wicket:container wicket:id="headerEnvironment" />
+				<wicket:container wicket:id="headerAdditionalContent" />
+			</header>
+			
+			<main class="main-section">
+				<div class="main-body">
+					<div class="content-container">
+						<div class="content-pre-header-section">
+							<div class="content-pre-header-container">
+								<div class="content-pre-header">
+									<div wicket:id="breadCrumb" />
+								</div>
+							</div>
+						</div>
+						<wicket:child />
+					</div>
+				</div>
+			</main>
+			
+			<footer class="footer-section">
+				<div class="footer-container">
+					<div class="row g-3">
+						<div class="col-auto ms-auto">
+							<div class="footer-description">
+								<div class="row g-2 align-items-center justify-content-end">
+									<div class="col-auto">
+										<div class="footer-description-info">
+											<h6 class="footer-title"><wicket:message key="common.rootPageTitle" /></h6>
+											<div wicket:id="applicationVersion" class="footer-info-version-app" />
+											<div wicket:id="iglooVersion" class="footer-info-version-igloo" />
+										</div>
+									</div>
+									<div class="col-auto">
+										<div class="footer-description-logo">
+											<a href="https://github.com/igloo-project/igloo-parent" target="_blank">
+												<img src="static/common/images/logo-igloo-square.png" height="45" width="45" alt="Logo Igloo">
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+		
+		<div wicket:id="feedback" data-placement="bottom" />
+	</body>
+</html>

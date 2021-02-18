@@ -32,7 +32,8 @@ public abstract class AbstractUserDataProvider<U extends User> extends AbstractS
 	private final CompositeSortModel<UserSort> sortModel = new CompositeSortModel<>(
 		CompositingStrategy.LAST_ONLY,
 		ImmutableMap.of(
-			UserSort.FULL_NAME, UserSort.FULL_NAME.getDefaultOrder(),
+			UserSort.LAST_NAME, UserSort.LAST_NAME.getDefaultOrder(),
+			UserSort.FIRST_NAME, UserSort.FIRST_NAME.getDefaultOrder(),
 			UserSort.ID, UserSort.ID.getDefaultOrder()
 		),
 		ImmutableMap.of(

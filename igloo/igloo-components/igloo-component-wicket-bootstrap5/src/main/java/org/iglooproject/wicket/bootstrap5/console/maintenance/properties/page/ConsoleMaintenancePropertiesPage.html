@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div class="content-container">
+		<div class="content-header-section">
+			<div class="content-header-container">
+				<div class="content-header">
+					<h1 class="content-header-title">
+						<wicket:message key="console.maintenance.properties" />
+					</h1>
+				</div>
+			</div>
+		</div>
+		<div class="content-lead-section">
+			<div class="content-lead-container">
+				<div class="row row-form">
+					<div class="col-lg-5 col-xl-4">
+						<input wicket:id="filter" class="form-control" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="content-body-section">
+			<div class="content-body-container">
+				<div class="content-body">
+					<div wicket:id="propertiesContainer" class="row g-4">
+						<div class="col-12">
+							<div class="card card-main">
+								<div class="card-header">
+									<div class="card-header-title">
+										<wicket:message key="console.maintenance.properties" />
+									</div>
+								</div>
+								<div class="card-body card-body-table">
+									<div class="table-responsive">
+										<table class="table table-striped table-bordered">
+											<tbody>
+												<tr wicket:id="propertyIds">
+													<th class="cell-w-400"><wicket:container wicket:id="name" /></th>
+													<td class="cell-w-400"><wicket:container wicket:id="value" /></td>
+												</tr>
+												<tr wicket:id="emptyListPropertyIds">
+													<td><wicket:message key="common.list.empty" /></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="card card-main">
+								<div class="card-header">
+									<div class="card-header-title">
+										<wicket:message key="console.maintenance.properties" />
+									</div>
+								</div>
+								<div class="card-body card-body-table">
+									<div class="table-responsive">
+										<table class="table table-striped table-bordered">
+											<tbody>
+												<tr wicket:id="properties">
+													<th class="cell-w-400"><wicket:container wicket:id="name" /></th>
+													<td class="cell-w-400"><wicket:container wicket:id="value" /></td>
+												</tr>
+												<tr wicket:id="emptyListProperties">
+													<td><wicket:message key="common.list.empty" /></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</wicket:extend>
+</html>

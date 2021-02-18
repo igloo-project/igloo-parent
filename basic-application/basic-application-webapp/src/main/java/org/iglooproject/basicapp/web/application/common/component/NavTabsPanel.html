@@ -3,18 +3,18 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
 	<div class="col-lg-3">
-		<ul class="nav nav-page flex-column nav-pills" role="tablist">
-			<li wicket:id="tabs" class="nav-item">
-				<a wicket:id="link" class="nav-link" role="tab" data-toggle="tab">
+		<ul class="nav nav-pills-outline vstack gap-2" role="tablist">
+			<li wicket:id="tabs" class="nav-item" role="presentation">
+				<button wicket:id="tab" class="nav-link" type="button">
 					<span wicket:id="label" />
-				</a>
+				</button>
 			</li>
 		</ul>
 	</div>
 	
 	<div class="col-lg-9">
 		<div class="tab-content">
-			<div wicket:id="tabsContents" class="tab-pane fade" role="tabpanel" />
+			<div wicket:id="panels" class="tab-pane fade" />
 		</div>
 	</div>
 </wicket:panel>

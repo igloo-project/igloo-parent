@@ -41,20 +41,20 @@
 										<table class="table table-bordered-inner table-card-body table-layout-fixed">
 											<thead class="thead-light">
 												<tr>
-													<th class="text text-xl"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.nom" /></th>
-													<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.evictionCount" /></th>
-													<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.cacheHits" /></th>
-													<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.cacheMisses" /></th>
-													<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.hitRatio" /></th>
-													<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.memoryStoreObjectCount" /></th>
-													<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.maxElementsInMemory" /></th>
-													<th class="numeric numeric-sm"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.cacheFillRatio" /></th>
-													<th class="actions actions-2x"></th>
+													<th class="cell-w-300"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.nom" /></th>
+													<th class="cell-w-80"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.evictionCount" /></th>
+													<th class="cell-w-80"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.cacheHits" /></th>
+													<th class="cell-w-80"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.cacheMisses" /></th>
+													<th class="cell-w-80"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.hitRatio" /></th>
+													<th class="cell-w-80"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.memoryStoreObjectCount" /></th>
+													<th class="cell-w-80"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.maxElementsInMemory" /></th>
+													<th class="cell-w-80"><wicket:message key="console.maintenance.ehcache.cacheManager.cache.cacheFillRatio" /></th>
+													<th class="cell-w-actions-2x"></th>
 												</tr>
 											</thead>
 											<tbody wicket:id="caches">
 												<tr>
-													<td rowspan="2" class="text text-xl">
+													<td rowspan="2">
 														<span wicket:id="name" />
 														<div class="input-group input-group-sm">
 															<input wicket:id="nameInput" class="form-control cache-name-input" type="text" />
@@ -72,7 +72,7 @@
 													<td class="text-right"><span wicket:id="memoryStoreObjectCount"></span></td>
 													<td class="text-right"><span wicket:id="maxElementsInMemory"></span></td>
 													<td class="text-right"><span wicket:id="cacheFillRatio"></span></td>
-													<td class="actions actions-2x" rowspan="2">
+													<td rowspan="2">
 														<div wicket:id="editPopup" />
 														<div class="row row-table-action">
 															<div class="col-table-action">

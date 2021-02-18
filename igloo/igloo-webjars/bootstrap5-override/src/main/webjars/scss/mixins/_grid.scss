@@ -1,0 +1,4 @@
+@mixin gutter($gutter-x, $gutter-y: $gutter-x) {
+	--#{$variable-prefix}gutter-x: #{$gutter-x};
+	--#{$variable-prefix}gutter-y: #{$gutter-y};
+}

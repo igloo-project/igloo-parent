@@ -18,12 +18,14 @@ import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
+import com.google.common.collect.Lists;
+
 public abstract class ConfirmLink<O> extends Link<O> {
 
 	private static final long serialVersionUID = -4124927130129944090L;
 
-	@SpringBean
-	private List<IBootstrapConfirmModule> modules;
+	@SpringBean(required = false)
+	private List<IBootstrapConfirmModule> modules = Lists.newArrayList();
 
 	public static <O> IConfirmLinkBuilderStepStart<ConfirmLink<O>, O> build() {
 		return new ConfirmLinkBuilder<>();

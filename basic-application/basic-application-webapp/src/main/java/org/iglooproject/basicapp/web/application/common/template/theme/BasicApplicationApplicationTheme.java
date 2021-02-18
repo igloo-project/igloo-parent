@@ -5,15 +5,11 @@ import java.util.function.Supplier;
 
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
-import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 
 public enum BasicApplicationApplicationTheme {
@@ -26,8 +22,7 @@ public enum BasicApplicationApplicationTheme {
 		
 		@Override
 		public void renderHead(IHeaderResponse response) {
-			response.render(CssHeaderItem.forReference(org.iglooproject.basicapp.web.application.common.template.resources.styles.application.basic.StylesScssResourceReference.get()));
-			response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
+			response.render(CssHeaderItem.forReference(org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationbasic.StylesScssResourceReference.get()));
 		}
 		
 		@Override
@@ -47,9 +42,7 @@ public enum BasicApplicationApplicationTheme {
 				
 				new ApplicationEnvironmentPanel("environment"),
 				
-				new org.iglooproject.basicapp.web.application.common.template.theme.basic.FooterPanel("footer"),
-				
-				new WebMarkupContainer("scrollToTop").add(new ScrollToTopBehavior())
+				new org.iglooproject.basicapp.web.application.common.template.theme.basic.FooterPanel("footer")
 			);
 		}
 		
@@ -66,8 +59,7 @@ public enum BasicApplicationApplicationTheme {
 		
 		@Override
 		public void renderHead(IHeaderResponse response) {
-			response.render(CssHeaderItem.forReference(org.iglooproject.basicapp.web.application.common.template.resources.styles.application.advanced.StylesScssResourceReference.get()));
-			response.render(JavaScriptHeaderItem.forReference(BootstrapCollapseJavaScriptResourceReference.get()));
+			response.render(CssHeaderItem.forReference(org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationadvanced.StylesScssResourceReference.get()));
 		}
 		
 		@Override

@@ -1,0 +1,88 @@
+.select2-container--bootstrap {
+	.select2-selection__clear {
+		margin-left: 10px;
+	}
+	
+	.select2-selection--multiple {
+		font-size: $s2bs-font-size-base;
+		
+		.select2-selection__rendered {
+			padding: calc((#{$s2bs-padding-base-vertical} / 2) - (1px / 2));
+		}
+		
+		.select2-selection__choice {
+			margin: calc((#{$s2bs-padding-base-vertical} / 2) - (1px / 2));
+			white-space: normal;
+			word-break: break-word;
+		}
+		
+		.select2-search--inline {
+			margin: calc((#{$s2bs-padding-base-vertical} / -2) + (1px / 2));
+			
+			.select2-search__field {
+				height: calc(#{$s2bs-input-height-base} - 2 * #{$border-width});
+				margin: 0;
+			}
+		}
+		
+		.select2-selection__choice__remove {
+			float: left;
+		}
+		
+		.select2-selection__clear {
+			margin: calc((#{$s2bs-padding-base-vertical} / 2) + (1px / 2)) 10px;
+		}
+	}
+	
+	.select2-selection--multiple.form-control-sm,
+	.input-group-sm & .select2-selection--multiple,
+	.form-group-sm & .select2-selection--multiple {
+		font-size: $s2bs-font-size-small;
+		
+		.select2-selection__rendered {
+			padding: calc((#{$s2bs-padding-small-vertical} / 2) - (1px / 2));
+		}
+		
+		.select2-selection__choice {
+			margin: calc((#{$s2bs-padding-small-vertical} / 2) - (1px / 2));
+		}
+		
+		.select2-search--inline {
+			margin: calc((#{$s2bs-padding-small-vertical} / -2) + (1px / 2));
+			
+			.select2-search__field {
+				height: calc(#{$s2bs-input-height-small} - 2 * #{$border-width});
+			}
+		}
+		
+		.select2-selection__clear {
+			margin: calc((#{$s2bs-padding-small-vertical} / 2) + (1px / 2)) 10px;
+		}
+	}
+
+	.select2-selection--multiple.form-control-lg,
+	.input-group-lg & .select2-selection--multiple,
+	.form-group-lg & .select2-selection--multiple {
+		font-size: $s2bs-font-size-large;
+		
+		.select2-selection__rendered {
+			padding: calc((#{$s2bs-padding-large-vertical} / 2) - (1px / 2));
+		}
+		
+		.select2-selection__choice {
+			margin: calc((#{$s2bs-padding-large-vertical} / 2) - (1px / 2));
+		}
+		
+		.select2-search--inline {
+			margin: calc((#{$s2bs-padding-large-vertical} / -2) + (1px / 2));
+			
+			.select2-search__field {
+				height: calc(#{$s2bs-input-height-large} - 2 * #{$border-width});
+			}
+		}
+		
+		.select2-selection__clear {
+			margin: calc((#{$s2bs-padding-large-vertical} / 2) + (1px / 2)) 10px;
+		}
+	}
+}

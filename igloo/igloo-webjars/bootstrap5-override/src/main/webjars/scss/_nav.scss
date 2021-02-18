@@ -1,0 +1,29 @@
+.nav-pills-outline {
+	.nav-link {
+		width: 100%;
+		text-align: left;
+		@include gradient-bg($nav-pills-outline-link-bg);
+		border: $nav-pills-outline-border-width solid $nav-pills-outline-border-color;
+		@include border-radius($nav-pills-outline-border-radius);
+		
+		&:hover,
+		&:focus {
+			@include gradient-bg($nav-pills-outline-link-hover-bg);
+			isolation: isolate;
+		}
+		
+		&:disabled,
+		&.disabled {
+			color: $nav-pills-outline-link-disabled-color;
+			@include gradient-bg($nav-pills-outline-link-disabled-bg);
+			pointer-events: none;
+			cursor: default;
+		}
+	}
+	
+	.nav-link.active,
+	.show > .nav-link {
+		color: $nav-pills-outline-link-active-color;
+		@include gradient-bg($nav-pills-outline-link-active-bg);
+	}
+}

@@ -1,5 +1,8 @@
 package org.iglooproject.basicapp.web.application.administration.page;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_DISPLAY_LG;
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_DISPLAY_XL;
 import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.TABLE_ROW_DISABLED;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
@@ -24,7 +27,6 @@ import org.iglooproject.basicapp.web.application.administration.template.Adminis
 import org.iglooproject.basicapp.web.application.common.component.AnnouncementMessagePanel;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.renderer.AnnouncementEnabledRenderer;
-import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -96,12 +98,15 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 		DecoratedCoreDataTablePanel<?, ?> results =
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 				.addBootstrapBadgeColumn(Model.of(), Bindings.announcement(), AnnouncementEnabledRenderer.get())
+					.badgePill()
 					.hideLabel()
-					.withClass("narrow")
+					.withClass("cell-w-60 text-center")
 				.addLabelColumn(new ResourceModel("business.announcement.id"), Bindings.announcement().id())
 					.withSort(AnnouncementSort.ID, SortIconStyle.NUMERIC, CycleMode.DEFAULT_REVERSE)
-					.withClass("numeric numeric-sm")
+					.withClass("cell-w-60")
 				.addLabelColumn(new ResourceModel("business.announcement.type"), Bindings.announcement().type(), EnumRenderer.get())
+					.withClass("cell-w-100")
+					.withClass(CELL_DISPLAY_XL)
 				.addColumn(new AbstractCoreColumn<Announcement, AnnouncementSort>(new ResourceModel("business.announcement.message")) {
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -109,11 +114,13 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 						cellItem.add(new AnnouncementMessagePanel(componentId, rowModel));
 					}
 				})
+					.withClass("cell-w-400")
 				.addLabelColumn(new ResourceModel("business.announcement.publication.startDateTime"), Bindings.announcement().publication().startDateTime(), DatePattern.REALLY_SHORT_DATETIME)
 					.withSort(AnnouncementSort.PUBLICATION_START_DATE_TIME, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
-					.withClass("date date-md")
+					.withClass("cell-w-150")
 				.addLabelColumn(new ResourceModel("business.announcement.publication.endDateTime"), Bindings.announcement().publication().endDateTime(), DatePattern.REALLY_SHORT_DATETIME)
-					.withClass("date date-md")
+					.withClass("cell-w-150")
+					.withClass(CELL_DISPLAY_LG)
 				.addActionColumn()
 					.addAction(ActionRenderers.edit(), new OneParameterModalOpenAjaxAction<IModel<Announcement>>(popup) {
 						private static final long serialVersionUID = 1L;
@@ -144,9 +151,9 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 								}
 							}
 						})
-					.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
+					.withClassOnElements(BTN_TABLE_ROW_ACTION)
 					.end()
-					.withClass("actions actions-2x")
+					.withClass("cell-w-actions-2x")
 				.rows()
 					.withClass(itemModel -> Condition.predicate(itemModel, AnnouncementPredicates.disabled()).then(TABLE_ROW_DISABLED).otherwise(""))
 					.end()

@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.component;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION;
 
 import org.apache.wicket.RestartResponseException;
@@ -20,7 +21,6 @@ import org.iglooproject.basicapp.web.application.administration.form.UserGroupDr
 import org.iglooproject.basicapp.web.application.administration.model.UserGroupDataProvider;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDetailPage;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
-import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
@@ -56,7 +56,7 @@ public class TechnicalUserDetailGroupsPanel extends GenericPanel<TechnicalUser> 
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 				.addLabelColumn(new ResourceModel("business.userGroup.name"))
 					.withLink(AdministrationUserGroupDetailPage.MAPPER)
-					.withClass("text text-md")
+					.withClass("cell-w-300")
 				.addActionColumn()
 					.addConfirmAction(ActionRenderers.remove())
 						.title(new ResourceModel("administration.userGroup.detail.users.action.remove.confirmation.title"))
@@ -86,9 +86,9 @@ public class TechnicalUserDetailGroupsPanel extends GenericPanel<TechnicalUser> 
 							}
 						})
 						.hideLabel()
-					.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
+					.withClassOnElements(BTN_TABLE_ROW_ACTION)
 					.end()
-					.withClass("actions actions-1x")
+					.withClass("cell-w-actions-1x")
 				.bootstrapCard()
 					.addIn(AddInPlacement.FOOTER_MAIN, (wicketId, table) -> new UserGroupAddFragment(wicketId, userModel))
 					.ajaxPager(AddInPlacement.HEADING_RIGHT)

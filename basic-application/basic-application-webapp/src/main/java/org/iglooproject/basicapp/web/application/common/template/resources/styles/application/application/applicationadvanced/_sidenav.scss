@@ -1,0 +1,111 @@
+.sidenav-container {
+	ul {
+		margin: 0;
+		padding: 0;
+		
+		li {
+			list-style: none;
+		}
+	}
+	
+	ul.sidenav {
+		li.sidenav-item {
+			> a.sidenav-link {
+				display: flex;
+				align-items: baseline;
+				justify-content: space-between;
+				padding: 5px 10px 5px 7px;
+				border-left: 3px solid transparent;
+				font-size: 1rem;
+				word-wrap: break-word;
+				text-decoration: none;
+				color: inherit;
+				
+				&:hover, &:focus {
+					text-decoration: none;
+					outline: 0;
+					background-color: rgba(0, 0, 0, .06);
+				}
+				
+				> .sidenav-icon {
+					margin-right: 7px;
+				}
+				
+				> .sidenav-label {
+					@include flex-item-text-break();
+					flex: 1 1 100%;
+				}
+				
+				> .sidenav-label-sub-open-icon,
+				> .sidenav-label-sub-close-icon {
+					display: none;
+					margin-left: 2px;
+				}
+				
+				&.sidenav-link-sub {
+					&:not(.collapsed) {
+						> .sidenav-label-sub-open-icon {
+							display: inline;
+						}
+					}
+					
+					&.collapsed {
+						> .sidenav-label-sub-close-icon {
+							display: inline;
+						}
+					}
+				}
+			}
+			
+			&.active {
+				> a.sidenav-link {
+					background-color: $brand;
+					color: $brand-text;
+					font-weight: bold;
+				}
+			}
+			
+			&.active-sub {
+				> a.sidenav-link {
+					background-color: rgba($brand, .1);
+					font-weight: bold;
+					border-left-color: $brand;
+				}
+			}
+			
+			ul.sidenav-sub {
+				padding: 2px 0;
+				background: rgba(0, 0, 0, .02);
+				background: linear-gradient(rgba(0, 0, 0, .06), rgba(0, 0, 0, .02) 8px);
+				border-top: 1px solid rgba(0, 0, 0, .08);
+				border-bottom: 1px solid rgba(0, 0, 0, .01);
+				
+				
+				> li.sidenav-item {
+					font-size: .95rem;
+					
+					> a.sidenav-link {
+						> .sidenav-sub-icon {
+							width: $fa-fw-width;
+							color: rgba(0, 0, 0, .5);
+							text-align: center;
+							margin-right: 7px;
+						}
+					}
+					
+					&.active {
+						> a.sidenav-link {
+							background-color: $brand;
+							color: $brand-text;
+							font-weight: bold;
+							
+							> .sidenav-sub-icon {
+								color: $brand-text;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

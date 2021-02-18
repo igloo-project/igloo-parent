@@ -15,8 +15,13 @@ import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 
 public interface IDataTableFactory<T, S extends ISort<?>> extends IClusterable {
 
-	CoreDataTable<T, S> create(String id, Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider,
-			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
-			long rowsPerPage);
+	CoreDataTable<T, S> create(
+		String id,
+		Map<IColumn<T, S>, Condition> columns,
+		ISequenceProvider<T> sequenceProvider,
+		List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
+		List<Behavior> tableBehaviors,
+		long rowsPerPage
+	);
 
 }

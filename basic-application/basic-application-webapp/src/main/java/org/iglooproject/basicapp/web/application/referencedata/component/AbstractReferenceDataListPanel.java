@@ -1,10 +1,11 @@
 package org.iglooproject.basicapp.web.application.referencedata.component;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
-import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.basicapp.web.application.referencedata.form.AbstractReferenceDataPopup;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
@@ -75,10 +76,10 @@ public abstract class AbstractReferenceDataListPanel
 					}
 				})
 				.when(itemModel -> getEditCondition(itemModel))
-				.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
+				.withClassOnElements(BTN_TABLE_ROW_ACTION)
 				.end()
 				.when(getEditCondition())
-				.withClass("actions actions-1x");
+				.withClass("cell-w-actions-1x");
 		return super.addActionColumn(builder);
 	}
 

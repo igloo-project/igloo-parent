@@ -41,6 +41,7 @@ import org.springframework.context.annotation.Import;
  * <li>igloo-ac.property.disabled: {@link IglooPropertyAutoConfiguration}</li>
  * <li>igloo-ac.application.disabled: {@link IglooApplicationConfigAutoConfiguration}</li>
  * <li>igloo-ac.bootstrap4.disabled: {@link IglooBootstrap4AutoConfiguration}</li>
+ * <li>igloo-ac.bootstrap5.disabled: {@link IglooBootstrap5AutoConfiguration}</li>
  * <li>igloo-ac.wicket.disabled: {@link IglooWicketAutoConfiguration}</li>
  * </ul>
  */

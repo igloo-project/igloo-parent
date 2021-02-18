@@ -6,6 +6,7 @@ import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.IglooAutoConfigurationImportSelector;
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap5AutoConfiguration;
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaMoreAutoConfiguration;
@@ -54,18 +55,21 @@ class PropertyAutoConfigurationTestCase {
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.withPropertyValues(String.format("%s=%s",
-					IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
-					Joiner.on(",").join(IglooJpaAutoConfiguration.class.getName(),
-							IglooJpaMoreAutoConfiguration.class.getName(),
-							IglooFlywayAutoConfiguration.class.getName(),
-							IglooHibernateSearchAutoConfiguration.class.getName(),
-							IglooBootstrap4AutoConfiguration.class.getName(),
-							IglooWicketAutoConfiguration.class.getName(),
-							IglooJpaSecurityAutoConfiguration.class.getName(),
-							IglooTaskManagementAutoConfiguration.class.getName())))
+				IglooAutoConfigurationImportSelector.PROPERTY_NAME_AUTOCONFIGURE_EXCLUDE,
+				Joiner.on(",").join(
+					IglooJpaAutoConfiguration.class.getName(),
+					IglooJpaMoreAutoConfiguration.class.getName(),
+					IglooFlywayAutoConfiguration.class.getName(),
+					IglooHibernateSearchAutoConfiguration.class.getName(),
+					IglooBootstrap5AutoConfiguration.class.getName(),
+					IglooWicketAutoConfiguration.class.getName(),
+					IglooJpaSecurityAutoConfiguration.class.getName(),
+					IglooTaskManagementAutoConfiguration.class.getName()
+				)
+			))
 			.withPropertyValues("propertyNamesForInfoLogLevel=version")
 			.run(
-				(context) -> {
+				context -> {
 					assertThat(context).hasSingleBean(IPropertyService.class);
 					assertThat(context).doesNotHaveBean(IMutablePropertyDao.class);
 				}
@@ -73,8 +77,13 @@ class PropertyAutoConfigurationTestCase {
 	}
 
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {IglooJpaSecurityAutoConfiguration.class,
-			IglooApplicationConfigAutoConfiguration.class})
+	@EnableIglooAutoConfiguration(
+		exclude = {
+			IglooBootstrap4AutoConfiguration.class,
+			IglooJpaSecurityAutoConfiguration.class,
+			IglooApplicationConfigAutoConfiguration.class
+		}
+	)
 	public static class TestConfig {}
 
 }

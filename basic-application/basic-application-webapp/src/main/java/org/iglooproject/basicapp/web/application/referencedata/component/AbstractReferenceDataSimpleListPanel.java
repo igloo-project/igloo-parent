@@ -61,8 +61,8 @@ public abstract class AbstractReferenceDataSimpleListPanel
 						.withClass(itemModel -> (itemModel != null && !itemModel.getObject().isEnabled()) ? Model.of(TABLE_ROW_DISABLED): Model.of(""))
 						.end()
 					.bootstrapCard()
-					.count("referenceData.count")
-					.ajaxPagers()
+						.count("referenceData.count")
+						.ajaxPagers()
 			)
 				.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 		

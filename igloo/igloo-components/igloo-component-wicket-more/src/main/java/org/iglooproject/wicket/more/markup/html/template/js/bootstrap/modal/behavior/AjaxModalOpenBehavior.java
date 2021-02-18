@@ -21,12 +21,14 @@ import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
+import com.google.common.collect.Lists;
+
 public class AjaxModalOpenBehavior extends AjaxEventBehavior {
 
 	private static final long serialVersionUID = 3299212684157849227L;
 
-	@SpringBean
-	private List<IBootstrapModalModule> modules;
+	@SpringBean(required = false)
+	private List<IBootstrapModalModule> modules = Lists.newArrayList();
 
 	private final IAjaxModalPopupPanel modal;
 

@@ -5,20 +5,20 @@
 		<div class="content-header-section">
 			<div class="content-header-container">
 				<div class="content-header">
-					<h4 class="content-header-title">
+					<h1 class="content-header-title">
 						<wicket:message key="console.notifications" />
-					</h4>
+					</h1>
 				</div>
 			</div>
 		</div>
 		<div class="content-body-section">
 			<div class="content-body-container">
 				<div class="content-body">
-					<div class="card card-page">
+					<div class="card card-main">
 						<div class="card-header">
-							<h5 class="card-header-title">
+							<div class="card-header-title">
 								<wicket:message key="console.notifications" />
-							</h5>
+							</div>
 						</div>
 						<div class="card-body">
 							<button wicket:id="sendExample" class="btn btn-primary" type="button">
@@ -29,7 +29,7 @@
 						<wicket:enclosure child="notifications">
 							<div class="list-group list-group-flush">
 								<wicket:container wicket:id="notifications">
-									<a wicket:id="link" class="list-group-item">
+									<a wicket:id="link" class="list-group-item list-group-item-action">
 										<span class="fa fa-fw fa-share-square" />
 										<span wicket:id="label" />
 									</a>

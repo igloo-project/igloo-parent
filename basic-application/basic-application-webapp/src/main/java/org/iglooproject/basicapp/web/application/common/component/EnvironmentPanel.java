@@ -2,20 +2,16 @@ package org.iglooproject.basicapp.web.application.common.component;
 
 import java.util.List;
 
-import javax.servlet.http.Cookie;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.EnumLabel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.cookies.CookieUtils;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.config.util.Environment;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.ajax.AjaxListeners;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -34,8 +30,6 @@ public class EnvironmentPanel extends GenericPanel<Environment> {
 
 	private static final String COOKIE_CLOSE_NAME = "environmentAlertClose";
 
-	private final IModel<Boolean> compactModel = Model.of(Boolean.FALSE);
-
 	private final IModel<Boolean> closeModel = Model.of(Boolean.FALSE);
 
 	public EnvironmentPanel(String id) {
@@ -46,45 +40,39 @@ public class EnvironmentPanel extends GenericPanel<Environment> {
 		super(id, environmentModel);
 		setOutputMarkupId(true);
 		
+		Condition openCondition = Condition.isFalse(closeModel);
+		
 		add(
-			new AjaxLink<Void>("main") {
+			new EnclosureContainer("container")
+				.condition(openCondition)
+				.add(
+					new EnumLabel<>("environment", environmentModel),
+					new AjaxLink<Void>("close") {
+						private static final long serialVersionUID = 1L;
+						@Override
+						public void onClick(AjaxRequestTarget target) {
+							COOKIE_UTILS.save(COOKIE_CLOSE_NAME, Boolean.TRUE.toString());
+							closeModel.setObject(Boolean.TRUE);
+							AjaxListeners.add(target, AjaxListeners.refresh(EnvironmentPanel.this));
+						}
+					}
+				),
+			new AjaxLink<Void>("open") {
 				private static final long serialVersionUID = 1L;
 				@Override
 				public void onClick(AjaxRequestTarget target) {
-					Cookie cookie = COOKIE_UTILS.getCookie(COOKIE_CLOSE_NAME);
-					
-					if (cookie == null) {
-						COOKIE_UTILS.save(COOKIE_CLOSE_NAME, Boolean.TRUE.toString());
-						closeModel.setObject(Boolean.TRUE);
-					} else {
-						COOKIE_UTILS.remove(COOKIE_CLOSE_NAME);
-						closeModel.setObject(Boolean.FALSE);
-					}
-					
+					COOKIE_UTILS.remove(COOKIE_CLOSE_NAME);
+					closeModel.setObject(Boolean.FALSE);
 					AjaxListeners.add(target, AjaxListeners.refresh(EnvironmentPanel.this));
 				}
 			}
-				.add(
-					new EnclosureContainer("container")
-						.condition(Condition.isFalse(closeModel))
-						.add(
-							new CoreLabel("intro", new ResourceModel("environment.explanation"))
-								.setEscapeModelStrings(false)
-								.add(Condition.isTrue(compactModel).thenHide()),
-							new EnumLabel<>("environment", environmentModel)
-						)
-				)
+				.add(openCondition.thenHide())
 		);
 		
 		add(
 			new ClassAttributeAppender(environmentModel),
 			new ClassAttributeAppender(Condition.isTrue(closeModel).then("header-alert-section-dismissed").otherwise(""))
 		);
-	}
-
-	public EnvironmentPanel compact() {
-		compactModel.setObject(Boolean.TRUE);
-		return this;
 	}
 
 	@Override
@@ -109,7 +97,7 @@ public class EnvironmentPanel extends GenericPanel<Environment> {
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		Detachables.detach(compactModel, closeModel);
+		Detachables.detach(closeModel);
 	}
 
 }

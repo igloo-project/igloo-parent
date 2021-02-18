@@ -5,8 +5,9 @@
 		<wicket:panel>
 			<div class="feedback-container">
 				<div class="feedback-panel">
-					<button wicket:id="closeTrigger" class="close" type="button">
-						<span>&times;</span>
+					<button wicket:id="closeTrigger" class="btn-close btn-close-icon" type="button">
+						<span class="fa fa-lg fa-fw fa-times" />
+						<span class="visually-hidden"><wicket:message key="common.close" /></span>
 					</button>
 					<wicket:enclosure child="FATALfeedbackPanel">
 						<div class="alert alert-dark">

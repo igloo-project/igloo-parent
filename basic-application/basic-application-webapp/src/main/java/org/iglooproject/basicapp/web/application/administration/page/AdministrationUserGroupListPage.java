@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.page;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import java.util.List;
@@ -20,7 +21,6 @@ import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.administration.form.UserGroupPopup;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserGroupTemplate;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
-import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -92,6 +92,7 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 			DataTableBuilder.start(ReadOnlyCollectionModel.of(userGroupListModel, GenericEntityModel.factory()))
 				.addLabelColumn(new ResourceModel("business.userGroup.name"), Bindings.userGroup().name())
 					.withLink(AdministrationUserGroupDetailPage.MAPPER_SOURCE.setParameter2(new ComponentPageModel(this)))
+					.withClass("cell-w-350 cell-w-max")
 				.addActionColumn()
 					.addConfirmAction(ActionRenderers.delete())
 						.title(parameter ->
@@ -125,9 +126,9 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 							}
 						})
 						.whenPermission(BasicApplicationPermissionConstants.DELETE)
-						.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
+						.withClassOnElements(BTN_TABLE_ROW_ACTION)
 					.end()
-					.withClass("actions actions-1x")
+					.withClass("cell-w-actions-1x")
 				.bootstrapCard()
 					.ajaxPagers()
 					.count("administration.userGroup.list.count")

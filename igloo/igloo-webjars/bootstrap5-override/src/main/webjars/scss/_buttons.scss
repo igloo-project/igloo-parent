@@ -1,0 +1,43 @@
+.btn-xs {
+	@include button-size($btn-padding-y-xs, $btn-padding-x-xs, $btn-font-size-xs, $btn-border-radius-xs);
+}
+
+.btn-none {
+	background: none;
+}
+
+.btn-placeholder {
+	color: transparent !important;
+	opacity: 0 !important;
+	text-decoration: none !important;
+	box-shadow: none !important;
+	cursor: auto !important;
+}
+
+.btn-form-check {
+	color: $input-color;
+	background-color: $form-check-input-bg;
+	border: $form-check-input-border;
+	@include transition($form-check-transition);
+	@include border-radius($form-check-input-border-radius);
+	
+	.btn-check:active + &,
+	&:active,
+	&.active {
+		filter: $form-check-input-active-filter;
+		box-shadow: $form-check-input-focus-box-shadow;
+	}
+	
+	.btn-check:focus + &,
+	&:focus {
+		border-color: $form-check-input-focus-border;
+		outline: 0;
+		box-shadow: $form-check-input-focus-box-shadow;
+	}
+	
+	.btn-check:checked + & {
+		color: $form-check-input-checked-color;
+		background-color: $form-check-input-checked-bg-color;
+		border-color: $form-check-input-checked-border-color;
+	}
+}

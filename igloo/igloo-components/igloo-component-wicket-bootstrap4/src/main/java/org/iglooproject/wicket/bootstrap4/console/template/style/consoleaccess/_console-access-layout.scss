@@ -11,7 +11,7 @@
 			
 			.card-header {
 				&.card-main-title {
-					@include bg($dark);
+					@include text-bg-variant($dark);
 					font-size: $h4-font-size;
 				}
 			}
@@ -29,7 +29,6 @@
 		
 		.container-page {
 			@include make-container();
-			
 			max-width: $container-page-md;
 			
 			.card {

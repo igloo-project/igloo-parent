@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.page;
 
-import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_HIDDEN_MD_AND_LESS;
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_DISPLAY_2XL;
 import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.TABLE_ROW_DISABLED;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
@@ -106,20 +106,19 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 					)
 			);
 		
-		DecoratedCoreDataTablePanel<BasicUser, ?> results =
-			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
+		DecoratedCoreDataTablePanel<BasicUser, ?> results = DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 			.addBootstrapBadgeColumn(Model.of(), Bindings.user(), UserEnabledRenderer.get())
-				.hideLabel()
-				.withClass("narrow")
+				.badgePill()
+				.withClass("cell-w-100 text-center")
 			.addLabelColumn(new ResourceModel("business.user.username"), Bindings.user().username())
 				.withLink(AdministrationBasicUserDetailPage.MAPPER.setParameter2(new PageModel<>(this)))
-				.withClass("text text-md")
+				.withClass("cell-w-250")
 			.addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
 				.withSort(UserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-				.withClass("text text-md")
+				.withClass("cell-w-250")
 			.addLabelColumn(new ResourceModel("business.user.firstName"), Bindings.user().firstName())
 				.withSort(UserSort.FIRST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-				.withClass("text text-md")
+				.withClass("cell-w-250")
 			.addColumn(new AbstractCoreColumn<BasicUser, UserSort>(new ResourceModel("business.user.email")) {
 				private static final long serialVersionUID = 1L;
 				@Override
@@ -138,8 +137,8 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 					);
 				}
 			})
-				.withClass("text text-md")
-				.withClass(CELL_HIDDEN_MD_AND_LESS)
+				.withClass("cell-w-350")
+				.withClass(CELL_DISPLAY_2XL)
 			.rows()
 				.withClass(itemModel -> Condition.predicate(itemModel, UserPredicates.disabled()).then(TABLE_ROW_DISABLED).otherwise(""))
 				.end()

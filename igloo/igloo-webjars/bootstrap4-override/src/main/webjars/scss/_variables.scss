@@ -464,6 +464,33 @@ $table-caption-color:         $text-muted !default; // bootstrap
 $table-bg-level:              -9 !default; // bootstrap
 $table-border-level:          -6 !default; // bootstrap
 
+$table-cell-widths: () !default; // bootstrap-override
+$table-cell-widths: map-merge(
+  (
+    "auto": auto,
+    20: 20px,
+    40: 40px,
+    60: 60px,
+    80: 80px,
+    100: 100px,
+    120: 120px,
+    150: 150px,
+    200: 200px,
+    250: 250px,
+    300: 300px,
+    350: 350px, 
+    400: 400px,
+    500: 500px,
+    700: 700px,
+    "actions-1x": 60px,
+    "actions-2x": 100px,
+    "actions-3x": 140px,
+    "actions-4x": 180px,
+    "actions-5x": 210px
+  ),
+  $table-cell-widths
+); // bootstrap-override
+
 
 // Buttons + Forms
 //

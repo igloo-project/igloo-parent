@@ -22,6 +22,8 @@ import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.stat
 import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.statement.BootstrapModalStatement;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
+import com.google.common.collect.Lists;
+
 public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IModalPopupPanel {
 
 	private static final long serialVersionUID = -6919950872346297617L;
@@ -32,8 +34,8 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 
 	private static final String FOOTER_WICKET_ID = "footer";
 
-	@SpringBean
-	private List<IBootstrapModalModule> modules;
+	@SpringBean(required = false)
+	private List<IBootstrapModalModule> modules = Lists.newArrayList();
 
 	private final WebMarkupContainer container;
 

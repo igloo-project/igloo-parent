@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap5AutoConfiguration;
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaMoreAutoConfiguration;
@@ -41,7 +42,7 @@ class JpaMoreAutoConfigurationTestCase {
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
 			.run(
-				(context) -> {
+				context -> {
 					assertThat(context).hasSingleBean(IglooJpaAutoConfiguration.class);
 					assertThat(context).hasSingleBean(IglooJpaMoreAutoConfiguration.class);
 					assertThat(context).hasSingleBean(IImportDataDao.class);
@@ -59,7 +60,7 @@ class JpaMoreAutoConfigurationTestCase {
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestJpaLessConfig.class))
 			.run(
-				(context) -> {
+				context -> {
 					assertThat(context).doesNotHaveBean(IglooJpaAutoConfiguration.class);
 					assertThat(context).doesNotHaveBean(IglooJpaMoreAutoConfiguration.class);
 					assertThat(context).doesNotHaveBean(IImportDataDao.class); 
@@ -68,20 +69,30 @@ class JpaMoreAutoConfigurationTestCase {
 	}
 
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {IglooJpaSecurityAutoConfiguration.class,
-			IglooApplicationConfigAutoConfiguration.class})
+	@EnableIglooAutoConfiguration(
+		exclude = {
+			IglooBootstrap4AutoConfiguration.class,
+			IglooJpaSecurityAutoConfiguration.class,
+			IglooApplicationConfigAutoConfiguration.class
+		}
+	)
 	public static class TestConfig {}
 
 	@Configuration
-	@EnableIglooAutoConfiguration(exclude = {
-			IglooJpaAutoConfiguration.class, IglooHibernateSearchAutoConfiguration.class,
+	@EnableIglooAutoConfiguration(
+		exclude = {
+			IglooJpaAutoConfiguration.class,
+			IglooHibernateSearchAutoConfiguration.class,
 			IglooFlywayAutoConfiguration.class,
 			IglooTaskManagementAutoConfiguration.class,
 			IglooJpaSecurityAutoConfiguration.class,
 			IglooBootstrap4AutoConfiguration.class,
+			IglooBootstrap5AutoConfiguration.class,
 			IglooWicketAutoConfiguration.class,
 			IglooPropertyAutoConfiguration.class,
-			IglooApplicationConfigAutoConfiguration.class})
+			IglooApplicationConfigAutoConfiguration.class
+		}
+	)
 	public static class TestJpaLessConfig {
 	}
 

@@ -24,6 +24,7 @@ public abstract class AbstractWebPageTemplate extends CoreWebPage {
 	private static final long serialVersionUID = -5598937641577320345L;
 	
 	public static final String BOOTSTRAP4_VARIATION = "bs4";
+	public static final String BOOTSTRAP5_VARIATION = "bs5";
 	
 	protected static final String DEFAULT_HEAD_PAGE_TITLE_SEPARATOR = " › ";
 	

@@ -14,13 +14,12 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipBehavior;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
 public abstract class ConsoleAccessTemplate extends AbstractWebPageTemplate {
@@ -50,9 +49,7 @@ public abstract class ConsoleAccessTemplate extends AbstractWebPageTemplate {
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		
-		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
-		
-		add(new BootstrapDropdownBehavior());
+		add(new BootstrapTooltipBehavior(getBootstrapTooltip()));
 	}
 	
 	@Override

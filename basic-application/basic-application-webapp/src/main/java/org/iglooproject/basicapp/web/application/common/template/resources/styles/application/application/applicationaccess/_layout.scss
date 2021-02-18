@@ -1,0 +1,64 @@
+.application-access {
+	.container-page {
+		.card {
+			border-top: 0;
+			border-left: 0;
+			border-right: 0;
+			@include border-radius(0);
+			
+			[class*="card-"] {
+				@include border-radius(0);
+			}
+			
+			.card-header {
+				&.card-main-title {
+					padding: $card-spacer-y $card-spacer-x;
+					@include text-bg-variant($brand);
+					font-size: $h3-font-size;
+				}
+			}
+		}
+	}
+}
+
+@include media-breakpoint-up(breakpoint-next(xs)) {
+	.application-access {
+		> .body-container {
+			> .main-section {
+				padding: 60px 0;
+			}
+		}
+		
+		.container-page {
+			@include make-container();
+			max-width: $container-page-md;
+			
+			.card {
+				border: 0;
+				box-shadow: $box-shadow-lg;
+				
+				&.card-main-title-cascade {
+					margin: 0 $card-spacer-x;
+					
+					.card-header {
+						&.card-main-title {
+							margin: 0 (-1 * $card-spacer-x);
+							border-radius: $border-radius;
+							box-shadow: $box-shadow;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@include media-breakpoint-up(lg) {
+	.application-access {
+		&.application-access-lg {
+			.container-page {
+				max-width: $container-page-lg;
+			}
+		}
+	}
+}

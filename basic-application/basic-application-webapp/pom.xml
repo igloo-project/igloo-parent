@@ -32,7 +32,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-wicket-bootstrap4</artifactId>
+			<artifactId>igloo-component-wicket-bootstrap5</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>

@@ -14,7 +14,6 @@ import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -36,6 +35,7 @@ import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.Consol
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.dropdown.BootstrapDropDownJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipBehavior;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -47,9 +47,6 @@ import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.scrolltotop.ScrollToTopBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.security.page.LogoutPage;
@@ -222,11 +219,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback", propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE), propertyService.get(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT)));
 		
-		add(new WebMarkupContainer("scrollToTop").add(new ScrollToTopBehavior()));
-		
-		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
-		
-		add(new BootstrapDropdownBehavior());
+		add(new BootstrapTooltipBehavior(getBootstrapTooltip()));
 	}
 
 	protected IPageLinkDescriptor getApplicationHomePageLinkDescriptor() {

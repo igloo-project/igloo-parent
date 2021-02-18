@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div class="content-container">
+		<div class="content-header-section">
+			<div class="content-header-container">
+				<div class="content-header">
+					<h1 class="content-header-title">
+						<wicket:message key="console.maintenance.tasks" />
+					</h1>
+				</div>
+			</div>
+		</div>
+		
+		<div class="content-lead-section">
+			<div class="content-lead-container">
+				<div class="row g-4">
+					<div wicket:id="taskManager" class="col-lg-5" />
+					<div wicket:id="search" class="col-lg-7" />
+				</div>
+			</div>
+		</div>
+		
+		<div class="content-body-section">
+			<div class="content-body-container">
+				<div class="content-body">
+					<div wicket:id="results" class="card card-main" />
+				</div>
+			</div>
+		</div>
+	</div>
+</wicket:extend>
+</html>

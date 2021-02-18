@@ -24,6 +24,7 @@
 	
 	<modules>
 		<module>bootstrap4-override</module>
+		<module>bootstrap5-override</module>
 	</modules>
 	
 	<build>

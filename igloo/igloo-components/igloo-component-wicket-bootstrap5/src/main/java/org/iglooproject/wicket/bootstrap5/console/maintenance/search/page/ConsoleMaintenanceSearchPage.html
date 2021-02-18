@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div class="content-container">
+		<div class="content-header-section">
+			<div class="content-header-container">
+				<div class="content-header">
+					<h1 class="content-header-title">
+						<wicket:message key="console.maintenance.search" />
+					</h1>
+				</div>
+			</div>
+		</div>
+		<div class="content-body-section">
+			<div class="content-body-container">
+				<div class="content-body">
+					<div class="row g-4">
+						<div class="col-xl-6">
+							<div class="card card-main">
+								<div class="card-header">
+									<div class="card-header-title">
+										<wicket:message key="console.maintenance.search.reindex.title" />
+									</div>
+								</div>
+								<div class="card-body">
+									<div class="alert alert-info">
+										<wicket:message key="console.maintenance.search.reindex.description" />
+									</div>
+									<div class="card-action card-action-bottom">
+										<div class="row row-action justify-content-end">
+											<div class="col-auto">
+												<button wicket:id="reindexContent" class="btn btn-danger" type="button">
+													<span class="fa fa-fw fa-sync" />
+													<wicket:message key="console.maintenance.search.reindex.action" />
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<wicket:enclosure child="reindexClassesForm">
+							<div class="col-xl-6">
+								<div class="card card-main">
+									<div class="card-header">
+										<div class="card-header-title">
+											<wicket:message key="console.maintenance.search.reindex.partial.title" />
+										</div>
+									</div>
+									<div class="card-body">
+										<form wicket:id="reindexClassesForm">
+											<div class="alert alert-info mb-3">
+												<wicket:message key="console.maintenance.search.reindex.partial.description" />
+											</div>
+											<div class="row row-form">
+												<div class="col-12">
+													<div class="row row-form-group form-group">
+														<div class="col-12">
+															<select wicket:id="classes" class="form-control" />
+														</div>
+													</div>
+												</div>
+												<div class="col-12">
+													<div class="row row-form-group form-group">
+														<div class="col-12">
+															<textarea wicket:id="ids" class="form-control" rows="7" />
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="card-action card-action-bottom">
+												<div class="row row-action justify-content-end">
+													<div class="col-auto">
+														<button wicket:id="reindexClasses" class="btn btn-warning" type="button">
+															<span class="fa fa-fw fa-sync" />
+															<wicket:message key="console.maintenance.search.reindex.action" />
+														</button>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</wicket:enclosure>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</wicket:extend>
+</html>

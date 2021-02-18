@@ -7,7 +7,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.CollectionModel;
 import org.iglooproject.functional.Predicates2;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.IBootstrapTooltip;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.model.Models;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
