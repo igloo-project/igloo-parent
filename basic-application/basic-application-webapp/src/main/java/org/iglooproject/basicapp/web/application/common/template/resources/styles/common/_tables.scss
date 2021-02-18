@@ -1,148 +1,49 @@
-table {
-	> thead, > tbody, > tfoot {
-		> tr {
-			> th, > td {
-				&.text {
-					&.text-xs {
-						width: 130px;
-					}
-					&.text-sm {
-						width: 180px;
-					}
-					&.text-md {
-						width: 230px;
-					}
-					&.text-lg {
-						width: 280px;
-					}
-					&.text-xl {
-						width: 330px;
-					}
-				}
-				&.code {
-					&.code-xs {
-						width: 70px;
-					}
-					&.code-sm {
-						width: 95px;
-					}
-					&.code-md {
-						width: 120px;
-					}
-					&.code-lg {
-						width: 145px;
-					}
-					&.code-xl {
-						width: 170px;
-					}
-				}
-				&.statut {
-					&.statut-xs {
-						width: 70px;
-					}
-					&.statut-sm {
-						width: 95px;
-					}
-					&.statut-md {
-						width: 120px;
-					}
-					&.statut-lg {
-						width: 145px;
-					}
-					&.statut-xl {
-						width: 170px;
-					}
-				}
-				&.date {
-					&.date-xs {
-						width: 100px;
-					}
-					&.date-sm {
-						width: 110px;
-					}
-					&.date-md {
-						width: 130px;
-					}
-					&.date-lg {
-						width: 150px;
-					}
-					&.date-xl {
-						width: 170px;
-					}
-				}
-				&.numeric {
-					&.numeric-xs {
-						width: 40px;
-					}
-					&.numeric-sm {
-						width: 80px;
-					}
-					&.numeric-md {
-						width: 100px;
-					}
-					&.numeric-lg {
-						width: 130px;
-					}
-					&.numeric-xl {
-						width: 160px;
-					}
-				}
-				&.narrow {
-					width: 1px;
-					text-align: center;
-				}
-				&.actions {
-					text-align: center;
-					
-					&.actions-1x {
-						width: 60px;
-						min-width: 60px;
-						max-width: 60px;
-					}
-					&.actions-2x {
-						width: 100px;
-						min-width: 100px;
-						max-width: 100px;
-					}
-					&.actions-3x {
-						width: 140px;
-						min-width: 140px;
-						max-width: 140px;
-					}
-					&.actions-4x {
-						width: 180px;
-						min-width: 180px;
-						max-width: 180px;
-					}
-					&.actions-5x {
-						width: 210px;
-						min-width: 210px;
-						max-width: 210px;
+.table {
+	> :not(caption) > * > * {
+		@each $breakpoint in map-keys($grid-breakpoints) {
+			@include media-breakpoint-up($breakpoint) {
+				$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+				
+				@each $name, $value in (
+					"auto": auto,
+					20: 20px,
+					40: 40px,
+					60: 60px,
+					80: 80px,
+					100: 100px,
+					150: 150px,
+					200: 200px,
+					250: 250px,
+					300: 300px, 
+					400: 400px,
+					500: 500px,
+					"actions-1x": 60px,
+					"actions-2x": 100px,
+					"actions-3x": 140px,
+					"actions-4x": 180px,
+					"actions-5x": 210px
+				) {
+					&.cell-w#{$infix}-#{$name} {
+						width: $value;
 					}
 				}
 			}
 		}
-	}
-	
-	> thead, > tbody, > tfoot {
-		> tr {
-			> th, > td {
-				.row-table-action {
-					@include make-row();
-					@include make-row-grid(map-get($grid-gutters, xxs));
-					
-					justify-content: center;
-					
-					.col-table-action {
-						@include make-col-ready();
-						@include make-col-auto();
-					}
-				}
-				
-				.btn-table-row-action {
-					@include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-line-height-sm, $btn-border-radius-sm);
-				}
+		
+		.row-table-action {
+			@include make-row();
+			@include make-row-grid(map-get($grid-gutters, xxs));
+			
+			justify-content: center;
+			
+			.col-table-action {
+				@include make-col-ready();
+				@include make-col-auto();
 			}
+		}
+		
+		.btn-table-row-action {
+			@include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-line-height-sm, $btn-border-radius-sm);
 		}
 	}
 }

@@ -97,11 +97,13 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 				.addBootstrapBadgeColumn(Model.of(), Bindings.announcement(), AnnouncementActiveRenderer.get())
 					.hideLabel()
-					.withClass("narrow")
+					.withClass("cell-w-60 text-center")
 				.addLabelColumn(new ResourceModel("business.announcement.id"), Bindings.announcement().id())
 					.withSort(AnnouncementSort.ID, SortIconStyle.NUMERIC, CycleMode.DEFAULT_REVERSE)
-					.withClass("numeric numeric-sm")
+					.withClass("cell-w-60")
 				.addLabelColumn(new ResourceModel("business.announcement.type"), Bindings.announcement().type(), EnumRenderer.get())
+					.withClass("cell-w-100")
+					.withClass(CssClassConstants.CELL_HIDDEN_LG_AND_LESS)
 				.addColumn(new AbstractCoreColumn<Announcement, AnnouncementSort>(new ResourceModel("business.announcement.message")) {
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -109,11 +111,13 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 						cellItem.add(new AnnouncementMessagePanel(componentId, rowModel));
 					}
 				})
+					.withClass("cell-w-400")
 				.addLabelColumn(new ResourceModel("business.announcement.publication.startDateTime"), Bindings.announcement().publication().startDateTime(), DatePattern.REALLY_SHORT_DATETIME)
 					.withSort(AnnouncementSort.PUBLICATION_START_DATE_TIME, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
-					.withClass("date date-md")
+					.withClass("cell-w-150")
 				.addLabelColumn(new ResourceModel("business.announcement.publication.endDateTime"), Bindings.announcement().publication().endDateTime(), DatePattern.REALLY_SHORT_DATETIME)
-					.withClass("date date-md")
+					.withClass("cell-w-150")
+					.withClass(CssClassConstants.CELL_HIDDEN_MD_AND_LESS)
 				.addActionColumn()
 					.addAction(ActionRenderers.edit(), new OneParameterModalOpenAjaxAction<IModel<Announcement>>(popup) {
 						private static final long serialVersionUID = 1L;
@@ -146,9 +150,12 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 						})
 					.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
 					.end()
-					.withClass("actions actions-2x")
+					.withClass("cell-w-actions-2x")
 				.rows()
 					.withClass(itemModel -> Condition.predicate(itemModel, AnnouncementPredicates.inactive()).then(TABLE_ROW_DISABLED).otherwise(""))
+					.end()
+				.table()
+					.fixed()
 					.end()
 				.bootstrapCard()
 					.count("administration.announcement.list.count")

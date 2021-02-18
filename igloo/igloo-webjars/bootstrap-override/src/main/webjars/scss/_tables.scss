@@ -1,4 +1,9 @@
 .table {
+	> :not(caption) > * > * {
+		overflow: hidden;
+		@extend .text-break;
+	}
+	
 	tfoot th {
 		vertical-align: top;
 		border-top: 2 * $table-border-width solid $table-border-color;

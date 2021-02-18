@@ -106,20 +106,19 @@ public class AdministrationTechnicalUserListPage extends AdministrationUserListT
 					)
 			);
 		
-		DecoratedCoreDataTablePanel<TechnicalUser, ?> results =
-			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
+		DecoratedCoreDataTablePanel<TechnicalUser, ?> results = DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 			.addBootstrapBadgeColumn(Model.of(), Bindings.user(), UserActiveRenderer.get())
 				.hideLabel()
-				.withClass("narrow")
+				.withClass("cell-w-60 text-center")
 			.addLabelColumn(new ResourceModel("business.user.username"), Bindings.user().username())
 				.withLink(AdministrationTechnicalUserDetailPage.MAPPER.setParameter2(new PageModel<>(this)))
-				.withClass("text text-md")
+				.withClass("cell-w-200")
 			.addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
 				.withSort(UserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-				.withClass("text text-md")
+				.withClass("cell-w-200")
 			.addLabelColumn(new ResourceModel("business.user.firstName"), Bindings.user().firstName())
 				.withSort(UserSort.FIRST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-				.withClass("text text-md")
+				.withClass("cell-w-200")
 			.addColumn(new AbstractCoreColumn<TechnicalUser, UserSort>(new ResourceModel("business.user.email")) {
 				private static final long serialVersionUID = 1L;
 				@Override
@@ -138,10 +137,13 @@ public class AdministrationTechnicalUserListPage extends AdministrationUserListT
 					);
 				}
 			})
-				.withClass("text text-md")
+				.withClass("cell-w-400")
 				.withClass(CELL_HIDDEN_MD_AND_LESS)
 			.rows()
 				.withClass(itemModel -> Condition.predicate(itemModel, UserPredicates.inactive()).then(TABLE_ROW_DISABLED).otherwise(""))
+				.end()
+			.table()
+				.fixed()
 				.end()
 			.bootstrapCard()
 				.ajaxPagers()

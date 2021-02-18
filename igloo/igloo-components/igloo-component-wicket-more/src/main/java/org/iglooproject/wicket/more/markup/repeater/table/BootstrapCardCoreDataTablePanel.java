@@ -20,16 +20,18 @@ public class BootstrapCardCoreDataTablePanel<T, S extends ISort<?>> extends Deco
 	private static final long serialVersionUID = -5953180156268489658L;
 
 	public BootstrapCardCoreDataTablePanel(
-			String id,
-			IDataTableFactory<T, S> factory,
-			Map<IColumn<T, S>, Condition> columns,
-			ISequenceProvider<T> sequenceProvider,
-			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
-			long rowsPerPage,
-			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories,
-			Condition responsiveCondition) {
-		super(id, factory, columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage, addInComponentFactories,
-				responsiveCondition);
+		String id,
+		IDataTableFactory<T, S> factory,
+		Map<IColumn<T, S>, Condition> columns,
+		ISequenceProvider<T> sequenceProvider,
+		List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
+		List<Behavior> tableBehaviors,
+		long rowsPerPage,
+		Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories,
+		Condition responsiveCondition
+	) {
+		super(id, factory, columns, sequenceProvider, rowsBehaviorFactories, tableBehaviors, rowsPerPage,
+				addInComponentFactories, responsiveCondition);
 	}
-	
+
 }

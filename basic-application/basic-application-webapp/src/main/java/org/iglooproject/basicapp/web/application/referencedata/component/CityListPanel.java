@@ -55,14 +55,14 @@ public class CityListPanel extends AbstractReferenceDataListPanel<City, Referenc
 		return builder
 			.addLabelColumn(new ResourceModel("business.referenceData.label.fr"), Bindings.city().label().fr())
 				.withSort(ReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-				.withClass("text text-md")
+				.withClass("cell-w-250")
 			.addLabelColumn(new ResourceModel("business.referenceData.label.en"), Bindings.city().label().en())
 				.withSort(ReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-				.withClass("text text-md")
-				.withClass(CssClassConstants.CELL_HIDDEN_MD_AND_LESS)
-			.addLabelColumn(new ResourceModel("business.city.postalCode"), Bindings.city().postalCode())
+				.withClass("cell-w-250")
+				.withClass(CssClassConstants.CELL_HIDDEN_SM_AND_LESS)
+			.addLabelColumn(new ResourceModel("business.city.postalCode.short"), Bindings.city().postalCode())
 				.withSort(ReferenceDataSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
-				.withClass("code code-sm");
+				.withClass("cell-w-100");
 	}
 
 	@Override

@@ -10,7 +10,7 @@ body {
 	background: transparent;
 	border-radius: 4px;
 }
- 
+
 .beautiful-scroll::-webkit-scrollbar-thumb {
 	background: rgba(0, 0, 0, .15);
 	border-radius: 4px;
@@ -33,9 +33,11 @@ body {
 	opacity: .7;
 	z-index: 1000000;
 	
-	@each $breakpoint in map-keys($grid-breakpoints){
+	@each $breakpoint, $width in $grid-breakpoints {
 		@include media-breakpoint-up($breakpoint){
-			content: to-upper-case("#{$breakpoint}");
+			$container-max-width: map-get($container-max-widths, $breakpoint);
+			$container-max-width: "100%" !default;
+			content: to-upper-case("#{$breakpoint}") " · " "#{$width}" " · " "#{$container-max-width}";
 		}
 	}
 }

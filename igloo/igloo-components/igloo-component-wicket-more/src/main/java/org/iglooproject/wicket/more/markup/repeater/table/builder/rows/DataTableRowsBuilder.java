@@ -27,7 +27,7 @@ public abstract class DataTableRowsBuilder<T, S extends ISort<?>> implements IDa
 	}
 
 	@Override
-	public DataTableRowsBuilder<T, S> withClass(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories) {
+	public IDataTableRowsState<T, S> withClass(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories) {
 		this.rowsBehaviorFactoriesBuilder.addAll(
 			valueModelFactories
 				.stream()
@@ -41,7 +41,7 @@ public abstract class DataTableRowsBuilder<T, S extends ISort<?>> implements IDa
 	}
 
 	@Override
-	public DataTableRowsBuilder<T, S> withClass(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory) {
+	public IDataTableRowsState<T, S> withClass(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory) {
 		return withClass(ImmutableList.of(Objects.requireNonNull(valueModelFactory)));
 	}
 
@@ -60,13 +60,13 @@ public abstract class DataTableRowsBuilder<T, S extends ISort<?>> implements IDa
 	}
 
 	@Override
-	public DataTableRowsBuilder<T, S> add(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories) {
+	public IDataTableRowsState<T, S> add(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories) {
 		this.rowsBehaviorFactoriesBuilder.addAll(Objects.requireNonNull(rowsBehaviorFactories));
 		return this;
 	}
 
 	@Override
-	public DataTableRowsBuilder<T, S> add(IDetachableFactory<? super IModel<? extends T>, ? extends Behavior> rowsBehaviorFactory) {
+	public IDataTableRowsState<T, S> add(IDetachableFactory<? super IModel<? extends T>, ? extends Behavior> rowsBehaviorFactory) {
 		return add(ImmutableList.of(Objects.requireNonNull(rowsBehaviorFactory)));
 	}
 

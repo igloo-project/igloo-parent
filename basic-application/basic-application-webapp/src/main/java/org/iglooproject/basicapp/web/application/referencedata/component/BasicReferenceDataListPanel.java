@@ -6,6 +6,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
 import org.iglooproject.basicapp.core.business.referencedata.search.ReferenceDataSort;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
+import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.basicapp.web.application.referencedata.form.AbstractReferenceDataPopup;
 import org.iglooproject.basicapp.web.application.referencedata.form.BasicReferenceDataPopup;
 import org.iglooproject.basicapp.web.application.referencedata.model.AbstractReferenceDataDataProvider;
@@ -65,10 +66,11 @@ public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>>
 		return builder
 			.addLabelColumn(new ResourceModel("business.referenceData.label.fr"), Bindings.referenceData().label().fr())
 				.withSort(ReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
-				.withClass("text text-md")
+				.withClass("cell-w-300")
 			.addLabelColumn(new ResourceModel("business.referenceData.label.en"), Bindings.referenceData().label().en())
 				.withSort(ReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
-				.withClass("text text-md");
+				.withClass("cell-w-300")
+				.withClass(CssClassConstants.CELL_HIDDEN_SM_AND_LESS);
 	}
 
 	@Override

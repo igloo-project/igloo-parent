@@ -66,9 +66,12 @@ public abstract class AbstractReferenceDataListPanel<
 					.rows()
 						.withClass(itemModel -> (itemModel != null && !itemModel.getObject().isEnabled()) ? Model.of(TABLE_ROW_DISABLED) : Model.of(""))
 						.end()
+					.table()
+						.fixed()
+						.end()
 					.bootstrapCard()
-					.count("referenceData.count")
-					.ajaxPagers()
+						.count("referenceData.count")
+						.ajaxPagers()
 			)
 		)
 			.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
@@ -115,7 +118,7 @@ public abstract class AbstractReferenceDataListPanel<
 				.when(itemModel -> getEditCondition(itemModel))
 				.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
 				.end()
-				.withClass("actions actions-1x");
+				.withClass("cell-w-actions-1x");
 	}
 
 	protected IDecoratedBuildState<T, S> addIn(IDecoratedBuildState<T, S> builder) {
