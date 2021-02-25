@@ -5,6 +5,7 @@ stages:
   - prepare
   - build
   - test
+  - verify
   - analyze
   - deploy
   - dependencies
@@ -40,6 +41,18 @@ maven-test:
   except:
     variables:
       - $CHECK_DEPENDENCIES
+
+maven-verify:
+  stage: verify
+  script:
+    - mvn verify
+  artifacts:
+    when: always
+    paths:
+      - */target/surefire-reports/TEST-*.xml
+    reports:
+      junit:
+        - */target/surefire-reports/TEST-*.xml
 
 maven-dependencies:
   stage: dependencies
