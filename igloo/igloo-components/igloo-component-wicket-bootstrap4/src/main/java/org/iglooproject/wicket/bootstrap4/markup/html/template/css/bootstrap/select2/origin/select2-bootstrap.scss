@@ -156,6 +156,36 @@ $s2bs-form-control-transition: $input-transition !default;
   }
 }
 
+// OVERRIDE ORIGIN MIXIN
+// Fix focus box-shadow
+@mixin validation-state-focus($color) {
+  .select2-dropdown,
+  .select2-selection {
+    border-color: $color;
+  }
+
+  .select2-container--focus .select2-selection,
+  .select2-container--open .select2-selection {
+    border-color: darken($color, 10%);
+
+    $s2bs-form-control-state-focus-box-shadow: 0 0 0 $input-btn-focus-width rgba($color, .25);
+
+    @if $s2bs-enable-shadows {
+      box-shadow: $s2bs-form-control-box-shadow, $s2bs-form-control-state-focus-box-shadow;
+    } @else {
+      box-shadow: $s2bs-form-control-state-focus-box-shadow;
+    }
+  }
+
+  &.select2-drop-active {
+    border-color: darken($color, 10%);
+
+    &.select2-drop.select2-drop-above {
+      border-top-color: darken($color, 10%);
+    }
+  }
+}
+
 // dropdown arrow when dropdown is open
 @mixin dropdown-arrow {
   .select2-selection--single {

@@ -151,6 +151,8 @@ public abstract class CoreWicketApplication extends WebApplication {
 		
 		addResourceReplacements();
 		
+		updateResourceBundles();
+		
 		mountCommonResources();
 		mountCommonPages();
 		
@@ -175,6 +177,11 @@ public abstract class CoreWicketApplication extends WebApplication {
 	protected void addResourceReplacements() {
 		modules.stream()
 			.forEach(module -> module.addResourceReplacements(this));
+	}
+	
+	protected void updateResourceBundles() {
+		modules.stream()
+			.forEach(module -> module.updateResourceBundles(getResourceBundles()));
 	}
 	
 	protected void mountCommonResources() {
