@@ -70,14 +70,17 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		addPermissionsFromAuthorities(expandedGrantedAuthorities, authoritiesAndPermissions.getRight());
 		Collection<Permission> expandedReachablePermissions = permissionHierarchy.getReachablePermissions(authoritiesAndPermissions.getRight());
 		
-		// In any case, we can't pass an empty password hash to the CoreUserDetails
-		
-		CoreUserDetails userDetails = new CoreUserDetails(user.getUsername(),
-				StringUtils.hasText(user.getPasswordHash()) ? user.getPasswordHash() : EMPTY_PASSWORD_HASH,
-				user.isActive(), true, true, true, 
-				expandedGrantedAuthorities, expandedReachablePermissions);
-		
-		return userDetails;
+		return new CoreUserDetails(
+			user.getUsername(),
+			// In any case, we can't pass an empty password hash to the CoreUserDetails
+			StringUtils.hasText(user.getPasswordHash()) ? user.getPasswordHash() : EMPTY_PASSWORD_HASH,
+			user.isActive(),
+			true,
+			true,
+			true, 
+			expandedGrantedAuthorities,
+			expandedReachablePermissions
+		);
 	}
 	
 	protected IGroupedUser<?> getUserByUsername(String username) {
