@@ -14,4 +14,6 @@ public interface IMockUserService extends IGenericUserService<MockUser> {
 	@Secured(CoreAuthorityConstants.ROLE_AUTHENTICATED)
 	void protectedMethodRoleAuthenticated();
 
+	Long countEnabled();
+
 }

@@ -69,7 +69,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 			user.getUsername(),
 			// In any case, we can't pass an empty password hash to the CoreUserDetails
 			StringUtils.hasText(user.getPasswordHash()) ? user.getPasswordHash() : EMPTY_PASSWORD_HASH,
-			user.isActive(),
+			user.isEnabled(),
 			true,
 			true,
 			true, 

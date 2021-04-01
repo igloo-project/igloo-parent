@@ -156,7 +156,7 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 	@JsonIgnore
 	public boolean isNotificationEnabled() {
 		// implémentation par défaut ; dépend de l'état de l'utilisateur
-		return isActive();
+		return isEnabled();
 	}
 
 }

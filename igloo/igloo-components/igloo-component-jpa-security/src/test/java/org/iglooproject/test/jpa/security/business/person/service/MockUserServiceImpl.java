@@ -10,9 +10,12 @@ import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 @Service("mockPersonService")
 public class MockUserServiceImpl extends GenericUserServiceImpl<MockUser> implements IMockUserService {
 
+	private IMockUserDao dao;
+
 	@Autowired
-	public MockUserServiceImpl(IMockUserDao testPersonDao) {
-		super(testPersonDao);
+	public MockUserServiceImpl(IMockUserDao dao) {
+		super(dao);
+		this.dao = dao;
 	}
 
 	@Override
@@ -22,4 +25,10 @@ public class MockUserServiceImpl extends GenericUserServiceImpl<MockUser> implem
 	@Override
 	public void protectedMethodRoleAuthenticated() {
 	}
+
+	@Override
+	public Long countEnabled() {
+		return dao.countEnabled();
+	}
+
 }

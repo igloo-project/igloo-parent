@@ -85,14 +85,9 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 	}
 	
 	@Override
-	public void setActive(U person, boolean active) throws ServiceException, SecurityServiceException {
-		person.setActive(active);
+	public void setEnabled(U person, boolean enabled) throws ServiceException, SecurityServiceException {
+		person.setEnabled(enabled);
 		super.update(person);
-	}
-	
-	@Override
-	public Long countActive() {
-		return personDao.countActive();
 	}
 	
 	@Override

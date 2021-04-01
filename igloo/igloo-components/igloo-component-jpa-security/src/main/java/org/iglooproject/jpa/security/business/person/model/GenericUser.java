@@ -58,7 +58,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	public static final String USERNAME = "username";
 	public static final String USERNAME_SORT = "usernameSort";
 	
-	public static final String ACTIVE = "active";
+	public static final String ENABLED = "enabled";
 	
 	public static final String GROUPS = "groups";
 	
@@ -78,9 +78,9 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@JsonIgnore
 	private String passwordHash = EMPTY_PASSWORD_HASH;
 	
-	@Field(name = ACTIVE)
+	@Field(name = ENABLED)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
-	private boolean active = true;
+	private boolean enabled = true;
 	
 	@JsonIgnore
 	@Column(nullable = false)
@@ -189,13 +189,13 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 		return !Objects.equals(getPasswordHash(), EMPTY_PASSWORD_HASH);
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
+	@Override
+	public boolean isEnabled() {
+		return enabled;
 	}
 
-	@Override
-	public boolean isActive() {
-		return active;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public void setLastLoginDate(Date lastLoginDate) {

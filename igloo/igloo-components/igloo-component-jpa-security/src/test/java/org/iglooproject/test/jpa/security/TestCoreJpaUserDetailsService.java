@@ -95,11 +95,11 @@ public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 		
 		// Test reimplemented QueryDSL methods
 		MockUser personInactive = createMockPerson("inactive", "inactive", "inactive");
-		personInactive.setActive(false);
+		personInactive.setEnabled(false);
 		mockUserService.update(personInactive);
 		
 		assertEquals(group1, mockUserGroupService.getByName("group1"));
 		assertEquals(new Long(4), mockUserService.count());
-		assertEquals(new Long(3), mockUserService.countActive());
+		assertEquals(new Long(3), mockUserService.countEnabled());
 	}
 }

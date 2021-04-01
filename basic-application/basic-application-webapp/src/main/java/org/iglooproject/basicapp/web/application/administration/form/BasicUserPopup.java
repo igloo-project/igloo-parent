@@ -91,9 +91,8 @@ public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 									.setLabel(new ResourceModel("business.user.confirmPassword"))
 									.setRequired(passwordRequired)
 							),
-						
-						new CheckBox("active", BindingModel.of(getModel(), Bindings.user().active()))
-							.setLabel(new ResourceModel("business.user.active"))
+						new CheckBox("enabled", BindingModel.of(getModel(), Bindings.user().enabled()))
+							.setLabel(new ResourceModel("business.user.enabled"))
 							.setOutputMarkupId(true)
 					),
 				new EmailTextField("email", BindingModel.of(getModel(), Bindings.user().email()))

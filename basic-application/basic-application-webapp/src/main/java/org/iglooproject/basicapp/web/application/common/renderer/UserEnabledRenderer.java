@@ -7,26 +7,26 @@ import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.Bootstrap
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
 
-public abstract class UserActiveRenderer extends BootstrapRenderer<User> {
+public abstract class UserEnabledRenderer extends BootstrapRenderer<User> {
 
 	private static final long serialVersionUID = 8417578372352258838L;
 
-	private static final UserActiveRenderer INSTANCE = new UserActiveRenderer() {
+	private static final UserEnabledRenderer INSTANCE = new UserEnabledRenderer() {
 		private static final long serialVersionUID = 1L;
 		@Override
 		protected BootstrapRendererInformation doRender(User value, Locale locale) {
 			if (value == null) {
 				return null;
 			}
-			if (value.isActive()) {
+			if (value.isEnabled()) {
 				return BootstrapRendererInformation.builder()
-					.label(getString("business.user.active.true", locale))
+					.label(getString("business.user.enabled.true", locale))
 					.icon("fa fa-fw fa-check")
 					.color(BootstrapColor.SUCCESS)
 					.build();
 			} else {
 				return BootstrapRendererInformation.builder()
-					.label(getString("business.user.active.false", locale))
+					.label(getString("business.user.enabled.false", locale))
 					.icon("fa fa-fw fa-times")
 					.color(BootstrapColor.SECONDARY)
 					.build();
@@ -34,11 +34,11 @@ public abstract class UserActiveRenderer extends BootstrapRenderer<User> {
 		}
 	};
 
-	public static final UserActiveRenderer get() {
+	public static final UserEnabledRenderer get() {
 		return INSTANCE;
 	}
 
-	private UserActiveRenderer() {
+	private UserEnabledRenderer() {
 	}
 
 }

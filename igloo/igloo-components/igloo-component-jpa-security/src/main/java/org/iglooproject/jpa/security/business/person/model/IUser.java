@@ -17,7 +17,7 @@ public interface IUser {
 
 	Set<? extends Permission> getPermissions();
 
-	boolean isActive();
+	boolean isEnabled();
 
 	String getPasswordHash();
 

@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -15,11 +14,13 @@ import org.iglooproject.basicapp.web.application.administration.form.UserAjaxDro
 import org.iglooproject.basicapp.web.application.administration.form.UserGroupDropDownSingleChoice;
 import org.iglooproject.basicapp.web.application.administration.model.AbstractUserDataProvider;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserDetailPage;
+import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.wicket.markup.html.form.PageableSearchForm;
 import org.iglooproject.wicket.more.ajax.SerializableListener;
 import org.iglooproject.wicket.more.common.behavior.UpdateOnChangeAjaxEventBehavior;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.model.ComponentPageModel;
+import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
@@ -42,9 +43,9 @@ public class TechnicalUserListSearchPanel extends Panel {
 					new UserGroupDropDownSingleChoice("userGroup", dataProvider.getGroupModel())
 						.setLabel(new ResourceModel("business.user.group"))
 						.add(new LabelPlaceholderBehavior()),
-					new CheckBox("active", dataProvider.getIncludeInactivesModel())
-						.setLabel(new ResourceModel("administration.user.list.search.includeInactives"))
-						.setOutputMarkupId(true),
+					new EnumDropDownSingleChoice<>("enabledFilter", dataProvider.getEnabledFilterModel(), EnabledFilter.class)
+						.setLabel(new ResourceModel("business.user.enabled.state"))
+						.add(new LabelPlaceholderBehavior()),
 					new UserAjaxDropDownSingleChoice<>("quickAccess", quickAccessModel, TechnicalUser.class)
 						.setLabel(new ResourceModel("common.quickAccess"))
 						.add(new LabelPlaceholderBehavior())

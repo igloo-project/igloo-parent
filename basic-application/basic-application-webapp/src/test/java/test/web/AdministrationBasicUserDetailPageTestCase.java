@@ -73,7 +73,7 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 			.map(GenericEntityModel.of(basicUser)).url();
 		tester.executeUrl(url);
 		
-		assertTrue(basicUser.isActive());
+		assertTrue(basicUser.isEnabled());
 		
 		tester.assertInvisible("headerElementsSection:actionsContainer:enable");
 		tester.assertEnabled("headerElementsSection:actionsContainer:disable");
@@ -83,6 +83,6 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 		tester.assertEnabled("headerElementsSection:actionsContainer:enable");
 		tester.assertInvisible("headerElementsSection:actionsContainer:disable");
 		
-		assertFalse(basicUser.isActive());
+		assertFalse(basicUser.isEnabled());
 	}
 }

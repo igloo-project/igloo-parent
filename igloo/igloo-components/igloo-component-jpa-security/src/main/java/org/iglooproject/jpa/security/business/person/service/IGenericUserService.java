@@ -10,9 +10,7 @@ import org.iglooproject.jpa.security.business.person.model.GenericUser;
 
 public interface IGenericUserService<U extends GenericUser<U, ?>> extends IGenericEntityService<Long, U>, ISecurityUserService<U> {
 
-	void setActive(U person, boolean active) throws ServiceException, SecurityServiceException;
-
-	Long countActive();
+	void setEnabled(U person, boolean enabled) throws ServiceException, SecurityServiceException;
 
 	void setPasswords(U person, String clearTextPassword) throws ServiceException, SecurityServiceException;
 

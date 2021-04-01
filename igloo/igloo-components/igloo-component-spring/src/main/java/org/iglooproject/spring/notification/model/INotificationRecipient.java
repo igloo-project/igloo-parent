@@ -17,5 +17,6 @@ public interface INotificationRecipient {
 	 */
 	boolean isNotificationEnabled();
 
-	boolean isActive();
+	boolean isEnabled();
+
 }

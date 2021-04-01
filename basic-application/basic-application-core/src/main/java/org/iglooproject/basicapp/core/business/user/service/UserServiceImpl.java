@@ -85,8 +85,8 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	}
 
 	@Override
-	public void setActive(User person, boolean active) throws ServiceException, SecurityServiceException {
-		super.setActive(person, active);
+	public void setEnabled(User person, boolean active) throws ServiceException, SecurityServiceException {
+		super.setEnabled(person, active);
 		historyLogService.log(active ? HistoryEventType.ENABLE : HistoryEventType.DISABLE, person, HistoryLogAdditionalInformationBean.empty());
 	}
 

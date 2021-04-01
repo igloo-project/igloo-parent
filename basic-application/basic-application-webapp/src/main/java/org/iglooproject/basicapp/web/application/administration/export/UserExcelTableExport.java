@@ -77,7 +77,7 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 		emailLink.setAddress("mailto:" + emailAddress);
 		addLinkToCell(addTextCell(row, columnIndex++, emailAddress), emailLink);
 		
-		if (binding.active().getSafely()) {
+		if (binding.enabled().getSafely()) {
 			addTextCell(row, columnIndex++, "Oui");
 		}
 		else {

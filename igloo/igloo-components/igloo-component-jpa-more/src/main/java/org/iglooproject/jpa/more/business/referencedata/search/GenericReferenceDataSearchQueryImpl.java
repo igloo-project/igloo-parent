@@ -3,6 +3,7 @@ package org.iglooproject.jpa.more.business.referencedata.search;
 import java.util.Map;
 
 import org.apache.lucene.search.SortField;
+import org.iglooproject.commons.util.exception.IllegalSwitchValueException;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.search.query.AbstractHibernateSearchSearchQuery;
@@ -43,7 +44,7 @@ public abstract class GenericReferenceDataSearchQueryImpl
 				must(matchIfGiven(GenericReferenceData.ENABLED, Boolean.FALSE));
 				break;
 			default:
-				throw new IllegalStateException(String.format("Unknown value for EnabledFilter : %s", enabledFilter));
+				throw new IllegalSwitchValueException(enabledFilter);
 			}
 		} 
 		return thisAsQ();
