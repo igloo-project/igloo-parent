@@ -17,7 +17,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -58,10 +57,6 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		
 		if (user == null) {
 			throw new UsernameNotFoundException("CoreJpaUserDetailsServiceImpl: User not found: " + username);
-		}
-		
-		if (!user.isActive()) {
-			throw new DisabledException("User is disabled");
 		}
 		
 		Pair<Set<GrantedAuthority>, Set<Permission>> authoritiesAndPermissions = getAuthoritiesAndPermissions(user);
