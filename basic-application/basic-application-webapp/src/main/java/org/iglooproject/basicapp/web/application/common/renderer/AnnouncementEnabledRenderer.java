@@ -7,26 +7,26 @@ import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.Bootstrap
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
 
-public abstract class AnnouncementActiveRenderer extends BootstrapRenderer<Announcement> {
+public abstract class AnnouncementEnabledRenderer extends BootstrapRenderer<Announcement> {
 
 	private static final long serialVersionUID = 8417578372352258838L;
 
-	private static final AnnouncementActiveRenderer INSTANCE = new AnnouncementActiveRenderer() {
+	private static final AnnouncementEnabledRenderer INSTANCE = new AnnouncementEnabledRenderer() {
 		private static final long serialVersionUID = 1L;
 		@Override
 		protected BootstrapRendererInformation doRender(Announcement value, Locale locale) {
 			if (value == null) {
 				return null;
 			}
-			if (value.isActive()) {
+			if (value.isEnabled()) {
 				return BootstrapRendererInformation.builder()
-					.label(getString("business.announcement.active.true", locale))
+					.label(getString("business.announcement.enabled.true", locale))
 					.icon("fa fa-fw fa-check")
 					.color(BootstrapColor.SUCCESS)
 					.build();
 			} else {
 				return BootstrapRendererInformation.builder()
-					.label(getString("business.announcement.active.false", locale))
+					.label(getString("business.announcement.enabled.false", locale))
 					.icon("fa fa-fw fa-ban")
 					.color(BootstrapColor.SECONDARY)
 					.build();
@@ -34,11 +34,11 @@ public abstract class AnnouncementActiveRenderer extends BootstrapRenderer<Annou
 		}
 	};
 
-	public static final AnnouncementActiveRenderer get() {
+	public static final AnnouncementEnabledRenderer get() {
 		return INSTANCE;
 	}
 
-	private AnnouncementActiveRenderer() {
+	private AnnouncementEnabledRenderer() {
 	}
 
 }

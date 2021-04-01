@@ -23,7 +23,7 @@ public class AnnouncementDaoImpl extends GenericEntityDaoImpl<Long, Announcement
 			.from(qAnnouncement)
 			.where(qAnnouncement.publication.startDateTime.loe(now))
 			.where(qAnnouncement.publication.endDateTime.goe(now))
-			.where(qAnnouncement.active.isTrue())
+			.where(qAnnouncement.enabled.isTrue())
 			.orderBy(qAnnouncement.publication.startDateTime.asc())
 			.fetch();
 	}
@@ -36,7 +36,7 @@ public class AnnouncementDaoImpl extends GenericEntityDaoImpl<Long, Announcement
 			.from(qAnnouncement)
 			.where(qAnnouncement.publication.startDateTime.loe(now))
 			.where(qAnnouncement.publication.endDateTime.goe(now))
-			.where(qAnnouncement.active.isTrue())
+			.where(qAnnouncement.enabled.isTrue())
 			.orderBy(qAnnouncement.publication.startDateTime.desc())
 			.fetchFirst();
 	}

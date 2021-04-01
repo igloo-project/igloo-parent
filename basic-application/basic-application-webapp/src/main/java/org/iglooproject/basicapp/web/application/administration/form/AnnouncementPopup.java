@@ -169,8 +169,8 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 				.setLabel(new ResourceModel("business.announcement.publication.endDateTime.time"))
 				.setRequired(true)
 				.add(new UpdateOnChangeAjaxEventBehavior()),
-			new CheckBox("active", bindableModel.bind(Bindings.announcement().active()))
-				.setLabel(new ResourceModel("business.announcement.active"))
+			new CheckBox("enabled", bindableModel.bind(Bindings.announcement().enabled()))
+				.setLabel(new ResourceModel("business.announcement.enabled"))
 				.setOutputMarkupId(true)
 				.add(new UpdateOnChangeAjaxEventBehavior())
 		);

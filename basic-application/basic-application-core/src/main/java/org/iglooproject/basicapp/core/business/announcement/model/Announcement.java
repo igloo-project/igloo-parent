@@ -44,7 +44,7 @@ public class Announcement extends GenericEntity<Long, Announcement> {
 	private LocalizedText description;
 
 	@Basic(optional = false)
-	private boolean active = true;
+	private boolean enabled = true;
 
 	@Embedded
 	private HistoryEventSummary creation;
@@ -100,12 +100,12 @@ public class Announcement extends GenericEntity<Long, Announcement> {
 		this.description = (description == null ? null : new LocalizedText(description));
 	}
 
-	public boolean isActive() {
-		return active;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
+	public void setActive(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public HistoryEventSummary getCreation() {

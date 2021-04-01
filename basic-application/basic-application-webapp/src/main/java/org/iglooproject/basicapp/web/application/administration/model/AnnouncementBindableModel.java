@@ -23,7 +23,7 @@ public class AnnouncementBindableModel extends BindableModel<Announcement> {
 	private final IModel<Date> publicationEndTimeModel = Model.of();
 
 	public AnnouncementBindableModel() {
-		this(new GenericEntityModel<Long, Announcement>(new Announcement()));
+		this(new GenericEntityModel<>(new Announcement()));
 	}
 
 	public AnnouncementBindableModel(IModel<Announcement> mainModel) {
@@ -36,7 +36,7 @@ public class AnnouncementBindableModel extends BindableModel<Announcement> {
 		bindWithCache(Bindings.announcement().description(), new Model<>());
 		bindWithCache(Bindings.announcement().publication().startDateTime(), new Model<>());
 		bindWithCache(Bindings.announcement().publication().endDateTime(), new Model<>());
-		bindWithCache(Bindings.announcement().active(), new Model<>());
+		bindWithCache(Bindings.announcement().enabled(), new Model<>());
 	}
 
 	@Override
