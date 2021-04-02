@@ -23,17 +23,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G extends GenericUserGroup<G, U>>
 		extends GenericUser<U, G>
 		implements ISimpleUser, INotificationRecipient {
-	
+
 	private static final long serialVersionUID = 4869548461178261021L;
-	
+
 	public static final String FIRST_NAME = "firstName";
 	public static final String FIRST_NAME_SORT = "firstNameSort";
-	
+
 	public static final String LAST_NAME = "lastName";
 	public static final String LAST_NAME_SORT = "lastNameSort";
-	
+
 	public static final String EMAIL = "email";
-	
+
 	@Column(nullable = false)
 	@Field(name = FIRST_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	@Field(name = FIRST_NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
@@ -49,29 +49,23 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 	@Field(name = EMAIL, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String email;
-	
-	private String phoneNumber;
-	
-	private String gsmNumber;
-	
-	private String faxNumber;
-	
+
 	public GenericSimpleUser() {
 		super();
 	}
-	
+
 	public GenericSimpleUser(String username, String firstName, String lastName, String passwordHash) {
 		super(username, passwordHash);
 		setFirstName(firstName);
 		setLastName(lastName);
 	}
-	
+
 	/*
 	 * Works around a bindgen bug, where bindgen seems unable to substitute a concrete type to the "G" type parameter if we don't override this method here.
 	 */
 	@Override
 	public Set<G> getGroups() {
-		return super.getGroups(); //NOSONAR
+		return super.getGroups(); // NOSONAR
 	}
 
 	@Override
@@ -113,30 +107,6 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public void setGsmNumber(String gsmNumber) {
-		this.gsmNumber = gsmNumber;
-	}
-
-	public String getGsmNumber() {
-		return gsmNumber;
-	}
-
-	public String getFaxNumber() {
-		return faxNumber;
-	}
-
-	public void setFaxNumber(String faxNumber) {
-		this.faxNumber = faxNumber;
 	}
 
 	@Override
