@@ -14,10 +14,8 @@ import java.util.SortedSet;
 import javax.persistence.Basic;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.UniqueConstraint;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cascade;
@@ -110,7 +108,6 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	private Set<Authority> authorities = new LinkedHashSet<>();
 
 	@ManyToMany
-	@JoinTable(uniqueConstraints = { @UniqueConstraint(columnNames = { "persons_id", "groups_id" }) })
 	@SortComparator(GenericUserGroupComparator.class)
 	@Field(name = GROUPS, bridge = @FieldBridge(impl = GenericEntityCollectionIdFieldBridge.class), analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose

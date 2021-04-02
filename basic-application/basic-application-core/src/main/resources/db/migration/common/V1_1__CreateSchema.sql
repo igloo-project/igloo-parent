@@ -29,7 +29,7 @@ create table ${schema}.TechnicalUser (id int8 not null, primary key (id));
 create table ${schema}.user_ (id int8 not null, creationDate timestamp not null, enabled boolean not null, lastLoginDate timestamp, lastUpdateDate timestamp not null, locale varchar(255), passwordHash ${type.text}, username ${type.text} not null, email ${type.text}, firstName ${type.text} not null, lastName ${type.text} not null, announcementInformation_lastActionDate timestamp, announcementInformation_open boolean not null, passwordInformation_lastUpdateDate timestamp, passwordRecoveryRequest_creationDate timestamp, passwordRecoveryRequest_initiator varchar(255), passwordRecoveryRequest_token ${type.text}, passwordRecoveryRequest_type varchar(255), primary key (id));
 create table ${schema}.user__Authority (user__id int8 not null, authorities_id int8 not null, primary key (user__id, authorities_id));
 create table ${schema}.user__passwordInformation_history (user__id int8 not null, passwordInformation_history ${type.text}, history_ORDER int4 not null, primary key (user__id, history_ORDER));
-create table ${schema}.user__UserGroup (persons_id int8 not null, groups_id int8 not null, primary key (persons_id, groups_id));
+create table ${schema}.user__UserGroup (users_id int8 not null, groups_id int8 not null, primary key (users_id, groups_id));
 create table ${schema}.UserGroup (id int8 not null, description ${type.text}, locked boolean not null, name ${type.text}, primary key (id));
 create table ${schema}.UserGroup_Authority (UserGroup_id int8 not null, authorities_id int8 not null, primary key (UserGroup_id, authorities_id));
 alter table ${schema}.City add constraint UKcici6ao6snb79g0i2ebsix408 unique (label_fr, postalCode);
@@ -47,7 +47,7 @@ alter table ${schema}.user__Authority add constraint FKhoyhws618rm4v2rjvm0x9uuhk
 alter table ${schema}.user__Authority add constraint FK1nrpbko4mct39gq143ef5jwq0 foreign key (user__id) references ${schema}.user_;
 alter table ${schema}.user__passwordInformation_history add constraint FKhhvmnfe1oakm04ad2k6xbrh59 foreign key (user__id) references ${schema}.user_;
 alter table ${schema}.user__UserGroup add constraint FKpctvagil9lsn2dovvt1fpfa5y foreign key (groups_id) references ${schema}.UserGroup;
-alter table ${schema}.user__UserGroup add constraint FKgqeklcob49vjws6n5jkxbxg07 foreign key (persons_id) references ${schema}.user_;
+alter table ${schema}.user__UserGroup add constraint FKi09rq0mpjvl80ck9tglp995d6 foreign key (users_id) references ${schema}.user_;
 alter table ${schema}.UserGroup_Authority add constraint FK9gql8awj70oo2bgxupgcu9qxf foreign key (authorities_id) references ${schema}.Authority;
 alter table ${schema}.UserGroup_Authority add constraint FKrpwlh5niy92myi8fi0yiwr4ep foreign key (UserGroup_id) references ${schema}.UserGroup;
 
