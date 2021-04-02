@@ -15,15 +15,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public class TestPersonService extends AbstractJpaSecurityTestCase {
+public class TestUserService extends AbstractJpaSecurityTestCase {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
 
 	@Test
 	public void testAuthorities() throws ServiceException, SecurityServiceException {
-		MockUser person1 = createMockPerson("login1", "firstName1", "lastName1");
-		MockUser person2 = createMockPerson("login2", "firstName2", "lastName2");
+		MockUser person1 = createMockUser("login1", "firstName1", "lastName1");
+		MockUser person2 = createMockUser("login2", "firstName2", "lastName2");
 		
 		Authority adminAuthority = authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN);
 		Authority group1Authority = authorityService.getByName(ROLE_GROUP_1);
@@ -55,18 +55,18 @@ public class TestPersonService extends AbstractJpaSecurityTestCase {
 
 	@Test
 	public void testCaseInsensitiveUsernameFetch() throws ServiceException, SecurityServiceException {
-		MockUser person1 = createMockPerson("Login1", "firstName1", "lastName1");
-		MockUser person2 = createMockPerson("logIn2", "firstName2", "lastName2");
-		mockUserService.setPasswords(person1, "toto");
-		mockUserService.setPasswords(person2, "tata");
+		MockUser user1 = createMockUser("Login1", "firstName1", "lastName1");
+		MockUser user2 = createMockUser("logIn2", "firstName2", "lastName2");
+		mockUserService.setPasswords(user1, "toto");
+		mockUserService.setPasswords(user2, "tata");
 		
-		assertEquals(person1, mockUserService.getByUsernameCaseInsensitive("login1"));
-		assertEquals(person1, mockUserService.getByUsernameCaseInsensitive("Login1"));
-		assertEquals(person1, mockUserService.getByUsernameCaseInsensitive("LogIn1"));
+		assertEquals(user1, mockUserService.getByUsernameCaseInsensitive("login1"));
+		assertEquals(user1, mockUserService.getByUsernameCaseInsensitive("Login1"));
+		assertEquals(user1, mockUserService.getByUsernameCaseInsensitive("LogIn1"));
 		
-		assertEquals(person2, mockUserService.getByUsernameCaseInsensitive("login2"));
-		assertEquals(person2, mockUserService.getByUsernameCaseInsensitive("Login2"));
-		assertEquals(person2, mockUserService.getByUsernameCaseInsensitive("LogIn2"));
+		assertEquals(user2, mockUserService.getByUsernameCaseInsensitive("login2"));
+		assertEquals(user2, mockUserService.getByUsernameCaseInsensitive("Login2"));
+		assertEquals(user2, mockUserService.getByUsernameCaseInsensitive("LogIn2"));
 		
 		assertEquals("Login1", userDetailsService.loadUserByUsername("Login1").getUsername());
 		assertEquals("Login1", userDetailsService.loadUserByUsername("login1").getUsername());

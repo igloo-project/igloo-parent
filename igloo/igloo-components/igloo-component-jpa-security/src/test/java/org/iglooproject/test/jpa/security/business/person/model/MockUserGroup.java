@@ -6,6 +6,7 @@ import org.iglooproject.jpa.security.business.person.model.GenericUserGroup;
 
 @Entity
 public class MockUserGroup extends GenericUserGroup<MockUserGroup, MockUser> {
+
 	private static final long serialVersionUID = 5310917945553360988L;
 
 	@Override

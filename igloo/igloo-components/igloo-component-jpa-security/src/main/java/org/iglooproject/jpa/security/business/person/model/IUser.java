@@ -15,7 +15,7 @@ public interface IUser {
 
 	Set<Authority> getAuthorities();
 
-	Set<? extends Permission> getPermissions();
+	Set<Permission> getPermissions();
 
 	boolean isEnabled();
 

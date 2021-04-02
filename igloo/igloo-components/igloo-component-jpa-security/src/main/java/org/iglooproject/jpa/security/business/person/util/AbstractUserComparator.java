@@ -6,9 +6,9 @@ import org.iglooproject.jpa.security.business.person.model.GenericUser;
 public class AbstractUserComparator extends AbstractGenericEntityComparator<Long, GenericUser<?, ?>> {
 
 	private static final long serialVersionUID = 5465095061690808293L;
-	
+
 	private static final AbstractUserComparator INSTANCE = new AbstractUserComparator();
-	
+
 	public static AbstractUserComparator get() {
 		return INSTANCE;
 	}
@@ -22,5 +22,5 @@ public class AbstractUserComparator extends AbstractGenericEntityComparator<Long
 		}
 		return order;
 	}
-	
+
 }

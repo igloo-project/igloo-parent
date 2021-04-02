@@ -5,8 +5,8 @@ import org.iglooproject.jpa.security.business.person.model.GenericSimpleUser;
 
 public abstract class GenericSimpleUserServiceImpl<U extends GenericSimpleUser<U, ?>> extends GenericUserServiceImpl<U> {
 
-	public GenericSimpleUserServiceImpl(IGenericUserDao<U> personDao) {
-		super(personDao);
+	public GenericSimpleUserServiceImpl(IGenericUserDao<U> dao) {
+		super(dao);
 	}
 
 }

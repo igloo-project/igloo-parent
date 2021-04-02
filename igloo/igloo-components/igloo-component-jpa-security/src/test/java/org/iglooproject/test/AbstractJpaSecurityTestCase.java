@@ -86,32 +86,32 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		cleanEntities(authorityService);
 	}
 
-	protected MockUser createMockPerson(String username, String firstName, String lastName) throws ServiceException, SecurityServiceException {
-		return createMockPerson(username, firstName, lastName, "test@example.com");
+	protected MockUser createMockUser(String username, String firstName, String lastName) throws ServiceException, SecurityServiceException {
+		return createMockUser(username, firstName, lastName, "test@example.com");
 	}
 	
-	protected MockUser createMockPerson(String username, String firstName, String lastName, String email) throws ServiceException, SecurityServiceException {
-		MockUser person = new MockUser();
-		person.setUsername(username);
-		person.setFirstName(firstName);
-		person.setLastName(lastName);
-		person.setEmail(email);
+	protected MockUser createMockUser(String username, String firstName, String lastName, String email) throws ServiceException, SecurityServiceException {
+		MockUser user = new MockUser();
+		user.setUsername(username);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setEmail(email);
 		
-		person.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+		user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		
-		mockUserService.create(person);
-		mockUserService.setPasswords(person, DEFAULT_PASSWORD);
+		mockUserService.create(user);
+		mockUserService.setPasswords(user, DEFAULT_PASSWORD);
 		
-		return person;
+		return user;
 	}
 	
-	protected MockUserGroup createMockPersonGroup(String name) throws ServiceException, SecurityServiceException {
-		MockUserGroup personGroup = new MockUserGroup();
-		personGroup.setName(name);
+	protected MockUserGroup createMockUserGroup(String name) throws ServiceException, SecurityServiceException {
+		MockUserGroup userGroup = new MockUserGroup();
+		userGroup.setName(name);
 		
-		mockUserGroupService.create(personGroup);
+		mockUserGroupService.create(userGroup);
 		
-		return personGroup;
+		return userGroup;
 	}
 	
 	protected Authority createAuthority(String name) throws ServiceException, SecurityServiceException {
@@ -123,8 +123,8 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		return authority;
 	}
 	
-	protected void authenticateAs(IUser person) {
-		authenticateAs(new UsernamePasswordAuthenticationToken(person.getUsername(), DEFAULT_PASSWORD));
+	protected void authenticateAs(IUser user) {
+		authenticateAs(new UsernamePasswordAuthenticationToken(user.getUsername(), DEFAULT_PASSWORD));
 	}
 	
 	protected void authenticateAs(UsernamePasswordAuthenticationToken authenticationToken) {

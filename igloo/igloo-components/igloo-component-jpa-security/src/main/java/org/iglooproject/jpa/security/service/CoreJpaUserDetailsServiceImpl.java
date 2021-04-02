@@ -79,13 +79,11 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	}
 	
 	protected IGroupedUser<?> getUserByUsername(String username) {
-		IGroupedUser<?> user;
 		if (AuthenticationUsernameComparison.CASE_INSENSITIVE.equals(authenticationUsernameComparison)) {
-			user = userService.getByUsernameCaseInsensitive(username);
+			return userService.getByUsernameCaseInsensitive(username);
 		} else {
-			user = userService.getByUsername(username);
+			return userService.getByUsername(username);
 		}
-		return user;
 	}
 	
 	protected void addCustomPermissionsFromAuthorities(Collection<? extends GrantedAuthority> expandedGrantedAuthorities, Set<Permission> permissions) {
@@ -112,9 +110,9 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		addAuthorities(grantedAuthorities, user.getAuthorities());
 		permissions.addAll(user.getPermissions());
 		
-		for (IUserGroup personGroup : user.getGroups()) {
-			addAuthorities(grantedAuthorities, personGroup.getAuthorities());
-			permissions.addAll(personGroup.getPermissions());
+		for (IUserGroup userGroup : user.getGroups()) {
+			addAuthorities(grantedAuthorities, userGroup.getAuthorities());
+			permissions.addAll(userGroup.getPermissions());
 		}
 		
 		return new ImmutablePair<>(grantedAuthorities, permissions);

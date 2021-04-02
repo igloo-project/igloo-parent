@@ -11,101 +11,103 @@ import org.iglooproject.jpa.security.business.authority.service.IAuthorityServic
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.person.dao.IGenericUserDao;
 import org.iglooproject.jpa.security.business.person.model.GenericUser;
+import org.iglooproject.spring.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 		extends GenericEntityServiceImpl<Long, U>
 		implements IGenericUserService<U>, ISecurityUserService<U> {
-	
+
+	private IGenericUserDao<U> dao;
+
 	@Autowired
 	private IAuthorityService authorityService;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
-	private IGenericUserDao<U> personDao;
-	
+
 	@Autowired
-	public GenericUserServiceImpl(IGenericUserDao<U> personDao) {
-		super(personDao);
-		this.personDao = personDao;
+	public GenericUserServiceImpl(IGenericUserDao<U> dao) {
+		super(dao);
+		this.dao = dao;
 	}
-	
+
 	@Override
-	public U getByUsername(String username) {
-		return getByNaturalId(username);
-	}
-	
-	@Override
-	public U getByUsernameCaseInsensitive(String username) {
-		return personDao.getByUsernameCaseInsensitive(username);
-	}
-	
-	@Override
-	protected void createEntity(U person) throws ServiceException, SecurityServiceException {
-		super.createEntity(person);
+	protected void createEntity(U user) throws ServiceException, SecurityServiceException {
+		super.createEntity(user);
 		
 		Date date = new Date();
-		person.setCreationDate(date);
-		person.setLastUpdateDate(date);
+		user.setCreationDate(date);
+		user.setLastUpdateDate(date);
 		
-		if (person.getAuthorities().size() == 0) {
+		if (user.getAuthorities().isEmpty()) {
 			Authority defaultAuthority = authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 			if (defaultAuthority != null) {
-				person.addAuthority(defaultAuthority);
+				user.addAuthority(defaultAuthority);
 				
-				super.save(person);
+				super.save(user);
 			} else {
 				throw new ServiceException("Default authority ROLE_AUTHENTICATED has not been created yet");
 			}
 		}
 	}
-	
+
 	@Override
-	protected void updateEntity(U person) throws ServiceException, SecurityServiceException {
-		person.setLastUpdateDate(new Date());
-		super.updateEntity(person);
-	}
-	
-	@Override
-	public void updateProfileInformation(U person) throws ServiceException, SecurityServiceException {
-		super.update(person);
-	}
-	
-	@Override
-	public void addAuthority(U person, Authority authority) throws ServiceException, SecurityServiceException {
-		person.addAuthority(authority);
-		super.update(person);
-	}
-	
-	@Override
-	public void addAuthority(U person, String authorityName) throws ServiceException, SecurityServiceException {
-		addAuthority(person, authorityService.getByName(authorityName));
-	}
-	
-	@Override
-	public void setEnabled(U person, boolean enabled) throws ServiceException, SecurityServiceException {
-		person.setEnabled(enabled);
-		super.update(person);
-	}
-	
-	@Override
-	public void setPasswords(U person, String clearTextPassword) throws ServiceException, SecurityServiceException {
-		person.setPasswordHash(passwordEncoder.encode(clearTextPassword));
-		super.update(person);
+	protected void updateEntity(U user) throws ServiceException, SecurityServiceException {
+		user.setLastUpdateDate(new Date());
+		super.updateEntity(user);
 	}
 
 	@Override
-	public void updateLastLoginDate(U person) throws ServiceException, SecurityServiceException {
-		person.setLastLoginDate(new Date());
-		super.updateEntity(person);
+	public U getByUsername(String username) {
+		if (!StringUtils.hasText(username)) {
+			return null;
+		}
+		return getByNaturalId(username);
 	}
-	
+
 	@Override
-	public void updateLocale(U person, Locale locale) throws ServiceException, SecurityServiceException {
-		person.setLocale(locale);
-		super.updateEntity(person);
+	public U getByUsernameCaseInsensitive(String username) {
+		if (!StringUtils.hasText(username)) {
+			return null;
+		}
+		return dao.getByUsernameCaseInsensitive(username);
+	}
+
+	@Override
+	public void setEnabled(U user, boolean enabled) throws ServiceException, SecurityServiceException {
+		user.setEnabled(enabled);
+		super.update(user);
+	}
+
+	@Override
+	public void setPasswords(U user, String clearTextPassword) throws ServiceException, SecurityServiceException {
+		user.setPasswordHash(passwordEncoder.encode(clearTextPassword));
+		super.update(user);
+	}
+
+	@Override
+	public void updateLastLoginDate(U user) throws ServiceException, SecurityServiceException {
+		user.setLastLoginDate(new Date());
+		super.updateEntity(user);
+	}
+
+	@Override
+	public void updateLocale(U user, Locale locale) throws ServiceException, SecurityServiceException {
+		user.setLocale(locale);
+		super.updateEntity(user);
+	}
+
+	@Override
+	public void addAuthority(U user, Authority authority) throws ServiceException, SecurityServiceException {
+		user.addAuthority(authority);
+		super.update(user);
+	}
+
+	@Override
+	public void addAuthority(U user, String authorityName) throws ServiceException, SecurityServiceException {
+		addAuthority(user, authorityService.getByName(authorityName));
 	}
 
 }

@@ -7,21 +7,20 @@ import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.jpa.security.business.authority.dao.IAuthorityDao;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 
-@Service("authorityService")
-public class AuthorityServiceImpl extends GenericEntityServiceImpl<Long, Authority>
-		implements IAuthorityService {
+@Service
+public class AuthorityServiceImpl extends GenericEntityServiceImpl<Long, Authority> implements IAuthorityService {
 
-	private IAuthorityDao authorityDao;
+	private IAuthorityDao dao;
 
 	@Autowired
-	public AuthorityServiceImpl(IAuthorityDao authorityDao) {
-		super(authorityDao);
-		this.authorityDao = authorityDao;
+	public AuthorityServiceImpl(IAuthorityDao dao) {
+		super(dao);
+		this.dao = dao;
 	}
-	
+
 	@Override
 	public Authority getByName(String name) {
-		return authorityDao.getByName(name);
+		return dao.getByName(name);
 	}
 
 }

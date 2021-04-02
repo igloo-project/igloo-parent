@@ -5,8 +5,8 @@ import org.bindgen.Bindable;
 @Bindable
 public interface ISimpleUser extends IUser {
 
-	String getLastName();
-
 	String getFirstName();
+
+	String getLastName();
 
 }

@@ -26,7 +26,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 	private IPermissionHierarchy permissionHierarchy;
 	
 	@Autowired
-	private IGenericUserService<T> personService;
+	private IGenericUserService<T> userService;
 	
 	@Autowired
 	private ISecurityService securityService;
@@ -43,7 +43,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 		}
 
 		if (authentication.getPrincipal() instanceof UserDetails) {
-			return personService.getByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+			return userService.getByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
 		}
 
 		return null;

@@ -7,7 +7,7 @@ import org.iglooproject.jpa.security.business.person.service.GenericUserServiceI
 import org.iglooproject.test.jpa.security.business.person.dao.IMockUserDao;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 
-@Service("mockPersonService")
+@Service
 public class MockUserServiceImpl extends GenericUserServiceImpl<MockUser> implements IMockUserService {
 
 	private IMockUserDao dao;

@@ -18,7 +18,7 @@ public class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
 
 	@Test
 	public void testRoleHierarchy() throws ServiceException, SecurityServiceException {
-		MockUser admin = createMockPerson("admin", "firstName", "lastName");
+		MockUser admin = createMockUser("admin", "firstName", "lastName");
 		admin.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN));
 		mockUserService.update(admin);
 		
@@ -27,7 +27,7 @@ public class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
 		assertTrue(securityService.hasAdminRole(admin));
 		assertTrue(securityService.hasAuthenticatedRole(admin));
 		
-		MockUser authenticated = createMockPerson("authenticated", "firstName", "lastName");
+		MockUser authenticated = createMockUser("authenticated", "firstName", "lastName");
 		authenticated.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		mockUserService.update(authenticated);
 		

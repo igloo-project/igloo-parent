@@ -12,7 +12,7 @@ import org.iglooproject.test.jpa.security.business.person.dao.IMockUserGroupDao;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
 
-@Service("mockPersonGroupService")
+@Service
 public class MockUserGroupServiceImpl extends GenericUserGroupServiceImpl<MockUserGroup, MockUser> implements IMockUserGroupService {
 
 	private final IMockUserGroupDao mockUserGroupDao;
@@ -22,9 +22,10 @@ public class MockUserGroupServiceImpl extends GenericUserGroupServiceImpl<MockUs
 		super(mockUserGroupDao);
 		this.mockUserGroupDao = mockUserGroupDao;
 	}
-	
+
 	@Override
 	public List<MockUser> listUsersByUserGroup(MockUserGroup group) throws ServiceException, SecurityServiceException {
 		return mockUserGroupDao.listUsersByUserGroup(group);
 	}
+
 }

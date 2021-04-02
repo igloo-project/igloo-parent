@@ -6,8 +6,7 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.person.model.GenericUser;
 import org.iglooproject.jpa.security.business.person.model.GenericUserGroup;
 
-public interface IGenericUserGroupService<G extends GenericUserGroup<G, U>, U extends GenericUser<U, G>>
-		extends IGenericEntityService<Long, G> {
+public interface IGenericUserGroupService<G extends GenericUserGroup<G, U>, U extends GenericUser<U, G>> extends IGenericEntityService<Long, G> {
 
 	G getByName(String name);
 

@@ -10,18 +10,16 @@ import org.iglooproject.jpa.security.business.person.model.GenericUser;
 
 public interface IGenericUserService<U extends GenericUser<U, ?>> extends IGenericEntityService<Long, U>, ISecurityUserService<U> {
 
-	void setEnabled(U person, boolean enabled) throws ServiceException, SecurityServiceException;
+	void setEnabled(U user, boolean enabled) throws ServiceException, SecurityServiceException;
 
-	void setPasswords(U person, String clearTextPassword) throws ServiceException, SecurityServiceException;
+	void setPasswords(U user, String clearTextPassword) throws ServiceException, SecurityServiceException;
 
-	void addAuthority(U person, Authority authority) throws ServiceException, SecurityServiceException;
+	void updateLastLoginDate(U user) throws ServiceException, SecurityServiceException;
 
-	void addAuthority(U person, String authorityName) throws ServiceException, SecurityServiceException;
+	void updateLocale(U user, Locale locale) throws ServiceException, SecurityServiceException;
 
-	void updateLastLoginDate(U person) throws ServiceException, SecurityServiceException;
-	
-	void updateLocale(U person, Locale locale) throws ServiceException, SecurityServiceException;
+	void addAuthority(U user, Authority authority) throws ServiceException, SecurityServiceException;
 
-	void updateProfileInformation(U person) throws ServiceException, SecurityServiceException;
+	void addAuthority(U user, String authorityName) throws ServiceException, SecurityServiceException;
 
 }

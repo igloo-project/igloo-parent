@@ -15,7 +15,7 @@ import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
 import org.iglooproject.test.jpa.security.business.person.model.QMockUser;
 import org.iglooproject.test.jpa.security.business.person.model.QMockUserGroup;
 
-@Repository("mockPersonGroupDao")
+@Repository
 public class MockUserGroupDaoImpl extends GenericUserGroupDaoImpl<MockUserGroup, MockUser> implements IMockUserGroupDao {
 	
 	@Override
