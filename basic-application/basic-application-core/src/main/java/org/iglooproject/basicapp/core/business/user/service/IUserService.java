@@ -5,7 +5,7 @@ import java.util.List;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.person.service.IGenericUserService;
+import org.iglooproject.jpa.security.business.user.service.IGenericUserService;
 
 public interface IUserService extends IGenericUserService<User> {
 

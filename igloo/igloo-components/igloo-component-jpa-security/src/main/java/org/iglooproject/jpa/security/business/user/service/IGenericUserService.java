@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.security.business.person.service;
+package org.iglooproject.jpa.security.business.user.service;
 
 import java.util.Locale;
 
@@ -6,7 +6,7 @@ import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.jpa.security.business.person.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.model.GenericUser;
 
 public interface IGenericUserService<U extends GenericUser<U, ?>> extends IGenericEntityService<Long, U>, ISecurityUserService<U> {
 

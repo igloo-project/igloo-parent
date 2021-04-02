@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.security.business.person.model;
+package org.iglooproject.jpa.security.business.user.model;
 
 import static org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl.EMPTY_PASSWORD_HASH;
 
@@ -36,7 +36,7 @@ import org.iglooproject.jpa.search.bridge.GenericEntityCollectionIdFieldBridge;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.jpa.security.business.person.util.GenericUserGroupComparator;
+import org.iglooproject.jpa.security.business.user.util.GenericUserGroupComparator;
 import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

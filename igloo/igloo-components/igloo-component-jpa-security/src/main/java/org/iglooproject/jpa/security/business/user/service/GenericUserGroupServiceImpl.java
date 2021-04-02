@@ -1,11 +1,11 @@
-package org.iglooproject.jpa.security.business.person.service;
+package org.iglooproject.jpa.security.business.user.service;
 
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.person.dao.IGenericUserGroupDao;
-import org.iglooproject.jpa.security.business.person.model.GenericUser;
-import org.iglooproject.jpa.security.business.person.model.GenericUserGroup;
+import org.iglooproject.jpa.security.business.user.dao.IGenericUserGroupDao;
+import org.iglooproject.jpa.security.business.user.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.model.GenericUserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class GenericUserGroupServiceImpl<G extends GenericUserGroup<G, U>, U extends GenericUser<U, G>>

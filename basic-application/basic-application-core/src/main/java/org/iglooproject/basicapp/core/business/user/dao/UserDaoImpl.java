@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.iglooproject.basicapp.core.business.user.model.QUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.jpa.security.business.person.dao.GenericUserDaoImpl;
+import org.iglooproject.jpa.security.business.user.dao.GenericUserDaoImpl;
 import org.iglooproject.spring.util.StringUtils;
 import org.springframework.stereotype.Repository;
 

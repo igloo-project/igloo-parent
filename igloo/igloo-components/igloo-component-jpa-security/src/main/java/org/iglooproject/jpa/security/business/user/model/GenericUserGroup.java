@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.security.business.person.model;
+package org.iglooproject.jpa.security.business.user.model;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -30,7 +30,7 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.jpa.security.business.person.util.GenericUserComparator;
+import org.iglooproject.jpa.security.business.user.util.GenericUserComparator;
 import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

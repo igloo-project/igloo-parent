@@ -21,7 +21,7 @@ import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.security.model.SecurityOptions;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.person.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;

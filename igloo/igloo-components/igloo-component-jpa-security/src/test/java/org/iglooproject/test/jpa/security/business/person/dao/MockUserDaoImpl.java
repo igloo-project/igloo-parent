@@ -1,6 +1,6 @@
 package org.iglooproject.test.jpa.security.business.person.dao;
 
-import org.iglooproject.jpa.security.business.person.dao.GenericUserDaoImpl;
+import org.iglooproject.jpa.security.business.user.dao.GenericUserDaoImpl;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.QMockUser;
 import org.springframework.stereotype.Repository;

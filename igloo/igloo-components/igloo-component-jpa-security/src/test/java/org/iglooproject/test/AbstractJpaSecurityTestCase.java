@@ -5,7 +5,7 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.jpa.security.business.person.model.IUser;
+import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.jpa.security.service.ISecurityService;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;

@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.security.business.person.service;
+package org.iglooproject.jpa.security.business.user.service;
 
 import java.util.Date;
 import java.util.Locale;
@@ -9,8 +9,8 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.jpa.security.business.person.dao.IGenericUserDao;
-import org.iglooproject.jpa.security.business.person.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.dao.IGenericUserDao;
+import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.spring.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

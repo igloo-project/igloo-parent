@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.security.business.person.model;
+package org.iglooproject.jpa.security.business.user.model;
 
 import java.util.SortedSet;
 

@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.iglooproject.jpa.security.business.person.model.IUser;
+import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.person.service.GenericUserGroupServiceImpl;
+import org.iglooproject.jpa.security.business.user.service.GenericUserGroupServiceImpl;
 import org.iglooproject.test.jpa.security.business.person.dao.IMockUserGroupDao;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;

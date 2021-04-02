@@ -1,8 +1,8 @@
-package org.iglooproject.jpa.security.business.person.util;
+package org.iglooproject.jpa.security.business.user.util;
 
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.util.AbstractGenericEntityComparator;
-import org.iglooproject.jpa.security.business.person.model.GenericUserGroup;
+import org.iglooproject.jpa.security.business.user.model.GenericUserGroup;
 
 public class GenericUserGroupComparator extends AbstractGenericEntityComparator<Long, GenericUserGroup<?, ?>> {
 

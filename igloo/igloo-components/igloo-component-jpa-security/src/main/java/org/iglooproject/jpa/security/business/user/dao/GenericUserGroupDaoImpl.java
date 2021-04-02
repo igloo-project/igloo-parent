@@ -1,9 +1,9 @@
-package org.iglooproject.jpa.security.business.person.dao;
+package org.iglooproject.jpa.security.business.user.dao;
 
 import org.iglooproject.jpa.business.generic.dao.GenericEntityDaoImpl;
-import org.iglooproject.jpa.security.business.person.model.GenericUser;
-import org.iglooproject.jpa.security.business.person.model.GenericUserGroup;
-import org.iglooproject.jpa.security.business.person.model.QGenericUserGroup;
+import org.iglooproject.jpa.security.business.user.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.model.GenericUserGroup;
+import org.iglooproject.jpa.security.business.user.model.QGenericUserGroup;
 
 import com.querydsl.core.types.dsl.PathBuilder;
 

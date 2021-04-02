@@ -1,7 +1,7 @@
 package org.igloo.spring.autoconfigure.security.stub;
 
-import org.iglooproject.jpa.security.business.person.model.GenericUser;
-import org.iglooproject.jpa.security.business.person.service.ISecurityUserService;
+import org.iglooproject.jpa.security.business.user.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.service.ISecurityUserService;
 import org.springframework.stereotype.Service;
 
 @Service

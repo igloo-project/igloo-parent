@@ -12,7 +12,7 @@ import org.hibernate.search.annotations.Indexed;
 import org.iglooproject.basicapp.core.business.user.model.embeddable.UserAnnouncementInformation;
 import org.iglooproject.basicapp.core.business.user.model.embeddable.UserPasswordInformation;
 import org.iglooproject.basicapp.core.business.user.model.embeddable.UserPasswordRecoveryRequest;
-import org.iglooproject.jpa.security.business.person.model.GenericSimpleUser;
+import org.iglooproject.jpa.security.business.user.model.GenericSimpleUser;
 import org.iglooproject.spring.util.StringUtils;
 
 @Indexed

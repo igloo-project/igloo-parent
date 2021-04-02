@@ -2,7 +2,7 @@ package org.iglooproject.test.jpa.security.business.person.model;
 
 import javax.persistence.Entity;
 
-import org.iglooproject.jpa.security.business.person.model.GenericUserGroup;
+import org.iglooproject.jpa.security.business.user.model.GenericUserGroup;
 
 @Entity
 public class MockUserGroup extends GenericUserGroup<MockUserGroup, MockUser> {

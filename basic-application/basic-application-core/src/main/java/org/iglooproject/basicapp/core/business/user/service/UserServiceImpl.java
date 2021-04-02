@@ -10,7 +10,7 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenticationService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
+import org.iglooproject.jpa.security.business.user.service.GenericSimpleUserServiceImpl;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
