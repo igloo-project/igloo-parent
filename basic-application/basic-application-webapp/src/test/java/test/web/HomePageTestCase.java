@@ -20,10 +20,12 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 
+@Ignore
 public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

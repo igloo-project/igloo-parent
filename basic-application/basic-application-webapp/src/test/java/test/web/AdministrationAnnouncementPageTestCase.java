@@ -4,8 +4,10 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class AdministrationAnnouncementPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

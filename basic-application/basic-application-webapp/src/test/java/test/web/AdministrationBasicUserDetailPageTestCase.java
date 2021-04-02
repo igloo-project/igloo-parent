@@ -13,11 +13,12 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.html.template.component.BreadCrumbListView;
 import org.iglooproject.wicket.more.markup.html.template.component.LinkGeneratorBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
-
 @EnableWebSecurity
+@Ignore
 public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
