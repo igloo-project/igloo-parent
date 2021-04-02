@@ -30,7 +30,7 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.jpa.security.business.person.util.AbstractUserComparator;
+import org.iglooproject.jpa.security.business.person.util.GenericUserComparator;
 import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -71,8 +71,8 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 	 */
 	@JsonIgnore
 	@ManyToMany(mappedBy = "groups")
-	@SortComparator(AbstractUserComparator.class)
-	private SortedSet<U> persons = Sets.newTreeSet(AbstractUserComparator.get()); // NOSONAR
+	@SortComparator(GenericUserComparator.class)
+	private SortedSet<U> persons = Sets.newTreeSet(GenericUserComparator.get()); // NOSONAR
 
 	@JsonIgnore
 	@ManyToMany

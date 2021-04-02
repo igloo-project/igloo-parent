@@ -4,13 +4,13 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.util.AbstractGenericEntityComparator;
 import org.iglooproject.jpa.security.business.person.model.GenericUserGroup;
 
-public class AbstractPersonGroupComparator extends AbstractGenericEntityComparator<Long, GenericUserGroup<?, ?>> {
+public class GenericUserGroupComparator extends AbstractGenericEntityComparator<Long, GenericUserGroup<?, ?>> {
 
 	private static final long serialVersionUID = -8477673271287138297L;
 
-	public static final AbstractPersonGroupComparator INSTANCE = new AbstractPersonGroupComparator();
+	public static final GenericUserGroupComparator INSTANCE = new GenericUserGroupComparator();
 
-	public static AbstractPersonGroupComparator get() {
+	public static GenericUserGroupComparator get() {
 		return INSTANCE;
 	}
 

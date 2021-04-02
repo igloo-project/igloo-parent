@@ -38,7 +38,7 @@ import org.iglooproject.jpa.search.bridge.GenericEntityCollectionIdFieldBridge;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.jpa.security.business.person.util.AbstractPersonGroupComparator;
+import org.iglooproject.jpa.security.business.person.util.GenericUserGroupComparator;
 import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -111,10 +111,10 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 
 	@ManyToMany
 	@JoinTable(uniqueConstraints = { @UniqueConstraint(columnNames = { "persons_id", "groups_id" }) })
-	@SortComparator(AbstractPersonGroupComparator.class)
+	@SortComparator(GenericUserGroupComparator.class)
 	@Field(name = GROUPS, bridge = @FieldBridge(impl = GenericEntityCollectionIdFieldBridge.class), analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
-	private SortedSet<G> groups = Sets.newTreeSet(AbstractPersonGroupComparator.get());
+	private SortedSet<G> groups = Sets.newTreeSet(GenericUserGroupComparator.get());
 
 	public GenericUser() {
 	}
