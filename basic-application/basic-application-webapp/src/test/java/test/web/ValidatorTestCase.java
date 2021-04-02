@@ -6,11 +6,9 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-@Ignore
 public class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	/**
