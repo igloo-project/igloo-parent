@@ -1,20 +1,21 @@
 package org.iglooproject.basicapp.web.application.security.login.component;
 
-import org.apache.wicket.Application;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
-import org.iglooproject.wicket.more.AbstractCoreSession;
-import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
+import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
+import org.iglooproject.basicapp.web.application.BasicApplicationSession;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.slf4j.Logger;
@@ -32,81 +33,67 @@ public class SignInContentPanel extends Panel {
 	@SpringBean
 	private IUserService userService;
 
-	private FormComponent<String> usernameField;
-
-	private FormComponent<String> passwordField;
-	
 	public SignInContentPanel(String wicketId) {
 		super(wicketId);
 		
+		IModel<String> usernameModel = Model.of();
+		IModel<String> passwordModel = Model.of();
+		
 		Form<Void> form = new Form<Void>("form") {
 			private static final long serialVersionUID = 1L;
-			
 			@Override
 			protected void onSubmit() {
-				AbstractCoreSession<?> session = AbstractCoreSession.get();
-				User loggedInUser = null;
-				boolean success = false;
-				boolean badCredentials = false;
 				try {
-					session.signIn(usernameField.getModelObject(), passwordField.getModelObject());
-					loggedInUser = (User) session.getUser();
-					userService.onSignIn(loggedInUser);
-					success = true;
+					BasicApplicationSession.get().signIn(usernameModel.getObject(), passwordModel.getObject());
+					onSuccess(BasicApplicationSession.get().getUser());
 				} catch (BadCredentialsException e) { // NOSONAR
-					badCredentials = true;
-					session.error(getString("signIn.error.authentication"));
+					onBadCredentials(usernameModel.getObject());
 				} catch (UsernameNotFoundException e) { // NOSONAR
-					session.error(getString("signIn.error.authentication"));
+					Session.get().error(getString("signIn.error.authentication"));
 				} catch (DisabledException e) { // NOSONAR
-					session.error(getString("signIn.error.userDisabled"));
+					Session.get().error(getString("signIn.error.userDisabled"));
+				} catch (RestartResponseException e) { // NOSONAR
+					throw e;
 				} catch (Exception e) {
 					LOGGER.error("Unknown error during authentification", e);
-					session.error(getString("signIn.error.unknown"));
+					Session.get().error(getString("signIn.error.unknown"));
 				}
 				
-				if (success) {
-					/* Redirect the user depending on its type, and not based on the authentication page.
-					 * This allows user to authenticate from the wrong page, when there's multiple authentication pages.
-					 */
-					throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
-				} else if (badCredentials) {
-					User user = userService.getByUsername(usernameField.getModelObject());
-					if (user != null) {
-						try {
-							userService.onSignInFail(user);
-						} catch (Exception e1) {
-							LOGGER.error("Unknown error while trying to find the user associated with the username entered in the form", e1);
-							session.error(getString("signIn.error.unknown"));
-						}
-					}
-				}
-				
-				throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor().newRestartResponseException();
+				throw BasicApplicationApplication.get().getSignInPageLinkDescriptor().newRestartResponseException();
 			}
 		};
 		add(form);
 		
-		usernameField = new RequiredTextField<>("username", Model.of(""));
-		usernameField.setLabel(new ResourceModel("signIn.username"));
-		usernameField.add(new LabelPlaceholderBehavior());
-		usernameField.setOutputMarkupId(true);
-		form.add(usernameField);
-		
-		passwordField = new PasswordTextField("password", Model.of("")).setRequired(true);
-		passwordField.setLabel(new ResourceModel("signIn.password"));
-		passwordField.add(new LabelPlaceholderBehavior());
-		form.add(passwordField);
+		form
+			.add(
+				new TextField<>("username", usernameModel)
+					.setRequired(true)
+					.setLabel(new ResourceModel("signIn.username"))
+					.add(new LabelPlaceholderBehavior()),
+				new PasswordTextField("password", passwordModel)
+					.setRequired(true)
+					.setLabel(new ResourceModel("signIn.password"))
+					.add(new LabelPlaceholderBehavior())
+			);
 	}
 
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
+	private void onSuccess(User user) throws ServiceException, SecurityServiceException {
+		userService.onSignIn(user);
+		throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
+	}
+
+	private void onBadCredentials(String username) {
+		Session.get().error(getString("signIn.error.authentication"));
 		
-		// There's javascript directly in the HTML file
-		response.render(JavaScriptHeaderItem.forReference(
-			Application.get().getJavaScriptLibrarySettings().getJQueryReference()
-		));
+		User user = userService.getByUsername(username);
+		if (user != null) {
+			try {
+				userService.onSignInFail(user);
+			} catch (Exception e) {
+				LOGGER.error("Unknown error while trying to find the user associated with the username entered in the form", e);
+				Session.get().error(getString("signIn.error.unknown"));
+			}
+		}
 	}
 
 }

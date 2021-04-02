@@ -12,7 +12,7 @@
 		li.sidenav-item {
 			> a.sidenav-link {
 				display: flex;
-				align-items: center;
+				align-items: baseline;
 				justify-content: space-between;
 				
 				padding: 5px 10px 5px 7px;
@@ -30,18 +30,17 @@
 				
 				> .sidenav-icon {
 					margin-right: 7px;
-					line-height: 1.5;
 				}
 				
 				> .sidenav-label {
 					@include flex-item-overflow-wrap();
 					flex: 1 1 100%;
-					line-height: 1.5;
 				}
 				
 				> .sidenav-label-sub-open-icon,
 				> .sidenav-label-sub-close-icon {
 					display: none;
+					margin-left: 2px;
 				}
 				
 				&.sidenav-link-sub {
@@ -107,7 +106,7 @@
 					
 					> a.sidenav-link {
 						> .sidenav-sub-icon {
-							width: 1.16em;
+							width: $fa-fw-width;
 							color: rgba(0, 0, 0, .5);
 							text-align: center;
 							margin-right: 7px;

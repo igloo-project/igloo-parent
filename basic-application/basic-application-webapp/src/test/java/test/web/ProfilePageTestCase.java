@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-
 @EnableWebSecurity
 public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
 

@@ -27,7 +27,7 @@ public class CoreUserDetails extends User {
 		super(username, password, authorities);
 		this.permissions = ImmutableSet.copyOf(permissions);
 	}
-	
+
 	public Collection<Permission> getPermissions() {
 		return permissions;
 	}

@@ -359,7 +359,7 @@ $shadow-xl:                   map-get($shadows, 24) !default; // bootstrap-overr
 // Font, line-height, and color for body text, headings, and more.
 
 // stylelint-disable value-keyword-case
-$font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default; // bootstrap
+$font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default; // bootstrap
 $font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default; // bootstrap
 $font-family-base:            $font-family-sans-serif !default; // bootstrap
 // stylelint-enable value-keyword-case
@@ -682,7 +682,7 @@ $custom-select-disabled-bg:         $gray-200 !default; // bootstrap
 $custom-select-bg-size:             8px 10px !default; // bootstrap // In pixels because image dimensions
 $custom-select-indicator-color:     $gray-800 !default; // bootstrap
 $custom-select-indicator:           url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'><path fill='#{$custom-select-indicator-color}' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>") !default; // bootstrap
-$custom-select-background:          escape-svg($custom-select-indicator) no-repeat right $custom-select-padding-x center / $custom-select-bg-size !default; // bootstrap // Used so we can have multiple background elements (e.g., arrow and feedback icon)
+$custom-select-background:          escape-svg($custom-select-indicator) right $custom-select-padding-x center / $custom-select-bg-size no-repeat !default; // bootstrap // Used so we can have multiple background elements (e.g., arrow and feedback icon)
 
 $custom-select-feedback-icon-padding-right: add(1em * .75, (2 * $custom-select-padding-y * .75) + $custom-select-padding-x + $custom-select-indicator-padding) !default; // bootstrap
 $custom-select-feedback-icon-position:      center right ($custom-select-padding-x + $custom-select-indicator-padding) !default; // bootstrap
@@ -846,6 +846,8 @@ $navbar-toggler-padding-x:          .75rem !default; // bootstrap
 $navbar-toggler-font-size:          $font-size-lg !default; // bootstrap
 $navbar-toggler-border-radius:      $btn-border-radius !default; // bootstrap
 
+$navbar-nav-scroll-max-height:      75vh !default; // bootstrap
+
 $navbar-main-bg:                    $brand-color !default; // bootstrap-override
 $navbar-main-color:                 $brand-text-color !default; // bootstrap-override
 $navbar-main-hover-color:           $navbar-main-color !default; // bootstrap-override
@@ -895,12 +897,12 @@ $dropdown-box-shadow:               0 .5rem 1rem rgba($black, .175) !default; //
 
 $dropdown-link-color:               $gray-900 !default; // bootstrap
 $dropdown-link-hover-color:         darken($gray-900, 5%) !default; // bootstrap
-$dropdown-link-hover-bg:            $gray-100 !default; // bootstrap
+$dropdown-link-hover-bg:            $gray-200 !default; // bootstrap
 
 $dropdown-link-active-color:        $component-active-color !default; // bootstrap
 $dropdown-link-active-bg:           $component-active-bg !default; // bootstrap
 
-$dropdown-link-disabled-color:      $gray-600 !default; // bootstrap
+$dropdown-link-disabled-color:      $gray-500 !default; // bootstrap
 
 $dropdown-item-padding-y:           .25rem !default; // bootstrap
 $dropdown-item-padding-x:           1.5rem !default; // bootstrap
@@ -938,6 +940,9 @@ $pagination-active-border-color:    $pagination-active-bg !default; // bootstrap
 $pagination-disabled-color:         $gray-600 !default; // bootstrap
 $pagination-disabled-bg:            $white !default; // bootstrap
 $pagination-disabled-border-color:  $gray-300 !default; // bootstrap
+
+$pagination-border-radius-sm:       $border-radius-sm !default; // bootstrap
+$pagination-border-radius-lg:       $border-radius-lg !default; // bootstrap
 
 
 // Jumbotron

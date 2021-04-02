@@ -125,6 +125,10 @@
 @import "webjars://bootstrap-override:current/scss/utilities/flex";
 @import "webjars://bootstrap:current/scss/utilities/float";
 @import "webjars://bootstrap-override:current/scss/utilities/float";
+@import "webjars://bootstrap:current/scss/utilities/interactions";
+@import "webjars://bootstrap-override:current/scss/utilities/interactions";
+@import "webjars://bootstrap:current/scss/utilities/overflow";
+@import "webjars://bootstrap-override:current/scss/utilities/overflow";
 @import "webjars://bootstrap:current/scss/utilities/position";
 @import "webjars://bootstrap-override:current/scss/utilities/position";
 @import "webjars://bootstrap:current/scss/utilities/screenreaders";
@@ -133,10 +137,10 @@
 @import "webjars://bootstrap-override:current/scss/utilities/shadows";
 @import "webjars://bootstrap:current/scss/utilities/sizing";
 @import "webjars://bootstrap-override:current/scss/utilities/sizing";
-@import "webjars://bootstrap:current/scss/utilities/stretched-link";
-@import "webjars://bootstrap-override:current/scss/utilities/stretched-link";
 @import "webjars://bootstrap:current/scss/utilities/spacing";
 @import "webjars://bootstrap-override:current/scss/utilities/spacing";
+@import "webjars://bootstrap:current/scss/utilities/stretched-link";
+@import "webjars://bootstrap-override:current/scss/utilities/stretched-link";
 @import "webjars://bootstrap:current/scss/utilities/text";
 @import "webjars://bootstrap-override:current/scss/utilities/text";
 @import "webjars://bootstrap:current/scss/utilities/visibility";

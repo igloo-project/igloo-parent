@@ -19,7 +19,6 @@ import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelLinkCo
 import org.junit.Test;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
-
 @EnableWebSecurity
 public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
 

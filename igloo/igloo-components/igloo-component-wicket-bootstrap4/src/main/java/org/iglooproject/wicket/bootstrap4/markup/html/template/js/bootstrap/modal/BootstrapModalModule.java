@@ -11,7 +11,6 @@ public class BootstrapModalModule implements IBootstrapModalModule {
 	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(BootstrapModalJavaScriptResourceReference.get()));
-		response.render(JavaScriptHeaderItem.forReference(BootstrapModalMoreJavaScriptResourceReference.get()));
 	}
 
 }

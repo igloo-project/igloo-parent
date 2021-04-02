@@ -69,8 +69,7 @@ public abstract class CoreWicketAuthenticatedApplication extends CoreWicketAppli
 		getMarkupSettings().setMarkupFactory(new CoreMarkupFactory());
 		
 		getSecuritySettings().setAuthorizationStrategy(newAuthorizationStrategy());
-		getSecuritySettings().setUnauthorizedComponentInstantiationListener(
-				newUnauthorizedComponentInstantiationListener());
+		getSecuritySettings().setUnauthorizedComponentInstantiationListener(newUnauthorizedComponentInstantiationListener());
 		
 		coreExceptionMapperProvider = new CoreDefaultExceptionMapperProvider();
 	}

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-common</artifactId>
-		<version>2.3.1</version>
+		<version>2.4.0</version>
 		<relativePath>../igloo-parent-maven-configuration-common/pom.xml</relativePath>
 	</parent>
 
@@ -236,9 +236,9 @@
 		<igloo.elasticsearch-test.snakeyaml.version>1.26</igloo.elasticsearch-test.snakeyaml.version>
 		<igloo.elasticsearch-test.asm2.version>5.1</igloo.elasticsearch-test.asm2.version>
 
-		<igloo.webjars.bootstrap.version>4.5.3</igloo.webjars.bootstrap.version>
+		<igloo.webjars.bootstrap.version>4.6.0</igloo.webjars.bootstrap.version>
 		<igloo.webjars.popper.version>1.16.1-lts</igloo.webjars.popper.version>
-		<igloo.webjars.clipboard.version>2.0.6</igloo.webjars.clipboard.version>
+		<igloo.webjars.clipboard.version>2.0.8</igloo.webjars.clipboard.version>
 		<igloo.webjars.jquery-mask-plugin.version>1.14.16</igloo.webjars.jquery-mask-plugin.version>
 
 		<!-- autoprefixer plugin; experimental, do not reuse without notice -->
@@ -254,35 +254,35 @@
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-jpa-test</artifactId>
-				<version>2.3.1</version>
+				<version>2.4.0</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-jpa-more-test</artifactId>
-				<version>2.3.1</version>
+				<version>2.4.0</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-wicket-test</artifactId>
-				<version>2.3.1</version>
+				<version>2.4.0</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-wicket-more-test</artifactId>
-				<version>2.3.1</version>
+				<version>2.4.0</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-test</artifactId>
-				<version>2.3.1</version>
+				<version>2.4.0</version>
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
@@ -290,7 +290,7 @@
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-junit5</artifactId>
-				<version>2.3.1</version>
+				<version>2.4.0</version>
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
@@ -298,7 +298,7 @@
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-elasticsearch-test</artifactId>
-				<version>2.3.1</version>
+				<version>2.4.0</version>
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
@@ -1289,7 +1289,7 @@
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-hibernate-search</artifactId>
-				<version>2.3.1</version>
+				<version>2.4.0</version>
 			</dependency>
 
 			<dependency>

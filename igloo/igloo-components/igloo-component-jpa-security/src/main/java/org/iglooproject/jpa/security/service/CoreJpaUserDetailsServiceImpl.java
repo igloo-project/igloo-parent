@@ -17,7 +17,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -60,24 +59,23 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("CoreJpaUserDetailsServiceImpl: User not found: " + username);
 		}
 		
-		if (!user.isActive()) {
-			throw new DisabledException("User is disabled");
-		}
-		
 		Pair<Set<GrantedAuthority>, Set<Permission>> authoritiesAndPermissions = getAuthoritiesAndPermissions(user);
 		Collection<? extends GrantedAuthority> expandedGrantedAuthorities = roleHierarchy.getReachableGrantedAuthorities(authoritiesAndPermissions.getLeft());
 		addCustomPermissionsFromAuthorities(expandedGrantedAuthorities, authoritiesAndPermissions.getRight());
 		addPermissionsFromAuthorities(expandedGrantedAuthorities, authoritiesAndPermissions.getRight());
 		Collection<Permission> expandedReachablePermissions = permissionHierarchy.getReachablePermissions(authoritiesAndPermissions.getRight());
 		
-		// In any case, we can't pass an empty password hash to the CoreUserDetails
-		
-		CoreUserDetails userDetails = new CoreUserDetails(user.getUsername(),
-				StringUtils.hasText(user.getPasswordHash()) ? user.getPasswordHash() : EMPTY_PASSWORD_HASH,
-				user.isActive(), true, true, true, 
-				expandedGrantedAuthorities, expandedReachablePermissions);
-		
-		return userDetails;
+		return new CoreUserDetails(
+			user.getUsername(),
+			// In any case, we can't pass an empty password hash to the CoreUserDetails
+			StringUtils.hasText(user.getPasswordHash()) ? user.getPasswordHash() : EMPTY_PASSWORD_HASH,
+			user.isActive(),
+			true,
+			true,
+			true, 
+			expandedGrantedAuthorities,
+			expandedReachablePermissions
+		);
 	}
 	
 	protected IGroupedUser<?> getUserByUsername(String username) {
