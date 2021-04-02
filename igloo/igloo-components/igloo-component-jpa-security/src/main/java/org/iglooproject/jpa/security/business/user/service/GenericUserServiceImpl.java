@@ -35,9 +35,8 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 
 	@Override
 	protected void createEntity(U user) throws ServiceException, SecurityServiceException {
-		super.createEntity(user);
-		
 		Date date = new Date();
+		
 		user.setCreationDate(date);
 		user.setLastUpdateDate(date);
 		
@@ -45,12 +44,12 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 			Authority defaultAuthority = authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED);
 			if (defaultAuthority != null) {
 				user.addAuthority(defaultAuthority);
-				
-				super.save(user);
 			} else {
 				throw new ServiceException("Default authority ROLE_AUTHENTICATED has not been created yet");
 			}
 		}
+		
+		super.createEntity(user);
 	}
 
 	@Override
