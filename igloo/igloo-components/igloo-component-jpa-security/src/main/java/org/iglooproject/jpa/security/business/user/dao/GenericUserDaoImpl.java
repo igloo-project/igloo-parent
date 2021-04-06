@@ -18,13 +18,6 @@ public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>> extends Ge
 	}
 
 	@Override
-	public void save(U user) {
-		super.save(user);
-		
-		flush();
-	}
-
-	@Override
 	public U getByUsernameCaseInsensitive(String username) {
 		QGenericUser qUser = new QGenericUser(getEntityPath());
 		return new JPAQuery<U>(getEntityManager())
