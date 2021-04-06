@@ -7,7 +7,7 @@ import org.iglooproject.jpa.security.business.user.service.GenericUserGroupServi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("personGroupService")
+@Service
 public class UserGroupServiceImpl extends GenericUserGroupServiceImpl<UserGroup, User>
 		implements IUserGroupService {
 

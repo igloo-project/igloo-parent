@@ -7,7 +7,7 @@ import org.iglooproject.jpa.util.IDatabaseConsistencyCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("databaseConsistencyCheckService")
+@Service
 public class DatabaseConsistencyCheckServiceImpl implements IDatabaseConsistencyCheckService {
 
 	@Autowired
