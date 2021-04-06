@@ -1,5 +1,9 @@
 package org.iglooproject.jpa.migration;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.EnumSet;
 import java.util.Map;
 
@@ -55,6 +59,13 @@ public final class SqlUpdateScript {
 		ServiceRegistry serviceRegistry = ((SessionImpl) entityManager.getDelegate()).getSessionFactory().getServiceRegistry();
 		Metadata metadata = context.getBean(MetadataRegistryIntegrator.class).getMetadata();
 		
+		// hibernate append script to existing file; we want file to be reset.
+		// we create the file if needed and output null content to it.
+		try {
+			Files.write(Paths.get(fileName), new byte[0], StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+		} catch (IOException e) {
+			throw new RuntimeException(String.format("File %s cannot be created/emptied.", fileName), e);
+		}
 		EnumSet<TargetType> targetTypes = EnumSet.of(TargetType.SCRIPT);
 		TargetDescriptor targetDescriptor = SchemaExport.buildTargetDescriptor(targetTypes, fileName, serviceRegistry);
 		
