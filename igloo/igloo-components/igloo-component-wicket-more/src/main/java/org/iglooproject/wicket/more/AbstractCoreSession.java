@@ -44,16 +44,16 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCoreSession.class);
 	
-	@SpringBean(name="personService")
+	@SpringBean(name = "userService")
 	protected IGenericUserService<U> userService;
 	
-	@SpringBean(name="authenticationService")
+	@SpringBean(name = "authenticationService")
 	protected IAuthenticationService authenticationService;
 	
-	@SpringBean(name="authenticationManager")
+	@SpringBean(name = "authenticationManager")
 	protected AuthenticationManager authenticationManager;
 	
-	@SpringBean(name="propertyService")
+	@SpringBean(name = "propertyService")
 	protected IPropertyService propertyService;
 	
 	private final IModel<U> userModel = new SessionThreadSafeGenericEntityModel<>();

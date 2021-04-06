@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQuery;
 
-@Repository("personDao")
+@Repository("userDao")
 public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 
 	private static final QUser qUser = QUser.user;

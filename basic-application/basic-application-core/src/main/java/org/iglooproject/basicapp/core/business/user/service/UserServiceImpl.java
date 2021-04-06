@@ -18,7 +18,7 @@ import org.iglooproject.spring.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("personService")
+@Service("userService")
 public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implements IUserService {
 
 	@Autowired
