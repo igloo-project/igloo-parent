@@ -26,6 +26,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hibernate.internal.SessionImpl;
 import org.hibernate.metamodel.model.domain.internal.EmbeddableTypeImpl;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
@@ -92,12 +93,14 @@ public abstract class AbstractTestCase {
 	public void init() throws ServiceException, SecurityServiceException {
 		cleanAll();
 		checkEmptyDatabase();
+		clearCaches();
 	}
 	
 	@After
 	public void close() throws ServiceException, SecurityServiceException {
 		cleanAll();
 		checkEmptyDatabase();
+		clearCaches();
 	}
 	
 	/**
@@ -170,6 +173,18 @@ public abstract class AbstractTestCase {
 				Assert.fail(String.format("Il reste des objets de type %1$s", entities.get(0).getClass().getSimpleName()));
 			}
 		}
+	}
+	
+	/**
+	 * With spring test caching mechanism, we use the same entity manager for all tests. Even if cache are handled
+	 * correctly for eviction when entities are removed at test end, it keeps in cache SoftLock for read/write
+	 * strategy cache.
+	 * 
+	 * If we reuse an identifier, then re-insert fails to insert cache entry as item is soft-lock, and it can be cached
+	 * only at first retrieval. This behavior lead to unexpected and inconsistent result in TestCache.
+	 */
+	private void clearCaches() {
+		((SessionImpl) getEntityManager().getDelegate()).getSessionFactory().getCache().evictAllRegions();
 	}
 	
 	protected <E> List<E> listEntities(Class<E> clazz) {
