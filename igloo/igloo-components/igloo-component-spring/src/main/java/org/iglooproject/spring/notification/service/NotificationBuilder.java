@@ -614,7 +614,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 	
 	private void addRecipient(Map<NotificationTarget, INotificationRecipient> recipientsByTarget,
 			INotificationRecipient recipient) {
-		if ((recipient.isNotificationEnabled() || bypassDisabledRecipients) && recipient.isActive() && StringUtils.hasText(recipient.getEmail())) {
+		if ((recipient.isNotificationEnabled() || bypassDisabledRecipients) && recipient.isEnabled() && StringUtils.hasText(recipient.getEmail())) {
 			addRecipientUnsafe(
 					recipientsByTarget,
 					NotificationTarget.of(recipient, charset), recipient

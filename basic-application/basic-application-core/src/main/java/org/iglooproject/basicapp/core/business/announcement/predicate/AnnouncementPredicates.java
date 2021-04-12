@@ -14,14 +14,14 @@ import com.google.common.collect.Lists;
 
 public final class AnnouncementPredicates {
 
-	public static SerializablePredicate2<Announcement> active() {
+	public static SerializablePredicate2<Announcement> enabled() {
 		return Predicates2.notNullAnd(
-			Predicates2.compose(Predicates2.isTrue(), Bindings.announcement().active())
+			Predicates2.compose(Predicates2.isTrue(), Bindings.announcement().enabled())
 		);
 	}
 
-	public static SerializablePredicate2<Announcement> inactive() {
-		return Predicates2.notNullAndNot(active());
+	public static SerializablePredicate2<Announcement> disabled() {
+		return Predicates2.notNullAndNot(enabled());
 	}
 
 	public static SerializablePredicate2<Announcement> type(AnnouncementType type, AnnouncementType ... otherTypes) {

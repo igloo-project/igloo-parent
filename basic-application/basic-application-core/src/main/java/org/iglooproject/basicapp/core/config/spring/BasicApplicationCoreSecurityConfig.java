@@ -17,7 +17,7 @@ import org.iglooproject.basicapp.core.security.service.IBasicApplicationSecurity
 import org.iglooproject.basicapp.core.security.service.IBasicApplicationUserDetailsService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.core.security.service.SecurityManagementServiceImpl;
-import org.iglooproject.jpa.security.business.person.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.jpa.security.config.spring.DefaultJpaSecurityConfig;
 import org.iglooproject.jpa.security.runas.CoreRunAsManagerImpl;
 import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;

@@ -7,6 +7,7 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.search.IAbstractUserSearchQuery;
 import org.iglooproject.basicapp.core.business.user.search.UserSort;
+import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.search.query.ISearchQuery;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
@@ -26,7 +27,7 @@ public abstract class AbstractUserDataProvider<U extends User> extends AbstractS
 
 	private final IModel<UserGroup> groupModel = new GenericEntityModel<>();
 
-	private final IModel<Boolean> includeInactivesModel = Model.of(Boolean.FALSE);
+	private final IModel<EnabledFilter> enabledFilterModel = new Model<>(EnabledFilter.ENABLED_ONLY);
 
 	private final CompositeSortModel<UserSort> sortModel = new CompositeSortModel<>(
 		CompositingStrategy.LAST_ONLY,
@@ -63,8 +64,8 @@ public abstract class AbstractUserDataProvider<U extends User> extends AbstractS
 		return groupModel;
 	}
 
-	public IModel<Boolean> getIncludeInactivesModel() {
-		return includeInactivesModel;
+	public IModel<EnabledFilter> getEnabledFilterModel() {
+		return enabledFilterModel;
 	}
 
 	public CompositeSortModel<UserSort> getSortModel() {
@@ -78,7 +79,7 @@ public abstract class AbstractUserDataProvider<U extends User> extends AbstractS
 		return createSearchQuery()
 			.name(nameModel.getObject())
 			.group(groupModel.getObject())
-			.includeInactive(includeInactivesModel.getObject())
+			.enabled(enabledFilterModel.getObject())
 			.sort(sortModel.getObject());
 	}
 
@@ -88,7 +89,7 @@ public abstract class AbstractUserDataProvider<U extends User> extends AbstractS
 		Detachables.detach(
 			nameModel,
 			groupModel,
-			includeInactivesModel,
+			enabledFilterModel,
 			sortModel
 		);
 	}

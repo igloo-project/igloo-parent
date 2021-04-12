@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 
-@Service("importDataService")
+@Service
 public class ImportDataServiceImpl extends AbstractImportDataServiceImpl {
 
 	@Override

@@ -10,7 +10,7 @@ import org.iglooproject.spring.notification.service.AbstractNotificationServiceI
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("notificationService")
+@Service
 public class NotificationServiceImpl extends AbstractNotificationServiceImpl implements INotificationService {
 
 	private static final String ERROR_EXCEPTION_MESSAGE = "Error during send mail process (to: %s, subject: %s)";

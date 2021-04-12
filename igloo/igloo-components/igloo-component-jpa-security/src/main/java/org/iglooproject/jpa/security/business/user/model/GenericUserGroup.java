@@ -1,10 +1,12 @@
-package org.iglooproject.jpa.security.business.person.model;
+package org.iglooproject.jpa.security.business.user.model;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.SortedSet;
 
-import javax.persistence.Column;
+import javax.persistence.Basic;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -28,7 +30,7 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.jpa.security.business.person.util.AbstractUserComparator;
+import org.iglooproject.jpa.security.business.user.util.GenericUserComparator;
 import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,20 +40,21 @@ import com.querydsl.core.annotations.QueryType;
 
 @MappedSuperclass
 @Bindable
-public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PERSON extends GenericUser<PERSON, G>>
+public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U extends GenericUser<U, G>>
 		extends GenericEntity<Long, G>
 		implements IUserGroup {
 
 	private static final long serialVersionUID = 2156717229285615454L;
-	
+
 	public static final String NAME = "name";
 	public static final String NAME_SORT = "nameSort";
-	
+
 	@Id
 	@DocumentId
 	@GeneratedValue
 	private Long id;
 
+	@Basic
 	@Field(name = NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	@Field(name = NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = NAME_SORT)
@@ -68,22 +71,23 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 	 */
 	@JsonIgnore
 	@ManyToMany(mappedBy = "groups")
-	@SortComparator(AbstractUserComparator.class)
-	private Set<PERSON> persons = Sets.newTreeSet(AbstractUserComparator.get()); // NOSONAR
-	
+	@SortComparator(GenericUserComparator.class)
+	private SortedSet<U> users = Sets.newTreeSet(GenericUserComparator.get()); // NOSONAR
+
 	@JsonIgnore
 	@ManyToMany
-	@Cascade({CascadeType.SAVE_UPDATE})
+	@Cascade({ CascadeType.SAVE_UPDATE })
 	@OrderBy("name")
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Authority> authorities = new LinkedHashSet<>();
-	
+
+	@Basic
 	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
 	private String description;
-	
-	@Column(nullable = false)
+
+	@Basic(optional = false)
 	private boolean locked = false;
-	
+
 	public GenericUserGroup() {
 	}
 
@@ -107,28 +111,28 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public Set<Authority> getAuthorities() {
 		return Collections.unmodifiableSet(authorities);
 	}
 
-	public void setAuthorities(Set<Authority> authorities) {
+	public void setAuthorities(Collection<Authority> authorities) {
 		CollectionUtils.replaceAll(this.authorities, authorities);
 	}
-	
+
 	public void addAuthority(Authority authority) {
 		this.authorities.add(authority);
 	}
-	
+
 	public void removeAuthority(Authority authority) {
 		this.authorities.remove(authority);
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
@@ -144,10 +148,10 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, PERSON>, PE
 	public void setLocked(boolean locked) {
 		this.locked = locked;
 	}
-	
+
 	@Override
 	@QueryType(PropertyType.NONE)
-	public Set<? extends Permission> getPermissions() {
+	public Set<Permission> getPermissions() {
 		return Sets.newHashSetWithExpectedSize(0);
 	}
 

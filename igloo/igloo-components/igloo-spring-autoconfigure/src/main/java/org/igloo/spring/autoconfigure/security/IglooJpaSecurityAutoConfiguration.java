@@ -11,7 +11,7 @@ import org.iglooproject.commons.util.security.PermissionObject;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.security.access.expression.method.CoreMethodSecurityExpressionHandler;
 import org.iglooproject.jpa.security.business.JpaSecurityBusinessPackage;
-import org.iglooproject.jpa.security.business.person.service.ISecurityUserService;
+import org.iglooproject.jpa.security.business.user.service.ISecurityUserService;
 import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
 import org.iglooproject.jpa.security.hierarchy.PermissionHierarchyImpl;
 import org.iglooproject.jpa.security.model.NamedPermission;

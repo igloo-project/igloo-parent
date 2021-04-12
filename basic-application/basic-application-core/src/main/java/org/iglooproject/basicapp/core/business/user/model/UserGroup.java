@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Indexed;
-import org.iglooproject.jpa.security.business.person.model.GenericUserGroup;
+import org.iglooproject.jpa.security.business.user.model.GenericUserGroup;
 
 @Entity
 @Indexed

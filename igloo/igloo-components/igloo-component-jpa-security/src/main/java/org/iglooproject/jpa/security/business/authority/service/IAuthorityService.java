@@ -6,5 +6,5 @@ import org.iglooproject.jpa.security.business.authority.model.Authority;
 public interface IAuthorityService extends IGenericEntityService<Long, Authority> {
 
 	Authority getByName(String name);
-	
+
 }

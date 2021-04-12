@@ -25,33 +25,33 @@ public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testLoadUserByUsername() throws ServiceException, SecurityServiceException {
-		MockUserGroup adminGroup = createMockPersonGroup("adminGroup");
+		MockUserGroup adminGroup = createMockUserGroup("adminGroup");
 		adminGroup.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN));
 		
-		MockUserGroup group1 = createMockPersonGroup("group1");
+		MockUserGroup group1 = createMockUserGroup("group1");
 		group1.addAuthority(authorityService.getByName(ROLE_GROUP_1));
 		
-		MockUserGroup group2 = createMockPersonGroup("group2");
+		MockUserGroup group2 = createMockUserGroup("group2");
 		group2.addAuthority(authorityService.getByName(ROLE_GROUP_2));
 		
 		mockUserGroupService.update(adminGroup);
 		mockUserGroupService.update(group1);
 		mockUserGroupService.update(group2);
 		
-		MockUser personAdmin = createMockPerson("admin", "admin", "admin");
-		MockUser personGroup1 = createMockPerson("userGroup1", "userGroup1", "userGroup1");
-		MockUser personGroup2 = createMockPerson("userGroup2", "userGroup2", "userGroup2");
+		MockUser userAdmin = createMockUser("admin", "admin", "admin");
+		MockUser userGroup1 = createMockUser("userGroup1", "userGroup1", "userGroup1");
+		MockUser userGroup2 = createMockUser("userGroup2", "userGroup2", "userGroup2");
 		
-		mockUserGroupService.addUser(adminGroup, personAdmin);
-		mockUserGroupService.addUser(group1, personGroup1);
-		mockUserGroupService.addUser(group2, personGroup2);
+		mockUserGroupService.addUser(adminGroup, userAdmin);
+		mockUserGroupService.addUser(group1, userGroup1);
+		mockUserGroupService.addUser(group2, userGroup2);
 		
 		Collection<GrantedAuthority> grantedAuthorities;
 		Iterator<GrantedAuthority> iterator;
 		UserDetails userDetails;
 		
 		// Admin person
-		userDetails = coreJpaUserDetailsService.loadUserByUsername(personAdmin.getUsername());
+		userDetails = coreJpaUserDetailsService.loadUserByUsername(userAdmin.getUsername());
 		
 		grantedAuthorities = (Collection<GrantedAuthority>) userDetails.getAuthorities();
 		
@@ -67,7 +67,7 @@ public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 		assertEquals(ROLE_GROUP_3, iterator.next().getAuthority());
 		
 		// Group1 person
-		userDetails = coreJpaUserDetailsService.loadUserByUsername(personGroup1.getUsername());
+		userDetails = coreJpaUserDetailsService.loadUserByUsername(userGroup1.getUsername());
 		
 		grantedAuthorities = (Collection<GrantedAuthority>) userDetails.getAuthorities();
 		
@@ -81,7 +81,7 @@ public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 		assertEquals(ROLE_GROUP_3, iterator.next().getAuthority());
 		
 		// Group2 person
-		userDetails = coreJpaUserDetailsService.loadUserByUsername(personGroup2.getUsername());
+		userDetails = coreJpaUserDetailsService.loadUserByUsername(userGroup2.getUsername());
 		
 		grantedAuthorities = (Collection<GrantedAuthority>) userDetails.getAuthorities();
 		
@@ -94,12 +94,12 @@ public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 		assertEquals(ROLE_GROUP_2, iterator.next().getAuthority());
 		
 		// Test reimplemented QueryDSL methods
-		MockUser personInactive = createMockPerson("inactive", "inactive", "inactive");
-		personInactive.setActive(false);
-		mockUserService.update(personInactive);
+		MockUser userInactive = createMockUser("inactive", "inactive", "inactive");
+		userInactive.setEnabled(false);
+		mockUserService.update(userInactive);
 		
 		assertEquals(group1, mockUserGroupService.getByName("group1"));
 		assertEquals(new Long(4), mockUserService.count());
-		assertEquals(new Long(3), mockUserService.countActive());
+		assertEquals(new Long(3), mockUserService.countEnabled());
 	}
 }

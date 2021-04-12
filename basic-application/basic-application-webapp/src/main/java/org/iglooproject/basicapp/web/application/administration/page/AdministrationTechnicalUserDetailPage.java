@@ -19,7 +19,7 @@ import org.iglooproject.basicapp.web.application.administration.component.tab.Ad
 import org.iglooproject.basicapp.web.application.administration.component.tab.AdministrationTechnicalUserDetailTabSecurityPanel;
 import org.iglooproject.basicapp.web.application.administration.form.UserPasswordEditPopup;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
-import org.iglooproject.basicapp.web.application.common.renderer.UserActiveRenderer;
+import org.iglooproject.basicapp.web.application.common.renderer.UserEnabledRenderer;
 import org.iglooproject.basicapp.web.application.common.util.BootstrapTabsUtils;
 import org.iglooproject.basicapp.web.application.navigation.link.LinkFactory;
 import org.iglooproject.wicket.bootstrap4.markup.html.bootstrap.component.BootstrapBadge;
@@ -98,7 +98,7 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 				new EnclosureContainer("informationContainer")
 					.anyChildVisible()
 					.add(
-						new BootstrapBadge<>("active", userModel, UserActiveRenderer.get())
+						new BootstrapBadge<>("active", userModel, UserEnabledRenderer.get())
 					)
 			);
 		
@@ -149,7 +149,7 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 							@Override
 							public void onClick(AjaxRequestTarget target) {
 								try {
-									userService.setActive(getModelObject(), true);
+									userService.setEnabled(getModelObject(), true);
 									Session.get().success(getString("administration.user.action.enable.success"));
 									target.add(getPage());
 								} catch (Exception e) {
@@ -160,7 +160,7 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 							}
 						}
 							.add(
-								Condition.predicate(userModel, UserPredicates.inactive())
+								Condition.predicate(userModel, UserPredicates.disabled())
 									.thenShow()
 							),
 						
@@ -173,7 +173,7 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 								@Override
 								public void execute(AjaxRequestTarget target) {
 									try {
-										userService.setActive(userModel.getObject(), false);
+										userService.setEnabled(userModel.getObject(), false);
 										Session.get().success(getString("administration.user.action.disable.success"));
 									} catch (Exception e) {
 										LOGGER.error("Error occured while disabling user", e);
@@ -187,7 +187,7 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 							.add(
 								Condition.and(
 									Condition.isEqual(BasicApplicationSession.get().getUserModel(), userModel).negate(),
-									Condition.predicate(userModel, UserPredicates.active())
+									Condition.predicate(userModel, UserPredicates.enabled())
 								)
 									.thenShow()
 							)

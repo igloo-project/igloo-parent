@@ -2,17 +2,19 @@ package org.iglooproject.test.jpa.security.business.person.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import org.iglooproject.jpa.security.business.person.service.GenericUserServiceImpl;
+import org.iglooproject.jpa.security.business.user.service.GenericUserServiceImpl;
 import org.iglooproject.test.jpa.security.business.person.dao.IMockUserDao;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 
-@Service("mockPersonService")
+@Service
 public class MockUserServiceImpl extends GenericUserServiceImpl<MockUser> implements IMockUserService {
 
+	private IMockUserDao dao;
+
 	@Autowired
-	public MockUserServiceImpl(IMockUserDao testPersonDao) {
-		super(testPersonDao);
+	public MockUserServiceImpl(IMockUserDao dao) {
+		super(dao);
+		this.dao = dao;
 	}
 
 	@Override
@@ -22,4 +24,10 @@ public class MockUserServiceImpl extends GenericUserServiceImpl<MockUser> implem
 	@Override
 	public void protectedMethodRoleAuthenticated() {
 	}
+
+	@Override
+	public Long countEnabled() {
+		return dao.countEnabled();
+	}
+
 }

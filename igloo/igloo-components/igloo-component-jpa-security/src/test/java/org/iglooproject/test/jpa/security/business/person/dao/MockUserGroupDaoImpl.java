@@ -9,13 +9,13 @@ import com.querydsl.jpa.impl.JPAQuery;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.person.dao.GenericUserGroupDaoImpl;
+import org.iglooproject.jpa.security.business.user.dao.GenericUserGroupDaoImpl;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
 import org.iglooproject.test.jpa.security.business.person.model.QMockUser;
 import org.iglooproject.test.jpa.security.business.person.model.QMockUserGroup;
 
-@Repository("mockPersonGroupDao")
+@Repository
 public class MockUserGroupDaoImpl extends GenericUserGroupDaoImpl<MockUserGroup, MockUser> implements IMockUserGroupDao {
 	
 	@Override

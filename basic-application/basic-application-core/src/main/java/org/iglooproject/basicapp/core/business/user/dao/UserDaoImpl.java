@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.iglooproject.basicapp.core.business.user.model.QUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.jpa.security.business.person.dao.GenericUserDaoImpl;
+import org.iglooproject.jpa.security.business.user.dao.GenericUserDaoImpl;
 import org.iglooproject.spring.util.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQuery;
 
-@Repository("personDao")
+@Repository("userDao")
 public class UserDaoImpl extends GenericUserDaoImpl<User> implements IUserDao {
 
 	private static final QUser qUser = QUser.user;

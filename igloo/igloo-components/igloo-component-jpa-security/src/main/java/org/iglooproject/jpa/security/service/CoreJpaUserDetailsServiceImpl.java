@@ -7,9 +7,9 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
-import org.iglooproject.jpa.security.business.person.model.IGroupedUser;
-import org.iglooproject.jpa.security.business.person.model.IUserGroup;
-import org.iglooproject.jpa.security.business.person.service.ISecurityUserService;
+import org.iglooproject.jpa.security.business.user.model.IGroupedUser;
+import org.iglooproject.jpa.security.business.user.model.IUserGroup;
+import org.iglooproject.jpa.security.business.user.service.ISecurityUserService;
 import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
 import org.iglooproject.jpa.security.model.CoreUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +69,7 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 			user.getUsername(),
 			// In any case, we can't pass an empty password hash to the CoreUserDetails
 			StringUtils.hasText(user.getPasswordHash()) ? user.getPasswordHash() : EMPTY_PASSWORD_HASH,
-			user.isActive(),
+			user.isEnabled(),
 			true,
 			true,
 			true, 
@@ -79,13 +79,11 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 	}
 	
 	protected IGroupedUser<?> getUserByUsername(String username) {
-		IGroupedUser<?> user;
 		if (AuthenticationUsernameComparison.CASE_INSENSITIVE.equals(authenticationUsernameComparison)) {
-			user = userService.getByUsernameCaseInsensitive(username);
+			return userService.getByUsernameCaseInsensitive(username);
 		} else {
-			user = userService.getByUsername(username);
+			return userService.getByUsername(username);
 		}
-		return user;
 	}
 	
 	protected void addCustomPermissionsFromAuthorities(Collection<? extends GrantedAuthority> expandedGrantedAuthorities, Set<Permission> permissions) {
@@ -112,9 +110,9 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		addAuthorities(grantedAuthorities, user.getAuthorities());
 		permissions.addAll(user.getPermissions());
 		
-		for (IUserGroup personGroup : user.getGroups()) {
-			addAuthorities(grantedAuthorities, personGroup.getAuthorities());
-			permissions.addAll(personGroup.getPermissions());
+		for (IUserGroup userGroup : user.getGroups()) {
+			addAuthorities(grantedAuthorities, userGroup.getAuthorities());
+			permissions.addAll(userGroup.getPermissions());
 		}
 		
 		return new ImmutablePair<>(grantedAuthorities, permissions);

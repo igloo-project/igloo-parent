@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.security.business.person.model;
+package org.iglooproject.jpa.security.business.user.model;
 
 import java.util.Set;
 
@@ -15,9 +15,9 @@ public interface IUser {
 
 	Set<Authority> getAuthorities();
 
-	Set<? extends Permission> getPermissions();
+	Set<Permission> getPermissions();
 
-	boolean isActive();
+	boolean isEnabled();
 
 	String getPasswordHash();
 

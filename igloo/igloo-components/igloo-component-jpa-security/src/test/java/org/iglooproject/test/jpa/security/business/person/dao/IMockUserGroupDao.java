@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.person.dao.IGenericUserGroupDao;
+import org.iglooproject.jpa.security.business.user.dao.IGenericUserGroupDao;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
 

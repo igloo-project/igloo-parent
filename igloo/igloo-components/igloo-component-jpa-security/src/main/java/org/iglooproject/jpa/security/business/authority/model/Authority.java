@@ -34,7 +34,7 @@ public class Authority extends GenericEntity<Long, Authority> {
 
 	public Authority() {
 	}
-	
+
 	@Override
 	public Long getId() {
 		return id;

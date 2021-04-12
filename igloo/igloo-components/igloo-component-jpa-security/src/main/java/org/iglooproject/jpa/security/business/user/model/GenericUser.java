@@ -1,21 +1,21 @@
-package org.iglooproject.jpa.security.business.person.model;
+package org.iglooproject.jpa.security.business.user.model;
 
 import static org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl.EMPTY_PASSWORD_HASH;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.SortedSet;
 
-import javax.persistence.Column;
+import javax.persistence.Basic;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.UniqueConstraint;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cascade;
@@ -36,7 +36,7 @@ import org.iglooproject.jpa.search.bridge.GenericEntityCollectionIdFieldBridge;
 import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.jpa.security.business.person.util.AbstractPersonGroupComparator;
+import org.iglooproject.jpa.security.business.user.util.GenericUserGroupComparator;
 import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -54,71 +54,73 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 		implements IGroupedUser<G> {
 
 	private static final long serialVersionUID = 1803671157183603979L;
-	
+
 	public static final String USERNAME = "username";
 	public static final String USERNAME_SORT = "usernameSort";
-	
-	public static final String ACTIVE = "active";
-	
+
+	public static final String ENABLED = "enabled";
+
 	public static final String GROUPS = "groups";
-	
+
 	@Id
 	@GeneratedValue
 	@DocumentId
 	private Long id;
-	
-	@Column(nullable = false)
+
+	@Basic(optional = false)
 	@NaturalId(mutable = true)
 	@Field(name = USERNAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	@Field(name = USERNAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = USERNAME_SORT)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String username;
-	
+
 	@JsonIgnore
 	private String passwordHash = EMPTY_PASSWORD_HASH;
-	
-	@Field(name = ACTIVE)
+
+	@Basic(optional = false)
+	@Field(name = ENABLED)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
-	private boolean active = true;
-	
+	private boolean enabled = true;
+
 	@JsonIgnore
-	@Column(nullable = false)
-	private Date creationDate = new Date();
-	
+	@Basic(optional = false)
+	private Date creationDate;
+
 	@JsonIgnore
-	@Column(nullable = false)
-	private Date lastUpdateDate = new Date();
-	
+	@Basic(optional = false)
+	private Date lastUpdateDate;
+
 	@JsonIgnore
+	@Basic
 	private Date lastLoginDate;
-	
+
 	/**
 	 * preferred locale for user, can be null
 	 */
 	@JsonIgnore
+	@Basic
 	private Locale locale;
-	
+
 	@JsonIgnore
 	@ManyToMany
-	@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+	@Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE })
 	private Set<Authority> authorities = new LinkedHashSet<>();
-	
+
 	@ManyToMany
-	@JoinTable(uniqueConstraints = { @UniqueConstraint(columnNames = { "persons_id", "groups_id" }) })
-	@SortComparator(AbstractPersonGroupComparator.class)
+	@SortComparator(GenericUserGroupComparator.class)
 	@Field(name = GROUPS, bridge = @FieldBridge(impl = GenericEntityCollectionIdFieldBridge.class), analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
-	private Set<G> groups = Sets.newTreeSet(AbstractPersonGroupComparator.get());
-	
+	private SortedSet<G> groups = Sets.newTreeSet(GenericUserGroupComparator.get());
+
 	public GenericUser() {
 	}
-	
+
 	public GenericUser(String username, String passwordHash) {
 		this.username = username;
 		this.passwordHash = passwordHash;
 	}
-	
+
 	@Override
 	public Long getId() {
 		return id;
@@ -145,24 +147,24 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 		return Collections.unmodifiableSet(authorities);
 	}
 
-	public void setAuthorities(Set<Authority> authorities) {
+	public void setAuthorities(Collection<Authority> authorities) {
 		CollectionUtils.replaceAll(this.authorities, authorities);
 	}
-	
+
 	public void addAuthority(Authority authority) {
 		this.authorities.add(authority);
 	}
-	
+
 	public void removeAuthority(Authority authority) {
 		this.authorities.remove(authority);
 	}
-	
+
 	@Override
-	public Set<G> getGroups() {
-		return Collections.unmodifiableSet(groups);
+	public SortedSet<G> getGroups() {
+		return Collections.unmodifiableSortedSet(groups);
 	}
 
-	public void setGroups(Set<G> groups) {
+	public void setGroups(Collection<G> groups) {
 		CollectionUtils.replaceAll(this.groups, groups);
 	}
 
@@ -170,12 +172,12 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	public void addGroup(G group) {
 		this.groups.add(group);
 	}
-	
+
 	@Override
-	public void removeGroup(G personGroup) {
-		this.groups.remove(personGroup);
+	public void removeGroup(G group) {
+		this.groups.remove(group);
 	}
-	
+
 	@Override
 	public String getPasswordHash() {
 		return passwordHash;
@@ -189,13 +191,13 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 		return !Objects.equals(getPasswordHash(), EMPTY_PASSWORD_HASH);
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
+	@Override
+	public boolean isEnabled() {
+		return enabled;
 	}
 
-	@Override
-	public boolean isActive() {
-		return active;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public void setLastLoginDate(Date lastLoginDate) {
@@ -238,10 +240,10 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	public void setLocale(Locale locale) {
 		this.locale = locale;
 	}
-	
+
 	@Override
 	@QueryType(PropertyType.NONE)
-	public Set<? extends Permission> getPermissions() {
+	public Set<Permission> getPermissions() {
 		return Sets.newHashSetWithExpectedSize(0);
 	}
 

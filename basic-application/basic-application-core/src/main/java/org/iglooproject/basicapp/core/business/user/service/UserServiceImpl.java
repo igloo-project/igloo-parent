@@ -10,7 +10,7 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenticationService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.person.service.GenericSimpleUserServiceImpl;
+import org.iglooproject.jpa.security.business.user.service.GenericSimpleUserServiceImpl;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -18,7 +18,7 @@ import org.iglooproject.spring.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("personService")
+@Service("userService")
 public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implements IUserService {
 
 	@Autowired
@@ -85,8 +85,8 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
 	}
 
 	@Override
-	public void setActive(User person, boolean active) throws ServiceException, SecurityServiceException {
-		super.setActive(person, active);
+	public void setEnabled(User person, boolean active) throws ServiceException, SecurityServiceException {
+		super.setEnabled(person, active);
 		historyLogService.log(active ? HistoryEventType.ENABLE : HistoryEventType.DISABLE, person, HistoryLogAdditionalInformationBean.empty());
 	}
 

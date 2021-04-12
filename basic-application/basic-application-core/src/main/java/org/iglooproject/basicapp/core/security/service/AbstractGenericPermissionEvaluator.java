@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.jpa.security.business.person.model.IUser;
+import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.iglooproject.jpa.security.service.IGenericPermissionEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;

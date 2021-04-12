@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.jpa.security.business.person.model.IUser;
+import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.iglooproject.jpa.security.runas.RunAsSystemToken;
 import org.iglooproject.jpa.security.util.UserConstants;
 import org.springframework.beans.factory.annotation.Autowired;

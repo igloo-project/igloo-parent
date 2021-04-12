@@ -39,7 +39,7 @@ public class BasicUserDetailDescriptionPanel extends GenericPanel<BasicUser> {
 		add(
 			new CoreLabel("username", BindingModel.of(userModel, Bindings.user().username()))
 				.showPlaceholder(),
-			new BooleanIcon("active", BindingModel.of(userModel, Bindings.user().active())),
+			new BooleanIcon("enabled", BindingModel.of(userModel, Bindings.user().enabled())),
 			new EmailLink("email", emailModel),
 			new DefaultPlaceholderPanel("emailPlaceholder").condition(Condition.modelNotNull(emailModel)),
 			new CoreLabel("locale", BindingModel.of(userModel, Bindings.user().locale()))

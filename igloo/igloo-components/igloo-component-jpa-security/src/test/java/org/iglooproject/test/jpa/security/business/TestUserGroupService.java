@@ -11,12 +11,12 @@ import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
 import org.junit.Test;
 
-public class TestPersonGroupService extends AbstractJpaSecurityTestCase {
+public class TestUserGroupService extends AbstractJpaSecurityTestCase {
 
 	@Test
 	public void testAuthorities() throws ServiceException, SecurityServiceException {
-		MockUserGroup group1 = createMockPersonGroup("group1");
-		MockUserGroup group2 = createMockPersonGroup("group2");
+		MockUserGroup group1 = createMockUserGroup("group1");
+		MockUserGroup group2 = createMockUserGroup("group2");
 		
 		Authority adminAuthority = authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN);
 		Authority group1Authority = authorityService.getByName(ROLE_GROUP_1);
@@ -48,10 +48,10 @@ public class TestPersonGroupService extends AbstractJpaSecurityTestCase {
 	
 	@Test
 	public void testMembers() throws ServiceException, SecurityServiceException {
-		MockUserGroup group1 = createMockPersonGroup("group1");
+		MockUserGroup group1 = createMockUserGroup("group1");
 		
-		MockUser user1 = createMockPerson("user1", "user1", "user1");
-		MockUser user2 = createMockPerson("user2", "user2", "user2");
+		MockUser user1 = createMockUser("user1", "user1", "user1");
+		MockUser user2 = createMockUser("user2", "user2", "user2");
 
 		mockUserGroupService.addUser(group1, user1);
 		

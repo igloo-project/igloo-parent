@@ -13,8 +13,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.jpa.security.business.person.model.GenericUser;
-import org.iglooproject.jpa.security.business.person.service.IGenericUserService;
+import org.iglooproject.jpa.security.business.user.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.service.IGenericUserService;
 import org.iglooproject.jpa.security.config.spring.DefaultJpaSecurityConfig;
 import org.iglooproject.jpa.security.model.NamedPermission;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
@@ -44,16 +44,16 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCoreSession.class);
 	
-	@SpringBean(name="personService")
+	@SpringBean(name = "userService")
 	protected IGenericUserService<U> userService;
 	
-	@SpringBean(name="authenticationService")
+	@SpringBean(name = "authenticationService")
 	protected IAuthenticationService authenticationService;
 	
-	@SpringBean(name="authenticationManager")
+	@SpringBean(name = "authenticationManager")
 	protected AuthenticationManager authenticationManager;
 	
-	@SpringBean(name="propertyService")
+	@SpringBean(name = "propertyService")
 	protected IPropertyService propertyService;
 	
 	private final IModel<U> userModel = new SessionThreadSafeGenericEntityModel<>();

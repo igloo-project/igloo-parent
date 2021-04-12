@@ -1,19 +1,19 @@
-package org.iglooproject.jpa.security.business.person.util;
+package org.iglooproject.jpa.security.business.user.util;
 
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.util.AbstractGenericEntityComparator;
-import org.iglooproject.jpa.security.business.person.model.GenericUserGroup;
+import org.iglooproject.jpa.security.business.user.model.GenericUserGroup;
 
-public class AbstractPersonGroupComparator extends AbstractGenericEntityComparator<Long, GenericUserGroup<?, ?>> {
+public class GenericUserGroupComparator extends AbstractGenericEntityComparator<Long, GenericUserGroup<?, ?>> {
 
 	private static final long serialVersionUID = -8477673271287138297L;
-	
-	public static final AbstractPersonGroupComparator INSTANCE = new AbstractPersonGroupComparator();
-	
-	public static AbstractPersonGroupComparator get() {
+
+	public static final GenericUserGroupComparator INSTANCE = new GenericUserGroupComparator();
+
+	public static GenericUserGroupComparator get() {
 		return INSTANCE;
 	}
-	
+
 	@Override
 	protected int compareNotNullObjects(GenericUserGroup<?, ?> left, GenericUserGroup<?, ?> right) {
 		int order = GenericEntity.STRING_COLLATOR_FRENCH.compare(left.getName(), right.getName());
@@ -22,5 +22,5 @@ public class AbstractPersonGroupComparator extends AbstractGenericEntityComparat
 		}
 		return order;
 	}
-	
+
 }

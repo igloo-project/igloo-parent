@@ -23,7 +23,7 @@ import org.iglooproject.basicapp.web.application.administration.model.Announceme
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationAnnouncementTemplate;
 import org.iglooproject.basicapp.web.application.common.component.AnnouncementMessagePanel;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
-import org.iglooproject.basicapp.web.application.common.renderer.AnnouncementActiveRenderer;
+import org.iglooproject.basicapp.web.application.common.renderer.AnnouncementEnabledRenderer;
 import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.condition.Condition;
@@ -95,7 +95,7 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 		
 		DecoratedCoreDataTablePanel<?, ?> results =
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
-				.addBootstrapBadgeColumn(Model.of(), Bindings.announcement(), AnnouncementActiveRenderer.get())
+				.addBootstrapBadgeColumn(Model.of(), Bindings.announcement(), AnnouncementEnabledRenderer.get())
 					.hideLabel()
 					.withClass("narrow")
 				.addLabelColumn(new ResourceModel("business.announcement.id"), Bindings.announcement().id())
@@ -148,7 +148,7 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 					.end()
 					.withClass("actions actions-2x")
 				.rows()
-					.withClass(itemModel -> Condition.predicate(itemModel, AnnouncementPredicates.inactive()).then(TABLE_ROW_DISABLED).otherwise(""))
+					.withClass(itemModel -> Condition.predicate(itemModel, AnnouncementPredicates.disabled()).then(TABLE_ROW_DISABLED).otherwise(""))
 					.end()
 				.bootstrapCard()
 					.count("administration.announcement.list.count")

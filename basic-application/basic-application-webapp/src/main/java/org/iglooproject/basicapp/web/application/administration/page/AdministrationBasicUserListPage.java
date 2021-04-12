@@ -24,7 +24,7 @@ import org.iglooproject.basicapp.web.application.administration.export.UserExcel
 import org.iglooproject.basicapp.web.application.administration.form.BasicUserPopup;
 import org.iglooproject.basicapp.web.application.administration.model.BasicUserDataProvider;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserListTemplate;
-import org.iglooproject.basicapp.web.application.common.renderer.UserActiveRenderer;
+import org.iglooproject.basicapp.web.application.common.renderer.UserEnabledRenderer;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.markup.html.link.EmailLink;
@@ -108,7 +108,7 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 		
 		DecoratedCoreDataTablePanel<BasicUser, ?> results =
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
-			.addBootstrapBadgeColumn(Model.of(), Bindings.user(), UserActiveRenderer.get())
+			.addBootstrapBadgeColumn(Model.of(), Bindings.user(), UserEnabledRenderer.get())
 				.hideLabel()
 				.withClass("narrow")
 			.addLabelColumn(new ResourceModel("business.user.username"), Bindings.user().username())
@@ -141,7 +141,7 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 				.withClass("text text-md")
 				.withClass(CELL_HIDDEN_MD_AND_LESS)
 			.rows()
-				.withClass(itemModel -> Condition.predicate(itemModel, UserPredicates.inactive()).then(TABLE_ROW_DISABLED).otherwise(""))
+				.withClass(itemModel -> Condition.predicate(itemModel, UserPredicates.disabled()).then(TABLE_ROW_DISABLED).otherwise(""))
 				.end()
 			.bootstrapCard()
 				.ajaxPagers()

@@ -2,7 +2,7 @@ package org.iglooproject.wicket.more.util.binding;
 
 import org.bindgen.java.util.ListBinding;
 import org.iglooproject.commons.util.mime.MediaTypeBinding;
-import org.iglooproject.jpa.security.business.person.model.GenericUserBinding;
+import org.iglooproject.jpa.security.business.user.model.GenericUserBinding;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformationBinding;
 import org.iglooproject.wicket.more.model.IBindableDataProviderBinding;
 

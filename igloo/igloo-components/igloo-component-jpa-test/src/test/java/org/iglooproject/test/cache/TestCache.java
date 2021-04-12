@@ -26,6 +26,10 @@ public class TestCache extends AbstractJpaCoreTestCase {
 		
 		entityManagerReset();
 		company = companyService.getById(company.getId());
+		
+		Assert.assertEquals(1, getStatistics().getSecondLevelCacheHitCount());
+		Assert.assertEquals(0, getStatistics().getSecondLevelCacheMissCount());
+		
 		entityManagerReset();
 		company = companyService.getById(company.getId());
 		

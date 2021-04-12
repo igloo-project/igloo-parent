@@ -22,7 +22,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.google.common.collect.ImmutableList;
 
-@Service("dataUpgradeManager")
+@Service
 public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl implements IDataUpgradeManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DataUpgradeManagerImpl.class);

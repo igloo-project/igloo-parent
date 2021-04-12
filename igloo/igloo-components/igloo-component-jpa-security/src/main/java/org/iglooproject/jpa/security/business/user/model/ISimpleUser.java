@@ -1,12 +1,12 @@
-package org.iglooproject.jpa.security.business.person.model;
+package org.iglooproject.jpa.security.business.user.model;
 
 import org.bindgen.Bindable;
 
 @Bindable
 public interface ISimpleUser extends IUser {
 
-	String getLastName();
-
 	String getFirstName();
+
+	String getLastName();
 
 }
