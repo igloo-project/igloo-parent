@@ -201,9 +201,9 @@
 		<igloo.javax-activation.version>1.1.1</igloo.javax-activation.version>
 		<igloo.javax-validation-api.version>1.1.0.Final</igloo.javax-validation-api.version>
 
-		<igloo.wicket.version>8.10.0</igloo.wicket.version>
+		<igloo.wicket.version>8.12.0</igloo.wicket.version>
 		<igloo.wiquery.version>8.1.1</igloo.wiquery.version>
-		<igloo.wicketstuff-select2.version>8.10.0</igloo.wicketstuff-select2.version>
+		<igloo.wicketstuff-select2.version>8.12.0</igloo.wicketstuff-select2.version>
 		<!-- https://github.com/l0rdn1kk0n/wicket-webjars (0.5.x -> wicket 7, 2.0.x -> wicket 8) -->
 		<igloo.wicket-webjars.version>2.0.10</igloo.wicket-webjars.version>
 		<igloo.webjars-locator-core.version>0.46</igloo.webjars-locator-core.version>
