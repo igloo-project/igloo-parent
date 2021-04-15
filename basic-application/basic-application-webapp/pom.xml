@@ -212,10 +212,11 @@
 								<argument>core-fa:igloo.fontawesome.CoreFontAwesomeCssScope</argument>
 								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationadvanced.StylesScssResourceReference:styles.scss</argument>
 								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationbasic.StylesScssResourceReference:styles.scss</argument>
-								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.application.console.console.ConsoleScssResourceReference:console.scss</argument>
-								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.NotificationScssResourceReference:notification.scss</argument>
-								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.application.console.consoleaccess.ConsoleAccessScssResourceReference:console-access.scss</argument>
 								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationaccess.ApplicationAccessScssResourceReference:application-access.scss</argument>
+								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.application.console.console.ConsoleScssResourceReference:console.scss</argument>
+								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.application.console.consoleaccess.ConsoleAccessScssResourceReference:console-access.scss</argument>
+								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.head.NotificationHeadScssResourceReference:notification-head.scss</argument>
+								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.email.NotificationEmailScssResourceReference:notification-email.scss</argument>
 							</arguments>
 						</configuration>
 					</execution>

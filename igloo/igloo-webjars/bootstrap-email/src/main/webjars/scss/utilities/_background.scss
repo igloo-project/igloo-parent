@@ -1,0 +1,12 @@
+@each $color, $value in map-merge(
+	$theme-colors,
+	(
+		"body": $body-bg,
+		"white": $white,
+		"transparent": transparent
+	)
+) {
+	.bg-#{$color} {
+		@include bg-color-variant($value, $enable-important-utilities);
+	}
+}

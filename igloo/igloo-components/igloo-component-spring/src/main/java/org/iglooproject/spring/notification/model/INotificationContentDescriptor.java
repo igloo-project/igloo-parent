@@ -4,13 +4,11 @@ import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 
 public interface INotificationContentDescriptor {
-	
+
 	String renderSubject() throws NotificationContentRenderingException;
-	
-	String renderHtmlBody() throws NotificationContentRenderingException;
-	
-	String renderTextBody() throws NotificationContentRenderingException;
-	
+
+	INotificationContentBody renderBody() throws NotificationContentRenderingException;
+
 	/**
 	 * @param recipient The notification recipient.
 	 * @param contextDescriptor The notification content descriptor

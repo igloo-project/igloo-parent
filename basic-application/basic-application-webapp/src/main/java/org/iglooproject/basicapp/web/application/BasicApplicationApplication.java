@@ -41,11 +41,12 @@ import org.iglooproject.basicapp.web.application.common.template.resources.Basic
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationaccess.ApplicationAccessScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.console.console.ConsoleScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.console.consoleaccess.ConsoleAccessScssResourceReference;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.NotificationScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.email.NotificationEmailScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.head.NotificationHeadScssResourceReference;
 import org.iglooproject.basicapp.web.application.console.common.component.ConsoleAccessHeaderAdditionalContentPanel;
 import org.iglooproject.basicapp.web.application.console.common.component.ConsoleHeaderAdditionalContentPanel;
 import org.iglooproject.basicapp.web.application.console.common.component.ConsoleHeaderEnvironmentPanel;
-import org.iglooproject.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
+import org.iglooproject.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoListPage;
 import org.iglooproject.basicapp.web.application.history.renderer.HistoryValueRenderer;
 import org.iglooproject.basicapp.web.application.navigation.page.HomePage;
 import org.iglooproject.basicapp.web.application.navigation.page.MaintenancePage;
@@ -114,7 +115,8 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 			preloadStyleSheets(
 				ConsoleAccessScssResourceReference.get(),
 				ConsoleScssResourceReference.get(),
-				NotificationScssResourceReference.get(),
+				NotificationEmailScssResourceReference.get(),
+				NotificationHeadScssResourceReference.get(),
 				ApplicationAccessScssResourceReference.get(),
 				org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationbasic.StylesScssResourceReference.get(),
 				org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationadvanced.StylesScssResourceReference.get()
@@ -210,10 +212,10 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		consoleConfiguration.setConsoleHeaderAdditionalContentComponentFactory(ConsoleHeaderAdditionalContentPanel::new);
 		
 		ConsoleMenuSection notificationMenuSection = new ConsoleMenuSection(
-			"notificationsMenuSection",
+			"notificationMenuSection",
 			"console.notifications",
-			"notifications",
-			ConsoleNotificationDemoIndexPage.class
+			"notification",
+			ConsoleNotificationDemoListPage.class
 		);
 		consoleConfiguration.addMenuSection(notificationMenuSection);
 		

@@ -1,0 +1,9 @@
+@mixin bg-color-variant($background, $important: false) {
+	background-color: $background important($important);
+	color: color-contrast($background) important($important);
+
+	&,
+	& > tbody > tr > td {
+		color: color-contrast($background) important($important);
+	}
+}

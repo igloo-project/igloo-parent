@@ -34,6 +34,7 @@ import com.helger.css.writer.CSSWriterSettings;
  * <p>This registry does <strong>not</strong> optimize selector matching at all : each time getStyle() is called, the component
  * tags are compared to every single selector in the stylesheet.
  */
+@Deprecated
 public class SimplePhlocCssHtmlNotificationCssRegistry implements IHtmlNotificationCssRegistry {
 	
 	private static final Comparator<String> CSS_PROPERTY_NAME_COLLATOR;

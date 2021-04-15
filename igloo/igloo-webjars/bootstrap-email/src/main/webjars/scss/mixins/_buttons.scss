@@ -1,0 +1,36 @@
+@mixin button-variant($background, $border, $color: color-contrast($background)) {
+	& > tbody > tr > td {
+		background-color: $background;
+
+		> a {
+			background-color: $background;
+			color: $color;
+			border: $btn-border-width solid $border;
+		}
+	}
+}
+
+@mixin button-outline-variant($color) {
+	& > tbody > tr > td {
+		background-color: transparent;
+		border: $btn-border-width solid $color;
+
+		> a {
+			background-color: transparent;
+			color: $color;
+			border: $btn-border-width solid $color;
+		}
+	}
+}
+
+@mixin button-size($padding-y, $padding-x, $font-size, $border-radius) {
+	& > tbody > tr > td {
+		@include border-radius($border-radius, 0);
+
+		> a {
+			padding: $padding-y $padding-x;
+			font-size: $font-size;
+			@include border-radius($border-radius, 0);
+		}
+	}
+}

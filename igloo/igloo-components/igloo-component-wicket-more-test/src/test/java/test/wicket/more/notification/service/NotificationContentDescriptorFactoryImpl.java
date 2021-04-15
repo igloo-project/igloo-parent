@@ -1,7 +1,10 @@
 package test.wicket.more.notification.service;
 
+import java.util.Locale;
+
 import org.apache.wicket.Component;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.Page;
+import org.apache.wicket.markup.html.pages.BrowserInfoPage;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.iglooproject.wicket.more.notification.service.AbstractNotificationContentDescriptorFactory;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
@@ -18,10 +21,9 @@ public class NotificationContentDescriptorFactoryImpl extends AbstractNotificati
 	public INotificationContentDescriptor simpleContent(String content) {
 		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.simpleContent") {
 			@Override
-			public Component createComponent(String wicketId) {
-				return new CoreLabel(wicketId, Model.of(content)).setEscapeModelStrings(false);
+			public Page createPage(Locale locale) {
+				return new BrowserInfoPage();
 			}
-
 			@Override
 			public Class<? extends Component> getComponentClass() {
 				return CoreLabel.class;

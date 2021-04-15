@@ -177,6 +177,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.iglooproject.webjars</groupId>
+			<artifactId>bootstrap-email</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-sass</artifactId>
 			<version>${project.version}</version>
@@ -202,6 +208,11 @@
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>annotations</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.github.resilience4j</groupId>
+			<artifactId>resilience4j-all</artifactId>
 		</dependency>
 	</dependencies>
 	

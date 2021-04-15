@@ -1,0 +1,51 @@
+.btn {
+	border-collapse: separate !important;
+	@include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-border-radius);
+
+	& > tbody > tr > td {
+		width: 100%;
+		text-align: center;
+
+		> a {
+			display: inline-block;
+			font-family: $btn-font-family;
+			font-weight: $btn-font-weight;
+			line-height: $btn-line-height;
+			color: $body-color;
+			text-align: center;
+			text-decoration: if($link-decoration == none, null, none);
+			white-space: $btn-white-space;
+			vertical-align: middle;
+		}
+	}
+}
+
+@each $color, $value in $theme-colors {
+	.btn-#{$color} {
+		@include button-variant($value, $value);
+	}
+}
+
+@each $color, $value in $theme-colors {
+	.btn-outline-#{$color} {
+		@include button-outline-variant($value);
+	}
+}
+
+.btn-link {
+	& > tbody > tr > td {
+		> a {
+			font-weight: $font-weight-normal;
+			color: $btn-link-color;
+			text-decoration: $link-decoration;
+		}
+	}
+}
+
+.btn-lg {
+	@include button-size($btn-padding-y-lg, $btn-padding-x-lg, $btn-font-size-lg, $btn-border-radius-lg);
+}
+
+.btn-sm {
+	@include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-border-radius-sm);
+}

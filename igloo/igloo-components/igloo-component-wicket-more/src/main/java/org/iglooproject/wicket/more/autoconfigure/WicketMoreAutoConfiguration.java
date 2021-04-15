@@ -6,6 +6,7 @@ import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOL
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
+import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.NOTIFICATION_INLINER_JUICE_ENABLED;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.SCSS_STATIC_ENABLED;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.SCSS_STATIC_RESOURCE_PATH;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME_TEMPLATE;
@@ -70,6 +71,7 @@ public class WicketMoreAutoConfiguration implements IPropertyRegistryConfig {
 		registry.registerBoolean(AUTOPREFIXER_ENABLED, true);
 		registry.registerBoolean(SCSS_STATIC_ENABLED, true);
 		registry.registerString(SCSS_STATIC_RESOURCE_PATH, StaticResourceHelper.DEFAULT_STATIC_SCSS_RESOURCE_PATH);
+		registry.registerBoolean(NOTIFICATION_INLINER_JUICE_ENABLED, true);
 		
 		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME, "http");
 		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME, "localhost");

@@ -24,28 +24,16 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 
 	@Override
 	public void sendExampleNotification(User user) throws ServiceException {
-		Instant date = Instant.now();
-		String url = notificationUrlBuilderService.getUserDescriptionUrl(user);
-		
 		try {
+			Instant instant = Instant.now();
+			String url = notificationUrlBuilderService.getUserDescriptionUrl(user);
+			
 			builder().to(user)
-				.content(contentDescriptorFactory.example(user, date))
+				.content(contentDescriptorFactory.example(user, instant))
 				.template("example.ftl")
 				.variable("userFullName", user.getFullName())
-				.variable("date", Date.from(date))
+				.variable("date", Date.from(instant))
 				.variable("url", url)
-				.send();
-		} catch (RuntimeException | ServiceException e) {
-			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
-		}
-	}
-	
-	@Override
-	public void sendUserPasswordRecoveryRequest(User user) throws ServiceException {
-		try {
-			builder()
-				.to(user)
-				.content(contentDescriptorFactory.userPasswordRecoveryRequest(user))
 				.send();
 		} catch (RuntimeException | ServiceException e) {
 			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
@@ -55,12 +43,27 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 	@Override
 	public void sendExampleNotification(User userTo, String from) throws ServiceException {
 		try {
-			Instant date = Instant.now();
+			Instant instant = Instant.now();
+			
 			builder()
 				.sender("no-reply@basicapp.org")
 				.from(from)
 				.to(new SimpleRecipient(Locale.FRANCE, userTo.getEmail(), userTo.getFullName()))
-				.content(contentDescriptorFactory.example(userTo, date))
+				.content(contentDescriptorFactory.example(userTo, instant))
+				.send();
+		} catch (RuntimeException | ServiceException e) {
+			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
+		}
+	}
+
+	@Override
+	public void sendUserPasswordRecoveryRequest(User user) throws ServiceException {
+		try {
+			Instant instant = Instant.now();
+			
+			builder()
+				.to(user)
+				.content(contentDescriptorFactory.userPasswordRecoveryRequest(user, instant))
 				.send();
 		} catch (RuntimeException | ServiceException e) {
 			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
