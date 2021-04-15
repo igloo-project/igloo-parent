@@ -1,0 +1,44 @@
+.card {
+	background-color: $card-bg;
+	background-clip: border-box;
+	border: $card-border-width solid $card-border-color;
+	@include border-radius($card-border-radius);
+}
+
+.card-body {
+	& > tbody > tr > td {
+		padding: $card-spacer-y $card-spacer-x;
+	}
+}
+
+.card-header {
+	background-color: $card-cap-bg;
+
+	& > tbody > tr > td {
+		padding: $card-cap-padding-y $card-cap-padding-x;
+	}
+
+	.card-header-text {
+		color: $card-cap-color;
+	}
+
+	.card-header-title {
+		font-size: rem(1.5);
+	}
+}
+
+.card-footer {
+	background-color: $card-cap-bg;
+
+	& > tbody > tr > td {
+		padding: $card-cap-padding-y $card-cap-padding-x;
+	}
+
+	.card-footer-text {
+		color: $card-cap-color;
+	}
+}
+
+.card-text {
+	color: $card-color;
+}

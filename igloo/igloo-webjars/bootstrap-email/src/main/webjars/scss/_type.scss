@@ -1,0 +1,40 @@
+.h1 {
+	@extend h1;
+}
+
+.h2 {
+	@extend h2;
+}
+
+.h3 {
+	@extend h3;
+}
+
+.h4 {
+	@extend h4;
+}
+
+.h5 {
+	@extend h5;
+}
+
+.h6 {
+	@extend h6;
+}
+
+.lead {
+	font-size: $lead-font-size;
+	font-weight: $lead-font-weight;
+}
+
+@each $display, $font-size in $display-font-sizes {
+	.display-#{$display} {
+		font-size: $font-size;
+		font-weight: $display-font-weight;
+		line-height: $display-line-height;
+	}
+}
+
+.small {
+	@extend small;
+}

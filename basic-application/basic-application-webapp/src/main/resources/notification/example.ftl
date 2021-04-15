@@ -1,12 +1,10 @@
 <#ftl strip_text=true>
-<#if SUBJECT!false>Example notification - ${userFullName}</#if>
+<#if SUBJECT!false>Example notification · ${userFullName} · ${date?date?string.short}, at ${date?time?string.short}</#if>
 
 <#if BODY_TEXT!false>
-Hello,
+User ${userFullName} did something on ${date?date?string.short}, at ${date?time?string.short}.
 
-Something happened to user ${userFullName} on ${date?date?string.short}.
-
-You may access the user description by clicking on the link below:
+To access the application, click on the link below:
 ${url}
 
 -- BasicApplication

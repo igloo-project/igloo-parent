@@ -10,38 +10,33 @@
 				</h1>
 			</div>
 		</div>
-	</div>
-	<div class="content-body-section">
-		<div class="content-body-container">
-			<div class="content-body">
-				<div class="card card-main">
-					<div class="card-body">
-						<form wicket:id="form">
-							<div class="row row-form">
-								<div class="col-12">
-									<div class="row row-form-group form-group">
-										<div class="col-md-4 col-lg-3">
-											<label wicket:for="recipient" class="col-form-label form-label"><wicket:label /></label>
-										</div>
-										<div class="col-md-8 col-lg-6">
-											<select wicket:id="recipient" class="form-control" />
-										</div>
-									</div>
-								</div>
+		<div class="content-lead-section">
+			<div class="content-lead-container">
+				<form wicket:id="form">
+					<div class="row row-form">
+						<div class="form-group col-lg-4 col-2xl-3">
+							<label wicket:for="locale" class="sr-only"><wicket:label /></label>
+							<div class="input-group">
+								<span class="input-group-text"><span class="fa fa-fw fa-language" /></span>
+								<select wicket:id="locale" class="form-control" />
 							</div>
-						</form>
+						</div>
 					</div>
-					<div wicket:id="subject" class="card-body text-monospace" />
-					<div class="card-body">
-						<div wicket:id="body" id="notification-body-container" />
+				</form>
+			</div>
+		</div>
+		<div class="content-body-section">
+			<div class="content-body-container">
+				<div class="content-body">
+					<div class="card card-page">
+						<div wicket:id="subject" class="card-header lead font-weight-normal" />
+						<div class="card-body">
+							<iframe wicket:id="body" style="height: 700px;" />
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<script>
-		$('#notification-body-container  *').removeAttr('class');
-		$('body').removeAttr('style');
-	</script>
 </wicket:extend>
 </html>

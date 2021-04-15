@@ -62,18 +62,15 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 	 * @param offlineComponent A supplier for the component to be rendered.
 	 * @param locale The locale to use when rendering.
 	 * @param variation A string identifier that will be passed to {@link #postProcessHtml(Component, Locale, String, String)}.
-	 * @return The component returned by <code>componenentSupplier</code>, rendered in HTML with the given <code>locale</code>
+	 * @return The component returned by <code>offlineComponent</code>, rendered in HTML with the given <code>locale</code>
 	 */
 	protected String renderComponent(final IOfflineComponentProvider<? extends Component> offlineComponent, final Locale locale, final String variation) {
 		Args.notNull(offlineComponent, "offlineComponent");
 		try (ITearDownHandle handle = context(locale).open()) {
 			RequestCycle.get().setMetaData(OfflineComponentClassMetadataKey.INSTANCE, offlineComponent.getComponentClass());
-			
 			Component component = offlineComponent.getComponent();
 			Args.notNull(component, "component");
-			String htmlBody = ComponentRenderer.renderComponent(component).toString();
-			
-			return postProcessHtml(component, locale, variation, htmlBody);
+			return postProcessHtml(component, ComponentRenderer.renderComponent(component).toString(), locale, variation);
 		}
 	}
 	
@@ -81,18 +78,26 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 	 * @param offlineComponent A supplier for the page to be rendered.
 	 * @param locale The locale to use when rendering.
 	 * @param variation A string identifier that will be passed to {@link #postProcessHtml(Component, Locale, String, String)}.
-	 * @return The component returned by <code>pageSupplier</code>, rendered in HTML with the given <code>locale</code>
+	 * @return The component returned by <code>offlineComponent</code>, rendered in HTML with the given <code>locale</code>
 	 */
 	protected String renderPage(final IOfflineComponentProvider<? extends Page> offlineComponent, final Locale locale, final String variation) {
 		Args.notNull(offlineComponent, "offlineComponent");
+		
+		Pair<Page, CharSequence> result;
+		
 		try (ITearDownHandle handle = context(locale).open()) {
-			Pair<Page, CharSequence> result = renderPage(offlineComponent);
+			result = renderPage(offlineComponent);
 			if (!offlineComponent.getComponentClass().isInstance(result.getLeft())) {
 				LOGGER.warn("Component class {} does not match advertised class {}",
 						result.getLeft().getClass().getName(), offlineComponent.getComponentClass().getName());
 			}
-			
-			return postProcessHtml(result.getLeft(), locale, variation, result.getRight().toString());
+		}
+		
+		try {
+			return postProcessHtml(result.getLeft(), result.getRight().toString(), locale, variation);
+		} catch (Exception e) {
+			LOGGER.error("Error on post process HTML.", e);
+			return result.getRight().toString();
 		}
 	}
 
@@ -134,7 +139,7 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 		
 	}
 	
-	protected abstract String postProcessHtml(Component component, Locale locale, String variation, String htmlBodyToProcess);
+	protected abstract String postProcessHtml(Component component, String htmlBody, Locale locale, String variation);
 	
 	protected IRendererService getRendererService() {
 		return rendererService;

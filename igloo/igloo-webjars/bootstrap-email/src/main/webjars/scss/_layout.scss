@@ -1,0 +1,74 @@
+.header-section {
+	& > tbody > tr > td {
+		padding: $card-spacer-y $card-spacer-x;
+	}
+}
+
+.header-section-main {
+	background-color: $primary;
+	@include border-top-radius($card-border-radius);
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	
+	& > tbody > tr > td {
+		.header-section-text {
+			color: color-contrast($primary);
+		}
+
+		.header-section-title {
+			font-size: rem(2);
+		}
+	}
+}
+
+.header-section-environment {
+	& > tbody > tr > td {
+		padding-top: $card-spacer-y / 2;
+		padding-bottom: $card-spacer-y / 2;
+
+		.header-section-title {
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+	}
+}
+
+.header-section-environment-development {
+	background-color: $success;
+
+	& > tbody > tr > td {
+		.header-section-text {
+			color: color-contrast($success);
+		}
+	}
+}
+
+.header-section-environment-testing {
+	background-color: $info;
+
+	& > tbody > tr > td {
+		.header-section-text {
+			color: color-contrast($info);
+		}
+	}
+}
+
+.header-section-environment-staging {
+	background-color: $warning;
+
+	& > tbody > tr > td {
+		.header-section-text {
+			color: color-contrast($warning);
+		}
+	}
+}
+
+.header-section-environment-production {
+	background-color: $danger;
+
+	& > tbody > tr > td {
+		.header-section-text {
+			color: color-contrast($danger);
+		}
+	}
+}

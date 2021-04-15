@@ -1,0 +1,11 @@
+@each $size, $value in (
+	25: 25%,
+	50: 50%,
+	75: 75%,
+	100: 100%,
+	auto: auto
+) {
+	.w-#{$size} {
+		width: $value if($enable-important-utilities, !important, null);
+	}
+}

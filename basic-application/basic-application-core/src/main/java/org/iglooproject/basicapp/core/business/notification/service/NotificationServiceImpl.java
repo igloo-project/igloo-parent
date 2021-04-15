@@ -23,10 +23,10 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 
 	@Override
 	public void sendExampleNotification(User user) throws ServiceException {
-		Date date = new Date();
-		String url = notificationUrlBuilderService.getUserDescriptionUrl(user);
-		
 		try {
+			Date date = new Date();
+			String url = notificationUrlBuilderService.getUserDescriptionUrl(user);
+			
 			builder().to(user)
 				.content(contentDescriptorFactory.example(user, date))
 				.template("example.ftl")
@@ -38,13 +38,17 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
 		}
 	}
-	
+
 	@Override
-	public void sendUserPasswordRecoveryRequest(User user) throws ServiceException {
+	public void sendExampleNotification(User userTo, String from) throws ServiceException {
 		try {
+			Date date = new Date();
+			
 			builder()
-				.to(user)
-				.content(contentDescriptorFactory.userPasswordRecoveryRequest(user))
+				.sender("no-reply@basicapp.org")
+				.from(from)
+				.to(new SimpleRecipient(Locale.FRANCE, userTo.getEmail(), userTo.getFullName()))
+				.content(contentDescriptorFactory.example(userTo, date))
 				.send();
 		} catch (RuntimeException | ServiceException e) {
 			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
@@ -52,14 +56,13 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 	}
 
 	@Override
-	public void sendExampleNotification(User userTo, String from) throws ServiceException {
+	public void sendUserPasswordRecoveryRequest(User user) throws ServiceException {
 		try {
 			Date date = new Date();
+			
 			builder()
-				.sender("no-reply@basicapp.org")
-				.from(from)
-				.to(new SimpleRecipient(Locale.FRANCE, userTo.getEmail(), userTo.getFullName()))
-				.content(contentDescriptorFactory.example(userTo, date))
+				.to(user)
+				.content(contentDescriptorFactory.userPasswordRecoveryRequest(user, date))
 				.send();
 		} catch (RuntimeException | ServiceException e) {
 			throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);

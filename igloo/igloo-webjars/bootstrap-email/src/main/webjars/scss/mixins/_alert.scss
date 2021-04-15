@@ -1,0 +1,8 @@
+@mixin alert-variant($background, $border, $color) {
+	background-color: $background;
+	border-color: $border;
+	
+	& > tbody > tr > td {
+		color: $color;
+	}
+}

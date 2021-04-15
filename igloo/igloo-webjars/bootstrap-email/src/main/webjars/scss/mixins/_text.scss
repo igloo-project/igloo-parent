@@ -1,0 +1,10 @@
+@mixin text-break($important: false) {
+	overflow-wrap: break-word important($important);
+	word-wrap: break-word important($important);
+	word-break: break-all important($important); // fallback Outlook
+	word-break: break-word important($important);
+}
+
+@mixin text-break-all($important: false) {
+	word-break: break-all important($important);
+}

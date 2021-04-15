@@ -1,0 +1,31 @@
+@each $prop, $abbrev in (margin: m, padding: p) {
+	@each $size, $length in map-merge($spacers, (auto: auto)) {
+		.#{$abbrev}-#{$size} {
+			#{$prop}: $length if($enable-important-utilities, !important, null);
+		}
+		.#{$abbrev}t-#{$size},
+		.#{$abbrev}y-#{$size} {
+			#{$prop}-top: $length if($enable-important-utilities, !important, null);
+		}
+		.#{$abbrev}e-#{$size},
+		.#{$abbrev}x-#{$size} {
+			#{$prop}-right: $length if($enable-important-utilities, !important, null);
+		}
+		.#{$abbrev}b-#{$size},
+		.#{$abbrev}y-#{$size} {
+			#{$prop}-bottom: $length if($enable-important-utilities, !important, null);
+		}
+		.#{$abbrev}s-#{$size},
+		.#{$abbrev}x-#{$size} {
+			#{$prop}-left: $length if($enable-important-utilities, !important, null);
+		}
+	}
+}
+
+@each $size, $value in $spacers {
+	.s-#{$size} {
+		font-size: $value if($enable-important-utilities, !important, null);
+		line-height: $value if($enable-important-utilities, !important, null);
+		height: $value if($enable-important-utilities, !important, null);
+	}
+}

@@ -1,0 +1,47 @@
+.table {
+	width: 100%;
+	color: $table-color;
+	vertical-align: $table-cell-vertical-align;
+
+	> :not(caption) > * > * {
+		padding: $table-cell-padding-y $table-cell-padding-x;
+		background-color: $table-bg;
+		border-bottom: $table-border-width solid $table-border-color;
+	}
+
+	> tbody {
+		vertical-align: inherit;
+	}
+
+	> thead {
+		vertical-align: bottom;
+	}
+}
+
+.table-sm {
+	> :not(caption) > * > * {
+		padding: $table-cell-padding-y-sm $table-cell-padding-x-sm;
+	}
+}
+
+.table-bordered {
+	> :not(caption) > * > * {
+		border: $table-border-width solid $table-border-color;
+	}
+}
+
+.table-borderless {
+	> :not(caption) > * > * {
+		border: 0;
+	}
+}
+
+.table-striped {
+	> tbody > tr:nth-of-type(#{$table-striped-order}) {
+		color: $table-striped-color;
+
+		> * {
+			background-color: $table-striped-bg;
+		}
+	}
+}

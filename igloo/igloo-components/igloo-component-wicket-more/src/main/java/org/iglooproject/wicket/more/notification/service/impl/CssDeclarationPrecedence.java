@@ -15,6 +15,7 @@ import com.google.common.collect.Ordering;
  * @see {@link http://www.w3.org/TR/2009/CR-CSS2-20090908/cascade.html#cascading-order}
  * @see CssSelectorSpecificity
  */
+@Deprecated
 public class CssDeclarationPrecedence implements Comparable<CssDeclarationPrecedence> {
 	
 	private final boolean isImportant;

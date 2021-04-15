@@ -37,6 +37,7 @@ import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.mail.api.SimpleRecipient;
 import org.iglooproject.spring.config.util.MailSenderBehavior;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
+import org.iglooproject.spring.notification.model.INotificationContentBody;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.iglooproject.spring.notification.model.NotificationTarget;
 import org.iglooproject.spring.notification.service.impl.ExplicitelyDefinedNotificationContentDescriptorImpl;
@@ -659,17 +660,19 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		return new FirstNotNullNotificationContentDescriptorImpl(descriptors);
 	}
 	
-	private MimeMessage buildMessage(INotificationContentDescriptor contentDescriptor, Targets recipients,
-			String encoding) throws NotificationContentRenderingException, MessagingException {
+	private MimeMessage buildMessage(INotificationContentDescriptor contentDescriptor, Targets recipients, String encoding) throws NotificationContentRenderingException, MessagingException {
 		String subject = buildSubject(contentDescriptor.renderSubject());
-		String textBody = contentDescriptor.renderTextBody();
-		String htmlBody = contentDescriptor.renderHtmlBody();
+		INotificationContentBody body = contentDescriptor.renderBody();
+		String bodyPlainText = body.getPlainText();
+		String bodyHtmlText = body.getHtmlText();
+		
 		MimeMessage message = mailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, isMultipartNeeded(textBody, htmlBody), encoding);
+		MimeMessageHelper helper = new MimeMessageHelper(message, isMultipartNeeded(bodyPlainText, bodyHtmlText), encoding);
 		
 		if (from == null) {
 			from = getDefaultFrom();
 		}
+		
 		helper.setFrom(from);
 		
 		if (sender != null) {
@@ -684,6 +687,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		Collection<NotificationTarget> filteredTos = filterTo(recipients.to);
 		Collection<NotificationTarget> filteredCcs = filterCcBcc(recipients.cc);
 		Collection<NotificationTarget> filteredBccs = filterCcBcc(recipients.bcc);
+		
 		if (filteredTos.isEmpty() && filteredCcs.isEmpty() && filteredBccs.isEmpty()) {
 			return null;
 		}
@@ -691,12 +695,15 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		if (replyTo != null) {
 			helper.setReplyTo(replyTo.getAddress());
 		}
+		
 		for (NotificationTarget to : filteredTos) {
 			helper.addTo(to.getAddress());
 		}
+		
 		for (NotificationTarget cc : filteredCcs) {
 			helper.addCc(cc.getAddress());
 		}
+		
 		for (NotificationTarget bcc : filteredBccs) {
 			helper.addBcc(bcc.getAddress());
 		}
@@ -706,48 +713,56 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		String textBodyPrefix = getBodyPrefix(recipients.to, recipients.cc, recipients.bcc, encoding, MailFormat.TEXT);
 		String htmlBodyPrefix = getBodyPrefix(recipients.to, recipients.cc, recipients.bcc, encoding, MailFormat.HTML);
 		
-		if (StringUtils.hasText(textBody) && StringUtils.hasText(htmlBody)) {
-			helper.setText(textBodyPrefix + textBody, htmlBodyPrefix + htmlBody);
-		} else if (StringUtils.hasText(htmlBody)) {
-			helper.setText(htmlBodyPrefix + htmlBody, true);
+		if (StringUtils.hasText(bodyPlainText) && StringUtils.hasText(bodyHtmlText)) {
+			helper.setText(textBodyPrefix + bodyPlainText, htmlBodyPrefix + bodyHtmlText);
+		} else if (StringUtils.hasText(bodyHtmlText)) {
+			helper.setText(htmlBodyPrefix + bodyHtmlText, true);
 		} else {
-			helper.setText(textBodyPrefix + textBody);
+			helper.setText(textBodyPrefix + bodyPlainText);
 		}
-	
+		
 		for (LabelValue<String, File> attachment : attachments) {
 			helper.addAttachment(attachment.getLabel(), attachment.getValue());
 		}
+		
 		for (Map.Entry<String, File> inline : inlines.entrySet()) {
 			helper.addInline(inline.getKey(), inline.getValue());
 		}
+		
 		for (Entry<String, Collection<String>> header : headers.asMap().entrySet()) {
 			for (String value : header.getValue()) {
 				message.addHeader(header.getKey(), value);
 			}
 		}
+		
 		if (priority != 0) {
 			helper.setPriority(priority);
 		}
+		
 		return message;
 	}
 	
 	private String buildSubject(String subject) {
 		StringBuilder builder = new StringBuilder();
+		
 		if (StringUtils.hasText(subjectPrefix)) {
 			builder.append(subjectPrefix);
 		}
+		
 		if (propertyService.isConfigurationTypeDevelopment()) {
 			builder.append(DEV_SUBJECT_PREFIX);
 		}
+		
 		if (builder.length() > 0) {
 			builder.append(" ");
 		}
+		
 		builder.append(subject);
 		return builder.toString();
 	}
 
-	private boolean isMultipartNeeded(String textBody, String htmlBody) {
-		boolean multipleBodies = StringUtils.hasText(textBody) && StringUtils.hasText(htmlBody);
+	private boolean isMultipartNeeded(String bodyPlainText, String bodyHtmlText) {
+		boolean multipleBodies = StringUtils.hasText(bodyPlainText) && StringUtils.hasText(bodyHtmlText);
 		return multipleBodies || !attachments.isEmpty() || !inlines.isEmpty();
 	}
 	
@@ -812,9 +827,9 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 			
 			StringBuffer newBody = new StringBuffer();
 			newBody.append("═════════════════════").append(newLine);
-			newBody.append("<b>To:</b> ").append(renderAddressesForDebug(to, mailFormat)).append(newLine);
-			newBody.append("<b>Cc:</b> ").append(renderAddressesForDebug(cc, mailFormat)).append(newLine);
-			newBody.append("<b>Bcc:</b> ").append(renderAddressesForDebug(bcc, mailFormat)).append(newLine);
+			newBody.append("To: ").append(renderAddressesForDebug(to, mailFormat)).append(newLine);
+			newBody.append("Cc: ").append(renderAddressesForDebug(cc, mailFormat)).append(newLine);
+			newBody.append("Bcc: ").append(renderAddressesForDebug(bcc, mailFormat)).append(newLine);
 			newBody.append("Encoding: ").append(encoding).append(newLine);
 			newBody.append("═════════════════════").append(newLine).append(newLine).append(newLine);
 			
@@ -831,6 +846,7 @@ public class NotificationBuilder implements INotificationBuilderInitState, INoti
 		} else {
 			debug = "<none>";
 		}
+		
 		if (MailFormat.HTML.equals(mailFormat)) {
 			return StringEscapeUtils.escapeHtml4(debug);
 		} else {

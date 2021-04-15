@@ -1,0 +1,171 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+}
+
+:root {
+	font-size: $font-size-root;
+}
+
+body,
+#body {
+	&,
+	& > tbody > tr > td {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		outline: 0;
+		width: 100%;
+		height: 100%;
+		font-family: $font-family-base;
+		font-size: $font-size-base;
+		font-weight: $font-weight-base;
+		line-height: $line-height-base;
+		text-align: $body-text-align;
+		-webkit-text-size-adjust: 100%;
+		-ms-text-size-adjust: 100%;
+		box-sizing: border-box;
+	}
+}
+
+#body {
+	&,
+	& > tbody > tr > td {
+		color: $body-color;
+		background-color: $body-bg;
+	}
+}
+
+hr {
+	display: none;
+}
+
+%heading {
+	margin-top: 0;
+	margin-bottom: $headings-margin-bottom;
+	font-family: $headings-font-family;
+	font-style: $headings-font-style;
+	font-weight: $headings-font-weight;
+	line-height: $headings-line-height;
+	color: $headings-color;
+}
+
+h1 {
+	@extend %heading;
+	font-size: $h1-font-size;
+}
+
+h2 {
+	@extend %heading;
+	font-size: $h2-font-size;
+}
+
+h3 {
+	@extend %heading;
+	font-size: $h3-font-size;
+}
+
+h4 {
+	@extend %heading;
+	font-size: $h4-font-size;
+}
+
+h5 {
+	@extend %heading;
+	font-size: $h5-font-size;
+}
+
+h6 {
+	@extend %heading;
+	font-size: $h6-font-size;
+}
+
+p {
+	margin: 0;
+}
+
+ol,
+ul {
+	padding-left: rem(2);
+}
+
+ol,
+ul,
+dl {
+	margin: 0;
+}
+
+b,
+strong {
+	font-weight: $font-weight-bolder;
+}
+
+small {
+	font-size: $small-font-size;
+}
+
+a {
+	color: $link-color;
+	text-decoration: $link-decoration;
+}
+
+a:not([href]):not([class]) {
+	&,
+	&:hover {
+		color: inherit;
+		text-decoration: none;
+	}
+}
+
+img,
+svg {
+	vertical-align: middle;
+}
+
+img {
+	border: 0 none;
+	height: auto;
+	line-height: 100%;
+	outline: none;
+	text-decoration: none;
+	display: block;
+}
+
+a img {
+	border: 0 none;
+}
+
+table {
+	table-layout: fixed;
+	caption-side: bottom;
+	border-collapse: collapse;
+}
+
+// to fix centering in yahoo
+table[align=center] {
+	margin: 0 auto;
+}
+
+th {
+	font-weight: $table-th-font-weight;
+	text-align: inherit;
+	text-align: -webkit-match-parent;
+}
+
+thead,
+tbody,
+tfoot,
+tr,
+td,
+th {
+	text-align: left;
+	line-height: $line-height-base;
+	font-size: $font-size-base;
+}
+
+[hidden] {
+	display: none !important;
+}

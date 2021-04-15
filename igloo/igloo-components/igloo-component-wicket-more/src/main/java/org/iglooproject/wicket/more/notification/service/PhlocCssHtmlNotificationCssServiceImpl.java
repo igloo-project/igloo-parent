@@ -3,13 +3,19 @@ package org.iglooproject.wicket.more.notification.service;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -24,13 +30,14 @@ import com.helger.css.ECSSVersion;
 import com.helger.css.decl.CascadingStyleSheet;
 import com.helger.css.reader.CSSReader;
 
+@Deprecated
 public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotificationCssService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PhlocCssHtmlNotificationCssServiceImpl.class);
 	
 	private static final String DEFAULT_VARIATION = "##DEFAULT##";
 	
-	private final Map<ICssResourceReference, Pair<IHtmlNotificationCssRegistry, Instant>> registryCache = Maps.newHashMap();
+	private final Map<ICssResourceReference, Triple<IHtmlNotificationCssRegistry, String, Instant>> registryCache = Maps.newHashMap();
 	
 	private final Map<String, ICssResourceReference> registrySpecs = Maps.newHashMap();
 	
@@ -39,6 +46,18 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 	 */
 	@Override
 	public synchronized IHtmlNotificationCssRegistry getRegistry(String componentVariation) throws ServiceException {
+		return getEntry(componentVariation, Pair<String, IHtmlNotificationCssRegistry>::getRight);
+	}
+	
+	/**
+	 * Return raw CSS. Return null if no defaults are registered.
+	 */
+	@Override
+	public synchronized String getCss(String componentVariation) throws ServiceException {
+		return getEntry(componentVariation, Pair<String, IHtmlNotificationCssRegistry>::getLeft);
+	}
+
+	private synchronized <T> T getEntry(String componentVariation, Function<Pair<String, IHtmlNotificationCssRegistry>, T> mapper) throws ServiceException {
 		final ICssResourceReference cssResourceReference;
 		if (componentVariation != null && registrySpecs.containsKey(componentVariation)) {
 			cssResourceReference = registrySpecs.get(componentVariation);
@@ -50,23 +69,23 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 		if (cssResourceReference == null) {
 			return null;
 		} else {
-			return getRegistry(cssResourceReference);
+			return mapper.apply(getRegistry(cssResourceReference));
 		}
 	}
 
-	private synchronized IHtmlNotificationCssRegistry getRegistry(ICssResourceReference cssResourceReference) throws ServiceException {
+	private synchronized Pair<String, IHtmlNotificationCssRegistry> getRegistry(ICssResourceReference cssResourceReference) throws ServiceException {
 		IResourceStream resourceStream = cssResourceReference.getResource().getResourceStream();
 		if (resourceStream == null) { // NOSONAR findbugs:RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE
 			throw new ServiceException("Could not retrieve resource stream for resource reference " + cssResourceReference + " when accessing a notification CSS style registry");
 		}
 		
 		Instant currentResourceLastModifiedTime = resourceStream.lastModifiedTime();
-		Pair<IHtmlNotificationCssRegistry, Instant> cacheEntry = registryCache.get(cssResourceReference);
+		Triple<IHtmlNotificationCssRegistry, String, Instant> cacheEntry = registryCache.get(cssResourceReference);
 		if (cacheEntry != null && cacheEntry.getRight().equals(currentResourceLastModifiedTime)) {
-			return cacheEntry.getLeft();
+			return Pair.of(cacheEntry.getMiddle(), cacheEntry.getLeft());
 		} else {
-			IHtmlNotificationCssRegistry registry = createRegistry(resourceStream);
-			registryCache.put(cssResourceReference, Pair.of(registry, currentResourceLastModifiedTime));
+			Pair<String, IHtmlNotificationCssRegistry> registry = createRegistry(resourceStream);
+			registryCache.put(cssResourceReference, Triple.of(registry.getRight(), registry.getLeft(), currentResourceLastModifiedTime));
 			return registry;
 		}
 	}
@@ -88,14 +107,18 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 		registryCache.remove(cssResourceReference);
 	}
 	
-	private IHtmlNotificationCssRegistry createRegistry(IResourceStream resourceStream) throws ServiceException {
-		CascadingStyleSheet sheet = CSSReader.readFromStream(new WicketResourceStreamToPhlocInputStreamProviderWrapper(resourceStream),
-				Charset.defaultCharset(), ECSSVersion.CSS30);
-		
-		if (sheet == null) {
-			throw new ServiceException("An error occurred while parsing notification CSS; see the logs for details.");
-		} else {
-			return new SimplePhlocCssHtmlNotificationCssRegistry(sheet);
+	private Pair<String, IHtmlNotificationCssRegistry> createRegistry(IResourceStream resourceStream) throws ServiceException {
+		try (InputStream is = new WicketResourceStreamToPhlocInputStreamProviderWrapper(resourceStream).getInputStream(); Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
+			String css = IOUtils.toString(reader);
+			CascadingStyleSheet sheet = CSSReader.readFromString(css, Charset.defaultCharset(), ECSSVersion.CSS30);
+			
+			if (sheet == null) {
+				throw new ServiceException("An error occurred while parsing notification CSS; see the logs for details.");
+			} else {
+				return Pair.of(css, new SimplePhlocCssHtmlNotificationCssRegistry(sheet));
+			}
+		} catch (IOException e) {
+			throw new ServiceException(String.format("Error extracting css %s", resourceStream));
 		}
 	}
 	
