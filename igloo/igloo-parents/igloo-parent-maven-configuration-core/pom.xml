@@ -124,7 +124,7 @@
 			to solve this issue. This call to `toPath` in commons-io has been introduced in revision `r1686472` (released in version 2.5). There was no issue that we know of before. Rolling back to TrueZip 7.1 is 
 			not an option: it's really old and missing features that we're using right now. Thus, for now, we'll stick with commons-io 2.4, until we migrate from TrueZip to its successor, TrueVFS, which seems to have 
 			solved the issue. -->
-		<igloo.commons-io.version>2.4</igloo.commons-io.version>
+		<igloo.commons-io.version>2.7</igloo.commons-io.version>
 
 		<igloo.commons-lang.version>2.6</igloo.commons-lang.version>
 		<!-- https://commons.apache.org/proper/commons-lang/release-notes/RELEASE-NOTES-3.10.txt -->
