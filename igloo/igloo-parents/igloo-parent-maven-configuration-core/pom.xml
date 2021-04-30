@@ -174,7 +174,7 @@
 		<!-- See comments on property igloo.commons-io.version -->
 		<igloo.truezip.version>7.7.10</igloo.truezip.version>
 		<igloo.bouncycastle.version>2.55</igloo.bouncycastle.version>
-		<igloo.bouncycastle-jdk15on.version>1.66</igloo.bouncycastle-jdk15on.version>
+		<igloo.bouncycastle-jdk15on.version>1.67</igloo.bouncycastle-jdk15on.version>
 
 		<igloo.flying-saucer.version>9.1.20</igloo.flying-saucer.version>
 		<igloo.imageinfo.version>1.9</igloo.imageinfo.version>
