@@ -28,7 +28,7 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 		new ColumnInformation("business.user.lastName"),
 		new ColumnInformation("business.user.firstName"),
 		new ColumnInformation("business.user.email"),
-		new ColumnInformation("business.user.active"),
+		new ColumnInformation("business.user.enabled"),
 		new ColumnInformation("business.user.creationDate"),
 		new ColumnInformation("business.user.lastUpdateDate"),
 		new ColumnInformation("business.user.lastLoginDate")

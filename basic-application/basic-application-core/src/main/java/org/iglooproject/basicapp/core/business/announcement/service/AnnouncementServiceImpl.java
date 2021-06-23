@@ -70,8 +70,8 @@ public class AnnouncementServiceImpl extends GenericEntityServiceImpl<Long, Anno
 	}
 
 	@Override
-	public List<Announcement> listActive() {
-		return dao.listActive();
+	public List<Announcement> listEnabled() {
+		return dao.listEnabled();
 	}
 
 	@Override

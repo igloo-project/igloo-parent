@@ -104,7 +104,7 @@ public class Announcement extends GenericEntity<Long, Announcement> {
 		return enabled;
 	}
 
-	public void setActive(boolean enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 

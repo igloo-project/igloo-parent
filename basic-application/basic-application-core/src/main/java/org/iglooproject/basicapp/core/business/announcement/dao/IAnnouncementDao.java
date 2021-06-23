@@ -8,7 +8,7 @@ import org.iglooproject.jpa.business.generic.dao.IGenericEntityDao;
 
 public interface IAnnouncementDao extends IGenericEntityDao<Long, Announcement> {
 
-	List<Announcement> listActive();
+	List<Announcement> listEnabled();
 
 	Date getMostRecentPublicationStartDate();
 

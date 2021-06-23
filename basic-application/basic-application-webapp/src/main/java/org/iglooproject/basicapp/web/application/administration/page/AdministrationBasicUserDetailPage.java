@@ -99,7 +99,7 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 				new EnclosureContainer("informationContainer")
 					.anyChildVisible()
 					.add(
-						new BootstrapBadge<>("active", userModel, UserEnabledRenderer.get())
+						new BootstrapBadge<>("enabled", userModel, UserEnabledRenderer.get())
 					)
 			);
 		
