@@ -4,9 +4,10 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.wicket.model.IModel;
-
 import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
 import org.iglooproject.wicket.more.util.model.Models;
+
+import com.google.common.collect.Iterables;
 
 abstract class AbstractMapCollectionModel<T, C extends Collection<T>, M extends IModel<T>>
 		implements IItemModelAwareCollectionModel<T, C, M> {
@@ -26,9 +27,9 @@ abstract class AbstractMapCollectionModel<T, C extends Collection<T>, M extends 
 
 	@Override
 	public long size() {
-		return 0;
+		return Iterables.size(internalIterable());
 	}
-	
+
 	protected abstract Iterable<M> internalIterable();
 
 	@Override
@@ -55,7 +56,7 @@ abstract class AbstractMapCollectionModel<T, C extends Collection<T>, M extends 
 	public void clear() {
 		throw newReadOnlyException();
 	}
-	
+
 	protected UnsupportedOperationException newReadOnlyException() {
 		return new UnsupportedOperationException("Model " + getClass() + " is read-only");
 	}
