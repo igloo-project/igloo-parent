@@ -292,8 +292,8 @@ $box-shadow-sm:               0 .125rem .25rem rgba($black, .075) !default; // b
 $box-shadow:                  0 .5rem 1rem rgba($black, .15) !default; // bootstrap
 $box-shadow-lg:               0 1rem 3rem rgba($black, .175) !default; // bootstrap
 
-$component-active-color:      $white !default; // bootstrap
-$component-active-bg:         theme-color("primary") !default; // bootstrap
+$component-active-bg:         $brand-color !default; // bootstrap | bootstrap-override
+$component-active-color:      color-yiq($component-active-bg) !default; // bootstrap | bootstrap-override
 
 $caret-width:                 .3em !default; // bootstrap
 $caret-vertical-align:        $caret-width * .85 !default; // bootstrap
@@ -851,7 +851,7 @@ $navbar-toggler-border-radius:      $btn-border-radius !default; // bootstrap
 $navbar-nav-scroll-max-height:      75vh !default; // bootstrap
 
 $navbar-main-bg:                    $brand-color !default; // bootstrap-override
-$navbar-main-color:                 $brand-text-color !default; // bootstrap-override
+$navbar-main-color:                 color-yiq($navbar-main-bg) !default; // bootstrap-override
 $navbar-main-hover-color:           $navbar-main-color !default; // bootstrap-override
 $navbar-main-active-color:          $navbar-main-color !default; // bootstrap-override
 $navbar-main-disabled-color:        rgba($navbar-main-color, .25) !default; // bootstrap-override
