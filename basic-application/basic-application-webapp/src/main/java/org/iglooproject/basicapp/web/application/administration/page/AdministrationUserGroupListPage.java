@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
@@ -134,11 +133,6 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 					.count("administration.userGroup.list.count")
 				.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE))
 		);
-	}
-
-	@Override
-	protected Class<? extends WebPage> getSecondMenuPage() {
-		return AdministrationUserGroupListPage.class;
 	}
 
 }

@@ -2,7 +2,6 @@ package org.iglooproject.basicapp.web.application.administration.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -84,11 +83,6 @@ public class AdministrationUserGroupDetailPage extends AdministrationUserGroupTe
 
 	public static IPageLinkGenerator linkGenerator(IModel<UserGroup> userGroupModel) {
 		return linkDescriptor(userGroupModel, Model.of((Page)null));
-	}
-
-	@Override
-	protected Class<? extends WebPage> getSecondMenuPage() {
-		return AdministrationUserGroupDetailPage.class;
 	}
 
 }

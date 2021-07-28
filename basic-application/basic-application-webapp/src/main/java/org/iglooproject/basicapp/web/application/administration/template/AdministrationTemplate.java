@@ -18,8 +18,7 @@ public abstract class AdministrationTemplate extends MainTemplate {
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-			new ResourceModel("navigation.administration"),
-			AdministrationBasicUserListPage.linkDescriptor()
+			new ResourceModel("navigation.administration")
 		));
 	}
 
