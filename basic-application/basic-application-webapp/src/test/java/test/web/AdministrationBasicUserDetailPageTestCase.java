@@ -12,6 +12,7 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.html.template.component.BreadCrumbListView;
 import org.iglooproject.wicket.more.markup.html.template.component.LinkGeneratorBreadCrumbElementPanel;
+import org.iglooproject.wicket.more.markup.html.template.component.SimpleBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.junit.Test;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -45,12 +46,7 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 		tester.assertVisible(tester.breadCrumbPath(), BreadCrumbListView.class);
 		
 		String administrationBreadCrumbPath = tester.breadCrumbElementPath(0);
-		tester.assertVisible(administrationBreadCrumbPath, LinkGeneratorBreadCrumbElementPanel.class);
-		tester.assertEnabled(administrationBreadCrumbPath + ":breadCrumbElementLink", Link.class);
-		@SuppressWarnings("unchecked")
-		Link<Void> administrationLink = (Link<Void>) tester.getComponentFromLastRenderedPage(administrationBreadCrumbPath + ":breadCrumbElementLink");
-		String administrationLabel = (String) administrationLink.getBody().getObject();
-		assertEquals(localize("navigation.administration"), administrationLabel);
+		tester.assertVisible(administrationBreadCrumbPath, SimpleBreadCrumbElementPanel.class);
 		
 		String administrationBasicUserBreadCrumbPath = tester.breadCrumbElementPath(1);
 		tester.assertVisible(administrationBasicUserBreadCrumbPath, LinkGeneratorBreadCrumbElementPanel.class);
@@ -60,7 +56,7 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 		String administrationBasicUserLabel = (String) administrationBasicUserLink.getBody().getObject();
 		assertEquals(localize("navigation.administration.user.basicUser"), administrationBasicUserLabel);
 		
-		tester.clickLink(administrationBreadCrumbPath + ":breadCrumbElementLink");
+		tester.clickLink(administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink");
 		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
 	}
 
