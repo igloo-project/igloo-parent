@@ -16,7 +16,7 @@ public class AnnouncementDaoImpl extends GenericEntityDaoImpl<Long, Announcement
 	private QAnnouncement qAnnouncement = QAnnouncement.announcement;
 
 	@Override
-	public List<Announcement> listActive() {
+	public List<Announcement> listEnabled() {
 		Date now = new Date();
 		return new JPAQuery<>(getEntityManager())
 			.select(qAnnouncement)

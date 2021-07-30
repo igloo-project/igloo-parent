@@ -56,7 +56,7 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 		super(parameters);
 		
 		addBreadCrumbElement(new BreadCrumbElement(
-			new ResourceModel("navigation.administration.user.basicUser"),
+			new ResourceModel("navigation.administration.user.technicalUser"),
 			AdministrationTechnicalUserListPage.linkDescriptor()
 		));
 		addBreadCrumbElement(new BreadCrumbElement(
@@ -98,7 +98,7 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 				new EnclosureContainer("informationContainer")
 					.anyChildVisible()
 					.add(
-						new BootstrapBadge<>("active", userModel, UserEnabledRenderer.get())
+						new BootstrapBadge<>("enabled", userModel, UserEnabledRenderer.get())
 					)
 			);
 		

@@ -16,7 +16,7 @@ public interface IAnnouncementService extends IGenericEntityService<Long, Announ
 	@Transactional(readOnly = true)
 	void cleanWithoutSaving(Announcement announcement);
 
-	List<Announcement> listActive();
+	List<Announcement> listEnabled();
 
 	Date getMostRecentPublicationStartDate();
 
