@@ -228,7 +228,7 @@
 		<!-- https://github.com/vt-middleware/passay/commits/master -->
 		<igloo.passay.version>1.6.0</igloo.passay.version>
 		<igloo.java-object-diff.version>0.95</igloo.java-object-diff.version>
-		<igloo.elasticsearch.version>5.6.10</igloo.elasticsearch.version>
+		<igloo.elasticsearch.version>6.8.17</igloo.elasticsearch.version>
 		<igloo.elasticsearch-cluster-runner.version>${igloo.elasticsearch.version}.0</igloo.elasticsearch-cluster-runner.version>
 
 		<igloo.embedded-elasticsearch.version>2.10.0</igloo.embedded-elasticsearch.version>
