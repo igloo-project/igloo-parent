@@ -3,7 +3,9 @@ package org.iglooproject.basicapp.web.application.notification.component;
 import java.util.Date;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.ResourceKeyGenerator;
@@ -52,18 +54,16 @@ public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> ex
 					.setParameters(dateModel, authorModel)
 			);
 		
+		IModel<String> urlModel = Model.of(
+			linkGenerator
+				.bypassPermissions()
+				.fullUrl()
+		);
+		
 		add(
 			new CoreLabel("linkIntro", linkIntroModel),
-			linkGenerator
-				.bypassPermissions()
-				.link("mainLink")
-				.setAbsolute(true)
-				.setBody(linkLabelModel),
-			linkGenerator
-				.bypassPermissions()
-				.link("url")
-				.setAbsolute(true)
-				.setBody(linkGenerator::fullUrl)
+			new ExternalLink("mainLink", urlModel, linkLabelModel),
+			new ExternalLink("url", urlModel, urlModel)
 		);
 		
 		add(
