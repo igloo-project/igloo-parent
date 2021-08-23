@@ -36,7 +36,6 @@ public class BasicReferenceDataSearchPanel<T extends ReferenceData<? super T>> e
 				protected void onSubmit(AjaxRequestTarget target) {
 					// Just in case the dataProvider's content was loaded before search parameters changed
 					dataProvider.detach();
-					
 					target.add(table);
 					FeedbackUtils.refreshFeedback(target, getPage());
 				}

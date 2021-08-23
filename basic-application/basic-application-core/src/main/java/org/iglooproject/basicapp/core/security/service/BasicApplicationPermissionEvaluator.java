@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.core.security.service;
 
+import org.iglooproject.basicapp.core.business.referencedata.model.City;
 import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
@@ -15,6 +16,9 @@ public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionE
 
 	@Autowired
 	private IUserGroupPermissionEvaluator userGroupPermissionEvaluator;
+
+	@Autowired
+	private ICityPermissionEvaluator cityPermissionEvaluator;
 
 	@Autowired
 	private IReferenceDataPermissionEvaluator referenceDataPermissionEvaluator;
@@ -33,6 +37,8 @@ public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionE
 			return userPermissionEvaluator.hasPermission(user, (User) targetDomainObject, permission);
 		} else if (targetDomainObject instanceof UserGroup) {
 			return userGroupPermissionEvaluator.hasPermission(user, (UserGroup) targetDomainObject, permission);
+		} else if (targetDomainObject instanceof City) {
+			return cityPermissionEvaluator.hasPermission(user, (City) targetDomainObject, permission);
 		} else if (targetDomainObject instanceof ReferenceData) {
 			return referenceDataPermissionEvaluator.hasPermission(user, (ReferenceData<?>) targetDomainObject, permission);
 		}
