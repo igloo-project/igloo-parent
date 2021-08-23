@@ -178,7 +178,7 @@
 
 		<igloo.flying-saucer.version>9.1.20</igloo.flying-saucer.version>
 		<igloo.imageinfo.version>1.9</igloo.imageinfo.version>
-		<igloo.jsoup.version>1.13.1</igloo.jsoup.version>
+		<igloo.jsoup.version>1.14.2</igloo.jsoup.version>
 		<!-- https://hc.apache.org/news.html -->
 		<!-- Since 4.5.8 we have to use setNormalizeUri(false) on links, otherwise URIUtils.rewriteURI will try to parse the path and will return broke paths if your path doesn't respect the ASCII standard -->
 		<igloo.httpclient.version>4.5.13</igloo.httpclient.version>
