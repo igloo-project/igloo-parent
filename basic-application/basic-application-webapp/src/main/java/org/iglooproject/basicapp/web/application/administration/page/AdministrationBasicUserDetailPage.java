@@ -6,7 +6,6 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -141,7 +140,7 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 							})
 							.create("passwordReset", userModel)
 							.add(
-								Condition.isTrue(Model.of(securityManagementService.getSecurityOptions(userModel.getObject()).isPasswordAdminRecoveryEnabled()))
+								Condition.isTrue(() -> securityManagementService.getSecurityOptions(userModel.getObject()).isPasswordAdminRecoveryEnabled())
 									.thenShow()
 							),
 						
