@@ -5,6 +5,7 @@ import org.iglooproject.basicapp.web.application.navigation.page.HomePage;
 import org.iglooproject.basicapp.web.application.security.login.component.SignInContentPanel;
 import org.iglooproject.basicapp.web.application.security.login.component.SignInFooterPanel;
 import org.iglooproject.basicapp.web.application.security.login.page.SignInPage;
+import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryRequestCreationPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryRequestResetPage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -30,6 +31,17 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 		tester.clickLink("footer:passwordRecoveryRequestReset");
 		
 		tester.assertRenderedPage(SecurityPasswordRecoveryRequestResetPage.class);
+	}
+
+	@Test
+	public void redirectionToPasswordRecoveryRequestCreation() {
+		tester.startPage(SignInPage.class);
+		tester.assertRenderedPage(SignInPage.class);
+		
+		tester.assertEnabled("footer:passwordRecoveryRequestCreation");
+		tester.clickLink("footer:passwordRecoveryRequestCreation");
+		
+		tester.assertRenderedPage(SecurityPasswordRecoveryRequestCreationPage.class);
 	}
 
 	@Test
