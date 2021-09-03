@@ -80,9 +80,9 @@
 		<igloo.oracle10g.version>10.2.0.5</igloo.oracle10g.version>
 		<igloo.mysql.version>5.1.14</igloo.mysql.version>
 
-		<igloo.bindgen.version>4.1-SNAPSHOT</igloo.bindgen.version>
-		<igloo.bindgen-java.version>1.1-SNAPSHOT</igloo.bindgen-java.version>
-		<igloo.bindgen-bindings-java.version>1.2-SNAPSHOT</igloo.bindgen-bindings-java.version>
+		<igloo.bindgen.version>5.0-SNAPSHOT</igloo.bindgen.version>
+		<igloo.bindgen-java.version>2.0-SNAPSHOT</igloo.bindgen-java.version>
+		<igloo.bindgen-bindings-java.version>2.0-SNAPSHOT</igloo.bindgen-bindings-java.version>
 		<!-- 5.0.4: https://github.com/spring-projects/spring-security/milestone/112?closed=1 -->
 		<!-- 5.0.5: https://github.com/spring-projects/spring-security/milestone/114?closed=1 -->
 		<!-- 5.0.6: https://github.com/spring-projects/spring-security/milestone/116?closed=1 -->
