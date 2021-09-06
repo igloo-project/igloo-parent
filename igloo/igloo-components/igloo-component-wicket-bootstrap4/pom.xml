@@ -10,7 +10,11 @@
 	<artifactId>igloo-component-wicket-bootstrap4</artifactId>
 	
 	<name>Igloo - Component - Wicket - Bootstrap 4</name>
-	
+
+	<properties>
+		<processor.test.skip>true</processor.test.skip>
+	</properties>
+
 	<dependencies>
 		<!-- Igloo dependencies -->
 		

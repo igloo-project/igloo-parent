@@ -10,7 +10,11 @@
 	<artifactId>igloo-component-wicket-more</artifactId>
 	
 	<name>Igloo - Component - Wicket - More Wicket fun</name>
-	
+
+	<properties>
+		<processor.test.skip>true</processor.test.skip>
+	</properties>
+
 	<dependencies>
 		<!-- Igloo dependencies -->
 		

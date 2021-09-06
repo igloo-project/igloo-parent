@@ -12,6 +12,10 @@
 	
 	<name>Igloo - Component - JPA - More JPA fun</name>
 
+	<properties>
+		<processor.test.skip>true</processor.test.skip>
+	</properties>
+
 	<dependencies>
 		
 		<!-- Igloo dependencies -->
