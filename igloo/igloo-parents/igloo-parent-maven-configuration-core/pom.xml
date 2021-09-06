@@ -1479,53 +1479,6 @@
 	</dependencyManagement>
 
 	<build>
-		<plugins>
-			<plugin>
-				<!-- Override maven-enforcer-plugin from igloo-parent-maven-configuration-common so that we can enforce dependencies differently in Igloo. (Note that igloo-parent-maven-configuration-common is also 
-					used independently from Igloo) -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>${igloo.maven-enforcer-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>enforce</id>
-						<goals>
-							<goal>enforce</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<DependencyConvergence />
-								<bannedDependencies>
-									<excludes>
-										<exclude>org.springframework:spring</exclude>
-										<exclude>org.springframework:spring-ldap</exclude>
-										<exclude>commons-logging:commons-logging</exclude>
-										<exclude>cglib:cglib</exclude>
-										<exclude>rhino:rhino</exclude>
-										<exclude>rhino:js</exclude>
-										<exclude>javassist:javassist</exclude>
-										<exclude>apache-xerces:xml-apis</exclude>
-										<exclude>javax.servlet:servlet-api</exclude>
-										<exclude>net.sf.ehcache.internal:ehcache-core</exclude>
-										<exclude>postgresql:postgresql</exclude>
-										<!-- this dependency is intended for testing -->
-										<exclude>*:elasticsearch-cluster-runner:*:jar:compile</exclude>
-										<!-- this dependency is renamed com.sun.mail:javax.mail -->
-										<exclude>javax.mail:mail</exclude>
-									</excludes>
-								</bannedDependencies>
-								<requireMavenVersion>
-									<version>[${minimal.maven.version},)</version>
-								</requireMavenVersion>
-								<requireJavaVersion>
-									<version>${jdk.version}</version>
-								</requireJavaVersion>
-							</rules>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -1549,6 +1502,8 @@
 							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
 							<processor>org.bindgen.processor.Processor</processor>
 						</processors>
+						<releaseVersion>${jdk.release.version}</releaseVersion>
+						<skipSourcesUnchanged>true</skipSourcesUnchanged>
 					</configuration>
 					<executions>
 						<execution>
@@ -1584,115 +1539,6 @@
 				<sonar.projectName>${project.name} (${sonar.projectBranch})</sonar.projectName>
 			</properties>
 		</profile>
-		<profile>
-			<id>eclipse-build</id>
-			<!-- An automatically-set profile that disables proccessors' sources generation. They are still ran in order to automatically set the generated sourcepaths on the eclipse projects. This is done at the 
-				same time for both main sources and test sources, presumably because doing otherwise upsets Eclipse. Detail: the processors are generally too resource-consuming to be ran as part of the automatic Eclipse 
-				build, which is triggered by each file change. -->
-			<activation>
-				<property>
-					<name>m2e.version</name>
-				</property>
-			</activation>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.codehaus.mojo</groupId>
-							<artifactId>animal-sniffer-maven-plugin</artifactId>
-							<version>${igloo.animal-sniffer-maven-plugin.version}</version>
-							<executions>
-								<execution>
-									<id>check-java-version</id>
-									<phase>compile</phase>
-									<goals>
-										<goal>check</goal>
-									</goals>
-									<configuration>
-										<ignores>
-											<!-- Test bindings are generated in the main code, but they reference test classes that are absent from the main code, which makes animal-sniffer cry. We tell him not to mind about that. -->
-											)
-											<ignore>org.iglooproject.test.*</ignore>
-										</ignores>
-									</configuration>
-								</execution>
-							</executions>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
-		</profile>
-		<profile>
-			<id>jdk11-processor</id>
-			<activation>
-				<jdk>[9,)</jdk>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>javax.annotation</groupId>
-					<artifactId>javax.annotation-api</artifactId>
-				</dependency>
-			</dependencies>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.bsc.maven</groupId>
-							<artifactId>maven-processor-plugin</artifactId>
-							<configuration>
-								<releaseVersion>${jdk.release.version}</releaseVersion>
-							</configuration>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
-		</profile>
 	</profiles>
-
-	<repositories>
-		<repository>
-			<id>nexus-igloo-releases</id>
-			<name>Nexus Igloo Releases</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-
-		<repository>
-			<id>nexus-igloo-snapshots</id>
-			<name>Nexus Igloo Snapshots</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>nexus-igloo-releases</id>
-			<name>Nexus Igloo Releases</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-
-		<pluginRepository>
-			<id>nexus-igloo-snapshots</id>
-			<name>Nexus Igloo Snapshots</name>
-			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
 
 </project>
