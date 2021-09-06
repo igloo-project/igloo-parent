@@ -2,8 +2,8 @@ package org.iglooproject.test.jpa.batch;
 
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -14,15 +14,6 @@ import java.util.concurrent.Semaphore;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.hamcrest.CoreMatchers;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-
-import com.google.common.collect.Lists;
-
 import org.iglooproject.functional.Joiners;
 import org.iglooproject.jpa.batch.executor.BatchExecutorCreator;
 import org.iglooproject.jpa.batch.executor.MultithreadedBatchExecutor;
@@ -31,6 +22,14 @@ import org.iglooproject.jpa.batch.runnable.ReadWriteBatchRunnable;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.business.person.model.Person;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+
+import com.google.common.collect.Lists;
 
 public class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor {
 

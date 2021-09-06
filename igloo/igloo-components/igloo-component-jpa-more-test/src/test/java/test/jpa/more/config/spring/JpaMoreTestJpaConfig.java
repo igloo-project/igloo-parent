@@ -22,6 +22,7 @@ import test.jpa.more.business.util.transaction.service.ITestTransactionSynchroni
 @ComponentScan(basePackageClasses = ITestTransactionSynchronizationTaskService.class)
 public class JpaMoreTestJpaConfig extends AbstractConfiguredJpaMoreJpaConfig {
 
+	@Override
 	@Bean
 	public JpaPackageScanProvider applicationJpaPackageScanProvider() {
 		return new JpaPackageScanProvider(JpaMoreTestBusinessPackage.class.getPackage());

@@ -99,7 +99,7 @@ public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 		mockUserService.update(userInactive);
 		
 		assertEquals(group1, mockUserGroupService.getByName("group1"));
-		assertEquals(new Long(4), mockUserService.count());
-		assertEquals(new Long(3), mockUserService.countEnabled());
+		assertEquals(Long.valueOf(4), mockUserService.count());
+		assertEquals(Long.valueOf(3), mockUserService.countEnabled());
 	}
 }
