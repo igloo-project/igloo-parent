@@ -11,7 +11,6 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.jpa.more.business.task.model.AbstractTask;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
@@ -48,9 +47,9 @@ import org.iglooproject.wicket.more.util.DatePattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate {
 
@@ -58,9 +57,7 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceTaskDetailPage.class);
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-		.enableDefaultTyping(DefaultTyping.NON_FINAL)
-		.enable(SerializationFeature.INDENT_OUTPUT);
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	public static final ILinkDescriptorMapper<IPageLinkDescriptor, IModel<QueuedTaskHolder>> MAPPER =
 		LinkDescriptorBuilder.start()
@@ -237,9 +234,8 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate
 				@Override
 				protected String load() {
 					try {
-						AbstractTask runnableTask = OBJECT_MAPPER.readValue(queuedTaskHolderModel.getObject().getSerializedTask(), AbstractTask.class);
-						return OBJECT_MAPPER.writeValueAsString(runnableTask);
-					} catch (Exception e) {
+						return OBJECT_MAPPER.readTree(queuedTaskHolderModel.getObject().getSerializedTask()).toPrettyString();
+					} catch (JsonProcessingException e) {
 						LOGGER.error("Error parsing the task: " + queuedTaskHolderModel.getObject(), e);
 						return "Error parsing the task";
 					}
