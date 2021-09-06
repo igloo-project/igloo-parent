@@ -19,13 +19,12 @@ import org.apache.commons.io.filefilter.NameFileFilter;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Assumptions;
 import org.iglooproject.commons.io.FileUtils;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.Mockito;
 
-import de.schlichtherle.truezip.file.TFile;
+import net.java.truevfs.access.TFile;
 
 public class TestFileUtils {
 
@@ -221,7 +220,6 @@ public class TestFileUtils {
 	 * Clean by last modification time, with a directory usecase
 	 */
 	@Test
-	@Ignore
 	public void cleanDirectoryDateWithDirectory() throws IOException, InterruptedException {
 		File subFolder = folder.newFolder("directory");
 		File file1 = new File(subFolder, "file1");
@@ -250,7 +248,6 @@ public class TestFileUtils {
 	 * Check we use last modification time and not creation time
 	 */
 	@Test
-	@Ignore
 	public void cleanDirectoryLastModified() throws IOException, InterruptedException {
 		File subFolder = folder.newFolder("directory");
 		File file1 = new File(subFolder, "file1");

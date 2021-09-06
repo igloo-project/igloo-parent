@@ -29,7 +29,7 @@ import org.iglooproject.imports.table.common.excel.scanner.IExcelImportFileScann
 
 import com.google.common.collect.ImmutableMap;
 
-import de.schlichtherle.truezip.file.TFileInputStream;
+import net.java.truevfs.access.TFileInputStream;
 
 public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workbook, Sheet, Row, Cell, CellReference> {
 	

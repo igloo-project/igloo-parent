@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import de.schlichtherle.truezip.file.TFileInputStream;
+import net.java.truevfs.access.TFileInputStream;
 
 
 public class SimpleFileStoreImpl implements IFileStore {

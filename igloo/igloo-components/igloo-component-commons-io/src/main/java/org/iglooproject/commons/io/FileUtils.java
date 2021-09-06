@@ -17,7 +17,7 @@ import org.apache.commons.io.filefilter.NameFileFilter;
 
 import com.google.common.collect.Lists;
 
-import de.schlichtherle.truezip.file.TFile;
+import net.java.truevfs.access.TFile;
 
 public final class FileUtils {
 	

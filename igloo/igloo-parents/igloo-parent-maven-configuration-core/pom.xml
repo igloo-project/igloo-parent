@@ -128,7 +128,7 @@
 			to solve this issue. This call to `toPath` in commons-io has been introduced in revision `r1686472` (released in version 2.5). There was no issue that we know of before. Rolling back to TrueZip 7.1 is 
 			not an option: it's really old and missing features that we're using right now. Thus, for now, we'll stick with commons-io 2.4, until we migrate from TrueZip to its successor, TrueVFS, which seems to have 
 			solved the issue. -->
-		<igloo.commons-io.version>2.4</igloo.commons-io.version>
+		<igloo.commons-io.version>2.11.0</igloo.commons-io.version>
 
 		<igloo.commons-lang.version>2.6</igloo.commons-lang.version>
 		<!-- https://commons.apache.org/proper/commons-lang/release-notes/RELEASE-NOTES-3.10.txt -->
@@ -175,8 +175,7 @@
 		<igloo.jackson2-jaxrs.version>${igloo.jackson2-core.version}</igloo.jackson2-jaxrs.version>
 		<igloo.jackson2-dataformat-xml.version>${igloo.jackson2-core.version}</igloo.jackson2-dataformat-xml.version>
 
-		<!-- See comments on property igloo.commons-io.version -->
-		<igloo.truezip.version>7.7.10</igloo.truezip.version>
+		<igloo.truevfs.version>0.14.0</igloo.truevfs.version>
 		<igloo.bouncycastle.version>2.55</igloo.bouncycastle.version>
 		<igloo.bouncycastle-jdk15on.version>1.66</igloo.bouncycastle-jdk15on.version>
 
@@ -1055,40 +1054,13 @@
 				</exclusions>
 			</dependency>
 
-			<!-- TrueZip -->
+			<!-- TrueVFS -->
 
 			<dependency>
-				<groupId>de.schlichtherle.truezip</groupId>
-				<artifactId>truezip-file</artifactId>
-				<version>${igloo.truezip.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>de.schlichtherle.truezip</groupId>
-				<artifactId>truezip-driver-file</artifactId>
-				<version>${igloo.truezip.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>de.schlichtherle.truezip</groupId>
-				<artifactId>truezip-driver-tar</artifactId>
-				<version>${igloo.truezip.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>de.schlichtherle.truezip</groupId>
-				<artifactId>truezip-driver-zip</artifactId>
-				<version>${igloo.truezip.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>de.schlichtherle.truezip</groupId>
-						<artifactId>truezip-swing</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.bouncycastle</groupId>
-						<artifactId>bcprov-jdk15on</artifactId>
-					</exclusion>
-				</exclusions>
+				<groupId>net.java.truevfs</groupId>
+				<artifactId>truevfs-profile-base</artifactId>
+				<version>${igloo.truevfs.version}</version>
+				<type>pom</type>
 			</dependency>
 
 			<!-- Explicit bouncycastle dependency (excluded from transitive) -->

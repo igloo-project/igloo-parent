@@ -8,9 +8,9 @@
 		<version>2.7.2</version>
 	</parent>
 
-	<artifactId>igloo-component-truezip</artifactId>
+	<artifactId>igloo-component-truevfs</artifactId>
 
-	<name>Igloo - Component - Truezip</name>
+	<name>Igloo - Component - TrueVFS</name>
 	<description>Truezip</description>
 
 	<dependencies>
@@ -24,26 +24,27 @@
 			<type>pom</type>
 		</dependency>
 		
-		<!-- TrueZIP -->
-		
+		<!-- TrueVFS -->
 		<dependency>
-			<groupId>de.schlichtherle.truezip</groupId>
-			<artifactId>truezip-file</artifactId>
+			<groupId>net.java.truevfs</groupId>
+			<artifactId>truevfs-profile-base</artifactId>
+			<type>pom</type>
+			<exclusions>
+				<exclusion>
+					<groupId>net.java.truevfs</groupId>
+					<artifactId>truevfs-access-swing</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-		
 		<dependency>
-			<groupId>de.schlichtherle.truezip</groupId>
-			<artifactId>truezip-driver-file</artifactId>
+			<groupId>net.java.truevfs</groupId>
+			<artifactId>truevfs-access</artifactId>
+			<version>${igloo.truevfs.version}</version>
 		</dependency>
-		
 		<dependency>
-			<groupId>de.schlichtherle.truezip</groupId>
-			<artifactId>truezip-driver-tar</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>de.schlichtherle.truezip</groupId>
-			<artifactId>truezip-driver-zip</artifactId>
+			<groupId>net.java.truevfs</groupId>
+			<artifactId>truevfs-driver-zip</artifactId>
+			<version>${igloo.truevfs.version}</version>
 		</dependency>
 		
 	</dependencies>

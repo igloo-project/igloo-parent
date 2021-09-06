@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import de.schlichtherle.truezip.file.TFile;
+import net.java.truevfs.access.TFile;
 
 @SuppressWarnings("squid:S00101") // class named on purpose, skip class name rule
 public class DataUpgrade_InitDataFromExcel implements IDataUpgrade {

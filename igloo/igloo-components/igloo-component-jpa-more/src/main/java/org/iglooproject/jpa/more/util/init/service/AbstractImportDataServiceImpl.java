@@ -50,7 +50,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 
-import de.schlichtherle.truezip.file.TFileInputStream;
+import net.java.truevfs.access.TFileInputStream;
 
 public abstract class AbstractImportDataServiceImpl implements IImportDataService {
 	
