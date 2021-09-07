@@ -2,7 +2,7 @@ package org.iglooproject.jpa.security.business.user.model;
 
 import java.util.SortedSet;
 
-import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
@@ -36,19 +36,19 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 
 	public static final String EMAIL = "email";
 
-	@Basic(optional = false)
+	@Column(nullable = false)
 	@Field(name = FIRST_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	@Field(name = FIRST_NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = FIRST_NAME_SORT)
 	private String firstName;
 
-	@Basic(optional = false)
+	@Column(nullable = false)
 	@Field(name = LAST_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	@Field(name = LAST_NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = LAST_NAME_SORT)
 	private String lastName;
 
-	@Basic
+	@Column
 	@Field(name = EMAIL, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String email;
