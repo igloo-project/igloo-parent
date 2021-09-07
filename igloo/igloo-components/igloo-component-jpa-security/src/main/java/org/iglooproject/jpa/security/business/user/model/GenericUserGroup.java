@@ -6,7 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.SortedSet;
 
-import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -54,7 +54,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 	@GeneratedValue
 	private Long id;
 
-	@Basic
+	@Column
 	@Field(name = NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	@Field(name = NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = NAME_SORT)
@@ -81,11 +81,11 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Authority> authorities = new LinkedHashSet<>();
 
-	@Basic
-	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
+	@Column
+	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")	
 	private String description;
 
-	@Basic(optional = false)
+	@Column(nullable = false)
 	private boolean locked = false;
 
 	public GenericUserGroup() {

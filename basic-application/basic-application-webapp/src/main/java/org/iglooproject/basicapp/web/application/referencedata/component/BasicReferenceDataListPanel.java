@@ -15,14 +15,12 @@ import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
-import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IAddedCoreColumnState;
+import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IColumnState;
 
 public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>> 
 		extends AbstractReferenceDataListPanel<T, ReferenceDataSort, AbstractReferenceDataDataProvider<T, ReferenceDataSort>> {
 
 	private static final long serialVersionUID = -4026683202098875499L;
-
-	protected SerializableSupplier2<T> supplier;
 
 	public BasicReferenceDataListPanel(
 		String id,
@@ -37,14 +35,8 @@ public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>>
 		SerializableSupplier2<T> supplier,
 		AbstractReferenceDataDataProvider<T, ReferenceDataSort> dataProvider
 	) {
-		super(id, dataProvider, dataProvider.getSortModel());
-		this.supplier = supplier;
+		super(id, dataProvider, dataProvider.getSortModel(), supplier);
 		setOutputMarkupId(true);
-	}
-
-	@Override
-	protected T getNewInstance() {
-		return this.supplier.get();
 	}
 
 	@Override
@@ -59,10 +51,8 @@ public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>>
 	}
 
 	@Override
-	protected IAddedCoreColumnState<T, ReferenceDataSort> addColumns(
-			DataTableBuilder<T, ReferenceDataSort> builder
-	) {
-		return builder
+	protected IColumnState<T, ReferenceDataSort> addColumns(DataTableBuilder<T, ReferenceDataSort> builder) {
+		return super.addColumns(builder)
 			.addLabelColumn(new ResourceModel("business.referenceData.label.fr"), Bindings.referenceData().label().fr())
 				.withSort(ReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
 				.withClass("text text-md")

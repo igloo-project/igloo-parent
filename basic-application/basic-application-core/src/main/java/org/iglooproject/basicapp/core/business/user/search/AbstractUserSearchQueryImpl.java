@@ -45,7 +45,7 @@ public abstract class AbstractUserSearchQueryImpl<U extends User> extends Abstra
 			default:
 				throw new IllegalSwitchValueException(enabledFilter);
 			}
-		} 
+		}
 		return this;
 	}
 

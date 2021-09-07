@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.SortedSet;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -67,7 +68,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@DocumentId
 	private Long id;
 
-	@Basic(optional = false)
+	@Column(nullable = false)
 	@NaturalId(mutable = true)
 	@Field(name = USERNAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	@Field(name = USERNAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
@@ -78,28 +79,28 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@JsonIgnore
 	private String passwordHash = EMPTY_PASSWORD_HASH;
 
-	@Basic(optional = false)
+	@Column(nullable = false)
 	@Field(name = ENABLED)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private boolean enabled = true;
 
 	@JsonIgnore
-	@Basic(optional = false)
+	@Column(nullable = false)
 	private Date creationDate;
 
 	@JsonIgnore
-	@Basic(optional = false)
+	@Column(nullable = false)
 	private Date lastUpdateDate;
 
 	@JsonIgnore
-	@Basic
+	@Column
 	private Date lastLoginDate;
 
 	/**
 	 * preferred locale for user, can be null
 	 */
 	@JsonIgnore
-	@Basic
+	@Column
 	private Locale locale;
 
 	@JsonIgnore

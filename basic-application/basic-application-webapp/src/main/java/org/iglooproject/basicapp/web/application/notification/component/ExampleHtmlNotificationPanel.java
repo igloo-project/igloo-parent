@@ -3,7 +3,9 @@ package org.iglooproject.basicapp.web.application.notification.component;
 import java.util.Date;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
@@ -32,16 +34,15 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 				)
 		);
 		
+		IModel<String> urlModel = Model.of(
+			BasicApplicationApplication.get().getHomePageLinkDescriptor()
+				.bypassPermissions()
+				.fullUrl()
+		);
+		
 		add(
-			BasicApplicationApplication.get().getHomePageLinkDescriptor()
-				.bypassPermissions()
-				.link("mainLink")
-				.setAbsolute(true),
-			BasicApplicationApplication.get().getHomePageLinkDescriptor()
-				.bypassPermissions()
-				.link("url")
-				.setAbsolute(true)
-				.setBody(BasicApplicationApplication.get().getHomePageLinkDescriptor()::fullUrl)
+			new ExternalLink("mainLink", urlModel),
+			new ExternalLink("url", urlModel, urlModel)
 		);
 		
 		add(
