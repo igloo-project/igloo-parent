@@ -40,7 +40,6 @@
 		<module>igloo-component-jpa-more</module>
 		<module>igloo-component-jpa-more-test</module>
 		<module>igloo-component-jpa-security</module>
-		<module>igloo-component-jpa-externallinkchecker</module>
 		
 		<module>igloo-component-export</module>
 		<module>igloo-component-imports</module>
