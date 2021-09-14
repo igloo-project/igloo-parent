@@ -221,6 +221,7 @@
 		<igloo.grizzly.version>1.9.65</igloo.grizzly.version>
 		<igloo.findbugs-annotations.version>3.0.1u2</igloo.findbugs-annotations.version>
 		<igloo.findbugs-jsr305.version>3.0.2</igloo.findbugs-jsr305.version>
+		<igloo.errorprone.version>2.3.4</igloo.errorprone.version>
 
 		<!-- https://github.com/vt-middleware/passay/commits/master -->
 		<igloo.passay.version>1.6.0</igloo.passay.version>
@@ -678,6 +679,32 @@
 					<exclusion>
 						<artifactId>xml-apis</artifactId>
 						<groupId>xml-apis</groupId>
+					</exclusion>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-search-orm</artifactId>
+				<version>${igloo.hibernate-search.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-search-elasticsearch</artifactId>
+				<version>${igloo.hibernate-search.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -1477,6 +1504,22 @@
 							<artifactId>querydsl-apt</artifactId>
 							<classifier>jpa</classifier>
 							<version>${igloo.querydsl.version}</version>
+						</dependency>
+						<!-- for bindings, we can encounter guava types that uses check-time annotations -->
+						<dependency>
+							<groupId>com.google.errorprone</groupId>
+							<artifactId>error_prone_annotations</artifactId>
+							<version>${igloo.errorprone.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>com.google.code.findbugs</groupId>
+							<artifactId>annotations</artifactId>
+							<version>${igloo.findbugs-annotations.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>com.google.code.findbugs</groupId>
+							<artifactId>jsr305</artifactId>
+							<version>${igloo.findbugs-jsr305.version}</version>
 						</dependency>
 					</dependencies>
 					<configuration>

@@ -1,9 +1,9 @@
-package org.iglooproject.jpa.hibernate.analyzers;
+package igloo.hibernateconfig.elasticsearch;
 
 import org.apache.lucene.analysis.Analyzer;
 
 public interface LuceneEmbeddedAnalyzerRegistry {
 
-	Analyzer getAnalyzer(String analyzerName);
+	Analyzer getRegistryAnalyzer(String analyzerName);
 
 }

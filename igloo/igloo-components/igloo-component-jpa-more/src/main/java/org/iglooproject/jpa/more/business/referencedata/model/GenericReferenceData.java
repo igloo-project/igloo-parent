@@ -11,9 +11,10 @@ import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 
 import com.google.common.base.MoreObjects.ToStringHelper;
+
+import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 
 @MappedSuperclass
 @Bindable

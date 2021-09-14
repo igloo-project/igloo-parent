@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.config.spring.provider;
+package igloo.hibernateconfig.api;
 
 import java.util.Properties;
 

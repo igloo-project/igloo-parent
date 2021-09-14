@@ -14,8 +14,9 @@ import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.basicapp.core.business.common.util.BasicApplicationLocale;
 import org.iglooproject.jpa.more.business.localization.model.AbstractLocalizedText;
-import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
-import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
+
+import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
+import igloo.hibernateconfig.api.HibernateSearchNormalizer;
 
 @MappedSuperclass
 @Bindable

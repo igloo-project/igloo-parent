@@ -18,8 +18,9 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
-import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
 import org.springframework.util.Assert;
+
+import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 
 @Embeddable
 @MappedSuperclass

@@ -27,8 +27,6 @@ import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
-import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.user.util.GenericUserComparator;
 import org.springframework.security.acls.model.Permission;
@@ -37,6 +35,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryType;
+
+import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
+import igloo.hibernateconfig.api.HibernateSearchNormalizer;
 
 @MappedSuperclass
 @Bindable

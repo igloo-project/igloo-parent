@@ -15,7 +15,8 @@ import org.hibernate.search.annotations.Indexed;
 
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+
+import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 
 @Entity
 @Indexed

@@ -23,13 +23,14 @@ import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
-import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
-import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.MoreObjects.ToStringHelper;
+
+import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
+import igloo.hibernateconfig.api.HibernateSearchNormalizer;
 
 @Entity
 @Bindable

@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.hibernate.analyzers;
+package igloo.hibernateconfig.lucene;
 
 import org.apache.lucene.analysis.core.KeywordTokenizerFactory;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
@@ -10,8 +10,9 @@ import org.apache.lucene.analysis.pattern.PatternReplaceFilterFactory;
 import org.hibernate.search.analyzer.definition.LuceneAnalysisDefinitionProvider;
 import org.hibernate.search.analyzer.definition.LuceneAnalysisDefinitionRegistryBuilder;
 import org.iglooproject.lucene.analysis.french.CoreFrenchMinimalStemFilterFactory;
-import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
-import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
+
+import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
+import igloo.hibernateconfig.api.HibernateSearchNormalizer;
 
 public class CoreLuceneAnalyzersDefinitionProvider implements LuceneAnalysisDefinitionProvider {
 

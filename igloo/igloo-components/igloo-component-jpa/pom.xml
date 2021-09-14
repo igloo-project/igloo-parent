@@ -21,6 +21,11 @@
 			<artifactId>igloo-component-spring</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-hibernate-configurator-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	
 		<!-- hibernate-search -->
 		

@@ -1,6 +1,8 @@
-package org.iglooproject.jpa.hibernate.analyzers;
+package igloo.hibernateconfig.elasticsearch;
 
 import org.hibernate.search.analyzer.definition.LuceneAnalysisDefinitionRegistryBuilder;
+
+import igloo.hibernateconfig.lucene.CoreLuceneAnalyzersDefinitionProvider;
 
 public class CoreLuceneClientAnalyzersDefinitionProvider extends CoreLuceneAnalyzersDefinitionProvider {
 
