@@ -61,13 +61,6 @@
 			<artifactId>spring-expression</artifactId>
 		</dependency>
 		
-		<!-- Misc. -->
-		
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
-		</dependency>
-		
 	</dependencies>
 	
 </project>

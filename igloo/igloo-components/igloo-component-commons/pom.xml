@@ -64,6 +64,11 @@
 			<artifactId>bindgen</artifactId>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>annotations</artifactId>
+		</dependency>
+		
 		<!-- Test dependencies -->
 		
 		<dependency>

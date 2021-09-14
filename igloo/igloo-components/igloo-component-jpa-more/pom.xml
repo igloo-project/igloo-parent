@@ -85,6 +85,11 @@
 			<artifactId>java-object-diff</artifactId>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>annotations</artifactId>
+		</dependency>
+		
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>

@@ -42,22 +42,13 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-search-elasticsearch</artifactId>
 			<version>${igloo.hibernate-search.version}</version>
+			<optional>true</optional>
 			<exclusions>
 				<exclusion>
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
-				<!-- resolve manually conflict (hibernate-search-elasticsearch) -->
-				<exclusion>
-					<groupId>com.google.code.gson</groupId>
-					<artifactId>gson</artifactId>
-				</exclusion>
 			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
 		</dependency>
 
 		<dependency>

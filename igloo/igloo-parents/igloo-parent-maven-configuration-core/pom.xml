@@ -58,14 +58,6 @@
 		<igloo.byte-buddy.version>1.10.10</igloo.byte-buddy.version>
 		<igloo.jboss-logging.version>3.4.1.Final</igloo.jboss-logging.version>
 
-		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_7 -->
-		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_8 -->
-		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_9 -->
-		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_10 -->
-		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_11 -->
-		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_2_12 -->
-		<!-- https://github.com/cglib/cglib/releases/tag/RELEASE_3_3_0 -->
-		<igloo.cglib.version>3.3.0</igloo.cglib.version>
 		<igloo.javassist.version>3.27.0-GA</igloo.javassist.version>
 
 		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
@@ -113,8 +105,6 @@
 		<!-- https://in.relation.to/2019/09/19/hibernate-search-5-11-3-Final/ -->
 		<!-- https://in.relation.to/2019/11/22/hibernate-search-5-11-4-Final-and-5-10-8-Final/ -->
 		<igloo.hibernate-search.version>5.11.5.Final</igloo.hibernate-search.version>
-		<!-- both needed by less4j and hibernate-search ; we keep hibernate-search version -->
-		<igloo.gson.version>2.8.6</igloo.gson.version>
 		<!-- overriden in some modules, when we are in a elasticsearch context -->
 		<igloo.lucene.version>5.5.5</igloo.lucene.version>
 
@@ -579,12 +569,6 @@
 			<!-- Reflection, proxying, instrumentation... -->
 
 			<dependency>
-				<groupId>cglib</groupId>
-				<artifactId>cglib-nodep</artifactId>
-				<version>${igloo.cglib.version}</version>
-			</dependency>
-
-			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjrt</artifactId>
 				<version>${igloo.aspectj.version}</version>
@@ -742,9 +726,15 @@
 				<artifactId>querydsl-jpa</artifactId>
 				<version>${igloo.querydsl.version}</version>
 				<exclusions>
+					<!-- code analysis annotation -->
 					<exclusion>
-						<groupId>cglib</groupId>
-						<artifactId>cglib</artifactId>
+						<groupId>com.google.code.findbugs</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+					<!-- code lifecycle annotation -->
+					<exclusion>
+						<groupId>com.infradna.tool</groupId>
+						<artifactId>bridge-method-annotation</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -833,6 +823,26 @@
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${igloo.guava.version}</version>
+				<exclusions>
+					<!-- code analysis annotation -->
+					<exclusion>
+						<groupId>com.google.code.findbugs</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+					<!-- code analysis annotation -->
+					<exclusion>
+						<groupId>com.google.errorprone</groupId>
+						<artifactId>error_prone_annotations</artifactId>
+					</exclusion>
+					<!-- annotation for objective C -->
+					<exclusion>
+						<groupId>com.google.j2objc</groupId>
+						<artifactId>j2objc-annotations</artifactId>
+					</exclusion>
+				</exclusions>
+				<!-- NOTE: listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava is
+				an empty jar to avoid conflict with listenablefuture:jar:1.0 that contains only
+				ListenableFuture. For our case, ListenableFuture is provided by guava jar -->
 			</dependency>
 
 			<!-- Utils -->
@@ -955,6 +965,13 @@
 				<groupId>com.helger</groupId>
 				<artifactId>ph-css</artifactId>
 				<version>${igloo.ph-css.version}</version>
+				<exclusions>
+					<!-- code analysis annotation -->
+					<exclusion>
+						<groupId>com.google.code.findbugs</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
@@ -1055,7 +1072,6 @@
 			</dependency>
 
 			<!-- TrueVFS -->
-
 			<dependency>
 				<groupId>net.java.truevfs</groupId>
 				<artifactId>truevfs-profile-base</artifactId>
@@ -1112,12 +1128,6 @@
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-ioc</artifactId>
 				<version>${igloo.wicket.version}</version>
-				<exclusions>
-					<exclusion>
-						<artifactId>cglib</artifactId>
-						<groupId>cglib</groupId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 
 			<dependency>
@@ -1297,12 +1307,6 @@
 				<version>3.1.0-SNAPSHOT</version>
 			</dependency>
 
-			<dependency>
-				<groupId>com.google.code.gson</groupId>
-				<artifactId>gson</artifactId>
-				<version>${igloo.gson.version}</version>
-			</dependency>
-
 			<!-- Test dependencies -->
 
 			<dependency>
@@ -1389,17 +1393,19 @@
 			</dependency>
 
 			<dependency>
+				<!-- code analysis annotation -->
 				<groupId>com.google.code.findbugs</groupId>
 				<artifactId>annotations</artifactId>
 				<version>${igloo.findbugs-annotations.version}</version>
+				<scope>provided</scope>
 			</dependency>
 
-
-			<!-- Solves a "dependency convergence error" triggered by JQuery, which requires an older version of jsr305 -->
 			<dependency>
+				<!-- code analysis annotation -->
 				<groupId>com.google.code.findbugs</groupId>
 				<artifactId>jsr305</artifactId>
 				<version>${igloo.findbugs-jsr305.version}</version>
+				<scope>provided</scope>
 			</dependency>
 
 			<!-- Used for testing purpose -->
