@@ -124,8 +124,10 @@
 										<!-- this dependency is intended for testing -->
 										<exclude>*:elasticsearch-cluster-runner:*:jar:compile</exclude>
 										<exclude>*:embedded-elasticsearch:*:jar:test</exclude>
-										<!-- this dependency is renamed com.sun.mail:javax.mail -->
-										<exclude>javax.mail:mail</exclude>
+										<!-- this dependency is renamed com.sun.mail:jakarta.mail -->
+										<exclude>com.sun.mail:javax.mail</exclude><!-- old implementation -->
+										<exclude>javax.mail:mail-api</exclude><!-- old API -->
+										<exclude>jakarta.mail:jakarta.mail-api</exclude><!-- API only -->
 									</excludes>
 								</bannedDependencies>
 								<requireMavenVersion>

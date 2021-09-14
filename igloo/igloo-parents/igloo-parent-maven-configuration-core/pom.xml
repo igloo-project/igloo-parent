@@ -139,7 +139,7 @@
 		<igloo.commons-configuration.version>2.7</igloo.commons-configuration.version>
 
 		<igloo.jta.version>1.1</igloo.jta.version>
-		<igloo.javax-mail.version>1.6.2</igloo.javax-mail.version>
+		<igloo.javax-mail.version>1.6.6</igloo.javax-mail.version>
 
 		<igloo.slf4j.version>1.7.30</igloo.slf4j.version>
 		<igloo.log4j.version>1.2.17</igloo.log4j.version>
@@ -866,6 +866,11 @@
 						<groupId>com.google.j2objc</groupId>
 						<artifactId>j2objc-annotations</artifactId>
 					</exclusion>
+					<!-- code analysis annotation -->
+					<exclusion>
+						<groupId>org.checkerframework</groupId>
+						<artifactId>checker-qual</artifactId>
+					</exclusion>
 				</exclusions>
 				<!-- NOTE: listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava is
 				an empty jar to avoid conflict with listenablefuture:jar:1.0 that contains only
@@ -900,7 +905,7 @@
 
 			<dependency>
 				<groupId>com.sun.mail</groupId>
-				<artifactId>javax.mail</artifactId>
+				<artifactId>jakarta.mail</artifactId>
 				<version>${igloo.javax-mail.version}</version>
 			</dependency>
 
