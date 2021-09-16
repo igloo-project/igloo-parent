@@ -4,7 +4,6 @@ variables:
 stages:
   - prepare
   - build
-  - test
   - verify
   - analyze
   - deploy
@@ -24,20 +23,6 @@ maven-build:
   environment: staging
   script:
     - "mvn -DskipTests clean package"
-  except:
-    variables:
-      - $CHECK_DEPENDENCIES
-
-maven-test:
-  stage: test
-  environment: staging
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - artifacts/
-  script:
-    - "source gitlab-ci.build.conf"
-    - "./ci/maven-allure.sh"
   except:
     variables:
       - $CHECK_DEPENDENCIES
