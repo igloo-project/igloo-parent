@@ -68,7 +68,7 @@
 		<igloo.hikaricp.version>3.4.5</igloo.hikaricp.version>
 		<!-- https://jira.terracotta.org/jira/browse/EHC/fixforversion/13000/?selectedTab=com.atlassian.jira.jira-projects-plugin:version-summary-panel -->
 		<!-- terracotta maven repository cannot be managed efficiently; use central dependency -->
-		<igloo.ehcache.version>2.10.6</igloo.ehcache.version>
+		<igloo.ehcache.version>2.10.9.2</igloo.ehcache.version>
 		<!-- https://github.com/querydsl/querydsl/issues?utf8=%E2%9C%93&q=milestone%3A4.2.1 -->
 		<igloo.querydsl.version>4.4.0</igloo.querydsl.version>
 
@@ -746,8 +746,8 @@
 			<!-- Cache (also used for Hibernate second level cache) -->
 
 			<dependency>
-				<groupId>net.sf.ehcache.internal</groupId>
-				<artifactId>ehcache-core</artifactId>
+				<groupId>net.sf.ehcache</groupId>
+				<artifactId>ehcache</artifactId>
 				<version>${igloo.ehcache.version}</version>
 			</dependency>
 
@@ -1478,7 +1478,7 @@
 										<exclude>javassist:javassist</exclude>
 										<exclude>apache-xerces:xml-apis</exclude>
 										<exclude>javax.servlet:servlet-api</exclude>
-										<exclude>net.sf.ehcache:ehcache-core</exclude>
+										<exclude>net.sf.ehcache.internal:ehcache-core</exclude>
 										<exclude>postgresql:postgresql</exclude>
 										<!-- this dependency is intended for testing -->
 										<exclude>*:elasticsearch-cluster-runner:*:jar:compile</exclude>
