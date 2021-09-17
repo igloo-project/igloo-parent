@@ -34,10 +34,10 @@ maven-verify:
   artifacts:
     when: always
     paths:
-      - "*/target/surefire-reports/TEST-*.xml"
+      - "**/target/surefire-reports/TEST-*.xml"
     reports:
       junit:
-        - "*/target/surefire-reports/TEST-*.xml"
+        - "**/target/surefire-reports/TEST-*.xml"
 
 maven-dependencies:
   stage: dependencies
