@@ -1,3 +1,6 @@
+image:
+  name: maven:3.8-openjdk-8
+
 variables:
   MAVEN_OPTS: "-Xmx1536m"
 
@@ -5,9 +8,9 @@ stages:
   - prepare
   - build
   - verify
-  - analyze
-  - deploy
   - dependencies
+  - deploy
+  - analyze
 
 maven-prepare:
   stage: prepare
@@ -17,6 +20,8 @@ maven-prepare:
     expire_in: 1 day
     paths:
       - gitlab-ci.build.conf
+  tags:
+    - docker
 
 maven-build:
   stage: build
@@ -26,6 +31,8 @@ maven-build:
   except:
     variables:
       - $CHECK_DEPENDENCIES
+  tags:
+    - docker
 
 maven-verify:
   stage: verify
@@ -38,6 +45,8 @@ maven-verify:
     reports:
       junit:
         - "**/target/surefire-reports/TEST-*.xml"
+  tags:
+    - docker
 
 maven-dependencies:
   stage: dependencies
@@ -48,6 +57,8 @@ maven-dependencies:
   only:
     variables:
       - $CHECK_DEPENDENCIES
+  tags:
+    - docker
 
 maven-deploy:
   stage: deploy
@@ -63,18 +74,19 @@ maven-deploy:
   except:
     variables:
       - $CHECK_DEPENDENCIES
+  tags:
+    - docker
 
 sonar-analyze:
   stage: analyze
   environment: staging
   script:
     - "source gitlab-ci.build.conf"
-#    - ./ci/artifacts-pull.sh
-#    - find -name jacoco.exec
     - mvn verify sonar:sonar
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
-#      -Dsonar.jacoco.reportPaths=target/jacoco.exec
   except:
     variables:
       - $CHECK_DEPENDENCIES
+  tags:
+    - docker

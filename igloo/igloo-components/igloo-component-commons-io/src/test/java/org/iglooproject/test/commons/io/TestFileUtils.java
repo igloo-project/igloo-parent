@@ -17,6 +17,7 @@ import org.apache.commons.io.filefilter.FileFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.Assumptions;
 import org.iglooproject.commons.io.FileUtils;
 import org.junit.Rule;
 import org.junit.Test;
@@ -285,6 +286,7 @@ public class TestFileUtils {
 	 */
 	@Test
 	public void cleanDirectoryFailing() throws IOException, InterruptedException {
+		Assumptions.assumeThat(System.getenv().getOrDefault("CI_RUNNER_TAGS", "")).doesNotContain("docker");
 		File subFolder = folder.newFolder("directory");
 		File file1 = new File(subFolder, "file1");
 		File file2 = new File(subFolder, "file2");
