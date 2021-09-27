@@ -430,8 +430,8 @@ public class TestFileUtils {
 
 	private Date waitSomeTime() throws InterruptedException {
 		Date date = new Date();
-		// under 1000ms, delta-time is not high enough to ensure that file2 last modification date is late enough
-		Thread.sleep(1000);
+		// under 2000ms, delta-time is not high enough to ensure that file2 last modification date is late enough
+		Thread.sleep(2000);
 		return date;
 	}
 }
