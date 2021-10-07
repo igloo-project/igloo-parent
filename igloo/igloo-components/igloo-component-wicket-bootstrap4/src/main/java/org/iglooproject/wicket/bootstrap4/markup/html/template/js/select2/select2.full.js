@@ -4114,10 +4114,13 @@ S2.define('select2/dropdown/search',[
       self.$search.attr('tabindex', 0);
       self.$search.attr('aria-controls', resultsId);
 
-      self.$search.trigger('focus');
+      // https://github.com/select2/select2/issues/5993
+      // https://jsfiddle.net/9muo0ea7/ + https://jsfiddle.net/6sgLhe0m/
+      //self.$search.trigger('focus');
 
       window.setTimeout(function () {
-        self.$search.trigger('focus');
+        //self.$search.trigger('focus');
+        self.$search.get(0)?.focus();
       }, 0);
     });
 
