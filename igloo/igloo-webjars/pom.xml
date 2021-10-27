@@ -23,7 +23,7 @@
 	</properties>
 	
 	<modules>
-		<module>bootstrap-override</module>
+		<module>bootstrap4-override</module>
 	</modules>
 	
 	<build>

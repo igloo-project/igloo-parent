@@ -129,11 +129,7 @@
 			<artifactId>ph-css</artifactId>
 		</dependency>
 		
-		<!-- webjars -->
-		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>popper.js</artifactId>
-		</dependency>
+		<!-- WebJars -->
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>clipboard</artifactId>
@@ -141,11 +137,6 @@
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>jquery-mask-plugin</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.webjars</groupId>
-			<artifactId>bootstrap-override</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>
