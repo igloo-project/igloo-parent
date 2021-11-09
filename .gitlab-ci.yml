@@ -1,9 +1,8 @@
 image:
-  name: maven:3.8-openjdk-8
+  name: maven:3.8-openjdk-11
 
 variables:
   MAVEN_OPTS: "-Xmx1536m"
-  JAVA_HOME: /usr/lib/jvm/java-11-openjdk
 
 stages:
   - build
