@@ -74,7 +74,7 @@
 		<!-- terracotta maven repository cannot be managed efficiently; use central dependency -->
 		<igloo.ehcache.version>2.10.9.2</igloo.ehcache.version>
 		<!-- https://github.com/querydsl/querydsl/issues?utf8=%E2%9C%93&q=milestone%3A4.2.1 -->
-		<igloo.querydsl.version>4.4.0</igloo.querydsl.version>
+		<igloo.querydsl.version>5.0.0</igloo.querydsl.version>
 
 		<!--https://github.com/google/guava/releases/ -->
 		<igloo.guava.version>29.0-jre</igloo.guava.version>
@@ -1478,6 +1478,9 @@
 							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
 							<processor>org.bindgen.processor.Processor</processor>
 						</processors>
+						<systemProperties>
+							<querydsl.generatedAnnotationClass>javax.annotation.processing.Generated</querydsl.generatedAnnotationClass>
+						</systemProperties>
 						<releaseVersion>${jdk.release.version}</releaseVersion>
 						<skipSourcesUnchanged>true</skipSourcesUnchanged>
 					</configuration>
@@ -1509,33 +1512,6 @@
 	</build>
 
 	<profiles>
-		<profile>
-			<!-- from jdk11, javax-annotation is no longer parts of java environment -->
-			<!-- provided at runtime by tomcat -->
-			<id>jdk11-processor</id>
-			<activation>
-				<jdk>[9,)</jdk>
-			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>javax.annotation</groupId>
-					<artifactId>javax.annotation-api</artifactId>
-				</dependency>
-			</dependencies>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.bsc.maven</groupId>
-							<artifactId>maven-processor-plugin</artifactId>
-							<configuration>
-								<releaseVersion>${jdk.release.version}</releaseVersion>
-							</configuration>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
-		</profile>
 		<profile>
 			<id>sonar-branch</id>
 			<activation>

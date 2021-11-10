@@ -53,6 +53,11 @@
 			<artifactId>bindgen</artifactId>
 		</dependency>
 		
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+		</dependency>
+		
 		<!-- Excel Import -->
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
