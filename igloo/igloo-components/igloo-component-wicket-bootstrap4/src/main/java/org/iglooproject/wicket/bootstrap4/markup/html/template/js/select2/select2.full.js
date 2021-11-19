@@ -4120,7 +4120,10 @@ S2.define('select2/dropdown/search',[
 
       window.setTimeout(function () {
         //self.$search.trigger('focus');
-        self.$search.get(0)?.focus();
+        let search = self.$search.get(0);
+        if (search) {
+          search.focus();
+        }
       }, 0);
     });
 
