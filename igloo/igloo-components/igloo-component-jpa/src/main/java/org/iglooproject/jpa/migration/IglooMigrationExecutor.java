@@ -47,4 +47,9 @@ public class IglooMigrationExecutor implements MigrationExecutor {
 		return migration.canExecuteInTransaction();
 	}
 
+	@Override
+	public boolean shouldExecute() {
+		return migration.shouldExecute();
+	}
+
 }

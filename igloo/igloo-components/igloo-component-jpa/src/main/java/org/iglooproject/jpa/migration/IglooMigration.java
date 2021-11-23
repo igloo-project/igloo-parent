@@ -57,4 +57,9 @@ public abstract class IglooMigration implements IIglooMigration {
 		return true;
 	}
 
+	@Override
+	public boolean shouldExecute() {
+		return true;
+	}
+
 }

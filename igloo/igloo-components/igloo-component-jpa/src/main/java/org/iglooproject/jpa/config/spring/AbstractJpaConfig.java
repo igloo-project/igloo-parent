@@ -112,10 +112,12 @@ public abstract class AbstractJpaConfig {
 			Arrays.asList(configuration.getLocations()),
 			configuration.getClassLoader(),
 			configuration.getEncoding(),
+			configuration.getDetectEncoding(),
 			//this boolean has been added since flyway 7.0.0 and is unused in flyway 7.0.2, be carefull when updating flyway
 			false,
 			new ResourceNameCache(),
-			new LocationScannerCache()
+			new LocationScannerCache(),
+			configuration.getFailOnMissingLocations()
 		);
 		
 		configuration.resolvers(new IglooMigrationResolver(scanner, configuration, applicationContext));

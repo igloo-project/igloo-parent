@@ -18,4 +18,6 @@ public interface IIglooMigration {
 	boolean isUndo();
 
 	boolean canExecuteInTransaction();
+
+	boolean shouldExecute();
 }
