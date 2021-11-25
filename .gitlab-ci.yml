@@ -1,22 +1,15 @@
+image:
+  name: maven:3.8-openjdk-11
+
 variables:
   MAVEN_OPTS: "-Xmx1536m"
 
 stages:
-  - prepare
   - build
-  - test
-  - analyze
-  - deploy
+  - verify
   - dependencies
-
-maven-prepare:
-  stage: prepare
-  script:
-    - "./ci/config-test.py"
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - gitlab-ci.build.conf
+  - deploy
+  - analyze
 
 maven-build:
   stage: build
@@ -26,20 +19,49 @@ maven-build:
   except:
     variables:
       - $CHECK_DEPENDENCIES
+  tags:
+    - docker
 
-maven-test:
-  stage: test
-  environment: staging
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - artifacts/
+maven-verify:h2:
+  stage: verify
   script:
-    - "source gitlab-ci.build.conf"
-    - "./ci/maven-allure.sh"
-  except:
-    variables:
-      - $CHECK_DEPENDENCIES
+    - mvn verify
+  artifacts:
+    when: always
+    paths:
+      - "**/target/surefire-reports/TEST-*.xml"
+    reports:
+      junit:
+        - "**/target/surefire-reports/TEST-*.xml"
+  tags:
+    - docker
+
+maven-verify:postgresql12:
+  stage: verify
+  script:
+    - mvn verify
+  artifacts:
+    when: always
+    paths:
+      - "**/target/surefire-reports/TEST-*.xml"
+    reports:
+      junit:
+        - "**/target/surefire-reports/TEST-*.xml"
+  tags:
+    - docker
+  services:
+    - name: postgres:12
+      alias: postgresql
+  variables:
+    POSTGRES_USER: igloo_test
+    POSTGRES_PASSWORD: igloo_test
+    TEST_DB_USER: igloo_test
+    TEST_DB_PASSWORD: igloo_test
+    TEST_DB_SCHEMA: public
+    TEST_DB_NAME: igloo_test
+    TEST_DB_TYPE: postgresql
+    TEST_DB_HOST: postgresql
+    TEST_DB_PORT: 5432
 
 maven-dependencies:
   stage: dependencies
@@ -50,6 +72,8 @@ maven-dependencies:
   only:
     variables:
       - $CHECK_DEPENDENCIES
+  tags:
+    - docker
 
 maven-deploy:
   stage: deploy
@@ -65,18 +89,20 @@ maven-deploy:
   except:
     variables:
       - $CHECK_DEPENDENCIES
+  tags:
+    - docker
 
 sonar-analyze:
   stage: analyze
   environment: staging
   script:
-    - "source gitlab-ci.build.conf"
-#    - ./ci/artifacts-pull.sh
-#    - find -name jacoco.exec
+    - ./ci/sonar-branch.py | tee config
+    - source config
     - mvn verify sonar:sonar
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
-#      -Dsonar.jacoco.reportPaths=target/jacoco.exec
   except:
     variables:
       - $CHECK_DEPENDENCIES
+  tags:
+    - docker

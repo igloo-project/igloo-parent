@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.ResultSetDynaClass;
@@ -30,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Streams;
 
@@ -50,7 +50,10 @@ public abstract class AbstractMetaModelTestCase extends AbstractTestCase {
 	}
 
 	protected JdbcRelation getRelation(Connection connection, String schemaPattern, String relationPattern, String... types) {
-		return Iterables.getOnlyElement(getRelations(connection, schemaPattern, relationPattern, types));
+		return getRelations(connection, schemaPattern, "%", types).stream()
+				.filter(i -> i.getTable_name().equalsIgnoreCase(relationPattern))
+				.findFirst()
+				.orElseThrow(() -> new NoSuchElementException(String.format("Relation %s cannot be found.", relationPattern)));
 	}
 
 	protected Collection<JdbcRelation> getRelations(Connection connection, String schemaPattern, String relationPattern, String... types) {

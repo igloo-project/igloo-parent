@@ -1,10 +1,10 @@
 package test.jpa.more.business.property;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -15,10 +15,6 @@ import java.io.ObjectOutputStream;
 import java.util.Set;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.Test;
-
-import com.google.common.collect.ImmutableSet;
-
 import org.iglooproject.spring.property.model.AbstractPropertyIds;
 import org.iglooproject.spring.property.model.IPropertyRegistryKey;
 import org.iglooproject.spring.property.model.IPropertyRegistryKeyDeclaration;
@@ -26,6 +22,9 @@ import org.iglooproject.spring.property.model.ImmutablePropertyId;
 import org.iglooproject.spring.property.model.ImmutablePropertyIdTemplate;
 import org.iglooproject.spring.property.model.MutablePropertyId;
 import org.iglooproject.spring.property.model.MutablePropertyIdTemplate;
+import org.junit.Test;
+
+import com.google.common.collect.ImmutableSet;
 
 public class TestPropertyIds {
 

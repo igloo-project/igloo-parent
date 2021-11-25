@@ -1,6 +1,7 @@
 package org.iglooproject.config.bootstrap.spring;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -201,13 +202,14 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 	 */
 	private void reconfigure(String configurationClassName, Properties properties, List<String> locations) {
 		try {
-			ILoggerConfiguration configuration = (ILoggerConfiguration) Class.forName(configurationClassName).newInstance();
+			ILoggerConfiguration configuration =
+					(ILoggerConfiguration) Class.forName(configurationClassName).getConstructor().newInstance();
 			if (properties != null) {
 				configuration.reconfigure(properties);
 			} else {
 				configuration.reconfigure(locations);
 			}
-		} catch (RuntimeException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+		} catch (InvocationTargetException | NoSuchMethodException | RuntimeException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
 			throw new IllegalStateException(String.format("Failed loading configuration reloading class %s", configurationClassName), e);
 		}
 	}

@@ -11,7 +11,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

@@ -17,13 +17,14 @@ import org.apache.commons.io.filefilter.FileFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.Assumptions;
 import org.iglooproject.commons.io.FileUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.Mockito;
 
-import de.schlichtherle.truezip.file.TFile;
+import net.java.truevfs.access.TFile;
 
 public class TestFileUtils {
 
@@ -285,6 +286,7 @@ public class TestFileUtils {
 	 */
 	@Test
 	public void cleanDirectoryFailing() throws IOException, InterruptedException {
+		Assumptions.assumeThat(System.getenv().getOrDefault("CI_RUNNER_TAGS", "")).doesNotContain("docker");
 		File subFolder = folder.newFolder("directory");
 		File file1 = new File(subFolder, "file1");
 		File file2 = new File(subFolder, "file2");
@@ -428,8 +430,8 @@ public class TestFileUtils {
 
 	private Date waitSomeTime() throws InterruptedException {
 		Date date = new Date();
-		// under 1000ms, delta-time is not high enough to ensure that file2 last modification date is late enough
-		Thread.sleep(1000);
+		// under 2000ms, delta-time is not high enough to ensure that file2 last modification date is late enough
+		Thread.sleep(2000);
 		return date;
 	}
 }

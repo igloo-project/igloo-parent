@@ -4,7 +4,7 @@
 	
 	<groupId>org.iglooproject</groupId>
 	<artifactId>igloo-parent</artifactId>
-	<version>2.7.2</version>
+	<version>3.0.0</version>
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Parent</name>
@@ -19,13 +19,8 @@
 		<maven-site-plugin.version>3.8.2</maven-site-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.4.1</igloo.wagon-ssh-external-plugin.version>
 		<maven-project-info-reports-plugin.version>3.1.1</maven-project-info-reports-plugin.version>
-		
-		<!-- version needed here as we use allure to aggregate child reports -->
-		<igloo.allure-maven.version>2.10.0</igloo.allure-maven.version>
-
-		<igloo.allure.version>2.8.1</igloo.allure.version>
-		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
 		<igloo.owasp-maven-plugin.version>5.3.2</igloo.owasp-maven-plugin.version>
+		<igloo.versions-maven-plugin.version>2.8.1</igloo.versions-maven-plugin.version>
 	</properties>
 	
 	<profiles>
@@ -66,82 +61,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<!-- profile example for switching toolchain; no longer used -->
-			<id>jdk8</id>
-			<activation>
-				<property>
-					<name>jdk8</name>
-				</property>
-			</activation>
-			<properties>
-				<maven.compiler.source>1.8</maven.compiler.source>
-				<maven.compiler.target>1.8</maven.compiler.target>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-toolchains-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>toolchain</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<toolchains>
-								<jdk>
-									<version>1.8</version>
-								</jdk>
-							</toolchains>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>allure</id>
-			<activation>
-				<property>
-					<name>allure.enabled</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<reporting>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-project-info-reports-plugin</artifactId>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>index</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-					</plugin>
-					<plugin>
-						<groupId>io.qameta.allure</groupId>
-						<artifactId>allure-maven</artifactId>
-						<version>${igloo.allure-maven.version}</version>
-						<configuration>
-							<reportVersion>${igloo.allure.version}</reportVersion>
-							<allureDownloadUrl>${igloo.allure.downloadUrl}</allureDownloadUrl>
-						</configuration>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>aggregate</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-					</plugin>
-				</plugins>
-			</reporting>
-		</profile>
-		
-		<profile>
 			<id>owasp</id>
 			<activation>
 				<property>
@@ -165,7 +84,6 @@
 					<plugin>
 						<groupId>org.owasp</groupId>
 						<artifactId>dependency-check-maven</artifactId>
-						<version>${igloo.owasp-maven-plugin.version}</version>
 						<configuration>
 							<suppressionFiles>
 								<suppressionFile>owasp-suppressions.xml</suppressionFile>
@@ -287,6 +205,16 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
 					<version>${maven-project-info-reports-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.owasp</groupId>
+					<artifactId>dependency-check-maven</artifactId>
+					<version>${igloo.owasp-maven-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>${igloo.versions-maven-plugin.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>

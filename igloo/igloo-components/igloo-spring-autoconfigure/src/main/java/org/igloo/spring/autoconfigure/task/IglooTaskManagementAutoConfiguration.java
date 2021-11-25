@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Scope;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 
 @Configuration
 @ConditionalOnProperty(name = "igloo-ac.tasks.disabled", havingValue = "false", matchIfMissing = true)
@@ -40,9 +41,15 @@ public class IglooTaskManagementAutoConfiguration {
 	
 	public static final String OBJECT_MAPPER_BEAN_NAME = "queuedTaskHolderObjectMapper";
 
+	/**
+	 * Base configuration for task serialization. We use a permissive deserializer config as data are internally
+	 * managed by application.
+	 */
 	@Bean(name = OBJECT_MAPPER_BEAN_NAME)
 	public ObjectMapper queuedTaskHolderObjectMapper() {
-		return new ObjectMapper().enableDefaultTyping(DefaultTyping.NON_FINAL);
+		return new ObjectMapper().activateDefaultTyping(
+				LaissezFaireSubTypeValidator.instance,
+				DefaultTyping.NON_FINAL);
 	}
 
 	@Bean

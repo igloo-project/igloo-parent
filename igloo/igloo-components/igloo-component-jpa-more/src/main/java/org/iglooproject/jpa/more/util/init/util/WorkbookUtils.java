@@ -76,10 +76,10 @@ public final class WorkbookUtils {
 	}
 	
 	private static Object getCellValue(FormulaEvaluator formulaEvaluator, Cell cell) {
-		Object cellPrimitiveValue = getCellPrimitiveValue(cell, cell.getCellTypeEnum());
+		Object cellPrimitiveValue = getCellPrimitiveValue(cell, cell.getCellType());
 		if (cellPrimitiveValue != null) {
 			return cellPrimitiveValue;
-		} else if (cell.getCellTypeEnum().equals(CellType.FORMULA)) {
+		} else if (cell.getCellType().equals(CellType.FORMULA)) {
 			return getCellValueFromFormula(formulaEvaluator, cell);
 		}
 		return null;
@@ -89,7 +89,7 @@ public final class WorkbookUtils {
 		try {
 			CellValue cellValue = formulaEvaluator.evaluate(cell);
 			
-			if (cellValue.getCellTypeEnum().equals(CellType.NUMERIC)) {
+			if (cellValue.getCellType().equals(CellType.NUMERIC)) {
 				if (DateUtil.isCellDateFormatted(cell)) {
 					Calendar calendar = GregorianCalendar.getInstance();
 					calendar.setTime(DateUtil.getJavaDate(cellValue.getNumberValue()));
@@ -98,7 +98,7 @@ public final class WorkbookUtils {
 				} else {
 					return DECIMAL_FORMAT.format(cellValue.getNumberValue());
 				}
-			} else if (cellValue.getCellTypeEnum().equals(CellType.STRING)) {
+			} else if (cellValue.getCellType().equals(CellType.STRING)) {
 				if (StringUtils.hasText(cellValue.getStringValue())) {
 					return cellValue.getStringValue();
 				}
@@ -108,7 +108,7 @@ public final class WorkbookUtils {
 			// we can retrieve the cached value (which may no longer be correct, depending of what you do on your file).
 			FormulaFeature feature = EnumUtils.getEnum(FormulaFeature.class, e.getCause().getMessage());
 			if (ALLOWED_NOT_IMPLEMENTED_FORMULA_FEATURES.contains(feature)) {
-				return getCellPrimitiveValue(cell, cell.getCachedFormulaResultTypeEnum());
+				return getCellPrimitiveValue(cell, cell.getCachedFormulaResultType());
 			} else {
 				throw e;
 			}

@@ -116,10 +116,10 @@ public class TestHibernateLambdaSwitch {
 			IntStream.range(0, nbObjects).forEach((i) -> {
 				try {
 					Object entity;
-					entity = clazz.newInstance();
+					entity = clazz.getConstructor().newInstance();
 					method1.invoke(entity, r.nextLong());
 					myEntities.add(entity);
-				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				} catch (NoSuchMethodException |InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					throw new IllegalStateException(e);
 				}
 			});

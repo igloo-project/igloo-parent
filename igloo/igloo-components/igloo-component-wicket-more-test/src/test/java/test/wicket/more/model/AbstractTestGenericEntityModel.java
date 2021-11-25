@@ -1,7 +1,7 @@
 package test.wicket.more.model;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

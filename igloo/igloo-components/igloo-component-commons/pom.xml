@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>2.7.2</version>
+		<version>3.0.0</version>
 	</parent>
 
 	<artifactId>igloo-component-commons</artifactId>
@@ -55,13 +55,6 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-		</dependency>
-		
-		<!-- Utils -->
-		
-		<dependency>
-			<groupId>org.javatuples</groupId>
-			<artifactId>javatuples</artifactId>
 		</dependency>
 		
 		<!-- Bindgen -->

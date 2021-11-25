@@ -2,6 +2,8 @@ package org.iglooproject.test.metamodel;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,6 +13,8 @@ import javax.persistence.metamodel.EntityType;
 import org.hibernate.Session;
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.jdbc.Work;
+import org.hibernate.metamodel.spi.MetamodelImplementor;
+import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.tool.schema.extract.spi.SequenceInformation;
 import org.hibernate.tool.schema.extract.spi.TableInformation;
 import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
@@ -57,8 +61,7 @@ public class TestMetaModel extends AbstractMetaModelTestCase {
 		Identifier expectedTableNameIdentifier = metadataRegistryIntegrator.getMetadata().getDatabase().toIdentifier(expectedTableName);
 		Identifier expectedSequenceNameIdentifier = metadataRegistryIntegrator.getMetadata().getDatabase().toIdentifier(expectedSequenceName);
 
-		TableInformation table = getTableInformation(configurationProvider.getDefaultSchema(),
-				expectedTableName);
+		TableInformation table = getTableInformation(configurationProvider.getDefaultSchema(), expectedTableName);
 		Assert.assertEquals(expectedTableNameIdentifier, table.getName().getTableName());
 
 		SequenceInformation sequence = getSequenceInformation(configurationProvider.getDefaultSchema(),
@@ -77,6 +80,7 @@ public class TestMetaModel extends AbstractMetaModelTestCase {
 	@Test
 	public void testTablesAndSequencesJdbc() {
 		EntityManager entityManager = entityManagerUtils.getEntityManager();
+		
 		((Session) entityManager.getDelegate()).doWork(new Work() {
 			@Override
 			public void execute(Connection connection) throws SQLException {
@@ -84,17 +88,24 @@ public class TestMetaModel extends AbstractMetaModelTestCase {
 				Assume.assumeTrue(DbTypeConstants.FAMILY_POSTGRESQL.contains(propertyService.getAsString(SpringPropertyIds.DB_TYPE)));
 				Assume.assumeFalse(connection.getMetaData().getDatabaseProductName().toLowerCase().equals("h2"));
 				
-				String expectedTableName = Person.class.getSimpleName(); // person
+				// result is schema.table
+				String qualifiedName = ((AbstractEntityPersister) ((MetamodelImplementor) entityManager.getMetamodel()).entityPersister(Person.class)).getTableName();
+				// split
+				String[] qualifiedNameParts = qualifiedName.split("\\.");
+				// extract last item -> table name
+				String expectedTableName = qualifiedNameParts[qualifiedNameParts.length - 1];
+				// reverse and extract second item -> schema name, if missing, fallback to default schema name
+				List<String> reverseExpectedTableName = Arrays.<String>asList(qualifiedNameParts);
+				Collections.reverse(reverseExpectedTableName);
+				String tableSchema = reverseExpectedTableName.stream().skip(1).findFirst().orElse(configurationProvider.getDefaultSchema());
 				String expectedSequenceName = expectedTableName + "_id_seq"; // person_id_seq
-
-				
-				JdbcRelation table = getRelation(connection, configurationProvider.getDefaultSchema(),
+				JdbcRelation table = getRelation(connection, tableSchema,
 						expectedTableName, JdbcDatabaseMetaDataConstants.REL_TYPE_TABLE);
-				Assert.assertEquals(expectedTableName, table.getTable_name());
+				Assert.assertEquals(expectedTableName.toLowerCase(), table.getTable_name().toLowerCase());
 				
-				JdbcRelation sequence = getRelation(connection, configurationProvider.getDefaultSchema(),
+				JdbcRelation sequence = getRelation(connection, tableSchema,
 						expectedSequenceName, JdbcDatabaseMetaDataConstants.REL_TYPE_SEQUENCE);
-				Assert.assertEquals(expectedSequenceName, sequence.getTable_name());
+				Assert.assertEquals(expectedSequenceName.toLowerCase(), sequence.getTable_name().toLowerCase());
 			}
 		});
 	}

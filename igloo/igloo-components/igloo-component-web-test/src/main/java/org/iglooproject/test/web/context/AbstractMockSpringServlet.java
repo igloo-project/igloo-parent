@@ -9,7 +9,7 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-import jersey.repackaged.com.google.common.base.Joiner;
+import com.google.common.base.Joiner;
 
 public abstract class AbstractMockSpringServlet extends AbstractMockServlet {
 

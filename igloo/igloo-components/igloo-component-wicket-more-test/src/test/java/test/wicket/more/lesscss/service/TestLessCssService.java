@@ -1,5 +1,7 @@
 package test.wicket.more.lesscss.service;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
@@ -39,7 +41,7 @@ public class TestLessCssService extends AbstractWicketMoreTestCase {
 					false
 			);
 			
-			Assert.assertThat(
+			assertThat(
 					compiledStylesheet.getSource(),
 					CoreMatchers.startsWith(".test2 {\n  color: #eeeeee;\n}\n"
 							+ ".test {\n  color: #cccccc;\n}\n")
@@ -73,7 +75,7 @@ public class TestLessCssService extends AbstractWicketMoreTestCase {
 					false
 			);
 
-			Assert.assertThat(
+			assertThat(
 					compiledStylesheet.getSource(),
 					CoreMatchers.startsWith(".test2 {\n  color: #eeeeee;\n}\n"
 							+ ".test {\n  color: #cccccc;\n}\n"

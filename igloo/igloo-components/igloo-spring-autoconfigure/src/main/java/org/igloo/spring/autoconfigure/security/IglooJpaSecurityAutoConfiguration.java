@@ -88,6 +88,7 @@ public class IglooJpaSecurityAutoConfiguration {
 		return AuthenticationUsernameComparison.CASE_SENSITIVE;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Bean
 	@ConditionalOnMissingBean
 	public ISecurityUserService<?> userServiceImpl() {

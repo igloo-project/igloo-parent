@@ -15,9 +15,8 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
 import org.iglooproject.jpa.more.util.transaction.service.TransactionSynchronizationTaskManagerServiceImpl;
 import org.iglooproject.jpa.search.service.IHibernateSearchService;
-import org.junit.Rule;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -36,9 +35,6 @@ import test.jpa.more.business.util.transaction.model.TestDeleteOnRollbackTask;
 import test.jpa.more.business.util.transaction.model.TestUseEntityBeforeCommitOrClearTask;
 
 public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
-
-	@Rule
-	public ExpectedException exception = ExpectedException.none();
 
 	@Autowired
 	private ITransactionSynchronizationTaskManagerService transactionSynchronizationTaskManagerService;
@@ -78,11 +74,11 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 
 	@Test
 	public void testTaskNoTransaction() {
-		exception.expect(IllegalStateException.class);
-		exception.expectMessage(TransactionSynchronizationTaskManagerServiceImpl.EXCEPTION_MESSAGE_NO_ACTUAL_TRANSACTION_ACTIVE);
-		
 		// Cannot push tasks if there's no transaction
-		transactionSynchronizationTaskManagerService.push(new TestCreateAfterCommitTask());
+		Assert.assertThrows(
+				TransactionSynchronizationTaskManagerServiceImpl.EXCEPTION_MESSAGE_NO_ACTUAL_TRANSACTION_ACTIVE, 
+				IllegalStateException.class,
+				() -> transactionSynchronizationTaskManagerService.push(new TestCreateAfterCommitTask()));
 	}
 
 	@Test

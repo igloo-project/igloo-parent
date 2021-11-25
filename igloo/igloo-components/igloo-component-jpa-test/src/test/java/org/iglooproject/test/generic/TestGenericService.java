@@ -126,7 +126,7 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		Assert.assertTrue(person.equals(person2));
 		
 		cleanAll();
-		Assert.assertEquals(new Long(0), personService.count());
+		Assert.assertEquals(Long.valueOf(0), personService.count());
 		
 		person = new Person("Firstname", "Lastname");
 		personService.create(person);
@@ -136,7 +136,7 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		person = new Person("Firstname", "Lastname");
 		personService.create(person);
 		
-		Assert.assertEquals(new Long(2), personService.count());
+		Assert.assertEquals(Long.valueOf(2), personService.count());
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 		Assert.assertNull(personB4);
 		
 		cleanAll();
-		Assert.assertEquals(new Long(0), personService.count());
+		Assert.assertEquals(Long.valueOf(0), personService.count());
 	}
 	
 	@Test
@@ -194,14 +194,14 @@ public class TestGenericService extends AbstractJpaCoreTestCase {
 	
 	@Test
 	public void testCount() throws ServiceException, SecurityServiceException {
-		Assert.assertEquals(new Long(0), personService.count());
+		Assert.assertEquals(Long.valueOf(0), personService.count());
 		
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
 		Person person1 = new Person("Firstname1", "Lastname1");
 		personService.create(person1);
 		
-		Assert.assertEquals(new Long(2), personService.count());
+		Assert.assertEquals(Long.valueOf(2), personService.count());
 	}
 	
 	@Before

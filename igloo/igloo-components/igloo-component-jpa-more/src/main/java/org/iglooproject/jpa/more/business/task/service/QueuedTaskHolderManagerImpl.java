@@ -57,7 +57,6 @@ import com.google.common.collect.Multimaps;
 	
 public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, ApplicationListener<ContextRefreshedEvent> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(QueuedTaskHolderManagerImpl.class);
-	private static final String CACHE_KEY_TASK_ID = "QueuedTaskHolderManagerImpl##taskIds";
 	private static final String INIT_QUEUES_EXECUTOR_NAME = "QueueTaskHolder#initQueuesFromDatabase";
 
 	@Autowired

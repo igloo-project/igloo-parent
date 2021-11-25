@@ -9,58 +9,44 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.iglooproject.truevfs.registry.TFileRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-
-import de.schlichtherle.truezip.file.TArchiveDetector;
-import de.schlichtherle.truezip.file.TConfig;
-import de.schlichtherle.truezip.util.SuffixSet;
-import org.iglooproject.commons.util.mime.MediaType;
-import org.iglooproject.truezip.registry.TFileRegistry;
+import net.java.truevfs.access.TArchiveDetector;
+import net.java.truevfs.access.TConfig;
 
 public class OpenTFileRegistryFilter implements Filter {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(OpenTFileRegistryFilter.class);
 	
+	private TConfig config;
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		configureGlobally(TConfig.get());
+		config = TConfig.open();
+		configureGlobally(TConfig.open());
 	}
 	
 	protected void configureGlobally(TConfig trueZipConfig) {
-		trueZipConfig.setArchiveDetector(new TArchiveDetector(new SuffixSet(
-				ImmutableList.copyOf(Iterables.<String>concat(
-						MediaType.APPLICATION_ZIP.supportedExtensions(),
-						MediaType.APPLICATION_JAR.supportedExtensions()
-				))).toString()));
+		trueZipConfig.setArchiveDetector(new TArchiveDetector("zip|jar"));
 	}
 	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		try {
-			TConfig.push();
-			TFileRegistry.open();
-			
+		try (TConfig conf = TConfig.open(); TFileRegistry registry = TFileRegistry.open()) {
 			chain.doFilter(request, response);
-		} finally {
-			try {
-				TFileRegistry.close();
-			} catch (RuntimeException e) {
-				LOGGER.error("Error while trying to sync truezip filesystem (TFileRegistry.sync())", e);
-			}
-			try {
-				TConfig.pop();
-			} catch (RuntimeException e) {
-				LOGGER.error("Error while trying to pop truezip config (TConfig.pop())", e);
-			}
 		}
 	}
 
 	@Override
-	public void destroy() { }
+	public void destroy() {
+		if (config != null) {
+			config.close();
+		} else {
+			LOGGER.warn("Unexpected null value for TConfig");
+		}
+	}
 }
 

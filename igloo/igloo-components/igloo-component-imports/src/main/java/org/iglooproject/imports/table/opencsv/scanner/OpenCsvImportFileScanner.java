@@ -9,10 +9,6 @@ import java.io.Reader;
 
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.lang3.Validate;
-
-import com.opencsv.CSVReader;
-
-import de.schlichtherle.truezip.file.TFileInputStream;
 import org.iglooproject.imports.table.common.csv.scanner.ICsvImportFileScanner;
 import org.iglooproject.imports.table.common.event.exception.TableImportException;
 import org.iglooproject.imports.table.common.event.exception.TableImportFileException;
@@ -21,6 +17,10 @@ import org.iglooproject.imports.table.opencsv.model.CsvCell;
 import org.iglooproject.imports.table.opencsv.model.CsvCellReference;
 import org.iglooproject.imports.table.opencsv.model.CsvRow;
 import org.iglooproject.imports.table.opencsv.model.CsvTable;
+
+import com.opencsv.CSVReader;
+
+import net.java.truevfs.access.TFileInputStream;
 
 public class OpenCsvImportFileScanner implements ICsvImportFileScanner<CsvTable, CsvRow, CsvCell, CsvCellReference> {
 	

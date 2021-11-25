@@ -4,7 +4,7 @@
 
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>2.7.2</version>
+	<version>3.0.0</version>
 	<packaging>pom</packaging>
 
 	<name>Igloo - Parent - Maven configuration - Common</name>
@@ -14,18 +14,13 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
 
-		<jdk.version>1.8</jdk.version>
+		<jdk.version>11</jdk.version>
 		<!-- used for generation; version numbers are not compatible; keep it in sync with jdk.version -->
-		<jdk.release.version>8</jdk.release.version>
-		<minimal.jdk.version>1.8</minimal.jdk.version>
+		<jdk.release.version>11</jdk.release.version>
+		<minimal.jdk.version>11</minimal.jdk.version>
 
 		<!-- ipv6 local network not available on travis - https://github.com/travis-ci/travis-ci/issues/4964 -->
 		<test.argLine>-Xms512m -Xmx1024m -XX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true</test.argLine>
-		<!-- note: this can be modified by jacoco plugin that appends its own java-agent if profile is activated -->
-		<argLine>${test.argLine} ${allure.argLine}</argLine>
-
-		<!-- conditionally overridden by allure profile -->
-		<allure.argLine />
 
 		<!-- Should be a valid artifact of type "signature" See http://search.maven.org/#search|ga|1|g%3A%22org.codehaus.mojo.signature%22 -->
 		<jdk.signature.groupId>org.codehaus.mojo.signature</jdk.signature.groupId>
@@ -59,49 +54,19 @@
 		<igloo.maven-site-plugin.version>3.8.2</igloo.maven-site-plugin.version>
 		<igloo.maven-project-info-reports-plugin.version>3.1.1</igloo.maven-project-info-reports-plugin.version>
 		<igloo.maven-failsafe-plugin.version>3.0.0-M5</igloo.maven-failsafe-plugin.version>
+		<igloo.versions-maven-plugin.version>2.8.1</igloo.versions-maven-plugin.version>
 		<igloo.jacoco-maven-plugin.version>0.8.6</igloo.jacoco-maven-plugin.version>
 		<igloo.buildnumber-maven-plugin.version>1.4</igloo.buildnumber-maven-plugin.version>
+		<igloo.dependency-check.version>6.3.1</igloo.dependency-check.version>
 
 		<igloo.wagon-maven-plugin.version>2.0.0</igloo.wagon-maven-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.4.1</igloo.wagon-ssh-external-plugin.version>
 
-		<igloo.maven-processor-plugin.version>4.2-jdk8</igloo.maven-processor-plugin.version>
+		<igloo.maven-processor-plugin.version>4.4</igloo.maven-processor-plugin.version>
 		<igloo.aspectj-maven-plugin.version>1.8</igloo.aspectj-maven-plugin.version>
 		<igloo.build-helper-maven-plugin.version>3.0.0</igloo.build-helper-maven-plugin.version>
-
-		<!-- aspectj is used by allure -->
-		<igloo.allure-aspectj.version>1.8.13</igloo.allure-aspectj.version>
-		<igloo.allure-maven.version>2.10.0</igloo.allure-maven.version>
-		<igloo.allure.version>2.8.1</igloo.allure.version>
-		<igloo.allure.downloadUrl>https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/%s/allure-commandline-%s.zip</igloo.allure.downloadUrl>
-		<igloo.allure-junit4.version>2.13.6</igloo.allure-junit4.version>
-		<igloo.allure-junit5.version>2.13.6</igloo.allure-junit5.version>
-		<igloo.junit-dataprovider.version>1.13.1</igloo.junit-dataprovider.version>
 		<igloo.owasp-maven-plugin.version>5.3.2</igloo.owasp-maven-plugin.version>
 	</properties>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>io.qameta.allure</groupId>
-				<artifactId>allure-junit4</artifactId>
-				<version>${igloo.allure-junit4.version}</version>
-				<scope>test</scope>
-				<exclusions>
-					<exclusion>
-						<groupId>com.fasterxml.jackson.module</groupId>
-						<artifactId>jackson-module-jaxb-annotations</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>com.tngtech.java</groupId>
-				<artifactId>junit-dataprovider</artifactId>
-				<version>${igloo.junit-dataprovider.version}</version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<build>
 		<plugins>
@@ -129,6 +94,7 @@
 				</dependencies>
 			</plugin>
 			<plugin>
+				<?m2e ignore ?>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<version>${igloo.maven-enforcer-plugin.version}</version>
@@ -153,6 +119,8 @@
 										<exclude>xml-apis:xml-apis</exclude>
 										<exclude>apache-xerces:xml-apis</exclude>
 										<exclude>javax.servlet:servlet-api</exclude>
+										<exclude>net.sf.ehcache:ehcache-core</exclude>
+										<exclude>postgresql:postgresql</exclude>
 										<!-- this dependency is intended for testing -->
 										<exclude>*:elasticsearch-cluster-runner:*:jar:compile</exclude>
 										<exclude>*:embedded-elasticsearch:*:jar:test</exclude>
@@ -176,23 +144,12 @@
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-toolchains-plugin</artifactId>
-					<version>${igloo.maven-toolchains-plugin.version}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>toolchain</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${igloo.maven-compiler-plugin.version}</version>
 					<configuration>
 						<source>${jdk.version}</source>
 						<target>${jdk.version}</target>
+						<release>${jdk.release.version}</release>
 						<compilerArgument>-proc:none</compilerArgument>
 						<testCompilerArgument>-proc:none</testCompilerArgument>
 					</configuration>
@@ -285,7 +242,9 @@
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>${igloo.maven-javadoc-plugin.version}</version>
 					<configuration>
-						<additionalparam>-Xdoclint:none</additionalparam>
+						<additionalJOptions>
+							<additionalJOption>-Xdoclint:none</additionalJOption>
+						</additionalJOptions>
 						<skip>true</skip>
 					</configuration>
 				</plugin>
@@ -338,67 +297,18 @@
 						</dependency>
 					</dependencies>
 				</plugin>
-
-				<!-- This plugin's configuration is used to skip plugin executions in Eclipse m2e only. It has no influence on the Maven build itself. It has no influence when running goals explicitely (as a Run Configuration) 
-					from Eclipse, either. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-enforcer-plugin</artifactId>
-										<versionRange>[1.0,)</versionRange>
-										<goals>
-											<goal>enforce</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-dependency-plugin</artifactId>
-										<versionRange>[1.0,)</versionRange>
-										<goals>
-											<goal>copy-dependencies</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore />
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>exec-maven-plugin</artifactId>
 					<version>${igloo.exec-maven-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>io.qameta.allure</groupId>
-					<artifactId>allure-maven</artifactId>
-					<version>${igloo.allure-maven.version}</version>
-					<configuration>
-						<reportVersion>${igloo.allure.version}</reportVersion>
-						<allureDownloadUrl>${igloo.allure.downloadUrl}</allureDownloadUrl>
-					</configuration>
-				</plugin>
-				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
 					<version>${igloo.jacoco-maven-plugin.version}</version>
 					<configuration>
-						<destfile>${project.build.directory}/coverage-reports/jacoco-unit.exec</destfile>
-						<datafile>${project.build.directory}/coverage-reports/jacoco-unit.exec</datafile>
+						<destFile>${project.build.directory}/coverage-reports/jacoco-unit.exec</destFile>
+						<dataFile>${project.build.directory}/coverage-reports/jacoco-unit.exec</dataFile>
 						<includes>
 							<!-- this allows better performance and memory usage for coverage computation -->
 							<include>org.iglooproject.*</include>
@@ -445,53 +355,21 @@
 						<doUpdate>false</doUpdate>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>${igloo.versions-maven-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.owasp</groupId>
+					<artifactId>dependency-check-maven</artifactId>
+					<version>${igloo.dependency-check.version}</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
 
 	<profiles>
-		<profile>
-			<id>animal-sniffer</id>
-			<activation>
-				<jdk>(,1.8]</jdk>
-			</activation>
-			<build>
-				<plugins>
-					<!-- Enforce code compatibility with the target JRE, even when building with a newer JDK. This ensures that none of the newer classes or methods that were not yet defined in the target JRE are referenced 
-						in this project. See https://maven.apache.org/guides/mini/guide-building-jdk14-on-jdk15.html Please be aware that code generation tools may be affected by the JDK used to compile, and thus may trigger 
-						a failure (because they automatically reference newer classes or methods). In this case, the only way to make things work is to use the proper JDK (use maven toolchains plugin). -->
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>animal-sniffer-maven-plugin</artifactId>
-						<version>${igloo.animal-sniffer-maven-plugin.version}</version>
-						<executions>
-							<execution>
-								<id>check-java-version</id>
-								<phase>compile</phase>
-								<goals>
-									<goal>check</goal>
-								</goals>
-								<configuration>
-									<signature>
-										<groupId>${jdk.signature.groupId}</groupId>
-										<artifactId>${jdk.signature.artifactId}</artifactId>
-										<version>${jdk.signature.version}</version>
-									</signature>
-								</configuration>
-							</execution>
-						</executions>
-						<dependencies>
-							<dependency>
-								<groupId>${jdk.signature.groupId}</groupId>
-								<artifactId>${jdk.signature.artifactId}</artifactId>
-								<version>${jdk.signature.version}</version>
-								<type>signature</type>
-							</dependency>
-						</dependencies>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 		<profile>
 			<id>sonar-branch</id>
 			<activation>
@@ -503,118 +381,6 @@
 				<sonar.projectKey>${project.groupId}:${project.artifactId}:${sonar.projectBranch}</sonar.projectKey>
 				<sonar.projectName>${project.name} (${sonar.projectBranch})</sonar.projectName>
 			</properties>
-		</profile>
-		<profile>
-			<id>allure</id>
-			<activation>
-				<property>
-					<name>allure.enabled</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<properties>
-				<allure.argLine>"-javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${igloo.allure-aspectj.version}/aspectjweaver-${igloo.allure-aspectj.version}.jar"</allure.argLine>
-			</properties>
-			<build>
-				<!-- override junit behavior with allure-junit4 + aspectj -->
-				<!-- configure allure-junit4 output -->
-				<!-- add allure-maven plugin as executor.json file generated during report phase is needed for aggregation -->
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<version>${igloo.maven-surefire-plugin.version}</version>
-						<configuration>
-							<properties>
-								<property>
-									<name>listener</name>
-									<value>io.qameta.allure.junit4.AllureJunit4</value>
-								</property>
-							</properties>
-							<systemProperties>
-								<property>
-									<name>allure.results.directory</name>
-									<value>${project.build.directory}/allure-results</value>
-								</property>
-								<property>
-									<!-- TODO: configure issue URL -->
-									<name>allure.link.issue.pattern</name>
-									<value>https://example.org/issue/{}</value>
-								</property>
-							</systemProperties>
-						</configuration>
-						<dependencies>
-							<dependency>
-								<groupId>org.aspectj</groupId>
-								<artifactId>aspectjweaver</artifactId>
-								<version>${igloo.allure-aspectj.version}</version>
-							</dependency>
-						</dependencies>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-failsafe-plugin</artifactId>
-						<version>${igloo.maven-failsafe-plugin.version}</version>
-						<configuration>
-							<properties>
-								<property>
-									<name>listener</name>
-									<value>io.qameta.allure.junit4.AllureJunit4</value>
-								</property>
-							</properties>
-							<systemProperties>
-								<property>
-									<name>allure.results.directory</name>
-									<value>${project.build.directory}/allure-results</value>
-								</property>
-								<property>
-									<!-- TODO: configure issue URL -->
-									<name>allure.link.issue.pattern</name>
-									<value>https://example.org/issue/{}</value>
-								</property>
-							</systemProperties>
-						</configuration>
-						<dependencies>
-							<dependency>
-								<groupId>org.aspectj</groupId>
-								<artifactId>aspectjweaver</artifactId>
-								<version>${igloo.allure-aspectj.version}</version>
-							</dependency>
-						</dependencies>
-					</plugin>
-					<plugin>
-						<groupId>io.qameta.allure</groupId>
-						<artifactId>allure-maven</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-			<reporting>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-project-info-reports-plugin</artifactId>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>index</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-					</plugin>
-					<plugin>
-						<groupId>io.qameta.allure</groupId>
-						<artifactId>allure-maven</artifactId>
-						<version>${igloo.allure-maven.version}</version>
-						<reportSets>
-							<reportSet>
-								<reports>
-									<report>report</report>
-								</reports>
-							</reportSet>
-						</reportSets>
-					</plugin>
-				</plugins>
-			</reporting>
 		</profile>
 		<profile>
 			<id>owasp</id>
@@ -698,7 +464,6 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>versions-maven-plugin</artifactId>
-						<version>2.7</version>
 						<configuration>
 							<processDependencyManagement>true</processDependencyManagement>
 							<processDependencyManagementTransitive>true</processDependencyManagementTransitive>
@@ -726,9 +491,6 @@
 				</property>
 			</activation>
 			<build>
-				<!-- override junit behavior with allure-junit4 + aspectj -->
-				<!-- configure allure-junit4 output -->
-				<!-- add allure-maven plugin as executor.json file generated during report phase is needed for aggregation -->
 				<plugins>
 					<plugin>
 						<groupId>org.jacoco</groupId>

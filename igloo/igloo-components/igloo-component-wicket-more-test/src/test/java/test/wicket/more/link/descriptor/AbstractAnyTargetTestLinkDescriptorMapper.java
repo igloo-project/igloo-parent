@@ -1,7 +1,7 @@
 package test.wicket.more.link.descriptor;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 import java.util.List;
 

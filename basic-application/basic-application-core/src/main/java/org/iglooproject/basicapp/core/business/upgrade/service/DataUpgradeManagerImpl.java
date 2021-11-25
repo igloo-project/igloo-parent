@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.core.business.upgrade.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.iglooproject.basicapp.core.business.upgrade.model.DataUpgradePackage;
@@ -68,12 +69,13 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl imple
 		
 		final IDataUpgrade upgrade;
 		try {
-			upgrade = (IDataUpgrade) Class.forName(dataUpdateClassName).newInstance();
+			upgrade = (IDataUpgrade) Class.forName(dataUpdateClassName).getConstructor().newInstance();
 		} catch (ClassNotFoundException e) {
 			throw new ServiceException(String.format("Upgrade class %s not found", dataUpdateClassName), e);
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
 			throw new ServiceException(String.format("Upgrade class %s cannot be instantiated", dataUpdateClassName), e);
 		}
+
 		
 		Throwable result = null;
 		try {

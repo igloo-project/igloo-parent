@@ -27,13 +27,13 @@ public class DynaBeanConverter<T> implements Function2<DynaBean, T> {
 		}
 		
 		try {
-			T newInstance = targetType.newInstance();
+			T newInstance = targetType.getConstructor().newInstance();
 			BeanUtils.copyProperties(newInstance, input);
 			return newInstance;
 		} catch (InstantiationException | IllegalAccessException e) {
 			throw new IllegalStateException(
 					String.format("newInstance must be available on %s", targetType.getSimpleName()), e);
-		} catch (InvocationTargetException e) {
+		} catch (IllegalArgumentException | NoSuchMethodException | InvocationTargetException e) {
 			throw new IllegalStateException(
 					String.format("error copying properties on %s", targetType.getSimpleName()), e);
 		}

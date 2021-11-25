@@ -93,8 +93,8 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		Assert.assertNull(personB4);
 		
 		cleanAll();
-		Assert.assertEquals(new Long(0), personService.count());
-		Assert.assertEquals(new Long(0), personDao.count(QPerson.person));
+		Assert.assertEquals(Long.valueOf(0), personService.count());
+		Assert.assertEquals(Long.valueOf(0), personDao.count(QPerson.person));
 	}
 
 	@Test
@@ -215,12 +215,12 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 	@Test
 	public void testCounts() throws ServiceException, SecurityServiceException {
 		{
-			Assert.assertEquals(new Long(0), personDao.count());
+			Assert.assertEquals(Long.valueOf(0), personDao.count());
 		}
 		
 		{
-			Assert.assertEquals(new Long(0), personDao.count(QPerson.person));
-			Assert.assertEquals(new Long(0), personDao.countByField(QPerson.person, QPerson.person.lastName, "AAAA"));
+			Assert.assertEquals(Long.valueOf(0), personDao.count(QPerson.person));
+			Assert.assertEquals(Long.valueOf(0), personDao.countByField(QPerson.person, QPerson.person.lastName, "AAAA"));
 		}
 		
 		Person person1 = new Person("Firstname1", "Lastname1");
@@ -233,12 +233,12 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		personService.create(person4);
 		
 		{
-			Assert.assertEquals(new Long(4), personDao.count());
+			Assert.assertEquals(Long.valueOf(4), personDao.count());
 		}
 		
 		{
-			Assert.assertEquals(new Long(4), personDao.count(QPerson.person));
-			Assert.assertEquals(new Long(2), personDao.countByField(QPerson.person, QPerson.person.lastName, "AAAA"));
+			Assert.assertEquals(Long.valueOf(4), personDao.count(QPerson.person));
+			Assert.assertEquals(Long.valueOf(2), personDao.countByField(QPerson.person, QPerson.person.lastName, "AAAA"));
 		}
 	}
 	
