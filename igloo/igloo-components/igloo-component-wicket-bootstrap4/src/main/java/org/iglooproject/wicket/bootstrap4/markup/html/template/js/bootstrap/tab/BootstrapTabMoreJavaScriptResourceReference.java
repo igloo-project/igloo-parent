@@ -18,7 +18,7 @@ public final class BootstrapTabMoreJavaScriptResourceReference extends WebjarsJQ
 	private static final BootstrapTabMoreJavaScriptResourceReference INSTANCE = new BootstrapTabMoreJavaScriptResourceReference();
 
 	private BootstrapTabMoreJavaScriptResourceReference() {
-		super("bootstrap-override/current/js/dist/tab-more.js");
+		super("webjars/bootstrap-override/current/js/dist/tab-more.js");
 	}
 
 	@Override

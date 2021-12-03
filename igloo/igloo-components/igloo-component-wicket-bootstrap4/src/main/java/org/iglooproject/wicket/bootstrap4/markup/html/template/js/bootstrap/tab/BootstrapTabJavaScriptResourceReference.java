@@ -19,7 +19,7 @@ public final class BootstrapTabJavaScriptResourceReference extends WebjarsJQuery
 	private static final BootstrapTabJavaScriptResourceReference INSTANCE = new BootstrapTabJavaScriptResourceReference();
 
 	private BootstrapTabJavaScriptResourceReference() {
-		super("bootstrap/current/js/dist/tab.js");
+		super("webjars/bootstrap/current/js/dist/tab.js");
 	}
 
 	@Override
