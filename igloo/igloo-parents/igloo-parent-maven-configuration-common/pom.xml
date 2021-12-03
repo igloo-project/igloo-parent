@@ -106,7 +106,7 @@
 						</goals>
 						<configuration>
 							<rules>
-								<DependencyConvergence />
+								<requireUpperBoundDeps />
 								<bannedDependencies>
 									<excludes>
 										<exclude>org.springframework:spring</exclude>
