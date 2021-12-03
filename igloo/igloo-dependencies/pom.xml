@@ -24,7 +24,6 @@
 		<module>igloo-dependency-web-spring-security</module>
 		<module>igloo-dependency-hibernate-core</module>
 		<module>igloo-dependency-hibernate-search</module>
-		<module>igloo-dependency-less4j</module>
 		<module>igloo-dependency-wicket</module>
 		<module>igloo-dependency-poi</module>
 		<module>igloo-dependency-opencsv</module>

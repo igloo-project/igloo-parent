@@ -43,13 +43,6 @@
 			<type>pom</type>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.iglooproject.dependencies</groupId>
-			<artifactId>igloo-dependency-less4j</artifactId>
-			<version>${project.version}</version>
-			<type>pom</type>
-		</dependency>
-		
 		<!-- WiQuery -->
 		
 		<dependency>

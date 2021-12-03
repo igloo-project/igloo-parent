@@ -132,7 +132,6 @@
 		<!-- https://commons.apache.org/proper/commons-compress/ -->
 		<igloo.commons-compress.version>1.21</igloo.commons-compress.version>
 		<igloo.commons-validator.version>1.7</igloo.commons-validator.version>
-		<igloo.commons-collections.version>3.2.2</igloo.commons-collections.version>
 		<igloo.commons-collections4.version>4.4</igloo.commons-collections4.version>
 		<igloo.commons-beanutils.version>1.9.4</igloo.commons-beanutils.version>
 		<igloo.commons-fileupload.version>1.4</igloo.commons-fileupload.version>
@@ -206,7 +205,6 @@
 		<igloo.webjars-locator-core.version>0.46</igloo.webjars-locator-core.version>
 		<igloo.wqplot.version>7.1.0.owsi1</igloo.wqplot.version>
 
-		<igloo.less4j.version>1.17.2</igloo.less4j.version>
 		<!-- http://jsass.readthedocs.io/en/latest/changelog.html -->
 		<igloo.jsass.version>5.10.3</igloo.jsass.version>
 
@@ -429,19 +427,6 @@
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-configuration2</artifactId>
 				<version>${igloo.commons-configuration.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<!-- Solves a "dependency convergence error" triggered by commons-beanutils and commons-validation which does not require the same version of commons-collections. -->
-			<dependency>
-				<groupId>commons-collections</groupId>
-				<artifactId>commons-collections</artifactId>
-				<version>${igloo.commons-collections.version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>commons-logging</groupId>
@@ -919,18 +904,6 @@
 				<groupId>org.freemarker</groupId>
 				<artifactId>freemarker</artifactId>
 				<version>${igloo.freemarker.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.github.sommeri</groupId>
-				<artifactId>less4j</artifactId>
-				<version>${igloo.less4j.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 
 			<dependency>
