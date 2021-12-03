@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
+import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
@@ -79,14 +80,16 @@ public class IglooAutoConfigurationBehaviorTestCase {
 	}
 
 	@Configuration
-	@EnableAutoConfiguration
+	// our gson version is not compatible with spring-boot
+	@EnableAutoConfiguration(exclude = GsonAutoConfiguration.class)
 	@EnableIglooAutoConfiguration(exclude = {IglooJpaSecurityAutoConfiguration.class,
 			IglooApplicationConfigAutoConfiguration.class})
 	public static class TestBothSpringBootIglooConfig {
 	}
 
 	@Configuration
-	@EnableAutoConfiguration(exclude = FlywayAutoConfiguration.class)
+	// our gson version is not compatible with spring-boot
+	@EnableAutoConfiguration(exclude = { FlywayAutoConfiguration.class, GsonAutoConfiguration.class })
 	public static class TestSpringBootConfig {
 	}
 
