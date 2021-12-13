@@ -112,11 +112,11 @@
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<flowInitContext>
-						<masterBranchName>master</masterBranchName>
-						<developBranchName>dev</developBranchName>
-						<featureBranchPrefix>ft-</featureBranchPrefix>
-						<releaseBranchPrefix>rl-</releaseBranchPrefix>
-						<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
+						<masterBranchName>v2-master</masterBranchName>
+						<developBranchName>v2-dev</developBranchName>
+						<featureBranchPrefix>v2-ft-</featureBranchPrefix>
+						<releaseBranchPrefix>v2-rl-</releaseBranchPrefix>
+						<hotfixBranchPrefix>v2-hf-</hotfixBranchPrefix>
 						<versionTagPrefix>v</versionTagPrefix>
 					</flowInitContext>
 				</configuration>
