@@ -4,7 +4,7 @@
 
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>2.7.3</version>
+	<version>2.7.4</version>
 	<packaging>pom</packaging>
 
 	<name>Igloo - Parent - Maven configuration - Common</name>
@@ -112,11 +112,11 @@
 				<configuration>
 					<autoVersionSubmodules>true</autoVersionSubmodules>
 					<flowInitContext>
-						<masterBranchName>v2-master</masterBranchName>
-						<developBranchName>v2-dev</developBranchName>
-						<featureBranchPrefix>v2-ft-</featureBranchPrefix>
-						<releaseBranchPrefix>v2-rl-</releaseBranchPrefix>
-						<hotfixBranchPrefix>v2-hf-</hotfixBranchPrefix>
+						<masterBranchName>master</masterBranchName>
+						<developBranchName>dev</developBranchName>
+						<featureBranchPrefix>ft-</featureBranchPrefix>
+						<releaseBranchPrefix>rl-</releaseBranchPrefix>
+						<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
 						<versionTagPrefix>v</versionTagPrefix>
 					</flowInitContext>
 				</configuration>
