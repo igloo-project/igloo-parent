@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>igloo-dependencies</artifactId>
 		<groupId>org.iglooproject.dependencies</groupId>
-		<version>2.7.4-SNAPSHOT</version>
+		<version>2.7.4</version>
 	</parent>
 	
 	<artifactId>igloo-dependency-poi</artifactId>

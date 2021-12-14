@@ -4,7 +4,7 @@
 	
 	<groupId>org.iglooproject</groupId>
 	<artifactId>igloo-parent</artifactId>
-	<version>2.7.4-SNAPSHOT</version>
+	<version>2.7.4</version>
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Parent</name>
