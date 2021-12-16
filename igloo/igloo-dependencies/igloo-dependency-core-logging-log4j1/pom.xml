@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>igloo-dependencies</artifactId>
 		<groupId>org.iglooproject.dependencies</groupId>
-		<version>3.0.1</version>
+		<version>3.0.2</version>
 	</parent>
 	
 	<artifactId>igloo-dependency-core-logging-log4j1</artifactId>
