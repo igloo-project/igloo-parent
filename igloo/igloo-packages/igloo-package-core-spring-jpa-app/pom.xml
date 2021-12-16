@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>igloo-packages</artifactId>
 		<groupId>org.iglooproject.packages</groupId>
-		<version>3.0.1</version>
+		<version>3.0.2-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>igloo-package-core-spring-jpa-app</artifactId>
