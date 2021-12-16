@@ -50,7 +50,7 @@ pushd "${temp_directory}/basic_application"
 	rm README.md build-and-push-archetype.sh
 
 	# actually build the archetype from the  project
-	mvn -U -Pdevelopment -DskipTests=true clean package install archetype:create-from-project -Darchetype.properties=archetype.properties
+	mvn -U -DskipTests=true clean package install archetype:create-from-project -Darchetype.properties=archetype.properties
 	if [ $? -ne 0 ]; then
 		echo 1>&2 "Error while building the archetype"
 		exit 1
