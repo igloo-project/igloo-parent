@@ -1312,12 +1312,6 @@
 				<version>3.1.0-SNAPSHOT</version>
 			</dependency>
 
-			<dependency>
-				<groupId>com.google.code.gson</groupId>
-				<artifactId>gson</artifactId>
-				<version>${igloo.gson.version}</version>
-			</dependency>
-
 			<!-- Test dependencies -->
 
 			<dependency>
