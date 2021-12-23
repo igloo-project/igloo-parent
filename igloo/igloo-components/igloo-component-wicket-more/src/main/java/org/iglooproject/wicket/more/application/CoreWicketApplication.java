@@ -28,7 +28,6 @@ import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.time.Duration;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.more.css.lesscss.service.ILessCssService;
 import org.iglooproject.wicket.more.css.scss.service.ICachedScssService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -56,9 +55,6 @@ public abstract class CoreWicketApplication extends WebApplication {
 	
 	@Autowired
 	private ApplicationContext applicationContext;
-	
-	@Autowired
-	protected ILessCssService lessCssService;
 	
 	@Autowired
 	protected ICachedScssService scssService;

@@ -21,7 +21,7 @@ public final class BootstrapTooltipJavaScriptResourceReference extends WebjarsJQ
 	private static final BootstrapTooltipJavaScriptResourceReference INSTANCE = new BootstrapTooltipJavaScriptResourceReference();
 
 	private BootstrapTooltipJavaScriptResourceReference() {
-		super("bootstrap-override/current/js/dist/tooltip.js");
+		super("webjars/bootstrap-override/current/js/dist/tooltip.js");
 	}
 
 	@Override

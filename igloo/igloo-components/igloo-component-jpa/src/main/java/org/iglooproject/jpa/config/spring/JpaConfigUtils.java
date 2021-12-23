@@ -24,19 +24,13 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.spi.IdentifierGeneratorStrategyProvider;
 import org.hibernate.loader.BatchFetchStyle;
-import org.hibernate.search.elasticsearch.cfg.ElasticsearchEnvironment;
-import org.hibernate.search.store.impl.FSDirectoryProvider;
-import org.hibernate.search.store.impl.RAMDirectoryProvider;
 import org.iglooproject.jpa.business.generic.service.ITransactionalAspectAwareService;
 import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionJndiConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionPoolConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
-import org.iglooproject.jpa.config.spring.provider.IJpaPropertiesProvider;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.hibernate.analyzers.CoreElasticSearchAnalyzersDefinitionProvider;
-import org.iglooproject.jpa.hibernate.analyzers.CoreLuceneAnalyzersDefinitionProvider;
 import org.iglooproject.jpa.hibernate.jpa.PerTableSequenceStrategyProvider;
 import org.iglooproject.jpa.hibernate.model.naming.PostgreSQLPhysicalNamingStrategyImpl;
 import org.springframework.aop.Advisor;
@@ -54,6 +48,10 @@ import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;
 import com.zaxxer.hikari.HikariDataSource;
+
+import igloo.hibernateconfig.api.HibernateSearchBackend;
+import igloo.hibernateconfig.api.HibernateSearchConfigurator;
+import igloo.hibernateconfig.api.IJpaPropertiesProvider;
 
 public final class JpaConfigUtils {
 
@@ -135,28 +133,15 @@ public final class JpaConfigUtils {
 		}
 
 		String hibernateSearchIndexBase = configuration.getHibernateSearchIndexBase();
-		
+		HibernateSearchBackend backend;
 		if (configuration.isHibernateSearchElasticSearchEnabled()) {
-			properties.setProperty(ElasticsearchEnvironment.ANALYSIS_DEFINITION_PROVIDER, CoreElasticSearchAnalyzersDefinitionProvider.class.getName());
-			properties.setProperty("hibernate.search.default.indexmanager", "elasticsearch");
-			properties.setProperty("hibernate.search.default.elasticsearch.host", configuration.getElasticSearchHost());
-			properties.setProperty("hibernate.search.default.elasticsearch.index_schema_management_strategy", configuration.getElasticSearchIndexSchemaManagementStrategy());
+			backend = HibernateSearchBackend.ELASTICSEARCH;
 		} else if (StringUtils.hasText(hibernateSearchIndexBase)) {
-			properties.setProperty(org.hibernate.search.cfg.Environment.ANALYSIS_DEFINITION_PROVIDER, CoreLuceneAnalyzersDefinitionProvider.class.getName());
-			if (configuration.isHibernateSearchIndexInRam()) {
-				properties.setProperty("hibernate.search.default.directory_provider", RAMDirectoryProvider.class.getName());
-			} else {
-				properties.setProperty("hibernate.search.default.directory_provider", FSDirectoryProvider.class.getName());
-				properties.setProperty("hibernate.search.default.locking_strategy", "native");
-			}
-			
-			properties.setProperty("hibernate.search.default.indexBase", hibernateSearchIndexBase);
-			properties.setProperty("hibernate.search.default.exclusive_index_use", Boolean.TRUE.toString());
-			properties.setProperty(org.hibernate.search.cfg.Environment.LUCENE_MATCH_VERSION,
-					org.hibernate.search.cfg.Environment.DEFAULT_LUCENE_MATCH_VERSION.toString());
+			backend = HibernateSearchBackend.LUCENE;
 		} else {
-			properties.setProperty("hibernate.search.autoregister_listeners", Boolean.FALSE.toString());
+			backend = HibernateSearchBackend.DISABLED;
 		}
+		HibernateSearchConfigurator.load(backend).configureHibernateSearch(configuration, properties);
 		
 		Class<? extends Analyzer> hibernateSearchDefaultAnalyzer = configuration.getHibernateSearchDefaultAnalyzer();
 		if (hibernateSearchDefaultAnalyzer != null) {

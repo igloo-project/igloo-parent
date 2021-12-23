@@ -9,7 +9,7 @@ public final class ClipboardJavaScriptResourceReference extends WebjarsJavaScrip
 	private static final ClipboardJavaScriptResourceReference INSTANCE = new ClipboardJavaScriptResourceReference();
 
 	private ClipboardJavaScriptResourceReference() {
-		super("clipboard/current/dist/clipboard.js");
+		super("webjars/clipboard/current/dist/clipboard.js");
 	}
 
 	public static ClipboardJavaScriptResourceReference get() {

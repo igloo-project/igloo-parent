@@ -19,7 +19,7 @@ import org.springframework.util.Assert;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
-import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
+import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 
 public class GenericEntityCollectionReference<K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
 		implements Serializable {

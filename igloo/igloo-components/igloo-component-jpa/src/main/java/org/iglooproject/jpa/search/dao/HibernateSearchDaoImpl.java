@@ -6,27 +6,19 @@ import static org.iglooproject.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_REIN
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.CacheMode;
 import org.hibernate.search.MassIndexer;
 import org.hibernate.search.SearchFactory;
 import org.hibernate.search.analyzer.impl.LuceneAnalyzerReference;
-import org.hibernate.search.analyzer.impl.ScopedLuceneAnalyzerReference;
-import org.hibernate.search.analyzer.impl.SimpleLuceneAnalyzerReference;
 import org.hibernate.search.batchindexing.MassIndexerProgressMonitor;
 import org.hibernate.search.batchindexing.impl.MassIndexerImpl;
-import org.hibernate.search.elasticsearch.analyzer.impl.ElasticsearchAnalyzerReference;
-import org.hibernate.search.elasticsearch.analyzer.impl.ScopedElasticsearchAnalyzerReference;
 import org.hibernate.search.engine.integration.impl.ExtendedSearchIntegrator;
 import org.hibernate.search.engine.integration.impl.SearchIntegration;
 import org.hibernate.search.hcore.util.impl.HibernateHelper;
@@ -38,18 +30,16 @@ import org.hibernate.search.spi.IndexedTypeSet;
 import org.hibernate.search.spi.SearchIntegrator;
 import org.hibernate.search.spi.impl.IndexedTypeSets;
 import org.hibernate.search.spi.impl.PojoIndexedTypeIdentifier;
-import org.hibernate.search.util.impl.PassThroughAnalyzer;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.config.spring.provider.IJpaPropertiesProvider;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.hibernate.analyzers.LuceneEmbeddedAnalyzerRegistry;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.google.common.collect.Maps;
+import igloo.hibernateconfig.api.ClientSideAnalyzerProvider;
+import igloo.hibernateconfig.api.IJpaPropertiesProvider;
 
 @Repository("hibernateSearchDao")
 public class HibernateSearchDaoImpl implements IHibernateSearchDao {
@@ -63,10 +53,10 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	private IJpaPropertiesProvider jpaPropertiesProvider;
 	
 	/**
-	 * With Elasticsearch used as backend, provides client-side Lucene analyzers. 
+	 * With Elasticsearch used as backend, provides client-side Lucene analyzers. Null otherwise.
 	 */
 	@Autowired(required = false)
-	private LuceneEmbeddedAnalyzerRegistry luceneEmbeddedAnalyzerRegistry;
+	private ClientSideAnalyzerProvider clientSideAnalyzerProvider;
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -77,12 +67,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	@Override
 	public Analyzer getAnalyzer(String analyzerName) {
 		if (jpaPropertiesProvider.isHibernateSearchElasticSearchEnabled()) {
-			if ("default".equals(analyzerName)) {
-				return PassThroughAnalyzer.INSTANCE;
-			} else {
-				checkClientSideAnalyzers(true);
-				return luceneEmbeddedAnalyzerRegistry.getAnalyzer(analyzerName);
-			}
+			return clientSideAnalyzerProvider.getAnalyzer(analyzerName);
 		} else {
 			ExtendedSearchIntegrator searchIntegrator = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(ExtendedSearchIntegrator.class);
 			SearchIntegration integration = searchIntegrator.getIntegration(LuceneEmbeddedIndexManagerType.INSTANCE);
@@ -97,22 +82,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		IndexedTypeIdentifier indexedType = getIndexBoundType(entityType, searchIntegrator);
 		
 		if (jpaPropertiesProvider.isHibernateSearchElasticSearchEnabled()) {
-			ScopedElasticsearchAnalyzerReference scopedAnalyzer = (ScopedElasticsearchAnalyzerReference) searchIntegrator.getAnalyzerReference(indexedType);
-			try {
-				// these properties are package protected ! Use a bypass !
-				ElasticsearchAnalyzerReference globalAnalyzer = (ElasticsearchAnalyzerReference) FieldUtils.getField(ScopedElasticsearchAnalyzerReference.class, "globalAnalyzerReference", true).get(scopedAnalyzer);
-				@SuppressWarnings("unchecked")
-				Map<String, ElasticsearchAnalyzerReference> analyzers = (Map<String, ElasticsearchAnalyzerReference>) FieldUtils.getField(ScopedElasticsearchAnalyzerReference.class, "scopedAnalyzerReferences", true).get(scopedAnalyzer);
-				
-				Map<String, LuceneAnalyzerReference> luceneAnalyzers = Maps.newHashMap();
-				for (Entry<String, ElasticsearchAnalyzerReference> analyzer : analyzers.entrySet()) {
-					luceneAnalyzers.put(analyzer.getKey(), new SimpleLuceneAnalyzerReference(getAnalyzer(analyzer.getValue().getAnalyzerName(null))));
-				}
-				LuceneAnalyzerReference luceneGlobalAnalyzer = new SimpleLuceneAnalyzerReference(getAnalyzer(globalAnalyzer.getAnalyzerName(null)));
-				return new ScopedLuceneAnalyzerReference.Builder(luceneGlobalAnalyzer, luceneAnalyzers).build().getAnalyzer();
-			} catch (IllegalAccessException e) {
-				throw new RuntimeException("illegal access on scoped analyzer", e);
-			}
+			return clientSideAnalyzerProvider.getAnalyzer(searchIntegrator, indexedType);
 		} else {
 			return Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(SearchIntegrator.class).getAnalyzer(indexedType);
 		}
@@ -326,30 +296,5 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	@Override
 	public void flushToIndexes() {
 		Search.getFullTextEntityManager(entityManager).flushToIndexes();
-	}
-	
-	@PostConstruct
-	private void checkClientSideAnalyzers() {
-		checkClientSideAnalyzers(false);
-	}
-
-	private boolean checkClientSideAnalyzers(boolean throwException) {
-		if (luceneEmbeddedAnalyzerRegistry == null) {
-			String message = String.format("No %s available; please add a bean implementation if you want to use client-side analysis with elasticsearch", LuceneEmbeddedAnalyzerRegistry.class.getSimpleName());
-			if (throwException) {
-				throw new IllegalStateException(message);
-			} else {
-				if (jpaPropertiesProvider.isHibernateSearchElasticSearchEnabled()) {
-					// error if needed (elasticsearch mode)
-					LOGGER.error(message);
-				} else {
-					// debug if not mandatory (lucene mode)
-					LOGGER.debug(message);
-				}
-				return false;
-			}
-		} else {
-			return true;
-		}
 	}
 }

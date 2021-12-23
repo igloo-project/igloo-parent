@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
+import igloo.hibernateconfig.api.IJpaPropertiesProvider;
+
 public interface IJpaConfigurationProvider extends IJpaPropertiesProvider {
 
 	List<JpaPackageScanProvider> getJpaPackageScanProviders();

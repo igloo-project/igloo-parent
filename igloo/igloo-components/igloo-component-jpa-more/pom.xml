@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>3.0.3</version>
+		<version>3.1.0</version>
 	</parent>
 
 	<artifactId>igloo-component-jpa-more</artifactId>
@@ -83,6 +83,11 @@
 		<dependency>
 			<groupId>de.danielbechler</groupId>
 			<artifactId>java-object-diff</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>annotations</artifactId>
 		</dependency>
 		
 		<!-- Test dependencies -->

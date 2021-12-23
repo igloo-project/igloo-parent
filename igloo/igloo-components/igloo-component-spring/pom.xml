@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>3.0.3</version>
+		<version>3.1.0</version>
 	</parent>
 
 	<artifactId>igloo-component-spring</artifactId>
@@ -40,7 +40,7 @@
 		
 		<dependency>
 			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
+			<artifactId>jakarta.mail</artifactId>
 		</dependency>
 		
 		<dependency>

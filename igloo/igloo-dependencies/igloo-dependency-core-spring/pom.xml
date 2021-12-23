@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>igloo-dependencies</artifactId>
 		<groupId>org.iglooproject.dependencies</groupId>
-		<version>3.0.3</version>
+		<version>3.1.0</version>
 	</parent>
 	
 	<artifactId>igloo-dependency-core-spring</artifactId>
@@ -59,13 +59,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-expression</artifactId>
-		</dependency>
-		
-		<!-- Misc. -->
-		
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
 		</dependency>
 		
 	</dependencies>

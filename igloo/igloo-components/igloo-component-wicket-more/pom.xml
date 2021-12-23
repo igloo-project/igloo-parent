@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>3.0.3</version>
+		<version>3.1.0</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-more</artifactId>
@@ -39,13 +39,6 @@
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-web-spring-security</artifactId>
-			<version>${project.version}</version>
-			<type>pom</type>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.iglooproject.dependencies</groupId>
-			<artifactId>igloo-dependency-less4j</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
 		</dependency>
@@ -121,6 +114,10 @@
 			<artifactId>javax.annotation-api</artifactId>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>annotations</artifactId>
+		</dependency>
 	</dependencies>
 	
 	<build>

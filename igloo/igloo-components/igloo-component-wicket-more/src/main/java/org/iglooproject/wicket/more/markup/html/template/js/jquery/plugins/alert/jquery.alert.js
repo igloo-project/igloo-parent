@@ -9,7 +9,7 @@
 			var placement = $selector.data("placement");
 			var $panel = $(".alert-global-panel, .feedback-container", $selector);
 			$panel.off("click.alert");
-			if ($(".alert-info, .alert-warning, .alert-danger, .alert-error, .alert-success, .alert-secondary" , $panel).length > 0) {
+			if ($(".alert", $panel).length > 0) {
 				$panel.show();
 				if (placement == "bottom") {
 					$panel.animate({ bottom: 0 }, 500);
@@ -17,7 +17,7 @@
 					$panel.animate({ top: 0 }, 500);
 				}
 				
-				if ($(".alert-info, .alert-warning, .alert-danger, .alert-error", $panel).length == 0) {
+				if ($(".alert", $panel).not(".alert-success").length == 0) {
 					$panel.on("click.alert", function(event) { $.fn.alert.close(event); });
 					if (autohideDelay == null) {
 						autohideDelay = 5000;
@@ -37,7 +37,7 @@
 			var $selector = $(selector);
 			var placement = $selector.data("placement");
 			var $panel = $(".alert-global-panel, .feedback-container", $selector);
-			if ($(".alert-info, .alert-warning, .alert-danger, .alert-error, .alert-success" , $panel).length > 0) {
+			if ($(".alert" , $panel).length > 0) {
 				if (placement == "bottom") {
 					$panel.css({ bottom: -$panel.outerHeight() });
 				} else {
@@ -53,7 +53,7 @@
 		close: function(event) {
 			var $panel = $(event.target).closest(".alert-global-panel, .feedback-container");
 			var placement = $(event.target).closest(".animated-global-feedback").data("placement");
-			if ($(".alert-info, .alert-warning, .alert-danger, .alert-error, .alert-success" , $panel).length > 0) {
+			if ($(".alert" , $panel).length > 0) {
 				if (placement == "bottom") {
 					$panel.stop(true).animate({ bottom: -$panel.outerHeight() });
 				} else {

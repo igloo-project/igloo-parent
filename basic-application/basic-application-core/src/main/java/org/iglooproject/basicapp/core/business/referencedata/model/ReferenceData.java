@@ -10,10 +10,11 @@ import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.basicapp.core.business.common.model.embeddable.LocalizedText;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
-import org.iglooproject.jpa.search.util.HibernateSearchAnalyzer;
-import org.iglooproject.jpa.search.util.HibernateSearchNormalizer;
 
 import com.querydsl.core.annotations.QueryInit;
+
+import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
+import igloo.hibernateconfig.api.HibernateSearchNormalizer;
 
 @MappedSuperclass
 public class ReferenceData<E extends ReferenceData<?>> extends GenericReferenceData<E, LocalizedText> implements IReferenceDataBindingInterface {
