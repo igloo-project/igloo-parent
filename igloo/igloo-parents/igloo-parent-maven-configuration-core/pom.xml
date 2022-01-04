@@ -142,7 +142,7 @@
 
 		<igloo.slf4j.version>1.7.30</igloo.slf4j.version>
 		<igloo.log4j.version>1.2.17</igloo.log4j.version>
-		<igloo.log4j2.version>2.17.0</igloo.log4j2.version>
+		<igloo.log4j2.version>2.17.1</igloo.log4j2.version>
 
 		<!-- https://sourceforge.net/p/opencsv/wiki/What%27s%20new/ -->
 		<igloo.opencsv.version>4.3.2</igloo.opencsv.version>
