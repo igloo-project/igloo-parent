@@ -212,7 +212,7 @@
 
 		<igloo.junit.version>4.13.2</igloo.junit.version>
 		<igloo.junit5.version>5.7.0</igloo.junit5.version>
-		<igloo.h2.version>1.4.200</igloo.h2.version>
+		<igloo.h2.version>2.0.206</igloo.h2.version>
 		<igloo.mockito.version>3.5.13</igloo.mockito.version>
 		<igloo.assertj.version>3.17.2</igloo.assertj.version>
 		<igloo.assertj-guava.version>3.4.0</igloo.assertj-guava.version>
