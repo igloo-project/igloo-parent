@@ -1,6 +1,5 @@
 package org.iglooproject.test.commons.io;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -42,33 +41,33 @@ public class TestFileUtils {
 		// Test sur un répertoire
 		File directoryFile = new File(DIRECTORY);
 		
-		assertTrue(directoryFile.exists());
-		assertTrue(directoryFile.isDirectory());
+		Assertions.assertThat(directoryFile).exists();
+		Assertions.assertThat(directoryFile).isDirectory();
 		
 		file = FileUtils.getFile(directoryFile, "test1.txt");
-		assertTrue(file.exists());
+		Assertions.assertThat(file).exists();
 		
 		file = FileUtils.getFile(directoryFile, "test2");
-		assertTrue(file.exists());
+		Assertions.assertThat(file).exists();
 		
 		// Test sur une archive
 		File archiveFile = new File(ZIP_FILE_PATH);
 		
-		assertTrue(archiveFile.exists());
-		assertTrue(archiveFile.length() > 0);
+		Assertions.assertThat(archiveFile).exists();
+		Assertions.assertThat(archiveFile.length()).isGreaterThan(0);
 		
 		TFile archiveDirectory = new TFile(archiveFile.getAbsolutePath());
 		
 		assertTrue(archiveDirectory.isDirectory());
 		
 		file = FileUtils.getFile(archiveDirectory, "test1.xls");
-		assertTrue(file.exists());
+		Assertions.assertThat(file).exists();
 		
 		file = FileUtils.getFile(archiveDirectory, "test2.doc");
-		assertTrue(file.exists());
+		Assertions.assertThat(file).exists();
 		
 		file = FileUtils.getFile(archiveDirectory, "test3");
-		assertTrue(file.exists());
+		Assertions.assertThat(file).exists();
 	}
 
 	/**
@@ -88,41 +87,41 @@ public class TestFileUtils {
 		// Test sur un répertoire
 		File directoryFile = new File(DIRECTORY);
 		
-		assertTrue(directoryFile.exists());
-		assertTrue(directoryFile.isDirectory());
+		Assertions.assertThat(directoryFile).exists();
+		Assertions.assertThat(directoryFile).isDirectory();
 		
 		files = FileUtils.list(directoryFile, new NameFileFilter("test1.txt"));
-		assertEquals(1, files.size());
-		assertTrue(files.iterator().next().exists());
+		Assertions.assertThat(files).hasSize(1);
+		Assertions.assertThat(files.iterator().next()).exists();
 		
 		files = FileUtils.list(directoryFile, new NameFileFilter("test2"));
-		assertEquals(1, files.size());
-		assertTrue(files.iterator().next().exists());
+		Assertions.assertThat(files).hasSize(1);
+		Assertions.assertThat(files.iterator().next()).exists();
 		
 		// Test sur une archive existante
 		File archiveFile = new File(ZIP_FILE_PATH);
 		
-		assertTrue(archiveFile.exists());
-		assertTrue(archiveFile.length() > 0);
+		Assertions.assertThat(archiveFile).exists();
+		Assertions.assertThat(files).hasSizeGreaterThan(0);
 		
 		TFile archiveDirectory = new TFile(archiveFile.getAbsolutePath());
 		
-		assertTrue(archiveDirectory.isDirectory());
+		Assertions.assertThat(archiveDirectory).isDirectory();
 		
 		files = FileUtils.list(archiveDirectory, new NameFileFilter("test1.xls"));
-		assertEquals(1, files.size());
-		assertTrue(files.iterator().next().exists());
+		Assertions.assertThat(files).hasSize(1);
+		Assertions.assertThat(files.iterator().next()).exists();
 		
 		files = FileUtils.list(archiveDirectory, new NameFileFilter("test2.doc"));
-		assertEquals(1, files.size());
-		assertTrue(files.iterator().next().exists());
+		Assertions.assertThat(files).hasSize(1);
+		Assertions.assertThat(files.iterator().next()).exists();
 		
 		files = FileUtils.list(archiveDirectory, new NameFileFilter("test3"));
-		assertEquals(1, files.size());
-		assertTrue(files.iterator().next().exists());
+		Assertions.assertThat(files).hasSize(1);
+		Assertions.assertThat(files.iterator().next()).exists();
 		
 		files = FileUtils.list(archiveDirectory, new NameFileFilter("test4.txt"));
-		assertEquals(0, files.size());
+		Assertions.assertThat(files).hasSize(0);
 	}
 
 	/**
@@ -186,13 +185,13 @@ public class TestFileUtils {
 		
 		FileUtils.cleanDirectory(subFolder, null);
 		
-		Assertions.assertThat(folder.getRoot().exists()).isTrue().as("Parent folder must be kept");
-		Assertions.assertThat(subFolder.exists()).isTrue().as("Cleaned folder must be kept");
-		Assertions.assertThat(file1.exists()).isFalse().as("This file must be cleaned");
-		Assertions.assertThat(file2.exists()).isFalse().as("This file must be cleaned");
+		Assertions.assertThat(folder.getRoot()).exists().as("Parent folder must be kept");
+		Assertions.assertThat(subFolder).exists().as("Cleaned folder must be kept");
+		Assertions.assertThat(file1).doesNotExist().as("This file must be cleaned");
+		Assertions.assertThat(file2).doesNotExist().as("This file must be cleaned");
 		// subfolder is managed as a whole
-		Assertions.assertThat(dir1.exists()).isFalse().as("This file must be cleaned");
-		Assertions.assertThat(file3.exists()).isFalse().as("This file must be cleaned");
+		Assertions.assertThat(dir1).doesNotExist().as("This file must be cleaned");
+		Assertions.assertThat(file3).doesNotExist().as("This file must be cleaned");
 	}
 
 	/**
@@ -210,10 +209,10 @@ public class TestFileUtils {
 		
 		FileUtils.cleanDirectory(subFolder, date);
 		
-		Assertions.assertThat(folder.getRoot().exists()).isTrue().as("Parent folder must be kept");
-		Assertions.assertThat(subFolder.exists()).isTrue().as("Cleaned folder must be kept");
-		Assertions.assertThat(file1.exists()).isFalse().as("This file must be cleaned");
-		Assertions.assertThat(file2.exists()).isTrue();
+		Assertions.assertThat(folder.getRoot()).exists().as("Parent folder must be kept");
+		Assertions.assertThat(subFolder).exists().as("Cleaned folder must be kept");
+		Assertions.assertThat(file1).doesNotExist().as("This file must be cleaned");
+		Assertions.assertThat(file2).exists();
 	}
 
 	/**
@@ -235,13 +234,13 @@ public class TestFileUtils {
 		
 		FileUtils.cleanDirectory(subFolder, date);
 		
-		Assertions.assertThat(folder.getRoot().exists()).isTrue().as("Parent folder must be kept");
-		Assertions.assertThat(subFolder.exists()).isTrue().as("Cleaned folder must be kept");
-		Assertions.assertThat(file1.exists()).isFalse().as("This file must be cleaned");
-		Assertions.assertThat(file2.exists()).isFalse().as("This file must be cleaned");
+		Assertions.assertThat(folder.getRoot()).exists().as("Parent folder must be kept");
+		Assertions.assertThat(subFolder).exists().as("Cleaned folder must be kept");
+		Assertions.assertThat(file1).doesNotExist().as("This file must be cleaned");
+		Assertions.assertThat(file2).doesNotExist().as("This file must be cleaned");
 		// subfolder is managed as a whole
-		Assertions.assertThat(dir1.exists()).isTrue().as("This directory is recent and must be kept");
-		Assertions.assertThat(file3.exists()).isTrue().as("This file is in a recent folder");
+		Assertions.assertThat(dir1).exists().as("This directory is recent and must be kept");
+		Assertions.assertThat(file3).exists().as("This file is in a recent folder");
 	}
 
 	/**
@@ -263,10 +262,10 @@ public class TestFileUtils {
 		
 		FileUtils.cleanDirectory(subFolder, date);
 		
-		Assertions.assertThat(folder.getRoot().exists()).isTrue().as("Parent folder must be kept").as("Parent folder must be kept");
-		Assertions.assertThat(subFolder.exists()).isTrue().as("Cleaned folder must be kept");
-		Assertions.assertThat(file1.exists()).isTrue().as("This file was modified after provided date and must be kept");
-		Assertions.assertThat(file2.exists()).isFalse().as("This file was created before provided date and must be deleted");
+		Assertions.assertThat(folder.getRoot()).exists().as("Parent folder must be kept");
+		Assertions.assertThat(subFolder).exists().as("Cleaned folder must be kept");
+		Assertions.assertThat(file1).exists().as("This file was modified after provided date and must be kept");
+		Assertions.assertThat(file2).doesNotExist().as("This file was created before provided date and must be deleted");
 	}
 
 	/**
@@ -300,12 +299,12 @@ public class TestFileUtils {
 		
 		Assertions.assertThatCode(() -> FileUtils.cleanDirectory(subFolder, null)).isInstanceOf(IOException.class);
 		
-		Assertions.assertThat(folder.getRoot().exists()).isTrue().as("Parent folder must be kept");
-		Assertions.assertThat(subFolder.exists()).isTrue().as("Cleaned folder must be kept");
-		Assertions.assertThat(file1.exists()).isFalse().as("This file must be cleaned");
-		Assertions.assertThat(file2.exists()).isFalse().as("This file must be cleaned");
-		Assertions.assertThat(dir1.exists()).isTrue().as("Protected folder cannot be deleted as content cannot be removed");
-		Assertions.assertThat(file3.exists()).isTrue().as("File cannot be removed as folder is write-protected");
+		Assertions.assertThat(folder.getRoot()).exists().as("Parent folder must be kept");
+		Assertions.assertThat(subFolder).exists().as("Cleaned folder must be kept");
+		Assertions.assertThat(file1).doesNotExist().as("This file must be cleaned");
+		Assertions.assertThat(file2).doesNotExist().as("This file must be cleaned");
+		Assertions.assertThat(dir1).exists().as("Protected folder cannot be deleted as content cannot be removed");
+		Assertions.assertThat(file3).exists().as("File cannot be removed as folder is write-protected");
 	}
 
 	/**
@@ -429,6 +428,7 @@ public class TestFileUtils {
 	}
 
 	private Date waitSomeTime() throws InterruptedException {
+		Thread.sleep(2000);
 		Date date = new Date();
 		// under 2000ms, delta-time is not high enough to ensure that file2 last modification date is late enough
 		Thread.sleep(2000);
