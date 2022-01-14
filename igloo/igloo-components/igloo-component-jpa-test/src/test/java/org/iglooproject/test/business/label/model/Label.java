@@ -1,5 +1,6 @@
 package org.iglooproject.test.business.label.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -13,6 +14,10 @@ public class Label extends GenericEntity<String, Label> {
 	@Id
 	private String id;
 	
+	/**
+	 * 2022-01: value is a reserved name with h2 2.x
+	 */
+	@Column(name = "_value")
 	private String value;
 
 	public Label() {
