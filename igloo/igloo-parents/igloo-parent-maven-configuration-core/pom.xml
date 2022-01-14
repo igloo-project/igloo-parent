@@ -109,7 +109,7 @@
 		<!-- https://in.relation.to/2019/06/18/hibernate-search-5-11-2-Final-and-5-10-6-Final/ -->
 		<!-- https://in.relation.to/2019/09/19/hibernate-search-5-11-3-Final/ -->
 		<!-- https://in.relation.to/2019/11/22/hibernate-search-5-11-4-Final-and-5-10-8-Final/ -->
-		<igloo.hibernate-search.version>5.11.10.Final</igloo.hibernate-search.version>
+		<igloo.hibernate-search.version>5.11.8.Final</igloo.hibernate-search.version>
 		<!-- overriden in some modules, when we are in a elasticsearch context -->
 		<igloo.lucene.version>5.5.5</igloo.lucene.version>
 
