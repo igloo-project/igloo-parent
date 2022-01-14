@@ -5,16 +5,16 @@ CREATE SCHEMA IF NOT EXISTS ${schema};
 --
 -- Base model
 --
-create sequence ${schema}.Announcement_id_seq start 1 increment 1;
-create sequence ${schema}.Authority_id_seq start 1 increment 1;
-create sequence ${schema}.City_id_seq start 1 increment 1;
-create sequence ${schema}.DataUpgradeRecord_id_seq start 1 increment 1;
-create sequence ${schema}.HistoryDifference_id_seq start 1 increment 1;
-create sequence ${schema}.HistoryLog_id_seq start 1 increment 1;
-create sequence ${schema}.Parameter_id_seq start 1 increment 1;
-create sequence ${schema}.QueuedTaskHolder_id_seq start 1 increment 1;
-create sequence ${schema}.user__id_seq start 1 increment 1;
-create sequence ${schema}.UserGroup_id_seq start 1 increment 1;
+create sequence ${schema}.Announcement_id_seq start with 1 increment 1;
+create sequence ${schema}.Authority_id_seq start with 1 increment 1;
+create sequence ${schema}.City_id_seq start with 1 increment 1;
+create sequence ${schema}.DataUpgradeRecord_id_seq start with 1 increment 1;
+create sequence ${schema}.HistoryDifference_id_seq start with 1 increment 1;
+create sequence ${schema}.HistoryLog_id_seq start with 1 increment 1;
+create sequence ${schema}.Parameter_id_seq start with 1 increment 1;
+create sequence ${schema}.QueuedTaskHolder_id_seq start with 1 increment 1;
+create sequence ${schema}.user__id_seq start with 1 increment 1;
+create sequence ${schema}.UserGroup_id_seq start with 1 increment 1;
 create table ${schema}.Announcement (id int8 not null, creation_date timestamp not null, creation_subject_label ${type.text}, creation_subject_reference_id int8, creation_subject_reference_type varchar(255), creation_subject_serialized ${type.text}, description_en ${type.text}, description_fr ${type.text}, enabled boolean not null, interruption_endDateTime timestamp, interruption_startDateTime timestamp, modification_date timestamp not null, modification_subject_label ${type.text}, modification_subject_reference_id int8, modification_subject_reference_type varchar(255), modification_subject_serialized ${type.text}, publication_endDateTime timestamp not null, publication_startDateTime timestamp not null, title_en ${type.text}, title_fr ${type.text}, type varchar(255) not null, primary key (id));
 create table ${schema}.Authority (id int8 not null, name ${type.text}, primary key (id));
 create table ${schema}.Authority_customPermissionNames (Authority_id int8 not null, customPermissionNames ${type.text});
