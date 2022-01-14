@@ -41,6 +41,14 @@
 			<version>${project.version}</version>
 		</dependency>
 		
+		<!-- this dependency must also be compatible with flywaydb 7 -->
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<!-- <artifactId>igloo-component-flyway-7</artifactId> -->
+			<artifactId>igloo-component-flyway-8</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
@@ -65,11 +73,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
 		</dependency>
 		
 		<!-- Test dependencies -->

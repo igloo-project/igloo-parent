@@ -2,28 +2,23 @@ package org.iglooproject.jpa.config.spring;
 
 import static org.iglooproject.jpa.property.JpaPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.BooleanQuery;
 import org.flywaydb.core.Flyway;
-import org.flywaydb.core.api.configuration.FluentConfiguration;
-import org.flywaydb.core.internal.scanner.LocationScannerCache;
-import org.flywaydb.core.internal.scanner.ResourceNameCache;
-import org.flywaydb.core.internal.scanner.Scanner;
+import org.iglooproject.flyway.FlywayInitializer;
+import org.iglooproject.flyway.IFlywayConfiguration;
 import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
 import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
 import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
-import org.iglooproject.jpa.migration.IIglooMigration;
-import org.iglooproject.jpa.migration.IglooMigrationResolver;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.iglooproject.jpa.property.FlywayPropertyIds;
 import org.iglooproject.jpa.search.CoreJpaSearchPackage;
@@ -46,8 +41,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import com.google.common.collect.Maps;
 
 /**
  * L'implémentation de cette classe doit être annotée {@link EnableAspectJAutoProxy}
@@ -85,49 +78,22 @@ public abstract class AbstractJpaConfig {
 
 	@Bean(initMethod = "migrate", value = { "flyway", "databaseInitialization" })
 	@Profile("flyway")
-	public Flyway flyway(DataSource dataSource, FlywayConfiguration flywayConfiguration,
+	public Flyway flyway(DataSource dataSource, IFlywayConfiguration flywayConfiguration,
 		IPropertyService propertyService, ConfigurableApplicationContext applicationContext) {
-		
-		FluentConfiguration configuration = Flyway.configure()
-			.dataSource(dataSource)
-			.schemas(flywayConfiguration.getSchemas())
-			.table(flywayConfiguration.getTable())
-			.locations(StringUtils.split(flywayConfiguration.getLocations(), ","))
-			.baselineOnMigrate(true)
-			// difficult to handle this case for the moment; we ignore mismatching checksums
-			// TODO allow developers to handle mismatches during their tests.
-			.validateOnMigrate(false);
-		
-		// Placeholders
-		Map<String, String> placeholders = Maps.newHashMap();
+		Map<String, String> placeholders = new HashMap<>();
 		for (String property : propertyService.get(FlywayPropertyIds.FLYWAY_PLACEHOLDERS_PROPERTIES)) {
 			placeholders.put(property, propertyService.get(FlywayPropertyIds.property(property)));
 		}
-		configuration.placeholderReplacement(true);
-		configuration.placeholders(placeholders);
-		
-		// Custom Spring-autowiring migration resolver
-		Scanner<IIglooMigration> scanner = new Scanner<>(
-			IIglooMigration.class,
-			Arrays.asList(configuration.getLocations()),
-			configuration.getClassLoader(),
-			configuration.getEncoding(),
-			configuration.getDetectEncoding(),
-			//this boolean has been added since flyway 7.0.0 and is unused in flyway 7.0.2, be carefull when updating flyway
-			false,
-			new ResourceNameCache(),
-			new LocationScannerCache(),
-			configuration.getFailOnMissingLocations()
-		);
-		
-		configuration.resolvers(new IglooMigrationResolver(scanner, configuration, applicationContext));
-		
-		return configuration.load();
+		return FlywayInitializer.flyway(
+				dataSource,
+				flywayConfiguration,
+				placeholders,
+				applicationContext.getAutowireCapableBeanFactory()::autowireBean);
 	}
 
 	@Bean
 	@Profile("flyway")
-	public FlywayConfiguration flywayConfiguration() {
+	public IFlywayConfiguration flywayConfiguration() {
 		return new FlywayConfiguration();
 	}
 

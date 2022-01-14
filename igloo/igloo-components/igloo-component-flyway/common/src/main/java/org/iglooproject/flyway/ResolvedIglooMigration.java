@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.migration;
+package org.iglooproject.flyway;
 
 import org.flywaydb.core.api.MigrationType;
 import org.flywaydb.core.internal.resolver.ResolvedMigrationImpl;

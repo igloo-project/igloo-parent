@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.migration;
+package org.iglooproject.flyway;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.migration;
+package org.iglooproject.flyway;
 
 import org.flywaydb.core.api.MigrationVersion;
 import org.flywaydb.core.api.migration.Context;

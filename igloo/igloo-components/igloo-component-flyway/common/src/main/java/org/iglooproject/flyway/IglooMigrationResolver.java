@@ -1,8 +1,9 @@
-package org.iglooproject.jpa.migration;
+package org.iglooproject.flyway;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.flywaydb.core.api.ClassProvider;
 import org.flywaydb.core.api.configuration.Configuration;
@@ -11,7 +12,6 @@ import org.flywaydb.core.api.resolver.MigrationResolver;
 import org.flywaydb.core.api.resolver.ResolvedMigration;
 import org.flywaydb.core.internal.resolver.ResolvedMigrationComparator;
 import org.flywaydb.core.internal.util.ClassUtils;
-import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * 
@@ -22,13 +22,14 @@ public class IglooMigrationResolver implements MigrationResolver {
 
 	private ClassProvider<IIglooMigration> scanner;
 
-	private ConfigurableApplicationContext applicationContext;
+	private Consumer<IIglooMigration> autowirer;
 
 	private Configuration configuration;
 
-	public IglooMigrationResolver(ClassProvider<IIglooMigration> scanner, Configuration configuration, ConfigurableApplicationContext applicationContext) {
+	public IglooMigrationResolver(ClassProvider<IIglooMigration> scanner, Configuration configuration,
+			Consumer<IIglooMigration> autowirer) {
 		this.scanner = scanner;
-		this.applicationContext = applicationContext;
+		this.autowirer = autowirer;
 		this.configuration = configuration;
 	}
 
@@ -38,7 +39,7 @@ public class IglooMigrationResolver implements MigrationResolver {
 		
 		for (Class<?> clazz : scanner.getClasses()) {
 			IIglooMigration javaMigration = ClassUtils.instantiate(clazz.getName(), configuration.getClassLoader());
-			applicationContext.getAutowireCapableBeanFactory().autowireBean(javaMigration);
+			autowirer.accept(javaMigration);
 			
 			ResolvedMigration resolvedMigration = new ResolvedIglooMigration(javaMigration, new IglooMigrationExecutor(javaMigration));
 			migrations.add(resolvedMigration);

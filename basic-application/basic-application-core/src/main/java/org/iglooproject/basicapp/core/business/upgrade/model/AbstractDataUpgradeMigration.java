@@ -4,7 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.flywaydb.core.api.migration.Context;
-import org.iglooproject.jpa.migration.IglooMigration;
+import org.iglooproject.flyway.IglooMigration;
 import org.iglooproject.jpa.more.business.upgrade.model.DataUpgradeRecord;
 import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
 import org.springframework.beans.factory.annotation.Value;
