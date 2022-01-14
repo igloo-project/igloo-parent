@@ -43,7 +43,8 @@
 		<!-- 5.2.2: https://github.com/spring-projects/spring-framework/releases/tag/v5.2.2.RELEASE -->
 		<!-- 5.2.6: https://github.com/spring-projects/spring-framework/releases/tag/v5.2.6.RELEASE -->
 		<!-- 5.2.8: https://github.com/spring-projects/spring-framework/releases/tag/v5.2.8.RELEASE -->
-		<igloo.spring.version>5.3.13</igloo.spring.version>
+		<!-- https://github.com/spring-projects/spring-framework/releases/tag/v5.3.15 -->
+		<igloo.spring.version>5.3.15</igloo.spring.version>
 		<igloo.spring-boot.version>2.3.4.RELEASE</igloo.spring-boot.version>
 		<!-- https://www.eclipse.org/aspectj/doc/released/README-196.html -->
 		<igloo.aspectj.version>1.9.7</igloo.aspectj.version>
@@ -55,14 +56,15 @@
 		<igloo.hibernate.version>5.4.29.Final</igloo.hibernate.version>
 		<igloo.hibernate-validator.version>5.4.3.Final</igloo.hibernate-validator.version>
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
-		<igloo.byte-buddy.version>1.12.1</igloo.byte-buddy.version>
-		<igloo.jboss-logging.version>3.4.2.Final</igloo.jboss-logging.version>
-		<igloo.jboss-logging-annotations.version>2.1.0.Final</igloo.jboss-logging-annotations.version>
+		<!-- https://github.com/raphw/byte-buddy/releases -->
+		<igloo.byte-buddy.version>1.12.6</igloo.byte-buddy.version>
+		<igloo.jboss-logging.version>3.4.3.Final</igloo.jboss-logging.version>
+		<igloo.jboss-logging-annotations.version>2.2.0.Final</igloo.jboss-logging-annotations.version>
 
 		<igloo.javassist.version>3.27.0-GA</igloo.javassist.version>
 
 		<!-- https://github.com/brettwooldridge/HikariCP/blob/dev/CHANGES -->
-		<igloo.hikaricp.version>5.0.0</igloo.hikaricp.version>
+		<igloo.hikaricp.version>5.0.1</igloo.hikaricp.version>
 		<!-- https://jira.terracotta.org/jira/browse/EHC/fixforversion/13000/?selectedTab=com.atlassian.jira.jira-projects-plugin:version-summary-panel -->
 		<!-- terracotta maven repository cannot be managed efficiently; use central dependency -->
 		<igloo.ehcache.version>2.10.9.2</igloo.ehcache.version>
@@ -95,9 +97,11 @@
 		<!-- 5.3.0: https://github.com/spring-projects/spring-security/releases/tag/5.3.0.RELEASE -->
 		<!-- 5.3.2: https://github.com/spring-projects/spring-security/releases/tag/5.3.2.RELEASE -->
 		<!-- 5.3.4: https://github.com/spring-projects/spring-security/releases/tag/5.3.4.RELEASE -->
-		<igloo.spring-security.version>5.4.1</igloo.spring-security.version>
+		<!-- https://github.com/spring-projects/spring-security/releases -->
+		<igloo.spring-security.version>5.4.10</igloo.spring-security.version>
 
-		<igloo.spring-ldap.version>2.3.3.RELEASE</igloo.spring-ldap.version>
+		<!-- https://github.com/spring-projects/spring-ldap/releases -->
+		<igloo.spring-ldap.version>2.3.5.RELEASE</igloo.spring-ldap.version>
 
 		<!-- http://in.relation.to/2018/09/13/hibernate-search-5-10-4-Final-5-9-3-Final-5-6-6-Final/ -->
 		<!-- http://in.relation.to/2018/12/20/hibernate-search-5-11-0-Final/ -->
@@ -105,7 +109,7 @@
 		<!-- https://in.relation.to/2019/06/18/hibernate-search-5-11-2-Final-and-5-10-6-Final/ -->
 		<!-- https://in.relation.to/2019/09/19/hibernate-search-5-11-3-Final/ -->
 		<!-- https://in.relation.to/2019/11/22/hibernate-search-5-11-4-Final-and-5-10-8-Final/ -->
-		<igloo.hibernate-search.version>5.11.8.Final</igloo.hibernate-search.version>
+		<igloo.hibernate-search.version>5.11.10.Final</igloo.hibernate-search.version>
 		<!-- overriden in some modules, when we are in a elasticsearch context -->
 		<igloo.lucene.version>5.5.5</igloo.lucene.version>
 
@@ -127,7 +131,8 @@
 		<!-- https://commons.apache.org/proper/commons-text/RELEASE-NOTES.txt -->
 		<igloo.commons-text.version>1.9</igloo.commons-text.version>
 		<igloo.commons-math3.version>3.6.1</igloo.commons-math3.version>
-		<igloo.commons-cli.version>1.4</igloo.commons-cli.version>
+		<!-- https://github.com/apache/commons-cli/blob/master/RELEASE-NOTES.txt -->
+		<igloo.commons-cli.version>1.5.0</igloo.commons-cli.version>
 		<igloo.commons-codec.version>1.15</igloo.commons-codec.version>
 		<igloo.commons-exec.version>1.3</igloo.commons-exec.version>
 		<!-- https://commons.apache.org/proper/commons-compress/ -->
@@ -139,10 +144,12 @@
 		<igloo.commons-configuration.version>2.7</igloo.commons-configuration.version>
 
 		<igloo.jta.version>1.1</igloo.jta.version>
-		<igloo.javax-mail.version>1.6.6</igloo.javax-mail.version>
+		<!-- https://github.com/eclipse-ee4j/mail/releases -->
+		<igloo.javax-mail.version>1.6.7</igloo.javax-mail.version>
 
-		<igloo.slf4j.version>1.7.32</igloo.slf4j.version>
-		<igloo.log4j.version>1.2.17</igloo.log4j.version>
+		<!-- https://www.slf4j.org/news.html -->
+		<igloo.slf4j.version>1.7.33</igloo.slf4j.version>
+		<igloo.reload4j.version>1.2.18.0</igloo.reload4j.version>
 		<igloo.log4j2.version>2.17.1</igloo.log4j2.version>
 
 		<!-- https://sourceforge.net/p/opencsv/wiki/What%27s%20new/ -->
@@ -158,7 +165,11 @@
 
 		<igloo.json-lib.version>2.3</igloo.json-lib.version>
 		<!-- https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.10 -->
-		<igloo.jackson2-core.version>2.13.0</igloo.jackson2-core.version>
+		<!-- https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.11 -->
+		<!-- https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.12 -->
+		<!-- https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.13 -->
+		<!-- https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.13.1 -->
+		<igloo.jackson2-core.version>2.13.1</igloo.jackson2-core.version>
 		<igloo.jackson2-databind.version>${igloo.jackson2-core.version}</igloo.jackson2-databind.version>
 		<!-- https://github.com/FasterXML/jackson-databind/issues/2478 Resync jackson versions when performing update to 2.9.11 -->
 		<igloo.jackson2-annotations.version>${igloo.jackson2-core.version}</igloo.jackson2-annotations.version>
@@ -167,7 +178,7 @@
 
 		<igloo.truevfs.version>0.14.0</igloo.truevfs.version>
 		<igloo.bouncycastle.version>2.55</igloo.bouncycastle.version>
-		<igloo.bouncycastle-jdk15on.version>1.69</igloo.bouncycastle-jdk15on.version>
+		<igloo.bouncycastle-jdk15on.version>1.70</igloo.bouncycastle-jdk15on.version>
 
 		<igloo.flying-saucer.version>9.1.22</igloo.flying-saucer.version>
 		<igloo.imageinfo.version>1.9</igloo.imageinfo.version>
@@ -176,12 +187,14 @@
 		<!-- https://hc.apache.org/news.html -->
 		<!-- Since 4.5.8 we have to use setNormalizeUri(false) on links, otherwise URIUtils.rewriteURI will try to parse the path and will return broke paths if your path doesn't respect the ASCII standard -->
 		<igloo.httpclient.version>4.5.13</igloo.httpclient.version>
-		<igloo.httpcore.version>4.4.14</igloo.httpcore.version>
+		<igloo.httpcore.version>4.4.15</igloo.httpcore.version>
+		<!-- https://hc.apache.org/news.html -->
+		<igloo.httpclient5.version>5.1.2</igloo.httpclient5.version>
 		<igloo.prettytime.version>5.0.2.Final</igloo.prettytime.version>
-		<igloo.ph-css.version>6.3.4</igloo.ph-css.version>
+		<!-- https://github.com/phax/ph-css/releases -->
+		<igloo.ph-css.version>6.4.3</igloo.ph-css.version>
 		<igloo.galimatias.version>0.2.1</igloo.galimatias.version>
 
-		<igloo.jersey.version>1.19.4</igloo.jersey.version>
 		<igloo.jersey2.version>2.35</igloo.jersey2.version>
 		<igloo.jersey2-spring5.version>2.35</igloo.jersey2-spring5.version>
 		<igloo.glassfish-asm-all-repackaged.version>2.5.0-b60</igloo.glassfish-asm-all-repackaged.version>
@@ -197,7 +210,7 @@
 		<igloo.javax-validation-api.version>2.0.1.Final</igloo.javax-validation-api.version>
 
 		<igloo.wicket.version>8.13.0</igloo.wicket.version>
-		<igloo.wiquery.version>8.1.1</igloo.wiquery.version>
+		<igloo.wiquery.version>8.2.0</igloo.wiquery.version>
 		<igloo.wicketstuff-select2.version>8.13.0</igloo.wicketstuff-select2.version>
 		<!-- https://github.com/l0rdn1kk0n/wicket-webjars (0.5.x -> wicket 7, 2.0.x -> wicket 8) -->
 		<igloo.wicket-webjars.version>2.0.20</igloo.wicket-webjars.version>
@@ -210,10 +223,10 @@
 		<igloo.flywaydb.version>7.15.0</igloo.flywaydb.version>
 
 		<igloo.junit.version>4.13.2</igloo.junit.version>
-		<igloo.junit5.version>5.7.0</igloo.junit5.version>
+		<igloo.junit5.version>5.8.0</igloo.junit5.version>
 		<igloo.h2.version>2.0.206</igloo.h2.version>
-		<igloo.mockito.version>4.0.0</igloo.mockito.version>
-		<igloo.assertj.version>3.21.0</igloo.assertj.version>
+		<igloo.mockito.version>4.1.0</igloo.mockito.version>
+		<igloo.assertj.version>3.22.0</igloo.assertj.version>
 		<igloo.assertj-guava.version>3.4.0</igloo.assertj-guava.version>
 		<igloo.grizzly.version>1.9.65</igloo.grizzly.version>
 		<igloo.findbugs-annotations.version>3.0.1u2</igloo.findbugs-annotations.version>
@@ -325,7 +338,7 @@
 
 			<dependency>
 				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
+				<artifactId>slf4j-reload4j</artifactId>
 				<version>${igloo.slf4j.version}</version>
 			</dependency>
 		
@@ -348,9 +361,9 @@
 			</dependency>
 
 			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>${igloo.log4j.version}</version>
+				<groupId>ch.qos.reload4j</groupId>
+				<artifactId>reload4j</artifactId>
+				<version>${igloo.reload4j.version}</version>
 			</dependency>
 
 			<dependency>
@@ -973,6 +986,18 @@
 			</dependency>
 
 			<dependency>
+				<groupId>org.apache.httpcomponents.client5</groupId>
+				<artifactId>httpclient5</artifactId>
+				<version>${igloo.httpclient5.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
 				<groupId>io.mola.galimatias</groupId>
 				<artifactId>galimatias</artifactId>
 				<version>${igloo.galimatias.version}</version>
@@ -1383,12 +1408,6 @@
 						<artifactId>servlet-api</artifactId>
 					</exclusion>
 				</exclusions>
-			</dependency>
-
-			<dependency>
-				<groupId>com.sun.jersey</groupId>
-				<artifactId>jersey-grizzly</artifactId>
-				<version>${igloo.jersey.version}</version>
 			</dependency>
 
 			<dependency>
