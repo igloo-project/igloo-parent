@@ -57,6 +57,7 @@
 		<!-- both needed by mockito and hibernate; we keep hibernate version -->
 		<igloo.byte-buddy.version>1.12.1</igloo.byte-buddy.version>
 		<igloo.jboss-logging.version>3.4.2.Final</igloo.jboss-logging.version>
+		<igloo.jboss-logging-annotations.version>2.1.0.Final</igloo.jboss-logging-annotations.version>
 
 		<igloo.javassist.version>3.27.0-GA</igloo.javassist.version>
 
@@ -331,6 +332,12 @@
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-core</artifactId>
+				<version>${igloo.log4j2.version}</version>
+			</dependency>
+		
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-api</artifactId>
 				<version>${igloo.log4j2.version}</version>
 			</dependency>
 		
@@ -650,6 +657,14 @@
 				<groupId>com.zaxxer</groupId>
 				<artifactId>HikariCP</artifactId>
 				<version>${igloo.hikaricp.version}</version>
+				<exclusions>
+					<!-- from 5.0.0, hikaricp activates slf4j 2.0.0 alpha1 if java 11 enabled -->
+					<!-- surely needed hikari tests, we can keep our own version -->
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<!-- Hibernate -->
@@ -727,6 +742,11 @@
 						<groupId>xml-apis</groupId>
 					</exclusion>
 				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.logging</groupId>
+				<artifactId>jboss-logging-annotations</artifactId>
+				<version>${igloo.jboss-logging-annotations.version}</version>
 			</dependency>
 
 			<!-- QueryDSL -->

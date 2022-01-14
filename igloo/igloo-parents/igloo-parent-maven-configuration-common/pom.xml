@@ -106,7 +106,12 @@
 						</goals>
 						<configuration>
 							<rules>
-								<requireUpperBoundDeps />
+								<requireUpperBoundDeps>
+									<excludes>
+										<exclude>org.osgi:org.osgi.core</exclude>
+										<exclude>org.codehaus.plexus:plexus-utils</exclude>
+									</excludes>
+								</requireUpperBoundDeps>
 								<bannedDependencies>
 									<excludes>
 										<exclude>org.springframework:spring</exclude>
