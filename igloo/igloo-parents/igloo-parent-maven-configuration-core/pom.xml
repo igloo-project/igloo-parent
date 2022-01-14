@@ -761,6 +761,11 @@
 				<artifactId>jboss-logging-annotations</artifactId>
 				<version>${igloo.jboss-logging-annotations.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.jboss.logging</groupId>
+				<artifactId>jboss-logging-processor</artifactId>
+				<version>${igloo.jboss-logging-annotations.version}</version>
+			</dependency>
 
 			<!-- QueryDSL -->
 
