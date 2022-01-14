@@ -255,6 +255,9 @@
 
 		<!-- needed as provided dependency to compile generated classes targetting Java 8 -->
 		<igloo.javax-annotation-generated.version>1.3.2</igloo.javax-annotation-generated.version>
+		
+		<!-- various truevfs modules requires different lombok versions -->
+		<igloo.lombok.version>1.18.20</igloo.lombok.version>
 	</properties>
 
 	<dependencyManagement>
@@ -1498,6 +1501,12 @@
 				<version>${igloo.javax-annotation-generated.version}</version>
 				<!-- used only to compile java 8 @Generated classes with java 11 -->
 				<scope>provided</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${igloo.lombok.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
