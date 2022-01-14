@@ -7,7 +7,6 @@ import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
 import org.iglooproject.jpa.more.business.search.query.HibernateSearchLuceneQueryFactoryImpl;
 import org.iglooproject.jpa.more.business.search.query.IHibernateSearchLuceneQueryFactory;
 import org.iglooproject.jpa.more.config.spring.JpaMoreApplicationPropertyRegistryConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -31,12 +30,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 })
 public class IglooJpaMoreAutoConfiguration {
 
-	@Autowired
-	protected IJpaConfigurationProvider jpaConfigurationProvider;
-
 	@Bean
 	@ConditionalOnMissingBean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(IJpaConfigurationProvider jpaConfigurationProvider) {
 		return JpaConfigUtils.entityManagerFactory(jpaConfigurationProvider);
 	}
 

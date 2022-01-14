@@ -45,7 +45,7 @@
 		<!-- 5.2.8: https://github.com/spring-projects/spring-framework/releases/tag/v5.2.8.RELEASE -->
 		<!-- https://github.com/spring-projects/spring-framework/releases/tag/v5.3.15 -->
 		<igloo.spring.version>5.3.15</igloo.spring.version>
-		<igloo.spring-boot.version>2.3.4.RELEASE</igloo.spring-boot.version>
+		<igloo.spring-boot.version>2.6.2</igloo.spring-boot.version>
 		<!-- https://www.eclipse.org/aspectj/doc/released/README-196.html -->
 		<igloo.aspectj.version>1.9.7</igloo.aspectj.version>
 

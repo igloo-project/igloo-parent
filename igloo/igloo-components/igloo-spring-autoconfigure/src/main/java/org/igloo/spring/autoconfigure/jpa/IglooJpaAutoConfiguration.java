@@ -12,8 +12,8 @@ import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
 import org.iglooproject.jpa.config.spring.DefaultJpaConfig;
 import org.iglooproject.jpa.config.spring.JpaApplicationPropertyRegistryConfig;
 import org.iglooproject.jpa.config.spring.JpaConfigUtils;
-import org.iglooproject.jpa.config.spring.provider.DefaultJpaConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionConfigurationProvider;
+import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
 import org.iglooproject.jpa.util.CoreJpaUtilPackage;
@@ -117,7 +117,7 @@ public class IglooJpaAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	@DependsOn("databaseInitialization")
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DefaultJpaConfigurationProvider defaultJpaCoreConfigurationProvider) {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(IJpaConfigurationProvider defaultJpaCoreConfigurationProvider) {
 		return JpaConfigUtils.entityManagerFactory(defaultJpaCoreConfigurationProvider);
 	}
 

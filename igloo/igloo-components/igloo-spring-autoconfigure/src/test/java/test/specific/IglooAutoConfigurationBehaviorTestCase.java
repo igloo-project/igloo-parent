@@ -57,7 +57,9 @@ public class IglooAutoConfigurationBehaviorTestCase {
 	public void testSpringBootAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
-			.withPropertyValues("spring.mail.host=localhost")
+			.withPropertyValues("spring.mail.host=localhost",
+					// we need hibernate 5.5 for default naming strategy; see HibernateProperties
+					"spring.jpa.hibernate.naming.physicalStrategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy")
 			.withConfiguration(AutoConfigurations.of(TestSpringBootConfig.class))
 			.run(
 				(context) -> { assertThat(context).hasSingleBean(JavaMailSenderImpl.class); }
