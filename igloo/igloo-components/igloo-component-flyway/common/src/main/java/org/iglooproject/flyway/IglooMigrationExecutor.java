@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.migration;
+package org.iglooproject.flyway;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -45,6 +45,11 @@ public class IglooMigrationExecutor implements MigrationExecutor {
 	@Override
 	public boolean canExecuteInTransaction() {
 		return migration.canExecuteInTransaction();
+	}
+
+	@Override
+	public boolean shouldExecute() {
+		return migration.shouldExecute();
 	}
 
 }

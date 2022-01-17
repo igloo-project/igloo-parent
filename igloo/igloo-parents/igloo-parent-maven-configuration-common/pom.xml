@@ -4,7 +4,7 @@
 
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>3.1.0</version>
+	<version>3.2.0</version>
 	<packaging>pom</packaging>
 
 	<name>Igloo - Parent - Maven configuration - Common</name>
@@ -39,30 +39,30 @@
 		<igloo.maven-resources-plugin.version>3.2.0</igloo.maven-resources-plugin.version>
 		<igloo.maven-surefire-plugin.version>3.0.0-M5</igloo.maven-surefire-plugin.version>
 		<igloo.maven-install-plugin.version>3.0.0-M1</igloo.maven-install-plugin.version>
-		<igloo.maven-war-plugin.version>3.3.1</igloo.maven-war-plugin.version>
+		<igloo.maven-war-plugin.version>3.3.2</igloo.maven-war-plugin.version>
 		<igloo.maven-assembly-plugin.version>3.3.0</igloo.maven-assembly-plugin.version>
 		<igloo.maven-jar-plugin.version>3.2.0</igloo.maven-jar-plugin.version>
 		<igloo.maven-deploy-plugin.version>3.0.0-M1</igloo.maven-deploy-plugin.version>
 		<igloo.maven-source-plugin.version>3.2.1</igloo.maven-source-plugin.version>
-		<igloo.maven-javadoc-plugin.version>3.2.0</igloo.maven-javadoc-plugin.version>
-		<igloo.maven-enforcer-plugin.version>3.0.0-M3</igloo.maven-enforcer-plugin.version>
-		<igloo.maven-dependency-plugin.version>3.1.2</igloo.maven-dependency-plugin.version>
+		<igloo.maven-javadoc-plugin.version>3.3.1</igloo.maven-javadoc-plugin.version>
+		<igloo.maven-enforcer-plugin.version>3.0.0</igloo.maven-enforcer-plugin.version>
+		<igloo.maven-dependency-plugin.version>3.2.0</igloo.maven-dependency-plugin.version>
 		<igloo.maven-antrun-plugin.version>3.0.0</igloo.maven-antrun-plugin.version>
 		<igloo.animal-sniffer-maven-plugin.version>1.18</igloo.animal-sniffer-maven-plugin.version>
 		<igloo.exec-maven-plugin.version>3.0.0</igloo.exec-maven-plugin.version>
 		<igloo.maven-clean-plugin.version>3.1.0</igloo.maven-clean-plugin.version>
-		<igloo.maven-site-plugin.version>3.8.2</igloo.maven-site-plugin.version>
-		<igloo.maven-project-info-reports-plugin.version>3.1.1</igloo.maven-project-info-reports-plugin.version>
+		<igloo.maven-site-plugin.version>3.9.1</igloo.maven-site-plugin.version>
+		<igloo.maven-project-info-reports-plugin.version>3.1.2</igloo.maven-project-info-reports-plugin.version>
 		<igloo.maven-failsafe-plugin.version>3.0.0-M5</igloo.maven-failsafe-plugin.version>
 		<igloo.versions-maven-plugin.version>2.8.1</igloo.versions-maven-plugin.version>
-		<igloo.jacoco-maven-plugin.version>0.8.6</igloo.jacoco-maven-plugin.version>
+		<igloo.jacoco-maven-plugin.version>0.8.7</igloo.jacoco-maven-plugin.version>
 		<igloo.buildnumber-maven-plugin.version>1.4</igloo.buildnumber-maven-plugin.version>
-		<igloo.dependency-check.version>6.3.1</igloo.dependency-check.version>
+		<igloo.dependency-check.version>6.5.1</igloo.dependency-check.version>
 
-		<igloo.wagon-maven-plugin.version>2.0.0</igloo.wagon-maven-plugin.version>
+		<igloo.wagon-maven-plugin.version>2.0.2</igloo.wagon-maven-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.4.1</igloo.wagon-ssh-external-plugin.version>
 
-		<igloo.maven-processor-plugin.version>4.4</igloo.maven-processor-plugin.version>
+		<igloo.maven-processor-plugin.version>4.5</igloo.maven-processor-plugin.version>
 		<igloo.aspectj-maven-plugin.version>1.8</igloo.aspectj-maven-plugin.version>
 		<igloo.build-helper-maven-plugin.version>3.0.0</igloo.build-helper-maven-plugin.version>
 		<igloo.owasp-maven-plugin.version>5.3.2</igloo.owasp-maven-plugin.version>
@@ -106,7 +106,12 @@
 						</goals>
 						<configuration>
 							<rules>
-								<requireUpperBoundDeps />
+								<requireUpperBoundDeps>
+									<excludes>
+										<exclude>org.osgi:org.osgi.core</exclude>
+										<exclude>org.codehaus.plexus:plexus-utils</exclude>
+									</excludes>
+								</requireUpperBoundDeps>
 								<bannedDependencies>
 									<excludes>
 										<exclude>org.springframework:spring</exclude>

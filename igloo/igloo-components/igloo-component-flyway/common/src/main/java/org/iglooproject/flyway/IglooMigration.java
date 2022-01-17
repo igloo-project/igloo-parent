@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.migration;
+package org.iglooproject.flyway;
 
 import org.flywaydb.core.api.FlywayException;
 import org.flywaydb.core.api.MigrationVersion;
@@ -54,6 +54,11 @@ public abstract class IglooMigration implements IIglooMigration {
 
 	@Override
 	public boolean canExecuteInTransaction() {
+		return true;
+	}
+
+	@Override
+	public boolean shouldExecute() {
 		return true;
 	}
 

@@ -109,6 +109,7 @@ public class IglooJpaSecurityAutoConfiguration {
 	}
 	
 	@Bean(name = "authenticationService")
+	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 	@ConditionalOnMissingBean
 	public IAuthenticationService authenticationService() {
 		return new CoreAuthenticationServiceImpl();

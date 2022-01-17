@@ -6,12 +6,15 @@ import org.iglooproject.jpa.config.spring.provider.DatabaseConnectionPoolConfigu
 import org.iglooproject.jpa.config.spring.provider.DatasourceProvider;
 import org.iglooproject.jpa.config.spring.provider.DefaultJpaConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionConfigurationProvider;
+import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 
 @Configuration
 @PropertySource(
@@ -23,7 +26,8 @@ public class DefaultJpaConfig {
 	public static final Logger LOGGER = LoggerFactory.getLogger(DefaultJpaConfig.class);
 
 	@Bean
-	public DefaultJpaConfigurationProvider defaultJpaCoreConfigurationProvider() {
+	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
+	public IJpaConfigurationProvider defaultJpaCoreConfigurationProvider() {
 		return new DefaultJpaConfigurationProvider();
 	}
 

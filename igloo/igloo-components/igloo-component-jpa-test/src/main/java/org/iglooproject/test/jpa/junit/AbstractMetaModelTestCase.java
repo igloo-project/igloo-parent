@@ -51,7 +51,7 @@ public abstract class AbstractMetaModelTestCase extends AbstractTestCase {
 
 	protected JdbcRelation getRelation(Connection connection, String schemaPattern, String relationPattern, String... types) {
 		return getRelations(connection, schemaPattern, "%", types).stream()
-				.filter(i -> i.getTable_name().equalsIgnoreCase(relationPattern))
+				.filter(i -> i.getTable_name() != null && i.getTable_name().equalsIgnoreCase(relationPattern))
 				.findFirst()
 				.orElseThrow(() -> new NoSuchElementException(String.format("Relation %s cannot be found.", relationPattern)));
 	}
@@ -62,7 +62,7 @@ public abstract class AbstractMetaModelTestCase extends AbstractTestCase {
 			Iterator<DynaBean> tablesResultSet =
 					new ResultSetDynaClass(
 						connection.getMetaData().getTables(null, schemaPattern, relationPattern, types),
-						false,
+						true,
 						true
 					).iterator();
 			
