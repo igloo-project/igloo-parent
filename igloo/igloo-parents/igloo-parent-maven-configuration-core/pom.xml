@@ -98,7 +98,7 @@
 		<!-- 5.3.2: https://github.com/spring-projects/spring-security/releases/tag/5.3.2.RELEASE -->
 		<!-- 5.3.4: https://github.com/spring-projects/spring-security/releases/tag/5.3.4.RELEASE -->
 		<!-- https://github.com/spring-projects/spring-security/releases -->
-		<igloo.spring-security.version>5.4.10</igloo.spring-security.version>
+		<igloo.spring-security.version>5.6.1</igloo.spring-security.version>
 
 		<!-- https://github.com/spring-projects/spring-ldap/releases -->
 		<igloo.spring-ldap.version>2.3.5.RELEASE</igloo.spring-ldap.version>

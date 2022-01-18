@@ -27,6 +27,8 @@ import org.iglooproject.jpa.security.service.JpaSecurityServicePackage;
 import org.iglooproject.jpa.security.service.NamedPermissionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -34,7 +36,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -49,6 +50,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.parameters.AnnotationParameterNameDiscoverer;
 import org.springframework.security.core.parameters.DefaultSecurityParameterNameDiscoverer;
@@ -62,7 +65,6 @@ import com.google.common.collect.Lists;
 @Configuration
 @ConditionalOnProperty(name = "igloo-ac.jpa-security.disabled", havingValue = "false", matchIfMissing = true)
 @Import(IglooJpaSecurityRunAsConfig.class)
-@ImportResource("classpath:spring/igloo-component-jpa-security-context.xml")
 @AutoConfigureAfter({ IglooJpaAutoConfiguration.class })
 @ComponentScan(basePackageClasses = {
 		JpaSecurityBusinessPackage.class,
@@ -258,6 +260,28 @@ public class IglooJpaSecurityAutoConfiguration {
 	@Bean
 	public JpaPackageScanProvider jpaSecurityPackageScanProvider() {
 		return new JpaPackageScanProvider(JpaSecurityBusinessPackage.class.getPackage());
+	}
+
+	@Configuration
+	@EnableGlobalMethodSecurity(order = 0, prePostEnabled = true, securedEnabled = true)
+	public static class JpaGlobalMethodSecurity extends GlobalMethodSecurityConfiguration {
+		@Autowired
+		@Qualifier("runAsManager")
+		private RunAsManager runAsManager;
+		
+		@Autowired
+		@Qualifier("expressionHandler")
+		private MethodSecurityExpressionHandler methodSecurityExpressionHandler;
+		
+		@Override
+		protected RunAsManager runAsManager() {
+			return runAsManager;
+		}
+		
+		@Override
+		protected MethodSecurityExpressionHandler createExpressionHandler() {
+			return methodSecurityExpressionHandler;
+		}
 	}
 
 }
