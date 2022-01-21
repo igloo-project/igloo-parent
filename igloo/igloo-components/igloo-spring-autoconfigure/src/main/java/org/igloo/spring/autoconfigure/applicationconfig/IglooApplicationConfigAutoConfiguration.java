@@ -1,6 +1,7 @@
 package org.igloo.spring.autoconfigure.applicationconfig;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.igloo.spring.autoconfigure.property.IglooPropertyAutoConfiguration;
 import org.iglooproject.spring.config.spring.IglooVersionInfoConfig;
@@ -11,8 +12,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
-import com.google.common.collect.Lists;
 
 @Configuration
 @ConditionalOnProperty(name = "igloo-ac.application.disabled", havingValue = "false", matchIfMissing = true)
@@ -30,12 +29,12 @@ public class IglooApplicationConfigAutoConfiguration {
 	 */
 	@Bean
 	public Collection<Object> wicketAutowiredWorkaround1() {
-		return Lists.<Object>newArrayList();
+		return Collections.emptyList();
 	}
 
 	@Bean
 	public Collection<Object> wicketAutowiredWorkaround2() {
-		return Lists.<Object>newArrayList();
+		return Collections.emptyList();
 	}
 
 }

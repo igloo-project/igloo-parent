@@ -1,11 +1,10 @@
 package test.jpa.more.business.task.config;
 
-import java.util.Collection;
-
 import org.apache.commons.lang3.EnumUtils;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
-import org.iglooproject.jpa.more.business.task.model.IQueueId;
 import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
+import org.iglooproject.jpa.more.config.spring.ImmutableTaskManagement.Builder;
+import org.iglooproject.jpa.more.config.spring.TaskManagementConfigurer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
@@ -20,9 +19,12 @@ import test.jpa.more.business.task.model.TestQueueId;
 )
 public class TestTaskManagementConfig extends AbstractTaskManagementConfig {
 
-	@Override
-	public Collection<? extends IQueueId> queueIds() {
-		return EnumUtils.getEnumList(TestQueueId.class);
+	@Configuration
+	public static class TestTaskManagementConfigurer implements TaskManagementConfigurer {
+		@Override
+		public void configure(Builder taskManagement) {
+			taskManagement.addAllQueueIds(EnumUtils.getEnumList(TestQueueId.class));
+		}
 	}
 
 }

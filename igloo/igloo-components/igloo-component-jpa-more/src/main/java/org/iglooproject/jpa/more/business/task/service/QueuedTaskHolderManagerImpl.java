@@ -19,7 +19,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import javax.annotation.PreDestroy;
-import javax.annotation.Resource;
 
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -78,8 +77,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	@Autowired
 	private ITransactionSynchronizationTaskManagerService synchronizationManager;
 
-	@Resource
-	private Collection<? extends IQueueId> queueIds;
+	private final Collection<? extends IQueueId> queueIds;
 
 	private int stopTimeout;
 
@@ -95,6 +93,10 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	private AtomicBoolean active = new AtomicBoolean(false);
 
 	private AtomicBoolean availableForAction = new AtomicBoolean(true);
+
+	public QueuedTaskHolderManagerImpl(Collection<? extends IQueueId> queueIds) {
+		this.queueIds = queueIds;
+	}
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
