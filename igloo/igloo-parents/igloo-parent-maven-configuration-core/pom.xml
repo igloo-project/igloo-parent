@@ -1575,7 +1575,6 @@
 							<querydsl.generatedAnnotationClass>javax.annotation.processing.Generated</querydsl.generatedAnnotationClass>
 						</systemProperties>
 						<releaseVersion>${jdk.release.version}</releaseVersion>
-						<skipSourcesUnchanged>true</skipSourcesUnchanged>
 					</configuration>
 					<executions>
 						<execution>
