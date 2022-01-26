@@ -1328,12 +1328,6 @@
 				<version>${igloo.javax-validation-api.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>org.flywaydb</groupId>
-				<artifactId>flyway-core</artifactId>
-				<version>${igloo.flywaydb.version}</version>
-			</dependency>
-
 			<!-- Elasticsearch -->
 			<dependency>
 				<groupId>org.elasticsearch</groupId>
