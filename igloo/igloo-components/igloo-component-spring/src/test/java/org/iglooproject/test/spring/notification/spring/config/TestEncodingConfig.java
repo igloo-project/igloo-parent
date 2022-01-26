@@ -1,18 +1,18 @@
-package org.iglooproject.test.jpa.config.spring;
+package org.iglooproject.test.spring.notification.spring.config;
 
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * Added configuration to override some properties
+ * Load configuration for mail encoding.
  */
 @Configuration
 @PropertySource(
 	name = IglooPropertySourcePriority.APPLICATION,
-	value = "classpath:/igloo-jpa-batch.properties",
+	value = "classpath:encoding-test.properties",
 	encoding = "UTF-8"
 )
-public class JpaBatchTestConfig {
+public class TestEncodingConfig {
 
 }

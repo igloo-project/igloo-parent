@@ -7,7 +7,8 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource(
 	name = IglooPropertySourcePriority.COMPONENT,
-	value = "classpath:configuration-app-default.properties"
+	value = "classpath:configuration-app-default.properties",
+	encoding = "UTF-8"
 )
 public class SpringWithConfigurationLocationsDefaultConfig {
 

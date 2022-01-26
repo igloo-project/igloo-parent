@@ -30,7 +30,8 @@ import org.springframework.context.annotation.PropertySource;
 @AutoConfigureAfter(IglooPropertyAutoConfiguration.class)
 @PropertySource(
 	name = IglooPropertySourcePriority.COMPONENT,
-	value = "classpath:/configuration/flyway-common.properties"
+	value = "classpath:/configuration/flyway-common.properties",
+	encoding = "UTF-8"
 )
 @Import({ FlywayPropertyRegistryConfig.class })
 public class IglooFlywayAutoConfiguration {

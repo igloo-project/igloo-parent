@@ -15,7 +15,8 @@ import test.jpa.more.business.task.model.TestQueueId;
 	name = IglooPropertySourcePriority.APPLICATION,
 	value = {
 		"classpath:jpa-more-test-task-management.properties"
-	}
+	},
+	encoding = "UTF-8"
 )
 public class TestTaskManagementConfig extends AbstractTaskManagementConfig {
 

@@ -19,7 +19,8 @@ import com.google.common.base.Converter;
 @Configuration
 @PropertySource(
 	name = IglooPropertySourcePriority.COMPONENT,
-	value = "classpath:flyway-placeholders.properties"
+	value = "classpath:flyway-placeholders.properties",
+	encoding = "UTF-8"
 )
 public class FlywayPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
 

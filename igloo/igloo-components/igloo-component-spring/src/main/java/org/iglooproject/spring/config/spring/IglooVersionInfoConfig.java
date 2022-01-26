@@ -9,7 +9,8 @@ import org.springframework.context.annotation.PropertySource;
 @ManifestPropertySource(prefix = "igloo.component-spring")
 @PropertySource(
 	name = IglooPropertySourcePriority.COMPONENT,
-	value = "classpath:igloo-component-spring.properties"
+	value = "classpath:igloo-component-spring.properties",
+	encoding = "UTF-8"
 )
 public class IglooVersionInfoConfig {
 

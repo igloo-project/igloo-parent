@@ -21,7 +21,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 	value = {
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		"classpath:rest-server.properties"
-	}
+	},
+	encoding = "UTF-8"
 )
 @Import({
 	RestServerTestJpaConfig.class,

@@ -16,7 +16,8 @@ import org.springframework.context.annotation.PropertySource;
 		"classpath:configuration-app-${igloo.applicationName}.properties",
 		"classpath:configuration-app-${user.name}.properties",
 		"classpath:configuration-app-placeholder.properties",
-	}
+	},
+	encoding = "UTF-8"
 )
 @Import({
 	SpringWithConfigurationLocationsOverrideConfig.class,

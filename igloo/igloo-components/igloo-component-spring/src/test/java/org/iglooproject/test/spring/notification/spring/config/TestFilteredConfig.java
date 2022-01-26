@@ -10,7 +10,8 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource(
 	name = IglooPropertySourcePriority.APPLICATION,
-	value = "classpath:notification-test-filtered.properties"
+	value = "classpath:notification-test-filtered.properties",
+	encoding = "UTF-8"
 )
 public class TestFilteredConfig {
 

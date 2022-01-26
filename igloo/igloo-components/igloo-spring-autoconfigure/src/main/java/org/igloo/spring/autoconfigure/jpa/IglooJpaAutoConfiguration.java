@@ -47,7 +47,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 	value = {
 		IglooJpaAutoConfiguration.PROPERTIES_COMPONENT_JPA,
 		"classpath:/configuration/jpa-common.properties"
-	}
+	},
+	encoding = "UTF-8"
 )
 @Import({ DefaultJpaConfig.class })
 @ComponentScan(

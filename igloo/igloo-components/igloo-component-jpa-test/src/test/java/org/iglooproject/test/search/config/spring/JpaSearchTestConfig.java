@@ -19,7 +19,8 @@ import org.springframework.context.annotation.PropertySource;
 		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
 		"classpath:igloo-jpa.properties",
 		"classpath:igloo-jpa-search.properties",
-	}
+	},
+	encoding = "UTF-8"
 )
 @Import({
 	JpaSearchJpaTestConfig.class,

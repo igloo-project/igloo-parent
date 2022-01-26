@@ -19,7 +19,8 @@ import org.springframework.context.annotation.ScopedProxyMode;
 @Configuration
 @PropertySource(
 	name = IglooPropertySourcePriority.COMPONENT,
-	value = "classpath:igloo-component-jpa.properties"
+	value = "classpath:igloo-component-jpa.properties",
+	encoding = "UTF-8"
 )
 public class DefaultJpaConfig {
 

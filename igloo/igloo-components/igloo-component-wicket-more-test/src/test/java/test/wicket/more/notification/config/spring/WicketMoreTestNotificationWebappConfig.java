@@ -17,7 +17,8 @@ import test.wicket.more.notification.application.WicketMoreTestNotificationAppli
 @Configuration
 @PropertySource(
 	name = IglooPropertySourcePriority.OVERRIDES,
-	value = "classpath:notification-test.properties"
+	value = "classpath:notification-test.properties",
+	encoding = "UTF-8"
 )
 @Import({
 	WicketMoreTestCoreCommonConfig.class,
