@@ -232,7 +232,7 @@
 		<igloo.grizzly.version>1.9.65</igloo.grizzly.version>
 		<igloo.findbugs-annotations.version>3.0.1u2</igloo.findbugs-annotations.version>
 		<igloo.findbugs-jsr305.version>3.0.2</igloo.findbugs-jsr305.version>
-		<igloo.errorprone.version>2.3.4</igloo.errorprone.version>
+		<igloo.errorprone.version>2.10.0</igloo.errorprone.version>
 
 		<!-- https://github.com/vt-middleware/passay/commits/master -->
 		<igloo.passay.version>1.6.1</igloo.passay.version>
