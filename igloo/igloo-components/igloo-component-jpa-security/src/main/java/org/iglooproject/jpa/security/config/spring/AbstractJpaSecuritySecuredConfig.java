@@ -5,10 +5,12 @@ import org.iglooproject.jpa.security.access.expression.method.CoreMethodSecurity
 import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.intercept.RunAsManager;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.core.parameters.AnnotationParameterNameDiscoverer;
@@ -45,6 +47,9 @@ public abstract class AbstractJpaSecuritySecuredConfig extends AbstractJpaSecuri
 	@EnableGlobalMethodSecurity(order = 0, prePostEnabled = true, securedEnabled = true)
 	public static class JpaGlobalMethodSecurity extends GlobalMethodSecurityConfiguration {
 		@Autowired
+		private ApplicationContext applicationContext;
+		
+		@Autowired
 		@Qualifier("runAsManager")
 		private RunAsManager runAsManager;
 		
@@ -60,6 +65,15 @@ public abstract class AbstractJpaSecuritySecuredConfig extends AbstractJpaSecuri
 		@Override
 		protected MethodSecurityExpressionHandler createExpressionHandler() {
 			return methodSecurityExpressionHandler;
+		}
+		
+		/**
+		 * Load authenticationManager bean as late as possible
+		 * (do not use an @Autowired attribute here, as it silently breaks transaction interceptors)
+		 */
+		@Override
+		protected AuthenticationManager authenticationManager() throws Exception {
+			return applicationContext.getBean("authenticationManager", AuthenticationManager.class);
 		}
 	}
 

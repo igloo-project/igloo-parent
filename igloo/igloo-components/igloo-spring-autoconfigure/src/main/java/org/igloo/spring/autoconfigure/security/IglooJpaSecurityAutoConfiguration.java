@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -266,6 +267,9 @@ public class IglooJpaSecurityAutoConfiguration {
 	@EnableGlobalMethodSecurity(order = 0, prePostEnabled = true, securedEnabled = true)
 	public static class JpaGlobalMethodSecurity extends GlobalMethodSecurityConfiguration {
 		@Autowired
+		private ApplicationContext applicationContext;
+		
+		@Autowired
 		@Qualifier("runAsManager")
 		private RunAsManager runAsManager;
 		
@@ -281,6 +285,15 @@ public class IglooJpaSecurityAutoConfiguration {
 		@Override
 		protected MethodSecurityExpressionHandler createExpressionHandler() {
 			return methodSecurityExpressionHandler;
+		}
+		
+		/**
+		 * Load authenticationManager bean as late as possible
+		 * (do not use an @Autowired attribute here, as it silently breaks transaction interceptors)
+		 */
+		@Override
+		protected AuthenticationManager authenticationManager() throws Exception {
+			return applicationContext.getBean("authenticationManager", AuthenticationManager.class);
 		}
 	}
 
