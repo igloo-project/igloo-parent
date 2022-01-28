@@ -2,6 +2,7 @@ package org.iglooproject.config.bootstrap.spring;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,6 +33,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.ResourcePropertySource;
 
 import com.google.common.base.Joiner;
@@ -109,7 +111,10 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 				LOGGER.debug("Bootstrap configuration: ignore duplicate {}", location);
 			} else if (applicationContext.getResource(location).exists()) {
 				LOGGER.debug("Bootstrap configuration: queuing {}", location);
-				resources.put(location, new ResourcePropertySource(location));
+				// Use an encoded resource; we enforce UTF-8 encoding
+				Resource resource = applicationContext.getResource(location);
+				EncodedResource encodedResource = new EncodedResource(resource, StandardCharsets.UTF_8);
+				resources.put(location, new ResourcePropertySource(location, encodedResource));
 			} else {
 				LOGGER.debug("Bootstrap configuration: ignore not existing {}", location);
 			}

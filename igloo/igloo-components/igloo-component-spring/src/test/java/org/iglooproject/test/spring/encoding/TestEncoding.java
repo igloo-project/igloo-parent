@@ -1,14 +1,10 @@
-package org.iglooproject.test.spring.notification;
+package org.iglooproject.test.spring.encoding;
 
-import static org.junit.Assert.assertEquals;
-
+import org.assertj.core.api.Assertions;
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
-import org.iglooproject.spring.property.SpringPropertyIds;
-import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.test.spring.notification.spring.config.TestEncodingConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,16 +16,23 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 		classes = { TestEncodingConfig.class },
 		initializers = { ExtendedApplicationContextInitializer.class }
 )
-public class TestEncoding extends AbstractTestNotification {
+public class TestEncoding {
 
-	@Autowired
-	private IPropertyService propertyService;
+	@Value("${encoding}")
+	private String compositeUtf8Value;
+	@Value("${alone}")
+	private String utf8Value;
 
 	@Test
-	public void testEncoding() {
+	public void testCompositeEncoding() {
 		String subjectPrefix = "[Test Igloo encoding : à é]";
-		String subjectPrefixProperty = propertyService.get(SpringPropertyIds.NOTIFICATION_MAIL_SUBJECT_PREFIX);
-		assertEquals(subjectPrefix, subjectPrefixProperty);
+		Assertions.assertThat(compositeUtf8Value).isEqualTo(subjectPrefix);
+	}
+
+	@Test
+	public void testIndividualEncoding() {
+		String subjectPrefix = "[Test Igloo encoding : à é]";
+		Assertions.assertThat(utf8Value).isEqualTo(subjectPrefix);
 	}
 
 }
