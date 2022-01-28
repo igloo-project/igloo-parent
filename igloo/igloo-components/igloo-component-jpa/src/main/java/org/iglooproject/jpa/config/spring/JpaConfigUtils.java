@@ -13,6 +13,7 @@ import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
@@ -22,6 +23,7 @@ import org.hibernate.cache.ehcache.ConfigSettings;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
+import org.hibernate.jpa.boot.spi.TypeContributorList;
 import org.hibernate.jpa.spi.IdentifierGeneratorStrategyProvider;
 import org.hibernate.loader.BatchFetchStyle;
 import org.iglooproject.jpa.business.generic.service.ITransactionalAspectAwareService;
@@ -46,6 +48,7 @@ import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.springframework.util.StringUtils;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -190,12 +193,29 @@ public final class JpaConfigUtils {
 		}
 		
 		properties.put(EntityManagerFactoryBuilderImpl.INTEGRATOR_PROVIDER, configuration.getIntegratorProvider());
+		if (configuration.getTypeContributors() != null) {
+			properties.put(
+				EntityManagerFactoryBuilderImpl.TYPE_CONTRIBUTORS,
+				new TypeContributorListImpl(configuration.getTypeContributors())
+			);
+		}
 		
 		// Override properties
 		properties.putAll(configuration.getDefaultExtraProperties());
 		properties.putAll(configuration.getExtraProperties());
 		
 		return properties;
+	}
+
+	public static class TypeContributorListImpl implements TypeContributorList {
+		private final List<TypeContributor> contributors;
+		public TypeContributorListImpl(List<TypeContributor> contributors) {
+			this.contributors = ImmutableList.copyOf(contributors);
+		}
+		@Override
+		public List<TypeContributor> getTypeContributors() {
+			return contributors;
+		}
 	}
 
 	public static Advisor defaultTransactionAdvisor(PlatformTransactionManager transactionManager) {
