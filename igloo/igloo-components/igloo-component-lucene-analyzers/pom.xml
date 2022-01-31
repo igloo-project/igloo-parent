@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>3.4.0-SNAPSHOT</version>
+		<version>3.3.0</version>
 	</parent>
 
 	<artifactId>igloo-component-lucene-analyzers</artifactId>
