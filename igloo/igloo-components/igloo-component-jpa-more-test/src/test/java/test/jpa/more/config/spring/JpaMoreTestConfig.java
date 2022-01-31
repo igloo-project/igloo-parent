@@ -23,7 +23,8 @@ import test.jpa.more.business.JpaMoreTestBusinessPackage;
 		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
 		"classpath:jpa-more-test.properties",
 		"classpath:property-test.properties",
-	}
+	},
+	encoding = "UTF-8"
 )
 @Import({
 	JpaMoreTestJpaConfig.class,

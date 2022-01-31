@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>3.2.1</version>
+		<version>3.3.0</version>
 	</parent>
 
 	<artifactId>igloo-component-jpa-more</artifactId>
@@ -86,8 +86,22 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.immutables</groupId>
+			<artifactId>value</artifactId>
+		</dependency>
+		
+		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>annotations</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.immutables</groupId>
+			<artifactId>value</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.errorprone</groupId>
+			<artifactId>error_prone_annotations</artifactId>
 		</dependency>
 		
 		<!-- Test dependencies -->

@@ -16,7 +16,8 @@ import org.springframework.context.annotation.PropertySource;
 	name = IglooPropertySourcePriority.BOOTSTRAP,
 	value = "composite:${igloo.configurationLocations}",
 	factory = CompositePropertySourceFactory.class,
-	ignoreResourceNotFound = true
+	ignoreResourceNotFound = true,
+	encoding = "UTF-8"
 )
 public class IglooBootstrapPropertySourcesConfig {
 

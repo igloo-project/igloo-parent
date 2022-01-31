@@ -16,7 +16,8 @@ import test.wicket.more.business.WicketMoreTestBusinessPackage;
 @Configuration
 @PropertySource(
 	name = IglooPropertySourcePriority.APPLICATION,
-	value = ConfigurationPropertiesUrlConstants.JPA_COMMON
+	value = ConfigurationPropertiesUrlConstants.JPA_COMMON,
+	encoding = "UTF-8"
 )
 @Import({
 	WicketMoreTestJpaConfig.class,

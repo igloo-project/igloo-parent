@@ -57,23 +57,28 @@ import org.springframework.context.annotation.PropertySource;
 @Documented
 @PropertySource(
 	name = IglooPropertySourcePriority.COMPONENT,
-	value = "classpath:igloo-placeholder.properties"
+	value = "classpath:igloo-placeholder.properties",
+	encoding = "UTF-8"
 )
 @PropertySource(
 	name = IglooPropertySourcePriority.FRAMEWORK,
-	value = "classpath:igloo-placeholder.properties"
+	value = "classpath:igloo-placeholder.properties",
+	encoding = "UTF-8"
 )
 @PropertySource(
 	name = IglooPropertySourcePriority.APPLICATION,
-	value = "classpath:igloo-placeholder.properties"
+	value = "classpath:igloo-placeholder.properties",
+	encoding = "UTF-8"
 )
 @PropertySource(
 	name = IglooPropertySourcePriority.BOOTSTRAP,
-	value = "classpath:igloo-placeholder.properties"
+	value = "classpath:igloo-placeholder.properties",
+	encoding = "UTF-8"
 )
 @PropertySource(
 	name = IglooPropertySourcePriority.OVERRIDES,
-	value = "classpath:igloo-placeholder.properties"
+	value = "classpath:igloo-placeholder.properties",
+	encoding = "UTF-8"
 )
 public @interface IglooPropertySourcesLevels {
 

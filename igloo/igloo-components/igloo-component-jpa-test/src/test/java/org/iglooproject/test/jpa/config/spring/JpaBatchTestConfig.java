@@ -10,7 +10,8 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource(
 	name = IglooPropertySourcePriority.APPLICATION,
-	value = "classpath:/igloo-jpa-batch.properties"
+	value = "classpath:/igloo-jpa-batch.properties",
+	encoding = "UTF-8"
 )
 public class JpaBatchTestConfig {
 

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-common</artifactId>
-		<version>3.2.1</version>
+		<version>3.3.0</version>
 		<relativePath>../igloo-parent-maven-configuration-common/pom.xml</relativePath>
 	</parent>
 
@@ -98,7 +98,7 @@
 		<!-- 5.3.2: https://github.com/spring-projects/spring-security/releases/tag/5.3.2.RELEASE -->
 		<!-- 5.3.4: https://github.com/spring-projects/spring-security/releases/tag/5.3.4.RELEASE -->
 		<!-- https://github.com/spring-projects/spring-security/releases -->
-		<igloo.spring-security.version>5.4.10</igloo.spring-security.version>
+		<igloo.spring-security.version>5.6.1</igloo.spring-security.version>
 
 		<!-- https://github.com/spring-projects/spring-ldap/releases -->
 		<igloo.spring-ldap.version>2.3.5.RELEASE</igloo.spring-ldap.version>
@@ -225,14 +225,14 @@
 
 		<igloo.junit.version>4.13.2</igloo.junit.version>
 		<igloo.junit5.version>5.8.0</igloo.junit5.version>
-		<igloo.h2.version>2.0.206</igloo.h2.version>
+		<igloo.h2.version>2.1.210</igloo.h2.version>
 		<igloo.mockito.version>4.1.0</igloo.mockito.version>
 		<igloo.assertj.version>3.22.0</igloo.assertj.version>
 		<igloo.assertj-guava.version>3.4.0</igloo.assertj-guava.version>
 		<igloo.grizzly.version>1.9.65</igloo.grizzly.version>
 		<igloo.findbugs-annotations.version>3.0.1u2</igloo.findbugs-annotations.version>
 		<igloo.findbugs-jsr305.version>3.0.2</igloo.findbugs-jsr305.version>
-		<igloo.errorprone.version>2.3.4</igloo.errorprone.version>
+		<igloo.errorprone.version>2.10.0</igloo.errorprone.version>
 
 		<!-- https://github.com/vt-middleware/passay/commits/master -->
 		<igloo.passay.version>1.6.1</igloo.passay.version>
@@ -258,6 +258,7 @@
 		
 		<!-- various truevfs modules requires different lombok versions -->
 		<igloo.lombok.version>1.18.20</igloo.lombok.version>
+		<igloo.immutables.version>2.8.2</igloo.immutables.version>
 	</properties>
 
 	<dependencyManagement>
@@ -266,35 +267,35 @@
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-jpa-test</artifactId>
-				<version>3.2.1</version>
+				<version>3.3.0</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-jpa-more-test</artifactId>
-				<version>3.2.1</version>
+				<version>3.3.0</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-wicket-test</artifactId>
-				<version>3.2.1</version>
+				<version>3.3.0</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-wicket-more-test</artifactId>
-				<version>3.2.1</version>
+				<version>3.3.0</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-test</artifactId>
-				<version>3.2.1</version>
+				<version>3.3.0</version>
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
@@ -302,7 +303,7 @@
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-junit5</artifactId>
-				<version>3.2.1</version>
+				<version>3.3.0</version>
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
@@ -310,7 +311,7 @@
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-elasticsearch-test</artifactId>
-				<version>3.2.1</version>
+				<version>3.3.0</version>
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
@@ -1349,7 +1350,7 @@
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-hibernate-search</artifactId>
-				<version>3.2.1</version>
+				<version>3.3.0</version>
 			</dependency>
 
 			<!-- Test dependencies -->
@@ -1502,6 +1503,19 @@
 				<artifactId>lombok</artifactId>
 				<version>${igloo.lombok.version}</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>org.immutables</groupId>
+				<artifactId>value</artifactId>
+				<version>${igloo.immutables.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.google.errorprone</groupId>
+				<artifactId>error_prone_annotations</artifactId>
+				<version>${igloo.errorprone.version}</version>
+				<scope>provided</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -1523,6 +1537,11 @@
 							<classifier>jpa</classifier>
 							<version>${igloo.querydsl.version}</version>
 						</dependency>
+						<dependency>
+							<groupId>org.immutables</groupId>
+							<artifactId>value</artifactId>
+							<version>${igloo.immutables.version}</version>
+						</dependency>
 						<!-- for bindings, we can encounter guava types that uses check-time annotations -->
 						<dependency>
 							<groupId>com.google.errorprone</groupId>
@@ -1542,6 +1561,7 @@
 					</dependencies>
 					<configuration>
 						<processors>
+							<processor>org.immutables.processor.ProxyProcessor</processor>
 							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
 							<processor>org.bindgen.processor.Processor</processor>
 						</processors>
@@ -1549,7 +1569,6 @@
 							<querydsl.generatedAnnotationClass>javax.annotation.processing.Generated</querydsl.generatedAnnotationClass>
 						</systemProperties>
 						<releaseVersion>${jdk.release.version}</releaseVersion>
-						<skipSourcesUnchanged>true</skipSourcesUnchanged>
 					</configuration>
 					<executions>
 						<execution>

@@ -19,7 +19,8 @@ import org.springframework.context.annotation.PropertySource;
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JPA_SECURITY_COMMON,
 		"classpath:jpa-security-test.properties"
-	}
+	},
+	encoding = "UTF-8"
 )
 @ComponentScan(basePackageClasses = {
 		JpaSecurityTestBusinessPackage.class

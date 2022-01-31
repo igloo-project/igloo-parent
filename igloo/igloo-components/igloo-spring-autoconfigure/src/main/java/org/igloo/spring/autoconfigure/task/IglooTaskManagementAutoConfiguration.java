@@ -1,8 +1,8 @@
 package org.igloo.spring.autoconfigure.task;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.commons.lang3.EnumUtils;
 import org.igloo.spring.autoconfigure.property.IglooPropertyAutoConfiguration;
 import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
 import org.iglooproject.jpa.more.business.task.dao.IQueuedTaskHolderDao;
@@ -14,11 +14,15 @@ import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderManagerImpl;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderServiceImpl;
+import org.iglooproject.jpa.more.config.spring.ImmutableTaskManagement;
 import org.iglooproject.jpa.more.config.spring.JpaMoreTaskApplicationPropertyRegistryConfig;
+import org.iglooproject.jpa.more.config.spring.TaskManagementConfigurer;
 import org.iglooproject.jpa.more.util.transaction.CoreJpaMoreUtilTransactionPackage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -38,6 +42,8 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 @Import(JpaMoreTaskApplicationPropertyRegistryConfig.class)
 @AutoConfigureAfter(IglooPropertyAutoConfiguration.class)
 public class IglooTaskManagementAutoConfiguration {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(IglooTaskManagementAutoConfiguration.class);
 	
 	public static final String OBJECT_MAPPER_BEAN_NAME = "queuedTaskHolderObjectMapper";
 
@@ -61,34 +67,34 @@ public class IglooTaskManagementAutoConfiguration {
 	public IQueuedTaskHolderService queuedTaskHolderService(IQueuedTaskHolderDao queuedTaskHolderDao) {
 		return new QueuedTaskHolderServiceImpl(queuedTaskHolderDao);
 	}
-	
-	@Bean
-	public IQueuedTaskHolderManager queuedTaskHolderManager() {
-		return new QueuedTaskHolderManagerImpl();
-	}
-	
+
 	@Bean
 	@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public IQueuedTaskHolderSearchQuery queuedTaskHolderSearchQuery() {
 		return new QueuedTaskHolderSearchQueryImpl();
 	}
 
+	@Bean
+	public IQueuedTaskHolderManager queuedTaskHolderManager(
+			@Autowired(required = false) Collection<? extends IQueueId> queueIdsBean,
+			Collection<TaskManagementConfigurer> configurers) {
+		Collection<IQueueId> queueIds = new ArrayList<>();
+		if (queueIdsBean != null) {
+			LOGGER.warn("Please replace existing IQueueId collection beans by a TaskConfigurer bean.");
+			queueIds.addAll(queueIdsBean);
+		}
+		ImmutableTaskManagement.Builder builder = ImmutableTaskManagement.builder();
+		for (TaskManagementConfigurer configurer : configurers) {
+			configurer.configure(builder);
+		}
+		return new QueuedTaskHolderManagerImpl(queueIds);
+	}
+
 	/**
-	 * Must return all the {@link IQueueId queue IDs} that are valid in this application.
+	 * Ensure that we have at least one configurer.
 	 */
 	@Bean
-	@ConditionalOnMissingBean
-	// TODO fixme - this method only defines a bean of type Collection ; this may conflict with any other
-	// Collection bean
-	public Collection<? extends IQueueId> queueIds() {
-		return EnumUtils.getEnumList(StubQueueId.class);
-	}
-	
-	public enum StubQueueId implements IQueueId {
-		;
-		@Override
-		public String getUniqueStringId() {
-			return name();
-		}
+	public TaskManagementConfigurer emptyTaskManagementConfigurer() {
+		return new TaskManagementConfigurer() {};
 	}
 }

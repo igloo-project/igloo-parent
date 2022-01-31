@@ -19,7 +19,8 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource(
 	name = IglooPropertySourcePriority.APPLICATION,
-	value = "classpath:notification-test.properties"
+	value = "classpath:notification-test.properties",
+	encoding = "UTF-8"
 )
 @Import({ NotificationTestConfig.class })
 public class TestConfig {

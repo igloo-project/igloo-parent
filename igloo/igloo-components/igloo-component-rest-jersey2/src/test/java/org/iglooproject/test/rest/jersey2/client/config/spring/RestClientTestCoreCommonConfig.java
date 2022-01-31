@@ -23,7 +23,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 		ConfigurationPropertiesUrlConstants.JPA_COMMON,
 		ConfigurationPropertiesUrlConstants.JERSEY_MOCK_COMMON,
 		"classpath:rest-client.properties"
-	}
+	},
+	encoding = "UTF-8"
 )
 @Import({
 	RestClientTestJpaConfig.class,

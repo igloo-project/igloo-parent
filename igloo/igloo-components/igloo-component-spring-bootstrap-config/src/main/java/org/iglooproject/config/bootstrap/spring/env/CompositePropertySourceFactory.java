@@ -47,7 +47,7 @@ public class CompositePropertySourceFactory implements PropertySourceFactory {
 			for (Resource r : ((CompositeResource) resource.getResource()).getResources()) {
 				try {
 					PropertySource<?> wrappedPropertySource = DEFAULT_PROPERTY_SOURCE_FACTORY.createPropertySource(name,
-							new EncodedResource(r, resource.getCharset()));
+							new EncodedResource(r, resource.getEncoding()));
 					wrappedPropertySource = (wrappedPropertySource instanceof ResourcePropertySource ?
 							((ResourcePropertySource) wrappedPropertySource).withResourceName() : wrappedPropertySource);
 					compositePropertySource.addFirstPropertySource(wrappedPropertySource);

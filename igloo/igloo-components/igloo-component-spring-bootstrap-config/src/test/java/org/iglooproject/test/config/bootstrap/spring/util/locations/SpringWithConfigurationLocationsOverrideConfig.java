@@ -7,7 +7,8 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource(
 	name = IglooPropertySourcePriority.APPLICATION,
-	value = "classpath:configuration-app-override.properties"
+	value = "classpath:configuration-app-override.properties",
+	encoding = "UTF-8"
 )
 public class SpringWithConfigurationLocationsOverrideConfig {
 
