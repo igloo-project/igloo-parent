@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-hibernate-configurator-lucene</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo.version}</version>
 		</dependency>
 		
 		<!-- JDBC Driver -->
