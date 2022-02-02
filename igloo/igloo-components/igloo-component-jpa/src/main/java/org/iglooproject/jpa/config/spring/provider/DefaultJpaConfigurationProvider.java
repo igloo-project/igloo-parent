@@ -96,6 +96,12 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 
 	@Value("${hibernate.search.default.elasticsearch.index_schema_management_strategy}")
 	private String elasticSearchIndexSchemaManagementStrategy;
+
+	/**
+	 * If set to true, dom4j and jaxb dependencies must be provided on classpath
+	 */
+	@Value("${hibernate.xml_mapping_enabled:false}")
+	private boolean xmlMappingEnabled;
 	
 	@Resource(name = "hibernateDefaultExtraProperties")
 	private Properties defaultExtraProperties;
@@ -215,8 +221,8 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	}
 
 	@Override
-	public String getDefaultSchema() {
-		return defaultSchema;
+	public boolean isXmlMappingEnabled() {
+		return xmlMappingEnabled;
 	}
 
 	@Override
@@ -247,6 +253,11 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Override
 	public void setElasticSearchIndexSchemaManagementStrategy(String elasticSearchIndexSchemaManagementStrategy) {
 		this.elasticSearchIndexSchemaManagementStrategy = elasticSearchIndexSchemaManagementStrategy;
+	}
+
+	@Override
+	public String getDefaultSchema() {
+		return defaultSchema;
 	}
 
 	@Override

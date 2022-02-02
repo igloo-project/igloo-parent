@@ -89,6 +89,7 @@ public final class JpaConfigUtils {
 		properties.setProperty(Environment.GENERATE_STATISTICS, Boolean.FALSE.toString());
 		properties.setProperty(Environment.USE_REFLECTION_OPTIMIZER, Boolean.TRUE.toString());
 		properties.setProperty(Environment.CREATE_EMPTY_COMPOSITES_ENABLED, Boolean.toString(configuration.isCreateEmptyCompositesEnabled()));
+		properties.setProperty(Environment.XML_MAPPING_ENABLED, Boolean.toString(configuration.isCreateEmptyCompositesEnabled()));
 		
 		properties.setProperty(AvailableSettings.JPAQL_STRICT_COMPLIANCE, Boolean.TRUE.toString());
 		

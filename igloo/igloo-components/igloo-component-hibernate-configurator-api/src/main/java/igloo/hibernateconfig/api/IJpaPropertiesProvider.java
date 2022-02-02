@@ -76,4 +76,6 @@ public interface IJpaPropertiesProvider {
 
 	List<TypeContributor> getTypeContributors();
 
+	boolean isXmlMappingEnabled();
+
 }
