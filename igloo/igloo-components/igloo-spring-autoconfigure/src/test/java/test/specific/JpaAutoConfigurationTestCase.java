@@ -16,7 +16,7 @@ import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration
 import org.igloo.spring.autoconfigure.task.IglooTaskManagementAutoConfiguration;
 import org.igloo.spring.autoconfigure.wicket.IglooWicketAutoConfiguration;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
@@ -30,13 +30,13 @@ import com.google.common.base.Joiner;
  * which are declared at the bottom of the file.
  *  
  */
-public class JpaAutoConfigurationTestCase {
+class JpaAutoConfigurationTestCase {
 
 	/**
 	 * Check that autoconfiguration from {@link EntityManagerFactory} is triggered with EnableIglooAutoConfiguration
 	 */
 	@Test
-	public void testIglooJpaAutoConfigure() {
+	void testIglooJpaAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
@@ -50,7 +50,7 @@ public class JpaAutoConfigurationTestCase {
 	 * isn't when excluding property, hibernate search and flyway auto configurations.
 	 */
 	@Test
-	public void testIglooJpaNoPropertyAutoConfigure() {
+	void testIglooJpaNoPropertyAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))

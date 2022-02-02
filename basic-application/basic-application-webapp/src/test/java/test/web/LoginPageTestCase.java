@@ -9,12 +9,12 @@ import org.iglooproject.basicapp.web.application.security.password.page.Security
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryRequestResetPage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
+class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
-	public void initPage() {
+	void initPage() {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
@@ -23,7 +23,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void redirectionToPasswordRecoveryRequestReset() {
+	void redirectionToPasswordRecoveryRequestReset() {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
@@ -34,7 +34,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void redirectionToPasswordRecoveryRequestCreation() {
+	void redirectionToPasswordRecoveryRequestCreation() {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
@@ -45,7 +45,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void formSubmitSuccess() throws ServiceException, SecurityServiceException {
+	void formSubmitSuccess() throws ServiceException, SecurityServiceException {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		
@@ -64,7 +64,7 @@ public class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void formSubmitFail() throws ServiceException, SecurityServiceException {
+	void formSubmitFail() throws ServiceException, SecurityServiceException {
 		tester.startPage(SignInPage.class);
 		tester.assertRenderedPage(SignInPage.class);
 		

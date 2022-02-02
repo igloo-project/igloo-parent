@@ -5,7 +5,7 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.wicket.core.AbstractWicketTestCase;
 import org.iglooproject.wicket.more.test.WicketMoreWicketTester;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -21,7 +21,7 @@ public abstract class AbstractWicketMoreTestCase extends AbstractWicketTestCase<
 	@Autowired
 	private WebApplication application;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws ServiceException, SecurityServiceException {
 		setWicketTester(new WicketMoreWicketTester(application));
 	}

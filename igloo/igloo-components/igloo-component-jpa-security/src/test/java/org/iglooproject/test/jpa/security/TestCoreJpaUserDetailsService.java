@@ -1,6 +1,6 @@
 package org.iglooproject.test.jpa.security;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -11,20 +11,20 @@ import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConsta
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
+class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 
 	@Autowired
 	private UserDetailsService coreJpaUserDetailsService;
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testLoadUserByUsername() throws ServiceException, SecurityServiceException {
+	void testLoadUserByUsername() throws ServiceException, SecurityServiceException {
 		MockUserGroup adminGroup = createMockUserGroup("adminGroup");
 		adminGroup.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN));
 		

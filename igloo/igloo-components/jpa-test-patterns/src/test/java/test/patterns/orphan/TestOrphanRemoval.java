@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -18,7 +19,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 class TestOrphanRemoval {
 
 	@RegisterExtension
-	EntityManagerFactoryExtension extension = new EntityManagerFactoryExtension(
+	static EntityManagerFactoryExtension extension = new EntityManagerFactoryExtension(
 			AvailableSettings.DIALECT, org.hibernate.dialect.H2Dialect.class.getName(),
 			AvailableSettings.HBM2DDL_AUTO, "create",
 			AvailableSettings.JPA_JDBC_DRIVER, org.h2.Driver.class.getName(),
@@ -26,6 +27,9 @@ class TestOrphanRemoval {
 			AvailableSettings.LOADED_CLASSES, Arrays.asList(OrphanOwner.class, OrphanItem.class),
 			AvailableSettings.XML_MAPPING_ENABLED, Boolean.FALSE.toString()
 	);
+
+	public TestOrphanRemoval(EntityManagerFactory entityManagerFactory) {
+	}
 
 	/**
 	 * Test orphanRemoval behavior. {@link OrphanOwner} is an entity with a list of {@link OrphanItem} (@OneToMany).

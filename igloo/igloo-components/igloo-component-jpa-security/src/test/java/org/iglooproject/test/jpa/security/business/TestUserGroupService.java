@@ -1,6 +1,6 @@
 package org.iglooproject.test.jpa.security.business;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -9,12 +9,12 @@ import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConsta
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class TestUserGroupService extends AbstractJpaSecurityTestCase {
+class TestUserGroupService extends AbstractJpaSecurityTestCase {
 
 	@Test
-	public void testAuthorities() throws ServiceException, SecurityServiceException {
+	void testAuthorities() throws ServiceException, SecurityServiceException {
 		MockUserGroup group1 = createMockUserGroup("group1");
 		MockUserGroup group2 = createMockUserGroup("group2");
 		
@@ -47,7 +47,7 @@ public class TestUserGroupService extends AbstractJpaSecurityTestCase {
 	}
 	
 	@Test
-	public void testMembers() throws ServiceException, SecurityServiceException {
+	void testMembers() throws ServiceException, SecurityServiceException {
 		MockUserGroup group1 = createMockUserGroup("group1");
 		
 		MockUser user1 = createMockUser("user1", "user1", "user1");

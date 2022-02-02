@@ -6,7 +6,7 @@ import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderManagerImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +18,13 @@ import org.springframework.context.annotation.Configuration;
  * which are declared at the bottom of the file.
  *  
  */
-public class TaskManagementAutoConfigurationTestCase {
+class TaskManagementAutoConfigurationTestCase {
 
 	/**
 	 * Check that autoconfiguration from {@link QueuedTaskHolderManagerImpl} is triggered with EnableIglooAutoConfiguration
 	 */
 	@Test
-	public void testIglooTaskManagementAutoConfigure() {
+	void testIglooTaskManagementAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))

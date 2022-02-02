@@ -15,7 +15,7 @@ import org.igloo.spring.autoconfigure.task.IglooTaskManagementAutoConfiguration;
 import org.igloo.spring.autoconfigure.wicket.IglooWicketAutoConfiguration;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
@@ -29,13 +29,13 @@ import com.google.common.base.Joiner;
  * which are declared at the bottom of the file.
  *  
  */
-public class PropertyAutoConfigurationTestCase {
+class PropertyAutoConfigurationTestCase {
 
 	/**
 	 * Check that autoconfiguration from {@link IPropertyService} is triggered with EnableIglooAutoConfiguration
 	 */
 	@Test
-	public void testIglooPropertyAutoConfigure() {
+	void testIglooPropertyAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
@@ -49,7 +49,7 @@ public class PropertyAutoConfigurationTestCase {
 	 * when excluding jpa, flyway and hibernate search auto configurations
 	 */
 	@Test
-	public void testIglooPropertyNoJpaAutoConfigure() {
+	void testIglooPropertyNoJpaAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))

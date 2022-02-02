@@ -1,8 +1,10 @@
 package test.wicket.more.link.descriptor;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
@@ -26,7 +28,7 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkPara
 import org.iglooproject.wicket.more.model.CollectionCopyModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.javatuples.Pair;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.ImmutableList;
@@ -77,34 +79,43 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
 						LinkDescriptorBuilder.start()
 						.validator(Condition.alwaysTrue())
 				);
-		linkDescriptor.extract(new PageParameters());
+		assertDoesNotThrow(() -> linkDescriptor.extract(new PageParameters()));
 	}
 
-	@Test(expected = LinkParameterValidationRuntimeException.class)
+	@Test
 	public void url_noParam_validatorFails() {
 		ILinkDescriptor linkDescriptor = LinkDescriptorBuilder.start()
 				.validator(Condition.alwaysFalse())
 				.page(TestLinkDescriptorNoParameterPage.class);
-		linkDescriptor.url();
+		assertThrows(
+			LinkParameterValidationRuntimeException.class,
+			() -> linkDescriptor.url()
+		);
 	}
 
-	@Test(expected = LinkParameterModelValidationException.class)
+	@Test
 	public void extract_noParam_validatorFails() throws Exception {
 		ILinkDescriptor linkDescriptor =
 				buildWithNoParameterTarget(
 						LinkDescriptorBuilder.start()
 						.validator(Condition.alwaysFalse())
 				);
-		linkDescriptor.extract(new PageParameters());
+		assertThrows(
+			LinkParameterModelValidationException.class,
+			() -> linkDescriptor.extract(new PageParameters())
+		);
 	}
 
-	@Test(expected = LinkInvalidTargetRuntimeException.class)
+	@Test
 	public void url_noParam_missingTarget() {
 		ILinkDescriptor linkDescriptor =
 				buildWithNullTarget(
 						LinkDescriptorBuilder.start()
 				);
-		linkDescriptor.url();
+		assertThrows(
+			LinkInvalidTargetRuntimeException.class,
+			() -> linkDescriptor.url()
+		);
 	}
 
 	@Test
@@ -113,11 +124,10 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
 				buildWithNullTarget(
 						LinkDescriptorBuilder.start()
 				);
-		linkDescriptor.extract(new PageParameters());
-		// Just check that there is no exception thrown, which means that target validation is *not* performed
+		assertDoesNotThrow(() -> linkDescriptor.extract(new PageParameters()));
 	}
 
-	@Test(expected = LinkParameterValidationRuntimeException.class)
+	@Test
 	public void url_oneParamMandatory_mandatoryFails() {
 		IModel<Long> model = Model.of((Long)null);
 		ILinkDescriptor linkDescriptor =
@@ -125,10 +135,13 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
 						LinkDescriptorBuilder.start()
 						.map(CommonParameters.ID, model, Long.class).mandatory()
 				);
-		linkDescriptor.url();
+		assertThrows(
+			LinkParameterValidationRuntimeException.class,
+			() -> linkDescriptor.url()
+		);
 	}
 
-	@Test(expected = LinkParameterSerializedFormValidationException.class)
+	@Test
 	public void extract_oneParamMandatory_mandatoryFails() throws Exception {
 		IModel<Long> model = Model.of((Long)null);
 		ILinkDescriptor linkDescriptor =
@@ -136,7 +149,10 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
 						LinkDescriptorBuilder.start()
 						.map(CommonParameters.ID, model, Long.class).mandatory()
 				);
-		linkDescriptor.extract(new PageParameters());
+		assertThrows(
+			LinkParameterSerializedFormValidationException.class,
+			() -> linkDescriptor.extract(new PageParameters())
+		);
 	}
 
 	@Test
@@ -162,19 +178,22 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
 		assertEquals(Long.valueOf(1L), model.getObject());
 	}
 
-	@Test(expected = LinkParameterValidationRuntimeException.class)
+	@Test
 	public void url_oneParamOptional_validatorFails() {
 		IModel<Long> model = Model.of(1L);
 		ILinkDescriptor linkDescriptor =
-				buildWithOneParameterTarget(
-						LinkDescriptorBuilder.start()
-						.map(CommonParameters.ID, model, Long.class).optional()
-						.validator(Condition.alwaysFalse())
-				);
-		linkDescriptor.url();
+			buildWithOneParameterTarget(
+					LinkDescriptorBuilder.start()
+					.map(CommonParameters.ID, model, Long.class).optional()
+					.validator(Condition.alwaysFalse())
+			);
+		assertThrows(
+			LinkParameterValidationRuntimeException.class,
+			() -> linkDescriptor.url()
+		);
 	}
 
-	@Test(expected = LinkParameterModelValidationException.class)
+	@Test
 	public void extract_oneParamOptional_validatorFails() throws Exception {
 		IModel<Long> model = Model.of(1L);
 		ILinkDescriptor linkDescriptor =
@@ -183,7 +202,10 @@ public abstract class AbstractAnyTargetTestLinkDescriptor extends AbstractTestLi
 						.map(CommonParameters.ID, model, Long.class).optional()
 						.validator(Condition.alwaysFalse())
 				);
-		linkDescriptor.extract(new PageParameters());
+		assertThrows(
+			LinkParameterModelValidationException.class,
+			() -> linkDescriptor.extract(new PageParameters())
+		);
 	}
 
 	@Test

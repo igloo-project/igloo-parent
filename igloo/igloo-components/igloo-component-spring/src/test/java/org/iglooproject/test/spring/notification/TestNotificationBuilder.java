@@ -11,14 +11,14 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.exception.InvalidNotificationTargetException;
 import org.iglooproject.spring.notification.service.INotificationBuilderBaseState;
 import org.iglooproject.spring.notification.service.NotificationBuilder;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-public class TestNotificationBuilder extends AbstractTestNotification {
+class TestNotificationBuilder extends AbstractTestNotification {
 
 	@Test
-	public void testToCcBccExcept() throws ServiceException {
+	void testToCcBccExcept() throws ServiceException {
 		INotificationBuilderBaseState builder = createNotificationBuilder();
 		
 		builder.toAddress("test-to-1@example.com", "test-to-2@example.com", "mail@îdn.fr", "test-to-ignore@example.com")
@@ -31,7 +31,7 @@ public class TestNotificationBuilder extends AbstractTestNotification {
 	}
 
 	@Test
-	public void testInvalidEmail() throws ServiceException {
+	void testInvalidEmail() throws ServiceException {
 		INotificationBuilderBaseState builder = createNotificationBuilder();
 		Assertions.assertThatThrownBy(() ->
 			builder.toAddress("pas un mail valide")
@@ -42,7 +42,7 @@ public class TestNotificationBuilder extends AbstractTestNotification {
 	}
 
 	@Test
-	public void testSendGroup() throws ServiceException, MessagingException {
+	void testSendGroup() throws ServiceException, MessagingException {
 		INotificationBuilderBaseState builder = createNotificationBuilder();
 		String address1 = "test-to-1@example.com";
 		String address2 = "test-to-2@example.com";
@@ -61,7 +61,7 @@ public class TestNotificationBuilder extends AbstractTestNotification {
 	 * @see InternetAddress
 	 */
 	@Test
-	public void testSenderRFC822() throws ServiceException, MessagingException {
+	void testSenderRFC822() throws ServiceException, MessagingException {
 		createNotificationBuilder().sender("Sender <sender@example.com>").toAddress("to@example.com")
 			.subject("subject").textBody("text").send();
 		MimeMessage message = mockitoSend(Mockito.times(1)).getValue();

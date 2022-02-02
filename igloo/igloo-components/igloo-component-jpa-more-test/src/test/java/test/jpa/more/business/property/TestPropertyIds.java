@@ -1,11 +1,11 @@
 package test.jpa.more.business.property;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,11 +22,11 @@ import org.iglooproject.spring.property.model.ImmutablePropertyId;
 import org.iglooproject.spring.property.model.ImmutablePropertyIdTemplate;
 import org.iglooproject.spring.property.model.MutablePropertyId;
 import org.iglooproject.spring.property.model.MutablePropertyIdTemplate;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableSet;
 
-public class TestPropertyIds {
+class TestPropertyIds {
 
 	private static class PropertyIds extends AbstractPropertyIds {
 		static final MutablePropertyId<String> MUTABLE = mutable("mutable.property");
@@ -77,7 +77,7 @@ public class TestPropertyIds {
 	}
 	
 	@Test
-	public void serialization() {
+	void serialization() {
 		checkSerialization(PropertyIds.MUTABLE);
 		checkSerialization(PropertyIds.IMMUTABLE);
 		
@@ -89,7 +89,7 @@ public class TestPropertyIds {
 	}
 	
 	@Test
-	public void declaration() {
+	void declaration() {
 		IPropertyRegistryKeyDeclaration declaration = PropertyIds.MUTABLE.getDeclaration();
 		assertThat(declaration.toString(), CoreMatchers.containsString(PropertyIds.class.getName()));
 		
@@ -103,12 +103,12 @@ public class TestPropertyIds {
 	}
 	
 	@Test
-	public void mutableProperty() {
+	void mutableProperty() {
 		assertEquals("mutable.property", PropertyIds.MUTABLE.getKey());
 	}
 
 	@Test
-	public void mutablePropertyTemplate() {
+	void mutablePropertyTemplate() {
 		assertEquals("mutable.property.template.%s", PropertyIds.MUTABLE_TEMPLATE.getFormat());
 		
 		MutablePropertyId<String> generatedProperty = PropertyIds.MUTABLE_TEMPLATE.create("TEST");
@@ -117,12 +117,12 @@ public class TestPropertyIds {
 	}
 	
 	@Test
-	public void immutableProperty() {
+	void immutableProperty() {
 		assertEquals("immutable.property", PropertyIds.IMMUTABLE.getKey());
 	}
 
 	@Test
-	public void immutablePropertyTemplate() {
+	void immutablePropertyTemplate() {
 		assertEquals("immutable.property.template.%s", PropertyIds.IMMUTABLE_TEMPLATE.getFormat());
 		
 		ImmutablePropertyId<String> generatedProperty = PropertyIds.IMMUTABLE_TEMPLATE.create("TEST");

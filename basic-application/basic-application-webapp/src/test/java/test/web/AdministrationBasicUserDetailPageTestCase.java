@@ -1,8 +1,8 @@
 package test.web;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.wicket.markup.html.link.Link;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserDetailPage;
@@ -14,14 +14,14 @@ import org.iglooproject.wicket.more.markup.html.template.component.BreadCrumbLis
 import org.iglooproject.wicket.more.markup.html.template.component.LinkGeneratorBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.markup.html.template.component.SimpleBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @EnableWebSecurity
-public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase {
+class AdministrationBasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
-	public void initPage() throws ServiceException, SecurityServiceException {
+	void initPage() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		String url = AdministrationUserDetailTemplate.mapper()
@@ -33,7 +33,7 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 	}
 
 	@Test
-	public void breadcrumb() throws ServiceException, SecurityServiceException {
+	void breadcrumb() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		String url = AdministrationUserDetailTemplate.mapper()
@@ -61,7 +61,7 @@ public class AdministrationBasicUserDetailPageTestCase extends AbstractBasicAppl
 	}
 
 	@Test
-	public void desactivateUser() throws ServiceException, SecurityServiceException {
+	void desactivateUser() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		String url = AdministrationUserDetailTemplate.mapper()

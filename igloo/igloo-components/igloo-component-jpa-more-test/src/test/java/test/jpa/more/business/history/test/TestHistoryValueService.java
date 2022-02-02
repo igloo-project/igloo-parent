@@ -1,7 +1,7 @@
 package test.jpa.more.business.history.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 import java.util.Locale;
@@ -13,25 +13,25 @@ import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.internal.stubbing.answers.Returns;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.mockito.stubbing.OngoingStubbing;
 
 import test.jpa.more.business.entity.model.TestEntity;
 import test.jpa.more.business.history.service.TestHistoryValueServiceImpl;
 
-public class TestHistoryValueService /** Mocked, no need for extending a base class */ {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class TestHistoryValueService /** Mocked, no need for extending a base class */ {
 	
 	private static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
-
-	@Rule
-	public MockitoRule mockitoRule = MockitoJUnit.rule();
 	
 	@Mock
 	protected IEntityService entityService;
@@ -48,14 +48,14 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 	@InjectMocks
 	protected TestHistoryValueServiceImpl historyValueService;
 	
-	@Before
+	@BeforeEach
 	public void initPropertyService() {
 		OngoingStubbing<Locale> ongoing = when(propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
 		ongoing.thenReturn(DEFAULT_LOCALE);
 	}
 
 	@Test
-	public void retrieveGenericEntityMissing() {
+	void retrieveGenericEntityMissing() {
 		GenericEntityReference<Long, TestEntity> missingEntityReference = GenericEntityReference.of(TestEntity.class, 1L);
 		HistoryValue historyValue = new HistoryValue("label", missingEntityReference);
 		
@@ -65,7 +65,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 	}
 
 	@Test
-	public void retrieveGenericEntityPresent() {
+	void retrieveGenericEntityPresent() {
 		TestEntity testEntity = new TestEntity();
 		GenericEntityReference<Long, TestEntity> presentEntityReference = GenericEntityReference.of(TestEntity.class, 1L);
 		HistoryValue historyValue = new HistoryValue("label", presentEntityReference);
@@ -76,7 +76,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 	}
 
 	@Test
-	public void renderHistoryValueExplicitRendererWithRetrieval() {
+	void renderHistoryValueExplicitRendererWithRetrieval() {
 		final String expectedRendering = "EXPECTED";
 		
 		TestEntity testEntity = new TestEntity();
@@ -91,7 +91,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 	}
 
 	@Test
-	public void renderHistoryValueImplicitRendererWithRetrieval() {
+	void renderHistoryValueImplicitRendererWithRetrieval() {
 		final String expectedRendering = "EXPECTED";
 		
 		TestEntity testEntity = new TestEntity();
@@ -108,7 +108,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 	}
 
 	@Test
-	public void renderHistoryValueExplicitRendererNoRetrieval() {
+	void renderHistoryValueExplicitRendererNoRetrieval() {
 		final String expectedRendering = "EXPECTED";
 		
 		HistoryValue historyValue = new HistoryValue(expectedRendering);
@@ -117,7 +117,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 	}
 
 	@Test
-	public void renderHistoryValueImplicitRendererNoRetrieval() {
+	void renderHistoryValueImplicitRendererNoRetrieval() {
 		final String expectedRendering = "EXPECTED";
 		
 		HistoryValue historyValue = new HistoryValue(expectedRendering);
@@ -126,7 +126,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 	}
 
 	@Test
-	public void createNullExplicitRenderer() {
+	void createNullExplicitRenderer() {
 		final String expectedRendering = "EXPECTED";
 		
 		when(renderer.render(null, DEFAULT_LOCALE)).thenReturn(expectedRendering);
@@ -137,14 +137,14 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 	}
 
 	@Test
-	public void createNullImplicitRenderer() {
+	void createNullImplicitRenderer() {
 		HistoryValue expectedValue = new HistoryValue();
 		
 		assertEquals(expectedValue, historyValueService.create(null));
 	}
 
 	@Test
-	public void createEntityTypeExplicitRenderer() {
+	void createEntityTypeExplicitRenderer() {
 		final String expectedRendering = "EXPECTED";
 		final TestEntity originalValue = new TestEntity();
 		originalValue.setId(1L);
@@ -157,7 +157,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 	}
 
 	@Test
-	public void createEntityTypeImplicitRenderer() {
+	void createEntityTypeImplicitRenderer() {
 		final String expectedRendering = "EXPECTED";
 		final TestEntity originalValue = new TestEntity();
 		originalValue.setId(1L);
@@ -172,7 +172,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 	}
 
 	@Test
-	public void createMiscTypeExplicitRenderer() {
+	void createMiscTypeExplicitRenderer() {
 		final String expectedRendering = "EXPECTED";
 		final Object originalValue = new Object();
 		
@@ -184,7 +184,7 @@ public class TestHistoryValueService /** Mocked, no need for extending a base cl
 	}
 
 	@Test
-	public void createMiscTypeImplicitRenderer() {
+	void createMiscTypeImplicitRenderer() {
 		final String expectedRendering = "EXPECTED";
 		final Object originalValue = new Object();
 		

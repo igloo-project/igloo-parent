@@ -1,23 +1,22 @@
 package org.iglooproject.test.jpa.security;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.concurrent.Callable;
-
-import org.junit.Test;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
+import org.junit.jupiter.api.Test;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-public class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
+class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
 
 	@Test
-	public void testRoleHierarchy() throws ServiceException, SecurityServiceException {
+	void testRoleHierarchy() throws ServiceException, SecurityServiceException {
 		MockUser admin = createMockUser("admin", "firstName", "lastName");
 		admin.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN));
 		mockUserService.update(admin);
@@ -38,7 +37,7 @@ public class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
 	}
 	
 	@Test
-	public void testRunAsSystem() {
+	void testRunAsSystem() {
 		assertTrue(securityService.runAsSystem(new Callable<Boolean>() {
 			@Override
 			public Boolean call() {

@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
@@ -32,14 +32,14 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
  * This test relies on the fact that javax.mail and spring-mail is available on classpath.
  * 
  */
-public class IglooAutoConfigurationBehaviorTestCase {
+class IglooAutoConfigurationBehaviorTestCase {
 
 	/**
 	 * Check that autoconfiguration from {@link MailSenderAutoConfiguration} is triggered normally as we use here both
 	 * Spring Boot {@link EnableAutoConfiguration} and IglooAutoConfigure.
 	 */
 	@Test
-	public void testBothSpringBootIglooAutoConfigure() {
+	void testBothSpringBootIglooAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withPropertyValues("spring.mail.host=localhost")
@@ -54,7 +54,7 @@ public class IglooAutoConfigurationBehaviorTestCase {
 	 * Spring Boot {@link EnableAutoConfiguration}.
 	 */
 	@Test
-	public void testSpringBootAutoConfigure() {
+	void testSpringBootAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withPropertyValues("spring.mail.host=localhost",
@@ -73,7 +73,7 @@ public class IglooAutoConfigurationBehaviorTestCase {
 	 * setting as we want to inhibit all Spring Boot autoconfiguration
 	 */
 	@Test
-	public void testIglooAutoConfigure() {
+	void testIglooAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withPropertyValues("spring.mail.host=localhost")

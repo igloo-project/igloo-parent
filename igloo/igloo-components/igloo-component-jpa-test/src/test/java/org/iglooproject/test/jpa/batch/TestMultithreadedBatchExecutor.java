@@ -3,8 +3,8 @@ package org.iglooproject.test.jpa.batch;
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +22,7 @@ import org.iglooproject.jpa.batch.runnable.ReadWriteBatchRunnable;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.business.person.model.Person;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
 import com.google.common.collect.Lists;
 
-public class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor {
+class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestMultithreadedBatchExecutor.class);
 
@@ -72,7 +72,7 @@ public class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchEx
 	}
 
 	@Test
-	public void readOnly() {
+	void readOnly() {
 		List<Long> toExecute = Lists.newArrayList(personIds);
 		Collections.sort(toExecute);
 		
@@ -101,7 +101,7 @@ public class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchEx
 	}
 	
 	@Test
-	public void postExecute() {
+	void postExecute() {
 		final MutableBoolean postExecuteWasRun = new MutableBoolean(false);
 		writeRequiredTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@Override
@@ -131,14 +131,14 @@ public class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchEx
 					public void postExecute() {
 						postExecuteWasRun.setTrue();
 						Person person = personService.getById(personIds.get(0));
-						assertEquals("An entity had not been updated from the postExecute() perspective.",
-								person.getLastName(), NEW_LASTNAME_VALUE);
+						assertEquals(NEW_LASTNAME_VALUE, person.getLastName(),
+							"An entity had not been updated from the postExecute() perspective.");
 					}
 				});
 			}
 		});
 		
-		assertTrue("postExecute was not run.", postExecuteWasRun.booleanValue());
+		assertTrue(postExecuteWasRun.booleanValue(), "postExecute was not run.");
 	}
 	
 	private static class ConcurrentFailingRunnable<T> extends PartitionCountingRunnable<T> {
@@ -183,7 +183,7 @@ public class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchEx
 	}
 	
 	@Test
-	public void preExecuteErrorDefaultBehavior() {
+	void preExecuteErrorDefaultBehavior() {
 		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
 		executor.batchSize(10).threads(4);
 
@@ -203,7 +203,7 @@ public class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchEx
 	}
 	
 	@Test
-	public void preExecuteErrorCustomException() {
+	void preExecuteErrorCustomException() {
 		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
 		executor.batchSize(10).threads(4);
 
@@ -227,7 +227,7 @@ public class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchEx
 	}
 	
 	@Test
-	public void executePartitionErrorDefaultBehavior() {
+	void executePartitionErrorDefaultBehavior() {
 		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
 		executor.batchSize(10).threads(4);
 
@@ -245,11 +245,11 @@ public class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchEx
 		assertEquals(1, runException.getCause().getSuppressed().length);
 		assertThat(Arrays.asList(runException.getCause().getSuppressed()),
 				everyItem(CoreMatchers.<Throwable>instanceOf(TestBatchException1.class)));
-		assertTrue("The executor did not abort as expected", 10 > runnable.getExecutedPartitionCount());
+		assertTrue(10 > runnable.getExecutedPartitionCount(), "The executor did not abort as expected");
 	}
 	
 	@Test
-	public void executePartitionErrorCustomException() {
+	void executePartitionErrorCustomException() {
 		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
 		executor.batchSize(10).threads(4);
 
@@ -271,11 +271,11 @@ public class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchEx
 		assertEquals(1, runException.getCause().getSuppressed().length);
 		assertThat(Arrays.asList(runException.getCause().getSuppressed()),
 				everyItem(CoreMatchers.<Throwable>instanceOf(TestBatchException1.class)));
-		assertTrue("The executor did not abort as expected", 10 > runnable.getExecutedPartitionCount());
+		assertTrue(10 > runnable.getExecutedPartitionCount(), "The executor did not abort as expected");
 	}
 	
 	@Test
-	public void executePartitionErrorNoAbort() {
+	void executePartitionErrorNoAbort() {
 		MultithreadedBatchExecutor executor = executorCreator.newMultithreadedBatchExecutor();
 		executor.batchSize(10).threads(4);
 		executor.abortAllOnExecutionError(false);
@@ -293,6 +293,6 @@ public class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchEx
 		assertEquals(1, runException.getCause().getSuppressed().length);
 		assertThat(Arrays.asList(runException.getCause().getSuppressed()),
 				everyItem(CoreMatchers.<Throwable>instanceOf(TestBatchException1.class)));
-		assertEquals("The executor did abort (this was unexpected)", 10, runnable.getExecutedPartitionCount());
+		assertEquals(10, runnable.getExecutedPartitionCount(), "The executor did abort (this was unexpected)");
 	}
 }

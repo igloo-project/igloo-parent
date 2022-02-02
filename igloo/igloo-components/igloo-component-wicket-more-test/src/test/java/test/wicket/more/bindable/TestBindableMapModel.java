@@ -1,7 +1,7 @@
 package test.wicket.more.bindable;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,14 +12,14 @@ import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.wicket.more.bindable.model.BindableModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableMapModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableModel;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableMap;
 
-public class TestBindableMapModel extends AbstractTestBindableModel {
+class TestBindableMapModel extends AbstractTestBindableModel {
 	
 	@Test
-	public void alwaysReturnsSameModelInstance() {
+	void alwaysReturnsSameModelInstance() {
 		doReturn(rootValue).when(rootModel).getObject();
 		
 		IBindableModel<RootValue> bindableModel = new BindableModel<>(rootModel);
@@ -39,7 +39,7 @@ public class TestBindableMapModel extends AbstractTestBindableModel {
 	}
 	
 	@Test
-	public void alwaysReturnsSameModelInstanceEvenIfChained() {
+	void alwaysReturnsSameModelInstanceEvenIfChained() {
 		doReturn(rootValue).when(rootModel).getObject();
 		
 		IBindableModel<RootValue> bindableModel = new BindableModel<>(rootModel);
@@ -61,7 +61,7 @@ public class TestBindableMapModel extends AbstractTestBindableModel {
 	}
 
 	@Test
-	public void simpleCacheUsage() {
+	void simpleCacheUsage() {
 		Map<MapPropertyItemKey, MapPropertyItemValue> firstExpectedValue = ImmutableMap.of(
 				new MapPropertyItemKey(), new MapPropertyItemValue()
 		);
@@ -108,7 +108,7 @@ public class TestBindableMapModel extends AbstractTestBindableModel {
 	}
 
 	@Test
-	public void cacheUpdatePropagation() {
+	void cacheUpdatePropagation() {
 		Map<MapPropertyItemKey, MapPropertyItemValue> firstExpectedValue = ImmutableMap.of(
 				new MapPropertyItemKey(), new MapPropertyItemValue()
 		);
@@ -155,7 +155,7 @@ public class TestBindableMapModel extends AbstractTestBindableModel {
 	}
 
 	@Test
-	public void mapModelInterfaceUsage() {
+	void mapModelInterfaceUsage() {
 		MapPropertyItemKey firstItemKey = new MapPropertyItemKey();
 		MapPropertyItemKey secondItemKey = new MapPropertyItemKey();
 		MapPropertyItemKey thirdItemKey = new MapPropertyItemKey();

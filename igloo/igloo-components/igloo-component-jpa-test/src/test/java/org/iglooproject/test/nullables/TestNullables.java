@@ -1,6 +1,6 @@
 package org.iglooproject.test.nullables;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Date;
 
@@ -14,10 +14,10 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.nullables.model.EntityNullable;
 import org.iglooproject.test.business.nullables.service.IEntityNullableService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestNullables extends AbstractJpaCoreTestCase {
+class TestNullables extends AbstractJpaCoreTestCase {
 
 	@Autowired
 	private IEntityNullableService entityNullableService;
@@ -38,7 +38,7 @@ public class TestNullables extends AbstractJpaCoreTestCase {
 	 * 
 	 */
 	@Test
-	public void testSimpleCases() throws ServiceException, SecurityServiceException {
+	void testSimpleCases() throws ServiceException, SecurityServiceException {
 		// Case 1 : @Basic(optional = false) et @Column(nullable = false)
 		{
 			EntityNullable entity = initEntity();
@@ -88,7 +88,7 @@ public class TestNullables extends AbstractJpaCoreTestCase {
 	 *  @Basic(optional = true) is overriden by {@link Column#nullable} value if this one is declared.
 	 */
 	@Test
-	public void testOverrideCases() throws ServiceException, SecurityServiceException {
+	void testOverrideCases() throws ServiceException, SecurityServiceException {
 		// Case 1 : @Basic(optional = false) et @Column(nullable = false -> true)
 		{
 			EntityNullable entity = initEntity();

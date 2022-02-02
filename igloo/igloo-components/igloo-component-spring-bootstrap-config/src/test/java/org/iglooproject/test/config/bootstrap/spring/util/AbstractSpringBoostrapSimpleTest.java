@@ -3,7 +3,7 @@ package org.iglooproject.test.config.bootstrap.spring.util;
 import org.assertj.core.api.Assertions;
 import org.iglooproject.test.config.bootstrap.spring.environment.SpringBootstrapOverrideByEnvironmentTest;
 import org.iglooproject.test.config.bootstrap.spring.environment.SpringBootstrapOverrideBySystemPropertyTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 

@@ -1,7 +1,7 @@
 package org.iglooproject.test.jpa.batch;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,7 +14,7 @@ import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.model.QPerson;
 import org.iglooproject.test.jpa.config.spring.JpaBatchTestConfig;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public abstract class AbstractTestHibernateBatchExecutor extends AbstractJpaCore
 				new TransactionTemplate(transactionManager, writeRequiredTransactionAttribute);
 	}
 	
-	@Before
+	@BeforeEach
 	public void initPersons() throws ServiceException, SecurityServiceException {
 		personIds = Lists.newArrayList();
 		
@@ -81,8 +81,8 @@ public abstract class AbstractTestHibernateBatchExecutor extends AbstractJpaCore
 				.fetch();
 		for (Person person : persons) {
 			assertEquals(
-					String.format("%s had the wrong lastname", person),
-					shouldBeSetValue, person.getLastName()
+				shouldBeSetValue, person.getLastName(),
+				String.format("%s had the wrong lastname", person)
 			);
 		}
 	}

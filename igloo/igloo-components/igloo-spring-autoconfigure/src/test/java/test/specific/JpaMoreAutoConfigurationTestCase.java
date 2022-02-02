@@ -15,7 +15,7 @@ import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration
 import org.igloo.spring.autoconfigure.task.IglooTaskManagementAutoConfiguration;
 import org.igloo.spring.autoconfigure.wicket.IglooWicketAutoConfiguration;
 import org.iglooproject.jpa.more.util.init.dao.IImportDataDao;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
  * properly. 
  *  
  */
-public class JpaMoreAutoConfigurationTestCase {
+class JpaMoreAutoConfigurationTestCase {
 
 	/**
 	 * Check that @{@link ComponentScan} is triggered despite @{@link ConditionalOnBean} (workaround done by splitting
@@ -36,7 +36,7 @@ public class JpaMoreAutoConfigurationTestCase {
 	 * cf https://github.com/spring-projects/spring-boot/issues/1625
 	 */
 	@Test
-	public void testIglooJpaAutoConfigure() {
+	void testIglooJpaAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))
@@ -54,7 +54,7 @@ public class JpaMoreAutoConfigurationTestCase {
 	 * {@link IglooJpaMoreAutoConfiguration}.
 	 */
 	@Test
-	public void testIglooJpaLessAutoConfigure() {
+	void testIglooJpaLessAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestJpaLessConfig.class))

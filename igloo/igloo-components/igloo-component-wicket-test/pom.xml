@@ -34,10 +34,6 @@
 		</dependency>
 		
 		<!-- Test -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>

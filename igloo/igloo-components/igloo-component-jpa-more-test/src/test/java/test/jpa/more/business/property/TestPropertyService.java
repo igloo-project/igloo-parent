@@ -1,6 +1,7 @@
 package test.jpa.more.business.property;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -20,16 +21,19 @@ import org.iglooproject.spring.property.model.MutablePropertyId;
 import org.iglooproject.spring.property.model.MutablePropertyValueMap;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.property.service.PropertyServiceImpl;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.PlatformTransactionManager;
 
-public class TestPropertyService {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class TestPropertyService {
 
 	@Mock
 	private IImmutablePropertyDao immutablePropertyDao;
@@ -45,9 +49,6 @@ public class TestPropertyService {
 
 	@InjectMocks
 	private PropertyServiceImpl propertyService;
-
-	@Rule
-	public MockitoRule rule = MockitoJUnit.rule();
 	
 	private static class PropertyIds extends AbstractPropertyIds {
 		static final MutablePropertyId<String> MUTABLE_STRING = mutable("mutable.property.string");
@@ -66,7 +67,7 @@ public class TestPropertyService {
 	}
 	
 	@Test
-	public void mutablePropertyGet() throws ServiceException, SecurityServiceException {
+	void mutablePropertyGet() throws ServiceException, SecurityServiceException {
 		initPropertyService(new IPropertyRegistryConfig() {
 			@Override
 			public void register(IPropertyRegistry propertyService) {
@@ -86,7 +87,7 @@ public class TestPropertyService {
 	}
 
 	@Test
-	public void mutablePropertySet() throws ServiceException, SecurityServiceException {
+	void mutablePropertySet() throws ServiceException, SecurityServiceException {
 		initPropertyService(new IPropertyRegistryConfig() {
 			@Override
 			public void register(IPropertyRegistry propertyService) {
@@ -106,7 +107,7 @@ public class TestPropertyService {
 	}
 
 	@Test
-	public void mutablePropertySetAll() throws ServiceException, SecurityServiceException {
+	void mutablePropertySetAll() throws ServiceException, SecurityServiceException {
 		initPropertyService(new IPropertyRegistryConfig() {
 			@Override
 			public void register(IPropertyRegistry propertyService) {
@@ -129,29 +130,35 @@ public class TestPropertyService {
 		verify(mutablePropertyDao).setInTransaction("mutable.property.string.default", "MyValue3");
 	}
 
-	@Test(expected = PropertyServiceIncompleteRegistrationException.class)
-	public void partialRegistration() {
-		initPropertyService(new IPropertyRegistryConfig() {
-			@Override
-			public void register(IPropertyRegistry propertyService) {
-				propertyService.registerString(PropertyIds.MUTABLE_STRING);
-				propertyService.registerString(PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
-				// Do not register the last property
-			}
-		});
+	@Test
+	void partialRegistration() {
+		assertThrows(
+			PropertyServiceIncompleteRegistrationException.class,
+			() -> initPropertyService(new IPropertyRegistryConfig() {
+				@Override
+				public void register(IPropertyRegistry propertyService) {
+					propertyService.registerString(PropertyIds.MUTABLE_STRING);
+					propertyService.registerString(PropertyIds.MUTABLE_STRING_WITH_DEFAULT, "MyDefaultValue");
+					// Do not register the last property
+				}
+			})
+		);
 	}
 
-	@Test(expected = PropertyServiceIncompleteRegistrationException.class)
-	public void mutablePropertyUnregistered() {
+	@Test
+	void mutablePropertyUnregistered() {
 		// Do not register any property
 		
 		when(mutablePropertyDao.getInTransaction("mutable.property.string")).thenReturn("MyValue");
 		
-		propertyService.get(PropertyIds.MUTABLE_STRING);
+		assertThrows(
+			PropertyServiceIncompleteRegistrationException.class,
+			() -> propertyService.get(PropertyIds.MUTABLE_STRING)
+		);
 	}
 
 	@Test
-	public void immutablePropertyGet() {
+	void immutablePropertyGet() {
 		initPropertyService(new IPropertyRegistryConfig() {
 			@Override
 			public void register(IPropertyRegistry propertyService) {
@@ -166,13 +173,16 @@ public class TestPropertyService {
 		assertEquals((Long) 1L, propertyService.get(ImmutablePropertyIds.IMMUTABLE_LONG));
 	}
 
-	@Test(expected = PropertyServiceIncompleteRegistrationException.class)
-	public void immutablePropertyUnregistered() {
+	@Test
+	void immutablePropertyUnregistered() {
 		// Do not register any property
 		
 		when(immutablePropertyDao.get("immutable.property.string")).thenReturn("MyValue");
 		
-		propertyService.get(ImmutablePropertyIds.IMMUTABLE_STRING);
+		assertThrows(
+			PropertyServiceIncompleteRegistrationException.class,
+			() -> propertyService.get(ImmutablePropertyIds.IMMUTABLE_STRING)
+		);
 	}
 	
 	private static class DuplicatePropertyIds extends AbstractPropertyIds {
@@ -180,15 +190,18 @@ public class TestPropertyService {
 		static final ImmutablePropertyId<String> IMMUTABLE_STRING = immutable(ImmutablePropertyIds.IMMUTABLE_STRING.getKey());
 	}
 
-	@Test(expected = PropertyServiceDuplicateRegistrationException.class)
-	public void propertyAlreadyRegistered() {
-		initPropertyService(new IPropertyRegistryConfig() {
-			@Override
-			public void register(IPropertyRegistry propertyService) {
-				propertyService.registerString(ImmutablePropertyIds.IMMUTABLE_STRING);
-				propertyService.registerString(DuplicatePropertyIds.IMMUTABLE_STRING);
-			}
-		});
+	@Test
+	void propertyAlreadyRegistered() {
+		assertThrows(
+			PropertyServiceDuplicateRegistrationException.class,
+			() -> initPropertyService(new IPropertyRegistryConfig() {
+					@Override
+					public void register(IPropertyRegistry propertyService) {
+						propertyService.registerString(ImmutablePropertyIds.IMMUTABLE_STRING);
+						propertyService.registerString(DuplicatePropertyIds.IMMUTABLE_STRING);
+					}
+				})
+			);
 	}
 	
 	public void propertiesMutableImmutableWithSameKey() {

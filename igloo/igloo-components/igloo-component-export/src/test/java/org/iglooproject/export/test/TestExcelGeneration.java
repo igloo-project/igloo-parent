@@ -1,7 +1,7 @@
 package org.iglooproject.export.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,19 +10,18 @@ import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.Test;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.export.excel.ColumnInformation;
 import org.iglooproject.export.test.export.PersonHSSFExport;
 import org.iglooproject.export.test.export.PersonXSSFExport;
 import org.iglooproject.export.test.person.Person;
+import org.junit.jupiter.api.Test;
 
-public class TestExcelGeneration {
+import com.google.common.collect.ImmutableList;
+
+class TestExcelGeneration {
 
 	@Test
-	public void testHSSFGeneration() {
+	void testHSSFGeneration() {
 		int maxColumnWidth = 2000;
 		
 		List<ColumnInformation> columns = ImmutableList.<ColumnInformation>builder()
@@ -71,7 +70,7 @@ public class TestExcelGeneration {
 	}
 	
 	@Test
-	public void testXSSFGeneration() {
+	void testXSSFGeneration() {
 		List<String> columns = new ArrayList<String>();
 		columns.add("username");
 		columns.add("firstname");

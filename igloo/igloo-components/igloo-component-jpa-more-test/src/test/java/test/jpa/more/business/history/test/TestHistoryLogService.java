@@ -2,8 +2,8 @@ package test.jpa.more.business.history.test;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import java.util.Calendar;
@@ -30,17 +30,18 @@ import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.more.test.junit.difference.TestHistoryDifferenceCollectionMatcher;
 import org.iglooproject.jpa.more.test.junit.difference.TestHistoryDifferenceDescription;
 import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.hamcrest.MockitoHamcrest;
 import org.mockito.invocation.InvocationOnMock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -60,7 +61,9 @@ import test.jpa.more.business.history.model.atomic.TestHistoryEventType;
 import test.jpa.more.business.history.model.bean.TestHistoryLogAdditionalInformationBean;
 import test.jpa.more.business.history.service.ITestHistoryLogService;
 
-public class TestHistoryLogService extends AbstractJpaMoreTestCase {
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+class TestHistoryLogService extends AbstractJpaMoreTestCase {
 	
 	private static final Date DATE = new Date();
 
@@ -68,8 +71,6 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 	 * Only here to mock some parameters passed to the log() method.
 	 * The Spring context is still used for most beans.
 	 */
-	@Rule
-	public MockitoRule mockitoRule = MockitoJUnit.rule();
 	
 	@Mock(answer = Answers.RETURNS_MOCKS)
 	private IDifferenceFromReferenceGenerator<TestEntity> differenceGeneratorMock;
@@ -105,7 +106,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 		writeTransactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute);
 	}
 	
-	@Before
+	@BeforeEach
 	public void initValues() throws ServiceException, SecurityServiceException {
 		TestEntity before = new TestEntity("beforeEntity");
 		TestEntity after = new TestEntity("afterEntity");
@@ -115,7 +116,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 		entityHistoryValueAfter = createExpectedHistoryValue(after);
 	}
 	
-	@Before
+	@BeforeEach
 	public void initMocks() {
 		// Make the difference generation fail if the modified object is not attached to the session
 		AssertionError error = new AssertionError("Attempt to compute differences on an object that was not attached to the session");
@@ -160,7 +161,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 	}
 
 	@Test
-	public void logNow() throws ServiceException, SecurityServiceException {
+	void logNow() throws ServiceException, SecurityServiceException {
 		TestEntity object = new TestEntity("object");
 		testEntityService.create(object);
 		
@@ -194,7 +195,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 	}
 
 	@Test
-	public void logBeforeCommit() throws ServiceException, SecurityServiceException {
+	void logBeforeCommit() throws ServiceException, SecurityServiceException {
 		final TestEntity object = new TestEntity("object");
 		testEntityService.create(object);
 		
@@ -264,7 +265,7 @@ public class TestHistoryLogService extends AbstractJpaMoreTestCase {
 	}
 
 	@Test
-	public void logBeforeClear() throws ServiceException, SecurityServiceException {
+	void logBeforeClear() throws ServiceException, SecurityServiceException {
 		final TestEntity object = new TestEntity("object");
 		testEntityService.create(object);
 		

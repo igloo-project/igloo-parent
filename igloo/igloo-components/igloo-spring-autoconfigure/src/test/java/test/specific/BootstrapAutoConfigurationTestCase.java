@@ -6,7 +6,7 @@ import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.iglooproject.wicket.bootstrap4.application.WicketBootstrapModule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
@@ -18,14 +18,14 @@ import org.springframework.context.annotation.Configuration;
  * which are declared at the bottom of the file.
  *  
  */
-public class BootstrapAutoConfigurationTestCase {
+class BootstrapAutoConfigurationTestCase {
 
 	/**
 	 * Check that autoconfiguration from bootstrap 4 {@link WicketBootstrapModule} is triggered with
 	 * EnableIglooAutoConfiguration when excluding bootstrap 5
 	 */
 	@Test
-	public void testIglooBootstrap4AutoConfigure() {
+	void testIglooBootstrap4AutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))

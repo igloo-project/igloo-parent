@@ -2,23 +2,31 @@ package test.wicket.more.model;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.wicket.model.IModel;
-import org.junit.Test;
+import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.functional.Suppliers2;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Equivalence;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import test.wicket.more.business.person.model.Person;
+import test.wicket.more.business.person.model.PersonComparator;
 import test.wicket.more.business.person.service.IPersonService;
 
 public abstract class AbstractTestGenericEntityCollectionModel<C extends Collection<Person>>
@@ -57,8 +65,9 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 	
 	protected abstract C clone(C collection);
 	
-	@Test
-	public void testNotAttached() {
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testNotAttached(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) {
 		IModel<C> model = createModel();
 		assertThat(model.getObject(), isEmpty());
 		model = serializeAndDeserialize(model);

@@ -4,14 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.iglooproject.sass.util.JSassWebjarUrlMatcher;
 import org.iglooproject.sass.util.JSassWebjarUrlMatcher.WebjarUrl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class WebjarUrlTest {
+class WebjarUrlTest {
 
 	private JSassWebjarUrlMatcher matcher = JSassWebjarUrlMatcher.INSTANCE;
 
 	@Test
-	public void versionLessUrl() {
+	void versionLessUrl() {
 		WebjarUrl url = matcher.match("webjars://webjar/path/to/resource");
 		assertThat(url).isNotNull();
 		assertThat(url.getProtocol()).isEqualTo("webjars");
@@ -21,7 +21,7 @@ public class WebjarUrlTest {
 	}
 
 	@Test
-	public void versionUrl() {
+	void versionUrl() {
 		WebjarUrl url = matcher.match("webjars://webjar:version/path/to/resource");
 		assertThat(url).isNotNull();
 		assertThat(url.getProtocol()).isEqualTo("webjars");
@@ -31,7 +31,7 @@ public class WebjarUrlTest {
 	}
 
 	@Test
-	public void notUrl() {
+	void notUrl() {
 		assertThat(matcher.match("./simple/relative/path.scss")).isNull();
 		assertThat(matcher.match("http://www.iglooproject.org")).isNull();
 		assertThat(matcher.match("file:/absolute/path.scss")).isNull();

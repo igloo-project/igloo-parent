@@ -6,15 +6,15 @@ import javax.mail.internet.MimeMessage;
 
 import org.assertj.core.api.Assertions;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {"notification.mail.sender.behavior=FALLBACK_TO_FROM"})
-public class TestNotificationSenderFallbackToFrom extends AbstractTestNotification {
+class TestNotificationSenderFallbackToFrom extends AbstractTestNotification {
 
 	@Test
-	public void testNotificationSenderUnset() throws ServiceException, MessagingException {
+	void testNotificationSenderUnset() throws ServiceException, MessagingException {
 		createNotificationBuilder().from("from@example.com").toAddress("to@example.com")
 			.subject("subject").textBody("text").send();
 		MimeMessage message = mockitoSend(Mockito.times(1)).getValue();
@@ -23,7 +23,7 @@ public class TestNotificationSenderFallbackToFrom extends AbstractTestNotificati
 	}
 
 	@Test
-	public void testNotificationSenderSet() throws ServiceException, MessagingException {
+	void testNotificationSenderSet() throws ServiceException, MessagingException {
 		createNotificationBuilder().sender("sender@example.com").from("from@example.com").toAddress("to@example.com")
 			.subject("subject").textBody("text").send();
 		MimeMessage message = mockitoSend(Mockito.times(1)).getValue();
@@ -32,7 +32,7 @@ public class TestNotificationSenderFallbackToFrom extends AbstractTestNotificati
 	}
 
 	@Test
-	public void testNotificationDefaultFromSenderSet() throws ServiceException, MessagingException {
+	void testNotificationDefaultFromSenderSet() throws ServiceException, MessagingException {
 		createNotificationBuilder().sender("sender@example.com").toAddress("to@example.com")
 			.subject("subject").textBody("text").send();
 		MimeMessage message = mockitoSend(Mockito.times(1)).getValue();
@@ -41,7 +41,7 @@ public class TestNotificationSenderFallbackToFrom extends AbstractTestNotificati
 	}
 
 	@Test
-	public void testNotificationDefaultFromSenderUnset() throws ServiceException, MessagingException {
+	void testNotificationDefaultFromSenderUnset() throws ServiceException, MessagingException {
 		createNotificationBuilder().toAddress("to@example.com")
 			.subject("subject").textBody("text").send();
 		MimeMessage message = mockitoSend(Mockito.times(1)).getValue();

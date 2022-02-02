@@ -17,6 +17,12 @@
 
 package org.iglooproject.test.generic;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.List;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -29,13 +35,12 @@ import org.iglooproject.test.business.person.model.PersonReference;
 import org.iglooproject.test.business.person.model.PersonSubTypeA;
 import org.iglooproject.test.business.person.model.PersonSubTypeB;
 import org.iglooproject.test.business.person.model.QPerson;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestGenericDao extends AbstractJpaCoreTestCase {
+class TestGenericDao extends AbstractJpaCoreTestCase {
 
 	@Autowired
 	private IPersonDao personDao;
@@ -44,7 +49,7 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 	private IPersonReferenceDao personReferenceDao;
 
 	@Test
-	public void testGet() throws ServiceException, SecurityServiceException {
+	void testGet() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
 		
@@ -52,21 +57,21 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 			Person person1 = (Person) personDao.getById(Person.class, person.getId());
 			Person person2 = personDao.getById(person.getId());
 			
-			Assert.assertTrue(person.equals(person1));
-			Assert.assertTrue(person.equals(person2));
+			assertTrue(person.equals(person1));
+			assertTrue(person.equals(person2));
 		}
 		
 		{
 			Person person1 = (Person) personDao.getById(Person.class, person.getId());
 			Person person2 = personDao.getById(person.getId());
 			
-			Assert.assertTrue(person.equals(person1));
-			Assert.assertTrue(person.equals(person2));
+			assertTrue(person.equals(person1));
+			assertTrue(person.equals(person2));
 		}
 	}
 
 	@Test
-	public void testSubTypeGet() throws ServiceException, SecurityServiceException {
+	void testSubTypeGet() throws ServiceException, SecurityServiceException {
 		Person personA = new PersonSubTypeA("Firstname", "A", "DATA");
 		Person personB = new PersonSubTypeB("Firstname", "B", 3);
 		personService.create(personA);
@@ -82,23 +87,23 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		PersonSubTypeB personB3 = personDao.getById(PersonSubTypeB.class, personB.getId());
 		PersonSubTypeA personB4 = personDao.getById(PersonSubTypeA.class, personB.getId());
 
-		Assert.assertTrue(personA.equals(personA1));
-		Assert.assertTrue(personA.equals(personA2));
-		Assert.assertTrue(personA.equals(personA3));
-		Assert.assertNull(personA4);
+		assertTrue(personA.equals(personA1));
+		assertTrue(personA.equals(personA2));
+		assertTrue(personA.equals(personA3));
+		assertNull(personA4);
 		
-		Assert.assertTrue(personB.equals(personB1));
-		Assert.assertTrue(personB.equals(personB2));
-		Assert.assertTrue(personB.equals(personB3));
-		Assert.assertNull(personB4);
+		assertTrue(personB.equals(personB1));
+		assertTrue(personB.equals(personB2));
+		assertTrue(personB.equals(personB3));
+		assertNull(personB4);
 		
 		cleanAll();
-		Assert.assertEquals(Long.valueOf(0), personService.count());
-		Assert.assertEquals(Long.valueOf(0), personDao.count(QPerson.person));
+		assertEquals(Long.valueOf(0), personService.count());
+		assertEquals(Long.valueOf(0), personDao.count(QPerson.person));
 	}
 
 	@Test
-	public void testPolymorphicSubTypeGet() throws ServiceException, SecurityServiceException {
+	void testPolymorphicSubTypeGet() throws ServiceException, SecurityServiceException {
 		Person person = new PersonSubTypeA("Firstname", "A", "DATA");
 		PersonReference personReference = new PersonReference(person);
 		personService.create(person);
@@ -110,53 +115,53 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		
 		PersonReference personReference1 = personReferenceDao.getById(personReference.getId());
 		Person person1 = personReference1.getPerson();
-		Assert.assertEquals(person, person1);
-		Assert.assertFalse(person1 instanceof PersonSubTypeA); // person1 devrait être chargé en session en tant que proxy de Person
+		assertEquals(person, person1);
+		assertFalse(person1 instanceof PersonSubTypeA); // person1 devrait être chargé en session en tant que proxy de Person
 		
 		Person person2 = personDao.getById(PersonSubTypeA.class, person.getId());
-		Assert.assertEquals(person, person2);
-		Assert.assertTrue(person2 instanceof PersonSubTypeA); // Chargement en session SANS proxy
+		assertEquals(person, person2);
+		assertTrue(person2 instanceof PersonSubTypeA); // Chargement en session SANS proxy
 	}
 
 	@Test
-	public void testCreateDelete() throws ServiceException, SecurityServiceException {
+	void testCreateDelete() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
 		personService.flush();
-		Assert.assertTrue(personService.list().contains(person));
+		assertTrue(personService.list().contains(person));
 
 		personService.delete(person);
 		personService.flush();
-		Assert.assertFalse(personService.list().contains(person));
+		assertFalse(personService.list().contains(person));
 	}
 
 	@Test
-	public void testUpdate() throws ServiceException, SecurityServiceException {
+	void testUpdate() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
-		Assert.assertEquals("Firstname", personService.getById(person.getId()).getFirstName());
+		assertEquals("Firstname", personService.getById(person.getId()).getFirstName());
 
 		person.setFirstName("NewFirstname");
 		personDao.update(person);
-		Assert.assertEquals("NewFirstname", personService.getById(person.getId()).getFirstName());
+		assertEquals("NewFirstname", personService.getById(person.getId()).getFirstName());
 	}
 
 	@Test
-	public void testRefresh() throws ServiceException, SecurityServiceException {
+	void testRefresh() throws ServiceException, SecurityServiceException {
 		Person person = new Person("Firstname", "Lastname");
 		personService.create(person);
 
 		person.setFirstName("AAAAA");
-		Assert.assertEquals("AAAAA", person.getFirstName());
+		assertEquals("AAAAA", person.getFirstName());
 
 		personService.refresh(person);
-		Assert.assertEquals("Firstname", person.getFirstName());
+		assertEquals("Firstname", person.getFirstName());
 
 		Person person1 = new Person("Firstname", "Lastname");
 
 		try {
 			personService.refresh(person1);
-			Assert.fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
+			fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
 		} catch (IllegalArgumentException e) {
 		}
 
@@ -165,21 +170,21 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 
 		try {
 			personService.refresh(person1);
-			Assert.fail("Faire un refresh sur un objet non persisté doit lever une exception");
+			fail("Faire un refresh sur un objet non persisté doit lever une exception");
 		} catch (IllegalArgumentException e) {
 		}
 	}
 
 	@Test
-	public void testLists() throws ServiceException, SecurityServiceException {
+	void testLists() throws ServiceException, SecurityServiceException {
 		{
 			List<Person> emptyList = personDao.list();
-			Assert.assertEquals(0, emptyList.size());
+			assertEquals(0, emptyList.size());
 		}
 		
 		{
 			List<Person> emptyList = personDao.list(QPerson.person);
-			Assert.assertEquals(0, emptyList.size());
+			assertEquals(0, emptyList.size());
 		}
 		
 		Person person1 = new Person("Firstname1", "Lastname1");
@@ -194,33 +199,33 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		{
 			List<Person> list = personDao.list();
 			
-			Assert.assertEquals(4, list.size());
-			Assert.assertTrue(list.contains(person1));
-			Assert.assertTrue(list.contains(person2));
-			Assert.assertTrue(list.contains(person3));
-			Assert.assertTrue(list.contains(person4));
+			assertEquals(4, list.size());
+			assertTrue(list.contains(person1));
+			assertTrue(list.contains(person2));
+			assertTrue(list.contains(person3));
+			assertTrue(list.contains(person4));
 		}
 		
 		{
 			List<Person> list = personDao.list(QPerson.person);
 			
-			Assert.assertEquals(4, list.size());
-			Assert.assertTrue(list.contains(person1));
-			Assert.assertTrue(list.contains(person2));
-			Assert.assertTrue(list.contains(person3));
-			Assert.assertTrue(list.contains(person4));
+			assertEquals(4, list.size());
+			assertTrue(list.contains(person1));
+			assertTrue(list.contains(person2));
+			assertTrue(list.contains(person3));
+			assertTrue(list.contains(person4));
 		}
 	}
 
 	@Test
-	public void testCounts() throws ServiceException, SecurityServiceException {
+	void testCounts() throws ServiceException, SecurityServiceException {
 		{
-			Assert.assertEquals(Long.valueOf(0), personDao.count());
+			assertEquals(Long.valueOf(0), personDao.count());
 		}
 		
 		{
-			Assert.assertEquals(Long.valueOf(0), personDao.count(QPerson.person));
-			Assert.assertEquals(Long.valueOf(0), personDao.countByField(QPerson.person, QPerson.person.lastName, "AAAA"));
+			assertEquals(Long.valueOf(0), personDao.count(QPerson.person));
+			assertEquals(Long.valueOf(0), personDao.countByField(QPerson.person, QPerson.person.lastName, "AAAA"));
 		}
 		
 		Person person1 = new Person("Firstname1", "Lastname1");
@@ -233,22 +238,22 @@ public class TestGenericDao extends AbstractJpaCoreTestCase {
 		personService.create(person4);
 		
 		{
-			Assert.assertEquals(Long.valueOf(4), personDao.count());
+			assertEquals(Long.valueOf(4), personDao.count());
 		}
 		
 		{
-			Assert.assertEquals(Long.valueOf(4), personDao.count(QPerson.person));
-			Assert.assertEquals(Long.valueOf(2), personDao.countByField(QPerson.person, QPerson.person.lastName, "AAAA"));
+			assertEquals(Long.valueOf(4), personDao.count(QPerson.person));
+			assertEquals(Long.valueOf(2), personDao.countByField(QPerson.person, QPerson.person.lastName, "AAAA"));
 		}
 	}
 	
-	@Before
+	@BeforeEach
 	@Override
 	public void init() throws ServiceException, SecurityServiceException {
 		super.init();
 	}
 	
-	@After
+	@AfterEach
 	@Override
 	public void close() throws ServiceException, SecurityServiceException {
 		super.close();

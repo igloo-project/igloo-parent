@@ -1,18 +1,18 @@
 package test.wicket.more.bindable;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.iglooproject.wicket.more.bindable.model.BindableModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableModel;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class TestBindableModel extends AbstractTestBindableModel {
+class TestBindableModel extends AbstractTestBindableModel {
 	
 	@Test
-	public void readAccessToProperties() {
+	void readAccessToProperties() {
 		SimplePropertyValue expectedPropertyValue = new SimplePropertyValue();
 		rootValue.setSimpleProperty(expectedPropertyValue);
 		
@@ -26,7 +26,7 @@ public class TestBindableModel extends AbstractTestBindableModel {
 	}
 	
 	@Test
-	public void writeAccessToProperties() {
+	void writeAccessToProperties() {
 		doReturn(rootValue).when(rootModel).getObject();
 		
 		IBindableModel<RootValue> bindableModel = new BindableModel<>(rootModel);
@@ -38,7 +38,7 @@ public class TestBindableModel extends AbstractTestBindableModel {
 	}
 	
 	@Test
-	public void alwaysReturnsSameModelInstance() {
+	void alwaysReturnsSameModelInstance() {
 		doReturn(rootValue).when(rootModel).getObject();
 		
 		IBindableModel<RootValue> bindableModel = new BindableModel<>(rootModel);
@@ -50,7 +50,7 @@ public class TestBindableModel extends AbstractTestBindableModel {
 	}
 	
 	@Test
-	public void alwaysReturnsSameModelInstanceEvenIfChained() {
+	void alwaysReturnsSameModelInstanceEvenIfChained() {
 		doReturn(rootValue).when(rootModel).getObject();
 		
 		IBindableModel<RootValue> bindableModel = new BindableModel<>(rootModel);
@@ -64,7 +64,7 @@ public class TestBindableModel extends AbstractTestBindableModel {
 	}
 
 	@Test
-	public void simpleCacheUsage() {
+	void simpleCacheUsage() {
 		SimplePropertyValue firstExpectedValue = new SimplePropertyValue();
 		SimplePropertyValue secondExpectedValue = new SimplePropertyValue();
 		rootValue.setSimpleProperty(firstExpectedValue);
@@ -100,7 +100,7 @@ public class TestBindableModel extends AbstractTestBindableModel {
 	}
 
 	@Test
-	public void cacheUpdatePropagation() {
+	void cacheUpdatePropagation() {
 		SimplePropertyValue firstExpectedValue = new SimplePropertyValue();
 		SimplePropertyValue secondExpectedValue = new SimplePropertyValue();
 		rootValue.setSimpleProperty(firstExpectedValue);

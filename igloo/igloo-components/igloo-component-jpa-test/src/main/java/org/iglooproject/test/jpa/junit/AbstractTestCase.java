@@ -1,5 +1,9 @@
 package org.iglooproject.test.jpa.junit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.beans.PropertyDescriptor;
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -38,19 +42,16 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.jpa.util.EntityManagerUtils;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.rules.SpringClassRule;
-import org.springframework.test.context.junit4.rules.SpringMethodRule;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.google.common.collect.Lists;
@@ -61,18 +62,8 @@ import com.google.common.collect.Lists;
 	EntityManagerExecutionListener.class
 })
 @TestPropertySource(properties = "igloo.profile=test")
+@ExtendWith(SpringExtension.class)
 public abstract class AbstractTestCase {
-
-	/**
-	 * Use this instead of SpringJUnit4ClassRunner, so that implementors can choose their own runner
-	 */
-	@ClassRule
-	public static final SpringClassRule SCR = new SpringClassRule();
-	/**
-	 * Use this instead of SpringJUnit4ClassRunner, so that implementors can choose their own runner
-	 */
-	@Rule
-	public final SpringMethodRule springMethodRule = new SpringMethodRule();
 	
 	@Autowired
 	private EntityManagerUtils entityManagerUtils;
@@ -88,14 +79,14 @@ public abstract class AbstractTestCase {
 		}
 	}
 	
-	@Before
+	@BeforeEach
 	public void init() throws ServiceException, SecurityServiceException {
 		cleanAll();
 		checkEmptyDatabase();
 		clearCaches();
 	}
-	
-	@After
+
+	@AfterEach
 	public void close() throws ServiceException, SecurityServiceException {
 		cleanAll();
 		checkEmptyDatabase();
@@ -157,7 +148,7 @@ public abstract class AbstractTestCase {
 			String fieldName = field.getName();
 			if (source.isWritableProperty(fieldName) && String.class.isAssignableFrom(field.getPropertyType())) {
 				if (!ArrayUtils.contains(ignoredFields, fieldName) && source.isReadableProperty(fieldName)) {
-					Assert.assertEquals(fieldName, source.getPropertyValue(fieldName));
+					assertEquals(fieldName, source.getPropertyValue(fieldName));
 				}
 			}
 		}
@@ -169,7 +160,7 @@ public abstract class AbstractTestCase {
 			List<?> entities = listEntities(entityType.getBindableJavaType());
 			
 			if (entities.size() > 0) {
-				Assert.fail(String.format("Il reste des objets de type %1$s", entities.get(0).getClass().getSimpleName()));
+				fail(String.format("Il reste des objets de type %1$s", entities.get(0).getClass().getSimpleName()));
 			}
 		}
 	}
@@ -204,7 +195,7 @@ public abstract class AbstractTestCase {
 	}
 	
 	protected void assertDatesWithinXSeconds(Date date1, Date date2, Integer delayInSeconds) {
-		Assert.assertTrue(Math.abs(date1.getTime() - date2.getTime()) < delayInSeconds * 1000l);
+		assertTrue(Math.abs(date1.getTime() - date2.getTime()) < delayInSeconds * 1000l);
 	}
 
 	protected EntityManager getEntityManager() {

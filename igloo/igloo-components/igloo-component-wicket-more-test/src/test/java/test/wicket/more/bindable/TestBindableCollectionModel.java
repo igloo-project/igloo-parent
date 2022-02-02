@@ -1,7 +1,7 @@
 package test.wicket.more.bindable;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,14 +12,14 @@ import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.wicket.more.bindable.model.BindableModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableCollectionModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableModel;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableList;
 
-public class TestBindableCollectionModel extends AbstractTestBindableModel {
+class TestBindableCollectionModel extends AbstractTestBindableModel {
 	
 	@Test
-	public void alwaysReturnsSameModelInstance() {
+	void alwaysReturnsSameModelInstance() {
 		doReturn(rootValue).when(rootModel).getObject();
 		
 		IBindableModel<RootValue> bindableModel = new BindableModel<>(rootModel);
@@ -37,7 +37,7 @@ public class TestBindableCollectionModel extends AbstractTestBindableModel {
 	}
 	
 	@Test
-	public void alwaysReturnsSameModelInstanceEvenIfChained() {
+	void alwaysReturnsSameModelInstanceEvenIfChained() {
 		doReturn(rootValue).when(rootModel).getObject();
 		
 		IBindableModel<RootValue> bindableModel = new BindableModel<>(rootModel);
@@ -57,7 +57,7 @@ public class TestBindableCollectionModel extends AbstractTestBindableModel {
 	}
 
 	@Test
-	public void simpleCacheUsage() {
+	void simpleCacheUsage() {
 		Collection<CollectionPropertyItemValue> firstExpectedValue = ImmutableList.of(new CollectionPropertyItemValue());
 		Collection<CollectionPropertyItemValue> secondExpectedValue = ImmutableList.of(
 				new CollectionPropertyItemValue(), new CollectionPropertyItemValue()
@@ -98,7 +98,7 @@ public class TestBindableCollectionModel extends AbstractTestBindableModel {
 	}
 
 	@Test
-	public void cacheUpdatePropagation() {
+	void cacheUpdatePropagation() {
 		Collection<CollectionPropertyItemValue> firstExpectedValue = ImmutableList.of(new CollectionPropertyItemValue());
 		Collection<CollectionPropertyItemValue> secondExpectedValue = ImmutableList.of(
 				new CollectionPropertyItemValue(), new CollectionPropertyItemValue()
@@ -139,7 +139,7 @@ public class TestBindableCollectionModel extends AbstractTestBindableModel {
 	}
 
 	@Test
-	public void collectionModelInterfaceUsage() {
+	void collectionModelInterfaceUsage() {
 		CollectionPropertyItemValue firstItem = new CollectionPropertyItemValue();
 		CollectionPropertyItemValue secondItem = new CollectionPropertyItemValue();
 		CollectionPropertyItemValue thirdItem = new CollectionPropertyItemValue();

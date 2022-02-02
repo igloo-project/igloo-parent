@@ -15,23 +15,23 @@ import org.iglooproject.spring.notification.service.INotificationBuilderBaseStat
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.test.spring.notification.spring.config.TestFilteredConfig;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 @ContextConfiguration(
-		classes = { TestFilteredConfig.class },
-		inheritInitializers = true
+	classes = { TestFilteredConfig.class },
+	inheritInitializers = true
 )
-public class TestNotificationFiltered extends AbstractTestNotification {
+class TestNotificationFiltered extends AbstractTestNotification {
 
 	@Autowired
 	private IPropertyService propertyService;
 
 	@Test
-	public void testSendGroup() throws ServiceException, MessagingException {
+	void testSendGroup() throws ServiceException, MessagingException {
 		INotificationBuilderBaseState builder = createNotificationBuilder();
 		String address1 = "test-to-1@example.com";
 		String address2 = "test-to-2@example.com";

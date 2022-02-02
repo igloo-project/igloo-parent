@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +18,13 @@ import org.springframework.security.access.intercept.RunAsManager;
  * which are declared at the bottom of the file.
  *  
  */
-public class JpaSecurityAutoConfigurationTestCase {
+class JpaSecurityAutoConfigurationTestCase {
 
 	/**
 	 * Check that autoconfiguration from {@link FlywayConfiguration} is triggered with EnableIglooAutoConfiguration
 	 */
 	@Test
-	public void testIglooJpaSecurityAutoConfigure() {
+	void testIglooJpaSecurityAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))

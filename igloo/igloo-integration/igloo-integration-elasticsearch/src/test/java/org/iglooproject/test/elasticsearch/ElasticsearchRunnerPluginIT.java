@@ -19,16 +19,16 @@ import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.common.settings.Settings;
 import org.iglooproject.lucene.analysis.french.CoreFrenchMinimalStemFilter;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import plugin.CoreFrenchMinimalStemPlugin;
 
-public class ElasticsearchRunnerPluginIT {
+class ElasticsearchRunnerPluginIT {
 
 	private static final String GET_METHOD = "GET";
 
@@ -41,7 +41,7 @@ public class ElasticsearchRunnerPluginIT {
 	private int httpPort = 9000;
 	private int tcpPort = 9001;
 
-	@Before
+	@BeforeEach
 	public void setUpElastic() throws Exception {
 		clusterName = "es-minhash-" + System.currentTimeMillis();
 		// create runner instance
@@ -65,13 +65,13 @@ public class ElasticsearchRunnerPluginIT {
 		runner.ensureYellow();
 	}
 
-	@After
+	@AfterEach
 	public void stopElastic() throws IOException {
 		runner.close();
 	}
 
 	@Test
-	public void plugin() throws ConfigurationException, IOException, URISyntaxException {
+	void plugin() throws ConfigurationException, IOException, URISyntaxException {
 		HttpHost host = new HttpHost("localhost", httpPort);
 		try (RestClient client = RestClient.builder(host).build()) {
 			Map<String, String> params = new HashMap<>();
