@@ -8,9 +8,9 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.jpa.more.business.sort.ISort;
+import org.iglooproject.wicket.api.factory.IDetachableFactory;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.rows.state.IDataTableRowsState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IBuildState;
 

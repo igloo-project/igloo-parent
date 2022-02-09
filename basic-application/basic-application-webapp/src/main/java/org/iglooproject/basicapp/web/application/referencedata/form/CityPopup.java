@@ -10,9 +10,9 @@ import org.iglooproject.basicapp.core.business.common.model.PostalCode;
 import org.iglooproject.basicapp.core.business.referencedata.model.City;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.referencedata.validator.CityUnicityFormValidator;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
-import org.iglooproject.wicket.more.model.BindingModel;
+import org.iglooproject.wicket.api.bindgen.BindingModel;
+import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 
 public abstract class CityPopup extends AbstractReferenceDataPopup<City> {
 

@@ -14,19 +14,19 @@ import org.iglooproject.commons.util.report.BatchReportItemSeverity;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.more.business.task.model.BatchReportBean;
 import org.iglooproject.jpa.more.util.binding.CoreJpaMoreBindings;
+import org.iglooproject.wicket.api.Models;
+import org.iglooproject.wicket.api.bindgen.BindingModel;
+import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.behavior.BootstrapColorBehavior;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.IBootstrapRendererModel;
 import org.iglooproject.wicket.more.markup.repeater.collection.CollectionView;
 import org.iglooproject.wicket.more.markup.repeater.map.MapItem;
 import org.iglooproject.wicket.more.markup.repeater.map.MapView;
-import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.rendering.BatchReportItemSeverityRenderer;
-import org.iglooproject.wicket.more.util.model.Models;
 
 import com.google.common.collect.Range;
 

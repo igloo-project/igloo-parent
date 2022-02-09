@@ -9,9 +9,9 @@ import java.util.Collection;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.functional.Suppliers2;
-import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
+import org.iglooproject.wicket.api.ICollectionModel;
+import org.iglooproject.wicket.api.Models;
 import org.iglooproject.wicket.more.model.CollectionCopyModel;
-import org.iglooproject.wicket.more.util.model.Models;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 

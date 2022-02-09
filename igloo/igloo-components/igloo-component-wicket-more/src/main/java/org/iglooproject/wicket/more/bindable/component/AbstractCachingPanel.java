@@ -5,9 +5,9 @@ import org.apache.wicket.markup.html.form.IFormModelUpdateListener;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
+import org.iglooproject.bootstrap.api.IAjaxModalPopupPanel;
+import org.iglooproject.bootstrap.api.IAjaxModalShowListener;
 import org.iglooproject.wicket.more.bindable.model.IBindableModel;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.IAjaxModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.IAjaxModalShowListener;
 
 import com.google.common.base.Objects;
 

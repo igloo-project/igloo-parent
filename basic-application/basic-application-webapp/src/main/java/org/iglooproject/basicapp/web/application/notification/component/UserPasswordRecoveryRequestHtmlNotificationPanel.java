@@ -10,9 +10,9 @@ import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.ResourceKeyGenerator;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
+import org.iglooproject.wicket.api.bindgen.BindingModel;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
-import org.iglooproject.wicket.more.model.BindingModel;
 
 public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> extends AbstractHtmlNotificationPanel<T> {
 

@@ -2,8 +2,7 @@ package org.iglooproject.wicket.more.link.descriptor.builder.state.validator;
 
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
-
-import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;

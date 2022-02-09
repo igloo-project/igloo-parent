@@ -16,7 +16,6 @@ import org.iglooproject.wicket.markup.html.basic.CountLabel;
 import org.iglooproject.wicket.more.link.descriptor.impl.DynamicBookmarkablePageLink;
 import org.iglooproject.wicket.more.markup.html.template.component.BreadCrumbListView;
 import org.iglooproject.wicket.more.markup.html.template.component.LinkGeneratorBreadCrumbElementPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractModalPopupPanel;
 
 /**
  * Extended {@link CoreWicketTester} that adds wicket-more related assertions.
@@ -88,8 +87,10 @@ public class WicketMoreWicketTester extends CoreWicketTester {
 	 * Assert a Component is visible, of type popupClass (extends AbstractModalPopupPanel)
 	 * and that the internal component are invisible
 	 */
-	public <T extends AbstractModalPopupPanel<?>> void assertModalBeforeOpening(String modalPath, String modalTitle, Class<T> popupClass,
-		List<String> bodyFirstChildElementsId, List<String> footerFirstChildElementsId) {
+	public void assertModalBeforeOpening(String modalPath, String modalTitle,
+			Class<?> popupClass,
+			List<String> bodyFirstChildElementsId,
+			List<String> footerFirstChildElementsId) {
 		assertVisible(modalPath, popupClass);
 		
 		assertVisible(modalPath + ":container");

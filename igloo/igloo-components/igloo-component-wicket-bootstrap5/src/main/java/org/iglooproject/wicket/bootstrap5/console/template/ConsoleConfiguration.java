@@ -10,6 +10,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.UrlUtils;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.api.factory.IComponentFactory;
 import org.iglooproject.wicket.bootstrap5.console.maintenance.authentication.page.ConsoleMaintenanceAuthenticationPage;
 import org.iglooproject.wicket.bootstrap5.console.maintenance.data.page.ConsoleMaintenanceDataPage;
 import org.iglooproject.wicket.bootstrap5.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
@@ -24,7 +25,6 @@ import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
-import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;
 import org.iglooproject.wicket.more.markup.html.link.InvisibleLink;
 import org.springframework.util.StringUtils;
 

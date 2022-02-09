@@ -4,9 +4,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.model.IModel;
-
-import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.api.action.IOneParameterAjaxAction;
+import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
 
 public class ActionColumnAjaxActionFactory<T> implements IOneParameterComponentFactory<AjaxLink<T>, IModel<T>> {
 

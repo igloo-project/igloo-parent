@@ -6,7 +6,7 @@ import java.util.Date;
 import org.apache.wicket.Application;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.mime.MediaType;
-import org.iglooproject.wicket.more.model.BindingModel;
+import org.iglooproject.wicket.api.bindgen.BindingModel;
 import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
 
 public class ExportFileUtils {

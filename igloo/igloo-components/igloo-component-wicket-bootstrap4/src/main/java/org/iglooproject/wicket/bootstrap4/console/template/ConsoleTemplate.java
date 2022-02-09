@@ -30,6 +30,7 @@ import org.iglooproject.jpa.more.business.upgrade.service.IAbstractDataUpgradeSe
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.bootstrap4.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.collapse.BootstrapCollapseJavaScriptResourceReference;
@@ -38,7 +39,6 @@ import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tool
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipBehavior;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.AbstractCoreSession;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;

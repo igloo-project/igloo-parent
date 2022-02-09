@@ -11,9 +11,9 @@ import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.SerializableFunction2;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
+import org.iglooproject.wicket.api.Models;
+import org.iglooproject.wicket.api.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.util.model.Detachables;
-import org.iglooproject.wicket.more.util.model.Models;
 
 public class ReadOnlyModel<F, T> implements IComponentAssignedModel<T> {
 

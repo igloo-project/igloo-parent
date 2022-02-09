@@ -3,6 +3,7 @@ package org.iglooproject.wicket.more.markup.html.factory;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.wicket.api.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.util.model.Detachables;
 

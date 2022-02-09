@@ -13,10 +13,10 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
-import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
+import org.iglooproject.wicket.api.ICollectionModel;
+import org.iglooproject.wicket.api.IItemModelAwareCollectionModel;
+import org.iglooproject.wicket.api.Models;
 import org.iglooproject.wicket.more.util.model.Detachables;
-import org.iglooproject.wicket.more.util.model.Models;
 
 /**
  * An abstract base for implementations of {@link ICollectionModel} whose content is to be "cloned" (i.e. copied to a new

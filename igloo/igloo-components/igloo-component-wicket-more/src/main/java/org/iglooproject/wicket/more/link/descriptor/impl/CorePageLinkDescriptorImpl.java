@@ -15,6 +15,7 @@ import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 import org.iglooproject.spring.util.StringUtils;
+import org.iglooproject.wicket.api.Models;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
@@ -28,7 +29,6 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkPara
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
-import org.iglooproject.wicket.more.util.model.Models;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

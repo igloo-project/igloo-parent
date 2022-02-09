@@ -13,21 +13,21 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
+import org.iglooproject.wicket.api.bindgen.DataProviderBindings;
+import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.api.factory.IComponentFactory;
+import org.iglooproject.wicket.api.factory.IDetachableFactory;
+import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.api.repeater.ISequenceProvider;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.basic.CountLabel;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
-import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.html.navigation.paging.HideableAjaxPagingNavigator;
 import org.iglooproject.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
 import org.iglooproject.wicket.more.markup.repeater.FactoryRepeatingView;
-import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFactory;
 import org.iglooproject.wicket.more.model.IErrorAwareDataProvider;
-import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
 
 import com.google.common.collect.Multimap;
 
@@ -211,8 +211,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		
 		@Override
 		public Component create(String wicketId) {
-			IModel<Integer> countModel = new PropertyModel<>(sequenceProvider,
-					CoreWicketMoreBindings.iBindableDataProvider().size().getPath());
+			IModel<Integer> countModel = new PropertyModel<>(sequenceProvider, DataProviderBindings.iBindableDataProvider().size().getPath());
 			return new CountLabel(wicketId, countResourceKey, countModel);
 		}
 	}

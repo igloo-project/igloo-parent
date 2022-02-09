@@ -7,6 +7,7 @@ import java.util.Objects;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.wicket.api.Models;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;

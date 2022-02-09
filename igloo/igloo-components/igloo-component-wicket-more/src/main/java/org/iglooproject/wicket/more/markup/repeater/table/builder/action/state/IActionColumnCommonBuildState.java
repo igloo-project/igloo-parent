@@ -3,7 +3,7 @@ package org.iglooproject.wicket.more.markup.repeater.table.builder.action.state;
 import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
+import org.iglooproject.wicket.api.factory.IDetachableFactory;
 
 public interface IActionColumnCommonBuildState<T, I> {
 

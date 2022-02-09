@@ -10,9 +10,8 @@ import org.apache.wicket.markup.IMarkupFragment;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.AbstractRepeater;
 import org.apache.wicket.markup.repeater.RepeatingView;
-
-import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.api.factory.IComponentFactory;
+import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
 
 public class FactoryRepeatingView extends RepeatingView implements IRefreshableOnDemandRepeater {
 

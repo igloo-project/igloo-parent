@@ -9,8 +9,9 @@ import java.util.List;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
-import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
+import org.iglooproject.wicket.api.IItemModelAwareCollectionModel;
+import org.iglooproject.wicket.api.Models;
+import org.iglooproject.wicket.api.repeater.ISequenceProvider;
 
 import com.google.common.collect.ImmutableList;
 

@@ -6,12 +6,12 @@ import org.apache.wicket.request.resource.ResourceReference;
 
 import com.google.common.collect.ImmutableList;
 
+import org.iglooproject.wicket.api.Models;
 import org.iglooproject.wicket.more.link.descriptor.DynamicImage;
 import org.iglooproject.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.generator.IImageResourceLinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
-import org.iglooproject.wicket.more.util.model.Models;
 
 public class CoreImageResourceLinkDescriptorImpl extends CoreResourceLinkDescriptorImpl
 		implements IImageResourceLinkDescriptor {

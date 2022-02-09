@@ -8,7 +8,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-
+import org.iglooproject.wicket.api.repeater.ISequenceProvider;
 import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class SequenceGridView<T> extends SequenceView<T> {

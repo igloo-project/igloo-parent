@@ -11,10 +11,10 @@ import org.apache.commons.lang3.EnumUtils;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.functional.Suppliers2;
-import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
+import org.iglooproject.wicket.api.IMapModel;
+import org.iglooproject.wicket.api.Models;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.model.MapCopyModel;
-import org.iglooproject.wicket.more.util.model.Models;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 

@@ -4,7 +4,7 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.template.ApplicationAccessTemplate;
-import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.api.condition.Condition;
 
 public abstract class SecurityPasswordTemplate extends ApplicationAccessTemplate {
 

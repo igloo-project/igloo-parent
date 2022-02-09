@@ -10,7 +10,7 @@ import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordCreationContentPanel;
 import org.iglooproject.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
-import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;

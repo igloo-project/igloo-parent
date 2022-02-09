@@ -53,9 +53,11 @@
 		<module>igloo-component-autoprefixer</module>
 		
 		<module>igloo-component-wicket</module>
+		<module>igloo-component-wicket-api</module>
 		<module>igloo-component-wicket-test</module>
 		<module>igloo-component-wicket-more</module>
 		<module>igloo-component-wicket-more-test</module>
+		<module>igloo-component-bootstrap-api</module>
 		<module>igloo-component-wicket-bootstrap4</module>
 		<module>igloo-component-wicket-bootstrap5</module>
 		<module>igloo-component-wicket-more-jqplot</module>

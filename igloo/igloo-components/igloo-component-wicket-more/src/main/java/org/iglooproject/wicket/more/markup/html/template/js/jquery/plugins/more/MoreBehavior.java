@@ -8,9 +8,8 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
+import org.iglooproject.wicket.api.Models;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
-
-import org.iglooproject.wicket.more.util.model.Models;
 
 public class MoreBehavior extends Behavior {
 

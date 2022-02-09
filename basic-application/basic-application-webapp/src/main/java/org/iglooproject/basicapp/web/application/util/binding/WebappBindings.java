@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.web.application.util.binding;
 
-import org.iglooproject.wicket.more.model.IBindableDataProviderBinding;
+import org.iglooproject.wicket.api.provider.IBindableDataProviderBinding;
 
 
 public final class WebappBindings {

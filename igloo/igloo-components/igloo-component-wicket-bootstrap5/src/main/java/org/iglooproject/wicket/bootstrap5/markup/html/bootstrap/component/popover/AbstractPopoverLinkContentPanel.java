@@ -1,14 +1,14 @@
 package org.iglooproject.wicket.bootstrap5.markup.html.bootstrap.component.popover;
 
-import static org.iglooproject.wicket.more.condition.Condition.anyChildVisible;
+import static org.iglooproject.wicket.api.condition.Condition.anyChildVisible;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.popover.BootstrapPopoverBehavior;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.popover.BootstrapPopoverOptions;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;

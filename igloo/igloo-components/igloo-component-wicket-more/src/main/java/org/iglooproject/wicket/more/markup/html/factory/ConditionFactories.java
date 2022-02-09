@@ -2,8 +2,9 @@ package org.iglooproject.wicket.more.markup.html.factory;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.wicket.more.condition.BooleanOperator;
-import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.api.condition.BooleanOperator;
+import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.api.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.util.model.Detachables;
 import org.springframework.security.acls.model.Permission;
 

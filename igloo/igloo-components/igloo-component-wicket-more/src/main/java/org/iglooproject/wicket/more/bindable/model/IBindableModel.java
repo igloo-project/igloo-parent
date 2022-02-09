@@ -7,9 +7,9 @@ import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.wicket.api.ICollectionModel;
+import org.iglooproject.wicket.api.IMapModel;
 import org.iglooproject.wicket.more.bindable.exception.NoSuchModelException;
-import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
-import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
 
 /**
  * An {@link IModel} that also provides centralized access to its properties (referenced using

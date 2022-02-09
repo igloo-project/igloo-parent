@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
-import org.iglooproject.wicket.more.util.model.Models;
+import org.iglooproject.wicket.api.Models;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 public class BootstrapTooltipDocumentBehavior extends AbstractBootstrapTooltipBehavior {

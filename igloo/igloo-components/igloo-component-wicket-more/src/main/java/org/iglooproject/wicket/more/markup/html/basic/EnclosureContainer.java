@@ -1,7 +1,9 @@
 package org.iglooproject.wicket.more.markup.html.basic;
 
-import org.iglooproject.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyBehavior.Operator;
-import org.iglooproject.wicket.more.markup.html.basic.impl.AbstractConfigurableComponentBooleanPropertyContainer;
+import org.iglooproject.wicket.api.condition.AbstractConfigurableComponentBooleanPropertyContainer;
+import org.iglooproject.wicket.api.condition.ComponentBooleanProperty;
+import org.iglooproject.wicket.api.condition.ComponentBooleanPropertyBehavior;
+import org.iglooproject.wicket.api.condition.AbstractConfigurableComponentBooleanPropertyBehavior.Operator;
 
 public class EnclosureContainer extends AbstractConfigurableComponentBooleanPropertyContainer<EnclosureContainer> {
 

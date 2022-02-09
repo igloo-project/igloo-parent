@@ -10,6 +10,7 @@ import org.apache.wicket.util.lang.Args;
 
 import com.google.common.collect.ImmutableList;
 
+import org.iglooproject.wicket.api.Models;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.IResourceLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
@@ -18,7 +19,6 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParam
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.LinkParametersMapping;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
-import org.iglooproject.wicket.more.util.model.Models;
 
 public class CoreResourceLinkDescriptorImpl extends AbstractCoreExplicitelyParameterizedLinkDescriptor implements IResourceLinkDescriptor {
 

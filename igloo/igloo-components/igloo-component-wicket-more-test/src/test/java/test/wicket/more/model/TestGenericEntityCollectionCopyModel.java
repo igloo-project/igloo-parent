@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.functional.Suppliers2;
-import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
+import org.iglooproject.wicket.api.ICollectionModel;
 import org.iglooproject.wicket.more.model.CollectionCopyModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.junit.jupiter.params.provider.Arguments;

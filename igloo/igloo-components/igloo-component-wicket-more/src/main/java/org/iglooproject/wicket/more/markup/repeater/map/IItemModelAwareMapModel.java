@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.wicket.model.IModel;
-
-import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
+import org.iglooproject.wicket.api.IItemModelAwareCollectionModel;
+import org.iglooproject.wicket.api.IMapModel;
 
 /**
  * A {@link IMapModel} that provides a specific type of models for its items (keys and values).

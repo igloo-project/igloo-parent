@@ -7,8 +7,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
-import org.iglooproject.wicket.more.util.model.Models;
+import org.iglooproject.wicket.api.IMapModel;
+import org.iglooproject.wicket.api.Models;
 
 /**
  * A {@link IMapModel} whose content is to be "cloned" (i.e. copied to a new map) each time

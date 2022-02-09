@@ -4,7 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
-import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
 
 public interface IHistoryComponentFactory
 	extends IOneParameterComponentFactory<Component, IModel<HistoryDifference>> {

@@ -8,8 +8,8 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
 import org.iglooproject.basicapp.web.application.history.component.factory.IHistoryComponentFactory;
 import org.iglooproject.basicapp.web.application.history.renderer.HistoryDifferencePathRenderer;
+import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.repeater.collection.CollectionView;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 

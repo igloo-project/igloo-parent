@@ -34,7 +34,6 @@
 		</dependency>
 		
 		<!-- Test -->
-		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-jpa-test</artifactId>

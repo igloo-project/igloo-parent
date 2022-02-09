@@ -16,8 +16,8 @@ import org.iglooproject.basicapp.web.application.console.notification.demo.templ
 import org.iglooproject.basicapp.web.application.console.notification.demo.util.NotificationDemoEntry;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
+import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;

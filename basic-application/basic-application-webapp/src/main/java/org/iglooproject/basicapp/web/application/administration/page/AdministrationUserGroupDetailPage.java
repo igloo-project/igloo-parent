@@ -11,8 +11,9 @@ import org.iglooproject.basicapp.web.application.administration.component.UserGr
 import org.iglooproject.basicapp.web.application.administration.component.UserGroupDetailUsersPanel;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserGroupTemplate;
 import org.iglooproject.basicapp.web.application.navigation.link.LinkFactory;
+import org.iglooproject.wicket.api.bindgen.BindingModel;
+import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
@@ -21,7 +22,6 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDesc
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.link.model.PageModel;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
-import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 
 public class AdministrationUserGroupDetailPage extends AdministrationUserGroupTemplate {

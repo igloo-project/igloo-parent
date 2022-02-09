@@ -21,12 +21,12 @@ import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializablePredicate2;
+import org.iglooproject.wicket.api.Models;
 import org.iglooproject.wicket.markup.html.basic.AbstractCoreLabel;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.model.LocaleAwareReadOnlyModel;
 import org.iglooproject.wicket.more.util.IDatePattern;
 import org.iglooproject.wicket.more.util.model.Detachables;
-import org.iglooproject.wicket.more.util.model.Models;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Joiner.MapJoiner;

@@ -13,7 +13,7 @@ import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.Suppliers2;
-import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.ILinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;

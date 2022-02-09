@@ -4,25 +4,25 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.api.action.IAjaxAction;
+import org.iglooproject.wicket.api.action.IOneParameterAction;
+import org.iglooproject.wicket.api.action.IOneParameterAjaxAction;
+import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.api.factory.IDetachableFactory;
+import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.action.AjaxActions;
-import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
-import org.iglooproject.wicket.more.markup.html.action.IOneParameterAction;
-import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.factory.ActionColumnActionFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.factory.ActionColumnAjaxActionFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnAddedActionState;
@@ -475,7 +475,7 @@ public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParame
 	}
 
 	public IActionColumnAddedConfirmActionState<T, I> addConfirmAction(BootstrapRenderer<? super T> renderer,
-			IOneParameterComponentFactory<AjaxConfirmLink<T>, IModel<T>> ajaxConfirmLinkFactory) {
+			IOneParameterComponentFactory<AjaxLink<T>, IModel<T>> ajaxConfirmLinkFactory) {
 		AbstractActionColumnElementBuilder<T, ?, ?> builder = new ActionColumnSimpleElementBuilder<>(renderer, ajaxConfirmLinkFactory);
 		builders.add(builder);
 		return new ActionColumnAddedConfirmActionState(builder);

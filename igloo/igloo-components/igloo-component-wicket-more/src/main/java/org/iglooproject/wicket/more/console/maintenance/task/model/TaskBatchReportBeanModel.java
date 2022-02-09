@@ -4,7 +4,7 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.task.model.BatchReportBean;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.util.binding.CoreJpaMoreBindings;
-import org.iglooproject.wicket.more.model.BindingModel;
+import org.iglooproject.wicket.api.bindgen.BindingModel;
 
 public class TaskBatchReportBeanModel<B extends BatchReportBean> extends BatchReportBeanModel<B> {
 

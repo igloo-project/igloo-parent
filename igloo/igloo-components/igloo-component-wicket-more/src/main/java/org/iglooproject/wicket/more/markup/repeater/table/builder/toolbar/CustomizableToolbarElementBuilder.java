@@ -13,8 +13,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 import org.iglooproject.wicket.more.util.model.Detachables;
 

@@ -14,6 +14,9 @@ import org.iglooproject.wicket.bootstrap5.markup.html.template.css.bootstrap.Cor
 import org.iglooproject.wicket.bootstrap5.markup.html.template.css.fontawesome.CoreFontAwesomeCssScope;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.BootstrapJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.confirm.BootstrapConfirmJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.BootstrapModalMoreJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tab.BootstrapTabMoreJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.jqueryui.JQueryUIJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.select2.Select2JavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.select2.Select2MoreJavaScriptResourceReference;
@@ -59,10 +62,10 @@ public class WicketBootstrapModule implements IWicketModule {
 	public void updateResourceBundles(ResourceBundles resourceBundles) {
 		resourceBundles
 			.addJavaScriptBundle(getClass(), "bootstrap-bundle.js",
-				BootstrapJavaScriptResourceReference.get()
-//				BootstrapModalMoreJavaScriptResourceReference.get(),
-//				BootstrapTabMoreJavaScriptResourceReference.get(),
-//				BootstrapConfirmJavaScriptResourceReference.get()
+				BootstrapJavaScriptResourceReference.get(),
+				BootstrapModalMoreJavaScriptResourceReference.get(),
+				BootstrapTabMoreJavaScriptResourceReference.get(),
+				BootstrapConfirmJavaScriptResourceReference.get()
 			);
 		
 		resourceBundles

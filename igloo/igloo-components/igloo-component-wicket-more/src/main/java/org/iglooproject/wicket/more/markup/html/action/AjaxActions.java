@@ -4,7 +4,9 @@ import java.util.Objects;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
-import org.iglooproject.wicket.more.condition.Condition;
+import org.iglooproject.wicket.api.action.IAjaxAction;
+import org.iglooproject.wicket.api.action.IOneParameterAjaxAction;
+import org.iglooproject.wicket.api.condition.Condition;
 
 public class AjaxActions {
 

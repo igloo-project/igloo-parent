@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
-import org.iglooproject.wicket.more.util.model.Models;
+import org.iglooproject.wicket.api.IItemModelAwareCollectionModel;
+import org.iglooproject.wicket.api.Models;
 
 import com.google.common.collect.Iterables;
 
