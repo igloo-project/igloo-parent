@@ -3,9 +3,7 @@ package org.iglooproject.wicket.bootstrap4.application;
 import java.util.List;
 
 import org.apache.wicket.ResourceBundles;
-import org.apache.wicket.resource.JQueryResourceReference;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
-import org.apache.wicket.settings.JavaScriptLibrarySettings;
 import org.apache.wicket.settings.ResourceSettings;
 import org.iglooproject.sass.service.IScssService;
 import org.iglooproject.wicket.bootstrap4.console.resources.CoreWicketConsoleResources;
@@ -33,12 +31,6 @@ public class WicketBootstrapModule implements IWicketModule {
 
 	@Autowired
 	private IScssService scssService;
-
-	@Override
-	public void updateJavaScriptLibrarySettings(JavaScriptLibrarySettings javaScriptLibrarySettings) {
-		// Select2 need JQuery 3+ to work
-		javaScriptLibrarySettings.setJQueryReference(JQueryResourceReference.getV3());
-	}
 
 	@Override
 	public void updateSelect2ApplicationSettings(ApplicationSettings select2ApplicationSettings) {

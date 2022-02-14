@@ -2,6 +2,8 @@ package org.iglooproject.wicket.more.request.resource;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
+import java.time.Instant;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,13 +16,10 @@ import org.apache.wicket.request.resource.ContentDisposition;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.AbstractResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
-import org.apache.wicket.util.time.Duration;
-import org.apache.wicket.util.time.Time;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractFileStoreWebResource extends AbstractResource {
 
@@ -51,7 +50,7 @@ public abstract class AbstractFileStoreWebResource extends AbstractResource {
 		try {
 			final FileStoreResourceStream stream = getFileStoreResourceStream(attributes.getParameters());
 		
-			Time lastModifiedTime = stream.lastModifiedTime();
+			Instant lastModifiedTime = stream.lastModifiedTime();
 			if (lastModifiedTime != null) {
 				data.setLastModified(lastModifiedTime);
 			}

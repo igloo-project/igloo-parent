@@ -1,12 +1,12 @@
 package org.iglooproject.wicket.more.application;
 
 import static org.iglooproject.spring.property.SpringPropertyIds.CONFIGURATION_TYPE;
-import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_PATH;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
 
@@ -25,7 +25,6 @@ import org.apache.wicket.resource.NoOpTextCompressor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.IResourceStream;
-import org.apache.wicket.util.time.Duration;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.css.scss.service.ICachedScssService;
@@ -70,7 +69,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 	 */
 	private Locale numberFormatLocale = Locale.FRENCH;
 	
-	private static final Duration DEFAULT_TIMEOUT = Duration.minutes(10);
+	private static final Duration DEFAULT_TIMEOUT = Duration.ofMinutes(10);
 	
 	public static CoreWicketApplication get() {
 		final Application application = Application.get();
@@ -95,6 +94,9 @@ public abstract class CoreWicketApplication extends WebApplication {
 		WicketWebjars.install(this, settings);
 		watch.stop();
 		LOGGER.info("Webjars installed in {} ms.", watch.elapsed().toMillis());
+		
+		// disable CSP
+		getCspSettings().blocking().disabled();
 		
 		// injection Spring
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this, applicationContext));
@@ -125,7 +127,6 @@ public abstract class CoreWicketApplication extends WebApplication {
 		getResourceSettings().setHeaderItemComparator(CoreHeaderItemComparator.get());
 		
 		// configuration du disk data store de Wicket
-		getStoreSettings().setInmemoryCacheSize(propertyService.get(WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE));
 		getStoreSettings().setMaxSizePerSession(Bytes.megabytes(propertyService.get(WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION)));
 		
 		String wicketDiskDataStorePath = propertyService.get(WICKET_DISK_DATA_STORE_PATH);

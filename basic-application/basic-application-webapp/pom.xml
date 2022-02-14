@@ -83,6 +83,12 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-more-test</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	
 	<build>

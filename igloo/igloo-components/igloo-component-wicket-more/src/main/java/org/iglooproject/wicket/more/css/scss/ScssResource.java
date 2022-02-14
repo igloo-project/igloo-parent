@@ -2,6 +2,7 @@ package org.iglooproject.wicket.more.css.scss;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.time.Instant;
 import java.util.Locale;
 
 import org.apache.wicket.Application;
@@ -10,7 +11,6 @@ import org.apache.wicket.request.resource.PackageResource;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.StringResourceStream;
-import org.apache.wicket.util.time.Time;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.iglooproject.wicket.more.css.WicketCssPrecompilationException;
 import org.iglooproject.wicket.more.css.scss.service.ICachedScssService;
@@ -60,7 +60,7 @@ class ScssResource extends PackageResource {
 			
 			try (StringResourceStream scssResourceStream = new StringResourceStream(cssInformation.getSource(), "text/css")) {
 				scssResourceStream.setCharset(Charset.forName("UTF-8"));
-				scssResourceStream.setLastModified(Time.millis(cssInformation.getLastModifiedTime()));
+				scssResourceStream.setLastModified(Instant.ofEpochMilli(cssInformation.getLastModifiedTime()));
 				return scssResourceStream;
 			}
 		} catch (RuntimeException | IOException e) {
