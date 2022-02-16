@@ -75,7 +75,7 @@
 		<igloo.guava.version>31.0.1-jre</igloo.guava.version>
 
 		<!-- https://jdbc.postgresql.org/documentation/changelog.html -->
-		<igloo.postgresql.version>42.3.2</igloo.postgresql.version>
+		<igloo.postgresql.version>42.3.3</igloo.postgresql.version>
 		<igloo.oracle10g.version>10.2.0.5</igloo.oracle10g.version>
 		<igloo.mysql.version>5.1.14</igloo.mysql.version>
 
