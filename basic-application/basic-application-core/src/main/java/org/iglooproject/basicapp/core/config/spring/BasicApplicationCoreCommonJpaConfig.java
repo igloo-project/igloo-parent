@@ -15,8 +15,10 @@ import org.iglooproject.basicapp.core.config.hibernate.HibernateConfigPackage;
 import org.iglooproject.basicapp.core.config.hibernate.type.EmailAddressType;
 import org.iglooproject.basicapp.core.config.hibernate.type.PhoneNumberType;
 import org.iglooproject.basicapp.core.config.hibernate.type.PostalCodeType;
+import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.jpa.hibernate.usertype.StringClobType;
+import org.iglooproject.jpa.more.business.history.hibernate.FieldPathType;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -55,6 +57,7 @@ public class BasicApplicationCoreCommonJpaConfig {
 				typeContributions.contributeType(new PostalCodeType(), PostalCode.class.getName());
 				typeContributions.contributeType(new EmailAddressType(), EmailAddress.class.getName());
 				typeContributions.contributeType(new PhoneNumberType(), PhoneNumber.class.getName());
+				typeContributions.contributeType(new FieldPathType(), FieldPath.class.getName());
 			}
 		};
 	}
