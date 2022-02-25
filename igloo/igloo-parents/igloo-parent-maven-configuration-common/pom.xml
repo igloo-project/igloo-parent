@@ -4,7 +4,7 @@
 
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>3.3.0</version>
+	<version>3.4.0</version>
 	<packaging>pom</packaging>
 
 	<name>Igloo - Parent - Maven configuration - Common</name>
@@ -41,10 +41,10 @@
 		<igloo.maven-install-plugin.version>3.0.0-M1</igloo.maven-install-plugin.version>
 		<igloo.maven-war-plugin.version>3.3.2</igloo.maven-war-plugin.version>
 		<igloo.maven-assembly-plugin.version>3.3.0</igloo.maven-assembly-plugin.version>
-		<igloo.maven-jar-plugin.version>3.2.0</igloo.maven-jar-plugin.version>
+		<igloo.maven-jar-plugin.version>3.2.2</igloo.maven-jar-plugin.version>
 		<igloo.maven-deploy-plugin.version>3.0.0-M1</igloo.maven-deploy-plugin.version>
 		<igloo.maven-source-plugin.version>3.2.1</igloo.maven-source-plugin.version>
-		<igloo.maven-javadoc-plugin.version>3.3.1</igloo.maven-javadoc-plugin.version>
+		<igloo.maven-javadoc-plugin.version>3.3.2</igloo.maven-javadoc-plugin.version>
 		<igloo.maven-enforcer-plugin.version>3.0.0</igloo.maven-enforcer-plugin.version>
 		<igloo.maven-dependency-plugin.version>3.2.0</igloo.maven-dependency-plugin.version>
 		<igloo.maven-antrun-plugin.version>3.0.0</igloo.maven-antrun-plugin.version>
@@ -56,7 +56,7 @@
 		<igloo.maven-failsafe-plugin.version>3.0.0-M5</igloo.maven-failsafe-plugin.version>
 		<igloo.versions-maven-plugin.version>2.8.1</igloo.versions-maven-plugin.version>
 		<igloo.jacoco-maven-plugin.version>0.8.7</igloo.jacoco-maven-plugin.version>
-		<igloo.buildnumber-maven-plugin.version>1.4</igloo.buildnumber-maven-plugin.version>
+		<igloo.buildnumber-maven-plugin.version>3.0.0</igloo.buildnumber-maven-plugin.version>
 		<igloo.dependency-check.version>6.5.1</igloo.dependency-check.version>
 
 		<igloo.wagon-maven-plugin.version>2.0.2</igloo.wagon-maven-plugin.version>

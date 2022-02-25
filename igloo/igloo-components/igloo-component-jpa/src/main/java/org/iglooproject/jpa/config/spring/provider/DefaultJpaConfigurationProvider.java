@@ -9,6 +9,7 @@ import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.cache.spi.RegionFactory;
@@ -95,6 +96,12 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 
 	@Value("${hibernate.search.default.elasticsearch.index_schema_management_strategy}")
 	private String elasticSearchIndexSchemaManagementStrategy;
+
+	/**
+	 * If set to true, dom4j and jaxb dependencies must be provided on classpath
+	 */
+	@Value("${hibernate.xml_mapping_enabled:false}")
+	private boolean xmlMappingEnabled;
 	
 	@Resource(name = "hibernateDefaultExtraProperties")
 	private Properties defaultExtraProperties;
@@ -104,6 +111,9 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 
 	@Autowired(required = false)
 	private List<Integrator> integrators;
+
+	@Autowired(required = false)
+	private List<TypeContributor> typeContributors;
 
 	@Override
 	public List<JpaPackageScanProvider> getJpaPackageScanProviders() {
@@ -211,8 +221,8 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	}
 
 	@Override
-	public String getDefaultSchema() {
-		return defaultSchema;
+	public boolean isXmlMappingEnabled() {
+		return xmlMappingEnabled;
 	}
 
 	@Override
@@ -246,6 +256,11 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	}
 
 	@Override
+	public String getDefaultSchema() {
+		return defaultSchema;
+	}
+
+	@Override
 	public Properties getDefaultExtraProperties() {
 		return defaultExtraProperties;
 	}
@@ -273,6 +288,11 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 			integratorsSnapshot.addAll(integrators);
 		}
 		return () -> integratorsSnapshot;
+	}
+
+	@Override
+	public List<TypeContributor> getTypeContributors() {
+		return typeContributors;
 	}
 
 }

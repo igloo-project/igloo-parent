@@ -45,46 +45,51 @@ public final class TFileRegistry implements AutoCloseable {
 		}
 	}
 	
-	public TFile create(String path) {
+	public static TFile create(String path) {
 		TFile tFile = new TFile(path);
 		register(tFile);
 		return tFile;
 	}
 	
-	public TFile create(File file) {
+	public static TFile create(File file) {
 		TFile tFile = new TFile(file);
 		register(tFile);
 		return tFile;
 	}
 	
-	public TFile create(String parent, String member) {
+	public static TFile create(String parent, String member) {
 		TFile tFile = new TFile(parent, member);
 		register(tFile);
 		return tFile;
 	}
 	
-	public TFile create(File parent, String member) {
+	public static TFile create(File parent, String member) {
 		TFile tFile = new TFile(parent, member);
 		register(tFile);
 		return tFile;
 	}
 	
-	public TFile create(URI uri) {
+	public static TFile create(URI uri) {
 		TFile tFile = new TFile(uri);
 		register(tFile);
 		return tFile;
 	}
 
-	public void register(File file) {
+	public static void register(File file) {
+		TFileRegistry tFileRegistry = THREAD_LOCAL.get();
+		if (tFileRegistry == null) {
+			throw new IllegalStateException("No registry attached to thread");
+		}
+		Set<TFile> threadRegisteredFiles = tFileRegistry.registeredFiles;
 		if (file instanceof TFile) {
-			TFile topLevelArchive = ((TFile)file).getTopLevelArchive();
+			TFile topLevelArchive = ((TFile) file).getTopLevelArchive();
 			if (topLevelArchive != null) {
-				registeredFiles.add(topLevelArchive);
+				threadRegisteredFiles.add(topLevelArchive);
 			}
 		}
 	}
 
-	public void register(Iterable<? extends File> files) {
+	public static void register(Iterable<? extends File> files) {
 		for (File file : files) {
 			register(file);
 		}

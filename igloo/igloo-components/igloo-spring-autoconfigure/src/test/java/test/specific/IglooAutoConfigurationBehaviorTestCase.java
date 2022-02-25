@@ -58,6 +58,8 @@ public class IglooAutoConfigurationBehaviorTestCase {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withPropertyValues("spring.mail.host=localhost",
+					// disabled by default in igloo; allow to get rid of jaxb
+					"spring.jpa.properties.hibernate.xml_mapping_enabled=false",
 					// we need hibernate 5.5 for default naming strategy; see HibernateProperties
 					"spring.jpa.hibernate.naming.physicalStrategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy")
 			.withConfiguration(AutoConfigurations.of(TestSpringBootConfig.class))
