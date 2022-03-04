@@ -64,6 +64,10 @@
 		<module>igloo-component-jpa-migration</module>
 		<module>igloo-component-elasticsearch-plugin</module>
 		
+		<module>storage-api</module>
+		<module>storage-impl</module>
+		<module>storage-model</module>
+		
 		<module>igloo-spring-autoconfigure</module>
 		
 		<module>jpa-test-patterns</module>
