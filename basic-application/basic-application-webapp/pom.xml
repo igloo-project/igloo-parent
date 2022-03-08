@@ -50,6 +50,12 @@
 			<type>pom</type>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-validator</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		
 		<!-- Wicket debug bar -->
 		<dependency>
 			<groupId>org.apache.wicket</groupId>

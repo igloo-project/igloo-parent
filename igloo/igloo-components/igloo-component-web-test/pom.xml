@@ -13,18 +13,11 @@
 	<name>Igloo - Component - Test utility for mocking servlet server</name>
 	
 	<dependencies>
-		
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
 			<artifactId>igloo-dependency-core-spring</artifactId>
 			<version>${project.version}</version>
 			<type>pom</type>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-commons</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -36,6 +29,11 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 		
 		<!-- Test -->

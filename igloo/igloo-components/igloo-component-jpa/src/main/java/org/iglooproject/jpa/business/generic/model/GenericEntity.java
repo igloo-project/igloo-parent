@@ -30,7 +30,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.SortableField;
-import org.iglooproject.commons.util.LocaleUtils;
+import org.iglooproject.commons.util.ordering.SerializableCollator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,9 +61,9 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	@SuppressWarnings("rawtypes")
 	private static final Ordering<Comparable> DEFAULT_KEY_ORDERING = Ordering.natural().nullsLast();
 
-	public static final Ordering<String> STRING_COLLATOR_FRENCH = LocaleUtils.initCollator(Locale.FRENCH);
-	public static final Ordering<String> STRING_COLLATOR_ENGLISH = LocaleUtils.initCollator(Locale.ENGLISH);
-	public static final Ordering<String> STRING_COLLATOR_ROOT = LocaleUtils.initCollator(Locale.ROOT);
+	public static final Ordering<String> STRING_COLLATOR_FRENCH = new SerializableCollator(Locale.FRENCH).nullsLast();
+	public static final Ordering<String> STRING_COLLATOR_ENGLISH = new SerializableCollator(Locale.FRENCH).nullsLast();
+	public static final Ordering<String> STRING_COLLATOR_ROOT = new SerializableCollator(Locale.FRENCH).nullsLast();
 
 	@Override
 	@Transient

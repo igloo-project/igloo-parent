@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
-import org.iglooproject.commons.util.LocaleUtils;
+import org.iglooproject.commons.util.ordering.SerializableCollator;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
@@ -31,7 +31,7 @@ public final class BasicApplicationLocale {
 	);
 
 	public static final Ordering<String> initCollator(Locale locale) {
-		return LocaleUtils.initCollator(locale);
+		return new SerializableCollator(locale).nullsFirst();
 	}
 
 	public static final Ordering<String> comparator() {

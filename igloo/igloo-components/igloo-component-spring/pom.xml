@@ -16,10 +16,9 @@
 	<dependencies>
 	
 		<!-- Igloo -->
-		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-commons</artifactId>
+			<artifactId>igloo-context</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		

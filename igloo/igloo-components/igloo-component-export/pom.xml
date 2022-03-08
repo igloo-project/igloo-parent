@@ -15,10 +15,9 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-commons</artifactId>
+			<artifactId>igloo-component-functional</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
 		<!-- Export Excel -->
 		<dependency>
 			<groupId>org.iglooproject.dependencies</groupId>
