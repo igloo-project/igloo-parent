@@ -14,8 +14,6 @@
 	<description>Helpers for embedded elasticsearch tests</description>
 
 	<properties>
-		<!-- elasticsearch do not use same lucene version than hibernate-search -->
-		<igloo.lucene.version>6.6.1</igloo.lucene.version>
 		<!-- we do not need to uses enforcer plugin on test modules -->
 		<enforcer.skip>true</enforcer.skip>
 	</properties>
@@ -24,7 +22,7 @@
 		<dependency>
 			<groupId>org.codelibs</groupId>
 			<artifactId>elasticsearch-cluster-runner</artifactId>
-			<version>${igloo.lucene.version}.0</version>
+			<version>5.6.16.0</version>
 		</dependency>
 		<dependency>
 			<groupId>pl.allegro.tech</groupId>

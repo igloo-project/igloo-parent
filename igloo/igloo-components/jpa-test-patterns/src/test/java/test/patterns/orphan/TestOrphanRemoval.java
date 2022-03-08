@@ -24,7 +24,8 @@ class TestOrphanRemoval {
 			AvailableSettings.HBM2DDL_AUTO, "create",
 			AvailableSettings.JPA_JDBC_DRIVER, org.h2.Driver.class.getName(),
 			AvailableSettings.JPA_JDBC_URL, "jdbc:h2:mem:jpa_patterns;INIT=create schema if not exists jpa_patterns",
-			AvailableSettings.LOADED_CLASSES, Arrays.asList(OrphanOwner.class, OrphanItem.class)
+			AvailableSettings.LOADED_CLASSES, Arrays.asList(OrphanOwner.class, OrphanItem.class),
+			AvailableSettings.XML_MAPPING_ENABLED, Boolean.FALSE.toString()
 	);
 
 	/**

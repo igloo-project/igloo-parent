@@ -60,6 +60,11 @@
 			<artifactId>javax.annotation-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		
 		<!-- Tests -->
 		<dependency>
@@ -121,6 +126,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-commons</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-hibernate</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
