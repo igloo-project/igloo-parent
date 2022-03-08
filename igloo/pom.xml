@@ -19,10 +19,8 @@
 	</properties>
 	
 	<modules>
-		<module>igloo-dependencies</module>
 		<module>igloo-parents</module>
 		<module>igloo-components</module>
-		<module>igloo-packages</module>
 		<module>igloo-webjars</module>
 		<module>igloo-integration</module>
 	</modules>

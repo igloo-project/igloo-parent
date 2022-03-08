@@ -21,21 +21,16 @@
 	</properties>
 
 	<dependencies>
-		
 		<dependency>
-			<groupId>org.iglooproject.dependencies</groupId>
-			<artifactId>igloo-dependency-elasticsearch-test</artifactId>
-			<scope>compile</scope>
-			<type>pom</type>
+			<groupId>org.codelibs</groupId>
+			<artifactId>elasticsearch-cluster-runner</artifactId>
+			<version>${igloo.lucene.version}.0</version>
 		</dependency>
-		
 		<dependency>
-			<groupId>org.iglooproject.dependencies</groupId>
-			<artifactId>igloo-dependency-core-logging</artifactId>
-			<version>${project.version}</version>
-			<type>pom</type>
+			<groupId>pl.allegro.tech</groupId>
+			<artifactId>embedded-elasticsearch</artifactId>
+			<version>2.10.0</version>
 		</dependency>
-		
 	</dependencies>
 	
 	<build>
@@ -44,7 +39,6 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
-	
 		<plugins>
 			<plugin>
 				<!-- exception to allow elasticsearch -->
