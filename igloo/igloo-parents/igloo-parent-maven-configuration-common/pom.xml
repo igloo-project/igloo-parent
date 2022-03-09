@@ -4,7 +4,7 @@
 
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>3.4.0</version>
+	<version>3.5.0</version>
 	<packaging>pom</packaging>
 
 	<name>Igloo - Parent - Maven configuration - Common</name>
@@ -117,7 +117,6 @@
 										<exclude>org.springframework:spring</exclude>
 										<exclude>org.springframework:spring-ldap</exclude>
 										<exclude>commons-logging:commons-logging</exclude>
-										<exclude>cglib:cglib</exclude>
 										<exclude>rhino:rhino</exclude>
 										<exclude>rhino:js</exclude>
 										<exclude>javassist:javassist</exclude>

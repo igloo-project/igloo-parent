@@ -51,7 +51,6 @@ public final class WicketMorePropertyIds extends AbstractPropertyIds {
 	}
 
 	public static final ImmutablePropertyId<String> WICKET_DISK_DATA_STORE_PATH = immutable("wicket.diskDataStore.path");
-	public static final ImmutablePropertyId<Integer> WICKET_DISK_DATA_STORE_IN_MEMORY_CACHE_SIZE = immutable("wicket.diskDataStore.inMemoryCacheSize");
 	public static final ImmutablePropertyId<Integer> WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION = immutable("wicket.diskDataStore.maxSizePerSession");
 
 	public static final ImmutablePropertyId<Integer> GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE = immutable("globalFeedback.autohide.delay.value");

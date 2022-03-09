@@ -4,6 +4,7 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.time.Instant;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -11,7 +12,6 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
-import org.apache.wicket.util.time.Time;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.css.ICssResourceReference;
 import org.iglooproject.wicket.more.notification.service.impl.SimplePhlocCssHtmlNotificationCssRegistry;
@@ -30,7 +30,7 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 	
 	private static final String DEFAULT_VARIATION = "##DEFAULT##";
 	
-	private final Map<ICssResourceReference, Pair<IHtmlNotificationCssRegistry, Time>> registryCache = Maps.newHashMap();
+	private final Map<ICssResourceReference, Pair<IHtmlNotificationCssRegistry, Instant>> registryCache = Maps.newHashMap();
 	
 	private final Map<String, ICssResourceReference> registrySpecs = Maps.newHashMap();
 	
@@ -60,8 +60,8 @@ public class PhlocCssHtmlNotificationCssServiceImpl implements IHtmlNotification
 			throw new ServiceException("Could not retrieve resource stream for resource reference " + cssResourceReference + " when accessing a notification CSS style registry");
 		}
 		
-		Time currentResourceLastModifiedTime = resourceStream.lastModifiedTime();
-		Pair<IHtmlNotificationCssRegistry, Time> cacheEntry = registryCache.get(cssResourceReference);
+		Instant currentResourceLastModifiedTime = resourceStream.lastModifiedTime();
+		Pair<IHtmlNotificationCssRegistry, Instant> cacheEntry = registryCache.get(cssResourceReference);
 		if (cacheEntry != null && cacheEntry.getRight().equals(currentResourceLastModifiedTime)) {
 			return cacheEntry.getLeft();
 		} else {

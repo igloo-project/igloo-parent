@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-common</artifactId>
-		<version>3.4.0</version>
+		<version>3.5.0</version>
 		<relativePath>../igloo-parent-maven-configuration-common/pom.xml</relativePath>
 	</parent>
 
@@ -180,11 +180,11 @@
 		<igloo.javax-validation-api.version>2.0.1.Final</igloo.javax-validation-api.version>
 
 		<!-- https://wicket.apache.org/news/ -->
-		<igloo.wicket.version>8.14.0</igloo.wicket.version>
-		<igloo.wiquery.version>8.2.0</igloo.wiquery.version>
-		<igloo.wicketstuff-select2.version>8.13.0</igloo.wicketstuff-select2.version>
-		<!-- https://github.com/l0rdn1kk0n/wicket-webjars (0.5.x -> wicket 7, 2.0.x -> wicket 8) -->
-		<igloo.wicket-webjars.version>2.0.20</igloo.wicket-webjars.version>
+		<igloo.wicket.version>9.7.0</igloo.wicket.version>
+		<igloo.wiquery.version>9.0.0</igloo.wiquery.version>
+		<igloo.wicketstuff-select2.version>9.7.0</igloo.wicketstuff-select2.version>
+		<!-- https://github.com/l0rdn1kk0n/wicket-webjars (0.5.x -> wicket 7, 2.x -> wicket 8, 3.x -> Wicket 9) -->
+		<igloo.wicket-webjars.version>3.0.4</igloo.wicket-webjars.version>
 		<igloo.webjars-locator-core.version>0.50</igloo.webjars-locator-core.version>
 		<igloo.wqplot.version>7.1.0.owsi1</igloo.wqplot.version>
 
@@ -239,35 +239,35 @@
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-jpa-test</artifactId>
-				<version>3.4.0</version>
+				<version>3.5.0</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-jpa-more-test</artifactId>
-				<version>3.4.0</version>
+				<version>3.5.0</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-wicket-test</artifactId>
-				<version>3.4.0</version>
+				<version>3.5.0</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-wicket-more-test</artifactId>
-				<version>3.4.0</version>
+				<version>3.5.0</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-test</artifactId>
-				<version>3.4.0</version>
+				<version>3.5.0</version>
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
@@ -275,7 +275,7 @@
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-junit5</artifactId>
-				<version>3.4.0</version>
+				<version>3.5.0</version>
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
@@ -283,7 +283,7 @@
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-elasticsearch-test</artifactId>
-				<version>3.4.0</version>
+				<version>3.5.0</version>
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
@@ -1123,12 +1123,31 @@
 				<artifactId>wicket</artifactId>
 				<version>${igloo.wicket.version}</version>
 				<type>pom</type>
+				<exclusions>
+					<!-- Failed while enforcing RequireUpperBoundDeps (2.0.0-alpha5) -->
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-core</artifactId>
 				<version>${igloo.wicket.version}</version>
+				<exclusions>
+					<!-- Should be scope test -->
+					<exclusion>
+						<groupId>org.hamcrest</groupId>
+						<artifactId>hamcrest</artifactId>
+					</exclusion>
+					<!-- Failed while enforcing RequireUpperBoundDeps (2.0.0-alpha5) -->
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
@@ -1158,6 +1177,13 @@
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-ioc</artifactId>
 				<version>${igloo.wicket.version}</version>
+				<exclusions>
+					<!-- Failed while enforcing RequireUpperBoundDeps (2.0.0-alpha5) -->
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
@@ -1169,6 +1195,11 @@
 						<groupId>org.springframework</groupId>
 						<artifactId>spring</artifactId>
 					</exclusion>
+					<!-- Failed while enforcing RequireUpperBoundDeps (2.0.0-alpha5) -->
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 
@@ -1176,12 +1207,26 @@
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-auth-roles</artifactId>
 				<version>${igloo.wicket.version}</version>
+				<exclusions>
+					<!-- Failed while enforcing RequireUpperBoundDeps (2.0.0-alpha5) -->
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
 				<artifactId>wicket-extensions</artifactId>
 				<version>${igloo.wicket.version}</version>
+				<exclusions>
+					<!-- Failed while enforcing RequireUpperBoundDeps (2.0.0-alpha5) -->
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
@@ -1322,7 +1367,7 @@
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-hibernate-search</artifactId>
-				<version>3.4.0</version>
+				<version>3.5.0</version>
 			</dependency>
 
 			<!-- Test dependencies -->

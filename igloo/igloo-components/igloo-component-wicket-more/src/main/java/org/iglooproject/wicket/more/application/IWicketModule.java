@@ -9,7 +9,9 @@ import org.iglooproject.wicket.request.mapper.StaticResourceMapper;
 
 public interface IWicketModule {
 
-	void updateJavaScriptLibrarySettings(JavaScriptLibrarySettings javaScriptLibrarySettings);
+	default void updateJavaScriptLibrarySettings(JavaScriptLibrarySettings javaScriptLibrarySettings) {
+		// nothing to do
+	}
 
 	void updateSelect2ApplicationSettings(org.wicketstuff.select2.ApplicationSettings select2ApplicationSettings);
 

@@ -62,7 +62,7 @@ public final class FormProcessedListener implements IComponentInstantiationListe
 			return null;
 		}
 		final Form<?> rootForm = form.getRootForm();
-		IFormSubmitter submitter = rootForm.findSubmittingButton();
+		IFormSubmitter submitter = rootForm.findSubmitter();
 		if (submitter == null) {
 			return form;
 		} else {
