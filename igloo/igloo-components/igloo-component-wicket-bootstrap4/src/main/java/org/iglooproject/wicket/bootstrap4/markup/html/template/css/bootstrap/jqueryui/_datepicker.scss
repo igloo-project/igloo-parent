@@ -91,6 +91,7 @@ $ui-datepicker-footer-padding:							.5em .75em !default;
 			line-height: 2.5rem;
 			
 			cursor: pointer;
+			text-decoration: none;
 			
 			span {
 				position: static;
@@ -127,9 +128,7 @@ $ui-datepicker-footer-padding:							.5em .75em !default;
 				margin: 0;
 				
 				&.ui-icon {
-					&::before {
-						@include fa-mixin-icon($fa-var-chevron-left);
-					}
+					@include fa-icon-base($fa-var-chevron-left);
 				}
 			}
 			
@@ -149,9 +148,7 @@ $ui-datepicker-footer-padding:							.5em .75em !default;
 				margin: 0;
 				
 				&.ui-icon {
-					&::before {
-						@include fa-mixin-icon($fa-var-chevron-right);
-					}
+					@include fa-icon-base($fa-var-chevron-right);
 				}
 			}
 			
