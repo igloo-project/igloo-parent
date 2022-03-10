@@ -53,7 +53,7 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	 * This function allows to implement different behaviors based on Hibernate availability on classpath.
 	 * {@link Hibernate}.getClass(Object) is needed when we want to compare entity proxies.
 	 */
-	private static final Function<Object, Class<?>> GET_CLASS_FUNCTION;
+	static final Function<Object, Class<?>> GET_CLASS_FUNCTION;
 	public static final GenericEntityImplementation IMPLEMENTATION;
 
 	public static final String ID_SORT = "idSort";
@@ -187,7 +187,7 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 			GET_CLASS_FUNCTION = Hibernate::getClass;
 			IMPLEMENTATION = GenericEntityImplementation.HIBERNATE;
 		} else {
-			GET_CLASS_FUNCTION = i -> i.getClass();
+			GET_CLASS_FUNCTION = Object::getClass;
 			IMPLEMENTATION = GenericEntityImplementation.SIMPLE;
 		}
 	}

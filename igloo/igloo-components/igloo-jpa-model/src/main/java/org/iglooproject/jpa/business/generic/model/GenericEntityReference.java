@@ -14,7 +14,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
@@ -62,7 +61,7 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 	public GenericEntityReference(E entity) {
 		Verify.verifyNotNull(entity, "The referenced entity must not be null");
 		Verify.verify(!entity.isNew(), "The referenced entity must not be transient");
-		this.type = (Class<? extends E>)Hibernate.getClass(entity);
+		this.type = (Class<? extends E>) GenericEntity.GET_CLASS_FUNCTION.apply(entity);
 		this.id = entity.getId();
 	}
 	
