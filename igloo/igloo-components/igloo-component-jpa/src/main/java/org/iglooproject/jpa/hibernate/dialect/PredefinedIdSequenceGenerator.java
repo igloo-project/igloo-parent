@@ -1,9 +1,9 @@
-package org.iglooproject.jpa.business.generic.model;
+package org.iglooproject.jpa.hibernate.dialect;
 
 import java.io.Serializable;
 
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.iglooproject.jpa.hibernate.dialect.PerTableSequenceStyleGenerator;
+import org.iglooproject.jpa.business.generic.model.IPredefinedIdEntity;
 
 /**
  * Sequence generator used to define the new id manually

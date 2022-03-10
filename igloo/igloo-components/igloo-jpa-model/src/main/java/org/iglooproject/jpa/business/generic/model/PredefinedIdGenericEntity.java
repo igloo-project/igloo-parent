@@ -8,7 +8,7 @@ import javax.persistence.Transient;
 /**
  * This class allows us to manually set the id.
  *
- * @see PredefinedIdSequenceGenerator
+ * @see <a href="#PredefinedIdSequenceGenerator">PredefinedIdSequenceGenerator</a>
  */
 @MappedSuperclass
 public abstract class PredefinedIdGenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>

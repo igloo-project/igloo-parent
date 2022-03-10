@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.iglooproject.parents</groupId>
+		<artifactId>igloo-parent-maven-configuration-core</artifactId>
+		<version>3.6.0.STORAGE-SNAPSHOT</version>
+		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
+	</parent>
+	
+	<groupId>org.iglooproject.components</groupId>
+	<artifactId>igloo-jpa-model</artifactId>
+	
+	<name>Igloo - JPA base model</name>
+	
+	<properties>
+		<igloo.processors>${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>javax.persistence-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search-orm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-hibernate-configurator-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-collections</artifactId>
+			<version>${igloo-commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>bindgen-functional</artifactId>
+			<version>${igloo-commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.bindgen</groupId>
+			<artifactId>bindgen</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<classifier>jpa</classifier>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-bindgen</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-commons</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-hibernate</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-hibernate-search</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>

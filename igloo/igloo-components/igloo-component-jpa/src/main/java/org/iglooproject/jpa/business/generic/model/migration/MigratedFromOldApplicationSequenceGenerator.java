@@ -3,7 +3,7 @@ package org.iglooproject.jpa.business.generic.model.migration;
 import java.io.Serializable;
 
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.iglooproject.jpa.business.generic.model.PredefinedIdSequenceGenerator;
+import org.iglooproject.jpa.hibernate.dialect.PredefinedIdSequenceGenerator;
 
 /**
  * Sequence generator used to define the new id from the id used in an old application.
