@@ -25,19 +25,19 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-functional</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo-commons.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-commons-io</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo-commons.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-truevfs</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo-commons.version}</version>
 		</dependency>
 		
 		<!-- Dependencies -->
