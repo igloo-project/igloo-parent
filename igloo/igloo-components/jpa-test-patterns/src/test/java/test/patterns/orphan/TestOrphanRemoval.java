@@ -11,10 +11,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.cfg.AvailableSettings;
+import org.igloo.jpa.test.EntityManagerFactoryExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-
-import test.patterns.EntityManagerFactoryExtension;
 
 class TestOrphanRemoval {
 

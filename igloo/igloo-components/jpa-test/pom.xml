@@ -8,9 +8,13 @@
 		<version>3.6.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>jpa-test-patterns</artifactId>
+	<artifactId>jpa-test</artifactId>
 	
-	<name>Test JPA patterns</name>
+	<name>JPA test utilities</name>
+
+	<properties>
+		<asciidoclet.version>1.5.6</asciidoclet.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -18,15 +22,12 @@
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>jpa-test</artifactId>
-			<scope>test</scope>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -38,38 +39,16 @@
 			<artifactId>postgresql</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
-				<!-- disable jar -->
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>default-jar</id>
-						<phase>none</phase>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-install-plugin</artifactId>
+				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
+					<additionalJOptions combine.self="override">
+					</additionalJOptions>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -79,7 +58,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-logging</artifactId>
+				<artifactId>dependencies-hibernate</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -87,13 +66,6 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-testing</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-hibernate</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

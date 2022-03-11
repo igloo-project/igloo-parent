@@ -1,4 +1,4 @@
-package test.patterns;
+package org.igloo.jpa.test;
 
 import java.util.Arrays;
 import java.util.Optional;
