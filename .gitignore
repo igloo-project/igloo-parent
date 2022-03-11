@@ -7,3 +7,5 @@ target2
 gitlab-ci.build.conf
 .allure
 .*.swp
+.idea/
+/out/
