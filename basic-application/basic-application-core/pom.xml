@@ -36,6 +36,12 @@
 			<artifactId>igloo-component-jpa-security</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-config-test</artifactId>
+			<version>${igloo.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.security</groupId>

@@ -42,6 +42,12 @@
 			<artifactId>igloo-validator</artifactId>
 			<version>${igloo-commons.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-config-test</artifactId>
+			<version>${igloo.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 		
 		<!-- Wicket debug bar -->
 		<dependency>
@@ -65,6 +71,12 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jul-to-slf4j</artifactId>
+			<version>${igloo.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 		
 		<!-- Tests -->
 		<dependency>
@@ -74,20 +86,17 @@
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-more-test</artifactId>
 			<scope>test</scope>
 			<version>${igloo.version}</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
