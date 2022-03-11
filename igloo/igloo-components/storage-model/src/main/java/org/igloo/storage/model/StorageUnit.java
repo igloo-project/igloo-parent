@@ -2,6 +2,7 @@ package org.igloo.storage.model;
 
 import java.util.Set;
 
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
  * listing API to allow consistency jobs to check the storage status (missing or orphan files). Performance can
  * be ensured by splitting {@code StorageUnit} before listing can be problematic (duration, memory).
  */
+@Entity
 public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 
 	private static final long serialVersionUID = -4475039934044786927L;

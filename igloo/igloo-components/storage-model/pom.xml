@@ -22,6 +22,16 @@
 			<artifactId>igloo-jpa-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>bindgen-functional</artifactId>
+			<version>${igloo-commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-hibernate</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
