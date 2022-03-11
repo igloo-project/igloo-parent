@@ -9,8 +9,12 @@
 	</parent>
 
 	<artifactId>storage-model</artifactId>
-	
+
 	<name>Storage model</name>
+
+	<properties>
+		<igloo.processors>${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -24,18 +28,36 @@
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-hibernate</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
 			<artifactId>bindgen-functional</artifactId>
 			<version>${igloo-commons.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-hibernate</artifactId>
-			<version>${project.version}</version>
+			<groupId>org.bindgen</groupId>
+			<artifactId>bindgen</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<classifier>jpa</classifier>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -44,6 +66,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-hibernate</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-bindgen</artifactId>
 				<type>pom</type>
 				<scope>import</scope>
 				<version>${igloo-maven.version}</version>
