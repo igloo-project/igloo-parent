@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.bindgen.Bindable;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 /**
@@ -16,6 +17,7 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
  * be ensured by splitting {@code StorageUnit} before listing can be problematic (duration, memory).
  */
 @Entity
+@Bindable
 public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 
 	private static final long serialVersionUID = -4475039934044786927L;

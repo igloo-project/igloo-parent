@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
 import org.igloo.storage.model.hibernate.StorageHibernateConstants;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
@@ -13,6 +14,7 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
  * Entity that represents a stored file. {@code Fichier} are dispatched in {@code StorageUnit}.
  */
 @Entity
+@Bindable
 public class Fichier extends GenericEntity<Long, Fichier> {
 
 	private static final long serialVersionUID = 2683095626872762980L;
@@ -28,7 +30,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	private IFichierType fichierType;
 
 	/**
-	 * {@code StorageUnit} responible for file storage. Cannot be changed after initial attribution.
+	 * {@code StorageUnit} responsible for file storage. Cannot be changed after initial attribution.
 	 */
 	@ManyToOne(optional = false)
 	private StorageUnit storageUnit;
