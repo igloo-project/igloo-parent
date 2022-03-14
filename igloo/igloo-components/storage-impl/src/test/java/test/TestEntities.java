@@ -1,23 +1,28 @@
 package test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
 
 import org.hibernate.Session;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.IFichierType;
 import org.igloo.storage.model.StorageUnit;
+import org.igloo.storage.model.StorageUnitStatistics;
+import org.igloo.storage.model.atomic.FichierStatus;
 import org.junit.jupiter.api.Test;
 
 import test.model.FichierType1;
 import test.model.FichierType2;
 
+import static org.assertj.core.api.Assertions.*;
+
 class TestEntities extends AbstractTest {
+
 
 	/**
 	 * Check that hibernate maps correctly {@link IFichierType}
@@ -25,20 +30,49 @@ class TestEntities extends AbstractTest {
 	@Test
 	void testFichierTypePersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
+		storageUnit.setPath("/test");
+		storageUnit.setCreationDate(new Date());
+		storageUnit.setPathStrategy("testStrategy");
+
+		StorageUnitStatistics statistics = new StorageUnitStatistics();
+		statistics.setStorageUnit(storageUnit);
+
+		storageUnit.setStatistics(statistics);
+
 		Fichier fichier1 = new Fichier();
-		fichier1.setStorageUnit(storageUnit);
+		fichier1.setGuid("guid1");
+		fichier1.setStatus(FichierStatus.ALIVE);
 		fichier1.setFichierType(FichierType1.CONTENT1);
+		fichier1.setStorageUnit(storageUnit);
+		fichier1.setRelativePath("/relative-path");
+		fichier1.setName("filename");
+		fichier1.setSize(25);
+		fichier1.setChecksum("123");
+		fichier1.setChecksumType("checksumYype");
+		fichier1.setCreationDate(new Date());
+
 		Fichier fichier2 = new Fichier();
-		fichier2.setStorageUnit(storageUnit);
+		fichier2.setGuid("guid2");
+		fichier2.setStatus(FichierStatus.ALIVE);
 		fichier2.setFichierType(FichierType2.CONTENT3);
+		fichier2.setStorageUnit(storageUnit);
+		fichier2.setRelativePath("/relative-path");
+		fichier2.setName("filename");
+		fichier2.setSize(25);
+		fichier2.setChecksum("123");
+		fichier2.setChecksumType("checksumYype");
+		fichier2.setCreationDate(new Date());
+
 		entityManager.persist(storageUnit);
+		entityManager.persist(statistics);
 		entityManager.persist(fichier1);
 		entityManager.persist(fichier2);
 		entityManager.flush();
 		entityManager.clear();
+
 		assertThat(entityManager.find(Fichier.class, fichier1.getId()).getFichierType()).isEqualTo(FichierType1.CONTENT1);
 		assertThat(entityManager.find(Fichier.class, fichier2.getId()).getFichierType()).isEqualTo(FichierType2.CONTENT3);
-		
+
 		Session session = entityManager.unwrap(Session.class);
 		session.doWork(c -> {
 			try (PreparedStatement s = c.prepareStatement("select id, fichiertype from fichier order by id")) {
@@ -51,4 +85,115 @@ class TestEntities extends AbstractTest {
 			}
 		});
 	}
+
+
+	/**
+	 * Persist {@link Fichier} with minimal attribute initialized
+	 */
+	@Test
+	void testMinimalFichierPersist(EntityManager entityManager, EntityTransaction transaction) {
+		StorageUnit storageUnit = new StorageUnit();
+		storageUnit.setPath("/test");
+		storageUnit.setCreationDate(new Date());
+		storageUnit.setPathStrategy("testStrategy");
+
+		StorageUnitStatistics statistics = new StorageUnitStatistics();
+		statistics.setStorageUnit(storageUnit);
+
+		storageUnit.setStatistics(statistics);
+
+		Fichier fichier = new Fichier();
+		fichier.setGuid("guid");
+		fichier.setStatus(FichierStatus.ALIVE);
+		fichier.setFichierType(FichierType1.CONTENT1);
+		fichier.setStorageUnit(storageUnit);
+		fichier.setRelativePath("/relative-path");
+		fichier.setName("filename");
+		fichier.setSize(25);
+		fichier.setChecksum("123");
+		fichier.setChecksumType("checksumYype");
+		fichier.setCreationDate(new Date());
+
+		entityManager.persist(storageUnit);
+		entityManager.persist(statistics);
+		entityManager.persist(fichier);
+		entityManager.flush();
+		entityManager.clear();
+
+		assertThat(entityManager.find(Fichier.class, fichier.getId())).isNotNull();
+	}
+
+	/**
+	 * Check {@link Fichier#guid} unicity
+	 */
+	@Test
+	void testFichierGuidUnicityPersist(EntityManager entityManager, EntityTransaction transaction) {
+		StorageUnit storageUnit = new StorageUnit();
+		storageUnit.setPath("/test");
+		storageUnit.setCreationDate(new Date());
+		storageUnit.setPathStrategy("testStrategy");
+
+		StorageUnitStatistics statistics = new StorageUnitStatistics();
+		statistics.setStorageUnit(storageUnit);
+
+		storageUnit.setStatistics(statistics);
+
+		Fichier fichier1 = new Fichier();
+		fichier1.setGuid("guid");
+		fichier1.setStatus(FichierStatus.ALIVE);
+		fichier1.setFichierType(FichierType1.CONTENT1);
+		fichier1.setStorageUnit(storageUnit);
+		fichier1.setRelativePath("/relative-path");
+		fichier1.setName("filename");
+		fichier1.setSize(25);
+		fichier1.setChecksum("123");
+		fichier1.setChecksumType("checksumYype");
+		fichier1.setCreationDate(new Date());
+
+		Fichier fichier2 = new Fichier();
+		fichier2.setGuid("guid");
+		fichier2.setStatus(FichierStatus.ALIVE);
+		fichier2.setFichierType(FichierType1.CONTENT1);
+		fichier2.setStorageUnit(storageUnit);
+		fichier2.setRelativePath("/relative-path");
+		fichier2.setName("filename");
+		fichier2.setSize(25);
+		fichier2.setChecksum("123");
+		fichier2.setChecksumType("checksumYype");
+		fichier2.setCreationDate(new Date());
+
+		entityManager.persist(storageUnit);
+		entityManager.persist(statistics);
+		entityManager.persist(fichier1);
+		entityManager.persist(fichier2);
+		assertThatThrownBy(() -> entityManager.flush())
+			.isInstanceOf(PersistenceException.class)
+			.hasMessageContaining("ConstraintViolationException");
+	}
+
+	/**
+	 * Persist {@link StorageUnit} and {@link StorageUnitStatistics}
+	 */
+	@Test
+	void testStorageUnitAndStatisticsPersist(EntityManager entityManager, EntityTransaction transaction) {
+		StorageUnit storageUnit = new StorageUnit();
+		storageUnit.setPath("/test");
+		storageUnit.setCreationDate(new Date());
+		storageUnit.setPathStrategy("testStrategy");
+
+		StorageUnitStatistics statistics = new StorageUnitStatistics();
+		statistics.setStorageUnit(storageUnit);
+
+		storageUnit.setStatistics(statistics);
+
+		entityManager.persist(storageUnit);
+		entityManager.persist(statistics);
+		entityManager.flush();
+		entityManager.clear();
+
+		assertThat(entityManager.find(StorageUnit.class, storageUnit.getId())).isNotNull();
+		assertThat(entityManager.find(StorageUnit.class, storageUnit.getId()).getStatistics()).isNotNull();
+		assertThat(entityManager.find(StorageUnit.class, storageUnit.getId()).getStatistics().getId()).isEqualTo(statistics.getId());
+	}
+
 }
