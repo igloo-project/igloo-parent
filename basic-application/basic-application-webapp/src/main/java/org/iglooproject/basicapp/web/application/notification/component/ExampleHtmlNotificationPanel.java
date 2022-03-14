@@ -5,7 +5,7 @@ import java.util.Date;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
@@ -34,7 +34,7 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 				)
 		);
 		
-		IModel<String> urlModel = Model.of(
+		IModel<String> urlModel = LoadableDetachableModel.of(() ->
 			BasicApplicationApplication.get().getHomePageLinkDescriptor()
 				.bypassPermissions()
 				.fullUrl()
@@ -46,13 +46,16 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 		);
 		
 		add(
-			AdministrationUserDetailTemplate.mapper()
-				.ignoreParameter2()
-				.map(userModel)
-				.bypassPermissions()
-				.link("userLink")
-				.setAbsolute(true)
-				.setBody(BindingModel.of(userModel, Bindings.user().username())),
+			new ExternalLink("userLink",
+				LoadableDetachableModel.of(() ->
+					AdministrationUserDetailTemplate.mapper()
+						.ignoreParameter2()
+						.map(userModel)
+						.bypassPermissions()
+						.fullUrl()
+				),
+				BindingModel.of(userModel, Bindings.user().username())
+			),
 			new CoreLabel("firstname", BindingModel.of(userModel, Bindings.user().firstName())),
 			new CoreLabel("lastname", BindingModel.of(userModel, Bindings.user().lastName())),
 			new CoreLabel("email", BindingModel.of(userModel, Bindings.user().email())),

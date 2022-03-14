@@ -5,7 +5,7 @@ import java.util.Date;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.ResourceKeyGenerator;
@@ -54,7 +54,7 @@ public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> ex
 					.setParameters(dateModel, authorModel)
 			);
 		
-		IModel<String> urlModel = Model.of(
+		IModel<String> urlModel = LoadableDetachableModel.of(() ->
 			linkGenerator
 				.bypassPermissions()
 				.fullUrl()
