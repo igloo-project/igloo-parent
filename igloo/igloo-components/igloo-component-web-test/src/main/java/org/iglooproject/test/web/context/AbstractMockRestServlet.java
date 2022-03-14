@@ -3,10 +3,10 @@ package org.iglooproject.test.web.context;
 import java.net.URI;
 import java.util.Collection;
 
+import javax.servlet.ServletRegistration;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.UriBuilder;
 
-import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
