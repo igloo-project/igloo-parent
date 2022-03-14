@@ -2,44 +2,40 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div class="content-container">
-			<div class="content-header-section">
-				<div class="content-header-container">
-					<div class="content-header">
-						<div wicket:id="breadCrumb" />
-						
-						<h4 class="content-header-title">
-							<wicket:message key="console.notifications" />
-						</h4>
-					</div>
+		<div class="content-header-section">
+			<div class="content-header-container">
+				<div class="content-header">
+					<h4 class="content-header-title">
+						<wicket:message key="console.notifications" />
+					</h4>
 				</div>
 			</div>
-			<div class="content-body-section">
-				<div class="content-body-container">
-					<div class="content-body">
-						<div class="row row-md">
-							<div class="col-12">
-								<div class="card card-page">
-									<div class="card-body">
-										<form wicket:id="form">
-											<div class="row row-form">
-												<div class="col-12">
-													<div class="row row-form-group form-group">
-														<div class="col-md-4 col-lg-3">
-															<label wicket:for="recipient" class="col-form-label form-label"><wicket:label /></label>
-														</div>
-														<div class="col-md-8 col-lg-6">
-															<select wicket:id="recipient" class="form-control" />
-														</div>
+		</div>
+		<div class="content-body-section">
+			<div class="content-body-container">
+				<div class="content-body">
+					<div class="row row-md">
+						<div class="col-12">
+							<div class="card card-page">
+								<div class="card-body">
+									<form wicket:id="form">
+										<div class="row row-form">
+											<div class="col-12">
+												<div class="row row-form-group form-group">
+													<div class="col-md-4 col-lg-3">
+														<label wicket:for="recipient" class="col-form-label form-label"><wicket:label /></label>
+													</div>
+													<div class="col-md-8 col-lg-6">
+														<select wicket:id="recipient" class="form-control" />
 													</div>
 												</div>
 											</div>
-										</form>
-									</div>
-									<div wicket:id="subject" class="card-body text-monospace" />
-									<div class="card-body">
-										<div wicket:id="body" id="notification-body-container" />
-									</div>
+										</div>
+									</form>
+								</div>
+								<div wicket:id="subject" class="card-body text-monospace" />
+								<div class="card-body">
+									<div wicket:id="body" id="notification-body-container" />
 								</div>
 							</div>
 						</div>

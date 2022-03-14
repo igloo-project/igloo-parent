@@ -2,46 +2,42 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div class="content-container">
-			<div class="content-header-section">
-				<div class="content-header-container">
-					<div class="content-header">
-						<div wicket:id="breadCrumb" />
-						
-						<h4 class="content-header-title">
-							<wicket:message key="console.notifications" />
-						</h4>
-					</div>
+		<div class="content-header-section">
+			<div class="content-header-container">
+				<div class="content-header">
+					<h4 class="content-header-title">
+						<wicket:message key="console.notifications" />
+					</h4>
 				</div>
 			</div>
-			<div class="content-body-section">
-				<div class="content-body-container">
-					<div class="content-body">
-						<div class="card card-page">
-							<div class="card-header">
-								<h5 class="card-header-title">
-									<wicket:message key="console.notifications" />
-								</h5>
+		</div>
+		<div class="content-body-section">
+			<div class="content-body-container">
+				<div class="content-body">
+					<div class="card card-page">
+						<div class="card-header">
+							<h5 class="card-header-title">
+								<wicket:message key="console.notifications" />
+							</h5>
+						</div>
+						<div class="card-body">
+							<button wicket:id="sendExample" class="btn btn-primary" type="button">
+								<span class="fa fa-fw fa-paper-plane" />
+								<wicket:message key="console.notifications.example.send" />
+							</button>
+						</div>
+						<wicket:enclosure child="notifications">
+							<div class="list-group list-group-flush">
+								<wicket:container wicket:id="notifications">
+									<a wicket:id="link" class="list-group-item">
+										<span class="fa fa-fw fa-share-square" />
+										<span wicket:id="label" />
+									</a>
+								</wicket:container>
 							</div>
-							<div class="card-body">
-								<button wicket:id="sendExample" class="btn btn-primary" type="button">
-									<span class="fa fa-fw fa-paper-plane" />
-									<wicket:message key="console.notifications.example.send" />
-								</button>
-							</div>
-							<wicket:enclosure child="notifications">
-								<div class="list-group list-group-flush">
-									<wicket:container wicket:id="notifications">
-										<a wicket:id="link" class="list-group-item">
-											<span class="fa fa-fw fa-share-square" />
-											<span wicket:id="label" />
-										</a>
-									</wicket:container>
-								</div>
-							</wicket:enclosure>
-							<div wicket:id="emptyList" class="card-body">
-								<div class="alert alert-secondary"><wicket:message key="common.list.empty" /></div>
-							</div>
+						</wicket:enclosure>
+						<div wicket:id="emptyList" class="card-body">
+							<div class="alert alert-secondary"><wicket:message key="common.list.empty" /></div>
 						</div>
 					</div>
 				</div>
