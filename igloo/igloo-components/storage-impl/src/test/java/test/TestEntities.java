@@ -3,6 +3,7 @@ package test;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -40,7 +41,7 @@ class TestEntities extends AbstractTest {
 		storageUnit.setStatistics(statistics);
 
 		Fichier fichier1 = new Fichier();
-		fichier1.setGuid("guid1");
+		fichier1.setUuid(UUID.randomUUID());
 		fichier1.setStatus(FichierStatus.ALIVE);
 		fichier1.setFichierType(FichierType1.CONTENT1);
 		fichier1.setStorageUnit(storageUnit);
@@ -52,7 +53,7 @@ class TestEntities extends AbstractTest {
 		fichier1.setCreationDate(new Date());
 
 		Fichier fichier2 = new Fichier();
-		fichier2.setGuid("guid2");
+		fichier2.setUuid(UUID.randomUUID());
 		fichier2.setStatus(FichierStatus.ALIVE);
 		fichier2.setFichierType(FichierType2.CONTENT3);
 		fichier2.setStorageUnit(storageUnit);
@@ -103,7 +104,7 @@ class TestEntities extends AbstractTest {
 		storageUnit.setStatistics(statistics);
 
 		Fichier fichier = new Fichier();
-		fichier.setGuid("guid");
+		fichier.setUuid(UUID.randomUUID());
 		fichier.setStatus(FichierStatus.ALIVE);
 		fichier.setFichierType(FichierType1.CONTENT1);
 		fichier.setStorageUnit(storageUnit);
@@ -138,8 +139,9 @@ class TestEntities extends AbstractTest {
 
 		storageUnit.setStatistics(statistics);
 
+		UUID uuid = UUID.randomUUID();
 		Fichier fichier1 = new Fichier();
-		fichier1.setGuid("guid");
+		fichier1.setUuid(uuid);
 		fichier1.setStatus(FichierStatus.ALIVE);
 		fichier1.setFichierType(FichierType1.CONTENT1);
 		fichier1.setStorageUnit(storageUnit);
@@ -151,7 +153,7 @@ class TestEntities extends AbstractTest {
 		fichier1.setCreationDate(new Date());
 
 		Fichier fichier2 = new Fichier();
-		fichier2.setGuid("guid");
+		fichier2.setUuid(uuid);
 		fichier2.setStatus(FichierStatus.ALIVE);
 		fichier2.setFichierType(FichierType1.CONTENT1);
 		fichier2.setStorageUnit(storageUnit);

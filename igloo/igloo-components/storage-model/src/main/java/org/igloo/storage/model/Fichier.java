@@ -1,6 +1,18 @@
 package org.igloo.storage.model;
 
-import javax.persistence.*;
+import java.util.Date;
+import java.util.UUID;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
@@ -8,8 +20,6 @@ import org.igloo.storage.model.atomic.FichierDeletionStatus;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.hibernate.StorageHibernateConstants;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
-
-import java.util.Date;
 
 /**
  * Entity that represents a stored file. {@link Fichier} are dispatched in {@link StorageUnit}.
@@ -27,8 +37,8 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	/**
 	 * Use to identify associated file on the filesystem.
 	 */
-	@Column(unique = true, nullable = false) // TODO MPI : définir le bon type pour stocker le guid
-	private String guid; // TODO MPI : puisqu'on a un guid, besoin d'une filekey ?
+	@Column(columnDefinition = "uuid", unique = true, nullable = false, updatable = false)
+	private UUID uuid;
 
 	@Basic(optional = false)
 	@Enumerated(EnumType.STRING)
@@ -95,12 +105,12 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 		this.id = id;
 	}
 
-	public String getGuid() {
-		return guid;
+	public UUID getUuid() {
+		return uuid;
 	}
 
-	public void setGuid(String guid) {
-		this.guid = guid;
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
 	}
 
 	public FichierStatus getStatus() {
