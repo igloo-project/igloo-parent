@@ -2,6 +2,7 @@ package org.igloo.jpa.test;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,6 +21,10 @@ public class EntityManagerFactoryExtension implements ParameterResolver {
 
 	public EntityManagerFactoryExtension(Object... settings) {
 		this.settings = Optional.ofNullable(settings).orElse(new Object[0]);
+	}
+
+	public EntityManagerFactoryExtension(Supplier<Object[]> settingsSupplier) {
+		this.settings = settingsSupplier.get();
 	}
 
 	@Override
