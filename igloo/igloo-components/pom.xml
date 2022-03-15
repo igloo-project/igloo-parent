@@ -37,6 +37,7 @@
 		<module>igloo-component-hibernate-configurator-api</module>
 		<module>igloo-component-hibernate-configurator-lucene</module>
 		<module>igloo-component-hibernate-configurator-elasticsearch</module>
+		<module>igloo-hibernate</module>
 		<module>igloo-jpa-model</module>
 		<module>igloo-component-jpa</module>
 		<module>igloo-component-jpa-test</module>
