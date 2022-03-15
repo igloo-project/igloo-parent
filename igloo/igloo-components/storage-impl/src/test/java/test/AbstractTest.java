@@ -7,6 +7,7 @@ import org.igloo.jpa.test.EntityManagerFactoryExtension;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.StorageUnitStatistics;
+import org.iglooproject.jpa.hibernate.model.naming.ImplicitNamingStrategyJpaComponentPathImpl;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,5 +25,6 @@ class AbstractTest {
 			AvailableSettings.JPA_JDBC_DRIVER, org.h2.Driver.class.getName(),
 			AvailableSettings.JPA_JDBC_URL, "jdbc:h2:mem:storage;INIT=create schema if not exists storage",
 			AvailableSettings.LOADED_CLASSES, Arrays.asList(Fichier.class, StorageUnit.class, StorageUnitStatistics.class),
-			AvailableSettings.XML_MAPPING_ENABLED, Boolean.FALSE.toString());
+			AvailableSettings.XML_MAPPING_ENABLED, Boolean.FALSE.toString(),
+			AvailableSettings.IMPLICIT_NAMING_STRATEGY, ImplicitNamingStrategyJpaComponentPathImpl.INSTANCE);
 }
