@@ -4,6 +4,7 @@ import org.bindgen.Bindable;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Bindable
@@ -18,8 +19,8 @@ public class StorageUnitStatistics extends GenericEntity<Long, StorageUnitStatis
 
 	// TODO MPI : Ca devrait être utile de connaitre les types de fichier présent dans une SU
 	// TODO MPI : Peut-être faire des statistiques par type de fichier au sein d'une SU puis d'avoir les stats aggrégées
-//	@ManyToMany
-//	private List<IFichierType> fichiertypes;
+	@ElementCollection
+	private List<IFichierType> fichiertypes;
 
 	@Embedded
 	private StorageUnitStatisticsDatabase database = new StorageUnitStatisticsDatabase();

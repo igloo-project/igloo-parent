@@ -18,7 +18,7 @@ public class StorageUnitStatisticsDatabase implements Serializable {
 	private long fichierCount = 0;
 
 	/**
-	 * Count of {@link Fichier} with status {@link FichierStatus#DELETED}
+	 * Count of {@link Fichier} with status {@link FichierStatus#ALIVE}
 	 */
 	@Basic(optional = false)
 	private long aliveCount = 0;

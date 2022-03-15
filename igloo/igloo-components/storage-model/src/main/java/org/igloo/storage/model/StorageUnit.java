@@ -31,14 +31,14 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 	@Basic(optional = false)
 	private String path;
 
+	// TODO MPI : Comment je passe du uuid au relativePath - sans doute une interface
 	@Basic(optional = false)
-	private String pathStrategy; // TODO MPI : sans doute pas un String - permet de générer la fileKey ou le guid ?
+	private String pathStrategy;
 
 	@Basic(optional = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date creationDate;
 
-	// TODO MPI : pas sûr pour le orphanRemoval
 	@OneToOne(mappedBy = "storageUnit", optional = false, fetch = FetchType.LAZY)
 	private StorageUnitStatistics statistics;
 

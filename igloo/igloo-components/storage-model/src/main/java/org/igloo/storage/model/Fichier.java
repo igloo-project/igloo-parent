@@ -16,7 +16,6 @@ import javax.persistence.TemporalType;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
-import org.igloo.storage.model.atomic.FichierDeletionStatus;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.hibernate.StorageHibernateConstants;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
@@ -37,6 +36,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	/**
 	 * Use to identify associated file on the filesystem.
 	 */
+	@Basic(optional = false)
 	@Column(columnDefinition = "uuid", unique = true, nullable = false, updatable = false)
 	private UUID uuid;
 
@@ -56,6 +56,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	@ManyToOne(optional = false)
 	private StorageUnit storageUnit;
 
+	// TODO MPI : doc + exemple fichiertype/hash/uuid.png
 	@Basic(optional = false)
 	private String relativePath;
 
@@ -63,7 +64,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
     private String name;
 
 	@Basic
-	private String extension; // TODO MPI : on le laisse vide au cas où il n'y a pas d'extension
+	private String extension;
 
 	/**
 	 * Size in bytes.
@@ -71,29 +72,26 @@ public class Fichier extends GenericEntity<Long, Fichier> {
     @Basic(optional = false)
     private long size;
 
+	// TODO MPI : devrait être des chaînes de 16 caractères en SHA-256
     @Basic(optional = false)
-    private String checksum; // TODO MPI : String ?
+    private String checksum;
 
     @Basic(optional = false)
-    private String checksumType; // TODO MPI : String ?
+    private String checksumType; // TODO MPI : Enum SHA-256 (on utilise Guava {@link Hashing}
 
 	@Basic
-	private String mimetype; // TODO MPI : on le laisse optionnel au cas où on n'arrive pas à déterminer le type ?
+	private String mimetype;
 
 	@Basic(optional = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date creationDate;
 
 	/**
-	 * Initialized when {@link #status} is set to DELETED.
+	 * Initialized when {@link #status} is set to {@link FichierStatus#DELETED}.
 	 */
 	@Basic
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date deletionDate;
-
-	@Basic
-	@Enumerated(EnumType.STRING)
-	private FichierDeletionStatus deletionStatus;
 
 	@Override
 	public Long getId() {
@@ -209,11 +207,4 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 		this.deletionDate = deletionDate;
 	}
 
-	public FichierDeletionStatus getDeletionStatus() {
-		return deletionStatus;
-	}
-
-	public void setDeletionStatus(FichierDeletionStatus deletionStatus) {
-		this.deletionStatus = deletionStatus;
-	}
 }

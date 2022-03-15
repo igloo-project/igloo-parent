@@ -5,12 +5,12 @@ import org.igloo.storage.model.StorageUnit;
 // TODO MPI : à travailler
 public enum StorageUnitStatus {
 
+	// TODO MPI : définir
+	ALIVE,
+
 	/**
-	 * {@link StorageUnit} is closed
+	 * {@link StorageUnit} does not store new file
 	 */
-	READ_ONLY,
-	RESTORING,
-	ABSENT, // TODO MPI : ça correspond à quoi ?
-	ERROR; // TODO MPI : à voir si on le garde, sans doute plutôt dans une entité dédiée aux erreurs
+	ARCHIVED;
 
 }
