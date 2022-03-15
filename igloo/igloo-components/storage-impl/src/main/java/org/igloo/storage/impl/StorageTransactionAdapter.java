@@ -43,9 +43,9 @@ public class StorageTransactionAdapter implements TransactionSynchronization {
 			handler.doRemovePhysicalDeleteFichiersOnCommit(tasks);
 			break;
 		case TransactionSynchronization.STATUS_ROLLED_BACK:
-		case TransactionSynchronization.STATUS_UNKNOWN:
 			handler.doRemovePhysicalAddedFichiersOnRollback(tasks);
 			break;
+		case TransactionSynchronization.STATUS_UNKNOWN:
 		default:
 			throw new IllegalSwitchValueException(status);
 		}
