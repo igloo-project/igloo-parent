@@ -14,12 +14,15 @@ public class StorageOperations {
 	public void doRemovePhysicalFile(String logPrefix, StorageTask t) {
 		try {
 			if (Files.exists(t.getPath(), LinkOption.NOFOLLOW_LINKS)) {
+				if (LOGGER.isInfoEnabled()) {
+					LOGGER.debug("{}: deleting {} '{}'", logPrefix, t.getId(), t.getPath());
+				}
 				Files.delete(t.getPath());
 			} else {
-				LOGGER.warn("{} {} '{}' cannot be removed on rollback event - already absent", logPrefix, t.getId(), t.getPath());
+				LOGGER.warn("{} {} '{}' cannot be removed - already absent", logPrefix, t.getId(), t.getPath());
 			}
 		} catch (RuntimeException|IOException e) {
-			LOGGER.error("{} {} '{}' cannot be removed on rollback event", logPrefix, t.getId(), t.getPath(), e);
+			LOGGER.error("{} {} '{}' cannot be removed", logPrefix, t.getId(), t.getPath(), e);
 		}
 	}
 

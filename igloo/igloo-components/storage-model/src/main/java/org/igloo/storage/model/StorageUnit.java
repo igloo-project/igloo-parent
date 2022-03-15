@@ -39,7 +39,8 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date creationDate;
 
-	@OneToOne(mappedBy = "storageUnit", optional = false, fetch = FetchType.LAZY)
+	// TODO MPI : Supprimer; on aura des collections de StorageUnitStatistics car une par type de fichier
+	@OneToOne(mappedBy = "storageUnit", fetch = FetchType.LAZY)
 	private StorageUnitStatistics statistics;
 
 	/**
