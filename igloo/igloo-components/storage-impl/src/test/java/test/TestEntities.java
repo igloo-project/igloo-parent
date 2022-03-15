@@ -125,10 +125,10 @@ class TestEntities extends AbstractTest {
 	}
 
 	/**
-	 * Check {@link Fichier#guid} unicity
+	 * Check {@link Fichier#uuid} unicity
 	 */
 	@Test
-	void testFichierGuidUnicityPersist(EntityManager entityManager, EntityTransaction transaction) {
+	void testFichierUuidUnicityPersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
 		storageUnit.setPath("/test");
 		storageUnit.setCreationDate(new Date());
