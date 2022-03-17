@@ -27,6 +27,9 @@ import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import com.google.common.hash.Hashing;
+import com.google.common.hash.HashingInputStream;
+
 public class StorageService implements IStorageService {
 
 	// TODO: split data and handler
@@ -56,8 +59,11 @@ public class StorageService implements IStorageService {
 		fichier.setChecksumType(ChecksumType.SHA_256);
 		fichier.setCreationDate(new Date());
 		Path absolutePath = Path.of(unit.getPath(), fichier.getRelativePath());
-		try (FileOutputStream fos = new FileOutputStream(absolutePath.toString())) {
-			IOUtils.copy(inputStream, fos);
+		try (
+				HashingInputStream hashingInputStream = new HashingInputStream(Hashing.sha256(), inputStream);
+				FileOutputStream fos = new FileOutputStream(absolutePath.toString())) {
+			IOUtils.copy(hashingInputStream, fos);
+			fichier.setChecksum(hashingInputStream.hash().toString());
 		} catch (IOException e) {
 			// TODO use custom runtime exception
 			throw new IllegalStateException(e);
