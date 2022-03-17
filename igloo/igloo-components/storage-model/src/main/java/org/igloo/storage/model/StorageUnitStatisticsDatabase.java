@@ -4,6 +4,7 @@ import org.bindgen.Bindable;
 import org.igloo.storage.model.atomic.FichierStatus;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
@@ -15,30 +16,35 @@ public class StorageUnitStatisticsDatabase implements Serializable {
 	 * Count of total {@link Fichier} on the filesystem in the {@link StorageUnit}
 	 */
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private long fichierCount = 0;
 
 	/**
 	 * Count of {@link Fichier} with status {@link FichierStatus#ALIVE}
 	 */
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private long aliveCount = 0;
 
 	/**
 	 * Count of {@link Fichier} with status {@link FichierStatus#DELETED}
 	 */
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private long deletedCount = 0;
 
 	/**
 	 * Count of {@link Fichier} with {@link FichierStatus#DELETED} that should have been deleted
 	 */
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private long expiredDeletedCount = 0;
 
 	/**
 	 * Count of {@link Fichier} missing in database but wich file is still present in the filesystem
 	 */
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private long missingCount = 0;
 
 	public long getFichierCount() {

@@ -32,12 +32,14 @@ public class StorageUnitStatistics extends GenericEntity<Long, StorageUnitStatis
 	 * Count of {@link Fichier} and file wich size mismatch
 	 */
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private long sizeMismatchCount = 0;
 
 	/**
 	 * Count of {@link Fichier} and file wich checksum mismatch
 	 */
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private long checksumMismatchCount = 0;
 
 	@Override

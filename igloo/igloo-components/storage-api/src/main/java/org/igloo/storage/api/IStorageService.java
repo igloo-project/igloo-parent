@@ -14,6 +14,6 @@ public interface IStorageService {
 
 	public Fichier removeFichier(Fichier fichier);
 
-	public File getFichier(Fichier fichier);
+	public File getFile(Fichier fichier);
 
 }

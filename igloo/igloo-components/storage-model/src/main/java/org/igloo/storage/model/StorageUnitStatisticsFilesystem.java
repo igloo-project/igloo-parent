@@ -4,6 +4,7 @@ import org.bindgen.Bindable;
 import org.igloo.storage.model.atomic.FichierStatus;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
@@ -15,12 +16,14 @@ public class StorageUnitStatisticsFilesystem implements Serializable {
 	 * Size of StorageUnit in byte
 	 */
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private long size = 0;
 
 	/**
 	 * Count of total file on the filesystem in the {@code StorageUnit}
 	 */
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private long fileCount = 0;
 
 	/**
@@ -28,6 +31,7 @@ public class StorageUnitStatisticsFilesystem implements Serializable {
 	 * with status {@link FichierStatus#ALIVE}
 	 */
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private long missingCount = 0;
 
 	public long getSize() {

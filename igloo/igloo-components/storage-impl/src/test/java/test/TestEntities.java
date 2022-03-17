@@ -14,7 +14,9 @@ import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.IFichierType;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.StorageUnitStatistics;
+import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
+import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.junit.jupiter.api.Test;
 
 import test.model.FichierType1;
@@ -32,6 +34,7 @@ class TestEntities extends AbstractTest {
 	void testFichierTypePersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
 		storageUnit.setPath("/test");
+		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(new Date());
 		storageUnit.setPathStrategy("testStrategy");
 
@@ -49,7 +52,7 @@ class TestEntities extends AbstractTest {
 		fichier1.setName("filename");
 		fichier1.setSize(25);
 		fichier1.setChecksum("123");
-		fichier1.setChecksumType("checksumYype");
+		fichier1.setChecksumType(ChecksumType.SHA_256);
 		fichier1.setCreationDate(new Date());
 
 		Fichier fichier2 = new Fichier();
@@ -61,7 +64,7 @@ class TestEntities extends AbstractTest {
 		fichier2.setName("filename");
 		fichier2.setSize(25);
 		fichier2.setChecksum("123");
-		fichier2.setChecksumType("checksumYype");
+		fichier2.setChecksumType(ChecksumType.SHA_256);
 		fichier2.setCreationDate(new Date());
 
 		entityManager.persist(storageUnit);
@@ -95,6 +98,7 @@ class TestEntities extends AbstractTest {
 	void testMinimalFichierPersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
 		storageUnit.setPath("/test");
+		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(new Date());
 		storageUnit.setPathStrategy("testStrategy");
 
@@ -112,7 +116,7 @@ class TestEntities extends AbstractTest {
 		fichier.setName("filename");
 		fichier.setSize(25);
 		fichier.setChecksum("123");
-		fichier.setChecksumType("checksumYype");
+		fichier.setChecksumType(ChecksumType.SHA_256);
 		fichier.setCreationDate(new Date());
 
 		entityManager.persist(storageUnit);
@@ -131,6 +135,7 @@ class TestEntities extends AbstractTest {
 	void testFichierUuidUnicityPersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
 		storageUnit.setPath("/test");
+		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(new Date());
 		storageUnit.setPathStrategy("testStrategy");
 
@@ -149,7 +154,7 @@ class TestEntities extends AbstractTest {
 		fichier1.setName("filename");
 		fichier1.setSize(25);
 		fichier1.setChecksum("123");
-		fichier1.setChecksumType("checksumYype");
+		fichier1.setChecksumType(ChecksumType.SHA_256);
 		fichier1.setCreationDate(new Date());
 
 		Fichier fichier2 = new Fichier();
@@ -161,7 +166,7 @@ class TestEntities extends AbstractTest {
 		fichier2.setName("filename");
 		fichier2.setSize(25);
 		fichier2.setChecksum("123");
-		fichier2.setChecksumType("checksumYype");
+		fichier2.setChecksumType(ChecksumType.SHA_256);
 		fichier2.setCreationDate(new Date());
 
 		entityManager.persist(storageUnit);
@@ -180,6 +185,7 @@ class TestEntities extends AbstractTest {
 	void testStorageUnitAndStatisticsPersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
 		storageUnit.setPath("/test");
+		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(new Date());
 		storageUnit.setPathStrategy("testStrategy");
 

@@ -11,8 +11,8 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 /**
  * A {@link StorageUnit} is a physical device that can store files. {@link StorageUnit} implementation must provide
- * listing API to allow consistency jobs to check the storage status (missing or orphan files). Performance can
- * be ensured by splitting {@link StorageUnit} before listing can be problematic (duration, memory).
+ * listing API to allow consistency jobs to check the storage status (missing or orphan files/{@link Fichier}).
+ * Performance can be ensured by splitting {@link StorageUnit} before listing can be problematic (duration, memory).
  */
 @Entity
 @Bindable
@@ -24,18 +24,22 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 	@GeneratedValue
 	private Long id;
 
-	@Basic // TODO MPI : vu les valeurs actuelles, ça doit être optionnel(optional = false)
+	@Basic(optional = false)
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private StorageUnitStatus status;
 
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private String path;
 
 	// TODO MPI : Comment je passe du uuid au relativePath - sans doute une interface
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private String pathStrategy;
 
 	@Basic(optional = false)
+	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date creationDate;
 

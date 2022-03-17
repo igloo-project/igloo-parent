@@ -16,6 +16,7 @@ import javax.persistence.TemporalType;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
+import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.hibernate.StorageHibernateConstants;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
@@ -41,6 +42,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	private UUID uuid;
 
 	@Basic(optional = false)
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private FichierStatus status;
 
@@ -58,31 +60,39 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 
 	// TODO MPI : doc + exemple fichiertype/hash/uuid.png
 	@Basic(optional = false)
+	@Column(nullable = false)
 	private String relativePath;
 
-    @Basic(optional = false)
-    private String name;
+	@Basic(optional = false)
+	@Column(nullable = false)
+	private String name;
 
 	@Basic
+	@Column
 	private String extension;
 
 	/**
 	 * Size in bytes.
 	 */
-    @Basic(optional = false)
-    private long size;
+	@Basic(optional = false)
+	@Column(nullable = false)
+	private long size;
 
 	// TODO MPI : devrait être des chaînes de 16 caractères en SHA-256
-    @Basic(optional = false)
-    private String checksum;
+	@Basic(optional = false)
+	@Column(nullable = false)
+	private String checksum;
 
-    @Basic(optional = false)
-    private String checksumType; // TODO MPI : Enum SHA-256 (on utilise Guava {@link Hashing}
+	@Basic(optional = false)
+	@Column(nullable = false)
+	private ChecksumType checksumType; // TODO MPI : Enum SHA-256 (on utilise Guava {@link Hashing})
 
 	@Basic
+	@Column
 	private String mimetype;
 
 	@Basic(optional = false)
+	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date creationDate;
 
@@ -90,6 +100,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	 * Initialized when {@link #status} is set to {@link FichierStatus#DELETED}.
 	 */
 	@Basic
+	@Column
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date deletionDate;
 
@@ -175,11 +186,11 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 		this.checksum = checksum;
 	}
 
-	public String getChecksumType() {
+	public ChecksumType getChecksumType() {
 		return checksumType;
 	}
 
-	public void setChecksumType(String checksumType) {
+	public void setChecksumType(ChecksumType checksumType) {
 		this.checksumType = checksumType;
 	}
 

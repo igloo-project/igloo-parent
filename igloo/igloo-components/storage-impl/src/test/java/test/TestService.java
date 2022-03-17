@@ -63,7 +63,9 @@ class TestService extends AbstractTest {
 			}
 		});
 		assertThat(Path.of(tempDir.toString(), fichier.getRelativePath()))
-			.exists().content(StandardCharsets.UTF_8).isEqualTo("blabla");
+			.as("File must exist").exists()
+			.content(StandardCharsets.UTF_8)
+			.as("File content must be 'blabla'").isEqualTo("blabla");
 	}
 
 	@Test

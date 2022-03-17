@@ -16,6 +16,7 @@ import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.IFichierType;
 import org.igloo.storage.model.StorageUnit;
+import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -39,7 +40,7 @@ public class StorageService implements IStorageService {
 		fichier.setName("filename");
 		fichier.setSize(25);
 		fichier.setChecksum("123");
-		fichier.setChecksumType("checksumYype");
+		fichier.setChecksumType(ChecksumType.SHA_256);
 		fichier.setCreationDate(new Date());
 		Path absolutePath = Path.of(unit.getPath(), fichier.getRelativePath());
 		try (FileOutputStream fos = new FileOutputStream(absolutePath.toString())) {
@@ -76,7 +77,7 @@ public class StorageService implements IStorageService {
 	}
 
 	@Override
-	public File getFichier(Fichier fichier) {
+	public File getFile(Fichier fichier) {
 		// TODO Auto-generated method stub
 		return null;
 	}
