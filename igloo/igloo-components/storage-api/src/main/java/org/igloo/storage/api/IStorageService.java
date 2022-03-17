@@ -6,7 +6,7 @@ import java.io.InputStream;
 import javax.persistence.EntityManager;
 
 import org.igloo.storage.model.Fichier;
-import org.igloo.storage.model.IFichierType;
+import org.igloo.storage.model.atomic.IFichierType;
 
 public interface IStorageService {
 

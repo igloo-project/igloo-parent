@@ -18,6 +18,7 @@ import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
 import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
+import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.hibernate.StorageHibernateConstants;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 

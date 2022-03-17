@@ -1,4 +1,4 @@
-package org.igloo.storage.model;
+package org.igloo.storage.model.atomic;
 
 import java.io.Serializable;
 

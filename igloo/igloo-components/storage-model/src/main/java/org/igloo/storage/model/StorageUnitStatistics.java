@@ -1,6 +1,7 @@
 package org.igloo.storage.model;
 
 import org.bindgen.Bindable;
+import org.igloo.storage.model.atomic.IFichierType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 import javax.persistence.*;

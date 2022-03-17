@@ -3,10 +3,24 @@ package org.igloo.storage.model;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.bindgen.Bindable;
+import org.hibernate.annotations.Type;
+import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
+import org.igloo.storage.model.hibernate.StorageHibernateConstants;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 /**
@@ -28,6 +42,11 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private StorageUnitStatus status;
+
+	@Column(nullable = false, updatable = false)
+	@Basic(optional = false)
+	@Type(type = StorageHibernateConstants.TYPE_STORAGE_UNIT_TYPE)
+	private IStorageUnitType type;
 
 	@Basic(optional = false)
 	@Column(nullable = false)
@@ -69,6 +88,14 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 
 	public void setStatus(StorageUnitStatus status) {
 		this.status = status;
+	}
+
+	public IStorageUnitType getType() {
+		return type;
+	}
+
+	public void setType(IStorageUnitType type) {
+		this.type = type;
 	}
 
 	public String getPath() {

@@ -1,5 +1,8 @@
 package test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
@@ -11,18 +14,17 @@ import javax.persistence.PersistenceException;
 
 import org.hibernate.Session;
 import org.igloo.storage.model.Fichier;
-import org.igloo.storage.model.IFichierType;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.StorageUnitStatistics;
 import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
+import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.junit.jupiter.api.Test;
 
 import test.model.FichierType1;
 import test.model.FichierType2;
-
-import static org.assertj.core.api.Assertions.*;
+import test.model.StorageUnitType;
 
 class TestEntities extends AbstractTest {
 
@@ -33,6 +35,7 @@ class TestEntities extends AbstractTest {
 	@Test
 	void testFichierTypePersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
+		storageUnit.setType(StorageUnitType.TYPE_1);
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(new Date());
@@ -97,6 +100,7 @@ class TestEntities extends AbstractTest {
 	@Test
 	void testMinimalFichierPersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
+		storageUnit.setType(StorageUnitType.TYPE_1);
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(new Date());
@@ -134,6 +138,7 @@ class TestEntities extends AbstractTest {
 	@Test
 	void testFichierUuidUnicityPersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
+		storageUnit.setType(StorageUnitType.TYPE_1);
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(new Date());
@@ -184,6 +189,7 @@ class TestEntities extends AbstractTest {
 	@Test
 	void testStorageUnitAndStatisticsPersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
+		storageUnit.setType(StorageUnitType.TYPE_1);
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(new Date());

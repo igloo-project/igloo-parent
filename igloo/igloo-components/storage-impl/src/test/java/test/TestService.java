@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Date;
+import java.util.EnumSet;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,6 +19,7 @@ import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.impl.StorageService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
+import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,15 +31,17 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import test.model.FichierType1;
+import test.model.StorageUnitType;
 
 class TestService extends AbstractTest {
 
-	private IStorageService storageService = new StorageService();
+	private IStorageService storageService;
 	private TransactionTemplate transactionTemplate;
 	private Path tempDir;
 
 	@BeforeEach
 	void init(EntityManagerFactory entityManagerFactory, @TempDir Path tempDir) {
+		this.storageService = new StorageService(entityManagerFactory, Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)));
 		this.tempDir = tempDir;
 		PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
 		transactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute());
@@ -44,6 +49,7 @@ class TestService extends AbstractTest {
 			EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
 			StorageUnit su = new StorageUnit();
 			su.setCreationDate(new Date());
+			su.setType(StorageUnitType.TYPE_1);
 			su.setStatus(StorageUnitStatus.ALIVE);
 			su.setPath(tempDir.toString());
 			su.setPathStrategy("TODO");

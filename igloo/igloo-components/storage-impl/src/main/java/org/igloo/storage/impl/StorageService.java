@@ -7,17 +7,23 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
-import org.igloo.storage.model.IFichierType;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
+import org.igloo.storage.model.atomic.IFichierType;
+import org.igloo.storage.model.atomic.IStorageUnitType;
+import org.igloo.storage.model.atomic.StorageUnitStatus;
+import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -26,7 +32,14 @@ public class StorageService implements IStorageService {
 	// TODO: split data and handler
 	private static final Class<?> TASKS_RESOURCE_KEY = StorageService.class;
 
+	private final EntityManagerFactory entityManagerFactory;
 	private final StorageTransactionHandler handler = new StorageTransactionHandler(new StorageOperations());
+	private final Set<IStorageUnitType> storageUnitTypeCandidates;
+
+	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates) {
+		this.entityManagerFactory = entityManagerFactory;
+		this.storageUnitTypeCandidates = storageUnitTypeCandidates;
+	}
 
 	@Override
 	public Fichier addFichier(EntityManager entityManager, IFichierType fichierType, InputStream inputStream) {
@@ -82,9 +95,28 @@ public class StorageService implements IStorageService {
 		return null;
 	}
 
+	@Nonnull
 	private StorageUnit selectStorageUnit(EntityManager entityManager, IFichierType fichierType) {
-		// TODO dynamic switch
-		return entityManager.createQuery("FROM StorageUnit", StorageUnit.class).getSingleResult();
+		return storageUnitTypeCandidates.stream()
+				.filter(c -> c.accept(fichierType))
+				.findFirst()
+				.map(this::loadAliveStorageUnit)
+				.orElseThrow();
+	}
+
+	private StorageUnit loadAliveStorageUnit(IStorageUnitType storageUnitType) {
+		return entityManager()
+			.createQuery("FROM StorageUnit s WHERE s.type = :type AND s.status = :status ORDER BY s.id DESC", StorageUnit.class)
+			.setParameter("type", storageUnitType)
+			.setParameter("status", StorageUnitStatus.ALIVE)
+			.getResultStream()
+			.findFirst()
+			.orElseThrow();
+	}
+
+	@Nonnull
+	private EntityManager entityManager() {
+		return Optional.ofNullable(EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)).orElseThrow();
 	}
 
 }
