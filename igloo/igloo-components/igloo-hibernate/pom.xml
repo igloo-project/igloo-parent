@@ -17,6 +17,11 @@
 	
 	<dependencies>
 		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-jpa-model</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>javax.persistence-api</artifactId>
 		</dependency>
