@@ -107,6 +107,18 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<configuration>
+					<rules self.combine="override">
+						<requireUpperBoundDeps>
+							<!-- hibernate/mockito conflict; let hibernate decides! -->
+							<excludes>net.bytebuddy:byte-buddy</excludes>
+						</requireUpperBoundDeps>
+					</rules>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
