@@ -20,8 +20,8 @@ import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class SignInContentPanel extends Panel {
@@ -46,17 +46,17 @@ public class SignInContentPanel extends Panel {
 				try {
 					BasicApplicationSession.get().signIn(usernameModel.getObject(), passwordModel.getObject());
 					onSuccess(BasicApplicationSession.get().getUser());
+					throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
 				} catch (BadCredentialsException e) { // NOSONAR
-					onBadCredentials(usernameModel.getObject());
-				} catch (UsernameNotFoundException e) { // NOSONAR
 					Session.get().error(getString("signIn.error.authentication"));
-				} catch (DisabledException e) { // NOSONAR
-					Session.get().error(getString("signIn.error.userDisabled"));
+					onBadCredentials(usernameModel.getObject());
+				} catch (UsernameNotFoundException | AccountStatusException e) { // NOSONAR
+					Session.get().error(getString("signIn.error.authentication"));
 				} catch (RestartResponseException e) { // NOSONAR
 					throw e;
 				} catch (Exception e) {
 					LOGGER.error("Unknown error during authentification", e);
-					Session.get().error(getString("signIn.error.unknown"));
+					Session.get().error(getString("signIn.error.authentication"));
 				}
 				
 				throw BasicApplicationApplication.get().getSignInPageLinkDescriptor().newRestartResponseException();
@@ -79,19 +79,15 @@ public class SignInContentPanel extends Panel {
 
 	private void onSuccess(User user) throws ServiceException, SecurityServiceException {
 		userService.onSignIn(user);
-		throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
 	}
 
 	private void onBadCredentials(String username) {
-		Session.get().error(getString("signIn.error.authentication"));
-		
 		User user = userService.getByUsername(username);
 		if (user != null) {
 			try {
 				userService.onSignInFail(user);
 			} catch (Exception e) {
 				LOGGER.error("Unknown error while trying to find the user associated with the username entered in the form", e);
-				Session.get().error(getString("signIn.error.unknown"));
 			}
 		}
 	}
