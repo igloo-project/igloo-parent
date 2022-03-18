@@ -15,7 +15,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import com.google.common.io.CountingInputStream;
-import org.apache.commons.io.IOUtils;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
@@ -37,7 +36,8 @@ public class StorageService implements IStorageService {
 	private static final Class<?> TASKS_RESOURCE_KEY = StorageService.class;
 
 	private final EntityManagerFactory entityManagerFactory;
-	private final StorageTransactionHandler handler = new StorageTransactionHandler(new StorageOperations());
+	private final StorageOperations operations = new StorageOperations();
+	private final StorageTransactionHandler handler = new StorageTransactionHandler(operations);
 	private final Set<IStorageUnitType> storageUnitTypeCandidates;
 
 	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates) {
@@ -60,9 +60,8 @@ public class StorageService implements IStorageService {
 		Path absolutePath = Path.of(unit.getPath(), fichier.getRelativePath());
 		try (
 				HashingInputStream hashingInputStream = new HashingInputStream(Hashing.sha256(), inputStream);
-				CountingInputStream countingInputStream = new CountingInputStream(hashingInputStream);
-				FileOutputStream fos = new FileOutputStream(absolutePath.toString())) {
-			IOUtils.copy(countingInputStream, fos);
+				CountingInputStream countingInputStream = new CountingInputStream(hashingInputStream)) {
+			operations.copy(countingInputStream, absolutePath);
 			fichier.setChecksum(hashingInputStream.hash().toString());
 			fichier.setSize(countingInputStream.getCount());
 		} catch (IOException e) {

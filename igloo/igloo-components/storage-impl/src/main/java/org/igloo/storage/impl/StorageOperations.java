@@ -1,9 +1,13 @@
 package org.igloo.storage.impl;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
+import java.nio.file.Path;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +27,15 @@ public class StorageOperations {
 			}
 		} catch (RuntimeException|IOException e) {
 			LOGGER.error("{} {} '{}' cannot be removed", logPrefix, t.getId(), t.getPath(), e);
+		}
+	}
+
+	public void copy(InputStream inputStream, Path absolutePath) throws IOException {
+		try (FileOutputStream fos = new FileOutputStream(absolutePath.toString())) {
+			IOUtils.copy(inputStream, fos);
+		} catch (RuntimeException e) {
+			// TODO use custom runtime exception
+			throw new IllegalStateException(e);
 		}
 	}
 
