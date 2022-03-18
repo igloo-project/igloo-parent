@@ -29,14 +29,14 @@ public class StorageTransactionHandler {
     // fait le handler en cas de rollback
 	public void doRemovePhysicalAddedFichiersOnRollback(List<StorageTask> tasks2) {
 		tasks2.stream().filter(StorageTransactionHandler::isAdd).forEach(t -> {
-			operations.doRemovePhysicalFile("[rollback/add]", t);
+			operations.removePhysicalFile("[rollback/add]", t);
 		});
 	}
 
     // idem
 	public void doRemovePhysicalDeleteFichiersOnCommit(List<StorageTask> tasks) {
 		tasks.stream().filter(StorageTransactionHandler::isDelete).forEach(t -> {
-			operations.doRemovePhysicalFile("[commit/delete]", t);
+			operations.removePhysicalFile("[commit/delete]", t);
 		});
 	}
 

@@ -45,7 +45,7 @@ class TestTransaction {
 		adapter.addTask(3l, StorageTaskType.ASK_DELETION, fichier3);
 		adapter.addTask(4l, StorageTaskType.ADD, fichier4);
 		adapter.afterCompletion(TransactionSynchronization.STATUS_COMMITTED);
-		verify(operations).doRemovePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier2)));
+		verify(operations).removePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier2)));
 		verifyNoMoreInteractions(operations);
 	}
 
@@ -65,8 +65,8 @@ class TestTransaction {
 		adapter.addTask(3l, StorageTaskType.ASK_DELETION, fichier3);
 		adapter.addTask(4l, StorageTaskType.ADD, fichier4);
 		adapter.afterCompletion(TransactionSynchronization.STATUS_ROLLED_BACK);
-		verify(operations).doRemovePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier1)));
-		verify(operations).doRemovePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier4)));
+		verify(operations).removePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier1)));
+		verify(operations).removePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier4)));
 		verifyNoMoreInteractions(operations);
 	}
 

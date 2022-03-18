@@ -15,18 +15,24 @@ public class StorageOperations {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageOperations.class);
 
-	public void doRemovePhysicalFile(String logPrefix, StorageTask t) {
+	public void removePhysicalFile(String logPrefix, StorageTask t) {
+		Long fichierId = t.getId();
+		Path fileAbsolutePath = t.getPath();
+		removePhysicalFile(logPrefix, fichierId, fileAbsolutePath);
+	}
+
+	public void removePhysicalFile(String logPrefix, Long fichierId, Path fileAbsolutePath) {
 		try {
-			if (Files.exists(t.getPath(), LinkOption.NOFOLLOW_LINKS)) {
+			if (Files.exists(fileAbsolutePath, LinkOption.NOFOLLOW_LINKS)) {
 				if (LOGGER.isInfoEnabled()) {
-					LOGGER.debug("{}: deleting {} '{}'", logPrefix, t.getId(), t.getPath());
+					LOGGER.debug("{}: deleting {} '{}'", logPrefix, fichierId, fileAbsolutePath);
 				}
-				Files.delete(t.getPath());
+				Files.delete(fileAbsolutePath);
 			} else {
-				LOGGER.warn("{} {} '{}' cannot be removed - already absent", logPrefix, t.getId(), t.getPath());
+				LOGGER.warn("{} {} '{}' cannot be removed - already absent", logPrefix, fichierId, fileAbsolutePath);
 			}
 		} catch (RuntimeException|IOException e) {
-			LOGGER.error("{} {} '{}' cannot be removed", logPrefix, t.getId(), t.getPath(), e);
+			LOGGER.error("{} {} '{}' cannot be removed", logPrefix, fichierId, fileAbsolutePath, e);
 		}
 	}
 

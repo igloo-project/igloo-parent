@@ -3,17 +3,19 @@ package org.igloo.storage.api;
 import java.io.File;
 import java.io.InputStream;
 
-import javax.persistence.EntityManager;
-
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.atomic.IFichierType;
 
+import javax.annotation.Nonnull;
+
 public interface IStorageService {
 
-	public Fichier addFichier(EntityManager entityManager, IFichierType fichierType, InputStream inputStream);
+	@Nonnull
+	public Fichier addFichier(@Nonnull IFichierType fichierType, @Nonnull InputStream inputStream);
 
-	public Fichier removeFichier(Fichier fichier);
+	public void removeFichier(@Nonnull Fichier fichier);
 
-	public File getFile(Fichier fichier);
+	@Nonnull
+	public File getFile(@Nonnull Fichier fichier);
 
 }

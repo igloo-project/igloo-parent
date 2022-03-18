@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +20,7 @@ import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.impl.StorageService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
+import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,14 +66,7 @@ class TestService extends AbstractTest {
 
 	@Test
 	void testAdd(EntityManagerFactory entityManagerFactory) {
-		Fichier fichier = transactionTemplate.execute((t) -> {
-			EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
-			try (InputStream bais = new ByteArrayInputStream(FILE_CONTENT.getBytes(StandardCharsets.UTF_8))) {
-				return storageService.addFichier(em, FichierType1.CONTENT1, bais);
-			} catch (IOException e) {
-				throw new IllegalStateException(e);
-			}
-		});
+		Fichier fichier = createFichier(entityManagerFactory, FILE_CONTENT, FichierType1.CONTENT1, () -> {});
 		assertThat(Path.of(tempDir.toString(), fichier.getRelativePath()))
 			.as("File must exist").exists()
 			.content(StandardCharsets.UTF_8)
@@ -83,18 +78,52 @@ class TestService extends AbstractTest {
 	@Test
 	void testAddRollback(EntityManagerFactory entityManagerFactory) {
 		Runnable action = () -> {
-			transactionTemplate.execute((t) -> {
-				EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
-				try (InputStream bais = new ByteArrayInputStream(FILE_CONTENT.getBytes(StandardCharsets.UTF_8))) {
-					storageService.addFichier(em, FichierType1.CONTENT1, bais);
-					throw new IllegalStateException("Triggered rollback");
-				} catch (IOException e) {
-					throw new IllegalStateException(e);
-				}
-			});
+			String fileContent = FILE_CONTENT;
+			FichierType1 type = FichierType1.CONTENT1;
+			createFichier(entityManagerFactory, fileContent, type, () -> { throw new IllegalStateException("Triggered rollback"); });
 		};
+
 		assertThatCode(action::run).as("Fichier add must throw an exception").isInstanceOf(IllegalStateException.class).hasMessageContaining("Triggered rollback");
 		assertThat(Path.of(tempDir.toString(), "relative-path")).doesNotExist();
+	}
+
+	@Test
+	void testGet(EntityManagerFactory entityManagerFactory) {
+		String fileContent = FILE_CONTENT;
+		FichierType1 type = FichierType1.CONTENT1;
+		Fichier fichier = createFichier(entityManagerFactory, fileContent, type, () -> {});
+
+		File file = storageService.getFile(fichier);
+		assertThat(file)
+			.as("File must exist").exists()
+			.content(StandardCharsets.UTF_8)
+			.as("File content must be 'blabla'").isEqualTo(FILE_CONTENT);
+	}
+
+	@Test
+	void testRemove(EntityManagerFactory entityManagerFactory) {
+		String fileContent = FILE_CONTENT;
+		FichierType1 type = FichierType1.CONTENT1;
+
+		transactionTemplate.executeWithoutResult((t) -> {
+			Fichier fichier = createFichier(entityManagerFactory, fileContent, type, () -> {});
+			storageService.removeFichier(fichier);
+		});
+
+		assertThat(Path.of(tempDir.toString(), "relative-path")).doesNotExist();
+	}
+
+	private Fichier createFichier(EntityManagerFactory entityManagerFactory, String fileContent, IFichierType fichierType, Runnable postCreationAction) {
+		return transactionTemplate.execute((t) -> {
+			EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
+			try (InputStream bais = new ByteArrayInputStream(fileContent.getBytes(StandardCharsets.UTF_8))) {
+				return storageService.addFichier(fichierType, bais);
+			} catch (IOException e) {
+				throw new IllegalStateException(e);
+			} finally {
+				postCreationAction.run();
+			}
+		});
 	}
 
 	private DefaultTransactionAttribute writeTransactionAttribute() {

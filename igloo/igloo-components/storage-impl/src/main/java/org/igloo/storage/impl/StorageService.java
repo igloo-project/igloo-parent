@@ -1,7 +1,6 @@
 package org.igloo.storage.impl;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -23,6 +22,8 @@ import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -31,6 +32,8 @@ import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
 
 public class StorageService implements IStorageService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(StorageService.class);
 
 	// TODO: split data and handler
 	private static final Class<?> TASKS_RESOURCE_KEY = StorageService.class;
@@ -46,7 +49,9 @@ public class StorageService implements IStorageService {
 	}
 
 	@Override
-	public Fichier addFichier(EntityManager entityManager, IFichierType fichierType, InputStream inputStream) {
+	@Nonnull
+	public Fichier addFichier(IFichierType fichierType, InputStream inputStream) {
+		EntityManager entityManager = entityManager();
 		StorageUnit unit = selectStorageUnit(entityManager, fichierType);
 		Fichier fichier = new Fichier();
 		fichier.setUuid(UUID.randomUUID());
@@ -57,7 +62,7 @@ public class StorageService implements IStorageService {
 		fichier.setName("filename");
 		fichier.setChecksumType(ChecksumType.SHA_256);
 		fichier.setCreationDate(new Date());
-		Path absolutePath = Path.of(unit.getPath(), fichier.getRelativePath());
+		Path absolutePath = getAbsolutePath(fichier);
 		try (
 				HashingInputStream hashingInputStream = new HashingInputStream(Hashing.sha256(), inputStream);
 				CountingInputStream countingInputStream = new CountingInputStream(hashingInputStream)) {
@@ -90,15 +95,20 @@ public class StorageService implements IStorageService {
 	}
 
 	@Override
-	public Fichier removeFichier(Fichier fichier) {
-		// TODO Auto-generated method stub
-		return null;
+	public void removeFichier(@Nonnull Fichier fichier) {
+		entityManager().remove(fichier);
+		prepareAdapter().addTask(fichier.getId(), StorageTaskType.DELETE, getAbsolutePath(fichier));
 	}
 
 	@Override
-	public File getFile(Fichier fichier) {
-		// TODO Auto-generated method stub
-		return null;
+	@Nonnull
+	public File getFile(@Nonnull Fichier fichier) {
+		// TODO : gérer file manquant
+		return getAbsolutePath(fichier).toFile();
+	}
+
+	private Path getAbsolutePath(Fichier fichier) {
+		return Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath()).toAbsolutePath();
 	}
 
 	@Nonnull
@@ -112,7 +122,7 @@ public class StorageService implements IStorageService {
 
 	private StorageUnit loadAliveStorageUnit(IStorageUnitType storageUnitType) {
 		return entityManager()
-			.createQuery("FROM StorageUnit s WHERE s.type = :type AND s.status = :status ORDER BY s.id DESC", StorageUnit.class)
+			.createQuery("SELECT s FROM StorageUnit s WHERE s.type = :type AND s.status = :status ORDER BY s.id DESC", StorageUnit.class)
 			.setParameter("type", storageUnitType)
 			.setParameter("status", StorageUnitStatus.ALIVE)
 			.getResultStream()
