@@ -101,16 +101,12 @@ class TestService extends AbstractTest {
 	}
 
 	@Test
-	void testGet(EntityManagerFactory entityManagerFactory) {
-		String fileContent = FILE_CONTENT;
-		FichierType1 type = FichierType1.CONTENT1;
-		Fichier fichier = createFichier(entityManagerFactory, "filename", type, fileContent, () -> {});
+	void testGet(EntityManagerFactory entityManagerFactory) throws IOException {
+		Fichier fichier = createFichier(entityManagerFactory, "filename", FichierType1.CONTENT1, FILE_CONTENT, () -> {});
 
-		File file = storageService.getFile(fichier);
-		assertThat(file)
-			.as("File must exist").exists()
-			.content(StandardCharsets.UTF_8)
-			.as("File content must be 'blabla'").isEqualTo(FILE_CONTENT);
+		storageService.getFile(fichier);
+
+		verify(operations).getFile(Mockito.eq(Path.of(tempDir.toString(), fichier.getRelativePath())));
 	}
 
 	@Test

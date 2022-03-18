@@ -10,6 +10,7 @@ import java.nio.file.Path;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.igloo.storage.model.Fichier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,4 +57,7 @@ public class StorageOperations {
 		}
 	}
 
+	public File getFile(Path absolutePath) {
+		return absolutePath.toFile();
+	}
 }

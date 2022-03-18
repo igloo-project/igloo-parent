@@ -116,7 +116,7 @@ public class StorageService implements IStorageService {
 	@Nonnull
 	public File getFile(@Nonnull Fichier fichier) {
 		// TODO : gérer file manquant
-		return getAbsolutePath(fichier).toFile();
+		return operations.getFile(getAbsolutePath(fichier));
 	}
 
 	private Path getAbsolutePath(Fichier fichier) {
