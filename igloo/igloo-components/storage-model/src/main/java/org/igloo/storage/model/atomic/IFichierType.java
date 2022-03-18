@@ -11,4 +11,6 @@ public interface IFichierType extends IMappableInterface, Serializable {
 
 	String getDescription();
 
+	String getPath();
+
 }

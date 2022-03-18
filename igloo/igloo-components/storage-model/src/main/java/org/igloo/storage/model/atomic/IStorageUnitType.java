@@ -19,4 +19,6 @@ public interface IStorageUnitType extends IMappableInterface, Serializable {
 
 	boolean accept(IFichierType type);
 
+	IFichierPathStrategy getFichierPathStrategy();
+
 }

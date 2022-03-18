@@ -60,8 +60,9 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	private StorageUnit storageUnit;
 
 	// TODO MPI : doc + exemple fichiertype/hash/uuid.png
-	@Basic(optional = false)
-	@Column(nullable = false)
+	// TODO MPI : il est obligatoire dans les faits mais vide avant calcul du relativePath
+	@Basic
+	@Column
 	private String relativePath;
 
 	@Basic(optional = false)
@@ -72,16 +73,18 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	@Column
 	private String extension;
 
+	// TODO MPI : il est obligatoire dans les faits mais vide avant calcul du relativePath
 	/**
 	 * Size in bytes.
 	 */
-	@Basic(optional = false)
-	@Column(nullable = false)
+	@Basic
+	@Column
 	private long size;
 
 	// TODO MPI : devrait être des chaînes de 16 caractères en SHA-256
-	@Basic(optional = false)
-	@Column(nullable = false)
+	// TODO MPI : il est obligatoire dans les faits mais vide avant calcul du relativePath
+	@Basic
+	@Column
 	private String checksum;
 
 	@Basic(optional = false)

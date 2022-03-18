@@ -67,11 +67,15 @@ public class StorageService implements IStorageService {
 		fichier.setStatus(FichierStatus.ALIVE);
 		fichier.setFichierType(fichierType);
 		fichier.setStorageUnit(unit);
-		fichier.setRelativePath("relative-path");
 		fichier.setName(filename);
 		fichier.setChecksumType(ChecksumType.SHA_256);
 		fichier.setMimetype(mimeTypeResolver.resolve(fichier.getFilename()));
 		fichier.setCreationDate(new Date());
+
+		entityManager.persist(fichier);
+		entityManager.flush();
+
+		fichier.setRelativePath(unit.getType().getFichierPathStrategy().getPath(fichier));
 		Path absolutePath = getAbsolutePath(fichier);
 		try (
 				HashingInputStream hashingInputStream = new HashingInputStream(Hashing.sha256(), inputStream);
@@ -84,8 +88,7 @@ public class StorageService implements IStorageService {
 			throw new IllegalStateException(e);
 		}
 		StorageTransactionAdapter adapter = prepareAdapter();
-		entityManager.persist(fichier);
-		entityManager.flush();
+
 		adapter.addTask(fichier.getId(), StorageTaskType.ADD, absolutePath);
 		return fichier;
 	}

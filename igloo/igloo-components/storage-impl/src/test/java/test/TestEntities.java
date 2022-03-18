@@ -39,7 +39,6 @@ class TestEntities extends AbstractTest {
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(new Date());
-		storageUnit.setPathStrategy("testStrategy");
 
 		StorageUnitStatistics statistics = new StorageUnitStatistics();
 		statistics.setStorageUnit(storageUnit);
@@ -104,7 +103,6 @@ class TestEntities extends AbstractTest {
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(new Date());
-		storageUnit.setPathStrategy("testStrategy");
 
 		StorageUnitStatistics statistics = new StorageUnitStatistics();
 		statistics.setStorageUnit(storageUnit);
@@ -142,7 +140,6 @@ class TestEntities extends AbstractTest {
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(new Date());
-		storageUnit.setPathStrategy("testStrategy");
 
 		StorageUnitStatistics statistics = new StorageUnitStatistics();
 		statistics.setStorageUnit(storageUnit);
@@ -193,7 +190,6 @@ class TestEntities extends AbstractTest {
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(new Date());
-		storageUnit.setPathStrategy("testStrategy");
 
 		StorageUnitStatistics statistics = new StorageUnitStatistics();
 		statistics.setStorageUnit(storageUnit);

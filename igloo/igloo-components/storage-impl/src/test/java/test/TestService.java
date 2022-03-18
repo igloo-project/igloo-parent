@@ -59,7 +59,6 @@ class TestService extends AbstractTest {
 			su.setType(StorageUnitType.TYPE_1);
 			su.setStatus(StorageUnitStatus.ALIVE);
 			su.setPath(tempDir.toString());
-			su.setPathStrategy("TODO");
 			em.persist(su);
 			return su;
 		});

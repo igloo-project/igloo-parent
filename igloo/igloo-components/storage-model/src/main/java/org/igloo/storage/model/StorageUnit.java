@@ -52,11 +52,6 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 	@Column(nullable = false)
 	private String path;
 
-	// TODO MPI : Comment je passe du uuid au relativePath - sans doute une interface
-	@Basic(optional = false)
-	@Column(nullable = false)
-	private String pathStrategy;
-
 	@Basic(optional = false)
 	@Column(nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -104,14 +99,6 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 
 	public void setPath(String path) {
 		this.path = path;
-	}
-
-	public String getPathStrategy() {
-		return pathStrategy;
-	}
-
-	public void setPathStrategy(String pathStrategy) {
-		this.pathStrategy = pathStrategy;
 	}
 
 	public Date getCreationDate() {
