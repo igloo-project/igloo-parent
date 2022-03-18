@@ -67,13 +67,14 @@ class TestService extends AbstractTest {
 
 	@Test
 	void testAdd(EntityManagerFactory entityManagerFactory) {
-		Fichier fichier = createFichier(entityManagerFactory, FILE_CONTENT, FichierType1.CONTENT1, () -> {});
+		Fichier fichier = createFichier(entityManagerFactory, "filename.txt", FichierType1.CONTENT1, FILE_CONTENT, () -> {});
 		assertThat(Path.of(tempDir.toString(), fichier.getRelativePath()))
 			.as("File must exist").exists()
 			.content(StandardCharsets.UTF_8)
 			.as("File content must be 'blabla'").isEqualTo(FILE_CONTENT);
 		assertThat(fichier.getChecksum()).isEqualTo(FILE_CHECKSUM_SHA_256);
 		assertThat(fichier.getSize()).isEqualTo(FILE_SIZE);
+		assertThat(fichier.getMimetype()).isEqualTo("text/plain");
 	}
 
 	@Test
@@ -81,7 +82,7 @@ class TestService extends AbstractTest {
 		Runnable action = () -> {
 			String fileContent = FILE_CONTENT;
 			FichierType1 type = FichierType1.CONTENT1;
-			createFichier(entityManagerFactory, fileContent, type, () -> { throw new IllegalStateException("Triggered rollback"); });
+			createFichier(entityManagerFactory, "filename", type, fileContent, () -> { throw new IllegalStateException("Triggered rollback"); });
 		};
 
 		assertThatCode(action::run).as("Fichier add must throw an exception").isInstanceOf(IllegalStateException.class).hasMessageContaining("Triggered rollback");
@@ -92,7 +93,7 @@ class TestService extends AbstractTest {
 	void testGet(EntityManagerFactory entityManagerFactory) {
 		String fileContent = FILE_CONTENT;
 		FichierType1 type = FichierType1.CONTENT1;
-		Fichier fichier = createFichier(entityManagerFactory, fileContent, type, () -> {});
+		Fichier fichier = createFichier(entityManagerFactory, "filename", type, fileContent, () -> {});
 
 		File file = storageService.getFile(fichier);
 		assertThat(file)
@@ -107,7 +108,7 @@ class TestService extends AbstractTest {
 		FichierType1 type = FichierType1.CONTENT1;
 
 		transactionTemplate.executeWithoutResult((t) -> {
-			Fichier fichier = createFichier(entityManagerFactory, fileContent, type, () -> {});
+			Fichier fichier = createFichier(entityManagerFactory, "filename", type, fileContent, () -> {});
 			storageService.removeFichier(fichier);
 		});
 
@@ -125,7 +126,7 @@ class TestService extends AbstractTest {
 		FichierType1 type = FichierType1.CONTENT1;
 
 		Fichier fichier = transactionTemplate.execute((t) -> {
-			Fichier fichierToInvalidate = createFichier(entityManagerFactory, fileContent, type, () -> {});
+			Fichier fichierToInvalidate = createFichier(entityManagerFactory, "filename", type, fileContent, () -> {});
 			storageService.invalidateFichier(fichierToInvalidate);
 			return fichierToInvalidate;
 		});
@@ -133,11 +134,10 @@ class TestService extends AbstractTest {
 		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.INVALIDATED);
 	}
 
-	private Fichier createFichier(EntityManagerFactory entityManagerFactory, String fileContent, IFichierType fichierType, Runnable postCreationAction) {
+	private Fichier createFichier(EntityManagerFactory entityManagerFactory, String filename, IFichierType fichierType, String fileContent, Runnable postCreationAction) {
 		return transactionTemplate.execute((t) -> {
-			EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
 			try (InputStream bais = new ByteArrayInputStream(fileContent.getBytes(StandardCharsets.UTF_8))) {
-				return storageService.addFichier(fichierType, bais);
+				return storageService.addFichier(filename, fichierType, bais);
 			} catch (IOException e) {
 				throw new IllegalStateException(e);
 			} finally {

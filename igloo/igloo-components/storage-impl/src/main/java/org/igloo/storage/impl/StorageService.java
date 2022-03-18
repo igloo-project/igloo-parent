@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -58,7 +59,7 @@ public class StorageService implements IStorageService {
 
 	@Override
 	@Nonnull
-	public Fichier addFichier(IFichierType fichierType, InputStream inputStream) {
+	public Fichier addFichier(@Nullable String filename, @Nonnull IFichierType fichierType, @Nonnull InputStream inputStream) {
 		EntityManager entityManager = entityManager();
 		StorageUnit unit = selectStorageUnit(entityManager, fichierType);
 		Fichier fichier = new Fichier();
@@ -67,8 +68,9 @@ public class StorageService implements IStorageService {
 		fichier.setFichierType(fichierType);
 		fichier.setStorageUnit(unit);
 		fichier.setRelativePath("relative-path");
-		fichier.setName("filename");
+		fichier.setName(filename);
 		fichier.setChecksumType(ChecksumType.SHA_256);
+		fichier.setMimetype(mimeTypeResolver.resolve(fichier.getFilename()));
 		fichier.setCreationDate(new Date());
 		Path absolutePath = getAbsolutePath(fichier);
 		try (

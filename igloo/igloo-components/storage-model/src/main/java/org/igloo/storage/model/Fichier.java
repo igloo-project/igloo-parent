@@ -66,7 +66,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 
 	@Basic(optional = false)
 	@Column(nullable = false)
-	private String name;
+	private String filename;
 
 	@Basic
 	@Column
@@ -155,12 +155,12 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 		this.relativePath = relativePath;
 	}
 
-	public String getName() {
-		return name;
+	public String getFilename() {
+		return filename;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.filename = name;
 	}
 
 	public String getExtension() {
