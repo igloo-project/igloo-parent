@@ -2,6 +2,9 @@ package org.igloo.storage.impl;
 
 import java.nio.file.Path;
 
+import javax.annotation.concurrent.Immutable;
+
+@Immutable
 public class StorageTask {
 
 	private final Long id;

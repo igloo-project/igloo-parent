@@ -13,8 +13,7 @@ import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import com.google.common.base.Objects;
-import com.google.common.io.CountingInputStream;
+import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
@@ -29,8 +28,10 @@ import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import com.google.common.base.Objects;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
+import com.google.common.io.CountingInputStream;
 
 public class StorageService implements IStorageService {
 
@@ -43,10 +44,16 @@ public class StorageService implements IStorageService {
 	private final StorageOperations operations = new StorageOperations();
 	private final StorageTransactionHandler handler = new StorageTransactionHandler(operations);
 	private final Set<IStorageUnitType> storageUnitTypeCandidates;
+	private final IMimeTypeResolver mimeTypeResolver;
 
 	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates) {
+		this(entityManagerFactory, storageUnitTypeCandidates, new MimeTypeResolver());
+	}
+
+	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates, IMimeTypeResolver mimeTypeResolver) {
 		this.entityManagerFactory = entityManagerFactory;
 		this.storageUnitTypeCandidates = storageUnitTypeCandidates;
+		this.mimeTypeResolver = mimeTypeResolver;
 	}
 
 	@Override
