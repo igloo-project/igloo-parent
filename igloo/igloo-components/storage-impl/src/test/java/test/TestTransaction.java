@@ -39,11 +39,9 @@ class TestTransaction {
 		Path fichier1 = Path.of("fichier1");
 		Path fichier2 = Path.of("fichier2");
 		Path fichier3 = Path.of("fichier3");
-		Path fichier4 = Path.of("fichier4");
 		adapter.addTask(1l, StorageTaskType.ADD, fichier1);
 		adapter.addTask(2l, StorageTaskType.DELETE, fichier2);
-		adapter.addTask(3l, StorageTaskType.ASK_DELETION, fichier3);
-		adapter.addTask(4l, StorageTaskType.ADD, fichier4);
+		adapter.addTask(4l, StorageTaskType.ADD, fichier3);
 		adapter.afterCompletion(TransactionSynchronization.STATUS_COMMITTED);
 		verify(operations).removePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier2)));
 		verifyNoMoreInteractions(operations);
@@ -59,14 +57,12 @@ class TestTransaction {
 		Path fichier1 = Path.of("fichier1");
 		Path fichier2 = Path.of("fichier2");
 		Path fichier3 = Path.of("fichier3");
-		Path fichier4 = Path.of("fichier4");
 		adapter.addTask(1l, StorageTaskType.ADD, fichier1);
 		adapter.addTask(2l, StorageTaskType.DELETE, fichier2);
-		adapter.addTask(3l, StorageTaskType.ASK_DELETION, fichier3);
-		adapter.addTask(4l, StorageTaskType.ADD, fichier4);
+		adapter.addTask(4l, StorageTaskType.ADD, fichier3);
 		adapter.afterCompletion(TransactionSynchronization.STATUS_ROLLED_BACK);
 		verify(operations).removePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier1)));
-		verify(operations).removePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier4)));
+		verify(operations).removePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier3)));
 		verifyNoMoreInteractions(operations);
 	}
 

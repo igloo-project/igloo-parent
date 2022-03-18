@@ -20,6 +20,7 @@ import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.impl.StorageService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
+import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
@@ -111,6 +112,25 @@ class TestService extends AbstractTest {
 		});
 
 		assertThat(Path.of(tempDir.toString(), "relative-path")).doesNotExist();
+	}
+
+	@Test
+	void testRemoveRollback(EntityManagerFactory entityManagerFactory) {
+		// TODO
+	}
+
+	@Test
+	void testInvalidate(EntityManagerFactory entityManagerFactory) {
+		String fileContent = FILE_CONTENT;
+		FichierType1 type = FichierType1.CONTENT1;
+
+		Fichier fichier = transactionTemplate.execute((t) -> {
+			Fichier fichierToInvalidate = createFichier(entityManagerFactory, fileContent, type, () -> {});
+			storageService.invalidateFichier(fichierToInvalidate);
+			return fichierToInvalidate;
+		});
+
+		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.DELETED);
 	}
 
 	private Fichier createFichier(EntityManagerFactory entityManagerFactory, String fileContent, IFichierType fichierType, Runnable postCreationAction) {

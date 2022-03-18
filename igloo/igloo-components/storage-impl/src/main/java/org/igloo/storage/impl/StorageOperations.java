@@ -25,14 +25,14 @@ public class StorageOperations {
 		try {
 			if (Files.exists(fileAbsolutePath, LinkOption.NOFOLLOW_LINKS)) {
 				if (LOGGER.isInfoEnabled()) {
-					LOGGER.debug("{}: deleting {} '{}'", logPrefix, fichierId, fileAbsolutePath);
+					LOGGER.debug("{}: deleting Fichier {} '{}'", logPrefix, fichierId, fileAbsolutePath);
 				}
 				Files.delete(fileAbsolutePath);
 			} else {
-				LOGGER.warn("{} {} '{}' cannot be removed - already absent", logPrefix, fichierId, fileAbsolutePath);
+				LOGGER.warn("{} Fichier {} '{}' cannot be removed - already absent", logPrefix, fichierId, fileAbsolutePath);
 			}
 		} catch (RuntimeException|IOException e) {
-			LOGGER.error("{} {} '{}' cannot be removed", logPrefix, fichierId, fileAbsolutePath, e);
+			LOGGER.error("{} Fichier {} '{}' cannot be removed", logPrefix, fichierId, fileAbsolutePath, e);
 		}
 	}
 

@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import com.google.common.base.Objects;
 import com.google.common.io.CountingInputStream;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
@@ -80,24 +81,21 @@ public class StorageService implements IStorageService {
 		return fichier;
 	}
 
-	private StorageTransactionAdapter prepareAdapter() {
-		StorageTransactionAdapter adapter;
-		Optional<TransactionSynchronization> currentAdapter =
-				TransactionSynchronizationManager.getSynchronizations().stream()
-				.filter(StorageTransactionAdapter.class::isInstance).findAny();
-		if (currentAdapter.isEmpty()) {
-			adapter = new StorageTransactionAdapter(handler);
-			TransactionSynchronizationManager.registerSynchronization(adapter);
-		} else {
-			adapter = (StorageTransactionAdapter) currentAdapter.get();
-		}
-		return adapter;
+	@Override
+	public void removeFichier(@Nonnull Fichier fichier) {
+		// TODO : vérifier qu'on est dans un état DELETED ?
+		entityManager().remove(fichier);
+		prepareAdapter().addTask(fichier.getId(), StorageTaskType.DELETE, getAbsolutePath(fichier));
 	}
 
 	@Override
-	public void removeFichier(@Nonnull Fichier fichier) {
-		entityManager().remove(fichier);
-		prepareAdapter().addTask(fichier.getId(), StorageTaskType.DELETE, getAbsolutePath(fichier));
+	public void invalidateFichier(@Nonnull Fichier fichier) {
+		if (Objects.equal(fichier.getStatus(), FichierStatus.ALIVE)) {
+			fichier.setStatus(FichierStatus.DELETED);
+			fichier.setDeletionDate(new Date());
+		} else {
+			LOGGER.warn("[invalidate] Fichier {} is alread marked DELETED; no action", fichier.getId());
+		}
 	}
 
 	@Override
@@ -133,6 +131,20 @@ public class StorageService implements IStorageService {
 	@Nonnull
 	private EntityManager entityManager() {
 		return Optional.ofNullable(EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)).orElseThrow();
+	}
+
+	private StorageTransactionAdapter prepareAdapter() {
+		StorageTransactionAdapter adapter;
+		Optional<TransactionSynchronization> currentAdapter =
+			TransactionSynchronizationManager.getSynchronizations().stream()
+				.filter(StorageTransactionAdapter.class::isInstance).findAny();
+		if (currentAdapter.isEmpty()) {
+			adapter = new StorageTransactionAdapter(handler);
+			TransactionSynchronizationManager.registerSynchronization(adapter);
+		} else {
+			adapter = (StorageTransactionAdapter) currentAdapter.get();
+		}
+		return adapter;
 	}
 
 }
