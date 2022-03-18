@@ -10,8 +10,8 @@ public enum FichierStatus {
 	ALIVE,
 
 	/**
-	 * The deletion of {@link Fichier} has been asked and the file in the filesystem is deleted.
-	 * The entity will soon be deleted.
+	 * The deletion of {@link Fichier} has been asked.
+	 * The entity and the aossicated file will soon be deleted.
 	 */
-	DELETED;
+	INVALIDATED;
 }

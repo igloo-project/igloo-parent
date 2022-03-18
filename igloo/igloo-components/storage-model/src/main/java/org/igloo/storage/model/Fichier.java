@@ -98,7 +98,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	private Date creationDate;
 
 	/**
-	 * Initialized when {@link #status} is set to {@link FichierStatus#DELETED}.
+	 * Initialized when {@link #status} is set to {@link FichierStatus#INVALIDATED}.
 	 */
 	@Basic
 	@Column

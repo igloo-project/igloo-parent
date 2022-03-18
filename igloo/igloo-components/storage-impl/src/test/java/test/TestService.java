@@ -130,7 +130,7 @@ class TestService extends AbstractTest {
 			return fichierToInvalidate;
 		});
 
-		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.DELETED);
+		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.INVALIDATED);
 	}
 
 	private Fichier createFichier(EntityManagerFactory entityManagerFactory, String fileContent, IFichierType fichierType, Runnable postCreationAction) {

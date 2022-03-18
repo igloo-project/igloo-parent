@@ -27,14 +27,14 @@ public class StorageUnitStatisticsDatabase implements Serializable {
 	private long aliveCount = 0;
 
 	/**
-	 * Count of {@link Fichier} with status {@link FichierStatus#DELETED}
+	 * Count of {@link Fichier} with status {@link FichierStatus#INVALIDATED}
 	 */
 	@Basic(optional = false)
 	@Column(nullable = false)
 	private long deletedCount = 0;
 
 	/**
-	 * Count of {@link Fichier} with {@link FichierStatus#DELETED} that should have been deleted
+	 * Count of {@link Fichier} with {@link FichierStatus#INVALIDATED} that should have been deleted
 	 */
 	@Basic(optional = false)
 	@Column(nullable = false)

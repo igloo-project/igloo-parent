@@ -91,7 +91,7 @@ public class StorageService implements IStorageService {
 	@Override
 	public void invalidateFichier(@Nonnull Fichier fichier) {
 		if (Objects.equal(fichier.getStatus(), FichierStatus.ALIVE)) {
-			fichier.setStatus(FichierStatus.DELETED);
+			fichier.setStatus(FichierStatus.INVALIDATED);
 			fichier.setDeletionDate(new Date());
 		} else {
 			LOGGER.warn("[invalidate] Fichier {} is alread marked DELETED; no action", fichier.getId());
