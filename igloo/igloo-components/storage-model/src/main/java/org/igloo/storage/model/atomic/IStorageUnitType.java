@@ -17,6 +17,8 @@ public interface IStorageUnitType extends IMappableInterface, Serializable {
 
 	String getDescription();
 
+	String getPath();
+
 	boolean accept(IFichierType type);
 
 	IFichierPathStrategy getFichierPathStrategy();

@@ -7,9 +7,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.igloo.storage.model.Fichier;
+import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.IFichierType;
+import org.igloo.storage.model.atomic.IStorageUnitType;
 
 public interface IStorageService {
+
+	/**
+	 * Creation of {@link StorageUnit} from type into storage
+	 */
+	public StorageUnit createStorageUnit(@Nonnull IStorageUnitType type);
 
 	/**
 	 * Creation of {@link Fichier} and storage of associated file from inputStream into storage

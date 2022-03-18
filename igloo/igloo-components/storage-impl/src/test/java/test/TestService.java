@@ -58,19 +58,13 @@ class TestService extends AbstractTest {
 
 	@BeforeEach
 	void init(EntityManagerFactory entityManagerFactory, @TempDir Path tempDir) {
-		this.storageService = new StorageService(entityManagerFactory, Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)), operations);
+		this.storageService = new StorageService(entityManagerFactory, Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)), operations, () -> tempDir);
 		this.tempDir = tempDir;
 		PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
 		transactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute());
 		transactionTemplate.execute((t) -> {
 			EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
-			StorageUnit su = new StorageUnit();
-			su.setCreationDate(new Date());
-			su.setType(StorageUnitType.TYPE_1);
-			su.setStatus(StorageUnitStatus.ALIVE);
-			su.setPath(tempDir.toString());
-			em.persist(su);
-			return su;
+			return storageService.createStorageUnit(StorageUnitType.TYPE_1);
 		});
 	}
 
@@ -80,7 +74,7 @@ class TestService extends AbstractTest {
 		doAnswer(AdditionalAnswers.<InputStream, Path>answerVoid((a, b) -> { IOUtils.copy(a, baos); }))
 			.when(operations).copy(any(), any());
 		Fichier fichier = createFichier(entityManagerFactory, "filename.txt", FichierType1.CONTENT1, FILE_CONTENT, () -> {});
-		verify(operations).copy(any(), Mockito.eq(Path.of(tempDir.toString(), fichier.getRelativePath())));
+		verify(operations).copy(any(), Mockito.eq(Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath())));
 		
 		assertThat(baos.toByteArray()).isEqualTo(FILE_CONTENT.getBytes(StandardCharsets.UTF_8)).hasSize((int) FILE_SIZE);
 		assertThat(fichier.getChecksum()).isEqualTo(FILE_CHECKSUM_SHA_256);
@@ -106,7 +100,7 @@ class TestService extends AbstractTest {
 
 		storageService.getFile(fichier);
 
-		verify(operations).getFile(Mockito.eq(Path.of(tempDir.toString(), fichier.getRelativePath())));
+		verify(operations).getFile(Mockito.eq(Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath())));
 	}
 
 	@Test

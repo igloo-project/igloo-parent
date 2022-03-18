@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import com.google.common.base.Supplier;
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
@@ -46,17 +47,37 @@ public class StorageService implements IStorageService {
 	private final StorageTransactionHandler handler;
 	private final Set<IStorageUnitType> storageUnitTypeCandidates;
 	private final IMimeTypeResolver mimeTypeResolver;
+	private final Supplier<Path> storageUnitPathSupplier;
 
-	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations) {
-		this(entityManagerFactory, storageUnitTypeCandidates, operations, new MimeTypeResolver());
+	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier) {
+		this(entityManagerFactory, storageUnitTypeCandidates, operations, storageUnitPathSupplier, new MimeTypeResolver());
 	}
 
-	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, IMimeTypeResolver mimeTypeResolver) {
+	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier, IMimeTypeResolver mimeTypeResolver) {
 		this.entityManagerFactory = entityManagerFactory;
 		this.storageUnitTypeCandidates = storageUnitTypeCandidates;
 		this.mimeTypeResolver = mimeTypeResolver;
 		this.operations = operations;
+		this.storageUnitPathSupplier = storageUnitPathSupplier;
 		handler = new StorageTransactionHandler(operations);
+	}
+
+	@Override
+	public StorageUnit createStorageUnit(@Nonnull IStorageUnitType type) {
+		EntityManager entityManager = entityManager();
+		StorageUnit unit = new StorageUnit();
+		unit.setCreationDate(new Date());
+		unit.setType(type);
+		unit.setStatus(StorageUnitStatus.ALIVE);
+
+		entityManager.persist(unit);
+		entityManager.flush();
+
+		unit.setPath(storageUnitPathSupplier.get().toAbsolutePath()
+			.resolve(String.format("%s-%s", type.getPath(), unit.getId().toString()))
+				.toString());
+
+		return unit;
 	}
 
 	@Override

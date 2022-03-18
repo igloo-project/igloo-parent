@@ -48,8 +48,9 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 	@Type(type = StorageHibernateConstants.TYPE_STORAGE_UNIT_TYPE)
 	private IStorageUnitType type;
 
-	@Basic(optional = false)
-	@Column(nullable = false)
+	// TODO MPI : il est obligatoire dans les faits mais vide avant calcul du path
+	@Basic
+	@Column
 	private String path;
 
 	@Basic(optional = false)
