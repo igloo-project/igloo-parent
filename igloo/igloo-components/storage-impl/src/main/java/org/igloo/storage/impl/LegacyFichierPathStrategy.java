@@ -1,13 +1,13 @@
 package org.igloo.storage.impl;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
-import com.google.common.hash.Hashing;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.atomic.IFichierPathStrategy;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
+import com.google.common.base.Splitter;
+import com.google.common.hash.Hashing;
 
 public class LegacyFichierPathStrategy implements IFichierPathStrategy {
 
