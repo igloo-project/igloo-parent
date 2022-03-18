@@ -2,8 +2,13 @@ package test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +21,9 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import org.apache.commons.io.IOUtils;
 import org.igloo.storage.api.IStorageService;
+import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.impl.StorageService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
@@ -27,6 +34,8 @@ import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.mockito.AdditionalAnswers;
+import org.mockito.Mockito;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -44,11 +53,12 @@ class TestService extends AbstractTest {
 	private static final long FILE_SIZE = 6l;
 	private IStorageService storageService;
 	private TransactionTemplate transactionTemplate;
+	private StorageOperations operations = mock(StorageOperations.class);
 	private Path tempDir;
 
 	@BeforeEach
 	void init(EntityManagerFactory entityManagerFactory, @TempDir Path tempDir) {
-		this.storageService = new StorageService(entityManagerFactory, Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)));
+		this.storageService = new StorageService(entityManagerFactory, Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)), operations);
 		this.tempDir = tempDir;
 		PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
 		transactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute());
@@ -65,12 +75,14 @@ class TestService extends AbstractTest {
 	}
 
 	@Test
-	void testAdd(EntityManagerFactory entityManagerFactory) {
+	void testAdd(EntityManagerFactory entityManagerFactory) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		doAnswer(AdditionalAnswers.<InputStream, Path>answerVoid((a, b) -> { IOUtils.copy(a, baos); }))
+			.when(operations).copy(any(), any());
 		Fichier fichier = createFichier(entityManagerFactory, "filename.txt", FichierType1.CONTENT1, FILE_CONTENT, () -> {});
-		assertThat(Path.of(tempDir.toString(), fichier.getRelativePath()))
-			.as("File must exist").exists()
-			.content(StandardCharsets.UTF_8)
-			.as("File content must be 'blabla'").isEqualTo(FILE_CONTENT);
+		verify(operations).copy(any(), Mockito.eq(Path.of(tempDir.toString(), fichier.getRelativePath())));
+		
+		assertThat(baos.toByteArray()).isEqualTo(FILE_CONTENT.getBytes(StandardCharsets.UTF_8)).hasSize((int) FILE_SIZE);
 		assertThat(fichier.getChecksum()).isEqualTo(FILE_CHECKSUM_SHA_256);
 		assertThat(fichier.getSize()).isEqualTo(FILE_SIZE);
 		assertThat(fichier.getMimetype()).isEqualTo("text/plain");

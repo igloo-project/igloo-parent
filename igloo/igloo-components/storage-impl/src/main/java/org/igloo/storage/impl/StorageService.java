@@ -42,19 +42,21 @@ public class StorageService implements IStorageService {
 	private static final Class<?> TASKS_RESOURCE_KEY = StorageService.class;
 
 	private final EntityManagerFactory entityManagerFactory;
-	private final StorageOperations operations = new StorageOperations();
-	private final StorageTransactionHandler handler = new StorageTransactionHandler(operations);
+	private final StorageOperations operations;
+	private final StorageTransactionHandler handler;
 	private final Set<IStorageUnitType> storageUnitTypeCandidates;
 	private final IMimeTypeResolver mimeTypeResolver;
 
-	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates) {
-		this(entityManagerFactory, storageUnitTypeCandidates, new MimeTypeResolver());
+	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations) {
+		this(entityManagerFactory, storageUnitTypeCandidates, operations, new MimeTypeResolver());
 	}
 
-	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates, IMimeTypeResolver mimeTypeResolver) {
+	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, IMimeTypeResolver mimeTypeResolver) {
 		this.entityManagerFactory = entityManagerFactory;
 		this.storageUnitTypeCandidates = storageUnitTypeCandidates;
 		this.mimeTypeResolver = mimeTypeResolver;
+		this.operations = operations;
+		handler = new StorageTransactionHandler(operations);
 	}
 
 	@Override
