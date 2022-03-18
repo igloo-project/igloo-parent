@@ -38,6 +38,7 @@ class TestService extends AbstractTest {
 	private static final String FILE_CONTENT = "blabla";
 	// checksum from 'echo -n "blabla" | sha256sum'
 	private static final String FILE_CHECKSUM_SHA_256 = "ccadd99b16cd3d200c22d6db45d8b6630ef3d936767127347ec8a76ab992c2ea";
+	private static final long FILE_SIZE = 6l;
 	private IStorageService storageService;
 	private TransactionTemplate transactionTemplate;
 	private Path tempDir;
@@ -76,6 +77,7 @@ class TestService extends AbstractTest {
 			.content(StandardCharsets.UTF_8)
 			.as("File content must be 'blabla'").isEqualTo(FILE_CONTENT);
 		assertThat(fichier.getChecksum()).isEqualTo(FILE_CHECKSUM_SHA_256);
+		assertThat(fichier.getSize()).isEqualTo(FILE_SIZE);
 	}
 
 	@Test

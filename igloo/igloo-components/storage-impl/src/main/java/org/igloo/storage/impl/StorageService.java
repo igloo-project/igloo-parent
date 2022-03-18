@@ -14,6 +14,7 @@ import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
+import com.google.common.io.CountingInputStream;
 import org.apache.commons.io.IOUtils;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
@@ -54,16 +55,16 @@ public class StorageService implements IStorageService {
 		fichier.setStorageUnit(unit);
 		fichier.setRelativePath("relative-path");
 		fichier.setName("filename");
-		fichier.setSize(25);
-		fichier.setChecksum("123");
 		fichier.setChecksumType(ChecksumType.SHA_256);
 		fichier.setCreationDate(new Date());
 		Path absolutePath = Path.of(unit.getPath(), fichier.getRelativePath());
 		try (
 				HashingInputStream hashingInputStream = new HashingInputStream(Hashing.sha256(), inputStream);
+				CountingInputStream countingInputStream = new CountingInputStream(hashingInputStream);
 				FileOutputStream fos = new FileOutputStream(absolutePath.toString())) {
-			IOUtils.copy(hashingInputStream, fos);
+			IOUtils.copy(countingInputStream, fos);
 			fichier.setChecksum(hashingInputStream.hash().toString());
+			fichier.setSize(countingInputStream.getCount());
 		} catch (IOException e) {
 			// TODO use custom runtime exception
 			throw new IllegalStateException(e);
