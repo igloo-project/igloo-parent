@@ -128,11 +128,13 @@ class TestService extends AbstractTest {
 
 		Fichier fichier = transactionTemplate.execute((t) -> {
 			Fichier fichierToInvalidate = createFichier(entityManagerFactory, "filename", type, fileContent, () -> {});
+			Mockito.reset(operations); // Get rid of creation operation
 			storageService.invalidateFichier(fichierToInvalidate);
 			return fichierToInvalidate;
 		});
 
 		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.INVALIDATED);
+		Mockito.verifyNoInteractions(operations);
 	}
 
 	private Fichier createFichier(EntityManagerFactory entityManagerFactory, String filename, IFichierType fichierType, String fileContent, Runnable postCreationAction) {
