@@ -75,11 +75,6 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	@Column(nullable = false)
 	private String filename;
 
-	// TODO MPI : extension normalisée (en minuscule)
-	@Basic
-	@Column
-	private String extension;
-
 	// TODO MPI : il est obligatoire dans les faits mais vide avant calcul du relativePath
 	/**
 	 * Size in bytes.
@@ -168,14 +163,6 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 
 	public void setName(String name) {
 		this.filename = name;
-	}
-
-	public String getExtension() {
-		return extension;
-	}
-
-	public void setExtension(String extension) {
-		this.extension = extension;
 	}
 
 	public long getSize() {

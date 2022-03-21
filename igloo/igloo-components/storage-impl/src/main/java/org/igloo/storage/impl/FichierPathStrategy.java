@@ -25,7 +25,7 @@ public class FichierPathStrategy implements IFichierPathStrategy {
 			.limit(hashSizeInBytes)
 			.map(Path::of)
 			.reduce(Path.of(""), (a, b) -> a.resolve(b));
-		// TODO: gestion extension
+
 		return Path.of(fichier.getFichierType().getPath(), path.toString(), fichier.getUuid().toString()).toString();
 	}
 
