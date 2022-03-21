@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -66,7 +66,7 @@ public class StorageService implements IStorageService {
 	public StorageUnit createStorageUnit(@Nonnull IStorageUnitType type) {
 		EntityManager entityManager = entityManager();
 		StorageUnit unit = new StorageUnit();
-		unit.setCreationDate(new Date());
+		unit.setCreationDate(LocalDateTime.now());
 		unit.setType(type);
 		unit.setStatus(StorageUnitStatus.ALIVE);
 
@@ -93,7 +93,7 @@ public class StorageService implements IStorageService {
 		fichier.setName(filename);
 		fichier.setChecksumType(ChecksumType.SHA_256);
 		fichier.setMimetype(mimeTypeResolver.resolve(fichier.getFilename()));
-		fichier.setCreationDate(new Date());
+		fichier.setCreationDate(LocalDateTime.now());
 
 		entityManager.persist(fichier);
 		entityManager.flush();
@@ -127,7 +127,7 @@ public class StorageService implements IStorageService {
 	public void invalidateFichier(@Nonnull Fichier fichier) {
 		if (Objects.equal(fichier.getStatus(), FichierStatus.ALIVE)) {
 			fichier.setStatus(FichierStatus.INVALIDATED);
-			fichier.setDeletionDate(new Date());
+			fichier.setDeletionDate(LocalDateTime.now());
 		} else {
 			LOGGER.warn("[invalidate] Fichier {} is alread marked DELETED; no action", fichier.getId());
 		}

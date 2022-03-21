@@ -1,6 +1,6 @@
 package org.igloo.storage.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.persistence.Basic;
@@ -103,16 +103,14 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 
 	@Basic(optional = false)
 	@Column(nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date creationDate;
+	private LocalDateTime creationDate;
 
 	/**
 	 * Initialized when {@link #status} is set to {@link FichierStatus#INVALIDATED}.
 	 */
 	@Basic
 	@Column
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date deletionDate;
+	private LocalDateTime deletionDate;
 
 	@Override
 	public Long getId() {
@@ -212,19 +210,19 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 		this.mimetype = mimetype;
 	}
 
-	public Date getCreationDate() {
+	public LocalDateTime getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
 
-	public Date getDeletionDate() {
+	public LocalDateTime getDeletionDate() {
 		return deletionDate;
 	}
 
-	public void setDeletionDate(Date deletionDate) {
+	public void setDeletionDate(LocalDateTime deletionDate) {
 		this.deletionDate = deletionDate;
 	}
 

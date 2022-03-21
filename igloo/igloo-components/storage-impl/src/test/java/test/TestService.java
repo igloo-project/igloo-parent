@@ -9,12 +9,10 @@ import static org.mockito.Mockito.verify;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -26,11 +24,9 @@ import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.impl.StorageService;
 import org.igloo.storage.model.Fichier;
-import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
-import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -38,7 +38,7 @@ class TestEntities extends AbstractTest {
 		storageUnit.setType(StorageUnitType.TYPE_1);
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
-		storageUnit.setCreationDate(new Date());
+		storageUnit.setCreationDate(LocalDateTime.now());
 
 		StorageUnitStatistics statistics = new StorageUnitStatistics();
 		statistics.setStorageUnit(storageUnit);
@@ -55,7 +55,7 @@ class TestEntities extends AbstractTest {
 		fichier1.setSize(25);
 		fichier1.setChecksum("123");
 		fichier1.setChecksumType(ChecksumType.SHA_256);
-		fichier1.setCreationDate(new Date());
+		fichier1.setCreationDate(LocalDateTime.now());
 
 		Fichier fichier2 = new Fichier();
 		fichier2.setUuid(UUID.randomUUID());
@@ -67,7 +67,7 @@ class TestEntities extends AbstractTest {
 		fichier2.setSize(25);
 		fichier2.setChecksum("123");
 		fichier2.setChecksumType(ChecksumType.SHA_256);
-		fichier2.setCreationDate(new Date());
+		fichier2.setCreationDate(LocalDateTime.now());
 
 		entityManager.persist(storageUnit);
 		entityManager.persist(statistics);
@@ -102,7 +102,7 @@ class TestEntities extends AbstractTest {
 		storageUnit.setType(StorageUnitType.TYPE_1);
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
-		storageUnit.setCreationDate(new Date());
+		storageUnit.setCreationDate(LocalDateTime.now());
 
 		StorageUnitStatistics statistics = new StorageUnitStatistics();
 		statistics.setStorageUnit(storageUnit);
@@ -119,7 +119,7 @@ class TestEntities extends AbstractTest {
 		fichier.setSize(25);
 		fichier.setChecksum("123");
 		fichier.setChecksumType(ChecksumType.SHA_256);
-		fichier.setCreationDate(new Date());
+		fichier.setCreationDate(LocalDateTime.now());
 
 		entityManager.persist(storageUnit);
 		entityManager.persist(statistics);
@@ -139,7 +139,7 @@ class TestEntities extends AbstractTest {
 		storageUnit.setType(StorageUnitType.TYPE_1);
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
-		storageUnit.setCreationDate(new Date());
+		storageUnit.setCreationDate(LocalDateTime.now());
 
 		StorageUnitStatistics statistics = new StorageUnitStatistics();
 		statistics.setStorageUnit(storageUnit);
@@ -157,7 +157,7 @@ class TestEntities extends AbstractTest {
 		fichier1.setSize(25);
 		fichier1.setChecksum("123");
 		fichier1.setChecksumType(ChecksumType.SHA_256);
-		fichier1.setCreationDate(new Date());
+		fichier1.setCreationDate(LocalDateTime.now());
 
 		Fichier fichier2 = new Fichier();
 		fichier2.setUuid(uuid);
@@ -169,7 +169,7 @@ class TestEntities extends AbstractTest {
 		fichier2.setSize(25);
 		fichier2.setChecksum("123");
 		fichier2.setChecksumType(ChecksumType.SHA_256);
-		fichier2.setCreationDate(new Date());
+		fichier2.setCreationDate(LocalDateTime.now());
 
 		entityManager.persist(storageUnit);
 		entityManager.persist(statistics);
@@ -189,7 +189,7 @@ class TestEntities extends AbstractTest {
 		storageUnit.setType(StorageUnitType.TYPE_1);
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
-		storageUnit.setCreationDate(new Date());
+		storageUnit.setCreationDate(LocalDateTime.now());
 
 		StorageUnitStatistics statistics = new StorageUnitStatistics();
 		statistics.setStorageUnit(storageUnit);

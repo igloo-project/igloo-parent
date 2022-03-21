@@ -1,6 +1,6 @@
 package org.igloo.storage.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -55,8 +55,7 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 
 	@Basic(optional = false)
 	@Column(nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date creationDate;
+	private LocalDateTime creationDate;
 
 	// TODO MPI : Supprimer; on aura des collections de StorageUnitStatistics car une par type de fichier
 	@OneToOne(mappedBy = "storageUnit", fetch = FetchType.LAZY)
@@ -102,11 +101,11 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 		this.path = path;
 	}
 
-	public Date getCreationDate() {
+	public LocalDateTime getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
 
