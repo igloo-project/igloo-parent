@@ -2,10 +2,11 @@ package org.igloo.storage.model.atomic;
 
 import org.igloo.storage.model.StorageUnit;
 
-// TODO MPI : à travailler
 public enum StorageUnitStatus {
 
-	// TODO MPI : définir
+	/**
+	 * {@link StorageUnit} is in use and can receive new file
+	 */
 	ALIVE,
 
 	/**
