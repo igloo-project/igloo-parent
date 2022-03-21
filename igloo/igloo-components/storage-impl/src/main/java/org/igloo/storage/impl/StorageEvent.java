@@ -5,13 +5,13 @@ import java.nio.file.Path;
 import javax.annotation.concurrent.Immutable;
 
 @Immutable
-public class StorageTask {
+public class StorageEvent {
 
 	private final Long id;
-	private final StorageTaskType type;
+	private final StorageEventType type;
 	private final Path path;
 
-	public StorageTask(Long id, StorageTaskType type, Path path) {
+	public StorageEvent(Long id, StorageEventType type, Path path) {
 		this.id = id;
 		this.type = type;
 		this.path = path;
@@ -21,7 +21,7 @@ public class StorageTask {
 		return id;
 	}
 
-	public StorageTaskType getType() {
+	public StorageEventType getType() {
 		return type;
 	}
 

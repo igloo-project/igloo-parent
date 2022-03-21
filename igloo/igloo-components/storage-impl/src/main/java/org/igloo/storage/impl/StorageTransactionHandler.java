@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class reads provided {@link StorageTask} collections to apply appropriate transaction completion action
+ * This class reads provided {@link StorageEvent} collections to apply appropriate transaction completion action
  * on storage.
  * 
  * All file operations are delegated to {@link StorageOperations}. All meaningful logs are triggered by
@@ -27,25 +27,25 @@ public class StorageTransactionHandler {
 
     // TODO MPI : on ne devrait pas plutôt appeler la méthode `onRollback`, comme ça l'adapter n'a pas à savoir ce que
     // fait le handler en cas de rollback
-	public void doRemovePhysicalAddedFichiersOnRollback(List<StorageTask> tasks2) {
-		tasks2.stream().filter(StorageTransactionHandler::isAdd).forEach(t -> {
+	public void doRemovePhysicalAddedFichiersOnRollback(List<StorageEvent> events) {
+		events.stream().filter(StorageTransactionHandler::isAdd).forEach(t -> {
 			operations.removePhysicalFile("[rollback/add]", t);
 		});
 	}
 
     // idem
-	public void doRemovePhysicalDeleteFichiersOnCommit(List<StorageTask> tasks) {
-		tasks.stream().filter(StorageTransactionHandler::isDelete).forEach(t -> {
+	public void doRemovePhysicalDeleteFichiersOnCommit(List<StorageEvent> events) {
+		events.stream().filter(StorageTransactionHandler::isDelete).forEach(t -> {
 			operations.removePhysicalFile("[commit/delete]", t);
 		});
 	}
 
-	public static boolean isAdd(StorageTask task) {
-		return StorageTaskType.ADD.equals(task.getType());
+	public static boolean isAdd(StorageEvent event) {
+		return StorageEventType.ADD.equals(event.getType());
 	}
 
-	public static boolean isDelete(StorageTask task) {
-		return StorageTaskType.DELETE.equals(task.getType());
+	public static boolean isDelete(StorageEvent event) {
+		return StorageEventType.DELETE.equals(event.getType());
 	}
 
 }

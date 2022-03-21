@@ -40,7 +40,7 @@ public class StorageService implements IStorageService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageService.class);
 
 	// TODO: split data and handler
-	private static final Class<?> TASKS_RESOURCE_KEY = StorageService.class;
+	private static final Class<?> EVENTS_RESOURCE_KEY = StorageService.class;
 
 	private final EntityManagerFactory entityManagerFactory;
 	private final StorageOperations operations;
@@ -112,7 +112,7 @@ public class StorageService implements IStorageService {
 		}
 		StorageTransactionAdapter adapter = prepareAdapter();
 
-		adapter.addTask(fichier.getId(), StorageTaskType.ADD, absolutePath);
+		adapter.addEvent(fichier.getId(), StorageEventType.ADD, absolutePath);
 		return fichier;
 	}
 
@@ -120,7 +120,7 @@ public class StorageService implements IStorageService {
 	public void removeFichier(@Nonnull Fichier fichier) {
 		// TODO : vérifier qu'on est dans un état DELETED ?
 		entityManager().remove(fichier);
-		prepareAdapter().addTask(fichier.getId(), StorageTaskType.DELETE, getAbsolutePath(fichier));
+		prepareAdapter().addEvent(fichier.getId(), StorageEventType.DELETE, getAbsolutePath(fichier));
 	}
 
 	@Override

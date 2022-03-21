@@ -1,6 +1,6 @@
 package org.igloo.storage.impl;
 
-public enum StorageTaskType {
+public enum StorageEventType {
 
 	ADD,
 

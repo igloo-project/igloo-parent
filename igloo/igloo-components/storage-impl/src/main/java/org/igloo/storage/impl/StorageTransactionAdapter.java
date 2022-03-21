@@ -13,7 +13,7 @@ import org.springframework.transaction.support.TransactionSynchronizationUtils;
 
 /**
  * <p>Implements Spring {@link TransactionSynchronization} contract. This instance must be added in
- * {@link TransactionSynchronization} context and {@link #addTask(Long, StorageTaskType, Path)} must be called
+ * {@link TransactionSynchronization} context and {@link #addEvent(Long, StorageEventType, Path)} must be called
  * for each {@link Fichier} transaction-involving operation.</p>
  * 
  * <p>After transaction status switch, operations are delegated to {@link StorageTransactionHandler}.</p>
@@ -26,7 +26,7 @@ public class StorageTransactionAdapter implements TransactionSynchronization {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(StorageTransactionAdapter.class);
 
-	private final List<StorageTask> tasks = new LinkedList<>();
+	private final List<StorageEvent> events = new LinkedList<>();
 	private final StorageTransactionHandler handler;
 
 	public StorageTransactionAdapter(StorageTransactionHandler handler) {
@@ -40,10 +40,10 @@ public class StorageTransactionAdapter implements TransactionSynchronization {
 		}
 		switch (status) {
 		case TransactionSynchronization.STATUS_COMMITTED:
-			handler.doRemovePhysicalDeleteFichiersOnCommit(tasks);
+			handler.doRemovePhysicalDeleteFichiersOnCommit(events);
 			break;
 		case TransactionSynchronization.STATUS_ROLLED_BACK:
-			handler.doRemovePhysicalAddedFichiersOnRollback(tasks);
+			handler.doRemovePhysicalAddedFichiersOnRollback(events);
 			break;
 		case TransactionSynchronization.STATUS_UNKNOWN:
 		default:
@@ -51,7 +51,7 @@ public class StorageTransactionAdapter implements TransactionSynchronization {
 		}
 	}
 
-	public void addTask(Long id, StorageTaskType type, Path path) {
-		tasks.add(new StorageTask(id, type, path));
+	public void addEvent(Long id, StorageEventType type, Path path) {
+		events.add(new StorageEvent(id, type, path));
 	}
 }

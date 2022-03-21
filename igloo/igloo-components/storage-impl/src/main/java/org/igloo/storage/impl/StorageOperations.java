@@ -10,7 +10,6 @@ import java.nio.file.Path;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.igloo.storage.model.Fichier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +17,7 @@ public class StorageOperations {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageOperations.class);
 
-	public void removePhysicalFile(String logPrefix, StorageTask t) {
+	public void removePhysicalFile(String logPrefix, StorageEvent t) {
 		Long fichierId = t.getId();
 		Path fileAbsolutePath = t.getPath();
 		removePhysicalFile(logPrefix, fichierId, fileAbsolutePath);
