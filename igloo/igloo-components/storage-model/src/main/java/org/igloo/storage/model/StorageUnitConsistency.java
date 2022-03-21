@@ -1,26 +1,28 @@
 package org.igloo.storage.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class StorageConsistency implements Serializable {
+public class StorageUnitConsistency implements Serializable {
 
-	private int fsFileCount;
+	private StorageUnit unit;
 
-	private int dbFileCount;
+	private List<IFichierTypeConsistency> fichierTypeConsistencies = new ArrayList<>();
 
-	public int getFsFileCount() {
-		return fsFileCount;
+	public StorageUnitConsistency(StorageUnit unit) {
+		this.unit = unit;
 	}
 
-	public void setFsFileCount(int fsFileCount) {
-		this.fsFileCount = fsFileCount;
+	public List<IFichierTypeConsistency> getFichierTypeConsistencies() {
+		return fichierTypeConsistencies;
 	}
 
-	public int getDbFileCount() {
-		return dbFileCount;
+	public void setFichierTypeConsistencies(List<IFichierTypeConsistency> fichierTypeConsistencies) {
+		this.fichierTypeConsistencies = fichierTypeConsistencies;
 	}
 
-	public void setDbFileCount(int dbFileCount) {
-		this.dbFileCount = dbFileCount;
+	public void addFichierTypeConsistencies(IFichierTypeConsistency fichierTypeConsistency) {
+		fichierTypeConsistencies.add(fichierTypeConsistency);
 	}
 }

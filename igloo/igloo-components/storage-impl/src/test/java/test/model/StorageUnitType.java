@@ -43,6 +43,10 @@ public enum StorageUnitType implements IStorageUnitType {
 		return acceptedFichierTypes.contains(type);
 	}
 
+	public Set<IFichierType> getAcceptedFichierTypes() {
+		return acceptedFichierTypes;
+	}
+
 	@Override
 	public IFichierPathStrategy getFichierPathStrategy() {
 		return fichierPathStrategy;

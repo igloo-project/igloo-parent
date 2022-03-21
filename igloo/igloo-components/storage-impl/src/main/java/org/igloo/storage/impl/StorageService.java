@@ -22,9 +22,7 @@ import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
-import org.igloo.storage.model.Fichier;
-import org.igloo.storage.model.StorageConsistency;
-import org.igloo.storage.model.StorageUnit;
+import org.igloo.storage.model.*;
 import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
@@ -149,17 +147,32 @@ public class StorageService implements IStorageService {
 	@Override
 	public StorageConsistency checkConsistency(@Nonnull StorageUnit unit) {
 		StorageConsistency bean = new StorageConsistency();
+		StorageUnitConsistency unitConsistency = new StorageUnitConsistency(unit);
+		bean.addStorageUnitConsistencies(unitConsistency);
 
-		File unitDirectory = operations.getFile(Path.of(unit.getPath()));
-		Objects.requireNonNull(unitDirectory);
-		Collection<File> files = operations.listRecursively(unitDirectory, TrueFileFilter.TRUE, FileFileFilter.INSTANCE);
-		bean.setFsFileCount(files.size());
+		for (IFichierType acceptedFichierType : unit.getType().getAcceptedFichierTypes()) { // TODO MPI : problème d'ordre des fichiers types récupérés qui cassent les tests-
+			IFichierTypeConsistency fichierTypeConsistency = new IFichierTypeConsistency(acceptedFichierType);
+			File fichierTypeDirectory = operations.getFile(getAbsolutePath(unit, acceptedFichierType));
 
-		EntityManager entityManager = entityManager();
-		List<Fichier> fichiers = entityManager.createQuery("SELECT f FROM Fichier f where f.status = :status ORDER BY f.id DESC", Fichier.class)
-			.setParameter("status", FichierStatus.ALIVE)
-			.getResultList();
-		bean.setDbFileCount(fichiers.size());
+			int fsCount = 0; // TODO MPI : ne permet pas de savoir si le dossier existe et est vide OU n'existe pas
+			if (fichierTypeDirectory.exists()) {
+				Collection<File> files = operations.listRecursively(fichierTypeDirectory, TrueFileFilter.TRUE, FileFileFilter.INSTANCE);
+				fsCount = files.size();
+			}
+
+			EntityManager entityManager = entityManager();
+			List<Fichier> fichiers = entityManager.createQuery("SELECT f FROM Fichier f where f.storageUnit = :unit AND f.status = :status AND f.fichierType = :type ORDER BY f.id DESC", Fichier.class)
+				.setParameter("unit", unit)
+				.setParameter("status", FichierStatus.ALIVE)
+				.setParameter("type", acceptedFichierType)
+				.getResultList();
+			int dbCount = fichiers.size();
+
+			fichierTypeConsistency.setFsFileCount(fsCount);
+			fichierTypeConsistency.setDbFileCount(dbCount);
+
+			unitConsistency.addFichierTypeConsistencies(fichierTypeConsistency);
+		}
 
 		return bean;
 	}
@@ -168,6 +181,10 @@ public class StorageService implements IStorageService {
 
 	private Path getAbsolutePath(Fichier fichier) {
 		return Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath()).toAbsolutePath();
+	}
+
+	private Path getAbsolutePath(StorageUnit unit, IFichierType fichierType) {
+		return Path.of(unit.getPath(), fichierType.getPath()).toAbsolutePath();
 	}
 
 	@Nonnull

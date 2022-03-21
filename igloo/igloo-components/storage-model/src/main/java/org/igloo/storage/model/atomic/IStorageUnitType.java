@@ -1,6 +1,7 @@
 package org.igloo.storage.model.atomic;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
@@ -20,6 +21,8 @@ public interface IStorageUnitType extends IMappableInterface, Serializable {
 	String getPath();
 
 	boolean accept(IFichierType type);
+
+	Set<IFichierType> getAcceptedFichierTypes();
 
 	IFichierPathStrategy getFichierPathStrategy();
 

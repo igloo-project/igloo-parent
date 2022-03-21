@@ -2,6 +2,7 @@ package test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.data.Index.atIndex;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -18,6 +19,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.apache.commons.io.IOUtils;
+import org.assertj.core.api.SoftAssertions;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.impl.StorageEvent;
 import org.igloo.storage.impl.StorageOperations;
@@ -40,6 +42,7 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import test.model.FichierType1;
+import test.model.FichierType2;
 import test.model.StorageUnitType;
 
 class TestService extends AbstractTest {
@@ -155,7 +158,28 @@ class TestService extends AbstractTest {
 
 		StorageConsistency bean = transactionTemplate.execute((t) -> storageService.checkConsistency(fichier.getStorageUnit()));
 
-		assertThat(bean.getFsFileCount()).isEqualTo(1);
+		SoftAssertions soft = new SoftAssertions();
+		assertThat(bean.getStorageUnitConsistencies())
+			.satisfies(storageUnitConsistency -> {
+				assertThat(storageUnitConsistency.getFichierTypeConsistencies())
+					.hasSize(3)
+					.satisfies(iFichierTypeConsistency -> {
+						soft.assertThat(iFichierTypeConsistency.getFichierType()).isEqualTo(FichierType1.CONTENT1);
+						soft.assertThat(iFichierTypeConsistency.getFsFileCount()).isEqualTo(1L);
+						soft.assertThat(iFichierTypeConsistency.getDbFileCount()).isEqualTo(1L);
+					}, atIndex(0)) // Content1
+					.satisfies(iFichierTypeConsistency -> {
+						soft.assertThat(iFichierTypeConsistency.getFichierType()).isEqualTo(FichierType1.CONTENT2);
+						soft.assertThat(iFichierTypeConsistency.getFsFileCount()).isEqualTo(0);
+						soft.assertThat(iFichierTypeConsistency.getDbFileCount()).isEqualTo(0);
+					}, atIndex(1)) // Content2
+					.satisfies(iFichierTypeConsistency -> {
+						soft.assertThat(iFichierTypeConsistency.getFichierType()).isEqualTo(FichierType2.CONTENT4);
+						soft.assertThat(iFichierTypeConsistency.getFsFileCount()).isEqualTo(0);
+						soft.assertThat(iFichierTypeConsistency.getDbFileCount()).isEqualTo(0);
+					}, atIndex(2)); // Content4
+			}, atIndex(0));
+		soft.assertAll();
 	}
 
 	private Fichier createFichier(String filename, IFichierType fichierType, String fileContent, Runnable postCreationAction) {
