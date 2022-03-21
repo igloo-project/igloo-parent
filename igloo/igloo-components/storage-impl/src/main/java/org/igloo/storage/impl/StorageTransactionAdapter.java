@@ -40,10 +40,10 @@ public class StorageTransactionAdapter implements TransactionSynchronization {
 		}
 		switch (status) {
 		case TransactionSynchronization.STATUS_COMMITTED:
-			handler.doRemovePhysicalDeleteFichiersOnCommit(events);
+			handler.onCommit(events);
 			break;
 		case TransactionSynchronization.STATUS_ROLLED_BACK:
-			handler.doRemovePhysicalAddedFichiersOnRollback(events);
+			handler.onRollback(events);
 			break;
 		case TransactionSynchronization.STATUS_UNKNOWN:
 		default:

@@ -25,16 +25,15 @@ public class StorageTransactionHandler {
 		this.operations = operations;
 	}
 
-    // TODO MPI : on ne devrait pas plutôt appeler la méthode `onRollback`, comme ça l'adapter n'a pas à savoir ce que
-    // fait le handler en cas de rollback
-	public void doRemovePhysicalAddedFichiersOnRollback(List<StorageEvent> events) {
+	public void onRollback(List<StorageEvent> events) {
+		// Remove physical added file on rollback
 		events.stream().filter(StorageTransactionHandler::isAdd).forEach(t -> {
 			operations.removePhysicalFile("[rollback/add]", t);
 		});
 	}
 
-    // idem
-	public void doRemovePhysicalDeleteFichiersOnCommit(List<StorageEvent> events) {
+	public void onCommit(List<StorageEvent> events) {
+		// Remove physical deleted file on commit
 		events.stream().filter(StorageTransactionHandler::isDelete).forEach(t -> {
 			operations.removePhysicalFile("[commit/delete]", t);
 		});
