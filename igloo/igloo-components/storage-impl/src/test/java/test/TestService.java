@@ -23,6 +23,7 @@ import org.igloo.storage.impl.StorageEvent;
 import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.impl.StorageService;
 import org.igloo.storage.model.Fichier;
+import org.igloo.storage.model.StorageConsistency;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
@@ -144,6 +145,17 @@ class TestService extends AbstractTest {
 		assertThat(fichier).isNotNull();
 		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.INVALIDATED);
 		Mockito.verifyNoInteractions(operations);
+	}
+
+	@Test
+	void testConsistency() throws IOException {
+		Mockito.doCallRealMethod().when(operations).copy(any(), any());
+		Mockito.doCallRealMethod().when(operations).getFile(any());
+		Fichier fichier = transactionTemplate.execute((t) -> createFichier("filename.txt", FichierType1.CONTENT1, FILE_CONTENT, () -> {}));
+
+		StorageConsistency bean = transactionTemplate.execute((t) -> storageService.checkConsistency(fichier.getStorageUnit()));
+
+		assertThat(bean.getFsFileCount()).isEqualTo(1);
 	}
 
 	private Fichier createFichier(String filename, IFichierType fichierType, String fileContent, Runnable postCreationAction) {

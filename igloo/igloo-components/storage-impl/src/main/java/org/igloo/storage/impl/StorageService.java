@@ -1,13 +1,12 @@
 package org.igloo.storage.impl;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,9 +14,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import com.google.common.base.Supplier;
+import com.google.common.collect.Lists;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.filefilter.FileFileFilter;
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
+import org.igloo.storage.model.StorageConsistency;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
@@ -30,7 +36,6 @@ import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.google.common.base.Objects;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
 import com.google.common.io.CountingInputStream;
@@ -125,7 +130,7 @@ public class StorageService implements IStorageService {
 
 	@Override
 	public void invalidateFichier(@Nonnull Fichier fichier) {
-		if (Objects.equal(fichier.getStatus(), FichierStatus.ALIVE)) {
+		if (Objects.equals(fichier.getStatus(), FichierStatus.ALIVE)) {
 			fichier.setStatus(FichierStatus.INVALIDATED);
 			fichier.setDeletionDate(LocalDateTime.now());
 		} else {
@@ -139,6 +144,27 @@ public class StorageService implements IStorageService {
 		// TODO : gérer file manquant
 		return operations.getFile(getAbsolutePath(fichier));
 	}
+
+	// TODO MPI : à mettre dans un service spécifique aux vérifications de cohérence ?
+	@Override
+	public StorageConsistency checkConsistency(@Nonnull StorageUnit unit) {
+		StorageConsistency bean = new StorageConsistency();
+
+		File unitDirectory = operations.getFile(Path.of(unit.getPath()));
+		Objects.requireNonNull(unitDirectory);
+		Collection<File> files = operations.listRecursively(unitDirectory, TrueFileFilter.TRUE, FileFileFilter.INSTANCE);
+		bean.setFsFileCount(files.size());
+
+		EntityManager entityManager = entityManager();
+		List<Fichier> fichiers = entityManager.createQuery("SELECT f FROM Fichier f where f.status = :status ORDER BY f.id DESC", Fichier.class)
+			.setParameter("status", FichierStatus.ALIVE)
+			.getResultList();
+		bean.setDbFileCount(fichiers.size());
+
+		return bean;
+	}
+
+
 
 	private Path getAbsolutePath(Fichier fichier) {
 		return Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath()).toAbsolutePath();
