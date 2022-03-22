@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -33,7 +32,8 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 	private static final long serialVersionUID = -4475039934044786927L;
 
 	@Id
-	@GeneratedValue
+	@Basic(optional = false)
+	@Column(unique = true, nullable = false, updatable = false)
 	private Long id;
 
 	@Basic(optional = false)
@@ -46,9 +46,8 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 	@Type(type = StorageHibernateConstants.TYPE_STORAGE_UNIT_TYPE)
 	private IStorageUnitType type;
 
-	// TODO MPI : il est obligatoire dans les faits mais vide avant calcul du path
-	@Basic
-	@Column
+	@Basic(optional = false)
+	@Column(unique = true, nullable = false, updatable = false)
 	private String path;
 
 	@Basic(optional = false)

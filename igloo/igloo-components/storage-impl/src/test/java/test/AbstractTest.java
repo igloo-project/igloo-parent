@@ -45,8 +45,8 @@ class AbstractTest {
 				AvailableSettings.IMPLICIT_NAMING_STRATEGY, ImplicitNamingStrategyJpaComponentPathImpl.INSTANCE,
 				AvailableSettings.HBM2DDL_CREATE_SOURCE, "metadata-then-script",
 				AvailableSettings.HBM2DDL_DROP_SOURCE, "script-then-metadata",
-				AvailableSettings.HBM2DDL_CREATE_SCRIPT_SOURCE, new StringReader("create sequence fichier_id_seq;"),
-				AvailableSettings.HBM2DDL_DROP_SCRIPT_SOURCE, new StringReader("drop sequence if exists fichier_id_seq;")
+				AvailableSettings.HBM2DDL_CREATE_SCRIPT_SOURCE, new StringReader("create sequence fichier_id_seq; create sequence storageunit_id_seq;"),
+				AvailableSettings.HBM2DDL_DROP_SCRIPT_SOURCE, new StringReader("drop sequence if exists fichier_id_seq; drop sequence if exists storageunit_id_seq")
 		));
 		String type = Optional.ofNullable(System.getenv(CFG_DB_TYPE)).orElse(CFG_TYPE_H2);
 		if (CFG_TYPE_H2.equals(type)) {

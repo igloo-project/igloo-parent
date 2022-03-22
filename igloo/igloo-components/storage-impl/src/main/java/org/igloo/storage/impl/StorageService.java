@@ -76,15 +76,15 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		EntityManager entityManager = entityManager();
 		StorageUnit unit = new StorageUnit();
 		unit.setCreationDate(LocalDateTime.now());
+		unit.setId(sequenceGenerator.generateStorageUnit(entityManager));
 		unit.setType(type);
 		unit.setStatus(StorageUnitStatus.ALIVE);
-
-		entityManager.persist(unit);
-		entityManager.flush();
 
 		unit.setPath(storageUnitPathSupplier.get().toAbsolutePath()
 			.resolve(String.format("%s-%s", type.getPath(), unit.getId().toString()))
 				.toString());
+
+		entityManager.persist(unit);
 
 		return unit;
 	}
@@ -95,7 +95,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		EntityManager entityManager = entityManager();
 		StorageUnit unit = selectStorageUnit(entityManager, fichierType);
 		Fichier fichier = new Fichier();
-		fichier.setId(sequenceGenerator.generate(entityManager));
+		fichier.setId(sequenceGenerator.generateFichier(entityManager));
 		fichier.setUuid(UUID.randomUUID());
 		fichier.setStatus(FichierStatus.ALIVE);
 		fichier.setFichierType(fichierType);

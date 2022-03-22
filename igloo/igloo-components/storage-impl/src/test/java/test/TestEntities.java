@@ -35,6 +35,7 @@ class TestEntities extends AbstractTest {
 	@Test
 	void testFichierTypePersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
+		storageUnit.setId(1l);
 		storageUnit.setType(StorageUnitType.TYPE_1);
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
@@ -103,6 +104,7 @@ class TestEntities extends AbstractTest {
 	@Test
 	void testMinimalFichierPersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
+		storageUnit.setId(1l);
 		storageUnit.setType(StorageUnitType.TYPE_1);
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
@@ -142,6 +144,7 @@ class TestEntities extends AbstractTest {
 	@Test
 	void testFichierUuidUnicityPersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
+		storageUnit.setId(1l);
 		storageUnit.setType(StorageUnitType.TYPE_1);
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
@@ -196,6 +199,7 @@ class TestEntities extends AbstractTest {
 	@Test
 	void testStorageUnitAndStatisticsPersist(EntityManager entityManager, EntityTransaction transaction) {
 		StorageUnit storageUnit = new StorageUnit();
+		storageUnit.setId(1l);
 		storageUnit.setType(StorageUnitType.TYPE_1);
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
