@@ -6,9 +6,9 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Tuple;
 
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
@@ -157,21 +158,24 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 			.getResultStream()
 			.sorted((o1, o2) -> ComparisonChain.start().compare(o1.getName(), o2.getName()).result())
 			.collect(Collectors.toList());
-
+		
 		for (IFichierType fichierType : existingFichierTypes) {
 			StorageConsistency consistency = new StorageConsistency(unit, fichierType);
-
-			Collection<File> files = operations.listRecursively(getAbsolutePath(unit, fichierType));
+			
+			Path absolutePath = getAbsolutePath(unit, fichierType);
+			Map<Path, File> files = operations.listRecursively(absolutePath).stream().collect(Collectors.toMap(f -> f.toPath(), f -> f));
 			if (files != null) {
 				consistency.setFsFileCount(files.size());
 			}
+			Map<Path, Tuple> result = entityManager.createQuery("SELECT f.id AS id, f.relativePath AS relativePath, f.checksumType AS checksumType, f.checksum AS checksum, f.fichierType AS fichierType FROM Fichier f where f.storageUnit = :unit AND f.status = :status AND fichierType = :type ORDER BY f.id DESC", Tuple.class)
+					.setParameter("unit", unit)
+					.setParameter("type", fichierType)
+					.setParameter("status", FichierStatus.ALIVE)
+					.getResultStream()
+					.collect(Collectors.toMap(t -> Path.of(unit.getPath()).resolve(Path.of(t.get("relativePath", String.class))), t -> t));
 
-			Long fichierCount = entityManager.createQuery("SELECT COUNT(f) FROM Fichier f where f.storageUnit = :unit AND f.status = :status AND f.fichierType = :type GROUP BY f.id ORDER BY f.id DESC", Long.class)
-				.setParameter("unit", unit)
-				.setParameter("type", fichierType)
-				.setParameter("status", FichierStatus.ALIVE)
-				.getSingleResult();
-			consistency.setDbFichierCount(fichierCount.intValue()); // TODO MPI : on conserve le cast en int ou on passe en long ?
+			Collections.disjoint(files.keySet(), result.keySet());
+			consistency.setDbFichierCount(result.size()); // TODO MPI : on conserve le cast en int ou on passe en long ?
 
 			consistencies.add(consistency);
 		}

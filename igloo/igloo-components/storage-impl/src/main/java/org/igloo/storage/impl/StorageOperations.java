@@ -73,6 +73,6 @@ public class StorageOperations {
 		if (!directory.exists()) {
 			return null;
 		}
-		return FileUtils.listRecursively(getFile(directoryPath), TrueFileFilter.TRUE, FileFileFilter.INSTANCE);
+		return FileUtils.listRecursively(getFile(directoryPath), FileFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
 	}
 }
