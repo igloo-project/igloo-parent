@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.AdditionalAnswers;
 import org.mockito.Mockito;
+import org.springframework.core.Ordered;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -61,7 +62,7 @@ class TestService extends AbstractTest {
 
 	@BeforeEach
 	void init(EntityManagerFactory entityManagerFactory, @TempDir Path tempDir) {
-		this.storageService = new StorageService(entityManagerFactory, new SequenceGenerator("fichier_id_seq"), Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)), operations, () -> tempDir);
+		this.storageService = new StorageService(entityManagerFactory, Ordered.LOWEST_PRECEDENCE, new SequenceGenerator("fichier_id_seq"), Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)), operations, () -> tempDir);
 		PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
 		transactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute());
 		transactionTemplate.executeWithoutResult((t) -> storageService.createStorageUnit(StorageUnitType.TYPE_1));

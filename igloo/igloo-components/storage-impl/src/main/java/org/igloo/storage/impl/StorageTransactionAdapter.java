@@ -1,8 +1,6 @@
 package org.igloo.storage.impl;
 
 import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.igloo.storage.model.Fichier;
 import org.iglooproject.commons.util.exception.IllegalSwitchValueException;
@@ -26,11 +24,16 @@ public class StorageTransactionAdapter implements TransactionSynchronization {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(StorageTransactionAdapter.class);
 
-	private final List<StorageEvent> events = new LinkedList<>();
+	private final Integer order;
+
 	private final StorageTransactionHandler handler;
 
-	public StorageTransactionAdapter(StorageTransactionHandler handler) {
+	private final IStorageTransactionResourceManager resourceManager;
+
+	public StorageTransactionAdapter(Integer order, StorageTransactionHandler handler, IStorageTransactionResourceManager resourceManager) {
+		this.order = order;
 		this.handler = handler;
+		this.resourceManager = resourceManager;
 	}
 
 	@Override
@@ -38,20 +41,25 @@ public class StorageTransactionAdapter implements TransactionSynchronization {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("StorageTransactionAdapter is triggered with {} status", status);
 		}
-		switch (status) {
-		case TransactionSynchronization.STATUS_COMMITTED:
-			handler.onCommit(events);
-			break;
-		case TransactionSynchronization.STATUS_ROLLED_BACK:
-			handler.onRollback(events);
-			break;
-		case TransactionSynchronization.STATUS_UNKNOWN:
-		default:
-			throw new IllegalSwitchValueException(status);
+		try {
+			switch (status) {
+			case TransactionSynchronization.STATUS_COMMITTED:
+				handler.onCommit(resourceManager.getEvents());
+				break;
+			case TransactionSynchronization.STATUS_ROLLED_BACK:
+				handler.onRollback(resourceManager.getEvents());
+				break;
+			case TransactionSynchronization.STATUS_UNKNOWN:
+			default:
+				throw new IllegalSwitchValueException(status);
+			}
+		} finally {
+			resourceManager.unbind();
 		}
 	}
 
-	public void addEvent(Long id, StorageEventType type, Path path) {
-		events.add(new StorageEvent(id, type, path));
+	@Override
+	public int getOrder() {
+		return order;
 	}
 }

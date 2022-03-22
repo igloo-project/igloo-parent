@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,7 +33,6 @@ import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
-import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.google.common.base.Supplier;
@@ -41,11 +41,10 @@ import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
 import com.google.common.io.CountingInputStream;
 
-public class StorageService implements IStorageService {
+public class StorageService implements IStorageService, IStorageTransactionResourceManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageService.class);
 
-	// TODO: split data and handler
 	private static final Class<?> EVENTS_RESOURCE_KEY = StorageService.class;
 
 	private final EntityManagerFactory entityManagerFactory;
@@ -55,12 +54,13 @@ public class StorageService implements IStorageService {
 	private final IMimeTypeResolver mimeTypeResolver;
 	private final Supplier<Path> storageUnitPathSupplier;
 	private final SequenceGenerator sequenceGenerator;
+	private final StorageTransactionAdapter adapter;
 
-	public StorageService(EntityManagerFactory entityManagerFactory, SequenceGenerator sequenceGenerator, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier) {
-		this(entityManagerFactory, sequenceGenerator, storageUnitTypeCandidates, operations, storageUnitPathSupplier, new MimeTypeResolver());
+	public StorageService(EntityManagerFactory entityManagerFactory, Integer transactionSynchronizationOrder, SequenceGenerator sequenceGenerator, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier) {
+		this(entityManagerFactory, transactionSynchronizationOrder, sequenceGenerator, storageUnitTypeCandidates, operations, storageUnitPathSupplier, new MimeTypeResolver());
 	}
 
-	public StorageService(EntityManagerFactory entityManagerFactory, SequenceGenerator sequenceGenerator, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier, IMimeTypeResolver mimeTypeResolver) {
+	public StorageService(EntityManagerFactory entityManagerFactory, Integer transactionSynchronizationOrder, SequenceGenerator sequenceGenerator, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier, IMimeTypeResolver mimeTypeResolver) {
 		this.entityManagerFactory = entityManagerFactory;
 		this.sequenceGenerator = sequenceGenerator;
 		this.storageUnitTypeCandidates = storageUnitTypeCandidates;
@@ -68,6 +68,7 @@ public class StorageService implements IStorageService {
 		this.operations = operations;
 		this.storageUnitPathSupplier = storageUnitPathSupplier;
 		handler = new StorageTransactionHandler(operations);
+		adapter = new StorageTransactionAdapter(transactionSynchronizationOrder, handler, this);
 	}
 
 	@Override
@@ -118,9 +119,8 @@ public class StorageService implements IStorageService {
 			// TODO use custom runtime exception
 			throw new IllegalStateException(e);
 		}
-		StorageTransactionAdapter adapter = prepareAdapter();
 
-		adapter.addEvent(fichier.getId(), StorageEventType.ADD, absolutePath);
+		addEvent(fichier.getId(), StorageEventType.ADD, absolutePath);
 		return fichier;
 	}
 
@@ -128,7 +128,7 @@ public class StorageService implements IStorageService {
 	public void removeFichier(@Nonnull Fichier fichier) {
 		// TODO : vérifier qu'on est dans un état DELETED ?
 		entityManager().remove(fichier);
-		prepareAdapter().addEvent(fichier.getId(), StorageEventType.DELETE, getAbsolutePath(fichier));
+		addEvent(fichier.getId(), StorageEventType.DELETE, getAbsolutePath(fichier));
 	}
 
 	@Override
@@ -180,7 +180,10 @@ public class StorageService implements IStorageService {
 		return consistencies;
 	}
 
-
+	@Override
+	public void addEvent(Long id, StorageEventType type, Path path) {
+		prepareAdapter().addEvent(id, type, path);
+	}
 
 	private Path getAbsolutePath(Fichier fichier) {
 		return Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath()).toAbsolutePath();
@@ -214,18 +217,36 @@ public class StorageService implements IStorageService {
 		return Optional.ofNullable(EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)).orElseThrow();
 	}
 
-	private StorageTransactionAdapter prepareAdapter() {
-		StorageTransactionAdapter adapter;
-		Optional<TransactionSynchronization> currentAdapter =
-			TransactionSynchronizationManager.getSynchronizations().stream()
-				.filter(StorageTransactionAdapter.class::isInstance).findAny();
-		if (currentAdapter.isEmpty()) {
-			adapter = new StorageTransactionAdapter(handler);
-			TransactionSynchronizationManager.registerSynchronization(adapter);
-		} else {
-			adapter = (StorageTransactionAdapter) currentAdapter.get();
+	private StorageTransactionPayload prepareAdapter() {
+		if (!TransactionSynchronizationManager.isActualTransactionActive()) {
+			throw new IllegalStateException("No active transaction");
 		}
-		return adapter;
+		Optional<StorageTransactionPayload> payload = getPayloadResource();
+		if (payload.isEmpty()) {
+			TransactionSynchronizationManager.registerSynchronization(adapter);
+			StorageTransactionPayload payloadObject = new StorageTransactionPayload();
+			TransactionSynchronizationManager.bindResource(EVENTS_RESOURCE_KEY, payloadObject);
+			return payloadObject;
+		} else {
+			return payload.get();
+		}
+	}
+
+	private Optional<StorageTransactionPayload> getPayloadResource() {
+		return Optional.ofNullable(TransactionSynchronizationManager.getResource(EVENTS_RESOURCE_KEY))
+				.map(StorageTransactionPayload.class::cast);
+	}
+
+	@Override
+	public List<StorageEvent> getEvents() {
+		return getPayloadResource()
+				.map(StorageTransactionPayload::getEvents)
+				.orElseGet(Collections::emptyList);
+	}
+
+	@Override
+	public void unbind() {
+		TransactionSynchronizationManager.unbindResourceIfPossible(EVENTS_RESOURCE_KEY);
 	}
 
 }
