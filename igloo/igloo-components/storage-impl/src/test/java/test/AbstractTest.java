@@ -22,6 +22,7 @@ class AbstractTest {
 	private static final String CFG_DB_NAME = "TEST_DB_NAME";
 	private static final String CFG_DB_HOST = "TEST_DB_HOST";
 	private static final String CFG_DB_PORT = "TEST_DB_PORT";
+	private static final String CFG_DB_SCHEMA = "TEST_DB_SCHEMA";
 	private static final String CFG_TYPE_POSTGRESQL = "postgresql";
 	private static final String CFG_TYPE_H2 = "h2";
 	private static final String DEFAULT_USER = "igloo_test";
@@ -61,7 +62,7 @@ class AbstractTest {
 					AvailableSettings.DIALECT, PostgreSQL10Dialect.class.getName(),
 					AvailableSettings.JPA_JDBC_DRIVER, Driver.class.getName(),
 					AvailableSettings.JPA_JDBC_USER, Optional.ofNullable(System.getenv(CFG_DB_NAME)).orElse(DEFAULT_USER),
-					AvailableSettings.DEFAULT_SCHEMA, Optional.ofNullable(System.getenv(CFG_DB_NAME)).orElse(DEFAULT_USER),
+					AvailableSettings.DEFAULT_SCHEMA, Optional.ofNullable(System.getenv(CFG_DB_SCHEMA)).orElse(DEFAULT_USER),
 					AvailableSettings.JPA_JDBC_PASSWORD, Optional.ofNullable(System.getenv(DEFAULT_PASSWORD)).orElse(DEFAULT_NAME),
 					AvailableSettings.JPA_JDBC_URL, String.format("jdbc:postgresql://%s:%s/%s", host, port, name)));
 		} else {
