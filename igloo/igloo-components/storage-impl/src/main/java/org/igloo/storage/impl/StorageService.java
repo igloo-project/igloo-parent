@@ -166,7 +166,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 				consistency.setFsFileCount(files.size());
 			}
 
-			Long fichierCount = entityManager.createQuery("SELECT COUNT(f) FROM Fichier f where f.storageUnit = :unit AND f.status = :status AND f.fichierType = :type ORDER BY f.id DESC", Long.class)
+			Long fichierCount = entityManager.createQuery("SELECT COUNT(f) FROM Fichier f where f.storageUnit = :unit AND f.status = :status AND f.fichierType = :type GROUP BY f.id ORDER BY f.id DESC", Long.class)
 				.setParameter("unit", unit)
 				.setParameter("type", fichierType)
 				.setParameter("status", FichierStatus.ALIVE)
