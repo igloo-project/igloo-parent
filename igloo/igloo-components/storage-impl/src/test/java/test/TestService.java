@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import java.io.ByteArrayInputStream;
@@ -121,11 +122,11 @@ class TestService extends AbstractTest {
 		verifyNoMoreInteractions(operations);
 	}
 
-	// TODO MPI : à vérifier par LAL
 	@Test
 	void testRemoveRollback(EntityManagerFactory entityManagerFactory) throws IOException {
 		Runnable action = () -> {
 			Fichier fichier = transactionTemplate.execute((t) -> createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, () -> {}));
+			Mockito.reset(operations);
 
 			transactionTemplate.executeWithoutResult((t) -> {
 				EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
@@ -135,8 +136,7 @@ class TestService extends AbstractTest {
 		};
 
 		assertThatCode(action::run).as("Fichier remove must throw an exception").isInstanceOf(IllegalStateException.class).hasMessageContaining("Triggered rollback");
-		verify(operations, times(1)).copy(any(), any());
-		verifyNoMoreInteractions(operations); // method removePhysicalFile should not be called
+		verifyNoInteractions(operations); // method removePhysicalFile should not be called
 	}
 
 	@Test

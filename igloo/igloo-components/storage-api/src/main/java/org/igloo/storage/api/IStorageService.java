@@ -22,7 +22,6 @@ public interface IStorageService {
 
 	/**
 	 * Creation of {@link Fichier} and storage of associated file from inputStream into storage
-	 * @param filename TODO
 	 */
 	@Nonnull
 	Fichier addFichier(@Nullable String filename, @Nonnull IFichierType fichierType, @Nonnull InputStream inputStream);

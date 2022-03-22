@@ -4,7 +4,6 @@ public enum StorageEventType {
 
 	ADD,
 
-	// TODO MPI : deletion réelle
 	DELETE;
 
 }
