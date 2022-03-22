@@ -29,6 +29,8 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	private static final long serialVersionUID = 2683095626872762980L;
 
 	@Id
+	@Basic(optional = false)
+	@Column(unique = true, nullable = false, updatable = false)
 	private Long id;
 
 	/**
