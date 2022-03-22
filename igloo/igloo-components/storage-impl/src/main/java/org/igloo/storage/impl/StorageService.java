@@ -13,6 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -35,7 +36,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.google.common.base.Supplier;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
