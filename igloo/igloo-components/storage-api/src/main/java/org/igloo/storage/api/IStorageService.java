@@ -2,6 +2,7 @@ package org.igloo.storage.api;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -40,6 +41,6 @@ public interface IStorageService {
 	File getFile(@Nonnull Fichier fichier);
 
 	@Nonnull
-	StorageConsistency checkConsistency(@Nonnull StorageUnit unit);
+	List<StorageConsistency> checkConsistency(@Nonnull StorageUnit unit);
 
 }

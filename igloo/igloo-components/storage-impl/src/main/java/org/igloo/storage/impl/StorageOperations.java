@@ -9,24 +9,31 @@ import java.util.Collection;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.filefilter.FileFileFilter;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.igloo.storage.model.StorageUnit;
+import org.igloo.storage.model.atomic.IFichierType;
+import org.iglooproject.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class StorageOperations {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageOperations.class);
 
-	public void removePhysicalFile(String logPrefix, StorageEvent t) {
+	public void removePhysicalFile(@Nonnull String logPrefix, @Nonnull StorageEvent t) {
 		Long fichierId = t.getId();
 		Path fileAbsolutePath = t.getPath();
 		removePhysicalFile(logPrefix, fichierId, fileAbsolutePath);
 	}
 
-	public void removePhysicalFile(String logPrefix, Long fichierId, Path fileAbsolutePath) {
+	public void removePhysicalFile(@Nonnull String logPrefix, @Nonnull Long fichierId, @Nonnull Path fileAbsolutePath) {
 		try {
 			if (Files.exists(fileAbsolutePath, LinkOption.NOFOLLOW_LINKS)) {
 				if (LOGGER.isInfoEnabled()) {
@@ -41,14 +48,14 @@ public class StorageOperations {
 		}
 	}
 
-	public void copy(InputStream inputStream, Path absolutePath) throws IOException {
+	public void copy(@Nonnull InputStream inputStream, @Nonnull Path absolutePath) throws IOException {
 		Path dirPath = absolutePath.getParent();
 		File directory = dirPath.toFile();
 		if (directory.exists() && !directory.isDirectory()) {
 			throw new IllegalStateException(String.format("Parent path %s already exists and is not a directory", dirPath.toAbsolutePath()));
 		}
 		if (!directory.exists()) {
-			FileUtils.forceMkdir(directory);
+			org.apache.commons.io.FileUtils.forceMkdir(directory);
 		}
 
 		try (FileOutputStream fos = new FileOutputStream(absolutePath.toString())) {
@@ -59,54 +66,17 @@ public class StorageOperations {
 		}
 	}
 
-	public File getFile(Path absolutePath) {
+	@Nonnull
+	public File getFile(@Nonnull Path absolutePath) {
 		return absolutePath.toFile();
 	}
 
-	public static Collection<File> listRecursively(File directory, IOFileFilter resultsFilter, IOFileFilter recurseFilter) {
-		if (directory == null) {
-			throw new IllegalArgumentException(String.format("Null directory is not allowed (filter: %s, recurseFilter: %s)",
-					resultsFilter, recurseFilter));
+	@Nullable
+	public Collection<File> listRecursively(@Nonnull Path directoryPath) {
+		File directory = getFile(directoryPath);
+		if (!directory.exists()) {
+			return null;
 		}
-		Collection<File> results = Lists.newLinkedList();
-
-		IOFileFilter effectiveRecurseFilter = FileFilterUtils.makeDirectoryOnly(recurseFilter);
-		innerListRecursively(results, directory, resultsFilter, effectiveRecurseFilter);
-
-		return results;
+		return FileUtils.listRecursively(getFile(directoryPath), TrueFileFilter.TRUE, FileFileFilter.INSTANCE);
 	}
-
-	private static void innerListRecursively(Collection<File> results, File directory, IOFileFilter resultsFilter, IOFileFilter recurseFilter) {
-		List<File> found = listFiles(directory, resultsFilter);
-		results.addAll(found);
-
-		List<File> recursedSubdirectories = listFiles(directory, recurseFilter);
-		for (File recursedSubdirectory : recursedSubdirectories) {
-			innerListRecursively(results, recursedSubdirectory, resultsFilter, recurseFilter);
-		}
-	}
-
-	private static List<File> listFiles(File directory, FileFilter filter) {
-		if (directory == null) {
-			throw new IllegalArgumentException(String.format("Null directory is not allowed (filter: %s)", filter));
-		}
-
-		List<File> files = Lists.newArrayList();
-
-		File[] filesArray = directory.listFiles(filter);
-		if (filesArray != null) {
-			Arrays.sort(filesArray);
-			for (int i = 0; i < filesArray.length; i++) {
-				File file = filesArray[i];
-				if (file.canRead()) {
-					files.add(file);
-				}
-			}
-		} else {
-			// le résultat filesPaths est null si et seulement si il y a un problème avec la lecture du répertoire
-			throw new IllegalStateException("Error reading directory: " + directory.getPath());
-		}
-		return files;
-	}
-
 }

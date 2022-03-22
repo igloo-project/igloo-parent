@@ -1,12 +1,12 @@
 package org.igloo.storage.impl;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -14,11 +14,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import com.google.common.base.Supplier;
-import com.google.common.collect.Lists;
-import org.apache.commons.io.FilenameUtils;
+import com.google.common.collect.ComparisonChain;
+import com.google.common.collect.Ordering;
 import org.apache.commons.io.filefilter.FileFileFilter;
-import org.apache.commons.io.filefilter.FileFilterUtils;
-import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
@@ -145,36 +143,34 @@ public class StorageService implements IStorageService {
 
 	// TODO MPI : à mettre dans un service spécifique aux vérifications de cohérence ?
 	@Override
-	public StorageConsistency checkConsistency(@Nonnull StorageUnit unit) {
-		StorageConsistency bean = new StorageConsistency();
-		StorageUnitConsistency unitConsistency = new StorageUnitConsistency(unit);
-		bean.addStorageUnitConsistencies(unitConsistency);
+	public List<StorageConsistency> checkConsistency(@Nonnull StorageUnit unit) {
+		EntityManager entityManager = entityManager();
+		List<StorageConsistency> consistencies = new ArrayList<>();
 
-		for (IFichierType acceptedFichierType : unit.getType().getAcceptedFichierTypes()) { // TODO MPI : problème d'ordre des fichiers types récupérés qui cassent les tests-
-			IFichierTypeConsistency fichierTypeConsistency = new IFichierTypeConsistency(acceptedFichierType);
-			File fichierTypeDirectory = operations.getFile(getAbsolutePath(unit, acceptedFichierType));
+		List<IFichierType> existingFichierTypes = entityManager.createQuery("SELECT DISTINCT f.fichierType FROM Fichier f", IFichierType.class)
+			.getResultStream()
+			.sorted((o1, o2) -> ComparisonChain.start().compare(o1.getName(), o2.getName()).result())
+			.collect(Collectors.toList());
 
-			int fsCount = 0; // TODO MPI : ne permet pas de savoir si le dossier existe et est vide OU n'existe pas
-			if (fichierTypeDirectory.exists()) {
-				Collection<File> files = operations.listRecursively(fichierTypeDirectory, TrueFileFilter.TRUE, FileFileFilter.INSTANCE);
-				fsCount = files.size();
+		for (IFichierType fichierType : existingFichierTypes) {
+			StorageConsistency consistency = new StorageConsistency(unit, fichierType);
+
+			Collection<File> files = operations.listRecursively(getAbsolutePath(unit, fichierType));
+			if (files != null) {
+				consistency.setFsFileCount(files.size());
 			}
 
-			EntityManager entityManager = entityManager();
-			List<Fichier> fichiers = entityManager.createQuery("SELECT f FROM Fichier f where f.storageUnit = :unit AND f.status = :status AND f.fichierType = :type ORDER BY f.id DESC", Fichier.class)
+			Long fichierCount = entityManager.createQuery("SELECT COUNT(f) FROM Fichier f where f.storageUnit = :unit AND f.status = :status AND f.fichierType = :type ORDER BY f.id DESC", Long.class)
 				.setParameter("unit", unit)
+				.setParameter("type", fichierType)
 				.setParameter("status", FichierStatus.ALIVE)
-				.setParameter("type", acceptedFichierType)
-				.getResultList();
-			int dbCount = fichiers.size();
+				.getSingleResult();
+			consistency.setDbFichierCount(fichierCount.intValue()); // TODO MPI : on conserve le cast en int ou on passe en long ?
 
-			fichierTypeConsistency.setFsFileCount(fsCount);
-			fichierTypeConsistency.setDbFileCount(dbCount);
-
-			unitConsistency.addFichierTypeConsistencies(fichierTypeConsistency);
+			consistencies.add(consistency);
 		}
 
-		return bean;
+		return consistencies;
 	}
 
 

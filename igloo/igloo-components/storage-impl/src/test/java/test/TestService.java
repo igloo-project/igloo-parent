@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -152,32 +153,20 @@ class TestService extends AbstractTest {
 
 	@Test
 	void testConsistency() throws IOException {
-		Mockito.doCallRealMethod().when(operations).copy(any(), any());
-		Mockito.doCallRealMethod().when(operations).getFile(any());
+		doCallRealMethod().when(operations).copy(any(), any());
+		doCallRealMethod().when(operations).getFile(any());
+		doCallRealMethod().when(operations).listRecursively(any());
 		Fichier fichier = transactionTemplate.execute((t) -> createFichier("filename.txt", FichierType1.CONTENT1, FILE_CONTENT, () -> {}));
 
-		StorageConsistency bean = transactionTemplate.execute((t) -> storageService.checkConsistency(fichier.getStorageUnit()));
+		List<StorageConsistency> beans = transactionTemplate.execute((t) -> storageService.checkConsistency(fichier.getStorageUnit()));
 
 		SoftAssertions soft = new SoftAssertions();
-		assertThat(bean.getStorageUnitConsistencies())
-			.satisfies(storageUnitConsistency -> {
-				assertThat(storageUnitConsistency.getFichierTypeConsistencies())
-					.hasSize(3)
-					.satisfies(iFichierTypeConsistency -> {
-						soft.assertThat(iFichierTypeConsistency.getFichierType()).isEqualTo(FichierType1.CONTENT1);
-						soft.assertThat(iFichierTypeConsistency.getFsFileCount()).isEqualTo(1L);
-						soft.assertThat(iFichierTypeConsistency.getDbFileCount()).isEqualTo(1L);
-					}, atIndex(0)) // Content1
-					.satisfies(iFichierTypeConsistency -> {
-						soft.assertThat(iFichierTypeConsistency.getFichierType()).isEqualTo(FichierType1.CONTENT2);
-						soft.assertThat(iFichierTypeConsistency.getFsFileCount()).isEqualTo(0);
-						soft.assertThat(iFichierTypeConsistency.getDbFileCount()).isEqualTo(0);
-					}, atIndex(1)) // Content2
-					.satisfies(iFichierTypeConsistency -> {
-						soft.assertThat(iFichierTypeConsistency.getFichierType()).isEqualTo(FichierType2.CONTENT4);
-						soft.assertThat(iFichierTypeConsistency.getFsFileCount()).isEqualTo(0);
-						soft.assertThat(iFichierTypeConsistency.getDbFileCount()).isEqualTo(0);
-					}, atIndex(2)); // Content4
+		assertThat(beans)
+			.hasSize(1)
+			.satisfies(consistency -> {
+				soft.assertThat(consistency.getFichierType()).isEqualTo(FichierType1.CONTENT1);
+				soft.assertThat(consistency.getFsFileCount()).isEqualTo(1L);
+				soft.assertThat(consistency.getDbFichierCount()).isEqualTo(1L);
 			}, atIndex(0));
 		soft.assertAll();
 	}
