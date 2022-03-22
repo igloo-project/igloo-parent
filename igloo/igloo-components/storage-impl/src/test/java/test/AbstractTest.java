@@ -1,7 +1,7 @@
 package test;
 
+import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,9 +39,13 @@ class AbstractTest {
 		List<Object> settings = new ArrayList<>();
 		settings.addAll(List.of(
 				AvailableSettings.HBM2DDL_AUTO, "create",
-				AvailableSettings.LOADED_CLASSES, Arrays.asList(Fichier.class, StorageUnit.class, StorageUnitStatistics.class),
+				AvailableSettings.LOADED_CLASSES, List.of(Fichier.class, StorageUnit.class, StorageUnitStatistics.class),
 				AvailableSettings.XML_MAPPING_ENABLED, Boolean.FALSE.toString(),
-				AvailableSettings.IMPLICIT_NAMING_STRATEGY, ImplicitNamingStrategyJpaComponentPathImpl.INSTANCE
+				AvailableSettings.IMPLICIT_NAMING_STRATEGY, ImplicitNamingStrategyJpaComponentPathImpl.INSTANCE,
+				AvailableSettings.HBM2DDL_CREATE_SOURCE, "metadata-then-script",
+				AvailableSettings.HBM2DDL_DROP_SOURCE, "script-then-metadata",
+				AvailableSettings.HBM2DDL_CREATE_SCRIPT_SOURCE, new StringReader("create sequence fichier_id_seq;"),
+				AvailableSettings.HBM2DDL_DROP_SCRIPT_SOURCE, new StringReader("drop sequence if exists fichier_id_seq;")
 		));
 		String type = Optional.ofNullable(System.getenv(CFG_DB_TYPE)).orElse(CFG_TYPE_H2);
 		if (CFG_TYPE_H2.equals(type)) {
@@ -57,6 +61,7 @@ class AbstractTest {
 					AvailableSettings.DIALECT, PostgreSQL10Dialect.class.getName(),
 					AvailableSettings.JPA_JDBC_DRIVER, Driver.class.getName(),
 					AvailableSettings.JPA_JDBC_USER, Optional.ofNullable(System.getenv(CFG_DB_NAME)).orElse(DEFAULT_USER),
+					AvailableSettings.DEFAULT_SCHEMA, Optional.ofNullable(System.getenv(CFG_DB_NAME)).orElse(DEFAULT_USER),
 					AvailableSettings.JPA_JDBC_PASSWORD, Optional.ofNullable(System.getenv(DEFAULT_PASSWORD)).orElse(DEFAULT_NAME),
 					AvailableSettings.JPA_JDBC_URL, String.format("jdbc:postgresql://%s:%s/%s", host, port, name)));
 		} else {

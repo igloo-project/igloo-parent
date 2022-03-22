@@ -1,8 +1,8 @@
 package org.igloo.storage.model;
 
-import org.igloo.storage.model.atomic.IFichierType;
-
 import java.io.Serializable;
+
+import org.igloo.storage.model.atomic.IFichierType;
 
 // TODO MPI Faire un seul pour une unité et un fichierType
 public class StorageConsistency implements Serializable {

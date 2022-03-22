@@ -46,6 +46,7 @@ class TestEntities extends AbstractTest {
 		storageUnit.setStatistics(statistics);
 
 		Fichier fichier1 = new Fichier();
+		fichier1.setId(1l);
 		fichier1.setUuid(UUID.randomUUID());
 		fichier1.setStatus(FichierStatus.ALIVE);
 		fichier1.setFichierType(FichierType1.CONTENT1);
@@ -58,6 +59,7 @@ class TestEntities extends AbstractTest {
 		fichier1.setCreationDate(LocalDateTime.now());
 
 		Fichier fichier2 = new Fichier();
+		fichier2.setId(2l);
 		fichier2.setUuid(UUID.randomUUID());
 		fichier2.setStatus(FichierStatus.ALIVE);
 		fichier2.setFichierType(FichierType2.CONTENT3);
@@ -110,6 +112,7 @@ class TestEntities extends AbstractTest {
 		storageUnit.setStatistics(statistics);
 
 		Fichier fichier = new Fichier();
+		fichier.setId(1l);
 		fichier.setUuid(UUID.randomUUID());
 		fichier.setStatus(FichierStatus.ALIVE);
 		fichier.setFichierType(FichierType1.CONTENT1);
@@ -148,6 +151,7 @@ class TestEntities extends AbstractTest {
 
 		UUID uuid = UUID.randomUUID();
 		Fichier fichier1 = new Fichier();
+		fichier1.setId(1l);
 		fichier1.setUuid(uuid);
 		fichier1.setStatus(FichierStatus.ALIVE);
 		fichier1.setFichierType(FichierType1.CONTENT1);
@@ -160,6 +164,7 @@ class TestEntities extends AbstractTest {
 		fichier1.setCreationDate(LocalDateTime.now());
 
 		Fichier fichier2 = new Fichier();
+		fichier2.setId(2l);
 		fichier2.setUuid(uuid);
 		fichier2.setStatus(FichierStatus.ALIVE);
 		fichier2.setFichierType(FichierType1.CONTENT1);

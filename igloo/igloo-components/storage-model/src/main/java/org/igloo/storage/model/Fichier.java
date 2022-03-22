@@ -8,11 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
@@ -32,7 +29,6 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	private static final long serialVersionUID = 2683095626872762980L;
 
 	@Id
-	@GeneratedValue
 	private Long id;
 
 	/**

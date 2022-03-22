@@ -4,7 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.data.Index.atIndex;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,7 +27,7 @@ import javax.persistence.EntityManagerFactory;
 import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.SoftAssertions;
 import org.igloo.storage.api.IStorageService;
-import org.igloo.storage.impl.StorageEvent;
+import org.igloo.storage.impl.SequenceGenerator;
 import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.impl.StorageService;
 import org.igloo.storage.model.Fichier;
@@ -34,7 +39,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.AdditionalAnswers;
-import org.mockito.Answers;
 import org.mockito.Mockito;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -43,7 +47,6 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import test.model.FichierType1;
-import test.model.FichierType2;
 import test.model.StorageUnitType;
 
 class TestService extends AbstractTest {
@@ -55,12 +58,10 @@ class TestService extends AbstractTest {
 	private IStorageService storageService;
 	private TransactionTemplate transactionTemplate;
 	private final StorageOperations operations = mock(StorageOperations.class);
-	private Path tempDir;
 
 	@BeforeEach
 	void init(EntityManagerFactory entityManagerFactory, @TempDir Path tempDir) {
-		this.storageService = new StorageService(entityManagerFactory, Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)), operations, () -> tempDir);
-		this.tempDir = tempDir;
+		this.storageService = new StorageService(entityManagerFactory, new SequenceGenerator("fichier_id_seq"), Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)), operations, () -> tempDir);
 		PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
 		transactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute());
 		transactionTemplate.executeWithoutResult((t) -> storageService.createStorageUnit(StorageUnitType.TYPE_1));

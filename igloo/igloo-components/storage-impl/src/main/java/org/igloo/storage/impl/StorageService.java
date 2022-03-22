@@ -5,7 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -13,14 +19,11 @@ import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import com.google.common.base.Supplier;
-import com.google.common.collect.ComparisonChain;
-import com.google.common.collect.Ordering;
-import org.apache.commons.io.filefilter.FileFileFilter;
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
-import org.igloo.storage.model.*;
+import org.igloo.storage.model.Fichier;
+import org.igloo.storage.model.StorageConsistency;
+import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
@@ -32,6 +35,8 @@ import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import com.google.common.base.Supplier;
+import com.google.common.collect.ComparisonChain;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
 import com.google.common.io.CountingInputStream;
@@ -49,13 +54,15 @@ public class StorageService implements IStorageService {
 	private final Set<IStorageUnitType> storageUnitTypeCandidates;
 	private final IMimeTypeResolver mimeTypeResolver;
 	private final Supplier<Path> storageUnitPathSupplier;
+	private final SequenceGenerator sequenceGenerator;
 
-	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier) {
-		this(entityManagerFactory, storageUnitTypeCandidates, operations, storageUnitPathSupplier, new MimeTypeResolver());
+	public StorageService(EntityManagerFactory entityManagerFactory, SequenceGenerator sequenceGenerator, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier) {
+		this(entityManagerFactory, sequenceGenerator, storageUnitTypeCandidates, operations, storageUnitPathSupplier, new MimeTypeResolver());
 	}
 
-	public StorageService(EntityManagerFactory entityManagerFactory, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier, IMimeTypeResolver mimeTypeResolver) {
+	public StorageService(EntityManagerFactory entityManagerFactory, SequenceGenerator sequenceGenerator, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier, IMimeTypeResolver mimeTypeResolver) {
 		this.entityManagerFactory = entityManagerFactory;
+		this.sequenceGenerator = sequenceGenerator;
 		this.storageUnitTypeCandidates = storageUnitTypeCandidates;
 		this.mimeTypeResolver = mimeTypeResolver;
 		this.operations = operations;
@@ -87,6 +94,7 @@ public class StorageService implements IStorageService {
 		EntityManager entityManager = entityManager();
 		StorageUnit unit = selectStorageUnit(entityManager, fichierType);
 		Fichier fichier = new Fichier();
+		fichier.setId(sequenceGenerator.generate(entityManager));
 		fichier.setUuid(UUID.randomUUID());
 		fichier.setStatus(FichierStatus.ALIVE);
 		fichier.setFichierType(fichierType);
@@ -97,7 +105,6 @@ public class StorageService implements IStorageService {
 		fichier.setCreationDate(LocalDateTime.now());
 
 		entityManager.persist(fichier);
-		entityManager.flush();
 
 		fichier.setRelativePath(unit.getType().getFichierPathStrategy().getPath(fichier));
 		Path absolutePath = getAbsolutePath(fichier);
