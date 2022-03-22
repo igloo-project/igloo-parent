@@ -49,6 +49,8 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	 * Used to organize file storage. Cannot be changed after initial attribution.
 	 */
 	@Type(type = StorageHibernateConstants.TYPE_FICHIER_TYPE)
+	@Basic(optional = false)
+	@Column(nullable = false)
 	private IFichierType fichierType;
 
 	/**
@@ -57,13 +59,12 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	@ManyToOne(optional = false)
 	private StorageUnit storageUnit;
 
-	// TODO MPI : il est obligatoire dans les faits mais vide avant calcul du relativePath
 	/**
 	 * Path within storage unit directory<br>
 	 * Ex : {@code fichiertype/hash/file.png}
 	 */
-	@Basic
-	@Column
+	@Basic(optional = false)
+	@Column(nullable = false)
 	private String relativePath;
 
 	/**
@@ -73,25 +74,23 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	@Column(nullable = false)
 	private String filename;
 
-	// TODO MPI : il est obligatoire dans les faits mais vide avant calcul du relativePath
 	/**
 	 * Size in bytes.
 	 */
-	@Basic
-	@Column
+	@Basic(optional = false)
+	@Column(nullable = false)
 	private long size;
 
-	// TODO MPI : il est obligatoire dans les faits mais vide avant calcul du relativePath
-	@Basic
-	@Column
+	@Basic(optional = false)
+	@Column(nullable = false)
 	private String checksum;
 
 	@Basic(optional = false)
 	@Column(nullable = false)
 	private ChecksumType checksumType;
 
-	@Basic
-	@Column
+	@Basic(optional = false)
+	@Column(nullable = false)
 	private String mimetype;
 
 	@Basic(optional = false)

@@ -105,8 +105,6 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		fichier.setMimetype(mimeTypeResolver.resolve(fichier.getFilename()));
 		fichier.setCreationDate(LocalDateTime.now());
 
-		entityManager.persist(fichier);
-
 		fichier.setRelativePath(unit.getType().getFichierPathStrategy().getPath(fichier));
 		Path absolutePath = getAbsolutePath(fichier);
 		try (
@@ -119,6 +117,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 			// TODO use custom runtime exception
 			throw new IllegalStateException(e);
 		}
+		entityManager.persist(fichier);
 
 		addEvent(fichier.getId(), StorageEventType.ADD, absolutePath);
 		return fichier;
