@@ -87,6 +87,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 
 	@Basic(optional = false)
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private ChecksumType checksumType;
 
 	@Basic(optional = false)
