@@ -1,46 +1,32 @@
 package org.igloo.storage.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Tuple;
-
+import com.google.common.collect.ComparisonChain;
+import com.google.common.hash.Hashing;
+import com.google.common.hash.HashingInputStream;
+import com.google.common.io.CountingInputStream;
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistency;
 import org.igloo.storage.model.StorageUnit;
-import org.igloo.storage.model.atomic.ChecksumType;
-import org.igloo.storage.model.atomic.FichierStatus;
-import org.igloo.storage.model.atomic.IFichierType;
-import org.igloo.storage.model.atomic.IStorageUnitType;
-import org.igloo.storage.model.atomic.StorageUnitStatus;
+import org.igloo.storage.model.atomic.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import com.google.common.collect.ComparisonChain;
-import com.google.common.hash.Hashing;
-import com.google.common.hash.HashingInputStream;
-import com.google.common.io.CountingInputStream;
+import javax.annotation.Nonnull;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Tuple;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class StorageService implements IStorageService, IStorageTransactionResourceManager {
 
@@ -92,7 +78,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 
 	@Override
 	@Nonnull
-	public Fichier addFichier(@Nullable String filename, @Nonnull IFichierType fichierType, @Nonnull InputStream inputStream) {
+	public Fichier addFichier(@Nonnull String filename, @Nonnull IFichierType fichierType, @Nonnull InputStream inputStream) {
 		EntityManager entityManager = entityManager();
 		StorageUnit unit = selectStorageUnit(entityManager, fichierType);
 		Fichier fichier = new Fichier();

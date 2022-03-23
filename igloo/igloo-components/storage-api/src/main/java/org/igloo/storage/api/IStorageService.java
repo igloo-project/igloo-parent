@@ -1,17 +1,15 @@
 package org.igloo.storage.api;
 
-import java.io.File;
-import java.io.InputStream;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistency;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
+
+import javax.annotation.Nonnull;
+import java.io.File;
+import java.io.InputStream;
+import java.util.List;
 
 public interface IStorageService {
 
@@ -24,7 +22,7 @@ public interface IStorageService {
 	 * Creation of {@link Fichier} and storage of associated file from inputStream into storage
 	 */
 	@Nonnull
-	Fichier addFichier(@Nullable String filename, @Nonnull IFichierType fichierType, @Nonnull InputStream inputStream);
+	Fichier addFichier(@Nonnull String filename, @Nonnull IFichierType fichierType, @Nonnull InputStream inputStream);
 
 	/**
 	 * Deletion of {@link Fichier} and associated file
