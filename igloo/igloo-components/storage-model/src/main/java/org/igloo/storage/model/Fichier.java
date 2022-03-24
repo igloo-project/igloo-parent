@@ -99,11 +99,18 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	private LocalDateTime creationDate;
 
 	/**
+	 * Initialized when {@link #status} is set to {@link FichierStatus#ALIVE}.
+	 */
+	@Basic
+	@Column
+	private LocalDateTime validationDate;
+
+	/**
 	 * Initialized when {@link #status} is set to {@link FichierStatus#INVALIDATED}.
 	 */
 	@Basic
 	@Column
-	private LocalDateTime deletionDate;
+	private LocalDateTime invalidationDate;
 
 	@Override
 	public Long getId() {
@@ -203,12 +210,20 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 		this.creationDate = creationDate;
 	}
 
-	public LocalDateTime getDeletionDate() {
-		return deletionDate;
+	public LocalDateTime getValidationDate() {
+		return validationDate;
 	}
 
-	public void setDeletionDate(LocalDateTime deletionDate) {
-		this.deletionDate = deletionDate;
+	public void setValidationDate(LocalDateTime validationDate) {
+		this.validationDate = validationDate;
+	}
+
+	public LocalDateTime getInvalidationDate() {
+		return invalidationDate;
+	}
+
+	public void setInvalidationDate(LocalDateTime deletionDate) {
+		this.invalidationDate = deletionDate;
 	}
 
 }

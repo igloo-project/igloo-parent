@@ -75,7 +75,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		Fichier fichier = new Fichier();
 		fichier.setId(databaseOperations.generateFichier());
 		fichier.setUuid(UUID.randomUUID());
-		fichier.setStatus(FichierStatus.ALIVE);
+		fichier.setStatus(FichierStatus.TRANSIENT);
 		fichier.setFichierType(fichierType);
 		fichier.setStorageUnit(unit);
 		fichier.setName(filename);
@@ -102,20 +102,30 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 	}
 
 	@Override
-	public void removeFichier(@Nonnull Fichier fichier) {
-		// TODO : vérifier qu'on est dans un état DELETED ?
-		databaseOperations.removeFichier(fichier);
-		addEvent(fichier.getId(), StorageEventType.DELETE, getAbsolutePath(fichier));
+	public void validateFichier(@Nonnull Fichier fichier) {
+		if (Objects.equals(fichier.getStatus(), FichierStatus.TRANSIENT)) {
+			fichier.setStatus(FichierStatus.ALIVE);
+			fichier.setValidationDate(LocalDateTime.now());
+		} else {
+			LOGGER.warn("[validate] Fichier {} is alread marked ALIVE; no action", fichier.getId());
+		}
 	}
 
 	@Override
 	public void invalidateFichier(@Nonnull Fichier fichier) {
 		if (Objects.equals(fichier.getStatus(), FichierStatus.ALIVE)) {
 			fichier.setStatus(FichierStatus.INVALIDATED);
-			fichier.setDeletionDate(LocalDateTime.now());
+			fichier.setInvalidationDate(LocalDateTime.now());
 		} else {
 			LOGGER.warn("[invalidate] Fichier {} is alread marked DELETED; no action", fichier.getId());
 		}
+	}
+
+	@Override
+	public void removeFichier(@Nonnull Fichier fichier) {
+		// TODO : vérifier qu'on est dans un état DELETED ?
+		databaseOperations.removeFichier(fichier);
+		addEvent(fichier.getId(), StorageEventType.DELETE, getAbsolutePath(fichier));
 	}
 
 	@Override

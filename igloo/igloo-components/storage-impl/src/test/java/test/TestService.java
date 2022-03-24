@@ -63,6 +63,9 @@ class TestService extends AbstractTest {
 		assertThat(fichier.getChecksum()).isEqualTo(FILE_CHECKSUM_SHA_256);
 		assertThat(fichier.getSize()).isEqualTo(FILE_SIZE);
 		assertThat(fichier.getMimetype()).isEqualTo("text/plain");
+		assertThat(fichier.getCreationDate()).isNotNull();
+		assertThat(fichier.getValidationDate()).isNull();
+		assertThat(fichier.getInvalidationDate()).isNull();
 	}
 
 	@Test
@@ -119,16 +122,33 @@ class TestService extends AbstractTest {
 	}
 
 	@Test
-	void testInvalidate() {
+	void testValidate() {
 		Fichier fichier = transactionTemplate.execute((t) -> {
 			Fichier fichierToInvalidate = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, () -> {});
 			Mockito.reset(storageOperations); // Get rid of creation operation
+			storageService.validateFichier(fichierToInvalidate);
+			return fichierToInvalidate;
+		});
+
+		assertThat(fichier).isNotNull();
+		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.ALIVE);
+		assertThat(fichier.getValidationDate()).isNotNull();
+		Mockito.verifyNoInteractions(storageOperations);
+	}
+
+	@Test
+	void testInvalidate() {
+		Fichier fichier = transactionTemplate.execute((t) -> {
+			Fichier fichierToInvalidate = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, () -> {});
+			storageService.validateFichier(fichierToInvalidate);
+			Mockito.reset(storageOperations); // Get rid of creation/validation operation
 			storageService.invalidateFichier(fichierToInvalidate);
 			return fichierToInvalidate;
 		});
 
 		assertThat(fichier).isNotNull();
 		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.INVALIDATED);
+		assertThat(fichier.getInvalidationDate()).isNotNull();
 		Mockito.verifyNoInteractions(storageOperations);
 	}
 
