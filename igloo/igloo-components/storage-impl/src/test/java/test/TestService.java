@@ -2,71 +2,40 @@ package test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.data.Index.atIndex;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doCallRealMethod;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.apache.commons.io.IOUtils;
-import org.assertj.core.api.SoftAssertions;
-import org.igloo.storage.api.IStorageService;
-import org.igloo.storage.impl.SequenceGenerator;
-import org.igloo.storage.impl.StorageOperations;
-import org.igloo.storage.impl.StorageService;
 import org.igloo.storage.model.Fichier;
-import org.igloo.storage.model.StorageConsistency;
 import org.igloo.storage.model.atomic.FichierStatus;
-import org.igloo.storage.model.atomic.IFichierType;
-import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.AdditionalAnswers;
 import org.mockito.Mockito;
-import org.springframework.core.Ordered;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import test.model.FichierType1;
-import test.model.StorageUnitType;
 
 class TestService extends AbstractTest {
 
-	private static final String FILE_CONTENT = "blabla";
-	// checksum from 'echo -n "blabla" | sha256sum'
-	private static final String FILE_CHECKSUM_SHA_256 = "ccadd99b16cd3d200c22d6db45d8b6630ef3d936767127347ec8a76ab992c2ea";
-	private static final long FILE_SIZE = 6L;
-	private IStorageService storageService;
-	private TransactionTemplate transactionTemplate;
-	private final StorageOperations operations = mock(StorageOperations.class);
-
+	@Override
 	@BeforeEach
-	void init(EntityManagerFactory entityManagerFactory, @TempDir Path tempDir) {
-		this.storageService = new StorageService(entityManagerFactory, Ordered.LOWEST_PRECEDENCE, new SequenceGenerator("fichier_id_seq"), Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)), operations, () -> tempDir);
-		PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
-		transactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute());
-		transactionTemplate.executeWithoutResult((t) -> storageService.createStorageUnit(StorageUnitType.TYPE_1));
+	void initStorageUnit(EntityManagerFactory entityManagerFactory, @TempDir Path tempDir) {
+		super.initStorageUnit(entityManagerFactory, tempDir);
 	}
 
 	@Test
@@ -151,44 +120,6 @@ class TestService extends AbstractTest {
 		assertThat(fichier).isNotNull();
 		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.INVALIDATED);
 		Mockito.verifyNoInteractions(operations);
-	}
-
-	@Test
-	void testConsistency() throws IOException {
-		doCallRealMethod().when(operations).copy(any(), any());
-		doCallRealMethod().when(operations).getFile(any());
-		doCallRealMethod().when(operations).listRecursively(any());
-		Fichier fichier = transactionTemplate.execute((t) -> createFichier("filename.txt", FichierType1.CONTENT1, FILE_CONTENT, () -> {}));
-
-		List<StorageConsistency> beans = transactionTemplate.execute((t) -> storageService.checkConsistency(fichier.getStorageUnit()));
-
-		SoftAssertions soft = new SoftAssertions();
-		assertThat(beans)
-			.hasSize(1)
-			.satisfies(consistency -> {
-				soft.assertThat(consistency.getFichierType()).isEqualTo(FichierType1.CONTENT1);
-				soft.assertThat(consistency.getFsFileCount()).isEqualTo(1L);
-				soft.assertThat(consistency.getDbFichierCount()).isEqualTo(1L);
-			}, atIndex(0));
-		soft.assertAll();
-	}
-
-	private Fichier createFichier(String filename, IFichierType fichierType, String fileContent, Runnable postCreationAction) {
-		return transactionTemplate.execute((t) -> {
-			try (InputStream bais = new ByteArrayInputStream(fileContent.getBytes(StandardCharsets.UTF_8))) {
-				return storageService.addFichier(filename, fichierType, bais);
-			} catch (IOException e) {
-				throw new IllegalStateException(e);
-			} finally {
-				postCreationAction.run();
-			}
-		});
-	}
-
-	private DefaultTransactionAttribute writeTransactionAttribute() {
-		DefaultTransactionAttribute ta = new DefaultTransactionAttribute();
-		ta.setReadOnly(false);
-		return ta;
 	}
 
 }

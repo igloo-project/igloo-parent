@@ -28,7 +28,6 @@ import test.model.StorageUnitType;
 
 class TestEntities extends AbstractTest {
 
-
 	/**
 	 * Check that hibernate maps correctly {@link IFichierType}
 	 */

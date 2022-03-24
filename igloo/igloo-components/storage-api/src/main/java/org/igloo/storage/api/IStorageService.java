@@ -38,6 +38,6 @@ public interface IStorageService {
 	File getFile(@Nonnull Fichier fichier);
 
 	@Nonnull
-	List<StorageConsistency> checkConsistency(@Nonnull StorageUnit unit);
+	List<StorageConsistency> checkConsistency(StorageUnit unit, boolean checksumValidation);
 
 }

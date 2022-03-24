@@ -1,32 +1,47 @@
 package org.igloo.storage.impl;
 
-import com.google.common.collect.ComparisonChain;
-import com.google.common.hash.Hashing;
-import com.google.common.hash.HashingInputStream;
-import com.google.common.io.CountingInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistency;
+import org.igloo.storage.model.StorageFailure;
 import org.igloo.storage.model.StorageUnit;
-import org.igloo.storage.model.atomic.*;
+import org.igloo.storage.model.atomic.ChecksumType;
+import org.igloo.storage.model.atomic.FichierStatus;
+import org.igloo.storage.model.atomic.IFichierType;
+import org.igloo.storage.model.atomic.IStorageUnitType;
+import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import javax.annotation.Nonnull;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Tuple;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
+import com.google.common.collect.Sets;
+import com.google.common.hash.Hashing;
+import com.google.common.hash.HashingInputStream;
+import com.google.common.io.CountingInputStream;
 
 public class StorageService implements IStorageService, IStorageTransactionResourceManager {
 
@@ -136,35 +151,51 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 
 	// TODO MPI : à mettre dans un service spécifique aux vérifications de cohérence ?
 	@Override
-	public List<StorageConsistency> checkConsistency(@Nonnull StorageUnit unit) {
+	public List<StorageConsistency> checkConsistency(@Nonnull StorageUnit unit, boolean checksumValidation) {
 		EntityManager entityManager = entityManager();
 		List<StorageConsistency> consistencies = new ArrayList<>();
-
-		List<IFichierType> existingFichierTypes = entityManager.createQuery("SELECT DISTINCT f.fichierType FROM Fichier f", IFichierType.class)
-			.getResultStream()
-			.sorted((o1, o2) -> ComparisonChain.start().compare(o1.getName(), o2.getName()).result())
-			.collect(Collectors.toList());
 		
-		for (IFichierType fichierType : existingFichierTypes) {
-			StorageConsistency consistency = new StorageConsistency(unit, fichierType);
-			
-			Path absolutePath = getAbsolutePath(unit, fichierType);
-			Map<Path, File> files = operations.listRecursively(absolutePath).stream().collect(Collectors.toMap(f -> f.toPath(), f -> f));
-			if (files != null) {
-				consistency.setFsFileCount(files.size());
-			}
-			Map<Path, Tuple> result = entityManager.createQuery("SELECT f.id AS id, f.relativePath AS relativePath, f.checksumType AS checksumType, f.checksum AS checksum, f.fichierType AS fichierType FROM Fichier f where f.storageUnit = :unit AND f.status = :status AND fichierType = :type ORDER BY f.id DESC", Tuple.class)
-					.setParameter("unit", unit)
-					.setParameter("type", fichierType)
-					.setParameter("status", FichierStatus.ALIVE)
-					.getResultStream()
-					.collect(Collectors.toMap(t -> Path.of(unit.getPath()).resolve(Path.of(t.get("relativePath", String.class))), t -> t));
+		StorageConsistency consistency = new StorageConsistency(unit);
+		
+		Path absolutePath = Path.of(unit.getPath());
+		Map<Path, File> files = Optional.ofNullable(operations.listRecursively(absolutePath))
+				.orElseGet(Collections::emptyList)
+				.stream()
+				.collect(Collectors.toMap(File::toPath, Function.identity()));
+		consistency.setFsFileCount(files.size());
+		
+		Map<Path, Fichier> result = entityManager.createQuery("SELECT f FROM Fichier f where f.storageUnit = :unit AND f.status = :status ORDER BY f.id DESC", Fichier.class)
+				.setParameter("unit", unit)
+				.setParameter("status", FichierStatus.ALIVE)
+				.getResultStream()
+				.collect(Collectors.toMap(f -> Path.of(f.getRelativePath()), Function.identity()));
+		consistency.setDbFichierCount(result.size()); // TODO MPI : on conserve le cast en int ou on passe en long ?
 
-			Collections.disjoint(files.keySet(), result.keySet());
-			consistency.setDbFichierCount(result.size()); // TODO MPI : on conserve le cast en int ou on passe en long ?
-
-			consistencies.add(consistency);
+		Set<Path> missingEntities = Sets.difference(files.keySet(), result.keySet());
+		List<Fichier> missingFiles = Sets.difference(result.keySet(), files.keySet()).stream().map(result::get).collect(Collectors.toUnmodifiableList());
+		
+		for (Path missingEntity : missingEntities) {
+			entityManager().persist(StorageFailure.ofMissingEntity(Path.of(unit.getPath()).relativize(missingEntity).toString(), unit));
 		}
+		for (Fichier missingFile : missingFiles) {
+			entityManager().persist(StorageFailure.ofMissingFile(missingFile, unit));
+		}
+		Map<Path, Fichier> okEntitiesFiles = Sets.intersection(files.keySet(), result.keySet()).stream().collect(Collectors.toMap(Function.identity(), result::get));
+		if (checksumValidation) {
+			for (Fichier fichier : okEntitiesFiles.values()) {
+				try (InputStream fis = new FileInputStream(Path.of(unit.getPath()).resolve(fichier.getRelativePath()).toFile()); HashingInputStream his = new HashingInputStream(Hashing.sha256(), fis)) {
+					his.readAllBytes();
+					String checksum = his.hash().toString();
+					if (checksum.equals(fichier.getChecksum())) {
+						entityManager().persist(StorageFailure.ofChecksumMismatch(fichier, unit));
+					}
+				} catch (IOException e) {
+					LOGGER.error("Checksum calculation error on {}/{}", fichier.getId(), fichier.getUuid(), e);
+				}
+			}
+		}
+
+		consistencies.add(consistency);
 
 		return consistencies;
 	}
@@ -176,10 +207,6 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 
 	private Path getAbsolutePath(Fichier fichier) {
 		return Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath()).toAbsolutePath();
-	}
-
-	private Path getAbsolutePath(StorageUnit unit, IFichierType fichierType) {
-		return Path.of(unit.getPath(), fichierType.getPath()).toAbsolutePath();
 	}
 
 	@Nonnull
