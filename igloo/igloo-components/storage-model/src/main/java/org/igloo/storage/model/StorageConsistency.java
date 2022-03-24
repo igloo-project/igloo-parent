@@ -5,7 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-@Entity
+// TODO LAL : à ajuster
+//@Entity
 public class StorageConsistency implements Serializable {
 
 	private static final long serialVersionUID = -9046836892299254738L;
