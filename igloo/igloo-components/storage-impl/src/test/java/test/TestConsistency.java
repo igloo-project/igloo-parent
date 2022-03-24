@@ -1,50 +1,68 @@
 package test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.data.Index.atIndex;
+import static org.assertj.core.api.Assertions.atIndex;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
-
-import javax.persistence.EntityManagerFactory;
+import java.util.Set;
 
 import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
+import org.igloo.storage.impl.DatabaseOperations;
+import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistency;
+import org.igloo.storage.model.StorageUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.Extensions;
+import org.mockito.internal.stubbing.answers.AnswerFunctionalInterfaces;
 
-import test.model.FichierType1;
-
+@Extensions(@ExtendWith(SoftAssertionsExtension.class))
 public class TestConsistency extends AbstractTest {
 
-	@Override
+	protected StorageOperations storageOperations = mock(StorageOperations.class);
+	protected DatabaseOperations databaseOperations = mock(DatabaseOperations.class);
+
 	@BeforeEach
-	void initStorageUnit(EntityManagerFactory entityManagerFactory, @TempDir Path tempDir) {
-		super.initStorageUnit(entityManagerFactory, tempDir);
+	void initStorageUnit() {
+		super.init(null, null, storageOperations, databaseOperations);
 	}
 
 	@Test
-	void testConsistency() throws IOException {
-		doCallRealMethod().when(operations).copy(any(), any());
-		doCallRealMethod().when(operations).getFile(any());
-		doCallRealMethod().when(operations).listRecursively(any());
-		Fichier fichier = transactionTemplate.execute((t) -> createFichier("filename.txt", FichierType1.CONTENT1, FILE_CONTENT, () -> {}));
+	void testConsistency(SoftAssertions softly) throws IOException {
+		StorageUnit unit = new StorageUnit();
+		Path path = Path.of("/my-root-path");
+		unit.setPath(path.toString());
+		when(storageOperations.listUnitContent(unit)).thenReturn(Set.of(
+			Path.of("fichier1"),
+			Path.of("fichier2")
+		));
+		when(storageOperations.checksum(any())).then(AnswerFunctionalInterfaces.<String, Path>toAnswer(p -> p.getFileName().toString()));
+		Fichier fichier1 = new Fichier();
+		fichier1.setRelativePath("fichier1");
+		fichier1.setChecksum("fichier1");
+		Fichier fichier2 = new Fichier();
+		fichier2.setRelativePath("fichier2");
+		fichier2.setChecksum("fichier1");
+		when(databaseOperations.listUnitAliveFichiers()).thenReturn(Set.of(
+			fichier1,
+			fichier2
+		));
+		List<StorageConsistency> beans = storageService.checkConsistency(unit, true);
 
-		List<StorageConsistency> beans = transactionTemplate.execute((t) -> storageService.checkConsistency(fichier.getStorageUnit(), true));
-
-		SoftAssertions soft = new SoftAssertions();
 		assertThat(beans)
 			.hasSize(1)
 			.satisfies(consistency -> {
-				soft.assertThat(consistency.getFsFileCount()).isEqualTo(1L);
-				soft.assertThat(consistency.getDbFichierCount()).isEqualTo(1L);
+				softly.assertThat(consistency.getFsFileCount()).as("File (filesystem) count").isEqualTo(2L);
+				softly.assertThat(consistency.getDbFichierCount()).as("Fichier (entity) count").isEqualTo(2L);
 			}, atIndex(0));
-		soft.assertAll();
 	}
 
 }

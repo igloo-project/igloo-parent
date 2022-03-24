@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
  * This class reads provided {@link StorageEvent} collections to apply appropriate transaction completion action
  * on storage.
  * 
- * All file operations are delegated to {@link StorageOperations}. All meaningful logs are triggered by
+ * All file storageOperations are delegated to {@link StorageOperations}. All meaningful logs are triggered by
  * {@link StorageOperations} instance.
  * 
  * @see StorageOperations

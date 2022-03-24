@@ -13,6 +13,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 
 import org.hibernate.Session;
+import org.igloo.jpa.test.EntityManagerFactoryExtension;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.StorageUnitStatistics;
@@ -21,12 +22,16 @@ import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import test.model.FichierType1;
 import test.model.FichierType2;
 import test.model.StorageUnitType;
 
 class TestEntities extends AbstractTest {
+
+	@RegisterExtension
+	EntityManagerFactoryExtension extension = AbstractTest.initEntityManagerExtension();
 
 	/**
 	 * Check that hibernate maps correctly {@link IFichierType}

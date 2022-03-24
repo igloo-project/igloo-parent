@@ -1,6 +1,7 @@
 package org.igloo.storage.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,9 +20,13 @@ import javax.annotation.Nullable;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.igloo.storage.model.StorageUnit;
 import org.iglooproject.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.hash.Hashing;
+import com.google.common.hash.HashingInputStream;
 
 public class StorageOperations {
 
@@ -67,12 +76,34 @@ public class StorageOperations {
 		return absolutePath.toFile();
 	}
 
+	@Nonnull
+	public Set<Path> listUnitContent(StorageUnit unit) {
+		Path absolutePath = Path.of(unit.getPath());
+		return Optional.ofNullable(listRecursively(absolutePath))
+				.orElseGet(Collections::emptyList)
+				.stream()
+				.map(File::toPath)
+				.collect(Collectors.toSet());
+	}
+
 	@Nullable
-	public Collection<File> listRecursively(@Nonnull Path directoryPath) {
+	private Collection<File> listRecursively(@Nonnull Path directoryPath) {
 		File directory = getFile(directoryPath);
 		if (!directory.exists()) {
 			return null;
 		}
 		return FileUtils.listRecursively(getFile(directoryPath), FileFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+	}
+
+	@Nonnull
+	public String checksum(Path root) {
+		String checksum = null;
+		try (InputStream fis = new FileInputStream(root.toFile()); HashingInputStream his = new HashingInputStream(Hashing.sha256(), fis)) {
+			his.readAllBytes();
+			checksum = his.hash().toString();
+		} catch (IOException e) {
+			throw new IllegalStateException(String.format("Checksum calculation error on %s", root), e);
+		}
+		return checksum;
 	}
 }

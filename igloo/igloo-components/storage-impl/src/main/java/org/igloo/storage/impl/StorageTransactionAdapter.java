@@ -14,7 +14,7 @@ import org.springframework.transaction.support.TransactionSynchronizationUtils;
  * {@link TransactionSynchronization} context and {@link #addEvent(Long, StorageEventType, Path)} must be called
  * for each {@link Fichier} transaction-involving operation.</p>
  * 
- * <p>After transaction status switch, operations are delegated to {@link StorageTransactionHandler}.</p>
+ * <p>After transaction status switch, storageOperations are delegated to {@link StorageTransactionHandler}.</p>
  * 
  * @see TransactionSynchronization
  * @see StorageTransactionHandler
