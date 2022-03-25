@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
-import org.assertj.core.matcher.AssertionMatcher;
 import org.igloo.storage.impl.IStorageTransactionResourceManager;
 import org.igloo.storage.impl.StorageEvent;
 import org.igloo.storage.impl.StorageEventType;
@@ -20,19 +18,10 @@ import org.igloo.storage.impl.StorageTransactionAdapter;
 import org.igloo.storage.impl.StorageTransactionHandler;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.hamcrest.MockitoHamcrest;
 import org.springframework.core.Ordered;
 import org.springframework.transaction.support.TransactionSynchronization;
 
-class TestTransaction {
-	public static <T> T argThat(Consumer<T> assertions) {
-		return MockitoHamcrest.argThat(new AssertionMatcher<T>() {
-			@Override
-			public void assertion(T actual) throws AssertionError {
-				assertions.accept(actual);
-			}
-		});
-	}
+class TestTransaction extends AbstractTest {
 
 	private StorageTransactionResourceManager resourceManager = new StorageTransactionResourceManager();
 

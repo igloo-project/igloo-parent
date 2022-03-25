@@ -166,21 +166,21 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		List<Fichier> missingFiles = Sets.difference(result.keySet(), files).stream().map(result::get).collect(Collectors.toUnmodifiableList());
 		
 		for (Path missingEntity : missingEntities) {
-			StorageFailure failure = StorageFailure.ofMissingEntity(Path.of(unit.getPath()).relativize(missingEntity).toString(), unit);
+			StorageFailure failure = StorageFailure.ofMissingEntity(Path.of(unit.getPath()).resolve(missingEntity).toString(), unit);
 			databaseOperations.createFailure(failure);
 		}
 		for (Fichier missingFile : missingFiles) {
-			StorageFailure failure = StorageFailure.ofMissingFile(missingFile, unit);
+			StorageFailure failure = StorageFailure.ofMissingFile(Path.of(unit.getPath()).resolve(missingFile.getRelativePath()), missingFile, unit);
 			databaseOperations.createFailure(failure);
 		}
 		Map<Path, Fichier> okEntitiesFiles = Sets.intersection(files, result.keySet()).stream().collect(Collectors.toMap(Function.identity(), result::get));
 		if (checksumValidation) {
 			for (Fichier fichier : okEntitiesFiles.values()) {
-				Path root = Path.of(unit.getPath()).resolve(fichier.getRelativePath());
+				Path filePath = Path.of(unit.getPath()).resolve(fichier.getRelativePath());
 				try {
-					String checksum = storageOperations.checksum(root);
-					if (checksum.equals(fichier.getChecksum())) {
-						databaseOperations.createFailure(StorageFailure.ofChecksumMismatch(fichier, unit));
+					String checksum = storageOperations.checksum(filePath);
+					if (!checksum.equals(fichier.getChecksum())) {
+						databaseOperations.createFailure(StorageFailure.ofChecksumMismatch(filePath, fichier, unit));
 					}
 				} catch (RuntimeException e) {
 					LOGGER.error("Checksum calculation error on {}/{}", fichier.getId(), fichier.getUuid(), e);

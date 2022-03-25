@@ -11,9 +11,11 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import javax.persistence.EntityManagerFactory;
 
+import org.assertj.core.matcher.AssertionMatcher;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.PostgreSQL10Dialect;
 import org.igloo.jpa.test.EntityManagerFactoryExtension;
@@ -29,6 +31,7 @@ import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.hibernate.model.naming.ImplicitNamingStrategyJpaComponentPathImpl;
+import org.mockito.hamcrest.MockitoHamcrest;
 import org.postgresql.Driver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +104,15 @@ abstract class AbstractTest {
 			}
 			
 			return settings.toArray();
+		});
+	}
+
+	public static <T> T argThat(Consumer<T> assertions) {
+		return MockitoHamcrest.argThat(new AssertionMatcher<T>() {
+			@Override
+			public void assertion(T actual) throws AssertionError {
+				assertions.accept(actual);
+			}
 		});
 	}
 

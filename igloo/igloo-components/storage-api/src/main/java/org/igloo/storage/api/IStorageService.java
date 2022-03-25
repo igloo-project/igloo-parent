@@ -12,6 +12,10 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
+/**
+ * {@link IStorageService} is the main interface to use storage module. It allows to create new {@link StorageUnit}, to
+ * add, validate, invalidate, remove and get {@link Fichier} and associated data.
+ */
 public interface IStorageService {
 
 	/**
@@ -49,6 +53,9 @@ public interface IStorageService {
 	@Nonnull
 	File getFile(@Nonnull Fichier fichier);
 
+	/**
+	 * Perform a consistency check on a {@link StorageUnit}. Check can be performed with or without checksum validation.
+	 */
 	@Nonnull
 	List<StorageConsistency> checkConsistency(StorageUnit unit, boolean checksumValidation);
 

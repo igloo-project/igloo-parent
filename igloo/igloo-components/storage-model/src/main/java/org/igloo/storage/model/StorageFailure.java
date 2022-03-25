@@ -1,5 +1,6 @@
 package org.igloo.storage.model;
 
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 
 import javax.persistence.Basic;
@@ -133,9 +134,9 @@ public class StorageFailure extends GenericEntity<Long, StorageFailure> {
 		return failure;
 	}
 
-	public static StorageFailure ofMissingFile(Fichier fichier, StorageUnit unit) {
+	public static StorageFailure ofMissingFile(Path path, Fichier fichier, StorageUnit unit) {
 		StorageFailure failure = new StorageFailure();
-		failure.setPath(fichier.getRelativePath());
+		failure.setPath(path.toString());
 		failure.setFichier(fichier);
 		failure.setCreationTime(LocalDateTime.now());
 		failure.setStatus(StorageFailureStatus.ALIVE);
@@ -144,9 +145,9 @@ public class StorageFailure extends GenericEntity<Long, StorageFailure> {
 		return failure;
 	}
 
-	public static StorageFailure ofChecksumMismatch(Fichier fichier, StorageUnit unit) {
+	public static StorageFailure ofChecksumMismatch(Path path, Fichier fichier, StorageUnit unit) {
 		StorageFailure failure = new StorageFailure();
-		failure.setPath(fichier.getRelativePath());
+		failure.setPath(path.toString());
 		failure.setFichier(fichier);
 		failure.setCreationTime(LocalDateTime.now());
 		failure.setStatus(StorageFailureStatus.ALIVE);
