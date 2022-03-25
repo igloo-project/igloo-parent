@@ -107,7 +107,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 			fichier.setStatus(FichierStatus.ALIVE);
 			fichier.setValidationDate(LocalDateTime.now());
 		} else {
-			LOGGER.warn("[validate] Fichier {} is alread marked ALIVE; no action", fichier.getId());
+			LOGGER.warn("[validate] Fichier {} is already marked ALIVE; no action", fichier.getId());
 		}
 	}
 
@@ -117,13 +117,13 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 			fichier.setStatus(FichierStatus.INVALIDATED);
 			fichier.setInvalidationDate(LocalDateTime.now());
 		} else {
-			LOGGER.warn("[invalidate] Fichier {} is alread marked DELETED; no action", fichier.getId());
+			LOGGER.warn("[invalidate] Fichier {} is already marked INVALIDATED; no action", fichier.getId());
 		}
 	}
 
 	@Override
 	public void removeFichier(@Nonnull Fichier fichier) {
-		// TODO : vérifier qu'on est dans un état DELETED ?
+		// TODO : vérifier qu'on est dans un état INVALIDATED ?
 		databaseOperations.removeFichier(fichier);
 		addEvent(fichier.getId(), StorageEventType.DELETE, getAbsolutePath(fichier));
 	}

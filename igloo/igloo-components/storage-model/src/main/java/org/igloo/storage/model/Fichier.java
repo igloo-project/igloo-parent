@@ -142,8 +142,8 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 		return type;
 	}
 
-	public void setType(IFichierType fichierType) {
-		this.type = fichierType;
+	public void setType(IFichierType type) {
+		this.type = type;
 	}
 
 	public StorageUnit getStorageUnit() {
