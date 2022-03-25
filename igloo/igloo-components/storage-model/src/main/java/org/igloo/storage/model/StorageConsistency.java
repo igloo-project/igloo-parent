@@ -2,7 +2,6 @@ package org.igloo.storage.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 // TODO LAL : à ajuster
