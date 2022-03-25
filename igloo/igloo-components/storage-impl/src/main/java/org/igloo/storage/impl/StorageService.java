@@ -176,6 +176,10 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		Map<Path, Fichier> okEntitiesFiles = Sets.intersection(files, result.keySet()).stream().collect(Collectors.toMap(Function.identity(), result::get));
 		if (checksumValidation) {
 			for (Fichier fichier : okEntitiesFiles.values()) {
+				if (ChecksumType.UNKNOWN.equals(fichier.getChecksumType())) {
+					// skip fichier without checksum
+					continue;
+				}
 				Path filePath = Path.of(unit.getPath()).resolve(fichier.getRelativePath());
 				try {
 					String checksum = storageOperations.checksum(filePath);

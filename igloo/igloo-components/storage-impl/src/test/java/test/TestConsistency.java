@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.atIndex;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -19,6 +20,7 @@ import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistency;
 import org.igloo.storage.model.StorageUnit;
+import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.StorageFailureType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,6 +72,9 @@ public class TestConsistency extends AbstractTest {
 		));
 		List<StorageConsistency> beans = storageService.checkConsistency(unit, true);
 
+		// 2 missing entity
+		// 1 missing file
+		// 1 checksum mismatch
 		verify(databaseOperations).createFailure(argThat(f -> {
 			assertThat(f.getType()).isEqualTo(StorageFailureType.MISSING_ENTITY);
 			assertThat(f.getFichier()).isNull();
@@ -96,6 +101,25 @@ public class TestConsistency extends AbstractTest {
 				softly.assertThat(consistency.getFsFileCount()).as("File (filesystem) count").isEqualTo(5L);
 				softly.assertThat(consistency.getDbFichierCount()).as("Fichier (entity) count").isEqualTo(4L);
 			}, atIndex(0));
+	}
+
+	@Test
+	void testConsistencyNoChecksum(SoftAssertions softly) throws IOException {
+		StorageUnit unit = new StorageUnit();
+		Path path = Path.of("/my-root-path");
+		unit.setPath(path.toString());
+		Fichier fichier1 = new Fichier();
+		fichier1.setRelativePath("fichier1");
+		fichier1.setChecksum(null);
+		fichier1.setChecksumType(ChecksumType.UNKNOWN);
+		
+		when(storageOperations.listUnitContent(unit)).thenReturn(Set.of(Path.of("fichier1")));
+		when(databaseOperations.listUnitAliveFichiers()).thenReturn(Set.of(fichier1));
+		
+		storageService.checkConsistency(unit, true);
+		
+		verify(databaseOperations, never()).createFailure(any());
+		verify(storageOperations, never()).checksum(any());
 	}
 
 }
