@@ -18,7 +18,7 @@ import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.model.Fichier;
-import org.igloo.storage.model.StorageConsistency;
+import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.StorageFailureType;
@@ -70,27 +70,27 @@ public class TestConsistency extends AbstractTest {
 			fichier4,
 			fichier5
 		));
-		List<StorageConsistency> beans = storageService.checkConsistency(unit, true);
+		List<StorageConsistencyCheck> beans = storageService.checkConsistency(unit, true);
 
 		// 2 missing entity
 		// 1 missing file
 		// 1 checksum mismatch
-		verify(databaseOperations).createFailure(argThat(f -> {
+		verify(databaseOperations).triggerFailure(argThat(f -> {
 			assertThat(f.getType()).isEqualTo(StorageFailureType.MISSING_ENTITY);
 			assertThat(f.getFichier()).isNull();
 			assertThat(f.getPath()).isEqualTo(path.resolve(Path.of("fichier3")).toString());
 		}));
-		verify(databaseOperations).createFailure(argThat(f -> {
+		verify(databaseOperations).triggerFailure(argThat(f -> {
 			assertThat(f.getType()).isEqualTo(StorageFailureType.MISSING_ENTITY);
 			assertThat(f.getFichier()).isNull();
 			assertThat(f.getPath()).isEqualTo(path.resolve(Path.of("fichier6")).toString());
 		}));
-		verify(databaseOperations).createFailure(argThat(f -> {
+		verify(databaseOperations).triggerFailure(argThat(f -> {
 			assertThat(f.getType()).isEqualTo(StorageFailureType.MISSING_FILE);
 			assertThat(f.getFichier()).isEqualTo(fichier4);
 			assertThat(f.getPath()).isEqualTo(path.resolve(Path.of("fichier4")).toString());
 		}));
-		verify(databaseOperations).createFailure(argThat(f -> {
+		verify(databaseOperations).triggerFailure(argThat(f -> {
 			assertThat(f.getType()).isEqualTo(StorageFailureType.CHECKSUM_MISMATCH);
 			assertThat(f.getFichier()).isEqualTo(fichier5);
 			assertThat(f.getPath()).isEqualTo(path.resolve(Path.of("fichier5")).toString());
@@ -111,14 +111,14 @@ public class TestConsistency extends AbstractTest {
 		Fichier fichier1 = new Fichier();
 		fichier1.setRelativePath("fichier1");
 		fichier1.setChecksum(null);
-		fichier1.setChecksumType(ChecksumType.UNKNOWN);
+		fichier1.setChecksumType(ChecksumType.NONE);
 		
 		when(storageOperations.listUnitContent(unit)).thenReturn(Set.of(Path.of("fichier1")));
 		when(databaseOperations.listUnitAliveFichiers()).thenReturn(Set.of(fichier1));
 		
 		storageService.checkConsistency(unit, true);
 		
-		verify(databaseOperations, never()).createFailure(any());
+		verify(databaseOperations, never()).triggerFailure(any());
 		verify(storageOperations, never()).checksum(any());
 	}
 

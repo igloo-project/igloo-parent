@@ -23,7 +23,7 @@ import javax.persistence.EntityManagerFactory;
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
-import org.igloo.storage.model.StorageConsistency;
+import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageFailure;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.ChecksumType;
@@ -151,32 +151,30 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 
 	// TODO MPI : à mettre dans un service spécifique aux vérifications de cohérence ?
 	@Override
-	public List<StorageConsistency> checkConsistency(@Nonnull StorageUnit unit, boolean checksumValidation) {
-		List<StorageConsistency> consistencies = new ArrayList<>();
-		
-		StorageConsistency consistency = new StorageConsistency(unit);
+	public List<StorageConsistencyCheck> checkConsistency(@Nonnull StorageUnit unit, boolean checksumValidation) {
+		List<StorageConsistencyCheck> consistencies = new ArrayList<>();
+		StorageConsistencyCheck consistencyCheck = new StorageConsistencyCheck(unit);
 		
 		Set<Path> files = storageOperations.listUnitContent(unit);
-		consistency.setFsFileCount(files.size());
-		
 		Map<Path, Fichier> result = databaseOperations.listUnitAliveFichiers().stream().collect(Collectors.toMap(f -> Path.of(f.getRelativePath()), Function.identity()));
-		consistency.setDbFichierCount(result.size()); // TODO MPI : on conserve le cast en int ou on passe en long ?
+		consistencyCheck.setFsFileCount(files.size());
+		consistencyCheck.setDbFichierCount(result.size());
 
 		Set<Path> missingEntities = Sets.difference(files, result.keySet());
 		List<Fichier> missingFiles = Sets.difference(result.keySet(), files).stream().map(result::get).collect(Collectors.toUnmodifiableList());
 		
 		for (Path missingEntity : missingEntities) {
-			StorageFailure failure = StorageFailure.ofMissingEntity(Path.of(unit.getPath()).resolve(missingEntity).toString(), unit);
-			databaseOperations.createFailure(failure);
+			StorageFailure failure = StorageFailure.ofMissingEntity(Path.of(unit.getPath()).resolve(missingEntity).toString(), consistencyCheck);
+			databaseOperations.triggerFailure(failure);
 		}
 		for (Fichier missingFile : missingFiles) {
-			StorageFailure failure = StorageFailure.ofMissingFile(Path.of(unit.getPath()).resolve(missingFile.getRelativePath()), missingFile, unit);
-			databaseOperations.createFailure(failure);
+			StorageFailure failure = StorageFailure.ofMissingFile(Path.of(unit.getPath()).resolve(missingFile.getRelativePath()), missingFile, consistencyCheck);
+			databaseOperations.triggerFailure(failure);
 		}
 		Map<Path, Fichier> okEntitiesFiles = Sets.intersection(files, result.keySet()).stream().collect(Collectors.toMap(Function.identity(), result::get));
 		if (checksumValidation) {
 			for (Fichier fichier : okEntitiesFiles.values()) {
-				if (ChecksumType.UNKNOWN.equals(fichier.getChecksumType())) {
+				if (ChecksumType.NONE.equals(fichier.getChecksumType())) {
 					// skip fichier without checksum
 					continue;
 				}
@@ -184,16 +182,15 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 				try {
 					String checksum = storageOperations.checksum(filePath);
 					if (!checksum.equals(fichier.getChecksum())) {
-						databaseOperations.createFailure(StorageFailure.ofChecksumMismatch(filePath, fichier, unit));
+						databaseOperations.triggerFailure(StorageFailure.ofChecksumMismatch(filePath, fichier, consistencyCheck));
 					}
 				} catch (RuntimeException e) {
 					LOGGER.error("Checksum calculation error on {}/{}", fichier.getId(), fichier.getUuid(), e);
 				}
 			}
 		}
-
-		consistencies.add(consistency);
-
+		
+		consistencies.add(consistencyCheck);
 		return consistencies;
 	}
 

@@ -2,6 +2,8 @@ package org.igloo.storage.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -9,13 +11,17 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
 import org.igloo.storage.model.Fichier;
+import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageFailure;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IStorageUnitType;
+import org.igloo.storage.model.atomic.StorageFailureStatus;
+import org.igloo.storage.model.atomic.StorageFailureType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 
@@ -81,8 +87,56 @@ public class DatabaseOperations {
 			.orElseThrow();
 	}
 
-	public void createFailure(StorageFailure failure) {
-		entityManager().persist(failure);
+	/**
+	 * Create or update an existing failure.
+	 */
+	public void triggerFailure(StorageFailure failure) {
+		try {
+			StorageFailure storedFailure = entityManager().createQuery("SELECT f FROM StorageFailure f WHERE f.unit = :unit and f.path = :path ORDER BY f.id DESC", StorageFailure.class)
+				.setParameter("path", failure.getPath())
+				.getSingleResult();
+			// failure is known and acknowledged; we ignore subsequent checks
+			// except type failure change
+			if (failure.getType().equals(storedFailure.getType()) && StorageFailureStatus.ACKNOWLEDGED.equals(failure.getStatus())) {
+				return;
+			}
+			// a failure must not be reported on multiple unit; only misconfiguration may trigger this case
+			// (an absolute path cannot be linked to multiple units)
+			if (!failure.getConsistencyCheck().getUnit().equals(storedFailure.getConsistencyCheck().getUnit())) {
+				throw new IllegalStateException(String.format("Failure reported for %s in unit %d and already stored for unit %d", failure.getPath(), failure.getConsistencyCheck().getUnit().getId(), storedFailure.getConsistencyCheck().getUnit().getId()));
+			}
+			// else storedFailure is updated, except creation time
+			failure.setCreationTime(storedFailure.getCreationTime());
+			failure.setId(storedFailure.getId());
+			entityManager().merge(failure);
+		} catch (NoResultException e) {
+			entityManager().persist(failure);
+		}
+	}
+
+	/**
+	 * <p>Clean current failures linked with {@link StorageUnit} targetted by <code>consistencyCheck</code> and not
+	 * linked with this <code>consistencyCheck</code>. It allows to resolve as {@link StorageFailureStatus#FIXED} all
+	 * failures not updated by the provided {@link StorageConsistencyCheck}.</p>
+	 * 
+	 * @param if <code>true</code>, cleaned {@link StorageFailureStatus} includes checksum mismatch failure. If <code>false</code>,
+	 * there are excluded.
+	 */
+	public void cleanFailures(StorageConsistencyCheck consistencyCheck, boolean alsoCleanChecksumMismatch) {
+		Map<String, Object> params = new HashMap<>();
+		String query = "UPDATE StorageFailure SET status = :fixedStatus "
+				// link failure -> check -> unit
+				+ "FROM StorageUnit u JOIN StorageConsistencyCheck c ON c.unit_id = u.id "
+				// match same unit, other check and status ALIVE
+				+ "WHERE u.id = :unitId AND consistencyCheck_id != :consistencyCheckId AND status = :aliveStatus";
+		params.put("aliveStatus", StorageFailureStatus.ALIVE);
+		params.put("unitId", consistencyCheck.getUnit().getId());
+		params.put("consistencyCheckId", consistencyCheck.getId());
+		if (!alsoCleanChecksumMismatch) {
+			query += " AND type != :checksumMismatchType";
+			params.put("checksumMismatchType", StorageFailureType.CHECKSUM_MISMATCH);
+		}
+		entityManager().createNativeQuery(query, Integer.class).executeUpdate();
 	}
 
 	public void createFichier(Fichier fichier) {

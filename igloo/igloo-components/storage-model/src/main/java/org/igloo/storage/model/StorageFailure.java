@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,16 +26,20 @@ public class StorageFailure extends GenericEntity<Long, StorageFailure> {
 	private Long id;
 
 	@Basic(optional = false)
+	@Column(unique = true)
 	private String path;
 
 	@ManyToOne(optional = false)
-	private StorageUnit unit;
+	private StorageConsistencyCheck consistencyCheck;
 
 	@ManyToOne(optional = true)
 	private Fichier fichier;
 
 	@Basic(optional = false)
 	private LocalDateTime creationTime;
+
+	@Basic(optional = false)
+	private LocalDateTime lastFailureOn;
 
 	@Basic(optional = true)
 	private LocalDateTime acknowledgedOn;
@@ -68,12 +73,12 @@ public class StorageFailure extends GenericEntity<Long, StorageFailure> {
 		this.path = path;
 	}
 
-	public StorageUnit getUnit() {
-		return unit;
+	public StorageConsistencyCheck getConsistencyCheck() {
+		return consistencyCheck;
 	}
 
-	public void setUnit(StorageUnit unit) {
-		this.unit = unit;
+	public void setConsistencyCheck(StorageConsistencyCheck consistency) {
+		this.consistencyCheck = consistency;
 	}
 
 	public Fichier getFichier() {
@@ -90,6 +95,9 @@ public class StorageFailure extends GenericEntity<Long, StorageFailure> {
 
 	public void setCreationTime(LocalDateTime creationTime) {
 		this.creationTime = creationTime;
+		if (lastFailureOn == null) {
+			this.lastFailureOn = creationTime;
+		}
 	}
 
 	public LocalDateTime getAcknowledgedOn() {
@@ -108,6 +116,14 @@ public class StorageFailure extends GenericEntity<Long, StorageFailure> {
 		this.fixedOn = fixedOn;
 	}
 
+	public LocalDateTime getLastFailureOn() {
+		return lastFailureOn;
+	}
+
+	public void setLastFailureOn(LocalDateTime lastFailureOn) {
+		this.lastFailureOn = lastFailureOn;
+	}
+
 	public StorageFailureStatus getStatus() {
 		return status;
 	}
@@ -124,35 +140,35 @@ public class StorageFailure extends GenericEntity<Long, StorageFailure> {
 		this.type = type;
 	}
 
-	public static StorageFailure ofMissingEntity(String path, StorageUnit unit) {
+	public static StorageFailure ofMissingEntity(String path, StorageConsistencyCheck consistencyCheck) {
 		StorageFailure failure = new StorageFailure();
 		failure.setPath(path);
 		failure.setCreationTime(LocalDateTime.now());
 		failure.setStatus(StorageFailureStatus.ALIVE);
 		failure.setType(StorageFailureType.MISSING_ENTITY);
-		failure.setUnit(unit);
+		failure.setConsistencyCheck(consistencyCheck);
 		return failure;
 	}
 
-	public static StorageFailure ofMissingFile(Path path, Fichier fichier, StorageUnit unit) {
+	public static StorageFailure ofMissingFile(Path path, Fichier fichier, StorageConsistencyCheck consistencyCheck) {
 		StorageFailure failure = new StorageFailure();
 		failure.setPath(path.toString());
 		failure.setFichier(fichier);
 		failure.setCreationTime(LocalDateTime.now());
 		failure.setStatus(StorageFailureStatus.ALIVE);
 		failure.setType(StorageFailureType.MISSING_FILE);
-		failure.setUnit(unit);
+		failure.setConsistencyCheck(consistencyCheck);
 		return failure;
 	}
 
-	public static StorageFailure ofChecksumMismatch(Path path, Fichier fichier, StorageUnit unit) {
+	public static StorageFailure ofChecksumMismatch(Path path, Fichier fichier, StorageConsistencyCheck consistencyCheck) {
 		StorageFailure failure = new StorageFailure();
 		failure.setPath(path.toString());
 		failure.setFichier(fichier);
 		failure.setCreationTime(LocalDateTime.now());
 		failure.setStatus(StorageFailureStatus.ALIVE);
 		failure.setType(StorageFailureType.CHECKSUM_MISMATCH);
-		failure.setUnit(unit);
+		failure.setConsistencyCheck(consistencyCheck);
 		return failure;
 	}
 

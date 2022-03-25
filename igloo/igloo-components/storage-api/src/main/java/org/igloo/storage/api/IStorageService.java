@@ -1,7 +1,7 @@
 package org.igloo.storage.api;
 
 import org.igloo.storage.model.Fichier;
-import org.igloo.storage.model.StorageConsistency;
+import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
@@ -57,6 +57,6 @@ public interface IStorageService {
 	 * Perform a consistency check on a {@link StorageUnit}. Check can be performed with or without checksum validation.
 	 */
 	@Nonnull
-	List<StorageConsistency> checkConsistency(StorageUnit unit, boolean checksumValidation);
+	List<StorageConsistencyCheck> checkConsistency(StorageUnit unit, boolean checksumValidation);
 
 }

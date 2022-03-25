@@ -2,13 +2,21 @@ package org.igloo.storage.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-// TODO LAL : à ajuster
-//@Entity
-public class StorageConsistency implements Serializable {
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+
+@Entity
+public class StorageConsistencyCheck extends GenericEntity<Long, StorageConsistencyCheck> implements Serializable {
 
 	private static final long serialVersionUID = -9046836892299254738L;
+
+	@Id
+	@GeneratedValue
+	private Long id;
 
 	@ManyToOne
 	private StorageUnit unit;
@@ -17,13 +25,23 @@ public class StorageConsistency implements Serializable {
 
 	private int dbFichierCount;
 
-	public StorageConsistency() {
+	public StorageConsistencyCheck() {
 		super();
 	}
 
-	public StorageConsistency(StorageUnit unit) {
+	public StorageConsistencyCheck(StorageUnit unit) {
 		this();
 		this.unit = unit;
+	}
+
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public StorageUnit getUnit() {

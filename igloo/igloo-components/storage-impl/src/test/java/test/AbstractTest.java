@@ -24,6 +24,7 @@ import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.impl.StorageService;
 import org.igloo.storage.model.Fichier;
+import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageFailure;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.StorageUnitStatistics;
@@ -44,7 +45,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import test.model.StorageUnitType;
 
 abstract class AbstractTest {
-	private static final List<Class<? extends GenericEntity<Long, ?>>> ENTITIES = List.of(Fichier.class, StorageUnit.class, StorageUnitStatistics.class, StorageFailure.class);
+	private static final List<Class<? extends GenericEntity<Long, ?>>> ENTITIES = List.of(Fichier.class, StorageUnit.class, StorageUnitStatistics.class, StorageFailure.class, StorageConsistencyCheck.class);
 	private static final String CFG_DB_TYPE = "TEST_DB_TYPE";
 	private static final String CFG_DB_NAME = "TEST_DB_NAME";
 	private static final String CFG_DB_HOST = "TEST_DB_HOST";
