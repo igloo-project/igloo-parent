@@ -19,7 +19,7 @@ class TestPathStrategy extends AbstractTest {
 	void testFichierPathStrategy() {
 		Fichier fichier = new Fichier();
 		fichier.setUuid(uuid);
-		fichier.setFichierType(FichierType1.CONTENT1);
+		fichier.setType(FichierType1.CONTENT1);
 
 		FichierPathStrategy pathStrategy = new FichierPathStrategy(1);
 		String path = pathStrategy.getPath(fichier);
@@ -29,21 +29,23 @@ class TestPathStrategy extends AbstractTest {
 	void testLegacyFichierPathStrategy() {
 		{
 			Fichier fichier = new Fichier();
-			fichier.setId(29706l);
-			fichier.setFichierType(FichierType1.CONTENT1);
+			fichier.setId(29706L);
+			fichier.setName("29706.png");
+			fichier.setType(FichierType1.CONTENT1);
 
 			LegacyFichierPathStrategy legacyPathStrategy = new LegacyFichierPathStrategy(1);
 			String path = legacyPathStrategy.getPath(fichier);
-			assertThat(path).isEqualTo("content1/bb/29706");
+			assertThat(path).isEqualTo("content1/bb/29706.png");
 		}
 		{
 			Fichier fichier = new Fichier();
-			fichier.setId(3675l);
-			fichier.setFichierType(FichierType1.CONTENT1);
+			fichier.setId(3675L);
+			fichier.setName("3675.jpg");
+			fichier.setType(FichierType1.CONTENT1);
 
 			LegacyFichierPathStrategy legacyPathStrategy = new LegacyFichierPathStrategy(1);
 			String path = legacyPathStrategy.getPath(fichier);
-			assertThat(path).isEqualTo("content1/84/3675");
+			assertThat(path).isEqualTo("content1/84/3675.jpg");
 		}
 	}
 

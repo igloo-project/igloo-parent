@@ -27,7 +27,7 @@ public class LegacyFichierPathStrategy implements IFichierPathStrategy {
 				.map(Path::of)
 				.reduce(Path.of(""), (a, b) -> a.resolve(b));
 
-		return Path.of(fichier.getFichierType().getPath(), path.toString(), id.toString()).toString();
+		return Path.of(fichier.getType().getPath(), path.toString(), fichier.getFilename()).toString();
 	}
 
 }

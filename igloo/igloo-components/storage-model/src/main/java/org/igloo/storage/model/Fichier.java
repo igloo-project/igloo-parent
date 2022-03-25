@@ -51,7 +51,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	@Type(type = StorageHibernateConstants.TYPE_FICHIER_TYPE)
 	@Basic(optional = false)
 	@Column(nullable = false)
-	private IFichierType fichierType;
+	private IFichierType type;
 
 	/**
 	 * {@link StorageUnit} responsible for file storage. Cannot be changed after initial attribution.
@@ -138,12 +138,12 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 		this.status = status;
 	}
 
-	public IFichierType getFichierType() {
-		return fichierType;
+	public IFichierType getType() {
+		return type;
 	}
 
-	public void setFichierType(IFichierType fichierType) {
-		this.fichierType = fichierType;
+	public void setType(IFichierType fichierType) {
+		this.type = fichierType;
 	}
 
 	public StorageUnit getStorageUnit() {

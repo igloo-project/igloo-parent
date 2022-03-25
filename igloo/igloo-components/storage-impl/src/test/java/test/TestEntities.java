@@ -54,7 +54,7 @@ class TestEntities extends AbstractTest {
 		fichier1.setId(1l);
 		fichier1.setUuid(UUID.randomUUID());
 		fichier1.setStatus(FichierStatus.ALIVE);
-		fichier1.setFichierType(FichierType1.CONTENT1);
+		fichier1.setType(FichierType1.CONTENT1);
 		fichier1.setStorageUnit(storageUnit);
 		fichier1.setRelativePath("/relative-path");
 		fichier1.setName("filename");
@@ -68,7 +68,7 @@ class TestEntities extends AbstractTest {
 		fichier2.setId(2l);
 		fichier2.setUuid(UUID.randomUUID());
 		fichier2.setStatus(FichierStatus.ALIVE);
-		fichier2.setFichierType(FichierType2.CONTENT3);
+		fichier2.setType(FichierType2.CONTENT3);
 		fichier2.setStorageUnit(storageUnit);
 		fichier2.setRelativePath("/relative-path");
 		fichier2.setName("filename");
@@ -85,12 +85,12 @@ class TestEntities extends AbstractTest {
 		entityManager.flush();
 		entityManager.clear();
 
-		assertThat(entityManager.find(Fichier.class, fichier1.getId()).getFichierType()).isEqualTo(FichierType1.CONTENT1);
-		assertThat(entityManager.find(Fichier.class, fichier2.getId()).getFichierType()).isEqualTo(FichierType2.CONTENT3);
+		assertThat(entityManager.find(Fichier.class, fichier1.getId()).getType()).isEqualTo(FichierType1.CONTENT1);
+		assertThat(entityManager.find(Fichier.class, fichier2.getId()).getType()).isEqualTo(FichierType2.CONTENT3);
 
 		Session session = entityManager.unwrap(Session.class);
 		session.doWork(c -> {
-			try (PreparedStatement s = c.prepareStatement("select id, fichiertype from fichier order by id")) {
+			try (PreparedStatement s = c.prepareStatement("select id, type from fichier order by id")) {
 				ResultSet rs = s.executeQuery();
 				assertThat(rs.next()).isTrue();
 				assertThat(rs.getString(2)).isEqualTo("CONTENT1");
@@ -123,7 +123,7 @@ class TestEntities extends AbstractTest {
 		fichier.setId(1l);
 		fichier.setUuid(UUID.randomUUID());
 		fichier.setStatus(FichierStatus.ALIVE);
-		fichier.setFichierType(FichierType1.CONTENT1);
+		fichier.setType(FichierType1.CONTENT1);
 		fichier.setStorageUnit(storageUnit);
 		fichier.setRelativePath("/relative-path");
 		fichier.setName("filename");
@@ -164,7 +164,7 @@ class TestEntities extends AbstractTest {
 		fichier1.setId(1l);
 		fichier1.setUuid(uuid);
 		fichier1.setStatus(FichierStatus.ALIVE);
-		fichier1.setFichierType(FichierType1.CONTENT1);
+		fichier1.setType(FichierType1.CONTENT1);
 		fichier1.setStorageUnit(storageUnit);
 		fichier1.setRelativePath("/relative-path");
 		fichier1.setName("filename");
@@ -178,7 +178,7 @@ class TestEntities extends AbstractTest {
 		fichier2.setId(2l);
 		fichier2.setUuid(uuid);
 		fichier2.setStatus(FichierStatus.ALIVE);
-		fichier2.setFichierType(FichierType1.CONTENT1);
+		fichier2.setType(FichierType1.CONTENT1);
 		fichier2.setStorageUnit(storageUnit);
 		fichier2.setRelativePath("/relative-path");
 		fichier2.setName("filename");

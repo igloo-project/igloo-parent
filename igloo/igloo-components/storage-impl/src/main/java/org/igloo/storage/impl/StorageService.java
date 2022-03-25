@@ -76,7 +76,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		fichier.setId(databaseOperations.generateFichier());
 		fichier.setUuid(UUID.randomUUID());
 		fichier.setStatus(FichierStatus.TRANSIENT);
-		fichier.setFichierType(fichierType);
+		fichier.setType(fichierType);
 		fichier.setStorageUnit(unit);
 		fichier.setName(filename);
 		fichier.setChecksumType(ChecksumType.SHA_256);
