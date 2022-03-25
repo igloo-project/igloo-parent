@@ -56,6 +56,7 @@ abstract class AbstractTest {
 	private static final String DEFAULT_PORT = "5436";
 	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractTest.class);
 	protected static final String FILE_CONTENT = "blabla";
+	// checksum from 'echo -n "blabla" | sha256sum'
 	protected static final String FILE_CHECKSUM_SHA_256 = "ccadd99b16cd3d200c22d6db45d8b6630ef3d936767127347ec8a76ab992c2ea";
 	protected static final long FILE_SIZE = 6L;
 	static {
