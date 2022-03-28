@@ -43,10 +43,10 @@ class TestService extends AbstractTest {
 	protected StorageOperations storageOperations = mock(StorageOperations.class);
 
 	@BeforeEach
-	void initStorageUnit(EntityManagerFactory entityManagerFactory) {
+	void init(EntityManagerFactory entityManagerFactory) {
 		Path fakeRootPath = Path.of("/fakepath");
 		super.init(entityManagerFactory, fakeRootPath, storageOperations, new DatabaseOperations(entityManagerFactory, "fichier_id_seq", "storageunit_id_seq"));
-		super.initStorageUnit(entityManagerFactory, fakeRootPath);
+		super.initStorageUnit(entityManagerFactory);
 	}
 
 	@Test

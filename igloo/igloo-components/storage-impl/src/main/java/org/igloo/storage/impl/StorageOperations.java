@@ -84,6 +84,12 @@ public class StorageOperations {
 		}
 	}
 
+	/**
+	 * List content from a {@link StorageUnit}. If {@link StorageUnit} folder does not exist, returns an empty set.
+	 * 
+	 * @param unit an existing {@link StorageUnit}
+	 * @return a set of absolutePath designing file in unit directory. Folders are ignored.
+	 */
 	@Nonnull
 	public Set<Path> listUnitContent(StorageUnit unit) {
 		Path absolutePath = Path.of(unit.getPath());

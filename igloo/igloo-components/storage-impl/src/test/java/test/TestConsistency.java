@@ -44,14 +44,18 @@ public class TestConsistency extends AbstractTest {
 		StorageUnit unit = new StorageUnit();
 		Path path = Path.of("/my-root-path");
 		unit.setPath(path.toString());
+		when(databaseOperations.getStorageUnit(unit.getId())).thenReturn(unit);
 		when(storageOperations.listUnitContent(unit)).thenReturn(Set.of(
-			Path.of("fichier1"),
-			Path.of("fichier2"),
-			Path.of("fichier3"), // file missing in database
-			Path.of("fichier5"),
-			Path.of("fichier6") // file missing in database
+			path.resolve("fichier1"),
+			path.resolve("fichier2"),
+			path.resolve("fichier3"), // file missing in database
+			path.resolve("fichier5"),
+			path.resolve("fichier6") // file missing in database
 		));
-		when(storageOperations.checksum(any())).then(AnswerFunctionalInterfaces.<String, Path>toAnswer(p -> p.getFileName().toString()));
+		when(storageOperations.checksum(any()))
+			.then(AnswerFunctionalInterfaces.<String, Path>toAnswer(
+					p -> p.getFileName().toString()
+		));
 		Fichier fichier1 = new Fichier();
 		fichier1.setRelativePath("fichier1");
 		fichier1.setChecksum("fichier1");
@@ -64,7 +68,7 @@ public class TestConsistency extends AbstractTest {
 		Fichier fichier5 = new Fichier();
 		fichier5.setRelativePath("fichier5");
 		fichier5.setChecksum("fichier4"); // trigger checksum error
-		when(databaseOperations.listUnitAliveFichiers()).thenReturn(Set.of(
+		when(databaseOperations.listUnitAliveFichiers(unit)).thenReturn(Set.of(
 			fichier1,
 			fichier2,
 			fichier4,
@@ -75,6 +79,7 @@ public class TestConsistency extends AbstractTest {
 		// 2 missing entity
 		// 1 missing file
 		// 1 checksum mismatch
+		verify(databaseOperations).createConsistencyCheck(argThat(c -> assertThat(c.getUnit()).isEqualTo(unit)));
 		verify(databaseOperations).triggerFailure(argThat(f -> {
 			assertThat(f.getType()).isEqualTo(StorageFailureType.MISSING_ENTITY);
 			assertThat(f.getFichier()).isNull();
@@ -114,7 +119,7 @@ public class TestConsistency extends AbstractTest {
 		fichier1.setChecksumType(ChecksumType.NONE);
 		
 		when(storageOperations.listUnitContent(unit)).thenReturn(Set.of(Path.of("fichier1")));
-		when(databaseOperations.listUnitAliveFichiers()).thenReturn(Set.of(fichier1));
+		when(databaseOperations.listUnitAliveFichiers(unit)).thenReturn(Set.of(fichier1));
 		
 		storageService.checkConsistency(unit, true);
 		

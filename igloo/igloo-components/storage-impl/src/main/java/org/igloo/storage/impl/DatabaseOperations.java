@@ -59,20 +59,15 @@ public class DatabaseOperations {
 		});
 	}
 
-	@Nonnull
-	private EntityManager entityManager() {
-		return Optional.ofNullable(EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)).orElseThrow();
-	}
-
 	public void createStorageUnit(StorageUnit unit) {
 		entityManager().persist(unit);
 	}
 
 	@Nonnull
-	public Set<Fichier> listUnitAliveFichiers() {
-		return entityManager().createQuery("SELECT f FROM Fichier f where f.storageUnit = :unit AND f.status = :status ORDER BY f.id DESC", Fichier.class)
-				.setParameter("unit", this)
-				.setParameter("status", FichierStatus.ALIVE)
+	public Set<Fichier> listUnitAliveFichiers(StorageUnit unit) {
+		return entityManager().createQuery("SELECT f FROM Fichier f where f.storageUnit = :unit AND f.status != :invalidatedStatus ORDER BY f.id DESC", Fichier.class)
+				.setParameter("unit", unit)
+				.setParameter("invalidatedStatus", FichierStatus.INVALIDATED)
 				.getResultStream()
 				.collect(Collectors.toUnmodifiableSet());
 	}
@@ -92,7 +87,7 @@ public class DatabaseOperations {
 	 */
 	public void triggerFailure(StorageFailure failure) {
 		try {
-			StorageFailure storedFailure = entityManager().createQuery("SELECT f FROM StorageFailure f WHERE f.unit = :unit and f.path = :path ORDER BY f.id DESC", StorageFailure.class)
+			StorageFailure storedFailure = entityManager().createQuery("SELECT f FROM StorageFailure f WHERE f.path = :path ORDER BY f.id DESC", StorageFailure.class)
 				.setParameter("path", failure.getPath())
 				.getSingleResult();
 			// failure is known and acknowledged; we ignore subsequent checks
@@ -145,6 +140,19 @@ public class DatabaseOperations {
 
 	public void removeFichier(Fichier fichier) {
 		entityManager().remove(fichier);
+	}
+
+	public StorageUnit getStorageUnit(Long storageUnitId) {
+		return entityManager().find(StorageUnit.class, storageUnitId);
+	}
+
+	public void createConsistencyCheck(StorageConsistencyCheck consistencyCheck) {
+		entityManager().persist(consistencyCheck);
+	}
+
+	@Nonnull
+	private EntityManager entityManager() {
+		return Optional.ofNullable(EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)).orElseThrow();
 	}
 
 }

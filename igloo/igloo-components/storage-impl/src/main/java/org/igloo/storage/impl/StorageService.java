@@ -153,11 +153,15 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 	// TODO MPI : à mettre dans un service spécifique aux vérifications de cohérence ?
 	@Override
 	public List<StorageConsistencyCheck> checkConsistency(@Nonnull StorageUnit unit, boolean checksumValidation) {
+		// reload entity
+		final StorageUnit persistedUnit = databaseOperations.getStorageUnit(unit.getId());
 		List<StorageConsistencyCheck> consistencies = new ArrayList<>();
-		StorageConsistencyCheck consistencyCheck = new StorageConsistencyCheck(unit);
+		StorageConsistencyCheck consistencyCheck = new StorageConsistencyCheck(persistedUnit);
+		databaseOperations.createConsistencyCheck(consistencyCheck);
 		
-		Set<Path> files = storageOperations.listUnitContent(unit);
-		Map<Path, Fichier> result = databaseOperations.listUnitAliveFichiers().stream().collect(Collectors.toMap(f -> Path.of(f.getRelativePath()), Function.identity()));
+		Set<Path> files = storageOperations.listUnitContent(persistedUnit);
+		Map<Path, Fichier> result = databaseOperations.listUnitAliveFichiers(persistedUnit).stream()
+				.collect(Collectors.toMap(f -> Path.of(persistedUnit.getPath()).resolve(f.getRelativePath()), Function.identity()));
 		consistencyCheck.setFsFileCount(files.size());
 		consistencyCheck.setDbFichierCount(result.size());
 
@@ -165,11 +169,11 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		List<Fichier> missingFiles = Sets.difference(result.keySet(), files).stream().map(result::get).collect(Collectors.toUnmodifiableList());
 		
 		for (Path missingEntity : missingEntities) {
-			StorageFailure failure = StorageFailure.ofMissingEntity(Path.of(unit.getPath()).resolve(missingEntity).toString(), consistencyCheck);
+			StorageFailure failure = StorageFailure.ofMissingEntity(Path.of(persistedUnit.getPath()).resolve(missingEntity).toString(), consistencyCheck);
 			databaseOperations.triggerFailure(failure);
 		}
 		for (Fichier missingFile : missingFiles) {
-			StorageFailure failure = StorageFailure.ofMissingFile(Path.of(unit.getPath()).resolve(missingFile.getRelativePath()), missingFile, consistencyCheck);
+			StorageFailure failure = StorageFailure.ofMissingFile(Path.of(persistedUnit.getPath()).resolve(missingFile.getRelativePath()), missingFile, consistencyCheck);
 			databaseOperations.triggerFailure(failure);
 		}
 		Map<Path, Fichier> okEntitiesFiles = Sets.intersection(files, result.keySet()).stream().collect(Collectors.toMap(Function.identity(), result::get));
@@ -179,7 +183,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 					// skip fichier without checksum
 					continue;
 				}
-				Path filePath = Path.of(unit.getPath()).resolve(fichier.getRelativePath());
+				Path filePath = Path.of(persistedUnit.getPath()).resolve(fichier.getRelativePath());
 				try {
 					String checksum = storageOperations.checksum(filePath);
 					if (!checksum.equals(fichier.getChecksum())) {

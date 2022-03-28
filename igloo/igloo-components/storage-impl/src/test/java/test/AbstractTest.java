@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -45,6 +46,12 @@ import org.springframework.transaction.support.TransactionTemplate;
 import test.model.StorageUnitType;
 
 abstract class AbstractTest {
+	static {
+		// jboss-logging -> slf4j
+		System.setProperty("org.jboss.logging.provider", "slf4j");
+	}
+	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractTest.class);
+
 	private static final List<Class<? extends GenericEntity<Long, ?>>> ENTITIES = List.of(Fichier.class, StorageUnit.class, StorageUnitStatistics.class, StorageFailure.class, StorageConsistencyCheck.class);
 	private static final String CFG_DB_TYPE = "TEST_DB_TYPE";
 	private static final String CFG_DB_NAME = "TEST_DB_NAME";
@@ -58,15 +65,11 @@ abstract class AbstractTest {
 	private static final String DEFAULT_NAME = DEFAULT_USER;
 	private static final String DEFAULT_HOST = "localhost";
 	private static final String DEFAULT_PORT = "5436";
-	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractTest.class);
 	protected static final String FILE_CONTENT = "blabla";
 	// checksum from 'echo -n "blabla" | sha256sum'
 	protected static final String FILE_CHECKSUM_SHA_256 = "ccadd99b16cd3d200c22d6db45d8b6630ef3d936767127347ec8a76ab992c2ea";
 	protected static final long FILE_SIZE = 6L;
-	static {
-		// jboss-logging -> slf4j
-		System.setProperty("org.jboss.logging.provider", "slf4j");
-	}
+
 	protected IStorageService storageService;
 	protected TransactionTemplate transactionTemplate;
 
@@ -121,10 +124,21 @@ abstract class AbstractTest {
 		this.storageService = new StorageService(entityManagerFactory, Ordered.LOWEST_PRECEDENCE, databaseOperations, Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)), storageOperations, () -> tempDir);
 	}
 
-	void initStorageUnit(EntityManagerFactory entityManagerFactory, Path tempDir) {
+	StorageUnit initStorageUnit(EntityManagerFactory entityManagerFactory) {
+		Supplier<StorageUnit> action = () -> storageService.createStorageUnit(StorageUnitType.TYPE_1);
+		return doInWriteTransaction(entityManagerFactory, action);
+	}
+
+	<T> T doInWriteTransaction(EntityManagerFactory entityManagerFactory, Supplier<T> action) {
 		PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
 		transactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute());
-		transactionTemplate.executeWithoutResult((t) -> storageService.createStorageUnit(StorageUnitType.TYPE_1));
+		return transactionTemplate.execute((t) -> action.get());
+	}
+
+	<T> T doInReadTransaction(EntityManagerFactory entityManagerFactory, Supplier<T> action) {
+		PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
+		transactionTemplate = new TransactionTemplate(transactionManager, readTransactionAttribute());
+		return transactionTemplate.execute((t) -> action.get());
 	}
 
 	protected Fichier createFichier(String filename, IFichierType fichierType, String fileContent, Runnable postCreationAction) {
@@ -142,6 +156,12 @@ abstract class AbstractTest {
 	protected DefaultTransactionAttribute writeTransactionAttribute() {
 		DefaultTransactionAttribute ta = new DefaultTransactionAttribute();
 		ta.setReadOnly(false);
+		return ta;
+	}
+
+	protected DefaultTransactionAttribute readTransactionAttribute() {
+		DefaultTransactionAttribute ta = new DefaultTransactionAttribute();
+		ta.setReadOnly(true);
 		return ta;
 	}
 }
