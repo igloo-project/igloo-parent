@@ -1,6 +1,7 @@
 package org.igloo.storage.impl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -130,7 +131,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 
 	@Override
 	@Nonnull
-	public File getFile(@Nonnull Fichier fichier) {
+	public File getFile(@Nonnull Fichier fichier) throws FileNotFoundException {
 		// TODO : gérer file manquant
 		return storageOperations.getFile(getAbsolutePath(fichier));
 	}
@@ -184,7 +185,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 					if (!checksum.equals(fichier.getChecksum())) {
 						databaseOperations.triggerFailure(StorageFailure.ofChecksumMismatch(filePath, fichier, consistencyCheck));
 					}
-				} catch (RuntimeException e) {
+				} catch (FileNotFoundException|RuntimeException e) {
 					LOGGER.error("Checksum calculation error on {}/{}", fichier.getId(), fichier.getUuid(), e);
 				}
 			}

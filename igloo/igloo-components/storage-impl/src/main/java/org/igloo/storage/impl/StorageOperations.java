@@ -2,6 +2,7 @@ package org.igloo.storage.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,6 +11,7 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,10 +41,11 @@ public class StorageOperations {
 	}
 
 	public void removePhysicalFile(@Nonnull String logPrefix, @Nonnull Long fichierId, @Nonnull Path fileAbsolutePath) {
+		checkAbsolutePath(fileAbsolutePath);
 		try {
 			if (Files.exists(fileAbsolutePath, LinkOption.NOFOLLOW_LINKS)) {
 				if (LOGGER.isInfoEnabled()) {
-					LOGGER.debug("{}: deleting Fichier {} '{}'", logPrefix, fichierId, fileAbsolutePath);
+					LOGGER.info("{}: deleting Fichier {} '{}'", logPrefix, fichierId, fileAbsolutePath);
 				}
 				Files.delete(fileAbsolutePath);
 			} else {
@@ -54,6 +57,11 @@ public class StorageOperations {
 	}
 
 	public void copy(@Nonnull InputStream inputStream, @Nonnull Path absolutePath) throws IOException {
+		Objects.requireNonNull(inputStream, "InputStream must not be null.");
+		checkAbsolutePath(absolutePath);
+		if (absolutePath.toFile().exists() && absolutePath.toFile().isFile()) {
+			throw new IllegalStateException(String.format("File %s already exists and is a file.", absolutePath));
+		}
 		Path dirPath = absolutePath.getParent();
 		File directory = dirPath.toFile();
 		if (directory.exists() && !directory.isDirectory()) {
@@ -72,8 +80,14 @@ public class StorageOperations {
 	}
 
 	@Nonnull
-	public File getFile(@Nonnull Path absolutePath) {
-		return absolutePath.toFile();
+	public File getFile(@Nonnull Path absolutePath) throws FileNotFoundException {
+		checkAbsolutePath(absolutePath);
+		File file = absolutePath.toFile();
+		if (file.exists() && file.canRead()) {
+			return file;
+		} else {
+			throw new FileNotFoundException(String.format("File %s cannot be found or is not readable", file));
+		}
 	}
 
 	@Nonnull
@@ -88,22 +102,38 @@ public class StorageOperations {
 
 	@Nullable
 	private Collection<File> listRecursively(@Nonnull Path directoryPath) {
-		File directory = getFile(directoryPath);
+		File directory = directoryPath.toFile();
 		if (!directory.exists()) {
 			return null;
 		}
-		return FileUtils.listRecursively(getFile(directoryPath), FileFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+		return FileUtils.listRecursively(directory, FileFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
 	}
 
 	@Nonnull
-	public String checksum(Path root) {
+	public String checksum(Path path) throws FileNotFoundException {
+		checkAbsolutePath(path);
 		String checksum = null;
-		try (InputStream fis = new FileInputStream(root.toFile()); HashingInputStream his = new HashingInputStream(Hashing.sha256(), fis)) {
-			his.readAllBytes();
-			checksum = his.hash().toString();
-		} catch (IOException e) {
-			throw new IllegalStateException(String.format("Checksum calculation error on %s", root), e);
+		File file = path.toFile();
+		if (file.exists() && file.canRead()) {
+			try (InputStream fis = new FileInputStream(path.toFile()); HashingInputStream his = new HashingInputStream(Hashing.sha256(), fis)) {
+				his.readAllBytes();
+				checksum = his.hash().toString();
+				return checksum;
+			} catch (IOException e) {
+				throw new IllegalStateException(String.format("Checksum calculation error on %s", path), e);
+			}
+		} else {
+			throw new FileNotFoundException(String.format("File %s cannot be found or is not readable", file));
 		}
-		return checksum;
+	}
+
+	private void checkAbsolutePath(Path fileAbsolutePath) {
+		Objects.requireNonNull(fileAbsolutePath, "Path must not be null.");
+		if (!fileAbsolutePath.isAbsolute()) {
+			throw new IllegalStateException(String.format("Path %s is not absolute.", fileAbsolutePath));
+		}
+		if (fileAbsolutePath.toFile().exists() && fileAbsolutePath.toFile().isDirectory()) {
+			throw new IllegalStateException(String.format("Path %s is a directory, not a file.", fileAbsolutePath));
+		}
 	}
 }

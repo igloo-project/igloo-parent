@@ -9,6 +9,7 @@ import org.igloo.storage.model.atomic.IStorageUnitType;
 
 import javax.annotation.Nonnull;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -49,9 +50,11 @@ public interface IStorageService {
 
 	/**
 	 * Get file associated to {@link Fichier}
+	 * 
+	 * @throws FileNotFoundException if file cannot be found or is not readable.
 	 */
 	@Nonnull
-	File getFile(@Nonnull Fichier fichier);
+	File getFile(@Nonnull Fichier fichier) throws FileNotFoundException;
 
 	/**
 	 * Perform a consistency check on a {@link StorageUnit}. Check can be performed with or without checksum validation.
