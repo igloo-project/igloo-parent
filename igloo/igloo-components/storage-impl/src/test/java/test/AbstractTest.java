@@ -121,7 +121,7 @@ abstract class AbstractTest {
 	}
 
 	void init(EntityManagerFactory entityManagerFactory, Path tempDir, StorageOperations storageOperations, DatabaseOperations databaseOperations) {
-		this.storageService = new StorageService(entityManagerFactory, Ordered.LOWEST_PRECEDENCE, databaseOperations, Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)), storageOperations, () -> tempDir);
+		this.storageService = new StorageService(Ordered.LOWEST_PRECEDENCE, databaseOperations, Set.<IStorageUnitType>copyOf(EnumSet.allOf(StorageUnitType.class)), storageOperations, () -> tempDir);
 	}
 
 	StorageUnit initStorageUnit(EntityManagerFactory entityManagerFactory) {

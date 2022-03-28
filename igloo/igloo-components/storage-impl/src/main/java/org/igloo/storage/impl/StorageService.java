@@ -19,7 +19,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
-import javax.persistence.EntityManagerFactory;
 
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
@@ -55,11 +54,11 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 	final DatabaseOperations databaseOperations;
 	private final StorageTransactionAdapter adapter;
 
-	public StorageService(EntityManagerFactory entityManagerFactory, Integer transactionSynchronizationOrder, DatabaseOperations databaseOperations, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier) {
-		this(entityManagerFactory, transactionSynchronizationOrder, databaseOperations, storageUnitTypeCandidates, operations, storageUnitPathSupplier, new MimeTypeResolver());
+	public StorageService(Integer transactionSynchronizationOrder, DatabaseOperations databaseOperations, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier) {
+		this(transactionSynchronizationOrder, databaseOperations, storageUnitTypeCandidates, operations, storageUnitPathSupplier, new MimeTypeResolver());
 	}
 
-	public StorageService(EntityManagerFactory entityManagerFactory, Integer transactionSynchronizationOrder, DatabaseOperations databaseOperations, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier, IMimeTypeResolver mimeTypeResolver) {
+	public StorageService(Integer transactionSynchronizationOrder, DatabaseOperations databaseOperations, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier, IMimeTypeResolver mimeTypeResolver) {
 		this.databaseOperations = databaseOperations;
 		this.storageUnitTypeCandidates = storageUnitTypeCandidates;
 		this.mimeTypeResolver = mimeTypeResolver;
