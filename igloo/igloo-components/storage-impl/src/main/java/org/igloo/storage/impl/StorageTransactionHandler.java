@@ -28,14 +28,14 @@ public class StorageTransactionHandler {
 	public void onRollback(List<StorageEvent> events) {
 		// Remove physical added file on rollback
 		events.stream().filter(StorageTransactionHandler::isAdd).forEach(t -> {
-			operations.removePhysicalFile("[rollback/add]", t);
+			operations.removePhysicalFile("[rollback/add]", t.getId(), t.getPath());
 		});
 	}
 
 	public void onCommit(List<StorageEvent> events) {
 		// Remove physical deleted file on commit
 		events.stream().filter(StorageTransactionHandler::isDelete).forEach(t -> {
-			operations.removePhysicalFile("[commit/delete]", t);
+			operations.removePhysicalFile("[commit/delete]", t.getId(), t.getPath());
 		});
 	}
 

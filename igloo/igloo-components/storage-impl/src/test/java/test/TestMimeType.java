@@ -18,6 +18,7 @@ class TestMimeType {
 		softly.assertThat(mimeTypeResolver.resolve(".gitinfo")).isEqualTo("application/octet-stream");
 		softly.assertThat(mimeTypeResolver.resolve("file.")).isEqualTo("application/octet-stream");
 		softly.assertThat(mimeTypeResolver.resolve("png.")).isEqualTo("application/octet-stream");
+		softly.assertThat(mimeTypeResolver.resolve("png.   ")).isEqualTo("application/octet-stream");
 		softly.assertThat(mimeTypeResolver.resolve(".pdf")).isEqualTo("application/pdf");
 		softly.assertThat(mimeTypeResolver.resolve(".png.pdf")).isEqualTo("application/pdf");
 		softly.assertThat(mimeTypeResolver.resolve("whatever.png")).isEqualTo("image/png");

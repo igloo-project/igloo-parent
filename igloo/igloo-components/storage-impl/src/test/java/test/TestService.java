@@ -3,6 +3,7 @@ package test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -76,7 +77,7 @@ class TestService extends AbstractTest {
 
 		assertThatCode(action::run).as("Fichier add must throw an exception").isInstanceOf(IllegalStateException.class).hasMessageContaining("Triggered rollback");
 		verify(storageOperations, times(1)).copy(any(), any());
-		verify(storageOperations, times(1)).removePhysicalFile(any(), any());
+		verify(storageOperations, times(1)).removePhysicalFile(notNull(), notNull(), notNull());
 		verifyNoMoreInteractions(storageOperations);
 	}
 
@@ -89,7 +90,7 @@ class TestService extends AbstractTest {
 		verify(storageOperations, times(1)).getFile(any());
 		verifyNoMoreInteractions(storageOperations);
 
-		verify(storageOperations).getFile(Mockito.eq(Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath())));
+		verify(storageOperations).getFile(Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath()));
 	}
 
 	@Test
@@ -100,7 +101,7 @@ class TestService extends AbstractTest {
 			storageService.removeFichier(fichier);
 		});
 
-		verify(storageOperations, times(1)).removePhysicalFile(any(), any());
+		verify(storageOperations, times(1)).removePhysicalFile(notNull(), notNull(), notNull());
 		verifyNoMoreInteractions(storageOperations);
 	}
 

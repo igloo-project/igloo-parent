@@ -34,12 +34,6 @@ public class StorageOperations {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageOperations.class);
 
-	public void removePhysicalFile(@Nonnull String logPrefix, @Nonnull StorageEvent t) {
-		Long fichierId = t.getId();
-		Path fileAbsolutePath = t.getPath();
-		removePhysicalFile(logPrefix, fichierId, fileAbsolutePath);
-	}
-
 	public void removePhysicalFile(@Nonnull String logPrefix, @Nonnull Long fichierId, @Nonnull Path fileAbsolutePath) {
 		checkAbsolutePath(fileAbsolutePath);
 		try {

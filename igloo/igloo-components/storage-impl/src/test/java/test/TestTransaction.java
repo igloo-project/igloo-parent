@@ -1,7 +1,8 @@
 package test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
@@ -39,7 +40,7 @@ class TestTransaction extends AbstractTest {
 		resourceManager.addEvent(2l, StorageEventType.DELETE, fichier2);
 		resourceManager.addEvent(4l, StorageEventType.ADD, fichier3);
 		adapter.afterCompletion(TransactionSynchronization.STATUS_COMMITTED);
-		verify(operations).removePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier2)));
+		verify(operations).removePhysicalFile(anyString(), eq(2l), eq(fichier2));
 		verifyNoMoreInteractions(operations);
 	}
 
@@ -57,8 +58,8 @@ class TestTransaction extends AbstractTest {
 		resourceManager.addEvent(2l, StorageEventType.DELETE, fichier2);
 		resourceManager.addEvent(4l, StorageEventType.ADD, fichier3);
 		adapter.afterCompletion(TransactionSynchronization.STATUS_ROLLED_BACK);
-		verify(operations).removePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier1)));
-		verify(operations).removePhysicalFile(anyString(), argThat(t -> assertThat(t.getPath()).isEqualTo(fichier3)));
+		verify(operations).removePhysicalFile(anyString(), anyLong(), eq(fichier1));
+		verify(operations).removePhysicalFile(anyString(), anyLong(), eq(fichier3));
 		verifyNoMoreInteractions(operations);
 	}
 
