@@ -29,7 +29,7 @@ public class LegacyFichierPathStrategy implements IFichierPathStrategy {
 			filenameBuilder.append(FilenameUtils.EXTENSION_SEPARATOR).append(extension);
 		}
 
-		String digest = Hashing.md5().hashBytes(id.toString().getBytes(StandardCharsets.UTF_8)).toString();
+		String digest = md5(id);
 		Path path = Splitter.fixedLength(2)
 				.splitToStream(digest)
 				.limit(hashSizeInBytes)
@@ -37,6 +37,12 @@ public class LegacyFichierPathStrategy implements IFichierPathStrategy {
 				.reduce(Path.of(""), (a, b) -> a.resolve(b));
 
 		return Path.of(fichier.getType().getPath(), path.toString(), filenameBuilder.toString()).toString();
+	}
+
+	@SuppressWarnings("deprecation")
+	private String md5(Long id) {
+		// md5 used as a legacy option and with no cryptographic role
+		return Hashing.md5().hashBytes(id.toString().getBytes(StandardCharsets.UTF_8)).toString();
 	}
 
 }

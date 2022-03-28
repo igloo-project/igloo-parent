@@ -11,6 +11,8 @@ import java.util.List;
 @Bindable
 public class StorageUnitStatistics extends GenericEntity<Long, StorageUnitStatistics> {
 
+	private static final long serialVersionUID = 6165030207196592898L;
+
 	@Id
 	@GeneratedValue
 	private Long id;

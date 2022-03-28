@@ -43,6 +43,7 @@ public enum StorageUnitType implements IStorageUnitType {
 		return acceptedFichierTypes.contains(type);
 	}
 
+	@Override
 	public Set<IFichierType> getAcceptedFichierTypes() {
 		return acceptedFichierTypes;
 	}

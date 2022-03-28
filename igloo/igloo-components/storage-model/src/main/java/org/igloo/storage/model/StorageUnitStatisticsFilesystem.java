@@ -12,6 +12,8 @@ import java.io.Serializable;
 @Bindable
 public class StorageUnitStatisticsFilesystem implements Serializable {
 
+	private static final long serialVersionUID = 5999959241711215523L;
+
 	/**
 	 * Size of StorageUnit in byte
 	 */

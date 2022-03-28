@@ -12,6 +12,8 @@ import java.io.Serializable;
 @Bindable
 public class StorageUnitStatisticsDatabase implements Serializable {
 
+	private static final long serialVersionUID = -8145906938539634408L;
+
 	/**
 	 * Count of total {@link Fichier} on the filesystem in the {@link StorageUnit}
 	 */
