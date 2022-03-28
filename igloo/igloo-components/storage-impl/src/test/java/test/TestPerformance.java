@@ -1,6 +1,7 @@
 package test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.atIndex;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -19,12 +21,13 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.assertj.core.api.Assumptions;
+import org.assertj.core.api.AutoCloseableSoftAssertions;
 import org.assertj.core.api.Condition;
 import org.igloo.jpa.test.EntityManagerFactoryExtension;
 import org.igloo.storage.impl.DatabaseOperations;
@@ -88,17 +91,38 @@ class TestPerformance extends AbstractTest {
 		creationWatch.stop();
 		LOGGER.info("{} files created in {} seconds", fileCount, creationWatch.elapsed().toSeconds());
 		Set<Fichier> fichiers = doInReadTransaction(entityManagerFactory, () -> databaseOperations.listUnitAliveFichiers(unit));
+		Long fichierSize = fichiers.stream().map(Fichier::getSize).reduce((a, b) -> a + b).get();
 		LOGGER.info("{} bytes created in {} seconds",
-				fichiers.stream().map(Fichier::getSize).reduce((a, b) -> a + b).get(),
+				fichierSize,
 				creationWatch.elapsed().toSeconds());
 		assertThat(fichiers).hasSize(fileCount);
 		assertThat(fichiers.stream().map(Fichier::getStorageUnit).distinct()).hasSize(1);
 		assertThat(storageOperations.listUnitContent(fichiers.iterator().next().getStorageUnit())).hasSize(fileCount);
 		
-		checkConsistency(entityManagerFactory, fileCount, false, (f) -> assertThat(f).isEmpty());
-		checkConsistency(entityManagerFactory, fileCount, true, (f) -> assertThat(f).isEmpty());
+		Consumer<List<StorageConsistencyCheck>> noErrorAssertion = (cs) -> assertThat(cs)
+			.hasSize(1)
+			.satisfies((c) -> {
+				try (AutoCloseableSoftAssertions softly = new AutoCloseableSoftAssertions()) {
+					softly.assertThat(c.getFsFileCount()).as("File (filesystem) count").isEqualTo(fileCount);
+					softly.assertThat(c.getDbFichierCount()).as("Fichier (entity) count").isEqualTo(fileCount);
+					softly.assertThat(c.getContentMismatchCount()).isEqualTo(0);
+					softly.assertThat(c.getMissingFileCount()).isEqualTo(0);
+					softly.assertThat(c.getMissingFichierCount()).isEqualTo(0);
+					softly.assertThat(c.getCheckStartedOn()).isNotNull();
+					softly.assertThat(c.getCheckFinishedOn()).isNotNull();
+					softly.assertThat(c.getDbFichierSize()).isEqualTo(fichierSize);
+					softly.assertThat(c.getFsFileSize()).isEqualTo(fichierSize);
+				}
+			}, atIndex(0));
+		checkConsistency(entityManagerFactory, fileCount, false,
+			noErrorAssertion,
+			(f) -> assertThat(f).isEmpty());
+		checkConsistency(entityManagerFactory, fileCount, true, noErrorAssertion, (f) -> assertThat(f).isEmpty());
 		
 		List<Fichier> removed = new ArrayList<Fichier>(fichiers);
+		AtomicLong removedEntitiesSize = new AtomicLong();
+		AtomicLong removedFilesSize = new AtomicLong();
+		AtomicLong alteredSize = new AtomicLong();
 		Collections.shuffle(removed, random);
 		// drop 50 files
 		// drop 50 entities
@@ -111,6 +135,7 @@ class TestPerformance extends AbstractTest {
 					if (!absolutePath.toFile().delete()) {
 						throw new IllegalStateException(String.format("Cannot remove %s", f.getRelativePath()));
 					}
+					removedFilesSize.addAndGet(- f.getSize());
 				})
 				.collect(Collectors.toList());
 		List<Path> removedEntities = removed.stream()
@@ -120,6 +145,7 @@ class TestPerformance extends AbstractTest {
 					// remove fichier
 					EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
 					em.remove(em.find(Fichier.class, f.getId()));
+					removedEntitiesSize.addAndGet(- f.getSize());
 					return f;
 				}))
 				.map(f -> Path.of(unit.getPath()).resolve(f.getRelativePath()))
@@ -130,30 +156,50 @@ class TestPerformance extends AbstractTest {
 				.peek(f -> {
 					// modify content
 					Path absolutePath = Path.of(unit.getPath()).resolve(f.getRelativePath());
+					byte[] newContent = "alteredContent".getBytes(StandardCharsets.UTF_8);
 					try (FileOutputStream fos = new FileOutputStream(absolutePath.toFile())) {
-						IOUtils.copy(new ByteArrayInputStream("alteredContent".getBytes(StandardCharsets.UTF_8)), fos);
+						IOUtils.copy(new ByteArrayInputStream(newContent), fos);
 					} catch (IOException e) {
 						throw new IllegalStateException(e);
 					}
+					alteredSize.addAndGet(- f.getSize() + newContent.length);
 				})
 				.collect(Collectors.toList());
 		
 		checkConsistency(entityManagerFactory, fileCount, true,
+				(cs) -> assertThat(cs)
+					.hasSize(1)
+					.satisfies((c) -> {
+						try (AutoCloseableSoftAssertions softly = new AutoCloseableSoftAssertions()) {
+							softly.assertThat(c.getFsFileCount()).as("File (filesystem) count").isEqualTo(fileCount - 50);
+							softly.assertThat(c.getDbFichierCount()).as("Fichier (entity) count").isEqualTo(fileCount - 50);
+							softly.assertThat(c.getContentMismatchCount()).isEqualTo(50);
+							softly.assertThat(c.getMissingFileCount()).isEqualTo(50);
+							softly.assertThat(c.getMissingFichierCount()).isEqualTo(50);
+							softly.assertThat(c.getCheckStartedOn()).isNotNull();
+							softly.assertThat(c.getCheckFinishedOn()).isNotNull();
+							// database size: original size minus removed entities
+							softly.assertThat(c.getDbFichierSize()).isEqualTo(fichierSize + removedEntitiesSize.get());
+							// fs size: original size
+							softly.assertThat(c.getFsFileSize()).isEqualTo(fichierSize + removedFilesSize.get() + alteredSize.get());
+						}
+					}, atIndex(0)),
 				(f) -> assertThat(f)
 					.hasSize(150)
 					// check we have 50 items for each type
 					.areExactly(50, new Condition<StorageFailure>(fi -> StorageFailureType.MISSING_ENTITY.equals(fi.getType()) && removedEntities.contains(Path.of(fi.getPath())), "Entity from removedEntities must be found missing"))
 					.areExactly(50, new Condition<StorageFailure>(fi -> StorageFailureType.MISSING_FILE.equals(fi.getType()) && removedFiles.contains(fi.getFichier()), "Path from removedFiles must be found missing"))
-					.areExactly(50, new Condition<StorageFailure>(fi -> StorageFailureType.CHECKSUM_MISMATCH.equals(fi.getType()) && contentAltered.contains(fi.getFichier()), "Content from content altered must be found mismatching"))
+					.areExactly(50, new Condition<StorageFailure>(fi -> StorageFailureType.CONTENT_MISMATCH.equals(fi.getType()) && contentAltered.contains(fi.getFichier()), "Content from content altered must be found mismatching"))
 		);
 	}
 
-	private void checkConsistency(EntityManagerFactory entityManagerFactory, int fileCount, boolean checksumValidation, Consumer<List<StorageFailure>> failureCheck) {
+	private void checkConsistency(EntityManagerFactory entityManagerFactory, int fileCount, boolean checksumValidation, Consumer<List<StorageConsistencyCheck>> consistencyCheckCheck, Consumer<List<StorageFailure>> failureCheck) {
 		Stopwatch checkWatch = Stopwatch.createStarted();
 		List<StorageConsistencyCheck> sc = doInWriteTransaction(entityManagerFactory, () -> {
 			return storageService.checkConsistency(unit, checksumValidation);
 		});
 		checkWatch.stop();
+		consistencyCheckCheck.accept(sc);
 		LOGGER.info("{} files checked {} in {} seconds", fileCount, checksumValidation ? "(with checksum)" : "",checkWatch.elapsed().toSeconds());
 		assertThat(sc).hasSize(1);
 		Supplier<List<StorageFailure>> listStorageFailures = () -> EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory).createQuery("SELECT s FROM StorageFailure s", StorageFailure.class).getResultList();

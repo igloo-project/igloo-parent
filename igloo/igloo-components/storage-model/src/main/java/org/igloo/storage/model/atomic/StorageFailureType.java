@@ -4,6 +4,6 @@ public enum StorageFailureType {
 
 	MISSING_FILE,
 	MISSING_ENTITY,
-	CHECKSUM_MISMATCH;
+	CONTENT_MISMATCH;
 
 }

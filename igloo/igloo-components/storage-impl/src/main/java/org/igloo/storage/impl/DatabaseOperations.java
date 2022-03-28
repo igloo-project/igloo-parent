@@ -129,7 +129,7 @@ public class DatabaseOperations {
 		params.put("consistencyCheckId", consistencyCheck.getId());
 		if (!alsoCleanChecksumMismatch) {
 			query += " AND type != :checksumMismatchType";
-			params.put("checksumMismatchType", StorageFailureType.CHECKSUM_MISMATCH);
+			params.put("checksumMismatchType", StorageFailureType.CONTENT_MISMATCH);
 		}
 		entityManager().createNativeQuery(query, Integer.class).executeUpdate();
 	}

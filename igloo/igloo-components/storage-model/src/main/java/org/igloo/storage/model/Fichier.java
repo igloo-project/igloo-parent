@@ -79,7 +79,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	 */
 	@Basic(optional = false)
 	@Column(nullable = false)
-	private long size;
+	private Long size;
 
 	@Basic(optional = false)
 	@Column(nullable = false)
@@ -170,11 +170,11 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 		this.filename = name;
 	}
 
-	public long getSize() {
+	public Long getSize() {
 		return size;
 	}
 
-	public void setSize(long size) {
+	public void setSize(Long size) {
 		this.size = size;
 	}
 

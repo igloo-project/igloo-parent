@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
@@ -121,6 +122,22 @@ public class StorageOperations {
 				return checksum;
 			} catch (IOException e) {
 				throw new IllegalStateException(String.format("Checksum calculation error on %s", path), e);
+			}
+		} else {
+			throw new FileNotFoundException(String.format("File %s cannot be found or is not readable", file));
+		}
+	}
+
+	@Nonnull
+	public Long length(Path path) throws FileNotFoundException {
+		checkAbsolutePath(path);
+		File file = path.toFile();
+		if (file.exists() && file.canRead()) {
+			try {
+				BasicFileAttributes attrs = Files.readAttributes(path, BasicFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+				return attrs.size();
+			} catch (IOException e) {
+				throw new IllegalStateException(String.format("Size extraction error on %s", path), e);
 			}
 		} else {
 			throw new FileNotFoundException(String.format("File %s cannot be found or is not readable", file));

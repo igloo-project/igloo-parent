@@ -52,7 +52,7 @@ class TestEntities extends AbstractTest {
 		fichier1.setStorageUnit(storageUnit);
 		fichier1.setRelativePath("/relative-path");
 		fichier1.setName("filename");
-		fichier1.setSize(25);
+		fichier1.setSize(25l);
 		fichier1.setChecksum("123");
 		fichier1.setMimetype("application/octet-stream");
 		fichier1.setChecksumType(ChecksumType.SHA_256);
@@ -66,7 +66,7 @@ class TestEntities extends AbstractTest {
 		fichier2.setStorageUnit(storageUnit);
 		fichier2.setRelativePath("/relative-path");
 		fichier2.setName("filename");
-		fichier2.setSize(25);
+		fichier2.setSize(25l);
 		fichier2.setChecksum("123");
 		fichier2.setMimetype("application/octet-stream");
 		fichier2.setChecksumType(ChecksumType.SHA_256);
@@ -115,7 +115,7 @@ class TestEntities extends AbstractTest {
 		fichier.setStorageUnit(storageUnit);
 		fichier.setRelativePath("/relative-path");
 		fichier.setName("filename");
-		fichier.setSize(25);
+		fichier.setSize(25l);
 		fichier.setChecksum("123");
 		fichier.setMimetype("application/octet-stream");
 		fichier.setChecksumType(ChecksumType.SHA_256);
@@ -150,7 +150,7 @@ class TestEntities extends AbstractTest {
 		fichier1.setStorageUnit(storageUnit);
 		fichier1.setRelativePath("/relative-path");
 		fichier1.setName("filename");
-		fichier1.setSize(25);
+		fichier1.setSize(25l);
 		fichier1.setChecksum("123");
 		fichier1.setMimetype("application/octet-stream");
 		fichier1.setChecksumType(ChecksumType.SHA_256);
@@ -164,7 +164,7 @@ class TestEntities extends AbstractTest {
 		fichier2.setStorageUnit(storageUnit);
 		fichier2.setRelativePath("/relative-path");
 		fichier2.setName("filename");
-		fichier2.setSize(25);
+		fichier2.setSize(25l);
 		fichier2.setChecksum("123");
 		fichier2.setMimetype("application/octet-stream");
 		fichier2.setChecksumType(ChecksumType.SHA_256);

@@ -158,42 +158,80 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		StorageConsistencyCheck consistencyCheck = new StorageConsistencyCheck(persistedUnit);
 		databaseOperations.createConsistencyCheck(consistencyCheck);
 		
+		// we need to collect all this data during check
+		Integer fileCount = 0;
+		Integer fichierCount = 0;
+		Long fileSize = 0l;
+		Long fichierSize;
+		Integer missingFichierCount = 0;
+		Integer missingFileCount = 0;
+		Integer contentMismatchCount = 0;
+		
+		// list db and filesystem
 		Set<Path> files = storageOperations.listUnitContent(persistedUnit);
 		Map<Path, Fichier> result = databaseOperations.listUnitAliveFichiers(persistedUnit).stream()
 				.collect(Collectors.toMap(f -> Path.of(persistedUnit.getPath()).resolve(f.getRelativePath()), Function.identity()));
-		consistencyCheck.setFsFileCount(files.size());
-		consistencyCheck.setDbFichierCount(result.size());
+		// get general data
+		fileCount = files.size();
+		fichierCount = result.size();
+		fichierSize = result.values().stream().map(Fichier::getSize).reduce((a, b) -> a + b).orElse(0l);
 
+		// perform two-way comparison
 		Set<Path> missingEntities = Sets.difference(files, result.keySet());
 		List<Fichier> missingFiles = Sets.difference(result.keySet(), files).stream().map(result::get).collect(Collectors.toUnmodifiableList());
+		missingFichierCount = missingEntities.size();
+		missingFileCount = missingFiles.size();
 		
+		// trigger missing entity (calculate fs size simultaneously)
 		for (Path missingEntity : missingEntities) {
 			StorageFailure failure = StorageFailure.ofMissingEntity(Path.of(persistedUnit.getPath()).resolve(missingEntity).toString(), consistencyCheck);
 			databaseOperations.triggerFailure(failure);
+			try {
+				fileSize += storageOperations.length(missingEntity);
+			} catch (FileNotFoundException|RuntimeException e) {
+				LOGGER.error("Size check error on {}", missingEntity, e);
+			}
 		}
+		// trigger missing file
 		for (Fichier missingFile : missingFiles) {
 			StorageFailure failure = StorageFailure.ofMissingFile(Path.of(persistedUnit.getPath()).resolve(missingFile.getRelativePath()), missingFile, consistencyCheck);
 			databaseOperations.triggerFailure(failure);
 		}
+		
+		// collect file/fichier pairs to perform basic or extended content check (size or size+checksum)
 		Map<Path, Fichier> okEntitiesFiles = Sets.intersection(files, result.keySet()).stream().collect(Collectors.toMap(Function.identity(), result::get));
-		if (checksumValidation) {
-			for (Fichier fichier : okEntitiesFiles.values()) {
-				if (ChecksumType.NONE.equals(fichier.getChecksumType())) {
-					// skip fichier without checksum
-					continue;
-				}
-				Path filePath = Path.of(persistedUnit.getPath()).resolve(fichier.getRelativePath());
-				try {
+		
+		for (Fichier fichier : okEntitiesFiles.values()) {
+			Path filePath = Path.of(persistedUnit.getPath()).resolve(fichier.getRelativePath());
+			try {
+				// check size
+				Long size = storageOperations.length(filePath);
+				fileSize += size;
+				if (!size.equals(fichier.getSize())) {
+					databaseOperations.triggerFailure(StorageFailure.ofContentMismatch(filePath, fichier, consistencyCheck));
+					contentMismatchCount += 1;
+				} else if (checksumValidation && !ChecksumType.NONE.equals(fichier.getChecksumType())) {
+					// conditionally perform checksum comparison
 					String checksum = storageOperations.checksum(filePath);
 					if (!checksum.equals(fichier.getChecksum())) {
-						databaseOperations.triggerFailure(StorageFailure.ofChecksumMismatch(filePath, fichier, consistencyCheck));
+						databaseOperations.triggerFailure(StorageFailure.ofContentMismatch(filePath, fichier, consistencyCheck));
+						contentMismatchCount += 1;
 					}
-				} catch (FileNotFoundException|RuntimeException e) {
-					LOGGER.error("Checksum calculation error on {}/{}", fichier.getId(), fichier.getUuid(), e);
 				}
+			} catch (FileNotFoundException|RuntimeException e) {
+				LOGGER.error("Content check error on {}/{}", fichier.getId(), fichier.getUuid(), e);
 			}
 		}
-		
+
+		// update consistency object
+		consistencyCheck.setDbFichierCount(fichierCount);
+		consistencyCheck.setFsFileCount(fileCount);
+		consistencyCheck.setMissingFichierCount(missingFichierCount);
+		consistencyCheck.setMissingFileCount(missingFileCount);
+		consistencyCheck.setDbFichierSize(fichierSize);
+		consistencyCheck.setFsFileSize(fileSize);
+		consistencyCheck.setContentMismatchCount(contentMismatchCount);
+		consistencyCheck.setCheckFinishedOn(LocalDateTime.now());
 		consistencies.add(consistencyCheck);
 		return consistencies;
 	}
