@@ -28,7 +28,6 @@ import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageFailure;
 import org.igloo.storage.model.StorageUnit;
-import org.igloo.storage.model.StorageUnitStatistics;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
@@ -52,7 +51,7 @@ abstract class AbstractTest {
 	}
 	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractTest.class);
 
-	private static final List<Class<? extends GenericEntity<Long, ?>>> ENTITIES = List.of(Fichier.class, StorageUnit.class, StorageUnitStatistics.class, StorageFailure.class, StorageConsistencyCheck.class);
+	private static final List<Class<? extends GenericEntity<Long, ?>>> ENTITIES = List.of(Fichier.class, StorageUnit.class, StorageFailure.class, StorageConsistencyCheck.class);
 	private static final String CFG_DB_TYPE = "TEST_DB_TYPE";
 	private static final String CFG_DB_NAME = "TEST_DB_NAME";
 	private static final String CFG_DB_HOST = "TEST_DB_HOST";

@@ -79,7 +79,7 @@ public class TestConsistency extends AbstractTest {
 		// 2 missing entity
 		// 1 missing file
 		// 1 checksum mismatch
-		verify(databaseOperations).createConsistencyCheck(argThat(c -> assertThat(c.getUnit()).isEqualTo(unit)));
+		verify(databaseOperations).createConsistencyCheck(argThat(c -> assertThat(c.getStorageUnit()).isEqualTo(unit)));
 		verify(databaseOperations).triggerFailure(argThat(f -> {
 			assertThat(f.getType()).isEqualTo(StorageFailureType.MISSING_ENTITY);
 			assertThat(f.getFichier()).isNull();

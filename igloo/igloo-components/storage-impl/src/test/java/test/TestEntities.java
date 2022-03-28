@@ -16,7 +16,6 @@ import org.hibernate.Session;
 import org.igloo.jpa.test.EntityManagerFactoryExtension;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
-import org.igloo.storage.model.StorageUnitStatistics;
 import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
@@ -44,11 +43,6 @@ class TestEntities extends AbstractTest {
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(LocalDateTime.now());
-
-		StorageUnitStatistics statistics = new StorageUnitStatistics();
-		statistics.setStorageUnit(storageUnit);
-
-		storageUnit.setStatistics(statistics);
 
 		Fichier fichier1 = new Fichier();
 		fichier1.setId(1l);
@@ -79,7 +73,6 @@ class TestEntities extends AbstractTest {
 		fichier2.setCreationDate(LocalDateTime.now());
 
 		entityManager.persist(storageUnit);
-		entityManager.persist(statistics);
 		entityManager.persist(fichier1);
 		entityManager.persist(fichier2);
 		entityManager.flush();
@@ -114,11 +107,6 @@ class TestEntities extends AbstractTest {
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(LocalDateTime.now());
 
-		StorageUnitStatistics statistics = new StorageUnitStatistics();
-		statistics.setStorageUnit(storageUnit);
-
-		storageUnit.setStatistics(statistics);
-
 		Fichier fichier = new Fichier();
 		fichier.setId(1l);
 		fichier.setUuid(UUID.randomUUID());
@@ -134,7 +122,6 @@ class TestEntities extends AbstractTest {
 		fichier.setCreationDate(LocalDateTime.now());
 
 		entityManager.persist(storageUnit);
-		entityManager.persist(statistics);
 		entityManager.persist(fichier);
 		entityManager.flush();
 		entityManager.clear();
@@ -153,11 +140,6 @@ class TestEntities extends AbstractTest {
 		storageUnit.setPath("/test");
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(LocalDateTime.now());
-
-		StorageUnitStatistics statistics = new StorageUnitStatistics();
-		statistics.setStorageUnit(storageUnit);
-
-		storageUnit.setStatistics(statistics);
 
 		UUID uuid = UUID.randomUUID();
 		Fichier fichier1 = new Fichier();
@@ -189,7 +171,6 @@ class TestEntities extends AbstractTest {
 		fichier2.setCreationDate(LocalDateTime.now());
 
 		entityManager.persist(storageUnit);
-		entityManager.persist(statistics);
 		entityManager.persist(fichier1);
 		entityManager.persist(fichier2);
 		assertThatThrownBy(() -> entityManager.flush())
@@ -209,19 +190,11 @@ class TestEntities extends AbstractTest {
 		storageUnit.setStatus(StorageUnitStatus.ALIVE);
 		storageUnit.setCreationDate(LocalDateTime.now());
 
-		StorageUnitStatistics statistics = new StorageUnitStatistics();
-		statistics.setStorageUnit(storageUnit);
-
-		storageUnit.setStatistics(statistics);
-
 		entityManager.persist(storageUnit);
-		entityManager.persist(statistics);
 		entityManager.flush();
 		entityManager.clear();
 
 		assertThat(entityManager.find(StorageUnit.class, storageUnit.getId())).isNotNull();
-		assertThat(entityManager.find(StorageUnit.class, storageUnit.getId()).getStatistics()).isNotNull();
-		assertThat(entityManager.find(StorageUnit.class, storageUnit.getId()).getStatistics().getId()).isEqualTo(statistics.getId());
 	}
 
 }

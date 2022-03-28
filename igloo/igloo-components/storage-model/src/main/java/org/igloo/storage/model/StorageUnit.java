@@ -1,6 +1,7 @@
 package org.igloo.storage.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -11,7 +12,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
@@ -54,9 +54,8 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 	@Column(nullable = false)
 	private LocalDateTime creationDate;
 
-	// TODO MPI : Supprimer; on aura des collections de StorageUnitStatistics car une par type de fichier
-	@OneToOne(mappedBy = "storageUnit", fetch = FetchType.LAZY)
-	private StorageUnitStatistics statistics;
+	@OneToMany(mappedBy = "storageUnit", fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<StorageConsistencyCheck> consistencyChecks;
 
 	/**
 	 * Do not use this attribute, keep it lazy ! (ten thousand items expected).
@@ -106,12 +105,12 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 		this.creationDate = creationDate;
 	}
 
-	public StorageUnitStatistics getStatistics() {
-		return statistics;
+	public List<StorageConsistencyCheck> getConsistencyChecks() {
+		throw new IllegalStateException("This collection must remain lazy");
 	}
 
-	public void setStatistics(StorageUnitStatistics statistics) {
-		this.statistics = statistics;
+	public void setStatistics(List<StorageConsistencyCheck> statistics) {
+		throw new IllegalStateException("This collection must remain lazy");
 	}
 
 	public Set<Fichier> getFichiers() {

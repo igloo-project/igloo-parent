@@ -97,8 +97,8 @@ public class DatabaseOperations {
 			}
 			// a failure must not be reported on multiple unit; only misconfiguration may trigger this case
 			// (an absolute path cannot be linked to multiple units)
-			if (!failure.getConsistencyCheck().getUnit().equals(storedFailure.getConsistencyCheck().getUnit())) {
-				throw new IllegalStateException(String.format("Failure reported for %s in unit %d and already stored for unit %d", failure.getPath(), failure.getConsistencyCheck().getUnit().getId(), storedFailure.getConsistencyCheck().getUnit().getId()));
+			if (!failure.getConsistencyCheck().getStorageUnit().equals(storedFailure.getConsistencyCheck().getStorageUnit())) {
+				throw new IllegalStateException(String.format("Failure reported for %s in unit %d and already stored for unit %d", failure.getPath(), failure.getConsistencyCheck().getStorageUnit().getId(), storedFailure.getConsistencyCheck().getStorageUnit().getId()));
 			}
 			// else storedFailure is updated, except creation time
 			failure.setCreationTime(storedFailure.getCreationTime());
@@ -125,7 +125,7 @@ public class DatabaseOperations {
 				// match same unit, other check and status ALIVE
 				+ "WHERE u.id = :unitId AND consistencyCheck_id != :consistencyCheckId AND status = :aliveStatus";
 		params.put("aliveStatus", StorageFailureStatus.ALIVE);
-		params.put("unitId", consistencyCheck.getUnit().getId());
+		params.put("unitId", consistencyCheck.getStorageUnit().getId());
 		params.put("consistencyCheckId", consistencyCheck.getId());
 		if (!alsoCleanChecksumMismatch) {
 			query += " AND type != :checksumMismatchType";

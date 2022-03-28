@@ -19,7 +19,7 @@ public class StorageConsistencyCheck extends GenericEntity<Long, StorageConsiste
 	private Long id;
 
 	@ManyToOne
-	private StorageUnit unit;
+	private StorageUnit storageUnit;
 
 	private int fsFileCount;
 
@@ -31,7 +31,7 @@ public class StorageConsistencyCheck extends GenericEntity<Long, StorageConsiste
 
 	public StorageConsistencyCheck(StorageUnit unit) {
 		this();
-		this.unit = unit;
+		this.storageUnit = unit;
 	}
 
 	@Override
@@ -44,12 +44,12 @@ public class StorageConsistencyCheck extends GenericEntity<Long, StorageConsiste
 		this.id = id;
 	}
 
-	public StorageUnit getUnit() {
-		return unit;
+	public StorageUnit getStorageUnit() {
+		return storageUnit;
 	}
 
-	public void setUnit(StorageUnit unit) {
-		this.unit = unit;
+	public void setStorageUnit(StorageUnit storageUnit) {
+		this.storageUnit = storageUnit;
 	}
 
 	public int getFsFileCount() {
