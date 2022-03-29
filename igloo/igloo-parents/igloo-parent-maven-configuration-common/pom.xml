@@ -6,6 +6,7 @@
 		<groupId>org.iglooproject</groupId>
 		<artifactId>plugins-all</artifactId>
 		<version>4.0.0-SNAPSHOT</version>
+		<relativePath/>
 	</parent>
 
 	<groupId>org.iglooproject.parents</groupId>
