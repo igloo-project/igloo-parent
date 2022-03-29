@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.migration;
+package org.igloo.hibernate.hbm;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,12 +7,11 @@ import java.nio.file.StandardOpenOption;
 import java.util.EnumSet;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.internal.SessionImpl;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.SourceType;
@@ -24,17 +23,22 @@ import org.hibernate.tool.schema.spi.SchemaManagementTool;
 import org.hibernate.tool.schema.spi.ScriptSourceInput;
 import org.hibernate.tool.schema.spi.SourceDescriptor;
 import org.hibernate.tool.schema.spi.TargetDescriptor;
-import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import com.google.common.collect.Maps;
 
 public final class SqlUpdateScript {
 
+	private SqlUpdateScript() {}
+
 	public static void writeSqlDiffScript(ConfigurableApplicationContext context, String fileName, String action) {
 		EntityManagerFactory entityManagerFactory = context.getBean(EntityManagerFactory.class);
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		
+		Metadata metadata = context.getBean(MetadataRegistryIntegrator.class).getMetadata();
+		writeSqlDiffScript(entityManagerFactory, metadata, fileName, action);
+	}
+
+	public static void writeSqlDiffScript(EntityManagerFactory entityManagerFactory, Metadata metadata,
+			String fileName, String action) {
 		ExecutionOptions executionOptions = new ExecutionOptions() {
 			
 			@Override
@@ -56,8 +60,7 @@ public final class SqlUpdateScript {
 			}
 		};
 		
-		ServiceRegistry serviceRegistry = ((SessionImpl) entityManager.getDelegate()).getSessionFactory().getServiceRegistry();
-		Metadata metadata = context.getBean(MetadataRegistryIntegrator.class).getMetadata();
+		ServiceRegistry serviceRegistry = entityManagerFactory.unwrap(SessionFactoryImplementor.class).getServiceRegistry();
 		
 		// hibernate append script to existing file; we want file to be reset.
 		// we create the file if needed and output null content to it.

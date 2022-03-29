@@ -1,6 +1,4 @@
-package org.igloo.jpa.test;
-
-import static org.assertj.core.api.Assertions.fail;
+package org.igloo.hibernate.bootstrap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +29,7 @@ public class EntityManagerFactoryHelper {
 
 		if ( keysAndValues != null ) {
 			if ( keysAndValues.length %2 != 0 ) {
-				fail( "Varargs to create settings should contain even number of entries" );
+				throw new IllegalStateException("Varargs to create settings should contain even number of entries");
 			}
 
 

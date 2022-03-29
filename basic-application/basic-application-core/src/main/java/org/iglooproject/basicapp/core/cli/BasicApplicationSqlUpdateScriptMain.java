@@ -1,7 +1,7 @@
 package org.iglooproject.basicapp.core.cli;
 
+import org.igloo.hibernate.hbm.SqlUpdateScript;
 import org.iglooproject.basicapp.core.config.spring.BasicApplicationCoreHeadlessConfig;
-import org.iglooproject.jpa.migration.SqlUpdateScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

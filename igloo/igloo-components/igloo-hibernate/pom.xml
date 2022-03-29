@@ -29,6 +29,11 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	
 	<dependencyManagement>
@@ -36,6 +41,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-hibernate</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-spring</artifactId>
 				<type>pom</type>
 				<scope>import</scope>
 				<version>${igloo-maven.version}</version>

@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.hibernate.integrator.spi;
+package org.igloo.hibernate.hbm;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
