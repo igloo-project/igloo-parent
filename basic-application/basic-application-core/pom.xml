@@ -115,6 +115,12 @@
 			<version>${project.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
 		<!-- TODO -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
