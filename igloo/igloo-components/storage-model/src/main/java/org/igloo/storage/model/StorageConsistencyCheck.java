@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import org.igloo.storage.model.atomic.StorageConsistencyCheckResult;
+import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 @Entity
@@ -47,6 +48,9 @@ public class StorageConsistencyCheck extends GenericEntity<Long, StorageConsiste
 
 	@Enumerated(EnumType.STRING)
 	private StorageConsistencyCheckResult status;
+
+	@Enumerated(EnumType.STRING)
+	private StorageUnitCheckType checkType;
 
 	@Basic
 	private Integer fsFileCount;
@@ -119,6 +123,14 @@ public class StorageConsistencyCheck extends GenericEntity<Long, StorageConsiste
 
 	public void setStatus(StorageConsistencyCheckResult status) {
 		this.status = status;
+	}
+
+	public StorageUnitCheckType getCheckType() {
+		return checkType;
+	}
+
+	public void setCheckType(StorageUnitCheckType checkType) {
+		this.checkType = checkType;
 	}
 
 	public Integer getFsFileCount() {

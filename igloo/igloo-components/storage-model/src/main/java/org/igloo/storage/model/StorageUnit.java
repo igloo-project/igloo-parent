@@ -1,5 +1,6 @@
 package org.igloo.storage.model;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +17,7 @@ import javax.persistence.OneToMany;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Type;
 import org.igloo.storage.model.atomic.IStorageUnitType;
+import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.igloo.storage.model.hibernate.StorageHibernateConstants;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
@@ -63,6 +65,27 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 	@OneToMany(mappedBy = "storageUnit", fetch = FetchType.LAZY)
 	private Set<Fichier> fichiers;
 
+	/**
+	 * Automatic consistency check mechanism.
+	 */
+	@Basic(optional = false)
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private StorageUnitCheckType checkType = StorageUnitCheckType.NONE;
+
+	/**
+	 * Check delay for {@link StorageUnit}. If null, application settings is applied.
+	 */
+	@Basic(optional = true)
+	private Duration checkDelay;
+
+	/**
+	 * Checksum-enabled check delay for {@link StorageUnit}. If null application settings is applied. Used only if
+	 * {@link #checkType} allows checksum check.
+	 */
+	@Basic(optional = true)
+	private Duration checkChecksumDelay;
+
 	@Override
 	public Long getId() {
 		return id;
@@ -109,7 +132,7 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 		throw new IllegalStateException("This collection must remain lazy");
 	}
 
-	public void setStatistics(List<StorageConsistencyCheck> statistics) {
+	public void setConsistencyChecks(List<StorageConsistencyCheck> statistics) {
 		throw new IllegalStateException("This collection must remain lazy");
 	}
 
@@ -119,6 +142,30 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 
 	public void setFichiers(Set<Fichier> fichiers) {
 		throw new IllegalStateException("This collection must remain lazy.");
+	}
+
+	public StorageUnitCheckType getCheckType() {
+		return checkType;
+	}
+
+	public void setCheckType(StorageUnitCheckType checkType) {
+		this.checkType = checkType;
+	}
+
+	public Duration getCheckDelay() {
+		return checkDelay;
+	}
+
+	public void setCheckDelay(Duration checkDelay) {
+		this.checkDelay = checkDelay;
+	}
+
+	public Duration getCheckChecksumDelay() {
+		return checkChecksumDelay;
+	}
+
+	public void setCheckChecksumDelay(Duration checkChecksumDelay) {
+		this.checkChecksumDelay = checkChecksumDelay;
 	}
 
 }

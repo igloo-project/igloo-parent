@@ -3,6 +3,7 @@ package org.igloo.storage.impl;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -20,8 +21,10 @@ import org.igloo.storage.model.StorageFailure;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IStorageUnitType;
+import org.igloo.storage.model.atomic.StorageConsistencyCheckResult;
 import org.igloo.storage.model.atomic.StorageFailureStatus;
 import org.igloo.storage.model.atomic.StorageFailureType;
+import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 
@@ -148,6 +151,31 @@ public class DatabaseOperations {
 
 	public void createConsistencyCheck(StorageConsistencyCheck consistencyCheck) {
 		entityManager().persist(consistencyCheck);
+	}
+
+	public List<StorageUnit> listStorageUnits() {
+		return entityManager().createQuery("SELECT s FROM StorageUnit s ORDER BY s.id ASC", StorageUnit.class).getResultList();
+	}
+
+	public StorageConsistencyCheck getLastCheck(StorageUnit unit) {
+		try {
+			return entityManager().createQuery("SELECT s FROM StorageUnit s WHERE status != :checkStatus ORDER BY s.finishedOn DESC LIMIT 1", StorageConsistencyCheck.class)
+					.setParameter("checkStatus", StorageConsistencyCheckResult.UNKNOWN)
+					.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	public StorageConsistencyCheck getLastCheckChecksum(StorageUnit unit) {
+		try {
+			return entityManager().createQuery("SELECT s FROM StorageUnit s WHERE status != :checkStatus AND checkType = :checkType ORDER BY s.finishedOn DESC LIMIT 1", StorageConsistencyCheck.class)
+					.setParameter("checkStatus", StorageConsistencyCheckResult.UNKNOWN)
+					.setParameter("checkType", StorageUnitCheckType.LISTING_SIZE_CHECKSUM)
+					.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 	@Nonnull

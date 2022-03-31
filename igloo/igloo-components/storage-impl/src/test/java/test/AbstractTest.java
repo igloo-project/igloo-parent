@@ -20,7 +20,6 @@ import org.assertj.core.matcher.AssertionMatcher;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.PostgreSQL10Dialect;
 import org.igloo.jpa.test.EntityManagerFactoryExtension;
-import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.impl.StorageService;
@@ -69,7 +68,7 @@ abstract class AbstractTest {
 	protected static final String FILE_CHECKSUM_SHA_256 = "ccadd99b16cd3d200c22d6db45d8b6630ef3d936767127347ec8a76ab992c2ea";
 	protected static final long FILE_SIZE = 6L;
 
-	protected IStorageService storageService;
+	protected StorageService storageService;
 	protected TransactionTemplate transactionTemplate;
 
 	static EntityManagerFactoryExtension initEntityManagerExtension() {
