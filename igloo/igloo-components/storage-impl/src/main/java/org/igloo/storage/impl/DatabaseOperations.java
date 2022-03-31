@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -67,7 +68,8 @@ public class DatabaseOperations {
 	}
 
 	@Nonnull
-	public Set<Fichier> listUnitAliveFichiers(StorageUnit unit) {
+	public Set<Fichier> listUnitAliveFichiers(@Nonnull StorageUnit unit) {
+		Objects.requireNonNull(unit, "unit cannot be null");
 		return entityManager().createQuery("SELECT f FROM Fichier f where f.storageUnit = :unit AND f.status != :invalidatedStatus ORDER BY f.id DESC", Fichier.class)
 				.setParameter("unit", unit)
 				.setParameter("invalidatedStatus", FichierStatus.INVALIDATED)

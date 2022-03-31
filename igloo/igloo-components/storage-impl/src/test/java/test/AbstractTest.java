@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.assertj.core.matcher.AssertionMatcher;
@@ -36,6 +38,7 @@ import org.postgresql.Driver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.Ordered;
+import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
@@ -133,10 +136,22 @@ abstract class AbstractTest {
 		return transactionTemplate.execute((t) -> action.get());
 	}
 
+	<T> T doInWriteTransactionEntityManager(EntityManagerFactory entityManagerFactory, Function<EntityManager, T> action) {
+		PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
+		transactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute());
+		return transactionTemplate.execute((t) -> action.apply(EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)));
+	}
+
 	<T> T doInReadTransaction(EntityManagerFactory entityManagerFactory, Supplier<T> action) {
 		PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
 		transactionTemplate = new TransactionTemplate(transactionManager, readTransactionAttribute());
 		return transactionTemplate.execute((t) -> action.get());
+	}
+
+	<T> T doInReadTransactionEntityManager(EntityManagerFactory entityManagerFactory, Function<EntityManager, T> action) {
+		PlatformTransactionManager transactionManager = new JpaTransactionManager(entityManagerFactory);
+		transactionTemplate = new TransactionTemplate(transactionManager, readTransactionAttribute());
+		return transactionTemplate.execute((t) -> action.apply(EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)));
 	}
 
 	protected Fichier createFichier(String filename, IFichierType fichierType, String fileContent, Runnable postCreationAction) {
