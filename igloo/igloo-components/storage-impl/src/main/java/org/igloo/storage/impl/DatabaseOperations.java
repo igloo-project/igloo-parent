@@ -176,8 +176,10 @@ public class DatabaseOperations {
 
 	public StorageConsistencyCheck getLastCheck(StorageUnit unit) {
 		try {
-			return entityManager().createQuery("SELECT s FROM StorageUnit s WHERE status != :checkStatus ORDER BY s.finishedOn DESC LIMIT 1", StorageConsistencyCheck.class)
+			return entityManager().createQuery("SELECT s FROM StorageConsistencyCheck s WHERE status != :checkStatus AND storageUnit = :storageUnit ORDER BY s.checkFinishedOn DESC", StorageConsistencyCheck.class)
 					.setParameter("checkStatus", StorageConsistencyCheckResult.UNKNOWN)
+					.setParameter("storageUnit", unit)
+					.setMaxResults(1)
 					.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
@@ -186,9 +188,11 @@ public class DatabaseOperations {
 
 	public StorageConsistencyCheck getLastCheckChecksum(StorageUnit unit) {
 		try {
-			return entityManager().createQuery("SELECT s FROM StorageUnit s WHERE status != :checkStatus AND checkType = :checkType ORDER BY s.finishedOn DESC LIMIT 1", StorageConsistencyCheck.class)
+			return entityManager().createQuery("SELECT s FROM StorageConsistencyCheck s WHERE status != :checkStatus AND checkType = :checkType AND storageUnit = :storageUnit ORDER BY s.checkFinishedOn DESC", StorageConsistencyCheck.class)
 					.setParameter("checkStatus", StorageConsistencyCheckResult.UNKNOWN)
 					.setParameter("checkType", StorageUnitCheckType.LISTING_SIZE_CHECKSUM)
+					.setParameter("storageUnit", unit)
+					.setMaxResults(1)
 					.getSingleResult();
 		} catch (NoResultException e) {
 			return null;

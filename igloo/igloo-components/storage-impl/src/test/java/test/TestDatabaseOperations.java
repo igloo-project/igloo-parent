@@ -9,6 +9,7 @@ import static test.StorageAssertions.assertThat;
 import java.nio.file.Path;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,6 +40,7 @@ import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
+import org.igloo.storage.model.atomic.StorageConsistencyCheckResult;
 import org.igloo.storage.model.atomic.StorageFailureStatus;
 import org.igloo.storage.model.atomic.StorageFailureType;
 import org.igloo.storage.model.atomic.StorageUnitCheckType;
@@ -658,6 +660,205 @@ class TestDatabaseOperations extends AbstractTest {
 		
 	}
 
+	@Test
+	void testCreateRemoveFichier(EntityManagerFactory entityManagerFactory) {
+		StorageUnit storageUnit = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		doInWriteTransactionEntityManager(entityManagerFactory, em -> {
+			Fichier fichier = new Fichier();
+			fichier.setId(1l);
+			fichier.setUuid(UUID.randomUUID());
+			fichier.setStatus(FichierStatus.ALIVE);
+			fichier.setType(FichierType1.CONTENT1);
+			fichier.setStorageUnit(em.find(StorageUnit.class, storageUnit.getId()));
+			fichier.setRelativePath(String.format("/relative-path-%d", fichier.getId()));
+			fichier.setName("filename");
+			fichier.setSize(25l);
+			fichier.setChecksum("123");
+			fichier.setMimetype("application/octet-stream");
+			fichier.setChecksumType(ChecksumType.SHA_256);
+			fichier.setCreationDate(LocalDateTime.now());
+			databaseOperations.createFichier(fichier);
+			return fichier;
+		});
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(em.find(Fichier.class, 1l)).isNotNull();
+			return null;
+		});
+		doInWriteTransactionEntityManager(entityManagerFactory, em -> {
+			Fichier fichier = em.find(Fichier.class, 1l);
+			databaseOperations.removeFichier(fichier);
+			return fichier;
+		});
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(em.find(Fichier.class, 1l)).isNull();
+			return null;
+		});
+	}
+
+	@Test
+	void testGetStorageUnit(EntityManagerFactory entityManagerFactory) {
+		StorageUnit storageUnit = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(databaseOperations.getStorageUnit(storageUnit.getId())).isNotNull();
+			return null;
+		});
+	}
+
+	@Test
+	void testGetStorageUnitEmpty(EntityManagerFactory entityManagerFactory) {
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(databaseOperations.getStorageUnit(1l)).isNull();
+			return null;
+		});
+	}
+
+	@Test
+	void testListStorageUnit(EntityManagerFactory entityManagerFactory) {
+		StorageUnit storageUnit1 = createStorageUnit(entityManagerFactory, 2, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageUnit storageUnit2 = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			// ordered by id
+			assertThat(databaseOperations.listStorageUnits()).contains(storageUnit2, storageUnit1);
+			return null;
+		});
+	}
+
+	@Test
+	void testGetLastCheckEmpty(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(databaseOperations.getLastCheck(unit1)).isNull();
+			return null;
+		});
+	}
+
+	@Test
+	void testGetLastCheckFilterUnit(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageUnit unit2 = createStorageUnit(entityManagerFactory, 2l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
+		createConsistencyCheck(entityManagerFactory, unit2, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now().plus(Duration.ofDays(1)), StorageConsistencyCheckResult.OK);
+		
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(databaseOperations.getLastCheck(unit1)).isEqualTo(check1);
+			return null;
+		});
+	}
+	
+	@Test
+	void testGetLastCheckOrder(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
+		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now().minus(Duration.ofDays(1)), StorageConsistencyCheckResult.OK);
+		
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(databaseOperations.getLastCheck(unit1)).isEqualTo(check1);
+			return null;
+		});
+	}
+	
+	@Test
+	void testGetLastCheckFilterUnknown(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
+		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now(), StorageConsistencyCheckResult.UNKNOWN);
+		
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(databaseOperations.getLastCheck(unit1)).isEqualTo(check1);
+			return null;
+		});
+	}
+	
+	@Test
+	void testGetLastCheckAnyType(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now().minus(Duration.ofMinutes(1)), StorageConsistencyCheckResult.OK);
+		StorageConsistencyCheck check2 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
+		
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(databaseOperations.getLastCheck(unit1)).isEqualTo(check2);
+			return null;
+		});
+	}
+
+	@Test
+	void testGetLastCheckChecksumEmpty(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(databaseOperations.getLastCheck(unit1)).isNull();
+			return null;
+		});
+	}
+
+	@Test
+	void testGetLastCheckChecksumFilterUnit(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageUnit unit2 = createStorageUnit(entityManagerFactory, 2l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
+		createConsistencyCheck(entityManagerFactory, unit2, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, LocalDateTime.now().plus(Duration.ofDays(1)), StorageConsistencyCheckResult.OK);
+		
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(databaseOperations.getLastCheckChecksum(unit1)).isEqualTo(check1);
+			return null;
+		});
+	}
+	
+	@Test
+	void testGetLastCheckChecksumOrder(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
+		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, LocalDateTime.now().minus(Duration.ofDays(1)), StorageConsistencyCheckResult.OK);
+		
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(databaseOperations.getLastCheckChecksum(unit1)).isEqualTo(check1);
+			return null;
+		});
+	}
+	
+	@Test
+	void testGetLastCheckChecksumFilterUnknown(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
+		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, LocalDateTime.now(), StorageConsistencyCheckResult.UNKNOWN);
+		
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(databaseOperations.getLastCheckChecksum(unit1)).isEqualTo(check1);
+			return null;
+		});
+	}
+	
+	@Test
+	void testGetLastCheckChecksumFilterType(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
+		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now(), StorageConsistencyCheckResult.UNKNOWN);
+		
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(databaseOperations.getLastCheckChecksum(unit1)).isEqualTo(check1);
+			return null;
+		});
+	}
+
+	@Test
+	void testCreateConsistencyCheck(EntityManagerFactory entityManagerFactory) {
+		StorageUnit storageUnit = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check = doInWriteTransactionEntityManager(entityManagerFactory, em -> {
+			StorageConsistencyCheck c = new StorageConsistencyCheck();
+			c.setCheckFinishedOn(LocalDateTime.now());
+			c.setCheckStartedOn(LocalDateTime.now());
+			c.setCheckType(StorageUnitCheckType.LISTING_SIZE);
+			c.setStorageUnit(em.find(StorageUnit.class, storageUnit.getId()));
+			databaseOperations.createConsistencyCheck(c);
+			return c;
+		});
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			assertThat(em.find(StorageConsistencyCheck.class, check.getId()))
+				.usingRecursiveComparison()
+				.ignoringFields("fichiers", "storageUnit.fichiers", "storageUnit.consistencyChecks").isEqualTo(check);
+			return null;
+		});
+	}
+
 	private Consumer<? super StorageFailure> matcher(StorageConsistencyCheck check, String path, StorageFailureType type, StorageFailureStatus status) {
 		return f -> {
 			try (StorageSoftAssertions softly = new StorageSoftAssertions()) {
@@ -699,12 +900,17 @@ class TestDatabaseOperations extends AbstractTest {
 	}
 
 	private StorageConsistencyCheck createConsistencyCheck(EntityManagerFactory entityManagerFactory, StorageUnit unit1, StorageUnitCheckType type) {
+		return createConsistencyCheck(entityManagerFactory, unit1, type, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
+	}
+
+	private StorageConsistencyCheck createConsistencyCheck(EntityManagerFactory entityManagerFactory, StorageUnit unit1, StorageUnitCheckType type, LocalDateTime checkDate, StorageConsistencyCheckResult result) {
 		return doInWriteTransactionEntityManager(entityManagerFactory, (em) -> {
 			StorageConsistencyCheck check = new StorageConsistencyCheck();
-			check.setCheckFinishedOn(LocalDateTime.now());
-			check.setCheckStartedOn(LocalDateTime.now());
+			check.setCheckFinishedOn(checkDate);
+			check.setCheckStartedOn(checkDate);
 			check.setCheckType(type);
 			check.setStorageUnit(unit1);
+			check.setStatus(result);
 			em.persist(check);
 			return check;
 		});
