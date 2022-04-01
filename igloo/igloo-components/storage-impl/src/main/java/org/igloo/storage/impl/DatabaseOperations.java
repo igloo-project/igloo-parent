@@ -14,6 +14,7 @@ import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.igloo.storage.model.Fichier;
@@ -27,9 +28,13 @@ import org.igloo.storage.model.atomic.StorageFailureStatus;
 import org.igloo.storage.model.atomic.StorageFailureType;
 import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 
 public class DatabaseOperations {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseOperations.class);
 
 	private final EntityManagerFactory entityManagerFactory;
 
@@ -97,7 +102,8 @@ public class DatabaseOperations {
 				.getSingleResult();
 			// failure is known and acknowledged; we ignore subsequent checks
 			// except type failure change
-			if (failure.getType().equals(storedFailure.getType()) && StorageFailureStatus.ACKNOWLEDGED.equals(failure.getStatus())) {
+			if (failure.getType().equals(storedFailure.getType()) && StorageFailureStatus.ACKNOWLEDGED.equals(storedFailure.getStatus())) {
+				LOGGER.debug("Failure {} already acknowledged. Ignored.", failure);
 				return;
 			}
 			// a failure must not be reported on multiple unit; only misconfiguration may trigger this case
@@ -105,8 +111,14 @@ public class DatabaseOperations {
 			if (!failure.getConsistencyCheck().getStorageUnit().equals(storedFailure.getConsistencyCheck().getStorageUnit())) {
 				throw new IllegalStateException(String.format("Failure reported for %s in unit %d and already stored for unit %d", failure.getPath(), failure.getConsistencyCheck().getStorageUnit().getId(), storedFailure.getConsistencyCheck().getStorageUnit().getId()));
 			}
-			// else storedFailure is updated, except creation time
-			failure.setCreationTime(storedFailure.getCreationTime());
+			// else storedFailure is updated
+			if (StorageFailureStatus.ALIVE.equals(storedFailure.getStatus())) {
+				LOGGER.debug("Failure {} updates an already existing failure.", failure);
+				// if failure is already detected, keep creation time
+				failure.setCreationTime(storedFailure.getCreationTime());
+			} else {
+				LOGGER.debug("Failure {} replaces an already fixed or acknowlegded failure", failure);
+			}
 			failure.setId(storedFailure.getId());
 			entityManager().merge(failure);
 		} catch (NoResultException e) {
@@ -122,21 +134,24 @@ public class DatabaseOperations {
 	 * @param if <code>true</code>, cleaned {@link StorageFailureStatus} includes checksum mismatch failure. If <code>false</code>,
 	 * there are excluded.
 	 */
-	public void cleanFailures(StorageConsistencyCheck consistencyCheck, boolean alsoCleanChecksumMismatch) {
+	public Integer cleanFailures(StorageConsistencyCheck consistencyCheck, boolean alsoCleanChecksumMismatch) {
 		Map<String, Object> params = new HashMap<>();
 		String query = "UPDATE StorageFailure SET status = :fixedStatus "
-				// link failure -> check -> unit
-				+ "FROM StorageUnit u JOIN StorageConsistencyCheck c ON c.unit_id = u.id "
-				// match same unit, other check and status ALIVE
-				+ "WHERE u.id = :unitId AND consistencyCheck_id != :consistencyCheckId AND status = :aliveStatus";
-		params.put("aliveStatus", StorageFailureStatus.ALIVE);
+				// match same unit
+				+ "WHERE id IN (SELECT f.id FROM StorageFailure f JOIN StorageConsistencyCheck c ON f.consistencyCheck_id = c.id WHERE c.storageUnit_id = :unitId) "
+				// other consistencyCheck and status ALIVE
+				+ "AND consistencyCheck_id != :consistencyCheckId AND status = :aliveStatus";
+		params.put("fixedStatus", StorageFailureStatus.FIXED.name());
+		params.put("aliveStatus", StorageFailureStatus.ALIVE.name());
 		params.put("unitId", consistencyCheck.getStorageUnit().getId());
 		params.put("consistencyCheckId", consistencyCheck.getId());
 		if (!alsoCleanChecksumMismatch) {
 			query += " AND type != :checksumMismatchType";
-			params.put("checksumMismatchType", StorageFailureType.CONTENT_MISMATCH);
+			params.put("checksumMismatchType", StorageFailureType.CHECKSUM_MISMATCH.name());
 		}
-		entityManager().createNativeQuery(query, Integer.class).executeUpdate();
+		Query nativeQuery = entityManager().createNativeQuery(query);
+		params.forEach(nativeQuery::setParameter);
+		return nativeQuery.executeUpdate();
 	}
 
 	public void createFichier(Fichier fichier) {

@@ -189,7 +189,7 @@ class TestPerformance extends AbstractTest {
 					// check we have 50 items for each type
 					.areExactly(50, new Condition<StorageFailure>(fi -> StorageFailureType.MISSING_ENTITY.equals(fi.getType()) && removedEntities.contains(Path.of(fi.getPath())), "Entity from removedEntities must be found missing"))
 					.areExactly(50, new Condition<StorageFailure>(fi -> StorageFailureType.MISSING_FILE.equals(fi.getType()) && removedFiles.contains(fi.getFichier()), "Path from removedFiles must be found missing"))
-					.areExactly(50, new Condition<StorageFailure>(fi -> StorageFailureType.CONTENT_MISMATCH.equals(fi.getType()) && contentAltered.contains(fi.getFichier()), "Content from content altered must be found mismatching"))
+					.areExactly(50, new Condition<StorageFailure>(fi -> StorageFailureType.CHECKSUM_MISMATCH.equals(fi.getType()) && contentAltered.contains(fi.getFichier()), "Content from content altered must be found mismatching"))
 		);
 	}
 

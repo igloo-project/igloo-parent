@@ -215,13 +215,13 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 				Long size = storageOperations.length(filePath);
 				fileSize += size;
 				if (!size.equals(fichier.getSize())) {
-					databaseOperations.triggerFailure(StorageFailure.ofContentMismatch(filePath, fichier, consistencyCheck));
+					databaseOperations.triggerFailure(StorageFailure.ofSizeMismatch(filePath, fichier, consistencyCheck));
 					contentMismatchCount += 1;
 				} else if (checksumValidation && !ChecksumType.NONE.equals(fichier.getChecksumType())) {
 					// conditionally perform checksum comparison
 					String checksum = storageOperations.checksum(filePath);
 					if (!checksum.equals(fichier.getChecksum())) {
-						databaseOperations.triggerFailure(StorageFailure.ofContentMismatch(filePath, fichier, consistencyCheck));
+						databaseOperations.triggerFailure(StorageFailure.ofChecksumMismatch(filePath, fichier, consistencyCheck));
 						contentMismatchCount += 1;
 					}
 				}

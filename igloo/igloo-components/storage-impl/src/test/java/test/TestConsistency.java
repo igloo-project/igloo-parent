@@ -167,7 +167,7 @@ public class TestConsistency extends AbstractTest {
 			assertThat(f.getPath()).isEqualTo(path.resolve(Path.of("fichier4")).toString());
 		}));
 		verify(databaseOperations).triggerFailure(argThat(f -> {
-			assertThat(f.getType()).isEqualTo(StorageFailureType.CONTENT_MISMATCH);
+			assertThat(f.getType()).isEqualTo(StorageFailureType.CHECKSUM_MISMATCH);
 			assertThat(f.getFichier()).isEqualTo(fichier5);
 			assertThat(f.getPath()).isEqualTo(path.resolve(Path.of("fichier5")).toString());
 		}));

@@ -3,6 +3,8 @@ package test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.atIndex;
+import static test.StorageAssertions.assertThat;
 
 import java.nio.file.Path;
 import java.sql.PreparedStatement;
@@ -18,6 +20,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -42,13 +46,14 @@ import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.junit.jupiter.api.io.TempDir;
 
 import test.model.FichierType1;
 import test.model.FichierType2;
 import test.model.StorageUnitType;
 
-class TestEntities extends AbstractTest {
+class TestDatabaseOperations extends AbstractTest {
+
+	private static final String SELECT_STORAGE_FAILURE_ID_ASC = "SELECT f FROM StorageFailure f ORDER BY f.id ASC";
 
 	@RegisterExtension
 	EntityManagerFactoryExtension extension = AbstractTest.initEntityManagerExtension();
@@ -56,7 +61,7 @@ class TestEntities extends AbstractTest {
 	private DatabaseOperations databaseOperations;
 
 	@BeforeEach
-	void init(EntityManagerFactory entityManagerFactory, @TempDir Path tempDir) {
+	void init(EntityManagerFactory entityManagerFactory) {
 		databaseOperations = new DatabaseOperations(entityManagerFactory, "fichier_id_seq", "storageunit_id_seq");
 	}
 
@@ -400,32 +405,296 @@ class TestEntities extends AbstractTest {
 
 	@Test
 	void testTriggerFailure(EntityManagerFactory entityManagerFactory) {
-		LocalDateTime now = LocalDateTime.now();
 		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
-		createStorageUnit(entityManagerFactory, 2, StorageUnitType.TYPE_2, StorageUnitStatus.ALIVE);
 		StorageConsistencyCheck check = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
 		Fichier fichier1 = createFichier(entityManagerFactory, unit1, 1, FichierStatus.ALIVE);
-		StorageFailure failure = StorageFailure.ofMissingFile(Path.of("test"), fichier1, check);
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("test"), fichier1, check));
+		LocalDateTime afterTrigger = LocalDateTime.now();
+		assertThat(listFailures(entityManagerFactory))
+			.hasSize(1)
+			.satisfies(f -> {
+				// check failure is here with expected dates (before after)
+				assertThat(f)
+					.id(a -> a.isNotNull())
+					.fixedOn(a -> a.isNull())
+					.type(a -> a.isEqualTo(StorageFailureType.MISSING_FILE))
+					.status(a -> a.isEqualTo(StorageFailureStatus.ALIVE))
+					.consistencyCheck(a -> a.isEqualTo(check))
+					.fichier(a -> a.isEqualTo(fichier1))
+					.path(a -> a.isEqualTo("test"))
+					.creationTime(a -> a.isBefore(afterTrigger))
+					.lastFailureOn(a -> a.isEqualTo(f.getCreationTime()))
+					.acknowledgedOn(a -> a.isNull())
+					.fixedOn(a -> a.isNull());
+			}, Assertions.atIndex(0));
+	}
+
+	@Test
+	void testTriggerFailureAlreadyExistingAlive(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
+		Fichier fichier1 = createFichier(entityManagerFactory, unit1, 1, FichierStatus.ALIVE);
+		
+		// trigger first failure
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("test"), fichier1, check1));
+		
+		// trigger second check and new failure
+		LocalDateTime afterTrigger = LocalDateTime.now();
+		StorageConsistencyCheck check2 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
+		StorageFailure failure2 = StorageFailure.ofMissingFile(Path.of("test"), fichier1, check2);
+		triggerFailure(entityManagerFactory, failure2);
+		assertThat(listFailures(entityManagerFactory))
+			.hasSize(1)
+			.satisfies(f -> {
+				assertThat(f)
+					.id(a -> a.isNotNull())
+					.fixedOn(a -> a.isNull())
+					.type(a -> a.isEqualTo(StorageFailureType.MISSING_FILE))
+					.status(a -> a.isEqualTo(StorageFailureStatus.ALIVE))
+					.consistencyCheck(a -> a.isEqualTo(check2))
+					.fichier(a -> a.isEqualTo(fichier1))
+					.path(a -> a.isEqualTo("test"))
+					.creationTime(a -> a.isBefore(afterTrigger))
+					.lastFailureOn(a -> a.isAfter(afterTrigger))
+					.acknowledgedOn(a -> a.isNull())
+					.fixedOn(a -> a.isNull());
+			}, Assertions.atIndex(0));
+	}
+
+	@Test
+	void testTriggerFailureAlreadyExistingFixed(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
+		Fichier fichier1 = createFichier(entityManagerFactory, unit1, 1, FichierStatus.ALIVE);
+		
+		// trigger first failure and fix
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("test"), fichier1, check1));
+		updateSingleFailure(entityManagerFactory, f -> {
+			f.setStatus(StorageFailureStatus.FIXED);
+		});
+		
+		// trigger second check and new failure
+		LocalDateTime afterTrigger = LocalDateTime.now();
+		StorageConsistencyCheck check2 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
+		StorageFailure failure2 = StorageFailure.ofMissingFile(Path.of("test"), fichier1, check2);
+		triggerFailure(entityManagerFactory, failure2);
+		assertThat(listFailures(entityManagerFactory))
+			.hasSize(1)
+			.satisfies(
+					f -> {
+						// new failure replaces fixed one
+						assertThat(f)
+							.id(a -> a.isNotNull())
+							.fixedOn(a -> a.isNull())
+							.type(a -> a.isEqualTo(StorageFailureType.MISSING_FILE))
+							.status(a -> a.isEqualTo(StorageFailureStatus.ALIVE))
+							.consistencyCheck(a -> a.isEqualTo(check2))
+							.fichier(a -> a.isEqualTo(fichier1))
+							.path(a -> a.isEqualTo("test"))
+							.creationTime(a -> a.isAfter(afterTrigger))
+							.lastFailureOn(a -> a.isAfter(afterTrigger))
+							.acknowledgedOn(a -> a.isNull())
+							.fixedOn(a -> a.isNull());
+					}, atIndex(0)
+		);
+	}
+
+	@Test
+	void testTriggerFailureAlreadyExistingAcknowledged(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
+		Fichier fichier1 = createFichier(entityManagerFactory, unit1, 1, FichierStatus.ALIVE);
+		
+		// trigger first failure and ack
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("test"), fichier1, check1));
+		updateSingleFailure(entityManagerFactory, f -> {
+			f.setStatus(StorageFailureStatus.ACKNOWLEDGED);
+			f.setAcknowledgedOn(LocalDateTime.now());
+		});
+		
+		// trigger second check and new failure
+		LocalDateTime afterAcknowledged = LocalDateTime.now();
+		StorageConsistencyCheck check2 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
+		StorageFailure failure2 = StorageFailure.ofMissingFile(Path.of("test"), fichier1, check2);
+		triggerFailure(entityManagerFactory, failure2);
+		assertThat(listFailures(entityManagerFactory))
+			.hasSize(1)
+			.satisfies(
+					f -> {
+						// check that acknowledged failure is here and new failure is ignored
+						assertThat(f)
+							.id(a -> a.isNotNull())
+							.fixedOn(a -> a.isNull())
+							.type(a -> a.isEqualTo(StorageFailureType.MISSING_FILE))
+							.status(a -> a.isEqualTo(StorageFailureStatus.ACKNOWLEDGED))
+							.consistencyCheck(a -> a.isEqualTo(check1))
+							.fichier(a -> a.isEqualTo(fichier1))
+							.path(a -> a.isEqualTo("test"))
+							.creationTime(a -> a.isBefore(afterAcknowledged))
+							.lastFailureOn(a -> a.isBefore(afterAcknowledged))
+							.acknowledgedOn(a -> a.isBefore(afterAcknowledged))
+							.fixedOn(a -> a.isNull());
+					}, atIndex(0)
+		);
+	}
+
+	@Test
+	void testTriggerFailureAlreadyExistingAcknowledgedChangeType(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
+		Fichier fichier1 = createFichier(entityManagerFactory, unit1, 1, FichierStatus.ALIVE);
+		
+		// trigger first failure and ack
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("test"), fichier1, check1));
+		updateSingleFailure(entityManagerFactory, fa -> {
+			fa.setStatus(StorageFailureStatus.ACKNOWLEDGED);
+			fa.setAcknowledgedOn(LocalDateTime.now());
+		});
+		LocalDateTime afterFixed = LocalDateTime.now();
+		
+		// trigger second check and new failure (changing type)
+		StorageConsistencyCheck check2 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
+		StorageFailure failure2 = StorageFailure.ofMissingEntity("test", check2);
+		triggerFailure(entityManagerFactory, failure2);
+		assertThat(listFailures(entityManagerFactory))
+			.hasSize(1)
+			.satisfies(
+					f -> {
+						// new failure completely replaces the acknowledged one as type change
+						assertThat(f)
+							.id(a -> a.isNotNull())
+							.fixedOn(a -> a.isNull())
+							.type(a -> a.isEqualTo(StorageFailureType.MISSING_ENTITY))
+							.status(a -> a.isEqualTo(StorageFailureStatus.ALIVE))
+							.consistencyCheck(a -> a.isEqualTo(check2))
+							.fichier(a -> a.isNull())
+							.path(a -> a.isEqualTo("test"))
+							.creationTime(a -> a.isAfter(afterFixed))
+							.lastFailureOn(a -> a.isEqualTo(f.getCreationTime()))
+							.acknowledgedOn(a -> a.isNull())
+							.fixedOn(a -> a.isNull());
+					}, atIndex(0)
+		);
+	}
+
+	@Test
+	void testCleanFailures(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
+		Fichier fichier1 = createFichier(entityManagerFactory, unit1, 1, FichierStatus.ALIVE);
+		createFichier(entityManagerFactory, unit1, 2, FichierStatus.ALIVE);
+		Fichier fichier3 = createFichier(entityManagerFactory, unit1, 3, FichierStatus.ALIVE);
+		Fichier fichier4 = createFichier(entityManagerFactory, unit1, 4, FichierStatus.ALIVE);
+		Fichier fichier5 = createFichier(entityManagerFactory, unit1, 5, FichierStatus.ALIVE);
+		Fichier fichier6 = createFichier(entityManagerFactory, unit1, 6, FichierStatus.ALIVE);
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("test1"), fichier1, check1));
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingEntity("test2", check1));
+		triggerFailure(entityManagerFactory, StorageFailure.ofSizeMismatch(Path.of("test3"), fichier3, check1));
+		triggerFailure(entityManagerFactory, StorageFailure.ofChecksumMismatch(Path.of("test4"), fichier4, check1));
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("test5"), fichier5, check1));
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("test6"), fichier6, check1));
+		updateMatchingFailure(entityManagerFactory, f -> "test6".equals(f.getPath()), f -> f.setStatus(StorageFailureStatus.ACKNOWLEDGED));
+		
+		assertThat(listFailures(entityManagerFactory)).hasSize(6);
+		
+		StorageConsistencyCheck check2 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
+		{
+			// first recheck (without checksum)
+			// check without checksum -> previous checksum failures must be kept
+			doInWriteTransaction(entityManagerFactory, () -> {
+				databaseOperations.cleanFailures(check2, false);
+				return null;
+			});
+			triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("test5"), fichier5, check2));
+			
+			// if not redetected -> FIXED
+			// if rededected -> associated with new check
+			// if checksum -> kept
+			assertThat(listFailures(entityManagerFactory)).hasSize(6)
+				.satisfies(matcher(check1, "test1", StorageFailureType.MISSING_FILE, StorageFailureStatus.FIXED), atIndex(0))
+				.satisfies(matcher(check1, "test2", StorageFailureType.MISSING_ENTITY, StorageFailureStatus.FIXED), atIndex(1))
+				.satisfies(matcher(check1, "test3", StorageFailureType.SIZE_MISMATCH, StorageFailureStatus.FIXED), atIndex(2))
+				.satisfies(matcher(check1, "test4", StorageFailureType.CHECKSUM_MISMATCH, StorageFailureStatus.ALIVE), atIndex(3))
+				.satisfies(matcher(check2, "test5", StorageFailureType.MISSING_FILE, StorageFailureStatus.ALIVE), atIndex(4))
+				.satisfies(matcher(check1, "test6", StorageFailureType.MISSING_FILE, StorageFailureStatus.ACKNOWLEDGED), atIndex(5));
+		}
+		
+		StorageConsistencyCheck check3 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
+		{
+			// second recheck (with checksum)
+			// check with checksum -> previous checksum failures are marked fixed
+			doInWriteTransaction(entityManagerFactory, () -> {
+				databaseOperations.cleanFailures(check3, true);
+				return null;
+			});
+			triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("test5"), fichier5, check2));
+			
+			assertThat(listFailures(entityManagerFactory)).hasSize(6)
+				.satisfies(matcher(check1, "test1", StorageFailureType.MISSING_FILE, StorageFailureStatus.FIXED), atIndex(0))
+				.satisfies(matcher(check1, "test2", StorageFailureType.MISSING_ENTITY, StorageFailureStatus.FIXED), atIndex(1))
+				.satisfies(matcher(check1, "test3", StorageFailureType.SIZE_MISMATCH, StorageFailureStatus.FIXED), atIndex(2))
+				.satisfies(matcher(check1, "test4", StorageFailureType.CHECKSUM_MISMATCH, StorageFailureStatus.FIXED), atIndex(3))
+				.satisfies(matcher(check2, "test5", StorageFailureType.MISSING_FILE, StorageFailureStatus.ALIVE), atIndex(4))
+				.satisfies(matcher(check1, "test6", StorageFailureType.MISSING_FILE, StorageFailureStatus.ACKNOWLEDGED), atIndex(5));
+		}
+		
+		{
+			// third recheck, no failure
+			StorageConsistencyCheck check4 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE);
+			// check with checksum -> previous checksum failures are marked fixed
+			doInWriteTransaction(entityManagerFactory, () -> {
+				databaseOperations.cleanFailures(check4, true);
+				return null;
+			});
+			
+			assertThat(listFailures(entityManagerFactory)).hasSize(6)
+				.satisfies(matcher(check1, "test1", StorageFailureType.MISSING_FILE, StorageFailureStatus.FIXED), atIndex(0))
+				.satisfies(matcher(check1, "test2", StorageFailureType.MISSING_ENTITY, StorageFailureStatus.FIXED), atIndex(1))
+				.satisfies(matcher(check1, "test3", StorageFailureType.SIZE_MISMATCH, StorageFailureStatus.FIXED), atIndex(2))
+				.satisfies(matcher(check1, "test4", StorageFailureType.CHECKSUM_MISMATCH, StorageFailureStatus.FIXED), atIndex(3))
+				.satisfies(matcher(check2, "test5", StorageFailureType.MISSING_FILE, StorageFailureStatus.FIXED), atIndex(4))
+				.satisfies(matcher(check1, "test6", StorageFailureType.MISSING_FILE, StorageFailureStatus.ACKNOWLEDGED), atIndex(5));
+		}
+		
+	}
+
+	private Consumer<? super StorageFailure> matcher(StorageConsistencyCheck check, String path, StorageFailureType type, StorageFailureStatus status) {
+		return f -> {
+			try (StorageSoftAssertions softly = new StorageSoftAssertions()) {
+				softly.assertThat(f).path(a -> a.isEqualTo(path))
+					.status(a -> a.isEqualTo(status))
+					.type(a -> a.isEqualTo(type))
+					.consistencyCheck(a -> a.isEqualTo(check));
+			}
+		};
+	}
+
+	private List<StorageFailure> listFailures(EntityManagerFactory entityManagerFactory) {
+		return doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			return em.createQuery(SELECT_STORAGE_FAILURE_ID_ASC, StorageFailure.class).getResultList();
+		});
+	}
+
+	private void updateSingleFailure(EntityManagerFactory entityManagerFactory, Consumer<StorageFailure> updater) {
+		doInWriteTransactionEntityManager(entityManagerFactory, (em) -> {
+			StorageFailure f = em.createQuery(SELECT_STORAGE_FAILURE_ID_ASC, StorageFailure.class).getSingleResult();
+			updater.accept(f);
+			return f;
+		});
+	}
+
+	private void updateMatchingFailure(EntityManagerFactory entityManagerFactory, Predicate<StorageFailure> predicate, Consumer<StorageFailure> updater) {
+		doInWriteTransactionEntityManager(entityManagerFactory, (em) -> {
+			StorageFailure f = em.createQuery(SELECT_STORAGE_FAILURE_ID_ASC, StorageFailure.class).getResultStream().filter(predicate).findFirst().orElseThrow();
+			updater.accept(f);
+			return f;
+		});
+	}
+
+	private void triggerFailure(EntityManagerFactory entityManagerFactory, StorageFailure failure) {
 		doInWriteTransaction(entityManagerFactory, () -> {
 			databaseOperations.triggerFailure(failure);
 			return null;
-		});
-		doInReadTransactionEntityManager(entityManagerFactory, (em) -> {
-			List<StorageFailure> resultList = em.createQuery("SELECT f FROM StorageFailure f", StorageFailure.class).getResultList();
-			assertThat(resultList)
-				.hasSize(1)
-				.satisfies(i -> {
-					assertThat(i.getAcknowledgedOn()).isNull();
-					assertThat(i.getFixedOn()).isNull();
-					assertThat(i.getType()).isEqualTo(StorageFailureType.MISSING_FILE);
-					assertThat(i.getStatus()).isEqualTo(StorageFailureStatus.ALIVE);
-					assertThat(i.getPath()).isEqualTo("test");
-					assertThat(i.getLastFailureOn()).isAfter(now);
-					assertThat(i.getCreationTime()).isNotNull();
-					assertThat(i.getConsistencyCheck()).isEqualTo(check);
-					assertThat(i.getFichier()).isEqualTo(fichier1);
-				}, Assertions.atIndex(0));
-			return resultList.get(0);
 		});
 	}
 

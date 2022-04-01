@@ -161,13 +161,24 @@ public class StorageFailure extends GenericEntity<Long, StorageFailure> {
 		return failure;
 	}
 
-	public static StorageFailure ofContentMismatch(Path path, Fichier fichier, StorageConsistencyCheck consistencyCheck) {
+	public static StorageFailure ofSizeMismatch(Path path, Fichier fichier, StorageConsistencyCheck consistencyCheck) {
 		StorageFailure failure = new StorageFailure();
 		failure.setPath(path.toString());
 		failure.setFichier(fichier);
 		failure.setCreationTime(LocalDateTime.now());
 		failure.setStatus(StorageFailureStatus.ALIVE);
-		failure.setType(StorageFailureType.CONTENT_MISMATCH);
+		failure.setType(StorageFailureType.SIZE_MISMATCH);
+		failure.setConsistencyCheck(consistencyCheck);
+		return failure;
+	}
+
+	public static StorageFailure ofChecksumMismatch(Path path, Fichier fichier, StorageConsistencyCheck consistencyCheck) {
+		StorageFailure failure = new StorageFailure();
+		failure.setPath(path.toString());
+		failure.setFichier(fichier);
+		failure.setCreationTime(LocalDateTime.now());
+		failure.setStatus(StorageFailureStatus.ALIVE);
+		failure.setType(StorageFailureType.CHECKSUM_MISMATCH);
 		failure.setConsistencyCheck(consistencyCheck);
 		return failure;
 	}
