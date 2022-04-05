@@ -131,8 +131,8 @@ public class DatabaseOperations {
 	 * linked with this <code>consistencyCheck</code>. It allows to resolve as {@link StorageFailureStatus#FIXED} all
 	 * failures not updated by the provided {@link StorageConsistencyCheck}.</p>
 	 * 
-	 * @param if <code>true</code>, cleaned {@link StorageFailureStatus} includes checksum mismatch failure. If <code>false</code>,
-	 * there are excluded.
+	 * @param alsoCleanChecksumMismatch <code>true</code>, cleaned {@link StorageFailureStatus} includes checksum
+	 * mismatch failure. If <code>false</code>, there are excluded.
 	 */
 	public Integer cleanFailures(StorageConsistencyCheck consistencyCheck, boolean alsoCleanChecksumMismatch) {
 		Map<String, Object> params = new HashMap<>();

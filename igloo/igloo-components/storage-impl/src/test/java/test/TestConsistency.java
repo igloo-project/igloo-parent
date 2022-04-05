@@ -84,9 +84,6 @@ public class TestConsistency extends AbstractTest {
 		));
 		List<StorageConsistencyCheck> beans = storageService.checkConsistency(unit, true);
 
-		// 2 missing entity
-		// 1 missing file
-		// 1 checksum mismatch
 		verify(databaseOperations).createConsistencyCheck(argThat(c -> assertThat(c.getStorageUnit()).isEqualTo(unit)));
 		verify(databaseOperations, never()).triggerFailure(any());
 		assertThat(beans)
@@ -106,11 +103,11 @@ public class TestConsistency extends AbstractTest {
 	}
 
 	private Fichier createFichier(String relativePath, String checksum) {
-		Fichier fichier1 = new Fichier();
-		fichier1.setRelativePath(relativePath);
-		fichier1.setChecksum(checksum);
-		fichier1.setSize((long) checksum.length());
-		return fichier1;
+		Fichier fichier = new Fichier();
+		fichier.setRelativePath(relativePath);
+		fichier.setChecksum(checksum);
+		fichier.setSize((long) checksum.length());
+		return fichier;
 	}
 
 	@Test

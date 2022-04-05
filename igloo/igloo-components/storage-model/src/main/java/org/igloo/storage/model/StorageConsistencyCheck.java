@@ -27,7 +27,7 @@ public class StorageConsistencyCheck extends GenericEntity<Long, StorageConsiste
 
 	/**
 	 * Storage unit targetted by this check. Listings are performed on entity linked with this {@link StorageUnit} and
-	 * filesystem content in {@link StorageUnit} directory (see {@link StorageUnit#getPath()}.
+	 * filesystem content in {@link StorageUnit} directory (see {@link StorageUnit#getPath()}).
 	 */
 	@ManyToOne
 	private StorageUnit storageUnit;
