@@ -239,8 +239,8 @@ public class DatabaseOperations {
 				+ "count(distinct f.id) AS \"count\", sum(f.size) AS \"size\" " // metrics
 				+ "FROM StorageUnit s "
 				+ "JOIN Fichier f ON f.storageUnit_id = s.id "
-				+ "GROUP BY s.id, s.type, f.type "
-				+ "ORDER BY s.id ASC, s.type ASC, f.type ASC, \"count\" ASC, size ASC "))
+				+ "GROUP BY s.id, s.type, f.type, f.status "
+				+ "ORDER BY s.id ASC, s.type ASC, f.type ASC, f.status ASC, \"count\" ASC, size ASC "))
 				.addScalar("storageUnitId", LongType.INSTANCE)
 				.addScalar("storageUnitType", storageUnitTypeType)
 				.addScalar("fichierType", fichierTypeType)
@@ -261,8 +261,8 @@ public class DatabaseOperations {
 				+ "JOIN Fichier f ON f.storageUnit_id = s.id "
 				+ "JOIN StorageFailure fa ON fa.fichier_id = f.id "
 				+ "WHERE fa.fichier_id IS NOT NULL "
-				+ "GROUP BY s.id, s.type, f.type, fa.type, fa.status "
-				+ "ORDER BY s.id ASC, s.type ASC, f.type ASC, fa.type ASC, fa.status ASC, \"count\" ASC, size ASC "))
+				+ "GROUP BY s.id, s.type, f.type, f.status, fa.type, fa.status "
+				+ "ORDER BY s.id ASC, s.type ASC, f.type ASC, f.status ASC, fa.type ASC, fa.status ASC, \"count\" ASC, size ASC "))
 				.addScalar("storageUnitId", LongType.INSTANCE)
 				.addScalar("storageUnitType", storageUnitTypeType)
 				.addScalar("fichierType", fichierTypeType)
