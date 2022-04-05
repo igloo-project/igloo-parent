@@ -45,6 +45,9 @@ import org.igloo.storage.model.atomic.StorageFailureStatus;
 import org.igloo.storage.model.atomic.StorageFailureType;
 import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
+import org.igloo.storage.model.statistics.StorageFailureStatistic;
+import org.igloo.storage.model.statistics.StorageOrphanStatistic;
+import org.igloo.storage.model.statistics.StorageStatistic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -859,6 +862,229 @@ class TestDatabaseOperations extends AbstractTest {
 		});
 	}
 
+	@Test
+	void testGetStorageStatistics(EntityManagerFactory entityManagerFactory) {
+		StorageUnit storageUnit1 = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		createFichier(entityManagerFactory, storageUnit1, 11l, FichierStatus.ALIVE, FichierType1.CONTENT1);
+		createFichier(entityManagerFactory, storageUnit1, 12l, FichierStatus.ALIVE, FichierType1.CONTENT1);
+		createFichier(entityManagerFactory, storageUnit1, 13l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		
+		StorageUnit storageUnit2 = createStorageUnit(entityManagerFactory, 2, StorageUnitType.TYPE_2, StorageUnitStatus.ALIVE);
+		createFichier(entityManagerFactory, storageUnit2, 21l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		createFichier(entityManagerFactory, storageUnit2, 22l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		createFichier(entityManagerFactory, storageUnit2, 23l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		
+		List<StorageStatistic> statistics = doInReadTransactionEntityManager(entityManagerFactory, em -> databaseOperations.getStorageStatistics());
+		assertThat(statistics)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(1l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+					assertThat(i.getFichierType()).isEqualTo(FichierType1.CONTENT1);
+					assertThat(i.getFichierStatus()).isEqualTo(FichierStatus.ALIVE);
+					assertThat(i.getCount()).isEqualTo(2);
+					assertThat(i.getSize()).isEqualTo(2 * 25);
+				}, atIndex(0)
+		)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(1l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+					assertThat(i.getFichierType()).isEqualTo(FichierType1.CONTENT2);
+					assertThat(i.getFichierStatus()).isEqualTo(FichierStatus.ALIVE);
+					assertThat(i.getCount()).isEqualTo(1);
+					assertThat(i.getSize()).isEqualTo(1 * 25);
+				}, atIndex(1)
+		)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(2l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_2);
+					assertThat(i.getFichierType()).isEqualTo(FichierType1.CONTENT2);
+					assertThat(i.getFichierStatus()).isEqualTo(FichierStatus.ALIVE);
+					assertThat(i.getCount()).isEqualTo(3);
+					assertThat(i.getSize()).isEqualTo(3 * 25);
+				}, atIndex(2)
+		);
+	}
+
+	@Test
+	void testGetStorageFailureStatistics(EntityManagerFactory entityManagerFactory) {
+		StorageUnit storageUnit1 = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		Fichier fichier11  = createFichier(entityManagerFactory, storageUnit1, 11l, FichierStatus.ALIVE, FichierType1.CONTENT1);
+		Fichier fichier12 = createFichier(entityManagerFactory, storageUnit1, 12l, FichierStatus.ALIVE, FichierType1.CONTENT1);
+		Fichier fichier13 = createFichier(entityManagerFactory, storageUnit1, 13l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		Fichier fichier14 = createFichier(entityManagerFactory, storageUnit1, 14l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		Fichier fichier15 = createFichier(entityManagerFactory, storageUnit1, 15l, FichierStatus.ALIVE, FichierType1.CONTENT1);
+		StorageConsistencyCheck check11 = createConsistencyCheck(entityManagerFactory, storageUnit1, StorageUnitCheckType.LISTING_SIZE);
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("fichier11"), fichier11, check11));
+		triggerFailure(entityManagerFactory, StorageFailure.ofSizeMismatch(Path.of("fichier12"), fichier12, check11));
+		triggerFailure(entityManagerFactory, StorageFailure.ofChecksumMismatch(Path.of("fichier13"), fichier13, check11));
+		triggerFailure(entityManagerFactory, StorageFailure.ofChecksumMismatch(Path.of("fichier14"), fichier14, check11));
+		triggerFailure(entityManagerFactory, StorageFailure.ofChecksumMismatch(Path.of("fichier15"), fichier15, check11));
+		updateMatchingFailure(entityManagerFactory, f -> Long.valueOf(14).equals(f.getFichier().getId()), f -> f.setStatus(StorageFailureStatus.ACKNOWLEDGED));
+		updateMatchingFailure(entityManagerFactory, f -> Long.valueOf(15).equals(f.getFichier().getId()), f -> f.setStatus(StorageFailureStatus.FIXED));
+		
+		StorageUnit storageUnit2 = createStorageUnit(entityManagerFactory, 2, StorageUnitType.TYPE_2, StorageUnitStatus.ALIVE);
+		Fichier fichier21 = createFichier(entityManagerFactory, storageUnit2, 21l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		Fichier fichier22 = createFichier(entityManagerFactory, storageUnit2, 22l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		Fichier fichier23 = createFichier(entityManagerFactory, storageUnit2, 23l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		StorageConsistencyCheck check21 = createConsistencyCheck(entityManagerFactory, storageUnit2, StorageUnitCheckType.LISTING_SIZE);
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("fichier21"), fichier21, check21));
+		triggerFailure(entityManagerFactory, StorageFailure.ofSizeMismatch(Path.of("fichier22"), fichier22, check11));
+		triggerFailure(entityManagerFactory, StorageFailure.ofSizeMismatch(Path.of("fichier23"), fichier23, check11));
+		
+		List<StorageFailureStatistic> statistics = doInReadTransactionEntityManager(entityManagerFactory, em -> databaseOperations.getStorageFailureStatistics());
+		assertThat(statistics)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(1l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+					assertThat(i.getFichierType()).isEqualTo(FichierType1.CONTENT1);
+					assertThat(i.getFichierStatus()).isEqualTo(FichierStatus.ALIVE);
+					assertThat(i.getFailureType()).isEqualTo(StorageFailureType.CHECKSUM_MISMATCH);
+					assertThat(i.getFailureStatus()).isEqualTo(StorageFailureStatus.FIXED);
+					assertThat(i.getCount()).isEqualTo(1);
+					assertThat(i.getSize()).isEqualTo(1 * 25);
+				}, atIndex(0)
+		)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(1l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+					assertThat(i.getFichierType()).isEqualTo(FichierType1.CONTENT1);
+					assertThat(i.getFichierStatus()).isEqualTo(FichierStatus.ALIVE);
+					assertThat(i.getFailureType()).isEqualTo(StorageFailureType.MISSING_FILE);
+					assertThat(i.getFailureStatus()).isEqualTo(StorageFailureStatus.ALIVE);
+					assertThat(i.getCount()).isEqualTo(1);
+					assertThat(i.getSize()).isEqualTo(1 * 25);
+				}, atIndex(1)
+		)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(1l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+					assertThat(i.getFichierType()).isEqualTo(FichierType1.CONTENT1);
+					assertThat(i.getFichierStatus()).isEqualTo(FichierStatus.ALIVE);
+					assertThat(i.getFailureType()).isEqualTo(StorageFailureType.SIZE_MISMATCH);
+					assertThat(i.getFailureStatus()).isEqualTo(StorageFailureStatus.ALIVE);
+					assertThat(i.getCount()).isEqualTo(1);
+					assertThat(i.getSize()).isEqualTo(1 * 25);
+				}, atIndex(2)
+		)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(1l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+					assertThat(i.getFichierType()).isEqualTo(FichierType1.CONTENT2);
+					assertThat(i.getFichierStatus()).isEqualTo(FichierStatus.ALIVE);
+					assertThat(i.getFailureType()).isEqualTo(StorageFailureType.CHECKSUM_MISMATCH);
+					assertThat(i.getFailureStatus()).isEqualTo(StorageFailureStatus.ACKNOWLEDGED);
+					assertThat(i.getCount()).isEqualTo(1);
+					assertThat(i.getSize()).isEqualTo(1 * 25);
+				}, atIndex(3)
+		)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(1l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+					assertThat(i.getFichierType()).isEqualTo(FichierType1.CONTENT2);
+					assertThat(i.getFichierStatus()).isEqualTo(FichierStatus.ALIVE);
+					assertThat(i.getFailureType()).isEqualTo(StorageFailureType.CHECKSUM_MISMATCH);
+					assertThat(i.getFailureStatus()).isEqualTo(StorageFailureStatus.ALIVE);
+					assertThat(i.getCount()).isEqualTo(1);
+					assertThat(i.getSize()).isEqualTo(1 * 25);
+				}, atIndex(4)
+		)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(2l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_2);
+					assertThat(i.getFichierType()).isEqualTo(FichierType1.CONTENT2);
+					assertThat(i.getFichierStatus()).isEqualTo(FichierStatus.ALIVE);
+					assertThat(i.getFailureType()).isEqualTo(StorageFailureType.MISSING_FILE);
+					assertThat(i.getFailureStatus()).isEqualTo(StorageFailureStatus.ALIVE);
+					assertThat(i.getCount()).isEqualTo(1);
+					assertThat(i.getSize()).isEqualTo(1 * 25);
+				}, atIndex(5)
+		)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(2l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_2);
+					assertThat(i.getFichierType()).isEqualTo(FichierType1.CONTENT2);
+					assertThat(i.getFichierStatus()).isEqualTo(FichierStatus.ALIVE);
+					assertThat(i.getFailureType()).isEqualTo(StorageFailureType.SIZE_MISMATCH);
+					assertThat(i.getFailureStatus()).isEqualTo(StorageFailureStatus.ALIVE);
+					assertThat(i.getCount()).isEqualTo(2);
+					assertThat(i.getSize()).isEqualTo(2 * 25);
+				}, atIndex(6)
+		);
+	}
+
+	@Test
+	void testGetStorageOrphanStatistics(EntityManagerFactory entityManagerFactory) {
+		StorageUnit storageUnit1 = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		Fichier fichier11  = createFichier(entityManagerFactory, storageUnit1, 11l, FichierStatus.ALIVE, FichierType1.CONTENT1);
+		Fichier fichier12 = createFichier(entityManagerFactory, storageUnit1, 12l, FichierStatus.ALIVE, FichierType1.CONTENT1);
+		createFichier(entityManagerFactory, storageUnit1, 13l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		createFichier(entityManagerFactory, storageUnit1, 14l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		createFichier(entityManagerFactory, storageUnit1, 15l, FichierStatus.ALIVE, FichierType1.CONTENT1);
+		StorageConsistencyCheck check11 = createConsistencyCheck(entityManagerFactory, storageUnit1, StorageUnitCheckType.LISTING_SIZE);
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingFile(Path.of("fichier11"), fichier11, check11));
+		triggerFailure(entityManagerFactory, StorageFailure.ofSizeMismatch(Path.of("fichier12"), fichier12, check11));
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingEntity("fichier13", check11));
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingEntity("fichier14", check11));
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingEntity("fichier15", check11));
+		updateMatchingFailure(entityManagerFactory, f -> "fichier14".equals(f.getPath()), f -> f.setStatus(StorageFailureStatus.ACKNOWLEDGED));
+		updateMatchingFailure(entityManagerFactory, f -> "fichier15".equals(f.getPath()), f -> f.setStatus(StorageFailureStatus.FIXED));
+
+		StorageUnit storageUnit2 = createStorageUnit(entityManagerFactory, 2, StorageUnitType.TYPE_2, StorageUnitStatus.ALIVE);
+		createFichier(entityManagerFactory, storageUnit2, 21l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		createFichier(entityManagerFactory, storageUnit2, 22l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		createFichier(entityManagerFactory, storageUnit2, 23l, FichierStatus.ALIVE, FichierType1.CONTENT2);
+		StorageConsistencyCheck check21 = createConsistencyCheck(entityManagerFactory, storageUnit2, StorageUnitCheckType.LISTING_SIZE);
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingEntity("fichier21", check21));
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingEntity("fichier22", check21));
+		triggerFailure(entityManagerFactory, StorageFailure.ofMissingEntity("fichier23", check21));
+		
+		List<StorageOrphanStatistic> statistics = doInReadTransactionEntityManager(entityManagerFactory, em -> databaseOperations.getStorageOrphanStatistics());
+		
+		assertThat(statistics)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(1l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+					assertThat(i.getFailureStatus()).isEqualTo(StorageFailureStatus.ACKNOWLEDGED);
+					assertThat(i.getCount()).isEqualTo(1);
+				}, atIndex(0)
+		)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(1l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+					assertThat(i.getFailureStatus()).isEqualTo(StorageFailureStatus.ALIVE);
+					assertThat(i.getCount()).isEqualTo(1);
+				}, atIndex(1)
+		)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(1l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+					assertThat(i.getFailureStatus()).isEqualTo(StorageFailureStatus.FIXED);
+					assertThat(i.getCount()).isEqualTo(1);
+				}, atIndex(2)
+		)
+		.satisfies(
+				i -> {
+					assertThat(i.getStorageUnitId()).isEqualTo(2l);
+					assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_2);
+					assertThat(i.getFailureStatus()).isEqualTo(StorageFailureStatus.ALIVE);
+					assertThat(i.getCount()).isEqualTo(3);
+				}, atIndex(3)
+		);
+	}
+
 	private Consumer<? super StorageFailure> matcher(StorageConsistencyCheck check, String path, StorageFailureType type, StorageFailureStatus status) {
 		return f -> {
 			try (StorageSoftAssertions softly = new StorageSoftAssertions()) {
@@ -917,12 +1143,16 @@ class TestDatabaseOperations extends AbstractTest {
 	}
 
 	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status) {
+		return createFichier(entityManagerFactory, storageUnit, id, status, FichierType1.CONTENT1);
+	}
+
+	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, IFichierType type) {
 		return doInWriteTransactionEntityManager(entityManagerFactory, (em) -> {
 			Fichier fichier = new Fichier();
 			fichier.setId(id);
 			fichier.setUuid(UUID.randomUUID());
 			fichier.setStatus(status);
-			fichier.setType(FichierType1.CONTENT1);
+			fichier.setType(type);
 			fichier.setStorageUnit(em.find(StorageUnit.class, storageUnit.getId()));
 			fichier.setRelativePath(String.format("/relative-path-%d", id));
 			fichier.setName("filename");

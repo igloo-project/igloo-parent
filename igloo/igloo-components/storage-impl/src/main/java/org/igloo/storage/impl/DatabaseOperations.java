@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.EnumType;
+import org.hibernate.type.IntegerType;
+import org.hibernate.type.LongType;
+import org.hibernate.type.Type;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageFailure;
@@ -28,6 +36,10 @@ import org.igloo.storage.model.atomic.StorageFailureStatus;
 import org.igloo.storage.model.atomic.StorageFailureType;
 import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
+import org.igloo.storage.model.hibernate.StorageHibernateConstants;
+import org.igloo.storage.model.statistics.StorageFailureStatistic;
+import org.igloo.storage.model.statistics.StorageOrphanStatistic;
+import org.igloo.storage.model.statistics.StorageStatistic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
@@ -42,10 +54,30 @@ public class DatabaseOperations {
 
 	private final String storageUnitSequenceName;
 
+	private final Type fichierTypeType;
+	private final Type storageUnitTypeType;
+	private final Type fichierStatusType;
+	private final Type failureTypeType;
+	private final Type failureStatusType;
+
 	public DatabaseOperations(EntityManagerFactory entityManagerFactory, String fichierSequenceName, String storageUnitSequenceName) {
 		this.entityManagerFactory = entityManagerFactory;
 		this.fichierSequenceName = fichierSequenceName;
 		this.storageUnitSequenceName = storageUnitSequenceName;
+		fichierTypeType = entityManagerFactory.unwrap(SessionFactory.class).getTypeHelper().basic(StorageHibernateConstants.TYPE_FICHIER_TYPE);
+		storageUnitTypeType = entityManagerFactory.unwrap(SessionFactory.class).getTypeHelper().basic(StorageHibernateConstants.TYPE_STORAGE_UNIT_TYPE);
+		Properties fichierTypeTypeProperties = new Properties();
+		fichierTypeTypeProperties.setProperty(EnumType.ENUM, FichierStatus.class.getName());
+		fichierTypeTypeProperties.setProperty(EnumType.NAMED, Boolean.TRUE.toString());
+		fichierStatusType = entityManagerFactory.unwrap(SessionFactory.class).getTypeHelper().custom(EnumType.class, fichierTypeTypeProperties);
+		Properties failureTypeTypeProperties = new Properties();
+		failureTypeTypeProperties.setProperty(EnumType.ENUM, StorageFailureType.class.getName());
+		failureTypeTypeProperties.setProperty(EnumType.NAMED, Boolean.TRUE.toString());
+		failureTypeType = entityManagerFactory.unwrap(SessionFactory.class).getTypeHelper().custom(EnumType.class, failureTypeTypeProperties);
+		Properties failureStatusTypeProperties = new Properties();
+		failureStatusTypeProperties.setProperty(EnumType.ENUM, StorageFailureStatus.class.getName());
+		failureStatusTypeProperties.setProperty(EnumType.NAMED, Boolean.TRUE.toString());
+		failureStatusType = entityManagerFactory.unwrap(SessionFactory.class).getTypeHelper().custom(EnumType.class, failureStatusTypeProperties);
 	}
 
 	public long generateStorageUnit() {
@@ -97,6 +129,7 @@ public class DatabaseOperations {
 	 */
 	public void triggerFailure(StorageFailure failure) {
 		try {
+			@Nonnull
 			StorageFailure storedFailure = entityManager().createQuery("SELECT f FROM StorageFailure f WHERE f.path = :path ORDER BY f.id DESC", StorageFailure.class)
 				.setParameter("path", failure.getPath())
 				.getSingleResult();
@@ -197,6 +230,71 @@ public class DatabaseOperations {
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	public List<StorageStatistic> getStorageStatistics() {
+		return ((NativeQuery<StorageStatistic>) entityManager().createNativeQuery(
+				"SELECT s.id AS \"storageUnitId\", s.type AS \"storageUnitType\", f.type AS \"fichierType\", f.status AS \"fichierStatus\", " // dimensions
+				+ "count(distinct f.id) AS \"count\", sum(f.size) AS \"size\" " // metrics
+				+ "FROM StorageUnit s "
+				+ "JOIN Fichier f ON f.storageUnit_id = s.id "
+				+ "GROUP BY s.id, s.type, f.type "
+				+ "ORDER BY s.id ASC, s.type ASC, f.type ASC, \"count\" ASC, size ASC "))
+				.addScalar("storageUnitId", LongType.INSTANCE)
+				.addScalar("storageUnitType", storageUnitTypeType)
+				.addScalar("fichierType", fichierTypeType)
+				.addScalar("fichierStatus", fichierStatusType)
+				.addScalar("count", IntegerType.INSTANCE)
+				.addScalar("size", LongType.INSTANCE)
+				// deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with custom types
+				.setResultTransformer(Transformers.aliasToBean(StorageStatistic.class))
+				.getResultList();
+	}
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	public List<StorageFailureStatistic> getStorageFailureStatistics() {
+		return ((NativeQuery<StorageFailureStatistic>) entityManager().createNativeQuery(
+				"SELECT s.id AS \"storageUnitId\", s.type AS \"storageUnitType\", f.type AS \"fichierType\", f.status AS \"fichierStatus\", fa.type AS \"failureType\", fa.status AS \"failureStatus\", " // dimensions
+				+ "count(distinct f.id) AS \"count\", sum(f.size) AS \"size\" " // metrics
+				+ "FROM StorageUnit s "
+				+ "JOIN Fichier f ON f.storageUnit_id = s.id "
+				+ "JOIN StorageFailure fa ON fa.fichier_id = f.id "
+				+ "WHERE fa.fichier_id IS NOT NULL "
+				+ "GROUP BY s.id, s.type, f.type, fa.type, fa.status "
+				+ "ORDER BY s.id ASC, s.type ASC, f.type ASC, fa.type ASC, fa.status ASC, \"count\" ASC, size ASC "))
+				.addScalar("storageUnitId", LongType.INSTANCE)
+				.addScalar("storageUnitType", storageUnitTypeType)
+				.addScalar("fichierType", fichierTypeType)
+				.addScalar("fichierStatus", fichierStatusType)
+				.addScalar("failureType", failureTypeType)
+				.addScalar("failureStatus", failureStatusType)
+				.addScalar("count", IntegerType.INSTANCE)
+				.addScalar("size", LongType.INSTANCE)
+				// deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with custom types
+				.setResultTransformer(Transformers.aliasToBean(StorageFailureStatistic.class))
+				.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<StorageOrphanStatistic> getStorageOrphanStatistics() {
+		return ((NativeQuery<StorageOrphanStatistic>) entityManager().createNativeQuery(
+				"SELECT s.id AS \"storageUnitId\", s.type AS \"storageUnitType\", fa.status AS \"failureStatus\", " // dimensions
+				+ "count(distinct fa.id) AS \"count\" " // metrics
+				+ "FROM StorageUnit s "
+				+ "JOIN StorageConsistencyCheck c ON c.storageUnit_id = s.id "
+				+ "JOIN StorageFailure fa ON c.id = fa.consistencyCheck_id "
+				+ "WHERE fa.type = :missingEntityFailureType "
+				+ "GROUP BY s.id, s.type, fa.type, fa.status "
+				+ "ORDER BY s.id ASC, s.type ASC, fa.type ASC, fa.status ASC, \"count\" ASC "))
+				.addScalar("storageUnitId", LongType.INSTANCE)
+				.addScalar("storageUnitType", storageUnitTypeType)
+				.addScalar("failureStatus", failureStatusType)
+				.addScalar("count", IntegerType.INSTANCE)
+				.setParameter("missingEntityFailureType", StorageFailureType.MISSING_ENTITY, failureTypeType)
+				// deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with custom types
+				.setResultTransformer(Transformers.aliasToBean(StorageOrphanStatistic.class))
+				.getResultList();
 	}
 
 	@Nonnull

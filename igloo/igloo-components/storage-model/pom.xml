@@ -20,10 +20,12 @@
 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>javax.persistence-api</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
@@ -42,6 +44,7 @@
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-core</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.querydsl</groupId>
