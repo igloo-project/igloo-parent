@@ -58,6 +58,9 @@ public class DatabaseOperations {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseOperations.class);
 
 	private Supplier<String> lastCheckStatisticsQuery = Suppliers.memoize(() -> readSqlResource("last-check-statistics.sql"));
+	private Supplier<String> orphanStatisticsQuery = Suppliers.memoize(() -> readSqlResource("orphan-statistics.sql"));
+	private Supplier<String> unitStatisticsQuery = Suppliers.memoize(() -> readSqlResource("unit-statistics.sql"));
+	private Supplier<String> failureStatisticsQuery = Suppliers.memoize(() -> readSqlResource("failure-statistics.sql"));
 
 	private final EntityManagerFactory entityManagerFactory;
 
@@ -245,13 +248,7 @@ public class DatabaseOperations {
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageStatistic> getStorageStatistics() {
-		return ((NativeQuery<StorageStatistic>) entityManager().createNativeQuery(
-				"SELECT s.id AS \"storageUnitId\", s.type AS \"storageUnitType\", f.type AS \"fichierType\", f.status AS \"fichierStatus\", " // dimensions
-				+ "count(distinct f.id) AS \"count\", sum(f.size) AS \"size\" " // metrics
-				+ "FROM StorageUnit s "
-				+ "JOIN Fichier f ON f.storageUnit_id = s.id "
-				+ "GROUP BY s.id, s.type, f.type, f.status "
-				+ "ORDER BY s.id ASC, s.type ASC, f.type ASC, f.status ASC, \"count\" ASC, size ASC "))
+		return ((NativeQuery<StorageStatistic>) entityManager().createNativeQuery(unitStatisticsQuery.get()))
 				.addScalar("storageUnitId", LongType.INSTANCE)
 				.addScalar("storageUnitType", storageUnitTypeType)
 				.addScalar("fichierType", fichierTypeType)
@@ -265,15 +262,7 @@ public class DatabaseOperations {
 
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageFailureStatistic> getStorageFailureStatistics() {
-		return ((NativeQuery<StorageFailureStatistic>) entityManager().createNativeQuery(
-				"SELECT s.id AS \"storageUnitId\", s.type AS \"storageUnitType\", f.type AS \"fichierType\", f.status AS \"fichierStatus\", fa.type AS \"failureType\", fa.status AS \"failureStatus\", " // dimensions
-				+ "count(distinct f.id) AS \"count\", sum(f.size) AS \"size\" " // metrics
-				+ "FROM StorageUnit s "
-				+ "JOIN Fichier f ON f.storageUnit_id = s.id "
-				+ "JOIN StorageFailure fa ON fa.fichier_id = f.id "
-				+ "WHERE fa.fichier_id IS NOT NULL "
-				+ "GROUP BY s.id, s.type, f.type, f.status, fa.type, fa.status "
-				+ "ORDER BY s.id ASC, s.type ASC, f.type ASC, f.status ASC, fa.type ASC, fa.status ASC, \"count\" ASC, size ASC "))
+		return ((NativeQuery<StorageFailureStatistic>) entityManager().createNativeQuery(failureStatisticsQuery.get()))
 				.addScalar("storageUnitId", LongType.INSTANCE)
 				.addScalar("storageUnitType", storageUnitTypeType)
 				.addScalar("fichierType", fichierTypeType)
@@ -289,15 +278,7 @@ public class DatabaseOperations {
 
 	@SuppressWarnings("unchecked")
 	public List<StorageOrphanStatistic> getStorageOrphanStatistics() {
-		return ((NativeQuery<StorageOrphanStatistic>) entityManager().createNativeQuery(
-				"SELECT s.id AS \"storageUnitId\", s.type AS \"storageUnitType\", fa.status AS \"failureStatus\", " // dimensions
-				+ "count(distinct fa.id) AS \"count\" " // metrics
-				+ "FROM StorageUnit s "
-				+ "JOIN StorageConsistencyCheck c ON c.storageUnit_id = s.id "
-				+ "JOIN StorageFailure fa ON c.id = fa.consistencyCheck_id "
-				+ "WHERE fa.type = :missingEntityFailureType "
-				+ "GROUP BY s.id, s.type, fa.type, fa.status "
-				+ "ORDER BY s.id ASC, s.type ASC, fa.type ASC, fa.status ASC, \"count\" ASC "))
+		return ((NativeQuery<StorageOrphanStatistic>) entityManager().createNativeQuery(orphanStatisticsQuery.get()))
 				.addScalar("storageUnitId", LongType.INSTANCE)
 				.addScalar("storageUnitType", storageUnitTypeType)
 				.addScalar("failureStatus", failureStatusType)
