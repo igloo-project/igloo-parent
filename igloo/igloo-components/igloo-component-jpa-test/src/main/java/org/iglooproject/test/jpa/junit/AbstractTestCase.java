@@ -2,6 +2,7 @@ package org.iglooproject.test.jpa.junit;
 
 import java.beans.PropertyDescriptor;
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -326,6 +327,7 @@ public abstract class AbstractTestCase {
 		listeAutorisee.add(Float.class);
 		listeAutorisee.add(Date.class);
 		listeAutorisee.add(LocalDateTime.class);
+		listeAutorisee.add(Duration.class);
 		listeAutorisee.add(BigDecimal.class);
 		listeAutorisee.add(Boolean.class);
 		listeAutorisee.add(UUID.class);
