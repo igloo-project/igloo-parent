@@ -152,6 +152,7 @@
 	
 	<build>
 		<plugins>
+			<!-- It is needed to override masterBranchName: main -> master -->
 			<plugin>
 				<groupId>external.atlassian.jgitflow</groupId>
 				<artifactId>jgitflow-maven-plugin</artifactId>
