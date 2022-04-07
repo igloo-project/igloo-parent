@@ -11,8 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -30,6 +32,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.Assumptions;
 import org.hibernate.Session;
 import org.igloo.jpa.test.EntityManagerFactoryExtension;
 import org.igloo.storage.impl.DatabaseOperations;
@@ -45,12 +48,15 @@ import org.igloo.storage.model.atomic.StorageFailureStatus;
 import org.igloo.storage.model.atomic.StorageFailureType;
 import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
+import org.igloo.storage.model.statistics.StorageCheckStatistic;
 import org.igloo.storage.model.statistics.StorageFailureStatistic;
 import org.igloo.storage.model.statistics.StorageOrphanStatistic;
 import org.igloo.storage.model.statistics.StorageStatistic;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+
+import com.google.common.base.Strings;
 
 import test.model.FichierType1;
 import test.model.FichierType2;
@@ -1085,6 +1091,167 @@ class TestDatabaseOperations extends AbstractTest {
 		);
 	}
 
+	@Test
+	void testGetStorageCheckStatistics(EntityManagerFactory entityManagerFactory) {
+		// statistic precision is limited to second
+		LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		StorageUnit unit2 = createStorageUnit(entityManagerFactory, 2, StorageUnitType.TYPE_2, StorageUnitStatus.ALIVE);
+		// only run with postgresql
+		Assumptions.assumeThat(
+				Optional.ofNullable(System.getenv("TEST_DB_TYPE")).filter(Predicate.not(Strings::isNullOrEmpty)).filter("postgresql"::equals)
+		).as("testGetStorageCheckStatistics only available with postgresql")
+		.isNotEmpty();
+		
+		assertThat(getStorageCheckStatistics(entityManagerFactory)).hasSize(2)
+		.satisfies(i -> {
+			assertThat(i.getStorageUnitId()).isEqualTo(1);
+			assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+			assertThat(i.getLastOn()).isNull();
+			assertThat(i.getLastDuration()).isNull();
+			assertThat(i.getLastAge()).isNull();
+			assertThat(i.getLastChecksumOn()).isNull();
+			assertThat(i.getLastChecksumDuration()).isNull();
+			assertThat(i.getLastChecksumAge()).isNull();
+		}, atIndex(0))
+		.satisfies(i -> {
+			assertThat(i.getStorageUnitId()).isEqualTo(2);
+			assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_2);
+			assertThat(i.getLastOn()).isNull();
+			assertThat(i.getLastDuration()).isNull();
+			assertThat(i.getLastAge()).isNull();
+			assertThat(i.getLastChecksumOn()).isNull();
+			assertThat(i.getLastChecksumDuration()).isNull();
+			assertThat(i.getLastChecksumAge()).isNull();
+		}, atIndex(1));
+		
+		Duration unit1LastDuration = Duration.ofMinutes(3);
+		Duration unit1LastAge = Duration.ofDays(3);
+		LocalDateTime unit1LastFinishedOn = now.minus(unit1LastAge);
+		LocalDateTime unit1LastStartedOn = unit1LastFinishedOn.minus(unit1LastDuration);
+		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, unit1LastStartedOn, unit1LastFinishedOn, StorageConsistencyCheckResult.OK);
+		
+		assertThat(getStorageCheckStatistics(entityManagerFactory)).hasSize(2)
+		.satisfies(i -> {
+			assertThat(i.getStorageUnitId()).isEqualTo(1);
+			assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+			assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn);
+			assertThat(i.getLastDuration()).isEqualTo(unit1LastDuration);
+			// bdd uses now -> we cannot have exact equality
+			assertThat(i.getLastAge()).isCloseTo(unit1LastAge, Duration.ofSeconds(10));
+			assertThat(i.getLastChecksumOn()).isNull();
+			assertThat(i.getLastChecksumDuration()).isNull();
+			assertThat(i.getLastChecksumAge()).isNull();
+		}, atIndex(0))
+		.satisfies(i -> {
+			assertThat(i.getStorageUnitId()).isEqualTo(2);
+			assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_2);
+			assertThat(i.getLastOn()).isNull();
+			assertThat(i.getLastDuration()).isNull();
+			assertThat(i.getLastAge()).isNull();
+			assertThat(i.getLastChecksumOn()).isNull();
+			assertThat(i.getLastChecksumDuration()).isNull();
+			assertThat(i.getLastChecksumAge()).isNull();
+		}, atIndex(1));
+		
+		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, unit1LastStartedOn.minus(Duration.ofDays(1)), unit1LastStartedOn.minus(Duration.ofDays(1)), StorageConsistencyCheckResult.OK);
+		
+		// no change as consistencyCheck is older
+		assertThat(getStorageCheckStatistics(entityManagerFactory)).hasSize(2)
+		.satisfies(i -> {
+			assertThat(i.getStorageUnitId()).isEqualTo(1);
+			assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+			assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn);
+			assertThat(i.getLastDuration()).isEqualTo(unit1LastDuration);
+			// bdd uses now -> we cannot have exact equality
+			assertThat(i.getLastAge()).isCloseTo(unit1LastAge, Duration.ofSeconds(10));
+			assertThat(i.getLastChecksumOn()).isNull();
+			assertThat(i.getLastChecksumDuration()).isNull();
+			assertThat(i.getLastChecksumAge()).isNull();
+		}, atIndex(0))
+		.satisfies(i -> {
+			assertThat(i.getStorageUnitId()).isEqualTo(2);
+			assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_2);
+			assertThat(i.getLastOn()).isNull();
+			assertThat(i.getLastDuration()).isNull();
+			assertThat(i.getLastAge()).isNull();
+			assertThat(i.getLastChecksumOn()).isNull();
+			assertThat(i.getLastChecksumDuration()).isNull();
+			assertThat(i.getLastChecksumAge()).isNull();
+		}, atIndex(1));
+		
+		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, unit1LastStartedOn.minus(Duration.ofDays(2)), unit1LastFinishedOn.minus(Duration.ofDays(2)), StorageConsistencyCheckResult.OK);
+		
+		// checksum result
+		assertThat(getStorageCheckStatistics(entityManagerFactory)).hasSize(2)
+		.satisfies(i -> {
+			assertThat(i.getStorageUnitId()).isEqualTo(1);
+			assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+			assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn);
+			assertThat(i.getLastDuration()).isEqualTo(unit1LastDuration);
+			// bdd uses now -> we cannot have exact equality
+			assertThat(i.getLastAge()).isCloseTo(unit1LastAge, Duration.ofSeconds(10));
+			assertThat(i.getLastChecksumOn()).isEqualTo(unit1LastFinishedOn.minusDays(2));
+			assertThat(i.getLastChecksumDuration()).isEqualTo(unit1LastDuration);
+			assertThat(i.getLastChecksumAge()).isCloseTo(unit1LastAge.plusDays(2), Duration.ofSeconds(10));
+		}, atIndex(0))
+		.satisfies(i -> {
+			assertThat(i.getStorageUnitId()).isEqualTo(2);
+			assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_2);
+			assertThat(i.getLastOn()).isNull();
+			assertThat(i.getLastDuration()).isNull();
+			assertThat(i.getLastAge()).isNull();
+			assertThat(i.getLastChecksumOn()).isNull();
+			assertThat(i.getLastChecksumDuration()).isNull();
+			assertThat(i.getLastChecksumAge()).isNull();
+		}, atIndex(1));
+		
+		createConsistencyCheck(entityManagerFactory, unit2, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, unit1LastStartedOn, unit1LastFinishedOn, StorageConsistencyCheckResult.OK);
+		
+		// checksum on unit2 provides result both for last basic and checksum
+		assertThat(getStorageCheckStatistics(entityManagerFactory)).hasSize(2)
+		.satisfies(i -> {
+			assertThat(i.getStorageUnitId()).isEqualTo(1);
+			assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_1);
+			assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn);
+			assertThat(i.getLastDuration()).isEqualTo(unit1LastDuration);
+			// bdd uses now -> we cannot have exact equality
+			assertThat(i.getLastAge()).isCloseTo(unit1LastAge, Duration.ofSeconds(10));
+			assertThat(i.getLastChecksumOn()).isEqualTo(unit1LastFinishedOn.minusDays(2));
+			assertThat(i.getLastChecksumDuration()).isEqualTo(unit1LastDuration);
+			assertThat(i.getLastChecksumAge()).isCloseTo(unit1LastAge.plusDays(2), Duration.ofSeconds(10));
+		}, atIndex(0))
+		.satisfies(i -> {
+			assertThat(i.getStorageUnitId()).isEqualTo(2);
+			assertThat(i.getStorageUnitType()).isEqualTo(StorageUnitType.TYPE_2);
+			assertThat(i.getLastOn()).isEqualTo(unit1LastFinishedOn);
+			assertThat(i.getLastDuration()).isEqualTo(unit1LastDuration);
+			// bdd uses now -> we cannot have exact equality
+			assertThat(i.getLastAge()).isCloseTo(unit1LastAge, Duration.ofSeconds(10));
+			assertThat(i.getLastChecksumOn()).isEqualTo(unit1LastFinishedOn);
+			assertThat(i.getLastChecksumDuration()).isEqualTo(unit1LastDuration);
+			assertThat(i.getLastChecksumAge()).isCloseTo(unit1LastAge, Duration.ofSeconds(10));
+		}, atIndex(1));
+	}
+
+	private List<StorageCheckStatistic> getStorageCheckStatistics(EntityManagerFactory entityManagerFactory) {
+		return doInReadTransaction(entityManagerFactory, () -> {
+			return databaseOperations.getStorageCheckStatistics();
+		});
+	}
+
+	@Test
+	void testGetStorageCheckStatisticsNotSupported(EntityManagerFactory entityManagerFactory) {
+		// only run without postgresql
+		Assumptions.assumeThat(
+				Optional.ofNullable(System.getenv("TEST_DB_TYPE")).filter(Predicate.not(Strings::isNullOrEmpty)).filter("postgresql"::equals)
+		).as("testGetStorageCheckStatistics only available with postgresql")
+		.isEmpty();
+		assertThatCode(() -> {
+			getStorageCheckStatistics(entityManagerFactory);
+		}).as("Exception explaining that method is not supported without postgresql").isInstanceOf(IllegalStateException.class).hasMessageContaining("postgresql");
+	}
+
 	private Consumer<? super StorageFailure> matcher(StorageConsistencyCheck check, String path, StorageFailureType type, StorageFailureStatus status) {
 		return f -> {
 			try (StorageSoftAssertions softly = new StorageSoftAssertions()) {
@@ -1130,10 +1297,14 @@ class TestDatabaseOperations extends AbstractTest {
 	}
 
 	private StorageConsistencyCheck createConsistencyCheck(EntityManagerFactory entityManagerFactory, StorageUnit unit1, StorageUnitCheckType type, LocalDateTime checkDate, StorageConsistencyCheckResult result) {
+		return createConsistencyCheck(entityManagerFactory, unit1, type, checkDate, checkDate, result);
+	}
+
+	private StorageConsistencyCheck createConsistencyCheck(EntityManagerFactory entityManagerFactory, StorageUnit unit1, StorageUnitCheckType type, LocalDateTime startCheckDate, LocalDateTime endCheckDate, StorageConsistencyCheckResult result) {
 		return doInWriteTransactionEntityManager(entityManagerFactory, (em) -> {
 			StorageConsistencyCheck check = new StorageConsistencyCheck();
-			check.setCheckFinishedOn(checkDate);
-			check.setCheckStartedOn(checkDate);
+			check.setCheckStartedOn(startCheckDate);
+			check.setCheckFinishedOn(endCheckDate);
 			check.setCheckType(type);
 			check.setStorageUnit(unit1);
 			check.setStatus(result);

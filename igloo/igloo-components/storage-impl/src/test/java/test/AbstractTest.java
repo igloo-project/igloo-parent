@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.logging.LogManager;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -37,6 +38,7 @@ import org.mockito.hamcrest.MockitoHamcrest;
 import org.postgresql.Driver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.core.Ordered;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -50,6 +52,14 @@ abstract class AbstractTest {
 	static {
 		// jboss-logging -> slf4j
 		System.setProperty("org.jboss.logging.provider", "slf4j");
+		// enable JUL logging
+		try {
+			ByteArrayInputStream is = new ByteArrayInputStream(".level=ALL".getBytes());
+			LogManager.getLogManager().readConfiguration(is);
+		} catch (SecurityException | IOException e) {
+			throw new IllegalStateException(e);
+		}
+		SLF4JBridgeHandler.install();
 	}
 	protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractTest.class);
 

@@ -1,5 +1,7 @@
 package org.igloo.storage.impl;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -9,6 +11,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -21,8 +24,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.DurationType;
 import org.hibernate.type.EnumType;
 import org.hibernate.type.IntegerType;
+import org.hibernate.type.LocalDateTimeType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.Type;
 import org.igloo.storage.model.Fichier;
@@ -37,6 +42,7 @@ import org.igloo.storage.model.atomic.StorageFailureType;
 import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.igloo.storage.model.hibernate.StorageHibernateConstants;
+import org.igloo.storage.model.statistics.StorageCheckStatistic;
 import org.igloo.storage.model.statistics.StorageFailureStatistic;
 import org.igloo.storage.model.statistics.StorageOrphanStatistic;
 import org.igloo.storage.model.statistics.StorageStatistic;
@@ -44,9 +50,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 
+import com.google.common.base.Suppliers;
+import com.google.common.io.Resources;
+
 public class DatabaseOperations {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseOperations.class);
+
+	private Supplier<String> lastCheckStatisticsQuery = Suppliers.memoize(() -> readSqlResource("last-check-statistics.sql"));
 
 	private final EntityManagerFactory entityManagerFactory;
 
@@ -297,9 +308,40 @@ public class DatabaseOperations {
 				.getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<StorageCheckStatistic> getStorageCheckStatistics() {
+		if (!isPostgresqlBackend()) {
+			throw new IllegalStateException("getStorageCheckStatistics need postgresql backend");
+		}
+		return ((NativeQuery<StorageCheckStatistic>) entityManager().createNativeQuery(lastCheckStatisticsQuery.get()))
+				.addScalar("storageUnitId", LongType.INSTANCE)
+				.addScalar("storageUnitType", storageUnitTypeType)
+				.addScalar("lastOn", LocalDateTimeType.INSTANCE)
+				.addScalar("lastChecksumOn", LocalDateTimeType.INSTANCE)
+				.addScalar("lastDuration", DurationType.INSTANCE)
+				.addScalar("lastChecksumDuration", DurationType.INSTANCE)
+				.addScalar("lastAge", DurationType.INSTANCE)
+				.addScalar("lastChecksumAge", DurationType.INSTANCE)
+				// deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with custom types
+				.setResultTransformer(Transformers.aliasToBean(StorageCheckStatistic.class))
+				.getResultList();
+	}
+
+	private boolean isPostgresqlBackend() {
+		return ((String) entityManager().getEntityManagerFactory().unwrap(SessionFactory.class).getProperties().get("hibernate.dialect")).toLowerCase().contains("postgresql");
+	}
+
 	@Nonnull
 	private EntityManager entityManager() {
 		return Optional.ofNullable(EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)).orElseThrow();
+	}
+
+	private static String readSqlResource(String sqlFilename) {
+		try {
+			return Resources.toString(Resources.getResource(DatabaseOperations.class, sqlFilename), StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 }
