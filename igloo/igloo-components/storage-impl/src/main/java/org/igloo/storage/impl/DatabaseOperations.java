@@ -30,6 +30,7 @@ import org.hibernate.type.IntegerType;
 import org.hibernate.type.LocalDateTimeType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.Type;
+import org.igloo.storage.api.IStorageStatisticsService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageFailure;
@@ -53,7 +54,7 @@ import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import com.google.common.base.Suppliers;
 import com.google.common.io.Resources;
 
-public class DatabaseOperations {
+public class DatabaseOperations implements IStorageStatisticsService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseOperations.class);
 
@@ -246,6 +247,7 @@ public class DatabaseOperations {
 		}
 	}
 
+	@Override
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageStatistic> getStorageStatistics() {
 		return ((NativeQuery<StorageStatistic>) entityManager().createNativeQuery(unitStatisticsQuery.get()))
@@ -260,6 +262,7 @@ public class DatabaseOperations {
 				.getResultList();
 	}
 
+	@Override
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageFailureStatistic> getStorageFailureStatistics() {
 		return ((NativeQuery<StorageFailureStatistic>) entityManager().createNativeQuery(failureStatisticsQuery.get()))
@@ -276,7 +279,8 @@ public class DatabaseOperations {
 				.getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageOrphanStatistic> getStorageOrphanStatistics() {
 		return ((NativeQuery<StorageOrphanStatistic>) entityManager().createNativeQuery(orphanStatisticsQuery.get()))
 				.addScalar("storageUnitId", LongType.INSTANCE)
@@ -289,7 +293,8 @@ public class DatabaseOperations {
 				.getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageCheckStatistic> getStorageCheckStatistics() {
 		if (!isPostgresqlBackend()) {
 			throw new IllegalStateException("getStorageCheckStatistics need postgresql backend");
@@ -319,7 +324,7 @@ public class DatabaseOperations {
 
 	private static String readSqlResource(String sqlFilename) {
 		try {
-			return Resources.toString(Resources.getResource(DatabaseOperations.class, sqlFilename), StandardCharsets.UTF_8);
+			return Resources.toString(Resources.getResource("igloo-storage/" + sqlFilename), StandardCharsets.UTF_8);
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
