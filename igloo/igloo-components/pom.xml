@@ -67,6 +67,7 @@
 		<module>storage-api</module>
 		<module>storage-impl</module>
 		<module>storage-model</module>
+		<module>storage-micrometer</module>
 		
 		<module>igloo-spring-autoconfigure</module>
 		
