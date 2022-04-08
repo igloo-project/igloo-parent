@@ -1,7 +1,8 @@
 package org.igloo.storage.micrometer;
 
-import java.time.temporal.ChronoUnit;
+import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -91,7 +92,7 @@ public class MicrometerConfig {
 		this.refreshStatistics();
 	}
 
-	public void refreshStatistics() {
+	private void refreshStatistics() {
 		try {
 			statistics.set(storageStatisticsService.getStorageStatistics());
 			fileCount.register(statisticRows(StorageStatistic::getCount), true);
@@ -101,10 +102,10 @@ public class MicrometerConfig {
 			orphan.register(orphanRows(), true);
 			
 			checkStatistics.set(storageStatisticsService.getStorageCheckStatistics());
-			lastAge.register(checkRows(s -> s.getLastAge().get(ChronoUnit.DAYS)), true);
-			lastChecksumAge.register(checkRows(s -> s.getLastChecksumAge().get(ChronoUnit.DAYS)), true);
-			lastDuration.register(checkRows(s -> s.getLastDuration().get(ChronoUnit.SECONDS)), true);
-			lastChecksumDuration.register(checkRows(s -> s.getLastChecksumDuration().get(ChronoUnit.SECONDS)), true);
+			lastAge.register(checkRows(s -> durationToAge(s, StorageCheckStatistic::getLastAge, Duration.ofDays(1))), true);
+			lastChecksumAge.register(checkRows(s -> durationToAge(s, StorageCheckStatistic::getLastChecksumAge, Duration.ofDays(1))), true);
+			lastDuration.register(checkRows(s -> durationToAge(s, StorageCheckStatistic::getLastDuration, Duration.ofSeconds(1))), true);
+			lastChecksumDuration.register(checkRows(s -> durationToAge(s, StorageCheckStatistic::getLastChecksumDuration, Duration.ofSeconds(1))), true);
 			
 			failureStatistics.set(storageStatisticsService.getStorageFailureStatistics());
 			failure.register(failureRows(), true);
@@ -113,22 +114,27 @@ public class MicrometerConfig {
 		}
 	}
 
-	public Iterable<Row<?>> statisticRows(Function<StorageStatistic, Number> getter) {
+	private <T> Long durationToAge(T o, Function<T, Duration> objectToDuration, Duration durationUnit) {
+		return Optional.ofNullable(objectToDuration.apply(o)).map(d -> d.dividedBy(durationUnit)).orElse(null);
+	}
+
+	private Iterable<Row<?>> statisticRows(Function<StorageStatistic, Number> getter) {
 		return statistics.get().stream().<Row<Number>>map(s -> this.fileCountRow(s, getter))
 				.collect(Collectors.toList());
 	}
 
-	public Iterable<Row<?>> orphanRows() {
+	private Iterable<Row<?>> orphanRows() {
 		return orphanStatistics.get().stream().<Row<Number>>map(this::orphanRow)
 				.collect(Collectors.toList());
 	}
 
-	public Iterable<Row<?>> checkRows(Function<StorageCheckStatistic, Number> getter) {
-		return checkStatistics.get().stream().<Row<Number>>map(s -> this.checkRow(s, getter))
+	private Iterable<Row<?>> checkRows(Function<StorageCheckStatistic, Number> getter) {
+		// filter -> age can be null, for this case we do not register a value (else null value is transformed to 0 by micrometer)
+		return checkStatistics.get().stream().filter(s -> getter.apply(s) != null).<Row<Number>>map(s -> this.checkRow(s, getter))
 				.collect(Collectors.toList());
 	}
 
-	public Iterable<Row<?>> failureRows() {
+	private Iterable<Row<?>> failureRows() {
 		return failureStatistics.get().stream().<Row<Number>>map(this::failureRow)
 				.collect(Collectors.toList());
 	}
@@ -154,7 +160,7 @@ public class MicrometerConfig {
 		Tags tags = Tags.of(
 				"storageUnitId", s.getStorageUnitId().toString(),
 				"storageUnitType", s.getStorageUnitType().getName(),
-				"fichierType", s.getFailureType().name(),
+				"fichierType", s.getFichierType().getName(),
 				"fichierStatus", s.getFichierStatus().name(),
 				"failureType", s.getFailureType().name(),
 				"failureStatus", s.getFailureStatus().name());

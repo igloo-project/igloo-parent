@@ -1,4 +1,4 @@
-package org.igloo.storage.micrometer;
+package test;
 
 import org.igloo.storage.model.atomic.IFichierType;
 
