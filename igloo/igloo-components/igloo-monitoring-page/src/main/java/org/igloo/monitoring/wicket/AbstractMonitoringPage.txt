@@ -1,0 +1,2 @@
+<wicket:container wicket:id="status"></wicket:container><wicket:container wicket:id="message"></wicket:container>
+<wicket:container wicket:id="perfData></wicket:container>

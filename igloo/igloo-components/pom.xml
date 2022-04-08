@@ -69,6 +69,8 @@
 		<module>storage-model</module>
 		<module>storage-micrometer</module>
 		
+		<module>igloo-monitoring-page</module>
+		
 		<module>igloo-spring-autoconfigure</module>
 		
 		<module>jpa-test-patterns</module>
