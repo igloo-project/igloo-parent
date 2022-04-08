@@ -11,8 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import picocli.CommandLine;
+import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 
+@Command(name = "basic-application-cli", mixinStandardHelpOptions = true)
 public final class BasicApplicationSqlUpdateScriptMain extends AbstractBasicApplicationMain implements Callable<Integer> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BasicApplicationSqlUpdateScriptMain.class);
