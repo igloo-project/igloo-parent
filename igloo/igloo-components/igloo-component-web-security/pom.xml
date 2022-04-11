@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>3.4.0</version>
+		<version>3.4.1</version>
 	</parent>
 	
 	<artifactId>igloo-component-web-security</artifactId>
