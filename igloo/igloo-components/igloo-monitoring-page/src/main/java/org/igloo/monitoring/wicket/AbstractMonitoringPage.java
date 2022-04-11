@@ -1,14 +1,20 @@
 package org.igloo.monitoring.wicket;
 
-import org.apache.wicket.Page;
-import org.apache.wicket.markup.MarkupType;
-import org.apache.wicket.markup.html.basic.Label;
-import org.igloo.monitoring.HealthLookup;
-import org.igloo.monitoring.IHealthService;
+import java.nio.charset.StandardCharsets;
 
-public abstract class AbstractMonitoringPage extends Page {
-	public static final String TEXT_MIME = "text/plain";
-	public static final MarkupType TEXT_PLAIN_MARKUP_TYPE = new MarkupType("txt", TEXT_MIME);
+import org.apache.wicket.request.component.IRequestablePage;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.WebResponse;
+import org.igloo.monitoring.perfdata.HealthLookup;
+import org.igloo.monitoring.perfdata.HealthStatusRenderer;
+import org.igloo.monitoring.perfdata.IHealthService;
+
+public abstract class AbstractMonitoringPage implements IRequestablePage {
+
+	private static final long serialVersionUID = -1840613019641814018L;
+
+	private static final String MIMETYPE_TEXT = "text/plain";
+	private static final String HEADER_X_STATUS = "X-Status";
 
 	protected abstract IHealthService getHealthService();
 
@@ -16,9 +22,28 @@ public abstract class AbstractMonitoringPage extends Page {
 	}
 
 	@Override
-	protected void onInitialize() {
-		super.onInitialize();
+	public void renderPage() {
 		HealthLookup healthLookup = getHealthService().getHealthLookup();
-		add(new Label("status", healthLookup.getStatus()).setEscapeModelStrings(false));
+		new HealthStatusRenderer(healthLookup).getLookupString();
+		WebResponse response = (WebResponse) RequestCycle.get().getResponse();
+		response.addHeader("Content-Type", MIMETYPE_TEXT + "charset=" + StandardCharsets.UTF_8.displayName());
+		response.addHeader("Cache-Control", "no-cache");
+		switch (healthLookup.getStatus()) {
+		case CRITICAL:
+			response.addHeader(HEADER_X_STATUS, "2");
+			break;
+		case OK:
+			response.addHeader(HEADER_X_STATUS, "0");
+			break;
+		case UNKNOWN:
+			response.addHeader(HEADER_X_STATUS, "3");
+			break;
+		case WARNING:
+			response.addHeader(HEADER_X_STATUS, "1");
+			break;
+		default:
+			throw new IllegalStateException(String.format("Unknown status %s", healthLookup.getStatus()));
+		}
+		response.setStatus(200);
 	}
 }

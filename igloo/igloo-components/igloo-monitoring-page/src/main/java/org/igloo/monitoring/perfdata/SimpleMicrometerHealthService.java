@@ -1,4 +1,4 @@
-package org.igloo.monitoring;
+package org.igloo.monitoring.perfdata;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +26,7 @@ public class SimpleMicrometerHealthService implements IHealthService {
 	private final MeterRegistry registry;
 	private final String metricName;
 	private final Predicate<Gauge> metricFilter;
-	private final Collector<Gauge, Number, Number> reducer;
+	private final Collector<Gauge, ?, ? extends Number> reducer;
 	private final Function<Number, HealthStatus> statusFunction;
 	private final Function<Number, String> messageFunction;
 	private final Function<Gauge, String> perfDataClassifier;
@@ -58,14 +58,14 @@ public class SimpleMicrometerHealthService implements IHealthService {
 	 * @param statusFunction
 	 * @param messageFunction
 	 */
-	public SimpleMicrometerHealthService(MeterRegistry registry, String metricName, Tags filters, Collector<Gauge, Number, Number> reducer, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction) {
+	public SimpleMicrometerHealthService(MeterRegistry registry, String metricName, Tags filters, Collector<Gauge, ?, ? extends Number> reducer, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction) {
 		this(registry, metricName, tagFilter(filters), reducer, statusFunction, messageFunction);
 	}
 
 	/**
 	 * @see SimpleMicrometerHealthService#SimpleMicrometerHealthService(MeterRegistry, String, Predicate, Collector, Function, Function, Function)
 	 */
-	public SimpleMicrometerHealthService(MeterRegistry registry, String metricName, Predicate<Gauge> metricFilter, Collector<Gauge, Number, Number> reducer, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction) {
+	public SimpleMicrometerHealthService(MeterRegistry registry, String metricName, Predicate<Gauge> metricFilter, Collector<Gauge, ?, ? extends Number> reducer, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction) {
 		this(registry, metricName, metricFilter, reducer, statusFunction, messageFunction, null);
 	}
 
@@ -84,7 +84,7 @@ public class SimpleMicrometerHealthService implements IHealthService {
 	 * @param perfDataClassifier if perfData is needed, this classifier is used to split all matching metrics; each
 	 *        classifier is used for a perfData line. If null, only one perfData line is generated.
 	 */
-	public SimpleMicrometerHealthService(MeterRegistry registry, String metricName, Predicate<Gauge> metricFilter, Collector<Gauge, Number, Number> reducer, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction, Function<Gauge, String> perfDataClassifier) {
+	public SimpleMicrometerHealthService(MeterRegistry registry, String metricName, Predicate<Gauge> metricFilter, Collector<Gauge, ?, ? extends Number> reducer, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction, Function<Gauge, String> perfDataClassifier) {
 		this.registry = registry;
 		this.metricName = metricName;
 		this.metricFilter = metricFilter;
@@ -111,7 +111,7 @@ public class SimpleMicrometerHealthService implements IHealthService {
 				} catch (NoSuchElementException e) {
 					value = null;
 				} catch (IllegalArgumentException e) {
-					return unknownStatus(String.format("More than one metric %s and no reducer provided", metricName));
+					return unknownStatus(metricName, "More than one metric and no reducer provided");
 				}
 			}
 			HealthStatus status = statusFunction.apply(value);
@@ -133,10 +133,10 @@ public class SimpleMicrometerHealthService implements IHealthService {
 			} else {
 				perfDatas = List.of(new PerfData(metricName, baseUnit, value, null, null, null, null));
 			}
-			return new HealthLookup(status, message, perfDatas);
+			return new HealthLookup(metricName, status, message, perfDatas);
 		} catch (RuntimeException e) {
 			LOGGER.error("Unable to build status from micrometer metric {}", metricName, e);
-			return unknownStatus(e.getMessage());
+			return unknownStatus(metricName, e.getMessage());
 		}
 	}
 
@@ -153,8 +153,8 @@ public class SimpleMicrometerHealthService implements IHealthService {
 	 * 
 	 * @param message message to push with unknown status.
 	 */
-	private static HealthLookup unknownStatus(String message) {
-		return new HealthLookup(HealthStatus.UNKNOWN, message, null);
+	private static HealthLookup unknownStatus(String metricName, String message) {
+		return new HealthLookup(metricName, HealthStatus.UNKNOWN, message, null);
 	}
 
 	/**

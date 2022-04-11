@@ -1,4 +1,4 @@
-package org.igloo.monitoring;
+package org.igloo.monitoring.perfdata;
 
 public class PerfData {
 
