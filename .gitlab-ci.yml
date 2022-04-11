@@ -81,6 +81,7 @@ maven-deploy:
   script:
     - "mvn deploy -DskipTests -DperformRelease -Ddistribution=igloo-release"
   only:
+    - tags
     - /^master$/
     - /^dev$/
     - /^ft-.*-deploy$/
