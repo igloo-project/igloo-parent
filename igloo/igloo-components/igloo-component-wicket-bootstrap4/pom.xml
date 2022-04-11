@@ -156,6 +156,13 @@
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-bootstrap4</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-spring</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
