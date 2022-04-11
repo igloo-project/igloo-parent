@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import org.igloo.monitoring.perfdata.HealthLookup;
 import org.igloo.monitoring.perfdata.HealthStatus;
-import org.igloo.monitoring.perfdata.SimpleMicrometerHealthService;
+import org.igloo.monitoring.perfdata.SimpleMicrometerHealthMetricService;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.Gauge;
@@ -30,7 +30,7 @@ class TestMonitoring {
 				Row.of(Tags.of("tag1", "value1", "tag2", "value2"), 4)
 		), true);
 		Predicate<Gauge> predicate = g -> g.getId().getTag("tag2").equals("value1");
-		SimpleMicrometerHealthService service = new SimpleMicrometerHealthService(
+		SimpleMicrometerHealthMetricService service = new SimpleMicrometerHealthMetricService(
 				registry,
 				"metric.name",
 				predicate, // filter
@@ -68,7 +68,7 @@ class TestMonitoring {
 	void testSimpleMicrometerHealthServiceGroupBy() {
 		SimpleMeterRegistry registry = new SimpleMeterRegistry();
 		MultiGauge gauge = MultiGauge.builder("metric.name").baseUnit("item").register(registry);
-		SimpleMicrometerHealthService service2 = new SimpleMicrometerHealthService(
+		SimpleMicrometerHealthMetricService service2 = new SimpleMicrometerHealthMetricService(
 				registry,
 				"metric.name",
 				g -> g.getId().getTag("tag2").equals("value1"), // filter

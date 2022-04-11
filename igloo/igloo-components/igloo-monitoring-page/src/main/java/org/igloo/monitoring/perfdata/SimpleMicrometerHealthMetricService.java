@@ -19,9 +19,9 @@ import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tags;
 
-public class SimpleMicrometerHealthService implements IHealthService {
+public class SimpleMicrometerHealthMetricService implements IHealthMetricService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleMicrometerHealthService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleMicrometerHealthMetricService.class);
 
 	private final MeterRegistry registry;
 	private final String metricName;
@@ -34,7 +34,7 @@ public class SimpleMicrometerHealthService implements IHealthService {
 	/**
 	 * <p>With this constructor, tag-filtered metric must be unique.</p>
 	 * 
-	 * @see SimpleMicrometerHealthService#SimpleMicrometerHealthService(MeterRegistry, String, Predicate, Collector, Function, Function, Function)
+	 * @see SimpleMicrometerHealthMetricService#SimpleMicrometerHealthService(MeterRegistry, String, Predicate, Collector, Function, Function, Function)
 	 * 
 	 * @param registry
 	 * @param metricName
@@ -42,14 +42,14 @@ public class SimpleMicrometerHealthService implements IHealthService {
 	 * @param statusFunction
 	 * @param messageFunction
 	 */
-	public SimpleMicrometerHealthService(MeterRegistry registry, String metricName, Tags filters, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction) {
+	public SimpleMicrometerHealthMetricService(MeterRegistry registry, String metricName, Tags filters, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction) {
 		this(registry, metricName, filters, null, statusFunction, messageFunction);
 	}
 
 	/**
 	 * <p>Metric filtering is tag-based.</p>
 	 * 
-	 * @see SimpleMicrometerHealthService#SimpleMicrometerHealthService(MeterRegistry, String, Predicate, Collector, Function, Function, Function)
+	 * @see SimpleMicrometerHealthMetricService#SimpleMicrometerHealthService(MeterRegistry, String, Predicate, Collector, Function, Function, Function)
 	 * 
 	 * @param registry
 	 * @param metricName
@@ -58,14 +58,14 @@ public class SimpleMicrometerHealthService implements IHealthService {
 	 * @param statusFunction
 	 * @param messageFunction
 	 */
-	public SimpleMicrometerHealthService(MeterRegistry registry, String metricName, Tags filters, Collector<Gauge, ?, ? extends Number> reducer, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction) {
+	public SimpleMicrometerHealthMetricService(MeterRegistry registry, String metricName, Tags filters, Collector<Gauge, ?, ? extends Number> reducer, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction) {
 		this(registry, metricName, tagFilter(filters), reducer, statusFunction, messageFunction);
 	}
 
 	/**
-	 * @see SimpleMicrometerHealthService#SimpleMicrometerHealthService(MeterRegistry, String, Predicate, Collector, Function, Function, Function)
+	 * @see SimpleMicrometerHealthMetricService#SimpleMicrometerHealthService(MeterRegistry, String, Predicate, Collector, Function, Function, Function)
 	 */
-	public SimpleMicrometerHealthService(MeterRegistry registry, String metricName, Predicate<Gauge> metricFilter, Collector<Gauge, ?, ? extends Number> reducer, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction) {
+	public SimpleMicrometerHealthMetricService(MeterRegistry registry, String metricName, Predicate<Gauge> metricFilter, Collector<Gauge, ?, ? extends Number> reducer, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction) {
 		this(registry, metricName, metricFilter, reducer, statusFunction, messageFunction, null);
 	}
 
@@ -84,7 +84,7 @@ public class SimpleMicrometerHealthService implements IHealthService {
 	 * @param perfDataClassifier if perfData is needed, this classifier is used to split all matching metrics; each
 	 *        classifier is used for a perfData line. If null, only one perfData line is generated.
 	 */
-	public SimpleMicrometerHealthService(MeterRegistry registry, String metricName, Predicate<Gauge> metricFilter, Collector<Gauge, ?, ? extends Number> reducer, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction, Function<Gauge, String> perfDataClassifier) {
+	public SimpleMicrometerHealthMetricService(MeterRegistry registry, String metricName, Predicate<Gauge> metricFilter, Collector<Gauge, ?, ? extends Number> reducer, Function<Number, HealthStatus> statusFunction, Function<Number, String> messageFunction, Function<Gauge, String> perfDataClassifier) {
 		this.registry = registry;
 		this.metricName = metricName;
 		this.metricFilter = metricFilter;
