@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>3.5.0</version>
+		<version>3.5.1-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>basic-application-core</artifactId>
