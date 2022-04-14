@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
@@ -22,7 +21,6 @@ import com.google.common.base.Verify;
 
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 
-@Embeddable
 @MappedSuperclass
 @Access(AccessType.FIELD)
 public class GenericEntityReference<K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
