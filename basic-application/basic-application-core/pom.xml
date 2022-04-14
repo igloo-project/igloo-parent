@@ -40,7 +40,7 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-config-test</artifactId>
 			<version>${igloo.version}</version>
-			<scope>runtime</scope>
+			<scope>compile</scope>
 		</dependency>
 		
 		<dependency>
