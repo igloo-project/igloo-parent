@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,8 +27,6 @@ import org.hibernate.tool.schema.spi.ScriptTargetOutput;
 import org.hibernate.tool.schema.spi.SourceDescriptor;
 import org.hibernate.tool.schema.spi.TargetDescriptor;
 import org.springframework.context.ConfigurableApplicationContext;
-
-import com.google.common.collect.Maps;
 
 public final class SqlUpdateScript {
 
@@ -56,7 +55,7 @@ public final class SqlUpdateScript {
 			
 			@Override
 			public Map<?, ?> getConfigurationValues() {
-				Map<String, String> config = Maps.newHashMap();
+				Map<String, String> config = new HashMap<>();
 				config.put(AvailableSettings.HBM2DDL_DELIMITER, ";");
 				return config;
 			}
@@ -85,10 +84,10 @@ public final class SqlUpdateScript {
 					return null;
 				}
 			};
-			serviceRegistry.getService(SchemaManagementTool.class).getSchemaCreator(Maps.newHashMap())
+			serviceRegistry.getService(SchemaManagementTool.class).getSchemaCreator(new HashMap<>())
 					.doCreation(metadata, executionOptions, sourceDescriptor, targetDescriptor);
 		} else if (action.equals("update")) {
-			serviceRegistry.getService(SchemaManagementTool.class).getSchemaMigrator(Maps.newHashMap())
+			serviceRegistry.getService(SchemaManagementTool.class).getSchemaMigrator(new HashMap<>())
 					.doMigration(metadata, executionOptions, targetDescriptor);
 		}
 		

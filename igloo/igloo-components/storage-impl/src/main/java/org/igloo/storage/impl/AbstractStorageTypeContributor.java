@@ -5,7 +5,7 @@ import java.util.Set;
 import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.service.ServiceRegistry;
-import org.igloo.hibernate.type.InterfaceEnumMapperType;
+import org.igloo.jpa.type.InterfaceEnumMapperType;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.hibernate.StorageHibernateConstants;

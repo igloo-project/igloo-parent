@@ -1,4 +1,4 @@
-package org.igloo.hibernate.type;
+package org.igloo.jpa.type;
 
 import java.util.EnumSet;
 import java.util.HashMap;
