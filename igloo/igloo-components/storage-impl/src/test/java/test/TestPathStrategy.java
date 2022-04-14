@@ -30,7 +30,7 @@ class TestPathStrategy extends AbstractTest {
 		{
 			Fichier fichier = new Fichier();
 			fichier.setId(29706L);
-			fichier.setName("29706.png");
+			fichier.setFilename("29706.png");
 			fichier.setType(FichierType1.CONTENT1);
 
 			LegacyFichierPathStrategy legacyPathStrategy = new LegacyFichierPathStrategy(1);
@@ -40,7 +40,7 @@ class TestPathStrategy extends AbstractTest {
 		{
 			Fichier fichier = new Fichier();
 			fichier.setId(3675L);
-			fichier.setName("3675.jpg");
+			fichier.setFilename("3675.jpg");
 			fichier.setType(FichierType1.CONTENT1);
 
 			LegacyFichierPathStrategy legacyPathStrategy = new LegacyFichierPathStrategy(1);

@@ -1,17 +1,20 @@
 package org.igloo.storage.api;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
-
-import javax.annotation.Nonnull;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.List;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 /**
  * {@link IStorageService} is the main interface to use storage module. It allows to create new {@link StorageUnit}, to
@@ -26,12 +29,22 @@ public interface IStorageService {
 	StorageUnit createStorageUnit(@Nonnull IStorageUnitType type);
 
 	/**
-	 * Creation of {@link Fichier} with status {@link FichierStatus#TRANSIENT} and storage of associated file from
-	 * inputStream into storage. If it is not validated, it will at last be deleted along with associated file.
+	 * @see IStorageService#addFichier(String, IFichierType, InputStream, GenericEntity)
+	 * 
+	 * Fichier is associated with a null author.
 	 */
 	@Nonnull
 	Fichier addFichier(@Nonnull String filename, @Nonnull IFichierType fichierType, @Nonnull InputStream inputStream);
 
+	/**
+	 * Creation of {@link Fichier} with status {@link FichierStatus#TRANSIENT} and storage of associated file from
+	 * inputStream into storage. If it is not validated, it will at last be deleted along with associated file.
+	 * 
+	 * @see IStorageService#addFichier(String, IFichierType, InputStream, GenericEntity)
+	 */
+	@Nonnull
+	Fichier addFichier(@Nonnull String filename, @Nonnull IFichierType fichierType, @Nonnull InputStream inputStream,
+			@Nullable GenericEntity<Long, ?> author);
 
 	/**
 	 * The {@link Fichier} is marked {@link FichierStatus#ALIVE} and {@link Fichier#validationDate} is initialized.

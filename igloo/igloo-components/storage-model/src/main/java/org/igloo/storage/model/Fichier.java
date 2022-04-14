@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,6 +19,7 @@ import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.hibernate.StorageHibernateConstants;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.business.generic.model.LongEntityReference;
 
 /**
  * Entity that represents a stored file. {@link Fichier} are dispatched in {@link StorageUnit}.
@@ -112,6 +114,9 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	@Column
 	private LocalDateTime invalidationDate;
 
+	@Embedded
+	private LongEntityReference createdBy;
+
 	@Override
 	public Long getId() {
 		return id;
@@ -166,8 +171,8 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 		return filename;
 	}
 
-	public void setName(String name) {
-		this.filename = name;
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 
 	public Long getSize() {
@@ -224,6 +229,14 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 
 	public void setInvalidationDate(LocalDateTime deletionDate) {
 		this.invalidationDate = deletionDate;
+	}
+
+	public synchronized LongEntityReference getCreatedBy() {
+		return createdBy;
+	}
+
+	public synchronized void setCreatedBy(LongEntityReference createdBy) {
+		this.createdBy = createdBy;
 	}
 
 }

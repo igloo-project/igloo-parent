@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.atIndex;
 import static test.StorageAssertions.assertThat;
 
+import java.math.BigInteger;
 import java.nio.file.Path;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,6 +31,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
+import javax.persistence.Tuple;
 
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Assumptions;
@@ -52,6 +54,8 @@ import org.igloo.storage.model.statistics.StorageCheckStatistic;
 import org.igloo.storage.model.statistics.StorageFailureStatistic;
 import org.igloo.storage.model.statistics.StorageOrphanStatistic;
 import org.igloo.storage.model.statistics.StorageStatistic;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.business.generic.model.LongEntityReference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -95,7 +99,7 @@ class TestDatabaseOperations extends AbstractTest {
 		fichier1.setType(FichierType1.CONTENT1);
 		fichier1.setStorageUnit(storageUnit);
 		fichier1.setRelativePath("/relative-path");
-		fichier1.setName("filename");
+		fichier1.setFilename("filename");
 		fichier1.setSize(25l);
 		fichier1.setChecksum("123");
 		fichier1.setMimetype("application/octet-stream");
@@ -109,7 +113,7 @@ class TestDatabaseOperations extends AbstractTest {
 		fichier2.setType(FichierType2.CONTENT3);
 		fichier2.setStorageUnit(storageUnit);
 		fichier2.setRelativePath("/relative-path");
-		fichier2.setName("filename");
+		fichier2.setFilename("filename");
 		fichier2.setSize(25l);
 		fichier2.setChecksum("123");
 		fichier2.setMimetype("application/octet-stream");
@@ -158,7 +162,7 @@ class TestDatabaseOperations extends AbstractTest {
 		fichier.setType(FichierType1.CONTENT1);
 		fichier.setStorageUnit(storageUnit);
 		fichier.setRelativePath("/relative-path");
-		fichier.setName("filename");
+		fichier.setFilename("filename");
 		fichier.setSize(25l);
 		fichier.setChecksum("123");
 		fichier.setMimetype("application/octet-stream");
@@ -193,7 +197,7 @@ class TestDatabaseOperations extends AbstractTest {
 		fichier1.setType(FichierType1.CONTENT1);
 		fichier1.setStorageUnit(storageUnit);
 		fichier1.setRelativePath("/relative-path");
-		fichier1.setName("filename");
+		fichier1.setFilename("filename");
 		fichier1.setSize(25l);
 		fichier1.setChecksum("123");
 		fichier1.setMimetype("application/octet-stream");
@@ -207,7 +211,7 @@ class TestDatabaseOperations extends AbstractTest {
 		fichier2.setType(FichierType1.CONTENT1);
 		fichier2.setStorageUnit(storageUnit);
 		fichier2.setRelativePath("/relative-path");
-		fichier2.setName("filename");
+		fichier2.setFilename("filename");
 		fichier2.setSize(25l);
 		fichier2.setChecksum("123");
 		fichier2.setMimetype("application/octet-stream");
@@ -680,7 +684,7 @@ class TestDatabaseOperations extends AbstractTest {
 			fichier.setType(FichierType1.CONTENT1);
 			fichier.setStorageUnit(em.find(StorageUnit.class, storageUnit.getId()));
 			fichier.setRelativePath(String.format("/relative-path-%d", fichier.getId()));
-			fichier.setName("filename");
+			fichier.setFilename("filename");
 			fichier.setSize(25l);
 			fichier.setChecksum("123");
 			fichier.setMimetype("application/octet-stream");
@@ -1234,12 +1238,6 @@ class TestDatabaseOperations extends AbstractTest {
 		}, atIndex(1));
 	}
 
-	private List<StorageCheckStatistic> getStorageCheckStatistics(EntityManagerFactory entityManagerFactory) {
-		return doInReadTransaction(entityManagerFactory, () -> {
-			return databaseOperations.getStorageCheckStatistics();
-		});
-	}
-
 	@Test
 	void testGetStorageCheckStatisticsNotSupported(EntityManagerFactory entityManagerFactory) {
 		// only run without postgresql
@@ -1250,6 +1248,27 @@ class TestDatabaseOperations extends AbstractTest {
 		assertThatCode(() -> {
 			getStorageCheckStatistics(entityManagerFactory);
 		}).as("Exception explaining that method is not supported without postgresql").isInstanceOf(IllegalStateException.class).hasMessageContaining("postgresql");
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	void testFichierCreatedBy(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		Fichier fichier = createFichier(entityManagerFactory, unit, 1l, FichierStatus.ALIVE, FichierType1.CONTENT1, LongEntityReference.of(GenericEntity.class, 1l));
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			List<Tuple> result = em.createNativeQuery("SELECT createdby_type, createdby_id FROM Fichier;", Tuple.class).getResultList();
+			assertThat(result).hasSize(1);
+			assertThat(result.get(0).get("createdby_type")).isEqualTo(GenericEntity.class.getName()).isEqualTo(fichier.getCreatedBy().getType().getName());
+			// java long is stored as sql biginteger 
+			assertThat(result.get(0).get("createdby_id")).isEqualTo(BigInteger.valueOf(1)).isEqualTo(BigInteger.valueOf(fichier.getCreatedBy().getId()));
+			return null;
+		});
+	}
+
+	private List<StorageCheckStatistic> getStorageCheckStatistics(EntityManagerFactory entityManagerFactory) {
+		return doInReadTransaction(entityManagerFactory, () -> {
+			return databaseOperations.getStorageCheckStatistics();
+		});
 	}
 
 	private Consumer<? super StorageFailure> matcher(StorageConsistencyCheck check, String path, StorageFailureType type, StorageFailureStatus status) {
@@ -1314,10 +1333,18 @@ class TestDatabaseOperations extends AbstractTest {
 	}
 
 	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status) {
-		return createFichier(entityManagerFactory, storageUnit, id, status, FichierType1.CONTENT1);
+		return createFichier(entityManagerFactory, storageUnit, id, status, (LongEntityReference) null);
+	}
+
+	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, LongEntityReference author) {
+		return createFichier(entityManagerFactory, storageUnit, id, status, FichierType1.CONTENT1, author);
 	}
 
 	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, IFichierType type) {
+		return createFichier(entityManagerFactory, storageUnit, id, status, type, null);
+	}
+
+	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, IFichierType type, LongEntityReference author) {
 		return doInWriteTransactionEntityManager(entityManagerFactory, (em) -> {
 			Fichier fichier = new Fichier();
 			fichier.setId(id);
@@ -1326,12 +1353,13 @@ class TestDatabaseOperations extends AbstractTest {
 			fichier.setType(type);
 			fichier.setStorageUnit(em.find(StorageUnit.class, storageUnit.getId()));
 			fichier.setRelativePath(String.format("/relative-path-%d", id));
-			fichier.setName("filename");
+			fichier.setFilename("filename");
 			fichier.setSize(25l);
 			fichier.setChecksum("123");
 			fichier.setMimetype("application/octet-stream");
 			fichier.setChecksumType(ChecksumType.SHA_256);
 			fichier.setCreationDate(LocalDateTime.now());
+			fichier.setCreatedBy(author);
 			em.persist(fichier);
 			return fichier;
 		});

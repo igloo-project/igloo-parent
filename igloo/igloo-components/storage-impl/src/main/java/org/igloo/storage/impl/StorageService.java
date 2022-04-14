@@ -20,6 +20,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
@@ -34,6 +35,8 @@ import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageConsistencyCheckResult;
 import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.business.generic.model.LongEntityReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -75,7 +78,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 
 	@Override
 	@Nonnull
-	public Fichier addFichier(@Nonnull String filename, @Nonnull IFichierType fichierType, @Nonnull InputStream inputStream) {
+	public Fichier addFichier(@Nonnull String filename, @Nonnull IFichierType fichierType, @Nonnull InputStream inputStream, @Nullable GenericEntity<Long, ?> author) {
 		StorageUnit unit = selectStorageUnit(fichierType);
 		Fichier fichier = new Fichier();
 		fichier.setId(databaseOperations.generateFichier());
@@ -83,10 +86,11 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		fichier.setStatus(FichierStatus.TRANSIENT);
 		fichier.setType(fichierType);
 		fichier.setStorageUnit(unit);
-		fichier.setName(filename);
+		fichier.setFilename(filename);
 		fichier.setChecksumType(ChecksumType.SHA_256);
 		fichier.setMimetype(mimeTypeResolver.resolve(fichier.getFilename()));
 		fichier.setCreationDate(LocalDateTime.now());
+		fichier.setCreatedBy(LongEntityReference.ofLongEntity(author));
 
 		fichier.setRelativePath(unit.getType().getFichierPathStrategy().getPath(fichier));
 		Path absolutePath = getAbsolutePath(fichier);
@@ -104,6 +108,12 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 
 		addEvent(fichier.getId(), StorageEventType.ADD, absolutePath);
 		return fichier;
+	}
+
+	@Override
+	@Nonnull
+	public Fichier addFichier(@Nonnull String filename, @Nonnull IFichierType fichierType, @Nonnull InputStream inputStream) {
+		return addFichier(filename, fichierType, inputStream, null);
 	}
 
 	@Override
