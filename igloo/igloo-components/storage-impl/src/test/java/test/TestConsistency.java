@@ -92,7 +92,8 @@ public class TestConsistency extends AbstractTest {
 				softly.assertThat(consistency.getStatus()).as("Check status").isEqualTo(StorageConsistencyCheckResult.OK);
 				softly.assertThat(consistency.getFsFileCount()).as("File (filesystem) count").isEqualTo(6L);
 				softly.assertThat(consistency.getDbFichierCount()).as("Fichier (entity) count").isEqualTo(6L);
-				softly.assertThat(consistency.getContentMismatchCount()).isEqualTo(0);
+				softly.assertThat(consistency.getSizeMismatchCount()).isEqualTo(0);
+				softly.assertThat(consistency.getChecksumMismatchCount()).isEqualTo(0);
 				softly.assertThat(consistency.getMissingFileCount()).isEqualTo(0);
 				softly.assertThat(consistency.getMissingFichierCount()).isEqualTo(0);
 				softly.assertThat(consistency.getCheckStartedOn()).isBefore(consistency.getCheckFinishedOn());
@@ -112,6 +113,9 @@ public class TestConsistency extends AbstractTest {
 
 	@Test
 	void testConsistencyFailures(SoftAssertions softly) throws IOException {
+		// BEWARE
+		// storageOperations use filename (fichier1, fichier2) to generate file content and checksum == filename
+		// databaseOperations use checksum to calculate length
 		LocalDateTime testStart = LocalDateTime.now();
 		StorageUnit unit = new StorageUnit();
 		Path path = Path.of("/my-root-path");
@@ -122,7 +126,8 @@ public class TestConsistency extends AbstractTest {
 			path.resolve("fichier2"),
 			path.resolve("fichier3"), // file missing in database
 			path.resolve("fichier5"),
-			path.resolve("fichier6") // file missing in database
+			path.resolve("fichier6"), // file missing in database
+			path.resolve("fichier7") // file missing in database
 		));
 		when(storageOperations.checksum(any()))
 			.then(AnswerFunctionalInterfaces.<String, Path>toAnswer(
@@ -136,11 +141,13 @@ public class TestConsistency extends AbstractTest {
 		Fichier fichier2 = createFichier("fichier2", "fichier2");
 		Fichier fichier4 = createFichier("fichier4", "fichier4"); // missing is FS
 		Fichier fichier5 = createFichier("fichier5", "fichier4"); // checksum mismatch
+		Fichier fichier7 = createFichier("fichier7", "fichier"); // size mismatch
 		when(databaseOperations.listUnitAliveFichiers(unit)).thenReturn(Set.of(
 			fichier1,
 			fichier2,
 			fichier4,
-			fichier5
+			fichier5,
+			fichier7
 		));
 		List<StorageConsistencyCheck> beans = storageService.checkConsistency(unit, true);
 
@@ -168,19 +175,25 @@ public class TestConsistency extends AbstractTest {
 			assertThat(f.getFichier()).isEqualTo(fichier5);
 			assertThat(f.getPath()).isEqualTo(path.resolve(Path.of("fichier5")).toString());
 		}));
+		verify(databaseOperations).triggerFailure(argThat(f -> {
+			assertThat(f.getType()).isEqualTo(StorageFailureType.SIZE_MISMATCH);
+			assertThat(f.getFichier()).isEqualTo(fichier7);
+			assertThat(f.getPath()).isEqualTo(path.resolve(Path.of("fichier7")).toString());
+		}));
 		assertThat(beans)
 			.hasSize(1)
 			.satisfies(consistency -> {
 				softly.assertThat(consistency.getStatus()).as("Check status").isEqualTo(StorageConsistencyCheckResult.FAILED);
-				softly.assertThat(consistency.getFsFileCount()).as("File (filesystem) count").isEqualTo(5L);
-				softly.assertThat(consistency.getDbFichierCount()).as("Fichier (entity) count").isEqualTo(4L);
-				softly.assertThat(consistency.getContentMismatchCount()).isEqualTo(1);
+				softly.assertThat(consistency.getFsFileCount()).as("File (filesystem) count").isEqualTo(6L);
+				softly.assertThat(consistency.getDbFichierCount()).as("Fichier (entity) count").isEqualTo(5L);
+				softly.assertThat(consistency.getSizeMismatchCount()).isEqualTo(1);
+				softly.assertThat(consistency.getChecksumMismatchCount()).isEqualTo(1);
 				softly.assertThat(consistency.getMissingFileCount()).isEqualTo(1);
 				softly.assertThat(consistency.getMissingFichierCount()).isEqualTo(2);
 				softly.assertThat(consistency.getCheckStartedOn()).isBefore(consistency.getCheckFinishedOn());
 				softly.assertThat(consistency.getCheckFinishedOn()).isAfterOrEqualTo(testStart).isBeforeOrEqualTo(LocalDateTime.now());
-				softly.assertThat(consistency.getDbFichierSize()).isEqualTo(4 * "fichiern".length());
-				softly.assertThat(consistency.getFsFileSize()).isEqualTo(5 * "fichiern".length());
+				softly.assertThat(consistency.getDbFichierSize()).isEqualTo(4 * "fichiern".length() + "fichier".length()); // fichier7 has size len("fichier")
+				softly.assertThat(consistency.getFsFileSize()).isEqualTo(6 * "fichiern".length());
 			}, atIndex(0));
 	}
 

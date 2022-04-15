@@ -182,7 +182,8 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		Long fichierSize;
 		Integer missingFichierCount = 0;
 		Integer missingFileCount = 0;
-		Integer contentMismatchCount = 0;
+		Integer sizeMismatchCount = 0;
+		Integer checksumMismatchCount = 0;
 		
 		// list db and filesystem
 		// list database then filesystem
@@ -229,13 +230,13 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 				fileSize += size;
 				if (!size.equals(fichier.getSize())) {
 					databaseOperations.triggerFailure(StorageFailure.ofSizeMismatch(filePath, fichier, consistencyCheck));
-					contentMismatchCount += 1;
+					sizeMismatchCount += 1;
 				} else if (checksumValidation && !ChecksumType.NONE.equals(fichier.getChecksumType())) {
 					// conditionally perform checksum comparison
 					String checksum = storageOperations.checksum(filePath);
 					if (!checksum.equals(fichier.getChecksum())) {
 						databaseOperations.triggerFailure(StorageFailure.ofChecksumMismatch(filePath, fichier, consistencyCheck));
-						contentMismatchCount += 1;
+						checksumMismatchCount += 1;
 					}
 				}
 			} catch (FileNotFoundException|RuntimeException e) {
@@ -250,9 +251,11 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		consistencyCheck.setMissingFileCount(missingFileCount);
 		consistencyCheck.setDbFichierSize(fichierSize);
 		consistencyCheck.setFsFileSize(fileSize);
-		consistencyCheck.setContentMismatchCount(contentMismatchCount);
+		consistencyCheck.setSizeMismatchCount(sizeMismatchCount);
+		consistencyCheck.setChecksumMismatchCount(checksumMismatchCount);
 		consistencyCheck.setCheckFinishedOn(LocalDateTime.now());
-		if (consistencyCheck.getContentMismatchCount() > 0 || consistencyCheck.getMissingFichierCount() > 0 || consistencyCheck.getMissingFileCount() > 0) {
+		if (consistencyCheck.getSizeMismatchCount() > 0 || consistencyCheck.getChecksumMismatchCount() > 0
+				|| consistencyCheck.getMissingFichierCount() > 0 || consistencyCheck.getMissingFileCount() > 0) {
 			consistencyCheck.setStatus(StorageConsistencyCheckResult.FAILED);
 		} else {
 			consistencyCheck.setStatus(StorageConsistencyCheckResult.OK);

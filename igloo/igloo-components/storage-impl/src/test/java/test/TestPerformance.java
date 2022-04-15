@@ -105,7 +105,8 @@ class TestPerformance extends AbstractTest {
 				try (AutoCloseableSoftAssertions softly = new AutoCloseableSoftAssertions()) {
 					softly.assertThat(c.getFsFileCount()).as("File (filesystem) count").isEqualTo(fileCount);
 					softly.assertThat(c.getDbFichierCount()).as("Fichier (entity) count").isEqualTo(fileCount);
-					softly.assertThat(c.getContentMismatchCount()).isEqualTo(0);
+					softly.assertThat(c.getSizeMismatchCount()).isEqualTo(0);
+					softly.assertThat(c.getChecksumMismatchCount()).isEqualTo(0);
 					softly.assertThat(c.getMissingFileCount()).isEqualTo(0);
 					softly.assertThat(c.getMissingFichierCount()).isEqualTo(0);
 					softly.assertThat(c.getCheckStartedOn()).isNotNull();
@@ -173,7 +174,8 @@ class TestPerformance extends AbstractTest {
 						try (AutoCloseableSoftAssertions softly = new AutoCloseableSoftAssertions()) {
 							softly.assertThat(c.getFsFileCount()).as("File (filesystem) count").isEqualTo(fileCount - 50);
 							softly.assertThat(c.getDbFichierCount()).as("Fichier (entity) count").isEqualTo(fileCount - 50);
-							softly.assertThat(c.getContentMismatchCount()).isEqualTo(50);
+							softly.assertThat(c.getSizeMismatchCount()).isEqualTo(50);
+							softly.assertThat(c.getChecksumMismatchCount()).isEqualTo(0);
 							softly.assertThat(c.getMissingFileCount()).isEqualTo(50);
 							softly.assertThat(c.getMissingFichierCount()).isEqualTo(50);
 							softly.assertThat(c.getCheckStartedOn()).isNotNull();

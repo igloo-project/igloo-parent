@@ -71,7 +71,10 @@ public class StorageConsistencyCheck extends GenericEntity<Long, StorageConsiste
 	private Integer missingFichierCount;
 
 	@Basic
-	private Integer contentMismatchCount;
+	private Integer sizeMismatchCount;
+
+	@Basic
+	private Integer checksumMismatchCount;
 
 	public StorageConsistencyCheck() {
 		super();
@@ -181,11 +184,19 @@ public class StorageConsistencyCheck extends GenericEntity<Long, StorageConsiste
 		this.missingFichierCount = missingFichierCount;
 	}
 
-	public Integer getContentMismatchCount() {
-		return contentMismatchCount;
+	public Integer getSizeMismatchCount() {
+		return sizeMismatchCount;
 	}
 
-	public void setContentMismatchCount(Integer checksumMismatchCount) {
-		this.contentMismatchCount = checksumMismatchCount;
+	public void setSizeMismatchCount(Integer sizeMismatchCount) {
+		this.sizeMismatchCount = sizeMismatchCount;
+	}
+
+	public Integer getChecksumMismatchCount() {
+		return checksumMismatchCount;
+	}
+
+	public void setChecksumMismatchCount(Integer checksumMismatchCount) {
+		this.checksumMismatchCount = checksumMismatchCount;
 	}
 }
