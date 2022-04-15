@@ -771,18 +771,6 @@ class TestDatabaseOperations extends AbstractTest {
 	}
 	
 	@Test
-	void testGetLastCheckFilterUnknown(EntityManagerFactory entityManagerFactory) {
-		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
-		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
-		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now(), StorageConsistencyCheckResult.UNKNOWN);
-		
-		doInReadTransactionEntityManager(entityManagerFactory, em -> {
-			assertThat(databaseOperations.getLastCheck(unit1)).isEqualTo(check1);
-			return null;
-		});
-	}
-	
-	@Test
 	void testGetLastCheckAnyType(EntityManagerFactory entityManagerFactory) {
 		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
 		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now().minus(Duration.ofMinutes(1)), StorageConsistencyCheckResult.OK);
@@ -829,22 +817,11 @@ class TestDatabaseOperations extends AbstractTest {
 	}
 	
 	@Test
-	void testGetLastCheckChecksumFilterUnknown(EntityManagerFactory entityManagerFactory) {
-		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
-		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
-		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, LocalDateTime.now(), StorageConsistencyCheckResult.UNKNOWN);
-		
-		doInReadTransactionEntityManager(entityManagerFactory, em -> {
-			assertThat(databaseOperations.getLastCheckChecksum(unit1)).isEqualTo(check1);
-			return null;
-		});
-	}
-	
-	@Test
 	void testGetLastCheckChecksumFilterType(EntityManagerFactory entityManagerFactory) {
 		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
-		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
-		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now(), StorageConsistencyCheckResult.UNKNOWN);
+		StorageConsistencyCheck check1 = createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE_CHECKSUM, LocalDateTime.now().minusDays(1), StorageConsistencyCheckResult.OK);
+		// ignored as it is not a checksum check
+		createConsistencyCheck(entityManagerFactory, unit1, StorageUnitCheckType.LISTING_SIZE, LocalDateTime.now(), StorageConsistencyCheckResult.OK);
 		
 		doInReadTransactionEntityManager(entityManagerFactory, em -> {
 			assertThat(databaseOperations.getLastCheckChecksum(unit1)).isEqualTo(check1);

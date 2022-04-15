@@ -224,8 +224,7 @@ public class DatabaseOperations implements IStorageStatisticsService {
 
 	public StorageConsistencyCheck getLastCheck(StorageUnit unit) {
 		try {
-			return entityManager().createQuery("SELECT s FROM StorageConsistencyCheck s WHERE status != :checkStatus AND storageUnit = :storageUnit ORDER BY s.checkFinishedOn DESC", StorageConsistencyCheck.class)
-					.setParameter("checkStatus", StorageConsistencyCheckResult.UNKNOWN)
+			return entityManager().createQuery("SELECT s FROM StorageConsistencyCheck s WHERE storageUnit = :storageUnit ORDER BY s.checkFinishedOn DESC", StorageConsistencyCheck.class)
 					.setParameter("storageUnit", unit)
 					.setMaxResults(1)
 					.getSingleResult();
@@ -236,8 +235,7 @@ public class DatabaseOperations implements IStorageStatisticsService {
 
 	public StorageConsistencyCheck getLastCheckChecksum(StorageUnit unit) {
 		try {
-			return entityManager().createQuery("SELECT s FROM StorageConsistencyCheck s WHERE status != :checkStatus AND checkType = :checkType AND storageUnit = :storageUnit ORDER BY s.checkFinishedOn DESC", StorageConsistencyCheck.class)
-					.setParameter("checkStatus", StorageConsistencyCheckResult.UNKNOWN)
+			return entityManager().createQuery("SELECT s FROM StorageConsistencyCheck s WHERE checkType = :checkType AND storageUnit = :storageUnit ORDER BY s.checkFinishedOn DESC", StorageConsistencyCheck.class)
 					.setParameter("checkType", StorageUnitCheckType.LISTING_SIZE_CHECKSUM)
 					.setParameter("storageUnit", unit)
 					.setMaxResults(1)
