@@ -15,11 +15,13 @@ import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * {@link IStorageService} is the main interface to use storage module. It allows to create new {@link StorageUnit}, to
  * add, validate, invalidate, remove and get {@link Fichier} and associated data.
  */
+@Transactional
 public interface IStorageService {
 
 	/**
@@ -67,6 +69,7 @@ public interface IStorageService {
 	 * 
 	 * @throws FileNotFoundException if file cannot be found or is not readable.
 	 */
+	@Transactional(readOnly=true)
 	@Nonnull
 	File getFile(@Nonnull Fichier fichier) throws FileNotFoundException;
 
