@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +32,6 @@ import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageConsistencyCheckResult;
-import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.LongEntityReference;
@@ -59,8 +57,6 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 	private final Supplier<Path> storageUnitPathSupplier;
 	private final DatabaseOperations databaseOperations;
 	private final StorageTransactionAdapter adapter;
-	private final Duration defaultCheckDelay = Duration.ofDays(10);
-	private final Duration defaultCheckChecksumDelay = Duration.ofDays(30);
 
 	public StorageService(Integer transactionSynchronizationOrder, DatabaseOperations databaseOperations, Set<IStorageUnitType> storageUnitTypeCandidates, StorageOperations operations, Supplier<Path> storageUnitPathSupplier) {
 		this(transactionSynchronizationOrder, databaseOperations, storageUnitTypeCandidates, operations, storageUnitPathSupplier, new MimeTypeResolver());
@@ -267,113 +263,6 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 	@Override
 	public void addEvent(Long id, StorageEventType type, Path path) {
 		prepareAdapter().addEvent(id, type, path);
-	}
-
-	@Override
-	public void housekeeping() {
-		checkConsistency(defaultCheckDelay, defaultCheckChecksumDelay);
-		splitStorageUnits();
-	}
-
-	/**
-	 * Perform whole consistency check:
-	 * <ul>
-	 * <li>List all consistency check enabled {@link StorageUnit}</li>
-	 * <li>Check if consistency check is needed: can be disabled or recent enough not to be rechecked</li>
-	 * <li>Perform consistency check if needed</li>
-	 * </ul>
-	 * 
-	 * @see StorageUnit#getCheckType()
-	 * @see StorageUnit#getCheckDelay()
-	 * @see StorageUnit#getCheckChecksumDelay()
-	 */
-	public void checkConsistency(Duration defaultCheckDelay, Duration defaultCheckChecksumDelay) {
-		List<StorageUnit> units = databaseOperations.listStorageUnits();
-		for (StorageUnit unit : units) {
-			LOGGER.debug("Checking {}. Verifying if check must be processed", unit);
-			StorageUnitCheckType typeNeeded = checkConsistency(unit, defaultCheckDelay, defaultCheckChecksumDelay);
-			if (StorageUnitCheckType.NONE.equals(typeNeeded)) {
-				LOGGER.info("Checking {} skipped. Disabled on StorageUnit", unit);
-			} else {
-				boolean checksumEnabled = StorageUnitCheckType.LISTING_SIZE_CHECKSUM.equals(typeNeeded);
-				LOGGER.info("Checking {}. Processing (checksum={})", unit, checksumEnabled);
-				checkConsistency(unit, checksumEnabled);
-				LOGGER.info("Checking {}. Done", unit);
-			}
-		}
-	}
-
-	public StorageUnitCheckType checkConsistency(StorageUnit unit, Duration defaultCheckDelay,
-			Duration defaultCheckChecksumDelay) {
-		return getCheckConsistencyType(unit::toString,
-				LocalDateTime.now(),
-				unit::getCheckType,
-				() -> databaseOperations.getLastCheck(unit).getCheckFinishedOn(),
-				() -> databaseOperations.getLastCheckChecksum(unit).getCheckFinishedOn(),
-				() -> Optional.ofNullable(unit.getCheckDelay()).orElse(defaultCheckDelay),
-				() -> Optional.ofNullable(unit.getCheckChecksumDelay()).orElse(defaultCheckChecksumDelay)
-		);
-	}
-
-	/**
-	 * <p>For a unit with automatic check enabled, verify history to decide if check must be performed now, and if
-	 * checksum check must be enabled.</p>
-	 * 
-	 * <p>Static and supplier arguments are used to allow testability.</p>
-	 * 
-	 * @param unitLog String used for logging message
-	 * @param checkType Expected check type for storage unit. Supplier result must be not null.
-	 * @param lastCheck Last check date for unit. Supplier result may be null (if no check exists).
-	 * @param lastCheckChecksum Last checksum-enabled check date for unit. Supplier result may be null (if no check exists).
-	 * @param checkDelay Delay for a basic check. Supplier result must be not null. 
-	 * @param checkChecksumDelay Delay for a checksum check. Supplier result must be not null.
-	 * @see #checkConsistency(Duration, Duration)
-	 */
-	public static StorageUnitCheckType getCheckConsistencyType(@Nonnull Supplier<String> unitLog,
-			@Nonnull LocalDateTime reference,
-			@Nonnull Supplier<StorageUnitCheckType> checkType,
-			@Nonnull Supplier<LocalDateTime> lastCheck,
-			@Nonnull Supplier<LocalDateTime> lastCheckChecksum,
-			@Nonnull Supplier<Duration> checkDelay,
-			@Nonnull Supplier<Duration> checkChecksumDelay) {
-		// 3 steps:
-		// - is check enabled ?
-		// - is check old enough ?
-		// - is checksum enabled and old enough to be rechecked
-		if (StorageUnitCheckType.NONE.equals(checkType.get())) {
-			LOGGER.info("Checking {} skipped. Disabled on StorageUnit", unitLog.get());
-			return StorageUnitCheckType.NONE;
-		} else {
-			if (!isExpectedCheckDateElapsed(lastCheck, checkDelay, reference)) {
-				// last check is recent enough
-				LOGGER.debug("Checking {} skipped. Last check on {}, next check expected with delay {}", unitLog.get(), lastCheck.get(), checkDelay.get());
-				return StorageUnitCheckType.NONE;
-			} else {
-				if (StorageUnitCheckType.LISTING_SIZE_CHECKSUM.equals(checkType.get()) && isExpectedCheckDateElapsed(lastCheckChecksum, checkChecksumDelay, reference)) {
-					// checksum is needed and delay is elapsed
-					LOGGER.debug("Checking {} with checksum. Last checksum check on {}, next check expected with delay {}", unitLog.get(), lastCheckChecksum.get(), checkChecksumDelay.get());
-					return StorageUnitCheckType.LISTING_SIZE_CHECKSUM;
-				}
-				// checksum recent enough; only perform a simple check
-				return StorageUnitCheckType.LISTING_SIZE;
-			}
-		}
-	}
-
-	/**
-	 * <p>Static to ensure method is stateless and testable.</p>
-	 */
-	public static boolean isExpectedCheckDateElapsed(Supplier<LocalDateTime> lastCheck, Supplier<Duration> delay, LocalDateTime reference) {
-		return Optional.ofNullable(lastCheck.get()).map(d -> d.plus(delay.get())).map(reference::isAfter).orElse(true);
-	}
-
-	/**
-	 * Create automatically a new {@link StorageUnit} for overflowing and auto-creation enabled {@link StorageUnit}
-	 * 
-	 * TODO: add @see
-	 */
-	public void splitStorageUnits() {
-		
 	}
 
 	private Path getAbsolutePath(Fichier fichier) {

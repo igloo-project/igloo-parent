@@ -19,8 +19,8 @@ import java.util.Set;
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.igloo.storage.impl.DatabaseOperations;
+import org.igloo.storage.impl.StorageHousekeepingService;
 import org.igloo.storage.impl.StorageOperations;
-import org.igloo.storage.impl.StorageService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageUnit;
@@ -221,7 +221,7 @@ public class TestConsistency extends AbstractTest {
 		StorageUnit unit = new StorageUnit();
 		// check is useless ; no database lookup
 		// dates and delays are not checked
-		assertThat(StorageService.getCheckConsistencyType(unit::toString, LocalDateTime.now(), () -> StorageUnitCheckType.NONE, null, null, null, null)).isEqualTo(StorageUnitCheckType.NONE);
+		assertThat(StorageHousekeepingService.getCheckConsistencyType(unit::toString, LocalDateTime.now(), () -> StorageUnitCheckType.NONE, null, null, null, null)).isEqualTo(StorageUnitCheckType.NONE);
 		verifyNoInteractions(databaseOperations);
 	}
 
@@ -231,7 +231,7 @@ public class TestConsistency extends AbstractTest {
 		LocalDateTime now = LocalDateTime.now();
 		// NOTE: checksum date and delay not used as checksum not needed for unit
 		// not elapsed (last check not older than delay)
-		softly.assertThat(StorageService.getCheckConsistencyType(unit::toString,
+		softly.assertThat(StorageHousekeepingService.getCheckConsistencyType(unit::toString,
 				now,
 				() -> StorageUnitCheckType.LISTING_SIZE,
 				() -> _24h00m00sAgo(now), // last check last day
@@ -240,7 +240,7 @@ public class TestConsistency extends AbstractTest {
 				null
 		)).isEqualTo(StorageUnitCheckType.NONE);
 		// not elapsed (last check on delay)
-		softly.assertThat(StorageService.getCheckConsistencyType(unit::toString,
+		softly.assertThat(StorageHousekeepingService.getCheckConsistencyType(unit::toString,
 				now,
 				() -> StorageUnitCheckType.LISTING_SIZE,
 				() -> _23h59m59sAgo(now), // last check 23h59:59 ago
@@ -249,7 +249,7 @@ public class TestConsistency extends AbstractTest {
 				() -> Duration.ofDays(1)
 		)).isEqualTo(StorageUnitCheckType.NONE);
 		// no previous check
-		softly.assertThat(StorageService.getCheckConsistencyType(unit::toString,
+		softly.assertThat(StorageHousekeepingService.getCheckConsistencyType(unit::toString,
 				now,
 				() -> StorageUnitCheckType.LISTING_SIZE,
 				() -> null,
@@ -258,7 +258,7 @@ public class TestConsistency extends AbstractTest {
 				() -> Duration.ofDays(1)
 		)).isEqualTo(StorageUnitCheckType.LISTING_SIZE);
 		// elasped (last check older than delay)
-		softly.assertThat(StorageService.getCheckConsistencyType(unit::toString,
+		softly.assertThat(StorageHousekeepingService.getCheckConsistencyType(unit::toString,
 				now,
 				() -> StorageUnitCheckType.LISTING_SIZE,
 				() -> _24h00m01sAgo(now), // last check 24h00:01 ago
@@ -272,7 +272,7 @@ public class TestConsistency extends AbstractTest {
 	void testConsistencyCheckTypeDelayElapsedWithChecksum(SoftAssertions softly) {
 		StorageUnit unit = new StorageUnit();
 		LocalDateTime now = LocalDateTime.now();
-		assertThat(StorageService.getCheckConsistencyType(unit::toString,
+		assertThat(StorageHousekeepingService.getCheckConsistencyType(unit::toString,
 				now,
 				() -> StorageUnitCheckType.LISTING_SIZE_CHECKSUM,
 				() -> _24h00m00sAgo(now), // last check last day
@@ -280,7 +280,7 @@ public class TestConsistency extends AbstractTest {
 				() -> Duration.ofDays(1),
 				() -> Duration.ofDays(1)
 		)).as("Last check not old enough. Not check expected.").isEqualTo(StorageUnitCheckType.NONE);
-		assertThat(StorageService.getCheckConsistencyType(unit::toString,
+		assertThat(StorageHousekeepingService.getCheckConsistencyType(unit::toString,
 				now,
 				() -> StorageUnitCheckType.LISTING_SIZE_CHECKSUM,
 				() -> _23h59m59sAgo(now), // last check after last day
@@ -288,7 +288,7 @@ public class TestConsistency extends AbstractTest {
 				() -> Duration.ofDays(1),
 				() -> Duration.ofDays(1)
 		)).as("Last check not old enough. Not  check expected.").isEqualTo(StorageUnitCheckType.NONE);
-		softly.assertThat(StorageService.getCheckConsistencyType(unit::toString,
+		softly.assertThat(StorageHousekeepingService.getCheckConsistencyType(unit::toString,
 				now,
 				() -> StorageUnitCheckType.LISTING_SIZE_CHECKSUM,
 				() -> null,
@@ -296,7 +296,7 @@ public class TestConsistency extends AbstractTest {
 				() -> Duration.ofDays(1),
 				() -> Duration.ofDays(1)
 		)).as("No last check. Checksum expected.").isEqualTo(StorageUnitCheckType.LISTING_SIZE_CHECKSUM);
-		assertThat(StorageService.getCheckConsistencyType(unit::toString,
+		assertThat(StorageHousekeepingService.getCheckConsistencyType(unit::toString,
 				now,
 				() -> StorageUnitCheckType.LISTING_SIZE_CHECKSUM,
 				() -> _24h00m01sAgo(now), // last check older than lastday
@@ -304,7 +304,7 @@ public class TestConsistency extends AbstractTest {
 				() -> Duration.ofDays(1),
 				() -> Duration.ofDays(1)
 		)).as("Last check old enough and no last checksum. Checksum expected.").isEqualTo(StorageUnitCheckType.LISTING_SIZE_CHECKSUM);
-		assertThat(StorageService.getCheckConsistencyType(unit::toString,
+		assertThat(StorageHousekeepingService.getCheckConsistencyType(unit::toString,
 				now,
 				() -> StorageUnitCheckType.LISTING_SIZE_CHECKSUM,
 				() -> _24h00m01sAgo(now),
@@ -312,7 +312,7 @@ public class TestConsistency extends AbstractTest {
 				() -> Duration.ofDays(1),
 				() -> Duration.ofDays(1)
 		)).as("Last check old enough and last checksum not old enough. Basic check expected.").isEqualTo(StorageUnitCheckType.LISTING_SIZE);
-		assertThat(StorageService.getCheckConsistencyType(unit::toString,
+		assertThat(StorageHousekeepingService.getCheckConsistencyType(unit::toString,
 				now,
 				() -> StorageUnitCheckType.LISTING_SIZE_CHECKSUM,
 				() -> _24h00m01sAgo(now),
@@ -326,27 +326,27 @@ public class TestConsistency extends AbstractTest {
 	void testIsExpectedCheckDateElapsed(SoftAssertions softly) {
 		LocalDateTime now = LocalDateTime.now();
 		// if date is null, delay is not needed to return true
-		softly.assertThat(StorageService.isExpectedCheckDateElapsed(() -> null, null, now))
+		softly.assertThat(StorageHousekeepingService.isExpectedCheckDateElapsed(() -> null, null, now))
 			.as("No previous check. Elapsed.")
 			.isTrue();
 		// check that delay allow switch result
-		softly.assertThat(StorageService.isExpectedCheckDateElapsed(() -> _23h59m59sAgo(now), () -> Duration.ofDays(1), now))
+		softly.assertThat(StorageHousekeepingService.isExpectedCheckDateElapsed(() -> _23h59m59sAgo(now), () -> Duration.ofDays(1), now))
 			.as("Last check age less than duration. Not elapsed.")
 			.isFalse();
-		softly.assertThat(StorageService.isExpectedCheckDateElapsed(() -> _24h00m00sAgo(now), () -> Duration.ofDays(1), now))
+		softly.assertThat(StorageHousekeepingService.isExpectedCheckDateElapsed(() -> _24h00m00sAgo(now), () -> Duration.ofDays(1), now))
 			.as("Last check age equals duration. Not elapsed.")
 			.isFalse();
-		softly.assertThat(StorageService.isExpectedCheckDateElapsed(() -> _24h00m01sAgo(now), () -> Duration.ofDays(1), now))
+		softly.assertThat(StorageHousekeepingService.isExpectedCheckDateElapsed(() -> _24h00m01sAgo(now), () -> Duration.ofDays(1), now))
 			.as("Last check age older than duration. Elapsed.")
 			.isTrue();
 		Duration delay = Duration.ofMinutes(45);
-		softly.assertThat(StorageService.isExpectedCheckDateElapsed(() -> now.minus(delay), () -> delay, now))
+		softly.assertThat(StorageHousekeepingService.isExpectedCheckDateElapsed(() -> now.minus(delay), () -> delay, now))
 			.as("Last check age less than duration. Not elapsed.")
 			.isFalse();
-		softly.assertThat(StorageService.isExpectedCheckDateElapsed(() -> now.minus(delay.minus(Duration.ofSeconds(1))), () -> delay, now))
+		softly.assertThat(StorageHousekeepingService.isExpectedCheckDateElapsed(() -> now.minus(delay.minus(Duration.ofSeconds(1))), () -> delay, now))
 			.as("Last check age equals duration. Not elapsed.")
 			.isFalse();
-		softly.assertThat(StorageService.isExpectedCheckDateElapsed(() -> now.minus(delay.plus(Duration.ofSeconds(1))), () -> delay, now))
+		softly.assertThat(StorageHousekeepingService.isExpectedCheckDateElapsed(() -> now.minus(delay.plus(Duration.ofSeconds(1))), () -> delay, now))
 			.as("Last check age older than duration. Elapsed.")
 			.isTrue();
 	}
