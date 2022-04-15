@@ -185,9 +185,12 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		Integer contentMismatchCount = 0;
 		
 		// list db and filesystem
-		Set<Path> files = storageOperations.listUnitContent(persistedUnit);
+		// list database then filesystem
+		// -> when entity is available in database, file has to be created -> listed entities must be on FS
+		// -> we need to stop unit cleaning during check so we do not have deleted file for an existing entity
 		Map<Path, Fichier> result = databaseOperations.listUnitAliveFichiers(persistedUnit).stream()
 				.collect(Collectors.toMap(f -> Path.of(persistedUnit.getPath()).resolve(f.getRelativePath()), Function.identity()));
+		Set<Path> files = storageOperations.listUnitContent(persistedUnit);
 		// get general data
 		fileCount = files.size();
 		fichierCount = result.size();
