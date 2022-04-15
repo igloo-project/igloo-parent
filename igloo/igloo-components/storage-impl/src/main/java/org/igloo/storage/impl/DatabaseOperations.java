@@ -37,7 +37,6 @@ import org.igloo.storage.model.StorageFailure;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IStorageUnitType;
-import org.igloo.storage.model.atomic.StorageConsistencyCheckResult;
 import org.igloo.storage.model.atomic.StorageFailureStatus;
 import org.igloo.storage.model.atomic.StorageFailureType;
 import org.igloo.storage.model.atomic.StorageUnitCheckType;
