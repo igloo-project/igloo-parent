@@ -147,6 +147,10 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 		return type;
 	}
 
+	public <T> T getType(Class<T> clazz) {
+		return (T) getType();
+	}
+
 	public void setType(IFichierType type) {
 		this.type = type;
 	}
