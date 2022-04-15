@@ -4,12 +4,15 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 
 import org.igloo.storage.api.IStorageHousekeepingService;
 import org.igloo.storage.api.IStorageService;
+import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.slf4j.Logger;
@@ -28,8 +31,30 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 	private final TransactionOperations writeTransaction;
 	private final IStorageService storageService;
 	private final DatabaseOperations databaseOperations;
-	private final Duration defaultCheckDelay = Duration.ofDays(10);
-	private final Duration defaultCheckChecksumDelay = Duration.ofDays(30);
+	/**
+	 * Expected duration since last check to relaunch a basic check
+	 */
+	private final Duration defaultCheckDelay;
+	/**
+	 * Expected duration since last checksum to relaunch a checksum check
+	 */
+	private final Duration defaultCheckChecksumDelay;
+	/**
+	 * Expected duration since creation to trigger transient file deletion
+	 */
+	private final Duration transientCleaningDelay;
+	/**
+	 * database limit for {@link Fichier} listing when performing cleaning tasks
+	 */
+	private final Integer cleanLimit;
+	/**
+	 * Manage exclusive jobs
+	 */
+	private final Semaphore jobSemaphore = new Semaphore(1, true);
+
+	public StorageHousekeepingService(PlatformTransactionManager transactionManager, IStorageService storageService, DatabaseOperations databaseOperations) {
+		this(transactionManager, storageService, databaseOperations, Duration.ofDays(10), Duration.ofDays(30), Duration.ofDays(1), 500);
+	}
 
 	/**
 	 * Perform housekeeping jobs for storage module.
@@ -46,7 +71,9 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 	 * @param storageService
 	 * @param databaseOperations
 	 */
-	public StorageHousekeepingService(PlatformTransactionManager transactionManager, IStorageService storageService, DatabaseOperations databaseOperations) {
+	public StorageHousekeepingService(PlatformTransactionManager transactionManager, IStorageService storageService, DatabaseOperations databaseOperations,
+			Duration defaultCheckDelay, Duration defaultCheckChecksumDelay, Duration transientCleaningDelay,
+			Integer cleanLimit) {
 		if (transactionManager != null) {
 			DefaultTransactionAttribute writeAttribute = new DefaultTransactionAttribute();
 			writeAttribute.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -63,12 +90,81 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 		}
 		this.storageService = storageService;
 		this.databaseOperations = databaseOperations;
+		this.defaultCheckDelay = defaultCheckDelay;
+		this.defaultCheckChecksumDelay = defaultCheckChecksumDelay;
+		this.transientCleaningDelay = transientCleaningDelay;
+		this.cleanLimit = cleanLimit;
 	}
 
 	@Override
 	public void housekeeping() {
-		checkConsistency(defaultCheckDelay, defaultCheckChecksumDelay);
-		splitStorageUnits();
+		try {
+			doExclusiveJob(() -> {
+				checkConsistency(defaultCheckDelay, defaultCheckChecksumDelay);
+				checkInterruption();
+				splitStorageUnits();
+			}, "Housekeeping");
+		} catch (Interruption e) {
+			LOGGER.warn("Housekeeping job gracefully interrupted.");
+		}
+	}
+
+	private void doExclusiveJob(Runnable runnable, Object jobName) {
+		boolean acquire = false;
+		try {
+			acquire = jobSemaphore.tryAcquire(30, TimeUnit.MINUTES);
+			if (acquire) {
+				runnable.run();
+				checkConsistency(defaultCheckDelay, defaultCheckChecksumDelay);
+				splitStorageUnits();
+			} else {
+				LOGGER.error("Job {} skipped as another job is using exclusive lock. Aborted after a 30 minutes wait. Please check job scheduling.", jobName);
+			}
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		} finally {
+			if (acquire) {
+				jobSemaphore.release();
+			}
+		}
+	}
+
+	@Override
+	public void cleaning() {
+		try {
+			doExclusiveJob(this::cleanInvalidated, "Cleaning invalidated");
+			checkInterruption();
+			doExclusiveJob(this::cleanTransient, "Cleaning transient");
+		} catch (Interruption e) {
+			LOGGER.warn("Cleaning job gracefully interrupted.");
+		}
+	}
+
+	public void cleanInvalidated() {
+		clean(() -> readOnlyTransaction.execute(t -> databaseOperations.listInvalidated(cleanLimit)));
+	}
+
+	public void cleanTransient() {
+		LocalDateTime maxCreationDate = LocalDateTime.now().minus(transientCleaningDelay);
+		clean(() -> readOnlyTransaction.execute(t -> databaseOperations.listTransient(cleanLimit, maxCreationDate)));
+	}
+
+	public void clean(Supplier<List<Fichier>> source) throws Interruption {
+		List<Fichier> fichiers = source.get();
+		for (Fichier fichier : fichiers) {
+			try {
+				writeTransaction.executeWithoutResult(t -> storageService.removeFichier(fichier));
+			} catch (RuntimeException e) {
+				LOGGER.error("Error removing {}.", fichier, e);
+			}
+			checkInterruption();
+		}
+	}
+
+	public void checkInterruption() {
+		if (Thread.currentThread().isInterrupted()) {
+			throw new Interruption();
+		}
 	}
 
 	/**
@@ -169,6 +265,17 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 				writeTransaction.execute(t -> storageService.checkConsistency(unit, checksumEnabled));
 				LOGGER.info("Checking {}. Done", unit);
 			}
+			checkInterruption();
 		}
+	}
+
+	private static class Interruption extends RuntimeException {
+
+		private static final long serialVersionUID = -8913127134427780961L;
+
+		public Interruption() {
+			super();
+		}
+
 	}
 }

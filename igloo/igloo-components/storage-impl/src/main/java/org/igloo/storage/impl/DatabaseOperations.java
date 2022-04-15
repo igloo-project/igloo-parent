@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +16,12 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -92,6 +95,14 @@ public class DatabaseOperations implements IStorageStatisticsService {
 		failureStatusTypeProperties.setProperty(EnumType.ENUM, StorageFailureStatus.class.getName());
 		failureStatusTypeProperties.setProperty(EnumType.NAMED, Boolean.TRUE.toString());
 		failureStatusType = entityManagerFactory.unwrap(SessionFactory.class).getTypeHelper().custom(EnumType.class, failureStatusTypeProperties);
+	}
+
+	public Fichier getAttachedFichier(Fichier fichier) {
+		if (entityManager().contains(fichier)) {
+			return fichier;
+		} else {
+			return entityManager().find(Fichier.class, fichier.getId());
+		}
 	}
 
 	public long generateStorageUnit() {
@@ -242,6 +253,28 @@ public class DatabaseOperations implements IStorageStatisticsService {
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+	@Nonnull
+	public List<Fichier> listInvalidated(@Nullable Integer limit) {
+		TypedQuery<Fichier> query = entityManager().createQuery("SELECT f FROM Fichier f WHERE f.status = :invalidatedStatus ORDER BY f.id ASC", Fichier.class);
+		query.setParameter("invalidatedStatus", FichierStatus.INVALIDATED);
+		if (limit != null) {
+			query.setMaxResults(limit);
+		}
+		return query.getResultList();
+	}
+
+	@Nonnull
+	public List<Fichier> listTransient(@Nullable Integer limit, @Nonnull LocalDateTime maxCreationDate) {
+		Objects.requireNonNull(maxCreationDate, "maxCreationDate must not be null");
+		TypedQuery<Fichier> query = entityManager().createQuery("SELECT f FROM Fichier f WHERE f.status = :transientStatus AND f.creationDate < :maxCreationDate ORDER BY f.id ASC", Fichier.class);
+		query.setParameter("transientStatus", FichierStatus.TRANSIENT);
+		query.setParameter("maxCreationDate", maxCreationDate);
+		if (limit != null) {
+			query.setMaxResults(limit);
+		}
+		return query.getResultList();
 	}
 
 	@Override

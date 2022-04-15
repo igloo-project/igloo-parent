@@ -1231,13 +1231,61 @@ class TestDatabaseOperations extends AbstractTest {
 	@Test
 	void testFichierCreatedBy(EntityManagerFactory entityManagerFactory) {
 		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
-		Fichier fichier = createFichier(entityManagerFactory, unit, 1l, FichierStatus.ALIVE, FichierType1.CONTENT1, LongEntityReference.of(GenericEntity.class, 1l));
+		Fichier fichier = createFichier(entityManagerFactory, unit, 1l, FichierStatus.ALIVE, FichierType1.CONTENT1, LongEntityReference.of(GenericEntity.class, 1l), LocalDateTime.now());
 		doInReadTransactionEntityManager(entityManagerFactory, em -> {
 			List<Tuple> result = em.createNativeQuery("SELECT createdby_type, createdby_id FROM Fichier;", Tuple.class).getResultList();
 			assertThat(result).hasSize(1);
 			assertThat(result.get(0).get("createdby_type")).isEqualTo(GenericEntity.class.getName()).isEqualTo(fichier.getCreatedBy().getType().getName());
 			// java long is stored as sql biginteger 
 			assertThat(result.get(0).get("createdby_id")).isEqualTo(BigInteger.valueOf(1)).isEqualTo(BigInteger.valueOf(fichier.getCreatedBy().getId()));
+			return null;
+		});
+	}
+
+	@Test
+	void testListInvalidated(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		createFichier(entityManagerFactory, unit, 1l, FichierStatus.ALIVE);
+		createFichier(entityManagerFactory, unit, 2l, FichierStatus.TRANSIENT);
+		Fichier fichier4 = createFichier(entityManagerFactory, unit, 4l, FichierStatus.INVALIDATED);
+		Fichier fichier3 = createFichier(entityManagerFactory, unit, 3l, FichierStatus.INVALIDATED);
+		
+		doInReadTransaction(entityManagerFactory, () -> {
+			assertThat(databaseOperations.listInvalidated(1)).hasSize(1).contains(fichier3);
+			assertThat(databaseOperations.listInvalidated(null)).hasSize(2).containsExactly(fichier3, fichier4);
+			return null;
+		});
+	}
+
+	@Test
+	void testListTransient(EntityManagerFactory entityManagerFactory) {
+		LocalDateTime oneDayOld = LocalDateTime.now().minusDays(1);
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		createFichier(entityManagerFactory, unit, 1l, FichierStatus.ALIVE);
+		createFichier(entityManagerFactory, unit, 2l, FichierStatus.ALIVE);
+		Fichier fichier4 = createFichier(entityManagerFactory, unit, 4l, FichierStatus.TRANSIENT, oneDayOld.minusSeconds(1));
+		Fichier fichier3 = createFichier(entityManagerFactory, unit, 3l, FichierStatus.TRANSIENT, oneDayOld.minusSeconds(1));
+		// not old enough for cleaning
+		createFichier(entityManagerFactory, unit, 5l, FichierStatus.TRANSIENT, oneDayOld.plusMinutes(1));
+		
+		doInReadTransaction(entityManagerFactory, () -> {
+			assertThat(databaseOperations.listTransient(1, oneDayOld)).hasSize(1).contains(fichier3);
+			assertThat(databaseOperations.listTransient(null, oneDayOld)).hasSize(2).containsExactly(fichier3, fichier4);
+			return null;
+		});
+	}
+
+	@Test
+	void testRemove(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		Fichier fichier2 = createFichier(entityManagerFactory, unit, 2l, FichierStatus.ALIVE);
+		doInWriteTransaction(entityManagerFactory, () -> {
+			Fichier fichier = createFichier(entityManagerFactory, unit, 1l, FichierStatus.ALIVE);
+			databaseOperations.removeFichier(fichier);
+			return fichier;
+		});
+		doInReadTransactionEntityManager(entityManagerFactory, (em) -> {
+			assertThat(em.createQuery("SELECT f FROM Fichier f", Fichier.class).getResultList()).hasSize(1).containsExactly(fichier2);
 			return null;
 		});
 	}
@@ -1313,15 +1361,19 @@ class TestDatabaseOperations extends AbstractTest {
 		return createFichier(entityManagerFactory, storageUnit, id, status, (LongEntityReference) null);
 	}
 
+	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, LocalDateTime creationDate) {
+		return createFichier(entityManagerFactory, storageUnit, id, status, FichierType1.CONTENT1, null, creationDate);
+	}
+
 	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, LongEntityReference author) {
-		return createFichier(entityManagerFactory, storageUnit, id, status, FichierType1.CONTENT1, author);
+		return createFichier(entityManagerFactory, storageUnit, id, status, FichierType1.CONTENT1, author, LocalDateTime.now());
 	}
 
 	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, IFichierType type) {
-		return createFichier(entityManagerFactory, storageUnit, id, status, type, null);
+		return createFichier(entityManagerFactory, storageUnit, id, status, type, null, LocalDateTime.now());
 	}
 
-	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, IFichierType type, LongEntityReference author) {
+	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, IFichierType type, LongEntityReference author, LocalDateTime creationDate) {
 		return doInWriteTransactionEntityManager(entityManagerFactory, (em) -> {
 			Fichier fichier = new Fichier();
 			fichier.setId(id);
@@ -1335,7 +1387,7 @@ class TestDatabaseOperations extends AbstractTest {
 			fichier.setChecksum("123");
 			fichier.setMimetype("application/octet-stream");
 			fichier.setChecksumType(ChecksumType.SHA_256);
-			fichier.setCreationDate(LocalDateTime.now());
+			fichier.setCreationDate(creationDate);
 			fichier.setCreatedBy(author);
 			em.persist(fichier);
 			return fichier;

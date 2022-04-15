@@ -134,9 +134,14 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 
 	@Override
 	public void removeFichier(@Nonnull Fichier fichier) {
+		Fichier attachedFichier = databaseOperations.getAttachedFichier(fichier);
+		if (attachedFichier == null) {
+			LOGGER.warn("Fichier {} cannot be retrieved in database to be deleted.", fichier);
+			return;
+		}
 		// TODO : vérifier qu'on est dans un état INVALIDATED ?
-		databaseOperations.removeFichier(fichier);
-		addEvent(fichier.getId(), StorageEventType.DELETE, getAbsolutePath(fichier));
+		databaseOperations.removeFichier(attachedFichier);
+		addEvent(attachedFichier.getId(), StorageEventType.DELETE, getAbsolutePath(attachedFichier));
 	}
 
 	@Override

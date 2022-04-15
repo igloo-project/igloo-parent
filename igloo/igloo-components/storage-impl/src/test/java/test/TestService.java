@@ -95,13 +95,23 @@ class TestService extends AbstractTest {
 
 	@Test
 	void testRemove() {
-		transactionTemplate.executeWithoutResult((t) -> {
+		Fichier fichierToRemove = transactionTemplate.execute((t) -> {
 			Fichier fichier = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, () -> {});
 			Mockito.reset(storageOperations); // Get rid of creation operation
-			storageService.removeFichier(fichier);
+			return fichier;
 		});
+		// storageService reload an attached instance for remove, so we can pass detached instance
+		transactionTemplate.execute(t -> {
+			storageService.removeFichier(fichierToRemove);
+			return null;
+		});
+		// check physical removal is called
+		verify(storageOperations, times(1)).removePhysicalFile(
+				Mockito.any(), // log message
+				Mockito.eq(fichierToRemove.getId()), // id
+				argThat((a) -> { assertThat(a).toString().contains(fichierToRemove.getRelativePath()); } ) // path
+		);
 
-		verify(storageOperations, times(1)).removePhysicalFile(notNull(), notNull(), notNull());
 		verifyNoMoreInteractions(storageOperations);
 	}
 

@@ -1,5 +1,7 @@
 package org.igloo.storage.api;
 
+import org.igloo.storage.model.Fichier;
+
 public interface IStorageHousekeepingService {
 
 	/**
@@ -10,5 +12,11 @@ public interface IStorageHousekeepingService {
 	 * </ul>
 	 */
 	void housekeeping();
+
+	/**
+	 * Clean invalidated and transient {@link Fichier}. All invalidated {@link Fichier} are eligible for removal.
+	 * Transient {@link Fichier} are removed after a grace period.
+	 */
+	void cleaning();
 
 }
