@@ -46,6 +46,7 @@ public final class SqlUpdateScript {
 
 	public static void writeSqlDiffScript(EntityManagerFactory entityManagerFactory, Metadata metadata,
 			SqlOutput output, String action) {
+		ExceptionHandlerCollectingImpl exceptionHandler = new ExceptionHandlerCollectingImpl();
 		ExecutionOptions executionOptions = new ExecutionOptions() {
 			
 			@Override
@@ -62,10 +63,14 @@ public final class SqlUpdateScript {
 			
 			@Override
 			public ExceptionHandler getExceptionHandler() {
-				// TODO récupérer et vérifier aucune exception pendant la mise à jour
-				return new ExceptionHandlerCollectingImpl();
+				return exceptionHandler;
 			}
 		};
+		if (!exceptionHandler.getExceptions().isEmpty()) {
+			IllegalStateException e = new IllegalStateException("One or multiple exception during execution");
+			exceptionHandler.getExceptions().stream().forEach(e::addSuppressed);
+			throw e;
+		}
 		
 		ServiceRegistry serviceRegistry = entityManagerFactory.unwrap(SessionFactoryImplementor.class).getServiceRegistry();
 		
