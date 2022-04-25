@@ -15,11 +15,12 @@
  * limitations under the License.
  */
 
-package org.iglooproject.jpa.hibernate.dialect;
+package org.igloo.hibernate.dialect;
 
+import org.hibernate.dialect.PostgreSQL10Dialect;
 import org.hibernate.jpa.AvailableSettings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.igloo.hibernate.function.PostgreSQLIntervalFunction;
+import org.igloo.hibernate.function.PostgreSQLRegexpOperatorFunction;
 
 /**
  * <p>Register custom functions to allow advanced queryDSL queries.</p>
@@ -28,16 +29,12 @@ import org.slf4j.LoggerFactory;
  * {@link AvailableSettings#IDENTIFIER_GENERATOR_STRATEGY_PROVIDER}</p>
  * 
  * @author Open Wide
- * @deprecated please switch to {@link org.igloo.hibernate.dialect.PostgreSQLAdvancedDialect}
  */
-@Deprecated(since = "3.6.0")
-public class PostgreSQLAdvancedDialect extends org.igloo.hibernate.dialect.PostgreSQLAdvancedDialect { //NOSONAR ignore naming and too many parents
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(PostgreSQLAdvancedDialect.class);
+public class PostgreSQLAdvancedDialect extends PostgreSQL10Dialect { //NOSONAR ignore too many parents (10)
 	
 	public PostgreSQLAdvancedDialect() {
-		super();
-		LOGGER.warn("{} deprecated, please switch to {}", PostgreSQLAdvancedDialect.class.getName(), org.igloo.hibernate.dialect.PostgreSQLAdvancedDialect.class.getName());
+		registerFunction("interval", new PostgreSQLIntervalFunction());
+		registerFunction("regexp_operator", new PostgreSQLRegexpOperatorFunction());
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.hibernate.dialect.function;
+package org.igloo.hibernate.function;
 
 import java.util.List;
 
