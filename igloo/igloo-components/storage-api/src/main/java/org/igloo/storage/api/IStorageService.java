@@ -14,6 +14,7 @@ import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
+import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,5 +79,16 @@ public interface IStorageService {
 	 */
 	@Nonnull
 	List<StorageConsistencyCheck> checkConsistency(@Nonnull StorageUnit unit, boolean checksumValidation);
+
+	/**
+	 * Copy an existing {@link StorageUnitStatus#ALIVE} unit, switch it to {@link StorageUnitStatus#ARCHIVED}, and
+	 * return new {@link StorageUnit}.
+	 * 
+	 * <code>original</code> can be a detached instance. It will be reloaded.
+	 * 
+	 * @throws IllegalStateException if original is not {@link StorageUnitStatus#ALIVE}
+	 */
+	@Nonnull
+	StorageUnit splitStorageUnit(@Nonnull StorageUnit original);
 
 }

@@ -25,7 +25,9 @@ import org.igloo.jpa.test.EntityManagerFactoryExtension;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.model.Fichier;
+import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.FichierStatus;
+import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -161,6 +163,25 @@ class TestService extends AbstractTest {
 		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.INVALIDATED);
 		assertThat(fichier.getInvalidationDate()).isNotNull();
 		Mockito.verifyNoInteractions(storageOperations);
+	}
+
+	@Test
+	void testSplitStorageUnit(EntityManagerFactory entityManagerFactory) {
+		StorageUnit original = transactionTemplate.execute((t) -> {
+			EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
+			// created by init
+			return em.find(StorageUnit.class, 1l);
+		});
+		StorageUnit newUnit = transactionTemplate.execute((t) -> storageService.splitStorageUnit(original));
+		StorageUnit updated = transactionTemplate.execute((t) -> {
+			EntityManager em = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
+			// created by init
+			return em.find(StorageUnit.class, 1l);
+		});
+		assertThat(updated.getStatus()).isEqualTo(StorageUnitStatus.ARCHIVED);
+		assertThat(newUnit.getStatus()).isEqualTo(StorageUnitStatus.ALIVE);
+		assertThat(newUnit.getCreationDate()).isAfter(original.getCreationDate());
+		assertThat(newUnit.getId()).isGreaterThan(original.getId());
 	}
 
 }

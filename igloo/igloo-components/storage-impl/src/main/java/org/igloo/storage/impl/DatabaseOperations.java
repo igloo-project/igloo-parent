@@ -64,6 +64,7 @@ public class DatabaseOperations implements IStorageStatisticsService {
 	private Supplier<String> orphanStatisticsQuery = Suppliers.memoize(() -> readSqlResource("orphan-statistics.sql"));
 	private Supplier<String> unitStatisticsQuery = Suppliers.memoize(() -> readSqlResource("unit-statistics.sql"));
 	private Supplier<String> failureStatisticsQuery = Suppliers.memoize(() -> readSqlResource("failure-statistics.sql"));
+	private Supplier<String> storageUnitSplitQuery = Suppliers.memoize(() -> readSqlResource("storage-unit-split.sql"));
 
 	private final EntityManagerFactory entityManagerFactory;
 
@@ -127,6 +128,29 @@ public class DatabaseOperations implements IStorageStatisticsService {
 
 	public void createStorageUnit(StorageUnit unit) {
 		entityManager().persist(unit);
+	}
+
+	public StorageUnit splitStorageUnit(StorageUnit original, Long id, String newPath) {
+		if (!entityManager().contains(original)) {
+			original = entityManager().find(StorageUnit.class, original.getId());
+		}
+		if (!StorageUnitStatus.ALIVE.equals(original.getStatus())) {
+			throw new IllegalStateException(String.format("Original status %s unexpected for StorageUnit split", original.getStatus()));
+		}
+		StorageUnit newUnit = new StorageUnit();
+		newUnit.setId(id);
+		newUnit.setCheckChecksumDelay(original.getCheckChecksumDelay());
+		newUnit.setCheckDelay(original.getCheckDelay());
+		newUnit.setCheckType(original.getCheckType());
+		newUnit.setCreationDate(LocalDateTime.now());
+		newUnit.setPath(newPath);
+		newUnit.setSplitDuration(original.getSplitDuration());
+		newUnit.setSplitSize(original.getSplitSize());
+		newUnit.setStatus(StorageUnitStatus.ALIVE);
+		newUnit.setType(original.getType());
+		original.setStatus(StorageUnitStatus.ARCHIVED);
+		entityManager().persist(newUnit);
+		return newUnit;
 	}
 
 	@Nonnull
@@ -277,6 +301,15 @@ public class DatabaseOperations implements IStorageStatisticsService {
 		return query.getResultList();
 	}
 
+	/**
+	 * List {@link StorageUnit} that need to be split. Listing is based upon {@link StorageUnit#getSplitSize()} or
+	 * {@link StorageUnit#getSplitDuration()}. Null values implies NO automatic split.
+	 */
+	@Nonnull
+	public List<StorageUnit> listStorageUnitsToSplit() {
+		return entityManager().createQuery(storageUnitSplitQuery.get(), StorageUnit.class).getResultList();
+	}
+
 	@Override
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageStatistic> getStorageStatistics() {
@@ -352,9 +385,13 @@ public class DatabaseOperations implements IStorageStatisticsService {
 		return Optional.ofNullable(EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)).orElseThrow();
 	}
 
+	/**
+	 * Read query from a resource file; remove full line comment (i.e. line begins with --)
+	 */
 	private static String readSqlResource(String sqlFilename) {
 		try {
-			return Resources.toString(Resources.getResource("igloo-storage/" + sqlFilename), StandardCharsets.UTF_8);
+			List<String> content = Resources.readLines(Resources.getResource("igloo-storage/" + sqlFilename), StandardCharsets.UTF_8);
+			return content.stream().filter(l -> !l.strip().startsWith("--")).collect(Collectors.joining("\n"));
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}

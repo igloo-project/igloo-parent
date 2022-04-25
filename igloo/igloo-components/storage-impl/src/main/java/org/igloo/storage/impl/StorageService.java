@@ -166,7 +166,16 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 		return unit;
 	}
 
-	// TODO MPI : à mettre dans un service spécifique aux vérifications de cohérence ?
+	@Override
+	@Nonnull
+	public StorageUnit splitStorageUnit(@Nonnull StorageUnit original) {
+		Long id = databaseOperations.generateStorageUnit();
+		String path = storageUnitPathSupplier.get().toAbsolutePath()
+			.resolve(String.format("%s-%s", original.getType().getPath(), id.toString()))
+				.toString();
+		return databaseOperations.splitStorageUnit(original, id, path);
+	}
+
 	@Override
 	@Nonnull
 	public List<StorageConsistencyCheck> checkConsistency(@Nonnull StorageUnit unit, boolean checksumValidation) {

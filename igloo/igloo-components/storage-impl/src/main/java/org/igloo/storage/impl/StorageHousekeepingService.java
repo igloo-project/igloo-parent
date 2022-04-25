@@ -109,14 +109,23 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 		}
 	}
 
+	@Override
+	public void cleaning() {
+		try {
+			doExclusiveJob(this::cleanInvalidated, "Cleaning invalidated");
+			checkInterruption();
+			doExclusiveJob(this::cleanTransient, "Cleaning transient");
+		} catch (Interruption e) {
+			LOGGER.warn("Cleaning job gracefully interrupted.");
+		}
+	}
+
 	private void doExclusiveJob(Runnable runnable, Object jobName) {
 		boolean acquire = false;
 		try {
 			acquire = jobSemaphore.tryAcquire(30, TimeUnit.MINUTES);
 			if (acquire) {
 				runnable.run();
-				checkConsistency(defaultCheckDelay, defaultCheckChecksumDelay);
-				splitStorageUnits();
 			} else {
 				LOGGER.error("Job {} skipped as another job is using exclusive lock. Aborted after a 30 minutes wait. Please check job scheduling.", jobName);
 			}
@@ -126,17 +135,6 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 			if (acquire) {
 				jobSemaphore.release();
 			}
-		}
-	}
-
-	@Override
-	public void cleaning() {
-		try {
-			doExclusiveJob(this::cleanInvalidated, "Cleaning invalidated");
-			checkInterruption();
-			doExclusiveJob(this::cleanTransient, "Cleaning transient");
-		} catch (Interruption e) {
-			LOGGER.warn("Cleaning job gracefully interrupted.");
 		}
 	}
 
@@ -169,11 +167,15 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 
 	/**
 	 * Create automatically a new {@link StorageUnit} for overflowing and auto-creation enabled {@link StorageUnit}
-	 * 
-	 * TODO: add @see
 	 */
 	public void splitStorageUnits() {
-		
+		List<StorageUnit> storageUnits = readOnlyTransaction.execute(t -> databaseOperations.listStorageUnitsToSplit());
+		checkInterruption();
+		for (StorageUnit storageUnit : storageUnits) {
+			LOGGER.info("Splitting StorageUnit {}", storageUnit);
+			storageService.splitStorageUnit(storageUnit);
+			checkInterruption();
+		}
 	}
 
 	public StorageUnitCheckType checkConsistencyType(StorageUnit unit, Duration defaultCheckDelay,

@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.atIndex;
+import static org.assertj.core.api.Assertions.byLessThan;
 import static test.StorageAssertions.assertThat;
 
 import java.math.BigInteger;
@@ -1231,7 +1232,7 @@ class TestDatabaseOperations extends AbstractTest {
 	@Test
 	void testFichierCreatedBy(EntityManagerFactory entityManagerFactory) {
 		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
-		Fichier fichier = createFichier(entityManagerFactory, unit, 1l, FichierStatus.ALIVE, FichierType1.CONTENT1, LongEntityReference.of(GenericEntity.class, 1l), LocalDateTime.now());
+		Fichier fichier = createFichier(entityManagerFactory, unit, 1l, FichierStatus.ALIVE, FichierType1.CONTENT1, LongEntityReference.of(GenericEntity.class, 1l), LocalDateTime.now(), 25l);
 		doInReadTransactionEntityManager(entityManagerFactory, em -> {
 			List<Tuple> result = em.createNativeQuery("SELECT createdby_type, createdby_id FROM Fichier;", Tuple.class).getResultList();
 			assertThat(result).hasSize(1);
@@ -1288,6 +1289,109 @@ class TestDatabaseOperations extends AbstractTest {
 			assertThat(em.createQuery("SELECT f FROM Fichier f", Fichier.class).getResultList()).hasSize(1).containsExactly(fichier2);
 			return null;
 		});
+	}
+
+	@Test
+	void testListStorageUnitsToSplit(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		createFichier(entityManagerFactory, unit, 2l, FichierStatus.ALIVE);
+		doInReadTransaction(entityManagerFactory, () -> {
+			assertThat(databaseOperations.listStorageUnitsToSplit()).isEmpty();
+			return null;
+		});
+	}
+
+	@Test
+	void testListStorageUnitsToSplitNoSizeOverflow(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE, LocalDateTime.now(), null, 26000l);
+		createFichier(entityManagerFactory, unit, 2l, FichierStatus.ALIVE, 25000l);
+		doInReadTransaction(entityManagerFactory, () -> {
+			assertThat(databaseOperations.listStorageUnitsToSplit()).isEmpty();
+			return null;
+		});
+	}
+
+	@Test
+	void testListStorageUnitsToSplitSizeOverflow(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE, LocalDateTime.now(), null, 24000l);
+		createFichier(entityManagerFactory, unit, 2l, FichierStatus.ALIVE, 25000l);
+		doInReadTransaction(entityManagerFactory, () -> {
+			assertThat(databaseOperations.listStorageUnitsToSplit()).hasSize(1);
+			return null;
+		});
+	}
+
+	@Test
+	void testListStorageUnitsToSplitDurationNoOverflow(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE, LocalDateTime.now().minusDays(3), Duration.ofDays(3).plusMinutes(1), null);
+		createFichier(entityManagerFactory, unit, 2l, FichierStatus.ALIVE, 25000l);
+		doInReadTransaction(entityManagerFactory, () -> {
+			assertThat(databaseOperations.listStorageUnitsToSplit()).isEmpty();
+			return null;
+		});
+	}
+
+	@Test
+	void testListStorageUnitsToSplitDurationOverflow(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE, LocalDateTime.now().minusDays(3), Duration.ofDays(3).minusMinutes(1), null);
+		createFichier(entityManagerFactory, unit, 2l, FichierStatus.ALIVE, 25000l);
+		doInReadTransaction(entityManagerFactory, () -> {
+			assertThat(databaseOperations.listStorageUnitsToSplit()).hasSize(1);
+			return null;
+		});
+	}
+
+	@Test
+	void testListStorageUnitsToSplit_durationOverflow_sizeNoOverflow(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE, LocalDateTime.now().minusDays(3), Duration.ofDays(3).minusMinutes(1), 26000l);
+		createFichier(entityManagerFactory, unit, 2l, FichierStatus.ALIVE, 25000l);
+		doInReadTransaction(entityManagerFactory, () -> {
+			assertThat(databaseOperations.listStorageUnitsToSplit()).hasSize(1);
+			return null;
+		});
+	}
+
+	@Test
+	void testListStorageUnitsToSplit_bothDurationSizeOverflow(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE, LocalDateTime.now().minusDays(3), Duration.ofDays(3).minusMinutes(1), 24000l);
+		createFichier(entityManagerFactory, unit, 2l, FichierStatus.ALIVE, 25000l);
+		doInReadTransaction(entityManagerFactory, () -> {
+			assertThat(databaseOperations.listStorageUnitsToSplit()).hasSize(1);
+			return null;
+		});
+	}
+
+	@Test
+	void testSplitStorageUnit(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE,
+				LocalDateTime.now().minusDays(3), Duration.ofDays(3).minusMinutes(1), 25000l,
+				Duration.ofMinutes(10), Duration.ofMinutes(15), StorageUnitCheckType.LISTING_SIZE);
+		StorageUnit newUnit = doInWriteTransaction(entityManagerFactory, () -> {
+			return databaseOperations.splitStorageUnit(unit, 2l, "path2");
+		});
+		assertThat(newUnit.getCheckChecksumDelay()).isEqualTo(unit.getCheckChecksumDelay());
+		assertThat(newUnit.getCheckDelay()).isEqualTo(unit.getCheckDelay());
+		assertThat(newUnit.getCheckType()).isEqualTo(unit.getCheckType());
+		assertThat(newUnit.getPath()).isNotEqualTo(unit.getPath()).isNotNull();
+		assertThat(newUnit.getId()).isEqualTo(2l);
+		assertThat(newUnit.getSplitDuration()).isEqualTo(unit.getSplitDuration());
+		assertThat(newUnit.getSplitSize()).isEqualTo(unit.getSplitSize());
+		assertThat(newUnit.getStatus()).isEqualTo(StorageUnitStatus.ALIVE);
+		assertThat(newUnit.getCreationDate()).isCloseTo(LocalDateTime.now(), byLessThan(1, ChronoUnit.MINUTES));
+		assertThat(newUnit.getCheckChecksumDelay()).isEqualTo(unit.getCheckChecksumDelay());
+		assertThat(newUnit.getCheckChecksumDelay()).isEqualTo(unit.getCheckChecksumDelay());
+		StorageUnit old = doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			return em.find(StorageUnit.class, 1l);
+		});
+		assertThat(old.getStatus()).isEqualTo(StorageUnitStatus.ARCHIVED);
+	}
+
+	@Test
+	void testSplitStorageUnitWrongStatus(EntityManagerFactory entityManagerFactory) {
+		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ARCHIVED);
+		assertThatCode(() -> doInWriteTransaction(entityManagerFactory, () -> {
+			return databaseOperations.splitStorageUnit(unit, 2l, "path2");
+		})).isInstanceOf(IllegalStateException.class).hasMessageContaining("Original status").hasMessageContaining("unexpected");
 	}
 
 	private List<StorageCheckStatistic> getStorageCheckStatistics(EntityManagerFactory entityManagerFactory) {
@@ -1357,23 +1461,27 @@ class TestDatabaseOperations extends AbstractTest {
 		});
 	}
 
+	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, Long fileSize) {
+		return createFichier(entityManagerFactory, storageUnit, id, status, FichierType1.CONTENT1, (LongEntityReference) null, LocalDateTime.now(), fileSize);
+	}
+
 	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status) {
 		return createFichier(entityManagerFactory, storageUnit, id, status, (LongEntityReference) null);
 	}
 
 	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, LocalDateTime creationDate) {
-		return createFichier(entityManagerFactory, storageUnit, id, status, FichierType1.CONTENT1, null, creationDate);
+		return createFichier(entityManagerFactory, storageUnit, id, status, FichierType1.CONTENT1, null, creationDate, 25l);
 	}
 
 	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, LongEntityReference author) {
-		return createFichier(entityManagerFactory, storageUnit, id, status, FichierType1.CONTENT1, author, LocalDateTime.now());
+		return createFichier(entityManagerFactory, storageUnit, id, status, FichierType1.CONTENT1, author, LocalDateTime.now(), 25l);
 	}
 
 	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, IFichierType type) {
-		return createFichier(entityManagerFactory, storageUnit, id, status, type, null, LocalDateTime.now());
+		return createFichier(entityManagerFactory, storageUnit, id, status, type, null, LocalDateTime.now(), 25l);
 	}
 
-	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, IFichierType type, LongEntityReference author, LocalDateTime creationDate) {
+	private Fichier createFichier(EntityManagerFactory entityManagerFactory, StorageUnit storageUnit, long id, FichierStatus status, IFichierType type, LongEntityReference author, LocalDateTime creationDate, long fileSize) {
 		return doInWriteTransactionEntityManager(entityManagerFactory, (em) -> {
 			Fichier fichier = new Fichier();
 			fichier.setId(id);
@@ -1383,7 +1491,7 @@ class TestDatabaseOperations extends AbstractTest {
 			fichier.setStorageUnit(em.find(StorageUnit.class, storageUnit.getId()));
 			fichier.setRelativePath(String.format("/relative-path-%d", id));
 			fichier.setFilename("filename");
-			fichier.setSize(25l);
+			fichier.setSize(fileSize);
 			fichier.setChecksum("123");
 			fichier.setMimetype("application/octet-stream");
 			fichier.setChecksumType(ChecksumType.SHA_256);
@@ -1395,6 +1503,15 @@ class TestDatabaseOperations extends AbstractTest {
 	}
 
 	private StorageUnit createStorageUnit(EntityManagerFactory entityManagerFactory, long id, StorageUnitType type, StorageUnitStatus status) {
+		return createStorageUnit(entityManagerFactory, id, type, status, LocalDateTime.now(), null, null);
+	}
+
+	private StorageUnit createStorageUnit(EntityManagerFactory entityManagerFactory, long id, StorageUnitType type, StorageUnitStatus status, LocalDateTime creationDate, Duration splitDuration, Long splitSize) {
+		return createStorageUnit(entityManagerFactory, id, type, status, creationDate, splitDuration, splitSize, null, null, StorageUnitCheckType.NONE);
+	}
+
+	private StorageUnit createStorageUnit(EntityManagerFactory entityManagerFactory, long id, StorageUnitType type, StorageUnitStatus status, LocalDateTime creationDate, Duration splitDuration, Long splitSize,
+			Duration checkDelay, Duration checkChecksumDelay, StorageUnitCheckType checkType) {
 		return doInWriteTransactionEntityManager(entityManagerFactory, (em) -> {
 			StorageUnit storageUnit;
 			storageUnit = new StorageUnit();
@@ -1402,7 +1519,12 @@ class TestDatabaseOperations extends AbstractTest {
 			storageUnit.setType(type);
 			storageUnit.setPath(String.format("/test%d", id));
 			storageUnit.setStatus(status);
-			storageUnit.setCreationDate(LocalDateTime.now());
+			storageUnit.setCreationDate(creationDate);
+			storageUnit.setSplitDuration(splitDuration);
+			storageUnit.setSplitSize(splitSize);
+			storageUnit.setCheckChecksumDelay(checkChecksumDelay);
+			storageUnit.setCheckDelay(checkDelay);
+			storageUnit.setCheckType(checkType);
 			em.persist(storageUnit);
 			return storageUnit;
 		});

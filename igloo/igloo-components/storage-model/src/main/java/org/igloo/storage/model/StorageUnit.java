@@ -86,6 +86,22 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 	@Basic(optional = true)
 	private Duration checkChecksumDelay;
 
+	/**
+	 * Split condition, by total file size, before a storage unit split. New storage unit inherits all settings.
+	 * 
+	 * If null, file size does not trigger storage unit split.
+	 */
+	@Basic(optional = true)
+	private Long splitSize;
+
+	/**
+	 * Split condition, by duration, before a storage unit split. New storage unit inherits all settings.
+	 * 
+	 * If null, storage unit age does not trigger storage unit split.
+	 */
+	@Basic(optional = true)
+	private Duration splitDuration;
+
 	@Override
 	public Long getId() {
 		return id;
@@ -166,6 +182,22 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 
 	public void setCheckChecksumDelay(Duration checkChecksumDelay) {
 		this.checkChecksumDelay = checkChecksumDelay;
+	}
+
+	public synchronized Long getSplitSize() {
+		return splitSize;
+	}
+
+	public synchronized void setSplitSize(Long splitSize) {
+		this.splitSize = splitSize;
+	}
+
+	public synchronized Duration getSplitDuration() {
+		return splitDuration;
+	}
+
+	public synchronized void setSplitDuration(Duration splitDuration) {
+		this.splitDuration = splitDuration;
 	}
 
 }
