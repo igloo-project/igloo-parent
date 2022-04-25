@@ -147,7 +147,8 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 		return type;
 	}
 
-	public <T> T getType(Class<T> clazz) {
+	@SuppressWarnings("unchecked")
+	public <T> T getType(Class<T> clazz) { //NOSONAR clazz unused by needed for generatic typing
 		return (T) getType();
 	}
 
