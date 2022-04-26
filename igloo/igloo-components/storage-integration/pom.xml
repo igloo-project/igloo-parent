@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.iglooproject.components</groupId>
+		<artifactId>igloo-components</artifactId>
+		<version>3.6.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>storage-integration</artifactId>
+	
+	<name>Storage Spring integration</name>
+	
+	<properties>
+		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor</igloo.processors>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>storage-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-spring</artifactId>
+			<version>${project.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<!-- package scan provider -->
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa</artifactId>
+			<version>${project.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>annotations</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-hibernate</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-spring</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-quality-annotations</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>

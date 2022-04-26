@@ -68,6 +68,7 @@
 		<module>storage-impl</module>
 		<module>storage-model</module>
 		<module>storage-micrometer</module>
+		<module>storage-integration</module>
 		
 		<module>igloo-monitoring-page</module>
 		
