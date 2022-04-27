@@ -65,6 +65,8 @@ public interface IStorageService {
 	 */
 	void removeFichier(@Nonnull Fichier fichier);
 
+	Fichier getFichierById(@Nonnull Long id);
+
 	/**
 	 * Get file associated to {@link Fichier}
 	 * 

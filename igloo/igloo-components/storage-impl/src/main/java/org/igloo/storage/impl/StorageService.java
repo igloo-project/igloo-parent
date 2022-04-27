@@ -145,6 +145,11 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 	}
 
 	@Override
+	public Fichier getFichierById(@Nonnull Long id) {
+		return databaseOperations.getFichierById(id);
+	}
+
+	@Override
 	@Nonnull
 	public File getFile(@Nonnull Fichier fichier) throws FileNotFoundException {
 		// TODO : gérer file manquant

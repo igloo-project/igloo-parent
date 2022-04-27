@@ -98,6 +98,12 @@ public class DatabaseOperations implements IStorageStatisticsService {
 		failureStatusType = entityManagerFactory.unwrap(SessionFactory.class).getTypeHelper().custom(EnumType.class, failureStatusTypeProperties);
 	}
 
+	public Fichier getFichierById(Long id) {
+		return entityManager().createQuery("SELECT f from Fichier f where f.id = :id", Fichier.class)
+			.setParameter("id", id)
+			.getSingleResult();
+	}
+
 	public Fichier getAttachedFichier(Fichier fichier) {
 		if (entityManager().contains(fichier)) {
 			return fichier;
