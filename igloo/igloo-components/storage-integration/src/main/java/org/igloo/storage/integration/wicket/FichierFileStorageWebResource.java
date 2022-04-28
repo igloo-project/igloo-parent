@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.ContentDisposition;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -15,8 +16,11 @@ import org.igloo.storage.model.FichierBinding;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.model.CorePermissionConstants;
+import org.iglooproject.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
+import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IResourceLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
+import org.iglooproject.wicket.more.link.descriptor.builder.state.main.IOneMappableParameterMainState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
@@ -31,6 +35,26 @@ public class FichierFileStorageWebResource extends AbstractFichierStoreWebResour
 	@SpringBean
 	private IStorageService storageService;
 
+	private static final ResourceReference REFERENCE_ATTACHMENT = new ResourceReference(
+		FichierFileStorageWebResource.class,
+		"FichierAttachmmentFileStoreWebResource"
+	) {
+		private static final long serialVersionUID = 1L;
+		@Override
+		public IResource getResource() {
+			FichierFileStorageWebResource resource = new FichierFileStorageWebResource();
+			resource.setContentDisposition(ContentDisposition.ATTACHMENT);
+			return resource;
+		}
+	};
+
+	private static final IOneMappableParameterMainState<Fichier, IPageLinkDescriptor, IResourceLinkDescriptor, IImageResourceLinkDescriptor> MAPPER_BUILDER =
+		LinkDescriptorBuilder.start()
+			.model(Fichier.class)
+			.map(CommonParameters.ID).mandatory()
+			.permission(CorePermissionConstants.READ)
+			.renderInUrl(CommonParameters.TIMESTAMP, FICHIER.creationDate()).optional();
+
 	private static final ResourceReference REFERENCE = new ResourceReference(
 			FichierFileStorageWebResource.class, "FichierFileStorageWebResource") {
 		private static final long serialVersionUID = 1L;
@@ -40,13 +64,14 @@ public class FichierFileStorageWebResource extends AbstractFichierStoreWebResour
 			return new FichierFileStorageWebResource();
 		}
 	};
-	
-	public static final IOneParameterLinkDescriptorMapper<IResourceLinkDescriptor, Fichier> MAPPER = LinkDescriptorBuilder.start()
-		.model(Fichier.class)
-		.map(CommonParameters.ID).mandatory()
-		.permission(CorePermissionConstants.READ)
-		.renderInUrl(CommonParameters.TIMESTAMP, FICHIER.creationDate()).optional()
-		.resource(REFERENCE);
+
+	public static final IOneParameterLinkDescriptorMapper<IResourceLinkDescriptor, Fichier> MAPPER =
+		MAPPER_BUILDER
+			.resource(REFERENCE);
+
+	public static final IOneParameterLinkDescriptorMapper<IImageResourceLinkDescriptor, Fichier> MAPPER_ATTACHMENT =
+		MAPPER_BUILDER
+			.imageResource(REFERENCE_ATTACHMENT);
 	
 	@Override
 	protected FichierStoreResourceStream getFileStoreResourceStream(PageParameters parameters) throws ServiceException,
@@ -70,5 +95,9 @@ public class FichierFileStorageWebResource extends AbstractFichierStoreWebResour
 
 	public static final ResourceReference get() {
 		return REFERENCE;
+	}
+
+	public static final ResourceReference attachment() {
+		return REFERENCE_ATTACHMENT;
 	}
 }

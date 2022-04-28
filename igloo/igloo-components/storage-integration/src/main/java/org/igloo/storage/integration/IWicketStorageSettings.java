@@ -4,4 +4,6 @@ public interface IWicketStorageSettings {
 
 	String getMountPath();
 
+	String getDownloadMountPath();
+
 }

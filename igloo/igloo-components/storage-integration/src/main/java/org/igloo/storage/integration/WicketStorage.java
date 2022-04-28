@@ -27,6 +27,7 @@ public class WicketStorage {
 		if (existingSettings == null) {
 			app.setMetaData(STORAGE_SETTINGS_METADATA_KEY, settings);
 			app.mountResource(settings.getMountPath(), FichierFileStorageWebResource.get());
+			app.mountResource(settings.getDownloadMountPath(), FichierFileStorageWebResource.attachment());
 			LOGGER.info("initialize wicket storage with given settings: {}", settings);
 		}
 	}
