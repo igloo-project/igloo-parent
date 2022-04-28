@@ -12,7 +12,7 @@
 	<name>Igloo - Component - Wicket - Bootstrap 4</name>
 	
 	<properties>
-		<igloo.processors>${igloo.processor.spring},${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>${igloo.processor.bindgen}</igloo.processors>
 		<processor.test.skip>true</processor.test.skip>
 	</properties>
 
@@ -35,12 +35,6 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-export</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-indexer</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		
 		<!-- WiQuery -->

@@ -12,21 +12,12 @@
 	
 	<name>Igloo - Component - Rest with Jersey 2</name>
 	
-	<properties>
-		<igloo.processors>${igloo.processor.spring}</igloo.processors>
-	</properties>
-	
 	<dependencies>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-jpa</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-indexer</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		
 		<!-- Rest/Jersey -->
@@ -157,15 +148,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.bsc.maven</groupId>
-				<artifactId>maven-processor-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 	<dependencyManagement>
 		<dependencies>

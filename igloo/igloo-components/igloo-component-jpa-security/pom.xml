@@ -13,7 +13,7 @@
 	<name>Igloo - Component - JPA - Spring Security support</name>
 
 	<properties>
-		<igloo.processors>${igloo.processor.spring},${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>
@@ -26,10 +26,6 @@
 			<version>${project.version}</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-indexer</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>

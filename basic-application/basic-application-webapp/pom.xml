@@ -15,7 +15,7 @@
 	<name>${archetypeFullApplicationName} - Web Application</name>
 	
 	<properties>
-		<igloo.processors>${igloo.processor.spring},${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 	
 	<dependencies>
@@ -24,11 +24,6 @@
 			<groupId>org.iglooproject.archetype</groupId>
 			<artifactId>basic-application-core</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-indexer</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		
 		<!-- Igloo -->

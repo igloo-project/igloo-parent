@@ -13,7 +13,7 @@
 	<name>Igloo - Component - JPA - More JPA fun - Test</name>
 
 	<properties>
-		<igloo.processors>${igloo.processor.spring},${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>
@@ -35,11 +35,6 @@
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
 			<classifier>jpa</classifier>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-indexer</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		
