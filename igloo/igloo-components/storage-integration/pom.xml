@@ -36,6 +36,35 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-core</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-ioc</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- resource reference link permission check -->
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa-security</artifactId>
+			<version>${project.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<!-- resource reference link API -->
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-more</artifactId>
+			<version>${project.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
 		</dependency>
@@ -77,6 +106,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-spring</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-wicket</artifactId>
 				<type>pom</type>
 				<scope>import</scope>
 				<version>${igloo-maven.version}</version>
