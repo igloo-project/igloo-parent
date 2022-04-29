@@ -216,7 +216,7 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 				}
 				
 				if (propertyService.get(StoragePropertyIds.JOB_HOUSEKEEPING_CRON) != null) {
-					registerTask(registry, JOB_HOUSEKEEPING_CRON, "storageHousekeepingRegistrar", this::cleaning);
+					registerTask(registry, JOB_HOUSEKEEPING_CRON, "storageHousekeepingRegistrar", this::housekeeping);
 				} else {
 					LOGGER.warn("Storage housekeeping job disabled by explicit configuration (check {})", JOB_HOUSEKEEPING_CRON.getKey());
 				}
