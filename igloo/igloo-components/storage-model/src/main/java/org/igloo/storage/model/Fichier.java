@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -21,11 +22,15 @@ import org.igloo.storage.model.hibernate.StorageHibernateConstants;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.LongEntityReference;
 
+import de.danielbechler.diff.introspection.ObjectDiffEqualsOnlyType;
+
 /**
  * Entity that represents a stored file. {@link Fichier} are dispatched in {@link StorageUnit}.
  */
 @Entity
 @Bindable
+@Cacheable
+@ObjectDiffEqualsOnlyType
 public class Fichier extends GenericEntity<Long, Fichier> {
 
 	private static final long serialVersionUID = 2683095626872762980L;
