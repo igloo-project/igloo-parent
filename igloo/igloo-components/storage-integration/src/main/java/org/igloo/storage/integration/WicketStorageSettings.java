@@ -14,8 +14,8 @@ public class WicketStorageSettings implements IWicketStorageSettings {
 	/**
 	 * @param mountPath The path to use to mount resource; it is advised to include {@link CommonParameters#ID}
 	 *                  parameter in your path.
-	 * @param mountPath The path to use to download resource; it is advised to include {@link CommonParameters#ID}
-	 *                  parameter in your path.
+	 * @param downloadMountPath The path to use to download (Content-Disposition: Attachment) resource; it is advised to
+	 *                  include {@link CommonParameters#ID} parameter in your path.
 	 */
 	public WicketStorageSettings(String mountPath, String downloadMountPath) {
 		this.mountPath = mountPath;

@@ -7,9 +7,9 @@ import static org.igloo.storage.integration.StoragePropertyIds.JOB_CHECK_DEFAULT
 import static org.igloo.storage.integration.StoragePropertyIds.JOB_CLEANING_CRON;
 import static org.igloo.storage.integration.StoragePropertyIds.JOB_CLEAN_LIMIT;
 import static org.igloo.storage.integration.StoragePropertyIds.JOB_CLEAN_TRANSIENT_DELAY;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_DISABLED;
 import static org.igloo.storage.integration.StoragePropertyIds.JOB_HOUSEKEEPING_CRON;
 import static org.igloo.storage.integration.StoragePropertyIds.PATH;
-import static org.igloo.storage.integration.StoragePropertyIds.JOB_DISABLED;
 import static org.igloo.storage.integration.StoragePropertyIds.STORAGE_UNIT_TYPE_CANDIDATES;
 import static org.igloo.storage.integration.StoragePropertyIds.TRANSACTION_SYNCHRONIZATION_ORDER;
 
@@ -36,16 +36,22 @@ import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.property.model.ImmutablePropertyId;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -104,8 +110,8 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public IStorageScheduling storageScheduling(IStorageHousekeepingService storageHousekeepingService, TaskScheduler taskScheduler, IPropertyService propertyService) {
-		return new DefaultStorageScheduling(storageHousekeepingService, taskScheduler, propertyService);
+	public IStorageScheduling storageScheduling(IStorageHousekeepingService storageHousekeepingService, IPropertyService propertyService) {
+		return new DefaultStorageScheduling(storageHousekeepingService, propertyService);
 	}
 
 	@Override
@@ -174,26 +180,13 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 		}
 	}
 
-	public static class DefaultStorageScheduling implements IStorageScheduling {
+	public static class DefaultStorageScheduling implements IStorageScheduling, BeanDefinitionRegistryPostProcessor {
 		private final IStorageHousekeepingService storageHousekeepingService;
+		private final IPropertyService propertyService;
 		
-		public DefaultStorageScheduling(IStorageHousekeepingService housekeepingService, TaskScheduler taskScheduler, IPropertyService propertyService) {
+		public DefaultStorageScheduling(IStorageHousekeepingService housekeepingService, IPropertyService propertyService) {
 			this.storageHousekeepingService = housekeepingService;
-			if (!Boolean.TRUE.equals(propertyService.get(JOB_DISABLED))) {
-				LOGGER.warn("Storage jobs disabled by configuration (check {})", JOB_DISABLED.getKey());
-			} else {
-				if (propertyService.get(StoragePropertyIds.JOB_CLEANING_CRON) != null) {
-					taskScheduler.schedule(this::cleaning, new CronTrigger(propertyService.getAsString(JOB_CLEANING_CRON)));
-				} else {
-					LOGGER.warn("Storage cleaning job disabled by explicit configuration (check {})", JOB_CLEANING_CRON.getKey());
-				}
-				
-				if (propertyService.get(StoragePropertyIds.JOB_HOUSEKEEPING_CRON) != null) {
-					taskScheduler.schedule(this::cleaning, new CronTrigger(propertyService.getAsString(JOB_HOUSEKEEPING_CRON)));
-				} else {
-					LOGGER.warn("Storage housekeeping job disabled by explicit configuration (check {})", JOB_HOUSEKEEPING_CRON.getKey());
-				}
-			}
+			this.propertyService = propertyService;
 		}
 
 		@Override
@@ -204,6 +197,36 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 		@Override
 		public void housekeeping() {
 			storageHousekeepingService.housekeeping();
+		}
+
+		@Override
+		public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+			
+		}
+
+		@Override
+		public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+			if (!Boolean.TRUE.equals(propertyService.get(JOB_DISABLED))) {
+				LOGGER.warn("Storage jobs disabled by configuration (check {})", JOB_DISABLED.getKey());
+			} else {
+				if (propertyService.get(StoragePropertyIds.JOB_CLEANING_CRON) != null) {
+					registerTask(registry, JOB_CLEANING_CRON, "storageCleaningRegistrar", this::cleaning);
+				} else {
+					LOGGER.warn("Storage cleaning job disabled by explicit configuration (check {})", JOB_CLEANING_CRON.getKey());
+				}
+				
+				if (propertyService.get(StoragePropertyIds.JOB_HOUSEKEEPING_CRON) != null) {
+					registerTask(registry, JOB_HOUSEKEEPING_CRON, "storageHousekeepingRegistrar", this::cleaning);
+				} else {
+					LOGGER.warn("Storage housekeeping job disabled by explicit configuration (check {})", JOB_HOUSEKEEPING_CRON.getKey());
+				}
+			}
+		}
+
+		private void registerTask(BeanDefinitionRegistry registry, ImmutablePropertyId<CronTrigger> cronPropertyId, String registrarBeanName, Runnable task) {
+			ScheduledTaskRegistrar scheduledTaskRegistrar = new ScheduledTaskRegistrar();
+			scheduledTaskRegistrar.addCronTask(task, propertyService.getAsString(cronPropertyId));
+			registry.registerBeanDefinition(registrarBeanName, new RootBeanDefinition(ScheduledTaskRegistrar.class, () -> scheduledTaskRegistrar));
 		}
 	}
 
