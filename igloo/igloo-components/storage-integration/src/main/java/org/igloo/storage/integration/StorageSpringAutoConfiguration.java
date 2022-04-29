@@ -66,7 +66,7 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 				databaseOperations,
 				propertyService.get(STORAGE_UNIT_TYPE_CANDIDATES),
 				new StorageOperations(),
-				() -> Path.of(propertyService.get(StoragePropertyIds.PATH)),
+				() -> Path.of(propertyService.get(PATH)),
 				mimetypeResolver);
 	}
 
@@ -100,7 +100,7 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 		registry.registerString(PATH);
 		registry.registerString(DB_FICHIER_SEQUENCE_NAME, "fichier_id_seq");
 		registry.registerString(DB_STORAGE_UNIT_SEQUENCE_NAME, "storageUnit_id_seq");
-		registry.registerBoolean(StoragePropertyIds.JOB_DISABLED, false);
+		registry.registerBoolean(JOB_DISABLED, false);
 		registry.register(JOB_CLEANING_CRON, s -> cronTrigger(s, "0 0 22 * * ?"));
 		registry.registerBoolean(JOB_CLEANING_INVALIDATED_DISABLED, false);
 		registry.registerBoolean(JOB_CLEANING_TRANSIENT_DISABLED, false);
@@ -163,16 +163,16 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 			if (Boolean.TRUE.equals(propertyService.get(JOB_DISABLED))) {
 				LOGGER.warn("Storage jobs disabled by configuration (check {})", JOB_DISABLED.getKey());
 			} else {
-				if (propertyService.get(StoragePropertyIds.JOB_CLEANING_CRON) != null) {
+				if (propertyService.get(JOB_CLEANING_CRON) != null) {
 					registerTask(
 							propertyService,
 							scheduledTaskRegistrar, JOB_CLEANING_CRON,
-							() -> housekeepingService.cleaning(propertyService.get(StoragePropertyIds.JOB_CLEANING_INVALIDATED_DISABLED), propertyService.get(StoragePropertyIds.JOB_CLEANING_TRANSIENT_DISABLED)));
+							() -> housekeepingService.cleaning(propertyService.get(JOB_CLEANING_INVALIDATED_DISABLED), propertyService.get(JOB_CLEANING_TRANSIENT_DISABLED)));
 				} else {
 					LOGGER.warn("Storage cleaning job disabled by explicit configuration (check {})", JOB_CLEANING_CRON.getKey());
 				}
 				
-				if (propertyService.get(StoragePropertyIds.JOB_HOUSEKEEPING_CRON) != null) {
+				if (propertyService.get(JOB_HOUSEKEEPING_CRON) != null) {
 					registerTask(propertyService, scheduledTaskRegistrar, JOB_HOUSEKEEPING_CRON, housekeepingService::housekeeping);
 				} else {
 					LOGGER.warn("Storage housekeeping job disabled by explicit configuration (check {})", JOB_HOUSEKEEPING_CRON.getKey());
