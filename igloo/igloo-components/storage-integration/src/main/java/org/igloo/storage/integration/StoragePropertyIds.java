@@ -17,6 +17,8 @@ public class StoragePropertyIds extends AbstractPropertyIds {
 	public static final ImmutablePropertyId<Set<IStorageUnitType>> STORAGE_UNIT_TYPE_CANDIDATES = immutable("storage.storageUnitTypeCandidates");
 	public static final ImmutablePropertyId<Boolean> JOB_DISABLED = immutable("storage.job.disabled");
 	public static final ImmutablePropertyId<CronTrigger> JOB_CLEANING_CRON = immutable("storage.job.cleaning.cron");
+	public static final ImmutablePropertyId<Boolean> JOB_CLEANING_TRANSIENT_DISABLED = immutable("storage.job.cleaningTransient.disabled");
+	public static final ImmutablePropertyId<Boolean> JOB_CLEANING_INVALIDATED_DISABLED = immutable("storage.job.cleaningInvalidated.disabled");
 	public static final ImmutablePropertyId<CronTrigger> JOB_HOUSEKEEPING_CRON = immutable("storage.job.housekeeping.cron");
 	public static final ImmutablePropertyId<Duration> JOB_CHECK_DEFAULT_DELAY = immutable("storage.job.check.defaultDelay");
 	public static final ImmutablePropertyId<Duration> JOB_CHECK_CHECKSUM_DEFAULT_DELAY = immutable("storage.job.checkChecksum.defaultDelay");

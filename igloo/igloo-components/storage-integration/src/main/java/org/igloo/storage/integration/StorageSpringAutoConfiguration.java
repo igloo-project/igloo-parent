@@ -1,17 +1,6 @@
 package org.igloo.storage.integration;
 
-import static org.igloo.storage.integration.StoragePropertyIds.DB_FICHIER_SEQUENCE_NAME;
-import static org.igloo.storage.integration.StoragePropertyIds.DB_STORAGE_UNIT_SEQUENCE_NAME;
-import static org.igloo.storage.integration.StoragePropertyIds.JOB_CHECK_CHECKSUM_DEFAULT_DELAY;
-import static org.igloo.storage.integration.StoragePropertyIds.JOB_CHECK_DEFAULT_DELAY;
-import static org.igloo.storage.integration.StoragePropertyIds.JOB_CLEANING_CRON;
-import static org.igloo.storage.integration.StoragePropertyIds.JOB_CLEAN_LIMIT;
-import static org.igloo.storage.integration.StoragePropertyIds.JOB_CLEAN_TRANSIENT_DELAY;
-import static org.igloo.storage.integration.StoragePropertyIds.JOB_DISABLED;
-import static org.igloo.storage.integration.StoragePropertyIds.JOB_HOUSEKEEPING_CRON;
-import static org.igloo.storage.integration.StoragePropertyIds.PATH;
-import static org.igloo.storage.integration.StoragePropertyIds.STORAGE_UNIT_TYPE_CANDIDATES;
-import static org.igloo.storage.integration.StoragePropertyIds.TRANSACTION_SYNCHRONIZATION_ORDER;
+import static org.igloo.storage.integration.StoragePropertyIds.*;
 
 import java.nio.file.Path;
 import java.time.Duration;
@@ -113,6 +102,8 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 		registry.registerString(DB_STORAGE_UNIT_SEQUENCE_NAME, "storageUnit_id_seq");
 		registry.registerBoolean(StoragePropertyIds.JOB_DISABLED, false);
 		registry.register(JOB_CLEANING_CRON, s -> cronTrigger(s, "0 0 22 * * ?"));
+		registry.registerBoolean(JOB_CLEANING_INVALIDATED_DISABLED, false);
+		registry.registerBoolean(JOB_CLEANING_TRANSIENT_DISABLED, false);
 		registry.register(JOB_HOUSEKEEPING_CRON, s -> cronTrigger(s, "0 0 23 * * ?"));
 		// retrieve enum values from a ',' separated list. Each item can be an enum type OR a enum value
 		// enum value must be written package.enumType.ENUM_VALUE
@@ -146,20 +137,11 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 	}
 
 	private static CronTrigger cronTrigger(String value, String defaultCron) {
-		// null/empty -> default value
-		// disabled -> null
-		// else CronTrigger
-		if (value == null) {
-			return new CronTrigger(defaultCron);
-		} else if ("disabled".equalsIgnoreCase(value)) {
-			return null;
-		} else {
-			return new CronTrigger(value);
-		}
+		return Optional.ofNullable(value).filter(Predicate.not(Strings::isNullOrEmpty)).map(CronTrigger::new).orElseGet(() -> new CronTrigger(defaultCron));
 	}
 
-	private static Duration extractDuration(String s, Duration defaultValue) {
-		return Optional.ofNullable(s).filter(Predicate.not(Strings::isNullOrEmpty)).map(Duration::parse).orElse(defaultValue);
+	private static Duration extractDuration(String value, Duration defaultValue) {
+		return Optional.ofNullable(value).filter(Predicate.not(Strings::isNullOrEmpty)).map(Duration::parse).orElse(defaultValue);
 	}
 
 	private Set<IStorageUnitType> resolveIStorageUnitType(String className) throws ClassNotFoundException {
@@ -182,7 +164,10 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 				LOGGER.warn("Storage jobs disabled by configuration (check {})", JOB_DISABLED.getKey());
 			} else {
 				if (propertyService.get(StoragePropertyIds.JOB_CLEANING_CRON) != null) {
-					registerTask(propertyService, scheduledTaskRegistrar, JOB_CLEANING_CRON, housekeepingService::cleaning);
+					registerTask(
+							propertyService,
+							scheduledTaskRegistrar, JOB_CLEANING_CRON,
+							() -> housekeepingService.cleaning(propertyService.get(StoragePropertyIds.JOB_CLEANING_INVALIDATED_DISABLED), propertyService.get(StoragePropertyIds.JOB_CLEANING_TRANSIENT_DISABLED)));
 				} else {
 					LOGGER.warn("Storage cleaning job disabled by explicit configuration (check {})", JOB_CLEANING_CRON.getKey());
 				}

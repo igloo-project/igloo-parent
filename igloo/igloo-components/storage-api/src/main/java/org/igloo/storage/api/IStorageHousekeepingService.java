@@ -16,7 +16,10 @@ public interface IStorageHousekeepingService {
 	/**
 	 * Clean invalidated and transient {@link Fichier}. All invalidated {@link Fichier} are eligible for removal.
 	 * Transient {@link Fichier} are removed after a grace period.
+	 * 
+	 * @param cleaningInvalidatedDisabled skip cleaning of invalidated files
+	 * @param cleaningTransientDisabled skip cleaning of transient files
 	 */
-	void cleaning();
+	void cleaning(boolean cleaningInvalidatedDisabled, boolean cleaningTransientDisabled);
 
 }

@@ -110,11 +110,15 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 	}
 
 	@Override
-	public void cleaning() {
+	public void cleaning(boolean cleaningInvalidatedDisabled, boolean cleaningTransientDisabled) {
 		try {
-			doExclusiveJob(this::cleanInvalidated, "Cleaning invalidated");
-			checkInterruption();
-			doExclusiveJob(this::cleanTransient, "Cleaning transient");
+			if (!cleaningTransientDisabled) {
+				doExclusiveJob(this::cleanTransient, "Cleaning transient");
+				checkInterruption();
+			}
+			if (!cleaningInvalidatedDisabled) {
+				doExclusiveJob(this::cleanInvalidated, "Cleaning invalidated");
+			}
 		} catch (Interruption e) {
 			LOGGER.warn("Cleaning job gracefully interrupted.");
 		}
