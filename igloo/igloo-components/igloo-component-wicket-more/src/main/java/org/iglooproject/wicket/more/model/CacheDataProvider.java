@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.Function2;
+import org.iglooproject.functional.Predicates2;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -37,7 +38,8 @@ public class CacheDataProvider<T> implements IDataProvider<T>, IBindableDataProv
 
 	@Override
 	public IModel<T> model(T object) {
-		return reference.model(object);
+		IModel<T> model = reference.model(object);
+		return cache.stream().filter(Predicates2.equalTo(model)).findFirst().orElse(model);
 	}
 
 	@Override
