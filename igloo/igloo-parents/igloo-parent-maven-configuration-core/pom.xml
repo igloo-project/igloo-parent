@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-common</artifactId>
-		<version>3.5.1</version>
+		<version>3.5.2-SNAPSHOT</version>
 		<relativePath>../igloo-parent-maven-configuration-common/pom.xml</relativePath>
 	</parent>
 
@@ -239,35 +239,35 @@
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-jpa-test</artifactId>
-				<version>3.5.1</version>
+				<version>3.5.2-SNAPSHOT</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-jpa-more-test</artifactId>
-				<version>3.5.1</version>
+				<version>3.5.2-SNAPSHOT</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-wicket-test</artifactId>
-				<version>3.5.1</version>
+				<version>3.5.2-SNAPSHOT</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.components</groupId>
 				<artifactId>igloo-component-wicket-more-test</artifactId>
-				<version>3.5.1</version>
+				<version>3.5.2-SNAPSHOT</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-test</artifactId>
-				<version>3.5.1</version>
+				<version>3.5.2-SNAPSHOT</version>
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
@@ -275,7 +275,7 @@
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-junit5</artifactId>
-				<version>3.5.1</version>
+				<version>3.5.2-SNAPSHOT</version>
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
@@ -283,7 +283,7 @@
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-elasticsearch-test</artifactId>
-				<version>3.5.1</version>
+				<version>3.5.2-SNAPSHOT</version>
 				<scope>test</scope>
 				<type>pom</type>
 			</dependency>
@@ -1367,7 +1367,7 @@
 			<dependency>
 				<groupId>org.iglooproject.dependencies</groupId>
 				<artifactId>igloo-dependency-hibernate-search</artifactId>
-				<version>3.5.1</version>
+				<version>3.5.2-SNAPSHOT</version>
 			</dependency>
 
 			<!-- Test dependencies -->
