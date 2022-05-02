@@ -387,6 +387,7 @@ class TestConsistency extends AbstractTest {
 					unit3
 		);
 		// ensure that skipped unit1 does not affect limit
+		@SuppressWarnings("unchecked")
 		Function<StorageUnit, StorageUnitCheckType> policySupplier = ((Function<StorageUnit, StorageUnitCheckType>) mock(Function.class));
 		when(policySupplier.apply(unit1)).thenReturn(StorageUnitCheckType.NONE);
 		when(policySupplier.apply(unit2)).thenReturn(StorageUnitCheckType.LISTING_SIZE);
