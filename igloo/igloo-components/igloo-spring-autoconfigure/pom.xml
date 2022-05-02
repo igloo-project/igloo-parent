@@ -39,14 +39,6 @@
 			</exclusions>
 		</dependency>
 		
-		<!-- import manually spring as we excludes transitive dependencies from spring-boot(-autoconfigure)  -->
-		<dependency>
-			<groupId>org.iglooproject.dependencies</groupId>
-			<artifactId>igloo-dependency-core-spring</artifactId>
-			<version>3.6.0-SNAPSHOT</version>
-			<type>pom</type>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-jpa</artifactId>
@@ -85,14 +77,6 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.iglooproject.dependencies</groupId>
-			<artifactId>igloo-dependency-core-logging</artifactId>
-			<version>3.6.0-SNAPSHOT</version>
-			<type>pom</type>
 			<scope>provided</scope>
 		</dependency>
 		
