@@ -68,21 +68,23 @@ public class StorageOperations {
 
 		try (FileOutputStream fos = new FileOutputStream(absolutePath.toString())) {
 			IOUtils.copy(inputStream, fos);
-		} catch (RuntimeException e) {
-			// TODO use custom runtime exception
-			throw new IllegalStateException(e);
 		}
 	}
 
 	@Nonnull
-	public File getFile(@Nonnull Path absolutePath) throws FileNotFoundException {
+	public File getFile(@Nonnull Path absolutePath, boolean checkExists) throws FileNotFoundException {
 		checkAbsolutePath(absolutePath);
 		File file = absolutePath.toFile();
-		if (file.exists() && file.canRead()) {
+		// if checkExists == false, allow to return a not-existing file
+		if (!checkExists || (file.exists() && file.canRead())) {
 			return file;
 		} else {
-			throw new FileNotFoundException(String.format("File %s cannot be found or is not readable", file));
+			throw fileNotFoundException(file);
 		}
+	}
+
+	private FileNotFoundException fileNotFoundException(File file) {
+		return new FileNotFoundException(String.format("File %s cannot be found or is not readable", file));
 	}
 
 	/**
@@ -124,7 +126,7 @@ public class StorageOperations {
 				throw new IllegalStateException(String.format("Checksum calculation error on %s", path), e);
 			}
 		} else {
-			throw new FileNotFoundException(String.format("File %s cannot be found or is not readable", file));
+			throw fileNotFoundException(file);
 		}
 	}
 
@@ -140,7 +142,7 @@ public class StorageOperations {
 				throw new IllegalStateException(String.format("Size extraction error on %s", path), e);
 			}
 		} else {
-			throw new FileNotFoundException(String.format("File %s cannot be found or is not readable", file));
+			throw fileNotFoundException(file);
 		}
 	}
 

@@ -164,14 +164,20 @@ abstract class AbstractTest {
 		return transactionTemplate.execute((t) -> action.apply(EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)));
 	}
 
-	protected Fichier createFichier(String filename, IFichierType fichierType, String fileContent, Runnable postCreationAction) {
+	protected Fichier createFichier(String filename, IFichierType fichierType, String fileContent) {
+		return createFichier(filename, fichierType, fileContent, (f) -> {});
+	}
+
+	protected Fichier createFichier(String filename, IFichierType fichierType, String fileContent, Consumer<Fichier> postCreationAction) {
 		return transactionTemplate.execute((t) -> {
+			Fichier fichier = null;
 			try (InputStream bais = new ByteArrayInputStream(fileContent.getBytes(StandardCharsets.UTF_8))) {
-				return storageService.addFichier(filename, fichierType, bais);
+				fichier = storageService.addFichier(filename, fichierType, bais);
+				return fichier;
 			} catch (IOException e) {
 				throw new IllegalStateException(e);
 			} finally {
-				postCreationAction.run();
+				postCreationAction.accept(fichier);
 			}
 		});
 	}

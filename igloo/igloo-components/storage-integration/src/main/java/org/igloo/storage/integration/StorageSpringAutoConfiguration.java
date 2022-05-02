@@ -121,8 +121,9 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 					LOGGER.debug("{} cannot be resolved to a class. Resolving as an enum value.", value);
 					if (value.contains(".")) {
 						try {
-							String className = value.substring(0, value.lastIndexOf("."));
-							String enumName = value.substring(value.lastIndexOf(".") + 1);
+							int dotIndex = value.lastIndexOf('.');
+							String className = value.substring(0, dotIndex);
+							String enumName = value.substring(dotIndex + 1);
 							resolveIStorageUnitType(className).stream().filter(i -> enumName.equals(i.getName()))
 								.findFirst().ifPresentOrElse(types::add, () -> { throw new IllegalStateException(); });
 						} catch (ClassNotFoundException|IllegalStateException e1) {

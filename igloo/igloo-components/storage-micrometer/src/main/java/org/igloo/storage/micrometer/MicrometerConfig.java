@@ -25,6 +25,17 @@ import io.micrometer.core.instrument.Tags;
 
 public class MicrometerConfig {
 	
+	private static final String TAG_FAILURE_STATUS = "failureStatus";
+	private static final String TAG_FICHIER_STATUS = "fichierStatus";
+	private static final String TAG_FICHIER_TYPE = "fichierType";
+	private static final String TAG_STORAGE_UNIT_ID = "storageUnitId";
+	private static final String TAG_STORAGE_UNIT_TYPE = "storageUnitType";
+
+	private static final String UNIT_FICHIER = "Fichier";
+	private static final String UNIT_SECOND = "Second";
+	private static final String UNIT_HOUR = "Hour";
+	private static final String UNIT_FILE = "File";
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(MicrometerConfig.class);
 	
 	private final IStorageStatisticsService storageStatisticsService;
@@ -47,35 +58,35 @@ public class MicrometerConfig {
 		this.storageStatisticsService = storageStatisticsService;
 		fileCount = MultiGauge.builder("storage.fileCounts")
 				.description("Number of Fichier")
-				.baseUnit("Fichier")
+				.baseUnit(UNIT_FICHIER)
 				.register(registry);
 		size = MultiGauge.builder("storage.size")
 				.description("Storage size")
-				.baseUnit("Fichier")
+				.baseUnit(UNIT_FICHIER)
 				.register(registry);
 		failure = MultiGauge.builder("storage.failures")
 				.description("Number of Fichier")
-				.baseUnit("Fichier")
+				.baseUnit(UNIT_FICHIER)
 				.register(registry);
 		orphan = MultiGauge.builder("storage.orphans")
 				.description("Number of orphans")
-				.baseUnit("Files")
+				.baseUnit(UNIT_FILE)
 				.register(registry);
 		lastAge = MultiGauge.builder("storage.lastAge")
 				.description("Last check age")
-				.baseUnit("Age in hours")
+				.baseUnit(UNIT_HOUR)
 				.register(registry);
 		lastChecksumAge = MultiGauge.builder("storage.lastChecksumAge")
 				.description("Last checksum age")
-				.baseUnit("Age in hours")
+				.baseUnit(UNIT_HOUR)
 				.register(registry);
 		lastDuration = MultiGauge.builder("storage.lastDuration")
 				.description("Last check duration")
-				.baseUnit("Duration in seconds")
+				.baseUnit(UNIT_SECOND)
 				.register(registry);
 		lastChecksumDuration = MultiGauge.builder("storage.lastChecksumDuration")
 				.description("Last checksum duration")
-				.baseUnit("Duration in seconds")
+				.baseUnit(UNIT_SECOND)
 				.register(registry);
 	}
 
@@ -141,36 +152,36 @@ public class MicrometerConfig {
 
 	private Row<Number> fileCountRow(StorageStatistic s, Function<StorageStatistic, Number> getter) {
 		Tags tags = Tags.of(
-				"storageUnitId", s.getStorageUnitId().toString(),
-				"storageUnitType", s.getStorageUnitType().getName(),
-				"fichierType", s.getFichierType().getName(),
-				"fichierStatus", s.getFichierStatus().name());
+				TAG_STORAGE_UNIT_ID, s.getStorageUnitId().toString(),
+				TAG_STORAGE_UNIT_TYPE, s.getStorageUnitType().getName(),
+				TAG_FICHIER_TYPE, s.getFichierType().getName(),
+				TAG_FICHIER_STATUS, s.getFichierStatus().name());
 		return Row.of(tags, getter.apply(s));
 	}
 
 	private Row<Number> orphanRow(StorageOrphanStatistic s) {
 		Tags tags = Tags.of(
-				"storageUnitId", s.getStorageUnitId().toString(),
-				"storageUnitType", s.getStorageUnitType().getName(),
-				"failureStatus", s.getFailureStatus().name());
+				TAG_STORAGE_UNIT_ID, s.getStorageUnitId().toString(),
+				TAG_STORAGE_UNIT_TYPE, s.getStorageUnitType().getName(),
+				TAG_FAILURE_STATUS, s.getFailureStatus().name());
 		return Row.of(tags, s.getCount());
 	}
 
 	private Row<Number> failureRow(StorageFailureStatistic s) {
 		Tags tags = Tags.of(
-				"storageUnitId", s.getStorageUnitId().toString(),
-				"storageUnitType", s.getStorageUnitType().getName(),
-				"fichierType", s.getFichierType().getName(),
-				"fichierStatus", s.getFichierStatus().name(),
+				TAG_STORAGE_UNIT_ID, s.getStorageUnitId().toString(),
+				TAG_STORAGE_UNIT_TYPE, s.getStorageUnitType().getName(),
+				TAG_FICHIER_TYPE, s.getFichierType().getName(),
+				TAG_FICHIER_STATUS, s.getFichierStatus().name(),
 				"failureType", s.getFailureType().name(),
-				"failureStatus", s.getFailureStatus().name());
+				TAG_FAILURE_STATUS, s.getFailureStatus().name());
 		return Row.of(tags, s.getCount());
 	}
 
 	private Row<Number> checkRow(StorageCheckStatistic s, Function<StorageCheckStatistic, Number> getter) {
 		Tags tags = Tags.of(
-				"storageUnitId", s.getStorageUnitId().toString(),
-				"storageUnitType", s.getStorageUnitType().getName());
+				TAG_STORAGE_UNIT_ID, s.getStorageUnitId().toString(),
+				TAG_STORAGE_UNIT_TYPE, s.getStorageUnitType().getName());
 		return Row.of(tags, getter.apply(s));
 	}
 

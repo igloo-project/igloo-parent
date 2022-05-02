@@ -3,15 +3,13 @@ package test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.notNull;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -56,7 +54,7 @@ class TestService extends AbstractTest {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		doAnswer(AdditionalAnswers.<InputStream, Path>answerVoid((a, b) -> { IOUtils.copy(a, baos); }))
 			.when(storageOperations).copy(any(), any());
-		Fichier fichier = createFichier("filename.txt", FichierType1.CONTENT1, FILE_CONTENT, () -> {});
+		Fichier fichier = createFichier("filename.txt", FichierType1.CONTENT1, FILE_CONTENT);
 
 		verify(storageOperations).copy(any(), Mockito.eq(Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath())));
 		verify(storageOperations, times(1)).copy(any(), any());
@@ -74,7 +72,7 @@ class TestService extends AbstractTest {
 	@Test
 	void testAddRollback() throws IOException {
 		Runnable action = () -> {
-			createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, () -> { throw new IllegalStateException("Triggered rollback"); });
+			createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, (f) -> { throw new IllegalStateException("Triggered rollback"); });
 		};
 
 		assertThatCode(action::run).as("Fichier add must throw an exception").isInstanceOf(IllegalStateException.class).hasMessageContaining("Triggered rollback");
@@ -85,20 +83,49 @@ class TestService extends AbstractTest {
 
 	@Test
 	void testGet() throws IOException {
-		Fichier fichier = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, () -> {});
+		Fichier fichier = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT);
 		Mockito.reset(storageOperations); // Get rid of creation operation
 
 		storageService.getFile(fichier);
-		verify(storageOperations, times(1)).getFile(any());
+		verify(storageOperations, times(1)).getFile(any(), eq(true));
 		verifyNoMoreInteractions(storageOperations);
 
-		verify(storageOperations).getFile(Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath()));
+		verify(storageOperations).getFile(Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath()), true);
+	}
+
+	@Test
+	void testGetInvalidated() throws IOException {
+		Fichier fichier = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, (f) -> f.setStatus(FichierStatus.INVALIDATED));
+		Mockito.reset(storageOperations); // Get rid of creation operation
+
+		// check enabled - exception thrown
+		assertThatCode(() -> storageService.getFile(fichier)).isInstanceOf(FileNotFoundException.class);
+		verify(storageOperations, never()).getFile(any(), anyBoolean());
+		
+		// check disabled - file can be retrieved
+		storageService.getFile(fichier, false, true);
+		verify(storageOperations, times(1)).getFile(any(), eq(true));
+		verifyNoMoreInteractions(storageOperations);
+
+		verify(storageOperations).getFile(Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath()), true);
+	}
+
+	@Test
+	void testGetTransient() throws IOException {
+		Fichier fichier = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, (f) -> f.setStatus(FichierStatus.TRANSIENT));
+		Mockito.reset(storageOperations); // Get rid of creation operation
+
+		storageService.getFile(fichier);
+		verify(storageOperations, times(1)).getFile(any(), eq(true));
+		verifyNoMoreInteractions(storageOperations);
+
+		verify(storageOperations).getFile(Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath()), true);
 	}
 
 	@Test
 	void testRemove() {
 		Fichier fichierToRemove = transactionTemplate.execute((t) -> {
-			Fichier fichier = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, () -> {});
+			Fichier fichier = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT);
 			Mockito.reset(storageOperations); // Get rid of creation operation
 			return fichier;
 		});
@@ -120,7 +147,7 @@ class TestService extends AbstractTest {
 	@Test
 	void testRemoveRollback(EntityManagerFactory entityManagerFactory) throws IOException {
 		Runnable action = () -> {
-			Fichier fichier = transactionTemplate.execute((t) -> createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, () -> {}));
+			Fichier fichier = transactionTemplate.execute((t) -> createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT));
 			Mockito.reset(storageOperations);
 
 			transactionTemplate.executeWithoutResult((t) -> {
@@ -137,7 +164,7 @@ class TestService extends AbstractTest {
 	@Test
 	void testValidate() {
 		Fichier fichier = transactionTemplate.execute((t) -> {
-			Fichier fichierToInvalidate = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, () -> {});
+			Fichier fichierToInvalidate = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT);
 			Mockito.reset(storageOperations); // Get rid of creation operation
 			storageService.validateFichier(fichierToInvalidate);
 			return fichierToInvalidate;
@@ -152,7 +179,7 @@ class TestService extends AbstractTest {
 	@Test
 	void testInvalidate() {
 		Fichier fichier = transactionTemplate.execute((t) -> {
-			Fichier fichierToInvalidate = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, () -> {});
+			Fichier fichierToInvalidate = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT);
 			storageService.validateFichier(fichierToInvalidate);
 			Mockito.reset(storageOperations); // Get rid of creation/validation operation
 			storageService.invalidateFichier(fichierToInvalidate);

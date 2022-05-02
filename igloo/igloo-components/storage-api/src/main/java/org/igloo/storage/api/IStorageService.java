@@ -68,13 +68,19 @@ public interface IStorageService {
 	Fichier getFichierById(@Nonnull Long id);
 
 	/**
-	 * Get file associated to {@link Fichier}
+	 * Get file associated to {@link Fichier}. If File cannot be found on filesystem, or if Fichier status is
+	 * {@link FichierStatus#INVALIDATED}, this method throws a {@link FileNotFoundException}. See {@link #getFile(Fichier, boolean, boolean)}
+	 * to disable these checks.
 	 * 
-	 * @throws FileNotFoundException if file cannot be found or is not readable.
+	 * @throws FileNotFoundException if file cannot be found, is not readable or {@link Fichier#getStatus()} is {@link FichierStatus#INVALIDATED}.
 	 */
 	@Transactional(readOnly=true)
 	@Nonnull
 	File getFile(@Nonnull Fichier fichier) throws FileNotFoundException;
+
+	@Transactional(readOnly=true)
+	@Nonnull
+	File getFile(Fichier fichier, boolean checkTransient, boolean checkExists) throws FileNotFoundException;
 
 	/**
 	 * Perform a consistency check on a {@link StorageUnit}. Check can be performed with or without checksum validation.

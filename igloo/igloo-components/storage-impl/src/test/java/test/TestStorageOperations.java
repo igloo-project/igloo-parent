@@ -133,7 +133,7 @@ class TestStorageOperations {
 	}
 
 	/**
-	 * {@link StorageOperations#getFile(Path)} returns a valid {@link File} object (existing, readable).
+	 * {@link StorageOperations#getFile(Path, boolean)} returns a valid {@link File} object (existing, readable).
 	 */
 	@Test
 	void getFile(@TempDir Path tempDir) throws IOException {
@@ -142,19 +142,29 @@ class TestStorageOperations {
 		if (!file.toFile().createNewFile()) {
 			throw new IllegalStateException("Error creating context: file cannot be created");
 		}
-		assertThat(storage.getFile(file.toAbsolutePath())).isNotNull().exists().isReadable().isFile().isAbsolute();
+		assertThat(storage.getFile(file.toAbsolutePath(), true)).isNotNull().exists().isReadable().isFile().isAbsolute();
 	}
 
 	/**
-	 * {@link StorageOperations#getFile(Path)} throws a {@link FileNotFoundException} for a missing/not-readable file.
+	 * {@link StorageOperations#getFile(Path, boolean)} throws a {@link FileNotFoundException} for a missing/not-readable file.
 	 */
 	@Test
 	void getFileMissing(@TempDir Path tempDir) throws IOException {
 		Path file = tempDir.resolve("dir1/dir2/file");
 		FileUtils.createParentDirectories(file.toFile());
-		assertThatCode(() -> storage.getFile(file.toAbsolutePath()))
+		assertThatCode(() -> storage.getFile(file.toAbsolutePath(), true))
 			.isInstanceOf(FileNotFoundException.class)
 			.hasMessageContaining(file.toString());
+	}
+
+	/**
+	 * {@link StorageOperations#getFile(Path, boolean)} doest not throw an exception on missing file if check is disabled.
+	 */
+	@Test
+	void getFileMissingNoCheck(@TempDir Path tempDir) throws IOException {
+		Path file = tempDir.resolve("dir1/dir2/file");
+		FileUtils.createParentDirectories(file.toFile());
+		assertThat(storage.getFile(file.toAbsolutePath(), false)).isNotNull().doesNotExist().isAbsolute();
 	}
 
 	/**
@@ -163,13 +173,13 @@ class TestStorageOperations {
 	 */
 	@Test
 	void getFileInvalidArgs(@TempDir Path tempDir) throws IOException {
-		assertThatCode(() -> storage.getFile(null))
+		assertThatCode(() -> storage.getFile(null, false))
 			.isInstanceOf(NullPointerException.class)
 			.hasMessageContaining("Path must not be null");
-		assertThatCode(() -> storage.getFile(Path.of(""))) // NOSONAR
+		assertThatCode(() -> storage.getFile(Path.of(""), true)) // NOSONAR
 			.isInstanceOf(IllegalStateException.class)
 			.hasMessageContaining("is not absolute");
-		assertThatCode(() -> storage.getFile(tempDir)) // NOSONAR
+		assertThatCode(() -> storage.getFile(tempDir, true)) // NOSONAR
 			.isInstanceOf(IllegalStateException.class)
 			.hasMessageContaining("is a directory, not a file");
 	}

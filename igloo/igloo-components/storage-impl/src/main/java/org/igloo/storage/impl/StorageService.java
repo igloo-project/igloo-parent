@@ -97,8 +97,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 			fichier.setChecksum(hashingInputStream.hash().toString());
 			fichier.setSize(countingInputStream.getCount());
 		} catch (IOException e) {
-			// TODO use custom runtime exception
-			throw new IllegalStateException(e);
+			throw new IllegalStateException(String.format("Fichier content cannot be saved to %s", absolutePath), e);
 		}
 		databaseOperations.createFichier(fichier);
 
@@ -139,7 +138,9 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 			LOGGER.warn("Fichier {} cannot be retrieved in database to be deleted.", fichier);
 			return;
 		}
-		// TODO : vérifier qu'on est dans un état INVALIDATED ?
+		if (FichierStatus.ALIVE.equals(fichier.getStatus())) {
+			throw new IllegalStateException(String.format("Fichier %d, status=%s cannot be removed due to its current status.", fichier.getId(), fichier.getStatus().name()));
+		}
 		databaseOperations.removeFichier(attachedFichier);
 		addEvent(attachedFichier.getId(), StorageEventType.DELETE, getAbsolutePath(attachedFichier));
 	}
@@ -152,8 +153,16 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 	@Override
 	@Nonnull
 	public File getFile(@Nonnull Fichier fichier) throws FileNotFoundException {
-		// TODO : gérer file manquant
-		return storageOperations.getFile(getAbsolutePath(fichier));
+		return getFile(fichier, true, true);
+	}
+
+	@Override
+	@Nonnull
+	public File getFile(@Nonnull Fichier fichier, boolean checkInvalidated, boolean checkExists) throws FileNotFoundException {
+		if (checkInvalidated && FichierStatus.INVALIDATED.equals(fichier.getStatus())) {
+			throw new FileNotFoundException(String.format("Fichier %d is INVALIDATED; access not available", fichier.getId()));
+		}
+		return storageOperations.getFile(getAbsolutePath(fichier), checkExists);
 	}
 
 	@Override
@@ -183,6 +192,7 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 
 	@Override
 	@Nonnull
+	@java.lang.SuppressWarnings("java:S3776")
 	public List<StorageConsistencyCheck> checkConsistency(@Nonnull StorageUnit unit, boolean checksumValidation) {
 		// reload entity
 		final StorageUnit persistedUnit = databaseOperations.getStorageUnit(unit.getId());

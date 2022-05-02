@@ -58,6 +58,14 @@ import com.google.common.io.Resources;
 
 public class DatabaseOperations implements IStorageStatisticsService {
 
+	private static final String PARAMETER_FAILURE_STATUS = "failureStatus";
+	private static final String PARAMETER_FAILURE_TYPE = "failureType";
+	private static final String PARAMETER_SIZE = "size";
+	private static final String PARAMETER_COUNT = "count";
+	private static final String PARAMETER_FICHIER_STATUS = "fichierStatus";
+	private static final String PARAMETER_FICHIER_TYPE = "fichierType";
+	private static final String PARAMETER_STORAGE_UNIT_TYPE = "storageUnitType";
+	private static final String PARAMETER_STORAGE_UNIT_ID = "storageUnitId";
 	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseOperations.class);
 
 	private Supplier<String> lastCheckStatisticsQuery = Suppliers.memoize(() -> readSqlResource("last-check-statistics.sql"));
@@ -320,12 +328,12 @@ public class DatabaseOperations implements IStorageStatisticsService {
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageStatistic> getStorageStatistics() {
 		return ((NativeQuery<StorageStatistic>) entityManager().createNativeQuery(unitStatisticsQuery.get()))
-				.addScalar("storageUnitId", LongType.INSTANCE)
-				.addScalar("storageUnitType", storageUnitTypeType)
-				.addScalar("fichierType", fichierTypeType)
-				.addScalar("fichierStatus", fichierStatusType)
-				.addScalar("count", IntegerType.INSTANCE)
-				.addScalar("size", LongType.INSTANCE)
+				.addScalar(PARAMETER_STORAGE_UNIT_ID, LongType.INSTANCE)
+				.addScalar(PARAMETER_STORAGE_UNIT_TYPE, storageUnitTypeType)
+				.addScalar(PARAMETER_FICHIER_TYPE, fichierTypeType)
+				.addScalar(PARAMETER_FICHIER_STATUS, fichierStatusType)
+				.addScalar(PARAMETER_COUNT, IntegerType.INSTANCE)
+				.addScalar(PARAMETER_SIZE, LongType.INSTANCE)
 				// deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with custom types
 				.setResultTransformer(Transformers.aliasToBean(StorageStatistic.class))
 				.getResultList();
@@ -335,14 +343,14 @@ public class DatabaseOperations implements IStorageStatisticsService {
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageFailureStatistic> getStorageFailureStatistics() {
 		return ((NativeQuery<StorageFailureStatistic>) entityManager().createNativeQuery(failureStatisticsQuery.get()))
-				.addScalar("storageUnitId", LongType.INSTANCE)
-				.addScalar("storageUnitType", storageUnitTypeType)
-				.addScalar("fichierType", fichierTypeType)
-				.addScalar("fichierStatus", fichierStatusType)
-				.addScalar("failureType", failureTypeType)
-				.addScalar("failureStatus", failureStatusType)
-				.addScalar("count", IntegerType.INSTANCE)
-				.addScalar("size", LongType.INSTANCE)
+				.addScalar(PARAMETER_STORAGE_UNIT_ID, LongType.INSTANCE)
+				.addScalar(PARAMETER_STORAGE_UNIT_TYPE, storageUnitTypeType)
+				.addScalar(PARAMETER_FICHIER_TYPE, fichierTypeType)
+				.addScalar(PARAMETER_FICHIER_STATUS, fichierStatusType)
+				.addScalar(PARAMETER_FAILURE_TYPE, failureTypeType)
+				.addScalar(PARAMETER_FAILURE_STATUS, failureStatusType)
+				.addScalar(PARAMETER_COUNT, IntegerType.INSTANCE)
+				.addScalar(PARAMETER_SIZE, LongType.INSTANCE)
 				// deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with custom types
 				.setResultTransformer(Transformers.aliasToBean(StorageFailureStatistic.class))
 				.getResultList();
@@ -352,10 +360,10 @@ public class DatabaseOperations implements IStorageStatisticsService {
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageOrphanStatistic> getStorageOrphanStatistics() {
 		return ((NativeQuery<StorageOrphanStatistic>) entityManager().createNativeQuery(orphanStatisticsQuery.get()))
-				.addScalar("storageUnitId", LongType.INSTANCE)
-				.addScalar("storageUnitType", storageUnitTypeType)
-				.addScalar("failureStatus", failureStatusType)
-				.addScalar("count", IntegerType.INSTANCE)
+				.addScalar(PARAMETER_STORAGE_UNIT_ID, LongType.INSTANCE)
+				.addScalar(PARAMETER_STORAGE_UNIT_TYPE, storageUnitTypeType)
+				.addScalar(PARAMETER_FAILURE_STATUS, failureStatusType)
+				.addScalar(PARAMETER_COUNT, IntegerType.INSTANCE)
 				.setParameter("missingEntityFailureType", StorageFailureType.MISSING_ENTITY, failureTypeType)
 				// deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with custom types
 				.setResultTransformer(Transformers.aliasToBean(StorageOrphanStatistic.class))
@@ -369,8 +377,8 @@ public class DatabaseOperations implements IStorageStatisticsService {
 			throw new IllegalStateException("getStorageCheckStatistics need postgresql backend");
 		}
 		return ((NativeQuery<StorageCheckStatistic>) entityManager().createNativeQuery(lastCheckStatisticsQuery.get()))
-				.addScalar("storageUnitId", LongType.INSTANCE)
-				.addScalar("storageUnitType", storageUnitTypeType)
+				.addScalar(PARAMETER_STORAGE_UNIT_ID, LongType.INSTANCE)
+				.addScalar(PARAMETER_STORAGE_UNIT_TYPE, storageUnitTypeType)
 				.addScalar("lastOn", LocalDateTimeType.INSTANCE)
 				.addScalar("lastChecksumOn", LocalDateTimeType.INSTANCE)
 				.addScalar("lastDuration", DurationType.INSTANCE)
