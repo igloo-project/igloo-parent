@@ -2,12 +2,10 @@ package test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.atIndex;
+import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -15,6 +13,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
@@ -32,10 +33,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.Extensions;
+import org.mockito.ArgumentCaptor;
 import org.mockito.internal.stubbing.answers.AnswerFunctionalInterfaces;
 
 @Extensions(@ExtendWith(SoftAssertionsExtension.class))
-public class TestConsistency extends AbstractTest {
+class TestConsistency extends AbstractTest {
 
 	protected StorageOperations storageOperations = mock(StorageOperations.class);
 	protected DatabaseOperations databaseOperations = mock(DatabaseOperations.class);
@@ -349,6 +351,53 @@ public class TestConsistency extends AbstractTest {
 		softly.assertThat(StorageHousekeepingService.isExpectedCheckDateElapsed(() -> now.minus(delay.plus(Duration.ofSeconds(1))), () -> delay, now))
 			.as("Last check age older than duration. Elapsed.")
 			.isTrue();
+	}
+
+	@Test
+	void testConsistencyNoLimit() {
+		StorageUnit unit1 = new StorageUnit();
+		StorageUnit unit2 = new StorageUnit();
+		StorageUnit unit3 = new StorageUnit();
+		Supplier<List<StorageUnit>> units = () -> List.of(
+					unit1,
+					unit2,
+					unit3
+		);
+		Function<StorageUnit, StorageUnitCheckType> policySupplier = (unit) -> StorageUnitCheckType.LISTING_SIZE;
+		@SuppressWarnings("unchecked")
+		BiConsumer<StorageUnit, Boolean> checker = ((BiConsumer<StorageUnit, Boolean>) mock(BiConsumer.class));
+		
+		StorageHousekeepingService.checkConsistency(null, units, policySupplier, checker);
+		ArgumentCaptor<StorageUnit> capture = forClass(StorageUnit.class);
+		verify(checker, times(3)).accept(capture.capture(), eq(Boolean.FALSE));
+		assertThat(capture.getAllValues()).containsExactly(unit1, unit2, unit3);
+	}
+
+	@Test
+	void testConsistencyLimit() {
+		StorageUnit unit1 = new StorageUnit();
+		unit1.setId(1l);
+		StorageUnit unit2 = new StorageUnit();
+		unit2.setId(2l);
+		StorageUnit unit3 = new StorageUnit();
+		unit3.setId(3l);
+		Supplier<List<StorageUnit>> units = () -> List.of(
+					unit1,
+					unit2,
+					unit3
+		);
+		// ensure that skipped unit1 does not affect limit
+		Function<StorageUnit, StorageUnitCheckType> policySupplier = ((Function<StorageUnit, StorageUnitCheckType>) mock(Function.class));
+		when(policySupplier.apply(unit1)).thenReturn(StorageUnitCheckType.NONE);
+		when(policySupplier.apply(unit2)).thenReturn(StorageUnitCheckType.LISTING_SIZE);
+		when(policySupplier.apply(unit3)).thenReturn(StorageUnitCheckType.LISTING_SIZE);
+		@SuppressWarnings("unchecked")
+		BiConsumer<StorageUnit, Boolean> checker = ((BiConsumer<StorageUnit, Boolean>) mock(BiConsumer.class));
+		
+		StorageHousekeepingService.checkConsistency(1, units, policySupplier, checker);
+		ArgumentCaptor<StorageUnit> capture = forClass(StorageUnit.class);
+		verify(checker, times(1)).accept(capture.capture(), eq(Boolean.FALSE));
+		assertThat(capture.getAllValues()).containsExactly(unit2);
 	}
 
 	private LocalDateTime _24h00m01sAgo(LocalDateTime reference) {

@@ -86,7 +86,8 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 				propertyService.get(JOB_CHECK_DEFAULT_DELAY),
 				propertyService.get(JOB_CHECK_CHECKSUM_DEFAULT_DELAY),
 				propertyService.get(JOB_CLEAN_TRANSIENT_DELAY),
-				propertyService.get(JOB_CLEAN_LIMIT));
+				propertyService.get(JOB_CLEAN_LIMIT),
+				propertyService.get(JOB_CONSISTENCY_STORAGE_UNIT_LIMIT) <= 0 ? null : propertyService.get(JOB_CONSISTENCY_STORAGE_UNIT_LIMIT));
 	}
 
 	@Bean
@@ -104,6 +105,8 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 		registry.register(JOB_CLEANING_CRON, s -> cronTrigger(s, "0 0 22 * * ?"));
 		registry.registerBoolean(JOB_CLEANING_INVALIDATED_DISABLED, false);
 		registry.registerBoolean(JOB_CLEANING_TRANSIENT_DISABLED, false);
+		registry.registerBoolean(JOB_CONSISTENCY_DISABLED, false);
+		registry.registerBoolean(JOB_SPLIT_STORAGE_UNIT_DISABLED, false);
 		registry.register(JOB_HOUSEKEEPING_CRON, s -> cronTrigger(s, "0 0 23 * * ?"));
 		// retrieve enum values from a ',' separated list. Each item can be an enum type OR a enum value
 		// enum value must be written package.enumType.ENUM_VALUE
@@ -134,6 +137,7 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 		registry.register(JOB_CHECK_CHECKSUM_DEFAULT_DELAY, s -> StorageSpringAutoConfiguration.extractDuration(s, Duration.ofDays(15)));
 		registry.register(JOB_CLEAN_TRANSIENT_DELAY, s -> StorageSpringAutoConfiguration.extractDuration(s, Duration.ofHours(5)));
 		registry.registerInteger(JOB_CLEAN_LIMIT, 500);
+		registry.registerInteger(JOB_CONSISTENCY_STORAGE_UNIT_LIMIT, 0);
 	}
 
 	private static CronTrigger cronTrigger(String value, String defaultCron) {
@@ -173,7 +177,8 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 				}
 				
 				if (propertyService.get(JOB_HOUSEKEEPING_CRON) != null) {
-					registerTask(propertyService, scheduledTaskRegistrar, JOB_HOUSEKEEPING_CRON, housekeepingService::housekeeping);
+					registerTask(propertyService, scheduledTaskRegistrar, JOB_HOUSEKEEPING_CRON,
+							() -> housekeepingService.housekeeping(propertyService.get(JOB_CONSISTENCY_DISABLED), propertyService.get(JOB_SPLIT_STORAGE_UNIT_DISABLED)));
 				} else {
 					LOGGER.warn("Storage housekeeping job disabled by explicit configuration (check {})", JOB_HOUSEKEEPING_CRON.getKey());
 				}

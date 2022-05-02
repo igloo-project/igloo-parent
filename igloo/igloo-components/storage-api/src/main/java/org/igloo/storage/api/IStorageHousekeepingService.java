@@ -11,7 +11,7 @@ public interface IStorageHousekeepingService {
 	 * <li>Perform overflowing storage unit creation (each storage unit can disable automatic switch).</li>
 	 * </ul>
 	 */
-	void housekeeping();
+	void housekeeping(boolean consistencyDisabled, boolean splitStorageUnitDisabled);
 
 	/**
 	 * Clean invalidated and transient {@link Fichier}. All invalidated {@link Fichier} are eligible for removal.

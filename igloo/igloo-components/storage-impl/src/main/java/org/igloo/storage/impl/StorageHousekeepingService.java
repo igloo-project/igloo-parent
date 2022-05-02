@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
@@ -48,12 +50,17 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 	 */
 	private final Integer cleanLimit;
 	/**
+	 * {@link StorageUnit} limit for consistency check. It allows to smooth consistency check jobs. <code>null</code>
+	 * for unlimited.
+	 */
+	private final Integer consistencyStorageUnitLimit;
+	/**
 	 * Manage exclusive jobs
 	 */
 	private final Semaphore jobSemaphore = new Semaphore(1, true);
 
 	public StorageHousekeepingService(PlatformTransactionManager transactionManager, IStorageService storageService, DatabaseOperations databaseOperations) {
-		this(transactionManager, storageService, databaseOperations, Duration.ofDays(10), Duration.ofDays(30), Duration.ofDays(1), 500);
+		this(transactionManager, storageService, databaseOperations, Duration.ofDays(10), Duration.ofDays(30), Duration.ofDays(1), 500, null);
 	}
 
 	/**
@@ -71,9 +78,10 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 	 * @param storageService
 	 * @param databaseOperations
 	 */
-	public StorageHousekeepingService(PlatformTransactionManager transactionManager, IStorageService storageService, DatabaseOperations databaseOperations,
+	public StorageHousekeepingService(PlatformTransactionManager transactionManager, IStorageService storageService, DatabaseOperations databaseOperations, //NOSONAR
 			Duration defaultCheckDelay, Duration defaultCheckChecksumDelay, Duration transientCleaningDelay,
-			Integer cleanLimit) {
+			Integer cleanLimit, Integer consistencyStorageUnitLimit) {
+		checkConsistencyStorageUnitLimit(consistencyStorageUnitLimit);
 		if (transactionManager != null) {
 			DefaultTransactionAttribute writeAttribute = new DefaultTransactionAttribute();
 			writeAttribute.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -94,15 +102,20 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 		this.defaultCheckChecksumDelay = defaultCheckChecksumDelay;
 		this.transientCleaningDelay = transientCleaningDelay;
 		this.cleanLimit = cleanLimit;
+		this.consistencyStorageUnitLimit = consistencyStorageUnitLimit;
 	}
 
 	@Override
-	public void housekeeping() {
+	public void housekeeping(boolean consistencyDisabled, boolean splitStorageUnitDisabled) {
 		try {
 			doExclusiveJob(() -> {
-				checkConsistency(defaultCheckDelay, defaultCheckChecksumDelay);
-				checkInterruption();
-				splitStorageUnits();
+				if (!consistencyDisabled) {
+					checkConsistency(defaultCheckDelay, defaultCheckChecksumDelay);
+					checkInterruption();
+				}
+				if (!splitStorageUnitDisabled) {
+					splitStorageUnits();
+				}
 			}, "Housekeeping");
 		} catch (Interruption e) {
 			LOGGER.warn("Housekeeping job gracefully interrupted.");
@@ -163,12 +176,6 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 		}
 	}
 
-	public void checkInterruption() {
-		if (Thread.currentThread().isInterrupted()) {
-			throw new Interruption();
-		}
-	}
-
 	/**
 	 * Create automatically a new {@link StorageUnit} for overflowing and auto-creation enabled {@link StorageUnit}
 	 */
@@ -191,6 +198,27 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 				() -> readOnlyTransaction.execute(t -> databaseOperations.getLastCheckChecksum(unit).getCheckFinishedOn()),
 				() -> Optional.ofNullable(unit.getCheckDelay()).orElse(defaultCheckDelay),
 				() -> Optional.ofNullable(unit.getCheckChecksumDelay()).orElse(defaultCheckChecksumDelay)
+		);
+	}
+
+	/**
+	 * Perform whole consistency check:
+	 * <ul>
+	 * <li>List all consistency check enabled {@link StorageUnit}</li>
+	 * <li>Check if consistency check is needed: can be disabled or recent enough not to be rechecked</li>
+	 * <li>Perform consistency check if needed</li>
+	 * </ul>
+	 * 
+	 * @see StorageUnit#getCheckType()
+	 * @see StorageUnit#getCheckDelay()
+	 * @see StorageUnit#getCheckChecksumDelay()
+	 */
+	public void checkConsistency(Duration defaultCheckDelay, Duration defaultCheckChecksumDelay) {
+		checkConsistency(
+				consistencyStorageUnitLimit,
+				() -> readOnlyTransaction.execute(t -> databaseOperations.listStorageUnits()),
+				unit -> checkConsistencyType(unit, defaultCheckDelay, defaultCheckChecksumDelay),
+				(unit, checksumEnabled) -> writeTransaction.executeWithoutResult(t -> storageService.checkConsistency(unit, checksumEnabled))
 		);
 	}
 
@@ -246,32 +274,41 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 		return Optional.ofNullable(lastCheck.get()).map(d -> d.plus(delay.get())).map(reference::isAfter).orElse(true);
 	}
 
-	/**
-	 * Perform whole consistency check:
-	 * <ul>
-	 * <li>List all consistency check enabled {@link StorageUnit}</li>
-	 * <li>Check if consistency check is needed: can be disabled or recent enough not to be rechecked</li>
-	 * <li>Perform consistency check if needed</li>
-	 * </ul>
-	 * 
-	 * @see StorageUnit#getCheckType()
-	 * @see StorageUnit#getCheckDelay()
-	 * @see StorageUnit#getCheckChecksumDelay()
-	 */
-	public void checkConsistency(Duration defaultCheckDelay, Duration defaultCheckChecksumDelay) {
-		List<StorageUnit> units = readOnlyTransaction.execute(t -> databaseOperations.listStorageUnits());
+	public static void checkConsistency(
+			Integer consistencyStorageUnitLimit,
+			Supplier<List<StorageUnit>> storageUnitsSupplier,
+			Function<StorageUnit, StorageUnitCheckType> storageUnitCheckPolicySupplier,
+			BiConsumer<StorageUnit, Boolean> storageUnitChecker) {
+		checkConsistencyStorageUnitLimit(consistencyStorageUnitLimit);
+		List<StorageUnit> units = storageUnitsSupplier.get();
+		int batchSize = 0;
 		for (StorageUnit unit : units) {
 			LOGGER.debug("Checking {}. Verifying if check must be processed", unit);
-			StorageUnitCheckType typeNeeded = checkConsistencyType(unit, defaultCheckDelay, defaultCheckChecksumDelay);
+			StorageUnitCheckType typeNeeded = storageUnitCheckPolicySupplier.apply(unit);
 			if (StorageUnitCheckType.NONE.equals(typeNeeded)) {
 				LOGGER.info("Checking {} skipped. Disabled on StorageUnit", unit);
+			} else if (consistencyStorageUnitLimit != null && batchSize >= consistencyStorageUnitLimit) {
+				LOGGER.info("Consistency check ignored due to configured limit");
 			} else {
 				boolean checksumEnabled = StorageUnitCheckType.LISTING_SIZE_CHECKSUM.equals(typeNeeded);
 				LOGGER.info("Checking {}. Processing (checksum={})", unit, checksumEnabled);
-				writeTransaction.execute(t -> storageService.checkConsistency(unit, checksumEnabled));
+				storageUnitChecker.accept(unit, checksumEnabled);
 				LOGGER.info("Checking {}. Done", unit);
+				batchSize++;
 			}
 			checkInterruption();
+		}
+	}
+
+	private static void checkConsistencyStorageUnitLimit(Integer consistencyStorageUnitLimit) {
+		if (consistencyStorageUnitLimit != null && consistencyStorageUnitLimit <= 0) {
+			throw new IllegalStateException("consistencyStorageUnitLimit must be strictly positive or null");
+		}
+	}
+
+	public static void checkInterruption() {
+		if (Thread.currentThread().isInterrupted()) {
+			throw new Interruption();
 		}
 	}
 
