@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.igloo.monitoring.perfdata.HealthLookup;
-import org.igloo.monitoring.perfdata.HealthStatus;
-import org.igloo.monitoring.perfdata.SimpleMicrometerHealthMetricService;
+import org.igloo.monitoring.service.HealthLookup;
+import org.igloo.monitoring.service.HealthStatus;
+import org.igloo.monitoring.service.SimpleMicrometerHealthMetricService;
 import org.junit.jupiter.api.Test;
 
 import io.micrometer.core.instrument.Gauge;

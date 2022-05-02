@@ -13,16 +13,24 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManagerFactory;
 
+import org.igloo.monitoring.service.HealthService;
+import org.igloo.monitoring.service.HealthStatus;
+import org.igloo.monitoring.service.IHealthMetricService;
+import org.igloo.monitoring.service.IHealthService;
+import org.igloo.monitoring.service.SimpleMicrometerHealthMetricService;
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageHousekeepingService;
 import org.igloo.storage.api.IStorageService;
+import org.igloo.storage.api.IStorageStatisticsService;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.impl.MimeTypeResolver;
 import org.igloo.storage.impl.StorageHousekeepingService;
 import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.impl.StorageService;
+import org.igloo.storage.micrometer.MicrometerConfig;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.atomic.IStorageUnitType;
+import org.igloo.storage.model.atomic.StorageFailureStatus;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
 import org.iglooproject.spring.property.model.ImmutablePropertyId;
@@ -30,7 +38,11 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -43,9 +55,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.google.common.base.Strings;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tags;
+
 @Configuration
 @ConditionalOnProperty(name = "igloo-ac.storage.disabled", havingValue = "false", matchIfMissing = true)
 public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
+
+	public static final String HEALTH_FAILURES = "storage.failures";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageSpringAutoConfiguration.class);
 
@@ -190,6 +207,46 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 		private void registerTask(IPropertyService propertyService, ScheduledTaskRegistrar registrar, ImmutablePropertyId<CronTrigger> cronPropertyId,
 				Runnable task) {
 			registrar.addCronTask(task, propertyService.getAsString(cronPropertyId));
+		}
+	}
+
+	/**
+	 * Register micrometer config.
+	 */
+	@Configuration
+	@ConditionalOnClass(MicrometerConfig.class)
+	@ConditionalOnBean(MeterRegistry.class)
+	@ConditionalOnMissingBean(MicrometerConfig.class)
+	public static class MicrometerSupervision implements BeanPostProcessor {
+		
+		@Bean
+		public MicrometerConfig micrometerConfig(IStorageStatisticsService storageStatisticsService, MeterRegistry meterRegistry) {
+			return new MicrometerConfig(storageStatisticsService, meterRegistry);
+		}
+		
+		/**
+		 * Register wicket monitoring services.
+		 */
+		@Configuration
+		@ConditionalOnClass(HealthService.class)
+		public static class MicrometerWicketSupervision implements BeanPostProcessor {
+			@Autowired
+			private MeterRegistry meterRegistry;
+			
+			@Override
+			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+				if (bean instanceof IHealthService) {
+					IHealthMetricService failures = new SimpleMicrometerHealthMetricService(
+							meterRegistry,
+							MicrometerConfig.METER_FAILURES,
+							SimpleMicrometerHealthMetricService.tagFilter(Tags.of(MicrometerConfig.TAG_FAILURE_STATUS, StorageFailureStatus.ALIVE.name())), // check only alive failures
+							Collectors.summingInt(g -> Double.valueOf(g.value()).intValue()),
+							v -> v.intValue() == 0 ? HealthStatus.OK : v.intValue() < 10 ? HealthStatus.WARNING : HealthStatus.CRITICAL,
+							v -> v.intValue() >= 0 ? String.format("%d missing files detected in storage.", v.intValue()) : "No missing files in storage");
+					((IHealthService) bean).addService(HEALTH_FAILURES, failures);
+				}
+				return bean;
+			}
 		}
 	}
 

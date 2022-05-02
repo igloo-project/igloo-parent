@@ -1,4 +1,4 @@
-package org.igloo.monitoring.perfdata;
+package org.igloo.monitoring.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -163,7 +163,7 @@ public class SimpleMicrometerHealthMetricService implements IHealthMetricService
 	 * @param filters Set of tags that metric must contains with the same values.
 	 * @return a predicate filtering metrics by tags
 	 */
-	private static Predicate<Gauge> tagFilter(Tags filters) {
+	public static Predicate<Gauge> tagFilter(Tags filters) {
 		return g -> filters.stream().allMatch(t -> Objects.equals(t.getValue(), g.getId().getTag(t.getKey())));
 	}
 

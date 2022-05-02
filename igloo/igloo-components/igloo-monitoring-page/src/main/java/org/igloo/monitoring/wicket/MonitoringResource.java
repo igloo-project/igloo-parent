@@ -6,8 +6,8 @@ import java.nio.charset.StandardCharsets;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.IResource;
-import org.igloo.monitoring.perfdata.HealthLookup;
-import org.igloo.monitoring.perfdata.HealthStatusRenderer;
+import org.igloo.monitoring.service.HealthLookup;
+import org.igloo.monitoring.service.HealthStatusRenderer;
 
 public abstract class MonitoringResource implements IResource {
 

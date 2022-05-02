@@ -6,4 +6,6 @@ public interface IWicketStorageSettings {
 
 	String getDownloadMountPath();
 
+	boolean isSupervisionPagesEnabled();
+
 }

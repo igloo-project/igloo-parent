@@ -6,9 +6,14 @@ public class WicketStorageSettings implements IWicketStorageSettings {
 
 	private final String mountPath;
 	private final String downloadMountPath;
+	private final boolean supervisionPagesEnabled;
 
 	public WicketStorageSettings() {
-		this("/common/storage/fichier/${" + CommonParameters.ID + "}", "/common/storage/fichier/download/${" + CommonParameters.ID + "}");
+		this(false);
+	}
+
+	public WicketStorageSettings(boolean supervisionPagesEnabled) {
+		this("/common/storage/fichier/${" + CommonParameters.ID + "}", "/common/storage/fichier/download/${" + CommonParameters.ID + "}", supervisionPagesEnabled);
 	}
 
 	/**
@@ -17,9 +22,10 @@ public class WicketStorageSettings implements IWicketStorageSettings {
 	 * @param downloadMountPath The path to use to download (Content-Disposition: Attachment) resource; it is advised to
 	 *                  include {@link CommonParameters#ID} parameter in your path.
 	 */
-	public WicketStorageSettings(String mountPath, String downloadMountPath) {
+	public WicketStorageSettings(String mountPath, String downloadMountPath, boolean supervisionPagesEnabled) {
 		this.mountPath = mountPath;
 		this.downloadMountPath = downloadMountPath;
+		this.supervisionPagesEnabled = supervisionPagesEnabled;
 	}
 
 	@Override
@@ -30,6 +36,11 @@ public class WicketStorageSettings implements IWicketStorageSettings {
 	@Override
 	public String getDownloadMountPath() {
 		return downloadMountPath;
+	}
+
+	@Override
+	public boolean isSupervisionPagesEnabled() {
+		return supervisionPagesEnabled;
 	}
 
 }

@@ -25,11 +25,20 @@ import io.micrometer.core.instrument.Tags;
 
 public class MicrometerConfig {
 	
-	private static final String TAG_FAILURE_STATUS = "failureStatus";
-	private static final String TAG_FICHIER_STATUS = "fichierStatus";
-	private static final String TAG_FICHIER_TYPE = "fichierType";
-	private static final String TAG_STORAGE_UNIT_ID = "storageUnitId";
-	private static final String TAG_STORAGE_UNIT_TYPE = "storageUnitType";
+	public static final String METER_LAST_CHECKSUM_DURATION = "storage.lastChecksumDuration";
+	public static final String METER_LAST_CHECK_DURATION = "storage.lastCheckDuration";
+	public static final String METER_LAST_CHECKSUM_AGE = "storage.lastChecksumAge";
+	public static final String METER_LAST_CHECK_AGE = "storage.lastCheckAge";
+	public static final String METER_ORPHANS = "storage.orphans";
+	public static final String METER_FAILURES = "storage.failures";
+	public static final String METER_SIZE = "storage.size";
+	public static final String METER_FILE_COUNT = "storage.fileCounts";
+
+	public static final String TAG_FAILURE_STATUS = "failureStatus";
+	public static final String TAG_FICHIER_STATUS = "fichierStatus";
+	public static final String TAG_FICHIER_TYPE = "fichierType";
+	public static final String TAG_STORAGE_UNIT_ID = "storageUnitId";
+	public static final String TAG_STORAGE_UNIT_TYPE = "storageUnitType";
 
 	private static final String UNIT_FICHIER = "Fichier";
 	private static final String UNIT_SECOND = "Second";
@@ -56,35 +65,35 @@ public class MicrometerConfig {
 	
 	public MicrometerConfig(IStorageStatisticsService storageStatisticsService, MeterRegistry registry) {
 		this.storageStatisticsService = storageStatisticsService;
-		fileCount = MultiGauge.builder("storage.fileCounts")
+		fileCount = MultiGauge.builder(METER_FILE_COUNT)
 				.description("Number of Fichier")
 				.baseUnit(UNIT_FICHIER)
 				.register(registry);
-		size = MultiGauge.builder("storage.size")
+		size = MultiGauge.builder(METER_SIZE)
 				.description("Storage size")
 				.baseUnit(UNIT_FICHIER)
 				.register(registry);
-		failure = MultiGauge.builder("storage.failures")
+		failure = MultiGauge.builder(METER_FAILURES)
 				.description("Number of Fichier")
 				.baseUnit(UNIT_FICHIER)
 				.register(registry);
-		orphan = MultiGauge.builder("storage.orphans")
+		orphan = MultiGauge.builder(METER_ORPHANS)
 				.description("Number of orphans")
 				.baseUnit(UNIT_FILE)
 				.register(registry);
-		lastAge = MultiGauge.builder("storage.lastAge")
+		lastAge = MultiGauge.builder(METER_LAST_CHECK_AGE)
 				.description("Last check age")
 				.baseUnit(UNIT_HOUR)
 				.register(registry);
-		lastChecksumAge = MultiGauge.builder("storage.lastChecksumAge")
+		lastChecksumAge = MultiGauge.builder(METER_LAST_CHECKSUM_AGE)
 				.description("Last checksum age")
 				.baseUnit(UNIT_HOUR)
 				.register(registry);
-		lastDuration = MultiGauge.builder("storage.lastDuration")
+		lastDuration = MultiGauge.builder(METER_LAST_CHECK_DURATION)
 				.description("Last check duration")
 				.baseUnit(UNIT_SECOND)
 				.register(registry);
-		lastChecksumDuration = MultiGauge.builder("storage.lastChecksumDuration")
+		lastChecksumDuration = MultiGauge.builder(METER_LAST_CHECKSUM_DURATION)
 				.description("Last checksum duration")
 				.baseUnit(UNIT_SECOND)
 				.register(registry);

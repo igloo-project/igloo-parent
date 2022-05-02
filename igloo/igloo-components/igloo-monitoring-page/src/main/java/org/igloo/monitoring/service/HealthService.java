@@ -1,4 +1,4 @@
-package org.igloo.monitoring.perfdata;
+package org.igloo.monitoring.service;
 
 import java.util.Arrays;
 import java.util.HashMap;
