@@ -22,8 +22,10 @@
 			<artifactId>micrometer-core</artifactId>
 		</dependency>
 		<dependency>
+			<!-- allow context (healthService) configuration in core without wicket classpath activation -->
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-core</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>

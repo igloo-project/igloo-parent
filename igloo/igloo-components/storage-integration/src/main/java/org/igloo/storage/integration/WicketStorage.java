@@ -5,6 +5,7 @@ import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.igloo.monitoring.wicket.SpringBackedMonitoringResource;
 import org.igloo.storage.integration.wicket.FichierFileStorageWebResource;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,8 +19,12 @@ public class WicketStorage {
 
 	private WicketStorage() {} //NOSONAR
 
-	public static void install(WebApplication app) {
-		install(app, new WicketStorageSettings());
+	public static void install(WebApplication app, IPropertyService propertyService) {
+		install(app, new WicketStorageSettings(
+				propertyService.getAsString(StoragePropertyIds.WEB_URL),
+				propertyService.getAsString(StoragePropertyIds.WEB_DOWNLOAD_URL),
+				propertyService.get(StoragePropertyIds.MONITORING_ENABLED) && propertyService.get(StoragePropertyIds.MONITORING_WICKET_ENABLED)
+		));
 	}
 
 	public static void install(WebApplication app, IWicketStorageSettings settings) {

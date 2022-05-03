@@ -15,6 +15,16 @@ public class StoragePropertyIds extends AbstractPropertyIds {
 	 * Root path for new storage unit creation
 	 */
 	public static final ImmutablePropertyId<String> PATH = immutable("storage.path");
+
+	/**
+	 * Mount path for web resource.
+	 */
+	public static final ImmutablePropertyId<String> WEB_URL = immutable("storage.web.url");
+
+	/**
+	 * Mount path for web resource (download variant).
+	 */
+	public static final ImmutablePropertyId<String> WEB_DOWNLOAD_URL = immutable("storage.web.downloadUrl");
 	
 	/**
 	 * Order to add storage transaction synchronization. This synchronization remove added file on rollback event,
@@ -98,5 +108,15 @@ public class StoragePropertyIds extends AbstractPropertyIds {
 	 * Batch size for cleaning jobs.
 	 */
 	public static final ImmutablePropertyId<Integer> JOB_CLEAN_LIMIT = immutable("storage.job.clean.limit");
+	
+	/**
+	 * Enable monitoring stack.
+	 */
+	public static final ImmutablePropertyId<Boolean> MONITORING_ENABLED = immutable("storage.monitoring.enabled");
+	
+	/**
+	 * Enable monitoring pages.
+	 */
+	public static final ImmutablePropertyId<Boolean> MONITORING_WICKET_ENABLED = immutable("storage.monitoring.wicket.enabled");
 
 }

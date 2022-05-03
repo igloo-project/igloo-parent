@@ -8,14 +8,6 @@ public class WicketStorageSettings implements IWicketStorageSettings {
 	private final String downloadMountPath;
 	private final boolean supervisionPagesEnabled;
 
-	public WicketStorageSettings() {
-		this(false);
-	}
-
-	public WicketStorageSettings(boolean supervisionPagesEnabled) {
-		this("/common/storage/fichier/${" + CommonParameters.ID + "}", "/common/storage/fichier/download/${" + CommonParameters.ID + "}", supervisionPagesEnabled);
-	}
-
 	/**
 	 * @param mountPath The path to use to mount resource; it is advised to include {@link CommonParameters#ID}
 	 *                  parameter in your path.

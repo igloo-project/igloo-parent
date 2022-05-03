@@ -130,6 +130,8 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 		registry.registerBoolean(JOB_CLEANING_TRANSIENT_DISABLED, false);
 		registry.registerBoolean(JOB_CONSISTENCY_DISABLED, false);
 		registry.registerBoolean(JOB_SPLIT_STORAGE_UNIT_DISABLED, false);
+		registry.registerBoolean(MONITORING_ENABLED, false);
+		registry.registerBoolean(MONITORING_WICKET_ENABLED, false);
 		registry.register(JOB_HOUSEKEEPING_CRON, s -> cronTrigger(s, "0 0 23 * * ?"));
 		// retrieve enum values from a ',' separated list. Each item can be an enum type OR a enum value
 		// enum value must be written package.enumType.ENUM_VALUE
@@ -162,6 +164,8 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 		registry.register(JOB_CLEAN_TRANSIENT_DELAY, s -> StorageSpringAutoConfiguration.extractDuration(s, Duration.ofHours(5)));
 		registry.registerInteger(JOB_CLEAN_LIMIT, 500);
 		registry.registerInteger(JOB_CONSISTENCY_STORAGE_UNIT_LIMIT, 0);
+		registry.registerString(WEB_URL, "/common/storage/fichier/${id}");
+		registry.registerString(WEB_DOWNLOAD_URL, "/common/storage/fichier/${id}/download");
 	}
 
 	private static CronTrigger cronTrigger(String value, String defaultCron) {
@@ -182,6 +186,7 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 	}
 
 	@Configuration
+	@ConditionalOnProperty(name = "storage.job.disabled", havingValue = "false", matchIfMissing = true)
 	@ConditionalOnMissingBean(IStorageScheduling.class)
 	@ConditionalOnBean(SchedulingConfiguration.class)
 	public static class DefaultStorageScheduling {
@@ -220,6 +225,7 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 	 * Register micrometer config.
 	 */
 	@Configuration
+	@ConditionalOnProperty(name = "storage.monitoring.enabled", havingValue = "true", matchIfMissing = false)
 	@ConditionalOnClass(MicrometerConfig.class)
 	@ConditionalOnBean(MeterRegistry.class)
 	@ConditionalOnMissingBean(MicrometerConfig.class)
@@ -236,6 +242,7 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 		 * Register wicket monitoring services.
 		 */
 		@Configuration
+		@ConditionalOnProperty(name = "storage.monitoring.wicket.enabled", havingValue = "true", matchIfMissing = false)
 		@ConditionalOnClass(HealthService.class)
 		public static class MicrometerWicketSupervision implements BeanPostProcessor {
 			@Autowired
