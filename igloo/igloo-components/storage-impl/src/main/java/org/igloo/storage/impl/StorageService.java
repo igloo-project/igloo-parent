@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 
 import org.igloo.storage.api.IMimeTypeResolver;
 import org.igloo.storage.api.IStorageService;
+import org.igloo.storage.api.IStorageStatisticsService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageFailure;
@@ -33,6 +34,10 @@ import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageConsistencyCheckResult;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
+import org.igloo.storage.model.statistics.StorageCheckStatistic;
+import org.igloo.storage.model.statistics.StorageFailureStatistic;
+import org.igloo.storage.model.statistics.StorageOrphanStatistic;
+import org.igloo.storage.model.statistics.StorageStatistic;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.LongEntityReference;
 import org.slf4j.Logger;
@@ -44,7 +49,7 @@ import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
 import com.google.common.io.CountingInputStream;
 
-public class StorageService implements IStorageService, IStorageTransactionResourceManager {
+public class StorageService implements IStorageService, IStorageStatisticsService, IStorageTransactionResourceManager {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageService.class);
 
@@ -337,6 +342,26 @@ public class StorageService implements IStorageService, IStorageTransactionResou
 	@Override
 	public void unbind() {
 		TransactionSynchronizationManager.unbindResourceIfPossible(EVENTS_RESOURCE_KEY);
+	}
+
+	@Override
+	public List<StorageStatistic> getStorageStatistics() {
+		return databaseOperations.getStorageStatistics();
+	}
+
+	@Override
+	public List<StorageFailureStatistic> getStorageFailureStatistics() {
+		return databaseOperations.getStorageFailureStatistics();
+	}
+
+	@Override
+	public List<StorageOrphanStatistic> getStorageOrphanStatistics() {
+		return databaseOperations.getStorageOrphanStatistics();
+	}
+
+	@Override
+	public List<StorageCheckStatistic> getStorageCheckStatistics() {
+		return databaseOperations.getStorageCheckStatistics();
 	}
 
 }

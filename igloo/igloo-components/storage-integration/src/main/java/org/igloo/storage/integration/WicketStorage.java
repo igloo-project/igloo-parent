@@ -42,7 +42,8 @@ public class WicketStorage {
 	}
 
 	private static void mountSupervision(WebApplication app) {
-		app.mountResource("/monitoring/storage/failures", SpringBackedMonitoringResource.get(StorageSpringAutoConfiguration.HEALTH_FAILURES));
+		app.mountResource("/monitoring/storage/failures/", SpringBackedMonitoringResource.get(StorageSpringAutoConfiguration.HEALTH_FAILURES));
+		app.mountResource("/monitoring/storage/size/", SpringBackedMonitoringResource.get(StorageSpringAutoConfiguration.HEALTH_SIZE));
 	}
 
 	private static IWicketStorageSettings settings(final Application app) {

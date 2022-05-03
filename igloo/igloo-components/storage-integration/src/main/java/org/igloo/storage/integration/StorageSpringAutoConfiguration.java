@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.EntityManagerFactory;
 
+import org.apache.commons.io.FileUtils;
 import org.igloo.monitoring.service.HealthService;
 import org.igloo.monitoring.service.HealthStatus;
 import org.igloo.monitoring.service.IHealthMetricService;
@@ -53,6 +54,7 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -62,7 +64,11 @@ import io.micrometer.core.instrument.Tags;
 @ConditionalOnProperty(name = "igloo-ac.storage.disabled", havingValue = "false", matchIfMissing = true)
 public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 
+	/**
+	 * Beware that this names are differents from micrometer ids.
+	 */
 	public static final String HEALTH_FAILURES = "storage.failures";
+	public static final String HEALTH_SIZE= "storage.size";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageSpringAutoConfiguration.class);
 
@@ -221,7 +227,9 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 		
 		@Bean
 		public MicrometerConfig micrometerConfig(IStorageStatisticsService storageStatisticsService, MeterRegistry meterRegistry) {
-			return new MicrometerConfig(storageStatisticsService, meterRegistry);
+			MicrometerConfig c = new MicrometerConfig(storageStatisticsService, meterRegistry);
+			c.start();
+			return c;
 		}
 		
 		/**
@@ -239,13 +247,41 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 					IHealthMetricService failures = new SimpleMicrometerHealthMetricService(
 							meterRegistry,
 							MicrometerConfig.METER_FAILURES,
+							MicrometerConfig.METER_LAST_METRIC,
+							MicrometerConfig.TAG_STORAGE_METER,
 							SimpleMicrometerHealthMetricService.tagFilter(Tags.of(MicrometerConfig.TAG_FAILURE_STATUS, StorageFailureStatus.ALIVE.name())), // check only alive failures
-							Collectors.summingInt(g -> Double.valueOf(g.value()).intValue()),
-							v -> v.intValue() == 0 ? HealthStatus.OK : v.intValue() < 10 ? HealthStatus.WARNING : HealthStatus.CRITICAL,
-							v -> v.intValue() >= 0 ? String.format("%d missing files detected in storage.", v.intValue()) : "No missing files in storage");
+							Collectors.summingInt(g -> ((Double) g.value()).intValue()),
+							MicrometerWicketSupervision::failureStatus,
+							MicrometerWicketSupervision::failureMessage);
+					IHealthMetricService size = new SimpleMicrometerHealthMetricService(
+							meterRegistry,
+							MicrometerConfig.METER_SIZE,
+							MicrometerConfig.METER_LAST_METRIC,
+							MicrometerConfig.TAG_STORAGE_METER,
+							Predicates.alwaysTrue(), // check only alive failures
+							Collectors.summingLong(g -> ((Double) g.value()).longValue()),
+							v -> HealthStatus.OK,
+							v -> String.format("%s content in storage.", FileUtils.byteCountToDisplaySize(v.longValue())));
 					((IHealthService) bean).addService(HEALTH_FAILURES, failures);
+					((IHealthService) bean).addService(HEALTH_SIZE, size);
 				}
 				return bean;
+			}
+
+			private static String failureMessage(Number v) {
+				return v.intValue() >= 0 ?
+						String.format("%d missing files detected in storage.", v.intValue()) :
+						"No missing files in storage";
+			}
+
+			private static HealthStatus failureStatus(Number v) {
+				if (v.intValue() == 0) {
+					return HealthStatus.OK;
+				} else if (v.intValue() < 10) {
+					return HealthStatus.WARNING;
+				} else {
+					return HealthStatus.CRITICAL;
+				}
 			}
 		}
 	}

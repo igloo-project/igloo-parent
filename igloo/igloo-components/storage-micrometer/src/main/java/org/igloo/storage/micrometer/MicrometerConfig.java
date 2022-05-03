@@ -1,6 +1,7 @@
 package org.igloo.storage.micrometer;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executors;
@@ -11,6 +12,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.igloo.storage.api.IStorageStatisticsService;
+import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.statistics.StorageCheckStatistic;
 import org.igloo.storage.model.statistics.StorageFailureStatistic;
 import org.igloo.storage.model.statistics.StorageOrphanStatistic;
@@ -24,21 +26,51 @@ import io.micrometer.core.instrument.MultiGauge.Row;
 import io.micrometer.core.instrument.Tags;
 
 public class MicrometerConfig {
-	
+	/**
+	 * Last {@link StorageUnit} checksum duration. Only checked unit are reported. Not checked units are not reported.
+	 */
 	public static final String METER_LAST_CHECKSUM_DURATION = "storage.lastChecksumDuration";
+	/**
+	 * Last {@link StorageUnit} check duration. Only checked unit are reported. Not checked units are not reported.
+	 */
 	public static final String METER_LAST_CHECK_DURATION = "storage.lastCheckDuration";
+	/**
+	 * Last {@link StorageUnit} checksum age. Only checked unit are reported. Not checked units are not reported.
+	 */
 	public static final String METER_LAST_CHECKSUM_AGE = "storage.lastChecksumAge";
+	/**
+	 * Last {@link StorageUnit} check age. Only checked unit are reported. Not checked units are not reported.
+	 */
 	public static final String METER_LAST_CHECK_AGE = "storage.lastCheckAge";
+	/**
+	 * Number of orphans file (stored in filesystem and not referenced in database).
+	 */
 	public static final String METER_ORPHANS = "storage.orphans";
+	/**
+	 * Number of failures (missing files, size or checksum mismatch).
+	 */
 	public static final String METER_FAILURES = "storage.failures";
+	/**
+	 * Storage size, as computed from database entities.
+	 */
 	public static final String METER_SIZE = "storage.size";
+	/**
+	 * Storage file count, as computed from database entities.
+	 */
 	public static final String METER_FILE_COUNT = "storage.fileCounts";
+	/**
+	 * Last metric computation date, tagged by metric. Allow to check if a metric is broken or just missing
+	 * (missing failure statistic cause can be either no statistic computation or 0 failure).
+	 */
+	public static final String METER_LAST_METRIC = "storage.lastMetric";
 
+	public static final String TAG_FAILURE_TYPE = "failureType";
 	public static final String TAG_FAILURE_STATUS = "failureStatus";
 	public static final String TAG_FICHIER_STATUS = "fichierStatus";
 	public static final String TAG_FICHIER_TYPE = "fichierType";
 	public static final String TAG_STORAGE_UNIT_ID = "storageUnitId";
 	public static final String TAG_STORAGE_UNIT_TYPE = "storageUnitType";
+	public static final String TAG_STORAGE_METER = "storageMeter";
 
 	private static final String UNIT_FICHIER = "Fichier";
 	private static final String UNIT_SECOND = "Second";
@@ -62,6 +94,7 @@ public class MicrometerConfig {
 	private MultiGauge lastChecksumAge;
 	private MultiGauge lastDuration;
 	private MultiGauge lastChecksumDuration;
+	private MultiGauge lastMetric;
 	
 	public MicrometerConfig(IStorageStatisticsService storageStatisticsService, MeterRegistry registry) {
 		this.storageStatisticsService = storageStatisticsService;
@@ -97,6 +130,10 @@ public class MicrometerConfig {
 				.description("Last checksum duration")
 				.baseUnit(UNIT_SECOND)
 				.register(registry);
+		lastMetric = MultiGauge.builder(METER_LAST_METRIC)
+				.description("Last storage statistic extraction (epoch date)")
+				.baseUnit("epoch")
+				.register(registry);
 	}
 
 	public void start() {
@@ -129,6 +166,19 @@ public class MicrometerConfig {
 			
 			failureStatistics.set(storageStatisticsService.getStorageFailureStatistics());
 			failure.register(failureRows(), true);
+			Instant now = Instant.now();
+			lastMetric.register(
+				List.of(
+					Row.of(Tags.of(TAG_STORAGE_METER, METER_FAILURES), now.toEpochMilli()),
+					Row.of(Tags.of(TAG_STORAGE_METER, METER_FILE_COUNT), now.toEpochMilli()),
+					Row.of(Tags.of(TAG_STORAGE_METER, METER_LAST_CHECK_AGE), now.toEpochMilli()),
+					Row.of(Tags.of(TAG_STORAGE_METER, METER_LAST_CHECK_DURATION), now.toEpochMilli()),
+					Row.of(Tags.of(TAG_STORAGE_METER, METER_LAST_CHECKSUM_AGE), now.toEpochMilli()),
+					Row.of(Tags.of(TAG_STORAGE_METER, METER_LAST_CHECKSUM_DURATION), now.toEpochMilli()),
+					Row.of(Tags.of(TAG_STORAGE_METER, METER_ORPHANS), now.toEpochMilli()),
+					Row.of(Tags.of(TAG_STORAGE_METER, METER_SIZE), now.toEpochMilli())
+				),
+				true);
 		} catch (RuntimeException e) {
 			LOGGER.error("Error collecting storage statistics", e);
 		}
@@ -139,7 +189,7 @@ public class MicrometerConfig {
 	}
 
 	private Iterable<Row<?>> statisticRows(Function<StorageStatistic, Number> getter) {
-		return statistics.get().stream().<Row<Number>>map(s -> this.fileCountRow(s, getter))
+		return statistics.get().stream().<Row<Number>>map(s -> this.fileCountOrSizeRow(s, getter))
 				.collect(Collectors.toList());
 	}
 
@@ -159,7 +209,7 @@ public class MicrometerConfig {
 				.collect(Collectors.toList());
 	}
 
-	private Row<Number> fileCountRow(StorageStatistic s, Function<StorageStatistic, Number> getter) {
+	private Row<Number> fileCountOrSizeRow(StorageStatistic s, Function<StorageStatistic, Number> getter) {
 		Tags tags = Tags.of(
 				TAG_STORAGE_UNIT_ID, s.getStorageUnitId().toString(),
 				TAG_STORAGE_UNIT_TYPE, s.getStorageUnitType().getName(),
@@ -182,7 +232,7 @@ public class MicrometerConfig {
 				TAG_STORAGE_UNIT_TYPE, s.getStorageUnitType().getName(),
 				TAG_FICHIER_TYPE, s.getFichierType().getName(),
 				TAG_FICHIER_STATUS, s.getFichierStatus().name(),
-				"failureType", s.getFailureType().name(),
+				TAG_FAILURE_TYPE, s.getFailureType().name(),
 				TAG_FAILURE_STATUS, s.getFailureStatus().name());
 		return Row.of(tags, s.getCount());
 	}

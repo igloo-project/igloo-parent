@@ -35,6 +35,7 @@ public class HealthStatusRenderer {
 		sb.append(pd.getName());
 		sb.append("=");
 		sb.append(pd.getValue());
+		sb.append(" ");
 		sb.append(pd.getUnit());
 		sb.append(";");
 		sb.append(Optional.ofNullable(pd.getWarning()).orElse(0));

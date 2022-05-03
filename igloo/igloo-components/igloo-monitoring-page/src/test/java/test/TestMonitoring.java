@@ -33,6 +33,8 @@ class TestMonitoring {
 		SimpleMicrometerHealthMetricService service = new SimpleMicrometerHealthMetricService(
 				registry,
 				"metric.name",
+				null,
+				null,
 				predicate, // filter
 				Collectors.<Gauge>summingLong(g -> Double.valueOf(g.value()).longValue()), // sum matching
 				g -> g.longValue() < 3 ? HealthStatus.OK : HealthStatus.CRITICAL,
@@ -71,6 +73,8 @@ class TestMonitoring {
 		SimpleMicrometerHealthMetricService service2 = new SimpleMicrometerHealthMetricService(
 				registry,
 				"metric.name",
+				null,
+				null,
 				g -> g.getId().getTag("tag2").equals("value1"), // filter
 				Collectors.<Gauge>summingLong(g -> Double.valueOf(g.value()).longValue()), // sum matching
 				g -> g.longValue() < 6 ? HealthStatus.OK : HealthStatus.CRITICAL,

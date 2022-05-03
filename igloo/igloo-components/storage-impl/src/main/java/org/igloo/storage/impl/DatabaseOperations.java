@@ -33,7 +33,6 @@ import org.hibernate.type.IntegerType;
 import org.hibernate.type.LocalDateTimeType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.Type;
-import org.igloo.storage.api.IStorageStatisticsService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageFailure;
@@ -56,7 +55,7 @@ import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import com.google.common.base.Suppliers;
 import com.google.common.io.Resources;
 
-public class DatabaseOperations implements IStorageStatisticsService {
+public class DatabaseOperations {
 
 	private static final String PARAMETER_FAILURE_STATUS = "failureStatus";
 	private static final String PARAMETER_FAILURE_TYPE = "failureType";
@@ -324,7 +323,6 @@ public class DatabaseOperations implements IStorageStatisticsService {
 		return entityManager().createQuery(storageUnitSplitQuery.get(), StorageUnit.class).getResultList();
 	}
 
-	@Override
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageStatistic> getStorageStatistics() {
 		return ((NativeQuery<StorageStatistic>) entityManager().createNativeQuery(unitStatisticsQuery.get()))
@@ -339,7 +337,6 @@ public class DatabaseOperations implements IStorageStatisticsService {
 				.getResultList();
 	}
 
-	@Override
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageFailureStatistic> getStorageFailureStatistics() {
 		return ((NativeQuery<StorageFailureStatistic>) entityManager().createNativeQuery(failureStatisticsQuery.get()))
@@ -356,7 +353,6 @@ public class DatabaseOperations implements IStorageStatisticsService {
 				.getResultList();
 	}
 
-	@Override
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageOrphanStatistic> getStorageOrphanStatistics() {
 		return ((NativeQuery<StorageOrphanStatistic>) entityManager().createNativeQuery(orphanStatisticsQuery.get()))
@@ -370,7 +366,6 @@ public class DatabaseOperations implements IStorageStatisticsService {
 				.getResultList();
 	}
 
-	@Override
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<StorageCheckStatistic> getStorageCheckStatistics() {
 		if (!isPostgresqlBackend()) {
