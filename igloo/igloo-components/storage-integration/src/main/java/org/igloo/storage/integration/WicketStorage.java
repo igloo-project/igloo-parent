@@ -21,8 +21,9 @@ public class WicketStorage {
 
 	public static void install(WebApplication app, IPropertyService propertyService) {
 		install(app, new WicketStorageSettings(
-				propertyService.getAsString(StoragePropertyIds.WEB_URL),
-				propertyService.getAsString(StoragePropertyIds.WEB_DOWNLOAD_URL),
+				// do not use getAsString; we want the converted value, not the raw value !
+				propertyService.get(StoragePropertyIds.WEB_URL),
+				propertyService.get(StoragePropertyIds.WEB_DOWNLOAD_URL),
 				propertyService.get(StoragePropertyIds.MONITORING_ENABLED) && propertyService.get(StoragePropertyIds.MONITORING_WICKET_ENABLED)
 		));
 	}
@@ -47,8 +48,8 @@ public class WicketStorage {
 	}
 
 	private static void mountSupervision(WebApplication app) {
-		app.mountResource("/monitoring/storage/failures/", SpringBackedMonitoringResource.get(StorageSpringAutoConfiguration.HEALTH_FAILURES));
-		app.mountResource("/monitoring/storage/size/", SpringBackedMonitoringResource.get(StorageSpringAutoConfiguration.HEALTH_SIZE));
+		app.mountResource("/monitoring/storage/failures/", SpringBackedMonitoringResource.get(StorageAutoConfiguration.HEALTH_FAILURES));
+		app.mountResource("/monitoring/storage/size/", SpringBackedMonitoringResource.get(StorageAutoConfiguration.HEALTH_SIZE));
 	}
 
 	private static IWicketStorageSettings settings(final Application app) {

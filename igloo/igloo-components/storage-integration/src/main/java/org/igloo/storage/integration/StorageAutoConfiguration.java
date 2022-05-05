@@ -62,7 +62,7 @@ import io.micrometer.core.instrument.Tags;
 
 @Configuration
 @ConditionalOnProperty(name = "igloo-ac.storage.disabled", havingValue = "false", matchIfMissing = true)
-public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
+public class StorageAutoConfiguration implements IPropertyRegistryConfig {
 
 	/**
 	 * Beware that this names are differents from micrometer ids.
@@ -70,7 +70,7 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 	public static final String HEALTH_FAILURES = "storage.failures";
 	public static final String HEALTH_SIZE= "storage.size";
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(StorageSpringAutoConfiguration.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(StorageAutoConfiguration.class);
 
 	@Bean
 	public DatabaseOperations databaseOperations(EntityManagerFactory entityManagerFactory, IPropertyService propertyService) {
@@ -159,13 +159,14 @@ public class StorageSpringAutoConfiguration implements IPropertyRegistryConfig {
 			}
 			return types;
 		});
-		registry.register(JOB_CHECK_DEFAULT_DELAY, s -> StorageSpringAutoConfiguration.extractDuration(s, Duration.ofDays(3)));
-		registry.register(JOB_CHECK_CHECKSUM_DEFAULT_DELAY, s -> StorageSpringAutoConfiguration.extractDuration(s, Duration.ofDays(15)));
-		registry.register(JOB_CLEAN_TRANSIENT_DELAY, s -> StorageSpringAutoConfiguration.extractDuration(s, Duration.ofHours(5)));
+		registry.register(JOB_CHECK_DEFAULT_DELAY, s -> StorageAutoConfiguration.extractDuration(s, Duration.ofDays(3)));
+		registry.register(JOB_CHECK_CHECKSUM_DEFAULT_DELAY, s -> StorageAutoConfiguration.extractDuration(s, Duration.ofDays(15)));
+		registry.register(JOB_CLEAN_TRANSIENT_DELAY, s -> StorageAutoConfiguration.extractDuration(s, Duration.ofHours(5)));
 		registry.registerInteger(JOB_CLEAN_LIMIT, 500);
 		registry.registerInteger(JOB_CONSISTENCY_STORAGE_UNIT_LIMIT, 0);
-		registry.registerString(WEB_URL, "/common/storage/fichier/${id}");
-		registry.registerString(WEB_DOWNLOAD_URL, "/common/storage/fichier/${id}/download");
+		// ${} cannot be included simply in a property
+		registry.register(WEB_URL, s -> Optional.ofNullable(s).map(v -> v.replace("$[", "${").replace("]", "}")).orElse("/common/storage/fichier/${id}"));
+		registry.register(WEB_DOWNLOAD_URL, s -> Optional.ofNullable(s).map(v -> v.replace("$[", "${").replace("]", "}")).orElse("/common/storage/fichier/${id}/download"));
 	}
 
 	private static CronTrigger cronTrigger(String value, String defaultCron) {
