@@ -14,6 +14,7 @@ import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
+import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,7 @@ public interface IStorageService {
 	 * Creation of {@link StorageUnit} from type into storage
 	 */
 	@Nonnull
-	StorageUnit createStorageUnit(@Nonnull IStorageUnitType type);
+	StorageUnit createStorageUnit(IStorageUnitType type, StorageUnitCheckType checkType);
 
 	/**
 	 * @see IStorageService#addFichier(String, IFichierType, InputStream, GenericEntity)

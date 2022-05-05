@@ -33,6 +33,7 @@ import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageConsistencyCheckResult;
+import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
 import org.igloo.storage.model.statistics.StorageCheckStatistic;
 import org.igloo.storage.model.statistics.StorageFailureStatistic;
@@ -172,12 +173,13 @@ public class StorageService implements IStorageService, IStorageStatisticsServic
 
 	@Override
 	@Nonnull
-	public StorageUnit createStorageUnit(@Nonnull IStorageUnitType type) {
+	public StorageUnit createStorageUnit(@Nonnull IStorageUnitType type, @Nonnull StorageUnitCheckType checkType) {
 		StorageUnit unit = new StorageUnit();
 		unit.setCreationDate(LocalDateTime.now());
 		unit.setId(databaseOperations.generateStorageUnit());
 		unit.setType(type);
 		unit.setStatus(StorageUnitStatus.ALIVE);
+		unit.setCheckType(checkType);
 		unit.setPath(storageUnitPathSupplier.get().toAbsolutePath()
 			.resolve(String.format("%s-%s", type.getPath(), unit.getId().toString()))
 				.toString());

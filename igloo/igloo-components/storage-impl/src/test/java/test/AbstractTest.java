@@ -32,6 +32,7 @@ import org.igloo.storage.model.StorageFailure;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
+import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.hibernate.model.naming.ImplicitNamingStrategyJpaComponentPathImpl;
 import org.mockito.hamcrest.MockitoHamcrest;
@@ -136,7 +137,7 @@ abstract class AbstractTest {
 	}
 
 	StorageUnit initStorageUnit(EntityManagerFactory entityManagerFactory) {
-		Supplier<StorageUnit> action = () -> storageService.createStorageUnit(StorageUnitType.TYPE_1);
+		Supplier<StorageUnit> action = () -> storageService.createStorageUnit(StorageUnitType.TYPE_1, StorageUnitCheckType.NONE);
 		return doInWriteTransaction(entityManagerFactory, action);
 	}
 
