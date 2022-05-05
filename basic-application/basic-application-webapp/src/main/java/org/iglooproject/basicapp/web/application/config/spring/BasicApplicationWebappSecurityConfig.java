@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 @Configuration
 public class BasicApplicationWebappSecurityConfig extends AbstractWebappSecurityConfig {
@@ -23,12 +24,11 @@ public class BasicApplicationWebappSecurityConfig extends AbstractWebappSecurity
 			http.regexMatcher("^/console/.*")
 				.headers().disable()
 				.csrf().disable()
-				.formLogin()
-					.loginPage("/console/login/")
-					.defaultSuccessUrl("/console/login/success/", true)
-					.failureUrl("/console/login/failure/").and()
+				.formLogin().disable()
 				.anonymous().authorities(CoreAuthorityConstants.ROLE_ANONYMOUS).and()
-				.exceptionHandling().accessDeniedPage("/console/access-denied/").and()
+				.exceptionHandling()
+					.accessDeniedPage("/console/access-denied/")
+					.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/console/login/")).and()
 				.authorizeRequests()
 					.regexMatchers(
 						"/console/login/.*",
@@ -69,12 +69,11 @@ public class BasicApplicationWebappSecurityConfig extends AbstractWebappSecurity
 			http
 				.headers().disable()
 				.csrf().disable()
-				.formLogin()
-					.loginPage("/login/")
-					.defaultSuccessUrl("/login/success/", true)
-					.failureUrl("/login/failure/").and()
+				.formLogin().disable()
 				.anonymous().authorities(CoreAuthorityConstants.ROLE_ANONYMOUS).and()
-				.exceptionHandling().accessDeniedPage("/access-denied/").and()
+				.exceptionHandling()
+					.accessDeniedPage("/access-denied/")
+					.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login/")).and()
 				.authorizeRequests()
 					.antMatchers(
 						"/login/",
