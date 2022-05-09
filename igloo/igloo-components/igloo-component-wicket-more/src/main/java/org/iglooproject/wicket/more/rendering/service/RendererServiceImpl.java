@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.wicket.Application;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.convert.IConverter;
@@ -199,10 +200,17 @@ public class RendererServiceImpl implements IRendererService, IRendererRegistry 
 				};
 			}
 			
-			String result = new StringResourceModel(resourceKey)
-					.setModel(modelParameter).setParameters(positionalParameters)
-					.getObject();
-			return result;
+			return new StringResourceModel(resourceKey)
+				.setModel(modelParameter)
+				.setParameters(positionalParameters)
+				.wrapOnAssignment(new WebPage() {
+					private static final long serialVersionUID = 1L;
+					@Override
+					public Locale getLocale() {
+						return locale;
+					}
+				})
+				.getObject();
 		}
 	}
 
