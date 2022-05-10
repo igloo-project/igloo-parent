@@ -15,6 +15,7 @@ import javax.annotation.Nonnull;
 import org.igloo.storage.api.IStorageHousekeepingService;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
+import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.slf4j.Logger;
@@ -194,8 +195,9 @@ public class StorageHousekeepingService implements IStorageHousekeepingService {
 		return StorageHousekeepingService.getCheckConsistencyType(unit::toString,
 				LocalDateTime.now(),
 				unit::getCheckType,
-				() -> readOnlyTransaction.execute(t -> databaseOperations.getLastCheck(unit).getCheckFinishedOn()),
-				() -> readOnlyTransaction.execute(t -> databaseOperations.getLastCheckChecksum(unit).getCheckFinishedOn()),
+				// last check may be null
+				() -> readOnlyTransaction.execute(t -> Optional.ofNullable(databaseOperations.getLastCheck(unit)).map(StorageConsistencyCheck::getCheckFinishedOn).orElse(null)),
+				() -> readOnlyTransaction.execute(t -> Optional.ofNullable(databaseOperations.getLastCheckChecksum(unit)).map(StorageConsistencyCheck::getCheckFinishedOn).orElse(null)),
 				() -> Optional.ofNullable(unit.getCheckDelay()).orElse(defaultCheckDelay),
 				() -> Optional.ofNullable(unit.getCheckChecksumDelay()).orElse(defaultCheckChecksumDelay)
 		);

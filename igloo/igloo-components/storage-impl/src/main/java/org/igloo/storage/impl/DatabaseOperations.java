@@ -269,6 +269,7 @@ public class DatabaseOperations {
 		return entityManager().createQuery("SELECT s FROM StorageUnit s ORDER BY s.id ASC", StorageUnit.class).getResultList();
 	}
 
+	@Nullable
 	public StorageConsistencyCheck getLastCheck(StorageUnit unit) {
 		try {
 			return entityManager().createQuery("SELECT s FROM StorageConsistencyCheck s WHERE storageUnit = :storageUnit ORDER BY s.checkFinishedOn DESC", StorageConsistencyCheck.class)
@@ -280,6 +281,7 @@ public class DatabaseOperations {
 		}
 	}
 
+	@Nullable
 	public StorageConsistencyCheck getLastCheckChecksum(StorageUnit unit) {
 		try {
 			return entityManager().createQuery("SELECT s FROM StorageConsistencyCheck s WHERE checkType = :checkType AND storageUnit = :storageUnit ORDER BY s.checkFinishedOn DESC", StorageConsistencyCheck.class)
