@@ -20,7 +20,7 @@ import org.iglooproject.jpa.business.generic.model.IPredefinedIdEntity;
  */
 public class PredefinedIdSequenceGenerator extends PerTableSequenceStyleGenerator {
 	
-	public static final String CLASS_NAME = "org.iglooproject.jpa.business.generic.model.PredefinedIdSequenceGenerator";
+	public static final String CLASS_NAME = "org.iglooproject.jpa.hibernate.dialect.PredefinedIdSequenceGenerator";
 	
 	@Override
 	public Serializable generate(SharedSessionContractImplementor session, Object obj) {
