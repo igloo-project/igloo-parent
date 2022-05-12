@@ -1,9 +1,8 @@
 package test.wicket.more.model;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Map;
 
@@ -13,7 +12,8 @@ import javax.persistence.PersistenceContext;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Equivalence;
@@ -48,52 +48,52 @@ public abstract class AbstractTestGenericEntityMapCopyModel<K, V, M extends Map<
 	@PersistenceContext
 	protected EntityManager entityManager;
 	
-	public AbstractTestGenericEntityMapCopyModel(SerializableSupplier2<? extends M> mapSupplier, Equivalence<? super M> equivalence) {
-		super(mapSupplier, equivalence);
-	}
+	protected abstract IMapModel<K, V, M> createModel(SerializableSupplier2<? extends M> mapSupplier);
 
-	protected abstract IMapModel<K, V, M> createModel();
-
-	protected abstract M createMap(Person... persons);
+	protected abstract M createMap(SerializableSupplier2<? extends M> mapSupplier, Person... persons);
 	
 	protected abstract Iterable<Person> personIterable(M map);
-	
-	@Test
-	public void testNotAttached() {
-		IModel<M> model = createModel();
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testNotAttached(SerializableSupplier2<? extends M> mapSupplier, Equivalence<? super M> equivalence) {
+		IModel<M> model = createModel(mapSupplier);
 		assertThat(model.getObject(), isEmpty());
 		model = serializeAndDeserialize(model);
 		assertThat(model.getObject(), isEmpty());
 	}
-	
-	@Test
-	public void testAttachedNull() {
-		IModel<M> model = createModel();
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testAttachedNull(SerializableSupplier2<? extends M> mapSupplier, Equivalence<? super M> equivalence) {
+		IModel<M> model = createModel(mapSupplier);
 		model.setObject(null);
 		assertThat(model.getObject(), isEmpty());
 		model = serializeAndDeserialize(model);
 		assertThat(model.getObject(), isEmpty());
 	}
-	
-	@Test
-	public void testAttachedWhenTransient() {
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testAttachedWhenTransient(SerializableSupplier2<? extends M> mapSupplier, Equivalence<? super M> equivalence) {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
-		M map = createMap(person1, person2);
+		M map = createMap(mapSupplier, person1, person2);
 		
-		IModel<M> model = createModel();
-		model.setObject(clone(map));
-		assertThat(model.getObject(), isEquivalent(map));
+		IModel<M> model = createModel(mapSupplier);
+		model.setObject(clone(mapSupplier, map));
+		assertThat(model.getObject(), isEquivalent(equivalence, map));
 		
 		model = serializeAndDeserialize(model);
 		M modelObject = model.getObject();
-		assertNotNull(modelObject);
-		assertEquals(map.size(), modelObject.size());
-		assertThat(modelObject, not(isEquivalent(map)));
+		assertThat(modelObject).isNotNull();
+		assertThat(modelObject).hasSameSizeAs(map);
+		assertThat(modelObject, not(isEquivalent(equivalence, map)));
 	}
-	
-	@Test
-	public void testAttachedWhenPersisted() throws Exception {
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testAttachedWhenPersisted(SerializableSupplier2<? extends M> mapSupplier, Equivalence<? super M> equivalence) throws Exception {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
 		personService.create(person1);
@@ -101,33 +101,34 @@ public abstract class AbstractTestGenericEntityMapCopyModel<K, V, M extends Map<
 		personService.create(person2);
 		assertThat(person2, isAttachedToSession());
 		
-		M map = createMap(person1, person2);
+		M map = createMap(mapSupplier, person1, person2);
 		
-		IModel<M> model = createModel();
-		model.setObject(clone(map));
-		assertThat(model.getObject(), isEquivalent(map));
+		IModel<M> model = createModel(mapSupplier);
+		model.setObject(clone(mapSupplier, map));
+		assertThat(model.getObject(), isEquivalent(equivalence, map));
 		for (Person p : personIterable(model.getObject())) {
 			assertThat(p, isAttachedToSession());
 		}
 		
 		model = serializeAndDeserialize(model);
 		M modelObject = model.getObject();
-		assertThat(modelObject, isEquivalent(map));
+		assertThat(modelObject, isEquivalent(equivalence, map));
 		
 		for (Person p : personIterable(modelObject)) {
 			assertThat(p, isAttachedToSession());
 		}
 	}
-	
-	@Test
-	public void testAttachedWhenTransientAndDetachedWhenPersisted() throws Exception {
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testAttachedWhenTransientAndDetachedWhenPersisted(SerializableSupplier2<? extends M> mapSupplier, Equivalence<? super M> equivalence) throws Exception {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
-		M map = createMap(person1, person2);
+		M map = createMap(mapSupplier, person1, person2);
 		
-		IModel<M> model = createModel();
-		model.setObject(clone(map));
-		assertThat(model.getObject(), isEquivalent(map));
+		IModel<M> model = createModel(mapSupplier);
+		model.setObject(clone(mapSupplier, map));
+		assertThat(model.getObject(), isEquivalent(equivalence, map));
 		
 		personService.create(person1);
 		assertThat(person1, isAttachedToSession());
@@ -139,15 +140,16 @@ public abstract class AbstractTestGenericEntityMapCopyModel<K, V, M extends Map<
 		
 		model = serializeAndDeserialize(model);
 		M modelObject = model.getObject();
-		assertThat(modelObject, isEquivalent(map));
+		assertThat(modelObject, isEquivalent(equivalence, map));
 		
 		for (Person p : personIterable(modelObject)) {
 			assertThat(p, isAttachedToSession());
 		}
 	}
-	
-	@Test
-	public void testAttachedWhenPersistedAndDetachedWhenTransient() throws Exception {
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testAttachedWhenPersistedAndDetachedWhenTransient(SerializableSupplier2<? extends M> mapSupplier, Equivalence<? super M> equivalence) throws Exception {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
 		personService.create(person1);
@@ -155,11 +157,11 @@ public abstract class AbstractTestGenericEntityMapCopyModel<K, V, M extends Map<
 		personService.create(person2);
 		assertThat(person2, isAttachedToSession());
 		
-		M map = createMap(person1, person2);
+		M map = createMap(mapSupplier, person1, person2);
 		
-		IModel<M> model = createModel();
-		model.setObject(clone(map));
-		assertThat(model.getObject(), isEquivalent(map));
+		IModel<M> model = createModel(mapSupplier);
+		model.setObject(clone(mapSupplier, map));
+		assertThat(model.getObject(), isEquivalent(equivalence, map));
 		for (Person p : personIterable(model.getObject())) {
 			assertThat(p, isAttachedToSession());
 		}
@@ -168,19 +170,20 @@ public abstract class AbstractTestGenericEntityMapCopyModel<K, V, M extends Map<
 		
 		model = serializeAndDeserialize(model);
 		M modelObject = model.getObject();
-		M expected = createMap(null, person2);
-		assertThat(modelObject, isEquivalent(expected));
+		M expected = createMap(mapSupplier, null, person2);
+		assertThat(modelObject, isEquivalent(equivalence, expected));
 	}
 
-	@Test
-	public void testDetachedWhenTransientThenDetachedWhenPersisted() throws Exception {
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testDetachedWhenTransientThenDetachedWhenPersisted(SerializableSupplier2<? extends M> mapSupplier, Equivalence<? super M> equivalence) throws Exception {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
-		M map = createMap(person1, person2);
+		M map = createMap(mapSupplier, person1, person2);
 		
-		IModel<M> model = createModel();
-		model.setObject(clone(map));
-		assertThat(model.getObject(), isEquivalent(map));
+		IModel<M> model = createModel(mapSupplier);
+		model.setObject(clone(mapSupplier, map));
+		assertThat(model.getObject(), isEquivalent(equivalence, map));
 		
 		personService.create(person1);
 		assertThat(person1, isAttachedToSession());
@@ -192,7 +195,7 @@ public abstract class AbstractTestGenericEntityMapCopyModel<K, V, M extends Map<
 
 		model = serializeAndDeserialize(model); // Includes a second detach()
 		M modelObject = model.getObject();
-		assertThat(modelObject, isEquivalent(map));
+		assertThat(modelObject, isEquivalent(equivalence, map));
 		
 		for (Person p : personIterable(modelObject)) {
 			assertThat(p, isAttachedToSession());

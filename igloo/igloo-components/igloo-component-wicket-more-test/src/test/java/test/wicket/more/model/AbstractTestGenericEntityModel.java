@@ -18,15 +18,14 @@ import test.wicket.more.business.person.service.IPersonService;
 
 public abstract class AbstractTestGenericEntityModel extends AbstractTestModel<Person> {
 	
+	private Equivalence<? super Person> equivalence = Equivalence.equals();
+	
 	@Autowired
 	private IPersonService personService;
 	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	public AbstractTestGenericEntityModel() {
-		super(Equivalence.equals());
-	}
 	protected abstract IModel<Person> createModel();
 	protected abstract IModel<Person> createModel(Person person);
 	
@@ -49,9 +48,9 @@ public abstract class AbstractTestGenericEntityModel extends AbstractTestModel<P
 		Person person = new Person("John", "Doe");
 		IModel<Person> model = createModel(person);
 		model = serializeAndDeserialize(model);
-		assertThat(model.getObject(), CoreMatchers.not(isEquivalent(person)));
+		assertThat(model.getObject(), CoreMatchers.not(isEquivalent(equivalence, person)));
 	}
-	
+
 	@Test
 	public void testAttachedWhenPersisted() throws Exception {
 		Person person = new Person("John", "Doe");
@@ -62,11 +61,11 @@ public abstract class AbstractTestGenericEntityModel extends AbstractTestModel<P
 		assertThat(model.getObject(), isAttachedToSession());
 		
 		model = serializeAndDeserialize(model);
-		assertThat(model.getObject(), isEquivalent(person));
+		assertThat(model.getObject(), isEquivalent(equivalence, person));
 		assertThat(person, isAttachedToSession());
 		assertThat(model.getObject(), isAttachedToSession());
 	}
-	
+
 	@Test
 	public void testAttachedWhenTransientAndDetachedWhenPersisted() throws Exception {
 		Person person = new Person("John", "Doe");
@@ -77,7 +76,7 @@ public abstract class AbstractTestGenericEntityModel extends AbstractTestModel<P
 		assertThat(model.getObject(), isAttachedToSession());
 		
 		model = serializeAndDeserialize(model);
-		assertThat(model.getObject(), isEquivalent(person));
+		assertThat(model.getObject(), isEquivalent(equivalence, person));
 		assertThat(person, isAttachedToSession());
 		assertThat(model.getObject(), isAttachedToSession());
 	}
@@ -96,7 +95,7 @@ public abstract class AbstractTestGenericEntityModel extends AbstractTestModel<P
 		model = serializeAndDeserialize(model);
 		assertNull(model.getObject()); // Tries to load an entity whose id no longer exists => null
 	}
-	
+
 	@Test
 	public void testDetachedWhenTransientThenDetachedWhenPersisted() throws Exception {
 		Person person = new Person("John", "Doe");
@@ -109,7 +108,7 @@ public abstract class AbstractTestGenericEntityModel extends AbstractTestModel<P
 		assertThat(person, isAttachedToSession());
 		
 		model = serializeAndDeserialize(model); // Includes a second detach()
-		assertThat(model.getObject(), isEquivalent(person));
+		assertThat(model.getObject(), isEquivalent(equivalence, person));
 		assertThat(person, isAttachedToSession());
 		assertThat(model.getObject(), isAttachedToSession());
 	}

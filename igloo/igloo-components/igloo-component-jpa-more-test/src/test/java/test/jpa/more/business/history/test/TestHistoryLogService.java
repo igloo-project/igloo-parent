@@ -1,9 +1,8 @@
 package test.jpa.more.business.history.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import java.util.Calendar;
@@ -181,17 +180,17 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
 		List<TestHistoryLog> logs = historyLogService.list();
 		
-		assertEquals(1, logs.size());
+		assertThat(logs).hasSize(1);
 		
 		TestHistoryLog log = logs.iterator().next();
 
-		assertNotNull(log.getId());
+		assertThat(log.getId()).isNotNull();
 		
-		assertEquals(DATE, log.getDate());
-		assertEquals(TestHistoryEventType.EVENT1, log.getEventType());
-		assertEquals(expectedObjectHistoryValue, log.getMainObject());
-		assertEquals(expectedSecondaryObjectHistoryValue, log.getObject1());
-		assertThat(log.getDifferences(), matchesExpectedDifferences());
+		assertThat(log.getDate()).isEqualTo(DATE);
+		assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
+		assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
+		assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
+		assertThat(matchesExpectedDifferences()).isEqualTo(log.getDifferences());
 	}
 
 	@Test
@@ -241,11 +240,11 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
 		List<TestHistoryLog> logs = historyLogService.list();
 		
-		assertEquals(1, logs.size());
+		assertThat(logs).hasSize(1);
 		
 		TestHistoryLog log = logs.iterator().next();
 
-		assertNotNull(log.getId());
+		assertThat(log.getId()).isNotNull();
 		
 		assertThat(log.getDate(), new TypeSafeMatcher<Date>() {
 			@Override
@@ -258,9 +257,9 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 				return !item.before(before) && !item.after(after);
 			}
 		});
-		assertEquals(TestHistoryEventType.EVENT1, log.getEventType());
-		assertEquals(expectedObjectHistoryValue, log.getMainObject());
-		assertEquals(expectedSecondaryObjectHistoryValue, log.getObject1());
+		assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
+		assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
+		assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
 		assertThat(log.getDifferences(), matchesExpectedDifferences());
 	}
 
@@ -317,11 +316,11 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
 		List<TestHistoryLog> logs = historyLogService.list();
 		
-		assertEquals(1, logs.size());
+		assertThat(logs).hasSize(1);
 		
 		TestHistoryLog log = logs.iterator().next();
 
-		assertNotNull(log.getId());
+		assertThat(log.getId()).isNotNull();
 		
 		assertThat(log.getDate(), new TypeSafeMatcher<Date>() {
 			@Override
@@ -334,9 +333,9 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 				return !item.before(before) && !item.after(after);
 			}
 		});
-		assertEquals(TestHistoryEventType.EVENT1, log.getEventType());
-		assertEquals(expectedObjectHistoryValue, log.getMainObject());
-		assertEquals(expectedSecondaryObjectHistoryValue, log.getObject1());
+		assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
+		assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
+		assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
 		assertThat(log.getDifferences(), matchesExpectedDifferences());
 	}
 }

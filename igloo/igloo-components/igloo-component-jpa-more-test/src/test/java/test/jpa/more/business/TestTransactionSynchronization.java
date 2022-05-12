@@ -1,9 +1,7 @@
 package test.jpa.more.business;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 import java.util.Collection;
 
@@ -75,11 +73,9 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 	@Test
 	void testTaskNoTransaction() {
 		// Cannot push tasks if there's no transaction
-		assertThrows(
-			IllegalStateException.class,
-			() -> transactionSynchronizationTaskManagerService.push(new TestCreateAfterCommitTask()),
-			TransactionSynchronizationTaskManagerServiceImpl.EXCEPTION_MESSAGE_NO_ACTUAL_TRANSACTION_ACTIVE
-		);
+		assertThatCode(
+			() -> transactionSynchronizationTaskManagerService.push(new TestCreateAfterCommitTask())
+		).isInstanceOf(IllegalStateException.class).hasMessage(TransactionSynchronizationTaskManagerServiceImpl.EXCEPTION_MESSAGE_NO_ACTUAL_TRANSACTION_ACTIVE);
 	}
 
 	@Test
@@ -95,9 +91,9 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		entityManagerClear();
 		
 		Collection<GenericEntityReference<Long, TestEntity>> createdEntities = createAfterCommitTask.getCreatedEntities();
-		assertEquals(1, createdEntities.size());
+		assertThat(createdEntities).hasSize(1);
 		TestEntity createdEntity = testEntityService.getById(createdEntities.iterator().next());
-		assertNotNull(createdEntity);
+		assertThat(createdEntity).isNotNull();
 	}
 
 	@Test
@@ -117,7 +113,7 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		
 		entityManagerClear();
 		
-		assertNull(testEntityService.getById(testEntityId));
+		assertThat(testEntityService.getById(testEntityId)).isNull();
 	}
 
 	@Test
@@ -151,8 +147,8 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		
 		entityManagerClear();
 		
-		assertNull(testEntityService.getById(entityExpectedToBeDeletedId));
-		assertNotNull(testEntityService.getById(entityNOTExpectedToBeDeletedId));
+		assertThat(testEntityService.getById(entityExpectedToBeDeletedId)).isNull();
+		assertThat(testEntityService.getById(entityNOTExpectedToBeDeletedId)).isNotNull();
 	}
 
 	@Test
@@ -183,7 +179,7 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		
 		entityManagerClear();
 		
-		assertEquals(1, taskReference.getValue().getExecutionCount());
+		assertThat(taskReference.getValue().getExecutionCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -216,8 +212,8 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		
 		entityManagerClear();
 		
-		assertEquals(1, taskReference.getValue().getExecutionCount());
-		assertEquals(1, taskReference.getValue().getRollbackCount());
+		assertThat(taskReference.getValue().getExecutionCount()).isEqualTo(1);
+		assertThat(taskReference.getValue().getRollbackCount()).isEqualTo(1);
 	}
 
 	@Test
@@ -249,9 +245,9 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		
 		entityManagerClear();
 		
-		assertEquals(2, tasks.size());
+		assertThat(tasks).hasSize(2);
 		for (TestUseEntityBeforeCommitOrClearTask task : tasks) {
-			assertEquals(1, task.getExecutionCount());
+			assertThat(task.getExecutionCount()).isEqualTo(1);
 		}
 	}
 }

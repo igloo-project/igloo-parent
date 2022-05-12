@@ -5,13 +5,13 @@ import java.util.Locale;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.model.SimpleRecipient;
 import org.iglooproject.spring.notification.service.INotificationBuilderBaseState;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import test.wicket.more.notification.service.INotificationContentDescriptorFactory;
 
-public class TestWicketNotification extends AbstractTestWicketNotification {
+class TestWicketNotification extends AbstractTestWicketNotification {
 
 	@Autowired
 	public INotificationContentDescriptorFactory notificationContentDescriptorFactory;
@@ -20,7 +20,7 @@ public class TestWicketNotification extends AbstractTestWicketNotification {
 	 * Send one notification to two recipients.
 	 */
 	@Test
-	public void testWicketNotificationGroup() throws ServiceException {
+	void testWicketNotificationGroup() throws ServiceException {
 		INotificationBuilderBaseState builder = createNotificationBuilder();
 		builder.toAddress("test-1@example.com", "test-2@example.com")
 			.content(notificationContentDescriptorFactory.simpleContent("my content")).send();
@@ -31,7 +31,7 @@ public class TestWicketNotification extends AbstractTestWicketNotification {
 	 * Send one notification to two (locale=fr) recipients
 	 */
 	@Test
-	public void testWicketNotificationGroupLocale() throws ServiceException {
+	void testWicketNotificationGroupLocale() throws ServiceException {
 		INotificationBuilderBaseState builder = createNotificationBuilder();
 		builder.to(
 				new SimpleRecipient(Locale.FRENCH, "test-1@example.com", "Recipient 1"),
@@ -44,7 +44,7 @@ public class TestWicketNotification extends AbstractTestWicketNotification {
 	 * Check that locale=null is grouped with locale=fr as default locale is fr
 	 */
 	@Test
-	public void testWicketNotificationGroupLocaleNullAndDefault() throws ServiceException {
+	void testWicketNotificationGroupLocaleNullAndDefault() throws ServiceException {
 		INotificationBuilderBaseState builder = createNotificationBuilder();
 		builder.to(
 				new SimpleRecipient(Locale.FRENCH, "test-1@example.com", "Recipient 1"),
@@ -58,7 +58,7 @@ public class TestWicketNotification extends AbstractTestWicketNotification {
 	 * available locale (same prefix fr).
 	 */
 	@Test
-	public void testWicketNotificationGroupEquivalentLocale() throws ServiceException {
+	void testWicketNotificationGroupEquivalentLocale() throws ServiceException {
 		INotificationBuilderBaseState builder = createNotificationBuilder();
 		builder.to(
 				new SimpleRecipient(Locale.FRANCE, "test-1@example.com", "Recipient 1"),
@@ -72,7 +72,7 @@ public class TestWicketNotification extends AbstractTestWicketNotification {
 	 * replaced by default locale 'fr' and fr_FR is collapsed to 'fr'.
 	 */
 	@Test
-	public void testWicketNotificationGroupEquivalentLocale2() throws ServiceException {
+	void testWicketNotificationGroupEquivalentLocale2() throws ServiceException {
 		INotificationBuilderBaseState builder = createNotificationBuilder();
 		builder.to(
 				new SimpleRecipient(Locale.FRANCE, "test-1@example.com", "Recipient 1"),
@@ -86,7 +86,7 @@ public class TestWicketNotification extends AbstractTestWicketNotification {
 	 * 'en' is an available locale.
 	 */
 	@Test
-	public void testWicketNotificationSplitLocaleNullAndNotDefault() throws ServiceException {
+	void testWicketNotificationSplitLocaleNullAndNotDefault() throws ServiceException {
 		INotificationBuilderBaseState builder = createNotificationBuilder();
 		builder.to(
 				new SimpleRecipient(Locale.ENGLISH, "test-1@example.com", "Recipient 1"),
@@ -100,7 +100,7 @@ public class TestWicketNotification extends AbstractTestWicketNotification {
 	 * available locales.
 	 */
 	@Test
-	public void testWicketNotificationSplitLocales() throws ServiceException {
+	void testWicketNotificationSplitLocales() throws ServiceException {
 		INotificationBuilderBaseState builder = createNotificationBuilder();
 		builder.to(
 				new SimpleRecipient(Locale.FRANCE, "test-1@example.com", "Recipient 1"),
@@ -114,7 +114,7 @@ public class TestWicketNotification extends AbstractTestWicketNotification {
 	 * available locales.
 	 */
 	@Test
-	public void testWicketNotificationBypassDisabledRecipient() throws ServiceException {
+	void testWicketNotificationBypassDisabledRecipient() throws ServiceException {
 		INotificationBuilderBaseState builder = createNotificationBuilder();
 		builder
 			.bypassDisabledRecipients()

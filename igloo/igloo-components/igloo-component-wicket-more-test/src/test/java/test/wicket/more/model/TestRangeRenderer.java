@@ -1,5 +1,7 @@
 package test.wicket.more.model;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Date;
 import java.util.Locale;
 
@@ -9,8 +11,7 @@ import org.iglooproject.wicket.more.model.RangeModel;
 import org.iglooproject.wicket.more.rendering.Renderer;
 import org.iglooproject.wicket.more.util.DatePattern;
 import org.iglooproject.wicket.more.util.model.Models;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import test.wicket.more.AbstractWicketMoreTestCase;
 
@@ -61,10 +62,9 @@ public class TestRangeRenderer extends AbstractWicketMoreTestCase {
 		expected = Localizer.get().getString(KEY_MONEY_SOLO, null)
 				.replace(LOWER_UNIT_TAG, UPPER_UNIT_TAG)
 				.replace(UPPER_UNIT_TAG, Renderer.count(KEY_COUNT_BASE).render(lowerBoundModel.getObject(), Locale.FRANCE));
-		Assert.assertEquals(
-				expected,
+		assertThat(
 				Renderer.range(KEY_MONEY_BASE, Renderer.<Integer>count(KEY_COUNT_BASE)).asModel(moneyRangeModel).getObject()
-		);
+		).isEqualTo(expected);
 		// Testing .both suffix
 		lowerBoundModel = Models.transientModel(0);
 		upperBoundModel = Models.transientModel(1);
@@ -72,30 +72,27 @@ public class TestRangeRenderer extends AbstractWicketMoreTestCase {
 		expected = Localizer.get().getString(KEY_MONEY_BOTH, null)
 				.replace(LOWER_UNIT_TAG, Renderer.count(KEY_COUNT_BASE).render(lowerBoundModel.getObject(), Locale.FRANCE))
 				.replace(UPPER_UNIT_TAG, Renderer.count(KEY_COUNT_BASE).render(upperBoundModel.getObject(), Locale.FRANCE));
-		Assert.assertEquals(
-				expected,
+		assertThat(
 				Renderer.range(KEY_MONEY_BASE, Renderer.<Integer>count(KEY_COUNT_BASE)).asModel(moneyRangeModel).getObject()
-		);
+		).isEqualTo(expected);
 		// Testing .from suffix
 		lowerBoundModel = Models.transientModel(1);
 		upperBoundModel = null;
 		moneyRangeModel = RangeModel.atLeast(lowerBoundModel);
 		expected = Localizer.get().getString(KEY_MONEY_FROM, null)
 				.replace(LOWER_UNIT_TAG, Renderer.count(KEY_COUNT_BASE).render(lowerBoundModel.getObject(), Locale.FRANCE));
-		Assert.assertEquals(
-				expected,
+		assertThat(
 				Renderer.range(KEY_MONEY_BASE, Renderer.<Integer>count(KEY_COUNT_BASE)).asModel(moneyRangeModel).getObject()
-		);
+		).isEqualTo(expected);
 		// Testing .upto suffix
 		lowerBoundModel = null;
 		upperBoundModel = Models.transientModel(90);
 		moneyRangeModel = RangeModel.atMost(upperBoundModel);
 		expected = Localizer.get().getString(KEY_MONEY_UPTO, null)
 				.replace(UPPER_UNIT_TAG, Renderer.count(KEY_COUNT_BASE).render(upperBoundModel.getObject(), Locale.FRANCE));
-		Assert.assertEquals(
-				expected,
+		assertThat(
 				Renderer.range(KEY_MONEY_BASE, Renderer.<Integer>count(KEY_COUNT_BASE)).asModel(moneyRangeModel).getObject()
-		);
+		).isEqualTo(expected);
 	}
 	
 	private void testWithoutUnits() {
@@ -113,10 +110,9 @@ public class TestRangeRenderer extends AbstractWicketMoreTestCase {
 		expected = Localizer.get().getString(KEY_DATES_SOLO, null)
 				.replace(LOWER_TAG, UPPER_TAG)
 				.replace(UPPER_TAG, Renderer.fromDatePattern(DatePattern.SHORT_DATE).render(lowerBoundModel.getObject(), Locale.FRANCE));
-		Assert.assertEquals(
-				expected,
+		assertThat(
 				Renderer.range(KEY_DATES_BASE, Renderer.fromDatePattern(DatePattern.SHORT_DATE)).asModel(dateRangeModel).getObject()
-		);
+		).isEqualTo(expected);
 		// Testing .both suffix
 		lowerBoundModel = Models.transientModel(new Date(10000000000000L));
 		upperBoundModel = Models.transientModel(new Date(90000000000000L));
@@ -125,29 +121,26 @@ public class TestRangeRenderer extends AbstractWicketMoreTestCase {
 				Localizer.get().getString(KEY_DATES_BOTH, null)
 				.replace(LOWER_TAG, Renderer.fromDatePattern(DatePattern.SHORT_DATE).render(lowerBoundModel.getObject(), Locale.FRANCE))
 				.replace(UPPER_TAG, Renderer.fromDatePattern(DatePattern.SHORT_DATE).render(upperBoundModel.getObject(), Locale.FRANCE));
-		Assert.assertEquals(
-				expected,
+		assertThat(
 				Renderer.range(KEY_DATES_BASE, Renderer.fromDatePattern(DatePattern.SHORT_DATE)).asModel(dateRangeModel).getObject()
-		);
+		).isEqualTo(expected);
 		// Testing .from suffix
 		lowerBoundModel = Models.transientModel(new Date(80000000000000L));
 		upperBoundModel = null;
 		dateRangeModel = RangeModel.atLeast(lowerBoundModel);
 		expected = Localizer.get().getString(KEY_DATES_FROM, null)
 				.replace(LOWER_TAG, Renderer.fromDatePattern(DatePattern.SHORT_DATE).render(lowerBoundModel.getObject(), Locale.FRANCE));
-		Assert.assertEquals(
-				expected,
+		assertThat(
 				Renderer.range(KEY_DATES_BASE, Renderer.fromDatePattern(DatePattern.SHORT_DATE)).asModel(dateRangeModel).getObject()
-		);
+		).isEqualTo(expected);
 		// Testing .upto suffix
 		lowerBoundModel = null;
 		upperBoundModel = Models.transientModel(new Date(20000000000000L));
 		dateRangeModel = RangeModel.atMost(upperBoundModel);
 		expected = Localizer.get().getString(KEY_DATES_UPTO, null)
 				.replace(UPPER_TAG, Renderer.fromDatePattern(DatePattern.SHORT_DATE).render(upperBoundModel.getObject(), Locale.FRANCE));
-		Assert.assertEquals(
-				expected,
+		assertThat(
 				Renderer.range(KEY_DATES_BASE, Renderer.fromDatePattern(DatePattern.SHORT_DATE)).asModel(dateRangeModel).getObject()
-		);
+		).isEqualTo(expected);
 	}
 }

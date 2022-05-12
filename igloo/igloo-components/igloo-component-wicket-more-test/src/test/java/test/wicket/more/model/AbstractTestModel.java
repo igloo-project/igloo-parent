@@ -9,15 +9,8 @@ import com.google.common.base.Equivalence;
 import test.wicket.more.AbstractWicketMoreTestCase;
 
 public class AbstractTestModel<T> extends AbstractWicketMoreTestCase {
-	
-	private final Equivalence<? super T> equivalence;
 
-	public AbstractTestModel(Equivalence<? super T> equivalence) {
-		super();
-		this.equivalence = equivalence;
-	}
-	
-	protected Matcher<T> isEquivalent(final T expected) {
+	protected Matcher<T> isEquivalent(final Equivalence<? super T> equivalence, final T expected) {
 		return new TypeSafeMatcher<T>() {
 			@Override
 			public void describeTo(Description description) {

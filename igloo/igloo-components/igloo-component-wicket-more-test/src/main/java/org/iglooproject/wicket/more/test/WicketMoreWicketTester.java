@@ -1,8 +1,6 @@
 package org.iglooproject.wicket.more.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
@@ -59,7 +57,7 @@ public class WicketMoreWicketTester extends CoreWicketTester {
 		@SuppressWarnings("unchecked")
 		Link<Void> link = (Link<Void>) getComponentFromLastRenderedPage(elementLinkPath);
 		String label = (String) link.getBody().getObject();
-		assertEquals(label, expectedValue);
+		assertThat(expectedValue).isEqualTo(label);
 	}
 
 	/**
@@ -75,7 +73,7 @@ public class WicketMoreWicketTester extends CoreWicketTester {
 	 */
 	public <P extends Page>void assertDynamicBookmarkablePageLinkEnabled(String path, Class<P> pageClass) {
 		DynamicBookmarkablePageLink linkComponent = assertEnabled(path, DynamicBookmarkablePageLink.class);
-		assertTrue(linkComponent.isLinkedPageAccessible(pageClass));
+		assertThat(linkComponent.isLinkedPageAccessible(pageClass)).isTrue();
 	}
 
 	/**
@@ -83,7 +81,7 @@ public class WicketMoreWicketTester extends CoreWicketTester {
 	 */
 	public <P extends Page>void assertDynamicBookmarkablePageLinkDisabled(String path, Class<P> pageClass) {
 		DynamicBookmarkablePageLink linkComponent = assertDisabled(path, DynamicBookmarkablePageLink.class);
-		assertTrue(linkComponent.isLinkedPageAccessible(pageClass));
+		assertThat(linkComponent.isLinkedPageAccessible(pageClass)).isTrue();
 	}
 
 	/**
@@ -112,7 +110,7 @@ public class WicketMoreWicketTester extends CoreWicketTester {
 	public void assertTooltip(String path, String expectedValue) {
 		Component component = getComponentFromLastRenderedPage(path);
 		TagTester tagTester = TagTester.createTagByAttribute(getLastResponse().getDocument(), "id", component.getMarkupId());
-		assertNotNull(tagTester);
-		assertEquals(tagTester.getAttribute("title"), expectedValue);
+		assertThat(tagTester).isNotNull();
+		assertThat(expectedValue).isEqualTo(tagTester.getAttribute("title"));
 	}
 }

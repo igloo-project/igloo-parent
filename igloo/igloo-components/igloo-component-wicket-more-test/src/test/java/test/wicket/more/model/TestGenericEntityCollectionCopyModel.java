@@ -9,9 +9,7 @@ import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
 import org.iglooproject.wicket.more.model.CollectionCopyModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.common.base.Equivalence;
 import com.google.common.collect.ImmutableList;
@@ -19,8 +17,7 @@ import com.google.common.collect.ImmutableList;
 import test.wicket.more.business.person.model.Person;
 import test.wicket.more.business.person.model.PersonComparator;
 
-// TODO AWA
-public class TestGenericEntityCollectionCopyModel<C extends Collection<Person>>
+class TestGenericEntityCollectionCopyModel<C extends Collection<Person>>
 		extends AbstractTestGenericEntityCollectionModel<C> {
 
 	public static Stream<Arguments> data() {
@@ -34,27 +31,20 @@ public class TestGenericEntityCollectionCopyModel<C extends Collection<Person>>
 		return builder.build().stream();
 	}
 
-	private final SerializableSupplier2<? extends C> collectionSupplier;
-
-	public TestGenericEntityCollectionCopyModel(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) {
-		super(equivalence);
-		this.collectionSupplier = collectionSupplier;
-	}
-
 	@Override
-	protected ICollectionModel<Person, C> createModel() {
+	protected ICollectionModel<Person, C> createModel(SerializableSupplier2<? extends C> collectionSupplier) {
 		return CollectionCopyModel.custom(collectionSupplier, GenericEntityModel.<Person>factory());
 	}
 
 	@Override
-	protected C createCollection(Person... person) {
+	protected C createCollection(SerializableSupplier2<? extends C> collectionSupplier, Person... person) {
 		C collection = collectionSupplier.get();
 		collection.addAll(Arrays.asList(person));
 		return collection;
 	}
 
 	@Override
-	protected C clone(C collection) {
+	protected C clone(SerializableSupplier2<? extends C> collectionSupplier, C collection) {
 		C clone = collectionSupplier.get();
 		clone.addAll(collection);
 		return clone;
