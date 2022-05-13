@@ -121,6 +121,7 @@
 		<dependency>
 			<groupId>info.picocli</groupId>
 			<artifactId>picocli</artifactId>
+			<optional>true</optional>
 		</dependency>
 		
 		<dependency>

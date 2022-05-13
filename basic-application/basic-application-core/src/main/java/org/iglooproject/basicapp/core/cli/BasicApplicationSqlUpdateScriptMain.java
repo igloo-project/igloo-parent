@@ -20,10 +20,10 @@ public final class BasicApplicationSqlUpdateScriptMain extends AbstractBasicAppl
 	private static final Logger LOGGER = LoggerFactory.getLogger(BasicApplicationSqlUpdateScriptMain.class);
 	private static final Set<String> STDOUT_OPTIONS = Set.of("-", "stdout");
 
-	@Parameters(index = "0", description = "Action", defaultValue = "create")
+	@Parameters(index = "0", description = "Action", defaultValue = "update")
 	private Action action;
 
-	@Parameters(index = "1", description = "Output file. Use stdout or - to output to stdout", defaultValue = "/tmp/script.sql")
+	@Parameters(index = "1", description = "Output file. Use stdout or - to output to stdout", defaultValue = "stdout")
 	private String outputFilename;
 
 	private BasicApplicationSqlUpdateScriptMain() {
