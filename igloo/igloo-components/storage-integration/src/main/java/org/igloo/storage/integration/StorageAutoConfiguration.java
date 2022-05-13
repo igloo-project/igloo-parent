@@ -165,8 +165,8 @@ public class StorageAutoConfiguration implements IPropertyRegistryConfig {
 		registry.registerInteger(JOB_CLEAN_LIMIT, 500);
 		registry.registerInteger(JOB_CONSISTENCY_STORAGE_UNIT_LIMIT, 0);
 		// ${} cannot be included simply in a property
-		registry.register(WEB_URL, s -> Optional.ofNullable(s).map(v -> v.replace("$[", "${").replace("]", "}")).orElse("/common/storage/fichier/${id}"));
-		registry.register(WEB_DOWNLOAD_URL, s -> Optional.ofNullable(s).map(v -> v.replace("$[", "${").replace("]", "}")).orElse("/common/storage/fichier/${id}/download"));
+		registry.register(WEB_URL, s -> s.replace("$[", "${").replace("]", "}"), "/common/storage/fichier/${id}");
+		registry.register(WEB_DOWNLOAD_URL, s -> s.replace("$[", "${").replace("]", "}"), "/common/storage/fichier/${id}/download");
 	}
 
 	private static CronTrigger cronTrigger(String value, String defaultCron) {
