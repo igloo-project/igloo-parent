@@ -19,14 +19,21 @@
 	</properties>
 	
 	<dependencies>
-		
 		<dependency>
 			<groupId>org.iglooproject.archetype</groupId>
 			<artifactId>basic-application-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
-		<!-- Igloo -->
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-more</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jul-to-slf4j</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-bootstrap4</artifactId>
@@ -38,9 +45,19 @@
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.bindgen</groupId>
+			<artifactId>bindgen</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-validator</artifactId>
 			<version>${igloo-commons.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
@@ -61,22 +78,6 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-jul-to-slf4j</artifactId>
-			<version>${igloo.version}</version>
-			<scope>runtime</scope>
-		</dependency>
 		
 		<!-- Tests -->
 		<dependency>
@@ -86,25 +87,48 @@
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
+	
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-wicket-more-test</artifactId>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
-			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-guava</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-more-test</artifactId>
+			<version>${igloo.version}</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -129,48 +153,40 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-commons</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-hibernate</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-logging</artifactId>
-				<version>${igloo-maven.version}</version>
+				<version>${igloo-commons.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-wicket</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-spring</artifactId>
-				<version>${igloo-maven.version}</version>
+				<version>${igloo-commons.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-testing</artifactId>
-				<version>${igloo-maven.version}</version>
+				<version>${igloo-commons.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-spring</artifactId>
+				<version>${igloo-commons.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-bindgen</artifactId>
+				<version>${igloo-commons.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

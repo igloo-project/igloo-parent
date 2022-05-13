@@ -17,13 +17,11 @@
 	</properties>
 	
 	<dependencies>
-		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>javax.persistence-api</artifactId>
-		</dependency>
+		
+		<!-- Igloo -->
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-jpa</artifactId>
+			<artifactId>igloo-component-spring</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
@@ -33,68 +31,122 @@
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-jpa-security</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-config-test</artifactId>
-			<version>${igloo.version}</version>
-			<scope>compile</scope>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-acl</artifactId>
 		</dependency>
-		
-		<!-- Logging backend -->
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
 		</dependency>
-		
-		
 		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-spring-autoconfigure</artifactId>
-			<version>${igloo.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
 		</dependency>
-		
 		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-hibernate-configurator-lucene</artifactId>
-			<version>${igloo.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
 		</dependency>
-		
-		<!-- JDBC Driver -->
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
 		</dependency>
-		
 		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
 		</dependency>
-		<!-- Code generation only -->
 		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>
-			<classifier>jpa</classifier>
-			<scope>provided</scope>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
 		</dependency>
 		
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-config-test</artifactId>
+			<version>${igloo.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!-- Logging backend -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-spring-autoconfigure</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-hibernate-configurator-lucene</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.bindgen</groupId>
+			<artifactId>bindgen</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>bindgen-functional</artifactId>
+			<version>${igloo-commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<classifier>jpa</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+		</dependency>
+		
+		<!-- JDBC Driver -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 		
 		<!-- Test dependencies -->
@@ -104,30 +156,34 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-jpa-test</artifactId>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
-			<version>${project.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>info.picocli</groupId>
-			<artifactId>picocli</artifactId>
-			<optional>true</optional>
-		</dependency>
-		
-		<!-- TODO -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-guava</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa-test</artifactId>
+			<version>${igloo.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -166,41 +222,47 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-logging</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-commons</artifactId>
-				<version>${igloo-maven.version}</version>
+				<version>${igloo-commons.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-hibernate</artifactId>
-				<version>${igloo-maven.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-testing</artifactId>
-				<version>${igloo-maven.version}</version>
+				<artifactId>dependencies-bindgen</artifactId>
+				<version>${igloo-commons.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-spring</artifactId>
-				<version>${igloo-maven.version}</version>
+				<version>${igloo-commons.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-hibernate</artifactId>
+				<version>${igloo-commons.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-testing</artifactId>
+				<version>${igloo-commons.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-logging</artifactId>
+				<version>${igloo-commons.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
