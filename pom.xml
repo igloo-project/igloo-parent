@@ -15,11 +15,10 @@
 	<name>Igloo - Parent</name>
 	
 	<properties>
+		<masterBranchName>master</masterBranchName>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
-		<maven-jgitflow-plugin.version>1.0-m5.1</maven-jgitflow-plugin.version>
-		<igloo.jsch.version>0.1.55</igloo.jsch.version>
 		<maven-toolchains-plugin.version>3.0.0</maven-toolchains-plugin.version>
 		<maven-site-plugin.version>3.9.1</maven-site-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.4.1</igloo.wagon-ssh-external-plugin.version>
@@ -151,32 +150,6 @@
 	</profiles>
 	
 	<build>
-		<plugins>
-			<!-- It is needed to override masterBranchName: main -> master -->
-			<plugin>
-				<groupId>external.atlassian.jgitflow</groupId>
-				<artifactId>jgitflow-maven-plugin</artifactId>
-				<version>${maven-jgitflow-plugin.version}</version>
-				<configuration>
-					<autoVersionSubmodules>true</autoVersionSubmodules>
-					<flowInitContext>
-						<masterBranchName>master</masterBranchName>
-						<developBranchName>dev</developBranchName>
-						<featureBranchPrefix>ft-</featureBranchPrefix>
-						<releaseBranchPrefix>rl-</releaseBranchPrefix>
-						<hotfixBranchPrefix>hf-</hotfixBranchPrefix>
-						<versionTagPrefix>v</versionTagPrefix>
-					</flowInitContext>
-				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>com.jcraft</groupId>
-						<artifactId>jsch</artifactId>
-						<version>${igloo.jsch.version}</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-		</plugins>
 		<pluginManagement>
 			<plugins>
 				<plugin>
