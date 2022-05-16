@@ -2,10 +2,9 @@ package org.iglooproject.test.jpa.junit;
 
 import java.beans.PropertyDescriptor;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EnumType;
@@ -327,8 +326,11 @@ public abstract class AbstractTestCase {
 		listeAutorisee.add(Integer.class);
 		listeAutorisee.add(Float.class);
 		listeAutorisee.add(Date.class);
+		listeAutorisee.add(LocalDateTime.class);
+		listeAutorisee.add(Duration.class);
 		listeAutorisee.add(BigDecimal.class);
 		listeAutorisee.add(Boolean.class);
+		listeAutorisee.add(UUID.class);
 		listeAutorisee.add(int.class);
 		listeAutorisee.add(long.class);
 		listeAutorisee.add(double.class);

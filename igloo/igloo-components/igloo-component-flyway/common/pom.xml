@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>3.5.2</version>
+		<version>4.0.0</version>
 		<relativePath>../../</relativePath>
 	</parent>
 
@@ -17,9 +17,6 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
-			<!-- we set v7 so that upperBound enforcer is not triggered -->
-			<!-- use flyway-7 or flyway-8 artifact in projects-->
-			<version>${igloo.flywaydb7.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -27,5 +24,24 @@
 			<artifactId>guava</artifactId>
 		</dependency>
 	</dependencies>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-commons</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-hibernate</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 </project>

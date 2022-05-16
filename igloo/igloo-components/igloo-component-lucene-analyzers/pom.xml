@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>3.5.2</version>
+		<version>4.0.0</version>
 	</parent>
 
 	<artifactId>igloo-component-lucene-analyzers</artifactId>
@@ -29,26 +29,10 @@
 		<!-- Test dependencies -->
 		
 		<dependency>
-			<groupId>org.iglooproject.dependencies</groupId>
-			<artifactId>igloo-dependency-test</artifactId>
-			<type>pom</type>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.iglooproject.dependencies</groupId>
-			<artifactId>igloo-dependency-core-logging</artifactId>
-			<version>${project.version}</version>
-			<type>pom</type>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.dependencies</groupId>
-			<artifactId>igloo-dependency-core-logging-log4j2</artifactId>
-			<version>${project.version}</version>
-			<type>pom</type>
-			<scope>test</scope>
-		</dependency>
-		
 	</dependencies>
 	
 	<build>
@@ -58,5 +42,24 @@
 			</resource>
 		</resources>
 	</build>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-testing</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-hibernate-search</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	
 </project>

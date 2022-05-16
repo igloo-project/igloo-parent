@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject</groupId>
 		<artifactId>igloo-parent</artifactId>
-		<version>3.5.2</version>
+		<version>4.0.0</version>
 	</parent>
 	
 	<artifactId>igloo</artifactId>
@@ -19,10 +19,8 @@
 	</properties>
 	
 	<modules>
-		<module>igloo-dependencies</module>
 		<module>igloo-parents</module>
 		<module>igloo-components</module>
-		<module>igloo-packages</module>
 		<module>igloo-webjars</module>
 		<module>igloo-integration</module>
 	</modules>

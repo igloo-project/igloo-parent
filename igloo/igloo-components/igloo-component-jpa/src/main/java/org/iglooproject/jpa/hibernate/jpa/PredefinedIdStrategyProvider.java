@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
 import org.hibernate.jpa.spi.IdentifierGeneratorStrategyProvider;
-import org.iglooproject.jpa.business.generic.model.PredefinedIdSequenceGenerator;
+import org.iglooproject.jpa.hibernate.dialect.PredefinedIdSequenceGenerator;
 
 import com.google.common.collect.ImmutableMap;
 /**

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>3.5.2</version>
+		<version>4.0.0</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
@@ -16,16 +16,12 @@
 	<name>Igloo - Components</name>
 
 	<modules>
-		<module>bindgen-functional</module>
+		<module>jpa-test</module>
 		
 		<module>igloo-component-config-test</module>
 		
 		<module>igloo-component-jul-to-slf4j</module>
-		<module>igloo-component-truevfs</module>
-		<module>igloo-component-commons-io</module>
 		
-		<module>igloo-component-commons</module>
-		<module>igloo-component-functional</module>
 		<module>igloo-component-spring</module>
 		<module>igloo-component-spring-bootstrap-config</module>
 		<module>igloo-component-lucene-analyzers</module>
@@ -41,6 +37,8 @@
 		<module>igloo-component-hibernate-configurator-api</module>
 		<module>igloo-component-hibernate-configurator-lucene</module>
 		<module>igloo-component-hibernate-configurator-elasticsearch</module>
+		<module>igloo-hibernate</module>
+		<module>igloo-jpa-model</module>
 		<module>igloo-component-jpa</module>
 		<module>igloo-component-jpa-test</module>
 		
@@ -65,6 +63,14 @@
 		<module>igloo-component-rest-jersey2</module>
 		<module>igloo-component-jpa-migration</module>
 		<module>igloo-component-elasticsearch-plugin</module>
+		
+		<module>storage-api</module>
+		<module>storage-impl</module>
+		<module>storage-model</module>
+		<module>storage-micrometer</module>
+		<module>storage-integration</module>
+		
+		<module>igloo-monitoring-page</module>
 		
 		<module>igloo-spring-autoconfigure</module>
 		

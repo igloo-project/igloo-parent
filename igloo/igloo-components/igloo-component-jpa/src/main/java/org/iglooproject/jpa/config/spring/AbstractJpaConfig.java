@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 import org.apache.lucene.search.BooleanQuery;
 import org.flywaydb.core.Flyway;
+import org.igloo.hibernate.hbm.MetadataRegistryIntegrator;
 import org.iglooproject.flyway.FlywayInitializer;
 import org.iglooproject.flyway.IFlywayConfiguration;
 import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
@@ -18,7 +19,6 @@ import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
 import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
-import org.iglooproject.jpa.hibernate.integrator.spi.MetadataRegistryIntegrator;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.iglooproject.jpa.property.FlywayPropertyIds;
 import org.iglooproject.jpa.search.CoreJpaSearchPackage;

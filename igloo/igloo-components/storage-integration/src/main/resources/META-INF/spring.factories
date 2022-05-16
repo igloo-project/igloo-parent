@@ -1,0 +1,2 @@
+org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration=\
+org.igloo.storage.integration.StorageAutoConfiguration
