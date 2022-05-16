@@ -12,10 +12,6 @@
 	
 	<name>${archetypeFullApplicationName} - Core</name>
 	
-	<properties>
-		<igloo.processors>${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
-	</properties>
-	
 	<dependencies>
 		
 		<!-- Igloo -->
@@ -204,6 +200,9 @@
 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
+				<configuration>
+					<processors>${igloo.processor.querydsl},${igloo.processor.bindgen}</processors>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
