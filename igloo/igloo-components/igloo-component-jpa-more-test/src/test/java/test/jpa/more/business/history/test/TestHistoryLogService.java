@@ -185,12 +185,13 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 		TestHistoryLog log = logs.iterator().next();
 
 		assertThat(log.getId()).isNotNull();
-		
-		assertThat(log.getDate()).isEqualTo(DATE);
+
+		// beware that stored date **can** be a java.sql.Timestamp
+		assertThat(log.getDate().getTime()).isEqualTo(DATE.getTime());
 		assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
 		assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
 		assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
-		assertThat(matchesExpectedDifferences()).isEqualTo(log.getDifferences());
+		assertThat(log.getDifferences(), matchesExpectedDifferences());
 	}
 
 	@Test
