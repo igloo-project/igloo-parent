@@ -171,7 +171,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	}
 
 	protected void addCancelBehavior(AbstractLink link) {
-		link.add(new AttributeModifier("data-dismiss", "modal"));
+		link.add(new AttributeModifier("data-bs-dismiss", "modal"));
 	}
 
 	public void setBootstrapModal(IBootstrapModal bootstrapModal) {
