@@ -157,35 +157,35 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-commons</artifactId>
-				<version>${igloo-commons.version}</version>
+				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-wicket</artifactId>
-				<version>${igloo-commons.version}</version>
+				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-testing</artifactId>
-				<version>${igloo-commons.version}</version>
+				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-spring</artifactId>
-				<version>${igloo-commons.version}</version>
+				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-bindgen</artifactId>
-				<version>${igloo-commons.version}</version>
+				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
