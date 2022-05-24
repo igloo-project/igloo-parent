@@ -6,8 +6,6 @@ import org.iglooproject.sass.service.IScssService;
 
 public interface IWicketModule {
 
-	void addResourceReplacements(CoreWicketApplication application);
-
 	void updateResourceBundles(ResourceBundles resourceBundles);
 
 	void updateResourceSettings(ResourceSettings resourceSettings);

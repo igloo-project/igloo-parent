@@ -29,6 +29,7 @@ import org.apache.wicket.util.resource.IResourceStream;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.fontawesome.CoreFontAwesomeCssScope;
+import org.iglooproject.wicket.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.more.css.scss.service.ICachedScssService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -43,6 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
@@ -180,8 +182,8 @@ public abstract class CoreWicketApplication extends WebApplication {
 	}
 	
 	protected void addResourceReplacements() {
-		modules.stream()
-			.forEach(module -> module.addResourceReplacements(this));
+		addResourceReplacement(org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference.get(), JQueryUIJavaScriptResourceReference.get());
+		addResourceReplacement(org.wicketstuff.wiquery.ui.themes.WiQueryCoreThemeResourceReference.get(), JQueryUiCssResourceReference.get());
 	}
 	
 	protected void updateResourceBundles() {

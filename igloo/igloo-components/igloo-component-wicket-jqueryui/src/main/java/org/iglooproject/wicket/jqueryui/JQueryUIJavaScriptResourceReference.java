@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap4.markup.html.template.js.jqueryui;
+package org.iglooproject.wicket.jqueryui;
 
 import java.util.List;
 

@@ -8,21 +8,13 @@ import org.apache.wicket.settings.ResourceSettings;
 import org.iglooproject.sass.service.IScssService;
 import org.iglooproject.wicket.bootstrap5.console.resources.CoreWicketConsoleResources;
 import org.iglooproject.wicket.bootstrap5.console.template.style.CoreConsoleCssScope;
-import org.iglooproject.wicket.more.application.CoreWicketApplication;
 import org.iglooproject.wicket.more.application.IWicketModule;
 
 public class WicketConsoleModule implements IWicketModule {
 
 	@Override
-	public void addResourceReplacements(CoreWicketApplication application) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void updateResourceBundles(ResourceBundles resourceBundles) {
 		// Nothing
-
 	}
 
 	@Override

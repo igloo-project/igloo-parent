@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap4.markup.html.template.css.jqueryui;
+package org.iglooproject.wicket.jqueryui;
 
 import org.apache.wicket.request.resource.CssResourceReference;
 
