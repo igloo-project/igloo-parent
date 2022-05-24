@@ -8,9 +8,8 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.iglooproject.bootstrap.api.BootstrapModalEvent;
 import org.iglooproject.bootstrap.api.IAjaxModalPopupPanel;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.statement.BootstrapModalEvent;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.statement.BootstrapModalStatement;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.events.EventLabel;
 import org.wicketstuff.wiquery.core.javascript.JsScope;
@@ -75,7 +74,7 @@ public class AjaxModalOpenBehavior extends AjaxEventBehavior {
 		if (onModalComplete != null) {
 			onSuccessStatement.append(onModalComplete.render(true));
 		}
-		onSuccessStatement.append(BootstrapModalStatement.show(modal.getContainer(), modal.getBootstrapModal()).render(true));
+		onSuccessStatement.append(modal.getBootstrapModal().show(modal.getContainer()).render(true));
 		openModalListener.onSuccess(onSuccessStatement.render());
 		
 		

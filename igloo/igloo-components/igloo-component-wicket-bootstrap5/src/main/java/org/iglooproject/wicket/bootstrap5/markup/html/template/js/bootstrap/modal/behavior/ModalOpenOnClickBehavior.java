@@ -3,9 +3,8 @@ package org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.mod
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.iglooproject.bootstrap.api.BootstrapModalEvent;
 import org.iglooproject.bootstrap.api.IModalPopupPanel;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.statement.BootstrapModalEvent;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.statement.BootstrapModalStatement;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryAbstractBehavior;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
@@ -43,7 +42,7 @@ public class ModalOpenOnClickBehavior extends JQueryAbstractBehavior {
 				if (onModalStart != null) {
 					jsStatement.append(onModalStart.render(true));
 				}
-				jsStatement.append(BootstrapModalStatement.show(modal.getContainer(), modal.getBootstrapModal()).render(true));
+				jsStatement.append(modal.getBootstrapModal().show(modal.getContainer()).render(true));
 				if (onModalComplete != null) {
 					jsStatement.append(onModalComplete.render(true));
 				}

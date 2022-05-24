@@ -2,11 +2,13 @@ package org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.mod
 
 import java.io.Serializable;
 
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.iglooproject.bootstrap.api.BootstrapModalBackdrop;
 import org.iglooproject.bootstrap.api.IBootstrapModal;
 import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
-import org.wicketstuff.wiquery.core.options.LiteralOption;
 import org.wicketstuff.wiquery.core.options.Options;
 
 public final class BootstrapModal implements ChainableStatement, Serializable, IBootstrapModal {
@@ -14,9 +16,6 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
 	private static final long serialVersionUID = 7943137804361253044L;
 
 	public static final String BOOTSTRAP_MODAL_CHAIN_LABEL = "modal";
-
-	public static final CharSequence METHOD_SHOW = new LiteralOption("show").getJavascriptOption();
-	public static final CharSequence METHOD_HIDE = new LiteralOption("hide").getJavascriptOption();
 
 	private static final String OPTION_BACKDROP = "backdrop";
 	private static final String OPTION_MODAL_OVERFLOW = "modalOverflow";
@@ -91,6 +90,20 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
 
 	@Override
 	public CharSequence[] statementArgs() {
+		Options options = getOptions();
+		
+		CharSequence[] args;
+		if (method != null) {
+			args = new CharSequence[1];
+			args[0] = method;
+		} else {
+			args = new CharSequence[1];
+			args[0] = options.getJavaScriptOptions();
+		}
+		return args;
+	}
+
+	private Options getOptions() {
 		Options options = new Options();
 		if (backdrop != null) {
 			options.put(OPTION_BACKDROP, backdrop);
@@ -119,16 +132,7 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
 		if (keyboard != null) {
 			options.put(OPTION_KEYBOARD, keyboard);
 		}
-		
-		CharSequence[] args;
-		if (method != null) {
-			args = new CharSequence[1];
-			args[0] = method;
-		} else {
-			args = new CharSequence[1];
-			args[0] = options.getJavaScriptOptions();
-		}
-		return args;
+		return options;
 	}
 
 	public BootstrapModalBackdrop getBackdrop() {
@@ -139,6 +143,30 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
 	public BootstrapModal setBackdrop(BootstrapModalBackdrop backdrop) {
 		this.backdrop = backdrop;
 		return this;
+	}
+
+	@Override
+	public void addCancelBehavior(Component component) {
+		component.add(new AttributeModifier("data-bs-dismiss", "modal"));
+	}
+
+	@Override
+	public JsStatement show(Component modal) {
+		return modalEvent(modal, "show");
+	}
+
+	@Override
+	public JsStatement hide(Component modal) {
+		return modalEvent(modal, "hide");
+	}
+
+	private JsStatement modalEvent(Component modal, String event) {
+		return new JsStatement().append("bootstrapMore.ModalMore.getOrCreateInstance(document.getElementById(" + JsUtils.quotes(modal.getMarkupId()) + "))").chain(event);
+	}
+
+	@Override
+	public JsStatement modal(Component modal) {
+		return new JsStatement().append("new bootstrapMore.ModalMore(document.getElementById(" + JsUtils.quotes(modal.getMarkupId()) + "), " + getOptions().getJavaScriptOptions() + ")");
 	}
 
 	public Boolean getModalOverflow() {
@@ -220,14 +248,6 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
 	public BootstrapModal setKeyboard(Boolean keyboard) {
 		this.keyboard = keyboard;
 		return this;
-	}
-
-	public static final BootstrapModal modal() {
-		return new BootstrapModal(null);
-	}
-
-	public static final BootstrapModal hide() {
-		return new BootstrapModal(METHOD_HIDE);
 	}
 
 }

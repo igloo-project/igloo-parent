@@ -26,8 +26,8 @@ import org.iglooproject.basicapp.web.application.common.validator.UserPasswordVa
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;

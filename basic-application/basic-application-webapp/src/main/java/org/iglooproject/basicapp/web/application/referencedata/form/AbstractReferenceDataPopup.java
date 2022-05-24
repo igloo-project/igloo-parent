@@ -14,8 +14,8 @@ import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceDa
 import org.iglooproject.jpa.more.business.referencedata.service.IGenericReferenceDataService;
 import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;

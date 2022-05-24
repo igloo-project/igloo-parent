@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.component;
+package org.iglooproject.wicket.markup.html.panel;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;

@@ -1,6 +1,5 @@
 package org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.component;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.Markup;
@@ -10,12 +9,11 @@ import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.bootstrap.api.BootstrapModalBackdrop;
+import org.iglooproject.bootstrap.api.BootstrapModalUtils;
 import org.iglooproject.bootstrap.api.IBootstrapModal;
 import org.iglooproject.bootstrap.api.IModalPopupPanel;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.behavior.ModalOpenOnClickBehavior;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.statement.BootstrapModal;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.statement.BootstrapModalStatement;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
@@ -37,6 +35,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 
 	public AbstractModalPopupPanel(String id, IModel<? extends O> model) {
 		super(id, model);
+		bootstrapModal = BootstrapModalUtils.modal();
 		setOutputMarkupId(true);
 		
 		// doit être présent dès le début pour le bon fonctionnement de prepareLink
@@ -167,11 +166,11 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	 * Permet de récupérer le code de fermeture de la popup.
 	 */
 	public JsStatement closeStatement() {
-		return BootstrapModalStatement.hide(getContainer());
+		return getBootstrapModal().hide(getContainer());
 	}
 
 	protected void addCancelBehavior(AbstractLink link) {
-		link.add(new AttributeModifier("data-bs-dismiss", "modal"));
+		getBootstrapModal().addCancelBehavior(link);
 	}
 
 	public void setBootstrapModal(IBootstrapModal bootstrapModal) {
@@ -184,9 +183,6 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	}
 
 	public AbstractModalPopupPanel<O> setStatic() {
-		if (bootstrapModal == null) {
-			bootstrapModal = BootstrapModal.modal();
-		}
 		bootstrapModal.setKeyboard(false);
 		bootstrapModal.setBackdrop(BootstrapModalBackdrop.STATIC);
 		return this;

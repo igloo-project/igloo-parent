@@ -9,8 +9,8 @@ import org.iglooproject.bootstrap.api.BootstrapModalBackdrop;
 import org.iglooproject.bootstrap.api.BootstrapModalUtils;
 import org.iglooproject.bootstrap.api.IBootstrapModal;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.component.AbstractModalPopupPanel;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 

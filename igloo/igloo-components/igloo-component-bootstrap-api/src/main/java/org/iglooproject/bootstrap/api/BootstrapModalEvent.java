@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.statement;
+package org.iglooproject.bootstrap.api;
 
 import org.wicketstuff.wiquery.core.events.EventLabel;
 

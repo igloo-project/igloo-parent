@@ -11,7 +11,7 @@ import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.wicket.api.bindgen.BindingModel;
 import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
+import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
 
 public class BasicReferenceDataPopup<E extends ReferenceData<? super E>> extends AbstractReferenceDataPopup<E> {
 
