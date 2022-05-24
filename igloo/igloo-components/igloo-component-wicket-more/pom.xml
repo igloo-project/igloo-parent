@@ -32,6 +32,16 @@
 			<artifactId>igloo-component-wicket-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-select2</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-fontawesome</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>

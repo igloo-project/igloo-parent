@@ -161,12 +161,12 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
 	}
 
 	private JsStatement modalEvent(Component modal, String event) {
-		return new JsStatement().append("bootstrapMore.ModalMore.getOrCreateInstance(document.getElementById(" + JsUtils.quotes(modal.getMarkupId()) + "))").chain(event);
+		return new JsStatement().append("ModalMore.getOrCreateInstance(document.getElementById(" + JsUtils.quotes(modal.getMarkupId()) + "))").chain(event);
 	}
 
 	@Override
 	public JsStatement modal(Component modal) {
-		return new JsStatement().append("new bootstrapMore.ModalMore(document.getElementById(" + JsUtils.quotes(modal.getMarkupId()) + "), " + getOptions().getJavaScriptOptions() + ")");
+		return new JsStatement().append("new ModalMore(document.getElementById(" + JsUtils.quotes(modal.getMarkupId()) + "), " + getOptions().getJavaScriptOptions() + ")");
 	}
 
 	public Boolean getModalOverflow() {

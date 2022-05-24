@@ -21,19 +21,24 @@ import org.apache.wicket.request.resource.PackageResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
+import org.apache.wicket.resource.JQueryResourceReference;
 import org.apache.wicket.resource.NoOpTextCompressor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
+import org.iglooproject.wicket.fontawesome.CoreFontAwesomeCssScope;
 import org.iglooproject.wicket.more.css.scss.service.ICachedScssService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.head.CoreHeaderItemComparator;
+import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.request.mapper.NoVersionMountedMapper;
 import org.iglooproject.wicket.request.mapper.PageParameterAwareMountedMapper;
 import org.iglooproject.wicket.request.mapper.StaticResourceMapper;
+import org.iglooproject.wicket.select2.Select2JavaScriptResourceReference;
+import org.iglooproject.wicket.select2.Select2MoreJavaScriptResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,15 +165,18 @@ public abstract class CoreWicketApplication extends WebApplication {
 		
 		updateResourceSettings();
 	}
-	
+
 	protected void updateJavaScriptLibrarySettings() {
-		modules.stream()
-			.forEach(module -> module.updateJavaScriptLibrarySettings(getJavaScriptLibrarySettings()));
+		getJavaScriptLibrarySettings().setJQueryReference(JQueryResourceReference.getV3());
 	}
 	
 	protected void updateSelect2ApplicationSettings() {
-		modules.stream()
-			.forEach(module -> module.updateSelect2ApplicationSettings(org.wicketstuff.select2.ApplicationSettings.get()));
+		// Don't include css files from wicketstuff-select2.
+		// We take care of Select2 css file and Select2 Bootstrap scss files on our side.
+		// We also override select2 js file to choose specific version and also fix stuff.
+		org.wicketstuff.select2.ApplicationSettings.get()
+			.setIncludeCss(false)
+			.setJavascriptReferenceFull(Select2JavaScriptResourceReference.get());
 	}
 	
 	protected void addResourceReplacements() {
@@ -177,25 +185,30 @@ public abstract class CoreWicketApplication extends WebApplication {
 	}
 	
 	protected void updateResourceBundles() {
+		getResourceBundles().addJavaScriptBundle(getClass(), "select2-bundle.js",
+			Select2JavaScriptResourceReference.get(),
+			Select2MoreJavaScriptResourceReference.get()
+		);
 		modules.stream()
 			.forEach(module -> module.updateResourceBundles(getResourceBundles()));
 	}
 	
 	protected void mountCommonResources() {
-		modules.stream()
-			.forEach(module -> {
-				for (StaticResourceMapper mapper : module.listStaticResources()) {
-					mount(mapper);
-				}
-			});
+		mount(staticResourceMapper("/common", AbstractWebPageTemplate.class));
+		mount(staticResourceMapper("/font-awesome", CoreFontAwesomeCssScope.class));
+	}
+	
+	private StaticResourceMapper staticResourceMapper(final String path, final Class<?> clazz) {
+		return new StaticResourceMapper("/static" + path, clazz);
 	}
 	
 	protected void mountCommonPages() {
 	}
 	
 	protected void registerImportScopes() {
+		scssService.registerImportScope("core-fa", CoreFontAwesomeCssScope.class);
 		modules.stream()
-			.forEach(module -> module.registerImportScopes());
+			.forEach(module -> module.registerImportScopes(scssService));
 	}
 	
 	protected void updateResourceSettings() {

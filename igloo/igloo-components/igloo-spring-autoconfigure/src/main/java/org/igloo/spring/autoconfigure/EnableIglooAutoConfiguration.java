@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
+import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap5AutoConfiguration;
+import org.igloo.spring.autoconfigure.bootstrap.IglooWicketConsoleAutoConfiguration;
 import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaMoreAutoConfiguration;
@@ -42,6 +44,7 @@ import org.springframework.context.annotation.Import;
  * <li>igloo-ac.application.disabled: {@link IglooApplicationConfigAutoConfiguration}</li>
  * <li>igloo-ac.bootstrap4.disabled: {@link IglooBootstrap4AutoConfiguration}</li>
  * <li>igloo-ac.bootstrap5.disabled: {@link IglooBootstrap5AutoConfiguration}</li>
+ * <li>igloo-ac.console.disabled: {@link IglooWicketConsoleAutoConfiguration}</li>
  * <li>igloo-ac.wicket.disabled: {@link IglooWicketAutoConfiguration}</li>
  * </ul>
  */

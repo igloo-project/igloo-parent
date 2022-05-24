@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "js": "npm-run-all js-compile-*",
-    "js-compile-modal-more": "rollup --environment FILE:modal-more --config ./rollup.config.js --sourcemap"
+    "js-compile-modal-more": "rollup --environment SYMBOL:ModalMore --environment FILE:modal-more --config ./rollup.config.js --sourcemap"
   },
   "author": "",
   "license": "ISC",

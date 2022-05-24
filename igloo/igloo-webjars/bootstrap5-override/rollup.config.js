@@ -3,6 +3,7 @@
 const path = require('path')
 
 let file = process.env.FILE
+let symbol = process.env.SYMBOL
 
 const rollupConfig = {
   input: path.resolve(__dirname, `src/main/js/${file}.js`),
@@ -10,7 +11,7 @@ const rollupConfig = {
     file: path.resolve(__dirname, `target/js/js/dist/${file}.js`),
     format: 'umd',
     generatedCode: 'es2015',
-    name: 'bootstrapMore',
+    name: symbol,
     globals: {
       "@bootstrap": "bootstrap"
     }
