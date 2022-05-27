@@ -4,7 +4,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
-import org.iglooproject.bootstrap.api.BootstrapModalUtils;
+import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
 import org.iglooproject.bootstrap.api.IAjaxModalPopupPanel;
 import org.iglooproject.wicket.api.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.api.condition.Condition;
@@ -34,7 +34,7 @@ public class OneParameterModalOpenAjaxAction<T> implements IOneParameterAjaxActi
 
 	protected IAjaxCallListener getOpenModalCallListener() {
 		AjaxCallListener openModalListener = new AjaxCallListener();
-		openModalListener.onSuccess(BootstrapModalUtils.show(modal.getContainer(), modal.getBootstrapModal()).render(true));
+		openModalListener.onSuccess(modal.getBootstrapModal().show(modal.getContainer()).render(true));
 		return openModalListener;
 	}
 
@@ -44,7 +44,7 @@ public class OneParameterModalOpenAjaxAction<T> implements IOneParameterAjaxActi
 
 	@Override
 	public Condition getActionAvailableCondition(T parameter) {
-		return Condition.visible(BootstrapModalUtils.asComponent(modal));
+		return Condition.visible(BootstrapRequestCycle.getSettings().asComponent(modal));
 	}
 
 	public IAjaxModalPopupPanel getModal() {

@@ -12,7 +12,7 @@ public final class BootstrapModalMoreJavaScriptResourceReference extends Webjars
 	private static final long serialVersionUID = -1442288640907214154L;
 
 	private static final SerializableSupplier2<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
-		BootstrapModalJavaScriptResourceReference.get()
+		Bootstrap4ModalJavaScriptResourceReference.get()
 	);
 
 	private static final BootstrapModalMoreJavaScriptResourceReference INSTANCE = new BootstrapModalMoreJavaScriptResourceReference();

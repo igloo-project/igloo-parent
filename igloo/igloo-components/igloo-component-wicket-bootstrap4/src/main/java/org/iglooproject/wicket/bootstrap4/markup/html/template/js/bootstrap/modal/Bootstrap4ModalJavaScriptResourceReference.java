@@ -8,7 +8,7 @@ import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.util
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.WebjarsJQueryPluginResourceReference;
 import org.iglooproject.wicket.more.webjars.WebjarUtil;
 
-public final class BootstrapModalJavaScriptResourceReference extends WebjarsJQueryPluginResourceReference {
+public final class Bootstrap4ModalJavaScriptResourceReference extends WebjarsJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = -8799742276479282371L;
 
@@ -16,9 +16,9 @@ public final class BootstrapModalJavaScriptResourceReference extends WebjarsJQue
 		BootstrapUtilJavaScriptResourceReference.get()
 	);
 
-	private static final BootstrapModalJavaScriptResourceReference INSTANCE = new BootstrapModalJavaScriptResourceReference();
+	private static final Bootstrap4ModalJavaScriptResourceReference INSTANCE = new Bootstrap4ModalJavaScriptResourceReference();
 
-	private BootstrapModalJavaScriptResourceReference() {
+	private Bootstrap4ModalJavaScriptResourceReference() {
 		super("webjars/bootstrap/current/js/dist/modal.js");
 	}
 
@@ -29,7 +29,7 @@ public final class BootstrapModalJavaScriptResourceReference extends WebjarsJQue
 		return dependencies;
 	}
 
-	public static BootstrapModalJavaScriptResourceReference get() {
+	public static Bootstrap4ModalJavaScriptResourceReference get() {
 		return INSTANCE;
 	}
 

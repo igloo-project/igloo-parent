@@ -37,7 +37,7 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.bootstrap5.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.BootstrapJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipBehavior;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipOptions;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -169,7 +169,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		getApplicationTheme().renderHead(response);
-		response.render(JavaScriptHeaderItem.forReference(BootstrapJavaScriptResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
 	}
 
 	@Override

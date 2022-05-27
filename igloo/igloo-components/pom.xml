@@ -52,6 +52,7 @@
 		<module>igloo-component-sass</module>
 		<module>igloo-component-autoprefixer</module>
 		
+		<module>igloo-component-jquery</module>
 		<module>igloo-component-wicket</module>
 		<module>igloo-component-wicket-select2</module>
 		<module>igloo-component-wicket-fontawesome</module>
@@ -62,6 +63,7 @@
 		<module>igloo-component-wicket-more</module>
 		<module>igloo-component-wicket-more-test</module>
 		<module>igloo-component-bootstrap-api</module>
+		<module>igloo-component-bootstrap-modal</module>
 		<module>igloo-component-wicket-bootstrap4</module>
 		<module>igloo-component-wicket-bootstrap5</module>
 		<module>igloo-component-wicket-more-jqplot</module>

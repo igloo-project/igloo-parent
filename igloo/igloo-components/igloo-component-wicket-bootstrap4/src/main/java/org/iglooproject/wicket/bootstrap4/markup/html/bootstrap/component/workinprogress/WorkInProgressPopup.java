@@ -6,12 +6,12 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.bootstrap.api.BootstrapModalBackdrop;
-import org.iglooproject.bootstrap.api.BootstrapModalUtils;
+import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
 import org.iglooproject.bootstrap.api.IBootstrapModal;
-import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.component.AbstractModalPopupPanel;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
+import org.iglooproject.wicket.modal.AbstractModalPopupPanel;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 public class WorkInProgressPopup extends AbstractModalPopupPanel<String> {
@@ -20,7 +20,7 @@ public class WorkInProgressPopup extends AbstractModalPopupPanel<String> {
 
 	public WorkInProgressPopup(String id, IModel<String> messageModel) {
 		super(id, messageModel);
-		IBootstrapModal options = BootstrapModalUtils.modal();
+		IBootstrapModal options = BootstrapRequestCycle.getSettings().modal();
 		options.setKeyboard(false);
 		options.setBackdrop(BootstrapModalBackdrop.STATIC);
 		setBootstrapModal(options);
@@ -39,9 +39,9 @@ public class WorkInProgressPopup extends AbstractModalPopupPanel<String> {
 	}
 	
 	public void updateAjaxAttributes(AjaxRequestAttributes attributes) {
-		CharSequence hideIfNotRedirecting = doIfNotRedirecting(BootstrapModalUtils.hide(getContainer()));
+		CharSequence hideIfNotRedirecting = doIfNotRedirecting(getBootstrapModal().hide(getContainer()));
 		AjaxCallListener listener = new AjaxCallListener()
-				.onBeforeSend(BootstrapModalUtils.show(getContainer(), getBootstrapModal()).render())
+				.onBeforeSend(getBootstrapModal().show(getContainer()).render())
 				.onComplete(hideIfNotRedirecting);
 		attributes.getAjaxCallListeners().add(listener);
 	}

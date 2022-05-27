@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.wicket.Application;
@@ -26,10 +27,15 @@ import org.apache.wicket.resource.NoOpTextCompressor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.IResourceStream;
+import org.iglooproject.bootstrap.api.BootstrapSettings;
+import org.iglooproject.bootstrap.api.BootstrapVersion;
+import org.iglooproject.bootstrap.api.IBootstrapApplication;
+import org.iglooproject.bootstrap.api.IBootstrapProvider;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.fontawesome.CoreFontAwesomeCssScope;
 import org.iglooproject.wicket.jqueryui.JQueryUiCssResourceReference;
+import org.iglooproject.wicket.jqueryui.JQueryUIJavaScriptResourceReference;
 import org.iglooproject.wicket.more.css.scss.service.ICachedScssService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -44,7 +50,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.wicketstuff.wiquery.ui.JQueryUIJavaScriptResourceReference;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
@@ -52,7 +57,7 @@ import com.google.common.collect.Lists;
 import de.agilecoders.wicket.webjars.WicketWebjars;
 import de.agilecoders.wicket.webjars.settings.WebjarsSettings;
 
-public abstract class CoreWicketApplication extends WebApplication {
+public abstract class CoreWicketApplication extends WebApplication implements IBootstrapApplication {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CoreWicketApplication.class);
 	
@@ -70,6 +75,8 @@ public abstract class CoreWicketApplication extends WebApplication {
 	 */
 	@Autowired(required = false)
 	protected List<IWicketModule> modules = Lists.newArrayList();
+
+	private BootstrapSettings bootstrapSettings;
 
 	/**
 	 * Déclaré au démarrage de l'application ; ne doit pas être modifié par la suite
@@ -94,6 +101,7 @@ public abstract class CoreWicketApplication extends WebApplication {
 	@Override
 	public void init() {
 		super.init();
+		initBootstrap(applicationContext);
 		
 		// handle webjars
 		Stopwatch watch = Stopwatch.createStarted();
@@ -166,6 +174,13 @@ public abstract class CoreWicketApplication extends WebApplication {
 		registerImportScopes();
 		
 		updateResourceSettings();
+	}
+
+	private void initBootstrap(ApplicationContext applicationContext) {
+		Map<String, IBootstrapProvider> providers = applicationContext.getBeansOfType(IBootstrapProvider.class);
+		IBootstrapProvider bootstrap4Provider = providers.values().stream().filter(p -> BootstrapVersion.BOOTSTRAP_4.equals(p.getVersion())).findFirst().orElse(null);
+		IBootstrapProvider bootstrap5Provider = providers.values().stream().filter(p -> BootstrapVersion.BOOTSTRAP_5.equals(p.getVersion())).findFirst().orElse(null);
+		bootstrapSettings = new BootstrapSettings(BootstrapVersion.BOOTSTRAP_5, bootstrap4Provider, bootstrap5Provider);
 	}
 
 	protected void updateJavaScriptLibrarySettings() {
@@ -261,6 +276,11 @@ public abstract class CoreWicketApplication extends WebApplication {
 	@Override
 	public RuntimeConfigurationType getConfigurationType() {
 		return RuntimeConfigurationType.valueOf(propertyService.get(CONFIGURATION_TYPE).toUpperCase(Locale.ROOT));
+	}
+
+	@Override
+	public BootstrapSettings getBootstrapSettings() {
+		return bootstrapSettings;
 	}
 	
 	public final IPageLinkDescriptor getHomePageLinkDescriptor() {

@@ -26,8 +26,8 @@ import org.iglooproject.wicket.bootstrap5.console.maintenance.ehcache.component.
 import org.iglooproject.wicket.bootstrap5.console.maintenance.ehcache.component.ConsoleMaintenanceEhCacheProgressBarPanel;
 import org.iglooproject.wicket.bootstrap5.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.modal.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheInformationModel;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheListModel;
 import org.iglooproject.wicket.more.console.maintenance.ehcache.model.EhCacheCacheManagerListModel;

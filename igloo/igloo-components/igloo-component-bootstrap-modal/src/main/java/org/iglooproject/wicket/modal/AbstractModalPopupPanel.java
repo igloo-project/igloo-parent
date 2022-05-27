@@ -1,26 +1,30 @@
-package org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.component;
+package org.iglooproject.wicket.modal;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.core.util.resource.locator.IResourceStreamLocator;
+import org.apache.wicket.markup.ContainerInfo;
+import org.apache.wicket.markup.IMarkupResourceStreamProvider;
 import org.apache.wicket.markup.Markup;
 import org.apache.wicket.markup.MarkupFactory;
+import org.apache.wicket.markup.MarkupResourceStream;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.resource.IResourceStream;
 import org.iglooproject.bootstrap.api.BootstrapModalBackdrop;
-import org.iglooproject.bootstrap.api.BootstrapModalUtils;
+import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
 import org.iglooproject.bootstrap.api.IBootstrapModal;
 import org.iglooproject.bootstrap.api.IModalPopupPanel;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
-import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.behavior.ModalOpenOnClickBehavior;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
-public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IModalPopupPanel {
+public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> implements IModalPopupPanel, IMarkupResourceStreamProvider {
 
 	private static final long serialVersionUID = -6919950872346297617L;
 
@@ -38,7 +42,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 
 	public AbstractModalPopupPanel(String id, IModel<? extends O> model) {
 		super(id, model);
-		bootstrapModal = BootstrapModalUtils.modal();
+		bootstrapModal = BootstrapRequestCycle.getSettings().modal();
 		setOutputMarkupId(true);
 		
 		// doit être présent dès le début pour le bon fonctionnement de prepareLink
@@ -55,36 +59,6 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 						.add(new AttributeAppender("tabindex", Model.of("-1")))
 						.setOutputMarkupId(true)
 		);
-	}
-
-	/**
-	 * @param link
-	 * @param options - peut être null
-	 */
-	public void prepareLink(final Component link) {
-		link.add(new ModalOpenOnClickBehavior(this) {
-			private static final long serialVersionUID = 7578810529771850911L;
-			
-			@Override
-			public JsStatement onModalStart() {
-				return AbstractModalPopupPanel.this.onModalStart();
-			}
-			
-			@Override
-			public JsStatement onModalComplete() {
-				return AbstractModalPopupPanel.this.onModalComplete();
-			}
-			
-			@Override
-			public JsStatement onModalShow() {
-				return AbstractModalPopupPanel.this.onModalShow();
-			}
-			
-			@Override
-			public JsStatement onModalHide() {
-				return AbstractModalPopupPanel.this.onModalHide();
-			}
-		});
 	}
 
 	@Override
@@ -118,7 +92,24 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	public Markup getAssociatedMarkup() {
 		return MarkupFactory.get().getMarkup(this, AbstractModalPopupPanel.class, false);
 	}
-	
+
+	@Override
+	public IResourceStream getMarkupResourceStream(final MarkupContainer container, Class<?> containerClass) {
+		final IResourceStreamLocator locator = Application.get().getResourceSettings().getResourceStreamLocator();
+		if (AbstractModalPopupPanel.class.equals(containerClass)) {
+			// normal call
+			// markup is provided by current bootstrap registered version
+			Class<?> bootstrapOverrideContainerClass = BootstrapRequestCycle.getSettings().modalMarkupClass();
+			String path = bootstrapOverrideContainerClass.getName().replace('.', '/');
+			IResourceStream resourceStream = locator.locate(bootstrapOverrideContainerClass, path, null, null, null, "html", false);
+			return new MarkupResourceStream(resourceStream, new ContainerInfo(bootstrapOverrideContainerClass, container), bootstrapOverrideContainerClass);
+		} else {
+			// call originating from DelegatedMarkupPanel
+			String path = containerClass.getName().replace('.', '/');
+			IResourceStream resourceStream = locator.locate(containerClass, path, null, null, null, "html", false);
+			return new MarkupResourceStream(resourceStream, new ContainerInfo(containerClass, container), containerClass);
+		}
+	}
 	@Override
 	public String getContainerMarkupId() {
 		return container.getMarkupId();
@@ -133,7 +124,7 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		
-		response.render(JavaScriptHeaderItem.forReference(BootstrapModalJavaScriptResourceReference.get()));
+		BootstrapRequestCycle.getSettings().modalRenderHead(this, response);
 	}
 
 	public IModel<String> getModalCssClassModel() {

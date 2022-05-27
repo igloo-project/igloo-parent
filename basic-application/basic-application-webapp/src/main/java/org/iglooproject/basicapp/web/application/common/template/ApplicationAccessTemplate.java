@@ -7,7 +7,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
@@ -19,9 +18,9 @@ import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenti
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationAccessEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationaccess.ApplicationAccessScssResourceReference;
+import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.BootstrapJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipBehavior;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipOptions;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
@@ -107,7 +106,7 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.render(CssHeaderItem.forReference(ApplicationAccessScssResourceReference.get()));
-		response.render(JavaScriptHeaderItem.forReference(BootstrapJavaScriptResourceReference.get()));
+		BootstrapRequestCycle.getSettings().renderHead(getPage(), response);
 	}
 
 }

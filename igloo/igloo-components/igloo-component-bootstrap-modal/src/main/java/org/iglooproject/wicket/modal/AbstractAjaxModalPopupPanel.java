@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.component;
+package org.iglooproject.wicket.modal;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -8,7 +8,7 @@ import org.apache.wicket.util.visit.IVisit;
 import org.apache.wicket.util.visit.IVisitor;
 import org.iglooproject.bootstrap.api.IAjaxModalPopupPanel;
 import org.iglooproject.bootstrap.api.IAjaxModalShowListener;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
+import org.iglooproject.wicket.feedback.IFeedbackPanel;
 
 public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupPanel<O> implements IAjaxModalPopupPanel {
 
@@ -67,7 +67,7 @@ public abstract class AbstractAjaxModalPopupPanel<O> extends AbstractModalPopupP
 			});
 		}
 		visitChildren(IAjaxModalShowListener.class, new OnShowVisitor<>(target));
-		FeedbackUtils.refreshFeedback(target, getPage());
+		target.addChildren(getPage(), IFeedbackPanel.class);
 	}
 	
 	private class OnShowVisitor<T extends Component & IAjaxModalShowListener> implements IVisitor<T, Void> {

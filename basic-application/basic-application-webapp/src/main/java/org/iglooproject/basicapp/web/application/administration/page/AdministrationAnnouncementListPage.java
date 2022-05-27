@@ -30,7 +30,7 @@ import org.iglooproject.basicapp.web.application.common.renderer.AnnouncementEna
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.api.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.modal.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.action.OneParameterModalOpenAjaxAction;

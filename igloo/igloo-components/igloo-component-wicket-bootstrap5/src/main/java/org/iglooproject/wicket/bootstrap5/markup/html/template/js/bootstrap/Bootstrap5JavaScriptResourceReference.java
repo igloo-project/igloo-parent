@@ -9,7 +9,7 @@ import org.iglooproject.wicket.more.webjars.WebjarUtil;
 
 import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
 
-public final class BootstrapJavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
+public final class Bootstrap5JavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
 
 	private static final long serialVersionUID = 1302122786281225341L;
 
@@ -17,9 +17,9 @@ public final class BootstrapJavaScriptResourceReference extends WebjarsJavaScrip
 		PopperJavaScriptResourceReference.get()
 	);
 
-	private static final BootstrapJavaScriptResourceReference INSTANCE = new BootstrapJavaScriptResourceReference();
+	private static final Bootstrap5JavaScriptResourceReference INSTANCE = new Bootstrap5JavaScriptResourceReference();
 
-	private BootstrapJavaScriptResourceReference() {
+	private Bootstrap5JavaScriptResourceReference() {
 		super("webjars/bootstrap/current/dist/js/bootstrap.js");
 	}
 
@@ -30,7 +30,7 @@ public final class BootstrapJavaScriptResourceReference extends WebjarsJavaScrip
 		return dependencies;
 	}
 
-	public static BootstrapJavaScriptResourceReference get() {
+	public static Bootstrap5JavaScriptResourceReference get() {
 		return INSTANCE;
 	}
 

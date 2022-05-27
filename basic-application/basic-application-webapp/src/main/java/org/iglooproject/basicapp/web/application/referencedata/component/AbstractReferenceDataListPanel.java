@@ -11,7 +11,7 @@ import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.modal.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.html.action.OneParameterModalOpenAjaxAction;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
