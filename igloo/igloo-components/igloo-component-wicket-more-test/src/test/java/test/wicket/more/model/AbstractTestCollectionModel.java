@@ -29,10 +29,6 @@ public abstract class AbstractTestCollectionModel<C extends Collection<?>>
 			}
 		};
 
-	public AbstractTestCollectionModel(Equivalence<? super C> equivalence) {
-		super(equivalence);
-	}
-
 	protected Matcher<C> isEmpty() {
 		return new TypeSafeMatcher<C>() {
 			@Override

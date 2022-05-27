@@ -1,17 +1,18 @@
 package org.iglooproject.test.spring.util;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import org.junit.Test;
-
 import org.iglooproject.spring.util.StringUtils;
+import org.junit.jupiter.api.Test;
 
-public class TestStringUtils {
+class TestStringUtils {
 
 	@Test
-	public void testSplitAsList() {
+	void testSplitAsList() {
 		String str1 = "test1-test2-test3";
 		List<String> list1 = StringUtils.splitAsList(str1, "-");
 		assertEquals("test1", list1.get(0));
@@ -38,7 +39,7 @@ public class TestStringUtils {
 	}
 
 	@Test
-	public void testUrlize() {
+	void testUrlize() {
 		String cleanStr;
 
 		String str_maj = "ABCDEFG";
@@ -71,7 +72,7 @@ public class TestStringUtils {
 	}
 	
 	@Test
-	public void testTagify() {
+	void testTagify() {
 		String cleanStr;
 
 		String str_maj = "ABCDEFG";
@@ -108,7 +109,7 @@ public class TestStringUtils {
 	}
 	
 	@Test
-	public void testClean() {
+	void testClean() {
 		String cleanStr;
 
 		String str_maj = "ABCDEFG";
@@ -145,7 +146,7 @@ public class TestStringUtils {
 	}
 	
 	@Test
-	public void testCleanQuery() {
+	void testCleanQuery() {
 		String cleanStr;
 
 		String str_maj = "ABCDEFG";
@@ -182,7 +183,7 @@ public class TestStringUtils {
 	}
 
 	@Test
-	public void testRemoveAccents() {
+	void testRemoveAccents() {
 		String cleanStr;
 
 		String str1 = "À Á Â Ã Ä Å";
@@ -199,7 +200,7 @@ public class TestStringUtils {
 	}
 	
 	@Test
-	public void testCompare() {
+	void testCompare() {
 		String str1 = "testtest";
 		String str2 = "test test";
 		String str3 = "test test";
@@ -216,7 +217,7 @@ public class TestStringUtils {
 	}
 	
 	@Test
-	public void testNormalizeNewLines() {
+	void testNormalizeNewLines() {
 		String cleanStr;
 		
 		String str1 = "Ceci \r\n est un test d'uniformisation \r des retours \n à la ligne.";

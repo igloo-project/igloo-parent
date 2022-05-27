@@ -2,149 +2,145 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:extend>
-		<div class="content-container">
-			<div class="content-header-section">
-				<div class="content-header-container">
-					<div class="content-header">
-						<div wicket:id="breadCrumb" />
-						
-						<h4 class="content-header-title">
-							<wicket:message key="console.maintenance.task.common.task" />
-						</h4>
-					</div>
+		<div class="content-header-section">
+			<div class="content-header-container">
+				<div class="content-header">
+					<h4 class="content-header-title">
+						<wicket:message key="console.maintenance.task.common.task" />
+					</h4>
 				</div>
 			</div>
-			<div class="content-body-section">
-				<div class="content-body-container">
-					<div class="content-body">
-						<div class="row row-md">
-							<div class="col-md-6">
-								<div class="card card-page">
-									<div class="card-header">
-										<h5 class="card-header-title">
-											<wicket:message key="console.maintenance.task.detail.mainInformation" />
-										</h5>
+		</div>
+		<div class="content-body-section">
+			<div class="content-body-container">
+				<div class="content-body">
+					<div class="row row-md">
+						<div class="col-md-6">
+							<div class="card card-page">
+								<div class="card-header">
+									<h5 class="card-header-title">
+										<wicket:message key="console.maintenance.task.detail.mainInformation" />
+									</h5>
+								</div>
+								<div class="card-body">
+									<div wicket:id="statusContainer" class="alert">
+										<wicket:container wicket:id="status" />
+										<div wicket:id="actionsContainer" class="mt-3">
+											<div class="row row-action">
+												<div wicket:enclosure-component="reload" class="col-auto">
+													<button wicket:id="reload" class="btn btn-danger" type="button">
+														<span class="fa fa-fw fa-redo" />
+														<wicket:message key="console.maintenance.task.detail.mainInformation.reload" />
+													</button>
+												</div>
+												<div wicket:enclosure-component="cancel" class="col-auto">
+													<button wicket:id="cancel" class="btn btn-danger" type="button">
+														<span class="fa fa-fw fa-ban" />
+														<wicket:message key="console.maintenance.task.detail.mainInformation.cancel" />
+													</button>
+												</div>
+											</div>
+										</div>
 									</div>
-									<div class="card-body">
-										<div wicket:id="statusContainer" class="alert">
-											<wicket:container wicket:id="status" />
-											<div wicket:id="actionsContainer" class="mt-3">
-												<div class="row row-action">
-													<div wicket:enclosure-component="reload" class="col-auto">
-														<button wicket:id="reload" class="btn btn-danger" type="button">
-															<span class="fa fa-fw fa-redo" />
-															<wicket:message key="console.maintenance.task.detail.mainInformation.reload" />
-														</button>
+									
+									<div class="row row-description">
+										<div class="col-12">
+											<div class="row row-description-group description-group">
+												<div class="col-md-4">
+													<div class="description-label">
+														<wicket:message key="console.maintenance.task.common.name" />
 													</div>
-													<div wicket:enclosure-component="cancel" class="col-auto">
-														<button wicket:id="cancel" class="btn btn-danger" type="button">
-															<span class="fa fa-fw fa-ban" />
-															<wicket:message key="console.maintenance.task.detail.mainInformation.cancel" />
-														</button>
+												</div>
+												<div class="col-md-8">
+													<div class="description-value">
+														<span wicket:id="name" />
 													</div>
 												</div>
 											</div>
 										</div>
-										
-										<div class="row row-description">
-											<div class="col-12">
-												<div class="row row-description-group description-group">
-													<div class="col-md-4">
-														<div class="description-label">
-															<wicket:message key="console.maintenance.task.common.name" />
-														</div>
+										<div class="col-12">
+											<div class="row row-description-group description-group">
+												<div class="col-md-4">
+													<div class="description-label">
+														<wicket:message key="console.maintenance.task.common.queue" />
 													</div>
-													<div class="col-md-8">
-														<div class="description-value">
-															<span wicket:id="name" />
-														</div>
+												</div>
+												<div class="col-md-8">
+													<div class="description-value">
+														<span wicket:id="queue" />
+														<span wicket:id="defaultQueue"><wicket:message key="console.maintenance.task.common.queue.default" /></span>
 													</div>
 												</div>
 											</div>
-											<div class="col-12">
-												<div class="row row-description-group description-group">
-													<div class="col-md-4">
-														<div class="description-label">
-															<wicket:message key="console.maintenance.task.common.queue" />
-														</div>
+										</div>
+										<div class="col-12">
+											<div class="row row-description-group description-group">
+												<div class="col-md-4">
+													<div class="description-label">
+														<wicket:message key="console.maintenance.task.common.creationDate" />
 													</div>
-													<div class="col-md-8">
-														<div class="description-value">
-															<span wicket:id="queue" />
-															<span wicket:id="defaultQueue"><wicket:message key="console.maintenance.task.common.queue.default" /></span>
-														</div>
+												</div>
+												<div class="col-md-8">
+													<div class="description-value">
+														<span wicket:id="creationDate" />
 													</div>
 												</div>
 											</div>
-											<div class="col-12">
-												<div class="row row-description-group description-group">
-													<div class="col-md-4">
-														<div class="description-label">
-															<wicket:message key="console.maintenance.task.common.creationDate" />
-														</div>
+										</div>
+										<div class="col-12">
+											<div class="row row-description-group description-group">
+												<div class="col-md-4">
+													<div class="description-label">
+														<wicket:message key="console.maintenance.task.common.startDate" />
 													</div>
-													<div class="col-md-8">
-														<div class="description-value">
-															<span wicket:id="creationDate" />
-														</div>
+												</div>
+												<div class="col-md-8">
+													<div class="description-value">
+														<span wicket:id="startDate" />
 													</div>
 												</div>
 											</div>
-											<div class="col-12">
-												<div class="row row-description-group description-group">
-													<div class="col-md-4">
-														<div class="description-label">
-															<wicket:message key="console.maintenance.task.common.startDate" />
-														</div>
+										</div>
+										<div class="col-12">
+											<div class="row row-description-group description-group">
+												<div class="col-md-4">
+													<div class="description-label">
+														<wicket:message key="console.maintenance.task.common.endDate" />
 													</div>
-													<div class="col-md-8">
-														<div class="description-value">
-															<span wicket:id="startDate" />
-														</div>
+												</div>
+												<div class="col-md-8">
+													<div class="description-value">
+														<span wicket:id="endDate" />
 													</div>
 												</div>
 											</div>
-											<div class="col-12">
-												<div class="row row-description-group description-group">
-													<div class="col-md-4">
-														<div class="description-label">
-															<wicket:message key="console.maintenance.task.common.endDate" />
-														</div>
+										</div>
+										<div class="col-12">
+											<div class="row row-description-group description-group">
+												<div class="col-md-4">
+													<div class="description-label">
+														<wicket:message key="console.maintenance.task.common.status" />
 													</div>
-													<div class="col-md-8">
-														<div class="description-value">
-															<span wicket:id="endDate" />
-														</div>
+												</div>
+												<div class="col-md-8">
+													<div class="description-value">
+														<span wicket:id="status" />
+														<span wicket:id="statusPlaceholder" />
 													</div>
 												</div>
 											</div>
-											<div class="col-12">
-												<div class="row row-description-group description-group">
-													<div class="col-md-4">
-														<div class="description-label">
-															<wicket:message key="console.maintenance.task.common.status" />
-														</div>
-													</div>
-													<div class="col-md-8">
-														<div class="description-value">
-															<span wicket:id="status" />
-															<span wicket:id="statusPlaceholder" />
-														</div>
+										</div>
+										<div class="col-12">
+											<div class="row row-description-group description-group">
+												<div class="col-md-4">
+													<div class="description-label">
+														<wicket:message key="console.maintenance.task.common.result" />
 													</div>
 												</div>
-											</div>
-											<div class="col-12">
-												<div class="row row-description-group description-group">
-													<div class="col-md-4">
-														<div class="description-label">
-															<wicket:message key="console.maintenance.task.common.result" />
-														</div>
-													</div>
-													<div class="col-md-8">
-														<div class="description-value">
-															<span wicket:id="result" />
-															<span wicket:id="resultPlaceholder" />
-														</div>
+												<div class="col-md-8">
+													<div class="description-value">
+														<span wicket:id="result" />
+														<span wicket:id="resultPlaceholder" />
 													</div>
 												</div>
 											</div>
@@ -152,33 +148,33 @@
 									</div>
 								</div>
 							</div>
-							
-							<div class="col-md-6">
-								<div class="card card-page">
-									<div class="card-header">
-										<h5 class="card-header-title">
-											<wicket:message key="console.maintenance.task.detail.serializedTask" />
-										</h5>
-									</div>
-									<pre wicket:id="serializedTask" class="card-body bg-light pre-scrollable m-0" />
-								</div>
-							</div>
-							
-							<wicket:enclosure child="stackTrace">
-								<div class="col-12">
-									<div class="card card-danger">
-										<div class="card-header">
-											<h5 class="card-header-title">
-												<wicket:message key="console.maintenance.task.detail.mainInformation.stackTrace" />
-											</h5>
-										</div>
-										<pre wicket:id="stackTrace" class="card-body bg-light pre-scrollable m-0" />
-									</div>
-								</div>
-							</wicket:enclosure>
-							
-							<div wicket:id="batchReport" class="col-12" />
 						</div>
+						
+						<div class="col-md-6">
+							<div class="card card-page">
+								<div class="card-header">
+									<h5 class="card-header-title">
+										<wicket:message key="console.maintenance.task.detail.serializedTask" />
+									</h5>
+								</div>
+								<pre wicket:id="serializedTask" class="card-body bg-light pre-scrollable m-0" />
+							</div>
+						</div>
+						
+						<wicket:enclosure child="stackTrace">
+							<div class="col-12">
+								<div class="card card-danger">
+									<div class="card-header">
+										<h5 class="card-header-title">
+											<wicket:message key="console.maintenance.task.detail.mainInformation.stackTrace" />
+										</h5>
+									</div>
+									<pre wicket:id="stackTrace" class="card-body bg-light pre-scrollable m-0" />
+								</div>
+							</div>
+						</wicket:enclosure>
+						
+						<div wicket:id="batchReport" class="col-12" />
 					</div>
 				</div>
 			</div>

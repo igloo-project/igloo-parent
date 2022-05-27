@@ -6,8 +6,8 @@ import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitia
 import org.iglooproject.spring.notification.service.INotificationBuilderBaseState;
 import org.iglooproject.spring.notification.service.NotificationBuilder;
 import org.iglooproject.test.spring.notification.spring.config.TestConfig;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.verification.VerificationMode;
@@ -18,10 +18,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 @ContextConfiguration(
 		classes = { TestConfig.class },
@@ -31,6 +30,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 		"notification.mail.sender.behavior=EXPLICIT",
 		"notification.mail.from=" + AbstractTestNotification.CONFIG_FROM
 })
+@ExtendWith(SpringExtension.class)
 public abstract class AbstractTestNotification {
 
 	protected static final String CONFIG_FROM = "Example From <from-config@example.com>";
@@ -41,7 +41,7 @@ public abstract class AbstractTestNotification {
 	@Autowired
 	private JavaMailSender javaMailSender;
 
-	@Before
+	@BeforeEach
 	public void resetJavaMailSenderMock() {
 		Mockito.reset(javaMailSender);
 		JavaMailSender real = new JavaMailSenderImpl();

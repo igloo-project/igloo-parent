@@ -1,15 +1,15 @@
 package test.wicket.more.bindable;
 
 import org.apache.wicket.model.IModel;
-import org.junit.Rule;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import test.wicket.more.AbstractWicketMoreTestCase;
 
+@ExtendWith(MockitoExtension.class)
 public abstract class AbstractTestBindableModel extends AbstractWicketMoreTestCase {
 	
 	protected static RootValueBinding rootBinding() {
@@ -23,9 +23,6 @@ public abstract class AbstractTestBindableModel extends AbstractWicketMoreTestCa
 	protected static CollectionPropertyItemValueBinding collectionPropertyItemBinding() {
 		return new CollectionPropertyItemValueBinding();
 	}
-
-	@Rule
-	public MockitoRule rule = MockitoJUnit.rule();
 
 	@Spy
 	protected RootValue rootValue = new RootValue();

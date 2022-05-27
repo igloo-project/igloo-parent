@@ -4,7 +4,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.iglooproject.spring.notification.service.INotificationBuilderBaseState;
 import org.iglooproject.spring.notification.service.NotificationBuilder;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.verification.VerificationMode;
@@ -26,7 +26,7 @@ public abstract class AbstractTestWicketNotification extends AbstractWicketMoreT
 	@Autowired
 	private JavaMailSender javaMailSender;
 
-	@Before
+	@BeforeEach
 	public void resetJavaMailSenderMock() {
 		Mockito.reset(javaMailSender);
 		JavaMailSender real = new JavaMailSenderImpl();

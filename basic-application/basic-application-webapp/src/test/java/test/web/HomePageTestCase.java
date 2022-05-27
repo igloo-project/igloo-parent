@@ -1,6 +1,6 @@
 package test.web;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -20,14 +20,14 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableList;
 
-public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
+class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
-	public void initPage() {
+	void initPage() {
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
 		
@@ -36,7 +36,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void switchLocale() {
+	void switchLocale() {
 		tester.getSession().setLocale(Locale.ENGLISH);
 		tester.startPage(HomePage.class);
 		tester.assertRenderedPage(HomePage.class);
@@ -47,7 +47,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void initPageUserAuthenticated() throws ServiceException, SecurityServiceException {
+	void initPageUserAuthenticated() throws ServiceException, SecurityServiceException {
 		authenticateUser(basicUser);
 		
 		tester.startPage(HomePage.class);
@@ -60,7 +60,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void checkImageAlt() throws ServiceException, SecurityServiceException {
+	void checkImageAlt() throws ServiceException, SecurityServiceException {
 		authenticateUser(basicUser);
 		
 		tester.startPage(HomePage.class);
@@ -71,7 +71,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void sidebarMenuUserAuthenticated() throws ServiceException, SecurityServiceException {
+	void sidebarMenuUserAuthenticated() throws ServiceException, SecurityServiceException {
 		authenticateUser(basicUser);
 		
 		tester.startPage(HomePage.class);
@@ -81,7 +81,7 @@ public class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 	}
 
 	@Test
-	public void sidebarMenuUserAdmin() throws ServiceException, SecurityServiceException {
+	void sidebarMenuUserAdmin() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		tester.startPage(HomePage.class);

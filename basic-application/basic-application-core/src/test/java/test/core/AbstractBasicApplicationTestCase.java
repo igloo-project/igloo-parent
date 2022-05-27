@@ -12,14 +12,15 @@ import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConsta
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 import test.core.config.spring.BasicApplicationCoreTestCommonConfig;
 
 @ContextConfiguration(
-		classes = BasicApplicationCoreTestCommonConfig.class,
-		inheritInitializers = true
+	classes = BasicApplicationCoreTestCommonConfig.class,
+	inheritInitializers = true
 )
 public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase {
 
@@ -44,6 +45,7 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 	@Autowired
 	private IMutablePropertyDao mutablePropertyDao;
 	
+	@BeforeEach
 	@Override
 	public void init() throws ServiceException, SecurityServiceException {
 		super.init();

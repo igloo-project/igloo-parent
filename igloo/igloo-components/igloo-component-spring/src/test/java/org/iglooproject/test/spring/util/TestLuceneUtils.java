@@ -1,6 +1,6 @@
 package org.iglooproject.test.spring.util;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.Term;
@@ -18,12 +18,12 @@ import org.apache.lucene.search.WildcardQuery;
 import org.assertj.core.api.Assertions;
 import org.iglooproject.spring.util.lucene.search.LuceneUtils;
 import org.iglooproject.spring.util.lucene.search.RawLuceneQuery;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class TestLuceneUtils {
+class TestLuceneUtils {
 
 	@Test
-	public void testGetAutocompleteQuery() {
+	void testGetAutocompleteQuery() {
 		assertEquals(null, LuceneUtils.getAutocompleteQuery(null));
 		assertEquals("", LuceneUtils.getAutocompleteQuery(""));
 		
@@ -43,7 +43,7 @@ public class TestLuceneUtils {
 	}
 	
 	@Test
-	public void testGetSimilarityQuery() {
+	void testGetSimilarityQuery() {
 		assertEquals("alfresc~2", LuceneUtils.getSimilarityQuery("alfresc", 2));
 		assertEquals("alfresco~2 sha~2", LuceneUtils.getSimilarityQuery("alfresco-sha", 2));
 		assertEquals("alfresco~2 sha1~2", LuceneUtils.getSimilarityQuery("alfresco-sha1", 2));
@@ -58,7 +58,7 @@ public class TestLuceneUtils {
 	}
 	
 	@Test
-	public void testGetQuery() {
+	void testGetQuery() {
 		assertEquals("elephant de test", LuceneUtils.getQuery("éléphant de test"));
 		assertEquals("elephant de* test*", LuceneUtils.getQuery("éléphant de* test*"));
 		assertEquals("elephant test*", LuceneUtils.getQuery("éléphant * test*"));
@@ -69,7 +69,7 @@ public class TestLuceneUtils {
 	}
 	
 	@Test
-	public void testToFilterRangeQuery() {
+	void testToFilterRangeQuery() {
 		// LAL - changed on 2018.03.06 - throw an exception for min and max == null
 		Assertions.assertThatCode(() -> LuceneUtils.toFilterRangeQuery("number", null, null)).isInstanceOf(IllegalArgumentException.class);
 		assertEquals("number:[* TO 5]", LuceneUtils.toFilterRangeQuery("number", null, 5).toString());
@@ -81,7 +81,7 @@ public class TestLuceneUtils {
 	}
 	
 	@Test
-	public void testBooleanQueryToString() throws ParseException {
+	void testBooleanQueryToString() throws ParseException {
 		BooleanQuery.Builder bq1Builder = new BooleanQuery.Builder();
 		TermQuery queryTerm = new TermQuery(new Term("field1", "text1"));
 		BoostQuery query = new BoostQuery(queryTerm, 2.0f);
@@ -130,7 +130,7 @@ public class TestLuceneUtils {
 	}
 	
 	@Test
-	public void testBooleanQueryWithOneClause() throws ParseException {
+	void testBooleanQueryWithOneClause() throws ParseException {
 		BooleanQuery.Builder bq1Builder = new BooleanQuery.Builder();
 		bq1Builder.add(new TermQuery(new Term("", "text9")), Occur.MUST_NOT);
 		
@@ -146,24 +146,24 @@ public class TestLuceneUtils {
 	}
 	
 	@Test
-	public void testRawLuceneQueryToString() {
+	void testRawLuceneQueryToString() {
 		assertEquals("(field1:\"text1\")", LuceneUtils.queryToString(new RawLuceneQuery("field1:\"text1\"")));
 	}
 	
 	@Test
-	public void testFuzzyQueryToString() {
+	void testFuzzyQueryToString() {
 		assertEquals("field1:text1~1", LuceneUtils.queryToString(new FuzzyQuery(new Term("field1", "text1"), 1)));
 		assertEquals("text2~1", LuceneUtils.queryToString(new FuzzyQuery(new Term("", "text2"), 1)));
 	}
 	
 	@Test
-	public void testPrefixQueryToString() {
+	void testPrefixQueryToString() {
 		assertEquals("field1:prefix1*", LuceneUtils.queryToString(new PrefixQuery(new Term("field1", "prefix1"))));
 		assertEquals("prefix2*", LuceneUtils.queryToString(new PrefixQuery(new Term("", "prefix2"))));
 	}
 	
 	@Test
-	public void testWildcardQueryToString() {
+	void testWildcardQueryToString() {
 		assertEquals("field1:t?xt1", LuceneUtils.queryToString(new WildcardQuery(new Term("field1", "t?xt1"))));
 		assertEquals("t*t2", LuceneUtils.queryToString(new WildcardQuery(new Term("", "t*t2"))));
 		assertEquals("text3", LuceneUtils.queryToString(new WildcardQuery(new Term("", "text3"))));

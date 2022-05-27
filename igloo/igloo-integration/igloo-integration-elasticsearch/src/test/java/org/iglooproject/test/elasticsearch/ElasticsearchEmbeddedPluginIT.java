@@ -23,8 +23,8 @@ import org.apache.http.entity.StringEntity;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.iglooproject.lucene.analysis.french.CoreFrenchMinimalStemFilter;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,7 +44,7 @@ public class ElasticsearchEmbeddedPluginIT {
 
 	private boolean inhibited;
 
-	@Before
+	@BeforeEach
 	public void setUpElastic() throws Exception {
 		FileBasedConfiguration configuration;
 		{
@@ -76,7 +76,7 @@ public class ElasticsearchEmbeddedPluginIT {
 				Collections.singletonList(pluginUrl));
 	}
 
-	@After
+	@AfterEach
 	public void stopElastic() throws IOException {
 		if (runner != null) {
 			runner.stop();

@@ -229,7 +229,7 @@ public class NavbarPanel extends AbstractNavbarPanel {
 						BasicApplicationSession.get().success(getString("authentication.back.success"));
 					} catch (Exception e) {
 						LOGGER.error("Erreur lors de la reconnexion de l'utilisateur.", e);
-						Session.get().error(getString("signIn.error.unknown"));
+						Session.get().error(getString("common.error.unknown"));
 					}
 					throw LoginSuccessPage.linkDescriptor().newRestartResponseException();
 				}

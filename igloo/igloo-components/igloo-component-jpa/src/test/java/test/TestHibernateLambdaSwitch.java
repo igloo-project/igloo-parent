@@ -1,5 +1,6 @@
 package test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 import java.io.Closeable;
@@ -17,24 +18,23 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import org.assertj.core.api.Assertions;
 import org.assertj.core.data.Percentage;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityImplementation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Stopwatch;
 
-public class TestHibernateLambdaSwitch {
+class TestHibernateLambdaSwitch {
 
 	/**
 	 * This method allows to check performance overhead introduced by lambda-implementation of
 	 * {@link GenericEntity#equals(Object)}.
 	 */
 	@Test
-	public void testEqualsSwitch() throws IllegalAccessException, ClassNotFoundException, IOException,
+	void testEqualsSwitch() throws IllegalAccessException, ClassNotFoundException, IOException,
 			NoSuchMethodException, SecurityException {
 		assumeThat(Thread.currentThread().getContextClassLoader()).isInstanceOf(URLClassLoader.class);
 		
@@ -87,14 +87,14 @@ public class TestHibernateLambdaSwitch {
 		
 		// check that timings are either less or within 10% old value
 		try {
-			Assertions.assertThat(newImplementationHibernateTiming).isLessThan(oldImplementationHibernateTiming);
+			assertThat(newImplementationHibernateTiming).isLessThan(oldImplementationHibernateTiming);
 		} catch (AssertionError e) {
-			Assertions.assertThat(newImplementationHibernateTiming).isCloseTo(oldImplementationHibernateTiming, withinPercentage);
+			assertThat(newImplementationHibernateTiming).isCloseTo(oldImplementationHibernateTiming, withinPercentage);
 		}
 		try {
-			Assertions.assertThat(newImplementationSimpleTiming).isLessThan(oldImplementationSimpleTiming);
+			assertThat(newImplementationSimpleTiming).isLessThan(oldImplementationSimpleTiming);
 		} catch (AssertionError e) {
-			Assertions.assertThat(newImplementationSimpleTiming).isCloseTo(oldImplementationSimpleTiming, withinPercentage);
+			assertThat(newImplementationSimpleTiming).isCloseTo(oldImplementationSimpleTiming, withinPercentage);
 		}
 	}
 

@@ -1,23 +1,23 @@
 package test.jpa.more.business.property;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.iglooproject.spring.property.dao.IImmutablePropertyDao;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import test.jpa.more.business.AbstractJpaMoreTestCase;
 
-import org.iglooproject.spring.property.dao.IImmutablePropertyDao;
-
-public class TestImmutablePropertyDao extends AbstractJpaMoreTestCase {
+class TestImmutablePropertyDao extends AbstractJpaMoreTestCase {
 
 	@Autowired
 	private IImmutablePropertyDao immutablePropertyDao;
 
 	@Test
-	public void immutableProperty() {
-		Assert.assertEquals("MyValue", immutablePropertyDao.get("property.string.value"));
-		Assert.assertEquals("1", immutablePropertyDao.get("property.long.value"));
-		Assert.assertEquals(null, immutablePropertyDao.get("property.long.value2"));
+	void immutableProperty() {
+		assertEquals("MyValue", immutablePropertyDao.get("property.string.value"));
+		assertEquals("1", immutablePropertyDao.get("property.long.value"));
+		assertEquals(null, immutablePropertyDao.get("property.long.value2"));
 	}
 
 }

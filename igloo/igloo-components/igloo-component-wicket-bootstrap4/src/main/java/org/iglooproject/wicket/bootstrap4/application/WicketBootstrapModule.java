@@ -9,7 +9,7 @@ import org.iglooproject.sass.service.IScssService;
 import org.iglooproject.wicket.bootstrap4.console.resources.CoreWicketConsoleResources;
 import org.iglooproject.wicket.bootstrap4.console.template.style.CoreConsoleCssScope;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.bootstrap.CoreBootstrap4CssScope;
-import org.iglooproject.wicket.bootstrap4.markup.html.template.css.fontawesome.CoreFontAwesome5CssScope;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.css.fontawesome.CoreFontAwesomeCssScope;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.BootstrapModalJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.BootstrapModalMoreJavaScriptResourceReference;
@@ -67,7 +67,7 @@ public class WicketBootstrapModule implements IWicketModule {
 	public List<StaticResourceMapper> listStaticResources() {
 		return ImmutableList.of(
 			staticResourceMapper("/common", AbstractWebPageTemplate.class),
-			staticResourceMapper("/font-awesome", CoreFontAwesome5CssScope.class)
+			staticResourceMapper("/font-awesome", CoreFontAwesomeCssScope.class)
 		);
 	}
 
@@ -84,7 +84,7 @@ public class WicketBootstrapModule implements IWicketModule {
 	@Override
 	public void registerImportScopes() {
 		scssService.registerImportScope("core-bs4", CoreBootstrap4CssScope.class);
-		scssService.registerImportScope("core-fa", CoreFontAwesome5CssScope.class);
+		scssService.registerImportScope("core-fa", CoreFontAwesomeCssScope.class);
 		scssService.registerImportScope("core-console", CoreConsoleCssScope.class);
 	}
 

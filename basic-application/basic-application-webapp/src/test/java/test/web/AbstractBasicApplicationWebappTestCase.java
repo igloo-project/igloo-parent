@@ -23,11 +23,13 @@ import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConsta
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.test.wicket.core.AbstractWicketTestCase;
 import org.iglooproject.wicket.more.AbstractCoreSession;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -35,6 +37,7 @@ import test.web.config.spring.BasicApplicationWebappTestCommonConfig;
 
 @ContextConfiguration(classes = BasicApplicationWebappTestCommonConfig.class)
 @TestPropertySource(properties = "igloo.profile=test")
+@ExtendWith(SpringExtension.class)
 public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWicketTestCase<BasicApplicationWicketTester> {
 
 	protected static final String USER_PASSWORD = "USER_PASSWORD";
@@ -71,7 +74,7 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 	@Autowired
 	private WebApplication application;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws ServiceException, SecurityServiceException {
 		initAuthorities();
 		initUserGroups();

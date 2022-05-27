@@ -1,6 +1,6 @@
 package test.web;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.feedback.ExactLevelFeedbackMessageFilter;
@@ -11,15 +11,15 @@ import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 @EnableWebSecurity
-public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
+class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
-	public void initPage() throws ServiceException, SecurityServiceException {
+	void initPage() throws ServiceException, SecurityServiceException {
 		authenticateUser(basicUser);
 		
 		tester.startPage(ProfilePage.class);
@@ -27,7 +27,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 	}
 
 	@Test
-	public void updatePasswordPanelComponents() throws ServiceException, SecurityServiceException {
+	void updatePasswordPanelComponents() throws ServiceException, SecurityServiceException {
 		authenticateUser(basicUser);
 		
 		tester.startPage(ProfilePage.class);
@@ -65,7 +65,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 	}
 
 	@Test
-	public void updatePasswordFormMissingRequiredFields() throws ServiceException, SecurityServiceException {
+	void updatePasswordFormMissingRequiredFields() throws ServiceException, SecurityServiceException {
 		authenticateUser(basicUser);
 		
 		tester.startPage(ProfilePage.class);
@@ -85,7 +85,7 @@ public class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase 
 	}
 
 	@Test
-	public void updatePasswordFormSuccess() throws ServiceException, SecurityServiceException {
+	void updatePasswordFormSuccess() throws ServiceException, SecurityServiceException {
 		authenticateUser(basicUser);
 		
 		tester.startPage(ProfilePage.class);

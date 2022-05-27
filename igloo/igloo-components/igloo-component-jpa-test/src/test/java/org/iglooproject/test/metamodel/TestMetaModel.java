@@ -1,5 +1,10 @@
 package org.iglooproject.test.metamodel;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -32,16 +37,14 @@ import org.iglooproject.test.config.spring.JpaTestConfig;
 import org.iglooproject.test.jpa.junit.AbstractMetaModelTestCase;
 import org.iglooproject.test.jpa.util.jdbc.model.JdbcDatabaseMetaDataConstants;
 import org.iglooproject.test.jpa.util.jdbc.model.JdbcRelation;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 import com.google.common.collect.Lists;
 
 @ContextConfiguration(classes = JpaTestConfig.class, initializers = ExtendedTestApplicationContextInitializer.class)
-public class TestMetaModel extends AbstractMetaModelTestCase {
+class TestMetaModel extends AbstractMetaModelTestCase {
 
 	@Autowired
 	private IPropertyService propertyService;
@@ -55,18 +58,18 @@ public class TestMetaModel extends AbstractMetaModelTestCase {
 	 * <p>This method use Hibernate metadata extraction.</p>
 	 */
 	@Test
-	public void testTablesAndSequencesHibernate() {
+	void testTablesAndSequencesHibernate() {
 		String expectedTableName = Person.class.getSimpleName(); // person
 		String expectedSequenceName = expectedTableName + "_id_seq"; // person_id_seq
 		Identifier expectedTableNameIdentifier = metadataRegistryIntegrator.getMetadata().getDatabase().toIdentifier(expectedTableName);
 		Identifier expectedSequenceNameIdentifier = metadataRegistryIntegrator.getMetadata().getDatabase().toIdentifier(expectedSequenceName);
 
 		TableInformation table = getTableInformation(configurationProvider.getDefaultSchema(), expectedTableName);
-		Assert.assertEquals(expectedTableNameIdentifier, table.getName().getTableName());
+		assertEquals(expectedTableNameIdentifier, table.getName().getTableName());
 
 		SequenceInformation sequence = getSequenceInformation(configurationProvider.getDefaultSchema(),
 				expectedSequenceName);
-		Assert.assertEquals(expectedSequenceNameIdentifier, sequence.getSequenceName().getSequenceName());
+		assertEquals(expectedSequenceNameIdentifier, sequence.getSequenceName().getSequenceName());
 	}
 	
 	/**
@@ -78,15 +81,15 @@ public class TestMetaModel extends AbstractMetaModelTestCase {
 	 * <p>This method use jdbc metadata extraction. Currently work only with <b>PostgreSQL</b>.</p>
 	 */
 	@Test
-	public void testTablesAndSequencesJdbc() {
+	void testTablesAndSequencesJdbc() {
 		EntityManager entityManager = entityManagerUtils.getEntityManager();
 		
 		((Session) entityManager.getDelegate()).doWork(new Work() {
 			@Override
 			public void execute(Connection connection) throws SQLException {
 				// table and sequence information extraction only implemented for postgresql
-				Assume.assumeTrue(DbTypeConstants.FAMILY_POSTGRESQL.contains(propertyService.getAsString(SpringPropertyIds.DB_TYPE)));
-				Assume.assumeFalse(connection.getMetaData().getDatabaseProductName().toLowerCase().equals("h2"));
+				assumeTrue(DbTypeConstants.FAMILY_POSTGRESQL.contains(propertyService.getAsString(SpringPropertyIds.DB_TYPE)));
+				assumeFalse(connection.getMetaData().getDatabaseProductName().toLowerCase().equals("h2"));
 				
 				// result is schema.table
 				String qualifiedName = ((AbstractEntityPersister) ((MetamodelImplementor) entityManager.getMetamodel()).entityPersister(Person.class)).getTableName();
@@ -101,20 +104,20 @@ public class TestMetaModel extends AbstractMetaModelTestCase {
 				String expectedSequenceName = expectedTableName + "_id_seq"; // person_id_seq
 				JdbcRelation table = getRelation(connection, tableSchema,
 						expectedTableName, JdbcDatabaseMetaDataConstants.REL_TYPE_TABLE);
-				Assert.assertEquals(expectedTableName.toLowerCase(), table.getTable_name().toLowerCase());
+				assertEquals(expectedTableName.toLowerCase(), table.getTable_name().toLowerCase());
 				
 				JdbcRelation sequence = getRelation(connection, tableSchema,
 						expectedSequenceName, JdbcDatabaseMetaDataConstants.REL_TYPE_SEQUENCE);
-				Assert.assertEquals(expectedSequenceName.toLowerCase(), sequence.getTable_name().toLowerCase());
+				assertEquals(expectedSequenceName.toLowerCase(), sequence.getTable_name().toLowerCase());
 			}
 		});
 	}
 
 	@Test
-	public void testMetaModel() throws NoSuchFieldException, SecurityException {
+	void testMetaModel() throws NoSuchFieldException, SecurityException {
 		try {
 			super.testMetaModel();
-			Assert.fail("");
+			fail("");
 		} catch (IllegalStateException e) {
 			
 		}
@@ -125,7 +128,7 @@ public class TestMetaModel extends AbstractMetaModelTestCase {
 		try {
 			List<Class<?>> classes = Lists.newArrayList();
 			super.testMetaModel(otherPersonAttribute, classes);
-			Assert.fail("");
+			fail("");
 		} catch (IllegalStateException e) {
 			// on n'autorise pas le lien vers un objet de type inconnu (car va être sérialisé en base)
 		}
@@ -141,7 +144,7 @@ public class TestMetaModel extends AbstractMetaModelTestCase {
 			Attribute<?, ?> enumerationAttribute = personEntityType.getAttribute(QPerson.person.enumeration.getMetadata().getName());
 			List<Class<?>> classes = Lists.newArrayList();
 			super.testMetaModel(enumerationAttribute, classes);
-			Assert.fail("");
+			fail("");
 		} catch (IllegalStateException e) {
 			// on n'autorise pas le lien vers une énumération ordinale
 		}
@@ -158,7 +161,7 @@ public class TestMetaModel extends AbstractMetaModelTestCase {
 			Attribute<?, ?> enumerationListAttribute = personEntityType.getAttribute(QPerson.person.enumList.getMetadata().getName());
 			List<Class<?>> classes = Lists.newArrayList();
 			super.testMetaModel(enumerationListAttribute, classes);
-			Assert.fail("");
+			fail("");
 		} catch (IllegalStateException e) {
 			// on n'autorise pas le lien vers une liste d'énumération ordinale
 		}
@@ -175,7 +178,7 @@ public class TestMetaModel extends AbstractMetaModelTestCase {
 			Attribute<?, ?> enumerationMapAttribute = personEntityType.getAttribute(QPerson.person.enumMap.getMetadata().getName());
 			List<Class<?>> classes = Lists.newArrayList();
 			super.testMetaModel(enumerationMapAttribute, classes);
-			Assert.fail("");
+			fail("");
 		} catch (IllegalStateException e) {
 			// on n'autorise pas le lien vers une énumération ordinale
 		}
@@ -192,7 +195,7 @@ public class TestMetaModel extends AbstractMetaModelTestCase {
 			Attribute<?, ?> enumerationMapValueAttribute = personEntityType.getAttribute(QPerson.person.enumMapValue.getMetadata().getName());
 			List<Class<?>> classes = Lists.newArrayList();
 			super.testMetaModel(enumerationMapValueAttribute, classes);
-			Assert.fail("");
+			fail("");
 		} catch (IllegalStateException e) {
 			// on n'autorise pas le lien vers une énumération ordinale
 		}

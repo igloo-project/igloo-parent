@@ -1,6 +1,8 @@
 package org.iglooproject.imports.excel.test.poi;
 
-import static org.junit.Assert.assertEquals;
+
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.InputStream;
 import java.util.Calendar;
@@ -10,14 +12,14 @@ import java.util.List;
 import org.apache.commons.lang3.time.DateUtils;
 import org.iglooproject.imports.table.common.event.exception.TableImportException;
 import org.javatuples.Quartet;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableList;
 
-public class ApachePoiExcelImportTest {
+class ApachePoiExcelImportTest {
 	
 	@Test
-	public void testSuccess() throws TableImportException {
+	void testSuccess() throws TableImportException {
 		InputStream stream = ApachePoiExcelImportTest.class.getResourceAsStream("/wellFormattedFile.xlsx");
 		TestApachePoiExcelImporter importer = new TestApachePoiExcelImporter();
 		List<Quartet<Date, Boolean, String, Integer>> results = importer.doImport(stream, "wellFormattedFile.xlsx");
@@ -52,7 +54,7 @@ public class ApachePoiExcelImportTest {
 			Quartet<Date, Boolean, String, Integer> expectedResult, Quartet<Date, Boolean, String, Integer> actualResult) {
 		Object expectedValue = expectedResult.getValue(valueIndex);
 		Object actualValue = actualResult.getValue(valueIndex);
-		assertEquals("Wrong " + valueName + " at row " + (rowIndex+2), expectedValue, actualValue);
+		assertEquals(expectedValue, actualValue, "Wrong " + valueName + " at row " + (rowIndex+2));
 	}
 
 	private Quartet<Date, Boolean, String, Integer> newResult(Date date, Boolean bool, String string, Integer integer) {

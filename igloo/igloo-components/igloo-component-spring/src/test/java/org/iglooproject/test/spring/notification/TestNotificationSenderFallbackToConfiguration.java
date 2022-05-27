@@ -6,13 +6,13 @@ import javax.mail.internet.MimeMessage;
 
 import org.assertj.core.api.Assertions;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.test.context.TestPropertySource;
 
 @TestPropertySource(properties = {
-		"notification.mail.sender.behavior=FALLBACK_TO_CONFIGURATION",
-		"notification.mail.sender=" + TestNotificationSenderFallbackToConfiguration.CONFIG_SENDER
+	"notification.mail.sender.behavior=FALLBACK_TO_CONFIGURATION",
+	"notification.mail.sender=" + TestNotificationSenderFallbackToConfiguration.CONFIG_SENDER
 })
 public class TestNotificationSenderFallbackToConfiguration extends AbstractTestNotification {
 

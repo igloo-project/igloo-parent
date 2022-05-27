@@ -1,33 +1,34 @@
 package org.iglooproject.test;
 
-import org.iglooproject.lucene.analysis.french.CoreFrenchMinimalStemmer;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestCoreFrenchMinimalStemmer {
+import org.iglooproject.lucene.analysis.french.CoreFrenchMinimalStemmer;
+import org.junit.jupiter.api.Test;
+
+class TestCoreFrenchMinimalStemmer {
 	
 	private static final CoreFrenchMinimalStemmer STEMMER = new CoreFrenchMinimalStemmer();
 	
 	@Test
-	public void testStem() {
-		Assert.assertEquals("stag", stem("stage"));
-		Assert.assertEquals("stag", stem("stages"));
+	void testStem() {
+		assertEquals("stag", stem("stage"));
+		assertEquals("stag", stem("stages"));
 		
-		Assert.assertEquals("cree", stem("creer"));
+		assertEquals("cree", stem("creer"));
 		
-		Assert.assertEquals("noir", stem("noir"));
-		Assert.assertEquals("noir", stem("noire"));
-		Assert.assertEquals("noir", stem("noires"));
-		Assert.assertEquals("noir", stem("noirs"));
+		assertEquals("noir", stem("noir"));
+		assertEquals("noir", stem("noire"));
+		assertEquals("noir", stem("noires"));
+		assertEquals("noir", stem("noirs"));
 		
-		Assert.assertEquals("cheval", stem("cheval"));
-		Assert.assertEquals("cheval", stem("chevaux"));
+		assertEquals("cheval", stem("cheval"));
+		assertEquals("cheval", stem("chevaux"));
 		
-		Assert.assertEquals("chapeau", stem("chapeau"));
-		Assert.assertEquals("chapeau", stem("chapeaux"));
+		assertEquals("chapeau", stem("chapeau"));
+		assertEquals("chapeau", stem("chapeaux"));
 		
-		Assert.assertEquals("kit", stem("kits"));
-		Assert.assertEquals("kit", stem("kit"));
+		assertEquals("kit", stem("kits"));
+		assertEquals("kit", stem("kit"));
 	}
 	
 	public String stem(String word) {

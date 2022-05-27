@@ -1,9 +1,8 @@
 package test.wicket.more.model;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
 import java.util.Set;
@@ -12,7 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.wicket.model.IModel;
-import org.junit.Test;
+import org.iglooproject.functional.SerializableSupplier2;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Equivalence;
@@ -47,52 +48,52 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	public AbstractTestGenericEntityCollectionModel(Equivalence<? super C> equivalence) {
-		super(equivalence);
-	}
+	protected abstract IModel<C> createModel(SerializableSupplier2<? extends C> collectionSupplier);
 	
-	protected abstract IModel<C> createModel();
+	protected abstract C createCollection(SerializableSupplier2<? extends C> collectionSupplier, Person ... person);
 	
-	protected abstract C createCollection(Person ... person);
+	protected abstract C clone(SerializableSupplier2<? extends C> collectionSupplier, C collection);
 	
-	protected abstract C clone(C collection);
-	
-	@Test
-	public void testNotAttached() {
-		IModel<C> model = createModel();
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testNotAttached(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) {
+		IModel<C> model = createModel(collectionSupplier);
 		assertThat(model.getObject(), isEmpty());
 		model = serializeAndDeserialize(model);
 		assertThat(model.getObject(), isEmpty());
 	}
-	
-	@Test
-	public void testAttachedNull() {
-		IModel<C> model = createModel();
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testAttachedNull(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) {
+		IModel<C> model = createModel(collectionSupplier);
 		model.setObject(null);
 		assertThat(model.getObject(), isEmpty());
 		model = serializeAndDeserialize(model);
 		assertThat(model.getObject(), isEmpty());
 	}
-	
-	@Test
-	public void testAttachedWhenTransient() {
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testAttachedWhenTransient(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
-		C collection = createCollection(person1, person2);
+		C collection = createCollection(collectionSupplier, person1, person2);
 		
-		IModel<C> model = createModel();
-		model.setObject(clone(collection));
-		assertThat(model.getObject(), isEquivalent(collection));
+		IModel<C> model = createModel(collectionSupplier);
+		model.setObject(clone(collectionSupplier, collection));
+		assertThat(model.getObject(), isEquivalent(equivalence, collection));
 		
 		model = serializeAndDeserialize(model);
 		C modelObject = model.getObject();
-		assertNotNull(modelObject);
-		assertEquals(collection.size(), modelObject.size());
-		assertThat(modelObject, not(isEquivalent(collection)));
+		assertThat(modelObject).isNotNull();
+		assertThat(modelObject).hasSameSizeAs(collection);
+		assertThat(modelObject, not(isEquivalent(equivalence, collection)));
 	}
-	
-	@Test
-	public void testAttachedWhenPersisted() throws Exception {
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testAttachedWhenPersisted(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) throws Exception {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
 		personService.create(person1);
@@ -100,33 +101,34 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		personService.create(person2);
 		assertThat(person2, isAttachedToSession());
 		
-		C collection = createCollection(person1, person2);
+		C collection = createCollection(collectionSupplier, person1, person2);
 		
-		IModel<C> model = createModel();
-		model.setObject(clone(collection));
-		assertThat(model.getObject(), isEquivalent(collection));
+		IModel<C> model = createModel(collectionSupplier);
+		model.setObject(clone(collectionSupplier, collection));
+		assertThat(model.getObject(), isEquivalent(equivalence, collection));
 		for (Person p : model.getObject()) {
 			assertThat(p, isAttachedToSession());
 		}
 		
 		model = serializeAndDeserialize(model);
 		C modelObject = model.getObject();
-		assertThat(modelObject, isEquivalent(collection));
+		assertThat(modelObject, isEquivalent(equivalence, collection));
 		
 		for (Person p : modelObject) {
 			assertThat(p, isAttachedToSession());
 		}
 	}
-	
-	@Test
-	public void testAttachedWhenTransientAndDetachedWhenPersisted() throws Exception {
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testAttachedWhenTransientAndDetachedWhenPersisted(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) throws Exception {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
-		C collection = createCollection(person1, person2);
+		C collection = createCollection(collectionSupplier, person1, person2);
 		
-		IModel<C> model = createModel();
-		model.setObject(clone(collection));
-		assertThat(model.getObject(), isEquivalent(collection));
+		IModel<C> model = createModel(collectionSupplier);
+		model.setObject(clone(collectionSupplier, collection));
+		assertThat(model.getObject(), isEquivalent(equivalence, collection));
 		
 		personService.create(person1);
 		assertThat(person1, isAttachedToSession());
@@ -138,15 +140,16 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		
 		model = serializeAndDeserialize(model);
 		C modelObject = model.getObject();
-		assertThat(modelObject, isEquivalent(collection));
+		assertThat(modelObject, isEquivalent(equivalence, collection));
 		
 		for (Person p : modelObject) {
 			assertThat(p, isAttachedToSession());
 		}
 	}
-	
-	@Test
-	public void testAttachedWhenPersistedAndDetachedWhenTransient() throws Exception {
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testAttachedWhenPersistedAndDetachedWhenTransient(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) throws Exception {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
 		personService.create(person1);
@@ -154,11 +157,11 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		personService.create(person2);
 		assertThat(person2, isAttachedToSession());
 		
-		C collection = createCollection(person1, person2);
+		C collection = createCollection(collectionSupplier, person1, person2);
 		
-		IModel<C> model = createModel();
-		model.setObject(clone(collection));
-		assertThat(model.getObject(), isEquivalent(collection));
+		IModel<C> model = createModel(collectionSupplier);
+		model.setObject(clone(collectionSupplier, collection));
+		assertThat(model.getObject(), isEquivalent(equivalence, collection));
 		for (Person p : model.getObject()) {
 			assertThat(p, isAttachedToSession());
 		}
@@ -167,38 +170,40 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 		
 		model = serializeAndDeserialize(model);
 		C modelObject = model.getObject();
-		C expected = createCollection(null, person2);
-		assertThat(modelObject, isEquivalent(expected));
+		C expected = createCollection(collectionSupplier, null, person2);
+		assertThat(modelObject, isEquivalent(equivalence, expected));
 	}
-	
-	@Test
-	public void testCollectionCopy() throws Exception {
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testCollectionCopy(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) throws Exception {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
 		personService.create(person1);
 		assertThat(person1, isAttachedToSession());
 		
-		C collection = createCollection(person1, person2);
+		C collection = createCollection(collectionSupplier, person1, person2);
 		
-		IModel<C> model = createModel();
-		C collectionSetOnModel = clone(collection);
+		IModel<C> model = createModel(collectionSupplier);
+		C collectionSetOnModel = clone(collectionSupplier, collection);
 		model.setObject(collectionSetOnModel);
-		assertThat(model.getObject(), isEquivalent(collection));
+		assertThat(model.getObject(), isEquivalent(equivalence, collection));
 		
 		Person person3 = new Person("John3", "Doe3");
 		collectionSetOnModel.add(person3);
-		assertThat(model.getObject(), isEquivalent(collection));
+		assertThat(model.getObject(), isEquivalent(equivalence, collection));
 	}
-	
-	@Test
-	public void testDetachedWhenTransientThenDetachedWhenPersisted() throws Exception {
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testDetachedWhenTransientThenDetachedWhenPersisted(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) throws Exception {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
-		C collection = createCollection(person1, person2);
+		C collection = createCollection(collectionSupplier, person1, person2);
 		
-		IModel<C> model = createModel();
-		model.setObject(clone(collection));
-		assertThat(model.getObject(), isEquivalent(collection));
+		IModel<C> model = createModel(collectionSupplier);
+		model.setObject(clone(collectionSupplier, collection));
+		assertThat(model.getObject(), isEquivalent(equivalence, collection));
 		
 		personService.create(person1);
 		assertThat(person1, isAttachedToSession());
@@ -210,55 +215,57 @@ public abstract class AbstractTestGenericEntityCollectionModel<C extends Collect
 
 		model = serializeAndDeserialize(model); // Includes a second detach()
 		C modelObject = model.getObject();
-		assertThat(modelObject, isEquivalent(collection));
+		assertThat(modelObject, isEquivalent(equivalence, collection));
 		
 		for (Person p : modelObject) {
 			assertThat(p, isAttachedToSession());
 		}
 	}
-	
-	@Test
-	public void testCollectionGetObjectAdd() throws Exception {
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testCollectionGetObjectAdd(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) throws Exception {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
 		personService.create(person1);
 		assertThat(person1, isAttachedToSession());
 		
-		IModel<C> model = createModel();
-		C collectionSetOnModel = createCollection(person1, person2);
+		IModel<C> model = createModel(collectionSupplier);
+		C collectionSetOnModel = createCollection(collectionSupplier, person1, person2);
 		model.setObject(collectionSetOnModel);
 		C modelObject = model.getObject();
 		
 		Person person3 = new Person("John3", "Doe3");
 		modelObject.add(person3);
-		assertThat(model.getObject(), isEquivalent(createCollection(person1, person2, person3)));
+		assertThat(model.getObject(), isEquivalent(equivalence, createCollection(collectionSupplier, person1, person2, person3)));
 		
 		model = serializeAndDeserialize(model);
 		modelObject = model.getObject();
-		assertNotNull(modelObject);
-		assertEquals(3, modelObject.size());
+		assertThat(modelObject).isNotNull();
+		assertThat(modelObject).hasSize(3);
 	}
-	
-	@Test
-	public void testCollectionGetObjectRemove() throws Exception {
+
+	@ParameterizedTest(name = "{index}: collectionSupplier={0}, equivalence={1}")
+	@MethodSource("data")
+	public void testCollectionGetObjectRemove(SerializableSupplier2<? extends C> collectionSupplier, Equivalence<? super C> equivalence) throws Exception {
 		Person person1 = new Person("John", "Doe");
 		Person person2 = new Person("John2", "Doe2");
 		personService.create(person1);
 		assertThat(person1, isAttachedToSession());
 		
-		IModel<C> model = createModel();
-		C collectionSetOnModel = createCollection(person1, person2);
+		IModel<C> model = createModel(collectionSupplier);
+		C collectionSetOnModel = createCollection(collectionSupplier, person1, person2);
 		model.setObject(collectionSetOnModel);
 		C modelObject = model.getObject();
 		
 		modelObject.remove(person2);
-		assertThat(model.getObject(), isEquivalent(createCollection(person1)));
+		assertThat(model.getObject(), isEquivalent(equivalence, createCollection(collectionSupplier, person1)));
 		
 		model = serializeAndDeserialize(model);
 		modelObject = model.getObject();
-		assertNotNull(modelObject);
-		assertEquals(1, modelObject.size());
-		assertThat(modelObject, isEquivalent(createCollection(person1)));
+		assertThat(modelObject).isNotNull();
+		assertThat(modelObject).hasSize(1);
+		assertThat(modelObject, isEquivalent(equivalence, createCollection(collectionSupplier, person1)));
 	}
 
 }

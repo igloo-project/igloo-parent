@@ -1,10 +1,11 @@
 package org.iglooproject.test.jpa.security;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Collection;
 
@@ -13,19 +14,18 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
+class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 
 	@Test
-	public void testAuthenticationUserInfo() throws ServiceException, SecurityServiceException {
+	void testAuthenticationUserInfo() throws ServiceException, SecurityServiceException {
 		assertFalse(authenticationService.isLoggedIn());
 		
 		MockUser user = createMockUser(System.getProperty("user.name"), "firstName", "lastName");
@@ -57,7 +57,7 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 	}
 
 	@Test
-	public void testAuthenticationRoles() throws ServiceException, SecurityServiceException {
+	void testAuthenticationRoles() throws ServiceException, SecurityServiceException {
 		MockUser user = createMockUser(System.getProperty("user.name"), "firstName", "lastName");
 		user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		mockUserService.update(user);
@@ -93,7 +93,7 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 	}
 
 	@Test
-	public void testSecurityProxy() throws ServiceException, SecurityServiceException {
+	void testSecurityProxy() throws ServiceException, SecurityServiceException {
 		MockUser user = createMockUser(System.getProperty("user.name"), "firstName", "lastName");
 		user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 		mockUserService.update(user);
@@ -101,14 +101,14 @@ public class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
 		
 		try {
 			mockUserService.protectedMethodRoleAdmin();
-			Assert.fail("L'accès devrait être interdit.");
+			fail("L'accès devrait être interdit.");
 		} catch (AccessDeniedException e) {}
 		
 		mockUserService.protectedMethodRoleAuthenticated();
 	}
 	
-	@Before
-	@After
+	@BeforeEach
+	@AfterEach
 	public void signOut() {
 		authenticationService.signOut();
 	}

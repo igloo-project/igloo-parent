@@ -1,7 +1,7 @@
 package test.jpa.more.business;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
@@ -21,7 +21,7 @@ import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -36,7 +36,7 @@ import com.google.common.util.concurrent.RateLimiter;
 import test.jpa.more.business.task.config.TestTaskManagementConfig;
 
 @ContextConfiguration(classes = TestTaskManagementConfig.class)
-public class TestTaskManagement extends AbstractJpaMoreTestCase {
+class TestTaskManagement extends AbstractJpaMoreTestCase {
 
 	@Autowired
 	private IEntityService entityService;
@@ -193,7 +193,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 	}
 	
 	@Test
-	public void simple() throws Exception {
+	void simple() throws Exception {
 		final StaticValueAccessor<String> result = new StaticValueAccessor<>();
 		final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -222,7 +222,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 	}
 	
 	@Test
-	public void noTransaction() throws Exception {
+	void noTransaction() throws Exception {
 		final StaticValueAccessor<String> result = new StaticValueAccessor<>();
 		QueuedTaskHolder taskHolder = manager.submit(
 				new SimpleTestTask<>(result, "success", TaskExecutionResult.completed())
@@ -243,7 +243,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 	 * Queue submit is transaction-aware ; we test here that task is pushed to queue after transaction commit.
 	 */
 	@Test
-	public void submitInLongTransaction() throws Exception {
+	void submitInLongTransaction() throws Exception {
 		final StaticValueAccessor<String> result = new StaticValueAccessor<>();
 		final StaticValueAccessor<String> result2 = new StaticValueAccessor<>();
 		final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
@@ -356,7 +356,7 @@ public class TestTaskManagement extends AbstractJpaMoreTestCase {
 	}
 	
 	@Test
-	public void interrupt() throws Exception {
+	void interrupt() throws Exception {
 		final StaticValueAccessor<String> result = new StaticValueAccessor<>();
 		final StaticValueAccessor<Long> taskHolderId = new StaticValueAccessor<>();
 		transactionTemplate.execute(new TransactionCallbackWithoutResult() {

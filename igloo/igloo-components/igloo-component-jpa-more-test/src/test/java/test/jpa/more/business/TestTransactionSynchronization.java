@@ -1,8 +1,7 @@
 package test.jpa.more.business;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 import java.util.Collection;
 
@@ -15,8 +14,7 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
 import org.iglooproject.jpa.more.util.transaction.service.TransactionSynchronizationTaskManagerServiceImpl;
 import org.iglooproject.jpa.search.service.IHibernateSearchService;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -34,7 +32,7 @@ import test.jpa.more.business.util.transaction.model.TestCreateAfterCommitTask;
 import test.jpa.more.business.util.transaction.model.TestDeleteOnRollbackTask;
 import test.jpa.more.business.util.transaction.model.TestUseEntityBeforeCommitOrClearTask;
 
-public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
+class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 
 	@Autowired
 	private ITransactionSynchronizationTaskManagerService transactionSynchronizationTaskManagerService;
@@ -73,16 +71,15 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 	}
 
 	@Test
-	public void testTaskNoTransaction() {
+	void testTaskNoTransaction() {
 		// Cannot push tasks if there's no transaction
-		Assert.assertThrows(
-				TransactionSynchronizationTaskManagerServiceImpl.EXCEPTION_MESSAGE_NO_ACTUAL_TRANSACTION_ACTIVE, 
-				IllegalStateException.class,
-				() -> transactionSynchronizationTaskManagerService.push(new TestCreateAfterCommitTask()));
+		assertThatCode(
+			() -> transactionSynchronizationTaskManagerService.push(new TestCreateAfterCommitTask())
+		).isInstanceOf(IllegalStateException.class).hasMessage(TransactionSynchronizationTaskManagerServiceImpl.EXCEPTION_MESSAGE_NO_ACTUAL_TRANSACTION_ACTIVE);
 	}
 
 	@Test
-	public void testAfterCommitTask() {
+	void testAfterCommitTask() {
 		final TestCreateAfterCommitTask createAfterCommitTask = new TestCreateAfterCommitTask();
 		readOnlyTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@Override
@@ -94,13 +91,13 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		entityManagerClear();
 		
 		Collection<GenericEntityReference<Long, TestEntity>> createdEntities = createAfterCommitTask.getCreatedEntities();
-		assertEquals(1, createdEntities.size());
+		assertThat(createdEntities).hasSize(1);
 		TestEntity createdEntity = testEntityService.getById(createdEntities.iterator().next());
-		assertNotNull(createdEntity);
+		assertThat(createdEntity).isNotNull();
 	}
 
 	@Test
-	public void testRollbackTask() throws ServiceException, SecurityServiceException {
+	void testRollbackTask() throws ServiceException, SecurityServiceException {
 		TestEntity entity = new TestEntity("entity");
 		testEntityService.create(entity);
 		
@@ -116,11 +113,11 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		
 		entityManagerClear();
 		
-		assertNull(testEntityService.getById(testEntityId));
+		assertThat(testEntityService.getById(testEntityId)).isNull();
 	}
 
 	@Test
-	public void testNestedTransactions() throws ServiceException, SecurityServiceException {
+	void testNestedTransactions() throws ServiceException, SecurityServiceException {
 		TestEntity entityExpectedToBeDeleted = new TestEntity("entityExpectedToBeDeleted");
 		testEntityService.create(entityExpectedToBeDeleted);
 		final Long entityExpectedToBeDeletedId = entityExpectedToBeDeleted.getId();
@@ -150,12 +147,12 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		
 		entityManagerClear();
 		
-		assertNull(testEntityService.getById(entityExpectedToBeDeletedId));
-		assertNotNull(testEntityService.getById(entityNOTExpectedToBeDeletedId));
+		assertThat(testEntityService.getById(entityExpectedToBeDeletedId)).isNull();
+		assertThat(testEntityService.getById(entityNOTExpectedToBeDeletedId)).isNotNull();
 	}
 
 	@Test
-	public void testBeforeCommitOrClearTask() throws ServiceException, SecurityServiceException {
+	void testBeforeCommitOrClearTask() throws ServiceException, SecurityServiceException {
 		TestEntity entity = new TestEntity("entity");
 		testEntityService.create(entity);
 		final Long entityId = entity.getId();
@@ -182,11 +179,11 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		
 		entityManagerClear();
 		
-		assertEquals(1, taskReference.getValue().getExecutionCount());
+		assertThat(taskReference.getValue().getExecutionCount()).isEqualTo(1);
 	}
 
 	@Test
-	public void testBeforeCommitOrClearTaskWithRollback() throws ServiceException, SecurityServiceException {
+	void testBeforeCommitOrClearTaskWithRollback() throws ServiceException, SecurityServiceException {
 		TestEntity entity = new TestEntity("entity");
 		testEntityService.create(entity);
 		final Long entityId = entity.getId();
@@ -215,12 +212,12 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		
 		entityManagerClear();
 		
-		assertEquals(1, taskReference.getValue().getExecutionCount());
-		assertEquals(1, taskReference.getValue().getRollbackCount());
+		assertThat(taskReference.getValue().getExecutionCount()).isEqualTo(1);
+		assertThat(taskReference.getValue().getRollbackCount()).isEqualTo(1);
 	}
 
 	@Test
-	public void testBeforeCommitOrClearTaskBatchExecutor() throws ServiceException, SecurityServiceException {
+	void testBeforeCommitOrClearTaskBatchExecutor() throws ServiceException, SecurityServiceException {
 		TestEntity entity1 = new TestEntity("entity1");
 		testEntityService.create(entity1);
 		final Long entityId1 = entity1.getId();
@@ -248,9 +245,9 @@ public class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		
 		entityManagerClear();
 		
-		assertEquals(2, tasks.size());
+		assertThat(tasks).hasSize(2);
 		for (TestUseEntityBeforeCommitOrClearTask task : tasks) {
-			assertEquals(1, task.getExecutionCount());
+			assertThat(task.getExecutionCount()).isEqualTo(1);
 		}
 	}
 }

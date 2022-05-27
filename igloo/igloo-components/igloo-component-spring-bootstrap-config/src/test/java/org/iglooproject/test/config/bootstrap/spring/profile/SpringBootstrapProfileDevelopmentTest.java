@@ -2,7 +2,7 @@ package org.iglooproject.test.config.bootstrap.spring.profile;
 
 import org.assertj.core.api.Assertions;
 import org.iglooproject.test.config.bootstrap.spring.util.AbstractSpringBoostrapProfileTest;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.context.TestPropertySource;
 
 

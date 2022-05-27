@@ -17,18 +17,22 @@
 
 package org.iglooproject.test.generic;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.service.IPersonService;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestGenericEntity extends AbstractJpaCoreTestCase {
+class TestGenericEntity extends AbstractJpaCoreTestCase {
 
 	@Autowired
 	protected IPersonService personService;
@@ -37,17 +41,17 @@ public class TestGenericEntity extends AbstractJpaCoreTestCase {
 	public void testGenericEntity() throws ServiceException, SecurityServiceException {
 		Person person = new Person("FirstName", "LastName");
 		
-		Assert.assertNull(person.getId());
-		Assert.assertTrue(person.isNew());
+		assertNull(person.getId());
+		assertTrue(person.isNew());
 
 		personService.create(person);
 
-		Assert.assertFalse(person.isNew());
+		assertFalse(person.isNew());
 		
 		Long oldId = person.getId();
 		
 		person.setId(2L);
-		Assert.assertEquals(2, person.getId().intValue());
+		assertEquals(2, person.getId().intValue());
 
 		person.setId(oldId);
 
@@ -56,25 +60,25 @@ public class TestGenericEntity extends AbstractJpaCoreTestCase {
 
 		Person person2 = personService.getById(person.getId());
 
-		Assert.assertFalse(person.equals(person1));
-		Assert.assertTrue(person.equals(person2));
+		assertFalse(person.equals(person1));
+		assertTrue(person.equals(person2));
 
 		Person person4 = person;
 
-		Assert.assertFalse(person.compareTo(person1) == 0);
-		Assert.assertTrue(person.compareTo(person4) == 0);
+		assertFalse(person.compareTo(person1) == 0);
+		assertTrue(person.compareTo(person4) == 0);
 
-		Assert.assertEquals("LastName", person.getLastName());
-		Assert.assertEquals("FirstName", person.getFirstName());
+		assertEquals("LastName", person.getLastName());
+		assertEquals("FirstName", person.getFirstName());
 	}
 	
-	@Before
+	@BeforeEach
 	@Override
 	public void init() throws ServiceException, SecurityServiceException {
 		super.init();
 	}
 	
-	@After
+	@AfterEach
 	@Override
 	public void close() throws ServiceException, SecurityServiceException {
 		super.close();

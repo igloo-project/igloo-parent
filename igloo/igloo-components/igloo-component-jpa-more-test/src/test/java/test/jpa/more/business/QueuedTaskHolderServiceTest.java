@@ -5,14 +5,14 @@ import javax.persistence.Query;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableList;
 
-public class QueuedTaskHolderServiceTest extends AbstractJpaMoreTestCase {
+class QueuedTaskHolderServiceTest extends AbstractJpaMoreTestCase {
 
 	@Test
-	public void testGetListConsumableOk() throws ServiceException, SecurityServiceException {
+	void testGetListConsumableOk() throws ServiceException, SecurityServiceException {
 		Query query = getEntityManager().createQuery("select queuedTaskHolder\n" + 
 				"from QueuedTaskHolder queuedTaskHolder\n" + 
 				"where queuedTaskHolder.status in (:statuses) and queuedTaskHolder.queueId = :queue\n" + 
@@ -21,7 +21,7 @@ public class QueuedTaskHolderServiceTest extends AbstractJpaMoreTestCase {
 	}
 
 	@Test
-	public void testGetListConsumableKo() throws ServiceException, SecurityServiceException {
+	void testGetListConsumableKo() throws ServiceException, SecurityServiceException {
 		Query query = getEntityManager().createQuery("select queuedTaskHolder\n" + 
 				"from QueuedTaskHolder queuedTaskHolder\n" + 
 				"where queuedTaskHolder.status in (?1) and queuedTaskHolder.queueId = ?2\n" + 

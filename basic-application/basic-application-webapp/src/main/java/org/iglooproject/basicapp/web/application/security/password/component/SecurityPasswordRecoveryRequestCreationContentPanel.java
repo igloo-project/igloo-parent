@@ -17,7 +17,6 @@ import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRec
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
-import org.iglooproject.basicapp.web.application.common.validator.EmailExistsValidator;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
@@ -50,7 +49,6 @@ public class SecurityPasswordRecoveryRequestCreationContentPanel extends Panel {
 				.setLabel(new ResourceModel("business.user.email"))
 				.setRequired(true)
 				.add(EmailAddressValidator.getInstance())
-				.add(EmailExistsValidator.get())
 				.add(new LabelPlaceholderBehavior())
 		);
 		
@@ -63,11 +61,13 @@ public class SecurityPasswordRecoveryRequestCreationContentPanel extends Panel {
 					try {
 						User user = userService.getByEmailCaseInsensitive(emailModel.getObject());
 						
-						securityManagementService.initiatePasswordRecoveryRequest(
-							user,
-							user.hasPasswordHash() ? UserPasswordRecoveryRequestType.RESET : UserPasswordRecoveryRequestType.CREATION,
-							UserPasswordRecoveryRequestInitiator.USER
-						);
+						if (user != null && user.isEnabled() && user.isNotificationEnabled()) {
+							securityManagementService.initiatePasswordRecoveryRequest(
+								user,
+								user.hasPasswordHash() ? UserPasswordRecoveryRequestType.RESET : UserPasswordRecoveryRequestType.CREATION,
+								UserPasswordRecoveryRequestInitiator.USER
+							);
+						}
 						
 						Session.get().success(getString("security.password.recovery.request.creation.validate.success"));
 						

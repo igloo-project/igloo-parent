@@ -4,61 +4,57 @@
 	<wicket:extend>
 		<div wicket:id="passwordEditPopup" />
 		
-		<div class="content-container">
-			<div class="content-header-section">
-				<div class="content-header-container">
-					<div class="content-header">
-						<div wicket:id="breadCrumb" />
-						
-						<div class="row row-xs align-items-center">
-							<div class="col-auto">
-								<a wicket:id="backToSourcePage" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
-									<span class="fa fa-fw fa-arrow-left" />
-								</a>
-								<a wicket:id="backToList" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
-									<span class="fa fa-fw fa-arrow-left" />
-								</a>
-							</div>
-							<div class="col-auto">
-								<h4 wicket:id="pageTitle" class="content-header-title" />
-							</div>
+		<div class="content-header-section">
+			<div class="content-header-container">
+				<div class="content-header">
+					<div class="row row-xs align-items-center">
+						<div class="col-auto">
+							<a wicket:id="backToSourcePage" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
+								<span class="fa fa-fw fa-arrow-left" />
+							</a>
+							<a wicket:id="backToList" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
+								<span class="fa fa-fw fa-arrow-left" />
+							</a>
 						</div>
-						
-						<div wicket:id="headerElementsSection" class="content-header-elements-section">
-							<div class="row row-xs align-items-center">
-								<div wicket:id="informationContainer" class="col-auto">
-									<div class="row row-xs align-items-center">
-										<div class="col-auto">
-											<span wicket:id="enabled" class="badge-header" />
-										</div>
+						<div class="col-auto">
+							<h4 wicket:id="pageTitle" class="content-header-title" />
+						</div>
+					</div>
+					
+					<div wicket:id="headerElementsSection" class="content-header-elements-section">
+						<div class="row row-xs align-items-center">
+							<div wicket:id="informationContainer" class="col-auto">
+								<div class="row row-xs align-items-center">
+									<div class="col-auto">
+										<span wicket:id="enabled" class="badge-header" />
 									</div>
 								</div>
-								<div wicket:id="actionsContainer" class="col-auto ml-auto">
-									<div class="row row-xs align-items-center">
-										<div wicket:enclosure-component="passwordEdit" class="col-auto">
-											<button wicket:id="passwordEdit" class="btn btn-primary" type="button">
-												<span class="fa fa-fw fa-key" />
-												<wicket:message key="administration.user.action.password.edit" />
-											</button>
-										</div>
-										<div wicket:enclosure-component="passwordReset" class="col-auto">
-											<button wicket:id="passwordReset" class="btn btn-primary" type="button">
-												<span class="fa fa-fw fa-unlock-alt" />
-												<wicket:message key="administration.user.action.password.recovery.reset" />
-											</button>
-										</div>
-										<div wicket:enclosure-component="enable" class="col-auto">
-											<button wicket:id="enable" class="btn btn-success" type="button">
-												<span class="fa fa-fw fa-check" />
-												<wicket:message key="common.action.enable" />
-											</button>
-										</div>
-										<div wicket:enclosure-component="disable" class="col-auto">
-											<button wicket:id="disable" class="btn btn-danger" type="button">
-												<span class="fa fa-fw fa-times" />
-												<wicket:message key="common.action.disable" />
-											</button>
-										</div>
+							</div>
+							<div wicket:id="actionsContainer" class="col-auto ml-auto">
+								<div class="row row-xs align-items-center">
+									<div wicket:enclosure-component="passwordEdit" class="col-auto">
+										<button wicket:id="passwordEdit" class="btn btn-primary" type="button">
+											<span class="fa fa-fw fa-key" />
+											<wicket:message key="administration.user.action.password.edit" />
+										</button>
+									</div>
+									<div wicket:enclosure-component="passwordReset" class="col-auto">
+										<button wicket:id="passwordReset" class="btn btn-primary" type="button">
+											<span class="fa fa-fw fa-unlock-alt" />
+											<wicket:message key="administration.user.action.password.recovery.reset" />
+										</button>
+									</div>
+									<div wicket:enclosure-component="enable" class="col-auto">
+										<button wicket:id="enable" class="btn btn-success" type="button">
+											<span class="fa fa-fw fa-check" />
+											<wicket:message key="common.action.enable" />
+										</button>
+									</div>
+									<div wicket:enclosure-component="disable" class="col-auto">
+										<button wicket:id="disable" class="btn btn-danger" type="button">
+											<span class="fa fa-fw fa-times" />
+											<wicket:message key="common.action.disable" />
+										</button>
 									</div>
 								</div>
 							</div>
@@ -66,31 +62,31 @@
 					</div>
 				</div>
 			</div>
-			
-			<div class="content-tabs-section">
-				<div class="content-tabs-container">
-					<ul class="nav nav-page nav-pills" role="tablist">
-						<li class="nav-item">
-							<a wicket:id="mainInformationTabLink" class="nav-link active show" role="tab" data-toggle="tab">
-								<wicket:message key="administration.user.detail.tab.mainInformation" />
-							</a>
-						</li>
-						<li class="nav-item">
-							<a wicket:id="securityTabLink" class="nav-link" role="tab" data-toggle="tab">
-								<wicket:message key="administration.user.detail.tab.security" />
-							</a>
-						</li>
-					</ul>
-				</div>
+		</div>
+		
+		<div class="content-tabs-section">
+			<div class="content-tabs-container">
+				<ul class="nav nav-page nav-pills" role="tablist">
+					<li class="nav-item">
+						<a wicket:id="mainInformationTabLink" class="nav-link active show" role="tab" data-toggle="tab">
+							<wicket:message key="administration.user.detail.tab.mainInformation" />
+						</a>
+					</li>
+					<li class="nav-item">
+						<a wicket:id="securityTabLink" class="nav-link" role="tab" data-toggle="tab">
+							<wicket:message key="administration.user.detail.tab.security" />
+						</a>
+					</li>
+				</ul>
 			</div>
-			
-			<div class="content-body-section">
-				<div class="content-body-container">
-					<div class="content-body">
-						<div class="tab-content">
-							<div id="tab-main-information" class="tab-pane fade show active" role="tabpanel"><div wicket:id="mainInformation" /></div>
-							<div id="tab-security" class="tab-pane fade" role="tabpanel"><div wicket:id="security" /></div>
-						</div>
+		</div>
+		
+		<div class="content-body-section">
+			<div class="content-body-container">
+				<div class="content-body">
+					<div class="tab-content">
+						<div id="tab-main-information" class="tab-pane fade show active" role="tabpanel"><div wicket:id="mainInformation" /></div>
+						<div id="tab-security" class="tab-pane fade" role="tabpanel"><div wicket:id="security" /></div>
 					</div>
 				</div>
 			</div>

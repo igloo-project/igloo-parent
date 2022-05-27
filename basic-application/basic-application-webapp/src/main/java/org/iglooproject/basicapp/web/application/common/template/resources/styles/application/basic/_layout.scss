@@ -24,6 +24,24 @@ body {
 		
 		> .main-body {
 			.content-container {
+				.content-pre-header-section {
+					background-color: $white;
+					border-bottom: 1px solid rgba(0, 0, 0, .09);
+					
+					> .content-pre-header-container {
+						@include make-container();
+						@include make-container-max-widths();
+						
+						padding: 7.5px $layout-container-padding-x;
+						
+						> .content-pre-header {
+							.breadcrumb {
+								margin: 0;
+							}
+						}
+					}
+				}
+				
 				.content-header-section {
 					background-color: $white;
 					border-bottom: 1px solid rgba(0, 0, 0, .09);

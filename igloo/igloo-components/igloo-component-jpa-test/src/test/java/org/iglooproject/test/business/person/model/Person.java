@@ -44,7 +44,6 @@ import org.hibernate.search.annotations.Indexed;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.test.business.company.model.Company;
 import org.iglooproject.test.business.project.model.Project;
-import org.iglooproject.test.metamodel.TestMetaModel;
 
 @Entity
 @Indexed

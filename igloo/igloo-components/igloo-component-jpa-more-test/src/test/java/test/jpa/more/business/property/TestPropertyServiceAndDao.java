@@ -1,13 +1,8 @@
 package test.jpa.more.business.property;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.Date;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.test.context.ContextConfiguration;
-
-import test.jpa.more.business.AbstractJpaMoreTestCase;
-import test.jpa.more.business.property.TestPropertyServiceAndDao.TestPropertyServiceAndDaoConfig;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -20,9 +15,14 @@ import org.iglooproject.spring.property.model.MutablePropertyId;
 import org.iglooproject.spring.property.model.MutablePropertyIdTemplate;
 import org.iglooproject.spring.property.model.MutablePropertyValueMap;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ContextConfiguration;
+
+import test.jpa.more.business.AbstractJpaMoreTestCase;
+import test.jpa.more.business.property.TestPropertyServiceAndDao.TestPropertyServiceAndDaoConfig;
 
 @ContextConfiguration(classes = TestPropertyServiceAndDaoConfig.class)
-public class TestPropertyServiceAndDao extends AbstractJpaMoreTestCase {
+class TestPropertyServiceAndDao extends AbstractJpaMoreTestCase {
 	
 	public static class TestPropertyServiceAndDaoConfig extends AbstractApplicationPropertyRegistryConfig {
 
@@ -52,37 +52,37 @@ public class TestPropertyServiceAndDao extends AbstractJpaMoreTestCase {
 	}
 
 	@Test
-	public void mutableProperty() throws ServiceException, SecurityServiceException {
-		Assert.assertEquals("MyDefaultValue", propertyService.get(PropertyIds.MUTABLE_STRING));
+	void mutableProperty() throws ServiceException, SecurityServiceException {
+		assertEquals("MyDefaultValue", propertyService.get(PropertyIds.MUTABLE_STRING));
 		
 		propertyService.set(PropertyIds.MUTABLE_STRING, "MyValue");
-		Assert.assertEquals("MyValue", propertyService.get(PropertyIds.MUTABLE_STRING));
+		assertEquals("MyValue", propertyService.get(PropertyIds.MUTABLE_STRING));
 		
 		IMutablePropertyValueMap propertyValueMap = new MutablePropertyValueMap();
 		propertyValueMap.put(PropertyIds.MUTABLE_STRING, "MyValue2");
 		propertyService.setAll(propertyValueMap);
-		Assert.assertEquals("MyValue2", propertyService.get(PropertyIds.MUTABLE_STRING));
+		assertEquals("MyValue2", propertyService.get(PropertyIds.MUTABLE_STRING));
 	}
 
 	@Test
-	public void immutableProperty() {
-		Assert.assertEquals("MyValue", propertyService.get(PropertyIds.IMMUTABLE_STRING));
+	void immutableProperty() {
+		assertEquals("MyValue", propertyService.get(PropertyIds.IMMUTABLE_STRING));
 	}
 
 	@Test
-	public void immutablePropertyTemplate() {
-		Assert.assertEquals("MyValue", propertyService.get(PropertyIds.IMMUTABLE_STRING_TEMPLATE.create("value")));
+	void immutablePropertyTemplate() {
+		assertEquals("MyValue", propertyService.get(PropertyIds.IMMUTABLE_STRING_TEMPLATE.create("value")));
 	}
 
 	@Test
-	public void mutablePropertyTemplate() throws ServiceException, SecurityServiceException {
+	void mutablePropertyTemplate() throws ServiceException, SecurityServiceException {
 		MutablePropertyId<Long> mutableProperty = PropertyIds.MUTABLE_LONG_TEMPLATE.create("value");
 		propertyService.set(mutableProperty, (Long) 1L);
-		Assert.assertEquals((Long) 1L, propertyService.get(mutableProperty));
+		assertEquals((Long) 1L, propertyService.get(mutableProperty));
 	}
 
 	@Test
-	public void propertyDate() throws ServiceException, SecurityServiceException {
+	void propertyDate() throws ServiceException, SecurityServiceException {
 		propertyService.get(PropertyIds.IMMUTABLE_DATE);
 
 		propertyService.get(PropertyIds.IMMUTABLE_DATETIME);

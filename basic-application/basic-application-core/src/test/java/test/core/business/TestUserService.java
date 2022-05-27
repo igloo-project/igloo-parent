@@ -1,20 +1,20 @@
 package test.core.business;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import test.core.AbstractBasicApplicationTestCase;
 
-public class TestUserService extends AbstractBasicApplicationTestCase {
+class TestUserService extends AbstractBasicApplicationTestCase {
 
 	@Test
-	public void testUser() throws ServiceException, SecurityServiceException {
+	void testUser() throws ServiceException, SecurityServiceException {
 		
 		{
 			User user = new User();

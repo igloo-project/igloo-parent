@@ -1,7 +1,7 @@
 package test.web;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.wicket.util.tester.FormTester;
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -16,14 +16,14 @@ import org.iglooproject.wicket.markup.html.basic.CountLabel;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceGridView;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelLinkColumnPanel;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @EnableWebSecurity
-public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
+class AdministrationBasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test
-	public void initPage() throws ServiceException, SecurityServiceException {
+	void initPage() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
@@ -31,7 +31,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 	}
 
 	@Test
-	public void dataTableBuilderCountZero() throws ServiceException, SecurityServiceException {
+	void dataTableBuilderCountZero() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationTechnicalUserListPage.class);
@@ -46,7 +46,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 	}
 
 	@Test
-	public void dataTableBuilderCountOne() throws ServiceException, SecurityServiceException {
+	void dataTableBuilderCountOne() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationTechnicalUserListPage.class);
@@ -57,7 +57,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 	}
 
 	@Test
-	public void dataTableBuilderCountMultiple() throws ServiceException, SecurityServiceException {
+	void dataTableBuilderCountMultiple() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
@@ -68,7 +68,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 	}
 
 	@Test
-	public void dataTableBuilderFiltersDropDown() throws ServiceException, SecurityServiceException {
+	void dataTableBuilderFiltersDropDown() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
@@ -86,12 +86,12 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 		
 		form.submit();
 		
-		assertTrue(administrators.equals(userGroupField.getModelObject()));
+		assertEquals(administrators, userGroupField.getModelObject());
 		assertEquals(0, results.getItemCount());
 	}
 
 	@Test
-	public void accessToDetail() throws ServiceException, SecurityServiceException {
+	void accessToDetail() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);
@@ -114,7 +114,7 @@ public class AdministrationBasicUserListPageTestCase extends AbstractBasicApplic
 	}
 
 	@Test
-	public void excelButtonTootilp() throws ServiceException, SecurityServiceException {
+	void excelButtonTootilp() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationBasicUserListPage.class);

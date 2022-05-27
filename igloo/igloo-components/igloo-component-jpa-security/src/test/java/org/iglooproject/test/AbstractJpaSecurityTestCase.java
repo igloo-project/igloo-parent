@@ -14,8 +14,8 @@ import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
 import org.iglooproject.test.jpa.security.business.person.service.IMockUserGroupService;
 import org.iglooproject.test.jpa.security.business.person.service.IMockUserService;
 import org.iglooproject.test.jpa.security.config.spring.JpaSecurityTestConfig;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -58,7 +58,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 	@Autowired
 	protected PasswordEncoder passwordEncoder;
 
-	@Before
+	@BeforeEach
 	@Override
 	public void init() throws ServiceException, SecurityServiceException {
 		super.init();
@@ -73,7 +73,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 		createAuthority(ROLE_GROUP_3);
 	}
 	
-	@After
+	@AfterEach
 	@Override
 	public void close() throws ServiceException, SecurityServiceException {
 		super.close();

@@ -7,7 +7,7 @@ import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration
 import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.iglooproject.spring.util.ConfigurationLogger;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +19,13 @@ import org.springframework.context.annotation.Configuration;
  * which are declared at the bottom of the file.
  *  
  */
-public class ApplicationContextAutoConfigurationTestCase {
+class ApplicationContextAutoConfigurationTestCase {
 
 	/**
 	 * Check that autoconfiguration from {@link FlywayConfiguration} is triggered with EnableIglooAutoConfiguration
 	 */
 	@Test
-	public void testIglooApplicationConfigAutoConfigure() {
+	void testIglooApplicationConfigAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))

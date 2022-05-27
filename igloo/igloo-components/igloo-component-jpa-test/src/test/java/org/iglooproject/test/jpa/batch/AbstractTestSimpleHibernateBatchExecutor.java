@@ -2,7 +2,8 @@ package org.iglooproject.test.jpa.batch;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,8 +19,7 @@ import org.iglooproject.jpa.query.IQuery;
 import org.iglooproject.jpa.query.Queries;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.model.QPerson;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.TransactionStatus;
@@ -37,7 +37,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 	protected abstract SimpleHibernateBatchExecutor newSimpleHibernateBatchExecutor();
 	
 	@Test
-	public void readWrite() {
+	void readWrite() {
 		List<Long> toExecute = Lists.newArrayList(personIds);
 		
 		final List<Long> executed = Lists.newArrayList();
@@ -63,7 +63,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 	}
 	
 	@Test
-	public void readWriteInsideTransaction() {
+	void readWriteInsideTransaction() {
 		writeRequiredTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
@@ -74,7 +74,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 	}
 	
 	@Test
-	public void readOnly() {
+	void readOnly() {
 		List<Long> toExecute = Lists.newArrayList(personIds);
 		
 		SimpleHibernateBatchExecutor executor = newSimpleHibernateBatchExecutor();
@@ -97,7 +97,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 	}
 	
 	@Test
-	public void readOnlyInsideTransaction() {
+	void readOnlyInsideTransaction() {
 		writeRequiredTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@Override
 			protected void doInTransactionWithoutResult(TransactionStatus status) {
@@ -108,7 +108,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 	}
 
 	@Test
-	public void customNonConsumingQuery() {
+	void customNonConsumingQuery() {
 		List<Long> toExecute = Lists.newArrayList(Iterables.skip(personIds, 50));
 		Collections.sort(toExecute);
 		
@@ -137,7 +137,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 	}
 	
 	@Test
-	public void customConsumingQuery() {
+	void customConsumingQuery() {
 		List<Long> toExecute = Lists.newArrayList(personIds);
 		Collections.sort(toExecute);
 		
@@ -192,13 +192,13 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 				LOGGER.warn("executePartition#{}: Failing", partitionIndex);
 				throw new TestBatchException1();
 			default: // Should not happen
-				Assert.fail();
+				fail();
 			}
 		}
 	}
 	
 	@Test
-	public void preExecuteErrorDefaultBehavior() {
+	void preExecuteErrorDefaultBehavior() {
 		SimpleHibernateBatchExecutor executor = newSimpleHibernateBatchExecutor();
 		executor.batchSize(10);
 		
@@ -217,7 +217,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 	}
 	
 	@Test
-	public void preExecuteErrorCustomBehavior() {
+	void preExecuteErrorCustomBehavior() {
 		SimpleHibernateBatchExecutor executor = newSimpleHibernateBatchExecutor();
 		executor.batchSize(10);
 		
@@ -241,7 +241,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 	}
 	
 	@Test
-	public void executePartitionErrorDefaultBehavior() {
+	void executePartitionErrorDefaultBehavior() {
 		SimpleHibernateBatchExecutor executor = newSimpleHibernateBatchExecutor();
 		executor.batchSize(10);
 		
@@ -260,7 +260,7 @@ public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractT
 	}
 	
 	@Test
-	public void executePartitionErrorCustomBehavior() {
+	void executePartitionErrorCustomBehavior() {
 		SimpleHibernateBatchExecutor executor = newSimpleHibernateBatchExecutor();
 		executor.batchSize(10);
 		

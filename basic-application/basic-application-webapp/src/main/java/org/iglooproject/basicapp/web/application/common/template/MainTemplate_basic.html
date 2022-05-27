@@ -31,7 +31,16 @@
 					<div wicket:id="announcements" class="header-alert-section header-alert-dismissible announcements-section" />
 				</div>
 				<div class="main-body">
-					<wicket:child />
+					<div class="content-container">
+						<div wicket:enclosure-component="breadCrumb" class="content-pre-header-section">
+							<div class="content-pre-header-container">
+								<div class="content-pre-header">
+									<div wicket:id="breadCrumb" />
+								</div>
+							</div>
+						</div>
+						<wicket:child />
+					</div>
 				</div>
 			</main>
 			

@@ -11,10 +11,10 @@ import org.iglooproject.jpa.search.dao.IHibernateSearchDao;
 import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.iglooproject.test.search.model.Searchable;
 import org.iglooproject.test.search.model.SearchableBinding;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestSearchBase extends AbstractJpaSearchTestCase {
+class TestSearchBase extends AbstractJpaSearchTestCase {
 	
 	private SearchableBinding searchableBinding = new SearchableBinding();
 
@@ -32,7 +32,7 @@ public class TestSearchBase extends AbstractJpaSearchTestCase {
 	 * Example: manually split and analyze each token of an autocomplete query.
 	 */
 	@Test
-	public void base() {
+	void base() {
 		Searchable searchable = new Searchable();
 		entityManagerUtils.getCurrentEntityManager().persist(searchable);
 		Analyzer analyzer = hibernateSearchDao.getAnalyzer(Searchable.class);
@@ -45,7 +45,7 @@ public class TestSearchBase extends AbstractJpaSearchTestCase {
 	 * implementation is provided in place of an Elasticsearch reference).
 	 */
 	@Test
-	public void analyzer() throws IllegalArgumentException, IllegalAccessException {
+	void analyzer() throws IllegalArgumentException, IllegalAccessException {
 		Searchable searchable = new Searchable();
 		entityManagerUtils.getCurrentEntityManager().persist(searchable);
 		Analyzer analyzer = hibernateSearchDao.getAnalyzer(Searchable.class);

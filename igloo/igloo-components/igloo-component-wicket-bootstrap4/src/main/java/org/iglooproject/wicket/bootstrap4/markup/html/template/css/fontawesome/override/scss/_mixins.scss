@@ -1,15 +1,27 @@
-@mixin fa-mixin-font() {
-	@include fa-icon();
-	font-display: $fa-font-display;
-	font-family: $fa-font-family;
-	font-weight: $fa-font-weight;
+@mixin fa-icon-base-style() {
+	//@extend %fa-icon;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	display: var(--#{$fa-css-prefix}-display, #{$fa-display});
+	font-style: normal;
+	font-variant: normal;
+	line-height: 1;
+	text-rendering: auto;
+	font-family: var(--#{$fa-css-prefix}-style-family, '#{$fa-style-family}');
+	font-weight: var(--#{$fa-css-prefix}-style, #{$fa-style});
 }
 
-@mixin fa-mixin-content($fa-var-icon) {
-	content: fa-content($fa-var-icon);
+@mixin fa-icon-content($fa-var, $fa-before: true) {
+	@if $fa-before {
+		&::before {
+			content: fa-content($fa-var);
+		}
+	} @else {
+		content: fa-content($fa-var);
+	}
 }
 
-@mixin fa-mixin-icon($fa-var-icon) {
-	@include fa-mixin-font();
-	content: fa-content($fa-var-icon);
+@mixin fa-icon-base($fa-var, $fa-before: true) {
+	@include fa-icon-base-style();
+	@include fa-icon-content($fa-var, $fa-before);
 }

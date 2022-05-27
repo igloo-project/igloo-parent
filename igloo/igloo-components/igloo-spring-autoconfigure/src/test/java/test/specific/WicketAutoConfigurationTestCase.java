@@ -6,7 +6,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +18,13 @@ import org.springframework.context.annotation.Configuration;
  * which are declared at the bottom of the file.
  *  
  */
-public class WicketAutoConfigurationTestCase {
+class WicketAutoConfigurationTestCase {
 
 	/**
 	 * Check that autoconfiguration from {@link WebApplication} is triggered with EnableIglooAutoConfiguration
 	 */
 	@Test
-	public void testIglooWicketAutoConfigure() {
+	void testIglooWicketAutoConfigure() {
 		new ApplicationContextRunner()
 			.withAllowBeanDefinitionOverriding(true)
 			.withConfiguration(AutoConfigurations.of(TestConfig.class))

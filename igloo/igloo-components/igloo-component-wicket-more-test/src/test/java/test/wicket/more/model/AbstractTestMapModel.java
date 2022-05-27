@@ -29,15 +29,8 @@ public abstract class AbstractTestMapModel<M extends Map<?, ?>>
 			}
 		};
 
-	protected final SerializableSupplier2<? extends M> mapSupplier;
-
-	public AbstractTestMapModel(SerializableSupplier2<? extends M> mapSupplier, Equivalence<? super M> equivalence) {
-		super(equivalence);
-		this.mapSupplier = mapSupplier;
-	}
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected M clone(M map) {
+	protected M clone(SerializableSupplier2<? extends M> mapSupplier, M map) {
 		M clone = mapSupplier.get();
 		clone.putAll((Map)map);
 		return clone;

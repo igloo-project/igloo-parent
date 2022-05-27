@@ -1,5 +1,8 @@
 package org.iglooproject.test.transaction;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.hibernate.LazyInitializationException;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -7,8 +10,7 @@ import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.company.model.Company;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.util.service.ServiceExceptionService;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -19,69 +21,69 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Open Wide
  */
-public class TestTransactionService extends AbstractJpaCoreTestCase {
+class TestTransactionService extends AbstractJpaCoreTestCase {
 	
 	@Autowired
 	private ServiceExceptionService serviceExceptionService;
 	
 	@Test
-	public void testRollbackOnServiceException() throws ServiceException, SecurityServiceException {
+	void testRollbackOnServiceException() throws ServiceException, SecurityServiceException {
 		serviceExceptionService.dontThrow();
 
-		Assert.assertEquals(1, serviceExceptionService.size());
+		assertEquals(1, serviceExceptionService.size());
 
 		try {
 			serviceExceptionService.throwServiceException();
 		} catch (ServiceException e) {
 		}
 
-		Assert.assertEquals(1, serviceExceptionService.size());
+		assertEquals(1, serviceExceptionService.size());
 	}
 
 	@Test
-	public void testRollbackOnServiceInheritedException() throws ServiceException, SecurityServiceException {
+	void testRollbackOnServiceInheritedException() throws ServiceException, SecurityServiceException {
 		serviceExceptionService.dontThrow();
 
-		Assert.assertEquals(1, serviceExceptionService.size());
+		assertEquals(1, serviceExceptionService.size());
 
 		try {
 			serviceExceptionService.throwServiceInheritedException();
 		} catch (ServiceException e) {}
 
-		Assert.assertEquals(1, serviceExceptionService.size());
+		assertEquals(1, serviceExceptionService.size());
 	}
 	
 	@Test
-	public void testRollbackOnUncheckedException() throws ServiceException, SecurityServiceException {
+	void testRollbackOnUncheckedException() throws ServiceException, SecurityServiceException {
 		serviceExceptionService.dontThrow();
 
-		Assert.assertEquals(1, serviceExceptionService.size());
+		assertEquals(1, serviceExceptionService.size());
 
 		try {
 			serviceExceptionService.throwUncheckedException();
 		} catch (IllegalStateException e) {
 		}
 
-		Assert.assertEquals(1, serviceExceptionService.size());
+		assertEquals(1, serviceExceptionService.size());
 	}
 	
 	@Test
-	public void testCommitOnCheckedException() throws ServiceException, SecurityServiceException {
+	void testCommitOnCheckedException() throws ServiceException, SecurityServiceException {
 		serviceExceptionService.dontThrow();
 
-		Assert.assertEquals(1, serviceExceptionService.size());
+		assertEquals(1, serviceExceptionService.size());
 
 		try {
 			serviceExceptionService.throwCheckedException();
-			Assert.fail(String.format("Exception {} obligatoire", CheckedException.class.getName()));
+			fail(String.format("Exception {} obligatoire", CheckedException.class.getName()));
 		} catch (CheckedException e) {
 		}
 
-		Assert.assertEquals(2, serviceExceptionService.size());
+		assertEquals(2, serviceExceptionService.size());
 	}
 
 	@Test
-	public void testReloadOnRollback() throws ServiceException, SecurityServiceException {
+	void testReloadOnRollback() throws ServiceException, SecurityServiceException {
 		Company company = new Company("test");
 		Person person = createPerson("Person", "Test");
 		company.addEmployee1(person);
@@ -95,13 +97,13 @@ public class TestTransactionService extends AbstractJpaCoreTestCase {
 		
 		try {
 			serviceExceptionService.throwServiceInheritedException();
-			Assert.fail("La méthode précédente se finit en exception");
+			fail("La méthode précédente se finit en exception");
 		}
 		catch (ServiceException e) {}
 		
 		try {
 			company.getEmployees1().get(0);
-			Assert.fail("Faire une opération sur un objet après un rollback lève une LazyInitializationException " +
+			fail("Faire une opération sur un objet après un rollback lève une LazyInitializationException " +
 			"car l'objet n'est plus lié à la session");
 		} catch (LazyInitializationException e) {}
 		

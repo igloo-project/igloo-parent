@@ -5,10 +5,12 @@
 .form-label {
 	color: #5F6368;
 	
-	&.required:before {
-		@include fa-mixin-icon($fa-var-exclamation-circle);
-		color: $warning;
-		margin-right: 4px;
-		font-size: .9rem;
+	&.required {
+		&::after {
+			@include fa-icon-base($fa-var-asterisk, false);
+			@include fa-size($fa-size-scale-2xs);
+			margin-left: 4px;
+			color: $danger;
+		}
 	}
 }

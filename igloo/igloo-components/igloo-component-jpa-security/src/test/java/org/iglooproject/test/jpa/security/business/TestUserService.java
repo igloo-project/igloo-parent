@@ -1,6 +1,7 @@
 package org.iglooproject.test.jpa.security.business;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -8,20 +9,19 @@ import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public class TestUserService extends AbstractJpaSecurityTestCase {
+class TestUserService extends AbstractJpaSecurityTestCase {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
 
 	@Test
-	public void testAuthorities() throws ServiceException, SecurityServiceException {
+	void testAuthorities() throws ServiceException, SecurityServiceException {
 		MockUser person1 = createMockUser("login1", "firstName1", "lastName1");
 		MockUser person2 = createMockUser("login2", "firstName2", "lastName2");
 		
@@ -54,7 +54,7 @@ public class TestUserService extends AbstractJpaSecurityTestCase {
 	}
 
 	@Test
-	public void testCaseInsensitiveUsernameFetch() throws ServiceException, SecurityServiceException {
+	void testCaseInsensitiveUsernameFetch() throws ServiceException, SecurityServiceException {
 		MockUser user1 = createMockUser("Login1", "firstName1", "lastName1");
 		MockUser user2 = createMockUser("logIn2", "firstName2", "lastName2");
 		mockUserService.setPasswords(user1, "toto");
@@ -75,13 +75,13 @@ public class TestUserService extends AbstractJpaSecurityTestCase {
 		
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("Login1", "tata"));
-			Assert.fail("Le mot de passe est erroné");
+			fail("Le mot de passe est erroné");
 		} catch (AuthenticationException e) {}
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("Login1", "toto"));
 		
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("Login2", "toto"));
-			Assert.fail("Le mot de passe est erroné");
+			fail("Le mot de passe est erroné");
 		} catch (AuthenticationException e) {}
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("Login2", "tata"));
 	}

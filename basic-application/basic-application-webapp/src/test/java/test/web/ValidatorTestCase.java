@@ -6,16 +6,16 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-public class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
+class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	/**
 	 * Test the UserPasswordValidator when username = password which shouldn't be allowed
 	 */
 	@Test
-	public void userPasswordValidator() throws ServiceException, SecurityServiceException {
+	void userPasswordValidator() throws ServiceException, SecurityServiceException {
 		authenticateUser(administrator);
 		
 		tester.startPage(AdministrationTechnicalUserListPage.class);
