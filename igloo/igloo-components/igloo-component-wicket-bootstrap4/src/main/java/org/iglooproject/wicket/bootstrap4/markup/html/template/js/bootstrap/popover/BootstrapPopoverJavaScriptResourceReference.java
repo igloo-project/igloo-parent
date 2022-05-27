@@ -19,7 +19,7 @@ public final class BootstrapPopoverJavaScriptResourceReference extends WebjarsJQ
 	private static final BootstrapPopoverJavaScriptResourceReference INSTANCE = new BootstrapPopoverJavaScriptResourceReference();
 
 	private BootstrapPopoverJavaScriptResourceReference() {
-		super("webjars/bootstrap/current/js/dist/popover.js");
+		super("webjars/bootstrap4/current/js/dist/popover.js");
 	}
 
 	@Override

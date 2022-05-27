@@ -3,8 +3,8 @@ package org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap;
 import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
+import org.iglooproject.bootstrap.api.popper.PopperJavaScriptResourceReference;
 import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.wicket.more.markup.html.template.js.popper.PopperJavaScriptResourceReference;
 import org.iglooproject.wicket.more.webjars.WebjarUtil;
 
 import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;

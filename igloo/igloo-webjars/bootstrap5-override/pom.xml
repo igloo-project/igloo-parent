@@ -32,8 +32,11 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>${project.build.directory}/js/</directory>
-				<targetPath>META-INF/resources/webjars/${project.name}/${project.version}</targetPath>
+			<directory>${project.basedir}/src/main/generated-js/</directory>
+			<targetPath>META-INF/resources/webjars/${project.name}/${project.version}</targetPath>
+			<excludes>
+				<exclude>.gitkeep</exclude>
+			</excludes>
 			</resource>
 			<resource>
 				<directory>src/main/webjars</directory>
@@ -56,6 +59,12 @@
 							<filesets>
 								<fileset>
 									<directory>${project.basedir}/node_modules</directory>
+								</fileset>
+								<fileset>
+									<directory>${project.basedir}/src/main/generated-js</directory>
+									<excludes>
+										<exclude>.gitkeep</exclude>
+									</excludes>
 								</fileset>
 							</filesets>
 						</configuration>
@@ -82,6 +91,7 @@
 						<phase>generate-resources</phase>
 					</execution>
 					<execution>
+						<?m2e execute onIncremental?>
 						<id>npm-js</id>
 						<goals>
 							<goal>npm</goal>

@@ -19,7 +19,7 @@ public final class BootstrapCarouselJavaScriptResourceReference extends WebjarsJ
 	private static final BootstrapCarouselJavaScriptResourceReference INSTANCE = new BootstrapCarouselJavaScriptResourceReference();
 
 	private BootstrapCarouselJavaScriptResourceReference() {
-		super("webjars/bootstrap/current/js/dist/carousel.js");
+		super("webjars/bootstrap4/current/js/dist/carousel.js");
 	}
 
 	@Override

@@ -16,8 +16,17 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>bootstrap</artifactId>
+			<groupId>org.iglooproject.webjars</groupId>
+			<artifactId>bootstrap4</artifactId>
+			<!-- TODO: push to igloo-maven -->
+			<version>4.6.1</version>
+			<exclusions>
+				<!-- needed as it triggers a upper bound failure -->
+				<exclusion>
+					<groupId>org.webjars.npm</groupId>
+					<artifactId>bootstrap</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
