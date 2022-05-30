@@ -13,13 +13,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.spring.property.model.MutablePropertyId;
 import org.iglooproject.spring.property.model.PropertyId;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.bootstrap5.console.common.component.PropertyIdListPanel;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
 import org.iglooproject.wicket.modal.AbstractAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

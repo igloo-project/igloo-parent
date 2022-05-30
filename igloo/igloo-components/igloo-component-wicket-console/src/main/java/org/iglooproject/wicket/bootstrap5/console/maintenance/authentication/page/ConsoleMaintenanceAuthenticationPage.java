@@ -12,6 +12,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.jpa.security.business.user.service.IGenericUserService;
 import org.iglooproject.spring.util.StringUtils;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.bootstrap5.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -19,7 +20,6 @@ import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilde
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.springframework.security.authentication.DisabledException;
 
 public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> extends ConsoleMaintenanceTemplate {

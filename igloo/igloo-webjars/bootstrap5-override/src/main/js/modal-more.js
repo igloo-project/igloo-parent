@@ -1,4 +1,4 @@
-import * as bootstrap from "@bootstrap"
+import * as bootstrap from "bootstrap"
 
 class ModalMore extends bootstrap.Modal {
     show(relatedTarget) {

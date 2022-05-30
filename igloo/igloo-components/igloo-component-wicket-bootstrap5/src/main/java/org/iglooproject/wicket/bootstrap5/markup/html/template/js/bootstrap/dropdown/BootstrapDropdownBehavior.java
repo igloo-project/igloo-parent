@@ -9,7 +9,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
+import org.iglooproject.wicket.api.util.Detachables;
 
 public class BootstrapDropdownBehavior extends Behavior {
 

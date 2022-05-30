@@ -12,22 +12,22 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRendererModel;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.api.Models;
 import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.api.factory.IDetachableFactory;
 import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.behavior.BootstrapColorBehavior;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.IBootstrapRendererModel;
 import org.iglooproject.wicket.more.markup.html.factory.ConditionFactories;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreActionColumnElementPanel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.collect.ImmutableList;
@@ -39,7 +39,7 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 
 	private static final long serialVersionUID = 8791565179874571105L;
 
-	private final BootstrapRenderer<? super T> renderer;
+	private final IBootstrapRenderer<? super T> renderer;
 	
 	private final IOneParameterComponentFactory<? extends L, IModel<T>> factory;
 
@@ -55,7 +55,7 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 
 	private final List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> behaviorFactories = Lists.newArrayList();
 
-	public AbstractActionColumnElementBuilder(BootstrapRenderer<? super T> renderer,
+	public AbstractActionColumnElementBuilder(IBootstrapRenderer<? super T> renderer,
 			IOneParameterComponentFactory<? extends L, IModel<T>> factory) {
 		this.factory = factory;
 		this.renderer = renderer;
@@ -137,7 +137,7 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 				);
 	}
 
-	public BootstrapRenderer<? super T> getRenderer() {
+	public IBootstrapRenderer<? super T> getRenderer() {
 		return renderer;
 	}
 

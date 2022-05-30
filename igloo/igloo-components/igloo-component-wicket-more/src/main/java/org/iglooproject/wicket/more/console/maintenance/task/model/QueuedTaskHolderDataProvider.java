@@ -13,11 +13,11 @@ import org.iglooproject.jpa.more.business.task.search.IQueuedTaskHolderSearchQue
 import org.iglooproject.jpa.more.business.task.search.QueuedTaskHolderSort;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.ImmutableMap;
 

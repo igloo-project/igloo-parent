@@ -11,13 +11,13 @@ import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordCreationContentPanel;
 import org.iglooproject.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
 import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 

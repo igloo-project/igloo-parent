@@ -20,9 +20,9 @@ import org.apache.wicket.util.visit.Visits;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.markup.html.form.observer.IFormComponentChangeObserver;
 import org.iglooproject.wicket.more.markup.html.form.observer.impl.FormComponentChangeAjaxEventBehavior;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.visit.VisitFilters;
 import org.wicketstuff.wiquery.core.events.StateEvent;
 

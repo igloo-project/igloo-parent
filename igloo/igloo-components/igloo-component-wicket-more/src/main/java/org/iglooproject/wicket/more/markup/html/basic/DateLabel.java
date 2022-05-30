@@ -20,10 +20,9 @@ package org.iglooproject.wicket.more.markup.html.basic;
 import java.util.Date;
 
 import org.apache.wicket.model.IModel;
-
+import org.iglooproject.wicket.api.util.IDatePattern;
 import org.iglooproject.wicket.markup.html.basic.AbstractCoreLabel;
 import org.iglooproject.wicket.more.rendering.Renderer;
-import org.iglooproject.wicket.more.util.IDatePattern;
 
 public class DateLabel extends AbstractCoreLabel<DateLabel> {
 

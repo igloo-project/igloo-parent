@@ -4,7 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.iglooproject.wicket.more.util.model.Detachables;
+import org.iglooproject.wicket.api.util.Detachables;
 
 public class AbstractBootstrapTooltipBehavior extends Behavior {
 

@@ -19,6 +19,7 @@ import org.iglooproject.basicapp.core.business.user.typedescriptor.UserTypeDescr
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.common.model.UserTypeDescriptorModel;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -26,7 +27,6 @@ import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.validate.validators.PredicateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

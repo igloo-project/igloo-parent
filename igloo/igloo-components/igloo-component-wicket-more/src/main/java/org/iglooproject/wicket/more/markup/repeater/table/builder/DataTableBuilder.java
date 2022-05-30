@@ -11,6 +11,7 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
@@ -20,7 +21,10 @@ import org.iglooproject.wicket.api.factory.AbstractDecoratingParameterizedCompon
 import org.iglooproject.wicket.api.factory.IComponentFactory;
 import org.iglooproject.wicket.api.factory.IDetachableFactory;
 import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.api.model.ReadOnlyModel;
 import org.iglooproject.wicket.api.repeater.ISequenceProvider;
+import org.iglooproject.wicket.api.util.IDatePattern;
+import org.iglooproject.wicket.api.util.SequenceProviders;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
@@ -28,7 +32,6 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.BindingOneParameterLi
 import org.iglooproject.wicket.more.link.descriptor.mapper.FunctionOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.basic.TargetBlankBehavior;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.factory.ComponentFactories;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
@@ -67,10 +70,7 @@ import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelColumn
 import org.iglooproject.wicket.more.markup.repeater.table.column.ICoreColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.toolbar.CoreHeadersToolbar;
 import org.iglooproject.wicket.more.markup.repeater.table.toolbar.CoreNoRecordsToolbar;
-import org.iglooproject.wicket.more.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.rendering.Renderer;
-import org.iglooproject.wicket.more.util.IDatePattern;
-import org.iglooproject.wicket.more.util.model.SequenceProviders;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
@@ -291,7 +291,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	
 	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-			final ICoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
+			final ICoreBinding<? super T, C> binding, final IBootstrapRenderer<? super C> renderer) {
 		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<>(headerModel, binding, renderer);
 		columns.put(column, null);
 		return new AddedBootstrapBadgeColumnState<>(column);
@@ -299,7 +299,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	
 	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+			SerializableFunction2<? super T, C> function, IBootstrapRenderer<? super C> renderer) {
 		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<>(headerModel, function, renderer);
 		columns.put(column, null);
 		return new AddedBootstrapBadgeColumnState<>(column);
@@ -492,13 +492,13 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 		@Override
 		public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel, ICoreBinding<? super T, C> binding,
-				BootstrapRenderer<? super C> renderer) {
+				IBootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapBadgeColumn(headerModel, binding, renderer);
 		}
 		
 		@Override
 		public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-				SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+				SerializableFunction2<? super T, C> function, IBootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapBadgeColumn(headerModel, function, renderer);
 		}
 		

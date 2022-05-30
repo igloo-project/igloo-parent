@@ -2,6 +2,8 @@ package test.wicket.more.link.descriptor;
 
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
+import org.iglooproject.wicket.api.model.ModelFactories;
+import org.iglooproject.wicket.api.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.ILinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -10,8 +12,6 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chos
 import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
-import org.iglooproject.wicket.more.markup.html.factory.ModelFactories;
-import org.iglooproject.wicket.more.model.ReadOnlyModel;
 
 import test.wicket.more.link.descriptor.application.WicketMoreTestLinkDescriptorApplication;
 import test.wicket.more.link.descriptor.resource.TestLinkDescriptorNoParameterResource;

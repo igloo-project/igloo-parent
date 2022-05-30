@@ -11,9 +11,9 @@ import org.iglooproject.basicapp.web.application.history.component.factory.IHist
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.more.business.history.model.atomic.HistoryDifferenceEventType;
 import org.iglooproject.wicket.api.bindgen.BindingModel;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDifference> {
 

@@ -6,20 +6,22 @@ import java.util.Locale;
 import java.util.Objects;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.IBootstrapColor;
-import org.iglooproject.wicket.more.model.LocaleAwareReadOnlyModel;
+import org.iglooproject.bootstrap.api.common.IBootstrapColor;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRendererModel;
+import org.iglooproject.wicket.api.model.LocaleAwareReadOnlyModel;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.rendering.Renderer;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
-public abstract class BootstrapRenderer<T> extends Renderer<T> {
+public abstract class BootstrapRenderer<T> extends Renderer<T> implements IBootstrapRenderer<T> {
 
 	private static final long serialVersionUID = -715674989551497434L;
 
-	public static <T> BootstrapRenderer<T> constant(final String resourceKey, final String icon, final IBootstrapColor color) {
+	public static <T> IBootstrapRenderer<T> constant(final String resourceKey, final String icon, final IBootstrapColor color) {
 		return constant(resourceKey, resourceKey, icon, color);
 	}
 
-	public static <T> BootstrapRenderer<T> constant(final String labelResourceKey, final String tooltipResourceKey, final String icon, final IBootstrapColor color) {
+	public static <T> IBootstrapRenderer<T> constant(final String labelResourceKey, final String tooltipResourceKey, final String icon, final IBootstrapColor color) {
 		return new BootstrapRenderer<T>() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -46,16 +48,19 @@ public abstract class BootstrapRenderer<T> extends Renderer<T> {
 		return information == null ? null : information.getLabel();
 	}
 
+	@Override
 	public IBootstrapColor renderColor(T value, Locale locale) {
 		BootstrapRendererInformation information = doRender(value, locale);
 		return information == null ? null : information.getColor();
 	}
 
+	@Override
 	public String renderIconCssClass(T value, Locale locale) {
 		BootstrapRendererInformation information = doRender(value, locale);
 		return information == null ? null : information.getIconCssClass();
 	}
 
+	@Override
 	public String renderTooltip(T value, Locale locale) {
 		BootstrapRendererInformation information = doRender(value, locale);
 		return information == null ? null : information.getTooltip();

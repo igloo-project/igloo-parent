@@ -13,11 +13,11 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
 import org.iglooproject.jpa.more.business.search.query.ISearchQuery;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<HistoryLog, HistoryLogSort> {
 

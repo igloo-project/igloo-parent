@@ -11,6 +11,8 @@ import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserDetailPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserDetailPage;
+import org.iglooproject.wicket.api.model.ReadOnlyModel;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
@@ -18,8 +20,6 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.link.model.PageModel;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.model.ReadOnlyModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public abstract class AdministrationUserDetailTemplate<U extends User> extends AdministrationUserTemplate {
 

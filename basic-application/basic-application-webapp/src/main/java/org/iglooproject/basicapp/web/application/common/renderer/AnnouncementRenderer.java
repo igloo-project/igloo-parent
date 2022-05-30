@@ -7,9 +7,9 @@ import java.util.Locale;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.business.announcement.model.Announcement;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
+import org.iglooproject.wicket.api.util.DatePattern;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;
 import org.iglooproject.wicket.more.rendering.Renderer;
-import org.iglooproject.wicket.more.util.DatePattern;
 
 public abstract class AnnouncementRenderer extends Renderer<Announcement> {
 

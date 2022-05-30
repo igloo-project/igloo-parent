@@ -7,6 +7,7 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
@@ -15,7 +16,6 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.toolbar.state.
 import org.iglooproject.wicket.more.markup.repeater.table.builder.toolbar.state.IAddedToolbarLabelElementState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.toolbar.state.IToolbarElementState;
 import org.iglooproject.wicket.more.markup.repeater.table.toolbar.CoreCustomizableToolbar;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;

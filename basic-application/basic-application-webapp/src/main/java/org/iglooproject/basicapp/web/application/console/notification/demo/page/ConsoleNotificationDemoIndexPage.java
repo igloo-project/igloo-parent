@@ -17,13 +17,13 @@ import org.iglooproject.basicapp.web.application.console.notification.demo.util.
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.api.util.SequenceProviders;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.repeater.collection.SpecificModelCollectionView;
-import org.iglooproject.wicket.more.util.model.SequenceProviders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

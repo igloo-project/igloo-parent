@@ -13,6 +13,7 @@ import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.api.bindgen.BindingModel;
 import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.api.factory.IDetachableFactory;
+import org.iglooproject.wicket.api.model.ModelFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderMapperLinkDescriptorFactory;
@@ -29,7 +30,6 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.IL
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
-import org.iglooproject.wicket.more.markup.html.factory.ModelFactories;
 import org.javatuples.Pair;
 import org.javatuples.Tuple;
 import org.springframework.core.convert.TypeDescriptor;

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.wicket.api.action.IOneParameterAction;
 import org.iglooproject.wicket.api.action.IOneParameterAjaxAction;
@@ -11,42 +12,41 @@ import org.iglooproject.wicket.api.factory.IDetachableFactory;
 import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 
 public interface IActionColumnBuildState<T, I> extends IActionColumnCommonBuildState<T, I> {
 
-	IActionColumnAddedLinkState<T, I> addLink(BootstrapRenderer<? super T> renderer,
+	IActionColumnAddedLinkState<T, I> addLink(IBootstrapRenderer<? super T> renderer,
 			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper);
 
-	<C> IActionColumnAddedLinkState<T, I> addLink(BootstrapRenderer<? super T> renderer,
+	<C> IActionColumnAddedLinkState<T, I> addLink(IBootstrapRenderer<? super T> renderer,
 			ICoreBinding<? super T, C> binding,
 			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper);
 
-	IActionColumnAddedLinkState<T, I> addLabelledLink(BootstrapRenderer<? super T> renderer,
+	IActionColumnAddedLinkState<T, I> addLabelledLink(IBootstrapRenderer<? super T> renderer,
 			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper);
 
-	<C> IActionColumnAddedLinkState<T, I> addLabelledLink(BootstrapRenderer<? super T> renderer,
+	<C> IActionColumnAddedLinkState<T, I> addLabelledLink(IBootstrapRenderer<? super T> renderer,
 			ICoreBinding<? super T, C> binding,
 			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper);
 
-	IActionColumnAddedAjaxActionState<T, I> addAction(BootstrapRenderer<? super T> renderer,
+	IActionColumnAddedAjaxActionState<T, I> addAction(IBootstrapRenderer<? super T> renderer,
 			IOneParameterAjaxAction<? super IModel<T>> action);
 
-	IActionColumnAddedAjaxActionState<T, I> addLabelledAction(BootstrapRenderer<? super T> renderer,
+	IActionColumnAddedAjaxActionState<T, I> addLabelledAction(IBootstrapRenderer<? super T> renderer,
 			IOneParameterAjaxAction<? super IModel<T>> action);
 
-	IActionColumnAddedActionState<T, I> addAction(BootstrapRenderer<? super T> renderer,
+	IActionColumnAddedActionState<T, I> addAction(IBootstrapRenderer<? super T> renderer,
 			IOneParameterAction<? super IModel<T>> action);
 
-	IActionColumnAddedActionState<T, I> addLabelledAction(BootstrapRenderer<? super T> renderer,
+	IActionColumnAddedActionState<T, I> addLabelledAction(IBootstrapRenderer<? super T> renderer,
 			IOneParameterAction<? super IModel<T>> action);
 
-	IActionColumnConfirmActionBuilderStepStart<T, I> addConfirmAction(BootstrapRenderer<? super T> renderer);
+	IActionColumnConfirmActionBuilderStepStart<T, I> addConfirmAction(IBootstrapRenderer<? super T> renderer);
 
-	IActionColumnAddedActionState<T, I> addAction(BootstrapRenderer<? super T> renderer,
+	IActionColumnAddedActionState<T, I> addAction(IBootstrapRenderer<? super T> renderer,
 			IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory);
 
-	IActionColumnAddedActionState<T, I> addLabelledAction(BootstrapRenderer<? super T> renderer,
+	IActionColumnAddedActionState<T, I> addLabelledAction(IBootstrapRenderer<? super T> renderer,
 			IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory);
 
 	@Override

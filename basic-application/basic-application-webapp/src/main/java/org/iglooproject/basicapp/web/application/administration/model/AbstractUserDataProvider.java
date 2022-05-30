@@ -9,11 +9,11 @@ import org.iglooproject.basicapp.core.business.user.search.IAbstractUserSearchQu
 import org.iglooproject.basicapp.core.business.user.search.UserSort;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.search.query.ISearchQuery;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.ImmutableMap;
 

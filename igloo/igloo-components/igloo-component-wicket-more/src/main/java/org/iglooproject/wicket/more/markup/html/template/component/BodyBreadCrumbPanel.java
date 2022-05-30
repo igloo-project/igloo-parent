@@ -7,10 +7,10 @@ import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.api.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElementListConcatModel;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbMarkupTagRenderingBehavior;
-import org.iglooproject.wicket.more.model.ReadOnlyModel;
 
 public class BodyBreadCrumbPanel extends GenericPanel<List<BreadCrumbElement>> {
 

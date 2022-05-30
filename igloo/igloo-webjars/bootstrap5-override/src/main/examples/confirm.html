@@ -1,0 +1,14 @@
+---
+layout: base
+title: Confirm
+---
+<div class="container">
+    <button id="button" type="button" data-bs-title="Title" data-bs-text="Question" data-bs-yes-label="Oui" data-bs-no-label="Non">Show modal</button>
+</div>
+{{< partial "bootstrap.html" >}}
+<script src="/dist/confirm.js"></script>
+<script>
+    const buttonElement = document.getElementById("button")
+    buttonElement.addEventListener("confirm.bs.confirm", () => { console.log("Confirm event triggered"); })
+    var button = new Confirm(buttonElement)
+</script>

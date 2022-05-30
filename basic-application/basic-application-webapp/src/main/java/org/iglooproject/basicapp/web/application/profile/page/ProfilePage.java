@@ -8,11 +8,11 @@ import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.profile.component.ProfileDescriptionPanel;
 import org.iglooproject.basicapp.web.application.profile.template.ProfileTemplate;
 import org.iglooproject.wicket.api.bindgen.BindingModel;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class ProfilePage extends ProfileTemplate {
 

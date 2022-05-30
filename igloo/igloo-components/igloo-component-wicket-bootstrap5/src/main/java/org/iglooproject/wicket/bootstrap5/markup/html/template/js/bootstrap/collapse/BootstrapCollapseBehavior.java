@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.more.util.model.Detachables;
+import org.iglooproject.wicket.api.util.Detachables;
 
 public class BootstrapCollapseBehavior extends Behavior {
 

@@ -8,10 +8,10 @@ import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData
 import org.iglooproject.basicapp.core.business.referencedata.search.IReferenceDataSearchQuery;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.sort.ISort;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public abstract class AbstractReferenceDataDataProvider<T extends ReferenceData<? super T>, S extends ISort<SortField>>
 		extends AbstractSearchQueryDataProvider<T, S> {

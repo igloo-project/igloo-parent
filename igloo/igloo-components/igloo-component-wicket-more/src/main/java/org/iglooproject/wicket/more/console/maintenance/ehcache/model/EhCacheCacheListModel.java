@@ -8,7 +8,7 @@ import java.util.Set;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.wicket.more.util.model.Detachables;
+import org.iglooproject.wicket.api.util.Detachables;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;

@@ -6,11 +6,11 @@ import java.util.Map;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.api.factory.IDetachableFactory;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterMappingEntryBuilder;
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;

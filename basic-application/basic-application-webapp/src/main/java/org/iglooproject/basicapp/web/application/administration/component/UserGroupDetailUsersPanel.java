@@ -22,6 +22,7 @@ import org.iglooproject.basicapp.web.application.administration.template.Adminis
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.api.action.IOneParameterAjaxAction;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.link.model.ComponentPageModel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -29,7 +30,6 @@ import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

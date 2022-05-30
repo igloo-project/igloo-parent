@@ -1,11 +1,12 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action;
 
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.bootstrap.api.confirm.AjaxConfirmLink;
+import org.iglooproject.bootstrap.api.confirm.AjaxConfirmLinkBuilder;
 import org.iglooproject.bootstrap.api.confirm.IConfirmLinkBuilder;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.wicket.api.action.IOneParameterAjaxAction;
 import org.iglooproject.wicket.api.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnAddedConfirmActionState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepContent;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepEndContent;
@@ -20,14 +21,14 @@ public class ActionColumnConfirmActionBuilder<T, I> implements
 
 	private final ActionColumnBuilder<T,I> actionColumnBuilder;
 
-	private final BootstrapRenderer<? super T> renderer;
+	private final IBootstrapRenderer<? super T> renderer;
 
-	private IConfirmLinkBuilder<AjaxLink<T>, T> ajaxConfirmLinkBuilder;
+	private IConfirmLinkBuilder<AjaxConfirmLink<T>, T> ajaxConfirmLinkBuilder;
 
-	public ActionColumnConfirmActionBuilder(ActionColumnBuilder<T,I> actionColumnBuilder, BootstrapRenderer<? super T> renderer) {
+	public ActionColumnConfirmActionBuilder(ActionColumnBuilder<T,I> actionColumnBuilder, IBootstrapRenderer<? super T> renderer) {
 		this.actionColumnBuilder = actionColumnBuilder;
 		this.renderer = renderer;
-		ajaxConfirmLinkBuilder = AjaxConfirmLinkHelper.builder();
+		ajaxConfirmLinkBuilder = new AjaxConfirmLinkBuilder<T>();
 	}
 
 	@Override

@@ -5,13 +5,19 @@ import org.apache.wicket.ResourceBundles;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.settings.ResourceSettings;
 import org.iglooproject.bootstrap.api.BootstrapModalEvent;
 import org.iglooproject.bootstrap.api.BootstrapVersion;
 import org.iglooproject.bootstrap.api.IBootstrapModal;
 import org.iglooproject.bootstrap.api.IBootstrapProvider;
 import org.iglooproject.bootstrap.api.IModalPopupPanel;
+import org.iglooproject.bootstrap.api.badge.IBootstrapBadge;
+import org.iglooproject.bootstrap.api.confirm.BootstrapConfirm;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.sass.service.IScssService;
+import org.iglooproject.wicket.bootstrap5.markup.html.bootstrap.component.BootstrapBadge;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.css.bootstrap.CoreBootstrap5CssScope;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.confirm.BootstrapConfirmJavaScriptResourceReference;
@@ -94,6 +100,17 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 		response.render(JavaScriptHeaderItem.forReference(Bootstrap5ModalMoreJavaScriptResourceReference.get()));
 	}
 
+	@Override
+	public void confirmRenderHead(Component component, IHeaderResponse response) {
+		renderHead(component, response);
+		response.render(JavaScriptHeaderItem.forReference(BootstrapConfirmJavaScriptResourceReference.get()));
+	}
+
+	@Override
+	public JsStatement confirmStatement(Component component) {
+		return new JsStatement().$(component).chain(BootstrapConfirm.confirm()).append(";");
+	}
+
 	private JsStatement getBindClickStatement(Component component, IModalPopupPanel modal,
 			JsStatement onModalStart, JsStatement onModalComplete) {
 		if (!component.isEnabledInHierarchy()) {
@@ -132,6 +149,11 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 	@Override
 	public IBootstrapModal createModal() {
 		return new BootstrapModal();
+	}
+
+	@Override
+	public <T> SerializableSupplier2<IBootstrapBadge<T, BootstrapBadge<T>>> badgeSupplier(String id, IModel<T> model, final IBootstrapRenderer<? super T> renderer) {
+		return () -> new BootstrapBadge<T>(id, model, renderer);
 	}
 
 }

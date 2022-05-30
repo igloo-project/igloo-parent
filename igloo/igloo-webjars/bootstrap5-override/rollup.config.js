@@ -1,5 +1,7 @@
 'use strict'
 
+import resolve from '@rollup/plugin-node-resolve'
+
 const path = require('path')
 
 let file = process.env.FILE
@@ -16,7 +18,11 @@ const rollupConfig = {
       "@bootstrap": "bootstrap"
     }
   },
-  external: ['@bootstrap']
+  external: ['bootstrap'],
+  external: [],
+  plugins: [
+    resolve()
+  ]
 }
 
 module.exports = rollupConfig

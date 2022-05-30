@@ -15,6 +15,7 @@ import org.iglooproject.basicapp.web.application.administration.form.UserGroupDr
 import org.iglooproject.basicapp.web.application.administration.model.AbstractUserDataProvider;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserDetailPage;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.markup.html.form.PageableSearchForm;
 import org.iglooproject.wicket.more.ajax.SerializableListener;
 import org.iglooproject.wicket.more.common.behavior.UpdateOnChangeAjaxEventBehavior;
@@ -23,7 +24,6 @@ import org.iglooproject.wicket.more.link.model.ComponentPageModel;
 import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class BasicUserListSearchPanel extends Panel {
 

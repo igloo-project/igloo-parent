@@ -7,7 +7,8 @@ import java.util.Set;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.api.IItemModelAwareCollectionModel;
-import org.iglooproject.wicket.more.markup.repeater.map.IItemModelAwareMapModel;
+import org.iglooproject.wicket.api.model.IItemModelAwareMapModel;
+import org.iglooproject.wicket.api.model.MapCopyModel;
 
 public class WorkingCopyMapModel<K, V, M extends Map<K, V>, MK extends IModel<K>, MV extends IModel<V>>
 		extends WorkingCopyModel<M>

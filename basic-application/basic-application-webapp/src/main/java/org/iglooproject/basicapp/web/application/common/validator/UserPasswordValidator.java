@@ -18,8 +18,8 @@ import org.iglooproject.basicapp.core.security.service.ISecurityManagementServic
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.markup.html.form.validation.IFormModelValidator;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.passay.LengthRule;
 import org.passay.PasswordData;
 import org.passay.PasswordValidator;

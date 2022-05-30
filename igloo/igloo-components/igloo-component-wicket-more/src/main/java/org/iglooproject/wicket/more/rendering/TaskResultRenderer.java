@@ -2,8 +2,8 @@ package org.iglooproject.wicket.more.rendering;
 
 import java.util.Locale;
 
+import org.iglooproject.bootstrap.api.common.BootstrapColor;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.BootstrapColor;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation.Builder;

@@ -5,14 +5,21 @@ import org.apache.wicket.ResourceBundles;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.settings.ResourceSettings;
 import org.iglooproject.bootstrap.api.BootstrapModalEvent;
 import org.iglooproject.bootstrap.api.BootstrapVersion;
 import org.iglooproject.bootstrap.api.IBootstrapModal;
 import org.iglooproject.bootstrap.api.IBootstrapProvider;
 import org.iglooproject.bootstrap.api.IModalPopupPanel;
+import org.iglooproject.bootstrap.api.badge.IBootstrapBadge;
+import org.iglooproject.bootstrap.api.confirm.BootstrapConfirm;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.sass.service.IScssService;
+import org.iglooproject.wicket.bootstrap4.markup.html.bootstrap.component.BootstrapBadge;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.bootstrap.CoreBootstrap4CssScope;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.confirm.BootstrapConfirmJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.Bootstrap4ModalJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.BootstrapModalMoreJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.component.Bootstrap4ModalPanel;
@@ -126,6 +133,21 @@ public class WicketBootstrap4Module implements IWicketModule, IBootstrapProvider
 	@Override
 	public IBootstrapModal createModal() {
 		return new BootstrapModal();
+	}
+
+	@Override
+	public <T> SerializableSupplier2<IBootstrapBadge<T, BootstrapBadge<T>>> badgeSupplier(String id, IModel<T> model, final IBootstrapRenderer<? super T> renderer) {
+		return () -> new BootstrapBadge<T>(id, model, renderer);
+	}
+
+	@Override
+	public void confirmRenderHead(Component component, IHeaderResponse response) {
+		response.render(JavaScriptHeaderItem.forReference(BootstrapConfirmJavaScriptResourceReference.get()));
+	}
+
+	@Override
+	public JsStatement confirmStatement(Component component) {
+		return new JsStatement().$(component).chain(BootstrapConfirm.confirm()).append(";");
 	}
 
 }

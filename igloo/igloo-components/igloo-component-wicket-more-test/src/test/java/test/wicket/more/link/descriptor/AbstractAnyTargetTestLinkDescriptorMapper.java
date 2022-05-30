@@ -14,6 +14,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.api.model.CollectionCopyModel;
 import org.iglooproject.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.ILinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -29,7 +30,6 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkPara
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import org.iglooproject.wicket.more.markup.html.factory.ConditionFactories;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
-import org.iglooproject.wicket.more.model.CollectionCopyModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

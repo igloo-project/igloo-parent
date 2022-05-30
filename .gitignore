@@ -15,5 +15,6 @@ gitlab-ci.build.conf
 
 # npm
 node_modules/
+.hugo_build.lock
 package-lock.json
 generated-js/

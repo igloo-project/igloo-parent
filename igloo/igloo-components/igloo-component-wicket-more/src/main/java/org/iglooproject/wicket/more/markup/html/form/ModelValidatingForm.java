@@ -9,8 +9,8 @@ import org.apache.wicket.util.lang.Args;
 
 import com.google.common.collect.Lists;
 
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.markup.html.form.validation.IFormModelValidator;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class ModelValidatingForm<E> extends Form<E> {
 

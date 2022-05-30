@@ -3,7 +3,7 @@ package org.iglooproject.wicket.more.link.descriptor.mapper;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.api.Models;
-import org.iglooproject.wicket.more.model.ReadOnlyModel;
+import org.iglooproject.wicket.api.model.ReadOnlyModel;
 import org.javatuples.Pair;
 
 public abstract class AbstractTwoParameterLinkDescriptorMapper<L, T1, T2>

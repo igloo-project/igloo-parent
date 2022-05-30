@@ -7,12 +7,12 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.markup.html.form.ListMultipleChoice;
 import org.iglooproject.wicket.markup.html.model.ConcreteCollectionToCollectionWrapperModel;
 import org.iglooproject.wicket.more.markup.html.model.MultipleChoicesWrapperModel;
 import org.iglooproject.wicket.more.markup.html.select2.util.IDropDownChoiceWidth;
 import org.iglooproject.wicket.more.markup.html.select2.util.Select2Utils;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.wicketstuff.select2.Select2Behavior;
 import org.wicketstuff.select2.Settings;
 

@@ -9,6 +9,7 @@ import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.administration.form.TechnicalUserPopup;
 import org.iglooproject.wicket.api.bindgen.BindingModel;
 import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.api.util.DatePattern;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.link.EmailLink;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
@@ -18,7 +19,6 @@ import org.iglooproject.wicket.more.markup.html.basic.DefaultPlaceholderPanel;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.util.DatePattern;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public class TechnicalUserDetailDescriptionPanel extends GenericPanel<TechnicalUser> {

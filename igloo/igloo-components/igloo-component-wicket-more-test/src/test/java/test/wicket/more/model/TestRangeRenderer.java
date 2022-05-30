@@ -8,9 +8,9 @@ import java.util.Locale;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.api.Models;
+import org.iglooproject.wicket.api.util.DatePattern;
 import org.iglooproject.wicket.more.model.RangeModel;
 import org.iglooproject.wicket.more.rendering.Renderer;
-import org.iglooproject.wicket.more.util.DatePattern;
 import org.junit.jupiter.api.Test;
 
 import test.wicket.more.AbstractWicketMoreTestCase;

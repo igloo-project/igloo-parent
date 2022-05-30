@@ -23,13 +23,13 @@ import org.iglooproject.basicapp.web.application.common.validator.UserPasswordVa
 import org.iglooproject.basicapp.web.application.common.validator.UsernameUnicityValidator;
 import org.iglooproject.wicket.api.bindgen.BindingModel;
 import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 public class BasicUserPopup extends AbstractUserPopup<BasicUser> {
 

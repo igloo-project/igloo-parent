@@ -2,8 +2,6 @@ package org.igloo.spring.autoconfigure.bootstrap;
 
 import org.igloo.spring.autoconfigure.wicket.IglooWicketAutoConfiguration;
 import org.iglooproject.wicket.bootstrap5.application.WicketBootstrap5Module;
-import org.iglooproject.wicket.bootstrap5.markup.html.bootstrap.WicketBootstrap5ComponentsModule;
-import org.iglooproject.wicket.more.application.IWicketBootstrapComponentsModule;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -18,9 +16,5 @@ public class IglooBootstrap5AutoConfiguration {
 	@Bean
 	public WicketBootstrap5Module bootstrap5Module() {
 		return new WicketBootstrap5Module();
-	}
-	@Bean
-	public IWicketBootstrapComponentsModule wicketBootstrapComponentsModule() {
-		return new WicketBootstrap5ComponentsModule();
 	}
 }

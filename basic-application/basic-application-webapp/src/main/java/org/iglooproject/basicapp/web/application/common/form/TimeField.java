@@ -8,8 +8,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.iglooproject.basicapp.web.application.common.util.Masks;
 import org.iglooproject.basicapp.web.application.common.validator.TimeValidator;
+import org.iglooproject.wicket.api.util.IDatePattern;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.mask.MaskBehavior;
-import org.iglooproject.wicket.more.util.IDatePattern;
 import org.iglooproject.wicket.more.util.convert.converters.PatternDateConverter;
 
 public class TimeField extends TextField<Date> {

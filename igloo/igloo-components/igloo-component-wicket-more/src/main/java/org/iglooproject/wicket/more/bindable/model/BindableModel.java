@@ -15,9 +15,9 @@ import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.spring.util.StringUtils;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.bindable.exception.NoSuchModelException;
 import org.iglooproject.wicket.more.model.WorkingCopyModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Maps;

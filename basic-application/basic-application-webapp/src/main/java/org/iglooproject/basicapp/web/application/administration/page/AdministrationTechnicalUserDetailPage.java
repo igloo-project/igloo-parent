@@ -23,11 +23,11 @@ import org.iglooproject.basicapp.web.application.administration.template.Adminis
 import org.iglooproject.basicapp.web.application.common.renderer.UserEnabledRenderer;
 import org.iglooproject.basicapp.web.application.common.util.BootstrapTabsUtils;
 import org.iglooproject.basicapp.web.application.navigation.link.LinkFactory;
+import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
+import org.iglooproject.bootstrap.api.confirm.AjaxConfirmLink;
 import org.iglooproject.wicket.api.action.IAjaxAction;
 import org.iglooproject.wicket.api.bindgen.BindingModel;
 import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.bootstrap5.markup.html.bootstrap.component.BootstrapBadge;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.modal.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -100,8 +100,7 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 				new EnclosureContainer("informationContainer")
 					.anyChildVisible()
 					.add(
-						new BootstrapBadge<>("enabled", userModel, UserEnabledRenderer.get())
-							.badgePill()
+						BootstrapRequestCycle.getSettings().badgeSupplier("enabled", userModel, UserEnabledRenderer.get()).get().badgePill().asComponent()
 					)
 			);
 		

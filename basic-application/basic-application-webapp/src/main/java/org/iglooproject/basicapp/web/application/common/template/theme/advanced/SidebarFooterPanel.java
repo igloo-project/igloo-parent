@@ -8,10 +8,10 @@ import org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.api.util.DatePattern;
 import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.rendering.Renderer;
-import org.iglooproject.wicket.more.util.DatePattern;
 
 public class SidebarFooterPanel extends Panel {
 

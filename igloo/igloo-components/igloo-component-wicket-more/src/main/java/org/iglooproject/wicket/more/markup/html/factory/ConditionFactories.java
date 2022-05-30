@@ -5,7 +5,7 @@ import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.api.condition.BooleanOperator;
 import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.api.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.util.model.Detachables;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.collect.Lists;

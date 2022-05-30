@@ -2,9 +2,9 @@ package org.iglooproject.wicket.more.bindable.form;
 
 import com.google.common.collect.ImmutableList;
 
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.bindable.model.IBindableModel;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 /**
  * A form that automatically write {@link IBindableModel}'s caches to the underlying objects before validation and

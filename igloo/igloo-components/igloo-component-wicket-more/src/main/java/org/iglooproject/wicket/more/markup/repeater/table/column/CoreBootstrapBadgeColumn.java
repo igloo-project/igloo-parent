@@ -10,19 +10,18 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.api.factory.IDetachableFactory;
+import org.iglooproject.wicket.api.model.ReadOnlyModel;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
-import org.iglooproject.wicket.more.application.IWicketBootstrapComponentsModule;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.model.ReadOnlyModel;
 
 import com.google.common.collect.Lists;
 
@@ -30,12 +29,9 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 
 	private static final long serialVersionUID = -5344972073351010752L;
 
-	@SpringBean
-	private IWicketBootstrapComponentsModule bootstrapComponentsModule;
-
 	private final IDetachableFactory<IModel<T>, ? extends IModel<C>> modelFactory;
 
-	private final BootstrapRenderer<? super C> renderer;
+	private final IBootstrapRenderer<? super C> renderer;
 	
 	private Condition badgePill = Condition.alwaysFalse();
 	
@@ -59,7 +55,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 	private List<Behavior> linkBehaviors = Lists.newArrayList();
 
 	public CoreBootstrapBadgeColumn(IModel<?> headerLabelModel, final SerializableFunction2<? super T, C> function,
-			final BootstrapRenderer<? super C> renderer) {
+			final IBootstrapRenderer<? super C> renderer) {
 		super(headerLabelModel);
 		Injector.get().inject(this);
 		
@@ -86,7 +82,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 					
 					@Override
 					public Component getBootstrapBadge(String wicketId, IModel<T> rowModel) {
-						return bootstrapComponentsModule.badgeSupplier(wicketId, modelFactory.create(rowModel), renderer).get()
+						return BootstrapRequestCycle.getSettings().badgeSupplier(wicketId, modelFactory.create(rowModel), renderer).get()
 								.badgePill(badgePill)
 								.showIcon(showIcon)
 								.showLabel(showLabel)

@@ -6,8 +6,8 @@ import java.util.Objects;
 
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.BootstrapColor;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.IBootstrapColor;
+import org.iglooproject.bootstrap.api.common.BootstrapColor;
+import org.iglooproject.bootstrap.api.common.IBootstrapColor;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
 

@@ -4,6 +4,9 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.bootstrap.api.badge.IBootstrapBadge;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRendererModel;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
@@ -11,9 +14,6 @@ import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.behavior.BootstrapColorBehavior;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.IBootstrapRendererModel;
-import org.iglooproject.wicket.more.markup.html.bootstrap.component.IBootstrapBadge;
 
 public class BootstrapBadge<T> extends GenericPanel<T> implements IBootstrapBadge<T, BootstrapBadge<T>> {
 
@@ -25,7 +25,7 @@ public class BootstrapBadge<T> extends GenericPanel<T> implements IBootstrapBadg
 	private Condition showLabel = Condition.alwaysTrue();
 	private Condition showTooltip = Condition.alwaysTrue();
 
-	public BootstrapBadge(String id, IModel<T> model, final BootstrapRenderer<? super T> renderer) {
+	public BootstrapBadge(String id, IModel<T> model, final IBootstrapRenderer<? super T> renderer) {
 		super(id, model);
 		
 		IBootstrapRendererModel labelModel = renderer.asModel(model);

@@ -9,7 +9,7 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.api.IItemModelAwareCollectionModel;
-import org.iglooproject.wicket.more.model.CollectionCopyModel;
+import org.iglooproject.wicket.api.model.CollectionCopyModel;
 import org.iglooproject.wicket.more.model.WorkingCopyCollectionModel;
 
 public class BindableCollectionModel<T, C extends Collection<T>> extends BindableModel<C>

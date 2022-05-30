@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.converter.AbstractConverter;
 import org.apache.wicket.util.string.Strings;
-import org.iglooproject.wicket.more.util.IDatePattern;
+import org.iglooproject.wicket.api.util.IDatePattern;
 
 public class PatternDateConverter extends AbstractConverter<Date> {
 	

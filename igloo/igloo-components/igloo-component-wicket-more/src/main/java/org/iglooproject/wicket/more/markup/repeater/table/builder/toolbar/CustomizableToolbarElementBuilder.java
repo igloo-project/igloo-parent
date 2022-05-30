@@ -15,8 +15,8 @@ import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.FluentIterable;

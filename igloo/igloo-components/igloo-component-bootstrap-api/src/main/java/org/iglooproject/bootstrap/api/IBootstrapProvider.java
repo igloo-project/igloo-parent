@@ -3,6 +3,10 @@ package org.iglooproject.bootstrap.api;
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceBundles;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.model.IModel;
+import org.iglooproject.bootstrap.api.badge.IBootstrapBadge;
+import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
+import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.sass.service.IScssService;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
@@ -49,5 +53,11 @@ public interface IBootstrapProvider {
 	default JsStatement hide(Component modal) {
 		return new JsStatement().$(modal).chain("hide").append(";");
 	}
+
+	<T> SerializableSupplier2<? extends IBootstrapBadge<T, ? extends IBootstrapBadge<T, ?>>> badgeSupplier(String id, IModel<T> model, final IBootstrapRenderer<? super T> renderer);
+
+	void confirmRenderHead(Component component, IHeaderResponse response);
+
+	JsStatement confirmStatement(Component component);
 
 }

@@ -12,7 +12,7 @@ import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
 import org.iglooproject.basicapp.web.application.history.component.CompositeHistoryDifferencePanel;
 import org.iglooproject.basicapp.web.application.history.component.DefaultHistoryDifferencePanel;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
-import org.iglooproject.wicket.more.util.model.Detachables;
+import org.iglooproject.wicket.api.util.Detachables;
 
 /**
  * A {@link IHistoryComponentFactory} allowing the caller to customize the way some particular fields are displayed.
