@@ -129,7 +129,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	public IConfirmLinkBuilderStepOnclick<L, O> no(IModel<String> noLabelModel) {
 		this.noLabelModel = noLabelModel;
 		this.noIconModel = new Model<>("fa fa-fw fa-ban");
-		this.noButtonModel = new Model<>("btn btn-default btn-outline-secondary");
+		this.noButtonModel = new Model<>("btn btn-outline-secondary");
 		return this;
 	}
 
@@ -137,7 +137,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	public IConfirmLinkBuilderStepOnclick<L, O> no(IModel<String> noLabelModel, IModel<String> noIconModel) {
 		this.noLabelModel = noLabelModel;
 		this.noIconModel = noIconModel;
-		this.noButtonModel = new Model<>("btn btn-default btn-outline-secondary");
+		this.noButtonModel = new Model<>("btn btn-outline-secondary");
 		return this;
 	}
 
@@ -156,7 +156,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.yesIconModel = new Model<>("fa fa-fw fa-check");
 		this.noIconModel = new Model<>("fa fa-fw fa-ban");
 		this.yesButtonModel = new Model<>("btn btn-success");
-		this.noButtonModel = new Model<>("btn btn-default btn-outline-secondary");
+		this.noButtonModel = new Model<>("btn btn-outline-secondary");
 		return this;
 	}
 
@@ -167,7 +167,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.yesIconModel = new Model<>("fa fa-fw fa-check");
 		this.noIconModel = new Model<>("fa fa-fw fa-ban");
 		this.yesButtonModel = new Model<>("btn btn-success");
-		this.noButtonModel = new Model<>("btn btn-default btn-outline-secondary");
+		this.noButtonModel = new Model<>("btn btn-outline-secondary");
 		return this;
 	}
 
@@ -178,7 +178,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.yesIconModel = new Model<>("fa fa-fw fa-check");
 		this.noIconModel = new Model<>("fa fa-fw fa-ban");
 		this.yesButtonModel = new Model<>("btn btn-success");
-		this.noButtonModel = new Model<>("btn btn-default btn-outline-secondary");
+		this.noButtonModel = new Model<>("btn btn-outline-secondary");
 		return this;
 	}
 
@@ -189,7 +189,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.yesIconModel = new Model<>("fa fa-fw fa-check");
 		this.noIconModel = new Model<>("fa fa-fw fa-ban");
 		this.yesButtonModel = new Model<>("btn btn-success");
-		this.noButtonModel = new Model<>("btn btn-default btn-outline-secondary");
+		this.noButtonModel = new Model<>("btn btn-outline-secondary");
 		return this;
 	}
 

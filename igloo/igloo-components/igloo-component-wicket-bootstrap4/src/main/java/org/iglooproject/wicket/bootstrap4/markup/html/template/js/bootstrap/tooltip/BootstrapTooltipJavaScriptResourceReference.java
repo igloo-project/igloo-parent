@@ -3,10 +3,10 @@ package org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.too
 import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
+import org.iglooproject.bootstrap.api.popper.PopperJavaScriptResourceReference;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.util.BootstrapUtilJavaScriptResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.WebjarsJQueryPluginResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.js.popper.PopperJavaScriptResourceReference;
 import org.iglooproject.wicket.more.webjars.WebjarUtil;
 
 public final class BootstrapTooltipJavaScriptResourceReference extends WebjarsJQueryPluginResourceReference {

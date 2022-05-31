@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tooltip;
+package org.iglooproject.bootstrap.api.tooltip;
 
 import java.util.Objects;
 

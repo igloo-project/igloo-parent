@@ -6,16 +6,9 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormSubmitBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
-import org.wicketstuff.wiquery.core.events.Event;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
-import org.wicketstuff.wiquery.core.events.WiQueryEventBehavior;
-import org.wicketstuff.wiquery.core.javascript.JsScope;
-import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
 
 public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 
@@ -56,30 +49,6 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 		this.form = form;
 		add(new ConfirmContentBehavior(titleModel, textModel, yesLabelModel, noLabelModel, yesIconModel, noIconModel,
 				yesButtonModel, noButtonModel, cssClassNamesModel, textNoEscape));
-		
-		// Lors du clic, on ouvre la popup de confirmation. Si l'action est confirmée, 
-		// on délenche un évènement 'confirm'.
-		// l'événement click habituel est supprimé par surcharge de newAjaxEventBehavior ci-dessous
-		Event clickEvent = new Event(MouseEvent.CLICK) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public JsScope callback() {
-				return JsScopeEvent.quickScope(BootstrapRequestCycle.getSettings().confirmStatement(AjaxConfirmLink.this).append("event.preventDefault();"));
-			}
-		};
-		add(new WiQueryEventBehavior(clickEvent) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public boolean isEnabled(Component component) {
-				return AjaxConfirmLink.this.isEnabledInHierarchy();
-			}
-		});
-	}
-
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		BootstrapRequestCycle.getSettings().confirmRenderHead(this, response);
 	}
 
 	/**
@@ -89,12 +58,12 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 	@Override
 	protected AjaxEventBehavior newAjaxEventBehavior(String event) {
 		if (form != null) {
-			return new AjaxFormSubmitBehavior(form, "confirm") {
+			return new AjaxFormSubmitBehavior(form, BootstrapConfirmEvent.CONFIRM.getEventLabel()) {
 				private static final long serialVersionUID = 4405251450215656630L;
 				
 				@Override
 				protected void onSubmit(AjaxRequestTarget target) {
-					onClick(target);
+					AjaxConfirmLink.this.onClick(target);
 				}
 				
 				@Override
@@ -105,7 +74,7 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 			};
 		} else {
 			// Lorsque l'évènement 'confirm' est détecté, on déclenche l'action à proprement parler.
-			return new AjaxEventBehavior("confirm") {
+			return new AjaxEventBehavior(BootstrapConfirmEvent.CONFIRM.getEventLabel()) {
 				private static final long serialVersionUID = 1L;
 				
 				@Override
@@ -116,7 +85,7 @@ public abstract class AjaxConfirmLink<O> extends AjaxLink<O> {
 				
 				@Override
 				protected void onEvent(AjaxRequestTarget target) {
-					onClick(target);
+					AjaxConfirmLink.this.onClick(target);
 				}
 				
 				@Override

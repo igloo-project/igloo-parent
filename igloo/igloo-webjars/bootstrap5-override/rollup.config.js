@@ -15,11 +15,10 @@ const rollupConfig = {
     generatedCode: 'es2015',
     name: symbol,
     globals: {
-      "@bootstrap": "bootstrap"
+      "bootstrap": "bootstrap"
     }
   },
   external: ['bootstrap'],
-  external: [],
   plugins: [
     resolve()
   ]

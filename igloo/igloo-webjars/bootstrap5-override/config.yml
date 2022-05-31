@@ -1,4 +1,6 @@
 ---
+Params:
+  bootstrap: 5
 module:
   mounts:
     - source: src/main/generated-js/js/dist

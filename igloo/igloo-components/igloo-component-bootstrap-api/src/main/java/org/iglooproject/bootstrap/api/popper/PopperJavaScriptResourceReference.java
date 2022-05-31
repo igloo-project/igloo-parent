@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.markup.html.template.js.popper;
+package org.iglooproject.bootstrap.api.popper;
 
 import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
 

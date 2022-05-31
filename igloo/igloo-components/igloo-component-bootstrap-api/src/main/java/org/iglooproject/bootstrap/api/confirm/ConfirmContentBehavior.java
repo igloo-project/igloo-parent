@@ -13,16 +13,16 @@ public class ConfirmContentBehavior extends Behavior {
 
 	private static final long serialVersionUID = -5357415707217228299L;
 
-	private static final String ATTRIBUTE_TITLE = "data-modal-confirm-title";
-	private static final String ATTRIBUTE_TEXT = "data-modal-confirm-text";
-	private static final String ATTRIBUTE_YES_LABEL = "data-modal-confirm-yes-label";
-	private static final String ATTRIBUTE_NO_LABEL = "data-modal-confirm-no-label";
-	private static final String ATTRIBUTE_YES_ICON = "data-modal-confirm-yes-icon";
-	private static final String ATTRIBUTE_NO_ICON = "data-modal-confirm-no-icon";
-	private static final String ATTRIBUTE_YES_BUTTON = "data-modal-confirm-yes-button";
-	private static final String ATTRIBUTE_NO_BUTTON = "data-modal-confirm-no-button";
-	private static final String ATTRIBUTE_TEXT_NO_ESCAPE = "data-modal-confirm-text-noescape";
-	private static final String ATTRIBUTE_CSS_CLASS_NAMES = "data-modal-confirm-css-class-names";
+	private static final String ATTRIBUTE_TITLE = "data-bs-title";
+	private static final String ATTRIBUTE_TEXT = "data-bs-text";
+	private static final String ATTRIBUTE_YES_LABEL = "data-bs-yes-label";
+	private static final String ATTRIBUTE_NO_LABEL = "data-bs-no-label";
+	private static final String ATTRIBUTE_YES_ICON = "data-bs-yes-icon";
+	private static final String ATTRIBUTE_NO_ICON = "data-bs-no-icon";
+	private static final String ATTRIBUTE_YES_BUTTON = "data-bs-yes-button";
+	private static final String ATTRIBUTE_NO_BUTTON = "data-bs-no-button";
+	private static final String ATTRIBUTE_TEXT_NO_ESCAPE = "data-bs-no-escape";
+	private static final String ATTRIBUTE_CSS_CLASS_NAMES = "data-bs-css-class-names";
 
 	private final IModel<String> titleModel;
 

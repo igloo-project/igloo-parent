@@ -6,16 +6,16 @@
 		options = $.extend({}, $.fn.confirm.defaults, options);
 		$(this).each(function(index) {
 			var $this = $(this);
-			var text = $this.data("modal-confirm-text");
-			var title = $this.data("modal-confirm-title");
-			var yesLabel = $this.data("modal-confirm-yes-label");
-			var noLabel = $this.data("modal-confirm-no-label");
-			var yesIcon = $this.data("modal-confirm-yes-icon");
-			var noIcon = $this.data("modal-confirm-no-icon");
-			var yesButton = $this.data("modal-confirm-yes-button");
-			var noButton = $this.data("modal-confirm-no-button");
-			var noEscape = $this.data("modal-confirm-text-noescape");
-			var cssClassNames = $this.data("modal-confirm-css-class-names");
+			var text = $this.data("bs-text");
+			var title = $this.data("bs-title");
+			var yesLabel = $this.data("bs-yes-label");
+			var noLabel = $this.data("bs-no-label");
+			var yesIcon = $this.data("bs-yes-icon");
+			var noIcon = $this.data("bs-no-icon");
+			var yesButton = $this.data("bs-yes-button");
+			var noButton = $this.data("bs-no-button");
+			var noEscape = $this.data("bs-no-escape");
+			var cssClassNames = $this.data("bs-css-class-names");
 			var $modal = $("<div class='modal fade confirm' tabindex='-1'></div>");
 			var $dialog = $("<div class='modal-dialog'></div>");
 			var $content = $("<div class='modal-content'></div>");
@@ -32,12 +32,12 @@
 			$content.appendTo($('body'));
 			
 			var onConfirm = function(event) {
-				$this.trigger('confirm');
+				$this.trigger('confirm.bs.confirm');
 				$modal.modal('hide');
 				event.preventDefault();
 			};
 			var onCancel = function(event) {
-				$this.trigger('cancel');
+				$this.trigger('cancel.bs.confirm');
 				$modal.modal('hide');
 				event.preventDefault();
 			};

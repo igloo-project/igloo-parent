@@ -8,6 +8,7 @@
     "js": "npm-run-all js-compile",
     "js-compile": "npm-run-all js-compile-*",
     "js-compile-modal-more": "rollup --environment SYMBOL:ModalMore --environment FILE:modal-more --config ./rollup.config.js --sourcemap",
+    "js-compile-tooltip-more": "rollup --environment SYMBOL:TooltipMore --environment FILE:tooltip-more --config ./rollup.config.js --sourcemap",
     "js-compile-confirm": "rollup --environment SYMBOL:Confirm --environment FILE:confirm --config ./rollup.config.js --sourcemap",
     "docs-serve": "hugo server --port 9001 --disableFastRender",
     "watch": "npm-run-all --parallel watch-*",

@@ -3,12 +3,16 @@ layout: base
 title: Confirm
 ---
 <div class="container">
-    <button id="button" type="button" data-bs-title="Title" data-bs-text="Question" data-bs-yes-label="Oui" data-bs-no-label="Non">Show modal</button>
+    <button id="button1" class="btn btn-outline-secondary" type="button" data-bs-title="Title" data-bs-text="Question &lt;ok&gt;" data-bs-yes-label="Oui" data-bs-no-label="Non" data-bs-no-escape="false" data-bs-yes-button="btn btn-success" data-bs-no-button="btn btn-outline-secondary" data-bs-css-class-names="custom">Show modal</button>
+    <button id="button2" class="btn btn-outline-secondary" type="button" data-bs-title="Title" data-bs-text="&lt;b&gt;Question&lt;/b&gt;" data-bs-yes-label="Oui" data-bs-no-label="Non" data-bs-no-escape="true" data-bs-yes-button="btn btn-success" data-bs-no-button="btn btn-outline-secondary" data-bs-css-class-names="custom">Show modal (html)</button>
 </div>
 {{< partial "bootstrap.html" >}}
 <script src="/dist/confirm.js"></script>
 <script>
-    const buttonElement = document.getElementById("button")
-    buttonElement.addEventListener("confirm.bs.confirm", () => { console.log("Confirm event triggered"); })
-    var button = new Confirm(buttonElement)
+    const button1Element = document.getElementById("button1")
+    const button2Element = document.getElementById("button2")
+    button1Element.addEventListener("confirm.bs.confirm", () => { console.log("Confirm event1 triggered"); })
+    button2Element.addEventListener("confirm.bs.confirm", () => { console.log("Confirm event2 triggered"); })
+    var button1 = new Confirm(button1Element)
+    var button2 = new Confirm(button2Element)
 </script>

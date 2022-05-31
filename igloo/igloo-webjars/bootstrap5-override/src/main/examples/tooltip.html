@@ -1,0 +1,26 @@
+---
+layout: base
+title: Tooltip
+---
+<div class="container">
+    <div>
+        <button id="button1" class="btn btn-outline-secondary" type="button" data-toggle="tooltip" title="Tooltip">Show tooltip</button>
+    </div>
+    <div id="parent">
+        <button id="button2" class="btn btn-outline-secondary" type="button" data-toggle="tooltip" title="Button removed in 5s.">Test remove</button>
+    </div>
+</div>
+{{< partial "bootstrap.html" >}}
+<script>
+    const button1Element = document.getElementById("button1")
+    const button2Element = document.getElementById("button2")
+    new bootstrap.Tooltip(button1Element)
+    new bootstrap.Tooltip(button2Element)
+    const parent = document.getElementById("parent")
+    button2Element.addEventListener("mouseover", e => {
+        console.log("Remove in 5 s.");
+        setInterval(() => {
+        	parent.remove()
+        }, 5_000)
+    })
+</script>

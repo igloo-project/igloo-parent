@@ -1,4 +1,4 @@
-import { Modal } from "bootstrap"
+import * as bootstrap from "bootstrap"
 
 import BaseComponent from "bootstrap/js/src/base-component"
 import EventHandler from "bootstrap/js/src/dom/event-handler"
@@ -23,7 +23,7 @@ const Default = {
     noButton: '',
     noEscape: false,
     cssClassNames: '',
-    template: '<div class="modal fade confirm" tabindex="-1">' +
+    template: '<div class="modal fade confirm" data-bs-backdrop="static" tabindex="-1">' +
         '<div class="modal-dialog">' +
         '<div class="modal-content">' +
         '<div class="modal-header">' +
@@ -32,10 +32,10 @@ const Default = {
         '</div>' +
         '<div class="modal-body"></div>' +
         '<div class="modal-footer">' +
-            '<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">' +
+            '<button class="noButton" type="button" data-bs-dismiss="modal">' +
                 '<span class="noIcon"></span>' +
             '</button>' +
-            '<button class="btn btn-primary" type="button">' +
+            '<button class="yesButton" type="button">' +
                 '<span class="yesIcon"></span>' +
             '</button>' +
         '</div>' +
@@ -77,6 +77,14 @@ class Confirm extends BaseComponent {
             const modalElement = this._createModalElement()
             document.body.append(modalElement)
             this.modal = new bootstrap.Modal(modalElement)
+            EventHandler.on(this.modal._element, "hidden.bs.modal", () => {
+                const element = this.modal._element
+                const modal = this.modal
+                this.modal = null
+                // destroy modal element
+                modal.dispose()
+                element.remove()
+            });
         }
     }
 
@@ -84,17 +92,21 @@ class Confirm extends BaseComponent {
         const wrapper = document.createElement('div')
         wrapper.innerHTML = this._config.template
         const modal = wrapper.children[0]
+        if (this._config.cssClassNames) {
+            modal.classList.add(...this._config.cssClassNames.split(/ +/))
+        }
 
         // set before replacing class
-        SelectorEngine.findOne('.btn-secondary', modal).append(this._config.noLabel)
-        SelectorEngine.findOne('.btn-primary', modal).append(this._config.yesLabel)
+        SelectorEngine.findOne('.noButton', modal).append(this._config.noLabel)
+        SelectorEngine.findOne('.yesButton', modal).append(this._config.yesLabel)
+        EventHandler.on(SelectorEngine.findOne('.yesButton', modal), EVENT_CLICK, event => this._triggerConfirm(event))
 
         // TODO - set class for buttons
         if (this._config.noButton) {
-            SelectorEngine.findOne('.btn-secondary', modal).classList = [this._config.noButton]
+            SelectorEngine.findOne('.noButton', modal).classList = [this._config.noButton]
         }
         if (this._config.yesButton) {
-            SelectorEngine.findOne('.btn-primary', modal).classList = [this._config.yesButton]
+            SelectorEngine.findOne('.yesButton', modal).classList = [this._config.yesButton]
         }
         if (this._config.yesIcon) {
             SelectorEngine.findOne('.yesIcon', modal).classList = [this._config.yesIcon]
@@ -108,12 +120,10 @@ class Confirm extends BaseComponent {
         }
         SelectorEngine.findOne('.modal-title', modal).textContent = this._config.title
         if (this._config.noEscape) {
-            SelectorEngine.findOne('.modal-body', modal).textContent = this._config.text
-        } else {
             SelectorEngine.findOne('.modal-body', modal).innerHTML = this._config.text
+        } else {
+            SelectorEngine.findOne('.modal-body', modal).textContent = this._config.text
         }
-
-        EventHandler.on(SelectorEngine.findOne('.btn-primary', modal), EVENT_CLICK, event => this._triggerConfirm(event))
 
         return modal
     }

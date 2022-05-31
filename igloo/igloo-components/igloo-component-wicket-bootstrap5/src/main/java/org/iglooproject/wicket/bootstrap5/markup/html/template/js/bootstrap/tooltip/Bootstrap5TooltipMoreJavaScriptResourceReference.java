@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tab;
+package org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tooltip;
 
 import java.util.List;
 
@@ -8,18 +8,18 @@ import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.Boot
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.WebjarsJQueryPluginResourceReference;
 import org.iglooproject.wicket.more.webjars.WebjarUtil;
 
-public final class BootstrapTabMoreJavaScriptResourceReference extends WebjarsJQueryPluginResourceReference {
+public final class Bootstrap5TooltipMoreJavaScriptResourceReference extends WebjarsJQueryPluginResourceReference {
 
 	private static final long serialVersionUID = -1442288640907214154L;
 
-	private static final BootstrapTabMoreJavaScriptResourceReference INSTANCE = new BootstrapTabMoreJavaScriptResourceReference();
+	private static final Bootstrap5TooltipMoreJavaScriptResourceReference INSTANCE = new Bootstrap5TooltipMoreJavaScriptResourceReference();
 
 	private static final SerializableSupplier2<List<HeaderItem>> DEPENDENCIES = WebjarUtil.memoizeHeaderItemsforReferences(
 		Bootstrap5JavaScriptResourceReference.get()
 	);
 
-	private BootstrapTabMoreJavaScriptResourceReference() {
-		super("webjars/bootstrap5-override/current/js/dist/tab-more.js");
+	private Bootstrap5TooltipMoreJavaScriptResourceReference() {
+		super("webjars/bootstrap5-override/current/js/dist/tooltip-more.js");
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public final class BootstrapTabMoreJavaScriptResourceReference extends WebjarsJQ
 		return dependencies;
 	}
 
-	public static BootstrapTabMoreJavaScriptResourceReference get() {
+	public static Bootstrap5TooltipMoreJavaScriptResourceReference get() {
 		return INSTANCE;
 	}
 

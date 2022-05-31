@@ -13,18 +13,22 @@ import org.iglooproject.bootstrap.api.IBootstrapModal;
 import org.iglooproject.bootstrap.api.IBootstrapProvider;
 import org.iglooproject.bootstrap.api.IModalPopupPanel;
 import org.iglooproject.bootstrap.api.badge.IBootstrapBadge;
-import org.iglooproject.bootstrap.api.confirm.BootstrapConfirm;
 import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
+import org.iglooproject.bootstrap.api.tooltip.BootstrapTooltipBehavior;
+import org.iglooproject.bootstrap.api.tooltip.IBootstrapTooltipOptions;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.sass.service.IScssService;
+import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.bootstrap5.markup.html.bootstrap.component.BootstrapBadge;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.css.bootstrap.CoreBootstrap5CssScope;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.confirm.BootstrapConfirm;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.confirm.BootstrapConfirmJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.Bootstrap5ModalMoreJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.component.Bootstrap5ModalPanel;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.modal.statement.BootstrapModal;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tab.BootstrapTabMoreJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.tooltip.Bootstrap5TooltipMoreJavaScriptResourceReference;
 import org.iglooproject.wicket.more.application.IWicketModule;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
@@ -41,7 +45,8 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 				Bootstrap5JavaScriptResourceReference.get(),
 				Bootstrap5ModalMoreJavaScriptResourceReference.get(),
 				BootstrapTabMoreJavaScriptResourceReference.get(),
-				BootstrapConfirmJavaScriptResourceReference.get()
+				BootstrapConfirmJavaScriptResourceReference.get(),
+				Bootstrap5TooltipMoreJavaScriptResourceReference.get()
 			);
 	}
 
@@ -104,11 +109,12 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 	public void confirmRenderHead(Component component, IHeaderResponse response) {
 		renderHead(component, response);
 		response.render(JavaScriptHeaderItem.forReference(BootstrapConfirmJavaScriptResourceReference.get()));
+		response.render(OnDomReadyHeaderItem.forScript(confirmStatement(component).render(true)));
 	}
 
 	@Override
 	public JsStatement confirmStatement(Component component) {
-		return new JsStatement().$(component).chain(BootstrapConfirm.confirm()).append(";");
+		return BootstrapConfirm.confirm().confirm(component);
 	}
 
 	private JsStatement getBindClickStatement(Component component, IModalPopupPanel modal,
@@ -154,6 +160,16 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 	@Override
 	public <T> SerializableSupplier2<IBootstrapBadge<T, BootstrapBadge<T>>> badgeSupplier(String id, IModel<T> model, final IBootstrapRenderer<? super T> renderer) {
 		return () -> new BootstrapBadge<T>(id, model, renderer);
+	}
+
+	@Override
+	public void tooltipRenderHead(Component component, IHeaderResponse response, IBootstrapTooltipOptions options) {
+		response.render(JavaScriptHeaderItem.forReference(Bootstrap5TooltipMoreJavaScriptResourceReference.get()));
+		if (!StringUtils.hasText(options.getSelector())) {
+			throw new IllegalStateException("Option 'selector' is mandatory for " + BootstrapTooltipBehavior.class.getName());
+		}
+		
+		response.render(OnDomReadyHeaderItem.forScript("new TooltipMore(document.body, " + options.getJavaScriptOptions() + ");"));
 	}
 
 }

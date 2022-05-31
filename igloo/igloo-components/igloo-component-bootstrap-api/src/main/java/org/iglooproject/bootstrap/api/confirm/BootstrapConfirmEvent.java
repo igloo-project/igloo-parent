@@ -4,8 +4,8 @@ import org.wicketstuff.wiquery.core.events.EventLabel;
 
 public enum BootstrapConfirmEvent implements EventLabel {
 
-	CONFIRM("confirm"),
-	CANCEL("cancel");
+	CONFIRM("confirm.bs.confirm"),
+	CANCEL("cancel.bs.confirm");
 
 	private final String eventLabel;
 
