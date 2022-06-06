@@ -5,10 +5,11 @@ import java.util.List;
 import org.apache.wicket.markup.head.HeaderItem;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.WebjarsJQueryPluginResourceReference;
 import org.iglooproject.wicket.more.webjars.WebjarUtil;
 
-public final class BootstrapTabMoreJavaScriptResourceReference extends WebjarsJQueryPluginResourceReference {
+import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
+
+public final class BootstrapTabMoreJavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
 
 	private static final long serialVersionUID = -1442288640907214154L;
 
