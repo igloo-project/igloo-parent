@@ -47,7 +47,7 @@
 	
 	<filter>
 		<filter-name>openTFileRegistryFilter</filter-name>
-		<filter-class>org.iglooproject.wicket.servlet.filter.OpenTFileRegistryFilter</filter-class>
+		<filter-class>org.iglooproject.truevfs.filter.OpenTFileRegistryFilter</filter-class>
 	</filter>
 	
 	<filter>

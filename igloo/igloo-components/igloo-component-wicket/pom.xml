@@ -45,12 +45,6 @@
 			<version>${igloo-commons.version}</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-truevfs</artifactId>
-			<version>${igloo-commons.version}</version>
-		</dependency>
-		
 		<!-- Dependencies -->
 		
 		<dependency>
