@@ -61,6 +61,10 @@ public interface IBootstrapProvider {
 
 	void tooltipRenderHead(Component component, IHeaderResponse response, IBootstrapTooltipOptions options);
 
+	void tabRenderHead(Component component, IHeaderResponse response);
+
 	JsStatement confirmStatement(Component component);
+
+	JsStatement tabStatement(Component component);
 
 }

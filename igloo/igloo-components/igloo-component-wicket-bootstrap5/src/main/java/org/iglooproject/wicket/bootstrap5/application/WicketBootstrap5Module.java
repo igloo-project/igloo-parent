@@ -172,4 +172,16 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 		response.render(OnDomReadyHeaderItem.forScript("new TooltipMore(document.body, " + options.getJavaScriptOptions() + ");"));
 	}
 
+	@Override
+	public void tabRenderHead(Component component, IHeaderResponse response) {
+		response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapTabMoreJavaScriptResourceReference.get()));
+		response.render(OnDomReadyHeaderItem.forScript(tabStatement(component).render(true)));
+	}
+
+	@Override
+	public JsStatement tabStatement(Component component) {
+		return new JsStatement().append("new bootstrap.Tab(" + component.getMarkupId() + ");");
+	}
+
 }

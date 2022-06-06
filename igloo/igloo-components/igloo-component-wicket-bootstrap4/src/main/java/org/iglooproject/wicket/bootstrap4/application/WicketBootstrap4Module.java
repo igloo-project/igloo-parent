@@ -27,6 +27,8 @@ import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.moda
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.BootstrapModalMoreJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.component.Bootstrap4ModalPanel;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.statement.BootstrapModal;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tab.BootstrapTabJavaScriptResourceReference;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tab.BootstrapTabMoreJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipJavaScriptResourceReference;
 import org.iglooproject.wicket.more.application.IWicketModule;
 import org.wicketstuff.wiquery.core.events.Event;
@@ -162,6 +164,18 @@ public class WicketBootstrap4Module implements IWicketModule, IBootstrapProvider
 		}
 		
 		response.render(OnDomReadyHeaderItem.forScript("$(" + options.getSelector() + ").tooltip(" + options.getJavaScriptOptions() + ");"));
+	}
+
+	@Override
+	public void tabRenderHead(Component component, IHeaderResponse response) {
+		response.render(JavaScriptHeaderItem.forReference(BootstrapTabJavaScriptResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(BootstrapTabMoreJavaScriptResourceReference.get()));
+		response.render(OnDomReadyHeaderItem.forScript(tabStatement(component).render(true)));
+	}
+
+	@Override
+	public JsStatement tabStatement(Component component) {
+		return new JsStatement().$(component).chain("tab");
 	}
 
 }
