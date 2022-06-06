@@ -3,7 +3,7 @@ package org.iglooproject.wicket.markup.html.form;
 import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.functional.SerializableSupplier2;
+import org.danekja.java.util.function.serializable.SerializableSupplier;
 
 /**
  * A {@link CheckGroup} that allows the use of its constructor to instantiate anonymous classes, on contrary to {@link CheckGroup}
@@ -18,7 +18,7 @@ public abstract class InlineOverridableCheckGroup<T, C extends Collection<T>> ex
 
 	private static final long serialVersionUID = -4650865960701373800L;
 
-	public InlineOverridableCheckGroup(String id, IModel<C> model, SerializableSupplier2<? extends C> collectionSupplier) {
+	public InlineOverridableCheckGroup(String id, IModel<C> model, SerializableSupplier<? extends C> collectionSupplier) {
 		super(id, model, collectionSupplier);
 	}
 
