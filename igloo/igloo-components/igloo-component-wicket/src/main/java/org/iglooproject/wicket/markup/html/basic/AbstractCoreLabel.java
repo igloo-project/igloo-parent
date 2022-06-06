@@ -8,7 +8,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.util.string.Strings;
-import org.springframework.util.StringUtils;
 
 public abstract class AbstractCoreLabel<T extends AbstractCoreLabel<T>> extends Label {
 	
@@ -36,7 +35,7 @@ public abstract class AbstractCoreLabel<T extends AbstractCoreLabel<T>> extends 
 	protected void onConfigure() {
 		super.onConfigure();
 		
-		boolean defaultModelIsEmpty = !StringUtils.hasText(getDefaultModelObjectAsString());
+		boolean defaultModelIsEmpty = Strings.isEmpty(getDefaultModelObjectAsString());
 		
 		if (!defaultModelIsEmpty) {
 			currentModel = getDefaultModel();

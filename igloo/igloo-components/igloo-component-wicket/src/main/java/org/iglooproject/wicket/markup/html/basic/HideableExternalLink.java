@@ -2,7 +2,7 @@ package org.iglooproject.wicket.markup.html.basic;
 
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.IModel;
-import org.springframework.util.StringUtils;
+import org.apache.wicket.util.string.Strings;
 
 public class HideableExternalLink extends ExternalLink {
 	
@@ -20,7 +20,7 @@ public class HideableExternalLink extends ExternalLink {
 	protected void onConfigure() {
 		super.onConfigure();
 		
-		setVisible(StringUtils.hasText(getDefaultModelObjectAsString()));
+		setVisible(!Strings.isEmpty(getDefaultModelObjectAsString()));
 	}
 
 }
