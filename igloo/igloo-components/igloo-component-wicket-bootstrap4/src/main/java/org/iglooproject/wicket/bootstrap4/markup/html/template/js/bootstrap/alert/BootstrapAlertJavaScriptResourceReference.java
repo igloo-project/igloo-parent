@@ -19,7 +19,7 @@ public final class BootstrapAlertJavaScriptResourceReference extends WebjarsJQue
 	private static final BootstrapAlertJavaScriptResourceReference INSTANCE = new BootstrapAlertJavaScriptResourceReference();
 
 	private BootstrapAlertJavaScriptResourceReference() {
-		super("webjars/bootstrap4/current/js/dist/alert.js");
+		super("bootstrap4/current/js/dist/alert.js");
 	}
 
 	@Override

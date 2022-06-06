@@ -1,9 +1,11 @@
 package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util;
 
+import static de.agilecoders.wicket.webjars.util.Helper.prependWebjarsPathIfMissing;
+import static de.agilecoders.wicket.webjars.util.WebjarsVersion.useRecent;
+
 import java.util.Locale;
 
 import de.agilecoders.wicket.webjars.request.resource.IWebjarsResourceReference;
-import de.agilecoders.wicket.webjars.util.WebjarsVersion;
 
 public class WebjarsCoreJQueryPluginResourceReference extends AbstractCoreJQueryPluginResourceReference
 		implements IWebjarsResourceReference {
@@ -13,7 +15,7 @@ public class WebjarsCoreJQueryPluginResourceReference extends AbstractCoreJQuery
 	private final String originalName;
 
 	public WebjarsCoreJQueryPluginResourceReference(final String name) {
-		super(WebjarsCoreJQueryPluginResourceReference.class, WebjarsVersion.useRecent(name));
+		super(WebjarsCoreJQueryPluginResourceReference.class, useRecent(prependWebjarsPathIfMissing(name)));
 		this.originalName = name;
 	}
 

@@ -19,7 +19,7 @@ public final class BootstrapScrollSpyJavaScriptResourceReference extends Webjars
 	private static final BootstrapScrollSpyJavaScriptResourceReference INSTANCE = new BootstrapScrollSpyJavaScriptResourceReference();
 
 	private BootstrapScrollSpyJavaScriptResourceReference() {
-		super("webjars/bootstrap4/current/js/dist/scrollspy.js");
+		super("bootstrap4/current/js/dist/scrollspy.js");
 	}
 
 	@Override

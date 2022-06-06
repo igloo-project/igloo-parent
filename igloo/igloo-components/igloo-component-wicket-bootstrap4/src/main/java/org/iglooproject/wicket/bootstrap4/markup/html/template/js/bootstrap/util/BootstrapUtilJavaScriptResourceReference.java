@@ -9,7 +9,7 @@ public final class BootstrapUtilJavaScriptResourceReference extends WebjarsCoreJ
 	private static final BootstrapUtilJavaScriptResourceReference INSTANCE = new BootstrapUtilJavaScriptResourceReference();
 
 	private BootstrapUtilJavaScriptResourceReference() {
-		super("webjars/bootstrap4/current/js/dist/util.js");
+		super("bootstrap4/current/js/dist/util.js");
 	}
 
 	public static BootstrapUtilJavaScriptResourceReference get() {

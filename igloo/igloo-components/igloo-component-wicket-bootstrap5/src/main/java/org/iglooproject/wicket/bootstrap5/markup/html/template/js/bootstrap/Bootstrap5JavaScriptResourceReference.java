@@ -20,7 +20,7 @@ public final class Bootstrap5JavaScriptResourceReference extends WebjarsJavaScri
 	private static final Bootstrap5JavaScriptResourceReference INSTANCE = new Bootstrap5JavaScriptResourceReference();
 
 	private Bootstrap5JavaScriptResourceReference() {
-		super("webjars/bootstrap/current/dist/js/bootstrap.js");
+		super("bootstrap/current/dist/js/bootstrap.js");
 	}
 
 	@Override

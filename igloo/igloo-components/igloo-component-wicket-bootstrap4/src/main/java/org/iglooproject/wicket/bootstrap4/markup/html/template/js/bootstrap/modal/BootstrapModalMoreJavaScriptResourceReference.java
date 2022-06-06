@@ -18,7 +18,7 @@ public final class BootstrapModalMoreJavaScriptResourceReference extends Webjars
 	private static final BootstrapModalMoreJavaScriptResourceReference INSTANCE = new BootstrapModalMoreJavaScriptResourceReference();
 
 	private BootstrapModalMoreJavaScriptResourceReference() {
-		super("webjars/bootstrap4-override/current/js/dist/modal-more.js");
+		super("bootstrap4-override/current/js/dist/modal-more.js");
 	}
 
 	@Override

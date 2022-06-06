@@ -19,7 +19,7 @@ public final class BootstrapConfirmJavaScriptResourceReference extends WebjarsJQ
 	);
 
 	private BootstrapConfirmJavaScriptResourceReference() {
-		super("webjars/bootstrap5-override/current/js/dist/confirm.js");
+		super("bootstrap5-override/current/js/dist/confirm.js");
 	}
 
 	@Override

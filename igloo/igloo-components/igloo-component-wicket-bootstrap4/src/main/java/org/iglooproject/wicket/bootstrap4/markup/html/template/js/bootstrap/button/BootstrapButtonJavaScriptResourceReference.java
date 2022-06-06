@@ -19,7 +19,7 @@ public final class BootstrapButtonJavaScriptResourceReference extends WebjarsJQu
 	private static final BootstrapButtonJavaScriptResourceReference INSTANCE = new BootstrapButtonJavaScriptResourceReference();
 
 	private BootstrapButtonJavaScriptResourceReference() {
-		super("webjars/bootstrap4/current/js/dist/button.js");
+		super("bootstrap4/current/js/dist/button.js");
 	}
 
 	@Override

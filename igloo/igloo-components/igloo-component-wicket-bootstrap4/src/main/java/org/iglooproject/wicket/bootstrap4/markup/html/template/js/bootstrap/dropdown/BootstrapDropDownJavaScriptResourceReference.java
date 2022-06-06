@@ -21,7 +21,7 @@ public final class BootstrapDropDownJavaScriptResourceReference extends WebjarsJ
 	private static final BootstrapDropDownJavaScriptResourceReference INSTANCE = new BootstrapDropDownJavaScriptResourceReference();
 
 	private BootstrapDropDownJavaScriptResourceReference() {
-		super("webjars/bootstrap4/current/js/dist/dropdown.js");
+		super("bootstrap4/current/js/dist/dropdown.js");
 	}
 
 	@Override

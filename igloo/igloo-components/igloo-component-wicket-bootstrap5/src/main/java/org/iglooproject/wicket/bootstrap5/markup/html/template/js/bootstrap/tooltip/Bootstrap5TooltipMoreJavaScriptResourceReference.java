@@ -19,7 +19,7 @@ public final class Bootstrap5TooltipMoreJavaScriptResourceReference extends Webj
 	);
 
 	private Bootstrap5TooltipMoreJavaScriptResourceReference() {
-		super("webjars/bootstrap5-override/current/js/dist/tooltip-more.js");
+		super("bootstrap5-override/current/js/dist/tooltip-more.js");
 	}
 
 	@Override

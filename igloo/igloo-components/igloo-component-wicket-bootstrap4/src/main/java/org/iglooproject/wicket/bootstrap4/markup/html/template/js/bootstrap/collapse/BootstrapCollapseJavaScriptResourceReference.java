@@ -19,7 +19,7 @@ public final class BootstrapCollapseJavaScriptResourceReference extends WebjarsJ
 	private static final BootstrapCollapseJavaScriptResourceReference INSTANCE = new BootstrapCollapseJavaScriptResourceReference();
 
 	private BootstrapCollapseJavaScriptResourceReference() {
-		super("webjars/bootstrap4/current/js/dist/collapse.js");
+		super("bootstrap4/current/js/dist/collapse.js");
 	}
 
 	@Override

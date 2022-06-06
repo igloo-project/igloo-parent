@@ -9,7 +9,7 @@ public final class MaskJavaScriptResourceReference extends WebjarsJQueryPluginRe
 	private static final MaskJavaScriptResourceReference INSTANCE = new MaskJavaScriptResourceReference();
 
 	private MaskJavaScriptResourceReference() {
-		super("webjars/jquery-mask-plugin/current/dist/jquery.mask.js");
+		super("jquery-mask-plugin/current/dist/jquery.mask.js");
 	}
 
 	public static MaskJavaScriptResourceReference get() {

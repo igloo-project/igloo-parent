@@ -19,7 +19,7 @@ public final class Bootstrap5ModalMoreJavaScriptResourceReference extends Webjar
 	);
 
 	private Bootstrap5ModalMoreJavaScriptResourceReference() {
-		super("webjars/bootstrap5-override/current/js/dist/modal-more.js");
+		super("bootstrap5-override/current/js/dist/modal-more.js");
 	}
 
 	@Override
