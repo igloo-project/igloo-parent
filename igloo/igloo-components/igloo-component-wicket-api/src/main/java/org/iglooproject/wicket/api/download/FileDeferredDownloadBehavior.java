@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.export.file.behavior;
+package org.iglooproject.wicket.api.download;
 
 import java.io.File;
 import java.util.Objects;
@@ -7,7 +7,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.api.model.ReadOnlyModel;
 import org.iglooproject.wicket.api.util.Detachables;
-import org.iglooproject.wicket.more.export.AbstractDeferredDownloadBehavior;
 import org.javatuples.LabelValue;
 
 public class FileDeferredDownloadBehavior extends AbstractDeferredDownloadBehavior {

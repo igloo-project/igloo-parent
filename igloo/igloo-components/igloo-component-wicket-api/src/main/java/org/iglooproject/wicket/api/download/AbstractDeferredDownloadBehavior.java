@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.export;
+package org.iglooproject.wicket.api.download;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
