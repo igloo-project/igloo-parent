@@ -6,6 +6,7 @@ import org.apache.wicket.Application;
 import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.core.request.handler.IPageRequestHandler;
 import org.apache.wicket.request.IRequestHandler;
+import org.apache.wicket.request.IRequestHandlerDelegate;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,9 @@ public class BootstrapRequestCycle {
 	 */
 	private static BootstrapVersion findVersion() {
 		IRequestHandler requestHandler = RequestCycle.get().getActiveRequestHandler();
+		if (requestHandler instanceof IRequestHandlerDelegate) {
+			requestHandler = ((IRequestHandlerDelegate) requestHandler).getDelegateHandler();
+		}
 		if (!(requestHandler instanceof IPageRequestHandler)) {
 			throw new IllegalStateException(String.format("requestHandler not a IPageRequestHandler; version cannot be resolved (%s)", requestHandler.getClass().getName()));
 		} else {
