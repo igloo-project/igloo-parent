@@ -50,10 +50,10 @@ public class BasicApplicationWebappSecurityConfig extends AbstractWebappSecurity
 				.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint()).and()
 				.authorizeRequests()
 					.regexMatchers(
-						"^/wicket/resource/org.iglooproject.showcase.web.application.common.template.resources.js.[^/]+.*",
-						"^/wicket/resource/org.iglooproject.showcase.web.application.common.template.resources.styles.[^/]+.*",
-						"^/wicket/resource/org.iglooproject.showcase.web.application.common.template.resources.images.[^/]+.*").hasAnyAuthority(CoreAuthorityConstants.ROLE_ANONYMOUS)
-					.regexMatchers("^/wicket/resource/org.iglooproject.showcase.web.application.[^/]+.*").hasAnyAuthority(CoreAuthorityConstants.ROLE_AUTHENTICATED)
+						"^/wicket/resource/org.iglooproject.basicapp.web.application.common.template.resources.js.[^/]+.*",
+						"^/wicket/resource/org.iglooproject.basicapp.web.application.common.template.resources.styles.[^/]+.*",
+						"^/wicket/resource/org.iglooproject.basicapp.web.application.common.template.resources.images.[^/]+.*").hasAnyAuthority(CoreAuthorityConstants.ROLE_ANONYMOUS)
+					.regexMatchers("^/wicket/resource/org.iglooproject.basicapp.web.application.[^/]+.*").hasAnyAuthority(CoreAuthorityConstants.ROLE_AUTHENTICATED)
 					.regexMatchers("^/wicket/resource/.*").hasAnyAuthority(CoreAuthorityConstants.ROLE_ANONYMOUS);
 		}
 	}
