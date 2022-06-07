@@ -5,8 +5,8 @@ import java.util.Objects;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.model.IModel;
+import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.model.Detachables;
 
@@ -31,7 +31,7 @@ public class BootstrapTooltipBehavior extends Behavior {
 			throw new IllegalStateException("Option 'selector' is mandatory for " + BootstrapTooltipBehavior.class.getName());
 		}
 		
-		response.render(OnDomReadyHeaderItem.forScript("new bootstrap.Tooltip(document.body, " + options.getJavaScriptOptions() + ");"));
+		BootstrapRequestCycle.getSettings().tooltipRenderHead(component, response, options);
 	}
 
 	@Override
