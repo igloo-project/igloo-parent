@@ -7,17 +7,17 @@ import org.iglooproject.basicapp.core.security.service.ISecurityManagementServic
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.administration.form.UserPasswordEditPopup;
-import org.iglooproject.wicket.api.bindgen.BindingModel;
-import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.api.util.DatePattern;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.component.CoreLabel;
+import org.iglooproject.wicket.component.DateLabel;
+import org.iglooproject.wicket.component.DefaultPlaceholderPanel;
+import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.markup.html.link.EmailLink;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.modal.AjaxModalOpenBehavior;
-import org.iglooproject.wicket.more.markup.html.basic.DateLabel;
-import org.iglooproject.wicket.more.markup.html.basic.DefaultPlaceholderPanel;
+import org.iglooproject.wicket.model.BindingModel;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
+import org.iglooproject.wicket.util.DatePattern;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public class ProfileDescriptionPanel extends GenericPanel<User> {

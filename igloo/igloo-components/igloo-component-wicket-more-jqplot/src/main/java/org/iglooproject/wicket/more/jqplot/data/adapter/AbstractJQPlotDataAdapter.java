@@ -9,7 +9,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.util.lang.Classes;
-import org.iglooproject.wicket.api.util.Detachables;
+import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.jqplot.data.provider.AbstractJQPlotDataProvider;
 import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
 

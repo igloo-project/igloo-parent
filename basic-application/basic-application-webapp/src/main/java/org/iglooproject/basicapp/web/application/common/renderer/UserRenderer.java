@@ -3,7 +3,7 @@ package org.iglooproject.basicapp.web.application.common.renderer;
 import java.util.Locale;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.wicket.more.rendering.Renderer;
+import org.iglooproject.wicket.renderer.Renderer;
 
 public abstract class UserRenderer extends Renderer<User> {
 

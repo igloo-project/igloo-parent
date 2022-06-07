@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.markup.html.template.component;
 
 import org.apache.wicket.markup.html.panel.GenericPanel;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.component.CoreLabel;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbMarkupTagRenderingBehavior;
 

@@ -6,7 +6,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 import org.springframework.core.convert.ConversionException;
 import org.springframework.core.convert.TypeDescriptor;
-import org.iglooproject.wicket.api.Models;
+import org.iglooproject.wicket.model.Models;
 import org.iglooproject.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
 import org.iglooproject.wicket.more.link.service.ILinkParameterConversionService;

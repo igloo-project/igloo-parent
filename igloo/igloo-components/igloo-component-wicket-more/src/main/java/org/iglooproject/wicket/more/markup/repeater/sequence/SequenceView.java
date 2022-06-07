@@ -5,8 +5,8 @@ import java.util.Iterator;
 import org.apache.wicket.markup.repeater.AbstractPageableView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.api.repeater.ISequenceProvider;
-import org.iglooproject.wicket.api.util.SequenceProviders;
+import org.iglooproject.wicket.model.ISequenceProvider;
+import org.iglooproject.wicket.model.SequenceProviders;
 import org.iglooproject.wicket.more.markup.repeater.IRefreshableOnDemandRepeater;
 
 public abstract class SequenceView<T> extends AbstractPageableView<T> implements IRefreshableOnDemandRepeater {

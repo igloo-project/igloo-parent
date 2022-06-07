@@ -12,6 +12,10 @@
 	
 	<name>Igloo - Component - Wicket</name>
 	
+	<properties>
+		<igloo.processors>${igloo.processor.bindgen}</igloo.processors>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
@@ -26,8 +30,30 @@
 			<artifactId>wicket-spring</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.wicketstuff.wiquery</groupId>
+			<artifactId>wiquery-core</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.danekja</groupId>
 			<artifactId>jdk-serializable-functional</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.bindgen</groupId>
+			<artifactId>bindgen</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-acl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>bindgen-functional</artifactId>
+			<version>${igloo-commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa-security</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -59,6 +85,12 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 
 	<dependencyManagement>
@@ -73,6 +105,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-testing</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-bindgen</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

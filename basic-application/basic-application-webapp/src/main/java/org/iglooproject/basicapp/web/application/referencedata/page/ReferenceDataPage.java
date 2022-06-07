@@ -8,7 +8,7 @@ import org.iglooproject.basicapp.web.application.common.component.FeatureNotYetA
 import org.iglooproject.basicapp.web.application.common.component.NavTabsPanel;
 import org.iglooproject.basicapp.web.application.referencedata.component.CityListPanel;
 import org.iglooproject.basicapp.web.application.referencedata.template.ReferenceDataTemplate;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.component.CoreLabel;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 

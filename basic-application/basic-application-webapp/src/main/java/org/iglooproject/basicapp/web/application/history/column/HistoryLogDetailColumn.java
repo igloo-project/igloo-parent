@@ -19,7 +19,7 @@ import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
-import org.iglooproject.wicket.api.util.Detachables;
+import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 
 import com.google.common.collect.HashMultimap;

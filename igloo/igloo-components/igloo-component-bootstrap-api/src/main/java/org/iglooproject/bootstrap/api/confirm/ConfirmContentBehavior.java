@@ -7,7 +7,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.value.IValueMap;
 import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
-import org.iglooproject.wicket.api.Models;
+import org.iglooproject.wicket.model.Models;
 
 public class ConfirmContentBehavior extends Behavior {
 

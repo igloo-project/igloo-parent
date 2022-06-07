@@ -5,7 +5,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.api.bindgen.BindingModel;
+import org.iglooproject.wicket.model.BindingModel;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 
 public class CoreBooleanLabelColumn<T, S extends ISort<?>> extends AbstractCoreColumn<T, S> {

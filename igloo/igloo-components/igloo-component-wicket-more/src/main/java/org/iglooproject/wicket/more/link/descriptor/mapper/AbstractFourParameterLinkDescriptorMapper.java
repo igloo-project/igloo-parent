@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.link.descriptor.mapper;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.api.Models;
+import org.iglooproject.wicket.model.Models;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 

@@ -9,7 +9,7 @@ import org.javatuples.Unit;
 
 import com.google.common.collect.ImmutableList;
 
-import org.iglooproject.wicket.api.bindgen.BindingModel;
+import org.iglooproject.wicket.model.BindingModel;
 import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.AbstractLinkParameterMappingEntryFactory;
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;

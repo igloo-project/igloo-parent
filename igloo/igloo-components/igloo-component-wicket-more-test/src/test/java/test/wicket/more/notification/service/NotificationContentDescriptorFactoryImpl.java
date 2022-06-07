@@ -3,7 +3,7 @@ package test.wicket.more.notification.service;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.component.CoreLabel;
 import org.iglooproject.wicket.more.notification.service.AbstractNotificationContentDescriptorFactory;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 

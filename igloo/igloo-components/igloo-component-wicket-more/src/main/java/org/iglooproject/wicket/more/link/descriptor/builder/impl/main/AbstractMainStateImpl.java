@@ -1,6 +1,6 @@
 package org.iglooproject.wicket.more.link.descriptor.builder.impl.main;
 
-import static org.iglooproject.wicket.api.condition.Condition.anyPermission;
+import static org.iglooproject.wicket.condition.Condition.anyPermission;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,10 +10,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.bindgen.BindingRoot;
 import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.wicket.api.bindgen.BindingModel;
-import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.api.factory.IDetachableFactory;
-import org.iglooproject.wicket.api.model.ModelFactories;
+import org.iglooproject.wicket.condition.Condition;
+import org.iglooproject.wicket.factory.IDetachableFactory;
+import org.iglooproject.wicket.model.BindingModel;
+import org.iglooproject.wicket.model.ModelFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderMapperLinkDescriptorFactory;

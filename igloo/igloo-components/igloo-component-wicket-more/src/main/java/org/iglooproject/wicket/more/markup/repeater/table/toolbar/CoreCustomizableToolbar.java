@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.wicket.Component;
 
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.FactoryRepeatingView;
 import org.iglooproject.wicket.more.markup.repeater.table.AbstractCoreToolbar;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;

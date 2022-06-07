@@ -2,8 +2,8 @@ package org.iglooproject.wicket.more.markup.html.bootstrap.common.behavior;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.bootstrap.api.common.IBootstrapColor;
-import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+import org.iglooproject.wicket.model.Detachables;
 
 public class BootstrapColorBehavior extends ClassAttributeAppender {
 

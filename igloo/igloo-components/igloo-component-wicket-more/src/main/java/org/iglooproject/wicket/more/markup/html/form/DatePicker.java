@@ -9,9 +9,9 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.validation.validator.DateValidator;
-import org.iglooproject.wicket.api.util.IDatePattern;
 import org.iglooproject.wicket.more.util.convert.converters.CascadingConverter;
 import org.iglooproject.wicket.more.util.convert.converters.PatternDateConverter;
+import org.iglooproject.wicket.util.IDatePattern;
 import org.wicketstuff.wiquery.ui.datepicker.DateOption;
 
 import com.google.common.collect.ImmutableList;

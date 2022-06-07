@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.bindgen.java.lang.StringBinding;
+import org.iglooproject.wicket.model.BindingModel;
 import org.junit.jupiter.api.Test;
-import org.iglooproject.wicket.api.bindgen.BindingModel;
 
 import test.wicket.more.AbstractWicketMoreTestCase;
 

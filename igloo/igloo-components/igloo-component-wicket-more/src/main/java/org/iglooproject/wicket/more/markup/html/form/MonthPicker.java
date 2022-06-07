@@ -8,11 +8,11 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
-import org.iglooproject.wicket.api.util.DatePattern;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.monthpicker.MonthPickerJavaScriptResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.monthpicker.MonthPickerLanguageResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.monthpicker.MonthPickerOptions;
 import org.iglooproject.wicket.more.util.convert.converters.PatternDateConverter;
+import org.iglooproject.wicket.util.DatePattern;
 import org.wicketstuff.wiquery.core.javascript.JsQuery;
 import org.wicketstuff.wiquery.ui.datepicker.DateOption;
 

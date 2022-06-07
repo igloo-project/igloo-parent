@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action.state;
 
 import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
-import org.iglooproject.wicket.api.action.IAjaxAction;
+import org.iglooproject.wicket.action.IAjaxAction;
 
 
 public interface IActionColumnNoParameterBuildState<T, I> extends IActionColumnCommonBuildState<T, I> {

@@ -1,7 +1,7 @@
 package org.iglooproject.bootstrap.api.confirm;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.api.action.IAjaxAction;
+import org.iglooproject.wicket.action.IAjaxAction;
 
 public class AjaxConfirmLinkBuilder<O> extends AbstractConfirmLinkBuilder<AjaxConfirmLink<O>, O> implements IConfirmLinkBuilder<AjaxConfirmLink<O>, O> {
 

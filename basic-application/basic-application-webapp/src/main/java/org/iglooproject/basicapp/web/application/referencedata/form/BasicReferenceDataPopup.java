@@ -9,9 +9,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
-import org.iglooproject.wicket.api.bindgen.BindingModel;
-import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
+import org.iglooproject.wicket.model.BindingModel;
 
 public class BasicReferenceDataPopup<E extends ReferenceData<? super E>> extends AbstractReferenceDataPopup<E> {
 

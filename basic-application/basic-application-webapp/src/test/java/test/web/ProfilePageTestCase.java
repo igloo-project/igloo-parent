@@ -10,7 +10,7 @@ import org.iglooproject.basicapp.web.application.administration.form.UserPasswor
 import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.component.CoreLabel;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.wicketstuff.wiquery.core.events.MouseEvent;

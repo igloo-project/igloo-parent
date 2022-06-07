@@ -2,8 +2,8 @@ package org.iglooproject.wicket.more.markup.html.factory;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.api.factory.IComponentFactory;
-import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.factory.IComponentFactory;
+import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;

@@ -15,7 +15,7 @@ import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.api.util.Detachables;
+import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.bindable.exception.NoSuchModelException;
 import org.iglooproject.wicket.more.model.WorkingCopyModel;
 

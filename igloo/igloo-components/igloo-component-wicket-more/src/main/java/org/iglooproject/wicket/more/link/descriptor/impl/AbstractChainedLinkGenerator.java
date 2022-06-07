@@ -2,7 +2,7 @@ package org.iglooproject.wicket.more.link.descriptor.impl;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.request.cycle.RequestCycle;
-import org.iglooproject.wicket.api.util.Detachables;
+import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;

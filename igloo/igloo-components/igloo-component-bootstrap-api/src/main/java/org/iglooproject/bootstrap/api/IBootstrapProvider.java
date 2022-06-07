@@ -5,6 +5,7 @@ import org.apache.wicket.ResourceBundles;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.bootstrap.api.badge.IBootstrapBadge;
+import org.iglooproject.bootstrap.api.popover.IBootstrapPopoverOptions;
 import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.bootstrap.api.tooltip.IBootstrapTooltipOptions;
 import org.iglooproject.functional.SerializableSupplier2;
@@ -63,8 +64,10 @@ public interface IBootstrapProvider {
 
 	void tabRenderHead(Component component, IHeaderResponse response);
 
+	void popoverRenderHead(Component component, IHeaderResponse response, IBootstrapPopoverOptions options);
+
 	JsStatement confirmStatement(Component component);
 
-	JsStatement tabStatement(Component component);
+	Class<?> popoverMarkupClass();
 
 }

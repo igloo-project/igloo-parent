@@ -22,13 +22,13 @@ import org.iglooproject.basicapp.web.application.administration.form.UserGroupPo
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserGroupTemplate;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.api.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.api.bindgen.BindingModel;
+import org.iglooproject.wicket.action.IOneParameterAjaxAction;
+import org.iglooproject.wicket.component.EnclosureContainer;
 import org.iglooproject.wicket.modal.AjaxModalOpenBehavior;
+import org.iglooproject.wicket.model.BindingModel;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.model.ComponentPageModel;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;

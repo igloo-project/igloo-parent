@@ -8,15 +8,15 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.iglooproject.wicket.api.action.Actions;
-import org.iglooproject.wicket.api.action.AjaxActions;
-import org.iglooproject.wicket.api.action.IAction;
-import org.iglooproject.wicket.api.action.IAjaxAction;
-import org.iglooproject.wicket.api.action.IOneParameterAction;
-import org.iglooproject.wicket.api.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.api.factory.IDetachableFactory;
-import org.iglooproject.wicket.api.model.ModelFactories;
-import org.iglooproject.wicket.api.util.Detachables;
+import org.iglooproject.wicket.action.Actions;
+import org.iglooproject.wicket.action.AjaxActions;
+import org.iglooproject.wicket.action.IAction;
+import org.iglooproject.wicket.action.IAjaxAction;
+import org.iglooproject.wicket.action.IOneParameterAction;
+import org.iglooproject.wicket.action.IOneParameterAjaxAction;
+import org.iglooproject.wicket.factory.IDetachableFactory;
+import org.iglooproject.wicket.model.Detachables;
+import org.iglooproject.wicket.model.ModelFactories;
 
 public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> implements IConfirmLinkBuilderStepStart<L, O>, IConfirmLinkBuilderStepContent<L, O>,
 		IConfirmLinkBuilderStepEndContent<L, O>, IConfirmLinkBuilderStepNo<L, O>, IConfirmLinkBuilderStepOnclick<L, O>,

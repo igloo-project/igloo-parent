@@ -13,6 +13,7 @@ import org.iglooproject.bootstrap.api.IBootstrapModal;
 import org.iglooproject.bootstrap.api.IBootstrapProvider;
 import org.iglooproject.bootstrap.api.IModalPopupPanel;
 import org.iglooproject.bootstrap.api.badge.IBootstrapBadge;
+import org.iglooproject.bootstrap.api.popover.IBootstrapPopoverOptions;
 import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.bootstrap.api.tooltip.BootstrapTooltipBehavior;
 import org.iglooproject.bootstrap.api.tooltip.IBootstrapTooltipOptions;
@@ -20,6 +21,7 @@ import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.sass.service.IScssService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.bootstrap4.markup.html.bootstrap.component.BootstrapBadge;
+import org.iglooproject.wicket.bootstrap4.markup.html.bootstrap.component.popover.AbstractPopoverLinkContentPanel;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.css.bootstrap.CoreBootstrap4CssScope;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.confirm.BootstrapConfirm;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.confirm.BootstrapConfirmJavaScriptResourceReference;
@@ -27,6 +29,7 @@ import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.moda
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.BootstrapModalMoreJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.component.Bootstrap4ModalPanel;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.modal.statement.BootstrapModal;
+import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.popover.BootstrapPopoverJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tab.BootstrapTabJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tab.BootstrapTabMoreJavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipJavaScriptResourceReference;
@@ -132,6 +135,11 @@ public class WicketBootstrap4Module implements IWicketModule, IBootstrapProvider
 	}
 
 	@Override
+	public Class<?> popoverMarkupClass() {
+		return AbstractPopoverLinkContentPanel.class;
+	}
+
+	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
 		//nothing, js are loaded plugin by plugin
 	}
@@ -170,12 +178,13 @@ public class WicketBootstrap4Module implements IWicketModule, IBootstrapProvider
 	public void tabRenderHead(Component component, IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(BootstrapTabJavaScriptResourceReference.get()));
 		response.render(JavaScriptHeaderItem.forReference(BootstrapTabMoreJavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(tabStatement(component).render(true)));
+		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(component).chain("tab").render(true)));
 	}
 
 	@Override
-	public JsStatement tabStatement(Component component) {
-		return new JsStatement().$(component).chain("tab");
+	public void popoverRenderHead(Component component, IHeaderResponse response, IBootstrapPopoverOptions options) {
+		response.render(JavaScriptHeaderItem.forReference(BootstrapPopoverJavaScriptResourceReference.get()));
+		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(component).chain("popover", options.getJavaScriptOptions()).render()));
 	}
 
 }

@@ -15,13 +15,13 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.component.PlaceholderContainer;
+import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.jqplot.config.DefaultJQPlotRendererOptionsFactory;
 import org.iglooproject.wicket.more.jqplot.config.IJQPlotConfigurer;
 import org.iglooproject.wicket.more.jqplot.data.adapter.IJQPlotDataAdapter;
 import org.iglooproject.wicket.more.jqplot.plugin.autoresize.JQPlotAutoresizeJavascriptReference;
-import org.iglooproject.wicket.more.markup.html.basic.PlaceholderContainer;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

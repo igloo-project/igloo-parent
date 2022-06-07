@@ -23,7 +23,7 @@ import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.visit.IVisitFilter;
 import org.apache.wicket.util.visit.Visits;
 import org.iglooproject.bootstrap.api.IAjaxModalPopupPanel;
-import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.more.markup.repeater.IRefreshableOnDemandRepeater;
 import org.iglooproject.wicket.more.util.visit.VisitFilters;
 import org.iglooproject.wicket.more.util.visit.Visitors;

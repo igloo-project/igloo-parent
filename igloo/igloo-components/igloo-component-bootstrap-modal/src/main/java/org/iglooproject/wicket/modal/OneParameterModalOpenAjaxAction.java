@@ -6,8 +6,8 @@ import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
 import org.iglooproject.bootstrap.api.IAjaxModalPopupPanel;
-import org.iglooproject.wicket.api.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.action.IOneParameterAjaxAction;
+import org.iglooproject.wicket.condition.Condition;
 
 public class OneParameterModalOpenAjaxAction<T> implements IOneParameterAjaxAction<T> {
 

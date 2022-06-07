@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.iglooproject.wicket.api.factory.IDetachableFactory;
+import org.iglooproject.wicket.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IResourceLinkDescriptor;

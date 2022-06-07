@@ -2,7 +2,7 @@ package org.iglooproject.basicapp.web.application.common.template.theme.advanced
 
 import org.apache.wicket.markup.html.panel.Panel;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
-import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.condition.Condition;
 
 public class SidebarHeaderPanel extends Panel {
 

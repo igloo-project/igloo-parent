@@ -3,7 +3,7 @@ package org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.scr
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.iglooproject.wicket.api.Models;
+import org.iglooproject.wicket.model.Models;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 import org.wicketstuff.wiquery.core.options.Options;
 

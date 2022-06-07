@@ -17,12 +17,12 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.api.factory.IDetachableFactory;
-import org.iglooproject.wicket.api.repeater.ISequenceProvider;
-import org.iglooproject.wicket.api.util.Detachables;
-import org.iglooproject.wicket.api.util.SequenceProviders;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+import org.iglooproject.wicket.condition.Condition;
+import org.iglooproject.wicket.factory.IDetachableFactory;
+import org.iglooproject.wicket.model.Detachables;
+import org.iglooproject.wicket.model.ISequenceProvider;
+import org.iglooproject.wicket.model.SequenceProviders;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceGridView;
 
 import com.google.common.collect.Lists;

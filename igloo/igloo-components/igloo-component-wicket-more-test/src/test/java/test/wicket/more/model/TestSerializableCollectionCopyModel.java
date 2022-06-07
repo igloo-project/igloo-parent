@@ -9,11 +9,11 @@ import java.util.Collection;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.functional.Suppliers2;
-import org.iglooproject.wicket.api.ICollectionModel;
-import org.iglooproject.wicket.api.Models;
+import org.iglooproject.wicket.model.CollectionCopyModel;
+import org.iglooproject.wicket.model.ICollectionModel;
+import org.iglooproject.wicket.model.Models;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.iglooproject.wicket.api.model.CollectionCopyModel;
 
 import com.google.common.base.Equivalence;
 import com.google.common.collect.Ordering;

@@ -15,7 +15,7 @@ import org.apache.wicket.request.Url;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.iglooproject.functional.SerializableFunction2;
-import org.iglooproject.wicket.api.Models;
+import org.iglooproject.wicket.model.Models;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;

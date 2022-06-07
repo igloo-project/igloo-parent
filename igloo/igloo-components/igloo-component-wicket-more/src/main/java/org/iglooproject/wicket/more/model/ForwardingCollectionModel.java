@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.api.ICollectionModel;
+import org.iglooproject.wicket.model.ICollectionModel;
 
 public abstract class ForwardingCollectionModel<T, C extends Collection<T>> implements ICollectionModel<T, C> {
 	

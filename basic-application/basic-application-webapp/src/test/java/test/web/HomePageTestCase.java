@@ -18,7 +18,7 @@ import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.component.CoreLabel;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 import org.junit.jupiter.api.Test;
 

@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.SerializableFunction2;
+import org.iglooproject.wicket.renderer.Renderer;
 
 public final class CoreRenderers {
 

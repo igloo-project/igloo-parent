@@ -7,7 +7,7 @@ import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.search.IUserGroupSearchQuery;
 import org.iglooproject.basicapp.core.business.user.search.UserGroupSort;
 import org.iglooproject.jpa.more.business.search.query.ISearchQuery;
-import org.iglooproject.wicket.api.util.Detachables;
+import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;

@@ -11,9 +11,9 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+import org.iglooproject.wicket.condition.Condition;
+import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.ajax.AjaxListeners;
 
 import com.google.common.collect.Lists;

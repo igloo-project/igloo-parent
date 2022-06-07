@@ -15,7 +15,7 @@ import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.api.Models;
+import org.iglooproject.wicket.model.Models;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;

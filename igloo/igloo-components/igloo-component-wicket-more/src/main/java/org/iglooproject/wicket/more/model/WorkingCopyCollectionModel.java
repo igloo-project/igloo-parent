@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.api.IItemModelAwareCollectionModel;
-import org.iglooproject.wicket.api.model.CollectionCopyModel;
+import org.iglooproject.wicket.model.CollectionCopyModel;
+import org.iglooproject.wicket.model.IItemModelAwareCollectionModel;
 
 public class WorkingCopyCollectionModel<T, C extends Collection<T>, M extends IModel<T>>
 		extends WorkingCopyModel<C>

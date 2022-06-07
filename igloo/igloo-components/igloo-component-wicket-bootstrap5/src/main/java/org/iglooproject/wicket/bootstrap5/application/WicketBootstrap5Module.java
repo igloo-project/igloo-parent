@@ -13,6 +13,7 @@ import org.iglooproject.bootstrap.api.IBootstrapModal;
 import org.iglooproject.bootstrap.api.IBootstrapProvider;
 import org.iglooproject.bootstrap.api.IModalPopupPanel;
 import org.iglooproject.bootstrap.api.badge.IBootstrapBadge;
+import org.iglooproject.bootstrap.api.popover.IBootstrapPopoverOptions;
 import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.bootstrap.api.tooltip.BootstrapTooltipBehavior;
 import org.iglooproject.bootstrap.api.tooltip.IBootstrapTooltipOptions;
@@ -20,6 +21,7 @@ import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.sass.service.IScssService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.bootstrap5.markup.html.bootstrap.component.BootstrapBadge;
+import org.iglooproject.wicket.bootstrap5.markup.html.bootstrap.component.popover.AbstractPopoverLinkContentPanel;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.css.bootstrap.CoreBootstrap5CssScope;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
 import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.confirm.BootstrapConfirm;
@@ -148,6 +150,11 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 	}
 
 	@Override
+	public Class<?> popoverMarkupClass() {
+		return AbstractPopoverLinkContentPanel.class;
+	}
+
+	@Override
 	public void renderHead(Component component, IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
 	}
@@ -176,12 +183,13 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 	public void tabRenderHead(Component component, IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
 		response.render(JavaScriptHeaderItem.forReference(BootstrapTabMoreJavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(tabStatement(component).render(true)));
+		response.render(OnDomReadyHeaderItem.forScript("new bootstrap.Tab('" + component.getMarkupId() + "');"));
 	}
 
 	@Override
-	public JsStatement tabStatement(Component component) {
-		return new JsStatement().append("new bootstrap.Tab(" + component.getMarkupId() + ");");
+	public void popoverRenderHead(Component component, IHeaderResponse response, IBootstrapPopoverOptions options) {
+		response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
+		OnDomReadyHeaderItem.forScript("new bootstrap.Popover(document.getElementById('" + component.getMarkupId() + "'), " + options.getJavaScriptOptions() + ");");
 	}
 
 }

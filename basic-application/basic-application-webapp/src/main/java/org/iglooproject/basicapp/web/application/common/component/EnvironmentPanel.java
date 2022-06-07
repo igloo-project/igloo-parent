@@ -11,12 +11,12 @@ import org.apache.wicket.util.cookies.CookieUtils;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.config.util.Environment;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.api.util.Detachables;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+import org.iglooproject.wicket.component.EnclosureContainer;
+import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
+import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.ajax.AjaxListeners;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 
 import com.google.common.collect.ImmutableList;
 

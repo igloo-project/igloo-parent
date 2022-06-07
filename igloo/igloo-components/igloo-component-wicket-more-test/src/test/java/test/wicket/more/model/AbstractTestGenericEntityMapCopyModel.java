@@ -11,9 +11,9 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.wicket.model.IMapModel;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.iglooproject.wicket.api.IMapModel;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Equivalence;

@@ -35,11 +35,6 @@
 			<artifactId>igloo-component-jul-to-slf4j</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-wicket-api</artifactId>
-			<version>${igloo.version}</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>

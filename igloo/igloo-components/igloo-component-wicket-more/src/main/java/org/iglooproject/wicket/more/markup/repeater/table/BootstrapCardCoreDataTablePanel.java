@@ -7,10 +7,10 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.api.factory.IDetachableFactory;
-import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
-import org.iglooproject.wicket.api.repeater.ISequenceProvider;
+import org.iglooproject.wicket.condition.Condition;
+import org.iglooproject.wicket.factory.IDetachableFactory;
+import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.model.ISequenceProvider;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFactory;
 
 import com.google.common.collect.Multimap;

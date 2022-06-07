@@ -33,6 +33,7 @@ import org.iglooproject.bootstrap.api.IBootstrapApplication;
 import org.iglooproject.bootstrap.api.IBootstrapProvider;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
+import org.iglooproject.wicket.application.ICoreApplication;
 import org.iglooproject.wicket.fontawesome.CoreFontAwesomeCssScope;
 import org.iglooproject.wicket.jqueryui.JQueryUiCssResourceReference;
 import org.iglooproject.wicket.jqueryui.JQueryUIJavaScriptResourceReference;
@@ -57,7 +58,7 @@ import com.google.common.collect.Lists;
 import de.agilecoders.wicket.webjars.WicketWebjars;
 import de.agilecoders.wicket.webjars.settings.WebjarsSettings;
 
-public abstract class CoreWicketApplication extends WebApplication implements IBootstrapApplication {
+public abstract class CoreWicketApplication extends WebApplication implements ICoreApplication, IBootstrapApplication {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CoreWicketApplication.class);
 	
@@ -287,6 +288,7 @@ public abstract class CoreWicketApplication extends WebApplication implements IB
 		return LinkDescriptorBuilder.start().page(getHomePage());
 	}
 
+	@Override
 	public Locale getNumberFormatLocale() {
 		return numberFormatLocale;
 	}

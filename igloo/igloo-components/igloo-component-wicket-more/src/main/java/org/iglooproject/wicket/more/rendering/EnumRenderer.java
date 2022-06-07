@@ -23,6 +23,7 @@ import org.apache.wicket.Localizer;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.lang.Classes;
 import org.iglooproject.spring.util.StringUtils;
+import org.iglooproject.wicket.renderer.Renderer;
 
 public class EnumRenderer extends Renderer<Enum<?>> {
 

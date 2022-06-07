@@ -8,7 +8,7 @@ import org.apache.wicket.model.Model;
 import org.iglooproject.bootstrap.api.BootstrapModalBackdrop;
 import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
 import org.iglooproject.bootstrap.api.IBootstrapModal;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.component.CoreLabel;
 import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
 import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;

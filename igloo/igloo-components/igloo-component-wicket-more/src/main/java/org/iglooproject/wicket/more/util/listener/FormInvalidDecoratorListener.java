@@ -21,9 +21,9 @@ import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.visit.IVisitor;
-import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
+import org.iglooproject.wicket.component.EnclosureContainer;
+import org.iglooproject.wicket.condition.Condition;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 

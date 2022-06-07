@@ -15,7 +15,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.lang.Classes;
 import org.iglooproject.export.excel.AbstractExcelTableExport;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.markup.html.model.CountMessageModel;
+import org.iglooproject.wicket.model.CountMessageModel;
 
 import com.google.common.base.Joiner;
 

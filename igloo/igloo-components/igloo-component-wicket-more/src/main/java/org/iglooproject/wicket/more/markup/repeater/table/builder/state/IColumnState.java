@@ -8,10 +8,10 @@ import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.api.util.IDatePattern;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.ActionColumnBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.column.ICoreColumn;
-import org.iglooproject.wicket.more.rendering.Renderer;
+import org.iglooproject.wicket.renderer.Renderer;
+import org.iglooproject.wicket.util.IDatePattern;
 
 
 public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {

@@ -1,7 +1,7 @@
 package org.iglooproject.bootstrap.api.confirm;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.api.action.IAction;
+import org.iglooproject.wicket.action.IAction;
 
 public class ConfirmLinkBuilder<O> extends AbstractConfirmLinkBuilder<ConfirmLink<O>, O> {
 	private static final long serialVersionUID = 5629930352899730245L;

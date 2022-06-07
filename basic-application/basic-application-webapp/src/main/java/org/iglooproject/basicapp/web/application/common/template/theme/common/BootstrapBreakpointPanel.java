@@ -3,8 +3,8 @@ package org.iglooproject.basicapp.web.application.common.template.theme.common;
 import org.apache.wicket.model.Model;
 import org.iglooproject.basicapp.core.config.util.Environment;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
+import org.iglooproject.wicket.component.EnclosureContainer;
+import org.iglooproject.wicket.condition.Condition;
 
 public class BootstrapBreakpointPanel extends EnclosureContainer {
 

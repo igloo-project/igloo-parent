@@ -20,6 +20,7 @@ package org.iglooproject.wicket.more.rendering;
 import java.util.Locale;
 
 import org.iglooproject.jpa.more.business.localization.model.AbstractLocalizedText;
+import org.iglooproject.wicket.renderer.Renderer;
 
 public abstract class LocalizedTextRenderer extends Renderer<AbstractLocalizedText> {
 	

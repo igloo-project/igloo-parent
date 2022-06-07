@@ -8,11 +8,11 @@ import org.iglooproject.bootstrap.api.badge.IBootstrapBadge;
 import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.bootstrap.api.renderer.IBootstrapRendererModel;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.api.condition.Condition;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.component.CoreLabel;
+import org.iglooproject.wicket.component.EnclosureContainer;
+import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.markup.html.panel.GenericPanel;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.behavior.BootstrapColorBehavior;
 
 public class BootstrapBadge<T> extends GenericPanel<T> implements IBootstrapBadge<T, BootstrapBadge<T>> {

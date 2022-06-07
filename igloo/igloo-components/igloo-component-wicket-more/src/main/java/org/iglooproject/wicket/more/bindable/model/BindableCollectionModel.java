@@ -8,8 +8,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.wicket.api.IItemModelAwareCollectionModel;
-import org.iglooproject.wicket.api.model.CollectionCopyModel;
+import org.iglooproject.wicket.model.CollectionCopyModel;
+import org.iglooproject.wicket.model.IItemModelAwareCollectionModel;
 import org.iglooproject.wicket.more.model.WorkingCopyCollectionModel;
 
 public class BindableCollectionModel<T, C extends Collection<T>> extends BindableModel<C>

@@ -14,7 +14,7 @@ import org.iglooproject.basicapp.web.application.notification.component.UserPass
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordCreationPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordResetPage;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
-import org.iglooproject.wicket.api.bindgen.BindingModel;
+import org.iglooproject.wicket.model.BindingModel;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.model.GenericEntityModel;

@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.wicket.model.IModel;
 import org.danekja.java.util.function.serializable.SerializableSupplier;
 import org.iglooproject.functional.Suppliers2;
-import org.iglooproject.wicket.markup.html.model.ConcreteCollectionToCollectionWrapperModel;
+import org.iglooproject.wicket.model.ConcreteCollectionToCollectionWrapperModel;
 
 public class CheckGroup<T> extends org.apache.wicket.markup.html.form.CheckGroup<T> {
 

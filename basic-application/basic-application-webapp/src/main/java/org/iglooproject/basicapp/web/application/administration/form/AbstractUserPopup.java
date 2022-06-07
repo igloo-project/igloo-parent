@@ -25,11 +25,11 @@ import org.iglooproject.basicapp.web.application.common.validator.UsernamePatter
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.api.util.Detachables;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.component.CoreLabel;
+import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
 import org.iglooproject.wicket.modal.AbstractAjaxModalPopupPanel;
+import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;

@@ -9,9 +9,9 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.bootstrap.api.common.IBootstrapColor;
 import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.bootstrap.api.renderer.IBootstrapRendererModel;
-import org.iglooproject.wicket.api.model.LocaleAwareReadOnlyModel;
-import org.iglooproject.wicket.api.util.Detachables;
-import org.iglooproject.wicket.more.rendering.Renderer;
+import org.iglooproject.wicket.model.Detachables;
+import org.iglooproject.wicket.model.LocaleAwareReadOnlyModel;
+import org.iglooproject.wicket.renderer.Renderer;
 
 public abstract class BootstrapRenderer<T> extends Renderer<T> implements IBootstrapRenderer<T> {
 

@@ -2,8 +2,8 @@ package test.wicket.more.link.descriptor;
 
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.iglooproject.wicket.api.model.ModelFactories;
-import org.iglooproject.wicket.api.model.ReadOnlyModel;
+import org.iglooproject.wicket.model.ModelFactories;
+import org.iglooproject.wicket.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.ILinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;

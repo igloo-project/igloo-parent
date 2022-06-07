@@ -24,12 +24,12 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.basicapp.web.application.common.renderer.AuthorityRenderer;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.wicket.api.bindgen.BindingModel;
-import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.component.CoreLabel;
+import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.markup.html.form.CheckGroup;
 import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
 import org.iglooproject.wicket.modal.AbstractAjaxModalPopupPanel;
+import org.iglooproject.wicket.model.BindingModel;
 import org.iglooproject.wicket.more.link.model.PageModel;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;

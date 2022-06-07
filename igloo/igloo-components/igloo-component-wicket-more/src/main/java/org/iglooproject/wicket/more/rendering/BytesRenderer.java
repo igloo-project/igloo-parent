@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.wicket.util.lang.Bytes;
+import org.iglooproject.wicket.renderer.Renderer;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;

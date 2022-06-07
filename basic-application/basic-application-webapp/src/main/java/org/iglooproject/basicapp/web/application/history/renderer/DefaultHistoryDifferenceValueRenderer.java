@@ -9,9 +9,9 @@ import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
-import org.iglooproject.wicket.api.Models;
-import org.iglooproject.wicket.api.Models.MapModelBuilder;
-import org.iglooproject.wicket.more.rendering.Renderer;
+import org.iglooproject.wicket.model.Models;
+import org.iglooproject.wicket.model.Models.MapModelBuilder;
+import org.iglooproject.wicket.renderer.Renderer;
 
 import com.google.common.base.Optional;
 

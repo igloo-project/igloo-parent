@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.validation.ValidationError;
-import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.condition.Condition;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;

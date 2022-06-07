@@ -8,7 +8,7 @@ import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData
 import org.iglooproject.basicapp.core.business.referencedata.search.IReferenceDataSearchQuery;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.api.util.Detachables;
+import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;

@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import org.apache.wicket.Session;
+import org.iglooproject.wicket.renderer.Renderer;
 
 public abstract class LocaleRenderer extends Renderer<Locale> {
 

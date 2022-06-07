@@ -10,8 +10,8 @@ import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.commons.util.collections.CollectionUtils;
-import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.api.util.Detachables;
+import org.iglooproject.wicket.condition.Condition;
+import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 

@@ -12,7 +12,7 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserListPage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.wicket.markup.html.basic.CountLabel;
+import org.iglooproject.wicket.component.CountLabel;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceGridView;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelLinkColumnPanel;

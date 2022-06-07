@@ -3,7 +3,7 @@ package org.iglooproject.wicket.modal;
 import java.io.File;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.api.util.Detachables;
+import org.iglooproject.wicket.model.Detachables;
 import org.javatuples.LabelValue;
 
 public class FileDownloadAjaxLink extends AbstractFileDownloadAjaxLink {

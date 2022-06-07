@@ -12,13 +12,13 @@ import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.web.application.administration.form.UserAjaxDropDownSingleChoice;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
-import org.iglooproject.wicket.api.condition.Condition;
-import org.iglooproject.wicket.api.util.Detachables;
+import org.iglooproject.wicket.component.EnclosureContainer;
+import org.iglooproject.wicket.condition.Condition;
+import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.ajax.SerializableListener;
 import org.iglooproject.wicket.more.common.behavior.UpdateOnChangeAjaxEventBehavior;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.model.ComponentPageModel;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 

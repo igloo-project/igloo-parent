@@ -8,9 +8,9 @@ import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+import org.iglooproject.wicket.component.EnclosureContainer;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 
 public abstract class AbstractNavbarPanel extends Panel {

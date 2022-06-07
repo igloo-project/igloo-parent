@@ -9,7 +9,7 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.Function2;
 import org.iglooproject.functional.Predicates2;
-import org.iglooproject.wicket.api.provider.IBindableDataProvider;
+import org.iglooproject.wicket.model.IBindableDataProvider;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;

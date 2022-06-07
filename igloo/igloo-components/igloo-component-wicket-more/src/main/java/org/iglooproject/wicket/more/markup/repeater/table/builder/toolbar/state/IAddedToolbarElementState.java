@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.toolbar.state;
 
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.condition.Condition;
 
 public interface IAddedToolbarElementState<T, S extends ISort<?>> extends IToolbarElementState<T, S> {
 

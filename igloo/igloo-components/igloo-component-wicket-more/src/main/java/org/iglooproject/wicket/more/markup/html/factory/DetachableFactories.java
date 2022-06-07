@@ -1,8 +1,8 @@
 package org.iglooproject.wicket.more.markup.html.factory;
 
 import org.iglooproject.functional.SerializableFunction2;
-import org.iglooproject.wicket.api.factory.IDetachableFactory;
-import org.iglooproject.wicket.api.util.Detachables;
+import org.iglooproject.wicket.factory.IDetachableFactory;
+import org.iglooproject.wicket.model.Detachables;
 import org.javatuples.Unit;
 
 public final class DetachableFactories {

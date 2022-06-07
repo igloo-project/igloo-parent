@@ -1,7 +1,7 @@
 package org.iglooproject.bootstrap.api.badge;
 
 import org.apache.wicket.Component;
-import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.condition.Condition;
 
 public interface IBootstrapBadge<T, C extends Component & IBootstrapBadge<T, C>> {
 

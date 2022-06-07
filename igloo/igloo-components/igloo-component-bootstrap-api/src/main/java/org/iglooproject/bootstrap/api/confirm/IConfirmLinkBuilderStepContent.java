@@ -2,7 +2,7 @@ package org.iglooproject.bootstrap.api.confirm;
 
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.api.factory.IDetachableFactory;
+import org.iglooproject.wicket.factory.IDetachableFactory;
 
 public interface IConfirmLinkBuilderStepContent<L extends AbstractLink, O> {
 

@@ -10,10 +10,10 @@ import org.iglooproject.basicapp.web.application.referencedata.form.AbstractRefe
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.api.condition.Condition;
+import org.iglooproject.wicket.component.EnclosureContainer;
+import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.modal.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.modal.OneParameterModalOpenAjaxAction;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;

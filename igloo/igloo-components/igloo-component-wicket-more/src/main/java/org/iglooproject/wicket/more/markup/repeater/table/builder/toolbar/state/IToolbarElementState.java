@@ -4,7 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 
 

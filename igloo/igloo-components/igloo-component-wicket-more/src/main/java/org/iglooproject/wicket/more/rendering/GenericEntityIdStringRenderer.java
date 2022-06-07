@@ -3,6 +3,7 @@ package org.iglooproject.wicket.more.rendering;
 import java.util.Locale;
 
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.wicket.renderer.Renderer;
 
 public final class GenericEntityIdStringRenderer extends Renderer<GenericEntity<?, ?>> {
 

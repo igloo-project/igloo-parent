@@ -6,10 +6,10 @@ import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.commons.util.binding.ICoreBinding;
-import org.iglooproject.wicket.api.action.IOneParameterAction;
-import org.iglooproject.wicket.api.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.api.factory.IDetachableFactory;
-import org.iglooproject.wicket.api.factory.IOneParameterComponentFactory;
+import org.iglooproject.wicket.action.IOneParameterAction;
+import org.iglooproject.wicket.action.IOneParameterAjaxAction;
+import org.iglooproject.wicket.factory.IDetachableFactory;
+import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 

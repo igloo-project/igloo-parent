@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
-import org.iglooproject.wicket.api.ICollectionModel;
+import org.iglooproject.wicket.model.ICollectionModel;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
 import org.iglooproject.wicket.more.model.ReadOnlyCollectionModel;
 

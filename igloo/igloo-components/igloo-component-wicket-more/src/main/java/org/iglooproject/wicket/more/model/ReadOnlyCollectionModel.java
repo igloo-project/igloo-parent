@@ -11,8 +11,8 @@ import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 import org.iglooproject.functional.SerializableFunction2;
-import org.iglooproject.wicket.api.IItemModelAwareCollectionModel;
-import org.iglooproject.wicket.api.Models;
+import org.iglooproject.wicket.model.IItemModelAwareCollectionModel;
+import org.iglooproject.wicket.model.Models;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Streams;

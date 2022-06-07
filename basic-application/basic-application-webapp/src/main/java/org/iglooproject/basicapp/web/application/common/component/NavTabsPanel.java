@@ -10,8 +10,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.web.application.common.util.BootstrapTabsUtils;
 import org.iglooproject.bootstrap.api.tab.BootstrapTabBehavior;
-import org.iglooproject.wicket.api.util.Detachables;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
+import org.iglooproject.wicket.component.CoreLabel;
+import org.iglooproject.wicket.model.Detachables;
 
 public class NavTabsPanel extends Panel {
 	
