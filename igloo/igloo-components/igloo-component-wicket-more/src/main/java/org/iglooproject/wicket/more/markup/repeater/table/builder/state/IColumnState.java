@@ -4,14 +4,15 @@ import java.util.Date;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.ActionColumnBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.column.ICoreColumn;
-import org.iglooproject.wicket.renderer.Renderer;
-import org.iglooproject.wicket.util.IDatePattern;
+
+import igloo.bootstrap.renderer.IBootstrapRenderer;
+import igloo.wicket.renderer.Renderer;
+import igloo.wicket.util.IDatePattern;
 
 
 public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {

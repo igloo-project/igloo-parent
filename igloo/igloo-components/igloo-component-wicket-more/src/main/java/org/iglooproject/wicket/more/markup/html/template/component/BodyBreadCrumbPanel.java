@@ -6,11 +6,12 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElementListConcatModel;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbMarkupTagRenderingBehavior;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.ReadOnlyModel;
 
 public class BodyBreadCrumbPanel extends GenericPanel<List<BreadCrumbElement>> {
 

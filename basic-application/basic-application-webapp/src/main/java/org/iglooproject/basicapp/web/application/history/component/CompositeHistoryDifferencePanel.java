@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.web.application.history.component;
 
-import static org.iglooproject.wicket.condition.Condition.predicate;
+import static igloo.wicket.condition.Condition.predicate;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.panel.GenericPanel;
@@ -10,10 +10,11 @@ import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.history.component.factory.IHistoryComponentFactory;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.more.business.history.model.atomic.HistoryDifferenceEventType;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.component.EnclosureContainer;
-import org.iglooproject.wicket.model.BindingModel;
-import org.iglooproject.wicket.model.Detachables;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.model.BindingModel;
+import igloo.wicket.model.Detachables;
 
 public class CompositeHistoryDifferencePanel extends GenericPanel<HistoryDifference> {
 

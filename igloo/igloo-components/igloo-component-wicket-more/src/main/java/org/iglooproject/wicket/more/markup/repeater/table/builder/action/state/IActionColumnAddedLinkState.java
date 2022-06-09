@@ -5,9 +5,10 @@ import java.util.Collection;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.factory.IDetachableFactory;
 import org.springframework.security.acls.model.Permission;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
 
 public interface IActionColumnAddedLinkState<T, I> extends IActionColumnAddedElementState<T, I> {
 

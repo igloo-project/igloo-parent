@@ -7,13 +7,14 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.factory.IDetachableFactory;
-import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
-import org.iglooproject.wicket.model.ISequenceProvider;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFactory;
 
 import com.google.common.collect.Multimap;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.factory.IOneParameterComponentFactory;
+import igloo.wicket.model.ISequenceProvider;
 
 public class BootstrapCardCoreDataTablePanel<T, S extends ISort<?>> extends DecoratedCoreDataTablePanel<T, S> {
 

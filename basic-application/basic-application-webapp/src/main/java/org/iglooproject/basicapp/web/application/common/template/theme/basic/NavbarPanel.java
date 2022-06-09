@@ -20,12 +20,6 @@ import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.template.theme.common.AbstractNavbarPanel;
 import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
 import org.iglooproject.functional.SerializableFunction2;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.component.EnclosureContainer;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.model.BindingModel;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
@@ -34,6 +28,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
+
+import igloo.bootstrap5.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.BindingModel;
 
 public class NavbarPanel extends AbstractNavbarPanel {
 

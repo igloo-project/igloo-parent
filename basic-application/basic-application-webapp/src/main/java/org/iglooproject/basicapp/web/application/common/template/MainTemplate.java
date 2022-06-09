@@ -32,14 +32,8 @@ import org.iglooproject.basicapp.web.application.common.template.theme.BasicAppl
 import org.iglooproject.basicapp.web.application.common.template.theme.common.BootstrapBreakpointPanel;
 import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDataPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordExpirationPage;
-import org.iglooproject.bootstrap.api.tooltip.BootstrapTooltipBehavior;
-import org.iglooproject.bootstrap.api.tooltip.BootstrapTooltipOptions;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.bootstrap5.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
-import org.iglooproject.wicket.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
-import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
@@ -49,6 +43,13 @@ import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuIte
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 
 import com.google.common.collect.ImmutableList;
+
+import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
+import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
+import igloo.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
+import igloo.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.condition.Condition;
 
 public abstract class MainTemplate extends AbstractWebPageTemplate {
 

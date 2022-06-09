@@ -3,9 +3,10 @@ package org.iglooproject.wicket.more.markup.repeater.table.toolbar;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.component.CoreLabel;
 import org.iglooproject.wicket.more.markup.repeater.table.AbstractCoreToolbar;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
+
+import igloo.wicket.component.CoreLabel;
 
 public class CoreNoRecordsToolbar extends AbstractCoreToolbar {
 

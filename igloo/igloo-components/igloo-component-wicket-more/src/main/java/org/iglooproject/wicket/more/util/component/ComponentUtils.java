@@ -5,11 +5,12 @@ import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 import org.apache.wicket.Component;
-import org.iglooproject.bootstrap.api.IModalPopupPanel;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializablePredicate2;
 
 import com.google.common.collect.Streams;
+
+import igloo.bootstrap.modal.IModalPopupPanel;
 
 public final class ComponentUtils {
 

@@ -2,7 +2,8 @@ package org.iglooproject.wicket.more.link.descriptor.mapper;
 
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
-import org.iglooproject.wicket.model.BindingModel;
+
+import igloo.wicket.model.BindingModel;
 
 public class BindingOneParameterLinkDescriptorMapper<L, R, T> extends AbstractOneParameterLinkDescriptorMapper<L, R> {
 	

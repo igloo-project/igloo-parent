@@ -18,16 +18,17 @@ import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenti
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationAccessEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationaccess.ApplicationAccessScssResourceReference;
-import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
-import org.iglooproject.bootstrap.api.tooltip.BootstrapTooltipBehavior;
-import org.iglooproject.bootstrap.api.tooltip.BootstrapTooltipOptions;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
+
+import igloo.bootstrap.BootstrapRequestCycle;
+import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
+import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.markup.html.panel.InvisiblePanel;
 
 public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate {
 

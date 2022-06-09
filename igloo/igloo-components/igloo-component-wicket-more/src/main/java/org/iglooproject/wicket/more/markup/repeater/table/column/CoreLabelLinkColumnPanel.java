@@ -3,9 +3,10 @@ package org.iglooproject.wicket.more.markup.repeater.table.column;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.markup.html.panel.GenericPanel;
+
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.markup.html.panel.GenericPanel;
 
 public abstract class CoreLabelLinkColumnPanel<T, S extends ISort<?>> extends GenericPanel<T> {
 

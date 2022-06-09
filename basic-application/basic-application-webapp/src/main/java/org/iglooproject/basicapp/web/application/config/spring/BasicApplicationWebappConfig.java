@@ -16,14 +16,15 @@ import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.iglooproject.wicket.more.notification.service.PhlocCssHtmlNotificationCssServiceImpl;
 import org.iglooproject.wicket.more.rendering.BooleanRenderer;
 import org.iglooproject.wicket.more.rendering.service.RendererServiceImpl;
-import org.iglooproject.wicket.renderer.Renderer;
-import org.iglooproject.wicket.util.DatePattern;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+
+import igloo.wicket.renderer.Renderer;
+import igloo.wicket.util.DatePattern;
 
 @Configuration
 @EnableWebSecurity

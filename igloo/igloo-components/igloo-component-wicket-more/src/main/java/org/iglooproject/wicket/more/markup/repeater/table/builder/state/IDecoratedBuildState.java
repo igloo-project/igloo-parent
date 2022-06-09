@@ -2,13 +2,14 @@ package org.iglooproject.wicket.more.markup.repeater.table.builder.state;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.factory.IComponentFactory;
-import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnBuildState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnNoParameterBuildState;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IComponentFactory;
+import igloo.wicket.factory.IOneParameterComponentFactory;
 
 public interface IDecoratedBuildState<T, S extends ISort<?>> {
 	

@@ -4,8 +4,9 @@ import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.markup.html.panel.GenericPanel;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.markup.html.panel.GenericPanel;
 
 public abstract class CoreBootstrapBadgeLinkColumnPanel<T, S extends ISort<?>, C> extends GenericPanel<T> {
 

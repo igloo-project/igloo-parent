@@ -23,14 +23,6 @@ import org.iglooproject.basicapp.web.application.administration.template.Adminis
 import org.iglooproject.basicapp.web.application.common.renderer.UserEnabledRenderer;
 import org.iglooproject.basicapp.web.application.common.util.BootstrapTabsUtils;
 import org.iglooproject.basicapp.web.application.navigation.link.LinkFactory;
-import org.iglooproject.bootstrap.api.BootstrapRequestCycle;
-import org.iglooproject.bootstrap.api.confirm.AjaxConfirmLink;
-import org.iglooproject.wicket.action.IAjaxAction;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.component.EnclosureContainer;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.modal.AjaxModalOpenBehavior;
-import org.iglooproject.wicket.model.BindingModel;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -39,6 +31,15 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
+
+import igloo.bootstrap.BootstrapRequestCycle;
+import igloo.bootstrap.confirm.AjaxConfirmLink;
+import igloo.bootstrap.modal.AjaxModalOpenBehavior;
+import igloo.wicket.action.IAjaxAction;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.BindingModel;
 
 public class AdministrationBasicUserDetailPage extends AdministrationUserDetailTemplate<BasicUser> {
 

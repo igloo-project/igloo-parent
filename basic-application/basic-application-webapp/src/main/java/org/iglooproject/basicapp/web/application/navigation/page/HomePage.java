@@ -7,11 +7,12 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
 import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
 import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDataPage;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
+
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.condition.Condition;
 
 public class HomePage extends MainTemplate {
 

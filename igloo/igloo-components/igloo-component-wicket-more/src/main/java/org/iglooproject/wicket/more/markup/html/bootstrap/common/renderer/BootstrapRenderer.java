@@ -6,12 +6,13 @@ import java.util.Locale;
 import java.util.Objects;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.bootstrap.api.common.IBootstrapColor;
-import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
-import org.iglooproject.bootstrap.api.renderer.IBootstrapRendererModel;
-import org.iglooproject.wicket.model.Detachables;
-import org.iglooproject.wicket.model.LocaleAwareReadOnlyModel;
-import org.iglooproject.wicket.renderer.Renderer;
+
+import igloo.bootstrap.common.IBootstrapColor;
+import igloo.bootstrap.renderer.IBootstrapRenderer;
+import igloo.bootstrap.renderer.IBootstrapRendererModel;
+import igloo.wicket.model.Detachables;
+import igloo.wicket.model.LocaleAwareReadOnlyModel;
+import igloo.wicket.renderer.Renderer;
 
 public abstract class BootstrapRenderer<T> extends Renderer<T> implements IBootstrapRenderer<T> {
 

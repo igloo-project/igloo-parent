@@ -22,10 +22,6 @@ import org.iglooproject.basicapp.web.application.administration.form.UserGroupPo
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserGroupTemplate;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.component.EnclosureContainer;
-import org.iglooproject.wicket.modal.AjaxModalOpenBehavior;
-import org.iglooproject.wicket.model.BindingModel;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.model.ComponentPageModel;
@@ -37,6 +33,11 @@ import org.iglooproject.wicket.more.model.ReadOnlyCollectionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
+
+import igloo.bootstrap.modal.AjaxModalOpenBehavior;
+import igloo.wicket.action.IOneParameterAjaxAction;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.model.BindingModel;
 
 public class AdministrationUserGroupListPage extends AdministrationUserGroupTemplate {
 

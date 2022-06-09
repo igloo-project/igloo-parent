@@ -10,10 +10,11 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.component.DateLabel;
-import org.iglooproject.wicket.model.BindingModel;
-import org.iglooproject.wicket.util.DatePattern;
+
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.DateLabel;
+import igloo.wicket.model.BindingModel;
+import igloo.wicket.util.DatePattern;
 
 public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<User> {
 	

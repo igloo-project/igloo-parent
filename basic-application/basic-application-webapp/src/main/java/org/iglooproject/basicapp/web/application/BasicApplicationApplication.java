@@ -59,11 +59,6 @@ import org.iglooproject.basicapp.web.application.security.password.page.Security
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.bootstrap5.console.navigation.page.ConsoleAccessDeniedPage;
-import org.iglooproject.wicket.bootstrap5.console.navigation.page.ConsoleLoginFailurePage;
-import org.iglooproject.wicket.bootstrap5.console.navigation.page.ConsoleLoginSuccessPage;
-import org.iglooproject.wicket.bootstrap5.console.navigation.page.ConsoleSignInPage;
-import org.iglooproject.wicket.bootstrap5.console.template.ConsoleConfiguration;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
@@ -78,6 +73,12 @@ import org.iglooproject.wicket.more.util.listener.FormInvalidDecoratorListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.ImmutableList;
+
+import igloo.console.navigation.page.ConsoleAccessDeniedPage;
+import igloo.console.navigation.page.ConsoleLoginFailurePage;
+import igloo.console.navigation.page.ConsoleLoginSuccessPage;
+import igloo.console.navigation.page.ConsoleSignInPage;
+import igloo.console.template.ConsoleConfiguration;
 
 public class BasicApplicationApplication extends CoreWicketAuthenticatedApplication {
 	

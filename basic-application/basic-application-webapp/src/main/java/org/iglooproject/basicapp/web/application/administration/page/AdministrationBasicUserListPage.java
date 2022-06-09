@@ -27,11 +27,6 @@ import org.iglooproject.basicapp.web.application.administration.template.Adminis
 import org.iglooproject.basicapp.web.application.common.renderer.UserEnabledRenderer;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.component.EnclosureContainer;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.markup.html.link.EmailLink;
-import org.iglooproject.wicket.modal.AjaxModalOpenBehavior;
-import org.iglooproject.wicket.model.BindingModel;
 import org.iglooproject.wicket.more.excel.AbstractExcelExportAjaxLink;
 import org.iglooproject.wicket.more.excel.ExcelExportWorkInProgressModalPopupPanel;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
@@ -45,6 +40,12 @@ import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
+
+import igloo.bootstrap.modal.AjaxModalOpenBehavior;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.markup.html.link.EmailLink;
+import igloo.wicket.model.BindingModel;
 
 public class AdministrationBasicUserListPage extends AdministrationUserListTemplate<BasicUser> {
 

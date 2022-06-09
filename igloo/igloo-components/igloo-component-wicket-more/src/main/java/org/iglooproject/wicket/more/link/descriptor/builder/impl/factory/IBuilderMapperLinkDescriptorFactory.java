@@ -1,7 +1,9 @@
 package org.iglooproject.wicket.more.link.descriptor.builder.impl.factory;
 
 import org.javatuples.Tuple;
-import org.iglooproject.wicket.factory.IDetachableFactory;
+
+import igloo.wicket.factory.IDetachableFactory;
+
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 
 /**

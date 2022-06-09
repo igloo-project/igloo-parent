@@ -15,13 +15,14 @@ import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.bindable.exception.NoSuchModelException;
 import org.iglooproject.wicket.more.model.WorkingCopyModel;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+
+import igloo.wicket.model.Detachables;
 
 public class BindableModel<E> implements IBindableModel<E> {
 	

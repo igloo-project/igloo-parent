@@ -42,7 +42,7 @@
 	
 	<filter>
 		<filter-name>log4jUrlFilter</filter-name>
-		<filter-class>org.iglooproject.wicket.servlet.filter.Log4jUrlFilter</filter-class>
+		<filter-class>igloo.wicket.servlet.filter.Log4jUrlFilter</filter-class>
 	</filter>
 	
 	<filter>

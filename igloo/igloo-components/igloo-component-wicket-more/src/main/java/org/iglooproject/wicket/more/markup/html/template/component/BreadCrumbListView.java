@@ -6,10 +6,11 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbMarkupTagRenderingBehavior;
+
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.condition.Condition;
 
 public class BreadCrumbListView extends ListView<BreadCrumbElement> {
 

@@ -13,15 +13,16 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IOneParameterComponentFactory;
+import igloo.wicket.model.Detachables;
 
 public class CustomizableToolbarElementBuilder<T, S extends ISort<?>>
 		implements IOneParameterComponentFactory<Component, CoreDataTable<T, S>> {

@@ -3,7 +3,8 @@ package org.iglooproject.wicket.more.markup.html.form;
 import org.apache.wicket.Session;
 
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.wicket.renderer.Renderer;
+
+import igloo.wicket.renderer.Renderer;
 
 public final class GenericEntityRendererToChoiceRenderer {
 

@@ -9,16 +9,8 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.wicket.action.AjaxActions;
-import org.iglooproject.wicket.action.IAjaxAction;
-import org.iglooproject.wicket.action.IOneParameterAction;
-import org.iglooproject.wicket.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.factory.IDetachableFactory;
-import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
@@ -37,6 +29,15 @@ import org.springframework.security.acls.model.Permission;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
+import igloo.bootstrap.renderer.IBootstrapRenderer;
+import igloo.wicket.action.AjaxActions;
+import igloo.wicket.action.IAjaxAction;
+import igloo.wicket.action.IOneParameterAction;
+import igloo.wicket.action.IOneParameterAjaxAction;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.factory.IOneParameterComponentFactory;
 
 public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParameterBuildState<T, I>, IActionColumnBuildState<T, I> {
 

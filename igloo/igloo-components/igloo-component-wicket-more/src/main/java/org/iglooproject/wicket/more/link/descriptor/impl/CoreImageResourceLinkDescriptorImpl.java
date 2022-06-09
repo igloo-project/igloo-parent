@@ -6,7 +6,8 @@ import org.apache.wicket.request.resource.ResourceReference;
 
 import com.google.common.collect.ImmutableList;
 
-import org.iglooproject.wicket.model.Models;
+import igloo.wicket.model.Models;
+
 import org.iglooproject.wicket.more.link.descriptor.DynamicImage;
 import org.iglooproject.wicket.more.link.descriptor.IImageResourceLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.generator.IImageResourceLinkGenerator;

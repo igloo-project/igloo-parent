@@ -2,7 +2,8 @@ package org.iglooproject.wicket.more.bindable.form;
 
 import com.google.common.collect.ImmutableList;
 
-import org.iglooproject.wicket.model.Detachables;
+import igloo.wicket.model.Detachables;
+
 import org.iglooproject.wicket.more.bindable.model.IBindableModel;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 

@@ -11,7 +11,7 @@ import org.apache.wicket.util.convert.converter.BigDecimalConverter;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.validator.RangeValidator;
 
-import org.iglooproject.wicket.markup.html.form.FormComponentHelper;
+import igloo.wicket.markup.html.form.FormComponentHelper;
 
 public class PositiveBigDecimalTextField extends TextField<BigDecimal> {
 	private static final long serialVersionUID = 183668115931774497L;

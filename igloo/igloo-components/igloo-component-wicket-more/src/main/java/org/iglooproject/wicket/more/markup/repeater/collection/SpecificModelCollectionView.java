@@ -2,7 +2,8 @@ package org.iglooproject.wicket.more.markup.repeater.collection;
 
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.model.IItemModelAwareCollectionModel;
+
+import igloo.wicket.model.IItemModelAwareCollectionModel;
 
 /**
  * A collection view whose items provide access to their model through a more precise form than just

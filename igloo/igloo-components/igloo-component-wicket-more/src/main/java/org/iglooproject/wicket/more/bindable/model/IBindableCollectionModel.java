@@ -2,8 +2,8 @@ package org.iglooproject.wicket.more.bindable.model;
 
 import java.util.Collection;
 
-import org.iglooproject.wicket.model.ICollectionModel;
-import org.iglooproject.wicket.model.IItemModelAwareCollectionModel;
+import igloo.wicket.model.ICollectionModel;
+import igloo.wicket.model.IItemModelAwareCollectionModel;
 
 /**
  * A {@link IBindableModel} that also is a {@link ICollectionModel}.

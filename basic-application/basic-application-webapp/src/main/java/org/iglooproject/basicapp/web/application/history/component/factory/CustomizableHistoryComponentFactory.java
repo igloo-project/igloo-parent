@@ -8,11 +8,12 @@ import org.bindgen.BindingRoot;
 
 import com.google.common.collect.Maps;
 
+import igloo.wicket.model.Detachables;
+
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
 import org.iglooproject.basicapp.web.application.history.component.CompositeHistoryDifferencePanel;
 import org.iglooproject.basicapp.web.application.history.component.DefaultHistoryDifferencePanel;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
-import org.iglooproject.wicket.model.Detachables;
 
 /**
  * A {@link IHistoryComponentFactory} allowing the caller to customize the way some particular fields are displayed.

@@ -10,14 +10,15 @@ import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordCreationContentPanel;
 import org.iglooproject.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.Detachables;
 
 public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 

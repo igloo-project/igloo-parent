@@ -12,11 +12,12 @@ import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.repeater.table.AbstractCoreToolbar;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 import org.iglooproject.wicket.more.markup.repeater.table.column.ICoreColumn;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
 
 public class CoreHeadersToolbar<S extends ISort<?>> extends AbstractCoreToolbar {
 

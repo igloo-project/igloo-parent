@@ -10,10 +10,11 @@ import org.iglooproject.basicapp.core.business.history.model.HistoryLog;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.history.component.factory.IHistoryComponentFactory;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.model.BindingModel;
 
 import com.google.common.collect.ImmutableList;
+
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.model.BindingModel;
 
 public class HistoryLogDetailColumnPanel extends GenericPanel<HistoryLog> {
 

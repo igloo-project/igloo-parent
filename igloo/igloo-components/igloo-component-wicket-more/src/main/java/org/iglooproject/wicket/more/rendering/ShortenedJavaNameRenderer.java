@@ -2,7 +2,7 @@ package org.iglooproject.wicket.more.rendering;
 
 import java.util.Locale;
 
-import org.iglooproject.wicket.renderer.Renderer;
+import igloo.wicket.renderer.Renderer;
 
 /**
  * A renderer that shortens Java names, such as package names, class names or fully-qualified attribute names,

@@ -3,8 +3,9 @@ package org.iglooproject.wicket.more.markup.repeater.table.column;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.component.PlaceholderContainer;
-import org.iglooproject.wicket.condition.Condition;
+
+import igloo.wicket.component.PlaceholderContainer;
+import igloo.wicket.condition.Condition;
 
 public abstract class CoreActionColumnElementPanel<T> extends Panel {
 

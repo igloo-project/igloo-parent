@@ -9,10 +9,10 @@ import org.apache.wicket.Session;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.util.lang.Classes;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.jqplot.data.provider.AbstractJQPlotDataProvider;
 import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
 
+import igloo.wicket.model.Detachables;
 import nl.topicus.wqplot.data.AbstractSeries;
 import nl.topicus.wqplot.data.SeriesEntry;
 import nl.topicus.wqplot.options.PlotOptions;

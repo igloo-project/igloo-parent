@@ -3,7 +3,8 @@ package org.iglooproject.wicket.more.rendering.service;
 import org.bindgen.BindingRoot;
 
 import org.iglooproject.commons.util.fieldpath.FieldPath;
-import org.iglooproject.wicket.renderer.Renderer;
+
+import igloo.wicket.renderer.Renderer;
 
 
 public interface IRendererRegistry {

@@ -1,11 +1,12 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.factory.ComponentFactories;
+
+import igloo.bootstrap.renderer.IBootstrapRenderer;
 
 public class ActionColumnLinkBuilder<T>
 		extends AbstractActionColumnElementBuilder<T, AbstractDynamicBookmarkableLink, ActionColumnLinkBuilder<T>> {

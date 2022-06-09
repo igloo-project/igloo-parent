@@ -5,10 +5,6 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.toolbar.state.IAddedToolbarCoreElementState;
@@ -19,6 +15,11 @@ import org.iglooproject.wicket.more.markup.repeater.table.toolbar.CoreCustomizab
 
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IOneParameterComponentFactory;
+import igloo.wicket.model.Detachables;
 
 public class CustomizableToolbarBuilder<T, S extends ISort<?>> implements IToolbarElementState<T, S> {
 

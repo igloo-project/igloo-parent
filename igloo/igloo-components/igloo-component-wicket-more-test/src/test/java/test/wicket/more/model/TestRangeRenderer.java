@@ -7,12 +7,12 @@ import java.util.Locale;
 
 import org.apache.wicket.Localizer;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.model.Models;
 import org.iglooproject.wicket.more.model.RangeModel;
-import org.iglooproject.wicket.renderer.Renderer;
-import org.iglooproject.wicket.util.DatePattern;
 import org.junit.jupiter.api.Test;
 
+import igloo.wicket.model.Models;
+import igloo.wicket.renderer.Renderer;
+import igloo.wicket.util.DatePattern;
 import test.wicket.more.AbstractWicketMoreTestCase;
 
 public class TestRangeRenderer extends AbstractWicketMoreTestCase {

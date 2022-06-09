@@ -1,7 +1,7 @@
 package org.iglooproject.basicapp.web.application.history.component;
 
-import static org.iglooproject.wicket.condition.Condition.isTrue;
-import static org.iglooproject.wicket.condition.Condition.predicate;
+import static igloo.wicket.condition.Condition.isTrue;
+import static igloo.wicket.condition.Condition.predicate;
 
 import java.util.EnumSet;
 
@@ -14,10 +14,11 @@ import org.iglooproject.basicapp.web.application.history.component.factory.IHist
 import org.iglooproject.basicapp.web.application.history.renderer.DefaultHistoryDifferenceValueRenderer;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.jpa.more.business.history.model.atomic.HistoryDifferenceEventType;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.component.EnclosureContainer;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.model.BindingModel;
+
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.BindingModel;
 
 public class DefaultHistoryDifferencePanel extends GenericPanel<HistoryDifference> {
 

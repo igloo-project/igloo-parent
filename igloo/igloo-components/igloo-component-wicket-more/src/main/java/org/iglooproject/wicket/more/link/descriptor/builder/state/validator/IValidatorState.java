@@ -2,7 +2,6 @@ package org.iglooproject.wicket.more.link.descriptor.builder.state.validator;
 
 import org.apache.wicket.model.IModel;
 import org.bindgen.BindingRoot;
-import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IOneChosenParameterState;
@@ -11,6 +10,8 @@ import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper
 import org.iglooproject.wicket.more.link.descriptor.parameter.extractor.ILinkParametersExtractor;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
+
+import igloo.wicket.condition.Condition;
 
 /**
  * A state where one may add validation to the link.

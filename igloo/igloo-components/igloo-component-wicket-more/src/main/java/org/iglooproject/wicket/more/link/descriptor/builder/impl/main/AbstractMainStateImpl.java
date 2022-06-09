@@ -1,6 +1,6 @@
 package org.iglooproject.wicket.more.link.descriptor.builder.impl.main;
 
-import static org.iglooproject.wicket.condition.Condition.anyPermission;
+import static igloo.wicket.condition.Condition.anyPermission;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,10 +10,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.bindgen.BindingRoot;
 import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.factory.IDetachableFactory;
-import org.iglooproject.wicket.model.BindingModel;
-import org.iglooproject.wicket.model.ModelFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderMapperLinkDescriptorFactory;
@@ -36,6 +32,11 @@ import org.springframework.core.convert.TypeDescriptor;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.model.BindingModel;
+import igloo.wicket.model.ModelFactories;
 
 abstract class AbstractMainStateImpl
 		<

@@ -6,12 +6,14 @@ import java.util.Objects;
 
 import org.apache.wicket.behavior.Behavior;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IBuildState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.table.state.IDataTableTableState;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
+
 import com.google.common.collect.Lists;
 
 public abstract class DataTableTableBuilder<T, S extends ISort<?>> implements IDataTableTableState<T, S> {

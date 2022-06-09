@@ -28,12 +28,6 @@ import org.iglooproject.basicapp.web.application.common.component.AnnouncementMe
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.renderer.AnnouncementEnabledRenderer;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.component.EnclosureContainer;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.modal.AjaxModalOpenBehavior;
-import org.iglooproject.wicket.modal.OneParameterModalOpenAjaxAction;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
@@ -44,10 +38,17 @@ import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;
-import org.iglooproject.wicket.util.DatePattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
+
+import igloo.bootstrap.modal.AjaxModalOpenBehavior;
+import igloo.bootstrap.modal.OneParameterModalOpenAjaxAction;
+import igloo.wicket.action.IOneParameterAjaxAction;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.Detachables;
+import igloo.wicket.util.DatePattern;
 
 public class AdministrationAnnouncementListPage extends AdministrationAnnouncementTemplate {
 

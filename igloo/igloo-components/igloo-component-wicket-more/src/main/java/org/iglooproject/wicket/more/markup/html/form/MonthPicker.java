@@ -12,9 +12,10 @@ import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.month
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.monthpicker.MonthPickerLanguageResourceReference;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.monthpicker.MonthPickerOptions;
 import org.iglooproject.wicket.more.util.convert.converters.PatternDateConverter;
-import org.iglooproject.wicket.util.DatePattern;
 import org.wicketstuff.wiquery.core.javascript.JsQuery;
 import org.wicketstuff.wiquery.ui.datepicker.DateOption;
+
+import igloo.wicket.util.DatePattern;
 
 public class MonthPicker extends TextField<Date> {
 

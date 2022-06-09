@@ -13,16 +13,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.component.CountLabel;
-import org.iglooproject.wicket.component.EnclosureContainer;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.factory.IComponentFactory;
-import org.iglooproject.wicket.factory.IDetachableFactory;
-import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
-import org.iglooproject.wicket.model.DataProviderBindings;
-import org.iglooproject.wicket.model.ISequenceProvider;
 import org.iglooproject.wicket.more.markup.html.navigation.paging.HideableAjaxPagingNavigator;
 import org.iglooproject.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
 import org.iglooproject.wicket.more.markup.repeater.FactoryRepeatingView;
@@ -30,6 +20,17 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFact
 import org.iglooproject.wicket.more.model.IErrorAwareDataProvider;
 
 import com.google.common.collect.Multimap;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.CountLabel;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IComponentFactory;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.factory.IOneParameterComponentFactory;
+import igloo.wicket.model.DataProviderBindings;
+import igloo.wicket.model.ISequenceProvider;
 
 public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel implements IPageableItems {
 	

@@ -8,14 +8,16 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.rows.state.IDataTableRowsState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IBuildState;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.factory.IDetachableFactory;
+
 import com.google.common.collect.Lists;
 
 public abstract class DataTableRowsBuilder<T, S extends ISort<?>> implements IDataTableRowsState<T, S> {

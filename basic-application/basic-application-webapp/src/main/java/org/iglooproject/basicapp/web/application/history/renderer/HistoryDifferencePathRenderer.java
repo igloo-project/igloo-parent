@@ -5,11 +5,12 @@ import java.util.Locale;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.basicapp.core.business.history.model.HistoryDifference;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
-import org.iglooproject.wicket.model.Models;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
+
+import igloo.wicket.model.Models;
 
 public final class HistoryDifferencePathRenderer extends AbstractHistoryRenderer<HistoryDifference> {
 

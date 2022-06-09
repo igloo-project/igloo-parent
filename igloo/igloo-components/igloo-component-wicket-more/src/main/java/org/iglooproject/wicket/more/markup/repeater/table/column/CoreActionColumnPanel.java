@@ -5,9 +5,10 @@ import java.util.List;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.repeater.FactoryRepeatingView;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IOneParameterComponentFactory;
 
 public class CoreActionColumnPanel<T> extends Panel {
 

@@ -1,18 +1,19 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.bootstrap.api.confirm.AjaxConfirmLink;
-import org.iglooproject.bootstrap.api.confirm.AjaxConfirmLinkBuilder;
-import org.iglooproject.bootstrap.api.confirm.IConfirmLinkBuilder;
-import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
-import org.iglooproject.wicket.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnAddedConfirmActionState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepContent;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepEndContent;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepNo;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepOnclick;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepStart;
+
+import igloo.bootstrap.confirm.AjaxConfirmLink;
+import igloo.bootstrap.confirm.AjaxConfirmLinkBuilder;
+import igloo.bootstrap.confirm.IConfirmLinkBuilder;
+import igloo.bootstrap.renderer.IBootstrapRenderer;
+import igloo.wicket.action.IOneParameterAjaxAction;
+import igloo.wicket.factory.IDetachableFactory;
 
 public class ActionColumnConfirmActionBuilder<T, I> implements
 		IActionColumnConfirmActionBuilderStepStart<T,I>, IActionColumnConfirmActionBuilderStepContent<T,I>,

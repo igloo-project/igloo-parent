@@ -12,12 +12,13 @@ import org.iglooproject.basicapp.web.application.history.column.HistoryLogDetail
 import org.iglooproject.basicapp.web.application.history.model.HistoryLogDataProvider;
 import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
-import org.iglooproject.wicket.util.DatePattern;
+
+import igloo.wicket.markup.html.panel.GenericPanel;
+import igloo.wicket.util.DatePattern;
 
 public class UserDetailHistoryLogPanel extends GenericPanel<User> {
 

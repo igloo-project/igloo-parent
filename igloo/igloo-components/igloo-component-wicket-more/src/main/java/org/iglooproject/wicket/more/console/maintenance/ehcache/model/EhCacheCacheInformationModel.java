@@ -4,8 +4,8 @@ import java.util.Objects;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.iglooproject.wicket.model.Detachables;
 
+import igloo.wicket.model.Detachables;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 

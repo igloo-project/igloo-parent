@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 class BootstrapAutoConfigurationTestCase {
 
 	/**
-	 * Check that autoconfiguration from bootstrap 4 {@link org.iglooproject.wicket.bootstrap4.application.WicketBootstrap4Module} is triggered with
+	 * Check that autoconfiguration from bootstrap 4 {@link igloo.bootstrap4.application.WicketBootstrap4Module} is triggered with
 	 * EnableIglooAutoConfiguration when excluding bootstrap 5
 	 */
 	@Test
@@ -36,16 +36,16 @@ class BootstrapAutoConfigurationTestCase {
 					IglooBootstrap5AutoConfiguration.class.getName()))
 			.run(
 				(context) -> { 
-					assertThat(context).hasSingleBean(org.iglooproject.wicket.bootstrap4.application.WicketBootstrap4Module.class);
+					assertThat(context).hasSingleBean(igloo.bootstrap4.application.WicketBootstrap4Module.class);
 					assertThat(context).doesNotHaveBean(
-							org.iglooproject.wicket.bootstrap5.application.WicketBootstrap5Module.class
+							igloo.bootstrap5.application.WicketBootstrap5Module.class
 					);
 				}
 			);
 	}
 
 	/**
-	 * Check that autoconfiguration from bootstrap 5 {@link org.iglooproject.wicket.bootstrap5.application.WicketBootstrap5Module} is triggered with
+	 * Check that autoconfiguration from bootstrap 5 {@link igloo.bootstrap5.application.WicketBootstrap5Module} is triggered with
 	 * EnableIglooAutoConfiguration when excluding bootstrap 4
 	 */
 	@Test
@@ -58,9 +58,9 @@ class BootstrapAutoConfigurationTestCase {
 			.run(
 				(context) -> { 
 					assertThat(context).hasSingleBean(
-							org.iglooproject.wicket.bootstrap5.application.WicketBootstrap5Module.class
+							igloo.bootstrap5.application.WicketBootstrap5Module.class
 					);
-					assertThat(context).doesNotHaveBean(org.iglooproject.wicket.bootstrap4.application.WicketBootstrap4Module.class);
+					assertThat(context).doesNotHaveBean(igloo.bootstrap4.application.WicketBootstrap4Module.class);
 
 				}
 			);

@@ -1,9 +1,10 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.state;
 
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
+
+import igloo.wicket.condition.Condition;
 
 public interface IAddedCoreColumnState<T, S extends ISort<?>> extends IAddedColumnState<T, S> {
 

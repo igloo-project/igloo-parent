@@ -3,11 +3,12 @@ package org.iglooproject.basicapp.web.application.common.util;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.condition.Condition;
 import org.wicketstuff.wiquery.core.javascript.JsQuery;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.condition.Condition;
 
 public final class BootstrapTabsUtils {
 

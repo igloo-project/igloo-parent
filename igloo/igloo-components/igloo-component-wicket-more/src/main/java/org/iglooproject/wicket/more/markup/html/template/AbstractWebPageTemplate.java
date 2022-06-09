@@ -13,11 +13,12 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.CoreWebPage;
 import org.iglooproject.wicket.more.markup.html.template.component.BodyBreadCrumbPanel;
 import org.iglooproject.wicket.more.markup.html.template.component.HeadPageTitleBreadCrumbPanel;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
 
 public abstract class AbstractWebPageTemplate extends CoreWebPage {
 

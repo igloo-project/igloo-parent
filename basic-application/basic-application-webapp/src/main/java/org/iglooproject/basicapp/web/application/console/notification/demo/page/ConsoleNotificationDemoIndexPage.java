@@ -16,10 +16,6 @@ import org.iglooproject.basicapp.web.application.console.notification.demo.templ
 import org.iglooproject.basicapp.web.application.console.notification.demo.util.NotificationDemoEntry;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.component.PlaceholderContainer;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.model.SequenceProviders;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -29,6 +25,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Range;
+
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.PlaceholderContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.SequenceProviders;
 
 public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTemplate {
 

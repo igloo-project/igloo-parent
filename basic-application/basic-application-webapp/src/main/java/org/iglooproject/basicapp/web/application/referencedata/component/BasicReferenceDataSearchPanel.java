@@ -8,12 +8,13 @@ import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
 import org.iglooproject.basicapp.web.application.referencedata.model.AbstractReferenceDataDataProvider;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
-import org.iglooproject.wicket.markup.html.form.PageableSearchForm;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.wicketstuff.wiquery.core.events.StateEvent;
+
+import igloo.wicket.markup.html.form.PageableSearchForm;
 
 public class BasicReferenceDataSearchPanel<T extends ReferenceData<? super T>> extends Panel {
 

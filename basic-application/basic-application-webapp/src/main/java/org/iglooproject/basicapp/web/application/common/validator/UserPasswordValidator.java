@@ -18,7 +18,6 @@ import org.iglooproject.basicapp.core.security.service.ISecurityManagementServic
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.markup.html.form.validation.IFormModelValidator;
 import org.passay.LengthRule;
 import org.passay.PasswordData;
@@ -32,6 +31,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+
+import igloo.wicket.model.Detachables;
 
 public class UserPasswordValidator implements IFormModelValidator {
 

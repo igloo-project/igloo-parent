@@ -4,14 +4,15 @@ import java.util.Collection;
 
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.commons.util.binding.ICoreBinding;
-import org.iglooproject.wicket.action.IOneParameterAction;
-import org.iglooproject.wicket.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.factory.IDetachableFactory;
-import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
+
+import igloo.bootstrap.renderer.IBootstrapRenderer;
+import igloo.wicket.action.IOneParameterAction;
+import igloo.wicket.action.IOneParameterAjaxAction;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.factory.IOneParameterComponentFactory;
 
 public interface IActionColumnBuildState<T, I> extends IActionColumnCommonBuildState<T, I> {
 

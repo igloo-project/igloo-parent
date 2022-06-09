@@ -12,17 +12,18 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.referencedata.service.IGenericReferenceDataService;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
-import org.iglooproject.wicket.modal.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
+import igloo.wicket.model.Detachables;
 
 public abstract class AbstractReferenceDataPopup<T extends GenericReferenceData<? super T, ?>> extends AbstractAjaxModalPopupPanel<T> {
 

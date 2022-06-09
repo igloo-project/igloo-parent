@@ -1,9 +1,10 @@
 package org.iglooproject.basicapp.web.application.common.renderer;
 
-import org.iglooproject.bootstrap.api.common.BootstrapColor;
-import org.iglooproject.bootstrap.api.common.IBootstrapColor;
-import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
+
+import igloo.bootstrap.common.BootstrapColor;
+import igloo.bootstrap.common.IBootstrapColor;
+import igloo.bootstrap.renderer.IBootstrapRenderer;
 
 public final class ActionRenderers {
 

@@ -10,7 +10,8 @@ import org.apache.wicket.util.lang.Args;
 
 import com.google.common.collect.ImmutableList;
 
-import org.iglooproject.wicket.model.Models;
+import igloo.wicket.model.Models;
+
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.IResourceLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;

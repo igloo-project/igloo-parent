@@ -2,12 +2,13 @@ package org.iglooproject.wicket.more.link.descriptor.impl;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.request.cycle.RequestCycle;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
+
+import igloo.wicket.model.Detachables;
 
 abstract class AbstractChainedLinkGenerator<L extends ILinkGenerator> implements ILinkGenerator {
 	

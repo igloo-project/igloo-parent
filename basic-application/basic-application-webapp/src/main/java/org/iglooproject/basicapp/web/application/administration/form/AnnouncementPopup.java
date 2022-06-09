@@ -23,13 +23,6 @@ import org.iglooproject.basicapp.web.application.administration.model.Announceme
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationAnnouncementListPage;
 import org.iglooproject.basicapp.web.application.common.form.TimeField;
 import org.iglooproject.basicapp.web.application.common.util.Masks;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.component.EnclosureContainer;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
-import org.iglooproject.wicket.modal.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.model.BindingModel;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.ajax.SerializableListener;
 import org.iglooproject.wicket.more.bindable.form.CacheWritingForm;
 import org.iglooproject.wicket.more.common.behavior.UpdateOnChangeAjaxEventBehavior;
@@ -38,9 +31,17 @@ import org.iglooproject.wicket.more.markup.html.form.DatePicker;
 import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.mask.MaskBehavior;
-import org.iglooproject.wicket.util.DatePattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
+import igloo.wicket.model.BindingModel;
+import igloo.wicket.model.Detachables;
+import igloo.wicket.util.DatePattern;
 
 public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement> {
 

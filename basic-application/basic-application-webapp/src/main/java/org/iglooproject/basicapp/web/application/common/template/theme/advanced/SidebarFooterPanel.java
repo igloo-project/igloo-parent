@@ -7,11 +7,12 @@ import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.spring.property.SpringPropertyIds;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
-import org.iglooproject.wicket.renderer.Renderer;
-import org.iglooproject.wicket.util.DatePattern;
+
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.renderer.Renderer;
+import igloo.wicket.util.DatePattern;
 
 public class SidebarFooterPanel extends Panel {
 

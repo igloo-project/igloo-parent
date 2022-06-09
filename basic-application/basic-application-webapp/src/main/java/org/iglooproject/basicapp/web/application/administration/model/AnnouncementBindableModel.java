@@ -9,9 +9,10 @@ import org.iglooproject.basicapp.core.business.announcement.model.atomic.Announc
 import org.iglooproject.basicapp.core.util.DateUtils2;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.commons.util.CloneUtils;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.bindable.model.BindableModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
+
+import igloo.wicket.model.Detachables;
 
 public class AnnouncementBindableModel extends BindableModel<Announcement> {
 

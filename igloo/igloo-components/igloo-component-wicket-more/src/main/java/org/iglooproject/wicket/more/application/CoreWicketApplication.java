@@ -27,26 +27,13 @@ import org.apache.wicket.resource.NoOpTextCompressor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.IResourceStream;
-import org.iglooproject.bootstrap.api.BootstrapSettings;
-import org.iglooproject.bootstrap.api.BootstrapVersion;
-import org.iglooproject.bootstrap.api.IBootstrapApplication;
-import org.iglooproject.bootstrap.api.IBootstrapProvider;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.application.ICoreApplication;
-import org.iglooproject.wicket.fontawesome.CoreFontAwesomeCssScope;
-import org.iglooproject.wicket.jqueryui.JQueryUiCssResourceReference;
-import org.iglooproject.wicket.jqueryui.JQueryUIJavaScriptResourceReference;
 import org.iglooproject.wicket.more.css.scss.service.ICachedScssService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.head.CoreHeaderItemComparator;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
-import org.iglooproject.wicket.request.mapper.NoVersionMountedMapper;
-import org.iglooproject.wicket.request.mapper.PageParameterAwareMountedMapper;
-import org.iglooproject.wicket.request.mapper.StaticResourceMapper;
-import org.iglooproject.wicket.select2.Select2JavaScriptResourceReference;
-import org.iglooproject.wicket.select2.Select2MoreJavaScriptResourceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +44,19 @@ import com.google.common.collect.Lists;
 
 import de.agilecoders.wicket.webjars.WicketWebjars;
 import de.agilecoders.wicket.webjars.settings.WebjarsSettings;
+import igloo.bootstrap.BootstrapSettings;
+import igloo.bootstrap.BootstrapVersion;
+import igloo.bootstrap.IBootstrapApplication;
+import igloo.bootstrap.IBootstrapProvider;
+import igloo.fontawesome.CoreFontAwesomeCssScope;
+import igloo.jqueryui.JQueryUiCssResourceReference;
+import igloo.jqueryui.JQueryUIJavaScriptResourceReference;
+import igloo.select2.Select2JavaScriptResourceReference;
+import igloo.select2.Select2MoreJavaScriptResourceReference;
+import igloo.wicket.application.ICoreApplication;
+import igloo.wicket.request.mapper.NoVersionMountedMapper;
+import igloo.wicket.request.mapper.PageParameterAwareMountedMapper;
+import igloo.wicket.request.mapper.StaticResourceMapper;
 
 public abstract class CoreWicketApplication extends WebApplication implements ICoreApplication, IBootstrapApplication {
 	

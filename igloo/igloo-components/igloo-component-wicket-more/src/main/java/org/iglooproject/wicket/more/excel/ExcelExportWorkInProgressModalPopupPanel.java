@@ -1,7 +1,8 @@
 package org.iglooproject.wicket.more.excel;
 
 import org.apache.wicket.model.ResourceModel;
-import org.iglooproject.wicket.modal.WorkInProgressPopup;
+
+import igloo.bootstrap.modal.WorkInProgressPopup;
 
 public class ExcelExportWorkInProgressModalPopupPanel extends WorkInProgressPopup {
 	

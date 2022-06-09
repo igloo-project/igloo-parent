@@ -1,7 +1,8 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action.state;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.action.IOneParameterAjaxAction;
+
+import igloo.wicket.action.IOneParameterAjaxAction;
 
 public interface IActionColumnConfirmActionBuilderStepOnclick<T, I> {
 

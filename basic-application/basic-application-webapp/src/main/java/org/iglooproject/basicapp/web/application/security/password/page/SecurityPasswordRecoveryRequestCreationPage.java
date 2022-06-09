@@ -6,10 +6,11 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordRecoveryRequestCreationContentPanel;
 import org.iglooproject.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
-import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
+
+import igloo.wicket.condition.Condition;
 
 public class SecurityPasswordRecoveryRequestCreationPage extends SecurityPasswordTemplate {
 

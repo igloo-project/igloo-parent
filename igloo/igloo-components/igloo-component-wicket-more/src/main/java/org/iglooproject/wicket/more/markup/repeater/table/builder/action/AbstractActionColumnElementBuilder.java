@@ -12,18 +12,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.AbstractLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
-import org.iglooproject.bootstrap.api.renderer.IBootstrapRendererModel;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.component.PlaceholderContainer;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.factory.IDetachableFactory;
-import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
-import org.iglooproject.wicket.model.Detachables;
-import org.iglooproject.wicket.model.Models;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.behavior.BootstrapColorBehavior;
 import org.iglooproject.wicket.more.markup.html.factory.ConditionFactories;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
@@ -32,6 +22,17 @@ import org.springframework.security.acls.model.Permission;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
+import igloo.bootstrap.renderer.IBootstrapRenderer;
+import igloo.bootstrap.renderer.IBootstrapRendererModel;
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.PlaceholderContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.factory.IOneParameterComponentFactory;
+import igloo.wicket.model.Detachables;
+import igloo.wicket.model.Models;
 
 
 public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLink, F extends AbstractActionColumnElementBuilder<T, L, F>>

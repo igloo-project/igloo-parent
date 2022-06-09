@@ -2,8 +2,9 @@ package org.iglooproject.wicket.more.markup.repeater.table.builder.action.factor
 
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.action.IOneParameterAction;
-import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
+
+import igloo.wicket.action.IOneParameterAction;
+import igloo.wicket.factory.IOneParameterComponentFactory;
 
 public class ActionColumnActionFactory<T> implements IOneParameterComponentFactory<Link<T>, IModel<T>> {
 

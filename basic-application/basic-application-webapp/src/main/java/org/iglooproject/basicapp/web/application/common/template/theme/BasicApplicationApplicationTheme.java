@@ -9,8 +9,9 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.Model;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationEnvironmentPanel;
 import org.iglooproject.basicapp.web.application.common.template.MainTemplate;
-import org.iglooproject.wicket.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
+
+import igloo.wicket.condition.Condition;
 
 public enum BasicApplicationApplicationTheme {
 

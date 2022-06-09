@@ -17,15 +17,16 @@ import org.iglooproject.basicapp.core.business.announcement.service.IAnnouncemen
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.component.EnclosureContainer;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.ajax.AjaxListeners;
 import org.iglooproject.wicket.more.markup.repeater.collection.CollectionView;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.Detachables;
 
 public class AnnouncementsPanel extends Panel {
 

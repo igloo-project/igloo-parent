@@ -11,22 +11,9 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
-import org.iglooproject.bootstrap.api.renderer.IBootstrapRenderer;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.component.TargetBlankBehavior;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.factory.AbstractDecoratingParameterizedComponentFactory;
-import org.iglooproject.wicket.factory.IComponentFactory;
-import org.iglooproject.wicket.factory.IDetachableFactory;
-import org.iglooproject.wicket.factory.IOneParameterComponentFactory;
-import org.iglooproject.wicket.model.BindingModel;
-import org.iglooproject.wicket.model.ISequenceProvider;
-import org.iglooproject.wicket.model.ReadOnlyModel;
-import org.iglooproject.wicket.model.SequenceProviders;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.FunctionOneParameterLinkDescriptorMapper;
@@ -69,13 +56,27 @@ import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelColumn
 import org.iglooproject.wicket.more.markup.repeater.table.column.ICoreColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.toolbar.CoreHeadersToolbar;
 import org.iglooproject.wicket.more.markup.repeater.table.toolbar.CoreNoRecordsToolbar;
-import org.iglooproject.wicket.renderer.Renderer;
-import org.iglooproject.wicket.util.IDatePattern;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+
+import igloo.bootstrap.renderer.IBootstrapRenderer;
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.TargetBlankBehavior;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.AbstractDecoratingParameterizedComponentFactory;
+import igloo.wicket.factory.IComponentFactory;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.factory.IOneParameterComponentFactory;
+import igloo.wicket.model.BindingModel;
+import igloo.wicket.model.ISequenceProvider;
+import igloo.wicket.model.ReadOnlyModel;
+import igloo.wicket.model.SequenceProviders;
+import igloo.wicket.renderer.Renderer;
+import igloo.wicket.util.IDatePattern;
 
 public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnState<T, S> {
 

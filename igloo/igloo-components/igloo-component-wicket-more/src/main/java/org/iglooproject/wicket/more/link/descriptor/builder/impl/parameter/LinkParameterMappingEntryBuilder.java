@@ -10,7 +10,8 @@ import org.javatuples.Tuple;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
-import org.iglooproject.wicket.factory.IDetachableFactory;
+import igloo.wicket.factory.IDetachableFactory;
+
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;

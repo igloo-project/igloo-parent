@@ -6,10 +6,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Locale;
 
-import org.iglooproject.wicket.component.PercentageBigDecimalConverter;
 import org.iglooproject.wicket.more.rendering.CoreRenderers;
 import org.junit.jupiter.api.Test;
 
+import igloo.wicket.component.PercentageBigDecimalConverter;
 import test.wicket.more.AbstractWicketMoreTestCase;
 
 class PercentageTests extends AbstractWicketMoreTestCase {

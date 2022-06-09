@@ -10,12 +10,13 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IStyledColum
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.component.CoreLabel;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Sets;
+
+import igloo.wicket.component.CoreLabel;
 
 public abstract class AbstractCoreColumn<T, S extends ISort<?>> implements IStyledColumn<T, S>, ICoreColumn<T, S> {
 	

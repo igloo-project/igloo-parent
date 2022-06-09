@@ -17,15 +17,16 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.factory.IDetachableFactory;
-import org.iglooproject.wicket.model.Detachables;
-import org.iglooproject.wicket.model.ISequenceProvider;
-import org.iglooproject.wicket.model.SequenceProviders;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceGridView;
 
 import com.google.common.collect.Lists;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.model.Detachables;
+import igloo.wicket.model.ISequenceProvider;
+import igloo.wicket.model.SequenceProviders;
 
 /**
  * A re-implementation of DataTable that accepts ISequenceProvider instead of IDataProvider.

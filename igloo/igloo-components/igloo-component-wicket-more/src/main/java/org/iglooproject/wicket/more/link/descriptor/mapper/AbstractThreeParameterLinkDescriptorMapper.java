@@ -2,10 +2,11 @@ package org.iglooproject.wicket.more.link.descriptor.mapper;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
-import org.iglooproject.wicket.model.Models;
-import org.iglooproject.wicket.model.ReadOnlyModel;
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
+
+import igloo.wicket.model.Models;
+import igloo.wicket.model.ReadOnlyModel;
 
 public abstract class AbstractThreeParameterLinkDescriptorMapper<L, T1, T2, T3>
 		implements IThreeParameterLinkDescriptorMapper<L, T1, T2, T3> {

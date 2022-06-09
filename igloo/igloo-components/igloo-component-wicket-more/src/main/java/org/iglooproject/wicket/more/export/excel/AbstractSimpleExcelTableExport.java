@@ -15,9 +15,10 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.util.lang.Classes;
 import org.iglooproject.export.excel.AbstractExcelTableExport;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.model.CountMessageModel;
 
 import com.google.common.base.Joiner;
+
+import igloo.wicket.model.CountMessageModel;
 
 /**
  * Apporte quelques configurations de style ainsi que le support de l'extraction de traduction via wicket.

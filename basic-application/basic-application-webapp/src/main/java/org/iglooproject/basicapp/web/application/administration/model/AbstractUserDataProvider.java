@@ -9,13 +9,14 @@ import org.iglooproject.basicapp.core.business.user.search.IAbstractUserSearchQu
 import org.iglooproject.basicapp.core.business.user.search.UserSort;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.search.query.ISearchQuery;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 
 import com.google.common.collect.ImmutableMap;
+
+import igloo.wicket.model.Detachables;
 
 public abstract class AbstractUserDataProvider<U extends User> extends AbstractSearchQueryDataProvider<U, UserSort> {
 

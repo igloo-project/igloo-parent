@@ -11,8 +11,6 @@ import org.iglooproject.basicapp.web.application.administration.form.UserAjaxDro
 import org.iglooproject.basicapp.web.application.console.notification.demo.template.ConsoleNotificationDemoTemplate;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.ajax.AjaxListeners;
 import org.iglooproject.wicket.more.common.behavior.UpdateOnChangeAjaxEventBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
@@ -21,6 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Throwables;
+
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.model.Detachables;
 
 public class ConsoleNotificationDemoPage extends ConsoleNotificationDemoTemplate {
 

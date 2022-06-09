@@ -6,7 +6,8 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryRequestCreationPage;
 import org.iglooproject.basicapp.web.application.security.password.page.SecurityPasswordRecoveryRequestResetPage;
-import org.iglooproject.wicket.condition.Condition;
+
+import igloo.wicket.condition.Condition;
 
 public class SignInFooterPanel extends Panel {
 

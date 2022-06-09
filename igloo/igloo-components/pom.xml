@@ -61,8 +61,7 @@
 		<module>igloo-component-wicket-console</module>
 		<module>igloo-component-wicket-more</module>
 		<module>igloo-component-wicket-more-test</module>
-		<module>igloo-component-bootstrap-api</module>
-		<module>igloo-component-bootstrap-modal</module>
+		<module>igloo-component-bootstrap</module>
 		<module>igloo-component-wicket-bootstrap4</module>
 		<module>igloo-component-wicket-bootstrap5</module>
 		<module>igloo-component-wicket-more-jqplot</module>

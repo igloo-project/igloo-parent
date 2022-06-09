@@ -3,9 +3,10 @@ package org.iglooproject.basicapp.web.application.common.renderer;
 import java.util.Locale;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.bootstrap.api.common.BootstrapColor;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
+
+import igloo.bootstrap.common.BootstrapColor;
 
 public abstract class UserEnabledRenderer extends BootstrapRenderer<User> {
 

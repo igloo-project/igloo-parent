@@ -2,8 +2,9 @@ package org.iglooproject.wicket.more.link.descriptor.mapper;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
-import org.iglooproject.wicket.model.ReadOnlyModel;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
+
+import igloo.wicket.model.ReadOnlyModel;
 
 public class FunctionOneParameterLinkDescriptorMapper<R, T> extends AbstractOneParameterLinkDescriptorMapper<ILinkGenerator, R> {
 	

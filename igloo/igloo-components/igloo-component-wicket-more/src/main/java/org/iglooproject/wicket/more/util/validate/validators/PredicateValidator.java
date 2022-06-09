@@ -10,7 +10,8 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.wicket.model.Detachables;
+
+import igloo.wicket.model.Detachables;
 
 public class PredicateValidator<T> extends Behavior implements IValidator<T> {
 

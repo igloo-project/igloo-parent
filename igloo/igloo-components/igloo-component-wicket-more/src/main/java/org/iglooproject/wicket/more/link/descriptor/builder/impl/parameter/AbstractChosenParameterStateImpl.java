@@ -7,7 +7,6 @@ import org.apache.wicket.model.IDetachable;
 import org.bindgen.BindingRoot;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.wicket.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.mapping.CollectionLinkParameterMappingEntry;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.mapping.SimpleLinkParameterMappingEntry;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.ITwoMappableParameterOneChosenParameterState;
@@ -22,6 +21,8 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
+import igloo.wicket.factory.IDetachableFactory;
 
 /**
  * A base for implementing all interfaces that extend {@link IChosenParameterState}.

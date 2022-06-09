@@ -12,8 +12,6 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.flow.RedirectToUrlException;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.model.Models;
 import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableLink;
 import org.iglooproject.wicket.more.link.descriptor.DynamicImage;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
@@ -24,6 +22,9 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParam
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.Models;
 
 class InvalidLinkGenerator implements IPageLinkGenerator, IImageResourceLinkGenerator {
 	private static final long serialVersionUID = 1L;

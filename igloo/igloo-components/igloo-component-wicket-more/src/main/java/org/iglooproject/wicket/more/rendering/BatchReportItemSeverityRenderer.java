@@ -2,11 +2,12 @@ package org.iglooproject.wicket.more.rendering;
 
 import java.util.Locale;
 
-import org.iglooproject.bootstrap.api.common.BootstrapColor;
 import org.iglooproject.commons.util.report.BatchReportItemSeverity;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation.Builder;
+
+import igloo.bootstrap.common.BootstrapColor;
 
 public class BatchReportItemSeverityRenderer extends BootstrapRenderer<BatchReportItemSeverity> {
 

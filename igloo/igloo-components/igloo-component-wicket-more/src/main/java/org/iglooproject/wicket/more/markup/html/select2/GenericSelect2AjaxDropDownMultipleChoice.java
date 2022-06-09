@@ -4,12 +4,13 @@ import java.util.Collection;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.wicket.model.ConcreteCollectionToCollectionWrapperModel;
 import org.iglooproject.wicket.more.markup.html.select2.util.IDropDownChoiceWidth;
 import org.iglooproject.wicket.more.markup.html.select2.util.Select2Utils;
 import org.wicketstuff.select2.ChoiceProvider;
 import org.wicketstuff.select2.Select2MultiChoice;
 import org.wicketstuff.select2.Settings;
+
+import igloo.wicket.model.ConcreteCollectionToCollectionWrapperModel;
 
 public class GenericSelect2AjaxDropDownMultipleChoice<T> extends Select2MultiChoice<T> {
 

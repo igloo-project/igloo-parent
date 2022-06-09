@@ -21,15 +21,16 @@ import org.iglooproject.basicapp.web.application.common.model.UserTypeDescriptor
 import org.iglooproject.basicapp.web.application.common.validator.EmailUnicityValidator;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
 import org.iglooproject.basicapp.web.application.common.validator.UsernameUnicityValidator;
-import org.iglooproject.wicket.component.CoreLabel;
-import org.iglooproject.wicket.component.EnclosureContainer;
-import org.iglooproject.wicket.condition.Condition;
-import org.iglooproject.wicket.markup.html.panel.DelegatedMarkupPanel;
-import org.iglooproject.wicket.model.BindingModel;
-import org.iglooproject.wicket.model.Detachables;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
+
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
+import igloo.wicket.model.BindingModel;
+import igloo.wicket.model.Detachables;
 
 public class TechnicalUserPopup extends AbstractUserPopup<TechnicalUser> {
 

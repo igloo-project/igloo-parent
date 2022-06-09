@@ -9,15 +9,15 @@ import java.util.Collection;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.functional.Suppliers2;
-import org.iglooproject.wicket.model.CollectionCopyModel;
-import org.iglooproject.wicket.model.ICollectionModel;
-import org.iglooproject.wicket.model.Models;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.common.base.Equivalence;
 import com.google.common.collect.Ordering;
 
+import igloo.wicket.model.CollectionCopyModel;
+import igloo.wicket.model.ICollectionModel;
+import igloo.wicket.model.Models;
 import test.wicket.more.model.TestSerializableCollectionCopyModel.ValueEnum;
 
 class TestSerializableCollectionCopyModel<C extends Collection<ValueEnum>>

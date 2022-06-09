@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.wicket.markup.head.HeaderItem;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
 
+import igloo.jquery.util.AbstractCoreJQueryPluginResourceReference;
 import nl.topicus.wqplot.components.JQPlotJavaScriptResourceReference;
 
 /**
