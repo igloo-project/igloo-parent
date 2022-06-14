@@ -1,6 +1,7 @@
 'use strict'
 
 import resolve from '@rollup/plugin-node-resolve'
+import babel from '@rollup/plugin-babel'
 
 const path = require('path')
 
@@ -20,6 +21,10 @@ const rollupConfig = {
   },
   external: ['bootstrap'],
   plugins: [
+    babel({
+      exclude: 'node_modules/**',
+      babelHelpers: 'bundled'
+    }),
     resolve()
   ]
 }

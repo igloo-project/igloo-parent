@@ -1,3 +1,5 @@
+'use strict'
+
 import * as bootstrap from "bootstrap"
 
 import BaseComponent from "bootstrap/js/src/base-component"

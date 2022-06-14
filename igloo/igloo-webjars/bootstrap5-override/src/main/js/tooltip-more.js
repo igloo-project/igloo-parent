@@ -1,3 +1,5 @@
+'use strict'
+
 import * as bootstrap from "bootstrap"
 import { isVisible } from "bootstrap/js/src/util"
 

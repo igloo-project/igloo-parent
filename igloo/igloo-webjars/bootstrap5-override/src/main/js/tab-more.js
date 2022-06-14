@@ -1,3 +1,5 @@
+'use strict'
+
 window.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("shown.bs.tab", event => {
         if (event.target && event.target.matches('button[role="tab"]')) {

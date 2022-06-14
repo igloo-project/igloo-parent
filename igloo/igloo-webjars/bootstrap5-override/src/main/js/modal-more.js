@@ -1,3 +1,5 @@
+'use strict'
+
 import * as bootstrap from "bootstrap"
 
 class ModalMore extends bootstrap.Modal {
