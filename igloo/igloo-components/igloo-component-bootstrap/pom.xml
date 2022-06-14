@@ -13,6 +13,10 @@
 	<name>Igloo - Component - Common Bootstrap code</name>
 	<description>Common Bootstrap (bootstrap 4 / 5 shared code)</description>
 
+	<properties>
+		<igloo.processors>${igloo.processor.immutable}</igloo.processors>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
@@ -44,8 +48,25 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.immutables</groupId>
+			<artifactId>value</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -61,6 +82,12 @@
 				<directory>src/main/resources</directory>
 			</resource>
 		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
 
 	<dependencyManagement>
@@ -75,6 +102,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-wicket</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-testing</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

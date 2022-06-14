@@ -1,5 +1,6 @@
 package igloo.bootstrap.popover;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import org.apache.wicket.Component;
@@ -8,6 +9,7 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 
 import igloo.bootstrap.BootstrapRequestCycle;
 import igloo.wicket.model.Detachables;
@@ -20,6 +22,18 @@ public class BootstrapPopoverBehavior extends Behavior {
 
 	public BootstrapPopoverBehavior() {
 		this(LoadableDetachableModel.of(BootstrapPopoverOptions::get));
+	}
+
+	/**
+	 * @deprecated You should manage your own <code>IModel&lt;? extends IBootstrapPopoverOptions&gt;</code> and pass
+	 * it to the alternative constructor.
+	 * 
+	 * @param must be not-null and serializable
+	 */
+	@Deprecated
+	public BootstrapPopoverBehavior(IBootstrapPopoverOptions options) {
+		super();
+		this.optionsModel = Model.of((Serializable&IBootstrapPopoverOptions) Objects.requireNonNull(options));
 	}
 
 	public BootstrapPopoverBehavior(IModel<? extends IBootstrapPopoverOptions> optionsModel) {
