@@ -28,7 +28,6 @@ import igloo.bootstrap.renderer.IBootstrapRenderer;
 import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.IBootstrapTooltipOptions;
 import igloo.bootstrap4.markup.html.bootstrap.component.BootstrapBadge;
-import igloo.bootstrap4.markup.html.bootstrap.component.popover.AbstractPopoverLinkContentPanel;
 import igloo.bootstrap4.markup.html.template.css.bootstrap.CoreBootstrap4CssScope;
 import igloo.bootstrap4.markup.html.template.js.bootstrap.confirm.BootstrapConfirmJavaScriptResourceReference;
 import igloo.bootstrap4.markup.html.template.js.bootstrap.modal.Bootstrap4ModalJavaScriptResourceReference;
@@ -132,11 +131,6 @@ public class WicketBootstrap4Module implements IWicketModule, IBootstrapProvider
 	@Override
 	public Class<?> modalMarkupClass() {
 		return Bootstrap4ModalPanel.class;
-	}
-
-	@Override
-	public Class<?> popoverMarkupClass() {
-		return AbstractPopoverLinkContentPanel.class;
 	}
 
 	@Override

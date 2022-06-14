@@ -71,6 +71,4 @@ public interface IBootstrapProvider {
 
 	JsStatement confirmStatement(Component component);
 
-	Class<?> popoverMarkupClass();
-
 }
