@@ -1,5 +1,6 @@
 package igloo.bootstrap.popover;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,9 @@ import igloo.bootstrap.js.type.JsMappingType;
 import igloo.bootstrap.js.type.JsSequenceType;
 import igloo.bootstrap.js.type.JsStringType;
 
-@Value.Immutable()
+@Value.Immutable
 @Value.Style(typeImmutable="*", typeAbstract="I*")
-public interface IPopover extends IJsMapping<JsAnyType> {
+public interface IPopover extends IJsMapping<JsAnyType>, Serializable {
 
 	@Nullable
 	IJsStatement<JsBooleanType> animation();

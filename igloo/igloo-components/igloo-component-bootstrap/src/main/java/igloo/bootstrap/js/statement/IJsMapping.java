@@ -1,5 +1,6 @@
 package igloo.bootstrap.js.statement;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -12,7 +13,7 @@ import igloo.bootstrap.js.util.JsVisitor;
 
 @Value.Immutable(builder = true)
 @ImmutableStyle
-public interface IJsMapping<V extends JsAnyType> extends IJsStatement<JsMappingType<V>> {
+public interface IJsMapping<V extends JsAnyType> extends IJsStatement<JsMappingType<V>>, Serializable {
 
 	Map<String, IJsStatement<V>> values();
 

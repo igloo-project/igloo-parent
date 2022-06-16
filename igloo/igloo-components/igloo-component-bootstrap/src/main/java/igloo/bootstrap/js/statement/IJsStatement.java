@@ -1,10 +1,12 @@
 package igloo.bootstrap.js.statement;
 
+import java.io.Serializable;
+
 import igloo.bootstrap.js.type.JsAnyType;
 import igloo.bootstrap.js.type.JsType;
 import igloo.bootstrap.js.util.JsVisitor;
 
-public interface IJsStatement<T extends JsType> {
+public interface IJsStatement<T extends JsType> extends Serializable {
 
 	CharSequence render();
 

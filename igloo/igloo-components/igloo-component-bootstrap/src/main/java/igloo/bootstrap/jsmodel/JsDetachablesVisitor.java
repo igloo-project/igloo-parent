@@ -11,13 +11,18 @@ import igloo.bootstrap.js.util.JsVisitor;
 
 public class JsDetachablesVisitor implements JsVisitor {
 
-	private List<IDetachable> detachables = Lists.newArrayList();
+	private final List<IDetachable> detachables = Lists.newArrayList();
 
 	@Override
 	public void visit(IJsStatement<?> statement) {
-		if (statement instanceof JsDetachable) {
-			detachables.addAll(((JsDetachable) statement).getDetachables());
+		if (statement instanceof IJsDetachable) {
+			detachables.addAll(((IJsDetachable) statement).getDetachables());
 		}
+	}
+
+	public void visitAndDetach(IJsStatement<?> statement) {
+		visit(statement);
+		detachables.forEach(IDetachable::detach);
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.apache.wicket.model.IDetachable;
 
-public interface JsDetachable {
+public interface IJsDetachable {
 
 	Collection<IDetachable> getDetachables();
 

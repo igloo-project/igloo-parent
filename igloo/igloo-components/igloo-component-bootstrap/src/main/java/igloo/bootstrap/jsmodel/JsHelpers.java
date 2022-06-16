@@ -2,8 +2,10 @@ package igloo.bootstrap.jsmodel;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 
@@ -72,6 +74,10 @@ public class JsHelpers {
 		return new ElementComponent(component);
 	}
 
+	public static IJsStatement<JsElementType> ofFactory(Function<String, Component> componentFactory) {
+		return new ElementComponentFactory(componentFactory);
+	}
+
 	public static IJsStatement<JsStringType> ofString(IModel<String> valueModel) {
 		return new StringModel(valueModel);
 	}
@@ -81,6 +87,7 @@ public class JsHelpers {
 	}
 
 	private static class ElementComponent implements IJsLiteral<JsElementType> {
+		private static final long serialVersionUID = 6326579662056550218L;
 		private final Component component;
 		
 		public ElementComponent(Component component) {
@@ -93,8 +100,36 @@ public class JsHelpers {
 		}
 	}
 
-	private static class LiteralModel<T extends JsAnyType> implements IJsLiteral<T>, JsDetachable {
-		private final IModel<String> model;
+	private static class ElementComponentFactory implements IJsLiteral<JsElementType>, IJsComponentFactory {
+		private static final long serialVersionUID = 6326579662056550218L;
+		private transient Function<String, Component> componentFactory;
+		private Component component;
+		
+		public ElementComponentFactory(Function<String, Component> componentFactory) {
+			this.componentFactory = componentFactory;
+		}
+		
+		@Override
+		public String value() {
+			if (component == null) {
+				throw new IllegalStateException();
+			}
+			return "document.getElementById(\"#" + component.getMarkupId() + "\")";
+		}
+
+		@Override
+		public Component createComponent(String wicketId) {
+			component = componentFactory.apply(wicketId);
+			if (!component.getOutputMarkupId()) {
+				throw new IllegalStateException(String.format("Generated component must enable markupId (%s)", component));
+			}
+			return component;
+		}
+	}
+
+	private static class LiteralModel<T extends JsAnyType> implements IJsLiteral<T>, IJsDetachable, IJsModel {
+		private static final long serialVersionUID = -6405062352391297878L;
+		private IModel<String> model;
 		
 		public LiteralModel(IModel<String> literalModel) {
 			this.model = literalModel;
@@ -109,10 +144,18 @@ public class JsHelpers {
 		public Collection<IDetachable> getDetachables() {
 			return List.of(model);
 		}
+
+		@Override
+		public void wrapModels(Component component) {
+			if (model instanceof IComponentAssignedModel) {
+				this.model = ((IComponentAssignedModel<String>) model).wrapOnAssignment(component);
+			}
+		}
 	}
 
-	private static class StringModel implements IJsString, JsDetachable {
-		private final IModel<String> model;
+	private static class StringModel implements IJsString, IJsDetachable, IJsModel {
+		private static final long serialVersionUID = 7471789246999516516L;
+		private IModel<String> model;
 		
 		public StringModel(IModel<String> valueModel) {
 			this.model = valueModel;
@@ -127,10 +170,18 @@ public class JsHelpers {
 		public Collection<IDetachable> getDetachables() {
 			return List.of(model);
 		}
+
+		@Override
+		public void wrapModels(Component component) {
+			if (model instanceof IComponentAssignedModel) {
+				this.model = ((IComponentAssignedModel<String>) model).wrapOnAssignment(component);
+			}
+		}
 	}
 
-	private static class NumberModel implements IJsNumber, JsDetachable {
-		private final IModel<? extends Number> model;
+	private static class NumberModel implements IJsNumber, IJsDetachable, IJsModel {
+		private static final long serialVersionUID = -3553314976734412526L;
+		private IModel<? extends Number> model;
 		
 		public NumberModel(IModel<? extends Number> valueModel) {
 			this.model = valueModel;
@@ -144,6 +195,13 @@ public class JsHelpers {
 		@Override
 		public Collection<IDetachable> getDetachables() {
 			return List.of(model);
+		}
+
+		@Override
+		public void wrapModels(Component component) {
+			if (model instanceof IComponentAssignedModel) {
+				this.model = ((IComponentAssignedModel<? extends Number>) model).wrapOnAssignment(component);
+			}
 		}
 	}
 

@@ -1,5 +1,6 @@
 package igloo.bootstrap.js.statement;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,7 +14,7 @@ import igloo.bootstrap.js.util.JsVisitor;
 
 @Value.Immutable(builder = true)
 @ImmutableStyle
-public interface IJsFunction<V extends JsAnyType> extends IJsStatement<V> {
+public interface IJsFunction<V extends JsAnyType> extends IJsStatement<V>, Serializable {
 
 	@Value.Parameter
 	String functionName();

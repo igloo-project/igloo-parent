@@ -1,5 +1,7 @@
 package igloo.bootstrap.js.type;
 
-public interface JsType {
+import java.io.Serializable;
+
+public interface JsType extends Serializable {
 
 }

@@ -1,5 +1,6 @@
 package igloo.bootstrap.js.statement;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +13,7 @@ import igloo.bootstrap.js.util.JsVisitor;
 
 @Value.Immutable(builder = true)
 @ImmutableStyle
-public interface IJsSequence<V extends JsAnyType> extends IJsStatement<JsSequenceType<V>> {
+public interface IJsSequence<V extends JsAnyType> extends IJsStatement<JsSequenceType<V>>, Serializable {
 
 	List<IJsStatement<V>> values();
 
