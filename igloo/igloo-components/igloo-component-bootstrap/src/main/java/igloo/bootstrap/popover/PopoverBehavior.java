@@ -5,8 +5,8 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 
 import igloo.bootstrap.BootstrapRequestCycle;
-import igloo.bootstrap.jsmodel.JsDetachablesVisitor;
-import igloo.bootstrap.jsmodel.JsModelVisitor;
+import igloo.bootstrap.woption.IWOptionModelVisitor;
+import igloo.bootstrap.woption.IWOptionDetachablesVisitor;
 
 public class PopoverBehavior extends Behavior {
 
@@ -27,12 +27,12 @@ public class PopoverBehavior extends Behavior {
 	@Override
 	public void bind(Component component) {
 		super.bind(component);
-		new JsModelVisitor().visitAndBind(component, popover);
+		new IWOptionModelVisitor().visitAndBind(component, popover);
 	}
 
 	@Override
 	public void detach(Component component) {
-		new JsDetachablesVisitor().visitAndDetach(popover);
+		new IWOptionDetachablesVisitor().visitAndDetach(popover);
 		super.detach(component);
 	}
 

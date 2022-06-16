@@ -2,6 +2,8 @@ package igloo.bootstrap.js.statement;
 
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import org.immutables.value.Value;
 
 import igloo.bootstrap.js.type.JsStringType;
@@ -12,11 +14,12 @@ import igloo.bootstrap.js.util.ImmutableStyle;
 public interface IJsString extends IJsStatement<JsStringType>, Serializable {
 
 	@Value.Parameter
+	@Nullable
 	String value();
 
 	@Override
-	default CharSequence render() {
+	default String render() {
 		String value = value();
-		return value != null ? escape(value) : null;
+		return value != null ? Util.escape(value) : "null";
 	}
 }

@@ -2,6 +2,8 @@ package igloo.bootstrap.js.statement;
 
 import java.io.Serializable;
 
+import javax.annotation.Nullable;
+
 import org.immutables.value.Value;
 
 import igloo.bootstrap.js.type.JsBooleanType;
@@ -12,11 +14,12 @@ import igloo.bootstrap.js.util.ImmutableStyle;
 public interface IJsBoolean extends IJsStatement<JsBooleanType>, Serializable {
 
 	@Value.Parameter
+	@Nullable
 	Boolean value();
 
 	@Override
-	default CharSequence render() {
+	default String render() {
 		Boolean value = value();
-		return value != null ? value.toString() : null;
+		return value != null ? value.toString() : "null";
 	}
 }

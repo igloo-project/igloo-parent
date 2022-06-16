@@ -1,8 +1,8 @@
-package igloo.bootstrap.jsmodel;
+package igloo.bootstrap.woption;
 
 import org.apache.wicket.Component;
 
-public interface IJsModel {
+public interface IWOptionModel {
 
 	void wrapModels(Component component);
 

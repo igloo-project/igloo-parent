@@ -26,6 +26,9 @@ import igloo.bootstrap.js.type.JsBooleanType;
 import igloo.bootstrap.js.type.JsElementType;
 import igloo.bootstrap.js.type.JsNumberType;
 import igloo.bootstrap.js.type.JsStringType;
+import igloo.bootstrap.woption.IWOptionComponentFactory;
+import igloo.bootstrap.woption.IWOptionDetachable;
+import igloo.bootstrap.woption.IWOptionModel;
 
 public class JsHelpers {
 
@@ -100,7 +103,7 @@ public class JsHelpers {
 		}
 	}
 
-	private static class ElementComponentFactory implements IJsLiteral<JsElementType>, IJsComponentFactory {
+	private static class ElementComponentFactory implements IJsLiteral<JsElementType>, IWOptionComponentFactory {
 		private static final long serialVersionUID = 6326579662056550218L;
 		private transient Function<String, Component> componentFactory;
 		private Component component;
@@ -127,7 +130,7 @@ public class JsHelpers {
 		}
 	}
 
-	private static class LiteralModel<T extends JsAnyType> implements IJsLiteral<T>, IJsDetachable, IJsModel {
+	private static class LiteralModel<T extends JsAnyType> implements IJsLiteral<T>, IWOptionDetachable, IWOptionModel {
 		private static final long serialVersionUID = -6405062352391297878L;
 		private IModel<String> model;
 		
@@ -153,7 +156,7 @@ public class JsHelpers {
 		}
 	}
 
-	private static class StringModel implements IJsString, IJsDetachable, IJsModel {
+	private static class StringModel implements IJsString, IWOptionDetachable, IWOptionModel {
 		private static final long serialVersionUID = 7471789246999516516L;
 		private IModel<String> model;
 		
@@ -179,7 +182,7 @@ public class JsHelpers {
 		}
 	}
 
-	private static class NumberModel implements IJsNumber, IJsDetachable, IJsModel {
+	private static class NumberModel implements IJsNumber, IWOptionDetachable, IWOptionModel {
 		private static final long serialVersionUID = -3553314976734412526L;
 		private IModel<? extends Number> model;
 		

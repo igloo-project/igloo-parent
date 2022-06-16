@@ -18,6 +18,8 @@ import igloo.bootstrap.js.type.JsFunctionType;
 import igloo.bootstrap.js.type.JsMappingType;
 import igloo.bootstrap.js.type.JsSequenceType;
 import igloo.bootstrap.js.type.JsStringType;
+import igloo.bootstrap.woption.IWOption;
+import igloo.bootstrap.woption.IWOptionVisitor;
 
 @Value.Immutable
 @Value.Style(typeImmutable="*", typeAbstract="I*")
@@ -29,7 +31,6 @@ public interface IPopover extends IJsMapping<JsAnyType>, Serializable {
 	@Nullable
 	IJsStatement<JsAnyType> container();
 
-	@Nullable
 	IJsStatement<JsAnyType> content();
 
 	@Nullable
@@ -47,7 +48,6 @@ public interface IPopover extends IJsMapping<JsAnyType>, Serializable {
 	@Nullable
 	IJsStatement<JsStringType> template();
 
-	@Nullable
 	IJsStatement<JsAnyType> title();
 
 	@Nullable
@@ -77,6 +77,15 @@ public interface IPopover extends IJsMapping<JsAnyType>, Serializable {
 	@Nullable
 	IJsStatement<JsAnyType> popperConfig();
 
+	@Nullable
+	IWOption<Boolean> showLabel();
+
+	@Nullable
+	IWOption<String> iconCssClass();
+
+	@Nullable
+	IWOption<String> linkCssClass();
+
 	@Override
 	@Value.Derived
 	default Map<String, IJsStatement<JsAnyType>> values() {
@@ -91,15 +100,15 @@ public interface IPopover extends IJsMapping<JsAnyType>, Serializable {
 				Map.entry("delay", this::delay),
 				Map.entry("fallbackPlacements", this::fallbackPlacements),
 				Map.entry("html", this::html),
-				Map.entry("title", this::title),
-				Map.entry("trigger", this::trigger),
 				Map.entry("offset", this::offset),
 				Map.entry("placement", this::placement),
 				Map.entry("popperConfig", this::popperConfig),
 				Map.entry("sanitize", this::sanitize),
 				Map.entry("sanitizeFn", this::sanitizeFn),
 				Map.entry("selector", this::selector),
-				Map.entry("template", this::template)
+				Map.entry("template", this::template),
+				Map.entry("title", this::title),
+				Map.entry("trigger", this::trigger)
 			)
 			.stream()
 			.<Pair<String, IJsStatement<?>>>map(e -> Pair.of(e.getKey(), e.getValue().get()))
@@ -111,6 +120,12 @@ public interface IPopover extends IJsMapping<JsAnyType>, Serializable {
 	@SuppressWarnings("unchecked")
 	default IJsStatement<JsAnyType> rightCast(Pair<String, IJsStatement<?>> entry) {
 		return (IJsStatement<JsAnyType>) entry.getRight();
+	}
+
+	@Override
+	default void accept(IWOptionVisitor visitor) {
+		IJsMapping.super.accept(visitor);
+		
 	}
 
 }

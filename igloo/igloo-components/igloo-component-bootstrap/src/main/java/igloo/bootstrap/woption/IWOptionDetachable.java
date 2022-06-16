@@ -1,10 +1,10 @@
-package igloo.bootstrap.jsmodel;
+package igloo.bootstrap.woption;
 
 import java.util.Collection;
 
 import org.apache.wicket.model.IDetachable;
 
-public interface IJsDetachable {
+public interface IWOptionDetachable {
 
 	Collection<IDetachable> getDetachables();
 

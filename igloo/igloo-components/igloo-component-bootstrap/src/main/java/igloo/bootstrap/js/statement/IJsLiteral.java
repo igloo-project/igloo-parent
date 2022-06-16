@@ -15,7 +15,7 @@ public interface IJsLiteral<V extends JsAnyType> extends IJsStatement<V>, Serial
 	String value();
 
 	@Override
-	default CharSequence render() {
+	default String render() {
 		return value();
 	}
 }
