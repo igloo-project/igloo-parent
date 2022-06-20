@@ -71,9 +71,6 @@ public class JsHelpers {
 	}
 
 	public static IJsStatement<JsElementType> of(Component component) {
-		if (!component.getOutputMarkupId()) {
-			throw new IllegalStateException(String.format("outputMarkupId must be true to use in javascript statement on %s", component));
-		}
 		return new ElementComponent(component);
 	}
 
@@ -99,7 +96,7 @@ public class JsHelpers {
 		
 		@Override
 		public String value() {
-			return "document.getElementById(\"#" + component.getMarkupId() + "\")";
+			return "document.getElementById(\"" + component.getMarkupId() + "\")";
 		}
 	}
 
@@ -117,15 +114,12 @@ public class JsHelpers {
 			if (component == null) {
 				throw new IllegalStateException();
 			}
-			return "document.getElementById(\"#" + component.getMarkupId() + "\")";
+			return "document.getElementById(\"" + component.getMarkupId() + "\")";
 		}
 
 		@Override
 		public Component createComponent(String wicketId) {
 			component = componentFactory.apply(wicketId);
-			if (!component.getOutputMarkupId()) {
-				throw new IllegalStateException(String.format("Generated component must enable markupId (%s)", component));
-			}
 			return component;
 		}
 	}
