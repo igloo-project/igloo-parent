@@ -165,7 +165,7 @@ public class WicketBootstrap4Module implements IWicketModule, IBootstrapProvider
 			throw new IllegalStateException("Option 'selector' is mandatory for " + BootstrapTooltipBehavior.class.getName());
 		}
 		
-		response.render(OnDomReadyHeaderItem.forScript("$(" + options.getSelector() + ").tooltip(" + options.getJavaScriptOptions() + ");"));
+		response.render(OnDomReadyHeaderItem.forScript("$(document).tooltip(" + options.getJavaScriptOptions() + ");"));
 	}
 
 	@Override
