@@ -5,8 +5,8 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 
 import igloo.bootstrap.BootstrapRequestCycle;
-import igloo.bootstrap.woption.IWOptionModelVisitor;
 import igloo.bootstrap.woption.IWOptionDetachablesVisitor;
+import igloo.bootstrap.woption.IWOptionModelVisitor;
 
 public class PopoverBehavior extends Behavior {
 

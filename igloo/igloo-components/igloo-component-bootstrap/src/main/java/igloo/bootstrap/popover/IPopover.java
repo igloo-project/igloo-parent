@@ -10,7 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.immutables.value.Value;
 import org.springframework.lang.Nullable;
 
-import igloo.bootstrap.js.statement.IJsMapping;
+import igloo.bootstrap.js.statement.IJsObject;
 import igloo.bootstrap.js.statement.IJsStatement;
 import igloo.bootstrap.js.type.JsAnyType;
 import igloo.bootstrap.js.type.JsBooleanType;
@@ -23,7 +23,7 @@ import igloo.bootstrap.woption.IWOptionVisitor;
 
 @Value.Immutable
 @Value.Style(typeImmutable="*", typeAbstract="I*")
-public interface IPopover extends IJsMapping<JsAnyType>, Serializable {
+public interface IPopover extends IJsObject, Serializable {
 
 	@Nullable
 	IJsStatement<JsBooleanType> animation();
@@ -92,8 +92,8 @@ public interface IPopover extends IJsMapping<JsAnyType>, Serializable {
 
 	@Override
 	@Value.Derived
-	default Map<String, IJsStatement<JsAnyType>> values() {
-		Map<String, IJsStatement<JsAnyType>> result = new LinkedHashMap<>();
+	default Map<String, IJsStatement<?>> values() {
+		Map<String, IJsStatement<?>> result = new LinkedHashMap<>();
 		List.<Map.Entry<String, Supplier<IJsStatement<?>>>>of(
 				Map.entry("allowList", this::allowList),
 				Map.entry("animation", this::animation),
@@ -128,8 +128,7 @@ public interface IPopover extends IJsMapping<JsAnyType>, Serializable {
 
 	@Override
 	default void accept(IWOptionVisitor visitor) {
-		IJsMapping.super.accept(visitor);
-		
+		IJsObject.super.accept(visitor);
 	}
 
 }
