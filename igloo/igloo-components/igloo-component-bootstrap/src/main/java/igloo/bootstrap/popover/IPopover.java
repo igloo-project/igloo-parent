@@ -48,6 +48,7 @@ public interface IPopover extends IJsMapping<JsAnyType>, Serializable {
 	@Nullable
 	IJsStatement<JsStringType> template();
 
+	@Nullable
 	IJsStatement<JsAnyType> title();
 
 	@Nullable
@@ -76,6 +77,9 @@ public interface IPopover extends IJsMapping<JsAnyType>, Serializable {
 
 	@Nullable
 	IJsStatement<JsAnyType> popperConfig();
+
+	@Nullable
+	IWOption<String> label();
 
 	@Nullable
 	IWOption<Boolean> showLabel();
