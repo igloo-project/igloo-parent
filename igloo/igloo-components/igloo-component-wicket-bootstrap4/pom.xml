@@ -107,13 +107,6 @@
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 		</dependency>
-		
-		<!-- WebJars -->
-		<dependency>
-			<groupId>org.iglooproject.webjars</groupId>
-			<artifactId>bootstrap4-override</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 	</dependencies>
 	
 	<build>
