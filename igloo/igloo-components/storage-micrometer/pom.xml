@@ -70,6 +70,13 @@
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-hibernate</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-testing</artifactId>
 				<type>pom</type>
 				<scope>import</scope>
