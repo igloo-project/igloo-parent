@@ -25,7 +25,7 @@ maven-build:
 maven-verify:h2:
   stage: verify
   script:
-    - mvn verify
+    - mvn -U verify
   artifacts:
     when: always
     paths:
@@ -39,7 +39,7 @@ maven-verify:h2:
 maven-verify:postgresql12:
   stage: verify
   script:
-    - mvn verify
+    - mvn -U verify
   artifacts:
     when: always
     paths:
@@ -79,7 +79,7 @@ maven-deploy:
   stage: deploy
   environment: staging
   script:
-    - "mvn deploy -DskipTests -DperformRelease -Ddistribution=igloo-release"
+    - "mvn -U deploy -DskipTests -DperformRelease -Ddistribution=igloo-release"
   only:
     - /^master$/
     - /^dev$/
@@ -98,7 +98,7 @@ sonar-analyze:
   script:
     - ./ci/sonar-branch.py | tee config
     - source config
-    - mvn verify sonar:sonar
+    - mvn -U verify sonar:sonar
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
   except:
