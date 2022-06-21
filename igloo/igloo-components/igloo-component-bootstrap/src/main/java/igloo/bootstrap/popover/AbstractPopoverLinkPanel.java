@@ -2,14 +2,10 @@ package igloo.bootstrap.popover;
 
 import static igloo.wicket.condition.Condition.anyChildVisible;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.core.util.resource.locator.IResourceStreamLocator;
-import org.apache.wicket.markup.ContainerInfo;
 import org.apache.wicket.markup.IMarkupResourceStreamProvider;
-import org.apache.wicket.markup.MarkupResourceStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
@@ -20,6 +16,7 @@ import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
 import igloo.bootstrap.BootstrapRequestCycle;
+import igloo.bootstrap.util.Utils;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
@@ -78,12 +75,9 @@ public abstract class AbstractPopoverLinkPanel<T> extends GenericPanel<T> implem
 
 	@Override
 	public IResourceStream getMarkupResourceStream(final MarkupContainer container, Class<?> containerClass) {
-		final IResourceStreamLocator locator = Application.get().getResourceSettings().getResourceStreamLocator();
 		// markup is provided by current bootstrap registered version
 		Class<?> bootstrapOverrideContainerClass = BootstrapRequestCycle.getSettings().modalMarkupClass();
-		String path = bootstrapOverrideContainerClass.getName().replace('.', '/');
-		IResourceStream resourceStream = locator.locate(bootstrapOverrideContainerClass, path, null, null, null, "html", false);
-		return new MarkupResourceStream(resourceStream, new ContainerInfo(bootstrapOverrideContainerClass, container), bootstrapOverrideContainerClass);
+		return Utils.findResourceStream(container, bootstrapOverrideContainerClass);
 	}
 
 	protected abstract Component getTitleComponent(String wicketId);

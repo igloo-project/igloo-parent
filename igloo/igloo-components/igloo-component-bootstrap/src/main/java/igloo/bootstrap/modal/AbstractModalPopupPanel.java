@@ -19,6 +19,7 @@ import org.apache.wicket.util.resource.IResourceStream;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 import igloo.bootstrap.BootstrapRequestCycle;
+import igloo.bootstrap.util.Utils;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.markup.html.panel.GenericPanel;
 
@@ -93,19 +94,17 @@ public abstract class AbstractModalPopupPanel<O> extends GenericPanel<O> impleme
 
 	@Override
 	public IResourceStream getMarkupResourceStream(final MarkupContainer container, Class<?> containerClass) {
-		final IResourceStreamLocator locator = Application.get().getResourceSettings().getResourceStreamLocator();
 		if (AbstractModalPopupPanel.class.equals(containerClass)) {
 			// normal call
 			// markup is provided by current bootstrap registered version
+			final IResourceStreamLocator locator = Application.get().getResourceSettings().getResourceStreamLocator();
 			Class<?> bootstrapOverrideContainerClass = BootstrapRequestCycle.getSettings().modalMarkupClass();
 			String path = bootstrapOverrideContainerClass.getName().replace('.', '/');
 			IResourceStream resourceStream = locator.locate(bootstrapOverrideContainerClass, path, null, null, null, "html", false);
 			return new MarkupResourceStream(resourceStream, new ContainerInfo(bootstrapOverrideContainerClass, container), bootstrapOverrideContainerClass);
 		} else {
 			// call originating from DelegatedMarkupPanel
-			String path = containerClass.getName().replace('.', '/');
-			IResourceStream resourceStream = locator.locate(containerClass, path, null, null, null, "html", false);
-			return new MarkupResourceStream(resourceStream, new ContainerInfo(containerClass, container), containerClass);
+			return Utils.findResourceStream(container, containerClass);
 		}
 	}
 	@Override
