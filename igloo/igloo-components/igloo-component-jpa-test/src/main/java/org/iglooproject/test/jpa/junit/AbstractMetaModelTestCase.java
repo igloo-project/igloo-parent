@@ -11,7 +11,6 @@ import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.ResultSetDynaClass;
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.relational.Namespace;
-import org.hibernate.boot.model.relational.Namespace.Name;
 import org.hibernate.boot.model.relational.SqlStringGenerationContext;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.internal.SessionImpl;

@@ -205,6 +205,7 @@ public class StorageService implements IStorageService, IStorageStatisticsServic
 		final StorageUnit persistedUnit = databaseOperations.getStorageUnit(unit.getId());
 		List<StorageConsistencyCheck> consistencies = new ArrayList<>();
 		StorageConsistencyCheck consistencyCheck = new StorageConsistencyCheck(persistedUnit);
+		consistencyCheck.setCheckType(checksumValidation ? StorageUnitCheckType.LISTING_SIZE_CHECKSUM : StorageUnitCheckType.LISTING_SIZE);
 		databaseOperations.createConsistencyCheck(consistencyCheck);
 		
 		// we need to collect all this data during check
