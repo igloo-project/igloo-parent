@@ -9,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.type.TextType;
 import org.hibernate.usertype.UserType;
 
 /**
@@ -24,11 +25,11 @@ import org.hibernate.usertype.UserType;
 public abstract class AbstractImmutableMaterializedStringValueUserType<T extends AbstractMaterializedPrimitiveValue<String, T>>
 		implements UserType {
 	
-	private final UserType delegateType = new StringClobType();
+	private final TextType delegateType = new TextType();
 
 	@Override
 	public int[] sqlTypes() {
-		return delegateType.sqlTypes();
+		return new int[] { delegateType.sqlType() };
 	}
 	
 	@Override
