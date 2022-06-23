@@ -3,9 +3,10 @@ module.exports = {
       [
         '@babel/preset-env',
         {
-          loose: true,
+          loose: false,
           bugfixes: true,
-          modules: false
+          modules: false,
+          exclude: ["@babel/plugin-transform-classes"]
         }
       ]
     ],
