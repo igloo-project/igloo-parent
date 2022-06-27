@@ -11,7 +11,8 @@ import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.ResultSetDynaClass;
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.relational.Namespace;
-import org.hibernate.boot.model.relational.Namespace.Name;
+import org.hibernate.boot.model.relational.SqlStringGenerationContext;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.internal.SessionImpl;
 import org.hibernate.resource.transaction.spi.DdlTransactionIsolator;
 import org.hibernate.service.ServiceRegistry;
@@ -93,13 +94,14 @@ public abstract class AbstractMetaModelTestCase extends AbstractTestCase {
 	}
 	
 	protected DatabaseInformation getDatabaseInformation() {
-		ServiceRegistry serviceRegistry = ((SessionImpl) entityManagerUtils.getEntityManager().getDelegate()).getSessionFactory().getServiceRegistry();
-		Name defaultNamespace = metadataRegistryIntegrator.getMetadata().getDatabase().getDefaultNamespace().getName();
+		SessionFactoryImplementor sessionFactory = ((SessionImpl) entityManagerUtils.getEntityManager().getDelegate()).getSessionFactory();
+		SqlStringGenerationContext sqlStringGenerationContext = sessionFactory.getSqlStringGenerationContext();
+		ServiceRegistry serviceRegistry = sessionFactory.getServiceRegistry();
 		HibernateSchemaManagementTool schemaManagementTool = ((HibernateSchemaManagementTool) serviceRegistry.getService(SchemaManagementTool.class));
 		@SuppressWarnings("rawtypes")
 		JdbcContext jdbcContext = schemaManagementTool.resolveJdbcContext((Map) Maps.newHashMap());
 		DdlTransactionIsolator transactionIsolator = schemaManagementTool.getDdlTransactionIsolator(jdbcContext);
-		return Helper.buildDatabaseInformation(serviceRegistry, transactionIsolator, defaultNamespace);
+		return Helper.buildDatabaseInformation(serviceRegistry, transactionIsolator, sqlStringGenerationContext, schemaManagementTool);
 	}
 
 }

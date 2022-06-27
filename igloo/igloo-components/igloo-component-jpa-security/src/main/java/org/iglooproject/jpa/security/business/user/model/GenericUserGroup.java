@@ -83,7 +83,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 	private Set<Authority> authorities = new LinkedHashSet<>();
 
 	@Column
-	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")	
+	@Type(type = "text")	
 	private String description;
 
 	@Column(nullable = false)

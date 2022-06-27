@@ -17,7 +17,6 @@ import org.iglooproject.basicapp.core.config.hibernate.type.PhoneNumberType;
 import org.iglooproject.basicapp.core.config.hibernate.type.PostalCodeType;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
-import org.iglooproject.jpa.hibernate.usertype.StringClobType;
 import org.iglooproject.jpa.more.business.history.hibernate.FieldPathType;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -53,7 +52,6 @@ public class BasicApplicationCoreCommonJpaConfig {
 			
 			@Override
 			public void contribute(TypeContributions typeContributions, ServiceRegistry serviceRegistry) {
-				typeContributions.contributeType(new StringClobType(), "string", String.class.getName());
 				typeContributions.contributeType(new PostalCodeType(), PostalCode.class.getName());
 				typeContributions.contributeType(new EmailAddressType(), EmailAddress.class.getName());
 				typeContributions.contributeType(new PhoneNumberType(), PhoneNumber.class.getName());

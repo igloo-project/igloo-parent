@@ -7,19 +7,19 @@ import java.sql.SQLException;
 
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.type.TextType;
 import org.hibernate.usertype.UserType;
+import org.iglooproject.commons.util.fieldpath.FieldPath;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.iglooproject.commons.util.fieldpath.FieldPath;
-import org.iglooproject.jpa.hibernate.usertype.StringClobType;
 
 public class FieldPathType implements UserType {
 	
-	private final UserType delegateType = new StringClobType();
+	private final TextType delegateType = new TextType();
 
 	@Override
 	public int[] sqlTypes() {
-		return delegateType.sqlTypes();
+		return new int[] { delegateType.sqlType() };
 	}
 	
 	@Override

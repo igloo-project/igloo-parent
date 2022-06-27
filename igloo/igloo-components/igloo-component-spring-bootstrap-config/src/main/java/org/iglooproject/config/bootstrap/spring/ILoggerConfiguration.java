@@ -13,6 +13,7 @@ public interface ILoggerConfiguration {
 
 	public enum LoggerImplementation {
 		LOG4J("org.slf4j.impl.Log4jLoggerFactory", "org.iglooproject.config.bootstrap.spring.log4j1.Log4J1Configuration"),
+		RELOAD4J("org.slf4j.impl.Reload4jLoggerFactory", "org.iglooproject.config.bootstrap.spring.log4j1.Log4J1Configuration"),
 		LOG4J2("org.apache.logging.slf4j.Log4jLoggerFactory", "org.iglooproject.config.bootstrap.spring.log4j2.Log4J2Configuration");
 		
 		public final String slf4jLoggerFactoryClass;

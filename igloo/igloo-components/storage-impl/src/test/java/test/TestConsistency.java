@@ -92,6 +92,7 @@ class TestConsistency extends AbstractTest {
 			.hasSize(1)
 			.satisfies(consistency -> {
 				softly.assertThat(consistency.getStatus()).as("Check status").isEqualTo(StorageConsistencyCheckResult.OK);
+				softly.assertThat(consistency.getCheckType()).as("Check type").isEqualTo(StorageUnitCheckType.LISTING_SIZE_CHECKSUM);
 				softly.assertThat(consistency.getFsFileCount()).as("File (filesystem) count").isEqualTo(6L);
 				softly.assertThat(consistency.getDbFichierCount()).as("Fichier (entity) count").isEqualTo(6L);
 				softly.assertThat(consistency.getSizeMismatchCount()).isEqualTo(0);
@@ -186,6 +187,7 @@ class TestConsistency extends AbstractTest {
 			.hasSize(1)
 			.satisfies(consistency -> {
 				softly.assertThat(consistency.getStatus()).as("Check status").isEqualTo(StorageConsistencyCheckResult.FAILED);
+				softly.assertThat(consistency.getCheckType()).as("Check type").isEqualTo(StorageUnitCheckType.LISTING_SIZE_CHECKSUM);
 				softly.assertThat(consistency.getFsFileCount()).as("File (filesystem) count").isEqualTo(6L);
 				softly.assertThat(consistency.getDbFichierCount()).as("Fichier (entity) count").isEqualTo(5L);
 				softly.assertThat(consistency.getSizeMismatchCount()).isEqualTo(1);
@@ -225,6 +227,34 @@ class TestConsistency extends AbstractTest {
 		// dates and delays are not checked
 		assertThat(StorageHousekeepingService.getCheckConsistencyType(unit::toString, LocalDateTime.now(), () -> StorageUnitCheckType.NONE, null, null, null, null)).isEqualTo(StorageUnitCheckType.NONE);
 		verifyNoInteractions(databaseOperations);
+	}
+
+	@Test
+	void testConsistencyCheckTypeInitialized(SoftAssertions softly) {
+		StorageUnit unit = new StorageUnit();
+
+		List<StorageConsistencyCheck> consistencies = storageService.checkConsistency(unit, false);
+
+		assertThat(consistencies)
+			.hasSize(1)
+			.satisfies(
+				consistency -> assertThat(consistency.getCheckType()).isEqualTo(StorageUnitCheckType.LISTING_SIZE),
+				atIndex(0)
+			);
+	}
+
+	@Test
+	void testConsistencyCheckTypeChecksumInitialized(SoftAssertions softly) {
+		StorageUnit unit = new StorageUnit();
+
+		List<StorageConsistencyCheck> consistencies = storageService.checkConsistency(unit, true);
+
+		assertThat(consistencies)
+			.hasSize(1)
+			.satisfies(
+				consistency -> assertThat(consistency.getCheckType()).isEqualTo(StorageUnitCheckType.LISTING_SIZE_CHECKSUM),
+				atIndex(0)
+			);
 	}
 
 	@Test

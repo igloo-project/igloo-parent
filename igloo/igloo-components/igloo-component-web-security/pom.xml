@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>4.1.0</version>
+		<version>4.2.0</version>
 	</parent>
 	
 	<artifactId>igloo-component-web-security</artifactId>
@@ -31,6 +31,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-spring</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-hibernate</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

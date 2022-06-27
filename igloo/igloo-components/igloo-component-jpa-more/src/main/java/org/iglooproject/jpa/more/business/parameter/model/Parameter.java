@@ -34,7 +34,7 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 	private String name;
 
 	@Column
-	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
+	@Type(type = "text")
 	private String stringValue;
 	
 	public Parameter() {

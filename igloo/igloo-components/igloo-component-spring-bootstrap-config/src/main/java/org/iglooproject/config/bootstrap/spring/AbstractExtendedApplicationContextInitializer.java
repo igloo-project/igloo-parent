@@ -147,6 +147,8 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 		String loggerFactoryClassName = LoggerFactory.getILoggerFactory().getClass().getName();
 		if (loggerFactoryClassName.equals(LoggerImplementation.LOG4J.slf4jLoggerFactoryClass)) {
 			return LoggerImplementation.LOG4J;
+		} else if (loggerFactoryClassName.equals(LoggerImplementation.RELOAD4J.slf4jLoggerFactoryClass)) {
+			return LoggerImplementation.RELOAD4J;
 		} else if (loggerFactoryClassName.equals(LoggerImplementation.LOG4J2.slf4jLoggerFactoryClass)) {
 			return LoggerImplementation.LOG4J2;
 		} else {
@@ -157,6 +159,7 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 	private String getLoggerConfigurationsPropertyName(ConfigurableApplicationContext applicationContext, LoggerImplementation implementation) {
 		switch (implementation) {
 		case LOG4J:
+		case RELOAD4J:
 			return LOG4J_CONFIGURATIONS_PROPERTY;
 		case LOG4J2:
 			return LOG4J2_CONFIGURATIONS_PROPERTY;
@@ -177,6 +180,7 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 			List<String> ignoredConfigurations = Lists.newArrayList();
 			switch (implementation) {
 			case LOG4J:
+			case RELOAD4J:
 				loadLog4j1Configuration(applicationContext, log4jLocations, loadedConfigurations, ignoredConfigurations);
 				break;
 			case LOG4J2:

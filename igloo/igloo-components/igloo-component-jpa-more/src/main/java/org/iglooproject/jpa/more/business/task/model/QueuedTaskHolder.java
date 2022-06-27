@@ -64,7 +64,7 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	@Field(name = NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	@Field(name = NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = NAME_SORT)
-	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
+	@Type(type = "text")
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String name;
 
@@ -98,7 +98,7 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private int version;
 
 	@Column(nullable = false)
-	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
+	@Type(type = "text")
 	private String serializedTask;
 
 	@Column(nullable = false)
@@ -114,11 +114,11 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private TaskResult result;
 
 	@Column
-	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
+	@Type(type = "text")
 	private String stackTrace;
 
 	@Column
-	@Type(type = "org.iglooproject.jpa.hibernate.usertype.StringClobType")
+	@Type(type = "text")
 	private String report;
 
 	protected QueuedTaskHolder() {
