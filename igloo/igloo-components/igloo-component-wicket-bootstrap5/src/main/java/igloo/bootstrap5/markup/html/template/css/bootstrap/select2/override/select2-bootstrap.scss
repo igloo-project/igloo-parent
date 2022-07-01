@@ -1,4 +1,10 @@
+$s2bs-dropdown-zindex:							$zindex-select2 !default;
+
 .select2-container--bootstrap {
+	.select2-dropdown {
+		z-index: $s2bs-dropdown-zindex;
+	}
+	
 	.select2-selection__clear {
 		margin-left: 10px;
 	}
