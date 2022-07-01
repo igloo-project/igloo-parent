@@ -129,7 +129,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 	@Override
 	public IConfirmLinkBuilderStepOnclick<L, O> no(IModel<String> noLabelModel) {
 		this.noLabelModel = noLabelModel;
-		this.noIconModel = new Model<>("fa fa-fw fa-ban");
+		this.noIconModel = new Model<>();
 		this.noButtonModel = new Model<>("btn btn-outline-secondary");
 		return this;
 	}
@@ -155,7 +155,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.yesLabelModel = new ResourceModel("common.yes");
 		this.noLabelModel = new ResourceModel("common.no");
 		this.yesIconModel = new Model<>("fa fa-fw fa-check");
-		this.noIconModel = new Model<>("fa fa-fw fa-ban");
+		this.noIconModel = new Model<>();
 		this.yesButtonModel = new Model<>("btn btn-success");
 		this.noButtonModel = new Model<>("btn btn-outline-secondary");
 		return this;
@@ -166,7 +166,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.yesLabelModel = new ResourceModel("common.action.confirm");
 		this.noLabelModel = new ResourceModel("common.cancel");
 		this.yesIconModel = new Model<>("fa fa-fw fa-check");
-		this.noIconModel = new Model<>("fa fa-fw fa-ban");
+		this.noIconModel = new Model<>();
 		this.yesButtonModel = new Model<>("btn btn-success");
 		this.noButtonModel = new Model<>("btn btn-outline-secondary");
 		return this;
@@ -177,7 +177,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.yesLabelModel = new ResourceModel("common.action.validate");
 		this.noLabelModel = new ResourceModel("common.cancel");
 		this.yesIconModel = new Model<>("fa fa-fw fa-check");
-		this.noIconModel = new Model<>("fa fa-fw fa-ban");
+		this.noIconModel = new Model<>();
 		this.yesButtonModel = new Model<>("btn btn-success");
 		this.noButtonModel = new Model<>("btn btn-outline-secondary");
 		return this;
@@ -188,7 +188,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O> impl
 		this.yesLabelModel = new ResourceModel("common.action.save");
 		this.noLabelModel = new ResourceModel("common.cancel");
 		this.yesIconModel = new Model<>("fa fa-fw fa-check");
-		this.noIconModel = new Model<>("fa fa-fw fa-ban");
+		this.noIconModel = new Model<>();
 		this.yesButtonModel = new Model<>("btn btn-success");
 		this.noButtonModel = new Model<>("btn btn-outline-secondary");
 		return this;

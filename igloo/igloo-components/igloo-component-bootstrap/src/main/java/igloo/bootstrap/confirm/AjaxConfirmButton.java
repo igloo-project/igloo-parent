@@ -31,9 +31,9 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 			yesLabelModel,
 			noLabelModel,
 			new Model<String>("fa fa-fw fa-check"),
-			new Model<String>("fa fa-fw fa-ban"),
+			new Model<String>(),
 			new Model<String>("btn btn-success"),
-			new Model<String>("btn btn-default"),
+			new Model<String>("btn-outline-secondary"),
 			cssClassNamesModel,
 			textNoEscape,
 			null
@@ -58,9 +58,9 @@ public abstract class AjaxConfirmButton extends AjaxButton {
 			yesLabelModel,
 			noLabelModel,
 			new Model<String>("fa fa-fw fa-check"),
-			new Model<String>("fa fa-fw fa-ban"),
+			new Model<String>(),
 			new Model<String>("btn btn-success"),
-			new Model<String>("btn btn-default"),
+			new Model<String>("btn-outline-secondary"),
 			cssClassNamesModel,
 			textNoEscape,
 			form
