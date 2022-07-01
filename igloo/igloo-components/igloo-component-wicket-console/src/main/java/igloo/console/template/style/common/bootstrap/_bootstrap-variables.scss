@@ -353,7 +353,7 @@ $enable-grid-classes:         true !default;
 $enable-cssgrid:              false !default;
 $enable-button-pointers:      true !default;
 $enable-rfs:                  true !default;
-$enable-validation-icons:     true !default;
+$enable-validation-icons:     false !default;
 $enable-negative-margins:     false !default;
 $enable-deprecation-messages: true !default;
 $enable-important-utilities:  true !default;
@@ -1141,6 +1141,7 @@ $zindex-offcanvas:                  1045 !default;
 $zindex-modal-backdrop:             1050 !default;
 $zindex-modal:                      1055 !default;
 $zindex-popover:                    1070 !default;
+$zindex-select2:                    1075 !default;
 $zindex-tooltip:                    1080 !default;
 // scss-docs-end zindex-stack
 
@@ -1352,7 +1353,7 @@ $card-cap-padding-y:                $card-spacer-y * .5 !default;
 $card-cap-padding-x:                $card-spacer-x !default;
 $card-cap-bg:                       rgba($black, .03) !default;
 $card-cap-color:                    null !default;
-$card-header-title-font-size:       $font-size-base * 1.25 !default;
+$card-header-title-font-size:       $font-size-base * 1.5 !default;
 $card-height:                       null !default;
 $card-color:                        null !default;
 $card-bg:                           $white !default;
@@ -1502,7 +1503,7 @@ $modal-footer-margin-between:       .5rem !default;
 $modal-dialog-margin:               .5rem !default;
 $modal-dialog-margin-y-sm-up:       1.75rem !default;
 
-$modal-title-font-size:             $font-size-base * 1.25 !default;
+$modal-title-font-size:             $font-size-base * 1.5 !default;
 $modal-title-line-height:           $line-height-base !default;
 
 $modal-content-color:               null !default;
@@ -1524,9 +1525,9 @@ $modal-header-padding-y:            $modal-inner-padding !default;
 $modal-header-padding-x:            $modal-inner-padding !default;
 $modal-header-padding:              $modal-header-padding-y $modal-header-padding-x !default; // Keep this for backwards compatibility
 
-$modal-sm:                          300px !default;
-$modal-md:                          500px !default;
-$modal-lg:                          800px !default;
+$modal-sm:                          500px !default;
+$modal-md:                          700px !default;
+$modal-lg:                          900px !default;
 $modal-xl:                          1140px !default;
 
 $modal-fade-transform:              translate(0, -50px) !default;
