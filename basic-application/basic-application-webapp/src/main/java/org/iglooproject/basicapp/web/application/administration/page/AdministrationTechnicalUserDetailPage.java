@@ -32,9 +32,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-import igloo.bootstrap.BootstrapRequestCycle;
 import igloo.bootstrap.confirm.AjaxConfirmLink;
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
+import igloo.bootstrap5.markup.html.bootstrap.component.BootstrapBadge;
 import igloo.wicket.action.IAjaxAction;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.EnclosureContainer;
@@ -101,7 +101,8 @@ public class AdministrationTechnicalUserDetailPage extends AdministrationUserDet
 				new EnclosureContainer("informationContainer")
 					.anyChildVisible()
 					.add(
-						BootstrapRequestCycle.getSettings().badgeSupplier("enabled", userModel, UserEnabledRenderer.get()).get().badgePill().asComponent()
+						new BootstrapBadge<>("enabled", userModel, UserEnabledRenderer.get())
+							.badgePill()
 					)
 			);
 		
