@@ -63,4 +63,9 @@ public class WorkInProgressPopup extends AbstractModalPopupPanel<String> {
 	public IModel<String> getModalCssClassModel() {
 		return Model.of("modal-work-in-progress");
 	}
+	
+	@Override
+	public IModel<String> getModalDialogCssClassModel() {
+		return Model.of("modal-sm");
+	}
 }
