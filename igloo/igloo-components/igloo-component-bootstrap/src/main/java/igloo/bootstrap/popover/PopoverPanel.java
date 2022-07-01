@@ -29,7 +29,7 @@ public class PopoverPanel extends Panel {
 			titleComponent = new EmptyPanel("titleComponent");
 		}
 		Component contentComponent;
-		if (popover.title() instanceof IWOptionComponentFactory) {
+		if (popover.content() instanceof IWOptionComponentFactory) {
 			contentComponent = ((IWOptionComponentFactory) popover.content()).createComponent("contentComponent");
 		} else {
 			contentComponent = new EmptyPanel("contentComponent");
