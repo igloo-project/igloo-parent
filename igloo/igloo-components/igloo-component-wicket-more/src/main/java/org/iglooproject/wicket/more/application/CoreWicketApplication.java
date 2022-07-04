@@ -23,7 +23,6 @@ import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
 import org.apache.wicket.resource.JQueryResourceReference;
-import org.apache.wicket.resource.NoOpTextCompressor;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.IResourceStream;
@@ -49,8 +48,8 @@ import igloo.bootstrap.BootstrapVersion;
 import igloo.bootstrap.IBootstrapApplication;
 import igloo.bootstrap.IBootstrapProvider;
 import igloo.fontawesome.CoreFontAwesomeCssScope;
-import igloo.jqueryui.JQueryUiCssResourceReference;
 import igloo.jqueryui.JQueryUIJavaScriptResourceReference;
+import igloo.jqueryui.JQueryUiCssResourceReference;
 import igloo.select2.Select2JavaScriptResourceReference;
 import igloo.select2.Select2MoreJavaScriptResourceReference;
 import igloo.wicket.application.ICoreApplication;
@@ -130,8 +129,6 @@ public abstract class CoreWicketApplication extends WebApplication implements IC
 		packageResourceGuard.addPattern("+*.json");
 		packageResourceGuard.addPattern("+*.webmanifest");
 		
-		// la compression se fait au build quand c'est nécessaire ; on n'utilise pas la compression Wicket
-		getResourceSettings().setJavaScriptCompressor(new NoOpTextCompressor());
 		// utilisation des ressources minifiées que si on est en mode DEPLOYMENT
 		getResourceSettings().setUseMinifiedResources(RuntimeConfigurationType.DEPLOYMENT.equals(getConfigurationType()));
 		
