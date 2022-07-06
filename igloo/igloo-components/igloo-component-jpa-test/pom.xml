@@ -26,6 +26,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa-more</artifactId>
+			<scope>compile</scope>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-lang</artifactId>
 			<version>${igloo-commons.version}</version>
 		</dependency>
