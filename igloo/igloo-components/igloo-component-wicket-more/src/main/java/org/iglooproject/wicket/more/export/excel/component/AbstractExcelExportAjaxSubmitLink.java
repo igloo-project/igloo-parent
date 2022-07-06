@@ -6,10 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -18,6 +15,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.commons.util.mime.MediaType;
+import org.iglooproject.commons.util.mime.spreadsheet.SpreadsheetUtils;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.common.component.WorkInProgressPopup;
@@ -57,21 +55,6 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 		add(ajaxDownload);
 	}
 	
-	protected MediaType getMediaType(Workbook workbook) {
-		if (workbook instanceof HSSFWorkbook) {
-			return MediaType.APPLICATION_MS_EXCEL;
-		} else if (workbook instanceof XSSFWorkbook && ((XSSFWorkbook) workbook).isMacroEnabled()) {
-			return MediaType.APPLICATION_MS_EXCEL_MACRO;
-		} else if (workbook instanceof XSSFWorkbook && !((XSSFWorkbook) workbook).isMacroEnabled()) {
-			return MediaType.APPLICATION_OPENXML_EXCEL;
-		} else if (workbook instanceof SXSSFWorkbook) {
-			return MediaType.APPLICATION_OPENXML_EXCEL;
-		} else {
-			// Default
-			return MediaType.APPLICATION_MS_EXCEL;
-		}
-	}
-	
 	@Override
 	protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
 		super.updateAjaxAttributes(attributes);
@@ -88,7 +71,7 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
 				onEmptyExport(workbook);
 				hasError = true;
 			} else {
-				mediaTypeModel.setObject(getMediaType(workbook));
+				mediaTypeModel.setObject(SpreadsheetUtils.getMediaType(workbook));
 				
 				tmp = File.createTempFile("export-", "", propertyService.get(TMP_EXPORT_EXCEL_PATH));
 				tempFileModel.setObject(tmp);

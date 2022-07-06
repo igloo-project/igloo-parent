@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-lang</artifactId>
-			<version>${igloo-commons.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>
