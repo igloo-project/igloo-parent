@@ -7,6 +7,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
@@ -26,6 +27,7 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 import igloo.bootstrap.BootstrapRequestCycle;
 import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
+import igloo.igloojs.FocusJavaScriptResourceReference;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.markup.html.panel.InvisiblePanel;
@@ -107,6 +109,8 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
 		response.render(CssHeaderItem.forReference(ApplicationAccessScssResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forReference(FocusJavaScriptResourceReference.get()));
+		response.render(JavaScriptHeaderItem.forScript("focus.install()", "focus-install"));
 		BootstrapRequestCycle.getSettings().renderHead(getPage(), response);
 	}
 
