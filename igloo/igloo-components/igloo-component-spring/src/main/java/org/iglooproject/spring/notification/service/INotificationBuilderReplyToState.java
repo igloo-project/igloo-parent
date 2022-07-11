@@ -1,6 +1,6 @@
 package org.iglooproject.spring.notification.service;
 
-import org.iglooproject.spring.notification.model.INotificationRecipient;
+import org.iglooproject.mail.api.INotificationRecipient;
 
 public interface INotificationBuilderReplyToState extends INotificationBuilderToState {
 	

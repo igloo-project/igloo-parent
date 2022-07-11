@@ -2,7 +2,7 @@ package org.iglooproject.spring.notification.service;
 
 import java.util.Collection;
 
-import org.iglooproject.spring.notification.model.INotificationRecipient;
+import org.iglooproject.mail.api.INotificationRecipient;
 
 public interface INotificationBuilderToState {
 

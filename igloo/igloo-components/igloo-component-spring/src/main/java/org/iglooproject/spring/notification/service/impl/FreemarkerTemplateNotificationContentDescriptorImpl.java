@@ -11,6 +11,10 @@ import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.iglooproject.mail.api.INotificationRecipient;
+import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
+import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.javatuples.LabelValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +25,6 @@ import org.springframework.util.Assert;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
-import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
-import org.iglooproject.spring.notification.model.INotificationRecipient;
-import org.iglooproject.spring.property.service.IPropertyService;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 

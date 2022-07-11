@@ -27,6 +27,11 @@
 			<artifactId>igloo-component-wicket</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-mail-api</artifactId>
+			<version>${igloo-commons.version}</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
@@ -49,7 +54,7 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-lang</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo-commons.version}</version>
 		</dependency>
 		
 		<dependency>

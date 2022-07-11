@@ -13,7 +13,7 @@ import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.functional.Joiners;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.spring.notification.model.INotificationRecipient;
+import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.spring.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

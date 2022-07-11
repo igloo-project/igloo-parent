@@ -35,6 +35,12 @@
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-mail-api</artifactId>
+			<version>${igloo-commons.version}</version>
+		</dependency>
 		<!-- Code generation only -->
 		<dependency>
 			<groupId>com.querydsl</groupId>

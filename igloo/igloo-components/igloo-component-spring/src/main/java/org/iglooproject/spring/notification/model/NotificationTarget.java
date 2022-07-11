@@ -10,6 +10,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.spring.notification.exception.InvalidNotificationTargetException;
 import org.iglooproject.spring.util.StringUtils;
 
