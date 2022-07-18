@@ -2,7 +2,6 @@ package org.iglooproject.basicapp.web.application.security.login.component;
 
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
@@ -71,14 +70,11 @@ public class SignInContentPanel extends Panel {
 					.setRequired(true)
 					.setLabel(new ResourceModel("signIn.username"))
 					.add(new LabelPlaceholderBehavior())
-					.add(new AttributeAppender("data-focus", "10"))
-					.add(new AttributeAppender("data-focus-skip", "ifnotempty"))
 					.setOutputMarkupId(true),
 				new PasswordTextField("password", passwordModel)
 					.setRequired(true)
 					.setLabel(new ResourceModel("signIn.password"))
 					.add(new LabelPlaceholderBehavior())
-					.add(new AttributeAppender("data-focus", "10"))
 					.setOutputMarkupId(true)
 			);
 	}
