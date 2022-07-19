@@ -1,8 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.page;
 
 import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
-import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_DISPLAY_LG;
-import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_DISPLAY_XL;
 import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.TABLE_ROW_DISABLED;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
@@ -54,7 +52,7 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 
 	private static final long serialVersionUID = -4746355629579854697L;
 
-	private Logger LOGGER = LoggerFactory.getLogger(AdministrationAnnouncementListPage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdministrationAnnouncementListPage.class);
 
 	@SpringBean
 	private IAnnouncementService announcementService;
@@ -107,7 +105,6 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 					.withClass("cell-w-60")
 				.addLabelColumn(new ResourceModel("business.announcement.type"), Bindings.announcement().type(), EnumRenderer.get())
 					.withClass("cell-w-100")
-					.withClass(CELL_DISPLAY_XL)
 				.addColumn(new AbstractCoreColumn<Announcement, AnnouncementSort>(new ResourceModel("business.announcement.message")) {
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -118,10 +115,9 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 					.withClass("cell-w-400")
 				.addLabelColumn(new ResourceModel("business.announcement.publication.startDateTime"), Bindings.announcement().publication().startDateTime(), DatePattern.REALLY_SHORT_DATETIME)
 					.withSort(AnnouncementSort.PUBLICATION_START_DATE_TIME, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
-					.withClass("cell-w-150")
+					.withClass("cell-w-120")
 				.addLabelColumn(new ResourceModel("business.announcement.publication.endDateTime"), Bindings.announcement().publication().endDateTime(), DatePattern.REALLY_SHORT_DATETIME)
-					.withClass("cell-w-150")
-					.withClass(CELL_DISPLAY_LG)
+					.withClass("cell-w-120")
 				.addActionColumn()
 					.addAction(ActionRenderers.edit(), new OneParameterModalOpenAjaxAction<IModel<Announcement>>(popup) {
 						private static final long serialVersionUID = 1L;
