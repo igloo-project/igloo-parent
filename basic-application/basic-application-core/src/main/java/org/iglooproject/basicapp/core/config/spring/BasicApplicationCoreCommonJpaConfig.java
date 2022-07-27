@@ -4,6 +4,7 @@ import org.apache.lucene.search.SortField;
 import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.type.TextType;
 import org.iglooproject.basicapp.core.business.BasicApplicationCoreCommonBusinessPackage;
 import org.iglooproject.basicapp.core.business.common.model.EmailAddress;
 import org.iglooproject.basicapp.core.business.common.model.PhoneNumber;
@@ -52,6 +53,7 @@ public class BasicApplicationCoreCommonJpaConfig {
 			
 			@Override
 			public void contribute(TypeContributions typeContributions, ServiceRegistry serviceRegistry) {
+				typeContributions.contributeType(new TextType(), "string", String.class.getName());
 				typeContributions.contributeType(new PostalCodeType(), PostalCode.class.getName());
 				typeContributions.contributeType(new EmailAddressType(), EmailAddress.class.getName());
 				typeContributions.contributeType(new PhoneNumberType(), PhoneNumber.class.getName());
