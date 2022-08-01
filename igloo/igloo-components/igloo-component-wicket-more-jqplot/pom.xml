@@ -16,6 +16,12 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-more</artifactId>
 			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- WiQuery-jqPlot -->

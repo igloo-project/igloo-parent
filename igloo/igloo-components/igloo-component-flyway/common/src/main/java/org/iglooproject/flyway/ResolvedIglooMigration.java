@@ -1,6 +1,6 @@
 package org.iglooproject.flyway;
 
-import org.flywaydb.core.api.MigrationType;
+import org.flywaydb.core.api.CoreMigrationType;
 import org.flywaydb.core.internal.resolver.ResolvedMigrationImpl;
 import org.flywaydb.core.internal.util.ClassUtils;
 
@@ -17,7 +17,7 @@ public class ResolvedIglooMigration extends ResolvedMigrationImpl {
 			iglooMigration.getClass().getName(),
 			iglooMigration.getChecksum(),
 			iglooMigration.getEquivalentChecksum(),
-			MigrationType.JDBC,
+			CoreMigrationType.JDBC,
 			ClassUtils.getLocationOnDisk(iglooMigration.getClass()),
 			migrationExecutor
 		);
