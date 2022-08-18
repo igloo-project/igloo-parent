@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
 
@@ -91,10 +90,12 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		
 		File referenceDataFile = getFirstFile(directory, REFERENCE_DATA_FILE_NAMES);
 		
-		LOGGER.info("Importing {}", referenceDataFile.getName());
-		Workbook referenceDataWorkbook = getWorkbook(referenceDataFile);
-		importReferenceData(idsMapping, referenceDataWorkbook);
-		LOGGER.info("Import of {} complete", referenceDataFile.getName());
+		if (referenceDataFile != null) {
+			LOGGER.info("Importing {}", referenceDataFile.getName());
+			Workbook referenceDataWorkbook = getWorkbook(referenceDataFile);
+			importReferenceData(idsMapping, referenceDataWorkbook);
+			LOGGER.info("Import of {} complete", referenceDataFile.getName());
+		}
 		
 		importAfterReferenceData(directory, idsMapping);
 		
@@ -102,10 +103,12 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		
 		File businessDataFile = getFirstFile(directory, BUSINESS_DATA_FILE_NAMES);
 		
-		LOGGER.info("Importing {}", businessDataFile.getName());
-		Workbook businessItemWorkbook = getWorkbook(businessDataFile);
-		importMainBusinessItems(idsMapping, businessItemWorkbook);
-		LOGGER.info("Import of {} complete", businessDataFile.getName());
+		if (businessDataFile != null) {
+			LOGGER.info("Importing {}", businessDataFile.getName());
+			Workbook businessItemWorkbook = getWorkbook(businessDataFile);
+			importMainBusinessItems(idsMapping, businessItemWorkbook);
+			LOGGER.info("Import of {} complete", businessDataFile.getName());
+		}
 		
 		importAfterBusinessData(directory, idsMapping);
 		
@@ -124,7 +127,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 			.stream()
 			.sorted(Comparator.comparing(File::getName, Ordering.explicit(fileNames).nullsLast()))
 			.findFirst()
-			.orElseThrow(NoSuchElementException::new);
+			.orElse(null);
 	}
 	
 	protected Workbook getWorkbook(File file) throws FileNotFoundException, IOException {
