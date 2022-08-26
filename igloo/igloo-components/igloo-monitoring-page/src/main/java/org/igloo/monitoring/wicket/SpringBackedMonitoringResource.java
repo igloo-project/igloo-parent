@@ -18,7 +18,7 @@ public class SpringBackedMonitoringResource extends MonitoringResource {
 	public static final ResourceReference get(String name) {
 		return new ResourceReference(
 				SpringBackedMonitoringResource.class,
-				"FichierAttachmmentFileStoreWebResource"
+				"name"
 			) {
 				private static final long serialVersionUID = 1L;
 				@Override

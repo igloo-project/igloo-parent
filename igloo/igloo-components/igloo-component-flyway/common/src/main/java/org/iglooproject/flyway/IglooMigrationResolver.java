@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 
 import org.flywaydb.core.api.ClassProvider;
 import org.flywaydb.core.api.configuration.Configuration;
-import org.flywaydb.core.api.resolver.Context;
 import org.flywaydb.core.api.resolver.MigrationResolver;
 import org.flywaydb.core.api.resolver.ResolvedMigration;
 import org.flywaydb.core.internal.resolver.ResolvedMigrationComparator;

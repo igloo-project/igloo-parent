@@ -5,7 +5,7 @@ import java.util.Locale;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.spring.notification.model.SimpleRecipient;
+import org.iglooproject.mail.api.SimpleRecipient;
 import org.iglooproject.spring.notification.service.AbstractNotificationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

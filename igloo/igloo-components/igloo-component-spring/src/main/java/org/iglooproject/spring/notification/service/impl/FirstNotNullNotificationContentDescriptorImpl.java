@@ -2,12 +2,11 @@ package org.iglooproject.spring.notification.service.impl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import com.google.common.collect.ImmutableList;
-
+import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
-import org.iglooproject.spring.notification.model.INotificationRecipient;
+
+import com.google.common.collect.ImmutableList;
 
 public class FirstNotNullNotificationContentDescriptorImpl implements INotificationContentDescriptor {
 	

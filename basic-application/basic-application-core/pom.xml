@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>4.2.0</version>
+		<version>4.3.0</version>
 	</parent>
 	
 	<artifactId>basic-application-core</artifactId>
@@ -34,6 +34,11 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-jpa-security</artifactId>
 			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-mail-api</artifactId>
+			<version>${igloo-commons.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -181,12 +186,6 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-jpa-test</artifactId>
-			<version>${igloo.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -1,5 +1,6 @@
 package org.iglooproject.spring.notification.model;
 
+import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 
 public interface INotificationContentDescriptor {

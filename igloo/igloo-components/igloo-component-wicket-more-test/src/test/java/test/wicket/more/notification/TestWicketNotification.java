@@ -3,7 +3,7 @@ package test.wicket.more.notification;
 import java.util.Locale;
 
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.spring.notification.model.SimpleRecipient;
+import org.iglooproject.mail.api.SimpleRecipient;
 import org.iglooproject.spring.notification.service.INotificationBuilderBaseState;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -44,6 +44,8 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
+import org.iglooproject.jpa.more.business.referencedata.service.IGenericReferenceDataSubService;
 import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.springframework.beans.BeanWrapper;
@@ -80,6 +82,13 @@ abstract class AbstractCommonTestCase {
 			service.delete(entity);
 		}
 	}
+	
+	protected static <E extends GenericReferenceData<?, ?>> void cleanReferenceData(IGenericReferenceDataSubService service, Class<E> clazz) throws ServiceException, SecurityServiceException {
+		for (E entity : service.list(clazz)) {
+			service.delete(entity);
+		}
+	}
+	
 	
 	public void init() throws ServiceException, SecurityServiceException {
 		cleanAll();

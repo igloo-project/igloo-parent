@@ -5,14 +5,13 @@ import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.iglooproject.mail.api.INotificationRecipient;
+import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
+import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Maps;
-
-import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
-import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
-import org.iglooproject.spring.notification.model.INotificationRecipient;
-import org.iglooproject.spring.property.service.IPropertyService;
 
 public class ExplicitelyDefinedNotificationContentDescriptorImpl implements INotificationContentDescriptor {
 	

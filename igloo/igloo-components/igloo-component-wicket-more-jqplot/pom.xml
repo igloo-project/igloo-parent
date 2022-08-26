@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>4.2.0</version>
+		<version>4.3.0</version>
 	</parent>
 	<artifactId>igloo-component-wicket-more-jqplot</artifactId>
 	
@@ -16,6 +16,12 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-more</artifactId>
 			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- WiQuery-jqPlot -->

@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.iglooproject</groupId>
 		<artifactId>plugins-all</artifactId>
-		<version>4.2.0</version>
+		<version>4.3.0</version>
 		<relativePath />
 	</parent>
 
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>4.2.0</version>
+	<version>4.3.0</version>
 	<packaging>pom</packaging>
 
 	<name>Igloo - Parent - Maven configuration - Common</name>
