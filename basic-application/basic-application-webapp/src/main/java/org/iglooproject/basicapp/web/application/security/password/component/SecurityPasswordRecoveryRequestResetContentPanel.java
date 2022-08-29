@@ -51,6 +51,7 @@ public class SecurityPasswordRecoveryRequestResetContentPanel extends Panel {
 				.setRequired(true)
 				.add(EmailAddressValidator.getInstance())
 				.add(new LabelPlaceholderBehavior())
+				.setOutputMarkupId(true)
 		);
 		
 		form.add(

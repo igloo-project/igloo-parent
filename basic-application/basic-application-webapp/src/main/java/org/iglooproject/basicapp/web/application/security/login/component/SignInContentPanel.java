@@ -17,12 +17,15 @@ import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import igloo.igloojs.showpassword.ShowPasswordBehavior;
 
 public class SignInContentPanel extends Panel {
 
@@ -64,6 +67,8 @@ public class SignInContentPanel extends Panel {
 		};
 		add(form);
 		
+		PasswordTextField password = new PasswordTextField("password", passwordModel);
+		
 		form
 			.add(
 				new TextField<>("username", usernameModel)
@@ -71,11 +76,13 @@ public class SignInContentPanel extends Panel {
 					.setLabel(new ResourceModel("signIn.username"))
 					.add(new LabelPlaceholderBehavior())
 					.setOutputMarkupId(true),
-				new PasswordTextField("password", passwordModel)
+				password
 					.setRequired(true)
 					.setLabel(new ResourceModel("signIn.password"))
 					.add(new LabelPlaceholderBehavior())
-					.setOutputMarkupId(true)
+					.setOutputMarkupId(true),
+				new BlankLink("showPassword")
+					.add(new ShowPasswordBehavior(password))
 			);
 	}
 

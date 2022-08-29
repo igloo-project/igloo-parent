@@ -7,9 +7,7 @@ import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
@@ -23,8 +21,10 @@ import org.iglooproject.basicapp.web.application.common.validator.UserPasswordVa
 import org.iglooproject.basicapp.web.application.common.validator.UsernameUnicityValidator;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 
+import igloo.igloojs.showpassword.ShowPasswordBehavior;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
@@ -55,8 +55,7 @@ public class TechnicalUserPopup extends AbstractUserPopup<TechnicalUser> {
 				securityManagementService.getSecurityOptions(TechnicalUser.class).isPasswordAdminUpdateEnabled()
 			&&	!securityManagementService.getSecurityOptions(TechnicalUser.class).isPasswordUserRecoveryEnabled();
 		
-		PasswordTextField passwordField = new PasswordTextField("password", passwordModel);
-		PasswordTextField confirmPasswordField = new PasswordTextField("confirmPassword", Model.of());
+		PasswordTextField password = new PasswordTextField("password", passwordModel);
 		
 		form
 			.add(
@@ -84,9 +83,11 @@ public class TechnicalUserPopup extends AbstractUserPopup<TechnicalUser> {
 						new EnclosureContainer("passwordContainer")
 							.condition(Condition.isTrue(() -> securityManagementService.getSecurityOptions(TechnicalUser.class).isPasswordAdminUpdateEnabled()))
 							.add(
-								passwordField
+								password
 									.setLabel(new ResourceModel("business.user.password"))
 									.setRequired(passwordRequired),
+								new BlankLink("showPassword")
+									.add(new ShowPasswordBehavior(password)),
 								new CoreLabel("passwordHelp",
 									new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
 										.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
@@ -94,10 +95,7 @@ public class TechnicalUserPopup extends AbstractUserPopup<TechnicalUser> {
 											new StringResourceModel("security.user.password.help")
 												.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
 										)
-								),
-								confirmPasswordField
-									.setLabel(new ResourceModel("business.user.confirmPassword"))
-									.setRequired(passwordRequired)
+								)
 							),
 						new CheckBox("enabled", BindingModel.of(getModel(), Bindings.user().enabled()))
 							.setLabel(new ResourceModel("business.user.enabled"))
@@ -105,10 +103,8 @@ public class TechnicalUserPopup extends AbstractUserPopup<TechnicalUser> {
 					)
 			);
 		
-		form.add(new EqualPasswordInputValidator(passwordField, confirmPasswordField));
-		
 		form.add(
-			new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), passwordField)
+			new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), password)
 				.userModel(getModel())
 		);
 		

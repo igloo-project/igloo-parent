@@ -8,7 +8,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -22,12 +21,14 @@ import org.iglooproject.basicapp.web.application.common.validator.UserPasswordVa
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.iglooproject.wicket.more.util.validate.validators.PredicateValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import igloo.igloojs.showpassword.ShowPasswordBehavior;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.markup.html.panel.GenericPanel;
 import igloo.wicket.model.Detachables;
@@ -55,8 +56,7 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 		ModelValidatingForm<?> form = new ModelValidatingForm<>("form");
 		add(form);
 		
-		TextField<String> passwordField = new PasswordTextField("password", passwordModel);
-		TextField<String> confirmPasswordField = new PasswordTextField("confirmPassword", Model.of(""));
+		TextField<String> password = new PasswordTextField("password", passwordModel);
 		
 		form.add(
 			new TextField<String>("email", emailModel)
@@ -66,11 +66,15 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 				.add(
 					PredicateValidator.of(email -> email != null && email.equals(getModelObject().getEmail()))
 						.errorKey("common.validator.email.match.user")
-				),
-			passwordField
+				)
+				.setOutputMarkupId(true),
+			password
 				.setLabel(new ResourceModel("business.user.password"))
 				.setRequired(true)
-				.add(new LabelPlaceholderBehavior()),
+				.add(new LabelPlaceholderBehavior())
+				.setOutputMarkupId(true),
+			new BlankLink("showPassword")
+				.add(new ShowPasswordBehavior(password)),
 			new CoreLabel("passwordHelp",
 				new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
 					.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
@@ -78,17 +82,11 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 						new StringResourceModel("security.user.password.help")
 							.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
 					)
-			),
-			confirmPasswordField
-				.setLabel(new ResourceModel("business.user.confirmPassword"))
-				.setRequired(true)
-				.add(new LabelPlaceholderBehavior())
+			)
 		);
 		
-		form.add(new EqualPasswordInputValidator(passwordField, confirmPasswordField));
-		
 		form.add(
-			new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), passwordField)
+			new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), password)
 				.userModel(getModel())
 		);
 		

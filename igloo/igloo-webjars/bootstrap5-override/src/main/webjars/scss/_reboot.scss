@@ -1,3 +1,8 @@
+::-ms-reveal,
+::-ms-clear {
+	display: none;
+}
+
 body {
 	@include text-break();
 }

@@ -36,7 +36,6 @@ class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
 		form.setValue(form.getForm().get("lastName"), USER_PASSWORD);
 		form.setValue(form.getForm().get("username"), USER_PASSWORD);
 		form.setValue(form.getForm().get("addContainer:passwordContainer:password"), USER_PASSWORD);
-		form.setValue(form.getForm().get("addContainer:passwordContainer:confirmPassword"), USER_PASSWORD);
 		LocaleDropDownChoice localeField = (LocaleDropDownChoice) form.getForm().get("locale");
 		form.select(localeField.getId(), 0);
 		

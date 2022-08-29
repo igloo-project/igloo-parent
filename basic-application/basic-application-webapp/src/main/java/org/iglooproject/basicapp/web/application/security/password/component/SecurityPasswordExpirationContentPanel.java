@@ -8,7 +8,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -23,11 +22,13 @@ import org.iglooproject.basicapp.web.application.common.validator.UserPasswordVa
 import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import igloo.igloojs.showpassword.ShowPasswordBehavior;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.markup.html.panel.GenericPanel;
 import igloo.wicket.model.Detachables;
@@ -43,7 +44,7 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
 
 	private final IModel<? extends UserTypeDescriptor<? extends User>> userTypeDescriptorModel;
 
-	private final IModel<String> newPasswordModel = Model.of();
+	private final IModel<String> passwordModel = Model.of();
 
 	public SecurityPasswordExpirationContentPanel(String id) {
 		super(id, BasicApplicationSession.get().getUserModel());
@@ -53,14 +54,16 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
 		ModelValidatingForm<?> form = new ModelValidatingForm<>("form");
 		add(form);
 		
-		TextField<String> newPasswordField = new PasswordTextField("newPassword", newPasswordModel);
-		TextField<String> confirmPasswordField = new PasswordTextField("confirmPassword", Model.of());
+		TextField<String> password = new PasswordTextField("password", passwordModel);
 		
 		form.add(
-			newPasswordField
+			password
 				.setLabel(new ResourceModel("business.user.newPassword"))
 				.setRequired(true)
-				.add(new LabelPlaceholderBehavior()),
+				.add(new LabelPlaceholderBehavior())
+				.setOutputMarkupId(true),
+			new BlankLink("showPassword")
+				.add(new ShowPasswordBehavior(password)),
 			new CoreLabel("passwordHelp",
 				new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
 					.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
@@ -68,17 +71,11 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
 						new StringResourceModel("security.user.password.help")
 							.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
 					)
-			),
-			confirmPasswordField
-				.setLabel(new ResourceModel("business.user.confirmPassword"))
-				.setRequired(true)
-				.add(new LabelPlaceholderBehavior())
+			)
 		);
 		
-		form.add(new EqualPasswordInputValidator(newPasswordField, confirmPasswordField));
-		
 		form.add(
-			new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), newPasswordField)
+			new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), password)
 				.userModel(getModel())
 		);
 		
@@ -90,7 +87,7 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
 				protected void onSubmit(AjaxRequestTarget target) {
 					try {
 						User user = BasicApplicationSession.get().getUser();
-						securityManagementService.updatePassword(user, newPasswordModel.getObject());
+						securityManagementService.updatePassword(user, passwordModel.getObject());
 						
 						Session.get().success(getString("security.password.expiration.validate.success"));
 						
@@ -118,7 +115,7 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
 		super.onDetach();
 		Detachables.detach(
 			userTypeDescriptorModel,
-			newPasswordModel
+			passwordModel
 		);
 	}
 

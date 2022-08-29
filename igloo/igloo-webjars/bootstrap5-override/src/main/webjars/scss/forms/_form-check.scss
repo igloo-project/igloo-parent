@@ -1,0 +1,12 @@
+input {
+	&:checked {
+		~ label .form-check-label-unchecked {
+			display: none;
+		}
+	}
+	&:not(:checked) {
+		~ label .form-check-label-checked {
+			display: none;
+		}
+	}
+}

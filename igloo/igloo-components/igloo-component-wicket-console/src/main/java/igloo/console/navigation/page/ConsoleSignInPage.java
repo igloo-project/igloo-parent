@@ -2,10 +2,10 @@ package igloo.console.navigation.page;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -15,13 +15,15 @@ import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
+import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import igloo.console.template.ConsoleAccessTemplate;
+import igloo.igloojs.showpassword.ShowPasswordBehavior;
 
 public class ConsoleSignInPage extends ConsoleAccessTemplate {
 
@@ -31,7 +33,7 @@ public class ConsoleSignInPage extends ConsoleAccessTemplate {
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()
-				.page(ConsoleSignInPage.class);
+			.page(ConsoleSignInPage.class);
 	}
 	
 	public ConsoleSignInPage(PageParameters parameters) {
@@ -55,50 +57,50 @@ public class ConsoleSignInPage extends ConsoleAccessTemplate {
 		public ContentFragment(String id) {
 			super(id, "content", ConsoleSignInPage.this);
 			
-			FormComponent<String> usernameField = new RequiredTextField<>("username", Model.of(""));
-			FormComponent<String> passwordField = new PasswordTextField("password", Model.of(""));
+			IModel<String> usernameModel = Model.of();
+			IModel<String> passwordModel = Model.of();
 			
 			Form<Void> form = new Form<Void>("form") {
 				private static final long serialVersionUID = 1L;
-				
 				@Override
 				protected void onSubmit() {
-					AbstractCoreSession<?> session = AbstractCoreSession.get();
-					boolean success = false;
 					try {
-						session.signIn(usernameField.getModelObject(), passwordField.getModelObject());
-						success = true;
-					} catch (BadCredentialsException e) {
-						session.error(getString("console.signIn.error.authentication"));
-					} catch (UsernameNotFoundException e) {
-						session.error(getString("console.signIn.error.authentication"));
-					} catch (DisabledException e) {
-						session.error(getString("console.signIn.error.userDisabled"));
+						AbstractCoreSession.get().signIn(usernameModel.getObject(), passwordModel.getObject());
+						throw new RestartResponseException(ConsoleLoginSuccessPage.class);
+					} catch (BadCredentialsException e) { // NOSONAR
+						Session.get().error(getString("console.signIn.error.authentication"));
+					} catch (UsernameNotFoundException | AccountStatusException e) { // NOSONAR
+						Session.get().error(getString("console.signIn.error.authentication"));
+					} catch (RestartResponseException e) { // NOSONAR
+						throw e;
 					} catch (Exception e) {
-						LOGGER.error("Erreur inconnue lors de l'authentification de l'utilisateur", e);
-						session.error(getString("console.signIn.error.unknown"));
+						LOGGER.error("Unknown error during authentification", e);
+						Session.get().error(getString("console.signIn.error.authentication"));
 					}
 					
-					if (success) {
-						throw new RestartResponseException(ConsoleLoginSuccessPage.class);
-					} else {
-						throw new RestartResponseException(ConsoleLoginFailurePage.class);
-					}
+					throw new RestartResponseException(ConsoleLoginFailurePage.class);
 				}
 			};
 			add(form);
 			
-			usernameField.setLabel(new ResourceModel("console.signIn.username"));
-			usernameField.add(new LabelPlaceholderBehavior());
-			usernameField.setOutputMarkupId(true);
-			form.add(usernameField);
+			PasswordTextField password = new PasswordTextField("password", passwordModel);
 			
-			passwordField.setRequired(true);
-			passwordField.setLabel(new ResourceModel("console.signIn.password"));
-			passwordField.add(new LabelPlaceholderBehavior());
-			form.add(passwordField);
+			form
+				.add(
+					new TextField<>("username", usernameModel)
+						.setRequired(true)
+						.setLabel(new ResourceModel("console.signIn.username"))
+						.add(new LabelPlaceholderBehavior())
+						.setOutputMarkupId(true),
+					password
+						.setRequired(true)
+						.setLabel(new ResourceModel("console.signIn.password"))
+						.add(new LabelPlaceholderBehavior())
+						.setOutputMarkupId(true),
+					new BlankLink("showPassword")
+						.add(new ShowPasswordBehavior(password))
+				);
 		}
-		
 	}
 
 }

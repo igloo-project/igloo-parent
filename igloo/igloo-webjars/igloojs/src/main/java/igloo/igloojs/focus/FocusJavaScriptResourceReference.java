@@ -1,4 +1,4 @@
-package igloo.igloojs;
+package igloo.igloojs.focus;
 
 import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceReference;
 
