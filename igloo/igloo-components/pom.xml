@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>4.4.0-SNAPSHOT</version>
+		<version>4.4.0.jdk17-SNAPSHOT</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
@@ -14,6 +14,10 @@
 	<packaging>pom</packaging>
 
 	<name>Igloo - Components</name>
+	
+	<properties>
+		<maven.compiler.release>17</maven.compiler.release>
+	</properties>
 
 	<modules>
 		<module>jpa-test</module>
