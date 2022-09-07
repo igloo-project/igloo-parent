@@ -3,19 +3,14 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
 	<wicket:panel>
-		<div wicket:id="container" class="header-alert-container">
+		<div class="header-alert-container">
 			<div class="header-alert">
 				<div class="header-alert-content">
-					<span class="fa fa-fw fa-lg fa-server" />
+					<span class="fa fa-fw fa-server" aria-hidden="true" />
 					<span wicket:id="environment" class="fw-bold" />
 				</div>
-				<button wicket:id="close" class="btn-close btn-close-icon header-alert-btn-close" type="button">
-					<span class="fa fa-lg fa-fw fa-times" />
-					<span class="visually-hidden"><wicket:message key="common.close" /></span>
-				</button>
 			</div>
 		</div>
-		<button wicket:id="open" class="btn btn-none header-alert-btn-open stretched-link" type="button"></button>
 	</wicket:panel>
 </body>
 </html>
