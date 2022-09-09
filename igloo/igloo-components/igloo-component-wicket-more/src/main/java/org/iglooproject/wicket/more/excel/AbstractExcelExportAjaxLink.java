@@ -18,12 +18,12 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.export.spreadsheet.SpreadsheetUtils;
 import org.iglooproject.wicket.more.export.util.ExportFileUtils;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import igloo.bootstrap.modal.WorkInProgressPopup;
 import igloo.wicket.download.FileDeferredDownloadBehavior;
+import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.model.Detachables;
 
 public abstract class AbstractExcelExportAjaxLink extends AjaxLink<Void> {

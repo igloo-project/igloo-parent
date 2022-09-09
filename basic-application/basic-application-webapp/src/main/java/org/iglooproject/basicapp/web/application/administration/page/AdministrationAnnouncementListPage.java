@@ -28,7 +28,6 @@ import org.iglooproject.basicapp.web.application.common.renderer.AnnouncementEna
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
@@ -45,6 +44,7 @@ import igloo.bootstrap.modal.OneParameterModalOpenAjaxAction;
 import igloo.wicket.action.IOneParameterAjaxAction;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
+import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.model.Detachables;
 import igloo.wicket.util.DatePattern;
 

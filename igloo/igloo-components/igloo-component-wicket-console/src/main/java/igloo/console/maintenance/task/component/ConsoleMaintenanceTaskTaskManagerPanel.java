@@ -11,7 +11,6 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +21,7 @@ import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.CountLabel;
 import igloo.wicket.condition.Condition;
+import igloo.wicket.feedback.FeedbackUtils;
 
 public class ConsoleMaintenanceTaskTaskManagerPanel extends Panel {
 

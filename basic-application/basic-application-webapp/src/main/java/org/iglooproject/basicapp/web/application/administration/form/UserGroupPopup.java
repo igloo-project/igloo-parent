@@ -25,7 +25,6 @@ import org.iglooproject.basicapp.web.application.common.renderer.AuthorityRender
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.wicket.more.link.model.PageModel;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
@@ -36,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.condition.Condition;
+import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.markup.html.form.CheckGroup;
 import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
 import igloo.wicket.model.BindingModel;

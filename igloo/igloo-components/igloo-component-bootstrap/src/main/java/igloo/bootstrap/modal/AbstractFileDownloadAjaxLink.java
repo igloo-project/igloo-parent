@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import igloo.wicket.download.FileDeferredDownloadBehavior;
-import igloo.wicket.feedback.IFeedbackPanel;
+import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.model.Detachables;
 
 public abstract class AbstractFileDownloadAjaxLink extends AjaxLink<Void> {
@@ -54,7 +54,7 @@ public abstract class AbstractFileDownloadAjaxLink extends AjaxLink<Void> {
 			LOGGER.error("Error while downloading a file.", e);
 			error(getString("common.error.unexpected"));
 		}
-		target.addChildren(getPage(), IFeedbackPanel.class);
+		FeedbackUtils.refreshFeedback(target, getPage());
 	}
 
 	protected abstract LabelValue<String, File> generateFileInformation();

@@ -13,7 +13,6 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.spring.property.model.MutablePropertyId;
 import org.iglooproject.spring.property.model.PropertyId;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
 import igloo.console.common.component.PropertyIdListPanel;
 import igloo.wicket.component.CoreLabel;
+import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
 import igloo.wicket.model.Detachables;
 
