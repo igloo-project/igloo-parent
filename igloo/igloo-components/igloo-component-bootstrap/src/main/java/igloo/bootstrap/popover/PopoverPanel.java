@@ -30,7 +30,7 @@ public class PopoverPanel extends Panel {
 		WebMarkupContainer link = new WebMarkupContainer("link");
 		
 		Component titleComponent;
-		IJsStatement<?> title = popover.js().title();
+		IJsStatement title = popover.js().title();
 		if (title instanceof IComponentFactory) {
 			titleComponent = ((IComponentFactory<?>) title).create("titleComponent");
 		} else {
@@ -38,7 +38,7 @@ public class PopoverPanel extends Panel {
 		}
 		
 		Component contentComponent;
-		IJsStatement<?> content = popover.js().content();
+		IJsStatement content = popover.js().content();
 		if (content instanceof IComponentFactory) {
 			contentComponent = ((IComponentFactory<?>) content).create("contentComponent");
 		} else {

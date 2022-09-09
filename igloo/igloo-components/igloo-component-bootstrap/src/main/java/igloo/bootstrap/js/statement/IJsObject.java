@@ -4,23 +4,22 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import igloo.bootstrap.js.type.JsObjectType;
 import igloo.bootstrap.woption.IWVisitor;
 
-public interface IJsObject extends IJsStatement<JsObjectType>, Serializable {
+public interface IJsObject extends IJsStatement, Serializable {
 
-	Map<String, IJsStatement<?>> values();
+	Map<String, IJsStatement> values();
 
 	@Override
 	default void accept(IWVisitor visitor) {
-		for (IJsStatement<?> statement : values().values()) {
+		for (IJsStatement statement : values().values()) {
 			statement.accept(visitor);
 		}
 	}
 
 	@Override
 	default String render() {
-		Map<String, IJsStatement<?>> values = values();
+		Map<String, IJsStatement> values = values();
 		return values == null ?
 				"null" :
 				values.entrySet().stream()

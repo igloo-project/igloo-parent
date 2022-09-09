@@ -12,69 +12,63 @@ import org.springframework.lang.Nullable;
 
 import igloo.bootstrap.js.statement.IJsObject;
 import igloo.bootstrap.js.statement.IJsStatement;
-import igloo.bootstrap.js.type.JsAnyType;
-import igloo.bootstrap.js.type.JsBooleanType;
-import igloo.bootstrap.js.type.JsFunctionType;
-import igloo.bootstrap.js.type.JsMappingType;
-import igloo.bootstrap.js.type.JsSequenceType;
-import igloo.bootstrap.js.type.JsStringType;
 
 @Value.Immutable
 @Value.Style(typeImmutable="*", typeAbstract="I*")
 public interface IJsPopover extends IJsObject, Serializable {
 
 	@Nullable
-	IJsStatement<JsBooleanType> animation();
+	IJsStatement animation();
 
 	@Nullable
-	IJsStatement<JsAnyType> container();
+	IJsStatement container();
 
-	IJsStatement<JsAnyType> content();
-
-	@Nullable
-	IJsStatement<JsAnyType> delay();
+	IJsStatement content();
 
 	@Nullable
-	IJsStatement<JsBooleanType> html();
+	IJsStatement delay();
 
 	@Nullable
-	IJsStatement<JsAnyType> placement();
+	IJsStatement html();
 
 	@Nullable
-	IJsStatement<JsStringType> selector();
+	IJsStatement placement();
 
 	@Nullable
-	IJsStatement<JsStringType> template();
+	IJsStatement selector();
 
 	@Nullable
-	IJsStatement<JsAnyType> title();
+	IJsStatement template();
 
 	@Nullable
-	IJsStatement<JsAnyType> customClass();
+	IJsStatement title();
 
 	@Nullable
-	IJsStatement<JsStringType> trigger();
+	IJsStatement customClass();
 
 	@Nullable
-	IJsStatement<JsAnyType> offset();
+	IJsStatement trigger();
 
 	@Nullable
-	IJsStatement<JsSequenceType<JsStringType>> fallbackPlacements();
+	IJsStatement offset();
 
 	@Nullable
-	IJsStatement<JsAnyType> boundary();
+	IJsStatement fallbackPlacements();
 
 	@Nullable
-	IJsStatement<JsBooleanType> sanitize();
+	IJsStatement boundary();
 
 	@Nullable
-	IJsStatement<JsMappingType<JsSequenceType<JsStringType>>> allowList();
+	IJsStatement sanitize();
 
 	@Nullable
-	IJsStatement<JsFunctionType> sanitizeFn();
+	IJsStatement allowList();
 
 	@Nullable
-	IJsStatement<JsAnyType> popperConfig();
+	IJsStatement sanitizeFn();
+
+	@Nullable
+	IJsStatement popperConfig();
 
 	public enum Placement {
 		AUTO("auto"),
@@ -127,9 +121,9 @@ public interface IJsPopover extends IJsObject, Serializable {
 
 	@Override
 	@Value.Derived
-	default Map<String, IJsStatement<?>> values() {
-		Map<String, IJsStatement<?>> result = new LinkedHashMap<>();
-		List.<Map.Entry<String, Supplier<IJsStatement<?>>>>of(
+	default Map<String, IJsStatement> values() {
+		Map<String, IJsStatement> result = new LinkedHashMap<>();
+		List.<Map.Entry<String, Supplier<IJsStatement>>>of(
 				Map.entry("allowList", this::allowList),
 				Map.entry("animation", this::animation),
 				Map.entry("boundary", this::boundary),
@@ -150,15 +144,10 @@ public interface IJsPopover extends IJsObject, Serializable {
 				Map.entry("trigger", this::trigger)
 			)
 			.stream()
-			.<Pair<String, IJsStatement<?>>>map(e -> Pair.of(e.getKey(), e.getValue().get()))
+			.<Pair<String, IJsStatement>>map(e -> Pair.of(e.getKey(), e.getValue().get()))
 			.filter(e -> e.getRight() != null)
-			.forEachOrdered(e -> result.put(e.getLeft(), rightCast(e)));
+			.forEachOrdered(e -> result.put(e.getLeft(), e.getRight()));
 		return result;
-	}
-
-	@SuppressWarnings("unchecked")
-	default IJsStatement<JsAnyType> rightCast(Pair<String, IJsStatement<?>> entry) {
-		return (IJsStatement<JsAnyType>) entry.getRight();
 	}
 
 }

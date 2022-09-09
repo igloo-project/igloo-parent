@@ -6,12 +6,11 @@ import javax.annotation.Nullable;
 
 import org.immutables.value.Value;
 
-import igloo.bootstrap.js.type.JsBooleanType;
 import igloo.bootstrap.js.util.ImmutableStyle;
 
 @Value.Immutable
 @ImmutableStyle
-public interface IJsBoolean extends IJsStatement<JsBooleanType>, Serializable {
+public interface IJsBoolean extends IJsStatement, Serializable {
 
 	@Value.Parameter
 	@Nullable

@@ -8,23 +8,22 @@ import java.util.stream.Collectors;
 import org.immutables.value.Value;
 import org.springframework.lang.Nullable;
 
-import igloo.bootstrap.js.type.JsAnyType;
 import igloo.bootstrap.js.util.ImmutableStyle;
 import igloo.bootstrap.woption.IWVisitor;
 
 @Value.Immutable(builder = true)
 @ImmutableStyle
-public interface IJsFunction<V extends JsAnyType> extends IJsStatement<V>, Serializable {
+public interface IJsFunction extends IJsStatement, Serializable {
 
 	@Value.Parameter
 	String functionName();
 
 	@Nullable
-	List<IJsStatement<JsAnyType>> arguments();
+	List<IJsStatement> arguments();
 
 	@Override
 	default void accept(IWVisitor visitor) {
-		for (IJsStatement<JsAnyType> statement : arguments()) {
+		for (IJsStatement statement : arguments()) {
 			statement.accept(visitor);
 		}
 	}

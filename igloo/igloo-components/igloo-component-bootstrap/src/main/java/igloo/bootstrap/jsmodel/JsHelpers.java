@@ -22,10 +22,6 @@ import igloo.bootstrap.js.statement.JsNumber;
 import igloo.bootstrap.js.statement.JsSequence;
 import igloo.bootstrap.js.statement.JsString;
 import igloo.bootstrap.js.type.JsAnyType;
-import igloo.bootstrap.js.type.JsBooleanType;
-import igloo.bootstrap.js.type.JsElementType;
-import igloo.bootstrap.js.type.JsNumberType;
-import igloo.bootstrap.js.type.JsStringType;
 import igloo.bootstrap.woption.IWOptionDetachable;
 import igloo.bootstrap.woption.IWOptionModel;
 import igloo.wicket.factory.IComponentFactory;
@@ -34,59 +30,59 @@ public class JsHelpers {
 
 	private JsHelpers() {}
 
-	public static IJsStatement<JsBooleanType> of(Boolean value) {
+	public static IJsStatement of(Boolean value) {
 		return JsBoolean.of(value);
 	}
 
-	public static IJsStatement<JsStringType> of(String value) {
+	public static IJsStatement of(String value) {
 		return JsString.of(value);
 	}
 
-	public static IJsStatement<JsNumberType> of(Number value) {
+	public static IJsStatement of(Number value) {
 		return JsNumber.of(value);
 	}
 
-	public static <T extends JsAnyType> IJsLiteral<T> ofLiteral(String value) {
-		return JsLiteral.<T>of(value);
+	public static IJsLiteral ofLiteral(String value) {
+		return JsLiteral.of(value);
 	}
 
-	public static <T extends JsAnyType> IJsFunction<T> ofFunction(String value) {
-		return JsFunction.<T>of(value);
+	public static IJsFunction ofFunction(String value) {
+		return JsFunction.of(value);
 	}
 
-	public static <T extends JsAnyType> JsMapping.Builder<T> mapping() {
+	public static JsMapping.Builder mapping() {
 		return JsMapping.builder();
 	}
 
-	public static <T extends JsAnyType> JsSequence.Builder<T> sequence() {
+	public static JsSequence.Builder sequence() {
 		return JsSequence.builder();
 	}
 
-	public static <T extends JsAnyType> JsFunction.Builder<T> function() {
+	public static JsFunction.Builder function() {
 		return JsFunction.builder();
 	}
 
-	public static <T extends JsAnyType> IJsStatement<T> ofLiteral(IModel<String> literalModel) {
+	public static IJsStatement ofLiteral(IModel<String> literalModel) {
 		return new LiteralModel<>(literalModel);
 	}
 
-	public static IJsStatement<JsElementType> of(Component component) {
+	public static IJsStatement of(Component component) {
 		return new ElementComponent(component);
 	}
 
-	public static IJsStatement<JsElementType> ofFactory(Function<String, Component> componentFactory) {
+	public static IJsStatement ofFactory(Function<String, Component> componentFactory) {
 		return new ElementComponentFactory(componentFactory);
 	}
 
-	public static IJsStatement<JsStringType> ofString(IModel<String> valueModel) {
+	public static IJsStatement ofString(IModel<String> valueModel) {
 		return new StringModel(valueModel);
 	}
 
-	public static IJsStatement<JsNumberType> ofNumber(IModel<? extends Number> valueModel) {
+	public static IJsStatement ofNumber(IModel<? extends Number> valueModel) {
 		return new NumberModel(valueModel);
 	}
 
-	private static class ElementComponent implements IJsLiteral<JsElementType> {
+	private static class ElementComponent implements IJsLiteral {
 		private static final long serialVersionUID = 6326579662056550218L;
 		private final Component component;
 		
@@ -100,7 +96,7 @@ public class JsHelpers {
 		}
 	}
 
-	private static class ElementComponentFactory implements IJsLiteral<JsElementType>, IComponentFactory<Component> {
+	private static class ElementComponentFactory implements IJsLiteral, IComponentFactory<Component> {
 		private static final long serialVersionUID = 6326579662056550218L;
 		private transient Function<String, Component> componentFactory;
 		private Component component;
@@ -124,7 +120,7 @@ public class JsHelpers {
 		}
 	}
 
-	private static class LiteralModel<T extends JsAnyType> implements IJsLiteral<T>, IWOptionDetachable, IWOptionModel {
+	private static class LiteralModel<T extends JsAnyType> implements IJsLiteral, IWOptionDetachable, IWOptionModel {
 		private static final long serialVersionUID = -6405062352391297878L;
 		private IModel<String> model;
 		
