@@ -185,7 +185,7 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 	@Override
 	public void popoverRenderHead(Component component, IHeaderResponse response, Supplier<CharSequence> options) {
 		response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
-		OnDomReadyHeaderItem.forScript("new bootstrap.Popover(document.getElementById('" + component.getMarkupId() + "'), " + options.get() + ");");
+		response.render(OnDomReadyHeaderItem.forScript("new bootstrap.Popover(document.getElementById('" + component.getMarkupId() + "'), " + options.get() + ");"));
 	}
 
 }
