@@ -6,8 +6,9 @@ import org.immutables.value.Value;
 import org.springframework.lang.Nullable;
 
 import igloo.bootstrap.woption.IWOption;
-import igloo.bootstrap.woption.IWVisitor;
 import igloo.bootstrap.woption.IWVisitable;
+import igloo.bootstrap.woption.IWVisitor;
+import igloo.bootstrap.woption.WVisitables;
 
 @Value.Immutable
 @Value.Style(typeImmutable="*", typeAbstract="I*")
@@ -29,11 +30,14 @@ public interface IPopover extends IWVisitable, Serializable {
 
 	@Override
 	default void accept(IWVisitor visitor) {
-		visitor.visit(js());
-		visitor.visit(label());
-		visitor.visit(showLabel());
-		visitor.visit(iconCssClass());
-		visitor.visit(linkCssClass());
+		WVisitables.visit(
+			visitor,
+			js(),
+			label(),
+			showLabel(),
+			iconCssClass(),
+			linkCssClass()
+		);
 	}
 
 }
