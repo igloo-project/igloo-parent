@@ -8,7 +8,7 @@
 		<version>4.3.0.bs5-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>igloo-component-jquery</artifactId>
+	<artifactId>igloo-component-wicket-jquery</artifactId>
 
 	<name>Igloo - Component - JQuery</name>
 	<description>JQuery</description>

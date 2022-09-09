@@ -30,7 +30,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-jquery</artifactId>
+			<artifactId>igloo-component-wicket-jquery</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		
