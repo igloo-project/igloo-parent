@@ -11,7 +11,7 @@ import org.immutables.value.Value;
 import igloo.bootstrap.js.type.JsAnyType;
 import igloo.bootstrap.js.type.JsMappingType;
 import igloo.bootstrap.js.util.ImmutableStyle;
-import igloo.bootstrap.woption.IWOptionVisitor;
+import igloo.bootstrap.woption.IWVisitor;
 
 @Value.Immutable(builder = true)
 @ImmutableStyle
@@ -21,8 +21,7 @@ public interface IJsMapping<V extends JsAnyType> extends IJsStatement<JsMappingT
 	Map<String, IJsStatement<V>> values();
 
 	@Override
-	default void accept(IWOptionVisitor visitor) {
-		IJsStatement.super.accept(visitor);
+	default void accept(IWVisitor visitor) {
 		for (IJsStatement<V> statement : values().values()) {
 			statement.accept(visitor);
 		}

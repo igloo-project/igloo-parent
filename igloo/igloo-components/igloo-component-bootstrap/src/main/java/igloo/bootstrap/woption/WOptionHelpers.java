@@ -70,7 +70,7 @@ public class WOptionHelpers {
 		@Override
 		public void detach() {
 			model.detach();
-			new IWOptionDetachablesVisitor().visitAndDetach(this);
+			new WDetachablesVisitor().visitAndDetach(this);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class WOptionHelpers {
 
 		@Override
 		public void detach() {
-			new IWOptionDetachablesVisitor().visitAndDetach(option);
+			new WDetachablesVisitor().visitAndDetach(option);
 		}
 	}
 }

@@ -5,15 +5,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import igloo.bootstrap.js.type.JsObjectType;
-import igloo.bootstrap.woption.IWOptionVisitor;
+import igloo.bootstrap.woption.IWVisitor;
 
 public interface IJsObject extends IJsStatement<JsObjectType>, Serializable {
 
 	Map<String, IJsStatement<?>> values();
 
 	@Override
-	default void accept(IWOptionVisitor visitor) {
-		IJsStatement.super.accept(visitor);
+	default void accept(IWVisitor visitor) {
 		for (IJsStatement<?> statement : values().values()) {
 			statement.accept(visitor);
 		}

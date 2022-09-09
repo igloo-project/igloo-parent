@@ -6,18 +6,19 @@ import org.apache.wicket.model.IDetachable;
 
 import com.google.common.collect.Lists;
 
-public class IWOptionDetachablesVisitor implements IWOptionVisitor {
+public class WDetachablesVisitor implements IWVisitor {
 
 	private final List<IDetachable> detachables = Lists.newArrayList();
 
 	@Override
-	public void visit(IWOption<?> option) {
+	public void visit(IWVisitable option) {
+		option.accept(this);
 		if (option instanceof IWOptionDetachable) {
 			detachables.addAll(((IWOptionDetachable) option).getDetachables());
 		}
 	}
 
-	public void visitAndDetach(IWOption<?> option) {
+	public void visitAndDetach(IWVisitable option) {
 		visit(option);
 		detachables.forEach(IDetachable::detach);
 	}

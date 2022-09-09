@@ -5,16 +5,16 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.IHeaderResponse;
 
 import igloo.bootstrap.BootstrapRequestCycle;
-import igloo.bootstrap.woption.IWOptionDetachablesVisitor;
-import igloo.bootstrap.woption.IWOptionModelVisitor;
+import igloo.bootstrap.woption.WDetachablesVisitor;
+import igloo.bootstrap.woption.WOptionModelsVisitor;
 
 public class PopoverBehavior extends Behavior {
 
 	private static final long serialVersionUID = 7918322316697244768L;
 
-	private final IPopover popover;
+	private final IJsPopover popover;
 
-	public PopoverBehavior(IPopover popover) {
+	public PopoverBehavior(IJsPopover popover) {
 		this.popover = popover;
 	}
 
@@ -27,12 +27,12 @@ public class PopoverBehavior extends Behavior {
 	@Override
 	public void bind(Component component) {
 		super.bind(component);
-		new IWOptionModelVisitor().visitAndBind(component, popover);
+		new WOptionModelsVisitor().visitAndBind(component, popover);
 	}
 
 	@Override
 	public void detach(Component component) {
-		new IWOptionDetachablesVisitor().visitAndDetach(popover);
+		new WDetachablesVisitor().visitAndDetach(popover);
 		super.detach(component);
 	}
 

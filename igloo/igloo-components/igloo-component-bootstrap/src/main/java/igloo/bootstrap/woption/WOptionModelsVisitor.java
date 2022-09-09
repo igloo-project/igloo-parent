@@ -6,18 +6,19 @@ import org.apache.wicket.Component;
 
 import com.google.common.collect.Lists;
 
-public class IWOptionModelVisitor implements IWOptionVisitor {
+public class WOptionModelsVisitor implements IWVisitor {
 
 	private final List<IWOptionModel> optionModels = Lists.newArrayList();
 
 	@Override
-	public void visit(IWOption option) {
+	public void visit(IWVisitable option) {
+		option.accept(this);
 		if (option instanceof IWOptionModel) {
 			optionModels.add((IWOptionModel) option);
 		}
 	}
 
-	public void visitAndBind(Component component, IWOption option) {
+	public void visitAndBind(Component component, IWVisitable option) {
 		visit(option);
 		optionModels.forEach(i -> i.wrapModels(component));
 	}

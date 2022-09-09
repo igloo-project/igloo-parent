@@ -4,25 +4,15 @@ import java.io.Serializable;
 
 import igloo.bootstrap.js.type.JsAnyType;
 import igloo.bootstrap.js.type.JsType;
-import igloo.bootstrap.woption.IWOption;
-import igloo.bootstrap.woption.IWOptionVisitor;
+import igloo.bootstrap.woption.IWVisitable;
 
-public interface IJsStatement<T extends JsType> extends IWOption<String>, Serializable {
+public interface IJsStatement<T extends JsType> extends IWVisitable, Serializable {
 
 	String render();
-
-	default void accept(IWOptionVisitor visitor) {
-		visitor.visit(this);
-	}
 
 	@SuppressWarnings("unchecked")
 	default IJsStatement<JsAnyType> anyType() {
 		return (IJsStatement<JsAnyType>) this;
-	}
-
-	@Override
-	default String option() {
-		return render();
 	}
 
 }

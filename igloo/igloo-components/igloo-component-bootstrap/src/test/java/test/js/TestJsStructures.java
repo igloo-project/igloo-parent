@@ -13,8 +13,7 @@ import igloo.bootstrap.js.statement.JsString;
 import igloo.bootstrap.js.type.JsNumberType;
 import igloo.bootstrap.js.type.JsStringType;
 import igloo.bootstrap.jsmodel.JsHelpers;
-import igloo.bootstrap.popover.Popover;
-import igloo.bootstrap.woption.WOptionHelpers;
+import igloo.bootstrap.popover.JsPopover;
 
 class TestJsStructures {
 
@@ -48,38 +47,37 @@ class TestJsStructures {
 
 	@Test
 	void testPopover() {
-		assertThat(Popover.builder()
-			// not javascript
-			.iconCssClass(WOptionHelpers.of("custom-1"))
-			.linkCssClass(WOptionHelpers.of("custom-2"))
-			.showLabel(WOptionHelpers.of(false))
-			// javascript
-			.animation(of(true))
-			.boundary(of("clippingParents").anyType())
-			.container(of("body").anyType())
-			.content(of("My content").anyType())
-			.customClass(of("class1 class2").anyType())
-			.delay(of(10).anyType())
-			.fallbackPlacements(JsHelpers.<JsStringType>sequence().addValues(of("bottom"), of("right")).build())
-			.html(of(false))
-			.offset(JsHelpers.<JsNumberType>sequence().addValues(of(100), of(200)).build().anyType())
-			.placement(of("top").anyType())
-			.selector(of("[data-bs-toggle=\"popover\"]"))
-			.template(of("<dummy template>"))
-			.title(of("This is my title").anyType()).build().render()
-			).isEqualTo("{animation: true, "
-					+ "boundary: \"clippingParents\", "
-					+ "container: \"body\", "
-					+ "content: \"My content\", "
-					+ "customClass: \"class1 class2\", "
-					+ "delay: 10, "
-					+ "fallbackPlacements: [\"bottom\", \"right\"], "
-					+ "html: false, "
-					+ "offset: [100, 200], "
-					+ "placement: \"top\", "
-					+ "selector: \"[data-bs-toggle=\\\"popover\\\"]\", "
-					+ "template: \"<dummy template>\", "
-					+ "title: \"This is my title\"}");
+		assertThat(
+			JsPopover.builder()
+				.animation(of(true))
+				.boundary(of("clippingParents").anyType())
+				.container(of("body").anyType())
+				.content(of("My content").anyType())
+				.customClass(of("class1 class2").anyType())
+				.delay(of(10).anyType())
+				.fallbackPlacements(JsHelpers.<JsStringType>sequence().addValues(of("bottom"), of("right")).build())
+				.html(of(false))
+				.offset(JsHelpers.<JsNumberType>sequence().addValues(of(100), of(200)).build().anyType())
+				.placement(of("top").anyType())
+				.selector(of("[data-bs-toggle=\"popover\"]"))
+				.template(of("<dummy template>"))
+				.title(of("This is my title").anyType())
+				.build()
+				.render()
+		)
+			.isEqualTo("{animation: true, "
+				+ "boundary: \"clippingParents\", "
+				+ "container: \"body\", "
+				+ "content: \"My content\", "
+				+ "customClass: \"class1 class2\", "
+				+ "delay: 10, "
+				+ "fallbackPlacements: [\"bottom\", \"right\"], "
+				+ "html: false, "
+				+ "offset: [100, 200], "
+				+ "placement: \"top\", "
+				+ "selector: \"[data-bs-toggle=\\\"popover\\\"]\", "
+				+ "template: \"<dummy template>\", "
+				+ "title: \"This is my title\"}");
 	}
 
 }

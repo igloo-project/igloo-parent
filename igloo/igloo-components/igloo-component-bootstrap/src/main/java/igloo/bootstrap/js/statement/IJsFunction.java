@@ -10,7 +10,7 @@ import org.springframework.lang.Nullable;
 
 import igloo.bootstrap.js.type.JsAnyType;
 import igloo.bootstrap.js.util.ImmutableStyle;
-import igloo.bootstrap.woption.IWOptionVisitor;
+import igloo.bootstrap.woption.IWVisitor;
 
 @Value.Immutable(builder = true)
 @ImmutableStyle
@@ -23,8 +23,7 @@ public interface IJsFunction<V extends JsAnyType> extends IJsStatement<V>, Seria
 	List<IJsStatement<JsAnyType>> arguments();
 
 	@Override
-	default void accept(IWOptionVisitor visitor) {
-		IJsStatement.super.accept(visitor);
+	default void accept(IWVisitor visitor) {
 		for (IJsStatement<JsAnyType> statement : arguments()) {
 			statement.accept(visitor);
 		}
