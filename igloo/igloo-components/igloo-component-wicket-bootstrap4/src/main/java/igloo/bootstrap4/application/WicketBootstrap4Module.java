@@ -1,5 +1,7 @@
 package igloo.bootstrap4.application;
 
+import java.util.function.Supplier;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceBundles;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -23,7 +25,6 @@ import igloo.bootstrap.badge.IBootstrapBadge;
 import igloo.bootstrap.modal.BootstrapModalEvent;
 import igloo.bootstrap.modal.IBootstrapModal;
 import igloo.bootstrap.modal.IModalPopupPanel;
-import igloo.bootstrap.popover.IBootstrapPopoverOptions;
 import igloo.bootstrap.renderer.IBootstrapRenderer;
 import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.IBootstrapTooltipOptions;
@@ -176,9 +177,9 @@ public class WicketBootstrap4Module implements IWicketModule, IBootstrapProvider
 	}
 
 	@Override
-	public void popoverRenderHead(Component component, IHeaderResponse response, IBootstrapPopoverOptions options) {
+	public void popoverRenderHead(Component component, IHeaderResponse response, Supplier<CharSequence> options) {
 		response.render(JavaScriptHeaderItem.forReference(BootstrapPopoverJavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(component).chain("popover", options.getJavaScriptOptions()).render()));
+		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(component).chain("popover", options.get()).render()));
 	}
 
 }

@@ -1,5 +1,7 @@
 package igloo.bootstrap;
 
+import java.util.function.Supplier;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceBundles;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -11,7 +13,6 @@ import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import igloo.bootstrap.badge.IBootstrapBadge;
 import igloo.bootstrap.modal.IBootstrapModal;
 import igloo.bootstrap.modal.IModalPopupPanel;
-import igloo.bootstrap.popover.IBootstrapPopoverOptions;
 import igloo.bootstrap.renderer.IBootstrapRenderer;
 import igloo.bootstrap.tooltip.IBootstrapTooltipOptions;
 
@@ -67,7 +68,7 @@ public interface IBootstrapProvider {
 
 	void tabRenderHead(Component component, IHeaderResponse response);
 
-	void popoverRenderHead(Component component, IHeaderResponse response, IBootstrapPopoverOptions options);
+	void popoverRenderHead(Component component, IHeaderResponse response, Supplier<CharSequence> options);
 
 	JsStatement confirmStatement(Component component);
 

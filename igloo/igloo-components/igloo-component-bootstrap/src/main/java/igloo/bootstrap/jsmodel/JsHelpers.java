@@ -26,9 +26,9 @@ import igloo.bootstrap.js.type.JsBooleanType;
 import igloo.bootstrap.js.type.JsElementType;
 import igloo.bootstrap.js.type.JsNumberType;
 import igloo.bootstrap.js.type.JsStringType;
-import igloo.bootstrap.woption.IWOptionComponentFactory;
 import igloo.bootstrap.woption.IWOptionDetachable;
 import igloo.bootstrap.woption.IWOptionModel;
+import igloo.wicket.factory.IComponentFactory;
 
 public class JsHelpers {
 
@@ -100,7 +100,7 @@ public class JsHelpers {
 		}
 	}
 
-	private static class ElementComponentFactory implements IJsLiteral<JsElementType>, IWOptionComponentFactory {
+	private static class ElementComponentFactory implements IJsLiteral<JsElementType>, IComponentFactory<Component> {
 		private static final long serialVersionUID = 6326579662056550218L;
 		private transient Function<String, Component> componentFactory;
 		private Component component;
@@ -118,7 +118,7 @@ public class JsHelpers {
 		}
 
 		@Override
-		public Component createComponent(String wicketId) {
+		public Component create(String wicketId) {
 			component = componentFactory.apply(wicketId);
 			return component;
 		}

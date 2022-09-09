@@ -90,6 +90,55 @@ public interface IPopover extends IJsObject, Serializable {
 	@Nullable
 	IWOption<String> linkCssClass();
 
+	public enum Placement {
+		AUTO("auto"),
+		TOP("top"),
+		BOTTOM("bottom"),
+		LEFT("left"),
+		RIGHT("right");
+		
+		private final String value;
+		
+		private Placement(String value) {
+			this.value = value;
+		}
+		
+		public String getValue() {
+			return value;
+		}
+	}
+
+	public enum Trigger {
+		CLICK("click"),
+		HOVER("hover"),
+		FOCUS("focus"),
+		MANUAL("manual");
+		
+		private final String value;
+		
+		private Trigger(String value) {
+			this.value = value;
+		}
+		
+		public String getValue() {
+			return value;
+		}
+	}
+
+	public enum Boundary {
+		CLIPPING_PARENTS("clippingParents");
+		
+		private final String value;
+		
+		private Boundary(String value) {
+			this.value = value;
+		}
+		
+		public String getValue() {
+			return value;
+		}
+	}
+
 	@Override
 	@Value.Derived
 	default Map<String, IJsStatement<?>> values() {

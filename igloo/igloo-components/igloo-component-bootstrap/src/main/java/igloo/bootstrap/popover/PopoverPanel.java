@@ -10,10 +10,10 @@ import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.iglooproject.functional.Predicates2;
 
-import igloo.bootstrap.woption.IWOptionComponentFactory;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IComponentFactory;
 
 public class PopoverPanel extends Panel {
 	private static final long serialVersionUID = -8520209335567737130L;
@@ -23,14 +23,14 @@ public class PopoverPanel extends Panel {
 		WebMarkupContainer link = new WebMarkupContainer("link");
 		
 		Component titleComponent;
-		if (popover.title() instanceof IWOptionComponentFactory) {
-			titleComponent = ((IWOptionComponentFactory) popover.title()).createComponent("titleComponent");
+		if (popover.title() instanceof IComponentFactory) {
+			titleComponent = ((IComponentFactory<?>) popover.title()).create("titleComponent");
 		} else {
 			titleComponent = new EmptyPanel("titleComponent");
 		}
 		Component contentComponent;
-		if (popover.content() instanceof IWOptionComponentFactory) {
-			contentComponent = ((IWOptionComponentFactory) popover.content()).createComponent("contentComponent");
+		if (popover.content() instanceof IComponentFactory) {
+			contentComponent = ((IComponentFactory<?>) popover.content()).create("contentComponent");
 		} else {
 			contentComponent = new EmptyPanel("contentComponent");
 		}
