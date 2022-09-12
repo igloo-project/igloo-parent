@@ -436,6 +436,33 @@ $hr-margin-y:                 $spacer !default; // bootstrap
 $table-cell-padding:          .75rem !default; // bootstrap
 $table-cell-padding-sm:       .3rem !default; // bootstrap
 
+$table-cell-widths: () !default;
+$table-cell-widths: map-merge(
+  (
+    "auto": auto,
+    20: 20px,
+    40: 40px,
+    60: 60px,
+    80: 80px,
+    100: 100px,
+    120: 120px,
+    150: 150px,
+    200: 200px,
+    250: 250px,
+    300: 300px,
+    350: 350px, 
+    400: 400px,
+    500: 500px,
+    700: 700px,
+    "actions-1x": 60px,
+    "actions-2x": 100px,
+    "actions-3x": 140px,
+    "actions-4x": 180px,
+    "actions-5x": 210px
+  ),
+  $table-cell-widths
+); // bootstrap-override
+
 $table-color:                 $body-color !default; // bootstrap
 $table-bg:                    null !default; // bootstrap
 $table-accent-bg:             rgba($black, .025) !default; // bootstrap | bootstrap-override

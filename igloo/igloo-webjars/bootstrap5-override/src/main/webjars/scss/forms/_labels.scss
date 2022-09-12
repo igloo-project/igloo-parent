@@ -1,0 +1,12 @@
+.form-label {
+	color: #5F6368;
+	
+	&.required {
+		&::after {
+			@include fa-icon-base($fa-var-asterisk, false);
+			@include fa-size($fa-size-scale-2xs);
+			margin-inline-start: 4px;
+			color: $danger;
+		}
+	}
+}

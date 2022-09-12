@@ -10,12 +10,9 @@
 
 @import "variables";
 @import "../common/variables";
-@import "../../common/variables";
-
-@import "../../common/common";
-@import "../../common/layout";
-@import "../../common/forms";
 
 @import "../common/common";
+@import "../common/layout";
 
+@import "common";
 @import "layout";
