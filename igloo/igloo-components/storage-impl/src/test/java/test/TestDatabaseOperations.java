@@ -11,8 +11,10 @@ import java.math.BigInteger;
 import java.nio.file.Path;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -835,17 +837,22 @@ class TestDatabaseOperations extends AbstractTest {
 		StorageUnit storageUnit = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
 		StorageConsistencyCheck check = doInWriteTransactionEntityManager(entityManagerFactory, em -> {
 			StorageConsistencyCheck c = new StorageConsistencyCheck();
-			c.setCheckFinishedOn(LocalDateTime.now());
-			c.setCheckStartedOn(LocalDateTime.now());
+			// Round the results because the precision is different when comparing two `LocalDateTime`
+			Clock mClock = Clock.tickMillis(ZoneId.systemDefault());
+			c.setCheckFinishedOn(LocalDateTime.now(mClock));
+			c.setCheckStartedOn(LocalDateTime.now(mClock));
 			c.setCheckType(StorageUnitCheckType.LISTING_SIZE);
 			c.setStorageUnit(em.find(StorageUnit.class, storageUnit.getId()));
 			databaseOperations.createConsistencyCheck(c);
 			return c;
 		});
 		doInReadTransactionEntityManager(entityManagerFactory, em -> {
-			assertThat(em.find(StorageConsistencyCheck.class, check.getId()))
+			StorageConsistencyCheck storage = em.find(StorageConsistencyCheck.class, check.getId());
+			assertThat(storage)
 				.usingRecursiveComparison()
-				.ignoringFields("fichiers", "storageUnit.fichiers", "storageUnit.consistencyChecks").isEqualTo(check);
+				.ignoringFields(
+					"fichiers", "storageUnit.fichiers", "storageUnit.consistencyChecks"
+				).isEqualTo(check);
 			return null;
 		});
 	}
