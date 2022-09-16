@@ -75,4 +75,15 @@ public class BootstrapRequestCycle {
 		}
 	}
 
+	public static String getVariation() {
+		switch (getVersion()) {
+		case BOOTSTRAP_4:
+			return "bs4";
+		case BOOTSTRAP_5:
+			return null;
+		default:
+			throw new IllegalStateException();
+		}
+	}
+
 }

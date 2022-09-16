@@ -21,6 +21,7 @@ import org.iglooproject.wicket.more.model.IErrorAwareDataProvider;
 
 import com.google.common.collect.Multimap;
 
+import igloo.bootstrap.BootstrapRequestCycle;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.CountLabel;
@@ -261,4 +262,10 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 			error(getString("common.error.unexpected"));
 		}
 	}
+
+	@Override
+	public String getVariation() {
+		return BootstrapRequestCycle.getVariation();
+	}
+
 }

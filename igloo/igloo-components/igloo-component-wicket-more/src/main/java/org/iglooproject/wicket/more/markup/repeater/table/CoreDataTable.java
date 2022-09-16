@@ -21,6 +21,7 @@ import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceGridView;
 
 import com.google.common.collect.Lists;
 
+import igloo.bootstrap.BootstrapRequestCycle;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.factory.IDetachableFactory;
@@ -269,6 +270,11 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 			item.add(rowsBehaviorFactories.stream().map(f -> f.create(model)).toArray(Behavior[]::new));
 			return item;
 		}
+	}
+
+	@Override
+	public String getVariation() {
+		return BootstrapRequestCycle.getVariation();
 	}
 
 }

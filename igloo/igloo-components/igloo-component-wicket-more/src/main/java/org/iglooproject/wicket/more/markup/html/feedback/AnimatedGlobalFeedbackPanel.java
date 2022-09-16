@@ -25,6 +25,7 @@ import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
+import igloo.bootstrap.BootstrapRequestCycle;
 import igloo.wicket.behavior.ClassAttributeAppender;
 
 public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
@@ -119,4 +120,10 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 			}
 		};
 	}
+
+	@Override
+	public String getVariation() {
+		return BootstrapRequestCycle.getVariation();
+	}
+
 }
