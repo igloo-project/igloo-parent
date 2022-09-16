@@ -39,6 +39,7 @@ public class WorkInProgressPopup extends AbstractModalPopupPanel<String> {
 	public void updateAjaxAttributes(AjaxRequestAttributes attributes) {
 		CharSequence hideIfNotRedirecting = doIfNotRedirecting(getBootstrapModal().hide(getContainer()));
 		AjaxCallListener listener = new AjaxCallListener()
+				.onBeforeSend(getBootstrapModal().modal(getContainer()).render())
 				.onBeforeSend(getBootstrapModal().show(getContainer()).render())
 				.onComplete(hideIfNotRedirecting);
 		attributes.getAjaxCallListeners().add(listener);

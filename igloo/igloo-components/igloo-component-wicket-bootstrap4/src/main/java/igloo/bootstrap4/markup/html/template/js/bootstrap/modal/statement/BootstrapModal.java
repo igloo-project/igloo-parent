@@ -164,7 +164,7 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
 	}
 
 	private JsStatement modalEvent(Component modal, String event) {
-		return new JsStatement().$(modal).chain("modal").chain(event);
+		return new JsStatement().$(modal).chain("modal", JsUtils.quotes(event));
 	}
 
 	@Override
