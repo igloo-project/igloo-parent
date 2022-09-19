@@ -48,7 +48,6 @@ import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
 import igloo.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
-import igloo.igloojs.focus.FocusJavaScriptResourceReference;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.condition.Condition;
 
@@ -172,8 +171,6 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 		super.renderHead(response);
 		getApplicationTheme().renderHead(response);
 		response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
-		response.render(JavaScriptHeaderItem.forReference(FocusJavaScriptResourceReference.get()));
-		response.render(JavaScriptHeaderItem.forScript("focus.install()", "focus-install"));
 	}
 
 	@Override
