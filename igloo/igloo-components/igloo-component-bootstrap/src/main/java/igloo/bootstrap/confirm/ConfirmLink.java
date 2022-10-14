@@ -10,8 +10,6 @@ import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
-import igloo.bootstrap.BootstrapRequestCycle;
-
 public abstract class ConfirmLink<O> extends Link<O> {
 
 	private static final long serialVersionUID = -4124927130129944090L;
@@ -31,15 +29,14 @@ public abstract class ConfirmLink<O> extends Link<O> {
 	}
 
 	@Override
-	protected CharSequence getOnClickScript(CharSequence url) {
-		return BootstrapRequestCycle.getSettings().confirmStatement(ConfirmLink.this).append("return false;").render();
+	protected boolean useJSEventBindingWhenNeeded() {
+		// we prevent any custom onclick binding
+		return false;
 	}
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
-		BootstrapRequestCycle.getSettings().confirmRenderHead(this, response);
-		
 		Event confirmEvent = new Event(BootstrapConfirmEvent.CONFIRM) {
 			private static final long serialVersionUID = 6466300052232971891L;
 			

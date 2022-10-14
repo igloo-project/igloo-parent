@@ -152,6 +152,7 @@ public class WicketBootstrap4Module implements IWicketModule, IBootstrapProvider
 	@Override
 	public void confirmRenderHead(Component component, IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(BootstrapConfirmJavaScriptResourceReference.get()));
+		response.render(OnDomReadyHeaderItem.forScript(confirmStatement(component).render(true)));
 	}
 
 	@Override
