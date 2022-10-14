@@ -14,6 +14,10 @@
 	<name>igloojs</name>
 	<description>Igloo javascript</description>
 
+	<properties>
+		<frontend.npm.arguments>run js</frontend.npm.arguments>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>de.agilecoders.wicket.webjars</groupId>
@@ -42,63 +46,13 @@
 				<executions>
 					<execution>
 						<id>clean-node-modules</id>
-						<goals>
-							<goal>clean</goal>
-						</goals>
 						<phase>clean</phase>
-						<configuration>
-							<excludeDefaultDirectories>true</excludeDefaultDirectories>
-							<filesets>
-								<fileset>
-									<directory>${project.basedir}/node_modules</directory>
-								</fileset>
-								<fileset>
-									<directory>${project.basedir}/src/main/generated-js</directory>
-									<excludes>
-										<exclude>.gitkeep</exclude>
-									</excludes>
-								</fileset>
-							</filesets>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
 				<artifactId>frontend-maven-plugin</artifactId>
-				<version>1.12.1</version>
-				<executions>
-					<execution>
-						<id>install-node-and-npm</id>
-						<goals>
-							<goal>install-node-and-npm</goal>
-						</goals>
-						<phase>generate-resources</phase>
-					</execution>
-					<execution>
-						<id>npm-install</id>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<phase>generate-resources</phase>
-					</execution>
-					<execution>
-						<?m2e execute onIncremental?>
-						<id>npm-js</id>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<phase>generate-resources</phase>
-						<configuration>
-							<arguments>run js</arguments>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<nodeVersion>v16.14.0</nodeVersion>
-					<npmVersion>8.3.1</npmVersion>
-					<installDirectory>${project.build.directory}</installDirectory>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

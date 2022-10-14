@@ -18,8 +18,6 @@
 		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>bootstrap4</artifactId>
-			<!-- TODO: push to igloo-maven -->
-			<version>4.6.0</version>
 			<exclusions>
 				<!-- needed as it triggers a upper bound failure -->
 				<exclusion>
