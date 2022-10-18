@@ -9,3 +9,4 @@ gitlab-ci.build.conf
 .*.swp
 .idea/
 /out/
+*.iml
