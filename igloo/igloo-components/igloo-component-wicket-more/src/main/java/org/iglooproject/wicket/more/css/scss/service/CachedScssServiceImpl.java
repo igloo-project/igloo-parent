@@ -1,6 +1,7 @@
 package org.iglooproject.wicket.more.css.scss.service;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.iglooproject.commons.io.ClassPathResourceUtil;
 import org.iglooproject.sass.config.ISassConfigurationProvider;
@@ -94,8 +95,8 @@ public class CachedScssServiceImpl extends ScssServiceImpl implements ICachedScs
 		
 	private boolean isUpToDate(ScssStylesheetInformation stylesheet, String path) {
 		try {
-			return classpathResourceUtil.lastModified(path) <= stylesheet.getLastModifiedTime();
-		} catch (RuntimeException | IOException e) {
+			return lastModified(path) <= stylesheet.getLastModifiedTime();
+		} catch (RuntimeException | IOException | URISyntaxException e) {
 			LOGGER.warn("Error determining lastModifiedDate on {}; cached invalidated", path, e);
 			return false;
 		}

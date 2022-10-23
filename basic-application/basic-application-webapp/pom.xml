@@ -37,11 +37,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-wicket-bootstrap4</artifactId>
-			<version>${igloo.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-web-security</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>

@@ -1,0 +1,6 @@
+@import "test4";
+@import "$(scope-test)/test5";
+
+test3 {
+	color:$color2;
+}

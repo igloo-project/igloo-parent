@@ -1,113 +1,113 @@
-@import "webjars://bootstrap:current/scss/vendor/rfs";
+@import "META-INF/resources/webjars/bootstrap/scss/vendor/rfs";
 
 
-@import "webjars://bootstrap:current/scss/mixins/deprecate";
-@import "webjars://bootstrap5-override:current/scss/mixins/deprecate";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/deprecate";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/deprecate";
 @import "override/mixins/deprecate";
 
 
-@import "webjars://bootstrap:current/scss/mixins/breakpoints";
-@import "webjars://bootstrap5-override/scss/mixins/breakpoints";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/breakpoints";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/breakpoints";
 @import "override/mixins/breakpoints";
 
-@import "webjars://bootstrap5-override/scss/mixins/color-bg";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/color-bg";
 @import "override/mixins/color-bg";
 
-@import "webjars://bootstrap:current/scss/mixins/color-scheme";
-@import "webjars://bootstrap5-override/scss/mixins/color-scheme";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/color-scheme";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/color-scheme";
 @import "override/mixins/color-scheme";
 
-@import "webjars://bootstrap:current/scss/mixins/image";
-@import "webjars://bootstrap5-override/scss/mixins/image";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/image";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/image";
 @import "override/mixins/image";
 
-@import "webjars://bootstrap:current/scss/mixins/resize";
-@import "webjars://bootstrap5-override/scss/mixins/resize";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/resize";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/resize";
 @import "override/mixins/resize";
 
-@import "webjars://bootstrap:current/scss/mixins/visually-hidden";
-@import "webjars://bootstrap5-override/scss/mixins/visually-hidden";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/visually-hidden";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/visually-hidden";
 @import "override/mixins/visually-hidden";
 
-@import "webjars://bootstrap:current/scss/mixins/reset-text";
-@import "webjars://bootstrap5-override/scss/mixins/reset-text";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/reset-text";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/reset-text";
 @import "override/mixins/reset-text";
 
-@import "webjars://bootstrap:current/scss/mixins/text-truncate";
-@import "webjars://bootstrap5-override/scss/mixins/text-truncate";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/text-truncate";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/text-truncate";
 @import "override/mixins/text-truncate";
 
 
-@import "webjars://bootstrap:current/scss/mixins/utilities";
-@import "webjars://bootstrap5-override/scss/mixins/utilities";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/utilities";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/utilities";
 @import "override/mixins/utilities";
 
 
-@import "webjars://bootstrap:current/scss/mixins/alert";
-@import "webjars://bootstrap5-override/scss/mixins/alert";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/alert";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/alert";
 @import "override/mixins/alert";
 
-@import "webjars://bootstrap:current/scss/mixins/backdrop";
-@import "webjars://bootstrap5-override/scss/mixins/backdrop";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/backdrop";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/backdrop";
 @import "override/mixins/backdrop";
 
-@import "webjars://bootstrap5-override/scss/mixins/badge";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/badge";
 @import "override/mixins/badge";
 
-@import "webjars://bootstrap:current/scss/mixins/buttons";
-@import "webjars://bootstrap5-override/scss/mixins/buttons";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/buttons";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/buttons";
 @import "override/mixins/buttons";
 
-@import "webjars://bootstrap:current/scss/mixins/caret";
-@import "webjars://bootstrap5-override/scss/mixins/caret";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/caret";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/caret";
 @import "override/mixins/caret";
 
-@import "webjars://bootstrap:current/scss/mixins/pagination";
-@import "webjars://bootstrap5-override/scss/mixins/pagination";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/pagination";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/pagination";
 @import "override/mixins/pagination";
 
-@import "webjars://bootstrap:current/scss/mixins/lists";
-@import "webjars://bootstrap5-override/scss/mixins/lists";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/lists";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/lists";
 @import "override/mixins/lists";
 
-@import "webjars://bootstrap:current/scss/mixins/list-group";
-@import "webjars://bootstrap5-override/scss/mixins/list-group";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/list-group";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/list-group";
 @import "override/mixins/list-group";
 
-@import "webjars://bootstrap:current/scss/mixins/forms";
-@import "webjars://bootstrap5-override/scss/mixins/forms";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/forms";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/forms";
 @import "override/mixins/forms";
 
-@import "webjars://bootstrap:current/scss/mixins/table-variants";
-@import "webjars://bootstrap5-override/scss/mixins/table-variants";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/table-variants";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/table-variants";
 @import "override/mixins/table-variants";
 
 
-@import "webjars://bootstrap:current/scss/mixins/border-radius";
-@import "webjars://bootstrap5-override/scss/mixins/border-radius";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/border-radius";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/border-radius";
 @import "override/mixins/border-radius";
 
-@import "webjars://bootstrap:current/scss/mixins/box-shadow";
-@import "webjars://bootstrap5-override/scss/mixins/box-shadow";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/box-shadow";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/box-shadow";
 @import "override/mixins/box-shadow";
 
-@import "webjars://bootstrap:current/scss/mixins/gradients";
-@import "webjars://bootstrap5-override/scss/mixins/gradients";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/gradients";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/gradients";
 @import "override/mixins/gradients";
 
-@import "webjars://bootstrap:current/scss/mixins/transition";
-@import "webjars://bootstrap5-override/scss/mixins/transition";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/transition";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/transition";
 @import "override/mixins/transition";
 
 
-@import "webjars://bootstrap:current/scss/mixins/clearfix";
-@import "webjars://bootstrap5-override/scss/mixins/clearfix";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/clearfix";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/clearfix";
 @import "override/mixins/clearfix";
 
-@import "webjars://bootstrap:current/scss/mixins/container";
-@import "webjars://bootstrap5-override/scss/mixins/container";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/container";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/container";
 @import "override/mixins/container";
 
-@import "webjars://bootstrap:current/scss/mixins/grid";
-@import "webjars://bootstrap5-override/scss/mixins/grid";
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/grid";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/grid";
 @import "override/mixins/grid";

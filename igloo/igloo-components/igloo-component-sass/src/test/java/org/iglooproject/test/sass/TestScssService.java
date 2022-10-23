@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
-import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.Assertions;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.iglooproject.sass.service.IScssService;
@@ -16,6 +16,8 @@ import org.iglooproject.test.sass.config.TestSassConfigurationProvider;
 import org.iglooproject.test.sass.resources.TestScssServiceResourceScope;
 import org.iglooproject.test.sass.resources.other.scope.TestScssServiceOtherResourceScope;
 import org.junit.jupiter.api.Test;
+
+import com.google.common.io.Resources;
 
 class TestScssService {
 	
@@ -29,7 +31,7 @@ class TestScssService {
 				"style.scss"
 		);
 		
-		assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n", compiledStylesheet.getSource());
+		assertEquals(".test2 {\n  color: #eeeeee;\n}\n\n.test {\n  color: #cccccc;\n}", compiledStylesheet.getSource());
 		assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
 	}
 	
@@ -42,7 +44,8 @@ class TestScssService {
 				"style-scope.scss"
 		);
 		
-		assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n\n.test4 {\n\tcolor: #cccccc;\n}\n\n.test5 {\n\tcolor: #cccccc;\n}\n\ntest3 {\n\tcolor: #eeeeee;\n}\n", compiledStylesheet.getSource());
+		assertThat(compiledStylesheet.getSource())
+			.isEqualToIgnoringWhitespace(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n\n.test4 {\n\tcolor: #cccccc;\n}\n\n.test5 {\n\tcolor: #cccccc;\n}\n\ntest3 {\n\tcolor: #eeeeee;\n}\n");
 		assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
 	}
 
@@ -215,11 +218,10 @@ class TestScssService {
 		// about autoprefixer.scss:
 		// use indent with tab as spaces are processed to tab by scss
 		// (we want to check input == output if no autoprefixer)
-		String source = IOUtils.toString(
-				getClass().getResourceAsStream("/org/iglooproject/test/sass/resources/autoprefixer.scss"));
+		String source = Resources.toString(Resources.getResource("org/iglooproject/test/sass/resources/autoprefixer.scss"), StandardCharsets.UTF_8);
 		String output =
 				scssService.getCompiledStylesheet(TestScssServiceResourceScope.class, "autoprefixer.scss").getSource();
-		Assertions.assertThat(output).isEqualTo(source);
+		Assertions.assertThat(output).isEqualToIgnoringWhitespace(source);
 	}
 
 	/**
