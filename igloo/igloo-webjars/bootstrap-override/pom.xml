@@ -16,8 +16,8 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>bootstrap</artifactId>
+			<groupId>org.iglooproject.webjars</groupId>
+			<artifactId>bootstrap4</artifactId>
 		</dependency>
 	</dependencies>
 
