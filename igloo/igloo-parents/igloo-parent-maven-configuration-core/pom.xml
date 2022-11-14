@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-common</artifactId>
-		<version>4.3.0.bs5-SNAPSHOT</version>
+		<version>4.6.0.bs5-SNAPSHOT</version>
 		<relativePath>../igloo-parent-maven-configuration-common/pom.xml</relativePath>
 	</parent>
 
@@ -16,7 +16,7 @@
 
 	<properties>
 		<igloo.version>${project.version}</igloo.version>
-		<igloo-maven.version>4.4.1</igloo-maven.version>
+		<igloo-maven.version>4.6.0.bs5-SNAPSHOT</igloo-maven.version>
 		<igloo-commons.version>4.4.1</igloo-commons.version>
 
 		<igloo.log4j.major-version>2</igloo.log4j.major-version>
