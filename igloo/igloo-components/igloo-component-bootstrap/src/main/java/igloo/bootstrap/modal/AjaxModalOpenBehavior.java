@@ -51,6 +51,7 @@ public class AjaxModalOpenBehavior extends AjaxEventBehavior {
 		AjaxCallListener openModalListener = new AjaxCallListener();
 		
 		JsStatement onSuccessStatement = new JsStatement();
+		onSuccessStatement.append(modal.getBootstrapModal().modal(modal.getContainer()).render(true));
 		onSuccessStatement.append(modal.getBootstrapModal().show(modal.getContainer()).render(true));
 		openModalListener.onSuccess(onSuccessStatement.render());
 		
