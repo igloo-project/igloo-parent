@@ -37,6 +37,8 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 
 	private static final long serialVersionUID = 1L;
 
+	private final String variation;
+
 	private final Map<IColumn<T, S>, Condition> columnToConditionMap;
 
 	private final List<IColumn<T, S>> displayedColumns;
@@ -77,6 +79,7 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 		long rowsPerPage
 	) {
 		super(id);
+		this.variation = BootstrapRequestCycle.getVariation();
 		this.columnToConditionMap = columns;
 		this.displayedColumns = Lists.newArrayList();
 		this.rowsBehaviorFactories = rowsBehaviorFactories;
@@ -274,7 +277,7 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 
 	@Override
 	public String getVariation() {
-		return BootstrapRequestCycle.getVariation();
+		return variation;
 	}
 
 }

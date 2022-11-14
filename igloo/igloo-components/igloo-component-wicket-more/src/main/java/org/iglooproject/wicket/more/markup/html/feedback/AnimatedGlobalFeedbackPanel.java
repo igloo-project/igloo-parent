@@ -32,6 +32,8 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 
 	private static final long serialVersionUID = 2213180445046166086L;
 	
+	private final String variation;
+	
 	@SpringBean
 	private IPropertyService propertyService;
 	
@@ -50,6 +52,7 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 	 */
 	public AnimatedGlobalFeedbackPanel(String id, Integer autohideDelayValue, TimeUnit autohideDelayUnit) {
 		super(id);
+		this.variation = BootstrapRequestCycle.getVariation();
 		setOutputMarkupId(true);
 		
 		this.autohideDelayValue = autohideDelayValue != null ? autohideDelayValue : propertyService.get(GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE);
@@ -123,7 +126,7 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 
 	@Override
 	public String getVariation() {
-		return BootstrapRequestCycle.getVariation();
+		return variation;
 	}
 
 }

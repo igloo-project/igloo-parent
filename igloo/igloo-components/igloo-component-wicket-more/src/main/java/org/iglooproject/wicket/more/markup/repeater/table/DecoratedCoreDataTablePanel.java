@@ -40,6 +40,8 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	private final CoreDataTable<T, S> dataTable;
 	
 	private final ISequenceProvider<T> sequenceProvider;
+
+	private final String variation;
 	
 	public static enum AddInPlacement {
 		HEADING_MAIN,
@@ -64,6 +66,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		Condition responsiveCondition
 	) {
 		super(id);
+		this.variation = BootstrapRequestCycle.getVariation();
 		
 		this.sequenceProvider = sequenceProvider;
 		
@@ -265,7 +268,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 
 	@Override
 	public String getVariation() {
-		return BootstrapRequestCycle.getVariation();
+		return variation;
 	}
 
 }
