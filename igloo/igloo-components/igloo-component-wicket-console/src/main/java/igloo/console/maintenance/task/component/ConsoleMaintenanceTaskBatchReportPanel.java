@@ -42,7 +42,7 @@ public class ConsoleMaintenanceTaskBatchReportPanel extends GenericPanel<BatchRe
 		
 		add(
 			new TransparentWebMarkupContainer("card")
-				.add(new ClassAttributeAppender(batchReportNotEmptyCondition.then("bg-dark").otherwise("card-page")))
+				.add(new ClassAttributeAppender(batchReportNotEmptyCondition.then("text-bg-dark").otherwise("card-page")))
 		);
 		
 		add(
