@@ -10,6 +10,8 @@ public interface IBootstrapModal extends ChainableStatement {
 
 	IBootstrapModal setKeyboard(Boolean b);
 
+	IBootstrapModal setFocus(Boolean focus);
+
 	void addCancelBehavior(Component component);
 
 	JsStatement show(Component modal);

@@ -27,6 +27,7 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
 	private static final String OPTION_REPLACE = "replace";
 	private static final String OPTION_SPINNER = "spinner";
 	private static final String OPTION_KEYBOARD = "keyboard";
+	private static final String OPTION_FOCUS = "focus";
 
 	private final CharSequence method;
 
@@ -74,6 +75,12 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
 	 * Si true, active la sortie de la popup par la touche escape (défaut)
 	 */
 	private Boolean keyboard;
+
+	/**
+	 * If false, focus trap is deactivated (no effect as modal-more override _enforceFocus so it does nothing. true
+	 * of false value may not change observed behavior).
+	 */
+	private Boolean focus = false;
 
 	public BootstrapModal() {
 		this(null);
@@ -132,6 +139,9 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
 		}
 		if (keyboard != null) {
 			options.put(OPTION_KEYBOARD, keyboard);
+		}
+		if (focus != null) {
+			options.put(OPTION_FOCUS, focus);
 		}
 		// default is true, so modal is shown when component is created
 		options.put("show", false);
@@ -250,6 +260,16 @@ public final class BootstrapModal implements ChainableStatement, Serializable, I
 	@Override
 	public BootstrapModal setKeyboard(Boolean keyboard) {
 		this.keyboard = keyboard;
+		return this;
+	}
+
+	public Boolean getFocus() {
+		return focus;
+	}
+
+	@Override
+	public BootstrapModal setFocus(Boolean focus) {
+		this.focus = focus;
 		return this;
 	}
 }
