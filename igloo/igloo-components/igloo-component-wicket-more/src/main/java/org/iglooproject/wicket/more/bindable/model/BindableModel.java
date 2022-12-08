@@ -17,11 +17,12 @@ import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.bindable.exception.NoSuchModelException;
 import org.iglooproject.wicket.more.model.WorkingCopyModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+
+import igloo.wicket.model.Detachables;
 
 public class BindableModel<E> implements IBindableModel<E> {
 	

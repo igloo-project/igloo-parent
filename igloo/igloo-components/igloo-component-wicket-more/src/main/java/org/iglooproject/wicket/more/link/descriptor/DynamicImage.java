@@ -7,7 +7,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.lang.Args;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.common.IChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
@@ -16,6 +15,8 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkPar
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidators;
+
+import igloo.wicket.condition.Condition;
 
 /**
  * A {@link Image} whose targeted {@link ResourceReference} and {@link PageParameters} may change during the page life

@@ -18,10 +18,11 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.InjectOnly
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
+import igloo.wicket.factory.IDetachableFactory;
 
 /**
  * A base for implementing all interfaces that extend {@link IChosenParameterState}.

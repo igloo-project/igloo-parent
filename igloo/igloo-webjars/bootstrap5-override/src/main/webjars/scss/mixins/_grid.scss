@@ -1,0 +1,12 @@
+@mixin make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints) {
+	@each $breakpoint, $container-max-width in $max-widths {
+		@include media-breakpoint-up($breakpoint, $breakpoints) {
+			max-width: $container-max-width;
+		}
+	}
+}
+
+@mixin gutter($gutter-x, $gutter-y: $gutter-x) {
+	--#{$variable-prefix}gutter-x: #{$gutter-x};
+	--#{$variable-prefix}gutter-y: #{$gutter-y};
+}

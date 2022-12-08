@@ -28,12 +28,13 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkPara
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterSerializedFormValidationException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
-import org.iglooproject.wicket.more.util.model.Models;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
+import igloo.wicket.model.Models;
 
 public class CorePageLinkDescriptorImpl extends AbstractCoreExplicitelyParameterizedLinkDescriptor implements IPageLinkDescriptor {
 	

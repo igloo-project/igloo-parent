@@ -3,8 +3,8 @@ package org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer;
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.BootstrapColor;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.IBootstrapColor;
+import igloo.bootstrap.common.BootstrapColor;
+import igloo.bootstrap.common.IBootstrapColor;
 
 public final class BootstrapRendererInformation implements Serializable {
 

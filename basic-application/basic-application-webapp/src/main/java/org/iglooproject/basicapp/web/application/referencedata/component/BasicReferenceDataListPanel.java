@@ -1,5 +1,7 @@
 package org.iglooproject.basicapp.web.application.referencedata.component;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_DISPLAY_MD;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.ResourceModel;
@@ -55,10 +57,11 @@ public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>>
 		return super.addColumns(builder)
 			.addLabelColumn(new ResourceModel("business.referenceData.label.fr"), Bindings.referenceData().label().fr())
 				.withSort(ReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
-				.withClass("text text-md")
+				.withClass("cell-w-300")
 			.addLabelColumn(new ResourceModel("business.referenceData.label.en"), Bindings.referenceData().label().en())
 				.withSort(ReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
-				.withClass("text text-md");
+				.withClass("cell-w-300")
+				.withClass(CELL_DISPLAY_MD);
 	}
 
 	@Override

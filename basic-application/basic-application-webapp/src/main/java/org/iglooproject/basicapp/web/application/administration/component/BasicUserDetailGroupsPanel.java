@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.component;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION;
 
 import org.apache.wicket.RestartResponseException;
@@ -20,18 +21,18 @@ import org.iglooproject.basicapp.web.application.administration.form.UserGroupDr
 import org.iglooproject.basicapp.web.application.administration.model.UserGroupDataProvider;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDetailPage;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
-import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.markup.html.panel.GenericPanel;
-import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import igloo.wicket.action.IOneParameterAjaxAction;
+import igloo.wicket.feedback.FeedbackUtils;
+import igloo.wicket.markup.html.panel.GenericPanel;
+import igloo.wicket.model.Detachables;
 
 public class BasicUserDetailGroupsPanel extends GenericPanel<BasicUser> {
 
@@ -56,7 +57,7 @@ public class BasicUserDetailGroupsPanel extends GenericPanel<BasicUser> {
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 				.addLabelColumn(new ResourceModel("business.userGroup.name"))
 					.withLink(AdministrationUserGroupDetailPage.MAPPER)
-					.withClass("text text-md")
+					.withClass("cell-w-350 cell-w-max")
 				.addActionColumn()
 					.addConfirmAction(ActionRenderers.remove())
 						.title(new ResourceModel("administration.userGroup.detail.users.action.remove.confirmation.title"))
@@ -86,9 +87,9 @@ public class BasicUserDetailGroupsPanel extends GenericPanel<BasicUser> {
 							}
 						})
 						.hideLabel()
-					.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
+					.withClassOnElements(BTN_TABLE_ROW_ACTION)
 					.end()
-					.withClass("actions actions-1x")
+					.withClass("cell-w-actions-1x")
 				.bootstrapCard()
 					.addIn(AddInPlacement.FOOTER_MAIN, (wicketId, table) -> new UserGroupAddFragment(wicketId, userModel))
 					.ajaxPager(AddInPlacement.HEADING_RIGHT)

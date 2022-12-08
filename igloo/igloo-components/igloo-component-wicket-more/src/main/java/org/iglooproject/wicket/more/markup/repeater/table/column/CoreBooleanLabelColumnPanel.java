@@ -2,8 +2,9 @@ package org.iglooproject.wicket.more.markup.repeater.table.column;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
+
+import igloo.wicket.markup.html.panel.GenericPanel;
 
 public abstract class CoreBooleanLabelColumnPanel<S extends ISort<?>> extends GenericPanel<Boolean> {
 

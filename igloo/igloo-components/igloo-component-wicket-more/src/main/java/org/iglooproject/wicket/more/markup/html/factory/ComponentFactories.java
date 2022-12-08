@@ -6,6 +6,9 @@ import org.iglooproject.wicket.more.link.descriptor.AbstractDynamicBookmarkableL
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 
+import igloo.wicket.factory.IComponentFactory;
+import igloo.wicket.factory.IOneParameterComponentFactory;
+
 public final class ComponentFactories {
 
 	private ComponentFactories() {

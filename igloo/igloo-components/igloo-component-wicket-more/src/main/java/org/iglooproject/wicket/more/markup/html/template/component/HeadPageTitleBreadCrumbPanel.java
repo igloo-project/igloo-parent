@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbMarkupTagRenderingBehavior;
 
 import com.google.common.collect.ImmutableList;
+
+import igloo.wicket.condition.Condition;
 
 public class HeadPageTitleBreadCrumbPanel extends GenericPanel<List<BreadCrumbElement>> {
 

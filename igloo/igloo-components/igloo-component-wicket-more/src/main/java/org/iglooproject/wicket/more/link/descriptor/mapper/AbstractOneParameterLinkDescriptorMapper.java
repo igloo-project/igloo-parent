@@ -1,8 +1,9 @@
 package org.iglooproject.wicket.more.link.descriptor.mapper;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.more.model.ReadOnlyModel;
-import org.iglooproject.wicket.more.util.model.Models;
+
+import igloo.wicket.model.Models;
+import igloo.wicket.model.ReadOnlyModel;
 
 
 public abstract class AbstractOneParameterLinkDescriptorMapper<L, T1>

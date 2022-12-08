@@ -1,17 +1,19 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLinkBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnAddedConfirmActionState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepContent;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepEndContent;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepNo;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepOnclick;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnConfirmActionBuilderStepStart;
+
+import igloo.bootstrap.confirm.AjaxConfirmLink;
+import igloo.bootstrap.confirm.AjaxConfirmLinkBuilder;
+import igloo.bootstrap.confirm.IConfirmLinkBuilder;
+import igloo.bootstrap.renderer.IBootstrapRenderer;
+import igloo.wicket.action.IOneParameterAjaxAction;
+import igloo.wicket.factory.IDetachableFactory;
 
 public class ActionColumnConfirmActionBuilder<T, I> implements
 		IActionColumnConfirmActionBuilderStepStart<T,I>, IActionColumnConfirmActionBuilderStepContent<T,I>,
@@ -20,14 +22,14 @@ public class ActionColumnConfirmActionBuilder<T, I> implements
 
 	private final ActionColumnBuilder<T,I> actionColumnBuilder;
 
-	private final BootstrapRenderer<? super T> renderer;
+	private final IBootstrapRenderer<? super T> renderer;
 
-	private AjaxConfirmLinkBuilder<T> ajaxConfirmLinkBuilder;
+	private IConfirmLinkBuilder<AjaxConfirmLink<T>, T> ajaxConfirmLinkBuilder;
 
-	public ActionColumnConfirmActionBuilder(ActionColumnBuilder<T,I> actionColumnBuilder, BootstrapRenderer<? super T> renderer) {
+	public ActionColumnConfirmActionBuilder(ActionColumnBuilder<T,I> actionColumnBuilder, IBootstrapRenderer<? super T> renderer) {
 		this.actionColumnBuilder = actionColumnBuilder;
 		this.renderer = renderer;
-		ajaxConfirmLinkBuilder = (AjaxConfirmLinkBuilder<T>) AjaxConfirmLink.<T>build();
+		ajaxConfirmLinkBuilder = new AjaxConfirmLinkBuilder<T>();
 	}
 
 	@Override

@@ -8,6 +8,8 @@ import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
 import org.iglooproject.wicket.more.model.ReadOnlyCollectionModel;
 
+import igloo.wicket.model.ICollectionModel;
+
 public abstract class CollectionView<T> extends SequenceView<T> {
 
 	private static final long serialVersionUID = 1L;

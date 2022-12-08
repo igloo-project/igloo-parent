@@ -13,6 +13,8 @@ import org.iglooproject.functional.Predicates2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+import igloo.wicket.model.IBindableDataProvider;
+
 public class CacheDataProvider<T> implements IDataProvider<T>, IBindableDataProvider {
 
 	private static final long serialVersionUID = 6701302381473177093L;

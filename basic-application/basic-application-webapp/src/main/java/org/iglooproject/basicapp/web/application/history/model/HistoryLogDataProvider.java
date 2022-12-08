@@ -17,7 +17,8 @@ import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
+
+import igloo.wicket.model.Detachables;
 
 public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<HistoryLog, HistoryLogSort> {
 

@@ -6,7 +6,9 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
-import org.iglooproject.wicket.more.model.ReadOnlyMapModel;
+
+import igloo.wicket.model.IMapModel;
+import igloo.wicket.model.ReadOnlyMapModel;
 
 public abstract class MapView<K, V> extends SequenceView<K> {
 

@@ -9,7 +9,7 @@ import org.apache.wicket.validation.ValidationError;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
-import org.iglooproject.wicket.more.condition.Condition;
+import igloo.wicket.condition.Condition;
 
 public class ConditionalRequiredFormModelValidator implements IFormModelValidator {
 

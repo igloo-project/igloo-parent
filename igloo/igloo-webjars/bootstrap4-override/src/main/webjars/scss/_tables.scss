@@ -1,0 +1,177 @@
+.table {
+	> :not(caption) > * > * {
+		overflow: hidden;
+		@extend .text-break;
+		
+		@each $breakpoint in map-keys($grid-breakpoints) {
+			@include media-breakpoint-up($breakpoint) {
+				$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+				
+				@each $name, $value in $table-cell-widths {
+					&.cell-w#{$infix}-#{$name} {
+						min-width: $value;
+						width: $value;
+					}
+				}
+				
+				&.cell-w#{$infix}-fit {
+					width: 1%;
+					word-break: normal;
+					word-wrap: normal;
+					
+					.badge {
+						white-space: nowrap;
+					}
+				}
+				
+				&.cell-w#{$infix}-auto {
+					width: auto;
+				}
+			}
+		}
+		
+		.badge {
+			white-space: normal;
+		}
+		
+		.row-table-action {
+			@include make-row();
+			@include make-row-grid(map-get($grid-gutters, xxs));
+			
+			justify-content: center;
+			
+			.col-table-action {
+				@include make-col-ready();
+				@include make-col-auto();
+			}
+		}
+		
+		.btn-table-row-action {
+			@include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-line-height-sm, $btn-border-radius-sm);
+		}
+	}
+	
+	tfoot th {
+		vertical-align: top;
+		border-top: 2 * $table-border-width solid $table-border-color;
+	}
+}
+
+.table {
+	&.table-dark {
+		th {
+			.btn.btn-tab-sort {
+				color: $table-dark-color;
+			}
+		}
+	}
+	
+	.thead-dark {
+		th {
+			.btn.btn-tab-sort {
+				color: $table-dark-color;
+			}
+		}
+	}
+	
+	.thead-light {
+		th {
+			.btn.btn-tab-sort {
+				color: $table-head-color;
+			}
+		}
+	}
+	
+	th {
+		.btn.btn-tab-sort {
+			margin: 0;
+			padding: 0 3px;
+			float: right;
+			color: $body-color;
+			border: none;
+			background: none;
+			
+			&.active {
+				color: $link-color;
+				box-shadow: none;
+				background: none;
+			}
+		}
+	}
+}
+
+.table-bordered-inner {
+	th,
+	td {
+		border-top: $table-border-width solid $table-border-color;
+	}
+	
+	thead,
+	tbody {
+		tr {
+			&:first-child {
+				th,
+				td {
+					border-top: 0;
+				}
+			}
+		}
+	}
+	
+	th + th,
+	td + td {
+		border-left: $table-border-width solid $table-border-color;
+	}
+}
+
+.table-card-body {
+	margin: 0;
+	
+	caption {
+		padding-left: $card-spacer-x;
+		padding-right: $card-spacer-x;
+	}
+}
+
+.table-layout {
+	@each $breakpoint in map-keys($grid-breakpoints) {
+		@each $value in (auto, fixed) {
+			$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+			
+			&#{$infix}-#{$value} {
+				@include media-breakpoint-up($breakpoint) {
+					table-layout: #{$value};
+				}
+			}
+		}
+	}
+}
+
+.table-row-disabled {
+	background-color: transparent !important;
+	background: repeating-linear-gradient(
+		135deg,
+		$white,
+		$white 10px,
+		#E6E7E8 10px,
+		#E6E7E8 20px
+	);
+	
+	> td {
+		background-color: transparent;
+	}
+}
+
+.table-hover {
+	.table-row-disabled {
+		@include hover() {
+			background: repeating-linear-gradient(
+				135deg,
+				darken($white, 5%),
+				darken($white, 5%) 10px,
+				darken(#E6E7E8, 5%) 10px,
+				darken(#E6E7E8, 5%) 20px
+			);
+		}
+	}
+}

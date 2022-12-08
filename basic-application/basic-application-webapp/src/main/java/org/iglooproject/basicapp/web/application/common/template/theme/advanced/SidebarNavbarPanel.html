@@ -2,12 +2,14 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
-	<div class="navbar-header">
-		<button class="navbar-toggler" type="button">
-			<span class="navbar-toggler-icon" />
-		</button>
-		
-		<a class="navbar-brand" wicket:id="home"><wicket:message key="common.rootPageTitle" /></a>
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button class="navbar-toggler" type="button" data-bs-dismiss="offcanvas">
+				<span class="navbar-toggler-icon" />
+			</button>
+			
+			<a class="navbar-brand" wicket:id="home"><wicket:message key="common.rootPageTitle" /></a>
+		</div>
 	</div>
 </wicket:panel>
 </html>

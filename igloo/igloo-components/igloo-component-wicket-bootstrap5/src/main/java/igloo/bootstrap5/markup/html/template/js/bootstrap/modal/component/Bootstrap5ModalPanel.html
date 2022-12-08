@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<body>
+		<wicket:panel>
+			<div wicket:id="container" class="modal fade" style="display: none;">
+				<div wicket:id="dialog" class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<div class="modal-title"><wicket:container wicket:id="header" /></div>
+							<button class="btn-close btn-close-icon" type="button" data-bs-dismiss="modal">
+								<span class="fa fa-lg fa-fw fa-times"></span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<wicket:container wicket:id="body" />
+						</div>
+						<div class="modal-footer">
+							<wicket:container wicket:id="footer" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</wicket:panel>
+	</body>
+</html>

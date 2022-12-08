@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.page;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
 import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.TABLE_ROW_DISABLED;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
@@ -24,34 +25,34 @@ import org.iglooproject.basicapp.web.application.administration.template.Adminis
 import org.iglooproject.basicapp.web.application.common.component.AnnouncementMessagePanel;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.common.renderer.AnnouncementEnabledRenderer;
-import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import org.iglooproject.wicket.more.markup.html.action.IOneParameterAjaxAction;
-import org.iglooproject.wicket.more.markup.html.action.OneParameterModalOpenAjaxAction;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;
-import org.iglooproject.wicket.more.util.DatePattern;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
+
+import igloo.bootstrap.modal.AjaxModalOpenBehavior;
+import igloo.bootstrap.modal.OneParameterModalOpenAjaxAction;
+import igloo.wicket.action.IOneParameterAjaxAction;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.feedback.FeedbackUtils;
+import igloo.wicket.model.Detachables;
+import igloo.wicket.util.DatePattern;
 
 public class AdministrationAnnouncementListPage extends AdministrationAnnouncementTemplate {
 
 	private static final long serialVersionUID = -4746355629579854697L;
 
-	private Logger LOGGER = LoggerFactory.getLogger(AdministrationAnnouncementListPage.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdministrationAnnouncementListPage.class);
 
 	@SpringBean
 	private IAnnouncementService announcementService;
@@ -96,12 +97,14 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 		DecoratedCoreDataTablePanel<?, ?> results =
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 				.addBootstrapBadgeColumn(Model.of(), Bindings.announcement(), AnnouncementEnabledRenderer.get())
+					.badgePill()
 					.hideLabel()
-					.withClass("narrow")
+					.withClass("cell-w-60 text-center")
 				.addLabelColumn(new ResourceModel("business.announcement.id"), Bindings.announcement().id())
 					.withSort(AnnouncementSort.ID, SortIconStyle.NUMERIC, CycleMode.DEFAULT_REVERSE)
-					.withClass("numeric numeric-sm")
+					.withClass("cell-w-60")
 				.addLabelColumn(new ResourceModel("business.announcement.type"), Bindings.announcement().type(), EnumRenderer.get())
+					.withClass("cell-w-100")
 				.addColumn(new AbstractCoreColumn<Announcement, AnnouncementSort>(new ResourceModel("business.announcement.message")) {
 					private static final long serialVersionUID = 1L;
 					@Override
@@ -109,11 +112,12 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 						cellItem.add(new AnnouncementMessagePanel(componentId, rowModel));
 					}
 				})
+					.withClass("cell-w-400")
 				.addLabelColumn(new ResourceModel("business.announcement.publication.startDateTime"), Bindings.announcement().publication().startDateTime(), DatePattern.REALLY_SHORT_DATETIME)
 					.withSort(AnnouncementSort.PUBLICATION_START_DATE_TIME, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
-					.withClass("date date-md")
+					.withClass("cell-w-120")
 				.addLabelColumn(new ResourceModel("business.announcement.publication.endDateTime"), Bindings.announcement().publication().endDateTime(), DatePattern.REALLY_SHORT_DATETIME)
-					.withClass("date date-md")
+					.withClass("cell-w-120")
 				.addActionColumn()
 					.addAction(ActionRenderers.edit(), new OneParameterModalOpenAjaxAction<IModel<Announcement>>(popup) {
 						private static final long serialVersionUID = 1L;
@@ -144,9 +148,9 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 								}
 							}
 						})
-					.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
+					.withClassOnElements(BTN_TABLE_ROW_ACTION)
 					.end()
-					.withClass("actions actions-2x")
+					.withClass("cell-w-actions-2x")
 				.rows()
 					.withClass(itemModel -> Condition.predicate(itemModel, AnnouncementPredicates.disabled()).then(TABLE_ROW_DISABLED).otherwise(""))
 					.end()

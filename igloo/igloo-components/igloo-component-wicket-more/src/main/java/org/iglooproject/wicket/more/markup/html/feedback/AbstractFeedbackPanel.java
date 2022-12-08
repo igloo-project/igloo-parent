@@ -8,7 +8,9 @@ import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 
-public abstract class AbstractFeedbackPanel extends Panel {
+import igloo.wicket.feedback.IFeedbackPanel;
+
+public abstract class AbstractFeedbackPanel extends Panel implements IFeedbackPanel {
 	
 	private static final long serialVersionUID = 8440891357292721078L;
 	

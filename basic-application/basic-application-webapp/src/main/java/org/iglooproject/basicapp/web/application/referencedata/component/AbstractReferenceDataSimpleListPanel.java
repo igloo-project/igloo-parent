@@ -17,7 +17,8 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuild
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IColumnState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IDecoratedBuildState;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
-import org.iglooproject.wicket.more.util.model.Detachables;
+
+import igloo.wicket.model.Detachables;
 
 public abstract class AbstractReferenceDataSimpleListPanel
 		<
@@ -61,8 +62,8 @@ public abstract class AbstractReferenceDataSimpleListPanel
 						.withClass(itemModel -> (itemModel != null && !itemModel.getObject().isEnabled()) ? Model.of(TABLE_ROW_DISABLED): Model.of(""))
 						.end()
 					.bootstrapCard()
-					.count("referenceData.count")
-					.ajaxPagers()
+						.count("referenceData.count")
+						.ajaxPagers()
 			)
 				.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 		

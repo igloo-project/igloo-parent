@@ -11,8 +11,8 @@ import org.apache.wicket.model.IWrapModel;
 import org.apache.wicket.util.lang.Classes;
 import org.iglooproject.wicket.more.jqplot.data.provider.AbstractJQPlotDataProvider;
 import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
+import igloo.wicket.model.Detachables;
 import nl.topicus.wqplot.data.AbstractSeries;
 import nl.topicus.wqplot.data.SeriesEntry;
 import nl.topicus.wqplot.options.PlotOptions;

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>4.4.1</version>
+		<version>5.0.0</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-bootstrap4</artifactId>
@@ -21,7 +21,32 @@
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-more</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-jquery</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-jqueryui</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-bootstrap</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.webjars</groupId>
+			<artifactId>bootstrap4-override</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		

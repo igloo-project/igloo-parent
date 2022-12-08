@@ -9,11 +9,12 @@ import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
-import org.iglooproject.wicket.more.rendering.Renderer;
-import org.iglooproject.wicket.more.util.model.Models;
-import org.iglooproject.wicket.more.util.model.Models.MapModelBuilder;
 
 import com.google.common.base.Optional;
+
+import igloo.wicket.model.Models;
+import igloo.wicket.model.Models.MapModelBuilder;
+import igloo.wicket.renderer.Renderer;
 
 public final class DefaultHistoryDifferenceValueRenderer extends AbstractHistoryRenderer<HistoryDifference> {
 

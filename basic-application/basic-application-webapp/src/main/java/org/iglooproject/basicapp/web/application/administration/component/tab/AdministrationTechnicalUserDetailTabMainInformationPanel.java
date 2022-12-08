@@ -4,7 +4,8 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.web.application.administration.component.TechnicalUserDetailDescriptionPanel;
 import org.iglooproject.basicapp.web.application.administration.component.TechnicalUserDetailGroupsPanel;
-import org.iglooproject.wicket.markup.html.panel.GenericPanel;
+
+import igloo.wicket.markup.html.panel.GenericPanel;
 
 public class AdministrationTechnicalUserDetailTabMainInformationPanel extends GenericPanel<TechnicalUser> {
 

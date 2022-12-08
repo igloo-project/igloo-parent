@@ -5,11 +5,12 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
+
+import igloo.wicket.condition.Condition;
 
 public interface IAddedBootstrapBadgeColumnState<T, S extends ISort<?>, C> extends IAddedCoreColumnState<T, S> {
 

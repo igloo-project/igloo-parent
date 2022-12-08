@@ -30,9 +30,9 @@ import org.iglooproject.basicapp.web.application.common.renderer.UserGroupRender
 import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
 import org.iglooproject.basicapp.web.application.common.template.favicon.ApplicationFaviconPackage;
 import org.iglooproject.basicapp.web.application.common.template.resources.BasicApplicationResourcesPackage;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.applicationaccess.ApplicationAccessScssResourceReference;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.console.console.ConsoleScssResourceReference;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.console.consoleaccess.ConsoleAccessScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationaccess.ApplicationAccessScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.console.console.ConsoleScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.console.consoleaccess.ConsoleAccessScssResourceReference;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.NotificationScssResourceReference;
 import org.iglooproject.basicapp.web.application.console.common.component.ConsoleAccessHeaderAdditionalContentPanel;
 import org.iglooproject.basicapp.web.application.console.common.component.ConsoleHeaderAdditionalContentPanel;
@@ -59,11 +59,6 @@ import org.iglooproject.basicapp.web.application.security.password.page.Security
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleAccessDeniedPage;
-import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleLoginFailurePage;
-import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleLoginSuccessPage;
-import org.iglooproject.wicket.bootstrap4.console.navigation.page.ConsoleSignInPage;
-import org.iglooproject.wicket.bootstrap4.console.template.ConsoleConfiguration;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
@@ -78,6 +73,12 @@ import org.iglooproject.wicket.more.util.listener.FormInvalidDecoratorListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.ImmutableList;
+
+import igloo.console.navigation.page.ConsoleAccessDeniedPage;
+import igloo.console.navigation.page.ConsoleLoginFailurePage;
+import igloo.console.navigation.page.ConsoleLoginSuccessPage;
+import igloo.console.navigation.page.ConsoleSignInPage;
+import igloo.console.template.ConsoleConfiguration;
 
 public class BasicApplicationApplication extends CoreWicketAuthenticatedApplication {
 	
@@ -102,11 +103,12 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		// si on n'est pas en développement, on précharge les feuilles de styles pour éviter la ruée et permettre le remplissage du cache
 		if (!propertyService.isConfigurationTypeDevelopment()) {
 			preloadStyleSheets(
+				ConsoleAccessScssResourceReference.get(),
 				ConsoleScssResourceReference.get(),
 				NotificationScssResourceReference.get(),
 				ApplicationAccessScssResourceReference.get(),
-				org.iglooproject.basicapp.web.application.common.template.resources.styles.application.basic.StylesScssResourceReference.get(),
-				org.iglooproject.basicapp.web.application.common.template.resources.styles.application.advanced.StylesScssResourceReference.get()
+				org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationbasic.StylesScssResourceReference.get(),
+				org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationadvanced.StylesScssResourceReference.get()
 			);
 		}
 		

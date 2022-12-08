@@ -1,7 +1,8 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action.state;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
+
+import igloo.wicket.factory.IDetachableFactory;
 
 
 public interface IActionColumnConfirmActionBuilderStepContent<T, I> {

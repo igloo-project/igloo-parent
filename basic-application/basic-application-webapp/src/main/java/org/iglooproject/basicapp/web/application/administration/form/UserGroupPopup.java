@@ -24,20 +24,21 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.basicapp.web.application.common.renderer.AuthorityRenderer;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.markup.html.form.CheckGroup;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.model.PageModel;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
-import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.feedback.FeedbackUtils;
+import igloo.wicket.markup.html.form.CheckGroup;
+import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
+import igloo.wicket.model.BindingModel;
 
 public class UserGroupPopup extends AbstractAjaxModalPopupPanel<UserGroup> {
 

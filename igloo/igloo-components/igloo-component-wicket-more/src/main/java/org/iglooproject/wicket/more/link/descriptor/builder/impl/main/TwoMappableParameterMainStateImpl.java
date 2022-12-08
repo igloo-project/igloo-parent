@@ -16,9 +16,10 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.main.ITwoMappa
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.ITwoMappableParameterOneChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.ITwoMappableParameterTwoChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.javatuples.Tuple;
 import org.springframework.core.convert.TypeDescriptor;
+
+import igloo.wicket.factory.IDetachableFactory;
 
 final class TwoMappableParameterMainStateImpl
 		<

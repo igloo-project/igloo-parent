@@ -1,0 +1,7 @@
+.list-group-sub {
+	> .list-group-item {
+		padding: $table-cell-padding-y-sm $table-cell-padding-x-sm;
+		background: transparent;
+		border-style: dotted;
+	}
+}

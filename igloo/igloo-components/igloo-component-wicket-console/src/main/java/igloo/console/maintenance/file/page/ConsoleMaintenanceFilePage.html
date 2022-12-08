@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div class="content-container">
+		<div class="content-header-section">
+			<div class="content-header-container">
+				<div class="content-header">
+					<h1 class="content-header-title">
+						<wicket:message key="console.maintenance.file" />
+					</h1>
+				</div>
+			</div>
+		</div>
+		<div class="content-body-section">
+			<div class="content-body-container">
+				<div class="content-body">
+					<div class="row g-4">
+						<div class="col-md-10 col-lg-6">
+							<div class="card card-main">
+								<div class="card-header">
+									<div class="card-header-title">
+										<wicket:message key="console.maintenance.file.pathGeneration.title" />
+									</div>
+								</div>
+								<div class="card-body">
+									<div class="alert alert-info mb-3">
+										<wicket:message key="console.maintenance.file.pathGeneration.help" />
+									</div>
+									<form wicket:id="form">
+										<div class="row row-form">
+											<div class="col-12">
+												<div class="row row-form-group form-group">
+													<div class="col-md-4">
+														<label wicket:for="hashTableByteSize" class="col-form-label form-label"><wicket:label /></label>
+													</div>
+													<div class="col-md-8">
+														<input wicket:id="hashTableByteSize" type="text" class="form-control" />
+													</div>
+												</div>
+											</div>
+											<div class="col-12">
+												<div class="row row-form-group form-group">
+													<div class="col-md-4">
+														<label wicket:for="fileKey" class="col-form-label form-label"><wicket:label /></label>
+													</div>
+													<div class="col-md-8">
+														<input wicket:id="fileKey" type="text" class="form-control" />
+													</div>
+												</div>
+											</div>
+											<div class="col-12">
+												<div class="row row-form-group form-group">
+													<div class="col-md-4">
+														<label wicket:for="extension" class="col-form-label form-label"><wicket:label /></label>
+													</div>
+													<div class="col-md-8">
+														<input wicket:id="extension" type="text" class="form-control" />
+													</div>
+												</div>
+											</div>
+											<div class="col-12">
+												<button class="btn btn-success" type="submit">
+													<span class="fa fa-fw fa-paw" />
+													<wicket:message key="console.maintenance.file.pathGeneration.generate" />
+												</button>
+											</div>
+										</div>
+									</form>
+									<wicket:enclosure child="path">
+										<hr class="my-3">
+										<kbd wicket:id="path" class="fs-5" />
+									</wicket:enclosure>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</wicket:extend>
+</html>

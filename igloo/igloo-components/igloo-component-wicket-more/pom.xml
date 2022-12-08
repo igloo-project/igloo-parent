@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>4.4.1</version>
+		<version>5.0.0</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-more</artifactId>
@@ -24,33 +24,55 @@
 		<!-- Igloo dependencies -->
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-jquery</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-select2</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-fontawesome</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-wicket-jqueryui</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-mail-api</artifactId>
 			<version>${igloo-commons.version}</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-jpa-security</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-export</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-spring</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-bootstrap</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-lang</artifactId>
@@ -129,11 +151,7 @@
 			<artifactId>ph-css</artifactId>
 		</dependency>
 		
-		<!-- webjars -->
-		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>popper.js</artifactId>
-		</dependency>
+		<!-- WebJars -->
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>clipboard</artifactId>
@@ -141,11 +159,6 @@
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>jquery-mask-plugin</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.webjars</groupId>
-			<artifactId>bootstrap-override</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -244,7 +257,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-bootstrap4</artifactId>
+				<artifactId>dependencies-bootstrap5</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

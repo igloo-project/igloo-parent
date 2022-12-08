@@ -8,11 +8,12 @@ import org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds;
 import org.iglooproject.basicapp.web.application.common.template.theme.common.ChangeApplicationThemeAjaxLink;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.spring.property.SpringPropertyIds;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
-import org.iglooproject.wicket.more.rendering.Renderer;
-import org.iglooproject.wicket.more.util.DatePattern;
+
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.renderer.Renderer;
+import igloo.wicket.util.DatePattern;
 
 public class FooterPanel extends Panel {
 

@@ -11,7 +11,8 @@ import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.wicket.more.bindable.model.BindableModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
+
+import igloo.wicket.model.Detachables;
 
 public class AnnouncementBindableModel extends BindableModel<Announcement> {
 

@@ -6,7 +6,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.javatuples.Tuple;
 
-import org.iglooproject.wicket.more.condition.Condition;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
+
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.common.IMappableParameterDeclarationState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.choice.nonechosen.ITwoOrMoreMappableParameterNoneChosenChoiceState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.mapping.IAddedParameterMappingState;
@@ -18,7 +20,6 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.IL
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 
 /**
  * A state where some mappable parameters were {@link IMappableParameterDeclarationState declared} and some were

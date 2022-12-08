@@ -5,7 +5,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.validator.RangeValidator;
 
-import org.iglooproject.wicket.markup.html.form.FormComponentHelper;
+import igloo.wicket.markup.html.form.FormComponentHelper;
 
 public class PositiveIntegerTextField extends TextField<Integer> {
 	private static final long serialVersionUID = -3071860178961793589L;

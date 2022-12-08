@@ -4,6 +4,8 @@ import java.util.Locale;
 
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
+import igloo.wicket.renderer.Renderer;
+
 public final class GenericEntityIdStringRenderer extends Renderer<GenericEntity<?, ?>> {
 
 	private static final long serialVersionUID = 7873816954526901214L;

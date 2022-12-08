@@ -6,7 +6,8 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import org.iglooproject.jpa.more.business.history.service.IHistoryValueService;
-import org.iglooproject.wicket.more.rendering.Renderer;
+
+import igloo.wicket.renderer.Renderer;
 
 public final class HistoryValueRenderer extends Renderer<HistoryValue> {
 

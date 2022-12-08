@@ -5,6 +5,7 @@ import org.apache.wicket.Page;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -22,23 +23,23 @@ import org.iglooproject.basicapp.web.application.administration.template.Adminis
 import org.iglooproject.basicapp.web.application.common.renderer.UserEnabledRenderer;
 import org.iglooproject.basicapp.web.application.common.util.BootstrapTabsUtils;
 import org.iglooproject.basicapp.web.application.navigation.link.LinkFactory;
-import org.iglooproject.wicket.bootstrap4.markup.html.bootstrap.component.BootstrapBadge;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
-import org.iglooproject.wicket.more.markup.html.action.IAjaxAction;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.confirm.component.AjaxConfirmLink;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tab.BootstrapTabBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
-import org.iglooproject.wicket.more.model.BindingModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
+
+import igloo.bootstrap.confirm.AjaxConfirmLink;
+import igloo.bootstrap.modal.AjaxModalOpenBehavior;
+import igloo.bootstrap5.markup.html.bootstrap.component.BootstrapBadge;
+import igloo.wicket.action.IAjaxAction;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.feedback.FeedbackUtils;
+import igloo.wicket.model.BindingModel;
 
 public class AdministrationBasicUserDetailPage extends AdministrationUserDetailTemplate<BasicUser> {
 
@@ -49,8 +50,10 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 	public static final ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, BasicUser, Page> MAPPER =
 		AdministrationUserDetailTemplate.mapper(BasicUser.class);
 
-	public static final String ANCHOR_TAB_MAIN_INFORMATION = "tab-main-information";
-	public static final String ANCHOR_TAB_SECURITY = "tab-security";
+	public static final String TAB_MAIN_INFORMATION_PANEL_ID = "main-information";
+	public static final String TAB_MAIN_INFORMATION_TAB_ID = BootstrapTabsUtils.getTabMarkupId(TAB_MAIN_INFORMATION_PANEL_ID);
+	public static final String TAB_SECURITY_PANEL_ID = "security";
+	public static final String TAB_SECURITY_TAB_ID = BootstrapTabsUtils.getTabMarkupId(TAB_SECURITY_PANEL_ID);
 
 	public AdministrationBasicUserDetailPage(PageParameters parameters) {
 		super(parameters);
@@ -99,6 +102,7 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 					.anyChildVisible()
 					.add(
 						new BootstrapBadge<>("enabled", userModel, UserEnabledRenderer.get())
+							.badgePill()
 					)
 			);
 		
@@ -195,14 +199,24 @@ public class AdministrationBasicUserDetailPage extends AdministrationUserDetailT
 			);
 		
 		add(
-			BootstrapTabsUtils.buildTabLink("mainInformationTabLink", ANCHOR_TAB_MAIN_INFORMATION),
-			new AdministrationBasicUserDetailTabMainInformationPanel("mainInformation", userModel),
-			
-			BootstrapTabsUtils.buildTabLink("securityTabLink", ANCHOR_TAB_SECURITY),
-			new AdministrationBasicUserDetailTabSecurityPanel("security", userModel)
+			BootstrapTabsUtils.build(
+				TAB_MAIN_INFORMATION_TAB_ID,
+				TAB_MAIN_INFORMATION_PANEL_ID,
+				new WebMarkupContainer("mainInformationTab"),
+				new AdministrationBasicUserDetailTabMainInformationPanel("mainInformation", userModel),
+				() -> true
+			)
 		);
 		
-		add(new BootstrapTabBehavior());
+		add(
+			BootstrapTabsUtils.build(
+				TAB_SECURITY_TAB_ID,
+				TAB_SECURITY_PANEL_ID,
+				new WebMarkupContainer("securityTab"),
+				new AdministrationBasicUserDetailTabSecurityPanel("security", userModel),
+				() -> false
+			)
+		);
 	}
 
 	@Override

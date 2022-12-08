@@ -9,6 +9,8 @@ import java.util.Locale;
 import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.SerializableFunction2;
 
+import igloo.wicket.renderer.Renderer;
+
 public final class CoreRenderers {
 
 	private static SerializableFunction2<Locale, DecimalFormat> percentDecimalFormatFunction(final String pattern, final RoundingMode roundingMode) {

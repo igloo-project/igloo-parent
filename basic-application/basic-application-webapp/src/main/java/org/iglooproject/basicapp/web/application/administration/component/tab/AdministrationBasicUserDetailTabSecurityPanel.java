@@ -3,7 +3,8 @@ package org.iglooproject.basicapp.web.application.administration.component.tab;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.web.application.administration.component.UserDetailHistoryLogPanel;
-import org.iglooproject.wicket.markup.html.panel.GenericPanel;
+
+import igloo.wicket.markup.html.panel.GenericPanel;
 
 public class AdministrationBasicUserDetailTabSecurityPanel extends GenericPanel<BasicUser> {
 

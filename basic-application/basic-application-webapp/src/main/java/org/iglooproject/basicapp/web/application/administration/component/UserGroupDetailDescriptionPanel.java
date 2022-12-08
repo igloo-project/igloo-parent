@@ -12,16 +12,17 @@ import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.administration.form.UserGroupPopup;
 import org.iglooproject.basicapp.web.application.administration.model.RoleDataProvider;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.markup.html.panel.GenericPanel;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
-import org.iglooproject.wicket.more.model.BindingModel;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
+
+import igloo.bootstrap.modal.AjaxModalOpenBehavior;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.markup.html.panel.GenericPanel;
+import igloo.wicket.model.BindingModel;
 
 public class UserGroupDetailDescriptionPanel extends GenericPanel<UserGroup> {
 

@@ -1,6 +1,6 @@
 package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.conditionalinput;
 
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.AbstractCoreJQueryPluginResourceReference;
+import igloo.jquery.util.AbstractCoreJQueryPluginResourceReference;
 
 public final class ConditionalInputJavaScriptResourceReference extends AbstractCoreJQueryPluginResourceReference {
 	

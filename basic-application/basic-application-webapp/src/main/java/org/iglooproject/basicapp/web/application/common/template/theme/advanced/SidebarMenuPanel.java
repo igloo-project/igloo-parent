@@ -5,21 +5,21 @@ import java.util.function.Supplier;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 
 import com.google.common.collect.ImmutableList;
+
+import igloo.bootstrap5.markup.html.template.js.bootstrap.collapse.BootstrapCollapseBehavior;
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
 
 public class SidebarMenuPanel extends Panel {
 
@@ -32,6 +32,7 @@ public class SidebarMenuPanel extends Panel {
 		Supplier<Class<? extends WebPage>> secondMenuPageSupplier
 	) {
 		super(id);
+		setOutputMarkupId(true);
 		
 		add(Condition.anyChildVisible(this).thenShow());
 		
@@ -72,14 +73,12 @@ public class SidebarMenuPanel extends Panel {
 							new CoreLabel("label", navItem.getLabelModel())
 						);
 					
-					EnclosureContainer sidenavSubContainer = new EnclosureContainer("sidenavSubContainer");
-					item.add(
-						sidenavSubContainer
-							.anyChildVisible()
-							.setOutputMarkupId(true)
-					);
+					List<NavigationMenuItem> subMenuItems =
+						navItem.getSubMenuItems().stream()
+							.filter(subMenuItem -> Condition.visible(subMenuItem.linkHidingIfInvalid("navLink")).applies())
+							.collect(ImmutableList.toImmutableList());
 					
-					Condition isSubVisibleCondition = Condition.componentVisible(sidenavSubContainer);
+					Condition isSubVisibleCondition = Condition.constant(!subMenuItems.isEmpty());
 					
 					IModel<Boolean> isSubOpenModel = Model.of(navItem.getSubMenuForceOpenModel().getObject());
 					Condition isSubOpenCondition = Condition.isTrue(isSubOpenModel);
@@ -87,10 +86,12 @@ public class SidebarMenuPanel extends Panel {
 					IModel<Boolean> isSubActiveModel = Model.of(false);
 					Condition isSubActiveCondition = Condition.isTrue(isSubActiveModel);
 					
-					List<NavigationMenuItem> subMenuItems =
-						navItem.getSubMenuItems().stream()
-							.filter(subMenuItem -> Condition.visible(subMenuItem.linkHidingIfInvalid("navLink")).applies())
-							.collect(ImmutableList.toImmutableList());
+					EnclosureContainer sidenavSubContainer = new EnclosureContainer("sidenavSubContainer");
+					item.add(
+						sidenavSubContainer
+							.condition(isSubVisibleCondition)
+							.setOutputMarkupId(true)
+					);
 					
 					sidenavSubContainer
 						.add(
@@ -123,20 +124,14 @@ public class SidebarMenuPanel extends Panel {
 					}
 					
 					navLink.add(
-						new Behavior() {
+						new BootstrapCollapseBehavior(sidenavSubContainer) {
 							private static final long serialVersionUID = 1L;
-							@Override
-							public void onComponentTag(Component component, ComponentTag tag) {
-								tag.put("href", "#" + sidenavSubContainer.getMarkupId());
-								tag.put("data-toggle", "collapse");
-								tag.put("aria-expanded", isSubOpenModel.getObject().toString());
-								super.onComponentTag(component, tag);
-							}
 							@Override
 							public boolean isEnabled(Component component) {
 								return isSubVisibleCondition.applies();
 							}
 						}
+							.show(isSubOpenCondition)
 					);
 					
 					navLink.add(
@@ -144,22 +139,6 @@ public class SidebarMenuPanel extends Panel {
 							isSubVisibleCondition
 								.then(Model.of("sidenav-link-sub"))
 								.otherwise(Model.of())
-						)
-					);
-					
-					navLink.add(
-						new ClassAttributeAppender(
-							isSubVisibleCondition.and(isSubOpenCondition.negate())
-								.then(Model.of("collapsed"))
-								.otherwise(Model.of(""))
-						)
-					);
-					
-					sidenavSubContainer.add(
-						new ClassAttributeAppender(
-							isSubOpenCondition
-								.then(Model.of("show"))
-								.otherwise(Model.of("collapse"))
 						)
 					);
 					

@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
@@ -18,15 +17,16 @@ import org.iglooproject.basicapp.core.business.announcement.service.IAnnouncemen
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.ajax.AjaxListeners;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.repeater.collection.CollectionView;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.Detachables;
 
 public class AnnouncementsPanel extends Panel {
 
@@ -54,41 +54,61 @@ public class AnnouncementsPanel extends Panel {
 		super(id);
 		setOutputMarkupId(true);
 		
+		Condition openCondition = Condition.isFalse(closeModel);
+		
 		add(
-			new AjaxLink<Void>("main") {
+			new EnclosureContainer("container")
+				.condition(openCondition)
+				.add(
+					new CollectionView<Announcement>( "announcements", announcementsModel, GenericEntityModel.factory()) {
+						private static final long serialVersionUID = 1L;
+						@Override
+						protected void populateItem(Item<Announcement> item) {
+							item.add(
+								new AnnouncementMessagePanel("message", item.getModel())
+							);
+						}
+					},
+					new AjaxLink<Void>("close") {
+						private static final long serialVersionUID = 1L;
+						@Override
+						public void onClick(AjaxRequestTarget target) {
+							try {
+								closeModel.setObject(Boolean.TRUE);
+								
+								User user = BasicApplicationSession.get().getUser();
+								user.getAnnouncementInformation().setLastActionDate(new Date());
+								user.getAnnouncementInformation().setOpen(!closeModel.getObject());
+								userService.update(user);
+								
+								AjaxListeners.add(target, AjaxListeners.refresh(AnnouncementsPanel.this));
+							} catch (Exception e) {
+								LOGGER.error("Error on update user announcement information.", e);
+								Session.get().error(getString("common.error.unexpected"));
+							}
+						}
+					}
+				),
+			new AjaxLink<Void>("open") {
 				private static final long serialVersionUID = 1L;
 				@Override
 				public void onClick(AjaxRequestTarget target) {
 					try {
-						closeModel.setObject(!closeModel.getObject());
+						closeModel.setObject(Boolean.FALSE);
 						
 						User user = BasicApplicationSession.get().getUser();
 						user.getAnnouncementInformation().setLastActionDate(new Date());
 						user.getAnnouncementInformation().setOpen(!closeModel.getObject());
 						userService.update(user);
+						
+						AjaxListeners.add(target, AjaxListeners.refresh(AnnouncementsPanel.this));
 					} catch (Exception e) {
-						LOGGER.error("Error occured while saving user", e);
+						LOGGER.error("Error on update user announcement information.", e);
 						Session.get().error(getString("common.error.unexpected"));
 					}
-					AjaxListeners.add(target, AjaxListeners.refresh(AnnouncementsPanel.this));
 				}
 			}
-				.add(
-					new EnclosureContainer("container")
-						.condition(Condition.isFalse(closeModel))
-						.add(
-							new CollectionView<Announcement>( "announcements", announcementsModel, GenericEntityModel.factory()) {
-								private static final long serialVersionUID = 1L;
-								@Override
-								protected void populateItem(Item<Announcement> item) {
-									item.add(
-										new AnnouncementMessagePanel("message", item.getModel()),
-										new WebMarkupContainer("separator").add(Condition.isEqual(Model.of(item.getIndex()), Model.of(0)).thenHide())
-									);
-								}
-							}
-						)
-				)
+				.add(openCondition.thenHide())
 		);
 		
 		add(

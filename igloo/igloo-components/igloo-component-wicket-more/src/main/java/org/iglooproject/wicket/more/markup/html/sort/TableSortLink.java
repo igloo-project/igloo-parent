@@ -13,12 +13,13 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
 
 /**
  * CAUTION when extending : this "link" uses a PANEL markup sourcing strategy, for implementation purposes.

@@ -22,11 +22,12 @@ import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator
 import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionRuntimeException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.LinkParameterValidationRuntimeException;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
-import org.iglooproject.wicket.more.util.model.Models;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
+import igloo.wicket.model.Models;
 
 public class CorePageInstanceLinkGenerator implements IPageLinkGenerator {
 	

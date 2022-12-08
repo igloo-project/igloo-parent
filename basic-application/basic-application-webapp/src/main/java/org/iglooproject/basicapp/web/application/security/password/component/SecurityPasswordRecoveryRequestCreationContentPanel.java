@@ -18,11 +18,12 @@ import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRec
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.security.service.ISecurityManagementService;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import igloo.wicket.feedback.FeedbackUtils;
+import igloo.wicket.model.Detachables;
 
 public class SecurityPasswordRecoveryRequestCreationContentPanel extends Panel {
 
@@ -50,6 +51,7 @@ public class SecurityPasswordRecoveryRequestCreationContentPanel extends Panel {
 				.setRequired(true)
 				.add(EmailAddressValidator.getInstance())
 				.add(new LabelPlaceholderBehavior())
+				.setOutputMarkupId(true)
 		);
 		
 		form.add(

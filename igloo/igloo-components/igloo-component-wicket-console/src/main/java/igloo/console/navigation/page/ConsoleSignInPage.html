@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:extend>
+		<wicket:fragment wicket:id="content">
+			<div class="card-body">
+				<form wicket:id="form">
+					<div class="row g-3">
+						<div class="col-12">
+							<div class="form-group">
+								<div class="input-group">
+									<span class="input-group-text" aria-hidden="true"><span class="fa fa-fw fa-user fa-lg" /></span>
+									<div class="form-floating">
+										<input wicket:id="username" class="form-control" />
+										<label wicket:for="username"><wicket:label /></label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="form-group">
+								<div class="input-group">
+									<span class="input-group-text" aria-hidden="true"><span class="fa fa-fw fa-lock fa-lg" /></span>
+									<div class="form-floating">
+										<input wicket:id="password" class="form-control" type="password" />
+										<label wicket:for="password"><wicket:label /></label>
+									</div>
+									<button wicket:id="showPassword" class="btn btn-form-control-check" type="button">
+										<span class="fa fa-fw fa-eye form-check-label-unchecked" aria-hidden="true" />
+										<span class="fa fa-fw fa-eye-slash form-check-label-checked" aria-hidden="true" />
+										<span class="visually-hidden"><wicket:message key="common.password.show" /></span>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-auto ms-auto">
+							<button class="btn btn-danger btn-lg" type="submit">
+								<span class="fa fa-fw fa-sign-in-alt" />
+								<wicket:message key="console.signIn.action.signIn" />
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</wicket:fragment>
+	</wicket:extend>
+</html>	

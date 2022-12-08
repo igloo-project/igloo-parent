@@ -74,7 +74,7 @@ class AdministrationBasicUserDetailPageTestCase extends AbstractBasicApplication
 		tester.assertInvisible("headerElementsSection:actionsContainer:enable");
 		tester.assertEnabled("headerElementsSection:actionsContainer:disable");
 		
-		tester.executeAjaxEvent("headerElementsSection:actionsContainer:disable", "confirm");
+		tester.executeAjaxEvent("headerElementsSection:actionsContainer:disable", "confirm.bs.confirm");
 		
 		tester.assertEnabled("headerElementsSection:actionsContainer:enable");
 		tester.assertInvisible("headerElementsSection:actionsContainer:disable");

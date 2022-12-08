@@ -10,10 +10,11 @@ import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.commons.util.fieldpath.FieldPathComponent;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
-import org.iglooproject.wicket.more.rendering.Renderer;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
+
+import igloo.wicket.renderer.Renderer;
 
 public abstract class AbstractHistoryRenderer<T> extends Renderer<T> {
 

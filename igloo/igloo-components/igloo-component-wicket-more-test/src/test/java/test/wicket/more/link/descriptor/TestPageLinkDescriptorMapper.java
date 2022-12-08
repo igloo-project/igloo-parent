@@ -10,9 +10,9 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chos
 import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.IOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
-import org.iglooproject.wicket.more.markup.html.factory.ModelFactories;
-import org.iglooproject.wicket.more.model.ReadOnlyModel;
 
+import igloo.wicket.model.ModelFactories;
+import igloo.wicket.model.ReadOnlyModel;
 import test.wicket.more.link.descriptor.application.WicketMoreTestLinkDescriptorApplication;
 import test.wicket.more.link.descriptor.page.TestLinkDescriptorNoParameterPage;
 import test.wicket.more.link.descriptor.page.TestLinkDescriptorOneParameterPage;

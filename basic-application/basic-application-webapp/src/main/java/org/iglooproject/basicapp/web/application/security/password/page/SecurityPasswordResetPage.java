@@ -13,14 +13,15 @@ import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.security.password.component.SecurityPasswordResetContentPanel;
 import org.iglooproject.basicapp.web.application.security.password.template.SecurityPasswordTemplate;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.Detachables;
 
 public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 

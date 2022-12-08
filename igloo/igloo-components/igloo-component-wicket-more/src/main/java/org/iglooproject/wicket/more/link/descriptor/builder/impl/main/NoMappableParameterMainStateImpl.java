@@ -12,11 +12,12 @@ import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilde
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterTypeInformation;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.INoMappableParameterMainState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.main.IOneMappableParameterMainState;
-import org.iglooproject.wicket.more.markup.html.factory.ModelFactories;
 import org.javatuples.Tuple;
 import org.springframework.core.convert.TypeDescriptor;
 
 import com.google.common.collect.ImmutableList;
+
+import igloo.wicket.model.ModelFactories;
 
 public final class NoMappableParameterMainStateImpl
 		<

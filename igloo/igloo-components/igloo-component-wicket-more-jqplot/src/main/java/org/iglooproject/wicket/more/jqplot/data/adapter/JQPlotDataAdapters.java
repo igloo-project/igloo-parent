@@ -8,12 +8,12 @@ import java.util.Map;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.wicket.more.jqplot.util.LabelledSeries;
 import org.iglooproject.wicket.more.jqplot.util.LabelledSeriesEntry;
-import org.iglooproject.wicket.more.rendering.Renderer;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
+import igloo.wicket.renderer.Renderer;
 import nl.topicus.wqplot.data.AbstractSeries;
 import nl.topicus.wqplot.data.Series;
 import nl.topicus.wqplot.data.SeriesEntry;

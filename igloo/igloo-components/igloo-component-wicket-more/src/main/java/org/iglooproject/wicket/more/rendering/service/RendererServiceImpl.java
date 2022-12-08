@@ -17,10 +17,11 @@ import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;
-import org.iglooproject.wicket.more.rendering.Renderer;
 import org.javatuples.Triplet;
 
 import com.google.common.collect.Maps;
+
+import igloo.wicket.renderer.Renderer;
 
 public class RendererServiceImpl implements IRendererService, IRendererRegistry {
 	

@@ -18,8 +18,9 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.CommonParameters;
 import org.iglooproject.wicket.more.link.model.PageModel;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.model.ReadOnlyModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
+
+import igloo.wicket.model.Detachables;
+import igloo.wicket.model.ReadOnlyModel;
 
 public abstract class AdministrationUserDetailTemplate<U extends User> extends AdministrationUserTemplate {
 

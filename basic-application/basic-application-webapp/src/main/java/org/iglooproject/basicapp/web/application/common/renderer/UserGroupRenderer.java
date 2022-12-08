@@ -3,7 +3,8 @@ package org.iglooproject.basicapp.web.application.common.renderer;
 import java.util.Locale;
 
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
-import org.iglooproject.wicket.more.rendering.Renderer;
+
+import igloo.wicket.renderer.Renderer;
 
 public abstract class UserGroupRenderer extends Renderer<UserGroup> {
 

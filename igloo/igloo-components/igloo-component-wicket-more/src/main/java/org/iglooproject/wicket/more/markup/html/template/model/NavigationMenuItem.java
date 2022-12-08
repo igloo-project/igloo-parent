@@ -10,13 +10,14 @@ import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.commons.util.collections.CollectionUtils;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.Detachables;
 
 public class NavigationMenuItem implements IDetachable {
 

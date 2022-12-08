@@ -4,7 +4,8 @@ import java.util.Locale;
 
 import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
 import org.iglooproject.wicket.more.rendering.LocalizedTextRenderer;
-import org.iglooproject.wicket.more.rendering.Renderer;
+
+import igloo.wicket.renderer.Renderer;
 
 public abstract class ReferenceDataRenderer extends Renderer<ReferenceData<?>> {
 

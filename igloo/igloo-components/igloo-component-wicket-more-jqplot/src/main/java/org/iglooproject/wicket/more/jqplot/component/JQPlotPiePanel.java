@@ -11,8 +11,8 @@ import org.iglooproject.wicket.more.jqplot.data.adapter.JQPlotDataAdapters;
 import org.iglooproject.wicket.more.jqplot.data.adapter.JQPlotPieChartDataAdapter;
 import org.iglooproject.wicket.more.jqplot.data.provider.IJQPlotDataProvider;
 import org.iglooproject.wicket.more.jqplot.data.provider.JQPlotMapDataProvider;
-import org.iglooproject.wicket.more.rendering.Renderer;
 
+import igloo.wicket.renderer.Renderer;
 import nl.topicus.wqplot.components.plugins.JQPlotPieRenderer;
 import nl.topicus.wqplot.options.PlotOptions;
 import nl.topicus.wqplot.options.PlotSeries;

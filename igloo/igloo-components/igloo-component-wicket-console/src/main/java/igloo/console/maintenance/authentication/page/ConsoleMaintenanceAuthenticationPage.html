@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div class="content-container">
+		<div class="content-header-section">
+			<div class="content-header-container">
+				<div class="content-header">
+					<h1 class="content-header-title">
+						<wicket:message key="console.maintenance.authentication" />
+					</h1>
+				</div>
+			</div>
+		</div>
+		<div class="content-body-section">
+			<div class="content-body-container">
+				<div class="content-body">
+					<div class="row g-4">
+						<div class="col-md-10 col-lg-6">
+							<div class="card card-main">
+								<div class="card-header">
+									<div class="card-header-title">
+										<wicket:message key="console.maintenance.authentication.signInAs.title" />
+									</div>
+								</div>
+								<div class="card-body">
+									<form wicket:id="form">
+										<div class="row row-form">
+											<div class="col-12">
+												<div class="row row-form-group form-group">
+													<div class="col-12">
+														<div class="input-group">
+															<span class="input-group-text"><span class="fa fa-fw fa-user" /></span>
+															<input wicket:id="username" class="form-control" />
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-12">
+												<button class="btn btn-success" type="submit">
+													<span class="fa fa-fw fa-lock" />
+													<wicket:message key="console.maintenance.authentication.signInAs.signIn" />
+												</button>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</wicket:extend>
+</html>

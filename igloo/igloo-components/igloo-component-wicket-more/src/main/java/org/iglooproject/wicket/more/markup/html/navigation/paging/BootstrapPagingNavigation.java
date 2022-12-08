@@ -9,7 +9,8 @@ import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.navigation.paging.IPagingLabelProvider;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigation;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigationLink;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
 
 public class BootstrapPagingNavigation extends PagingNavigation {
 

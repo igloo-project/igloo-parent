@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.web.application.administration.page;
 
-import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_HIDDEN_MD_AND_LESS;
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_DISPLAY_2XL;
 import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.TABLE_ROW_DISABLED;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
@@ -27,24 +27,25 @@ import org.iglooproject.basicapp.web.application.administration.template.Adminis
 import org.iglooproject.basicapp.web.application.common.renderer.UserEnabledRenderer;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.markup.html.link.EmailLink;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.export.excel.component.AbstractExcelExportAjaxLink;
-import org.iglooproject.wicket.more.export.excel.component.ExcelExportWorkInProgressModalPopupPanel;
+import org.iglooproject.wicket.more.excel.AbstractExcelExportAjaxLink;
+import org.iglooproject.wicket.more.excel.ExcelExportWorkInProgressModalPopupPanel;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.model.PageModel;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
-import org.iglooproject.wicket.more.model.BindingModel;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
+
+import igloo.bootstrap.modal.AjaxModalOpenBehavior;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.markup.html.link.EmailLink;
+import igloo.wicket.model.BindingModel;
 
 public class AdministrationBasicUserListPage extends AdministrationUserListTemplate<BasicUser> {
 
@@ -106,20 +107,19 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 					)
 			);
 		
-		DecoratedCoreDataTablePanel<BasicUser, ?> results =
-			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
+		DecoratedCoreDataTablePanel<BasicUser, ?> results = DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 			.addBootstrapBadgeColumn(Model.of(), Bindings.user(), UserEnabledRenderer.get())
-				.hideLabel()
-				.withClass("narrow")
+				.badgePill()
+				.withClass("cell-w-100 text-center")
 			.addLabelColumn(new ResourceModel("business.user.username"), Bindings.user().username())
 				.withLink(AdministrationBasicUserDetailPage.MAPPER.setParameter2(new PageModel<>(this)))
-				.withClass("text text-md")
+				.withClass("cell-w-250")
 			.addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
 				.withSort(UserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-				.withClass("text text-md")
+				.withClass("cell-w-250")
 			.addLabelColumn(new ResourceModel("business.user.firstName"), Bindings.user().firstName())
 				.withSort(UserSort.FIRST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-				.withClass("text text-md")
+				.withClass("cell-w-250")
 			.addColumn(new AbstractCoreColumn<BasicUser, UserSort>(new ResourceModel("business.user.email")) {
 				private static final long serialVersionUID = 1L;
 				@Override
@@ -138,8 +138,8 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 					);
 				}
 			})
-				.withClass("text text-md")
-				.withClass(CELL_HIDDEN_MD_AND_LESS)
+				.withClass("cell-w-350")
+				.withClass(CELL_DISPLAY_2XL)
 			.rows()
 				.withClass(itemModel -> Condition.predicate(itemModel, UserPredicates.disabled()).then(TABLE_ROW_DISABLED).otherwise(""))
 				.end()

@@ -11,7 +11,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget.IJavaScriptResponse;
 import org.apache.wicket.ajax.AjaxRequestTarget.IListener;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.form.FormComponent;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.form.observer.IFormComponentChangeObserver;
 import org.iglooproject.wicket.more.markup.html.form.observer.impl.FormComponentChangeAjaxEventBehavior;
 import org.wicketstuff.select2.Select2Behavior;
@@ -19,6 +18,8 @@ import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import igloo.wicket.condition.Condition;
 
 public class UpdateOnChangeAjaxEventBehavior extends Behavior {
 

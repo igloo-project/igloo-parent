@@ -10,13 +10,13 @@ table {
 	width: 100%;
 	margin-bottom: $spacer;
 	color: $table-color;
-	background-color: $table-bg;
-	border: $table-border-width solid $table-border-color;
+	vertical-align: $table-cell-vertical-align;
+	border-color: $table-border-color;
 }
 
 th,
 td {
-	padding: $table-cell-padding;
+	padding: $table-cell-padding-y $table-cell-padding-x;
 	vertical-align: top;
-	border: $table-border-width solid $table-border-color;
+	border: $table-border-width solid $table-border-color !important;
 }

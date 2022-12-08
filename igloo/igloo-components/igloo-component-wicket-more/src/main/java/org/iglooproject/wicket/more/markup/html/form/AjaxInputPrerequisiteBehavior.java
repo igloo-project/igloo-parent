@@ -4,7 +4,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.util.lang.Args;
 
-import org.iglooproject.wicket.more.markup.html.basic.ComponentBooleanProperty;
+import igloo.wicket.condition.ComponentBooleanProperty;
 
 /**
  * Makes sure that the attached component is disabled and that its model is null

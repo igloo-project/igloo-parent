@@ -17,17 +17,18 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenticationService;
 import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.component.ApplicationAccessEnvironmentPanel;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.applicationaccess.ApplicationAccessScssResourceReference;
+import org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationaccess.ApplicationAccessScssResourceReference;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.bootstrap4.markup.html.template.js.bootstrap.tooltip.BootstrapTooltip;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.markup.html.panel.InvisiblePanel;
 import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackPanel;
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.tooltip.BootstrapTooltipDocumentBehavior;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
+
+import igloo.bootstrap.BootstrapRequestCycle;
+import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
+import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.markup.html.panel.InvisiblePanel;
 
 public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate {
 
@@ -65,9 +66,7 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 		
 		add(new AnimatedGlobalFeedbackPanel("feedback"));
 		
-		add(new BootstrapTooltipDocumentBehavior(getBootstrapTooltip()));
-		
-		add(new BootstrapDropdownBehavior());
+		add(new BootstrapTooltipBehavior(getBootstrapTooltipOptionsModel()));
 	}
 	
 	@Override
@@ -100,16 +99,14 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
 		return null;
 	}
 
-	protected BootstrapTooltip getBootstrapTooltip() {
-		return new BootstrapTooltip()
-			.selector("[title],[data-original-title]")
-			.animation(true)
-			.container("body");
+	protected IModel<BootstrapTooltipOptions> getBootstrapTooltipOptionsModel() {
+		return BootstrapTooltipOptions::get;
 	}
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
 		super.renderHead(response);
+		BootstrapRequestCycle.getSettings().renderHead(getPage(), response);
 		response.render(CssHeaderItem.forReference(ApplicationAccessScssResourceReference.get()));
 	}
 

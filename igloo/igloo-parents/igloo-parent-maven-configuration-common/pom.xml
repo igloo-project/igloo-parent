@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.iglooproject</groupId>
 		<artifactId>plugins-all</artifactId>
-		<version>4.4.1</version>
+		<version>5.0.0</version>
 		<relativePath />
 	</parent>
 
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>4.4.1</version>
+	<version>5.0.0</version>
 	<packaging>pom</packaging>
 
 	<name>Igloo - Parent - Maven configuration - Common</name>
@@ -24,7 +24,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<repositories>
 		<repository>
 			<id>nexus-igloo-releases</id>
@@ -34,7 +33,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		
+
 		<repository>
 			<id>nexus-igloo-snapshots</id>
 			<name>Nexus Igloo Snapshots</name>

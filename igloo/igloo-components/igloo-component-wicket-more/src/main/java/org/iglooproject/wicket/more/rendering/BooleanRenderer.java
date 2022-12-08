@@ -6,10 +6,11 @@ import java.util.Objects;
 
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.BootstrapColor;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.model.IBootstrapColor;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRendererInformation;
+
+import igloo.bootstrap.common.BootstrapColor;
+import igloo.bootstrap.common.IBootstrapColor;
 
 public class BooleanRenderer extends BootstrapRenderer<Boolean> {
 

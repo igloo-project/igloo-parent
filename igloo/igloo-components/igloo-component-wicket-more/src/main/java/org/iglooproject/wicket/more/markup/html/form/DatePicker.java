@@ -9,13 +9,14 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.validation.validator.DateValidator;
-import org.iglooproject.wicket.more.util.IDatePattern;
 import org.iglooproject.wicket.more.util.convert.converters.CascadingConverter;
 import org.iglooproject.wicket.more.util.convert.converters.PatternDateConverter;
 import org.wicketstuff.wiquery.ui.datepicker.DateOption;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
+import igloo.wicket.util.IDatePattern;
 
 public class DatePicker extends org.wicketstuff.wiquery.ui.datepicker.DatePicker<Date> {
 

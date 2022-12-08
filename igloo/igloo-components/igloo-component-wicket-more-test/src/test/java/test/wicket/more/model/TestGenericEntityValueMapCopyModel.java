@@ -11,16 +11,16 @@ import org.apache.wicket.model.IModel;
 import org.assertj.core.api.Assertions;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.functional.Suppliers2;
-import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.model.MapCopyModel;
-import org.iglooproject.wicket.more.util.model.Models;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.google.common.base.Equivalence;
 import com.google.common.collect.Ordering;
 
+import igloo.wicket.model.IMapModel;
+import igloo.wicket.model.MapCopyModel;
+import igloo.wicket.model.Models;
 import test.wicket.more.business.person.model.Person;
 import test.wicket.more.model.TestGenericEntityValueMapCopyModel.KeyEnum;
 

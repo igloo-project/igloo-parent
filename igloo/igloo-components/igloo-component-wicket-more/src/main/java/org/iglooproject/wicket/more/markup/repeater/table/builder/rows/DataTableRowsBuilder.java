@@ -8,14 +8,16 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.rows.state.IDataTableRowsState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IBuildState;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.factory.IDetachableFactory;
+
 import com.google.common.collect.Lists;
 
 public abstract class DataTableRowsBuilder<T, S extends ISort<?>> implements IDataTableRowsState<T, S> {
@@ -27,7 +29,7 @@ public abstract class DataTableRowsBuilder<T, S extends ISort<?>> implements IDa
 	}
 
 	@Override
-	public DataTableRowsBuilder<T, S> withClass(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories) {
+	public IDataTableRowsState<T, S> withClass(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories) {
 		this.rowsBehaviorFactoriesBuilder.addAll(
 			valueModelFactories
 				.stream()
@@ -41,7 +43,7 @@ public abstract class DataTableRowsBuilder<T, S extends ISort<?>> implements IDa
 	}
 
 	@Override
-	public DataTableRowsBuilder<T, S> withClass(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory) {
+	public IDataTableRowsState<T, S> withClass(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory) {
 		return withClass(ImmutableList.of(Objects.requireNonNull(valueModelFactory)));
 	}
 
@@ -60,13 +62,13 @@ public abstract class DataTableRowsBuilder<T, S extends ISort<?>> implements IDa
 	}
 
 	@Override
-	public DataTableRowsBuilder<T, S> add(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories) {
+	public IDataTableRowsState<T, S> add(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories) {
 		this.rowsBehaviorFactoriesBuilder.addAll(Objects.requireNonNull(rowsBehaviorFactories));
 		return this;
 	}
 
 	@Override
-	public DataTableRowsBuilder<T, S> add(IDetachableFactory<? super IModel<? extends T>, ? extends Behavior> rowsBehaviorFactory) {
+	public IDataTableRowsState<T, S> add(IDetachableFactory<? super IModel<? extends T>, ? extends Behavior> rowsBehaviorFactory) {
 		return add(ImmutableList.of(Objects.requireNonNull(rowsBehaviorFactory)));
 	}
 

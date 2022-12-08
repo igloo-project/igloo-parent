@@ -8,11 +8,11 @@ import java.util.Set;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 
+import igloo.wicket.model.Detachables;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 

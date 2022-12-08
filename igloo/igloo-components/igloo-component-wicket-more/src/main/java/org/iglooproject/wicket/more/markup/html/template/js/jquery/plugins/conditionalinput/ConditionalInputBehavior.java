@@ -10,7 +10,7 @@ import org.apache.wicket.markup.html.form.Radio;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryAbstractBehavior;
+import igloo.jquery.util.JQueryAbstractBehavior;
 
 public class ConditionalInputBehavior extends JQueryAbstractBehavior {
 	

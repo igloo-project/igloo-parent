@@ -10,10 +10,11 @@ import org.iglooproject.basicapp.web.application.administration.form.UserPasswor
 import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
+
+import igloo.wicket.component.CoreLabel;
 
 @EnableWebSecurity
 class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
@@ -53,12 +54,10 @@ class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		
 		// Body elements should now be visible
 		tester.assertVisible(passwordEditPopupFormPath());
-		tester.assertVisible(passwordEditPopupFormPath() + ":oldPassword");
-		tester.assertRequired(passwordEditPopupFormPath() + ":oldPassword");
+		tester.assertVisible(passwordEditPopupFormPath() + ":oldPasswordContainer:oldPassword");
+		tester.assertRequired(passwordEditPopupFormPath() + ":oldPasswordContainer:oldPassword");
 		tester.assertVisible(passwordEditPopupFormPath() + ":newPassword");
 		tester.assertRequired(passwordEditPopupFormPath() + ":newPassword");
-		tester.assertVisible(passwordEditPopupFormPath() + ":confirmPassword");
-		tester.assertRequired(passwordEditPopupFormPath() + ":confirmPassword");
 		// Footer elements should now be visible
 		tester.assertEnabled(passwordEditPopupPath() + ":footer:save");
 		tester.assertEnabled(passwordEditPopupPath() + ":footer:cancel");
@@ -80,8 +79,7 @@ class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		
 		String oldPasswordRequired ="Le champ 'Ancien mot de passe' est obligatoire.";
 		String newPasswordRequired ="Le champ 'Nouveau mot de passe' est obligatoire.";
-		String confirmPasswordRequired ="Le champ 'Confirmation' est obligatoire.";
-		tester.assertErrorMessages(oldPasswordRequired, newPasswordRequired, confirmPasswordRequired);
+		tester.assertErrorMessages(oldPasswordRequired, newPasswordRequired);
 	}
 
 	@Test
@@ -97,9 +95,8 @@ class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
 		// Necessary because the submission button is outside the form
 		Component submitButton = tester.getComponentFromLastRenderedPage(passwordEditPopupPath() + ":footer:save");
 		String newPassword = "newPassword";
-		form.setValue(form.getForm().get("oldPassword"), USER_PASSWORD);
+		form.setValue(form.getForm().get("oldPasswordContainer:oldPassword"), USER_PASSWORD);
 		form.setValue(form.getForm().get("newPassword"), newPassword);
-		form.setValue(form.getForm().get("confirmPassword"), newPassword);
 		form.submit(submitButton);
 		
 		tester.assertNoErrorMessage();

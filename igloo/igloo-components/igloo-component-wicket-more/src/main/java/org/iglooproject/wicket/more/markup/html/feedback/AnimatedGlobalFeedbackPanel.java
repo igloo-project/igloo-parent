@@ -16,6 +16,8 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.lang.Args;
+import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.feedback.FeedbackJavaScriptResourceReference;
 import org.wicketstuff.wiquery.core.events.Event;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 import org.wicketstuff.wiquery.core.javascript.JsQuery;
@@ -23,13 +25,14 @@ import org.wicketstuff.wiquery.core.javascript.JsScope;
 import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
-import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.alert.AlertJavascriptResourceReference;
+import igloo.bootstrap.BootstrapRequestCycle;
+import igloo.wicket.behavior.ClassAttributeAppender;
 
 public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 
 	private static final long serialVersionUID = 2213180445046166086L;
+	
+	private final String variation;
 	
 	@SpringBean
 	private IPropertyService propertyService;
@@ -49,6 +52,7 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 	 */
 	public AnimatedGlobalFeedbackPanel(String id, Integer autohideDelayValue, TimeUnit autohideDelayUnit) {
 		super(id);
+		this.variation = BootstrapRequestCycle.getVariation();
 		setOutputMarkupId(true);
 		
 		this.autohideDelayValue = autohideDelayValue != null ? autohideDelayValue : propertyService.get(GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE);
@@ -67,8 +71,8 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 
 	@Override
 	public void renderHead(IHeaderResponse response) {
-		response.render(JavaScriptHeaderItem.forReference(AlertJavascriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().append("$.fn.alert.reset('#")
+		response.render(JavaScriptHeaderItem.forReference(FeedbackJavaScriptResourceReference.get()));
+		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().append("$.fn.feedback.reset('#")
 				.append(getMarkupId())
 				.append("', ")
 				.append(String.valueOf(autohideDelayUnit.toMillis(autohideDelayValue)))
@@ -89,7 +93,7 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 				
 				@Override
 				public JsScope callback() {
-					return JsScopeEvent.quickScope("$.fn.alert.close(event);");
+					return JsScopeEvent.quickScope("$.fn.feedback.close(event);");
 				}
 			};
 			
@@ -119,4 +123,10 @@ public class AnimatedGlobalFeedbackPanel extends GlobalFeedbackPanel {
 			}
 		};
 	}
+
+	@Override
+	public String getVariation() {
+		return variation;
+	}
+
 }

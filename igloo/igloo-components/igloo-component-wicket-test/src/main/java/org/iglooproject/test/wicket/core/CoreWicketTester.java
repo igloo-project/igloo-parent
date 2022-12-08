@@ -1,5 +1,7 @@
 package org.iglooproject.test.wicket.core;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.tester.WicketTester;
@@ -19,9 +21,9 @@ public class CoreWicketTester extends WicketTester {
 	/**
 	 * Assert that a Component is visible and of type clazz
 	 */
-	public <T extends Component> void assertVisible(String path, Class<T> clazz) {
+	public void assertVisible(String path, Class<?> clazz) {
 		assertVisible(path);
-		assertComponent(path, clazz);
+		assertThat(assertExists(path)).isInstanceOf(clazz);
 	}
 
 	/**

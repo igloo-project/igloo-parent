@@ -2,8 +2,8 @@ package org.iglooproject.wicket.more.bindable.model;
 
 import java.util.Map;
 
-import org.iglooproject.wicket.more.markup.repeater.map.IItemModelAwareMapModel;
-import org.iglooproject.wicket.more.markup.repeater.map.IMapModel;
+import igloo.wicket.model.IItemModelAwareMapModel;
+import igloo.wicket.model.IMapModel;
 
 /**
  * A {@link IBindableModel} that also is a {@link IMapModel}.

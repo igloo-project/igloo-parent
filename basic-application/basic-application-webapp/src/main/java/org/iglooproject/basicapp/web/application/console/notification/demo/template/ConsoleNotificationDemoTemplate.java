@@ -3,7 +3,8 @@ package org.iglooproject.basicapp.web.application.console.notification.demo.temp
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.basicapp.web.application.console.notification.demo.page.ConsoleNotificationDemoIndexPage;
-import org.iglooproject.wicket.bootstrap4.console.template.ConsoleTemplate;
+
+import igloo.console.template.ConsoleTemplate;
 
 public abstract class ConsoleNotificationDemoTemplate extends ConsoleTemplate {
 

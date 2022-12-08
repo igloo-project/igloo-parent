@@ -8,6 +8,10 @@ import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.util.lang.Args;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
+/**
+ * @deprecated Not much used anymore. If needed, use a non-jQuery solution.
+ */
+@Deprecated
 public class ScrollToTopBehavior extends Behavior {
 
 	private static final long serialVersionUID = -4834541827215125178L;

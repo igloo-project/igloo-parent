@@ -30,7 +30,7 @@
 		padding: add($card-spacer-y, .25rem);
 		background-color: #007BFF;
 		border-bottom: $card-border-width solid #006CDF;
-		color: color-yiq($primary);
+		color: color-contrast($primary);
 	}
 }
 

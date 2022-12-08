@@ -11,11 +11,12 @@ import org.apache.wicket.model.IComponentAssignedModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IWrapModel;
 import org.iglooproject.functional.SerializableFunction2;
-import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
-import org.iglooproject.wicket.more.util.model.Models;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Streams;
+
+import igloo.wicket.model.IItemModelAwareCollectionModel;
+import igloo.wicket.model.Models;
 
 public class ReadOnlyCollectionModel<T, C extends Collection<T>>
 		implements IItemModelAwareCollectionModel<T, C, IModel<T>>, IComponentAssignedModel<C> {

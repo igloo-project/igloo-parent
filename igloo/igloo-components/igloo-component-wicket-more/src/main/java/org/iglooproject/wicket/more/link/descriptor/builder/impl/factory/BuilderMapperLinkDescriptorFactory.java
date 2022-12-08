@@ -9,8 +9,6 @@ import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkP
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
@@ -18,6 +16,9 @@ import org.javatuples.Tuple;
 import org.javatuples.Unit;
 
 import com.google.common.collect.Lists;
+
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.model.Detachables;
 
 public final class BuilderMapperLinkDescriptorFactory<TTarget, TLinkDescriptor>
 		implements IBuilderMapperLinkDescriptorFactory<TLinkDescriptor> {

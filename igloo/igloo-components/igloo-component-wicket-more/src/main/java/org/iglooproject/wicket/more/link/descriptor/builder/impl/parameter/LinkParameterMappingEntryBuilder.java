@@ -10,10 +10,11 @@ import org.javatuples.Tuple;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+import igloo.wicket.factory.IDetachableFactory;
+
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 
 public class LinkParameterMappingEntryBuilder<TTuple extends Tuple>
 		implements IDetachableFactory

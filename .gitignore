@@ -1,3 +1,5 @@
+!.gitkeep
+
 target
 target2
 .classpath
@@ -10,3 +12,10 @@ gitlab-ci.build.conf
 .idea/
 /out/
 *.iml
+
+# npm
+node_modules/
+.hugo_build.lock
+package-lock.json
+generated-js/
+coverage/

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 
-import org.iglooproject.wicket.more.model.IBindableDataProvider;
+import igloo.wicket.model.IBindableDataProvider;
 
 public abstract class LoadableDetachableDataProvider<T> implements IDataProvider<T>, IBindableDataProvider {
 

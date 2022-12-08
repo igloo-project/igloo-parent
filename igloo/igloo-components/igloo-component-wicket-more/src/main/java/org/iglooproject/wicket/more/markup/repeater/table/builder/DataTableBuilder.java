@@ -14,26 +14,16 @@ import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.BindingOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.FunctionOneParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ILinkDescriptorMapper;
-import org.iglooproject.wicket.more.markup.html.basic.TargetBlankBehavior;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
-import org.iglooproject.wicket.more.markup.html.factory.AbstractDecoratingParameterizedComponentFactory;
 import org.iglooproject.wicket.more.markup.html.factory.ComponentFactories;
-import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.html.sort.ISortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
-import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import org.iglooproject.wicket.more.markup.repeater.table.BootstrapCardCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.CoreDataTable;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
@@ -56,6 +46,8 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IAddedLa
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IBuildState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IColumnState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IDecoratedBuildState;
+import org.iglooproject.wicket.more.markup.repeater.table.builder.table.DataTableTableBuilder;
+import org.iglooproject.wicket.more.markup.repeater.table.builder.table.state.IDataTableTableState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.toolbar.CustomizableToolbarBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreActionColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreBooleanLabelColumn;
@@ -64,16 +56,27 @@ import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelColumn
 import org.iglooproject.wicket.more.markup.repeater.table.column.ICoreColumn;
 import org.iglooproject.wicket.more.markup.repeater.table.toolbar.CoreHeadersToolbar;
 import org.iglooproject.wicket.more.markup.repeater.table.toolbar.CoreNoRecordsToolbar;
-import org.iglooproject.wicket.more.model.BindingModel;
-import org.iglooproject.wicket.more.model.ReadOnlyModel;
-import org.iglooproject.wicket.more.rendering.Renderer;
-import org.iglooproject.wicket.more.util.IDatePattern;
-import org.iglooproject.wicket.more.util.model.SequenceProviders;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
+
+import igloo.bootstrap.renderer.IBootstrapRenderer;
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.TargetBlankBehavior;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.AbstractDecoratingParameterizedComponentFactory;
+import igloo.wicket.factory.IComponentFactory;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.factory.IOneParameterComponentFactory;
+import igloo.wicket.model.BindingModel;
+import igloo.wicket.model.ISequenceProvider;
+import igloo.wicket.model.ReadOnlyModel;
+import igloo.wicket.model.SequenceProviders;
+import igloo.wicket.renderer.Renderer;
+import igloo.wicket.util.IDatePattern;
 
 public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnState<T, S> {
 
@@ -91,6 +94,8 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 	private final List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories = Lists.newArrayList();
 
+	private final List<Behavior> tableBehaviors = Lists.newArrayList();
+
 	private boolean showTopToolbar = true;
 	
 	private boolean showBottomToolbar = true;
@@ -98,11 +103,15 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	private IDataTableFactory<T, S> factory = new IDataTableFactory<T, S>() {
 		private static final long serialVersionUID = 1L;
 		@Override
-		public CoreDataTable<T, S> create(String id, Map<IColumn<T, S>, Condition> columns,
-				ISequenceProvider<T> sequenceProvider,
-				List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
-				long rowsPerPage) {
-			return new CoreDataTable<>(id, columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage);
+		public CoreDataTable<T, S> create(
+			String id,
+			Map<IColumn<T, S>, Condition> columns,
+			ISequenceProvider<T> sequenceProvider,
+			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
+			List<Behavior> tableBehaviors,
+			long rowsPerPage
+		) {
+			return new CoreDataTable<>(id, columns, sequenceProvider, rowsBehaviorFactories, tableBehaviors, rowsPerPage);
 		}
 	};
 
@@ -283,7 +292,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	
 	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-			final ICoreBinding<? super T, C> binding, final BootstrapRenderer<? super C> renderer) {
+			final ICoreBinding<? super T, C> binding, final IBootstrapRenderer<? super C> renderer) {
 		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<>(headerModel, binding, renderer);
 		columns.put(column, null);
 		return new AddedBootstrapBadgeColumnState<>(column);
@@ -291,7 +300,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	
 	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+			SerializableFunction2<? super T, C> function, IBootstrapRenderer<? super C> renderer) {
 		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<>(headerModel, function, renderer);
 		columns.put(column, null);
 		return new AddedBootstrapBadgeColumnState<>(column);
@@ -349,11 +358,22 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
-	public DataTableRowsBuilder<T, S> rows() {
+	public IDataTableRowsState<T, S> rows() {
 		return new DataTableRowsBuilder<T, S>() {
 			@Override
 			protected IBuildState<T, S> onEnd(List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories) {
 				DataTableBuilder.this.rowsBehaviorFactories.addAll(rowsBehaviorFactories);
+				return DataTableBuilder.this;
+			}
+		};
+	}
+	
+	@Override
+	public IDataTableTableState<T, S> table() {
+		return new DataTableTableBuilder<T, S>() {
+			@Override
+			protected IBuildState<T, S> onEnd(List<Behavior> tableBehaviors) {
+				DataTableBuilder.this.tableBehaviors.addAll(tableBehaviors);
 				return DataTableBuilder.this;
 			}
 		};
@@ -391,7 +411,7 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 	@Override
 	public CoreDataTable<T, S> build(String id, long rowsPerPage) {
-		CoreDataTable<T, S> dataTable = factory.create(id, columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage);
+		CoreDataTable<T, S> dataTable = factory.create(id, columns, sequenceProvider, rowsBehaviorFactories, tableBehaviors, rowsPerPage);
 		finalizeBuild(dataTable);
 		return dataTable;
 	}
@@ -473,13 +493,13 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 
 		@Override
 		public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel, ICoreBinding<? super T, C> binding,
-				BootstrapRenderer<? super C> renderer) {
+				IBootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapBadgeColumn(headerModel, binding, renderer);
 		}
 		
 		@Override
 		public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-				SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer) {
+				SerializableFunction2<? super T, C> function, IBootstrapRenderer<? super C> renderer) {
 			return DataTableBuilder.this.addBootstrapBadgeColumn(headerModel, function, renderer);
 		}
 		
@@ -512,6 +532,11 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public IDataTableRowsState<T, S> rows() {
 			return DataTableBuilder.this.rows();
+		}
+		
+		@Override
+		public IDataTableTableState<T, S> table() {
+			return DataTableBuilder.this.table();
 		}
 		
 		@Override
@@ -1034,14 +1059,15 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
 			DecoratedCoreDataTablePanel<T, S> panel = new DecoratedCoreDataTablePanel<>(
-					id,
-					factory,
-					columns,
-					sequenceProvider,
-					rowsBehaviorFactories,
-					rowsPerPage,
-					addInComponentFactories,
-					responsiveCondition
+				id,
+				factory,
+				columns,
+				sequenceProvider,
+				rowsBehaviorFactories,
+				tableBehaviors,
+				rowsPerPage,
+				addInComponentFactories,
+				responsiveCondition
 			);
 			
 			if (noRecordsResourceKey == null && countResourceKey != null) {
@@ -1068,13 +1094,24 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		
 		@Override
 		public DecoratedCoreDataTablePanel<T, S> build(String id, long rowsPerPage) {
-			BootstrapCardCoreDataTablePanel<T, S> panel = new BootstrapCardCoreDataTablePanel<>(id, factory,
-					columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage, addInComponentFactories,
-					responsiveCondition);
+			BootstrapCardCoreDataTablePanel<T, S> panel = new BootstrapCardCoreDataTablePanel<>(
+				id,
+				factory,
+				columns,
+				sequenceProvider,
+				rowsBehaviorFactories,
+				tableBehaviors,
+				rowsPerPage,
+				addInComponentFactories,
+				responsiveCondition
+			);
+			
 			if (noRecordsResourceKey == null && countResourceKey != null) {
 				withNoRecordsResourceKey(countResourceKey + ".zero");
 			}
+			
 			DataTableBuilder.this.finalizeBuild(panel.getDataTable());
+			
 			return panel;
 		}
 	}

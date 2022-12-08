@@ -17,9 +17,10 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chos
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IThreeMappableParameterThreeChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IThreeMappableParameterTwoChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.IThreeParameterLinkDescriptorMapper;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.javatuples.Tuple;
 import org.springframework.core.convert.TypeDescriptor;
+
+import igloo.wicket.factory.IDetachableFactory;
 
 
 final class ThreeMappableParameterMainStateImpl

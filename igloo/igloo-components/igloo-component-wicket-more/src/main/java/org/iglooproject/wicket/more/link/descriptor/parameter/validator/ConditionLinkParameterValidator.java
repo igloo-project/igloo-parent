@@ -7,13 +7,14 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.lang.Args;
 import org.bindgen.BindingRoot;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.AbstractLinkParameterValidatorFactory;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.model.BindingModel;
 import org.javatuples.Tuple;
 import org.javatuples.Unit;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.model.BindingModel;
 
 public class ConditionLinkParameterValidator implements ILinkParameterValidator {
 	

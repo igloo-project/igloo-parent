@@ -5,9 +5,10 @@ import java.util.Collection;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.springframework.security.acls.model.Permission;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
 
 public interface IActionColumnAddedConfirmActionState<T, I> extends IActionColumnAddedElementState<T, I> {
 

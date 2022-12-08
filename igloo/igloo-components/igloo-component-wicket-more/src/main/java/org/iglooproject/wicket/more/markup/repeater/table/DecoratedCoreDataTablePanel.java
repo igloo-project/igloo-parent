@@ -13,23 +13,25 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.markup.html.basic.CountLabel;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
-import org.iglooproject.wicket.more.markup.html.factory.IComponentFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 import org.iglooproject.wicket.more.markup.html.navigation.paging.HideableAjaxPagingNavigator;
 import org.iglooproject.wicket.more.markup.html.navigation.paging.HideablePagingNavigator;
 import org.iglooproject.wicket.more.markup.repeater.FactoryRepeatingView;
-import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.IDataTableFactory;
 import org.iglooproject.wicket.more.model.IErrorAwareDataProvider;
-import org.iglooproject.wicket.more.util.binding.CoreWicketMoreBindings;
 
 import com.google.common.collect.Multimap;
+
+import igloo.bootstrap.BootstrapRequestCycle;
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.CountLabel;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IComponentFactory;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.factory.IOneParameterComponentFactory;
+import igloo.wicket.model.DataProviderBindings;
+import igloo.wicket.model.ISequenceProvider;
 
 public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel implements IPageableItems {
 	
@@ -38,6 +40,8 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	private final CoreDataTable<T, S> dataTable;
 	
 	private final ISequenceProvider<T> sequenceProvider;
+
+	private final String variation;
 	
 	public static enum AddInPlacement {
 		HEADING_MAIN,
@@ -51,19 +55,22 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	}
 	
 	public DecoratedCoreDataTablePanel(
-			String id,
-			IDataTableFactory<T, S> factory,
-			Map<IColumn<T, S>, Condition> columns,
-			ISequenceProvider<T> sequenceProvider,
-			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
-			long rowsPerPage,
-			Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories,
-			Condition responsiveCondition) {
+		String id,
+		IDataTableFactory<T, S> factory,
+		Map<IColumn<T, S>, Condition> columns,
+		ISequenceProvider<T> sequenceProvider,
+		List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
+		List<Behavior> tableBehaviors,
+		long rowsPerPage,
+		Multimap<AddInPlacement, ? extends IOneParameterComponentFactory<?, ? super DecoratedCoreDataTablePanel<T, S>>> addInComponentFactories,
+		Condition responsiveCondition
+	) {
 		super(id);
+		this.variation = BootstrapRequestCycle.getVariation();
 		
 		this.sequenceProvider = sequenceProvider;
 		
-		dataTable = newDataTable("dataTable", factory, columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage);
+		dataTable = newDataTable("dataTable", factory, columns, sequenceProvider, rowsBehaviorFactories, tableBehaviors, rowsPerPage);
 		
 		add(
 				new WebMarkupContainer("dataTableContainer")
@@ -140,8 +147,9 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 	protected CoreDataTable<T, S> newDataTable(String id, IDataTableFactory<T, S> factory,
 			Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider,
 			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
+			List<Behavior> tableBehaviors,
 			long rowsPerPage) {
-		return factory.create(id, columns, sequenceProvider, rowsBehaviorFactories, rowsPerPage);
+		return factory.create(id, columns, sequenceProvider, rowsBehaviorFactories, tableBehaviors, rowsPerPage);
 	}
 	
 	public CoreDataTable<T, S> getDataTable() {
@@ -208,8 +216,7 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 		
 		@Override
 		public Component create(String wicketId) {
-			IModel<Integer> countModel = new PropertyModel<>(sequenceProvider,
-					CoreWicketMoreBindings.iBindableDataProvider().size().getPath());
+			IModel<Integer> countModel = new PropertyModel<>(sequenceProvider, DataProviderBindings.iBindableDataProvider().size().getPath());
 			return new CountLabel(wicketId, countResourceKey, countModel);
 		}
 	}
@@ -258,4 +265,10 @@ public class DecoratedCoreDataTablePanel<T, S extends ISort<?>> extends Panel im
 			error(getString("common.error.unexpected"));
 		}
 	}
+
+	@Override
+	public String getVariation() {
+		return variation;
+	}
+
 }

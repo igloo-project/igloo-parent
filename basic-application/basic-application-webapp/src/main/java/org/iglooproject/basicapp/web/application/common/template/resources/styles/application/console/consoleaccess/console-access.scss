@@ -1,0 +1,18 @@
+@import "$(scope-core-console)common/fontawesome/fontawesome";
+
+@import "$(scope-core-console)common/bootstrap/bootstrap";
+
+@import "variables";
+@import "../common/variables";
+@import "$(scope-core-console)consoleaccess/variables";
+@import "$(scope-core-console)common/variables";
+
+@import "$(scope-core-console)common/common";
+@import "$(scope-core-console)common/layout";
+
+@import "../common/common";
+
+@import "$(scope-core-console)consoleaccess/common";
+@import "$(scope-core-console)consoleaccess/layout";
+
+@import "common";

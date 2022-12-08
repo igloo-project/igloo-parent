@@ -7,11 +7,12 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.BootstrapRenderer;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.ActionColumnBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.column.ICoreColumn;
-import org.iglooproject.wicket.more.rendering.Renderer;
-import org.iglooproject.wicket.more.util.IDatePattern;
+
+import igloo.bootstrap.renderer.IBootstrapRenderer;
+import igloo.wicket.renderer.Renderer;
+import igloo.wicket.util.IDatePattern;
 
 
 public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
@@ -39,10 +40,10 @@ public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 			ICoreBinding<? super T, ? extends Date> binding, IDatePattern datePattern);
 
 	<C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-			ICoreBinding<? super T, C> binding, BootstrapRenderer<? super C> renderer);
+			ICoreBinding<? super T, C> binding, IBootstrapRenderer<? super C> renderer);
 
 	<C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
-			SerializableFunction2<? super T, C> function, BootstrapRenderer<? super C> renderer);
+			SerializableFunction2<? super T, C> function, IBootstrapRenderer<? super C> renderer);
 
 	IAddedBooleanLabelColumnState<T, S> addBooleanLabelColumn(IModel<String> headerModel,
 			ICoreBinding<? super T, Boolean> binding);

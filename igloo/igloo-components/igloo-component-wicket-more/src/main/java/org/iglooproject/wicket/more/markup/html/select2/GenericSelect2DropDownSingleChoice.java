@@ -9,9 +9,10 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.wicket.more.markup.html.model.ChoicesWrapperModel;
 import org.iglooproject.wicket.more.markup.html.select2.util.IDropDownChoiceWidth;
 import org.iglooproject.wicket.more.markup.html.select2.util.Select2Utils;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.wicketstuff.select2.Select2Behavior;
 import org.wicketstuff.select2.Settings;
+
+import igloo.wicket.model.Detachables;
 
 public class GenericSelect2DropDownSingleChoice<T> extends DropDownChoice<T> {
 

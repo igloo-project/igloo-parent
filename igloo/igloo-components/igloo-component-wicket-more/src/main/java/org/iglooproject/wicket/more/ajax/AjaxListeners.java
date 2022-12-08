@@ -22,8 +22,6 @@ import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.visit.IVisitFilter;
 import org.apache.wicket.util.visit.Visits;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.IAjaxModalPopupPanel;
 import org.iglooproject.wicket.more.markup.repeater.IRefreshableOnDemandRepeater;
 import org.iglooproject.wicket.more.util.visit.VisitFilters;
 import org.iglooproject.wicket.more.util.visit.Visitors;
@@ -35,6 +33,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
+import igloo.bootstrap.modal.IAjaxModalPopupPanel;
+import igloo.wicket.condition.Condition;
 
 public final class AjaxListeners {
 	

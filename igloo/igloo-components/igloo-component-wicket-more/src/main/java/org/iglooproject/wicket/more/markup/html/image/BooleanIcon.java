@@ -4,7 +4,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
 
 /**
  * Container affichant une icône selon que le model soit true ou false.

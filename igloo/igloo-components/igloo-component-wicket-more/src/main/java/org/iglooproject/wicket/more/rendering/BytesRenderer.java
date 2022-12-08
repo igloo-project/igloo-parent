@@ -10,6 +10,8 @@ import org.apache.wicket.util.lang.Bytes;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+import igloo.wicket.renderer.Renderer;
+
 public class BytesRenderer extends Renderer<Bytes> {
 	
 	private static final long serialVersionUID = -5011963259015482288L;

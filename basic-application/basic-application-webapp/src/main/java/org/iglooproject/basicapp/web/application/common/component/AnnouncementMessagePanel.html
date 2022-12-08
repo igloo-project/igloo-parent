@@ -3,13 +3,13 @@
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
 	<wicket:panel>
-		<div wicket:id="serviceInterruptionContainer">
-			<strong><wicket:container wicket:id="title" /></strong><wicket:enclosure child="description">&nbsp;&middot;&nbsp;<wicket:container wicket:id="description" /></wicket:enclosure>
-		</div>
-		<div wicket:id="otherContainer">
+		<wicket:container wicket:id="serviceInterruptionContainer">
+			<p><strong><wicket:container wicket:id="title" /></strong><wicket:enclosure child="description">&nbsp;&middot;&nbsp;<wicket:container wicket:id="description" /></wicket:enclosure></p>
+		</wicket:container>
+		<wicket:container wicket:id="otherContainer">
 			<p><strong><wicket:container wicket:id="title" /></strong></p>
 			<wicket:container wicket:id="description" />
-		</div>
+		</wicket:container>
 	</wicket:panel>
 </body>
 </html>

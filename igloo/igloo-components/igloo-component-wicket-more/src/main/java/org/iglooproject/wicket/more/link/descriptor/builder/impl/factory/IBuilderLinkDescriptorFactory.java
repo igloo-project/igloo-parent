@@ -8,12 +8,13 @@ import org.apache.wicket.model.IModel;
 import org.javatuples.Pair;
 import org.javatuples.Tuple;
 
+import igloo.wicket.factory.IDetachableFactory;
+
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter.LinkParameterMappingEntryBuilder;
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.ILinkParameterMappingEntry;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 
 /**
  * A factory of link descriptors to be stored in the {@link LinkDescriptorBuilder} for keeping memory of the actual

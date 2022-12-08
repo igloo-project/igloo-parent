@@ -1,6 +1,6 @@
 package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.mask;
 
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.WebjarsJQueryPluginResourceReference;
+import igloo.jquery.util.WebjarsJQueryPluginResourceReference;
 
 public final class MaskJavaScriptResourceReference extends WebjarsJQueryPluginResourceReference {
 
@@ -9,7 +9,7 @@ public final class MaskJavaScriptResourceReference extends WebjarsJQueryPluginRe
 	private static final MaskJavaScriptResourceReference INSTANCE = new MaskJavaScriptResourceReference();
 
 	private MaskJavaScriptResourceReference() {
-		super("webjars/jquery-mask-plugin/current/dist/jquery.mask.js");
+		super("jquery-mask-plugin/current/dist/jquery.mask.js");
 	}
 
 	public static MaskJavaScriptResourceReference get() {

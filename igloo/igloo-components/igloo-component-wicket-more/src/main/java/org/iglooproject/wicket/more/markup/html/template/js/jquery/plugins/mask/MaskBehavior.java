@@ -5,9 +5,10 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.util.lang.Args;
-import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.util.JQueryAbstractBehavior;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
+
+import igloo.jquery.util.JQueryAbstractBehavior;
 
 public class MaskBehavior extends JQueryAbstractBehavior {
 

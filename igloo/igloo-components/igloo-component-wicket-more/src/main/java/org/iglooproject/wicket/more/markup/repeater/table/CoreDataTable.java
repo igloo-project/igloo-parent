@@ -17,15 +17,17 @@ import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.markup.repeater.sequence.ISequenceProvider;
 import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceGridView;
-import org.iglooproject.wicket.more.util.model.Detachables;
-import org.iglooproject.wicket.more.util.model.SequenceProviders;
 
 import com.google.common.collect.Lists;
+
+import igloo.bootstrap.BootstrapRequestCycle;
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.model.Detachables;
+import igloo.wicket.model.ISequenceProvider;
+import igloo.wicket.model.SequenceProviders;
 
 /**
  * A re-implementation of DataTable that accepts ISequenceProvider instead of IDataProvider.
@@ -34,6 +36,8 @@ import com.google.common.collect.Lists;
 public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPageableItems {
 
 	private static final long serialVersionUID = 1L;
+
+	private final String variation;
 
 	private final Map<IColumn<T, S>, Condition> columnToConditionMap;
 
@@ -55,14 +59,27 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 
 	private MarkupContainer componentToRefresh;
 	
-	public CoreDataTable(String id, Map<IColumn<T, S>, Condition> columns, IDataProvider<T> dataProvider,
-			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories, long rowsPerPage) {
-		this(id, columns, SequenceProviders.forDataProvider(dataProvider), rowsBehaviorFactories, rowsPerPage);
+	public CoreDataTable(
+		String id,
+		Map<IColumn<T, S>, Condition> columns,
+		IDataProvider<T> dataProvider,
+		List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
+		List<Behavior> tableBehaviors,
+		long rowsPerPage
+	) {
+		this(id, columns, SequenceProviders.forDataProvider(dataProvider), rowsBehaviorFactories, tableBehaviors, rowsPerPage);
 	}
 	
-	public CoreDataTable(String id, Map<IColumn<T, S>, Condition> columns, ISequenceProvider<T> sequenceProvider, 
-			List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories, long rowsPerPage) {
+	public CoreDataTable(
+		String id,
+		Map<IColumn<T, S>, Condition> columns,
+		ISequenceProvider<T> sequenceProvider,
+		List<IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> rowsBehaviorFactories,
+		List<Behavior> tableBehaviors,
+		long rowsPerPage
+	) {
 		super(id);
+		this.variation = BootstrapRequestCycle.getVariation();
 		this.columnToConditionMap = columns;
 		this.displayedColumns = Lists.newArrayList();
 		this.rowsBehaviorFactories = rowsBehaviorFactories;
@@ -80,6 +97,8 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 		topToolbars = new CoreToolbarsContainer("topToolbars");
 		bottomToolbars = new CoreToolbarsContainer("bottomToolbars");
 		add(topToolbars, bottomToolbars);
+		
+		add(tableBehaviors.stream().toArray(Behavior[]::new));
 		
 		setComponentToRefresh(this);
 	}
@@ -254,6 +273,11 @@ public class CoreDataTable<T, S extends ISort<?>> extends Panel implements IPage
 			item.add(rowsBehaviorFactories.stream().map(f -> f.create(model)).toArray(Behavior[]::new));
 			return item;
 		}
+	}
+
+	@Override
+	public String getVariation() {
+		return variation;
 	}
 
 }

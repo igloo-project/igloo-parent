@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:panel>
+	<div wicket:id="card" class="card card-main">
+		<div class="card-header">
+			<div class="card-header-title">
+				<wicket:message key="console.maintenance.task.taskManager.title" />
+				<wicket:enclosure child="active">
+					&middot;
+					<strong wicket:id="active" />
+				</wicket:enclosure>
+			</div>
+		</div>
+		<div class="card-body">
+			<div class="alert alert-warning"><wicket:container wicket:id="queueSize" /></div>
+			
+			<div class="card-action card-action-bottom">
+				<div class="row row-action justify-content-end">
+					<div class="col-auto">
+						<button wicket:id="stop" class="btn btn-danger" type="button">
+							<span class="fa fa-fw fa-stop" />
+							<wicket:message key="console.maintenance.task.taskManager.stop" />
+						</button>
+						<button wicket:id="start" class="btn btn-success" type="button">
+							<span class="fa fa-fw fa-play" />
+							<wicket:message key="console.maintenance.task.taskManager.start" />
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</wicket:panel>
+</html>

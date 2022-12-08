@@ -8,7 +8,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
@@ -24,17 +23,20 @@ import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.basicapp.web.application.common.model.UserTypeDescriptorModel;
 import org.iglooproject.basicapp.web.application.common.validator.UserPasswordValidator;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
-import org.iglooproject.wicket.markup.html.basic.CoreLabel;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.feedback.FeedbackUtils;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.AbstractAjaxModalPopupPanel;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.component.DelegatedMarkupPanel;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
+import igloo.igloojs.showpassword.ShowPasswordBehavior;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.feedback.FeedbackUtils;
+import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
+import igloo.wicket.model.Detachables;
 
 public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopupPanel<U> {
 
@@ -47,7 +49,7 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 
 	@SpringBean
 	private IBasicApplicationAuthenticationService authenticationService;
-	
+
 	@SpringBean
 	private ISecurityManagementService securityManagementService;
 
@@ -84,19 +86,25 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 		form = new ModelValidatingForm<>("form");
 		body.add(form);
 		
-		TextField<String> oldPasswordField = new PasswordTextField("oldPassword", oldPasswordModel);
-		TextField<String> newPasswordField = new PasswordTextField("newPassword", newPasswordModel);
-		TextField<String> confirmPasswordField = new PasswordTextField("confirmPassword", Model.of(""));
+		TextField<String> oldPassword = new PasswordTextField("oldPassword", oldPasswordModel);
+		TextField<String> newPassword = new PasswordTextField("newPassword", newPasswordModel);
 		
 		form
 			.add(
-				oldPasswordField
-					.setLabel(new ResourceModel("business.user.oldPassword"))
-					.setRequired(true)
-					.add(isOldPasswordRequired.thenShow()),
-				newPasswordField
+				new EnclosureContainer("oldPasswordContainer")
+					.condition(isOldPasswordRequired)
+					.add(
+						oldPassword
+							.setLabel(new ResourceModel("business.user.oldPassword"))
+							.setRequired(true),
+						new BlankLink("showOldPassword")
+							.add(new ShowPasswordBehavior(oldPassword))
+					),
+				newPassword
 					.setLabel(new ResourceModel("business.user.newPassword"))
 					.setRequired(true),
+				new BlankLink("showNewPassword")
+					.add(new ShowPasswordBehavior(newPassword)),
 				new CoreLabel("passwordHelp",
 					new StringResourceModel("security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
 						.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
@@ -104,18 +112,11 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 							new StringResourceModel("security.user.password.help")
 								.setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
 						)
-				),
-				confirmPasswordField
-					.setLabel(new ResourceModel("business.user.confirmPassword"))
-					.setRequired(true)
+				)
 			);
 		
 		form.add(
-			new EqualPasswordInputValidator(newPasswordField, confirmPasswordField)
-		);
-		
-		form.add(
-			new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), newPasswordField)
+			new UserPasswordValidator(userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), newPassword)
 				.userModel(getModel())
 		);
 		

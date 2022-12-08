@@ -6,9 +6,10 @@ import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulato
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.more.markup.html.factory.IOneParameterComponentFactory;
 
 import com.google.common.collect.Lists;
+
+import igloo.wicket.factory.IOneParameterComponentFactory;
 
 public class CoreActionColumn<T, S extends ISort<?>> extends AbstractCoreColumn<T, S> {
 

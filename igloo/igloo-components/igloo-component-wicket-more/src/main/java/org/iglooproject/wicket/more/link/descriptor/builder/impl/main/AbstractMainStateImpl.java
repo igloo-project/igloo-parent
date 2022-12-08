@@ -1,6 +1,6 @@
 package org.iglooproject.wicket.more.link.descriptor.builder.impl.main;
 
-import static org.iglooproject.wicket.more.condition.Condition.anyPermission;
+import static igloo.wicket.condition.Condition.anyPermission;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,7 +10,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.Args;
 import org.bindgen.BindingRoot;
 import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.BuilderTargetFactories;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderLinkDescriptorFactory;
 import org.iglooproject.wicket.more.link.descriptor.builder.impl.factory.IBuilderMapperLinkDescriptorFactory;
@@ -27,15 +26,17 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.IL
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
-import org.iglooproject.wicket.more.markup.html.factory.ModelFactories;
-import org.iglooproject.wicket.more.model.BindingModel;
 import org.javatuples.Pair;
 import org.javatuples.Tuple;
 import org.springframework.core.convert.TypeDescriptor;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.model.BindingModel;
+import igloo.wicket.model.ModelFactories;
 
 abstract class AbstractMainStateImpl
 		<

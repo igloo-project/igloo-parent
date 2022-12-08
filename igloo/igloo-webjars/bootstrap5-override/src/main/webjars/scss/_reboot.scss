@@ -1,0 +1,16 @@
+::-ms-reveal,
+::-ms-clear {
+	display: none;
+}
+
+body {
+	@include text-break();
+}
+
+p {
+	margin-bottom: 0;
+	
+	+ p {
+		margin-top: $paragraph-margin-bottom / 2;
+	}
+}

@@ -4,7 +4,7 @@ import org.apache.wicket.model.IModel;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 
-import org.iglooproject.wicket.more.util.model.Models;
+import igloo.wicket.model.Models;
 
 public abstract class AbstractFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4>
 		implements IFourParameterLinkDescriptorMapper<L, T1, T2, T3, T4> {

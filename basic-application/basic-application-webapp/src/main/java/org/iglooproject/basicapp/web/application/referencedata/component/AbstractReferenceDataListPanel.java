@@ -1,25 +1,27 @@
 package org.iglooproject.basicapp.web.application.referencedata.component;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
-import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.basicapp.web.application.referencedata.form.AbstractReferenceDataPopup;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.action.OneParameterModalOpenAjaxAction;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
-import org.iglooproject.wicket.more.markup.html.template.js.bootstrap.modal.behavior.AjaxModalOpenBehavior;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IColumnState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IDecoratedBuildState;
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
+
+import igloo.bootstrap.modal.AjaxModalOpenBehavior;
+import igloo.bootstrap.modal.OneParameterModalOpenAjaxAction;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
 
 public abstract class AbstractReferenceDataListPanel
 		<
@@ -75,10 +77,10 @@ public abstract class AbstractReferenceDataListPanel
 					}
 				})
 				.when(itemModel -> getEditCondition(itemModel))
-				.withClassOnElements(CssClassConstants.BTN_TABLE_ROW_ACTION)
+				.withClassOnElements(BTN_TABLE_ROW_ACTION)
 				.end()
 				.when(getEditCondition())
-				.withClass("actions actions-1x");
+				.withClass("cell-w-actions-1x");
 		return super.addActionColumn(builder);
 	}
 

@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.iglooproject.webjars</groupId>
+		<artifactId>igloo-webjars</artifactId>
+		<version>5.0.0</version>
+	</parent>
+
+	<artifactId>bootstrap4-override</artifactId>
+	<packaging>jar</packaging>
+
+	<name>bootstrap4-override</name>
+	<description>Bootstrap 4 overrides for Igloo</description>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.iglooproject.webjars</groupId>
+			<artifactId>bootstrap4</artifactId>
+			<exclusions>
+				<!-- needed as it triggers a upper bound failure -->
+				<exclusion>
+					<groupId>org.webjars.npm</groupId>
+					<artifactId>bootstrap</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>popper.js</artifactId>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-wicket</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-bootstrap4</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>

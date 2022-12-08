@@ -14,13 +14,14 @@ import org.iglooproject.basicapp.web.application.administration.form.UserAjaxDro
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
 import org.iglooproject.wicket.more.ajax.SerializableListener;
 import org.iglooproject.wicket.more.common.behavior.UpdateOnChangeAjaxEventBehavior;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.model.ComponentPageModel;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
+
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.Detachables;
 
 public class SidebarQuickSearchPanel extends Panel {
 

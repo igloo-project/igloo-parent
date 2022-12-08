@@ -9,13 +9,14 @@ import org.javatuples.Unit;
 
 import com.google.common.collect.ImmutableList;
 
+import igloo.wicket.model.BindingModel;
+
 import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.AbstractLinkParameterMappingEntryFactory;
 import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.ILinkParameterMappingEntryFactory;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ILinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.SimpleMandatoryLinkParameterValidator;
 import org.iglooproject.wicket.more.link.service.ILinkParameterConversionService;
-import org.iglooproject.wicket.more.model.BindingModel;
 
 public class InjectOnlyLinkParameterMappingEntry<T> extends AbstractLinkParameterMappingEntry {
 

@@ -9,7 +9,8 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import org.iglooproject.wicket.more.util.model.Detachables;
+import igloo.wicket.model.Detachables;
+import igloo.wicket.model.ISequenceProvider;
 
 public class SequenceGridView<T> extends SequenceView<T> {
 	private static final long serialVersionUID = 1L;

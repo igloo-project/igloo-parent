@@ -24,6 +24,8 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.lang.Classes;
 import org.iglooproject.spring.util.StringUtils;
 
+import igloo.wicket.renderer.Renderer;
+
 public class EnumRenderer extends Renderer<Enum<?>> {
 
 	private static final long serialVersionUID = -6934415690685574154L;

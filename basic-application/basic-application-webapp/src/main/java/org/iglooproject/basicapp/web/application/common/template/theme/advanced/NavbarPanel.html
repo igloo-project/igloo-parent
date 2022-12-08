@@ -2,27 +2,13 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
-	<div class="navbar-header">
-		<button class="navbar-toggler" type="button">
-			<span class="navbar-toggler-icon" />
-		</button>
-		
-		<a class="navbar-brand" wicket:id="home"><wicket:message key="common.rootPageTitle" /></a>
-	</div>
-	<div class="navbar-body collapse navbar-collapse">
-		<ul class="navbar-nav ml-auto">
-			<li class="nav-item" wicket:id="profileLinkNavItem">
-				<a wicket:id="profileLink" class="nav-link" wicket:message="title:common.profile.tooltip">
-					<span class="fa fa-fw fa-user-circle" />
-					<wicket:container wicket:id="userFullName" />
-				</a>
-			</li>
-			<li class="nav-item">
-				<a wicket:id="logout" class="btn btn-danger" wicket:message="title:common.logout">
-					<span class="fa fa-fw fa-power-off" />
-				</a>
-			</li>
-		</ul>
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class="navbar-brand" wicket:id="home"><wicket:message key="common.rootPageTitle" /></a>
+		</div>
 	</div>
 </wicket:panel>
 </html>

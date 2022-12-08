@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd" wicket:id="htmlElement">
+	<head>
+		<title wicket:id="headPageTitle" />
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta name="description" content="Console">
+		
+		<wicket:header-items />
+	</head>
+	<body class="application-access">
+		<div class="body-container">
+			<header class="header-section">
+				<wicket:container wicket:id="headerAdditionalContent" />
+			</header>
+			
+			<main class="main-section">
+				<div class="main-body">
+					<div class="container-page">
+						<div class="card card-main-title-cascade">
+							<div class="card-body">
+								<img src="static/common/images/logo-kobalt.png" class="img-fluid" alt="Kobalt" width="114" />
+							</div>
+							<div wicket:id="title" class="card-header card-main-title" role="heading" aria-level="1" />
+							<div wicket:id="content" />
+							<wicket:child />
+							<div class="card-footer" wicket:id="footer" />
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+		
+		<div wicket:id="feedback" data-placement="bottom" />
+	</body>
+</html>

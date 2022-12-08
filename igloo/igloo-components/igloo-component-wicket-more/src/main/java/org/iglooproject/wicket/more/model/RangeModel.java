@@ -1,9 +1,10 @@
 package org.iglooproject.wicket.more.model;
 
 import org.apache.wicket.model.IModel;
-import org.iglooproject.wicket.more.util.model.Detachables;
 
 import com.google.common.collect.Range;
+
+import igloo.wicket.model.Detachables;
 
 /**
  * A range model representing an interval between two values.

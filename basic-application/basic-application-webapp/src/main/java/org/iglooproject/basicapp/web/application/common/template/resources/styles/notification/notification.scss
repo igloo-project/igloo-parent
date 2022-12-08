@@ -6,44 +6,16 @@
  *          are not supported either.
  */
 
-// Variables
-@import "../common/bootstrap/bootstrap-prerequisite";
+@import "../application/common/bootstrap/bootstrap-functions";
+@import "../application/common/bootstrap/bootstrap-variables";
+@import "../application/common/bootstrap/bootstrap-mixins";
+@import "../application/common/bootstrap/bootstrap-utilities";
+@import "../application/common/bootstrap/bootstrap-root";
+@import "../application/common/bootstrap/bootstrap-reboot";
 
-@import "../application/common/bootstrap-variables";
-
-@import "webjars://bootstrap:current/scss/mixins";
-@import "webjars://bootstrap-override:current/scss/mixins";
-@import "../common/bootstrap/mixins";
-
-@import "webjars://bootstrap:current/scss/root";
-@import "webjars://bootstrap-override:current/scss/root";
-
-@import "webjars://bootstrap:current/scss/reboot";
-@import "webjars://bootstrap-override:current/scss/reboot";
-
-@import "webjars://bootstrap:current/scss/type";
-@import "webjars://bootstrap-override:current/scss/type";
-
-@import "webjars://bootstrap:current/scss/utilities/align";
-@import "webjars://bootstrap-override:current/scss/utilities/align";
-@import "webjars://bootstrap:current/scss/utilities/background";
-@import "webjars://bootstrap-override:current/scss/utilities/background";
-@import "webjars://bootstrap:current/scss/utilities/borders";
-@import "webjars://bootstrap-override:current/scss/utilities/borders";
-@import "webjars://bootstrap:current/scss/utilities/display";
-@import "webjars://bootstrap-override:current/scss/utilities/display";
-@import "webjars://bootstrap:current/scss/utilities/sizing";
-@import "webjars://bootstrap-override:current/scss/utilities/sizing";
-@import "webjars://bootstrap:current/scss/utilities/spacing";
-@import "webjars://bootstrap-override:current/scss/utilities/spacing";
-@import "webjars://bootstrap:current/scss/utilities/text";
-@import "webjars://bootstrap-override:current/scss/utilities/text";
-@import "webjars://bootstrap:current/scss/utilities/visibility";
-@import "webjars://bootstrap-override:current/scss/utilities/visibility";
+@import "webjars://bootstrap:current/scss/utilities/api";
 
 @import "variables";
-@import "../common/variables";
-@import "../application/common/variables";
 
 @import "framework/tables";
 @import "framework/buttons";

@@ -16,7 +16,6 @@ import org.iglooproject.basicapp.web.application.security.password.page.Security
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
-import org.iglooproject.wicket.more.model.BindingModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.notification.service.AbstractNotificationContentDescriptorFactory;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
@@ -24,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.ImmutableList;
+
+import igloo.wicket.model.BindingModel;
 
 @Service("BasicApplicationNotificationPanelRendererService")
 public class BasicApplicationNotificationContentDescriptorFactoryImpl

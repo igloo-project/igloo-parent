@@ -21,6 +21,8 @@ import java.util.Locale;
 
 import org.iglooproject.jpa.more.business.localization.model.AbstractLocalizedText;
 
+import igloo.wicket.renderer.Renderer;
+
 public abstract class LocalizedTextRenderer extends Renderer<AbstractLocalizedText> {
 	
 	private static final long serialVersionUID = -6397339082088737503L;

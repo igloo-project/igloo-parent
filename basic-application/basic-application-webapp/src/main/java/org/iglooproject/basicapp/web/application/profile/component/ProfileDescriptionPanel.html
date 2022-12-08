@@ -4,17 +4,18 @@
 	<wicket:panel>
 		<div wicket:id="passwordEditPopup" />
 		
-		<div class="card card-page">
+		<div class="card card-main">
 			<div class="card-header">
-				<h5 class="card-header-title"><wicket:message key="profile.description" /></h5>
+				<div class="card-header-title">
+					<wicket:message key="profile.description" />
+				</div>
 			</div>
 			<div class="card-body">
-				<div class="row row-sm">
+				<div class="row g-3">
 					<div class="col-12">
-						<h6 class="heading-section">
+						<div class="heading-section">
 							<wicket:message key="administration.user.detail.description.information" />
-						</h6>
-						
+						</div>
 						<div class="row row-description">
 							<div class="col-12">
 								<div class="row row-description-group description-group">
@@ -76,10 +77,9 @@
 						</div>
 					</div>
 					<div class="col-12">
-						<h6 class="heading-section">
+						<div class="heading-section">
 							<wicket:message key="administration.user.detail.description.tracking" />
-						</h6>
-						
+						</div>
 						<div class="row row-description">
 							<div class="col-12">
 								<div class="row row-description-group description-group">
@@ -127,7 +127,7 @@
 					</div>
 				</div>
 				
-				<div class="card-action">
+				<div class="card-action card-action-bottom">
 					<div class="row row-action justify-content-end">
 						<div wicket:enclosure="passwordEdit" class="col-auto">
 							<button wicket:id="passwordEdit" class="btn btn-primary" type="button">

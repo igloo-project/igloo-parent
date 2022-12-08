@@ -15,8 +15,9 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chos
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IFourMappableParameterThreeChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.parameter.chosen.IFourMappableParameterTwoChosenParameterState;
 import org.iglooproject.wicket.more.link.descriptor.mapper.IFourParameterLinkDescriptorMapper;
-import org.iglooproject.wicket.more.markup.html.factory.IDetachableFactory;
 import org.javatuples.Tuple;
+
+import igloo.wicket.factory.IDetachableFactory;
 
 final class FourMappableParameterMainStateImpl
 		<

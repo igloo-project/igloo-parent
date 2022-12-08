@@ -6,14 +6,14 @@ import java.util.stream.Stream;
 
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.functional.Suppliers2;
-import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
-import org.iglooproject.wicket.more.model.CollectionCopyModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.junit.jupiter.params.provider.Arguments;
 
 import com.google.common.base.Equivalence;
 import com.google.common.collect.ImmutableList;
 
+import igloo.wicket.model.CollectionCopyModel;
+import igloo.wicket.model.ICollectionModel;
 import test.wicket.more.business.person.model.Person;
 import test.wicket.more.business.person.model.PersonComparator;
 

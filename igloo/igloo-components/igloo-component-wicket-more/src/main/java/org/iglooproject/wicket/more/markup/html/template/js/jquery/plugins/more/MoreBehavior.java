@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
-import org.iglooproject.wicket.more.util.model.Models;
+import igloo.wicket.model.Models;
 
 public class MoreBehavior extends Behavior {
 

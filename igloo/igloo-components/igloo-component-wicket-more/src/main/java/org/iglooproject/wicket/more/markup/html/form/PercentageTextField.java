@@ -7,9 +7,9 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 
-import org.iglooproject.wicket.markup.html.form.FormComponentHelper;
-import org.iglooproject.wicket.more.markup.html.basic.PercentageBigDecimalConverter;
-import org.iglooproject.wicket.more.markup.html.basic.PercentageValidator;
+import igloo.wicket.component.PercentageBigDecimalConverter;
+import igloo.wicket.component.PercentageValidator;
+import igloo.wicket.markup.html.form.FormComponentHelper;
 
 public class PercentageTextField extends TextField<BigDecimal> {
 	private static final long serialVersionUID = -3071860178961793589L;

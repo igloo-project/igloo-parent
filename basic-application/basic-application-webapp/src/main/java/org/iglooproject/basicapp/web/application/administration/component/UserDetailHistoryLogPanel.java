@@ -12,12 +12,13 @@ import org.iglooproject.basicapp.web.application.history.column.HistoryLogDetail
 import org.iglooproject.basicapp.web.application.history.model.HistoryLogDataProvider;
 import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.markup.html.panel.GenericPanel;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
-import org.iglooproject.wicket.more.util.DatePattern;
+
+import igloo.wicket.markup.html.panel.GenericPanel;
+import igloo.wicket.util.DatePattern;
 
 public class UserDetailHistoryLogPanel extends GenericPanel<User> {
 
@@ -37,11 +38,11 @@ public class UserDetailHistoryLogPanel extends GenericPanel<User> {
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 				.addLabelColumn(new ResourceModel("business.history.date"), Bindings.historyLog().date(), DatePattern.SHORT_DATETIME)
 					.withSort(HistoryLogSort.DATE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
-					.withClass("date date-lg")
+					.withClass("cell-w-150")
 				.addLabelColumn(new ResourceModel("business.history.subject"), Bindings.historyLog().subject())
-					.withClass("text text-lg")
+					.withClass("cell-w-250")
 				.addColumn(new HistoryLogDetailColumn())
-					.withClass("text text-xl")
+					.withClass("cell-w-500")
 				.bootstrapCard()
 					.title("administration.user.detail.audits")
 					.ajaxPager(AddInPlacement.FOOTER_RIGHT)

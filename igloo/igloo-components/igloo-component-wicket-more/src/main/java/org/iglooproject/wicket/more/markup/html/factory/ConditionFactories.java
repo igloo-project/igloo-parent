@@ -2,12 +2,14 @@ package org.iglooproject.wicket.more.markup.html.factory;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.wicket.more.condition.BooleanOperator;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.collect.Lists;
+
+import igloo.wicket.condition.BooleanOperator;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.model.Detachables;
 
 public final class ConditionFactories {
 

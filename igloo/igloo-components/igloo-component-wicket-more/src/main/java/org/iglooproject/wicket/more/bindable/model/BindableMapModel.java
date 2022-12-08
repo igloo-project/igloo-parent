@@ -10,10 +10,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.wicket.more.markup.repeater.collection.IItemModelAwareCollectionModel;
-import org.iglooproject.wicket.more.markup.repeater.map.IItemModelAwareMapModel;
-import org.iglooproject.wicket.more.model.MapCopyModel;
 import org.iglooproject.wicket.more.model.WorkingCopyMapModel;
+
+import igloo.wicket.model.IItemModelAwareCollectionModel;
+import igloo.wicket.model.IItemModelAwareMapModel;
+import igloo.wicket.model.MapCopyModel;
 
 public class BindableMapModel<K, V, M extends Map<K, V>> extends BindableModel<M>
 		implements IBindableMapModel<K, V, M> {

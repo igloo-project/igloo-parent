@@ -7,10 +7,11 @@ import org.apache.wicket.util.lang.Args;
 import org.springframework.core.convert.ConversionException;
 import org.springframework.core.convert.TypeDescriptor;
 
+import igloo.wicket.model.Models;
+
 import org.iglooproject.wicket.more.link.descriptor.parameter.extractor.LinkParameterExtractionException;
 import org.iglooproject.wicket.more.link.descriptor.parameter.injector.LinkParameterInjectionException;
 import org.iglooproject.wicket.more.link.service.ILinkParameterConversionService;
-import org.iglooproject.wicket.more.util.model.Models;
 
 /**
  * A base class for implementing ILinkParameterMappingEntry.

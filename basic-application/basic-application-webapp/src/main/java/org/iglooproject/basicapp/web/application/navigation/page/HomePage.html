@@ -1,102 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
-	<wicket:extend>
-		<div class="content-header-section">
-			<div class="content-header-container">
-				<div class="content-header">
-					<h4 class="content-header-title">
-						<wicket:container wicket:id="pageTitle" />
-					</h4>
-				</div>
+<wicket:extend>
+	<div class="content-header-section">
+		<div class="content-header-container">
+			<div class="content-header">
+				<h1 class="content-header-title">
+					<wicket:container wicket:id="pageTitle" />
+				</h1>
 			</div>
 		</div>
-		
-		<div class="content-body-section">
-			<div class="content-body-container">
-				<div class="content-body">
-					<div class="row row-md">
-						<div wicket:enclosure-component="users" class="col-md-6 col-lg-4 col-xl-4">
-							<div class="card card-page h-100">
-								<div class="card-body card-img-top flex-grow-0 bg-primary text-center">
-									<span class="fa fa-fw fa-5x fa-users" />
-								</div>
-								<div class="card-header">
-									<h5 class="card-header-title">
-										<wicket:message key="homePage.navigation.users.title" />
-									</h5>
-								</div>
-								<div class="card-body d-flex flex-column">
-									<div>
-										<wicket:message key="homePage.navigation.users.description" />
+	</div>
+	
+	<div class="content-body-section">
+		<div class="content-body-container">
+			<div class="content-body">
+				<div class="row g-4">
+					<div wicket:enclosure-component="users" class="col-md-6 col-2xl-4">
+						<div class="card h-100">
+							<div class="card-header card-img-top py-3 flex-grow-0 alert-brand">
+								<div class="row g-3 align-items-center flex-overflow-wrap">
+									<div class="col-auto">
+										<span class="fa fa-fw fa-2x fa-users"></span>
 									</div>
-									<div class="mt-auto">
-										<div class="card-action">
-											<div class="row row-action justify-content-end">
-												<div class="col-auto">
-													<a wicket:id="users" class="btn btn-outline-primary stretched-link">
-														<span class="fa fa-fw fa-users" />
-														<wicket:message key="homePage.navigation.users.link" />
-													</a>
-												</div>
+									<div class="col-sm">
+										<div class="card-header-title">
+											<wicket:message key="homePage.navigation.users.title" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="card-body d-flex flex-column">
+								<div>
+									<wicket:message key="homePage.navigation.users.description" />
+								</div>
+								<div class="mt-auto">
+									<div class="card-action card-action-bottom">
+										<div class="row row-action justify-content-end">
+											<div class="col-auto">
+												<a wicket:id="users" class="btn btn-brand stretched-link">
+													<span class="fa fa-fw fa-users" />
+													<wicket:message key="homePage.navigation.users.link" />
+												</a>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div wicket:enclosure-component="referenceData" class="col-md-6 col-lg-4 col-xl-4">
-							<div class="card card-page h-100">
-								<div class="card-body card-img-top flex-grow-0 bg-primary text-center">
-									<span class="fa fa-fw fa-5x fa-list" />
-								</div>
-								<div class="card-header">
-									<h5 class="card-header-title">
-										<wicket:message key="homePage.navigation.referenceData.title" />
-									</h5>
-								</div>
-								<div class="card-body d-flex flex-column">
-									<div>
-										<wicket:message key="homePage.navigation.referenceData.description" />
+					</div>
+					<div wicket:enclosure-component="referenceData" class="col-md-6 col-2xl-4">
+						<div class="card h-100">
+							<div class="card-header card-img-top py-3 flex-grow-0 alert-brand">
+								<div class="row g-3 align-items-center flex-overflow-wrap">
+									<div class="col-auto">
+										<span class="fa fa-fw fa-2x fa-list"></span>
 									</div>
-									<div class="mt-auto">
-										<div class="card-action">
-											<div class="row row-action justify-content-end">
-												<div class="col-auto">
-													<a wicket:id="referenceData" class="btn btn-outline-primary stretched-link">
-														<span class="fa fa-fw fa-list" />
-														<wicket:message key="homePage.navigation.referenceData.link" />
-													</a>
-												</div>
+									<div class="col-sm">
+										<div class="card-header-title">
+											<wicket:message key="homePage.navigation.referenceData.title" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="card-body d-flex flex-column">
+								<div>
+									<wicket:message key="homePage.navigation.referenceData.description" />
+								</div>
+								<div class="mt-auto">
+									<div class="card-action card-action-bottom">
+										<div class="row row-action justify-content-end">
+											<div class="col-auto">
+												<a wicket:id="referenceData" class="btn btn-brand stretched-link">
+													<span class="fa fa-fw fa-list" />
+													<wicket:message key="homePage.navigation.referenceData.link" />
+												</a>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div wicket:enclosure-component="profile" class="col-md-6 col-lg-4 col-xl-4">
-							<div class="card card-page h-100">
-								<div class="card-body card-img-top flex-grow-0 bg-secondary text-center">
-									<span class="fa fa-fw fa-5x fa-id-card" />
-								</div>
-								<div class="card-header">
-									<h5 class="card-header-title">
-										<wicket:message key="homePage.navigation.profile.title" />
-									</h5>
-								</div>
-								<div class="card-body d-flex flex-column">
-									<div>
-										<wicket:message key="homePage.navigation.profile.description" />
+					</div>
+					<div wicket:enclosure-component="profile" class="col-md-6 col-2xl-4">
+						<div class="card h-100">
+							<div class="card-header card-img-top py-3 flex-grow-0 alert-secondary">
+								<div class="row g-3 align-items-center flex-overflow-wrap">
+									<div class="col-auto">
+										<span class="fa fa-fw fa-2x fa-id-card"></span>
 									</div>
-									<div class="mt-auto">
-										<div class="card-action">
-											<div class="row row-action justify-content-end">
-												<div class="col-auto">
-													<a wicket:id="profile" class="btn btn-outline-secondary stretched-link">
-														<span class="fa fa-fw fa-user-circle" />
-														<wicket:message key="homePage.navigation.profile.link" />
-													</a>
-												</div>
+									<div class="col-sm">
+										<div class="card-header-title">
+											<wicket:message key="homePage.navigation.profile.title" />
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="card-body d-flex flex-column">
+								<div>
+									<wicket:message key="homePage.navigation.profile.description" />
+								</div>
+								<div class="mt-auto">
+									<div class="card-action card-action-bottom">
+										<div class="row row-action justify-content-end">
+											<div class="col-auto">
+												<a wicket:id="profile" class="btn btn-secondary stretched-link">
+													<span class="fa fa-fw fa-user-circle" />
+													<wicket:message key="homePage.navigation.profile.link" />
+												</a>
 											</div>
 										</div>
 									</div>
@@ -107,5 +118,6 @@
 				</div>
 			</div>
 		</div>
-	</wicket:extend>
+	</div>
+</wicket:extend>
 </html>

@@ -21,14 +21,15 @@ import org.apache.wicket.markup.html.form.RadioGroup;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.visit.IVisitor;
-import org.iglooproject.wicket.behavior.ClassAttributeAppender;
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.markup.html.basic.EnclosureContainer;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
 
 public final class FormInvalidDecoratorListener {
 

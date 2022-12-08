@@ -10,8 +10,8 @@ import org.apache.wicket.model.ResourceModel;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
-import org.iglooproject.wicket.more.condition.Condition;
-import org.iglooproject.wicket.more.util.model.Models;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.Models;
 
 public class ConditionFormModelValidator implements IFormModelValidator {
 

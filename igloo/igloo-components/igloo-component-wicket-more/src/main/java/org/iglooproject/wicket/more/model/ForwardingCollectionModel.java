@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import org.apache.wicket.model.IModel;
 
-import org.iglooproject.wicket.more.markup.repeater.collection.ICollectionModel;
+import igloo.wicket.model.ICollectionModel;
 
 public abstract class ForwardingCollectionModel<T, C extends Collection<T>> implements ICollectionModel<T, C> {
 	

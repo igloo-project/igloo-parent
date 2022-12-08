@@ -19,14 +19,15 @@ import org.apache.wicket.util.visit.IVisitor;
 import org.apache.wicket.util.visit.Visits;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.wicket.more.condition.Condition;
 import org.iglooproject.wicket.more.markup.html.form.observer.IFormComponentChangeObserver;
 import org.iglooproject.wicket.more.markup.html.form.observer.impl.FormComponentChangeAjaxEventBehavior;
-import org.iglooproject.wicket.more.util.model.Detachables;
 import org.iglooproject.wicket.more.util.visit.VisitFilters;
 import org.wicketstuff.wiquery.core.events.StateEvent;
 
 import com.google.common.collect.Lists;
+
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.Detachables;
 
 /**
  * Performs abstract actions on the attached component according to the actual, client-side content of a given {@link FormComponent}.<br>

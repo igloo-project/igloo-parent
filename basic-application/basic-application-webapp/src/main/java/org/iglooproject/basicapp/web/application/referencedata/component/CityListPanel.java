@@ -1,11 +1,12 @@
 package org.iglooproject.basicapp.web.application.referencedata.component;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_DISPLAY_LG;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.City;
 import org.iglooproject.basicapp.core.business.referencedata.search.ReferenceDataSort;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
-import org.iglooproject.basicapp.web.application.common.util.CssClassConstants;
 import org.iglooproject.basicapp.web.application.referencedata.model.AbstractReferenceDataDataProvider;
 import org.iglooproject.basicapp.web.application.referencedata.model.BasicReferenceDataDataProvider;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
@@ -34,14 +35,14 @@ public class CityListPanel extends AbstractReferenceDataSimpleListPanel<City, Re
 		return super.addColumns(builder)
 			.addLabelColumn(new ResourceModel("business.referenceData.label.fr"), Bindings.city().label().fr())
 				.withSort(ReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-				.withClass("text text-md")
+				.withClass("cell-w-300")
 			.addLabelColumn(new ResourceModel("business.referenceData.label.en"), Bindings.city().label().en())
 				.withSort(ReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-				.withClass("text text-md")
-				.withClass(CssClassConstants.CELL_HIDDEN_MD_AND_LESS)
-			.addLabelColumn(new ResourceModel("business.city.postalCode"), Bindings.city().postalCode())
+				.withClass("cell-w-300")
+				.withClass(CELL_DISPLAY_LG)
+			.addLabelColumn(new ResourceModel("business.city.postalCode.short"), Bindings.city().postalCode())
 				.withSort(ReferenceDataSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
-				.withClass("code code-sm");
+				.withClass("cell-w-120");
 	}
 
 	@Override
