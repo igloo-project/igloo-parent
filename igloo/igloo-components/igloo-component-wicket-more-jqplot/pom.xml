@@ -55,6 +55,13 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-commons</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-wicket</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>

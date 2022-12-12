@@ -51,6 +51,11 @@
 			<version>${igloo-commons.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-cache</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>igloojs</artifactId>
 			<version>${igloo.version}</version>

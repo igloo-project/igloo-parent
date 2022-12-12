@@ -19,9 +19,7 @@ import org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
-import org.hibernate.cache.ehcache.ConfigSettings;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.cfg.Environment;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.spi.TypeContributorList;
 import org.hibernate.jpa.spi.IdentifierGeneratorStrategyProvider;
@@ -52,6 +50,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.zaxxer.hikari.HikariDataSource;
 
+import igloo.hibernateconfig.api.HibernateCacheRegionFactory;
 import igloo.hibernateconfig.api.HibernateSearchBackend;
 import igloo.hibernateconfig.api.HibernateSearchConfigurator;
 import igloo.hibernateconfig.api.IJpaPropertiesProvider;
@@ -81,59 +80,55 @@ public final class JpaConfigUtils {
 
 	public static Properties getJpaProperties(IJpaPropertiesProvider configuration) {
 		Properties properties = new Properties();
-		properties.setProperty(Environment.DEFAULT_SCHEMA, configuration.getDefaultSchema());
-		properties.setProperty(Environment.DIALECT, configuration.getDialect().getName());
-		properties.setProperty(Environment.HBM2DDL_AUTO, configuration.getHbm2Ddl());
-		properties.setProperty(Environment.SHOW_SQL, Boolean.FALSE.toString());
-		properties.setProperty(Environment.FORMAT_SQL, Boolean.FALSE.toString());
-		properties.setProperty(Environment.GENERATE_STATISTICS, Boolean.FALSE.toString());
-		properties.setProperty(Environment.USE_REFLECTION_OPTIMIZER, Boolean.TRUE.toString());
-		properties.setProperty(Environment.CREATE_EMPTY_COMPOSITES_ENABLED, Boolean.toString(configuration.isCreateEmptyCompositesEnabled()));
-		properties.setProperty(Environment.XML_MAPPING_ENABLED, Boolean.toString(configuration.isXmlMappingEnabled()));
+		properties.setProperty(AvailableSettings.DEFAULT_SCHEMA, configuration.getDefaultSchema());
+		properties.setProperty(AvailableSettings.DIALECT, configuration.getDialect().getName());
+		properties.setProperty(AvailableSettings.HBM2DDL_AUTO, configuration.getHbm2Ddl());
+		properties.setProperty(AvailableSettings.SHOW_SQL, Boolean.FALSE.toString());
+		properties.setProperty(AvailableSettings.FORMAT_SQL, Boolean.FALSE.toString());
+		properties.setProperty(AvailableSettings.GENERATE_STATISTICS, Boolean.FALSE.toString());
+		properties.setProperty(AvailableSettings.USE_REFLECTION_OPTIMIZER, Boolean.TRUE.toString());
+		properties.setProperty(AvailableSettings.CREATE_EMPTY_COMPOSITES_ENABLED, Boolean.toString(configuration.isCreateEmptyCompositesEnabled()));
+		properties.setProperty(AvailableSettings.XML_MAPPING_ENABLED, Boolean.toString(configuration.isXmlMappingEnabled()));
 		
 		properties.setProperty(AvailableSettings.JPAQL_STRICT_COMPLIANCE, Boolean.TRUE.toString());
 		
 		Integer defaultBatchSize = configuration.getDefaultBatchSize();
 		if (defaultBatchSize != null) {
-			properties.setProperty(Environment.DEFAULT_BATCH_FETCH_SIZE, Integer.toString(defaultBatchSize));
-			properties.setProperty(Environment.BATCH_FETCH_STYLE, BatchFetchStyle.PADDED.name());
+			properties.setProperty(AvailableSettings.DEFAULT_BATCH_FETCH_SIZE, Integer.toString(defaultBatchSize));
+			properties.setProperty(AvailableSettings.BATCH_FETCH_STYLE, BatchFetchStyle.PADDED.name());
 		}
 		
 		String hibernateHbm2DdlImportFiles = configuration.getHbm2DdlImportFiles();
 		if (StringUtils.hasText(hibernateHbm2DdlImportFiles)) {
-			properties.setProperty(Environment.HBM2DDL_IMPORT_FILES, hibernateHbm2DdlImportFiles);
+			properties.setProperty(AvailableSettings.HBM2DDL_IMPORT_FILES, hibernateHbm2DdlImportFiles);
 		}
 
-		String ehCacheConfiguration = configuration.getEhCacheConfiguration();
-		boolean singletonCache = configuration.isEhCacheSingleton();
 		boolean queryCacheEnabled = configuration.isQueryCacheEnabled();
-		if (StringUtils.hasText(ehCacheConfiguration)) {
-			if (configuration.getEhCacheRegionFactory() != null) {
-				properties.setProperty(Environment.CACHE_REGION_FACTORY, configuration.getEhCacheRegionFactory().getName());
-			} else {
-				// from 5.3.x, hibernate use alias names for hibernate-provided factory
-				// classes still supported
-				// https://github.com/hibernate/hibernate-orm/commit/f8964847dd40f64e1f478eba47c767be98742125
-				if (singletonCache) {
-					properties.setProperty(Environment.CACHE_REGION_FACTORY, "ehcache-singleton");
-				} else {
-					properties.setProperty(Environment.CACHE_REGION_FACTORY, "ehcache");
-				}
+		HibernateCacheRegionFactory cacheRegionFactory = configuration.getEhCacheRegionFactory();
+		if (!cacheRegionFactory.isDisabled()) {
+			properties.setProperty(AvailableSettings.CACHE_REGION_FACTORY, cacheRegionFactory.getRegionFactoryAlias());
+			if (cacheRegionFactory.isEhcache2()) {
+				// org.hibernate.cache.ehcache.ConfigSettings.EHCACHE_CONFIGURATION_RESOURCE_NAME
+				properties.setProperty("net.sf.ehcache.configurationResourceName", configuration.getEhCacheConfiguration());
+			} else if (cacheRegionFactory.isJcache()) {
+				properties.setProperty("hibernate.javax.cache.missing_cache_strategy", "create-warn");
+				properties.setProperty("hibernate.javax.cache.provider", cacheRegionFactory.getJcacheProvider());
+				properties.setProperty("hibernate.javax.cache.uri", configuration.getJcacheConfiguration());
 			}
+			
 			properties.setProperty(AvailableSettings.JPA_SHARED_CACHE_MODE, SharedCacheMode.ENABLE_SELECTIVE.name());
-			properties.setProperty(ConfigSettings.EHCACHE_CONFIGURATION_RESOURCE_NAME, ehCacheConfiguration);
-			properties.setProperty(Environment.USE_SECOND_LEVEL_CACHE, Boolean.TRUE.toString());
+			properties.setProperty(AvailableSettings.USE_SECOND_LEVEL_CACHE, Boolean.TRUE.toString());
 			if (queryCacheEnabled) {
-				properties.setProperty(Environment.USE_QUERY_CACHE, Boolean.TRUE.toString());
+				properties.setProperty(AvailableSettings.USE_QUERY_CACHE, Boolean.TRUE.toString());
 			} else {
-				properties.setProperty(Environment.USE_QUERY_CACHE, Boolean.FALSE.toString());
+				properties.setProperty(AvailableSettings.USE_QUERY_CACHE, Boolean.FALSE.toString());
 			}
 		} else {
 			if (queryCacheEnabled) {
 				throw new IllegalArgumentException("Could not enable query cache without EhCache configuration");
 			}
-			properties.setProperty(Environment.USE_SECOND_LEVEL_CACHE, Boolean.FALSE.toString());
-			properties.setProperty(Environment.USE_QUERY_CACHE, Boolean.FALSE.toString());
+			properties.setProperty(AvailableSettings.USE_SECOND_LEVEL_CACHE, Boolean.FALSE.toString());
+			properties.setProperty(AvailableSettings.USE_QUERY_CACHE, Boolean.FALSE.toString());
 		}
 
 		String hibernateSearchIndexBase = configuration.getHibernateSearchIndexBase();
@@ -167,23 +162,23 @@ public final class JpaConfigUtils {
 		// Using PerTableSequence by default
 		String identifierGeneratorStrategyProviderName = identifierGeneratorStategyProvider != null ?
 				identifierGeneratorStategyProvider.getName() : PerTableSequenceStrategyProvider.class.getName();
-		properties.setProperty(org.hibernate.jpa.AvailableSettings.IDENTIFIER_GENERATOR_STRATEGY_PROVIDER,
+		properties.setProperty(AvailableSettings.IDENTIFIER_GENERATOR_STRATEGY_PROVIDER,
 				identifierGeneratorStrategyProviderName);
 		
 		Class<? extends ImplicitNamingStrategy> implicitNamingStrategy = configuration.getImplicitNamingStrategy();
 		if (implicitNamingStrategy != null) {
-			properties.setProperty(Environment.IMPLICIT_NAMING_STRATEGY, implicitNamingStrategy.getName());
+			properties.setProperty(AvailableSettings.IMPLICIT_NAMING_STRATEGY, implicitNamingStrategy.getName());
 		} else {
-			throw new IllegalStateException(Environment.IMPLICIT_NAMING_STRATEGY + " may not be null: sensible values are "
+			throw new IllegalStateException(AvailableSettings.IMPLICIT_NAMING_STRATEGY + " may not be null: sensible values are "
 					+ ImplicitNamingStrategyJpaCompliantImpl.class.getName() + " for Igloo <= 0.7 or "
 					+ ImplicitNamingStrategyComponentPathImpl.class.getName() + " for Igloo >= 0.8");
 		}
 		
 		Class<? extends PhysicalNamingStrategy> physicalNamingStrategy = configuration.getPhysicalNamingStrategy();
 		if (physicalNamingStrategy != null) {
-			properties.setProperty(Environment.PHYSICAL_NAMING_STRATEGY, physicalNamingStrategy.getName());
+			properties.setProperty(AvailableSettings.PHYSICAL_NAMING_STRATEGY, physicalNamingStrategy.getName());
 		} else {
-			throw new IllegalStateException(Environment.PHYSICAL_NAMING_STRATEGY + " may not be null: sensible values are "
+			throw new IllegalStateException(AvailableSettings.PHYSICAL_NAMING_STRATEGY + " may not be null: sensible values are "
 					+ PhysicalNamingStrategyStandardImpl.class.getName() + " for no filtering of the name "
 					+ PostgreSQLPhysicalNamingStrategyImpl.class.getName() + " to truncate the name to conform with PostgreSQL identifier max length");
 		}

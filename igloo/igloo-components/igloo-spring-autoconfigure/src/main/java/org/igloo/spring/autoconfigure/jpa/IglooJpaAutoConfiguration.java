@@ -47,7 +47,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 	},
 	encoding = "UTF-8"
 )
-@Import({ DefaultJpaConfig.class })
+@Import({ DefaultJpaConfig.class, IglooJpaCacheConfig.class })
 @ComponentScan(
 	basePackageClasses = {
 		CoreJpaBatchPackage.class,
