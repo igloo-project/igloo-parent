@@ -1,7 +1,9 @@
 package igloo.console.template;
 
 import java.util.List;
+import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -9,6 +11,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.UrlUtils;
 import org.apache.wicket.request.resource.ResourceReference;
+import org.apache.wicket.settings.ResourceSettings;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
@@ -22,7 +25,6 @@ import com.google.common.collect.Sets;
 
 import igloo.console.maintenance.authentication.page.ConsoleMaintenanceAuthenticationPage;
 import igloo.console.maintenance.data.page.ConsoleMaintenanceDataPage;
-import igloo.console.maintenance.ehcache.page.ConsoleMaintenanceEhCachePage;
 import igloo.console.maintenance.file.page.ConsoleMaintenanceFilePage;
 import igloo.console.maintenance.gestion.page.ConsoleMaintenanceGestionPage;
 import igloo.console.maintenance.properties.page.ConsoleMaintenancePropertiesPage;
@@ -51,7 +53,7 @@ public final class ConsoleConfiguration {
 	private IComponentFactory<Component> consoleHeaderEnvironmentComponentFactory = InvisiblePanel::new;
 	
 	private IComponentFactory<Component> consoleHeaderAdditionalContentComponentFactory = InvisiblePanel::new;
-	
+
 	public static ConsoleConfiguration get() {
 		if (!StringUtils.hasText(INSTANCE.baseUrl)) {
 			throw new IllegalStateException("La console doit être initialisée par l'application avec une url de base.");
@@ -59,15 +61,16 @@ public final class ConsoleConfiguration {
 		return INSTANCE;
 	}
 	
-	public static ConsoleConfiguration build(String baseUrl, IPropertyService propertyService) {
-		return build(baseUrl, "common.console", true, propertyService);
+	public static ConsoleConfiguration build(String baseUrl, IPropertyService propertyService, ResourceSettings resourceSettings) {
+		return build(baseUrl, "common.console", true, propertyService, resourceSettings);
 	}
 	
 	public static ConsoleConfiguration build(
 			String baseUrl,
 			String consoleTitleKey,
 			boolean buildDefault,
-			IPropertyService propertyService
+			IPropertyService propertyService,
+			ResourceSettings resourceSettings
 	) {
 		INSTANCE.setBaseUrl(UrlUtils.normalizePath(baseUrl));
 		INSTANCE.setConsoleTitleKey(consoleTitleKey);
@@ -81,9 +84,6 @@ public final class ConsoleConfiguration {
 			ConsoleMenuItem maintenanceGestionMenuItem = new ConsoleMenuItem("maintenanceGestionMenuItem",
 					"console.maintenance.gestion", "gestion", ConsoleMaintenanceGestionPage.class);
 			maintenanceMenuSection.addMenuItem(maintenanceGestionMenuItem);
-			ConsoleMenuItem maintenanceEhcacheMenuItem = new ConsoleMenuItem("maintenanceEhcacheMenuItem",
-					"console.maintenance.ehcache", "ehcache", ConsoleMaintenanceEhCachePage.class);
-			maintenanceMenuSection.addMenuItem(maintenanceEhcacheMenuItem);
 			ConsoleMenuItem maintenanceDataMenuItem = new ConsoleMenuItem("maintenanceDataMenuItem",
 					"console.maintenance.data", "data", ConsoleMaintenanceDataPage.class);
 			maintenanceMenuSection.addMenuItem(maintenanceDataMenuItem);
@@ -105,8 +105,60 @@ public final class ConsoleConfiguration {
 			
 			INSTANCE.addMenuSection(maintenanceMenuSection);
 		}
+		INSTANCE.loadProviders(resourceSettings);
 		
 		return INSTANCE;
+	}
+
+	private void loadProviders(ResourceSettings resourceSettings) {
+		ServiceLoader<IConsolePageProvider> loader = ServiceLoader.load(IConsolePageProvider.class);
+		for (IConsolePageProvider pp : loader) {
+			pp.install(this, resourceSettings);
+		}
+	}
+
+	/**
+	 * This method can be called only during startup phase.
+	 * 
+	 * @param newMenuItem menuItem to add
+	 * @param sectionPredicate predicate to select section for insertion
+	 * @param menuPredicate predicate to select menu for insertion (before or after item, see next argument)
+	 * @param beforeMenuItem if true, <code>newMenuItem</code> is added before selected menu item; else after
+	 * @param firstIfNotFound if true, and <code>menuPredicate</code> fails to find an entry, <code>newMenuItem</code>
+	 * is added first in its section; else last
+	 */
+	public void insertMenu(ConsoleMenuItem newMenuItem,
+			Predicate<ConsoleMenuSection> sectionPredicate,
+			Predicate<ConsoleMenuItem> menuPredicate,
+			boolean beforeMenuItem,
+			boolean firstIfNotFound) { //NOSONAR
+		ConsoleMenuSection sectionFound = null;
+		boolean indexFound = false; 
+		for (ConsoleMenuSection section : getMenuSections()) {
+			if (sectionPredicate.test(section)) {
+				sectionFound = section;
+				int index = 0;
+				for (ConsoleMenuItem menuItem : section.getMenuItems()) {
+					if (menuPredicate.test(menuItem)) {
+						index = beforeMenuItem ?
+								section.getMenuItems().indexOf(menuItem) :
+									section.getMenuItems().indexOf(menuItem) + 1;
+						indexFound = true;
+						// menu item is found
+						break;
+					}
+				}
+				if (!indexFound) {
+					index = firstIfNotFound ? 0 : section.getMenuItems().size();
+				}
+				section.getMenuItems().add(index, newMenuItem);
+				// no need to search other sections
+				break;
+			}
+		}
+		if (sectionFound == null) {
+			throw new IllegalStateException("Section not found for insertion");
+		}
 	}
 	
 	public Link<Void> getConsoleLink(String wicketId) {

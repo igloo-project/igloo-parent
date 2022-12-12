@@ -74,6 +74,7 @@
 		<module>storage-integration</module>
 		
 		<module>igloo-monitoring-page</module>
+		<module>igloo-cache</module>
 		
 		<module>igloo-spring-autoconfigure</module>
 		

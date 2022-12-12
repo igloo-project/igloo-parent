@@ -92,10 +92,6 @@
 			<groupId>org.wicketstuff.wiquery</groupId>
 			<artifactId>wiquery-jquery-ui</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>

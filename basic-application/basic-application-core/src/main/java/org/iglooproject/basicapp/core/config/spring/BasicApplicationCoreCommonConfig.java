@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 // fonctionnement de l'annotation @Transactional
 @EnableTransactionManagement(order = BasicApplicationAdviceOrder.TRANSACTION)
 @EnableIglooAutoConfiguration
-public class BasicApplicationCoreCommonConfig {
+public class BasicApplicationCoreCommonConfig { //NOSONAR
 
 	public static final String APPLICATION_NAME = "basic-application";
 

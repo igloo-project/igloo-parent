@@ -12,13 +12,14 @@ import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
-import org.hibernate.cache.spi.RegionFactory;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.integrator.spi.Integrator;
 import org.hibernate.jpa.boot.spi.IntegratorProvider;
 import org.hibernate.jpa.spi.IdentifierGeneratorStrategyProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+
+import igloo.hibernateconfig.api.HibernateCacheRegionFactory;
 
 public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvider {
 
@@ -55,14 +56,14 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Value("#{dataSource}")
 	private DataSource dataSource;
 
-	@Value("${hibernate.ehCache.configurationLocation}")
+	@Value("${hibernate.ehCache.configurationLocation:}")
 	private String ehCacheConfiguration;
-
-	@Value("${hibernate.ehCache.singleton}")
-	private boolean ehCacheSingleton;
 	
-	@Value("${hibernate.ehCache.regionFactory:}")
-	private Class<? extends RegionFactory> ehCacheRegionFactory;
+	@Value("${hibernate.jcache.configurationLocation:}")
+	private String jcacheConfiguration;
+	
+	@Value("#{T(igloo.hibernateconfig.api.HibernateCacheRegionFactory).fromString('${hibernate.cache:}')}")
+	private HibernateCacheRegionFactory ehCacheRegionFactory;
 
 	@Value("${hibernate.queryCache.enabled}")
 	private boolean queryCacheEnabled;
@@ -171,12 +172,12 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	}
 
 	@Override
-	public boolean isEhCacheSingleton() {
-		return ehCacheSingleton;
+	public String getJcacheConfiguration() {
+		return jcacheConfiguration;
 	}
 	
 	@Override
-	public Class<? extends RegionFactory> getEhCacheRegionFactory() {
+	public HibernateCacheRegionFactory getEhCacheRegionFactory() {
 		return ehCacheRegionFactory;
 	}
 
