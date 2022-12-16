@@ -22,7 +22,8 @@ public class BootstrapTooltipOptions extends Options implements IBootstrapToolti
 	public static final BootstrapTooltipOptions get() {
 		return new BootstrapTooltipOptions()
 			.selector("[title],[data-bs-original-title]")
-			.container("body");
+			.container("body")
+			.boundary(Boundary.WINDOW);
 	}
 
 	public BootstrapTooltipOptions animation(boolean animation) {
@@ -249,7 +250,8 @@ public class BootstrapTooltipOptions extends Options implements IBootstrapToolti
 	}
 
 	public enum Boundary {
-		CLIPPING_PARENTS("clippingParents");
+		CLIPPING_PARENTS("clippingParents"),
+		WINDOW("window");
 		
 		private final String value;
 		
