@@ -27,7 +27,7 @@ public class Log4J2Configuration implements ILoggerConfiguration {
 		// modify configuration files list (comma-separated file path or url)
 		// path without schemes are resolved as file, then as classpath resource
 		// classpath resource must NOT start with a '/'
-		System.setProperty("log4j.configurationFile", configurationLocations.stream().collect(Collectors.joining(",")));
+		System.setProperty("log4j2.configurationFile", configurationLocations.stream().collect(Collectors.joining(",")));
 		// reload log4j2 properties
 		PropertiesUtil.getProperties().reload();
 		// reload configuration
