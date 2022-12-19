@@ -6,7 +6,7 @@
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-core-project</artifactId>
 		<relativePath>../igloo/igloo-parents/igloo-parent-core-project/pom.xml</relativePath>
-		<version>5.0.2-SNAPSHOT</version><!-- KEEPME: archetype parent.version -->
+		<version>5.0.2</version><!-- KEEPME: archetype parent.version -->
 	</parent>
 	
 	<groupId>org.iglooproject.archetype</groupId>
