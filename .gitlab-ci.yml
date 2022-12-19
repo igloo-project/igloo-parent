@@ -86,6 +86,7 @@ maven-deploy:
     - /^ft-.*-deploy$/
     - /^rl-.*$/
     - /^hf-.*$/
+    - v4.4.2
   except:
     variables:
       - $CHECK_DEPENDENCIES
