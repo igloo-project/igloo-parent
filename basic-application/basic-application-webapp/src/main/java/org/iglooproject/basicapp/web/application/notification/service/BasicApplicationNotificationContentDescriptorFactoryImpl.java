@@ -51,6 +51,10 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 			public Component createComponent(String wicketId) {
 				return new ExampleHtmlNotificationPanel(wicketId, GenericEntityModel.of(user), Model.of(date));
 			}
+			@Override
+			public Class<? extends Component> getComponentClass() {
+				return ExampleHtmlNotificationPanel.class;
+			}
 		};
 	}
 
@@ -87,6 +91,10 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 					userModel, userModel, Model.of(new Date()),
 					mapper.map(userModel, BindingModel.of(userModel, Bindings.user().passwordRecoveryRequest().token()))
 				);
+			}
+			@Override
+			public Class<? extends Component> getComponentClass() {
+				return UserPasswordRecoveryRequestHtmlNotificationPanel.class;
 			}
 		};
 	}

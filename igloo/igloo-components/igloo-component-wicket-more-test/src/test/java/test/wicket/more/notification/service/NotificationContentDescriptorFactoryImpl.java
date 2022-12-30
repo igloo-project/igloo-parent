@@ -21,6 +21,11 @@ public class NotificationContentDescriptorFactoryImpl extends AbstractNotificati
 			public Component createComponent(String wicketId) {
 				return new CoreLabel(wicketId, Model.of(content)).setEscapeModelStrings(false);
 			}
+
+			@Override
+			public Class<? extends Component> getComponentClass() {
+				return CoreLabel.class;
+			}
 		};
 	}
 }
