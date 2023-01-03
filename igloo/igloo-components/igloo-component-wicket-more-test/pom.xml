@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>5.1.0-SNAPSHOT</version>
+		<version>5.0.3</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-more-test</artifactId>
