@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>org.iglooproject</groupId>
 		<artifactId>plugins-all</artifactId>
-		<version>5.0.0</version>
+		<version>5.0.1</version>
 	</parent>
 	
 	<artifactId>igloo-parent</artifactId>
-	<version>5.0.2</version>
+	<version>5.0.3</version>
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Parent</name>
@@ -20,10 +20,10 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
 		<maven-toolchains-plugin.version>3.1.0</maven-toolchains-plugin.version>
-		<maven-site-plugin.version>4.0.0-M1</maven-site-plugin.version>
+		<maven-site-plugin.version>4.0.0-M4</maven-site-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.4.1</igloo.wagon-ssh-external-plugin.version>
 		<maven-project-info-reports-plugin.version>3.4.1</maven-project-info-reports-plugin.version>
-		<igloo.owasp-maven-plugin.version>7.3.0</igloo.owasp-maven-plugin.version>
+		<igloo.owasp-maven-plugin.version>7.4.1</igloo.owasp-maven-plugin.version>
 		<igloo.versions-maven-plugin.version>2.13.0</igloo.versions-maven-plugin.version>
 	</properties>
 	

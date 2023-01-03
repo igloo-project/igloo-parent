@@ -2,18 +2,22 @@ package org.iglooproject.wicket.more.notification.service;
 
 import java.util.Locale;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
-import org.apache.wicket.core.request.handler.PageProvider;
 import org.apache.wicket.core.util.string.ComponentRenderer;
 import org.apache.wicket.protocol.http.BufferedWebResponse;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.util.lang.Args;
 import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
-import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import igloo.wicket.offline.IOfflineComponentProvider;
+import igloo.wicket.offline.OfflineComponentClassMetadataKey;
 
 /**
  * <p>This is a common utility for "offline" page generation, for notifications or queued pdf rendering
@@ -29,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 abstract class AbstractOfflinePanelRendererServiceImpl {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractOfflinePanelRendererServiceImpl.class);
+	
 	private IWicketContextProvider wicketContextProvider;
 	
 	@Autowired
@@ -42,26 +48,27 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 		return wicketContextProvider;
 	}
 	
-	protected final String renderComponent(final SerializableSupplier2<Component> componentSupplier, Locale locale) {
-		return renderComponent(componentSupplier, locale, null);
+	protected final String renderComponent(final IOfflineComponentProvider<? extends Component> offlineComponent, Locale locale) {
+		return renderComponent(offlineComponent, locale, null);
 	}
 	
-	protected final String renderPage(final SerializableSupplier2<Page> pageSupplier, Locale locale) {
-		return renderPage(pageSupplier, locale, null);
+	protected final String renderPage(final IOfflineComponentProvider<? extends Page> offlineComponent, Locale locale) {
+		return renderPage(offlineComponent, locale, null);
 	}
 	
 	/**
-	 * @param componentSupplier A supplier for the component to be rendered.
+	 * @param offlineComponent A supplier for the component to be rendered.
 	 * @param locale The locale to use when rendering.
 	 * @param variation A string identifier that will be passed to {@link #postProcessHtml(Component, Locale, String, String)}.
 	 * @return The component returned by <code>componenentSupplier</code>, rendered in HTML with the given <code>locale</code>
 	 */
-	protected String renderComponent(final SerializableSupplier2<Component> componentSupplier, final Locale locale, final String variation) {
-		Args.notNull(componentSupplier, "componentSupplier");
+	protected String renderComponent(final IOfflineComponentProvider<? extends Component> offlineComponent, final Locale locale, final String variation) {
+		Args.notNull(offlineComponent, "offlineComponent");
 		try (ITearDownHandle handle = wicketContextProvider.context(locale).open()) {
-			Component component = componentSupplier.get();
-			Args.notNull(component, "component");
+			RequestCycle.get().setMetaData(OfflineComponentClassMetadataKey.INSTANCE, offlineComponent.getComponentClass());
 			
+			Component component = offlineComponent.getComponent();
+			Args.notNull(component, "component");
 			String htmlBody = ComponentRenderer.renderComponent(component).toString();
 			
 			return postProcessHtml(component, locale, variation, htmlBody);
@@ -69,18 +76,21 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 	}
 	
 	/**
-	 * @param pageSupplier A supplier for the page to be rendered.
+	 * @param offlineComponent A supplier for the page to be rendered.
 	 * @param locale The locale to use when rendering.
 	 * @param variation A string identifier that will be passed to {@link #postProcessHtml(Component, Locale, String, String)}.
 	 * @return The component returned by <code>pageSupplier</code>, rendered in HTML with the given <code>locale</code>
 	 */
-	protected String renderPage(final SerializableSupplier2<? extends Page> pageSupplier, final Locale locale, final String variation) {
-		Args.notNull(pageSupplier, "pageSupplier");
+	protected String renderPage(final IOfflineComponentProvider<? extends Page> offlineComponent, final Locale locale, final String variation) {
+		Args.notNull(offlineComponent, "offlineComponent");
 		try (ITearDownHandle handle = wicketContextProvider.context(locale).open()) {
-			Page page = pageSupplier.get();
-			String htmlBody = renderPage(new PageProvider(pageSupplier.get())).toString();
+			Pair<Page, CharSequence> result = renderPage(offlineComponent);
+			if (!offlineComponent.getComponentClass().isInstance(result.getLeft())) {
+				LOGGER.warn("Component class {} does not match advertised class {}",
+						result.getLeft().getClass().getName(), offlineComponent.getComponentClass().getName());
+			}
 			
-			return postProcessHtml(page, locale, variation, htmlBody);
+			return postProcessHtml(result.getLeft(), locale, variation, result.getRight().toString());
 		}
 	}
 
@@ -93,19 +103,25 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 	 * This method is made from {@link ComponentRenderer#renderComponent(java.util.function.Supplier)} for context
 	 * initialization code and {@link ComponentRenderer#renderPage(java.util.function.Supplier)} for rendering
 	 */
-	private static CharSequence renderPage(final PageProvider pageProvider) {
+	private static Pair<Page, CharSequence> renderPage(final IOfflineComponentProvider<? extends Page> offlineComponent) {
 		RequestCycle requestCycle = RequestCycle.get();
 		final Response originalResponse = requestCycle.getResponse();
 		BufferedWebResponse tempResponse = new BufferedWebResponse(null);
 		
 		try {
 			requestCycle.setResponse(tempResponse);
-			pageProvider.getPageInstance().renderPage();
+			requestCycle.setMetaData(OfflineComponentClassMetadataKey.INSTANCE, offlineComponent.getComponentClass());
+			Page component = offlineComponent.getComponent();
+			if (!offlineComponent.getComponentClass().isInstance(component)) {
+				LOGGER.warn("Component class {} does not match advertised class {}",
+						component.getClass().getName(), offlineComponent.getComponentClass().getName());
+			}
+			component.renderPage();
+			return Pair.of(component, tempResponse.getText());
 		} finally {
 			requestCycle.setResponse(originalResponse);
 		}
 		
-		return tempResponse.getText();
 	}
 	
 	protected abstract String postProcessHtml(Component component, Locale locale, String variation, String htmlBodyToProcess);

@@ -26,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
+import igloo.wicket.offline.IOfflineComponentProvider;
+
 public abstract class AbstractNotificationContentDescriptorFactory extends AbstractWicketRendererServiceImpl {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractNotificationContentDescriptorFactory.class);
@@ -79,14 +81,18 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 			return renderHtmlBody(getDefaultLocale());
 		}
 		
+		@SuppressWarnings("unchecked")
 		private String renderHtmlBody(Locale locale) {
 			return AbstractNotificationContentDescriptorFactory.this.renderComponent(
-					() -> createComponent("htmlComponent"),
+					// we can't ensure that component and class match with available generic information
+					IOfflineComponentProvider.<Component>fromSupplier(() -> createComponent("htmlComponent"), (Class) (Object) getComponentClass()),
 					locale
 			);
 		}
 		
 		public abstract Component createComponent(String wicketId);
+		
+		public abstract Class<? extends Component> getComponentClass();
 		
 		@Override
 		public INotificationContentDescriptor withContext(INotificationRecipient recipient) {
