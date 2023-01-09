@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.igloo.spring.autoconfigure.EnableIglooAutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
+import org.igloo.spring.autoconfigure.property.IglooPropertyAutoConfiguration;
 import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
-import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
 import org.iglooproject.spring.util.ConfigurationLogger;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 class ApplicationContextAutoConfigurationTestCase {
 
 	/**
-	 * Check that autoconfiguration from {@link FlywayConfiguration} is triggered with EnableIglooAutoConfiguration
+	 * Check that autoconfiguration from {@link IglooPropertyAutoConfiguration} is triggered with EnableIglooAutoConfiguration
 	 */
 	@Test
 	void testIglooApplicationConfigAutoConfigure() {

@@ -84,16 +84,12 @@
 			<artifactId>hibernate-search-orm</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-lucene-analyzers</artifactId>
-			<version>${project.version}</version>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
 		</dependency>
-		
-		<!-- this dependency must also be compatible with flywaydb 7 -->
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<!-- <artifactId>igloo-component-flyway-7</artifactId> -->
-			<artifactId>igloo-component-flyway-8</artifactId>
+			<artifactId>igloo-component-lucene-analyzers</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		
