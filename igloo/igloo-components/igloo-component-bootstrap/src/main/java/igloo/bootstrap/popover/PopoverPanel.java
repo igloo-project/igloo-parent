@@ -65,6 +65,11 @@ public class PopoverPanel extends Panel {
 					new PopoverBehavior(popover.js())
 				)
 		);
+		
+		// Hide the whole popover panel if the content component is not visible.
+		add(
+				Condition.componentVisible(contentComponent).thenShowInternal()
+		);
 	}
 
 	@Override
