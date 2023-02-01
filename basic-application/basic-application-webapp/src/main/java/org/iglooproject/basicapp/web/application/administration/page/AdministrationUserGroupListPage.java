@@ -93,7 +93,7 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 			DataTableBuilder.start(ReadOnlyCollectionModel.of(userGroupListModel, GenericEntityModel.factory()))
 				.addLabelColumn(new ResourceModel("business.userGroup.name"), Bindings.userGroup().name())
 					.withLink(AdministrationUserGroupDetailPage.MAPPER_SOURCE.setParameter2(new ComponentPageModel(this)))
-					.withClass("cell-w-350 cell-w-max")
+					.withClass("cell-w-300")
 				.addActionColumn()
 					.addConfirmAction(ActionRenderers.delete())
 						.title(parameter ->
@@ -127,7 +127,7 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 							}
 						})
 						.whenPermission(BasicApplicationPermissionConstants.DELETE)
-						.withClassOnElements(BTN_TABLE_ROW_ACTION)
+					.withClassOnElements(BTN_TABLE_ROW_ACTION)
 					.end()
 					.withClass("cell-w-actions-1x cell-w-fit")
 				.bootstrapCard()

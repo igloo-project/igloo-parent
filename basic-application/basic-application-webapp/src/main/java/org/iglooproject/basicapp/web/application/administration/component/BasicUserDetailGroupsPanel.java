@@ -57,7 +57,7 @@ public class BasicUserDetailGroupsPanel extends GenericPanel<BasicUser> {
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 				.addLabelColumn(new ResourceModel("business.userGroup.name"))
 					.withLink(AdministrationUserGroupDetailPage.MAPPER)
-					.withClass("cell-w-350 cell-w-max")
+					.withClass("cell-w-300")
 				.addActionColumn()
 					.addConfirmAction(ActionRenderers.remove())
 						.title(new ResourceModel("administration.userGroup.detail.users.action.remove.confirmation.title"))
