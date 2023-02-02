@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
-	<wicket:panel>
-		<form wicket:id="form" onsubmit="return false;">
-			<div class="row g-2">
-				<div class="form-group col-lg-6 col-2xl-5">
-					<label class="sr-only" wicket:for="label"><wicket:label /></label>
-					<input wicket:id="label" class="form-control" type="text" />
-				</div>
-				<div class="form-group col-lg-6 col-2xl-4">
-					<label class="sr-only" wicket:for="enabledFilter"><wicket:label /></label>
-					<select wicket:id="enabledFilter" class="form-control" />
-				</div>
-				<wicket:child />
+<wicket:panel>
+	<form wicket:id="form" onsubmit="return false;">
+		<div class="row g-2">
+			<div class="form-group col-lg-6 col-2xl-5">
+				<label class="sr-only" wicket:for="label"><wicket:label /></label>
+				<input wicket:id="label" class="form-control" type="text" />
 			</div>
-		</form>
-	</wicket:panel>
+			<div class="form-group col-lg-6 col-2xl-4">
+				<label class="sr-only" wicket:for="enabledFilter"><wicket:label /></label>
+				<select wicket:id="enabledFilter" class="form-control" />
+			</div>
+			<wicket:child />
+		</div>
+	</form>
+</wicket:panel>
 </html>

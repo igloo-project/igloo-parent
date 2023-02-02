@@ -2,32 +2,32 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
-	<wicket:panel>
-		<div wicket:id="body">
-			<form wicket:id="form">
-				<div class="row row-form">
-					<div class="col-12">
-						<div class="row row-form-group form-group">
-							<div class="col-md-4">
-								<label wicket:for="maxElementsInMemory" class="col-form-label form-label"><wicket:label /></label>
-							</div>
-							<div class="col-md-8">
-								<input wicket:id="maxElementsInMemory" class="form-control" type="text" />
-							</div>
+<wicket:panel>
+	<div wicket:id="body">
+		<form wicket:id="form">
+			<div class="row row-form">
+				<div class="col-12">
+					<div class="row row-form-group form-group">
+						<div class="col-md-4">
+							<label wicket:for="maxElementsInMemory" class="col-form-label form-label"><wicket:label /></label>
+						</div>
+						<div class="col-md-8">
+							<input wicket:id="maxElementsInMemory" class="form-control" type="text" />
 						</div>
 					</div>
 				</div>
-			</form>
-		</div>
-		<div wicket:id="footer">
-			<button wicket:id="cancel" class="btn btn-outline-secondary" type="button">
-				<wicket:message key="common.cancel" />
-			</button>
-			<button wicket:id="save" class="btn btn-success" type="button">
-				<span class="fa fa-fw fa-check"></span>
-				<wicket:message key="common.action.save" />
-			</button>
-		</div>
-	</wicket:panel>
+			</div>
+		</form>
+	</div>
+	<div wicket:id="footer">
+		<button wicket:id="cancel" class="btn btn-outline-secondary" type="button">
+			<wicket:message key="common.cancel" />
+		</button>
+		<button wicket:id="save" class="btn btn-success" type="button">
+			<span class="fa fa-fw fa-check"></span>
+			<wicket:message key="common.action.save" />
+		</button>
+	</div>
+</wicket:panel>
 </body>
 </html>

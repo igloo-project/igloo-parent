@@ -1,87 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
-	<wicket:panel>
-		<div class="decorated-data-table">
-			<wicket:enclosure child="headingAddInContainer">
-				<div class="decorated-data-table-section decorated-data-table-section-heading">
-					<div wicket:id="headingAddInContainer" class="add-in-container add-in-container-top">
-						<wicket:enclosure child="mainAddInWrapper">
-							<div class="add-in-section add-in-section-main">
-								<div class="add-in-wrapper add-in-wrapper-main" wicket:id="mainAddInWrapper">
-									<div class="add-in add-in-main" wicket:id="mainAddIn" />
-								</div>
+<wicket:panel>
+	<div class="decorated-data-table">
+		<wicket:enclosure child="headingAddInContainer">
+			<div class="decorated-data-table-section decorated-data-table-section-heading">
+				<div wicket:id="headingAddInContainer" class="add-in-container add-in-container-top">
+					<wicket:enclosure child="mainAddInWrapper">
+						<div class="add-in-section add-in-section-main">
+							<div class="add-in-wrapper add-in-wrapper-main" wicket:id="mainAddInWrapper">
+								<div class="add-in add-in-main" wicket:id="mainAddIn" />
 							</div>
-						</wicket:enclosure>
-						
-						<wicket:enclosure child="leftAddInWrapper">
-							<div class="add-in-section add-in-section-left">
-								<div class="add-in-wrapper add-in-wrapper-left" wicket:id="leftAddInWrapper">
-									<div class="add-in add-in-left" wicket:id="leftAddIn" />
-								</div>
+						</div>
+					</wicket:enclosure>
+					
+					<wicket:enclosure child="leftAddInWrapper">
+						<div class="add-in-section add-in-section-left">
+							<div class="add-in-wrapper add-in-wrapper-left" wicket:id="leftAddInWrapper">
+								<div class="add-in add-in-left" wicket:id="leftAddIn" />
 							</div>
-						</wicket:enclosure>
-						
-						<wicket:enclosure child="rightAddInWrapper">
-							<div class="add-in-section add-in-section-right">
-								<div class="add-in-wrapper add-in-wrapper-right" wicket:id="rightAddInWrapper">
-									<div class="add-in add-in-right" wicket:id="rightAddIn" />
-								</div>
+						</div>
+					</wicket:enclosure>
+					
+					<wicket:enclosure child="rightAddInWrapper">
+						<div class="add-in-section add-in-section-right">
+							<div class="add-in-wrapper add-in-wrapper-right" wicket:id="rightAddInWrapper">
+								<div class="add-in add-in-right" wicket:id="rightAddIn" />
 							</div>
-						</wicket:enclosure>
-					</div>
+						</div>
+					</wicket:enclosure>
 				</div>
-			</wicket:enclosure>
-			
-			<wicket:enclosure child="bodyTopAddInContainer">
-				<div class="decorated-data-table-section decorated-data-table-section-body-top">
-					<div wicket:id="bodyTopAddInContainer" class="add-in-container add-in-container-body-top">
-						<div wicket:id="bodyTopAddIn" />
-					</div>
-				</div>
-			</wicket:enclosure>
-			
-			<div wicket:id="dataTableContainer" class="table-responsive">
-				<table wicket:id="dataTable" class="table table-hover table-striped table-bordered" />
 			</div>
-			
-			<wicket:enclosure child="bodyBottomAddInContainer">
-				<div class="decorated-data-table-section decorated-data-table-section-body-bottom">
-					<div wicket:id="bodyBottomAddInContainer" class="add-in-container add-in-container-body-bottom">
-						<div wicket:id="bodyBottomAddIn" />
-					</div>
+		</wicket:enclosure>
+		
+		<wicket:enclosure child="bodyTopAddInContainer">
+			<div class="decorated-data-table-section decorated-data-table-section-body-top">
+				<div wicket:id="bodyTopAddInContainer" class="add-in-container add-in-container-body-top">
+					<div wicket:id="bodyTopAddIn" />
 				</div>
-			</wicket:enclosure>
-			
-			<wicket:enclosure child="footerAddInContainer">
-				<div class="decorated-data-table-section decorated-data-table-section-footer">
-					<div wicket:id="footerAddInContainer" class="add-in-container add-in-container-bottom">
-						<wicket:enclosure child="leftAddInWrapper">
-							<div class="add-in-section add-in-section-left">
-								<div class="add-in-wrapper add-in-wrapper-left" wicket:id="leftAddInWrapper">
-									<div class="add-in add-in-left" wicket:id="leftAddIn" />
-								</div>
-							</div>
-						</wicket:enclosure>
-						
-						<wicket:enclosure child="rightAddInWrapper">
-							<div class="add-in-section add-in-section-right">
-								<div class="add-in-wrapper add-in-wrapper-right" wicket:id="rightAddInWrapper">
-									<div class="add-in add-in-right" wicket:id="rightAddIn" />
-								</div>
-							</div>
-						</wicket:enclosure>
-						
-						<wicket:enclosure child="mainAddInWrapper">
-							<div class="add-in-section add-in-section-main">
-								<div class="add-in-wrapper add-in-wrapper-main" wicket:id="mainAddInWrapper">
-									<div class="add-in add-in-main" wicket:id="mainAddIn" />
-								</div>
-							</div>
-						</wicket:enclosure>
-					</div>
-				</div>
-			</wicket:enclosure>
+			</div>
+		</wicket:enclosure>
+		
+		<div wicket:id="dataTableContainer" class="table-responsive">
+			<table wicket:id="dataTable" class="table table-hover table-striped table-bordered" />
 		</div>
-	</wicket:panel>
+		
+		<wicket:enclosure child="bodyBottomAddInContainer">
+			<div class="decorated-data-table-section decorated-data-table-section-body-bottom">
+				<div wicket:id="bodyBottomAddInContainer" class="add-in-container add-in-container-body-bottom">
+					<div wicket:id="bodyBottomAddIn" />
+				</div>
+			</div>
+		</wicket:enclosure>
+		
+		<wicket:enclosure child="footerAddInContainer">
+			<div class="decorated-data-table-section decorated-data-table-section-footer">
+				<div wicket:id="footerAddInContainer" class="add-in-container add-in-container-bottom">
+					<wicket:enclosure child="leftAddInWrapper">
+						<div class="add-in-section add-in-section-left">
+							<div class="add-in-wrapper add-in-wrapper-left" wicket:id="leftAddInWrapper">
+								<div class="add-in add-in-left" wicket:id="leftAddIn" />
+							</div>
+						</div>
+					</wicket:enclosure>
+					
+					<wicket:enclosure child="rightAddInWrapper">
+						<div class="add-in-section add-in-section-right">
+							<div class="add-in-wrapper add-in-wrapper-right" wicket:id="rightAddInWrapper">
+								<div class="add-in add-in-right" wicket:id="rightAddIn" />
+							</div>
+						</div>
+					</wicket:enclosure>
+					
+					<wicket:enclosure child="mainAddInWrapper">
+						<div class="add-in-section add-in-section-main">
+							<div class="add-in-wrapper add-in-wrapper-main" wicket:id="mainAddInWrapper">
+								<div class="add-in add-in-main" wicket:id="mainAddIn" />
+							</div>
+						</div>
+					</wicket:enclosure>
+				</div>
+			</div>
+		</wicket:enclosure>
+	</div>
+</wicket:panel>
 </html>
