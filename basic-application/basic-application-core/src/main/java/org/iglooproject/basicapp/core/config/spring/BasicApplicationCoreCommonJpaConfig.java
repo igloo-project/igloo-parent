@@ -49,16 +49,12 @@ public class BasicApplicationCoreCommonJpaConfig {
 
 	@Bean
 	public TypeContributor applicationTypeContributor() {
-		return new TypeContributor() {
-			
-			@Override
-			public void contribute(TypeContributions typeContributions, ServiceRegistry serviceRegistry) {
-				typeContributions.contributeType(new TextType(), "string", String.class.getName());
-				typeContributions.contributeType(new PostalCodeType(), PostalCode.class.getName());
-				typeContributions.contributeType(new EmailAddressType(), EmailAddress.class.getName());
-				typeContributions.contributeType(new PhoneNumberType(), PhoneNumber.class.getName());
-				typeContributions.contributeType(new FieldPathType(), FieldPath.class.getName());
-			}
+		return (typeContributions, serviceRegistry) -> {
+			typeContributions.contributeType(new TextType(), "string", String.class.getName());
+			typeContributions.contributeType(new PostalCodeType(), PostalCode.class.getName());
+			typeContributions.contributeType(new EmailAddressType(), EmailAddress.class.getName());
+			typeContributions.contributeType(new PhoneNumberType(), PhoneNumber.class.getName());
+			typeContributions.contributeType(new FieldPathType(), FieldPath.class.getName());
 		};
 	}
 

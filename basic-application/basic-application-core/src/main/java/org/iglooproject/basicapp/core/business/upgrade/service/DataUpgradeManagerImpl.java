@@ -72,7 +72,7 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl imple
 			upgrade = (IDataUpgrade) Class.forName(dataUpdateClassName).getConstructor().newInstance();
 		} catch (ClassNotFoundException e) {
 			throw new ServiceException(String.format("Upgrade class %s not found", dataUpdateClassName), e);
-		} catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
 			throw new ServiceException(String.format("Upgrade class %s cannot be instantiated", dataUpdateClassName), e);
 		}
 
