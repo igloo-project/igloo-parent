@@ -91,7 +91,7 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 						.hideLabel()
 					.withClassOnElements(BTN_TABLE_ROW_ACTION)
 					.end()
-					.withClass("cell-w-actions-1x")
+					.withClass("cell-w-actions-1x cell-w-fit")
 				.bootstrapCard()
 					.addIn(AddInPlacement.FOOTER_MAIN, UserGroupAddUserFragment::new)
 					.ajaxPager(AddInPlacement.HEADING_RIGHT)

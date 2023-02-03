@@ -89,7 +89,7 @@ public class BasicUserDetailGroupsPanel extends GenericPanel<BasicUser> {
 						.hideLabel()
 					.withClassOnElements(BTN_TABLE_ROW_ACTION)
 					.end()
-					.withClass("cell-w-actions-1x")
+					.withClass("cell-w-actions-1x cell-w-fit")
 				.bootstrapCard()
 					.addIn(AddInPlacement.FOOTER_MAIN, (wicketId, table) -> new UserGroupAddFragment(wicketId, userModel))
 					.ajaxPager(AddInPlacement.HEADING_RIGHT)

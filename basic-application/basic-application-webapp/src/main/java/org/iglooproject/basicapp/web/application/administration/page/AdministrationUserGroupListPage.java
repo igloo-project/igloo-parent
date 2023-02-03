@@ -129,7 +129,7 @@ public class AdministrationUserGroupListPage extends AdministrationUserGroupTemp
 						.whenPermission(BasicApplicationPermissionConstants.DELETE)
 						.withClassOnElements(BTN_TABLE_ROW_ACTION)
 					.end()
-					.withClass("cell-w-actions-1x")
+					.withClass("cell-w-actions-1x cell-w-fit")
 				.bootstrapCard()
 					.ajaxPagers()
 					.count("administration.userGroup.list.count")

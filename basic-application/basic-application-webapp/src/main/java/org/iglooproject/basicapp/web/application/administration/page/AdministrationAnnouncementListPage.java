@@ -150,7 +150,7 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 						})
 					.withClassOnElements(BTN_TABLE_ROW_ACTION)
 					.end()
-					.withClass("cell-w-actions-2x")
+					.withClass("cell-w-actions-2x cell-w-fit")
 				.rows()
 					.withClass(itemModel -> Condition.predicate(itemModel, AnnouncementPredicates.disabled()).then(TABLE_ROW_DISABLED).otherwise(""))
 					.end()
