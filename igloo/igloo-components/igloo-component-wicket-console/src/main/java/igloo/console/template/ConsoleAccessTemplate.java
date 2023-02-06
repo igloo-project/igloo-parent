@@ -4,7 +4,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.TransparentWebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.IModel;
@@ -21,7 +20,6 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 
 import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
-import igloo.igloojs.focus.FocusJavaScriptResourceReference;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.markup.html.panel.InvisiblePanel;
 
@@ -95,8 +93,6 @@ public abstract class ConsoleAccessTemplate extends AbstractWebPageTemplate {
 		for (ResourceReference cssResourceReference : ConsoleConfiguration.get().getConsoleAccessCssResourcesReferences()) {
 			response.render(CssHeaderItem.forReference(cssResourceReference));
 		}
-		response.render(JavaScriptHeaderItem.forReference(FocusJavaScriptResourceReference.get()));
-		response.render(JavaScriptHeaderItem.forScript("focus.install()", "focus-install"));
 	}
 
 }

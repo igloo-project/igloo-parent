@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
-	<body>
-		<wicket:panel>
-			<div class="feedback-container">
-				<div class="feedback-panel">
-					<button wicket:id="closeTrigger" class="close" type="button">
-						<span>&times;</span>
-					</button>
-					<wicket:enclosure child="FATALfeedbackPanel">
-						<div class="alert alert-danger">
-							<wicket:container wicket:id="FATALfeedbackPanel" />
-						</div>
-					</wicket:enclosure>
-					<wicket:enclosure child="ERRORfeedbackPanel">
-						<div class="alert alert-danger">
-							<wicket:container wicket:id="ERRORfeedbackPanel" />
-						</div>
-					</wicket:enclosure>
-					<wicket:enclosure child="WARNINGfeedbackPanel">
-						<div class="alert alert-warning">
-							<wicket:container wicket:id="WARNINGfeedbackPanel" />
-						</div>
-					</wicket:enclosure>
-					<wicket:enclosure child="SUCCESSfeedbackPanel">
-						<div class="alert alert-success">
-							<wicket:container wicket:id="SUCCESSfeedbackPanel" />
-						</div>
-					</wicket:enclosure>
-					<wicket:enclosure child="INFOfeedbackPanel">
-						<div class="alert alert-info">
-							<wicket:container wicket:id="INFOfeedbackPanel" />
-						</div>
-					</wicket:enclosure>
-					<wicket:enclosure child="DEBUGfeedbackPanel">
-						<div class="alert alert-info">
-							<wicket:container wicket:id="DEBUGfeedbackPanel" />
-						</div>
-					</wicket:enclosure>
-					<wicket:enclosure child="UNDEFINEDfeedbackPanel">
-						<div class="alert alert-secondary">
-							<wicket:container wicket:id="UNDEFINEDfeedbackPanel" />
-						</div>
-					</wicket:enclosure>
-					<wicket:child />
+<body>
+<wicket:panel>
+	<div class="feedback-container">
+		<div class="feedback-panel">
+			<button wicket:id="closeTrigger" class="close" type="button">
+				<span>&times;</span>
+			</button>
+			<wicket:enclosure child="FATALfeedbackPanel">
+				<div class="alert alert-danger">
+					<wicket:container wicket:id="FATALfeedbackPanel" />
 				</div>
-			</div>
-		</wicket:panel>
-	</body>
+			</wicket:enclosure>
+			<wicket:enclosure child="ERRORfeedbackPanel">
+				<div class="alert alert-danger">
+					<wicket:container wicket:id="ERRORfeedbackPanel" />
+				</div>
+			</wicket:enclosure>
+			<wicket:enclosure child="WARNINGfeedbackPanel">
+				<div class="alert alert-warning">
+					<wicket:container wicket:id="WARNINGfeedbackPanel" />
+				</div>
+			</wicket:enclosure>
+			<wicket:enclosure child="SUCCESSfeedbackPanel">
+				<div class="alert alert-success">
+					<wicket:container wicket:id="SUCCESSfeedbackPanel" />
+				</div>
+			</wicket:enclosure>
+			<wicket:enclosure child="INFOfeedbackPanel">
+				<div class="alert alert-info">
+					<wicket:container wicket:id="INFOfeedbackPanel" />
+				</div>
+			</wicket:enclosure>
+			<wicket:enclosure child="DEBUGfeedbackPanel">
+				<div class="alert alert-info">
+					<wicket:container wicket:id="DEBUGfeedbackPanel" />
+				</div>
+			</wicket:enclosure>
+			<wicket:enclosure child="UNDEFINEDfeedbackPanel">
+				<div class="alert alert-secondary">
+					<wicket:container wicket:id="UNDEFINEDfeedbackPanel" />
+				</div>
+			</wicket:enclosure>
+			<wicket:child />
+		</div>
+	</div>
+</wicket:panel>
+</body>
 </html>

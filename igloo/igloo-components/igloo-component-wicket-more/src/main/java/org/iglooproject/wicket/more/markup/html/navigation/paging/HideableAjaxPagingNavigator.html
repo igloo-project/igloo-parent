@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
-	<wicket:panel>
-		<nav>
-			<ul class="pagination">
-				<wicket:enclosure child="first">
-					<li class="page-item">
-						<a wicket:id="first" class="page-link">&laquo;</a>
-					</li>
-				</wicket:enclosure>
-				<li wicket:id="navigation" class="page-item">
-					<a wicket:id="pageLink" class="page-link"><wicket:container wicket:id="pageNumber" /></a>
+<wicket:panel>
+	<nav>
+		<ul class="pagination">
+			<wicket:enclosure child="first">
+				<li class="page-item">
+					<a wicket:id="first" class="page-link">&laquo;</a>
 				</li>
-				<wicket:enclosure child="last">
-					<li class="page-item">
-						<a wicket:id="last" class="page-link">&raquo;</a>
-					</li>
-				</wicket:enclosure>
-			</ul>
-		</nav>
-	</wicket:panel>
+			</wicket:enclosure>
+			<li wicket:id="navigation" class="page-item">
+				<a wicket:id="pageLink" class="page-link"><wicket:container wicket:id="pageNumber" /></a>
+			</li>
+			<wicket:enclosure child="last">
+				<li class="page-item">
+					<a wicket:id="last" class="page-link">&raquo;</a>
+				</li>
+			</wicket:enclosure>
+		</ul>
+	</nav>
+</wicket:panel>
 </html>

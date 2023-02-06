@@ -80,7 +80,7 @@ public abstract class AbstractReferenceDataListPanel
 				.withClassOnElements(BTN_TABLE_ROW_ACTION)
 				.end()
 				.when(getEditCondition())
-				.withClass("cell-w-actions-1x");
+				.withClass("cell-w-actions-1x cell-w-fit");
 		return super.addActionColumn(builder);
 	}
 

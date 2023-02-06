@@ -26,9 +26,7 @@ public final class BasicApplicationLocale {
 	/**
 	 * Every possible locale used in this application, sorted by descending order of priority.
 	 */
-	public static final Collection<Locale> ALL = ImmutableList.of(
-			FRENCH, ENGLISH
-	);
+	public static final Collection<Locale> ALL = ImmutableList.of(FRENCH, ENGLISH);
 
 	public static final Ordering<String> initCollator(Locale locale) {
 		return new SerializableCollator(locale).nullsFirst();

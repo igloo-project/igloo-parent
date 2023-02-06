@@ -1,6 +1,5 @@
 .table {
 	> :not(caption) > * > * {
-		overflow: hidden;
 		@extend .text-break;
 		
 		@each $breakpoint in map-keys($grid-breakpoints) {

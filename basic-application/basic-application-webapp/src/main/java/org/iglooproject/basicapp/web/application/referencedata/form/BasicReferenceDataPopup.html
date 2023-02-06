@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
-	<wicket:extend>
-		<div class="col-12">
-			<div class="row row-form-group form-group">
-				<div class="col-md-4">
-					<label class="col-form-label form-label" wicket:for="labelFr"><wicket:label /></label>
-				</div>
-				<div class="col-md-8">
-					<input wicket:id="labelFr" type="text" class="form-control" />
+<wicket:extend>
+	<div class="col-12">
+		<div class="row row-form-group form-group">
+			<div class="col-md-4">
+				<label class="col-form-label form-label" wicket:for="labelFr"><wicket:label /></label>
+			</div>
+			<div class="col-md-8">
+				<input wicket:id="labelFr" type="text" class="form-control" />
+			</div>
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="row row-form-group form-group">
+			<div class="col-md-4">
+				<label class="col-form-label form-label" wicket:for="labelEn"><wicket:label /></label>
+			</div>
+			<div class="col-md-8">
+				<input wicket:id="labelEn" type="text" class="form-control" />
+			</div>
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="row row-form-group form-group">
+			<div class="col-md-8 offset-md-4">
+				<div class="form-check form-switch form-control-plaintext">
+					<input wicket:id="enabled" class="form-check-input" type="checkbox" role="switch" />
+					<label wicket:for="enabled" class="form-check-label"><wicket:label /></label>
 				</div>
 			</div>
 		</div>
-		<div class="col-12">
-			<div class="row row-form-group form-group">
-				<div class="col-md-4">
-					<label class="col-form-label form-label" wicket:for="labelEn"><wicket:label /></label>
-				</div>
-				<div class="col-md-8">
-					<input wicket:id="labelEn" type="text" class="form-control" />
-				</div>
-			</div>
-		</div>
-		<div class="col-12">
-			<div class="row row-form-group form-group">
-				<div class="col-md-8 offset-md-4">
-					<div class="form-check form-switch form-control-plaintext">
-						<input wicket:id="enabled" class="form-check-input" type="checkbox" role="switch" />
-						<label wicket:for="enabled" class="form-check-label"><wicket:label /></label>
-					</div>
-				</div>
-			</div>
-		</div>
-	</wicket:extend>
+	</div>
+</wicket:extend>
 </html>
