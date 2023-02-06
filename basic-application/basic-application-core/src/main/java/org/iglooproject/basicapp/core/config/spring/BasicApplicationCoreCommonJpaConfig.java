@@ -1,9 +1,7 @@
 package org.iglooproject.basicapp.core.config.spring;
 
 import org.apache.lucene.search.SortField;
-import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.TypeContributor;
-import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.TextType;
 import org.iglooproject.basicapp.core.business.BasicApplicationCoreCommonBusinessPackage;
 import org.iglooproject.basicapp.core.business.common.model.EmailAddress;
