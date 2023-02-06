@@ -22,9 +22,9 @@
 		<maven-toolchains-plugin.version>3.1.0</maven-toolchains-plugin.version>
 		<maven-site-plugin.version>4.0.0-M4</maven-site-plugin.version>
 		<igloo.wagon-ssh-external-plugin.version>3.4.1</igloo.wagon-ssh-external-plugin.version>
-		<maven-project-info-reports-plugin.version>3.4.1</maven-project-info-reports-plugin.version>
-		<igloo.owasp-maven-plugin.version>7.4.1</igloo.owasp-maven-plugin.version>
-		<igloo.versions-maven-plugin.version>2.13.0</igloo.versions-maven-plugin.version>
+		<maven-project-info-reports-plugin.version>3.4.2</maven-project-info-reports-plugin.version>
+		<igloo.owasp-maven-plugin.version>8.0.2</igloo.owasp-maven-plugin.version>
+		<igloo.versions-maven-plugin.version>2.14.2</igloo.versions-maven-plugin.version>
 	</properties>
 	
 	<profiles>
