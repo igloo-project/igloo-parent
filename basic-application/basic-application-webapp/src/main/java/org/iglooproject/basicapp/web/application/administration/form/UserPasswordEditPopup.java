@@ -180,4 +180,5 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 			isOldPasswordRequired
 		);
 	}
+
 }
