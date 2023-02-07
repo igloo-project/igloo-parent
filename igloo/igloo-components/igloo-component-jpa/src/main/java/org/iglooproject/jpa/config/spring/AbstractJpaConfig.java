@@ -2,25 +2,17 @@ package org.iglooproject.jpa.config.spring;
 
 import static org.iglooproject.jpa.property.JpaPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.apache.lucene.search.BooleanQuery;
-import org.flywaydb.core.Flyway;
 import org.igloo.hibernate.hbm.MetadataRegistryIntegrator;
-import org.iglooproject.flyway.FlywayInitializer;
-import org.iglooproject.flyway.IFlywayConfiguration;
 import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
 import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
 import org.iglooproject.jpa.config.spring.provider.IDatabaseConnectionConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.IJpaConfigurationProvider;
 import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
-import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
-import org.iglooproject.jpa.property.FlywayPropertyIds;
 import org.iglooproject.jpa.search.CoreJpaSearchPackage;
 import org.iglooproject.jpa.util.CoreJpaUtilPackage;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -28,7 +20,6 @@ import org.springframework.aop.Advisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -74,27 +65,6 @@ public abstract class AbstractJpaConfig {
 	@Bean
 	public MetadataRegistryIntegrator metdataRegistryIntegrator() {
 		return new MetadataRegistryIntegrator();
-	}
-
-	@Bean(initMethod = "migrate", value = { "flyway", "databaseInitialization" })
-	@Profile("flyway")
-	public Flyway flyway(DataSource dataSource, IFlywayConfiguration flywayConfiguration,
-		IPropertyService propertyService, ConfigurableApplicationContext applicationContext) {
-		Map<String, String> placeholders = new HashMap<>();
-		for (String property : propertyService.get(FlywayPropertyIds.FLYWAY_PLACEHOLDERS_PROPERTIES)) {
-			placeholders.put(property, propertyService.get(FlywayPropertyIds.property(property)));
-		}
-		return FlywayInitializer.flyway(
-				dataSource,
-				flywayConfiguration,
-				placeholders,
-				applicationContext.getAutowireCapableBeanFactory()::autowireBean);
-	}
-
-	@Bean
-	@Profile("flyway")
-	public IFlywayConfiguration flywayConfiguration() {
-		return new FlywayConfiguration();
 	}
 
 	/**

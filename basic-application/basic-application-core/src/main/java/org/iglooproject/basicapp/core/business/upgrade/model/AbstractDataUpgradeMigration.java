@@ -3,8 +3,8 @@ package org.iglooproject.basicapp.core.business.upgrade.model;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.flywaydb.core.api.migration.BaseJavaMigration;
 import org.flywaydb.core.api.migration.Context;
-import org.iglooproject.flyway.IglooMigration;
 import org.iglooproject.jpa.more.business.upgrade.model.DataUpgradeRecord;
 import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
-public abstract class AbstractDataUpgradeMigration extends IglooMigration {
+public abstract class AbstractDataUpgradeMigration extends BaseJavaMigration {
 
 	@Value("${db.schema}")
 	private String defaultSchema;
@@ -48,11 +48,6 @@ public abstract class AbstractDataUpgradeMigration extends IglooMigration {
 	@Override
 	public Integer getChecksum(){
 		return getDataUpgradeClass().getSimpleName().hashCode() * 23;
-	}
-
-	@Override
-	public Integer getEquivalentChecksum(){
-		return getChecksum();
 	}
 
 }

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>5.0.5</version>
+		<version>5.1.0</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
@@ -29,10 +29,6 @@
 		
 		<module>igloo-component-web-test</module>
 		<module>igloo-component-web-jpa-test</module>
-
-		<module>igloo-component-flyway/common</module>
-		<module>igloo-component-flyway/flyway-7</module>
-		<module>igloo-component-flyway/flyway-8</module>
 		
 		<module>igloo-component-hibernate-configurator-api</module>
 		<module>igloo-component-hibernate-configurator-lucene</module>

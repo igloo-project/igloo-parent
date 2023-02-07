@@ -1,58 +1,62 @@
 package org.igloo.spring.autoconfigure.flyway;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
-import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.migration.JavaMigration;
+import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
 import org.igloo.spring.autoconfigure.property.IglooPropertyAutoConfiguration;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
-import org.iglooproject.flyway.FlywayInitializer;
-import org.iglooproject.flyway.IFlywayConfiguration;
 import org.iglooproject.jpa.config.spring.FlywayPropertyRegistryConfig;
-import org.iglooproject.jpa.more.config.util.FlywayConfiguration;
-import org.iglooproject.jpa.property.FlywayPropertyIds;
-import org.iglooproject.spring.property.service.IPropertyService;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.flyway.disabled", havingValue = "false", matchIfMissing = true)
-@ConditionalOnClass(Flyway.class)
-@AutoConfigureAfter(IglooPropertyAutoConfiguration.class)
+@AutoConfigureAfter({IglooPropertyAutoConfiguration.class, IglooJpaAutoConfiguration.class})
+@Import({ FlywayPropertyRegistryConfig.class, FlywayAutoConfiguration.class })
 @PropertySource(
 	name = IglooPropertySourcePriority.COMPONENT,
 	value = "classpath:/configuration/flyway-common.properties",
 	encoding = "UTF-8"
 )
-@Import({ FlywayPropertyRegistryConfig.class })
 public class IglooFlywayAutoConfiguration {
 
-	@Bean(initMethod = "migrate", value = { "flyway", "databaseInitialization" })
-	public Flyway flyway(DataSource dataSource, IFlywayConfiguration flywayConfiguration,
-			IPropertyService propertyService, ConfigurableApplicationContext applicationContext) {
-		Map<String, String> placeholders = new HashMap<>();
-		for (String property : propertyService.get(FlywayPropertyIds.FLYWAY_PLACEHOLDERS_PROPERTIES)) {
-			placeholders.put(property, propertyService.get(FlywayPropertyIds.property(property)));
-		}
-		return FlywayInitializer.flyway(
-				dataSource,
-				flywayConfiguration,
-				placeholders,
-				applicationContext.getAutowireCapableBeanFactory()::autowireBean);
+	/**
+	 *  {@link JavaMigration} bean scanning and <code>spring.flyway.locations</code> definition for init-less migration.
+	 * 
+	 * Active only when migration.init.enabled=false or missing.
+	 */
+	@Configuration
+	@ComponentScan(basePackages = "db.migration.common")
+	@PropertySource(
+			name = IglooPropertySourcePriority.COMPONENT,
+			value = "classpath:/flyway/flyway-without-init.properties",
+			encoding = "UTF-8"
+		)
+	@ConditionalOnProperty(prefix = "migration.init", name = "enabled", havingValue = "false", matchIfMissing = true)
+	public static class JavaMigrationWithoutInit {
 	}
 
-	@Bean
-	public IFlywayConfiguration flywayConfiguration() {
-		return new FlywayConfiguration();
+	/**
+	 *  {@link JavaMigration} bean scanning and <code>spring.flyway.locations</code> definition for init-aware migration.
+	 *  
+	 *  Bean scanning is configured on <code>db.migration</code> package, so that it captures both common and init
+	 *  subpackages.
+	 * 
+	 * Active only when migration.init.enabled=false or missing.
+	 */
+	@Configuration
+	@ComponentScan(basePackages = "db.migration")
+	@PropertySource(
+		name = IglooPropertySourcePriority.COMPONENT,
+		value = "classpath:/flyway/flyway-with-init.properties",
+		encoding = "UTF-8"
+	)
+	@ConditionalOnProperty(prefix = "migration.init", name = "enabled", havingValue = "true", matchIfMissing = false)
+	public static class SqlAndJavaMigrationWithInit {
 	}
 
 }

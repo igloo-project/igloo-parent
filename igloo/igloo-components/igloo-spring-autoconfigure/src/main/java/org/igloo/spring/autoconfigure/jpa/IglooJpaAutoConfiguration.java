@@ -6,7 +6,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.igloo.hibernate.hbm.MetadataRegistryIntegrator;
-import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
 import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
@@ -21,7 +20,6 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.springframework.aop.Advisor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -41,7 +39,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 @ConditionalOnProperty(name = "igloo-ac.jpa.disabled", havingValue = "false", matchIfMissing = true)
 @ConditionalOnClass({ LocalContainerEntityManagerFactoryBean.class, EntityManager.class })
-@AutoConfigureAfter({ IglooFlywayAutoConfiguration.class })
 @PropertySource(
 	name = IglooPropertySourcePriority.COMPONENT,
 	value = {
