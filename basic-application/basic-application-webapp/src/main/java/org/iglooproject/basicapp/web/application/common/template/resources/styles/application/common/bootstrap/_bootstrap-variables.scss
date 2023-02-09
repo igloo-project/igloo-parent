@@ -467,12 +467,13 @@ $paragraph-margin-bottom:   1rem !default;
 // Content
 
 $content-spacing:                       1rem !default;
-$content-h1-margin-top:                 $content-spacing * 3 !default;
-$content-h2-margin-top:                 $content-spacing * 2.5 !default;
-$content-h3-margin-top:                 $content-spacing * 2 !default;
-$content-h4-margin-top:                 $content-spacing * 1.5 !default;
+$content-h1-margin-top:                 $content-spacing * 2 !default;
+$content-h2-margin-top:                 $content-spacing * 1.75 !default;
+$content-h3-margin-top:                 $content-spacing * 1.5 !default;
+$content-h4-margin-top:                 $content-spacing * 1.25 !default;
 $content-h5-margin-top:                 $content-spacing !default;
 $content-h6-margin-top:                 $content-spacing !default;
+$content-list-spacing:                  $content-spacing / 2 !default;
 $content-list-item-spacing:             $content-spacing / 4 !default;
 $content-description-item-spacing:      $content-spacing / 2 !default;
 
@@ -483,8 +484,9 @@ $content-h3-margin-top-sm:              $content-h3-margin-top / 2 !default;
 $content-h4-margin-top-sm:              $content-h4-margin-top / 2 !default;
 $content-h5-margin-top-sm:              $content-h5-margin-top / 2 !default;
 $content-h6-margin-top-sm:              $content-h6-margin-top / 2 !default;
-$content-list-item-spacing-sm:          $content-list-item-spacing / 4;
-$content-description-item-spacing-sm:   $content-description-item-spacing / 2;
+$content-list-spacing-sm:               $content-list-spacing / 2 !default;
+$content-list-item-spacing-sm:          $content-list-item-spacing / 2 !default;
+$content-description-item-spacing-sm:   $content-description-item-spacing / 2 !default;
 
 // Grid breakpoints
 //
