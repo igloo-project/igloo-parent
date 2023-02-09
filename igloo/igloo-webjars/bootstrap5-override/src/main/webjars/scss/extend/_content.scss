@@ -1,4 +1,4 @@
-h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, figure, dd, address {
+h1, h2, h3, h4, h5, h6, p, ul, ol, dd, blockquote, figure, address {
 	margin: 0;
 }
 
@@ -10,6 +10,7 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, figure, dd, address {
 	$h4-margin-top: $content-h4-margin-top,
 	$h5-margin-top: $content-h5-margin-top,
 	$h6-margin-top: $content-h6-margin-top,
+	$list-spacing: $content-list-spacing,
 	$list-item-spacing: $content-list-item-spacing,
 	$description-item-spacing: $content-description-item-spacing
 ) {
@@ -20,6 +21,7 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, figure, dd, address {
 	--#{$variable-prefix}content-h4-margin-top: #{$h4-margin-top};
 	--#{$variable-prefix}content-h5-margin-top: #{$h5-margin-top};
 	--#{$variable-prefix}content-h6-margin-top: #{$h6-margin-top};
+	--#{$variable-prefix}content-list-spacing: #{$list-spacing};
 	--#{$variable-prefix}content-list-item-spacing: #{$list-item-spacing};
 	--#{$variable-prefix}content-description-item-spacing: #{$description-item-spacing};
 }
@@ -32,12 +34,14 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, figure, dd, address {
 	--#{$variable-prefix}content-h4-margin-top: #{$content-h4-margin-top};
 	--#{$variable-prefix}content-h5-margin-top: #{$content-h5-margin-top};
 	--#{$variable-prefix}content-h6-margin-top: #{$content-h6-margin-top};
+	--#{$variable-prefix}content-list-spacing: #{$content-list-spacing};
 	--#{$variable-prefix}content-list-item-spacing: #{$content-list-item-spacing};
 	--#{$variable-prefix}content-description-item-spacing: #{$content-description-item-spacing};
 	
 	> * {
 		+ * {
 			margin-top: var(--#{$variable-prefix}content-spacing);
+			margin-bottom: 0;
 		}
 		
 		+ h1 {
@@ -67,8 +71,18 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, figure, dd, address {
 	
 	> ul,
 	> ol {
-		> * + li {
-			margin-top: var(--#{$variable-prefix}content-list-item-spacing);
+		&,
+		ul,
+		ol {
+			> * + li {
+				margin-top: var(--#{$variable-prefix}content-list-item-spacing);
+			}
+		}
+		
+		ul,
+		ol {
+			margin-top: var(--#{$variable-prefix}content-list-spacing);
+			margin-bottom: var(--#{$variable-prefix}content-list-spacing);
 		}
 	}
 	
@@ -76,6 +90,10 @@ h1, h2, h3, h4, h5, h6, p, ul, ol, blockquote, figure, dd, address {
 		> * + dt {
 			margin-top: var(--#{$variable-prefix}content-description-item-spacing);
 		}
+	}
+	
+	.blockquote-footer {
+		margin-bottom: 0;
 	}
 	
 	> :last-child {
