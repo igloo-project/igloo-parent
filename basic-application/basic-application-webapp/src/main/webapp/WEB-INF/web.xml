@@ -32,8 +32,10 @@
 	</session-config>
 	
 	<listener>
-		<!-- branchement de java.util.logging sur slf4j (permet de gérer les logs de jersey)  -->
-		<listener-class>org.iglooproject.slf4j.jul.bridge.SLF4JLoggingListener</listener-class>
+		<listener-class>igloo.julhelper.servlet.JulLoggingListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>igloo.log4j2jmx.servlet.Log4j2LoggingManagerListener</listener-class>
 	</listener>
 	
 	<listener>

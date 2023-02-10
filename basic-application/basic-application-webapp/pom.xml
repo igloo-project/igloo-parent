@@ -32,11 +32,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-jul-to-slf4j</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-bootstrap5</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
@@ -78,6 +73,18 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-config-test</artifactId>
 			<version>${igloo.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>jul-helper</artifactId>
+			<version>0.1-SNAPSHOT</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>log4j2-jmx-helper</artifactId>
+			<version>0.1-SNAPSHOT</version>
 			<scope>runtime</scope>
 		</dependency>
 		
