@@ -70,12 +70,24 @@
 }
 
 .modal {
-	input.hasDatepicker,
-	input.hasMonthpicker {
-		z-index: $zindex-modal !important;
+	.input-group {
+		z-index: $zindex-modal;
 		
-		&:focus {
-			z-index: $zindex-modal !important;
+		> .form-control {
+			&.hasDatepicker,
+			&.hasMonthpicker {
+				position: static;
+			}
+		}
+	}
+	
+	:not(.input-group) {
+		> .form-control {
+			&.hasDatepicker,
+			&.hasMonthpicker {
+				position: relative;
+				z-index: $zindex-modal;
+			}
 		}
 	}
 }
