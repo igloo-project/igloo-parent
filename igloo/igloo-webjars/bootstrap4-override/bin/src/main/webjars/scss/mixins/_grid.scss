@@ -1,0 +1,63 @@
+// For each breakpoint, define the maximum width of the container in a media query
+@mixin make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints) {
+	@each $breakpoint, $container-max-width in $max-widths {
+		@include media-breakpoint-up($breakpoint, $breakpoints) {
+			max-width: $container-max-width;
+		}
+	}
+}
+
+@mixin make-container-grid($gutters, $direction:"") {
+	@if type-of($gutters) == number {
+		padding#{$direction}: $gutters / 2;
+	} @else if type-of($gutters) == list {
+		@if length($gutters) == 1 {
+			padding: (nth($gutters, 1) / 2);
+		} @else if length($gutters) == 2 {
+			padding: (nth($gutters, 1) / 2) (nth($gutters, 2) / 2);
+		} @else if length($gutters) == 4 {
+			padding: (nth($gutters, 1) / 2) (nth($gutters, 2) / 2) (nth($gutters, 3) / 2) (nth($gutters, 4) / 2);
+		}
+	}
+}
+
+@mixin make-row-grid($gutters, $direction:"") {
+	&.row,
+	&[class*="row-"] {
+		@include make-row-grid-row($gutters, $direction);
+		
+		> .col,
+		> [class*="col-"],
+		> [class*="-col"] {
+			@include make-row-grid-col($gutters, $direction);
+		}
+	}
+}
+
+@mixin make-row-grid-row($gutters, $direction:"") {
+	@if type-of($gutters) == number {
+		margin#{$direction}: (-1 * ($gutters / 2));
+	} @else if type-of($gutters) == list {
+		@if length($gutters) == 1 {
+			margin: (-1 * (nth($gutters, 1) / 2));
+		} @else if length($gutters) == 2 {
+			margin: (-1 * (nth($gutters, 1) / 2)) (-1 * (nth($gutters, 2) / 2));
+		} @else if length($gutters) == 4 {
+			margin: (-1 * (nth($gutters, 1) / 2)) (-1 * (nth($gutters, 2) / 2)) (-1 * (nth($gutters, 3) / 2)) (-1 * (nth($gutters, 4) / 2));
+		}
+	}
+}
+
+@mixin make-row-grid-col($gutters, $direction:"") {
+	@if type-of($gutters) == number {
+		padding#{$direction}: $gutters / 2;
+	} @else if type-of($gutters) == list {
+		@if length($gutters) == 1 {
+			padding: (nth($gutters, 1) / 2);
+		} @else if length($gutters) == 2 {
+			padding: (nth($gutters, 1) / 2) (nth($gutters, 2) / 2);
+		} @else if length($gutters) == 4 {
+			padding: (nth($gutters, 1) / 2) (nth($gutters, 2) / 2) (nth($gutters, 3) / 2) (nth($gutters, 4) / 2);
+		}
+	}
+}

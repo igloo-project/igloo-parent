@@ -1,0 +1,12 @@
+.btn-xs {
+	@include button-size($btn-padding-y-xs, $btn-padding-x-xs, $btn-font-size-xs, $btn-line-height-xs, $btn-border-radius-xs);
+}
+
+.btn-placeholder {
+	@extend .btn;
+	color: transparent !important;
+	opacity: 0 !important;
+	text-decoration: none !important;
+	box-shadow: none !important;
+	cursor: auto !important;
+}

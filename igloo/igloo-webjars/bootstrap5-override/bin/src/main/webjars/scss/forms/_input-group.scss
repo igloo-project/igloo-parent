@@ -1,0 +1,89 @@
+// Override input group floating label à supprimer avec Bootstrap 5.2.1+.
+// Start
+
+.input-group {
+	> .form-control:focus,
+	> .form-select:focus,
+	> .form-floating:focus-within {
+		z-index: 5 !important;
+	}
+	
+	.btn {
+		&:focus {
+			z-index: 5 !important;
+		}
+	}
+	
+	@each $state, $data in $form-validation-states {
+		> .form-control,
+		> .form-select,
+		> .form-floating {
+			@include form-validation-state-selector($state) {
+				@if $state == "valid" {
+					z-index: 3 !important;
+				} @else if $state == "invalid" {
+					z-index: 4 !important;
+				}
+			}
+		}
+		
+		> .form-control:focus,
+		> .form-select:focus,
+		> .form-floating:focus-within {
+			@include form-validation-state-selector($state) {
+				z-index: 5 !important;
+			}
+		}
+	}
+}
+
+.input-group {
+	> .form-floating {
+		position: relative; // For focus state's z-index
+		flex: 1 1 auto;
+		width: 1%;
+		min-width: 0; // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+	}
+
+	> .form-floating:focus-within {
+		z-index: 3;
+	}
+}
+
+.input-group {
+	&:not(.has-validation) {
+		> :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),
+		> .dropdown-toggle:nth-last-child(n + 3),
+		> .form-floating:not(:last-child) > .form-control,
+		> .form-floating:not(:last-child) > .form-select {
+			@include border-end-radius(0);
+		}
+	}
+
+	&.has-validation {
+		> :nth-last-child(n + 3):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),
+		> .dropdown-toggle:nth-last-child(n + 4),
+		> .form-floating:nth-last-child(n + 3) > .form-control,
+		> .form-floating:nth-last-child(n + 3) > .form-select {
+			@include border-end-radius(0);
+		}
+	}
+
+	$validation-messages: "";
+	@each $state in map-keys($form-validation-states) {
+		$validation-messages: $validation-messages + ":not(." + unquote($state) + "-tooltip)" + ":not(." + unquote($state) + "-feedback)";
+	}
+
+	> :not(:first-child):not(.dropdown-menu)#{$validation-messages} {
+		margin-left: -$input-border-width;
+		@include border-start-radius(0);
+	}
+
+	> .form-floating:not(:first-child) > .form-control,
+	> .form-floating:not(:first-child) > .form-select {
+		@include border-start-radius(0);
+	}
+}
+
+// Override input group floating label à supprimer avec Bootstrap 5.2.0+.
+// End

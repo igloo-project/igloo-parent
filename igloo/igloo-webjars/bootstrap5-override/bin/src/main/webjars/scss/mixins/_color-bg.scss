@@ -1,0 +1,10 @@
+@mixin text-bg-variant($value, $important: false) {
+	$color-rgb: to-rgb($value);
+	color: color-contrast($value) important($important);
+	background-color: RGBA($color-rgb, var(--#{$variable-prefix}bg-opacity, 1)) important($important);
+}
+
+@mixin bg-text-variant($value, $important: false) {
+	color: $value important($important);
+	background-color: color-contrast($value) important($important);
+}

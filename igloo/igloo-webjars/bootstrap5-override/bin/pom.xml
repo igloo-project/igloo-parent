@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.iglooproject.webjars</groupId>
+		<artifactId>igloo-webjars</artifactId>
+		<version>5.2.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>bootstrap5-override</artifactId>
+	<packaging>jar</packaging>
+
+	<name>bootstrap5-override</name>
+	<description>Bootstrap 5 overrides for Igloo</description>
+
+	<properties>
+		<frontend.npm.arguments>run js</frontend.npm.arguments>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>bootstrap</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>popperjs__core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>select2-bootstrap-5-theme</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/generated-js/</directory>
+				<targetPath>META-INF/resources/webjars/${project.name}/${project.version}</targetPath>
+				<excludes>
+					<exclude>.gitkeep</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/webjars</directory>
+				<targetPath>META-INF/resources/webjars/${project.name}/${project.version}</targetPath>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>clean-node-modules</id>
+						<phase>clean</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-wicket</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-html</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-bootstrap5</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>

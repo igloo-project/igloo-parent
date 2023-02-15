@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<assembly>
+	<id>esplugin</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>elasticsearch</outputDirectory>
+			<useProjectArtifact>true</useProjectArtifact>
+			<useTransitiveFiltering>true</useTransitiveFiltering>
+			<useTransitiveDependencies>true</useTransitiveDependencies>
+		</dependencySet>
+	</dependencySets>
+	<files>
+		<file>
+			<source>${basedir}/src/main/resources/plugin-descriptor.properties</source>
+			<outputDirectory>elasticsearch</outputDirectory>
+			<filtered>true</filtered>
+		</file>
+	</files>
+</assembly>

@@ -1,0 +1,11 @@
+---
+Params:
+  bootstrap: 5
+module:
+  mounts:
+    - source: src/main/generated-js/js/dist
+      target: static/dist
+    - source: src/main/examples
+      target: content/examples
+    - source: src/main/layouts
+      target: layouts

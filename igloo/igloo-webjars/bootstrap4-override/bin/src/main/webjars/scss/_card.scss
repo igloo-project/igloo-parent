@@ -1,0 +1,33 @@
+.card-header {
+	.card-header-title {
+		margin-bottom: 0;
+	}
+}
+
+.card-action {
+	margin-top: 1rem;
+}
+
+.card-body + .card-body {
+	border-top: $card-border-width solid $card-border-color;
+}
+
+.card-body-table {
+	padding: 0;
+}
+
+@each $color, $value in $theme-colors {
+	.card {
+		&.card-#{$color} {
+			@include card-variant($value);
+		}
+	}
+}
+
+.accordion {
+	> .card {
+		.card-header {
+			margin-bottom: 0;
+		}
+	}
+}

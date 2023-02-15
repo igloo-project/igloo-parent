@@ -1,0 +1,34 @@
+@mixin heading-section-variant($color) {
+	--heading-section-color: #{$color};
+	--heading-section-border-color-rgb: #{to-rgb($color)};
+	--heading-section-border-color: #{rgba(var(--heading-section-border-color-rgb), .175)};
+}
+
+.heading-section {
+	color: var(--heading-section-color);
+	border-bottom: 1px solid var(--heading-section-border-color);
+	padding-bottom: $headings-margin-bottom * .5;
+	margin-bottom: $headings-margin-bottom;
+	@include font-size($h5-font-size);
+	@include heading-section-variant(#555555);
+}
+
+@each $name, $color in (
+	"white": $white,
+	"dark": $dark
+) {
+	.heading-section-#{$name} {
+		@include heading-section-variant($color);
+	}
+}
+
+
+.description-group {
+}
+
+.description-label {
+	color: #5F6368;
+}
+
+.description-value {
+}

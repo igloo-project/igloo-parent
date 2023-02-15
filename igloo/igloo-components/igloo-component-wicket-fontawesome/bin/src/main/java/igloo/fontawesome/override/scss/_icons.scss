@@ -1,0 +1,8 @@
+.fa {
+	&.#{$fa-css-prefix}-check-square:before {
+		@extend .far;
+	}
+	&.#{$fa-css-prefix}-square:before {
+		@extend .far;
+	}
+}
