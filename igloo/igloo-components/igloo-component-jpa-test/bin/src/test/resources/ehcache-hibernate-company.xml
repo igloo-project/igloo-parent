@@ -1,0 +1,12 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://www.ehcache.org/ehcache.xsd">
+	
+	<defaultCache maxEntriesLocalHeap="20"
+		memoryStoreEvictionPolicy="LRU" timeToLiveSeconds="3600"
+		overflowToDisk="false" />
+
+	<cache name="org.iglooproject.test.business.company.model.Company"
+		maxEntriesLocalHeap="50" eternal="false" timeToLiveSeconds="3600"
+		overflowToDisk="false" memoryStoreEvictionPolicy="LRU" />
+
+</ehcache>

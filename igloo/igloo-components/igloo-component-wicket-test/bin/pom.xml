@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.iglooproject.components</groupId>
+		<artifactId>igloo-components</artifactId>
+		<version>5.2.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>igloo-component-wicket-test</artifactId>
+	
+	<name>Igloo - Component - Wicket - Test</name>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-core</artifactId>
+		</dependency>
+		<dependency>
+			<!-- force commons-io version (override wicket-utils) -->
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		
+		<!--
+		Nécessaire car déclaré provided dans wiquery, ce qui ne suffit pas
+		See http://code.google.com/p/wiquery/issues/detail?id=148
+		-->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Test -->
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-jpa-test</artifactId>
+			<scope>compile</scope>
+			<version>${project.version}</version>
+		</dependency>
+		
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-commons</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-logging</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-testing</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-wicket</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-hibernate</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>

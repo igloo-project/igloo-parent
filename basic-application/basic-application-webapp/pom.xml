@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>5.1.2</version>
+		<version>5.2.0</version>
 	</parent>
 	
 	<packaging>war</packaging>
@@ -28,11 +28,6 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-console</artifactId> 
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-jul-to-slf4j</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -78,6 +73,23 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-config-test</artifactId>
 			<version>${igloo.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>jul-helper</artifactId>
+			<version>1.0.1</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>log4j2-jmx-helper</artifactId>
+			<version>1.0.1</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		
@@ -198,6 +210,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-bindgen</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-logging</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

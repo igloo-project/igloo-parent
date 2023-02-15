@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.iglooproject.components</groupId>
+		<artifactId>igloo-components</artifactId>
+		<version>5.2.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>igloo-component-web-jpa-test</artifactId>
+	
+	<name>Igloo - Component - Test utility for mocking jpa-aware servlet server</name>
+	
+	<dependencies>
+		
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-component-web-test</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.grizzly</groupId>
+			<artifactId>grizzly-http-servlet</artifactId>
+		</dependency>
+		
+	</dependencies>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-spring</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-jersey2</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>

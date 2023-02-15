@@ -1,0 +1,8 @@
+@mixin card-variant($bg) {
+	border-color: $bg;
+	
+	> .card-header, > .card-footer {
+		color: color-yiq($bg);
+		background-color: $bg;
+	}
+}

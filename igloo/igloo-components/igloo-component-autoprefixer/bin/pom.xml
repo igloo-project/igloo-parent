@@ -1,0 +1,110 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.iglooproject.components</groupId>
+		<artifactId>igloo-components</artifactId>
+		<version>5.2.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>igloo-component-autoprefixer</artifactId>
+	
+	<name>Igloo - Component - Autoprefixer</name>
+	<description>Autoprefixer tool (CSS)</description>
+
+	<properties>
+	</properties>
+
+	<dependencies>
+		<!-- commons-io, for file extraction -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		
+		<!-- Javascript engine -->
+		<dependency>
+			<groupId>org.mozilla</groupId>
+			<artifactId>rhino</artifactId>
+		</dependency>
+		
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+	</dependencies>
+	
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-commons</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-logging</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-testing</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-wicket</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-html</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-spring</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>

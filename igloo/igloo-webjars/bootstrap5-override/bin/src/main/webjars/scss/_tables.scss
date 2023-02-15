@@ -1,0 +1,157 @@
+.table {
+	margin-bottom: 0;
+	
+	> :not(caption) > * > * {
+		@extend .text-break;
+		
+		@each $breakpoint in map-keys($grid-breakpoints) {
+			@include media-breakpoint-up($breakpoint) {
+				$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+				
+				@each $name, $value in $table-cell-widths {
+					&.cell-w#{$infix}-#{$name} {
+						min-width: $value;
+						width: $value;
+					}
+				}
+				
+				&.cell-w#{$infix}-fit {
+					width: 1%;
+					word-break: normal;
+					word-wrap: normal;
+					
+					.row-table-action {
+						flex-wrap: nowrap;
+					}
+					
+					.badge {
+						white-space: nowrap;
+					}
+				}
+				
+				&.cell-w#{$infix}-max {
+					width: auto;
+				}
+			}
+		}
+		
+		.badge {
+			white-space: normal;
+		}
+		
+		.row-table-action {
+			@include make-row();
+			@include gutter(map-get($gutters, 1));
+			
+			justify-content: center;
+			
+			.col-table-action {
+				@include make-col-ready();
+				@include make-col-auto();
+			}
+		}
+		
+		.btn-table-row-action {
+			@include button-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-border-radius-sm);
+		}
+		
+		.btn-tab-sort {
+			@include button-outline-variant($dark);
+			margin-left: .125rem;
+			padding: 0 .125rem;
+			float: right;
+			
+			&.active {
+				@include button-outline-variant($component-active-bg);
+			}
+		}
+	}
+}
+
+.table-row-disabled {
+	background-color: transparent !important;
+	background: repeating-linear-gradient(
+		135deg,
+		$white,
+		$white 10px,
+		rgba($table-striped-bg, $table-striped-bg-factor) 10px,
+		rgba($table-striped-bg, $table-striped-bg-factor) 20px
+	);
+}
+
+.add-in-container {
+	@include make-row();
+	@include gutter(map-get($gutters, 3));
+	display: flex;
+	flex: 1 1 auto;
+	flex-wrap: wrap;
+	align-items: center;
+	
+	> .add-in-section {
+		@include make-col-ready();
+		@include make-col-auto();
+		align-self: center;
+		
+		> .add-in-wrapper {
+			@include make-row();
+			@include gutter(map-get($gutters, 2));
+			display: flex;
+			flex: 1 1 auto;
+			flex-wrap: wrap;
+			align-items: center;
+			
+			> .add-in {
+				@include make-col-ready();
+				@include make-col-auto();
+				
+				> nav {
+					> .pagination {
+						margin: 0;
+					}
+				}
+			}
+		}
+		
+		&.add-in-section-main {
+			width: 100%;
+			
+			> .add-in-wrapper.add-in-wrapper-main {
+				> .add-in.add-in-main {
+					flex-basis: 100%;
+				}
+			}
+		}
+		
+		&.add-in-section-right {
+			margin-left: auto;
+		}
+		
+		&.add-in-section-left {
+			> .add-in-wrapper.add-in-wrapper-left {
+				> .add-in {
+					&.add-in-title, &.add-in-emphasize {
+						@include font-size($card-header-title-font-size);
+					}
+				}
+			}
+		}
+	}
+}
+
+.decorated-data-table {
+	> .decorated-data-table-section {
+		&.decorated-data-table-section-heading,
+		&.decorated-data-table-section-body-top {
+			margin-bottom: $card-spacer-y;
+		}
+		
+		&.decorated-data-table-section-body-bottom,
+		&.decorated-data-table-section-footer {
+			margin-top: $card-spacer-y;
+		}
+	}
+	
+	.table {
+		margin: 0;
+	}
+}

@@ -1,0 +1,116 @@
+h1, h2, h3, h4, h5, h6, p, ul, ol, dd, blockquote, figure, address {
+	margin: 0;
+}
+
+@mixin content-variant(
+	$spacing: $content-spacing,
+	$h1-margin-top: $content-h1-margin-top,
+	$h2-margin-top: $content-h2-margin-top,
+	$h3-margin-top: $content-h3-margin-top,
+	$h4-margin-top: $content-h4-margin-top,
+	$h5-margin-top: $content-h5-margin-top,
+	$h6-margin-top: $content-h6-margin-top,
+	$list-spacing: $content-list-spacing,
+	$list-item-spacing: $content-list-item-spacing,
+	$description-item-spacing: $content-description-item-spacing
+) {
+	--#{$variable-prefix}content-spacing: #{$spacing};
+	--#{$variable-prefix}content-h1-margin-top: #{$h1-margin-top};
+	--#{$variable-prefix}content-h2-margin-top: #{$h2-margin-top};
+	--#{$variable-prefix}content-h3-margin-top: #{$h3-margin-top};
+	--#{$variable-prefix}content-h4-margin-top: #{$h4-margin-top};
+	--#{$variable-prefix}content-h5-margin-top: #{$h5-margin-top};
+	--#{$variable-prefix}content-h6-margin-top: #{$h6-margin-top};
+	--#{$variable-prefix}content-list-spacing: #{$list-spacing};
+	--#{$variable-prefix}content-list-item-spacing: #{$list-item-spacing};
+	--#{$variable-prefix}content-description-item-spacing: #{$description-item-spacing};
+}
+
+.content {
+	--#{$variable-prefix}content-spacing: #{$content-spacing};
+	--#{$variable-prefix}content-h1-margin-top: #{$content-h1-margin-top};
+	--#{$variable-prefix}content-h2-margin-top: #{$content-h2-margin-top};
+	--#{$variable-prefix}content-h3-margin-top: #{$content-h3-margin-top};
+	--#{$variable-prefix}content-h4-margin-top: #{$content-h4-margin-top};
+	--#{$variable-prefix}content-h5-margin-top: #{$content-h5-margin-top};
+	--#{$variable-prefix}content-h6-margin-top: #{$content-h6-margin-top};
+	--#{$variable-prefix}content-list-spacing: #{$content-list-spacing};
+	--#{$variable-prefix}content-list-item-spacing: #{$content-list-item-spacing};
+	--#{$variable-prefix}content-description-item-spacing: #{$content-description-item-spacing};
+	
+	> * {
+		+ * {
+			margin-top: var(--#{$variable-prefix}content-spacing);
+			margin-bottom: 0;
+		}
+		
+		+ h1 {
+			margin-top: var(--#{$variable-prefix}content-h1-margin-top);
+		}
+		
+		+ h2 {
+			margin-top: var(--#{$variable-prefix}content-h2-margin-top);
+		}
+		
+		+ h3 {
+			margin-top: var(--#{$variable-prefix}content-h3-margin-top);
+		}
+		
+		+ h4 {
+			margin-top: var(--#{$variable-prefix}content-h4-margin-top);
+		}
+		
+		+ h5 {
+			margin-top: var(--#{$variable-prefix}content-h5-margin-top);
+		}
+		
+		+ h6 {
+			margin-top: var(--#{$variable-prefix}content-h6-margin-top);
+		}
+	}
+	
+	> ul,
+	> ol {
+		&,
+		ul,
+		ol {
+			> * + li {
+				margin-top: var(--#{$variable-prefix}content-list-item-spacing);
+			}
+		}
+		
+		ul,
+		ol {
+			margin-top: var(--#{$variable-prefix}content-list-spacing);
+			margin-bottom: var(--#{$variable-prefix}content-list-spacing);
+		}
+	}
+	
+	> dl {
+		> * + dt {
+			margin-top: var(--#{$variable-prefix}content-description-item-spacing);
+		}
+	}
+	
+	.blockquote-footer {
+		margin-bottom: 0;
+	}
+	
+	> :last-child {
+		margin-bottom: 0;
+	}
+}
+
+.content-sm {
+	@include content-variant(
+		$content-spacing-sm,
+		$content-h1-margin-top-sm,
+		$content-h2-margin-top-sm,
+		$content-h3-margin-top-sm,
+		$content-h4-margin-top-sm,
+		$content-h5-margin-top-sm,
+		$content-h6-margin-top-sm,
+		$content-list-item-spacing-sm,
+		$content-description-item-spacing-sm
+	);
+}

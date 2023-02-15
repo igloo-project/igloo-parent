@@ -1,0 +1,7 @@
+p {
+	margin-bottom: 0;
+	
+	+ p {
+		margin-top: $paragraph-margin-bottom;
+	}
+}
