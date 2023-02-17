@@ -62,14 +62,6 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String name;
 
-	/**
-	 * This field is here just to generate bindings (qGenericUserGroup).
-	 * <p>It should not be accessed, since:
-	 * <ol>
-	 * <li>it is not kept up to date when adding a user to a group</li>
-	 * <li>loading it or keeping it up to date may lead to performance issues when groups contain many users (> 10k).
-	 * </ol>
-	 */
 	@JsonIgnore
 	@ManyToMany(mappedBy = "groups")
 	@SortComparator(GenericUserComparator.class)
@@ -115,6 +107,22 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public SortedSet<U> getUsers() {
+		return Collections.unmodifiableSortedSet(users);
+	}
+
+	public void setUsers(Collection<U> users) {
+		CollectionUtils.replaceAll(this.users, users);
+	}
+
+	public void addUser(U user) {
+		this.users.add(user);
+	}
+
+	public void removeUser(U user) {
+		this.users.remove(user);
 	}
 
 	@Override
@@ -163,5 +171,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 		}
 		return STRING_COLLATOR_FRENCH.compare(this.getName(), group.getName());
 	}
+
+	public abstract G thisAsG();
 
 }

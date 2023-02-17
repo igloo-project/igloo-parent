@@ -2,12 +2,15 @@ package org.iglooproject.jpa.security.business.user.dao;
 
 import org.iglooproject.jpa.business.generic.dao.GenericEntityDaoImpl;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.model.GenericUserGroup;
 import org.iglooproject.jpa.security.business.user.model.QGenericUser;
 
 import com.querydsl.core.types.dsl.BeanPath;
 import com.querydsl.jpa.impl.JPAQuery;
 
-public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>> extends GenericEntityDaoImpl<Long, U> implements IGenericUserDao<U> {
+public abstract class GenericUserDaoImpl<U extends GenericUser<U, G>, G extends GenericUserGroup<G, U>>
+		extends GenericEntityDaoImpl<Long, U>
+		implements IGenericUserDao<U, G> {
 
 	public GenericUserDaoImpl() {
 		super();

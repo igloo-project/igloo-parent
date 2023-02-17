@@ -11,4 +11,9 @@ public class MockUser extends GenericSimpleUser<MockUser, MockUserGroup> {
 
 	private static final long serialVersionUID = 4396833928821998996L;
 
+	@Override
+	public MockUser thisAsU() {
+		return this;
+	}
+
 }

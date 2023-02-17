@@ -11,15 +11,16 @@ import org.iglooproject.jpa.security.business.authority.service.IAuthorityServic
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.user.dao.IGenericUserDao;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.model.GenericUserGroup;
 import org.iglooproject.spring.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
+public abstract class GenericUserServiceImpl<U extends GenericUser<U, G>, G extends GenericUserGroup<G, U>>
 		extends GenericEntityServiceImpl<Long, U>
-		implements IGenericUserService<U>, ISecurityUserService<U> {
+		implements IGenericUserService<U, G>, ISecurityUserService<U> {
 
-	private IGenericUserDao<U> dao;
+	private IGenericUserDao<U, G> dao;
 
 	@Autowired
 	private IAuthorityService authorityService;
@@ -28,7 +29,7 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	public GenericUserServiceImpl(IGenericUserDao<U> dao) {
+	public GenericUserServiceImpl(IGenericUserDao<U, G> dao) {
 		super(dao);
 		this.dao = dao;
 	}
@@ -98,6 +99,18 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 		super.updateEntity(user);
 	}
 
+	@Override
+	public void addGroup(U user, G group) throws ServiceException, SecurityServiceException {
+		user.addGroup(group);
+		update(user);
+	}
+
+	@Override
+	public void removeGroup(U user, G group) throws ServiceException, SecurityServiceException {
+		user.removeGroup(group);
+		update(user);
+	}
+	
 	@Override
 	public void addAuthority(U user, Authority authority) throws ServiceException, SecurityServiceException {
 		user.addAuthority(authority);

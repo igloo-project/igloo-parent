@@ -15,7 +15,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
-import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
+import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.web.application.administration.form.UserAjaxDropDownSingleChoice;
 import org.iglooproject.basicapp.web.application.administration.model.UserDataProvider;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
@@ -41,7 +41,7 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserGroupDetailUsersPanel.class);
 
 	@SpringBean
-	private IUserGroupService userGroupService;
+	private IUserService userService;
 
 	@SpringBean
 	private IPropertyService propertyService;
@@ -73,10 +73,9 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 							@Override
 							public void execute(AjaxRequestTarget target, IModel<User> parameter) {
 								try {
-									UserGroup userGroup = UserGroupDetailUsersPanel.this.getModelObject();
 									User user = parameter.getObject();
-									
-									userGroupService.removeUser(userGroup, user);
+									UserGroup userGroup = UserGroupDetailUsersPanel.this.getModelObject();
+									userService.removeGroup(user, userGroup);
 									Session.get().success(getString("common.success"));
 									throw new RestartResponseException(getPage());
 								} catch (RestartResponseException e) {
@@ -122,13 +121,13 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 							
 							@Override
 							protected void onSubmit(AjaxRequestTarget target) {
-								UserGroup userGroup = UserGroupDetailUsersPanel.this.getModelObject();
 								User user = userModel.getObject();
+								UserGroup userGroup = UserGroupDetailUsersPanel.this.getModelObject();
 								
 								if (user != null) {
 									if (!user.getGroups().contains(userGroup)) {
 										try {
-											userGroupService.addUser(userGroup, user);
+											userService.addGroup(user, userGroup);
 											Session.get().success(getString("common.success"));
 										} catch (Exception e) {
 											LOGGER.error("Error when adding a user to a user group.", e);

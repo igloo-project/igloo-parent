@@ -42,9 +42,9 @@ class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 		MockUser userGroup1 = createMockUser("userGroup1", "userGroup1", "userGroup1");
 		MockUser userGroup2 = createMockUser("userGroup2", "userGroup2", "userGroup2");
 		
-		mockUserGroupService.addUser(adminGroup, userAdmin);
-		mockUserGroupService.addUser(group1, userGroup1);
-		mockUserGroupService.addUser(group2, userGroup2);
+		mockUserService.addGroup(userAdmin, adminGroup);
+		mockUserService.addGroup(userGroup1, group1);
+		mockUserService.addGroup(userGroup2, group2);
 		
 		Collection<GrantedAuthority> grantedAuthorities;
 		Iterator<GrantedAuthority> iterator;

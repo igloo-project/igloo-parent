@@ -1,5 +1,7 @@
 package org.iglooproject.jpa.security.business.user.service;
 
+import java.util.List;
+
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -15,31 +17,20 @@ public abstract class GenericUserGroupServiceImpl<G extends GenericUserGroup<G, 
 	protected IGenericUserGroupDao<G, U> dao;
 
 	@Autowired
-	private IGenericUserService<U> userService;
-
-	@Autowired
 	public GenericUserGroupServiceImpl(IGenericUserGroupDao<G, U> dao) {
 		super(dao);
 		this.dao = dao;
 	}
-	
+
+	@Override
+	public void delete(G entity) throws ServiceException, SecurityServiceException {
+		List.copyOf(entity.getUsers()).forEach(u -> u.removeGroup(entity));
+		super.delete(entity);
+	}
+
 	@Override
 	public G getByName(String name) {
 		return dao.getByName(name);
-	}
-
-	@Override
-	public void addUser(G group, U user) throws ServiceException, SecurityServiceException {
-		user.addGroup(group);
-		update(group);
-		userService.update(user);
-	}
-
-	@Override
-	public void removeUser(G group, U user) throws ServiceException, SecurityServiceException {
-		user.removeGroup(group);
-		update(group);
-		userService.update(user);
 	}
 
 }

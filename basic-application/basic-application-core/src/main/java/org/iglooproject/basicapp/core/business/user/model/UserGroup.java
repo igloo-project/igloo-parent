@@ -27,4 +27,9 @@ public class UserGroup extends GenericUserGroup<UserGroup, User> {
 		return this;
 	}
 
+	@Override
+	public UserGroup thisAsG() {
+		return this;
+	}
+
 }

@@ -140,7 +140,7 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 		
 		if (userGroups != null) {
 			for (UserGroup userGroup : userGroups) {
-				userGroupService.addUser(userGroup, user);
+				userService.addGroup(user, userGroup);
 			}
 		}
 		

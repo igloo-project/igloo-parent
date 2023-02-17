@@ -73,4 +73,9 @@ public class User extends GenericSimpleUser<User, UserGroup> {
 		}
 	}
 
+	@Override
+	public User thisAsU() {
+		return this;
+	}
+
 }

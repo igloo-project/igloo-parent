@@ -10,6 +10,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
+import org.iglooproject.jpa.security.business.user.model.GenericUserGroup;
 import org.iglooproject.jpa.security.business.user.service.IGenericUserService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.AbstractCoreSession;
@@ -23,12 +24,12 @@ import org.springframework.security.authentication.DisabledException;
 import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
 import igloo.wicket.model.Detachables;
 
-public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>> extends ConsoleMaintenanceTemplate {
+public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, G>, G extends GenericUserGroup<G, U>> extends ConsoleMaintenanceTemplate {
 
 	private static final long serialVersionUID = 3401416708867386953L;
 
 	@SpringBean
-	private IGenericUserService<U> genericUserService;
+	private IGenericUserService<U, G> genericUserService;
 
 	public static final IPageLinkDescriptor linkDescriptor() {
 		return LinkDescriptorBuilder.start()

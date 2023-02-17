@@ -14,4 +14,9 @@ public class MockUserGroup extends GenericUserGroup<MockUserGroup, MockUser> {
 		return this;
 	}
 
+	@Override
+	public MockUserGroup thisAsG() {
+		return this;
+	}
+
 }

@@ -16,7 +16,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
-import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
+import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.web.application.administration.form.UserGroupDropDownSingleChoice;
 import org.iglooproject.basicapp.web.application.administration.model.UserGroupDataProvider;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDetailPage;
@@ -41,7 +41,7 @@ public class TechnicalUserDetailGroupsPanel extends GenericPanel<TechnicalUser> 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TechnicalUserDetailGroupsPanel.class);
 
 	@SpringBean
-	private IUserGroupService userGroupService;
+	private IUserService userService;
 
 	@SpringBean
 	private IPropertyService propertyService;
@@ -71,10 +71,9 @@ public class TechnicalUserDetailGroupsPanel extends GenericPanel<TechnicalUser> 
 							@Override
 							public void execute(AjaxRequestTarget target, IModel<UserGroup> parameter) {
 								try {
-									UserGroup userGroup = parameter.getObject();
 									User user = userModel.getObject();
-									
-									userGroupService.removeUser(userGroup, user);
+									UserGroup userGroup = parameter.getObject();
+									userService.removeGroup(user, userGroup);
 									Session.get().success(getString("common.success"));
 									throw new RestartResponseException(getPage());
 								} catch (RestartResponseException e) {
@@ -119,11 +118,11 @@ public class TechnicalUserDetailGroupsPanel extends GenericPanel<TechnicalUser> 
 							@Override
 							protected void onSubmit(AjaxRequestTarget target) {
 								try {
-									UserGroup userGroup = userGroupModel.getObject();
 									User user = userModel.getObject();
+									UserGroup userGroup = userGroupModel.getObject();
 									
 									if (!user.getGroups().contains(userGroup)) {
-										userGroupService.addUser(userGroup, user);
+										userService.addGroup(user, userGroup);
 										Session.get().success(getString("common.success"));
 									} else {
 										LOGGER.warn("User already added to this group.");

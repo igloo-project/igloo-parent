@@ -26,7 +26,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 	private IPermissionHierarchy permissionHierarchy;
 	
 	@Autowired
-	private IGenericUserService<T> userService;
+	private IGenericUserService<T, ?> userService;
 	
 	@Autowired
 	private ISecurityService securityService;

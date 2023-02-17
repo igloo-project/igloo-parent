@@ -53,18 +53,18 @@ class TestUserGroupService extends AbstractJpaSecurityTestCase {
 		MockUser user1 = createMockUser("user1", "user1", "user1");
 		MockUser user2 = createMockUser("user2", "user2", "user2");
 
-		mockUserGroupService.addUser(group1, user1);
+		mockUserService.addGroup(user1, group1);
 		
 		user1 = mockUserService.getByUsername(user1.getUsername());
 		
 		assertEquals(1, mockUserGroupService.listUsersByUserGroup(group1).size());
 		assertEquals(1, user1.getGroups().size());
 		
-		mockUserGroupService.addUser(group1, user2);
+		mockUserService.addGroup(user2, group1);
 		
 		assertEquals(2, mockUserGroupService.listUsersByUserGroup(group1).size());
 		
-		mockUserGroupService.removeUser(group1, user2);
+		mockUserService.removeGroup(user2, group1);
 		
 		assertEquals(1, mockUserGroupService.listUsersByUserGroup(group1).size());
 	}

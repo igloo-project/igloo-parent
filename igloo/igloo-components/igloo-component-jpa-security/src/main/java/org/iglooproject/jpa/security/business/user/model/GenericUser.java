@@ -166,17 +166,24 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	}
 
 	public void setGroups(Collection<G> groups) {
-		CollectionUtils.replaceAll(this.groups, groups);
+		CollectionUtils.replaceAll(
+			this.groups,
+			groups,
+			g -> g.addUser(thisAsU()),
+			g -> g.removeUser(thisAsU())
+		);
 	}
 
 	@Override
 	public void addGroup(G group) {
 		this.groups.add(group);
+		group.addUser(thisAsU());
 	}
 
 	@Override
 	public void removeGroup(G group) {
 		this.groups.remove(group);
+		group.removeUser(thisAsU());
 	}
 
 	@Override
@@ -261,5 +268,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 		return super.toStringHelper()
 			.add("username", getUsername());
 	}
+
+	public abstract U thisAsU();
 
 }

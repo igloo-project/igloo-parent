@@ -7,6 +7,7 @@ import org.iglooproject.basicapp.core.business.history.model.bean.HistoryLogAddi
 import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
 import org.iglooproject.basicapp.core.business.user.dao.IUserDao;
 import org.iglooproject.basicapp.core.business.user.model.User;
+import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.security.service.IBasicApplicationAuthenticationService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -19,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("userService")
-public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implements IUserService {
+public class UserServiceImpl extends GenericSimpleUserServiceImpl<User, UserGroup> implements IUserService {
 
 	@Autowired
 	private IUserDao userDao;

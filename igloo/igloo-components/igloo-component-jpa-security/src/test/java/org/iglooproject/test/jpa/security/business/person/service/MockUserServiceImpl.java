@@ -1,13 +1,14 @@
 package org.iglooproject.test.jpa.security.business.person.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.iglooproject.jpa.security.business.user.service.GenericUserServiceImpl;
 import org.iglooproject.test.jpa.security.business.person.dao.IMockUserDao;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
+import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
-public class MockUserServiceImpl extends GenericUserServiceImpl<MockUser> implements IMockUserService {
+public class MockUserServiceImpl extends GenericUserServiceImpl<MockUser, MockUserGroup> implements IMockUserService {
 
 	private IMockUserDao dao;
 
