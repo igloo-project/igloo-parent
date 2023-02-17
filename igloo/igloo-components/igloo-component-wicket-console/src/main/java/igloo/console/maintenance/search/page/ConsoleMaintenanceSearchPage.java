@@ -8,6 +8,7 @@ import java.util.Set;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextArea;
@@ -34,10 +35,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 
 import igloo.bootstrap.confirm.AjaxConfirmLink;
-import igloo.bootstrap.confirm.ConfirmLink;
+import igloo.bootstrap.modal.WorkInProgressPopup;
 import igloo.console.common.component.JavaClassesDropDownMultipleChoice;
 import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
-import igloo.wicket.action.IAction;
 import igloo.wicket.action.IAjaxAction;
 import igloo.wicket.model.Detachables;
 
@@ -65,15 +65,18 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 		
 		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.search")));
 		
+		WorkInProgressPopup loadingPopup = new WorkInProgressPopup("loadingPopup", new ResourceModel("common.action.loading"));
+		add(loadingPopup);
+		
 		add(
-			ConfirmLink.<Void>build()
+			AjaxConfirmLink.<Void>build()
 				.title(new ResourceModel("common.action.confirm.title"))
 				.content(new ResourceModel("common.action.confirm.content"))
 				.confirm()
-				.onClick(new IAction() {
+				.onClick(new IAjaxAction() {
 					private static final long serialVersionUID = 1L;
 					@Override
-					public void execute() {
+					public void execute(AjaxRequestTarget target) {
 						try {
 							hibernateSearchService.reindexAll();
 							Session.get().success(getString("common.success"));
@@ -82,6 +85,11 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 							Session.get().error(getString("common.error.unexpected"));
 						}
 						setResponsePage(ConsoleMaintenanceSearchPage.class);
+					}
+					@Override
+					public void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+						IAjaxAction.super.updateAjaxAttributes(attributes);
+						loadingPopup.updateAjaxAttributes(attributes);
 					}
 				})
 				.create("reindexContent")
@@ -162,6 +170,11 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 							Session.get().error(getString("common.error.unexpected"));
 						}
 						setResponsePage(ConsoleMaintenanceSearchPage.class);
+					}
+					@Override
+					public void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+						IAjaxAction.super.updateAjaxAttributes(attributes);
+						loadingPopup.updateAjaxAttributes(attributes);
 					}
 				})
 				.create("reindexClasses")
