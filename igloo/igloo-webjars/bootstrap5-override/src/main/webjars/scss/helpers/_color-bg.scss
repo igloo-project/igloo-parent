@@ -7,3 +7,17 @@
 		@include bg-text-variant($value, $enable-important-utilities);
 	}
 }
+
+@each $state, $value in $theme-colors {
+	$bg-alert-background: shift-color($value, $alert-bg-scale);
+	$bg-alert-border: shift-color($value, $alert-border-scale);
+	$bg-alert-color: shift-color($value, $alert-color-scale);
+	
+	@if (contrast-ratio($bg-alert-background, $bg-alert-color) < $min-contrast-ratio) {
+		$alert-color: mix($value, color-contrast($bg-alert-background), abs($alert-color-scale));
+	}
+	
+	.bg-alert-#{$state} {
+		@include bg-alert-variant($bg-alert-background, $bg-alert-border, $bg-alert-color);
+	}
+}
