@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>org.iglooproject</groupId>
 		<artifactId>plugins-all</artifactId>
-		<version>5.2.0</version>
+		<version>5.3.0</version>
 	</parent>
 	
 	<artifactId>igloo-parent</artifactId>
-	<version>5.2.0</version>
+	<version>5.3.0</version>
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Parent</name>

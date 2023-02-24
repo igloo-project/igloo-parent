@@ -34,6 +34,7 @@ public final class BootstrapTabsUtils {
 		panel.add(new ClassAttributeAppender(Condition.isTrue(activeModel).then("active show").otherwise("")));
 		panel.add(new AttributeModifier("role", "tabpanel"));
 		panel.add(new AttributeModifier("aria-labelledby", tab::getMarkupId));
+		panel.add(new AttributeModifier("tabindex", "0"));
 		
 		return new Component[] { tab, panel };
 	}

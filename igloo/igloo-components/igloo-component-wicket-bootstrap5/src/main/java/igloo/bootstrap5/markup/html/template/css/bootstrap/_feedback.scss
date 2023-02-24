@@ -13,8 +13,7 @@
 			@include border-radius(0);
 			border: 0;
 			margin: 0;
-			padding-right: calc($btn-close-width + 2 * $alert-padding-x);
-			min-height: calc($btn-close-height + 2 * $alert-padding-y);
+			padding-right: $alert-dismissible-padding-r;
 			
 			> ul.feedbackPanel {
 				@include list-unstyled;

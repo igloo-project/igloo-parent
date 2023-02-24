@@ -8,3 +8,21 @@
 	color: $value important($important);
 	background-color: color-contrast($value) important($important);
 }
+
+@mixin bg-alert-variant($background, $border, $color) {
+	--#{$prefix}bg-alert-color: #{$color};
+	--#{$prefix}bg-alert-bg: #{$background};
+	--#{$prefix}bg-alert-border-color: #{$border};
+	
+	color: var(--#{$prefix}bg-alert-color);
+	background-color: var(--#{$prefix}bg-alert-bg);
+	border-color: var(--#{$prefix}bg-alert-border-color);
+	
+	@if $enable-gradients {
+		background-image: var(--#{$prefix}gradient);
+	}
+	
+	.alert-link {
+		color: shade-color($color, 20%);
+	}
+}
