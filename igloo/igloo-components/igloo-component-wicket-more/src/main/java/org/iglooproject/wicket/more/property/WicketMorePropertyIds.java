@@ -23,6 +23,8 @@ public final class WicketMorePropertyIds extends AbstractPropertyIds {
 	 */
 
 	public static final ImmutablePropertyId<Boolean> AUTOPREFIXER_ENABLED = immutable("autoprefixer.enabled");
+	public static final ImmutablePropertyId<Boolean> SCSS_STATIC_ENABLED = immutable("scss.static.enabled");
+	public static final ImmutablePropertyId<String> SCSS_STATIC_RESOURCE_PATH = immutable("scss.static.resourcePath");
 
 	public static final ImmutablePropertyId<String> WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME = immutable("wicket.backgroundThreadContextBuilder.url.scheme");
 	public static final ImmutablePropertyId<String> WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME = immutable("wicket.backgroundThreadContextBuilder.url.serverName");

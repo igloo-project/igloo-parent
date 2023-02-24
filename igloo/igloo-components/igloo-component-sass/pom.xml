@@ -45,6 +45,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<optional>true</optional>
+		</dependency>
 		
 		<!-- Test dependencies -->
 		<dependency>

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -48,13 +50,44 @@ public class ScssServiceImpl implements IScssService, IScopeResolver {
 	@Override
 	public ScssStylesheetInformation getCompiledStylesheet(Class<?> scope, String path) {
 		try {
-			return getCompiledDartClasspath(Resources.getResource(scope, path).toURI().getPath());
+			URL scssPath = Resources.getResource(scope, path);
+			// if useStatic == true, then try to load from resource path
+			// if available, return an do-not-expire resource
+			if (configurationProvider.useStatic()) {
+				ScssStylesheetInformation information = tryLoadFromStatic(scope, path, scssPath);
+				if (information != null) {
+					LOGGER.info("useStatic=true, using static file to provide {}:{}", scope.getName(), path);
+					return information;
+				}
+			}
+			// else perform resource compilation
+			return getCompiledDartClasspath(scssPath);
 		} catch (URISyntaxException e) {
 			throw new IllegalStateException(e);
 		}
 	}
 
-	private ScssStylesheetInformation getCompiledDartClasspath(String path) {
+	/**
+	 * Check embedded resource for a build-time generated version. Else return null.
+	 */
+	private ScssStylesheetInformation tryLoadFromStatic(Class<?> scope, String path, URL scssPath) throws URISyntaxException {
+		try {
+			Path outputFilename = StaticResourceHelper.getStaticResourcePath(configurationProvider.getResourcePath(), scope, path);
+			URL staticResource = Resources.getResource(outputFilename.toString());
+			String stylesheet = Resources.toString(staticResource, StandardCharsets.UTF_8);
+			// static never expires
+			ScssStylesheetInformation information = new ScssStylesheetInformation(scssPath.toString(), Long.MAX_VALUE);
+			information.setSource(stylesheet);
+			return information;
+		} catch (IllegalArgumentException e) {
+			LOGGER.warn("useStatic=true but no static file found for {}:{}. Fallback to runtime processing.", scope.getName(), path);
+		} catch (IOException e) {
+			LOGGER.warn("useStatic=true but static file for {}:{} cannot be read. Fallback to runtime processing.", scope.getName(), path, e);
+		}
+		return null;
+	}
+
+	private ScssStylesheetInformation getCompiledDartClasspath(URL path) {
 		try (SassCompiler sassCompiler = SassCompilerFactory.bundled()) {
 			// keep true; all messages are captured with slf4j
 			// note: if false, then we can receive 1 warning message that notices there is
@@ -65,7 +98,7 @@ public class ScssServiceImpl implements IScssService, IScopeResolver {
 			WebjarsImporter webjarImporter = new WebjarsImporter();
 			IglooDartImporter iglooDartImporter = new IglooDartImporter(webjarImporter, this);
 			sassCompiler.registerImporter(iglooDartImporter.autoCanonicalize());
-			CompileSuccess compileSuccess = sassCompiler.compileFile(new File(path));
+			CompileSuccess compileSuccess = sassCompiler.compileFile(new File(path.toURI().getPath()));
 			String compiledOutput = compileSuccess.getCss();
 			
 			if (configurationProvider.isAutoprefixerEnabled()) {
@@ -76,11 +109,11 @@ public class ScssServiceImpl implements IScssService, IScopeResolver {
 				LOGGER.debug("Autoprefixer end for {} : {} ms", path, stopwatch.elapsed(TimeUnit.MILLISECONDS));
 			}
 			
-			ScssStylesheetInformation compiledStylesheet = new ScssStylesheetInformation(path, compiledOutput);
+			ScssStylesheetInformation compiledStylesheet = new ScssStylesheetInformation(path.toString(), compiledOutput);
 			updateImportedStylesheets(compileSuccess, compiledStylesheet);
 			
 			return compiledStylesheet;
-		} catch (RuntimeException | IOException | SassCompilationFailedException | AutoprefixerException e) {
+		} catch (RuntimeException | IOException | SassCompilationFailedException | AutoprefixerException | URISyntaxException e) {
 			throw new IllegalStateException(String.format("Error compiling %s", path), e);
 		}
 	}
