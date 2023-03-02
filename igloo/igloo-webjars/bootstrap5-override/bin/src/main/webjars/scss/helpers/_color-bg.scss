@@ -1,9 +1,0 @@
-@each $color, $value in $theme-colors {
-	.text-bg-#{$color} {
-		@include text-bg-variant($value, $enable-important-utilities);
-	}
-	
-	.bg-text-#{$color} {
-		@include bg-text-variant($value, $enable-important-utilities);
-	}
-}

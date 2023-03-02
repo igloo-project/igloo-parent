@@ -1,1 +1,0 @@
-drop schema igloo_test cascade;
