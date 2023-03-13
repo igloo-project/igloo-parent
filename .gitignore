@@ -12,6 +12,7 @@ gitlab-ci.build.conf
 .idea/
 /out/
 *.iml
+bin/
 
 # npm
 node_modules/

@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>5.3.1</version>
+		<version>5.4.0</version>
 	</parent>
 	
 	<packaging>war</packaging>
@@ -33,11 +33,6 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-bootstrap5</artifactId>
-			<version>${igloo.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-wicket-bootstrap4</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
@@ -104,6 +99,13 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Only for packaging scss at build-time -->
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<optional>true</optional>
 		</dependency>
 		
 		<!-- Tests -->
@@ -174,6 +176,39 @@
 				<configuration>
 					<processors>${igloo.processor.bindgen}</processors>
 				</configuration>
+			</plugin>
+			<plugin>
+				<!-- generate SCSS at build-time; greatly speed-up application startup -->
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-scss</id>
+						<goals>
+							<goal>java</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<mainClass>org.iglooproject.sass.cli.ScssMain</mainClass>
+							<arguments>
+								<argument>--generation-path</argument>
+								<argument>${project.build.outputDirectory}</argument>
+								<argument>--scopes</argument>
+								<argument>core-bs5:igloo.bootstrap5.markup.html.template.css.bootstrap.CoreBootstrap5CssScope</argument>
+								<argument>--scopes</argument>
+								<argument>core-console:igloo.console.template.style.CoreConsoleCssScope</argument>
+								<argument>--scopes</argument>
+								<argument>core-fa:igloo.fontawesome.CoreFontAwesomeCssScope</argument>
+								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationadvanced.StylesScssResourceReference:styles.scss</argument>
+								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationbasic.StylesScssResourceReference:styles.scss</argument>
+								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.application.console.console.ConsoleScssResourceReference:console.scss</argument>
+								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.NotificationScssResourceReference:notification.scss</argument>
+								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.application.console.consoleaccess.ConsoleAccessScssResourceReference:console-access.scss</argument>
+								<argument>org.iglooproject.basicapp.web.application.common.template.resources.styles.application.application.applicationaccess.ApplicationAccessScssResourceReference:application-access.scss</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

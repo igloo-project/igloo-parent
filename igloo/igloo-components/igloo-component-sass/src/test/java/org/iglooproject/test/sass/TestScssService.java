@@ -6,9 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 
-import org.apache.commons.io.IOUtils;
 import org.assertj.core.api.Assertions;
+import org.iglooproject.sass.cli.ScssMain;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.iglooproject.sass.service.IScssService;
 import org.iglooproject.sass.service.ScssServiceImpl;
@@ -16,11 +18,15 @@ import org.iglooproject.test.sass.config.TestSassConfigurationProvider;
 import org.iglooproject.test.sass.resources.TestScssServiceResourceScope;
 import org.iglooproject.test.sass.resources.other.scope.TestScssServiceOtherResourceScope;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import com.google.common.io.Resources;
 
 class TestScssService {
 	
-	private IScssService scssService = new ScssServiceImpl(TestSassConfigurationProvider.of(false));
-	private IScssService autoprefixerScssService = new ScssServiceImpl(TestSassConfigurationProvider.of());
+	private IScssService scssService = new ScssServiceImpl(TestSassConfigurationProvider.of(false, false));
+	private IScssService autoprefixerScssService = new ScssServiceImpl(TestSassConfigurationProvider.of(true, false));
+	private IScssService staticScssService = new ScssServiceImpl(TestSassConfigurationProvider.of(true, true));
 	
 	@Test
 	void testGetCompiledStylesheet() throws Exception {
@@ -29,7 +35,7 @@ class TestScssService {
 				"style.scss"
 		);
 		
-		assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n", compiledStylesheet.getSource());
+		assertEquals(".test2 {\n  color: #eeeeee;\n}\n\n.test {\n  color: #cccccc;\n}", compiledStylesheet.getSource());
 		assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
 	}
 	
@@ -42,7 +48,8 @@ class TestScssService {
 				"style-scope.scss"
 		);
 		
-		assertEquals(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n\n.test4 {\n\tcolor: #cccccc;\n}\n\n.test5 {\n\tcolor: #cccccc;\n}\n\ntest3 {\n\tcolor: #eeeeee;\n}\n", compiledStylesheet.getSource());
+		assertThat(compiledStylesheet.getSource())
+			.isEqualToIgnoringWhitespace(".test2 {\n\tcolor: #eeeeee;\n}\n\n.test {\n\tcolor: #cccccc;\n}\n\n.test4 {\n\tcolor: #cccccc;\n}\n\n.test5 {\n\tcolor: #cccccc;\n}\n\ntest3 {\n\tcolor: #eeeeee;\n}\n");
 		assertTrue(compiledStylesheet.getLastModifiedTime() > 1324508163000l);
 	}
 
@@ -215,11 +222,10 @@ class TestScssService {
 		// about autoprefixer.scss:
 		// use indent with tab as spaces are processed to tab by scss
 		// (we want to check input == output if no autoprefixer)
-		String source = IOUtils.toString(
-				getClass().getResourceAsStream("/org/iglooproject/test/sass/resources/autoprefixer.scss"));
+		String source = Resources.toString(Resources.getResource("org/iglooproject/test/sass/resources/autoprefixer.scss"), StandardCharsets.UTF_8);
 		String output =
 				scssService.getCompiledStylesheet(TestScssServiceResourceScope.class, "autoprefixer.scss").getSource();
-		Assertions.assertThat(output).isEqualTo(source);
+		Assertions.assertThat(output).isEqualToIgnoringWhitespace(source);
 	}
 
 	/**
@@ -232,6 +238,29 @@ class TestScssService {
 				.getSource();
 		Assertions.assertThat(output).describedAs("-webkit-sticky must be added to the output")
 			.contains("-webkit-sticky");
+	}
+
+	@Test
+	void testStatic() {
+		// static disabled / generated file is empty
+		String output = scssService.getCompiledStylesheet(TestScssServiceResourceScope.class, "static-source.scss").getSource();
+		assertThat(output).isEmpty();
+		// static enaabled / static file is used - igloo-static-scss/4c1d3b924a175dc799714bd2ef6955585f926b1c0fff34e48d61ec3c16956732.css
+		// filename from StaticResourceHelper.getStaticResourcePath("", TestScssServiceResourceScope.class, "static-source.scss");
+		String outputStatic = staticScssService.getCompiledStylesheet(TestScssServiceResourceScope.class, "static-source.scss").getSource();
+		assertThat(outputStatic).isEqualTo("/* not empty marker */");
+	}
+
+	@Test
+	void testMain(@TempDir Path tempDir) {
+		ScssMain.main(new String[] {
+				"--generation-path",
+				tempDir.toString(),
+				String.format("%s:%s", TestScssServiceResourceScope.class.getName(), "main.scss")
+		});
+		// from StaticResourceHelper.getStaticResourcePath("", TestScssServiceResourceScope.class, "main.scss");
+		assertThat(tempDir.resolve("igloo-static-scss").resolve("1b1044731aa57ea2c56bb4ea859c60b8f4591cea23b05aef4a04c0758f5e3631.css"))
+			.content().contains("body {\n  font-weight: bold;\n}").contains("Generated from");
 	}
 
 }
