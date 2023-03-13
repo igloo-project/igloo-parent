@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-cache</artifactId>
-			<version>5.4.0-SNAPSHOT</version>
+			<version>5.5.0-SNAPSHOT</version>
 			<optional>true</optional>
 		</dependency>
 		
