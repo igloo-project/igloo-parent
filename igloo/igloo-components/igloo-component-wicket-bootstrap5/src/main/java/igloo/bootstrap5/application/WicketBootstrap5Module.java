@@ -179,7 +179,7 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 	public void tabRenderHead(Component component, IHeaderResponse response) {
 		response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
 		response.render(JavaScriptHeaderItem.forReference(BootstrapTabMoreJavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript("new bootstrap.Tab('" + component.getMarkupId() + "');"));
+		response.render(OnDomReadyHeaderItem.forScript("new bootstrap.Tab('#" + component.getMarkupId() + "');"));
 	}
 
 	@Override
