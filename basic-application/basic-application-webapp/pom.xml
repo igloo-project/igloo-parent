@@ -60,6 +60,12 @@
 			<artifactId>igloojs</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
+		<!-- Remove on HTML emails overhaul -->
+		<dependency>
+			<groupId>org.iglooproject.webjars</groupId>
+			<artifactId>bootstrap4-override</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.bindgen</groupId>
 			<artifactId>bindgen</artifactId>
