@@ -31,7 +31,6 @@ import igloo.wicket.util.DatePattern;
 @Import({
 	BasicApplicationCoreCommonConfig.class,
 	BasicApplicationWebappSecurityConfig.class,
-	BasicApplicationWebappCacheConfig.class,
 	BasicApplicationWebappApplicationPropertyRegistryConfig.class
 })
 @ComponentScan(

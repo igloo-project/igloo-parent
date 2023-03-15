@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>5.4.0</version>
+		<version>5.5.0</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-bootstrap5</artifactId>
@@ -27,11 +27,6 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-jquery</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.webjars</groupId>
-			<artifactId>bootstrap4-override</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -91,10 +86,6 @@
 		<dependency>
 			<groupId>org.wicketstuff.wiquery</groupId>
 			<artifactId>wiquery-jquery-ui</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
 		</dependency>
 
 		<dependency>

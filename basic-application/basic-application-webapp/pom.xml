@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>5.4.0</version>
+		<version>5.5.0</version>
 	</parent>
 	
 	<packaging>war</packaging>
@@ -51,8 +51,19 @@
 			<version>${igloo-commons.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-cache</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>igloojs</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<!-- Remove on HTML emails overhaul -->
+		<dependency>
+			<groupId>org.iglooproject.webjars</groupId>
+			<artifactId>bootstrap4-override</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
@@ -73,13 +84,13 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>jul-helper</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>log4j2-jmx-helper</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>

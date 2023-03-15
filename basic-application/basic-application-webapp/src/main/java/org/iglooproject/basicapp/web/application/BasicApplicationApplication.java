@@ -188,7 +188,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		mountPage("/console/access-denied/", ConsoleAccessDeniedPage.class);
 		
 		// Console
-		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console", propertyService);
+		ConsoleConfiguration consoleConfiguration = ConsoleConfiguration.build("console", propertyService, getResourceSettings());
 		consoleConfiguration.addCssResourceReference(ConsoleScssResourceReference.get());
 		consoleConfiguration.addConsoleAccessCssResourceReference(ConsoleAccessScssResourceReference.get());
 		consoleConfiguration.setConsoleAccessHeaderAdditionalContentComponentFactory(ConsoleAccessHeaderAdditionalContentPanel::new);

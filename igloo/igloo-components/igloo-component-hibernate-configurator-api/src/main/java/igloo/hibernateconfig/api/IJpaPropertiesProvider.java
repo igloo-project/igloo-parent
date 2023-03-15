@@ -7,7 +7,6 @@ import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
-import org.hibernate.cache.spi.RegionFactory;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.jpa.boot.spi.IntegratorProvider;
 import org.hibernate.jpa.spi.IdentifierGeneratorStrategyProvider;
@@ -32,9 +31,9 @@ public interface IJpaPropertiesProvider {
 
 	String getEhCacheConfiguration();
 
-	boolean isEhCacheSingleton();
-	
-	Class<? extends RegionFactory> getEhCacheRegionFactory();
+	String getJcacheConfiguration();
+
+	HibernateCacheRegionFactory getEhCacheRegionFactory();
 
 	boolean isQueryCacheEnabled();
 

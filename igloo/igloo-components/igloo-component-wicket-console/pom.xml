@@ -5,13 +5,17 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>5.4.0</version>
+		<version>5.5.0</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-console</artifactId>
 	
 	<name>Igloo - Component - Wicket Console</name>
 	<description>Wicket select2</description>
+
+	<properties>
+		<igloo.processors>${igloo.processor.bindgen}</igloo.processors>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -22,11 +26,25 @@
 		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>igloojs</artifactId>
-			<version>${igloo.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.bindgen</groupId>
+			<artifactId>bindgen</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>bindgen-functional</artifactId>
+			<version>${igloo-commons.version}</version>
 		</dependency>
 	</dependencies>
 	
@@ -47,6 +65,20 @@
 	
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-bindgen</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-commons</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-wicket</artifactId>
