@@ -100,4 +100,11 @@ public interface IStorageService {
 	@Nonnull
 	StorageUnit splitStorageUnit(@Nonnull StorageUnit original);
 
+	/**
+	 * Check creator of {@link Fichier}.
+	 * Check if {@link Fichier#getCreatedBy()} has same class type than <code>clazz</code> and same id than <code>id</code>
+	 */
+	@Transactional(readOnly=true)
+	public boolean isCreatedBy(@Nonnull Fichier fichier, @Nonnull Class<?> clazz, Long id);
+
 }
