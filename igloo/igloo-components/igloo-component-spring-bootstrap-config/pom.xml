@@ -49,12 +49,6 @@
 			<scope>runtime</scope>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-functional</artifactId>
-			<version>${igloo-commons.version}</version>
-		</dependency>
-		
 		<!-- Guava -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
