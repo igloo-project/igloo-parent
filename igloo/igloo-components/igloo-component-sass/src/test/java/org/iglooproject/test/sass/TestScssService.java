@@ -22,6 +22,8 @@ import org.junit.jupiter.api.io.TempDir;
 
 import com.google.common.io.Resources;
 
+import de.larsgrefer.sass.embedded.importer.CustomUrlImporter;
+
 class TestScssService {
 	
 	private IScssService scssService = new ScssServiceImpl(TestSassConfigurationProvider.of(false, false));
@@ -261,6 +263,32 @@ class TestScssService {
 		// from StaticResourceHelper.getStaticResourcePath("", TestScssServiceResourceScope.class, "main.scss");
 		assertThat(tempDir.resolve("igloo-static-scss").resolve("1b1044731aa57ea2c56bb4ea859c60b8f4591cea23b05aef4a04c0758f5e3631.css"))
 			.content().contains("body {\n  font-weight: bold;\n}").contains("Generated from");
+	}
+	
+	@Test
+	void testBootstrap4() {
+		assertThatCode(() -> scssService.getCompiledStylesheet(TestScssServiceResourceScope.class, "bootstrap4.scss")).doesNotThrowAnyException();
+	}
+	
+	@Test
+	void testBootstrap5() {
+		assertThatCode(() -> scssService.getCompiledStylesheet(TestScssServiceResourceScope.class, "bootstrap5.scss")).doesNotThrowAnyException();
+	}
+	
+	/**
+	 * <p>dart-sass embedder behavior is not the same when {@link CustomUrlImporter}<code>usedPrefixes</code> contains
+	 * a path. Resources resolution failure (null) that may be silently ignored triggers
+	 * <code>has no known prefix</code> when getRelativePath is called.</p>
+	 * 
+	 * <p>Triggering this use-case is done by loading a $(scope-*) resource (it add a path in usedPrefixes) then
+	 * loading a webjar resource inside a webjar.</p>
+	 * 
+	 * @see https://github.com/larsgrefer/dart-sass-java/issues/104
+	 */
+	@Test
+	void testMixedWebjarsScope() {
+		scssService.registerImportScope("test", TestScssServiceOtherResourceScope.class);
+		assertThatCode(() -> scssService.getCompiledStylesheet(TestScssServiceResourceScope.class, "mixed-webjars-scope.scss")).doesNotThrowAnyException();
 	}
 
 }
