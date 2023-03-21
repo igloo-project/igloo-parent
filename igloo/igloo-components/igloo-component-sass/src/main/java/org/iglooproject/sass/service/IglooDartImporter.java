@@ -5,6 +5,8 @@ import java.net.URL;
 
 import de.larsgrefer.sass.embedded.importer.ClasspathImporter;
 import de.larsgrefer.sass.embedded.importer.WebjarsImporter;
+import de.larsgrefer.sass.embedded.util.SyntaxUtil;
+import sass.embedded_protocol.EmbeddedSass.Syntax;
 
 /**
  * Handle both webjars (<code>META-INF/resources/webjars/...</code>) and scoped (<code>$(scope-NAME)/path/file<code>)
@@ -28,12 +30,26 @@ public final class IglooDartImporter extends ClasspathImporter { //NOSONAR no in
 		}
 		// handle classpath URLs
 		if (url.startsWith("jar:file:/") && url.contains("!")) {
+			// directory on openStream does not fail so we need to handle the directory case specifically
+			// we artificially exclude directory case by checking file extension
+			// example : bootstrap 4 has a mixins folder and use /mixins URL to load _mixins.scss
+			// we need to return null for mixins, so that _mixins.scss is tried
 			var tried = new URL(url);
-			try {
-				tried.openStream();
+			Syntax syntax = SyntaxUtil.guessSyntax(tried);
+			if (Syntax.UNRECOGNIZED.equals(syntax)) {
+				// do not accept extension-less or unknown extensions
+				return null;
+			}
+			// check resource existence
+			try (var is = tried.openStream()) {
 				return tried.toString();
 			} catch (IOException e) {
-				// not existing path must return null
+				// Not existing path must return null
+				// Do not let super.canonicalize handle it as it cannot handle version-less webjars urls
+				// as once usedPrefixes is populated it will enforce prefix checking and initial prefix
+				// cannot be registered as META-INF/resources/webjars/lib/res.scss is not a subpath
+				// or jar:file:.../META-INF/resources/webjars/lib/VERSION/res.scss
+				return null;
 			}
 		}
 		// handle webjars URL
