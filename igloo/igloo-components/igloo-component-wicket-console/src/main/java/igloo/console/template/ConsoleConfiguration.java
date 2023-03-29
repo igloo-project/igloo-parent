@@ -3,6 +3,7 @@ package igloo.console.template;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import org.apache.wicket.Component;
@@ -62,52 +63,66 @@ public final class ConsoleConfiguration {
 	}
 	
 	public static ConsoleConfiguration build(String baseUrl, IPropertyService propertyService, ResourceSettings resourceSettings) {
-		return build(baseUrl, "common.console", true, propertyService, resourceSettings);
+		return build(baseUrl, "common.console", propertyService, resourceSettings, null);
 	}
 	
+	/**
+	 * Initiate a ConsoleConfiguration object with default pages and external contributions (see {@link IConsolePageProvider}).
+	 * If you provide a not-null <code>customConfiguration</code>, default pages are not added by this method.
+	 * If appropriate, you may call <code>this.buildDefault()</code> in your <code>customConfiguration</code>.
+	 */
 	public static ConsoleConfiguration build(
 			String baseUrl,
 			String consoleTitleKey,
-			boolean buildDefault,
 			IPropertyService propertyService,
-			ResourceSettings resourceSettings
+			ResourceSettings resourceSettings,
+			Consumer<ConsoleConfiguration> customConfiguration
 	) {
 		INSTANCE.setBaseUrl(UrlUtils.normalizePath(baseUrl));
 		INSTANCE.setConsoleTitleKey(consoleTitleKey);
 		
-		if (buildDefault) {
-			ConsoleMenuSection maintenanceMenuSection = new ConsoleMenuSection("maintenanceMenuSection",
-					"console.maintenance", "maintenance", ConsoleMaintenanceSearchPage.class);
-			ConsoleMenuItem maintenanceSearchMenuItem = new ConsoleMenuItem("maintenanceSearchMenuItem",
-					"console.maintenance.search", "search", ConsoleMaintenanceSearchPage.class);
-			maintenanceMenuSection.addMenuItem(maintenanceSearchMenuItem);
-			ConsoleMenuItem maintenanceGestionMenuItem = new ConsoleMenuItem("maintenanceGestionMenuItem",
-					"console.maintenance.gestion", "gestion", ConsoleMaintenanceGestionPage.class);
-			maintenanceMenuSection.addMenuItem(maintenanceGestionMenuItem);
-			ConsoleMenuItem maintenanceDataMenuItem = new ConsoleMenuItem("maintenanceDataMenuItem",
-					"console.maintenance.data", "data", ConsoleMaintenanceDataPage.class);
-			maintenanceMenuSection.addMenuItem(maintenanceDataMenuItem);
-			ConsoleMenuItem maintenancePropertiesMenuItem = new ConsoleMenuItem("maintenancePropertiesMenuItem",
-					"console.maintenance.properties", "properties", ConsoleMaintenancePropertiesPage.class);
-			maintenanceMenuSection.addMenuItem(maintenancePropertiesMenuItem);
-			ConsoleMenuItem maintenanceAuthenticationMenuItem = new ConsoleMenuItem("maintenanceAuthenticationMenuItem",
-					"console.maintenance.authentication", "authentication", ConsoleMaintenanceAuthenticationPage.class);
-			maintenanceMenuSection.addMenuItem(maintenanceAuthenticationMenuItem);
-			ConsoleMenuItem maintenanceTaskMenuItem = new ConsoleMenuItem("maintenanceTaskMenuItem",
-					"console.maintenance.tasks", "task", ConsoleMaintenanceTaskListPage.class);
-			ConsoleMenuItemRelatedPage maintenanceTaskDetailPage = new ConsoleMenuItemRelatedPage(
-					"${" + CommonParameters.ID + "}/", ConsoleMaintenanceTaskDetailPage.class);
-			maintenanceTaskMenuItem.addRelatedPage(maintenanceTaskDetailPage);
-			maintenanceMenuSection.addMenuItem(maintenanceTaskMenuItem);
-			ConsoleMenuItem maintenanceFileMenuItem = new ConsoleMenuItem("maintenanceFileMenuItem",
-					"console.maintenance.file", "file", ConsoleMaintenanceFilePage.class);
-			maintenanceMenuSection.addMenuItem(maintenanceFileMenuItem);
-			
-			INSTANCE.addMenuSection(maintenanceMenuSection);
+		if (customConfiguration == null) {
+			INSTANCE.buildDefault();
+		} else {
+			customConfiguration.accept(INSTANCE);
 		}
 		INSTANCE.loadProviders(resourceSettings);
 		
 		return INSTANCE;
+	}
+
+	/**
+	 * Build console default configuration
+	 */
+	public void buildDefault() {
+		ConsoleMenuSection maintenanceMenuSection = new ConsoleMenuSection("maintenanceMenuSection",
+				"console.maintenance", "maintenance", ConsoleMaintenanceSearchPage.class);
+		ConsoleMenuItem maintenanceSearchMenuItem = new ConsoleMenuItem("maintenanceSearchMenuItem",
+				"console.maintenance.search", "search", ConsoleMaintenanceSearchPage.class);
+		maintenanceMenuSection.addMenuItem(maintenanceSearchMenuItem);
+		ConsoleMenuItem maintenanceGestionMenuItem = new ConsoleMenuItem("maintenanceGestionMenuItem",
+				"console.maintenance.gestion", "gestion", ConsoleMaintenanceGestionPage.class);
+		maintenanceMenuSection.addMenuItem(maintenanceGestionMenuItem);
+		ConsoleMenuItem maintenanceDataMenuItem = new ConsoleMenuItem("maintenanceDataMenuItem",
+				"console.maintenance.data", "data", ConsoleMaintenanceDataPage.class);
+		maintenanceMenuSection.addMenuItem(maintenanceDataMenuItem);
+		ConsoleMenuItem maintenancePropertiesMenuItem = new ConsoleMenuItem("maintenancePropertiesMenuItem",
+				"console.maintenance.properties", "properties", ConsoleMaintenancePropertiesPage.class);
+		maintenanceMenuSection.addMenuItem(maintenancePropertiesMenuItem);
+		ConsoleMenuItem maintenanceAuthenticationMenuItem = new ConsoleMenuItem("maintenanceAuthenticationMenuItem",
+				"console.maintenance.authentication", "authentication", ConsoleMaintenanceAuthenticationPage.class);
+		maintenanceMenuSection.addMenuItem(maintenanceAuthenticationMenuItem);
+		ConsoleMenuItem maintenanceTaskMenuItem = new ConsoleMenuItem("maintenanceTaskMenuItem",
+				"console.maintenance.tasks", "task", ConsoleMaintenanceTaskListPage.class);
+		ConsoleMenuItemRelatedPage maintenanceTaskDetailPage = new ConsoleMenuItemRelatedPage(
+				"${" + CommonParameters.ID + "}/", ConsoleMaintenanceTaskDetailPage.class);
+		maintenanceTaskMenuItem.addRelatedPage(maintenanceTaskDetailPage);
+		maintenanceMenuSection.addMenuItem(maintenanceTaskMenuItem);
+		ConsoleMenuItem maintenanceFileMenuItem = new ConsoleMenuItem("maintenanceFileMenuItem",
+				"console.maintenance.file", "file", ConsoleMaintenanceFilePage.class);
+		maintenanceMenuSection.addMenuItem(maintenanceFileMenuItem);
+		
+		this.addMenuSection(maintenanceMenuSection);
 	}
 
 	private void loadProviders(ResourceSettings resourceSettings) {
