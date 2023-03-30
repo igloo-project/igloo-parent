@@ -9,6 +9,7 @@ import static org.apache.commons.io.filefilter.FileFilterUtils.prefixFileFilter;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -28,8 +29,6 @@ import org.iglooproject.imports.table.common.event.exception.TableImportFileExce
 import org.iglooproject.imports.table.common.excel.scanner.IExcelImportFileScanner;
 
 import com.google.common.collect.ImmutableMap;
-
-import net.java.truevfs.access.TFileInputStream;
 
 public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workbook, Sheet, Row, Cell, CellReference> {
 	
@@ -83,7 +82,7 @@ public class ApachePoiImportFileScanner implements IExcelImportFileScanner<Workb
 		
 		ApachePoiImportNavigator navigator = new ApachePoiImportNavigator(filename);
 		
-		try (InputStream stream = new TFileInputStream(file); Workbook workbook = WorkbookFactory.create(stream)) {
+		try (InputStream stream = new FileInputStream(file); Workbook workbook = WorkbookFactory.create(stream)) {
 			for (int index = 0 ; index < workbook.getNumberOfSheets() ; ++index) {
 				Sheet sheet = workbook.getSheetAt(index);
 				if (navigator.tableHasContent(sheet) && SELECTIONS_PREDICATES.get(selection).test(sheet)) {
