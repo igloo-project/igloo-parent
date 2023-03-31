@@ -1,0 +1,6 @@
+.popover-header,
+.popover-body {
+	> .d-none {
+		display: initial !important;
+	}
+}
