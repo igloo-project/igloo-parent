@@ -14,14 +14,13 @@ class ModalMore extends bootstrap.Modal {
         // override current transitioning state
         this._ignoreTransitioning()
         super.hide()
-}
+    }
 
     _hideModal() {
         super._hideModal()
         if (this._parent) {
             this._parent.appendChild(this._element)
         }
-
     }
 
     _appendToBody() {

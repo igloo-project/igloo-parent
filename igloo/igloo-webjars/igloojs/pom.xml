@@ -20,8 +20,20 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>bindgen-functional</artifactId>
+			<version>${igloo-commons.version}</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>de.agilecoders.wicket.webjars</groupId>
 			<artifactId>wicket-webjars</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>lodash</artifactId>
+			<version>4.17.21</version>
 		</dependency>
 	</dependencies>
 

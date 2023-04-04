@@ -16,10 +16,11 @@ const rollupConfig = {
     generatedCode: 'es2015',
     name: symbol,
     globals: {
-      "bootstrap": "bootstrap"
+      "bootstrap": "bootstrap",
+      "lodash": "lodash"
     }
   },
-  external: ['bootstrap'],
+  external: ['bootstrap', 'lodash'],
   plugins: [
     babel({
       exclude: 'node_modules/**',
