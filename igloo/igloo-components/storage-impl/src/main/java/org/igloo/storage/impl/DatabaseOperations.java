@@ -320,9 +320,10 @@ public class DatabaseOperations {
 	 * List {@link StorageUnit} that need to be split. Listing is based upon {@link StorageUnit#getSplitSize()} or
 	 * {@link StorageUnit#getSplitDuration()}. Null values implies NO automatic split.
 	 */
+	@SuppressWarnings("unchecked")
 	@Nonnull
 	public List<StorageUnit> listStorageUnitsToSplit() {
-		return entityManager().createQuery(storageUnitSplitQuery.get(), StorageUnit.class).getResultList();
+		return entityManager().createNativeQuery(storageUnitSplitQuery.get(), StorageUnit.class).getResultList();
 	}
 
 	@SuppressWarnings({ "unchecked", "deprecation" })

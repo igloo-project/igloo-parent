@@ -1,5 +1,5 @@
-SELECT s from StorageUnit s
-JOIN Fichier f ON f.size IS NOT NULL
+SELECT s.* from StorageUnit s
+JOIN Fichier f ON f.size IS NOT NULL and f.storageUnit_id = s.id
 WHERE s.status = 'ALIVE'
 GROUP BY s.id
 -- max age or total file size condition
