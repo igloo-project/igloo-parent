@@ -1322,6 +1322,22 @@ class TestDatabaseOperations extends AbstractTest {
 	}
 
 	@Test
+	void testListStorageUnitsToSplitSizeOverflowOnlyOne(EntityManagerFactory entityManagerFactory) {
+		// split only this storage unit
+		StorageUnit unit1 = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE, LocalDateTime.now(), null, 24000l);
+		createFichier(entityManagerFactory, unit1, 2l, FichierStatus.ALIVE, 21000l);
+		createFichier(entityManagerFactory, unit1, 4l, FichierStatus.ALIVE, 4000l);
+		
+		// below split limit
+		StorageUnit unit2 = createStorageUnit(entityManagerFactory, 2l, StorageUnitType.TYPE_2, StorageUnitStatus.ALIVE, LocalDateTime.now(), null, 24000l);
+		createFichier(entityManagerFactory, unit2, 5l, FichierStatus.ALIVE, 21000l);
+		doInReadTransaction(entityManagerFactory, () -> {
+			assertThat(databaseOperations.listStorageUnitsToSplit()).containsExactly(unit1);
+			return null;
+		});
+	}
+
+	@Test
 	void testListStorageUnitsToSplitDurationNoOverflow(EntityManagerFactory entityManagerFactory) {
 		StorageUnit unit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE, LocalDateTime.now().minusDays(3), Duration.ofDays(3).plusMinutes(1), null);
 		createFichier(entityManagerFactory, unit, 2l, FichierStatus.ALIVE, 25000l);
