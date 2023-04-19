@@ -367,4 +367,11 @@ public class StorageService implements IStorageService, IStorageStatisticsServic
 		return databaseOperations.getStorageCheckStatistics();
 	}
 
+	@Override
+	public boolean isCreatedBy(@Nonnull Fichier fichier, @Nonnull Class<?> clazz, Long id) {
+		return fichier.getCreatedBy() != null && fichier.getCreatedBy().getId() != null && fichier.getCreatedBy().getType() != null
+			&& clazz.isAssignableFrom(fichier.getCreatedBy().getType())
+			&& id != null && Objects.equals(id, fichier.getCreatedBy().getId());
+	}
+
 }

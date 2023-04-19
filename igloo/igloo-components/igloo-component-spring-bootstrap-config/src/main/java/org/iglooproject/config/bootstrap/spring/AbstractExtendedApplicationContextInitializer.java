@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.iglooproject.config.bootstrap.spring.ILoggerConfiguration.LoggerImplementation;
@@ -17,7 +18,6 @@ import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySources
 import org.iglooproject.config.bootstrap.spring.config.IglooBootstrapPropertySourcesConfig;
 import org.iglooproject.config.bootstrap.spring.config.IglooPropertySourcesLevelsConfig;
 import org.iglooproject.config.bootstrap.spring.env.CompositeProtocolResolver;
-import org.iglooproject.functional.Function2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -409,7 +409,7 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 	 * 
 	 * <p>If you map a collection, you need to filter null values after mapping.</p>
 	 */
-	private static Function2<String, Resource> resourceFromLocation(ApplicationContext applicationContext,
+	private static Function<String, Resource> resourceFromLocation(ApplicationContext applicationContext,
 			boolean throwErrorIfNotReadable) {
 		return location -> {
 			String resolvedLocation = applicationContext.getEnvironment().resolveRequiredPlaceholders(location);

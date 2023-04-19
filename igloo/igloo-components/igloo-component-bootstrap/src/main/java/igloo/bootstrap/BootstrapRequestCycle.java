@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import org.apache.wicket.Application;
 import org.apache.wicket.MetaDataKey;
 import org.apache.wicket.core.request.handler.IPageRequestHandler;
+import org.apache.wicket.protocol.ws.api.WebSocketMessageBroadcastHandler;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.IRequestHandlerDelegate;
 import org.apache.wicket.request.cycle.RequestCycle;
@@ -54,8 +55,8 @@ public class BootstrapRequestCycle {
 		} else {
 			throw new IllegalStateException("No IPageRequestHandler and no OfflinePageMetadataKey metadata found; Page class retrieval fails.");
 		}
-		boolean bootstrap4 = IBootstrap4Component.class.isAssignableFrom(componentClass);
-		boolean bootstrap5 = IBootstrap5Component.class.isAssignableFrom(componentClass);
+		boolean bootstrap4 = componentClass != null && IBootstrap4Component.class.isAssignableFrom(componentClass);
+		boolean bootstrap5 = componentClass != null && IBootstrap5Component.class.isAssignableFrom(componentClass);
 		if (bootstrap4 && bootstrap5) {
 			LOGGER.warn("Both bootstrap 4 and bootstrap 5 enabled on {}, fallback to default {}; please use only one version", componentClass.getName(), BootstrapVersion.BOOTSTRAP_5.name());
 		}
@@ -68,16 +69,27 @@ public class BootstrapRequestCycle {
 		}
 	}
 
+	/**
+	 * Avec gestion du cas particulier des web sockets. Dans le cas d'un {@link WebSocketMessageBroadcastHandler},
+	 * l'information du {@link IPageRequestHandler} est au niveau de l'attribut {@code payload} qui est {@code private}
+	 * et sans getter associé. Il a donc été décidé de retourner {@code null} dans ce cas et d'utiliser alors la version
+	 * de Bootstrap par défaut de l'application.
+	 */
 	private static Class<?> lookupPageFromPageRequestHandler(@Nonnull IRequestHandler requestHandler) {
+		// cf. java doc
+		if (requestHandler instanceof WebSocketMessageBroadcastHandler) {
+			return null;
+		}
+		
 		if (requestHandler instanceof IRequestHandlerDelegate) {
 			requestHandler = ((IRequestHandlerDelegate) requestHandler).getDelegateHandler();
 		}
+		
 		if (!(requestHandler instanceof IPageRequestHandler)) {
 			throw new IllegalStateException(String.format("requestHandler not a IPageRequestHandler; version cannot be resolved (%s)", requestHandler.getClass().getName()));
-		} else {
-			IPageRequestHandler pageRequestHandler = (IPageRequestHandler) requestHandler;
-			return pageRequestHandler.getPageClass();
 		}
+		
+		return ((IPageRequestHandler) requestHandler).getPageClass();
 	}
 
 	public static IBootstrapProvider getSettings() {
