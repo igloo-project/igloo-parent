@@ -22,13 +22,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
-import org.iglooproject.functional.Joiners;
 import org.iglooproject.jpa.batch.runnable.IBatchRunnable;
 import org.iglooproject.jpa.batch.runnable.Writeability;
 import org.iglooproject.jpa.batch.util.IBeforeClearListener;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityCollectionReference;
-import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.query.IQuery;
 import org.iglooproject.jpa.query.Queries;
 
@@ -193,16 +191,17 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 			}
 			
 			LOGGER.info("    postExecute end");
-			
-			if (classesToReindex.size() > 0) {
-				LOGGER.info("    reindexing classes %1$s", Joiners.onComma().join(classesToReindex));
-				try {
-					hibernateSearchService.reindexClasses(classesToReindex);
-				} catch (ServiceException e) {
-					LOGGER.error("    reindexing failure", e);
-				}
-				LOGGER.info("    end of reindexing");
-			}
+			//TODO igloo-boot
+//			if (classesToReindex.size() > 0) {
+//				LOGGER.info("    reindexing classes %1$s", Joiners.onComma().join(classesToReindex));
+//				try {
+//					
+//					hibernateSearchService.reindexClasses(classesToReindex);
+//				} catch (ServiceException e) {
+//					LOGGER.error("    reindexing failure", e);
+//				}
+//				LOGGER.info("    end of reindexing");
+//			}
 			
 			LOGGER.info("End of batch for %1$s: %2$d/%3$d objects treated", loggerContext, offset, expectedTotalCount);
 		} catch (ExecutionException e) {
@@ -310,9 +309,10 @@ public class SimpleHibernateBatchExecutor extends AbstractBatchExecutor<SimpleHi
 			for (IBeforeClearListener beforeClearListener : executor.clearListeners) {
 				beforeClearListener.beforeClear();
 			}
-			if (!isReadOnly) {
-				executor.hibernateSearchService.flushToIndexes();
-			}
+			//TODO igloo-boot
+//			if (!isReadOnly) {
+//				executor.hibernateSearchService.flushToIndexes();
+//			}
 			executor.entityService.clear();
 		}
 

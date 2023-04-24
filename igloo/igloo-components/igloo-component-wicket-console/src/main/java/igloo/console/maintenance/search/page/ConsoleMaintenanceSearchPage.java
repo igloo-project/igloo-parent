@@ -2,6 +2,7 @@ package igloo.console.maintenance.search.page;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -18,11 +19,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.functional.Suppliers2;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -31,7 +28,6 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Sets;
 
 import igloo.bootstrap.confirm.AjaxConfirmLink;
@@ -51,9 +47,6 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 		return LinkDescriptorBuilder.start()
 			.page(ConsoleMaintenanceSearchPage.class);
 	}
-
-	@SpringBean
-	private IHibernateSearchService hibernateSearchService;
 
 	private final IModel<Collection<Class<?>>> classesChoicesModel;
 
@@ -78,7 +71,8 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 					@Override
 					public void execute(AjaxRequestTarget target) {
 						try {
-							hibernateSearchService.reindexAll();
+							// TODO igloo-boot
+//							hibernateSearchService.reindexAll();
 							Session.get().success(getString("common.success"));
 						} catch(Exception e) {
 							LOGGER.error("Erreur lors la réindexation complète.", e);
@@ -102,14 +96,16 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected Collection<Class<?>> load() {
-				try {
-					return hibernateSearchService.getIndexedRootEntities();
-				} catch (ServiceException e) {
-					LOGGER.error("Erreur lors de la récupération de la liste des classes indexées.", e);
-					Session.get().error(getString("console.maintenance.search.reindex.partial.error.getClasses"));
-					reindexClassesForm.setVisibilityAllowed(false);
-					return ImmutableList.of();
-				}
+				// TODO igloo-boot
+				return Collections.emptyList();
+//				try {
+//					return hibernateSearchService.getIndexedRootEntities();
+//				} catch (ServiceException e) {
+//					LOGGER.error("Erreur lors de la récupération de la liste des classes indexées.", e);
+//					Session.get().error(getString("console.maintenance.search.reindex.partial.error.getClasses"));
+//					reindexClassesForm.setVisibilityAllowed(false);
+//					return ImmutableList.of();
+//				}
 			}
 		};
 		classesChoicesModel.getObject(); // early load
@@ -146,18 +142,20 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 							}
 							
 							if (entityIds.isEmpty()) {
-								hibernateSearchService.reindexClasses(classesModel.getObject());
+								//TODO igloo-boot
+//								hibernateSearchService.reindexClasses(classesModel.getObject());
 							} else {
 								for (Class<?> clazz : classesModel.getObject()) {
-									for (Long entityId : entityIds) {
-										try {
-											@SuppressWarnings("unchecked")
-											Class<GenericEntity<Long, ?>> genericEntityClazz = (Class<GenericEntity<Long, ?>>) clazz;
-											hibernateSearchService.reindexEntity(genericEntityClazz, entityId);
-										} catch (IllegalArgumentException e) {
-											// On ignore les classes qui ne sont pas des GenericEntity.
-										}
-									}
+									//TODO igloo-boot
+//									for (Long entityId : entityIds) {
+//										try {
+//											@SuppressWarnings("unchecked")
+//											Class<GenericEntity<Long, ?>> genericEntityClazz = (Class<GenericEntity<Long, ?>>) clazz;
+//											hibernateSearchService.reindexEntity(genericEntityClazz, entityId);
+//										} catch (IllegalArgumentException e) {
+//											// On ignore les classes qui ne sont pas des GenericEntity.
+//										}
+//									}
 								}
 							}
 							

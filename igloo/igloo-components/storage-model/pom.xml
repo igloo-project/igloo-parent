@@ -18,8 +18,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>javax.persistence-api</artifactId>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -54,8 +54,13 @@
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
-			<classifier>jpa</classifier>
+			<classifier>jakarta</classifier>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 

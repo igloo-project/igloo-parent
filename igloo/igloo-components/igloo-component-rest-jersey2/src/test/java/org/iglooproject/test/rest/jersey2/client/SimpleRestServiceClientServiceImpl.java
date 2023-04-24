@@ -2,7 +2,7 @@ package org.iglooproject.test.rest.jersey2.client;
 
 import java.net.URI;
 
-import javax.ws.rs.client.WebTarget;
+import jakarta.ws.rs.client.WebTarget;
 
 import org.iglooproject.rest.jersey2.client.AbstractRestClientServiceImpl;
 import org.iglooproject.test.rest.jersey2.business.person.model.Person;

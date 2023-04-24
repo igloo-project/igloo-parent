@@ -3,22 +3,6 @@ package org.iglooproject.jpa.more.business.history.model;
 import java.util.Collections;
 import java.util.List;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Basic;
-import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
-import javax.persistence.Transient;
-
 import org.bindgen.Bindable;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
@@ -29,6 +13,19 @@ import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 import com.google.common.base.MoreObjects.ToStringHelper;
 import com.google.common.collect.Lists;
 import com.querydsl.core.annotations.QueryInit;
+
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Cacheable;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 
 @MappedSuperclass
 @Bindable
@@ -64,8 +61,10 @@ public abstract class AbstractHistoryDifference<HD extends AbstractHistoryDiffer
 	@QueryInit({"*.*.*"})
 	private HistoryValue after;
 	
-	@OneToMany(mappedBy = "parentDifference", cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderColumn
+	//TODO: igloo-boot
+//	@OneToMany(mappedBy = "parentDifference", cascade = CascadeType.ALL, orphanRemoval = true)
+//	@OrderColumn
+	@Transient
 	private List<HD> differences = Lists.newArrayList();
 	
 	public AbstractHistoryDifference() {

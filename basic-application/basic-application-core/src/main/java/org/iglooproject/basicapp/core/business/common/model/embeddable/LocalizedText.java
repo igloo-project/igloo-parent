@@ -3,9 +3,9 @@ package org.iglooproject.basicapp.core.business.common.model.embeddable;
 import java.util.Collection;
 import java.util.Locale;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;

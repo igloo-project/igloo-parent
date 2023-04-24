@@ -14,7 +14,6 @@ import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.BoostQuery;
 import org.apache.lucene.search.FuzzyQuery;
-import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
@@ -252,8 +251,9 @@ public final class LuceneUtils {
 			sb.append(formatPrefixQuery((PrefixQuery) luceneQuery));
 		} else if (luceneQuery instanceof WildcardQuery) {
 			sb.append(formatWildcardQuery((WildcardQuery) luceneQuery));
-		} else if (luceneQuery instanceof NumericRangeQuery) {
-			sb.append(formatNumericRangeQuery((NumericRangeQuery<? extends Number>) luceneQuery));
+		//TODO: igloo-boot
+//		} else if (luceneQuery instanceof NumericRangeQuery) {
+//			sb.append(formatNumericRangeQuery((NumericRangeQuery<? extends Number>) luceneQuery));
 		} else if (luceneQuery instanceof IToQueryStringAwareLuceneQuery) {
 			sb.append(((IToQueryStringAwareLuceneQuery) luceneQuery).toQueryString());
 		} else if (luceneQuery instanceof BoostQuery) {
@@ -364,10 +364,11 @@ public final class LuceneUtils {
 		return sb.toString();
 	}
 	
-	private static String formatNumericRangeQuery(NumericRangeQuery<? extends Number> numericRangeQuery) {
-		return toFilterRangeQuery(numericRangeQuery.getField(), numericRangeQuery.getMin(), numericRangeQuery.getMax(),
-				numericRangeQuery.includesMin(), numericRangeQuery.includesMax()).getQuery();
-	}
+	//TODO: igloo-boot
+//	private static String formatNumericRangeQuery(NumericRangeQuery<? extends Number> numericRangeQuery) {
+//		return toFilterRangeQuery(numericRangeQuery.getField(), numericRangeQuery.getMin(), numericRangeQuery.getMax(),
+//				numericRangeQuery.includesMin(), numericRangeQuery.includesMax()).getQuery();
+//	}
 	
 	private LuceneUtils() {
 	}

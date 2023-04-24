@@ -1,11 +1,11 @@
 package org.iglooproject.basicapp.core.business.history.model;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.Table;
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Cacheable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
 
 import org.bindgen.Bindable;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;

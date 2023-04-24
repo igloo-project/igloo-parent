@@ -3,22 +3,15 @@ package org.iglooproject.jpa.more.business.task.model;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Version;
-
 import org.bindgen.Bindable;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JavaType;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
+import org.hibernate.type.descriptor.java.StringJavaType;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
@@ -31,6 +24,13 @@ import com.google.common.base.MoreObjects.ToStringHelper;
 
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import igloo.hibernateconfig.api.HibernateSearchNormalizer;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 
 @Entity
 @Bindable
@@ -64,12 +64,12 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	@Field(name = NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
 	@Field(name = NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
 	@SortableField(forField = NAME_SORT)
-	@Type(type = "text")
+	@JavaType(StringJavaType.class)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String name;
 
 	@Column(nullable = true)
-	@Field(name = QUEUE_ID, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD), indexNullAs = Field.DEFAULT_NULL_TOKEN)
+	@Field(name = QUEUE_ID, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD), indexNullAs = "__NULL__")
 	private String queueId;
 
 	@Column(nullable = false)
@@ -98,7 +98,7 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private int version;
 
 	@Column(nullable = false)
-	@Type(type = "text")
+	@JavaType(StringJavaType.class)
 	private String serializedTask;
 
 	@Column(nullable = false)
@@ -114,11 +114,11 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private TaskResult result;
 
 	@Column
-	@Type(type = "text")
+	@JavaType(StringJavaType.class)
 	private String stackTrace;
 
 	@Column
-	@Type(type = "text")
+	@JavaType(StringJavaType.class)
 	private String report;
 
 	protected QueuedTaskHolder() {

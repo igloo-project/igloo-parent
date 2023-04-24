@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.annotation.Resource;
-import javax.persistence.spi.PersistenceProvider;
+import jakarta.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -71,7 +71,7 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	@Autowired(required=false)
 	private PersistenceProvider persistenceProvider;
 
-	@Value("${javax.persistence.validation.mode}")
+	@Value("${jakarta.persistence.validation.mode}")
 	private String validationMode;
 	
 	@Value("${hibernate.implicit_naming_strategy}")

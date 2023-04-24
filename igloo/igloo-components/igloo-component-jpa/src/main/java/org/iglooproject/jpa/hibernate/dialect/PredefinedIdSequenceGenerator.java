@@ -23,7 +23,7 @@ public class PredefinedIdSequenceGenerator extends PerTableSequenceStyleGenerato
 	public static final String CLASS_NAME = "org.iglooproject.jpa.hibernate.dialect.PredefinedIdSequenceGenerator";
 	
 	@Override
-	public Serializable generate(SharedSessionContractImplementor session, Object obj) {
+	public Object generate(SharedSessionContractImplementor session, Object obj) {
 		if (obj instanceof IPredefinedIdEntity) {
 			IPredefinedIdEntity<?> entity = (IPredefinedIdEntity<?>) obj;
 			Serializable predefinedId = entity.getPredefinedId();

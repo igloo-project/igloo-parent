@@ -15,10 +15,6 @@ public class IglooJpaCacheConfig {
 	@Bean
 	public CacheManager jpaCacheManager(IJpaConfigurationProvider jpaConfigurationProvider) {
 		switch(jpaConfigurationProvider.getEhCacheRegionFactory()) {
-		case EHCACHE:
-		case EHCACHE_SINGLETON:
-			// keep inlined class name as we need a working code even if class is not on classpath
-			return org.igloo.spring.autoconfigure.jpa.EhCacheLookup.lookup(jpaConfigurationProvider);
 		case JCACHE_CAFFEINE:
 			// keep inlined class name as we need a working code even if class is not on classpath
 			// we use jcache wrapping as spring-caffeine cannot wrap an already existing cache manager

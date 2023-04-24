@@ -25,10 +25,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter;
-import org.apache.lucene.util.ArrayUtil;
-import org.apache.lucene.util.RamUsageEstimator;
-
 import com.google.common.base.CharMatcher;
 
 /**
@@ -225,27 +221,9 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	 * 
 	 * @param text chaîne à nettoyer
 	 * @return chaîne sans accent
-	 * @see org.apache.lucene.analysis.ASCIIFoldingFilter
 	 */
 	public static String removeAccents(String text) {
-		if (text == null) {
-			return text;
-		}
-		
-		int length = text.length();
-		char[] input = text.toCharArray();
-		char[] output = new char[256];
-
-		// Worst-case length required:
-		final int maxSizeNeeded = 4 * length;
-		
-		if (output.length < maxSizeNeeded) {
-			output = new char[ArrayUtil.oversize(maxSizeNeeded, RamUsageEstimator.NUM_BYTES_CHAR)];
-		}
-		
-		int outputPos = ASCIIFoldingFilter.foldToASCII(input, 0, output, 0, length);
-
-		return new String(output, 0, outputPos);
+		return org.apache.commons.lang3.StringUtils.stripAccents(text);
 	}
 	
 	/**

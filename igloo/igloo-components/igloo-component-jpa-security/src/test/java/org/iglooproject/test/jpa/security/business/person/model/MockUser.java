@@ -1,6 +1,6 @@
 package org.iglooproject.test.jpa.security.business.person.model;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import org.hibernate.search.annotations.Indexed;
 import org.iglooproject.jpa.security.business.user.model.GenericSimpleUser;

@@ -6,8 +6,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableSupplier2;

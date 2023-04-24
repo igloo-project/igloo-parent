@@ -2,8 +2,8 @@ package org.iglooproject.jpa.hibernate.ejb;
 
 import java.util.Map;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.spi.PersistenceUnitInfo;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.spi.PersistenceUnitInfo;
 
 import org.hibernate.Interceptor;
 import org.hibernate.boot.SessionFactoryBuilder;

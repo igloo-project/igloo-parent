@@ -63,7 +63,7 @@
 		
 		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
-			<artifactId>jersey-spring5</artifactId>
+			<artifactId>jersey-spring6</artifactId>
 			<exclusions>
 				<exclusion>
 					<!-- Contains an outdated version of org.jboss.logging.Logger that messes up with the classpath
@@ -133,8 +133,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

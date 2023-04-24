@@ -1,6 +1,6 @@
 package test.jpa.more.business;
 
-import javax.persistence.Query;
+import jakarta.persistence.Query;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;

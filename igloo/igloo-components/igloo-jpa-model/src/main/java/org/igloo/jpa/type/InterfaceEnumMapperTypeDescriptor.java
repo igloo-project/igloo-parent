@@ -3,14 +3,13 @@ package org.igloo.jpa.type;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import org.hibernate.type.descriptor.WrapperOptions;
-import org.hibernate.type.descriptor.java.AbstractTypeDescriptor;
+import org.hibernate.type.descriptor.java.AbstractJavaType;
 import org.iglooproject.jpa.business.generic.model.IMappableInterface;
 
-public class InterfaceEnumMapperTypeDescriptor<T extends IMappableInterface> extends AbstractTypeDescriptor<T> {
+public class InterfaceEnumMapperTypeDescriptor<T extends IMappableInterface> extends  AbstractJavaType<T> {
 
 	private static final long serialVersionUID = 3446155631478715197L;
 
@@ -31,21 +30,13 @@ public class InterfaceEnumMapperTypeDescriptor<T extends IMappableInterface> ext
 		mapping = Map.copyOf(builder);
 	}
 
-	@Override
-	public T fromString(String string) {
-		if (string == null) {
-			return null;
-		}
-		return Optional.ofNullable(mapping.get(string)).orElseThrow();
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public <X> X unwrap(T value, Class<X> type, WrapperOptions options) {
 		if (value == null) {
 			return null;
 		}
-		if (getJavaType().isAssignableFrom(type)) {
+		if (getJavaTypeClass().isAssignableFrom(type)) {
 			return (X) value;
 		}
 		if (String.class.isAssignableFrom(type)) {
@@ -60,10 +51,10 @@ public class InterfaceEnumMapperTypeDescriptor<T extends IMappableInterface> ext
 		if (value == null) {
 			return null;
 		}
-		if (String.class.isInstance(value)) {
+		if (value instanceof String) {
 			return fromString((String) value);
 		}
-		if (getJavaType().isInstance(value)) {
+		if (getJavaTypeClass().isInstance(value)) {
 			return (T) value;
 		}
 		throw unknownWrap(value.getClass());

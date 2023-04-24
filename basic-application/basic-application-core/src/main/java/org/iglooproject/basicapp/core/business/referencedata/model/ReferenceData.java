@@ -1,7 +1,7 @@
 package org.iglooproject.basicapp.core.business.referencedata.model;
 
-import javax.persistence.Embedded;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.MappedSuperclass;
 
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;

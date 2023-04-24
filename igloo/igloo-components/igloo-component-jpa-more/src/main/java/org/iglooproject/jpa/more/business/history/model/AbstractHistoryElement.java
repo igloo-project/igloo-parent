@@ -1,7 +1,7 @@
 package org.iglooproject.jpa.more.business.history.model;
 
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;

@@ -8,18 +8,15 @@ import org.hibernate.service.ServiceRegistry;
 import org.igloo.jpa.type.InterfaceEnumMapperType;
 import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
-import org.igloo.storage.model.hibernate.StorageHibernateConstants;
 
 public abstract class AbstractStorageTypeContributor implements TypeContributor {
 
 	@Override
 	public final void contribute(TypeContributions typeContributions, ServiceRegistry serviceRegistry) {
 		typeContributions.contributeType(new InterfaceEnumMapperType<>(
-				StorageHibernateConstants.TYPE_FICHIER_TYPE,
 				IFichierType.class,
 				getFichierTypeTypes()));
 		typeContributions.contributeType(new InterfaceEnumMapperType<>(
-				StorageHibernateConstants.TYPE_STORAGE_UNIT_TYPE,
 				IStorageUnitType.class,
 				getStorageUnitTypeTypes()));
 	}

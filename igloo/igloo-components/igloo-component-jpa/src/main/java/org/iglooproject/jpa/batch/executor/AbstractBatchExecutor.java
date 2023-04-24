@@ -1,14 +1,12 @@
 package org.iglooproject.jpa.batch.executor;
 
+import org.iglooproject.jpa.batch.runnable.Writeability;
+import org.iglooproject.jpa.business.generic.service.IEntityService;
+import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import org.iglooproject.jpa.batch.runnable.Writeability;
-import org.iglooproject.jpa.business.generic.service.IEntityService;
-import org.iglooproject.jpa.search.service.IHibernateSearchService;
-import org.iglooproject.jpa.util.EntityManagerUtils;
 
 public abstract class AbstractBatchExecutor<T extends AbstractBatchExecutor<T>> {
 	
@@ -17,9 +15,6 @@ public abstract class AbstractBatchExecutor<T extends AbstractBatchExecutor<T>> 
 	@Autowired
 	private PlatformTransactionManager transactionManager;
 
-	@Autowired
-	protected IHibernateSearchService hibernateSearchService;
-	
 	@Autowired
 	protected IEntityService entityService;
 	

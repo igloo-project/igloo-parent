@@ -23,8 +23,8 @@ import java.io.Serializable;
 import java.util.Locale;
 import java.util.function.Function;
 
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 
 import org.hibernate.Hibernate;
 import org.hibernate.search.annotations.Analyze;

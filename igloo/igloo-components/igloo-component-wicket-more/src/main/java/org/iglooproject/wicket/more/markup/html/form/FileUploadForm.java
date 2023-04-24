@@ -2,8 +2,8 @@ package org.iglooproject.wicket.more.markup.html.form;
 
 import java.util.Map;
 
-import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
-import org.apache.commons.fileupload.FileUploadException;
+import org.apache.wicket.commons.fileupload2.FileUploadException;
+import org.apache.wicket.commons.fileupload2.pub.FileUploadSizeException;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -38,9 +38,9 @@ public class FileUploadForm<T> extends Form<T> {
 	}
 	
 	public static void onFileUploadException(Form<?> form, FileUploadException e, Map<String, Object> model) {
-		if (e instanceof SizeLimitExceededException) {
+		if (e instanceof FileUploadSizeException) {
 			final String defaultValue = "Upload must be less than " + form.getMaxSize();
-			model.put("actualSize", Bytes.bytes(((SizeLimitExceededException)e).getActualSize()));
+			model.put("actualSize", Bytes.bytes(((FileUploadSizeException)e).getActualSize()));
 			String msg = form.getString(FileUploadForm.class.getSimpleName() + '.' + UPLOAD_TOO_LARGE_RESOURCE_KEY, Model.ofMap(model), defaultValue);
 			form.error(msg);
 		} else {

@@ -16,12 +16,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.logging.LogManager;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
 import org.assertj.core.matcher.AssertionMatcher;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.dialect.PostgreSQL10Dialect;
 import org.igloo.jpa.test.EntityManagerFactoryExtension;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.impl.StorageOperations;
@@ -47,6 +43,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import test.model.StorageUnitType;
 
 abstract class AbstractTest {
@@ -109,7 +107,6 @@ abstract class AbstractTest {
 				String host = Optional.ofNullable(System.getenv(CFG_DB_HOST)).orElse(DEFAULT_HOST);
 				String name = Optional.ofNullable(System.getenv(CFG_DB_NAME)).orElse(DEFAULT_NAME);
 				settings.addAll(List.of(
-						AvailableSettings.DIALECT, PostgreSQL10Dialect.class.getName(),
 						AvailableSettings.JPA_JDBC_DRIVER, Driver.class.getName(),
 						AvailableSettings.JPA_JDBC_USER, Optional.ofNullable(System.getenv(CFG_DB_NAME)).orElse(DEFAULT_USER),
 						AvailableSettings.DEFAULT_SCHEMA, Optional.ofNullable(System.getenv(CFG_DB_SCHEMA)).orElse(DEFAULT_USER),

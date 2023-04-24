@@ -3,26 +3,23 @@ package org.igloo.storage.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.persistence.Basic;
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
 import org.bindgen.Bindable;
-import org.hibernate.annotations.Type;
 import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
-import org.igloo.storage.model.hibernate.StorageHibernateConstants;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.LongEntityReference;
 
 import de.danielbechler.diff.introspection.ObjectDiffEqualsOnlyType;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Cacheable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 /**
  * Entity that represents a stored file. {@link Fichier} are dispatched in {@link StorageUnit}.
@@ -55,7 +52,6 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	/**
 	 * Used to organize file storage. Cannot be changed after initial attribution.
 	 */
-	@Type(type = StorageHibernateConstants.TYPE_FICHIER_TYPE)
 	@Basic(optional = false)
 	@Column(nullable = false)
 	private IFichierType type;

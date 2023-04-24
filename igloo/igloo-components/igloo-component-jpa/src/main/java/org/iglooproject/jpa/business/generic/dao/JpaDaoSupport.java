@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceException;
 
 import org.hibernate.Session;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;

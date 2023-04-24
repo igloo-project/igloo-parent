@@ -28,12 +28,6 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
-			<optional>true</optional>
-		</dependency>
-		
-		<dependency>
 			<groupId>com.github.ben-manes.caffeine</groupId>
 			<artifactId>caffeine</artifactId>
 			<optional>true</optional>
@@ -41,6 +35,11 @@
 		<dependency>
 			<groupId>com.github.ben-manes.caffeine</groupId>
 			<artifactId>jcache</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
 			<optional>true</optional>
 		</dependency>
 		
@@ -128,11 +127,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
-				<configuration>
-					<classpathDependencyExcludes>
-						<classpathDependencyExclude>net.sf.ehcache:ehcache</classpathDependencyExclude>
-					</classpathDependencyExcludes>
-				</configuration>
 				<executions>
 					<execution>
 						<goals>
@@ -157,6 +151,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-commons</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-bindgen</artifactId>
 				<type>pom</type>
 				<scope>import</scope>
 				<version>${igloo-maven.version}</version>

@@ -1,16 +1,13 @@
 package org.iglooproject.basicapp.core.business.referencedata.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
-
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Indexed;
-import org.iglooproject.basicapp.core.business.common.model.PostalCode;
 import org.iglooproject.basicapp.core.business.common.model.embeddable.LocalizedText;
+
+import jakarta.persistence.Cacheable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Bindable
@@ -23,8 +20,9 @@ public class City extends ReferenceData<City> {
 
 	public static final String LABEL_AUTOCOMPLETE = "labelAutocomplete";
 
-	@Basic(optional = false)
-	private PostalCode postalCode;
+	//TODO: igloo-boot
+//	@Basic(optional = false)
+//	private PostalCode postalCode;
 
 	public City() {
 	}
@@ -33,18 +31,18 @@ public class City extends ReferenceData<City> {
 		super(label);
 	}
 
-	public PostalCode getPostalCode() {
-		return postalCode;
-	}
-
-	public void setPostalCode(PostalCode postalCode) {
-		this.postalCode = postalCode;
-	}
-
-	@Override
-	@Transient
-	public String getCode() {
-		return postalCode == null ? null : postalCode.getValue();
-	}
+//	public PostalCode getPostalCode() {
+//		return postalCode;
+//	}
+//
+//	public void setPostalCode(PostalCode postalCode) {
+//		this.postalCode = postalCode;
+//	}
+//
+//	@Override
+//	@Transient
+//	public String getCode() {
+//		return postalCode == null ? null : postalCode.getValue();
+//	}
 
 }

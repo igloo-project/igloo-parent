@@ -1,6 +1,6 @@
 package org.iglooproject.jpa.more.util.transaction.model;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
 

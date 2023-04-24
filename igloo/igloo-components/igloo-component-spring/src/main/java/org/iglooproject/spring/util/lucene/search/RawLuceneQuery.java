@@ -1,5 +1,7 @@
 package org.iglooproject.spring.util.lucene.search;
 
+import java.util.Objects;
+
 import org.apache.lucene.search.Query;
 
 public final class RawLuceneQuery extends Query {
@@ -17,6 +19,27 @@ public final class RawLuceneQuery extends Query {
 	@Override
 	public String toString(String field) {
 		return query;
+	}
+
+	@Override
+	public boolean equals(Object arg0) {
+		if (arg0 == null) {
+			return false;
+		}
+		if (arg0 instanceof RawLuceneQuery otherQuery) {
+			return Objects.equals(query, otherQuery.query);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		if (query == null) {
+			return 0;
+		} else {
+			return query.hashCode();
+		}
 	}
 	
 }

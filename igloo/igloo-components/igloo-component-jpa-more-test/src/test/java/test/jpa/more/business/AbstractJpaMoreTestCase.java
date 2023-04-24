@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 import test.jpa.more.business.entity.service.ITestEntityService;
-import test.jpa.more.config.spring.JpaMoreTestConfig;
 
-@ContextConfiguration(classes = JpaMoreTestConfig.class)
+@ContextConfiguration(classes = {})
 public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
 
 	@Autowired

@@ -1,9 +1,9 @@
 package org.iglooproject.jpa.more.business.referencedata.model;
 
-import javax.persistence.Basic;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Basic;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;

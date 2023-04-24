@@ -3,7 +3,7 @@ package org.igloo.hibernate.bootstrap;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 
 import org.hibernate.jpa.boot.spi.Bootstrap;
 

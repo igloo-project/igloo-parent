@@ -11,12 +11,7 @@ import org.igloo.spring.autoconfigure.applicationconfig.IglooApplicationConfigAu
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap4AutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooBootstrap5AutoConfiguration;
 import org.igloo.spring.autoconfigure.bootstrap.IglooWicketConsoleAutoConfiguration;
-import org.igloo.spring.autoconfigure.flyway.IglooFlywayAutoConfiguration;
-import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
-import org.igloo.spring.autoconfigure.jpa.IglooJpaMoreAutoConfiguration;
 import org.igloo.spring.autoconfigure.property.IglooPropertyAutoConfiguration;
-import org.igloo.spring.autoconfigure.search.IglooHibernateSearchAutoConfiguration;
-import org.igloo.spring.autoconfigure.security.IglooJpaSecurityAutoConfiguration;
 import org.igloo.spring.autoconfigure.task.IglooTaskManagementAutoConfiguration;
 import org.igloo.spring.autoconfigure.wicket.IglooWicketAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportSelector;
@@ -34,12 +29,7 @@ import org.springframework.context.annotation.Import;
  * Properties allow to enable/disable autoconfigurations:
  * 
  * <ul>
- * <li>igloo-ac.jpa.disabled: {@link IglooJpaAutoConfiguration}</li>
- * <li>igloo-ac.jpa-more.disabled: {@link IglooJpaMoreAutoConfiguration}</li>
- * <li>igloo-ac.flyway.disabled: {@link IglooFlywayAutoConfiguration}</li>
- * <li>igloo-ac.jpa-security.disabled: {@link IglooJpaSecurityAutoConfiguration}</li>
  * <li>igloo-ac.tasks.disabled: {@link IglooTaskManagementAutoConfiguration}</li>
- * <li>igloo-ac.hsearch.disabled: {@link IglooHibernateSearchAutoConfiguration}</li>
  * <li>igloo-ac.property.disabled: {@link IglooPropertyAutoConfiguration}</li>
  * <li>igloo-ac.application.disabled: {@link IglooApplicationConfigAutoConfiguration}</li>
  * <li>igloo-ac.bootstrap4.disabled: {@link IglooBootstrap4AutoConfiguration}</li>

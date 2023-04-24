@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.AjaxRequestTarget.IJavaScriptResponse;
 import org.apache.wicket.ajax.AjaxRequestTarget.IListener;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -111,7 +110,7 @@ public class UpdateOnChangeAjaxEventBehavior extends Behavior {
 		
 		target.addListener(new AjaxRequestTarget.IListener() {
 			@Override
-			public void onAfterRespond(Map<String, Component> map, IJavaScriptResponse response) {
+			public void onAfterRespond(Map<String, Component> map, AjaxRequestTarget response) {
 				formComponent.clearInput();
 			}
 		});

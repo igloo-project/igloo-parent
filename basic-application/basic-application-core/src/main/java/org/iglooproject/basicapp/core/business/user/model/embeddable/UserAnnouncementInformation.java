@@ -3,10 +3,10 @@ package org.iglooproject.basicapp.core.business.user.model.embeddable;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Basic;
-import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 import org.bindgen.Bindable;
 import org.iglooproject.commons.util.CloneUtils;

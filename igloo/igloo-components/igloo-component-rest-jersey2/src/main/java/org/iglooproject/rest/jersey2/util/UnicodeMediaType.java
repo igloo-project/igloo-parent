@@ -3,7 +3,7 @@ package org.iglooproject.rest.jersey2.util;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 public final class UnicodeMediaType {
 	

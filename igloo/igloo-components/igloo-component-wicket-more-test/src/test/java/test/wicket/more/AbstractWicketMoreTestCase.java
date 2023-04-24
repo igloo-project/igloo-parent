@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 import test.wicket.more.business.person.service.IPersonService;
-import test.wicket.more.config.spring.SimpleWicketMoreTestWebappConfig;
 
-@ContextConfiguration(classes = SimpleWicketMoreTestWebappConfig.class)
+@ContextConfiguration(classes = {})
 public abstract class AbstractWicketMoreTestCase extends AbstractWicketTestCase<WicketMoreWicketTester> {
 	
 	@Autowired

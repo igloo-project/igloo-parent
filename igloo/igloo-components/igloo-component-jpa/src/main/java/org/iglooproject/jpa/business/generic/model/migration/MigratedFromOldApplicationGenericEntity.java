@@ -2,8 +2,8 @@ package org.iglooproject.jpa.business.generic.model.migration;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 
 import org.iglooproject.jpa.business.generic.model.PredefinedIdGenericEntity;
 

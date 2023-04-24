@@ -5,22 +5,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
 import org.bindgen.Bindable;
-import org.hibernate.annotations.Type;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageUnitCheckType;
 import org.igloo.storage.model.atomic.StorageUnitStatus;
-import org.igloo.storage.model.hibernate.StorageHibernateConstants;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 /**
  * A {@link StorageUnit} is a physical device that can store files. {@link StorageUnit} implementation must provide
@@ -45,7 +43,6 @@ public class StorageUnit extends GenericEntity<Long, StorageUnit> {
 
 	@Column(nullable = false, updatable = false)
 	@Basic(optional = false)
-	@Type(type = StorageHibernateConstants.TYPE_STORAGE_UNIT_TYPE)
 	private IStorageUnitType type;
 
 	@Basic(optional = false)

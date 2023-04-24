@@ -13,21 +13,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.MapKey;
-import javax.persistence.MapKeyEnumerated;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.Attribute;
-import javax.persistence.metamodel.Attribute.PersistentAttributeType;
-import javax.persistence.metamodel.EntityType;
-import javax.persistence.metamodel.MapAttribute;
-import javax.persistence.metamodel.PluralAttribute;
-import javax.persistence.metamodel.SingularAttribute;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Description;
@@ -35,10 +20,6 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hibernate.internal.SessionImpl;
 import org.hibernate.metamodel.model.domain.internal.EmbeddableTypeImpl;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.FullTextQuery;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
 import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
@@ -46,7 +27,6 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.referencedata.service.IGenericReferenceDataSubService;
-import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
@@ -57,6 +37,21 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.google.common.collect.Lists;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.MapKey;
+import jakarta.persistence.MapKeyEnumerated;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.Attribute.PersistentAttributeType;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.MapAttribute;
+import jakarta.persistence.metamodel.PluralAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 
 /**
  * This class contains junit4/junit5 common code.
@@ -71,9 +66,6 @@ abstract class AbstractCommonTestCase {
 	
 	@Autowired
 	private EntityManagerUtils entityManagerUtils;
-	
-	@Autowired
-	private IHibernateSearchService hibernateSearchService;
 	
 	protected abstract void cleanAll() throws ServiceException, SecurityServiceException;
 	
@@ -100,25 +92,6 @@ abstract class AbstractCommonTestCase {
 		cleanAll();
 		checkEmptyDatabase();
 		clearCaches();
-	}
-	
-	/**
-	 * This method serves only when the test threads are stopped abruptly (not for the nominal case)
-	 * The purpose is to clean Lucene indexes by reindexing an empty database
-	 * It takes around 10 milliseconds if the database is empty (except the first time, it can take 200 millisecond)
-	 * otherwise it takes 500 milliseconds wheter there is 1000 or 10 000 objets to reindex
-	 */
-	protected void emptyIndexes() throws ServiceException {
-		Set<Class<?>> clazzes = hibernateSearchService.getIndexedRootEntities();
-		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
-		for (Class<?> clazz : clazzes) {
-			QueryBuilder builder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(clazz).get();
-			FullTextQuery query = fullTextEntityManager.createFullTextQuery(builder.all().createQuery(), clazz);
-			if (query.getResultSize() > 0) {
-				hibernateSearchService.reindexAll();
-				break;
-			}
-		}
 	}
 	
 	protected final <T extends GenericEntity<?, ?>> Matcher<T> isAttachedToSession() {

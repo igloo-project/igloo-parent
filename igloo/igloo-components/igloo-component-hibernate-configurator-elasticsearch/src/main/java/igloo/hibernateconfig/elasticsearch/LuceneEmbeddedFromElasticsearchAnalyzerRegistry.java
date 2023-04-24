@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.lucene.analysis.Analyzer;

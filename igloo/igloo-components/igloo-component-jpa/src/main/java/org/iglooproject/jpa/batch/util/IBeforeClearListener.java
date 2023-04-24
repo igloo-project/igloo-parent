@@ -1,6 +1,6 @@
 package org.iglooproject.jpa.batch.util;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 /**
  * A listener interface for classes that want to be notified whenever a clear is performed on the EntityManager.

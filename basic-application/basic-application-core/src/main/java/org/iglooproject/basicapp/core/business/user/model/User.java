@@ -1,11 +1,11 @@
 package org.iglooproject.basicapp.core.business.user.model;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Transient;
+import jakarta.persistence.Cacheable;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Transient;
 
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Indexed;

@@ -2,8 +2,8 @@ package org.iglooproject.jpa.business.generic.model;
 
 import java.io.Serializable;
 
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 
 /**
  * This class allows us to manually set the id.

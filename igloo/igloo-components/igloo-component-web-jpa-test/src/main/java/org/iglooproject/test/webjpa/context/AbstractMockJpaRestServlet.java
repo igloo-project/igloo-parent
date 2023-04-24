@@ -2,7 +2,7 @@ package org.iglooproject.test.webjpa.context;
 
 import java.util.Collection;
 
-import javax.ws.rs.core.Application;
+import jakarta.ws.rs.core.Application;
 
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.iglooproject.test.web.context.AbstractMockRestServlet;

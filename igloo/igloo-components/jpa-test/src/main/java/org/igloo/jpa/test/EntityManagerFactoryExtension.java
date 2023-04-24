@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 
 import org.igloo.hibernate.bootstrap.EntityManagerFactoryHelper;
 import org.junit.jupiter.api.extension.ExtensionContext;

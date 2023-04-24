@@ -3,11 +3,11 @@ package org.iglooproject.jpa.security.business.authority.model;
 import java.util.Collections;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 import org.bindgen.Bindable;
 import org.iglooproject.commons.util.collections.CollectionUtils;

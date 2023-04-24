@@ -13,7 +13,6 @@ import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
 import org.iglooproject.test.jpa.security.business.person.service.IMockUserGroupService;
 import org.iglooproject.test.jpa.security.business.person.service.IMockUserService;
-import org.iglooproject.test.jpa.security.config.spring.JpaSecurityTestConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 
-@ContextConfiguration(classes = JpaSecurityTestConfig.class)
+@ContextConfiguration(classes = {})
 public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
 
 	public static final String DEFAULT_PASSWORD = "test";

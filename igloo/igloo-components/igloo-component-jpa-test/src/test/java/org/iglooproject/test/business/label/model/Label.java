@@ -1,8 +1,8 @@
 package org.iglooproject.test.business.label.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 

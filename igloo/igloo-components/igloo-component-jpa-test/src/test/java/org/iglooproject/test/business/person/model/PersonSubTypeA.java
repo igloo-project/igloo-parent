@@ -1,7 +1,7 @@
 package org.iglooproject.test.business.person.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 
 @Entity
 public class PersonSubTypeA extends Person {

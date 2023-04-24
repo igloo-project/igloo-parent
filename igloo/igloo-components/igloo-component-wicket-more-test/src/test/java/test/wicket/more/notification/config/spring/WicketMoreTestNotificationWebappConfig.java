@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
-import test.wicket.more.config.spring.WicketMoreTestCoreCommonConfig;
 import test.wicket.more.notification.application.WicketMoreTestNotificationApplication;
 
 /**
@@ -21,7 +20,6 @@ import test.wicket.more.notification.application.WicketMoreTestNotificationAppli
 	encoding = "UTF-8"
 )
 @Import({
-	WicketMoreTestCoreCommonConfig.class,
 	NotificationTestConfig.class
 })
 public class WicketMoreTestNotificationWebappConfig extends AbstractWebappConfig {

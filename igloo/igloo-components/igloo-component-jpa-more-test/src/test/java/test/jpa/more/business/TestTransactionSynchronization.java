@@ -13,7 +13,6 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
 import org.iglooproject.jpa.more.util.transaction.service.TransactionSynchronizationTaskManagerServiceImpl;
-import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -39,9 +38,6 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 
 	@Autowired
 	private ITestEntityService testEntityService;
-	
-	@Autowired
-	private IHibernateSearchService hibernateSearchService;
 	
 	@Autowired
 	private BatchExecutorCreator batchExecutorCreator;
@@ -225,7 +221,8 @@ class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 		testEntityService.create(entity2);
 		final Long entityId2 = entity2.getId();
 		
-		hibernateSearchService.flushToIndexes();
+		//TODO igloo-boot
+		//hibernateSearchService.flushToIndexes();
 		
 		final Collection<TestUseEntityBeforeCommitOrClearTask> tasks = Lists.newArrayList();
 		

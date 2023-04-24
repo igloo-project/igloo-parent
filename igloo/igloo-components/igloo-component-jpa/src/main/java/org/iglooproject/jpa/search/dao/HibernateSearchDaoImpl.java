@@ -1,35 +1,17 @@
 package org.iglooproject.jpa.search.dao;
 
-import static org.iglooproject.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE;
-import static org.iglooproject.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
-
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.apache.lucene.analysis.Analyzer;
-import org.hibernate.CacheMode;
-import org.hibernate.search.MassIndexer;
+import org.hibernate.Hibernate;
 import org.hibernate.search.SearchFactory;
-import org.hibernate.search.analyzer.impl.LuceneAnalyzerReference;
 import org.hibernate.search.batchindexing.MassIndexerProgressMonitor;
-import org.hibernate.search.batchindexing.impl.MassIndexerImpl;
-import org.hibernate.search.engine.integration.impl.ExtendedSearchIntegrator;
-import org.hibernate.search.engine.integration.impl.SearchIntegration;
-import org.hibernate.search.hcore.util.impl.HibernateHelper;
-import org.hibernate.search.indexes.spi.LuceneEmbeddedIndexManagerType;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.Search;
-import org.hibernate.search.spi.IndexedTypeIdentifier;
-import org.hibernate.search.spi.IndexedTypeSet;
-import org.hibernate.search.spi.SearchIntegrator;
-import org.hibernate.search.spi.impl.IndexedTypeSets;
-import org.hibernate.search.spi.impl.PojoIndexedTypeIdentifier;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.property.service.IPropertyService;
@@ -38,8 +20,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import igloo.hibernateconfig.api.ClientSideAnalyzerProvider;
-import igloo.hibernateconfig.api.IJpaPropertiesProvider;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Repository("hibernateSearchDao")
 public class HibernateSearchDaoImpl implements IHibernateSearchDao {
@@ -49,14 +31,11 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	@Autowired
 	private IPropertyService propertyService;
 	
-	@Autowired
-	private IJpaPropertiesProvider jpaPropertiesProvider;
-	
 	/**
 	 * With Elasticsearch used as backend, provides client-side Lucene analyzers. Null otherwise.
 	 */
-	@Autowired(required = false)
-	private ClientSideAnalyzerProvider clientSideAnalyzerProvider;
+//	@Autowired(required = false)
+//	private ClientSideAnalyzerProvider clientSideAnalyzerProvider;
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -66,45 +45,49 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	
 	@Override
 	public Analyzer getAnalyzer(String analyzerName) {
-		if (jpaPropertiesProvider.isHibernateSearchElasticSearchEnabled()) {
-			return clientSideAnalyzerProvider.getAnalyzer(analyzerName);
-		} else {
-			ExtendedSearchIntegrator searchIntegrator = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(ExtendedSearchIntegrator.class);
-			SearchIntegration integration = searchIntegrator.getIntegration(LuceneEmbeddedIndexManagerType.INSTANCE);
-			return integration.getAnalyzerRegistry().getAnalyzerReference(analyzerName).unwrap(LuceneAnalyzerReference.class).getAnalyzer();
-		}
+		//TODO: igloo-boot
+		return null;
+//		if (jpaPropertiesProvider.isHibernateSearchElasticSearchEnabled()) {
+//			return clientSideAnalyzerProvider.getAnalyzer(analyzerName);
+//		} else {
+//			ExtendedSearchIntegrator searchIntegrator = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(ExtendedSearchIntegrator.class);
+//			SearchIntegration integration = searchIntegrator.getIntegration(LuceneEmbeddedIndexManagerType.INSTANCE);
+//			return integration.getAnalyzerRegistry().getAnalyzerReference(analyzerName).unwrap(LuceneAnalyzerReference.class).getAnalyzer();
+//		}
 	}
 	
 	@Override
 	public Analyzer getAnalyzer(Class<?> entityType) {
-		SearchFactory searchFactory = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory();
-		ExtendedSearchIntegrator searchIntegrator = searchFactory.unwrap(ExtendedSearchIntegrator.class);
-		IndexedTypeIdentifier indexedType = getIndexBoundType(entityType, searchIntegrator);
-		
-		if (jpaPropertiesProvider.isHibernateSearchElasticSearchEnabled()) {
-			return clientSideAnalyzerProvider.getAnalyzer(searchIntegrator, indexedType);
-		} else {
-			return Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(SearchIntegrator.class).getAnalyzer(indexedType);
-		}
+		//TODO: igloo-boot
+		return null;
+//		SearchFactory searchFactory = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory();
+//		ExtendedSearchIntegrator searchIntegrator = searchFactory.unwrap(ExtendedSearchIntegrator.class);
+//		IndexedTypeIdentifier indexedType = getIndexBoundType(entityType, searchIntegrator);
+//		
+//		if (jpaPropertiesProvider.isHibernateSearchElasticSearchEnabled()) {
+//			return clientSideAnalyzerProvider.getAnalyzer(searchIntegrator, indexedType);
+//		} else {
+//			return Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(SearchIntegrator.class).getAnalyzer(indexedType);
+//		}
 	}
 
 	/**
 	 * Extracted from ConnectedQueryContextBuilder
 	 */
-	private IndexedTypeIdentifier getIndexBoundType(Class<?> entityType, ExtendedSearchIntegrator factory) {
-		IndexedTypeIdentifier realtype = new PojoIndexedTypeIdentifier( entityType );
-		if ( factory.getIndexBinding( realtype ) != null ) {
-			return realtype;
-		}
-
-		IndexedTypeSet indexedSubTypes = factory.getIndexedTypesPolymorphic( realtype.asTypeSet() );
-
-		if ( !indexedSubTypes.isEmpty() ) {
-			return indexedSubTypes.iterator().next();
-		}
-
-		return null;
-	}
+//	private IndexedTypeIdentifier getIndexBoundType(Class<?> entityType, ExtendedSearchIntegrator factory) {
+//		IndexedTypeIdentifier realtype = new PojoIndexedTypeIdentifier( entityType );
+//		if ( factory.getIndexBinding( realtype ) != null ) {
+//			return realtype;
+//		}
+//
+//		IndexedTypeSet indexedSubTypes = factory.getIndexedTypesPolymorphic( realtype.asTypeSet() );
+//
+//		if ( !indexedSubTypes.isEmpty() ) {
+//			return indexedSubTypes.iterator().next();
+//		}
+//
+//		return null;
+//	}
 
 	@Override
 	public void reindexAll() throws ServiceException {
@@ -128,28 +111,30 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	
 	protected void reindexClasses(FullTextEntityManager fullTextEntityManager, Set<Class<?>> entityClasses)
 			throws InterruptedException {
-		int batchSize = propertyService.get(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE);
-		int loadThreads = propertyService.get(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS);
-		
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("Targets for indexing job: {}", entityClasses);
-		}
-		
-		for (Class<?> clazz : entityClasses) {
-			ProgressMonitor progressMonitor = new ProgressMonitor();
-			Thread t = new Thread(progressMonitor);
-			LOGGER.info(String.format("Reindexing %1$s.", clazz));
-			t.start();
-			MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
-			indexer.batchSizeToLoadObjects(batchSize)
-					.threadsToLoadObjects(loadThreads)
-					.cacheMode(CacheMode.NORMAL)
-					.progressMonitor(progressMonitor)
-					.startAndWait();
-			progressMonitor.stop();
-			t.interrupt();
-			LOGGER.info(String.format("Reindexing %1$s done.", clazz));
-		}
+		//TODO: igloo-boot
+		return;
+//		int batchSize = propertyService.get(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE);
+//		int loadThreads = propertyService.get(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS);
+//		
+//		if (LOGGER.isInfoEnabled()) {
+//			LOGGER.info("Targets for indexing job: {}", entityClasses);
+//		}
+//		
+//		for (Class<?> clazz : entityClasses) {
+//			ProgressMonitor progressMonitor = new ProgressMonitor();
+//			Thread t = new Thread(progressMonitor);
+//			LOGGER.info(String.format("Reindexing %1$s.", clazz));
+//			t.start();
+//			MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
+//			indexer.batchSizeToLoadObjects(batchSize)
+//					.threadsToLoadObjects(loadThreads)
+//					.cacheMode(CacheMode.NORMAL)
+//					.progressMonitor(progressMonitor)
+//					.startAndWait();
+//			progressMonitor.stop();
+//			t.interrupt();
+//			LOGGER.info(String.format("Reindexing %1$s done.", clazz));
+//		}
 	}
 
 	@Override
@@ -172,7 +157,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(E entity) {
 		if (entity != null) {
 			FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-			fullTextEntityManager.index(HibernateHelper.unproxy(entity));
+			fullTextEntityManager.index(Hibernate.unproxy(entity));
 		}
 	}
 	
@@ -180,42 +165,43 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	 * @see MassIndexerImpl#toRootEntities
 	 */
 	protected Set<Class<?>> getIndexedRootEntities(SearchFactory searchFactory, Class<?>... selection) {
-		ExtendedSearchIntegrator searchIntegrator = searchFactory.unwrap(ExtendedSearchIntegrator.class);
-		
-		Set<Class<?>> entities = new HashSet<>();
-		
-		// first build the "entities" set containing all indexed subtypes of "selection".
-		for (Class<?> entityType : selection) {
-			IndexedTypeSet targetedClasses = searchIntegrator.getIndexedTypesPolymorphic(IndexedTypeSets.fromClass(entityType));
-			if (targetedClasses.isEmpty()) {
-				String msg = entityType.getName() + " is not an indexed entity or a subclass of an indexed entity";
-				throw new IllegalArgumentException(msg);
-			}
-			entities.addAll(targetedClasses.toPojosSet());
-		}
-		
-		Set<Class<?>> cleaned = new HashSet<>();
-		Set<Class<?>> toRemove = new HashSet<>();
-		
-		//now remove all repeated types to avoid duplicate loading by polymorphic query loading
-		for (Class<?> type : entities) {
-			boolean typeIsOk = true;
-			for (Class<?> existing : cleaned) {
-				if (existing.isAssignableFrom(type)) {
-					typeIsOk = false;
-					break;
-				}
-				if (type.isAssignableFrom(existing)) {
-					toRemove.add(existing);
-				}
-			}
-			if (typeIsOk) {
-				cleaned.add(type);
-			}
-		}
-		cleaned.removeAll(toRemove);
-		
-		return cleaned;
+		return Collections.emptySet();
+//		ExtendedSearchIntegrator searchIntegrator = searchFactory.unwrap(ExtendedSearchIntegrator.class);
+//		
+//		Set<Class<?>> entities = new HashSet<>();
+//		
+//		// first build the "entities" set containing all indexed subtypes of "selection".
+//		for (Class<?> entityType : selection) {
+//			IndexedTypeSet targetedClasses = searchIntegrator.getIndexedTypesPolymorphic(IndexedTypeSets.fromClass(entityType));
+//			if (targetedClasses.isEmpty()) {
+//				String msg = entityType.getName() + " is not an indexed entity or a subclass of an indexed entity";
+//				throw new IllegalArgumentException(msg);
+//			}
+//			entities.addAll(targetedClasses.toPojosSet());
+//		}
+//		
+//		Set<Class<?>> cleaned = new HashSet<>();
+//		Set<Class<?>> toRemove = new HashSet<>();
+//		
+//		//now remove all repeated types to avoid duplicate loading by polymorphic query loading
+//		for (Class<?> type : entities) {
+//			boolean typeIsOk = true;
+//			for (Class<?> existing : cleaned) {
+//				if (existing.isAssignableFrom(type)) {
+//					typeIsOk = false;
+//					break;
+//				}
+//				if (type.isAssignableFrom(existing)) {
+//					toRemove.add(existing);
+//				}
+//			}
+//			if (typeIsOk) {
+//				cleaned.add(type);
+//			}
+//		}
+//		cleaned.removeAll(toRemove);
+//		
+//		return cleaned;
 	}
 	
 	protected EntityManager getEntityManager() {

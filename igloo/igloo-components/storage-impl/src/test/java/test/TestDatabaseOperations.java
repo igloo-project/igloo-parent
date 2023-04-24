@@ -28,12 +28,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceException;
-import javax.persistence.Tuple;
-
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Assumptions;
 import org.hibernate.Session;
@@ -63,6 +57,11 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import com.google.common.base.Strings;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.PersistenceException;
+import jakarta.persistence.Tuple;
 import test.model.FichierType1;
 import test.model.FichierType2;
 import test.model.StorageUnitType;

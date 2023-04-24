@@ -1,6 +1,6 @@
 package org.iglooproject.jpa.business.generic.model;
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
 
 import org.bindgen.Bindable;
 

@@ -2,21 +2,16 @@ package org.iglooproject.jpa.more.business.history.model.embeddable;
 
 import java.io.Serializable;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Basic;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bindgen.Bindable;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.FieldBridge;
-
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
-import org.iglooproject.jpa.search.bridge.NullEncodingGenericEntityReferenceFieldBridge;
+
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 
 @Embeddable
 @Bindable
@@ -40,7 +35,6 @@ public class HistoryValue implements Serializable {
 	private String serialized;
 	
 	@Embedded
-	@Field(name = REFERENCE, bridge = @FieldBridge(impl = NullEncodingGenericEntityReferenceFieldBridge.class), analyze = Analyze.NO)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryEntityReference reference;
 

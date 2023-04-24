@@ -15,16 +15,13 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.jpa.security.business.user.service.IGenericUserService;
-import org.iglooproject.jpa.security.config.spring.DefaultJpaSecurityConfig;
 import org.iglooproject.jpa.security.model.NamedPermission;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.model.threadsafe.SessionThreadSafeGenericEntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.intercept.RunAsUserToken;
 import org.springframework.security.acls.model.Permission;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -32,7 +29,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
@@ -315,9 +311,6 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 		localeModel.detach();
 	}
 
-	@SpringBean
-	private DefaultJpaSecurityConfig defaultJpaSecurityConfig;
-
 	@SpringBean(name = "userDetailsService")
 	private UserDetailsService userDetailsService;
 
@@ -338,30 +331,8 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	 * @see AbstractCoreSession#authenticate(String, String)
 	 */
 	public void signInAs(String username) throws UsernameNotFoundException {
-		// on charge l'utilisateur
-		// on le passe dans une méthode surchargeable -> implémentation par défaut à faire
-		// Sitra -> revoir l'implémentation par défaut
-		if (!hasSignInAsPermissions(getUser(), userService.getByUsername(username))) {
-			throw new SecurityException("L'utilisateur n'a pas les permissions nécessaires");
-		}
-		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-		RunAsUserToken token = new RunAsUserToken(defaultJpaSecurityConfig.getRunAsKey(),
-				userDetails, "runAs", userDetails.getAuthorities(), null);
-		
-		// On garde l'authentification de l'utilisateur pour pouvoir lui proposer de se reconnecter.
-		Authentication previousAuthentication = SecurityContextHolder.getContext().getAuthentication();
-		if (!(previousAuthentication instanceof AnonymousAuthenticationToken)) {
-			originalAuthentication = previousAuthentication;
-		}
-		
-		clearUserAuthentication();
-		signIn(false);
-		
-		Authentication authentication = authenticationManager.authenticate(token);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		doInitializeSession();
-		bind();
-		signIn(true);
+		//TODO igloo-boot
+		throw new IllegalStateException("igloo-boot");
 	}
 
 	public void signInAsMe() throws BadCredentialsException, SecurityException {

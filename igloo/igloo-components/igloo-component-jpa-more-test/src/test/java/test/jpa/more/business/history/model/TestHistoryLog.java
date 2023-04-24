@@ -2,8 +2,8 @@ package test.jpa.more.business.history.model;
 
 import java.util.Date;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
+import jakarta.persistence.Cacheable;
+import jakarta.persistence.Entity;
 
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Indexed;

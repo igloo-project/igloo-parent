@@ -3,7 +3,6 @@ package igloo.cache.monitor;
 import org.bindgen.Bindable;
 import org.springframework.cache.Cache;
 import org.springframework.cache.caffeine.CaffeineCache;
-import org.springframework.cache.ehcache.EhCacheCache;
 import org.springframework.cache.jcache.JCacheCache;
 
 /**
@@ -33,9 +32,6 @@ public interface ICacheWrapper {
 		} else if (cache instanceof CaffeineCache) {
 			// caffeine cache
 			return new igloo.cache.monitor.CaffeineCacheWrapper(cache.getName(), ((CaffeineCache) cache).getNativeCache());
-		} else if (cache instanceof EhCacheCache) {
-			// ehcache 2 cache
-			return new igloo.cache.monitor.EhCache2CacheWrapper((EhCacheCache) cache);
 		} else {
 			throw new IllegalStateException(String.format("Not supported type %s", cache.getClass().getName()));
 		}

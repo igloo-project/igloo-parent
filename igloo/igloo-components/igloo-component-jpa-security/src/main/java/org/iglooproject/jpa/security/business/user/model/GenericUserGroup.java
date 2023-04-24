@@ -6,25 +6,19 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.SortedSet;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OrderBy;
-
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.SortComparator;
-import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
+import org.hibernate.type.descriptor.java.StringJavaType;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
@@ -38,6 +32,12 @@ import com.querydsl.core.annotations.QueryType;
 
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import igloo.hibernateconfig.api.HibernateSearchNormalizer;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OrderBy;
 
 @MappedSuperclass
 @Bindable
@@ -83,7 +83,7 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 	private Set<Authority> authorities = new LinkedHashSet<>();
 
 	@Column
-	@Type(type = "text")	
+	@JavaType(StringJavaType.class)	
 	private String description;
 
 	@Column(nullable = false)

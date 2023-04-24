@@ -1,26 +1,20 @@
 package org.iglooproject.jpa.more.business.parameter.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-import org.apache.lucene.analysis.core.KeywordTokenizerFactory;
 import org.bindgen.Bindable;
+import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.Type;
-import org.hibernate.search.annotations.AnalyzerDef;
-import org.hibernate.search.annotations.TokenizerDef;
+import org.hibernate.type.descriptor.java.StringJavaType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 import com.google.common.base.MoreObjects.ToStringHelper;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+
 @Entity
 @Bindable
-//Needed to trigger LuceneEmbeddedIndexManagerType.INSTANCE for registry
-@AnalyzerDef(name = "FakeAnalyzer",
-	tokenizer = @TokenizerDef(factory = KeywordTokenizerFactory.class)
-)
 public class Parameter extends GenericEntity<Long, Parameter> {
 	
 	private static final long serialVersionUID = 4739408616523513971L;
@@ -34,7 +28,7 @@ public class Parameter extends GenericEntity<Long, Parameter> {
 	private String name;
 
 	@Column
-	@Type(type = "text")
+	@JavaType(StringJavaType.class)
 	private String stringValue;
 	
 	public Parameter() {

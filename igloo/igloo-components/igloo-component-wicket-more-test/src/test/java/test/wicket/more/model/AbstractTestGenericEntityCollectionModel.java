@@ -7,8 +7,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.Collection;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableSupplier2;

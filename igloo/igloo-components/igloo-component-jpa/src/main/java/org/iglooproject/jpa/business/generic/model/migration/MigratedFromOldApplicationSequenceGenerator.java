@@ -23,7 +23,7 @@ public class MigratedFromOldApplicationSequenceGenerator extends PredefinedIdSeq
 	public static final String CLASS_NAME = "org.iglooproject.jpa.business.generic.model.migration.MigratedFromOldApplicationSequenceGenerator";
 	
 	@Override
-	public Serializable generate(SharedSessionContractImplementor session, Object obj) {
+	public Object generate(SharedSessionContractImplementor session, Object obj) {
 		if (obj instanceof IMigratedFromOldApplicationEntity) {
 			IMigratedFromOldApplicationEntity<?> migratedEntity = (IMigratedFromOldApplicationEntity<?>) obj;
 			Serializable oldApplicationId = migratedEntity.getPredefinedId();

@@ -1,11 +1,11 @@
 package org.iglooproject.test.business.nullables.model;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.test.business.nullables.model.embeddable.NullablesSection;

@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @ManifestPropertySource(prefix = "basic-application.core")
 @Import({
-	BasicApplicationCoreCommonJpaConfig.class,			// configuration de la persistence
-	BasicApplicationCoreSecurityConfig.class,			// configuration de la sécurité
 	BasicApplicationCoreTaskManagementConfig.class,		// configuration de la gestion des tâches
 	BasicApplicationCoreNotificationConfig.class,		// configuration des notifications
 	BasicApplicationCoreSchedulingConfig.class,			// configuration des tâches planifiées

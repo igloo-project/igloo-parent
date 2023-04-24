@@ -1,6 +1,6 @@
 package test.wicket.more.notification;
 
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 
 import org.iglooproject.spring.notification.service.INotificationBuilderBaseState;
 import org.iglooproject.spring.notification.service.NotificationBuilder;

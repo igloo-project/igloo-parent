@@ -1,6 +1,6 @@
 package org.iglooproject.test.spring.notification;
 
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.spring.notification.service.INotificationBuilderBaseState;

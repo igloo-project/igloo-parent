@@ -2,9 +2,9 @@ package org.iglooproject.test.rest.jersey2.business.person.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 

@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.time.Duration;
 import java.time.Instant;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.injection.Injector;

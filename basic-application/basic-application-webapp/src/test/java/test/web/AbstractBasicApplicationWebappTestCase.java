@@ -96,7 +96,8 @@ public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWic
 		
 		authenticationService.signOut();
 		
-		emptyIndexes();
+		//TODO: igloo-boot
+//		emptyIndexes();
 	}
 
 	private void initAuthorities() throws ServiceException, SecurityServiceException {

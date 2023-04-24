@@ -2,25 +2,25 @@ package org.iglooproject.jpa.business.generic.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JavaType;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.type.descriptor.java.ClassJavaType;
 
 import com.google.common.base.Verify;
 
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 
 @Embeddable
 @MappedSuperclass
@@ -30,10 +30,8 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 	
 	private static final long serialVersionUID = 1357434247523209721L;
 	
-	private static final String CLASS_TYPE = "org.hibernate.type.ClassType";
-
 	@Column(nullable = true)
-	@Type(type = CLASS_TYPE)
+	@JavaType(ClassJavaType.class)
 	private /* final */ Class<? extends E> type;
 	
 	@Column(nullable = true)
