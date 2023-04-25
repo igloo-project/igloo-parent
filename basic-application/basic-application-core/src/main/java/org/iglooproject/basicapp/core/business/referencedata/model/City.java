@@ -13,7 +13,7 @@ import jakarta.persistence.UniqueConstraint;
 @Bindable
 @Indexed
 @Cacheable
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"label_fr", "postalcode"}) })
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"label_fr"/*, "postalcode"*/}) })
 public class City extends ReferenceData<City> {
 
 	private static final long serialVersionUID = -5714475132350205234L;

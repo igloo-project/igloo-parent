@@ -69,7 +69,8 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	private String name;
 
 	@Column(nullable = true)
-	@Field(name = QUEUE_ID, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD), indexNullAs = "__NULL__")
+	//TODO: igloo-boot
+	@Field(name = QUEUE_ID, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD)/*, indexNullAs = "__NULL__"*/)
 	private String queueId;
 
 	@Column(nullable = false)

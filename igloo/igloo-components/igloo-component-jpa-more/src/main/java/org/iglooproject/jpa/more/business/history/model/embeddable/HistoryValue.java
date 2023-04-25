@@ -35,6 +35,8 @@ public class HistoryValue implements Serializable {
 	private String serialized;
 	
 	@Embedded
+	//TODO: igloo-boot
+//	@Field(name = REFERENCE, bridge = @FieldBridge(impl = NullEncodingGenericEntityReferenceFieldBridge.class), analyze = Analyze.NO)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryEntityReference reference;
 

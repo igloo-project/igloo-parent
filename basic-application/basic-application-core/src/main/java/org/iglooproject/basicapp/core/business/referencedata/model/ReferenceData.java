@@ -1,20 +1,13 @@
 package org.iglooproject.basicapp.core.business.referencedata.model;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.MappedSuperclass;
-
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.IndexedEmbedded;
-import org.hibernate.search.annotations.Normalizer;
-import org.hibernate.search.annotations.SortableField;
 import org.iglooproject.basicapp.core.business.common.model.embeddable.LocalizedText;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 
 import com.querydsl.core.annotations.QueryInit;
 
-import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
-import igloo.hibernateconfig.api.HibernateSearchNormalizer;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class ReferenceData<E extends ReferenceData<?>> extends GenericReferenceData<E, LocalizedText> implements IReferenceDataBindingInterface {
@@ -59,9 +52,10 @@ public class ReferenceData<E extends ReferenceData<?>> extends GenericReferenceD
 	}
 
 	@Override
-	@Field(name = CODE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	@Field(name = CODE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	@SortableField(forField = CODE_SORT)
+	//TODO: igloo-boot
+//	@Field(name = CODE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+//	@Field(name = CODE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
+//	@SortableField(forField = CODE_SORT)
 	public String getCode() {
 		return null;
 	}
