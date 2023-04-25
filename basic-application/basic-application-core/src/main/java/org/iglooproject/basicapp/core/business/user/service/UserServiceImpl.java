@@ -16,9 +16,12 @@ import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
 @Service("userService")
+@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implements IUserService {
 
 	@Autowired
