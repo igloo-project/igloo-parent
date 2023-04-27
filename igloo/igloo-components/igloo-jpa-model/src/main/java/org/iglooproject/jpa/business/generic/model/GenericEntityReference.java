@@ -7,9 +7,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.JavaType;
+import org.hibernate.annotations.JdbcType;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.type.descriptor.java.ClassJavaType;
+import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 
 import com.google.common.base.Verify;
 
@@ -32,6 +34,7 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 	
 	@Column(nullable = true)
 	@JavaType(ClassJavaType.class)
+	@JdbcType(VarcharJdbcType.class)
 	private /* final */ Class<? extends E> type;
 	
 	@Column(nullable = true)
