@@ -1,6 +1,26 @@
 package org.igloo.storage.integration;
 
-import static org.igloo.storage.integration.StoragePropertyIds.*;
+import static org.igloo.storage.integration.StoragePropertyIds.DB_FICHIER_SEQUENCE_NAME;
+import static org.igloo.storage.integration.StoragePropertyIds.DB_STORAGE_UNIT_SEQUENCE_NAME;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_CHECK_CHECKSUM_DEFAULT_DELAY;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_CHECK_DEFAULT_DELAY;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_CLEANING_CRON;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_CLEANING_INVALIDATED_DISABLED;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_CLEANING_TRANSIENT_DISABLED;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_CLEAN_LIMIT;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_CLEAN_TRANSIENT_DELAY;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_CONSISTENCY_DISABLED;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_CONSISTENCY_STORAGE_UNIT_LIMIT;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_DISABLED;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_HOUSEKEEPING_CRON;
+import static org.igloo.storage.integration.StoragePropertyIds.JOB_SPLIT_STORAGE_UNIT_DISABLED;
+import static org.igloo.storage.integration.StoragePropertyIds.MONITORING_ENABLED;
+import static org.igloo.storage.integration.StoragePropertyIds.MONITORING_WICKET_ENABLED;
+import static org.igloo.storage.integration.StoragePropertyIds.PATH;
+import static org.igloo.storage.integration.StoragePropertyIds.STORAGE_UNIT_TYPE_CANDIDATES;
+import static org.igloo.storage.integration.StoragePropertyIds.TRANSACTION_SYNCHRONIZATION_ORDER;
+import static org.igloo.storage.integration.StoragePropertyIds.WEB_DOWNLOAD_URL;
+import static org.igloo.storage.integration.StoragePropertyIds.WEB_URL;
 
 import java.nio.file.Path;
 import java.time.Duration;
@@ -10,8 +30,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import jakarta.persistence.EntityManagerFactory;
 
 import org.apache.commons.io.FileUtils;
 import org.igloo.monitoring.service.HealthService;
@@ -32,7 +50,6 @@ import org.igloo.storage.micrometer.MicrometerConfig;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageFailureStatus;
-import org.iglooproject.jpa.config.spring.provider.JpaPackageScanProvider;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
 import org.iglooproject.spring.property.model.ImmutablePropertyId;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
@@ -46,6 +63,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -59,9 +77,11 @@ import com.google.common.base.Strings;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tags;
+import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
 @ConditionalOnProperty(name = "igloo-ac.storage.disabled", havingValue = "false", matchIfMissing = true)
+@EntityScan(basePackageClasses = Fichier.class)
 public class StorageAutoConfiguration implements IPropertyRegistryConfig {
 
 	/**
@@ -111,11 +131,6 @@ public class StorageAutoConfiguration implements IPropertyRegistryConfig {
 				propertyService.get(JOB_CLEAN_TRANSIENT_DELAY),
 				propertyService.get(JOB_CLEAN_LIMIT),
 				propertyService.get(JOB_CONSISTENCY_STORAGE_UNIT_LIMIT) <= 0 ? null : propertyService.get(JOB_CONSISTENCY_STORAGE_UNIT_LIMIT));
-	}
-
-	@Bean
-	public JpaPackageScanProvider storagePackageScanProvider() {
-		return new JpaPackageScanProvider(Fichier.class.getPackage());
 	}
 
 	@Override

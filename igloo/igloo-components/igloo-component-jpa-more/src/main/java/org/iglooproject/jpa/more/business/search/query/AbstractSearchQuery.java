@@ -9,10 +9,13 @@ import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 public abstract class AbstractSearchQuery<T, S extends ISort<?>> implements ISearchQuery<T, S> /* NOT Serializable */ {
 	
-//	@PersistenceContext
-//	protected EntityManager entityManager;
+	@PersistenceContext
+	protected EntityManager entityManager;
 	
 	protected List<S> defaultSorts;
 	protected Map<S, SortOrder> sortMap;

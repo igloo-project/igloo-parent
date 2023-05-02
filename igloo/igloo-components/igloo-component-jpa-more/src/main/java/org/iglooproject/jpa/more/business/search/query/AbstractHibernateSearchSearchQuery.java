@@ -15,6 +15,7 @@ import org.bindgen.BindingRoot;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.search.query.engine.spi.FacetManager;
@@ -22,7 +23,9 @@ import org.hibernate.search.query.facet.Facet;
 import org.hibernate.search.query.facet.FacetingRequest;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
+import org.iglooproject.jpa.search.util.SortFieldUtil;
 import org.iglooproject.spring.util.lucene.search.LuceneUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.ImmutableList;
@@ -40,8 +43,8 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	private FullTextEntityManager fullTextEntityManager;
 	
-//	@Autowired
-//	private IHibernateSearchLuceneQueryFactory factory;
+	@Autowired
+	private IHibernateSearchLuceneQueryFactory factory;
 	
 	private FullTextQuery fullTextQuery;
 	
@@ -62,10 +65,10 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	
 	@PostConstruct
 	private void init() {
-//		this.fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-//		this.factory.setDefaultClass(mainClass);
-//		
-//		this.junction = getDefaultQueryBuilder().bool();
+		this.fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+		this.factory.setDefaultClass(mainClass);
+		
+		this.junction = getDefaultQueryBuilder().bool();
 	}
 	
 	protected Analyzer getAnalyzer(Class<?> clazz) {
@@ -164,7 +167,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 				}
 			}
 			
-//			fullTextQuery = fullTextEntityManager.createFullTextQuery(junction.createQuery(), classes);
+			fullTextQuery = fullTextEntityManager.createFullTextQuery(junction.createQuery(), classes);
 		}
 		return fullTextQuery;
 	}
@@ -180,10 +183,9 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 		}
 		
 		Sort sort = SortUtils.getLuceneSortWithDefaults(sortMap, defaultSorts);
-		//TODO: igloo-boot
-//		if (sort != null && sort.getSort().length > 0) {
-//			SortFieldUtil.setSort(fullTextQuery, fullTextEntityManager, mainClass, sort);
-//		}
+		if (sort != null && sort.getSort().length > 0) {
+			SortFieldUtil.setSort(fullTextQuery, fullTextEntityManager, mainClass, sort);
+		}
 		return fullTextQuery;
 	}
 
