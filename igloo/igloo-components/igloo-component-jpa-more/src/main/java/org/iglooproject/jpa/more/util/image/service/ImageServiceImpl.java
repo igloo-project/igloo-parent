@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -30,16 +29,17 @@ import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.devlib.schmidt.imageinfo.ImageInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.util.image.exception.ImageThumbnailGenerationException;
 import org.iglooproject.jpa.more.util.image.model.ImageInformation;
 import org.iglooproject.jpa.more.util.image.model.ImageThumbnailFormat;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import jakarta.annotation.PostConstruct;
 
 @Service("imageService")
 public class ImageServiceImpl implements IImageService {

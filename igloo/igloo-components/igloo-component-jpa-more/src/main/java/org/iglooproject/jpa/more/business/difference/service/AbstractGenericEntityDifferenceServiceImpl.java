@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 
-import javax.annotation.PostConstruct;
-
 import org.bindgen.BindingRoot;
 import org.hibernate.proxy.HibernateProxy;
 import org.iglooproject.commons.util.binding.ICoreBinding;
@@ -60,6 +58,7 @@ import de.danielbechler.diff.node.DiffNode;
 import de.danielbechler.diff.node.DiffNode.Visitor;
 import de.danielbechler.diff.node.Visit;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.annotation.PostConstruct;
 
 @SuppressFBWarnings("squid:S1226")
 public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends GenericEntity<?, ?>> implements IDifferenceService<T> {

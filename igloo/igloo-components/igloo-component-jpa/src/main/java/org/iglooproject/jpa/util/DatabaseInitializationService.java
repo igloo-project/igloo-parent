@@ -22,9 +22,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import org.iglooproject.spring.property.service.IPropertyService;
+import jakarta.annotation.PostConstruct;
 
 /**
  * <p>Initialise le schéma de la base.</p>

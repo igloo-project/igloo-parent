@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.annotation.Resource;
-import jakarta.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -20,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import igloo.hibernateconfig.api.HibernateCacheRegionFactory;
+import jakarta.annotation.Resource;
+import jakarta.persistence.spi.PersistenceProvider;
 
 public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvider {
 
