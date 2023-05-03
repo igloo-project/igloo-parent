@@ -1,6 +1,6 @@
 package org.iglooproject.jpa.more.business.upgrade.service;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
@@ -43,13 +43,13 @@ public class DataUpgradeRecordServiceImpl extends GenericEntityServiceImpl<Long,
 	private void markAs(IDataUpgrade dataUpgrade, boolean done) throws ServiceException, SecurityServiceException {
 		DataUpgradeRecord record = getByDataUpgrade(dataUpgrade);
 		if (record != null) {
-			record.setExecutionDate(done ? new Date() : null);
+			record.setExecutionDate(done ? Instant.now() : null);
 			record.setDone(done);
 			update(record);
 		} else {
 			DataUpgradeRecord newRecord = new DataUpgradeRecord();
 			newRecord.setName(dataUpgrade.getName());
-			newRecord.setExecutionDate(done ? new Date() : null);
+			newRecord.setExecutionDate(done ? Instant.now() : null);
 			newRecord.setDone(done);
 			create(newRecord);
 		}

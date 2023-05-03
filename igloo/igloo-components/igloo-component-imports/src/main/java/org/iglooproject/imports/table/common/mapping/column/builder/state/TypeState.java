@@ -3,6 +3,8 @@ package org.iglooproject.imports.table.common.mapping.column.builder.state;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
 
@@ -52,6 +54,10 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
 	public abstract StringState<TTable, TRow, TCell, TCellReference> asString(Supplier2<? extends NumberFormat> formatIfNumeric);
 	
 	public abstract DateState<TTable, TRow, TCell, TCellReference> asDate();
+	
+	public abstract LocalDateState<TTable, TRow, TCell, TCellReference> asLocalDate();
+	
+	public abstract LocalDateTimeState<TTable, TRow, TCell, TCellReference> asLocalDateTime();
 	
 	protected class TypeStateSwitcher<T> implements ColumnFunctionBuildStateSwitcher<TTable, TRow, TCell, TCellReference, T> {
 		
@@ -138,6 +144,28 @@ public abstract class TypeState<TTable, TRow, TCell, TCellReference> {
 			return new DateState<TTable, TRow, TCell, TCellReference>() {
 				@Override
 				protected TypeStateSwitcher<Date> getStateSwitcher() {
+					return switcher;
+				}
+			};
+		}
+
+		@Override
+		public LocalDateState<TTable, TRow, TCell, TCellReference> toLocalDate(Function2<? super T, LocalDate> function) {
+			final TypeStateSwitcher<LocalDate> switcher = newSwitcher(function);
+			return new LocalDateState<TTable, TRow, TCell, TCellReference>() {
+				@Override
+				protected TypeStateSwitcher<LocalDate> getStateSwitcher() {
+					return switcher;
+				}
+			};
+		}
+
+		@Override
+		public LocalDateTimeState<TTable, TRow, TCell, TCellReference> toLocalDateTime(Function2<? super T, LocalDateTime> function) {
+			final TypeStateSwitcher<LocalDateTime> switcher = newSwitcher(function);
+			return new LocalDateTimeState<TTable, TRow, TCell, TCellReference>() {
+				@Override
+				protected TypeStateSwitcher<LocalDateTime> getStateSwitcher() {
 					return switcher;
 				}
 			};

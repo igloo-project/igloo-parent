@@ -1,6 +1,6 @@
 package org.iglooproject.jpa.more.business.history.util;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import org.iglooproject.functional.Supplier2;
@@ -29,7 +29,7 @@ public class HistoryLogBeforeCommitWithDifferencesTask<T,
 	
 	@SafeVarargs
 	public HistoryLogBeforeCommitWithDifferencesTask(
-			Date date, HET eventType,
+			Instant date, HET eventType,
 			T mainObject, HLAIB additionalInformation,
 			Supplier2<HD> historyDifferenceSupplier,
 			IDifferenceFromReferenceGenerator<T> differenceGenerator,

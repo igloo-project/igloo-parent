@@ -5,13 +5,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.beans.PropertyDescriptor;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Year;
+import java.time.YearMonth;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.assertj.core.api.Assertions;
@@ -173,12 +177,6 @@ abstract class AbstractCommonTestCase {
 		
 		return (Long) entityManagerUtils.getEntityManager().createQuery(cq).getSingleResult();
 	}
-	
-	@Deprecated(since = "4.1.0")
-	protected void assertDatesWithinXSeconds(Date date1, Date date2, Integer delayInSeconds) {
-		assertThat(Math.abs(date1.getTime() - date2.getTime()) < delayInSeconds * 1000l).isTrue();
-		assertThat(date1).isCloseTo(date2, TimeUnit.SECONDS.toMillis(1000));
-	}
 
 	protected EntityManager getEntityManager() {
 		return entityManagerUtils.getEntityManager();
@@ -299,7 +297,12 @@ abstract class AbstractCommonTestCase {
 		listeAutorisee.add(Integer.class);
 		listeAutorisee.add(Float.class);
 		listeAutorisee.add(Date.class);
+		listeAutorisee.add(Instant.class);
+		listeAutorisee.add(LocalDate.class);
 		listeAutorisee.add(LocalDateTime.class);
+		listeAutorisee.add(LocalTime.class);
+		listeAutorisee.add(Year.class);
+		listeAutorisee.add(YearMonth.class);
 		listeAutorisee.add(Duration.class);
 		listeAutorisee.add(BigDecimal.class);
 		listeAutorisee.add(Boolean.class);

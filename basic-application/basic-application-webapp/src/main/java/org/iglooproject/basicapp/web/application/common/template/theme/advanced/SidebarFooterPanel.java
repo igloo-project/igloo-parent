@@ -5,6 +5,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds;
+import org.iglooproject.basicapp.core.util.time.DateTimePattern;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
@@ -12,7 +13,6 @@ import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.renderer.Renderer;
-import igloo.wicket.util.DatePattern;
 
 public class SidebarFooterPanel extends Panel {
 
@@ -28,7 +28,7 @@ public class SidebarFooterPanel extends Panel {
 					.setParameters(
 						ApplicationPropertyModel.of(SpringPropertyIds.VERSION),
 						Condition.modelNotNull(ApplicationPropertyModel.of(BasicApplicationCorePropertyIds.BUILD_DATE))
-							.then(Renderer.fromDatePattern(DatePattern.SHORT_DATE).asModel(ApplicationPropertyModel.of(BasicApplicationCorePropertyIds.BUILD_DATE)))
+							.then(Renderer.fromDateTimePattern(DateTimePattern.SHORT_DATE).asModel(ApplicationPropertyModel.of(BasicApplicationCorePropertyIds.BUILD_DATE)))
 							.otherwise(new ResourceModel("common.version.date.placeholder"))
 					)
 			)

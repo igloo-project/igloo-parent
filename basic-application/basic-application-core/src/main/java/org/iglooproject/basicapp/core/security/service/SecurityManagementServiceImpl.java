@@ -5,11 +5,11 @@ import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWOR
 import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES;
 import static org.iglooproject.spring.property.SpringSecurityPropertyIds.PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
 import org.iglooproject.basicapp.core.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
@@ -95,10 +95,8 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		UserPasswordRecoveryRequestInitiator initiator,
 		User author
 	) throws ServiceException, SecurityServiceException {
-		Date now = new Date();
-		
 		user.getPasswordRecoveryRequest().setToken(RandomStringUtils.randomAlphanumeric(propertyService.get(PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT)));
-		user.getPasswordRecoveryRequest().setCreationDate(now);
+		user.getPasswordRecoveryRequest().setCreationDate(Instant.now());
 		user.getPasswordRecoveryRequest().setType(type);
 		user.getPasswordRecoveryRequest().setInitiator(initiator);
 		
@@ -126,10 +124,10 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			return false;
 		}
 		
-		Date expirationDate = DateUtils.addDays(user.getPasswordInformation().getLastUpdateDate(), propertyService.get(PASSWORD_EXPIRATION_DAYS));
-		Date now = new Date();
+		Instant expirationDate = user.getPasswordInformation().getLastUpdateDate().plus(propertyService.get(PASSWORD_EXPIRATION_DAYS), ChronoUnit.DAYS);
+		Instant now = Instant.now();
 		
-		return now.after(expirationDate);
+		return now.isAfter(expirationDate);
 	}
 
 	@Override
@@ -140,10 +138,10 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 			return true;
 		}
 		
-		Date expirationDate = DateUtils.addMinutes(user.getPasswordRecoveryRequest().getCreationDate(), propertyService.get(PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES));
-		Date now = new Date();
+		Instant expirationDate = user.getPasswordRecoveryRequest().getCreationDate().plus(propertyService.get(PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES), ChronoUnit.MINUTES);
+		Instant now = Instant.now();
 		
-		return now.after(expirationDate);
+		return now.isAfter(expirationDate);
 	}
 
 	@Override
@@ -158,7 +156,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 		}
 		
 		userService.setPasswords(user, password);
-		user.getPasswordInformation().setLastUpdateDate(new Date());
+		user.getPasswordInformation().setLastUpdateDate(Instant.now());
 		
 		if (getSecurityOptions(user).isPasswordHistoryEnabled()) {
 			EvictingQueue<String> historyQueue = EvictingQueue.create(propertyService.get(PASSWORD_HISTORY_COUNT));

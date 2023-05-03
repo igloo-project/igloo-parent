@@ -1,12 +1,11 @@
 package org.iglooproject.jpa.more.business.history.service;
 
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import java.time.Instant;
 
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventSummary;
 import org.iglooproject.jpa.util.HibernateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractHistoryEventSummaryServiceImpl<U> implements IGenericHistoryEventSummaryService<U> {
 	
@@ -17,16 +16,16 @@ public abstract class AbstractHistoryEventSummaryServiceImpl<U> implements IGene
 
 	@Override
 	public void refresh(HistoryEventSummary evenement) {
-		refresh(evenement, new Date());
+		refresh(evenement, Instant.now());
 	}
 	
 	@Override
-	public void refresh(HistoryEventSummary evenement, Date date) {
+	public void refresh(HistoryEventSummary evenement, Instant date) {
 		refresh(evenement, date, getDefaultSubject());
 	}
 	
 	@Override
-	public void refresh(HistoryEventSummary evenement, Date date, U subject) {
+	public void refresh(HistoryEventSummary evenement, Instant date, U subject) {
 		evenement.setDate(date);
 		evenement.setSubject(valueService.create(HibernateUtils.unwrap(subject)));
 	}

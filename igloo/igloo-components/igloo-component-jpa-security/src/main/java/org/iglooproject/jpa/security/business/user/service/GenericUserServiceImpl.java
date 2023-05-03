@@ -1,6 +1,6 @@
 package org.iglooproject.jpa.security.business.user.service;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.Locale;
 
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
@@ -35,10 +35,10 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 
 	@Override
 	protected void createEntity(U user) throws ServiceException, SecurityServiceException {
-		Date date = new Date();
+		Instant now = Instant.now();
 		
-		user.setCreationDate(date);
-		user.setLastUpdateDate(date);
+		user.setCreationDate(now);
+		user.setLastUpdateDate(now);
 		
 		if (user.getAuthorities().isEmpty()) {
 			Authority defaultAuthority = authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED);
@@ -54,7 +54,7 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 
 	@Override
 	protected void updateEntity(U user) throws ServiceException, SecurityServiceException {
-		user.setLastUpdateDate(new Date());
+		user.setLastUpdateDate(Instant.now());
 		super.updateEntity(user);
 	}
 
@@ -88,7 +88,7 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 
 	@Override
 	public void updateLastLoginDate(U user) throws ServiceException, SecurityServiceException {
-		user.setLastLoginDate(new Date());
+		user.setLastLoginDate(Instant.now());
 		super.updateEntity(user);
 	}
 

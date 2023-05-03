@@ -1,15 +1,12 @@
 package org.iglooproject.basicapp.core.business.user.model.embeddable;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
+
+import org.bindgen.Bindable;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-
-import org.bindgen.Bindable;
-import org.iglooproject.commons.util.CloneUtils;
 
 @Embeddable
 @Bindable
@@ -21,8 +18,7 @@ public class UserAnnouncementInformation implements Serializable {
 	private boolean open = true;
 
 	@Basic
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastActionDate;
+	private Instant lastActionDate;
 
 	public boolean isOpen() {
 		return open;
@@ -32,12 +28,12 @@ public class UserAnnouncementInformation implements Serializable {
 		this.open = open;
 	}
 
-	public Date getLastActionDate() {
-		return CloneUtils.clone(lastActionDate);
+	public Instant getLastActionDate() {
+		return lastActionDate;
 	}
 
-	public void setLastActionDate(Date lastActionDate) {
-		this.lastActionDate = CloneUtils.clone(lastActionDate);
+	public void setLastActionDate(Instant lastActionDate) {
+		this.lastActionDate = lastActionDate;
 	}
 
 }

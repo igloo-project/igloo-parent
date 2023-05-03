@@ -18,7 +18,6 @@ import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 
 import igloo.wicket.markup.html.panel.GenericPanel;
-import igloo.wicket.util.DatePattern;
 
 public class UserDetailHistoryLogPanel extends GenericPanel<User> {
 
@@ -36,7 +35,7 @@ public class UserDetailHistoryLogPanel extends GenericPanel<User> {
 		
 		add(
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
-				.addLabelColumn(new ResourceModel("business.history.date"), Bindings.historyLog().date(), DatePattern.SHORT_DATETIME)
+				.addLabelColumn(new ResourceModel("business.history.date"), Bindings.historyLog().date())
 					.withSort(HistoryLogSort.DATE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
 					.withClass("cell-w-150")
 				.addLabelColumn(new ResourceModel("business.history.subject"), Bindings.historyLog().subject())

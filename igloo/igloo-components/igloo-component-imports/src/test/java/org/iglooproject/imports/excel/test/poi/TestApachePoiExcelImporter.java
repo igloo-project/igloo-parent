@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -34,7 +34,7 @@ public class TestApachePoiExcelImporter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestApachePoiExcelImporter.class);
 
 	private static class Columns extends ApachePoiImportColumnSet {
-		final Column<Date> dateColumn = withIndex(0).asDate().build();
+		final Column<LocalDate> dateColumn = withIndex(0).asLocalDate().build();
 		final Column<Boolean> booleanColumn = withIndex(1).asString().toBoolean(input -> "true".equals(input) ? true : false).build();
 		final Column<String> stringColumn = withHeader("StringColumn", 2, MappingConstraint.REQUIRED).asString().clean().build();
 		final Column<Integer> integerColumn = withHeader("IntegerColumn").asInteger().build();
@@ -44,8 +44,8 @@ public class TestApachePoiExcelImporter {
 	private static final Columns COLUMNS = new Columns();
 	private static final ApachePoiImportFileScanner SCANNER = new ApachePoiImportFileScanner();
 
-	public List<Quartet<Date, Boolean, String, Integer>> doImport(InputStream stream, String filename) throws TableImportException {
-		final List<Quartet<Date, Boolean, String, Integer>> results = Lists.newArrayList();
+	public List<Quartet<LocalDate, Boolean, String, Integer>> doImport(InputStream stream, String filename) throws TableImportException {
+		final List<Quartet<LocalDate, Boolean, String, Integer>> results = Lists.newArrayList();
 		
 		SCANNER.scan(stream, filename, SheetSelection.ALL, new IExcelImportFileVisitor<Workbook, Sheet, Row, Cell, CellReference>() {
 			@Override
@@ -61,7 +61,7 @@ public class TestApachePoiExcelImporter {
 				assertFalse(sheetContext.column(COLUMNS.missingColumn).exists());
 				
 				for (Columns.RowContext rowContext : Iterables.skip(sheetContext, 1)) {
-					Quartet<Date, Boolean, String, Integer> result = Quartet.with(
+					Quartet<LocalDate, Boolean, String, Integer> result = Quartet.with(
 							rowContext.cell(COLUMNS.dateColumn).get(),
 							rowContext.cell(COLUMNS.booleanColumn).get(),
 							rowContext.cell(COLUMNS.stringColumn).get(),

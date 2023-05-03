@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.core.business.history.service;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import org.iglooproject.basicapp.core.business.history.dao.IHistoryLogDao;
@@ -31,7 +31,7 @@ public class HistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<History
 	}
 
 	@Override
-	protected <T> HistoryLog newHistoryLog(Date date, HistoryEventType eventType, List<HistoryDifference> differences,
+	protected <T> HistoryLog newHistoryLog(Instant date, HistoryEventType eventType, List<HistoryDifference> differences,
 			T mainObject, HistoryLogAdditionalInformationBean additionalInformation) {
 		HistoryLog log = new HistoryLog(date, eventType, valueService.create(mainObject));
 		

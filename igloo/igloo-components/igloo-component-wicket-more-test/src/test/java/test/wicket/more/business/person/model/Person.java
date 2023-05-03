@@ -1,6 +1,6 @@
 package test.wicket.more.business.person.model;
 
-import java.util.Date;
+import java.time.Instant;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +21,7 @@ public class Person extends GenericEntity<Long, Person> {
 
 	private String lastName;
 
-	private Date creationDate;
+	private Instant creationDate;
 
 	public Person() {
 	}
@@ -57,11 +57,11 @@ public class Person extends GenericEntity<Long, Person> {
 		this.lastName = lastName;
 	}
 	
-	public Date getCreationDate() {
+	public Instant getCreationDate() {
 		return creationDate;
 	}
 	
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(Instant creationDate) {
 		this.creationDate = creationDate;
 	}
 

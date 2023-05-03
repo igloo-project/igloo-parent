@@ -1,7 +1,5 @@
 package org.iglooproject.basicapp.web.application.config.spring;
 
-import java.util.Date;
-
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -22,9 +20,6 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
-import igloo.wicket.renderer.Renderer;
-import igloo.wicket.util.DatePattern;
 
 @Configuration
 @EnableWebSecurity
@@ -51,10 +46,6 @@ public class BasicApplicationWebappConfig {
 		
 		rendererService.registerRenderer(Boolean.class, BooleanRenderer.get());
 		rendererService.registerRenderer(boolean.class, BooleanRenderer.get());
-		
-		Renderer<Date> shortDateRenderer = Renderer.fromDatePattern(DatePattern.SHORT_DATE);
-		rendererService.registerRenderer(Date.class, shortDateRenderer);
-		rendererService.registerRenderer(java.sql.Date.class, shortDateRenderer);
 		
 		rendererService.registerRenderer(User.class, UserRenderer.get());
 		rendererService.registerRenderer(TechnicalUser.class, UserRenderer.get());

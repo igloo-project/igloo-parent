@@ -1,7 +1,7 @@
 package org.iglooproject.basicapp.core.business.history.search;
 
+import java.time.Instant;
 import java.util.Collection;
-import java.util.Date;
 
 import org.iglooproject.basicapp.core.business.history.model.HistoryLog;
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
@@ -14,7 +14,7 @@ public interface IHistoryLogSearchQuery extends ISearchQuery<HistoryLog, History
 
 	IHistoryLogSearchQuery subject(User user);
 
-	IHistoryLogSearchQuery date(Date dateMin, Date dateMax);
+	IHistoryLogSearchQuery date(Instant dateMin, Instant dateMax);
 
 	IHistoryLogSearchQuery object(GenericEntity<?, ?> object);
 

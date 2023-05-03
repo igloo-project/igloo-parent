@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.web.application.notification.component;
 
-import java.util.Date;
+import java.time.Instant;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -20,13 +20,13 @@ public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> ex
 	private static final long serialVersionUID = -6941290354402094613L;
 
 	public UserPasswordRecoveryRequestHtmlNotificationPanel(String id, ResourceKeyGenerator resourceKeyGenerator,
-			IModel<T> objectModel, IModel<User> authorModel, IModel<Date> dateModel, IPageLinkGenerator linkGenerator) {
+			IModel<T> objectModel, IModel<User> authorModel, IModel<Instant> dateModel, IPageLinkGenerator linkGenerator) {
 		this(id, resourceKeyGenerator, resourceKeyGenerator, objectModel, authorModel, dateModel, linkGenerator);
 	}
 
 	public UserPasswordRecoveryRequestHtmlNotificationPanel(String id, ResourceKeyGenerator resourceKeyGenerator,
 			ResourceKeyGenerator defaultResourceKeyGenerator, IModel<T> objectModel, IModel<User> authorModel,
-			IModel<Date> dateModel, IPageLinkGenerator linkGenerator) {
+			IModel<Instant> dateModel, IPageLinkGenerator linkGenerator) {
 		super(id, objectModel);
 		
 		StringResourceModel descriptionTextModel = new StringResourceModel(resourceKeyGenerator.resourceKey("text"), objectModel)

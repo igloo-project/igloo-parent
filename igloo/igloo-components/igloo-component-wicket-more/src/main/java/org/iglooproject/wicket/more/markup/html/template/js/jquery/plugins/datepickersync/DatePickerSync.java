@@ -1,6 +1,8 @@
 package org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.datepickersync;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +11,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.CloneUtils;
-import org.iglooproject.wicket.more.markup.html.form.DatePicker;
 import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
 import org.wicketstuff.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.wiquery.core.options.Options;
@@ -27,10 +28,10 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 	private static final String JS_ARRAY_START = "[";
 	private static final String JS_ARRAY_CLOSE = "]";
 	
-	private final List<DatePicker> precedents = Lists.newArrayList();
+	private final List<Component> precedents = Lists.newArrayList();
 	private final List<IModel<? extends Date>> precedentsModels = Lists.newArrayList();
 	
-	private final List<DatePicker> suivants = Lists.newArrayList();
+	private final List<Component> suivants = Lists.newArrayList();
 	private final List<IModel<? extends Date>> suivantsModels = Lists.newArrayList();
 
 	private final DatePickerSyncActionOnUpdate actionOnUpdate;
@@ -39,7 +40,7 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 		this.actionOnUpdate = DatePickerSyncActionOnUpdate.NOTHING;
 	}
 
-	public DatePickerSync(DatePicker precedent, DatePicker suivant, DatePickerSyncActionOnUpdate actionOnUpdate) {
+	public DatePickerSync(Component precedent, Component suivant, DatePickerSyncActionOnUpdate actionOnUpdate) {
 		if (precedent != null) {
 			addPrecedents(precedent);
 		}
@@ -85,12 +86,12 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 		return new CharSequence[] { options.getJavaScriptOptions() };
 	}
 	
-	public List<DatePicker> getPrecedents() {
+	public List<Component> getPrecedents() {
 		return CloneUtils.clone(precedents);
 	}
 	
-	public DatePickerSync addPrecedents(DatePicker first, DatePicker ... rest) {
-		for (DatePicker precedent : Lists.asList(first, rest)) {
+	public DatePickerSync addPrecedents(Component first, Component ... rest) {
+		for (Component precedent : Lists.asList(first, rest)) {
 			if (precedent != null) {
 				if (!this.precedents.contains(precedent)) {
 					this.precedents.add(precedent);
@@ -105,6 +106,16 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 	}
 	
 	@SafeVarargs
+	public final DatePickerSync addPrecedentsLocalDateModels(IModel<LocalDate> first, IModel<LocalDate> ... rest) {
+		for (IModel<LocalDate> precedent : Lists.asList(first, rest)) {
+			if (precedent != null && precedent.getObject() != null) {
+				addPrecedentsModels(() -> Date.from(precedent.getObject().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+			}
+		}
+		return this;
+	}
+	
+	@SafeVarargs
 	public final DatePickerSync addPrecedentsModels(IModel<? extends Date> first, IModel<? extends Date> ... rest) {
 		for (IModel<? extends Date> precedent : Lists.asList(first, rest)) {
 			if (precedent != null) {
@@ -116,12 +127,12 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 		return this;
 	}
 	
-	public List<DatePicker> getSuivants() {
+	public List<Component> getSuivants() {
 		return CloneUtils.clone(suivants);
 	}
 	
-	public DatePickerSync addSuivants(DatePicker first, DatePicker ... rest) {
-		for (DatePicker suivant : Lists.asList(first, rest)) {
+	public DatePickerSync addSuivants(Component first, Component ... rest) {
+		for (Component suivant : Lists.asList(first, rest)) {
 			if (suivant != null) {
 				if (!this.suivants.contains(suivant)) {
 					this.suivants.add(suivant);
@@ -133,6 +144,16 @@ public class DatePickerSync implements ChainableStatement, IDetachable, Serializ
 	
 	public List<IModel<? extends Date>> getSuivantsModels() {
 		return CloneUtils.clone(suivantsModels);
+	}
+
+	@SafeVarargs
+	public final DatePickerSync addSuivantsLocalDateModels(IModel<LocalDate> first, IModel<LocalDate> ... rest) {
+		for (IModel<LocalDate> suivant : Lists.asList(first, rest)) {
+			if (suivant != null && suivant.getObject() != null) {
+				addSuivantsModels(() -> Date.from(suivant.getObject().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+			}
+		}
+		return this;
 	}
 
 	@SafeVarargs

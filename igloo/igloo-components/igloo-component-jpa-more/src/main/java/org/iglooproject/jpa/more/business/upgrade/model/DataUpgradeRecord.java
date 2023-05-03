@@ -1,20 +1,17 @@
 package org.iglooproject.jpa.more.business.upgrade.model;
 
-import java.util.Date;
+import java.time.Instant;
+
+import org.bindgen.Bindable;
+import org.hibernate.annotations.NaturalId;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+
+import com.google.common.base.MoreObjects.ToStringHelper;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-
-import org.bindgen.Bindable;
-import org.hibernate.annotations.NaturalId;
-import org.iglooproject.commons.util.CloneUtils;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-
-import com.google.common.base.MoreObjects.ToStringHelper;
 
 @Entity
 @Bindable
@@ -31,8 +28,7 @@ public class DataUpgradeRecord extends GenericEntity<Long, DataUpgradeRecord> {
 	private String name;
 
 	@Column
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date executionDate;
+	private Instant executionDate;
 
 	@Column(nullable = false)
 	private boolean autoPerform = false;
@@ -58,12 +54,12 @@ public class DataUpgradeRecord extends GenericEntity<Long, DataUpgradeRecord> {
 		this.name = name;
 	}
 
-	public Date getExecutionDate() {
-		return CloneUtils.clone(executionDate);
+	public Instant getExecutionDate() {
+		return executionDate;
 	}
 
-	public void setExecutionDate(Date executionDate) {
-		this.executionDate = CloneUtils.clone(executionDate);
+	public void setExecutionDate(Instant executionDate) {
+		this.executionDate = executionDate;
 	}
 
 	public boolean isAutoPerform() {

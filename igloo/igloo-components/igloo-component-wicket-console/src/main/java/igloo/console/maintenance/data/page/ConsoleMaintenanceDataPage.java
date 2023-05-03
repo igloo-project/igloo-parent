@@ -30,11 +30,9 @@ import igloo.bootstrap.confirm.ConfirmLink;
 import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
 import igloo.wicket.action.IOneParameterAction;
 import igloo.wicket.component.CoreLabel;
-import igloo.wicket.component.DateLabel;
 import igloo.wicket.component.PlaceholderContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.model.BindingModel;
-import igloo.wicket.util.DatePattern;
 
 public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
 
@@ -78,7 +76,7 @@ public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
 				
 				item.add(
 					new CoreLabel("name", item.getModel().map(IDataUpgrade::getName)),
-					new DateLabel("executionDate", BindingModel.of(recordModel, dataUpgradeRecordBinding.executionDate()), DatePattern.SHORT_DATETIME)
+					new CoreLabel("executionDate", BindingModel.of(recordModel, dataUpgradeRecordBinding.executionDate()))
 						.showPlaceholder(),
 					new BooleanIcon("autoPerform",BindingModel.of(recordModel, dataUpgradeRecordBinding.autoPerform()))
 						.hideIfNullOrFalse()

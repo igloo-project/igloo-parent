@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.core.business.notification.service;
 
-import java.util.Date;
+import java.time.Instant;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
@@ -12,7 +12,7 @@ public class EmptyNotificationContentDescriptorFactoryImpl implements IBasicAppl
 		NotificationContentDescriptors.explicit("defaultSubject", "defaultTextBody", "defaultHtmlBody");
 
 	@Override
-	public INotificationContentDescriptor example(User user, Date date) {
+	public INotificationContentDescriptor example(User user, Instant date) {
 		return DEFAULT_DESCRIPTOR;
 	}
 

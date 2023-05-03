@@ -57,9 +57,9 @@ public class PersonHSSFExport extends AbstractExcelTableExport {
 		} else if ("lastname".equals(column)) {
 			addTextCell(currentRow, columnIndex, person.getLastName());
 		} else if ("birth date".equals(column)) {
-			addDateCell(currentRow, columnIndex, person.getBirthDate());
+			addLocalDateCell(currentRow, columnIndex, person.getBirthDateTime().toLocalDate());
 		} else if ("birth hour".equals(column)) {
-			addDateTimeCell(currentRow, columnIndex, person.getBirthDate());
+			addLocalDateTimeCell(currentRow, columnIndex, person.getBirthDateTime());
 		} else if ("age".equals(column)) {
 			addIntegerCell(currentRow, columnIndex, person.getAge());
 		} else if ("size".equals(column)) {

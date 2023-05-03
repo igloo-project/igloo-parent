@@ -1,15 +1,12 @@
 package org.iglooproject.basicapp.core.business.announcement.model.embeddable;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import org.bindgen.Bindable;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-
-import org.bindgen.Bindable;
-import org.iglooproject.commons.util.CloneUtils;
 
 @Embeddable
 @Bindable
@@ -18,27 +15,25 @@ public class AnnouncementDate implements Serializable {
 	private static final long serialVersionUID = -6711976886958374843L;
 
 	@Basic
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date startDateTime;
+	private LocalDateTime startDateTime;
 
 	@Basic
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date endDateTime;
+	private LocalDateTime endDateTime;
 
-	public Date getStartDateTime() {
-		return CloneUtils.clone(startDateTime);
+	public LocalDateTime getStartDateTime() {
+		return startDateTime;
 	}
 
-	public void setStartDateTime(Date startDateTime) {
-		this.startDateTime = CloneUtils.clone(startDateTime);
+	public void setStartDateTime(LocalDateTime startDateTime) {
+		this.startDateTime = startDateTime;
 	}
 
-	public Date getEndDateTime() {
-		return CloneUtils.clone(endDateTime);
+	public LocalDateTime getEndDateTime() {
+		return endDateTime;
 	}
 
-	public void setEndDateTime(Date endDateTime) {
-		this.endDateTime = CloneUtils.clone(endDateTime);
+	public void setEndDateTime(LocalDateTime endDateTime) {
+		this.endDateTime = endDateTime;
 	}
 
 }

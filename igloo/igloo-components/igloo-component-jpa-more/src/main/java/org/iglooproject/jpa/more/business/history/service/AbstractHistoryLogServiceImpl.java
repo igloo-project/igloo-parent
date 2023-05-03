@@ -1,6 +1,6 @@
 package org.iglooproject.jpa.more.business.history.service;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import org.iglooproject.functional.Supplier2;
@@ -39,7 +39,7 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 	}
 	
 	@Override
-	public <T> HL logNow(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
+	public <T> HL logNow(Instant date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
 			throws ServiceException, SecurityServiceException {
 		HL log = newHistoryLog(date, eventType, differences, mainObject, additionalInformation);
 
@@ -52,7 +52,7 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 		return log;
 	}
 	
-	protected abstract <T> HL newHistoryLog(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation);
+	protected abstract <T> HL newHistoryLog(Instant date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation);
 
 	protected abstract Supplier2<HD> newHistoryDifferenceSupplier();
 
@@ -84,7 +84,7 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 	public <T> void log(HET eventType, T mainObject, HLAIB additionalInformation) throws ServiceException,
 			SecurityServiceException {
 		transactionSynchronizationTaskManagerService.push(
-				new HistoryLogBeforeCommitTask<T, HLAIB, HL, HET, HD>(new Date(), eventType, mainObject, additionalInformation)
+				new HistoryLogBeforeCommitTask<T, HLAIB, HL, HET, HD>(Instant.now(), eventType, mainObject, additionalInformation)
 		);
 	}
 
@@ -113,7 +113,7 @@ public abstract class AbstractHistoryLogServiceImpl<HL extends AbstractHistoryLo
 					throws ServiceException, SecurityServiceException {
 		transactionSynchronizationTaskManagerService.push(
 				new HistoryLogBeforeCommitWithDifferencesTask<T, HLAIB, HL, HET, HD>(
-						new Date(), eventType,
+						Instant.now(), eventType,
 						mainObject, additionalInformation,
 						newHistoryDifferenceSupplier(),
 						differenceGenerator, historyDifferenceGenerator, differenceHandlers

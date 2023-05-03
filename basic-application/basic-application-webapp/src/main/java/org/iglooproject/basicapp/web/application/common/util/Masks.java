@@ -10,14 +10,14 @@ public class Masks {
 	public static MaskOptions dateOptions() {
 		return new MaskOptions()
 			.translation('r', "/[\\/]/", '/')
-			.placeholder(new ResourceModel("date.format.shortDate.placeholder"));
+			.placeholder(new ResourceModel("datetime.pattern.shortDate.placeholder"));
 	}
 
 	public static final String TIME = "00:00";
 
 	public static MaskOptions timeOptions() {
 		return new MaskOptions()
-			.placeholder(new ResourceModel("date.format.time.placeholder"));
+			.placeholder(new ResourceModel("datetime.pattern.time.placeholder"));
 	}
 
 	private Masks() {

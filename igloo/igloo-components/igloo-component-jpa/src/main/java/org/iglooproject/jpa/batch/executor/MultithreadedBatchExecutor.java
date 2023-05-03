@@ -2,7 +2,8 @@ package org.iglooproject.jpa.batch.executor;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -52,7 +53,7 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 	}
 	
 	public void run(String context, final List<Long> entityIds, final IBatchRunnable<Long> batchRunnable) {
-		Date startTime = new Date();
+		Instant startTime = Instant.now();
 		
 		LOGGER.info("Beginning batch for %1$s: %2$d objects", context, entityIds.size());
 		
@@ -138,8 +139,8 @@ public class MultithreadedBatchExecutor extends AbstractBatchExecutor<Multithrea
 		);
 	}
 	
-	protected void logEnd(String context, Date startTime, Exception e) {
-		long duration = new Date().getTime() - startTime.getTime();
+	protected void logEnd(String context, Instant startTime, Exception e) {
+		long duration = Duration.between(startTime, Instant.now()).toMillis();
 		
 		StringBuilder sb = new StringBuilder(String.format("%1$s - Migrated items ", context));
 		if (duration < 1000) {

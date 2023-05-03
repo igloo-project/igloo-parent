@@ -1,14 +1,13 @@
 package org.iglooproject.basicapp.web.application.administration.model;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.basicapp.core.business.announcement.model.Announcement;
 import org.iglooproject.basicapp.core.business.announcement.model.atomic.AnnouncementType;
-import org.iglooproject.basicapp.core.util.DateUtils2;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
-import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.wicket.more.bindable.model.BindableModel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 
@@ -18,10 +17,14 @@ public class AnnouncementBindableModel extends BindableModel<Announcement> {
 
 	private static final long serialVersionUID = -666421439042205567L;
 
-	private final IModel<Date> interruptionStartTimeModel = Model.of();
-	private final IModel<Date> interruptionEndTimeModel = Model.of();
-	private final IModel<Date> publicationStartTimeModel = Model.of();
-	private final IModel<Date> publicationEndTimeModel = Model.of();
+	private final IModel<LocalDate> interruptionStartLocalDateModel = Model.of();
+	private final IModel<LocalTime> interruptionStartLocalTimeModel = Model.of();
+	private final IModel<LocalDate> interruptionEndLocalDateModel = Model.of();
+	private final IModel<LocalTime> interruptionEndLocalTimeModel = Model.of();
+	private final IModel<LocalDate> publicationStartLocalDateModel = Model.of();
+	private final IModel<LocalTime> publicationStartLocalTimeModel = Model.of();
+	private final IModel<LocalDate> publicationEndLocalDateModel = Model.of();
+	private final IModel<LocalTime> publicationEndLocalTimeModel = Model.of();
 
 	public AnnouncementBindableModel() {
 		this(new GenericEntityModel<>(new Announcement()));
@@ -46,10 +49,29 @@ public class AnnouncementBindableModel extends BindableModel<Announcement> {
 		
 		Announcement announcement = getObject();
 		
-		announcement.getPublication().setStartDateTime(DateUtils2.addTime(announcement.getPublication().getStartDateTime(), publicationStartTimeModel.getObject()));
-		announcement.getPublication().setEndDateTime(DateUtils2.addTime(announcement.getPublication().getEndDateTime(), publicationEndTimeModel.getObject()));
-		announcement.getInterruption().setStartDateTime(DateUtils2.addTime(announcement.getInterruption().getStartDateTime(), interruptionStartTimeModel.getObject()));
-		announcement.getInterruption().setEndDateTime(DateUtils2.addTime(announcement.getInterruption().getEndDateTime(), interruptionEndTimeModel.getObject()));
+		if (publicationStartLocalDateModel.getObject() != null && publicationStartLocalTimeModel.getObject() != null) {
+			announcement.getPublication().setStartDateTime(publicationStartLocalDateModel.getObject().atTime(publicationStartLocalTimeModel.getObject()));
+		} else {
+			announcement.getPublication().setStartDateTime(null);
+		}
+		
+		if (publicationEndLocalDateModel.getObject() != null && publicationEndLocalTimeModel.getObject() != null) {
+			announcement.getPublication().setEndDateTime(publicationEndLocalDateModel.getObject().atTime(publicationEndLocalTimeModel.getObject()));
+		} else {
+			announcement.getPublication().setEndDateTime(null);
+		}
+		
+		if (interruptionStartLocalDateModel.getObject() != null && interruptionStartLocalTimeModel.getObject() != null) {
+			announcement.getInterruption().setStartDateTime(interruptionStartLocalDateModel.getObject().atTime(interruptionStartLocalTimeModel.getObject()));
+		} else {
+			announcement.getInterruption().setStartDateTime(null);
+		}
+		
+		if (interruptionEndLocalDateModel.getObject() != null && interruptionEndLocalTimeModel.getObject() != null) {
+			announcement.getInterruption().setEndDateTime(interruptionEndLocalDateModel.getObject().atTime(interruptionEndLocalTimeModel.getObject()));
+		} else {
+			announcement.getInterruption().setEndDateTime(null);
+		}
 	}
 
 	@Override
@@ -58,10 +80,14 @@ public class AnnouncementBindableModel extends BindableModel<Announcement> {
 		
 		Announcement announcement = getObject();
 		
-		publicationStartTimeModel.setObject(CloneUtils.clone(announcement.getPublication().getStartDateTime()));
-		publicationEndTimeModel.setObject(CloneUtils.clone(announcement.getPublication().getEndDateTime()));
-		interruptionStartTimeModel.setObject(CloneUtils.clone(announcement.getInterruption().getStartDateTime()));
-		interruptionEndTimeModel.setObject(CloneUtils.clone(announcement.getInterruption().getEndDateTime()));
+		publicationStartLocalDateModel.setObject(Bindings.announcement().publication().startDateTime().toLocalDate().apply(announcement));
+		publicationStartLocalTimeModel.setObject(Bindings.announcement().publication().startDateTime().toLocalTime().apply(announcement));
+		publicationEndLocalDateModel.setObject(Bindings.announcement().publication().endDateTime().toLocalDate().apply(announcement));
+		publicationEndLocalTimeModel.setObject(Bindings.announcement().publication().endDateTime().toLocalTime().apply(announcement));
+		interruptionStartLocalDateModel.setObject(Bindings.announcement().interruption().startDateTime().toLocalDate().apply(announcement));
+		interruptionStartLocalTimeModel.setObject(Bindings.announcement().interruption().startDateTime().toLocalTime().apply(announcement));
+		interruptionEndLocalDateModel.setObject(Bindings.announcement().interruption().endDateTime().toLocalDate().apply(announcement));
+		interruptionEndLocalTimeModel.setObject(Bindings.announcement().interruption().endDateTime().toLocalTime().apply(announcement));
 	}
 
 	@Override
@@ -77,30 +103,52 @@ public class AnnouncementBindableModel extends BindableModel<Announcement> {
 		super.setObject(announcement);
 	}
 
-	public IModel<Date> getInterruptionStartTimeModel() {
-		return interruptionStartTimeModel;
+	
+
+	public IModel<LocalDate> getInterruptionStartLocalDateModel() {
+		return interruptionStartLocalDateModel;
 	}
 
-	public IModel<Date> getInterruptionEndTimeModel() {
-		return interruptionEndTimeModel;
+	public IModel<LocalTime> getInterruptionStartLocalTimeModel() {
+		return interruptionStartLocalTimeModel;
 	}
 
-	public IModel<Date> getPublicationStartTimeModel() {
-		return publicationStartTimeModel;
+	public IModel<LocalDate> getInterruptionEndLocalDateModel() {
+		return interruptionEndLocalDateModel;
 	}
 
-	public IModel<Date> getPublicationEndTimeModel() {
-		return publicationEndTimeModel;
+	public IModel<LocalTime> getInterruptionEndLocalTimeModel() {
+		return interruptionEndLocalTimeModel;
+	}
+
+	public IModel<LocalDate> getPublicationStartLocalDateModel() {
+		return publicationStartLocalDateModel;
+	}
+
+	public IModel<LocalTime> getPublicationStartLocalTimeModel() {
+		return publicationStartLocalTimeModel;
+	}
+
+	public IModel<LocalDate> getPublicationEndLocalDateModel() {
+		return publicationEndLocalDateModel;
+	}
+
+	public IModel<LocalTime> getPublicationEndLocalTimeModel() {
+		return publicationEndLocalTimeModel;
 	}
 
 	@Override
 	protected void onDetach() {
 		super.onDetach();
 		Detachables.detach(
-			publicationEndTimeModel,
-			publicationStartTimeModel,
-			interruptionStartTimeModel,
-			interruptionEndTimeModel
+			publicationStartLocalDateModel,
+			publicationStartLocalTimeModel,
+			publicationEndLocalDateModel,
+			publicationEndLocalTimeModel,
+			interruptionStartLocalDateModel,
+			interruptionStartLocalTimeModel,
+			interruptionEndLocalDateModel,
+			interruptionEndLocalTimeModel
 		);
 	}
 

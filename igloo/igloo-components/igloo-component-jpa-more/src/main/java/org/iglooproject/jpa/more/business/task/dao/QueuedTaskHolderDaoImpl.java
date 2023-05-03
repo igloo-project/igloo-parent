@@ -1,16 +1,16 @@
 package org.iglooproject.jpa.more.business.task.dao;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
-
-import com.querydsl.jpa.JPQLQuery;
-import com.querydsl.jpa.impl.JPAQuery;
 
 import org.iglooproject.jpa.business.generic.dao.GenericEntityDaoImpl;
 import org.iglooproject.jpa.more.business.task.model.QQueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
+
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQuery;
 
 public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTaskHolder>
 		implements IQueuedTaskHolderDao {
@@ -18,7 +18,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 	private static final QQueuedTaskHolder qQueuedTaskHolder = QQueuedTaskHolder.queuedTaskHolder; // NOSONAR
 	
 	@Override
-	public Long count(Date since, TaskStatus... statuses) {
+	public Long count(Instant since, TaskStatus... statuses) {
 		JPQLQuery<QueuedTaskHolder> query = new JPAQuery<>(getEntityManager());
 
 		query.from(qQueuedTaskHolder).where(
@@ -38,7 +38,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 	
 	@Override
 	public QueuedTaskHolder getNextTaskForExecution(String taskType) {
-		Date now = new Date();
+		Instant now = Instant.now();
 		
 		QQueuedTaskHolder qQueuedTask = QQueuedTaskHolder.queuedTaskHolder;
 		
@@ -62,8 +62,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 
 	@Override
 	public QueuedTaskHolder getStalledTask(String taskType, int executionTimeLimitInSeconds) {
-		Calendar timeLimit = Calendar.getInstance();
-		timeLimit.add(Calendar.SECOND, -executionTimeLimitInSeconds);
+		Instant timeLimit = Instant.now().minus(executionTimeLimitInSeconds, ChronoUnit.SECONDS);
 		
 		QQueuedTaskHolder qQueuedTask = QQueuedTaskHolder.queuedTaskHolder;
 		
@@ -72,7 +71,7 @@ public class QueuedTaskHolderDaoImpl extends GenericEntityDaoImpl<Long, QueuedTa
 		query.from(qQueuedTask)
 				.where(qQueuedTask.startDate.isNotNull()
 						.and(qQueuedTask.taskType.eq(taskType))
-						.and(qQueuedTask.startDate.before(timeLimit.getTime())));
+						.and(qQueuedTask.startDate.before(timeLimit)));
 		
 		List<QueuedTaskHolder> stalledTasks = query.fetch();
 		

@@ -1,61 +1,60 @@
 package org.iglooproject.test.business.nullables.model.embeddable;
 
-import java.util.Date;
+import java.time.Instant;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-
-import org.iglooproject.commons.util.CloneUtils;
 
 @Embeddable
 public class NullablesSection {
 
 	@Basic(optional = false)
 	@Column(nullable = false)
-	private Date basicFalseColumnFalse;
+	private Instant basicFalseColumnFalse;
 
 	@Basic(optional = false)
 	@Column(nullable = true)
-	private Date basicFalseColumnTrue;
+	private Instant basicFalseColumnTrue;
 
 	@Basic(optional = true)
 	@Column(nullable = false)
-	private Date basicTrueColumnFalse;
+	private Instant basicTrueColumnFalse;
 
 	@Basic(optional = true)
 	@Column(nullable = true)
-	private Date basicTrueColumnTrue;
+	private Instant basicTrueColumnTrue;
 
-	public Date getBasicFalseColumnFalse() {
-		return CloneUtils.clone(basicFalseColumnFalse);
+	public Instant getBasicFalseColumnFalse() {
+		return basicFalseColumnFalse;
 	}
 
-	public void setBasicFalseColumnFalse(Date basicFalseColumnFalse) {
-		this.basicFalseColumnFalse = CloneUtils.clone(basicFalseColumnFalse);
+	public void setBasicFalseColumnFalse(Instant basicFalseColumnFalse) {
+		this.basicFalseColumnFalse = basicFalseColumnFalse;
 	}
 
-	public Date getBasicFalseColumnTrue() {
-		return CloneUtils.clone(basicFalseColumnTrue);
+	public Instant getBasicFalseColumnTrue() {
+		return basicFalseColumnTrue;
 	}
 
-	public void setBasicFalseColumnTrue(Date basicFalseColumnTrue) {
-		this.basicFalseColumnTrue = CloneUtils.clone(basicFalseColumnTrue);
+	public void setBasicFalseColumnTrue(Instant basicFalseColumnTrue) {
+		this.basicFalseColumnTrue = basicFalseColumnTrue;
 	}
 
-	public Date getBasicTrueColumnFalse() {
-		return CloneUtils.clone(basicTrueColumnFalse);
+	public Instant getBasicTrueColumnFalse() {
+		return basicTrueColumnFalse;
 	}
 
-	public void setBasicTrueColumnFalse(Date basicTrueColumnFalse) {
-		this.basicTrueColumnFalse = CloneUtils.clone(basicTrueColumnFalse);
+	public void setBasicTrueColumnFalse(Instant basicTrueColumnFalse) {
+		this.basicTrueColumnFalse = basicTrueColumnFalse;
 	}
 
-	public Date getBasicTrueColumnTrue() {
-		return CloneUtils.clone(basicTrueColumnTrue);
+	public Instant getBasicTrueColumnTrue() {
+		return basicTrueColumnTrue;
 	}
 
-	public void setBasicTrueColumnTrue(Date basicTrueColumnTrue) {
-		this.basicTrueColumnTrue = CloneUtils.clone(basicTrueColumnTrue);
+	public void setBasicTrueColumnTrue(Instant basicTrueColumnTrue) {
+		this.basicTrueColumnTrue = basicTrueColumnTrue;
 	}
+
 }

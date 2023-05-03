@@ -1,6 +1,8 @@
 package org.iglooproject.basicapp.web.application.common.component;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import org.apache.wicket.Session;
@@ -77,7 +79,7 @@ public class AnnouncementsPanel extends Panel {
 								closeModel.setObject(Boolean.TRUE);
 								
 								User user = BasicApplicationSession.get().getUser();
-								user.getAnnouncementInformation().setLastActionDate(new Date());
+								user.getAnnouncementInformation().setLastActionDate(Instant.now());
 								user.getAnnouncementInformation().setOpen(!closeModel.getObject());
 								userService.update(user);
 								
@@ -97,7 +99,7 @@ public class AnnouncementsPanel extends Panel {
 						closeModel.setObject(Boolean.FALSE);
 						
 						User user = BasicApplicationSession.get().getUser();
-						user.getAnnouncementInformation().setLastActionDate(new Date());
+						user.getAnnouncementInformation().setLastActionDate(Instant.now());
 						user.getAnnouncementInformation().setOpen(!closeModel.getObject());
 						userService.update(user);
 						
@@ -128,10 +130,10 @@ public class AnnouncementsPanel extends Panel {
 		
 		setVisible(true);
 		
-		Date userLastReadDate = BasicApplicationSession.get().getUser().getAnnouncementInformation().getLastActionDate();
-		Date mostRecentPublicationStartDate = announcementService.getMostRecentPublicationStartDate();
+		Instant lastActionDate = BasicApplicationSession.get().getUser().getAnnouncementInformation().getLastActionDate();
+		LocalDateTime mostRecentPublicationStartDate = announcementService.getMostRecentPublicationStartDate();
 		
-		if (userLastReadDate == null || userLastReadDate.before(mostRecentPublicationStartDate)) {
+		if (lastActionDate == null || LocalDateTime.ofInstant(lastActionDate, ZoneId.systemDefault()).isBefore(mostRecentPublicationStartDate)) {
 			closeModel.setObject(Boolean.FALSE);
 		} else {
 			closeModel.setObject(!BasicApplicationSession.get().getUser().getAnnouncementInformation().isOpen());

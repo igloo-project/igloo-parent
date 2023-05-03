@@ -1,10 +1,12 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.state;
 
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
+import org.iglooproject.commons.util.time.IDateTimePattern;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.ActionColumnBuilder;
@@ -38,6 +40,9 @@ public interface IColumnState<T, S extends ISort<?>> extends IBuildState<T, S> {
 
 	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
 			ICoreBinding<? super T, ? extends Date> binding, IDatePattern datePattern);
+
+	IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			ICoreBinding<? super T, ? extends TemporalAccessor> binding, IDateTimePattern dateTimePattern);
 
 	<C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
 			ICoreBinding<? super T, C> binding, IBootstrapRenderer<? super C> renderer);

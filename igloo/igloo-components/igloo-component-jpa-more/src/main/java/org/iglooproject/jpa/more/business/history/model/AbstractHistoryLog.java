@@ -1,7 +1,7 @@
 package org.iglooproject.jpa.more.business.history.model;
 
+import java.time.Instant;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -12,7 +12,6 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmb
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.ObjectPath;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.PropertyValue;
-import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
@@ -29,8 +28,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
 
 @Bindable
@@ -78,10 +75,8 @@ public abstract class AbstractHistoryLog<
 	private Long id;
 	
 	@Basic(optional = false)
-	@Temporal(TemporalType.TIMESTAMP)
 	@GenericField(name = DATE, sortable = Sortable.YES)
-	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
-	private Date date;
+	private Instant date;
 
 	@Basic(optional = false)
 	@Enumerated(EnumType.STRING)
@@ -130,8 +125,8 @@ public abstract class AbstractHistoryLog<
 		// nothing to do
 	}
 	
-	protected AbstractHistoryLog(Date date, HET eventType, HistoryValue mainObject) {
-		this.date = CloneUtils.clone(date);
+	protected AbstractHistoryLog(Instant date, HET eventType, HistoryValue mainObject) {
+		this.date = date;
 		this.eventType = eventType;
 		this.mainObject = mainObject;
 	}
@@ -165,12 +160,12 @@ public abstract class AbstractHistoryLog<
 		return FieldPath.ROOT;
 	}
 
-	public Date getDate() {
-		return CloneUtils.clone(date);
+	public Instant getDate() {
+		return date;
 	}
 
-	public void setDate(Date date) {
-		this.date = CloneUtils.clone(date);
+	public void setDate(Instant date) {
+		this.date = date;
 	}
 
 	public HET getEventType() {

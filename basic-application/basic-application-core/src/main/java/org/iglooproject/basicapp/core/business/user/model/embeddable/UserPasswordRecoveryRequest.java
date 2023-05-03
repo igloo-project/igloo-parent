@@ -1,7 +1,7 @@
 package org.iglooproject.basicapp.core.business.user.model.embeddable;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -10,10 +10,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Transient;
 
 import org.bindgen.Bindable;
-
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import org.iglooproject.basicapp.core.business.user.model.atomic.UserPasswordRecoveryRequestType;
-import org.iglooproject.commons.util.CloneUtils;
 
 @Embeddable
 @Bindable
@@ -25,7 +23,7 @@ public class UserPasswordRecoveryRequest implements Serializable {
 	private String token;
 
 	@Column
-	private Date creationDate;
+	private Instant creationDate;
 
 	@Column
 	@Enumerated(EnumType.STRING)
@@ -43,12 +41,12 @@ public class UserPasswordRecoveryRequest implements Serializable {
 		this.token = token;
 	}
 
-	public Date getCreationDate() {
-		return CloneUtils.clone(creationDate);
+	public Instant getCreationDate() {
+		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = CloneUtils.clone(creationDate);
+	public void setCreationDate(Instant creationDate) {
+		this.creationDate = creationDate;
 	}
 
 	public UserPasswordRecoveryRequestType getType() {

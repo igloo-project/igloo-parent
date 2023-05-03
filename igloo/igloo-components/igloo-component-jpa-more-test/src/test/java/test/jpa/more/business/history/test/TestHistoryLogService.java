@@ -5,12 +5,10 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
-import java.util.Calendar;
+import java.time.Instant;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -64,7 +62,7 @@ import test.jpa.more.business.history.service.ITestHistoryLogService;
 @MockitoSettings(strictness = Strictness.LENIENT)
 class TestHistoryLogService extends AbstractJpaMoreTestCase {
 	
-	private static final Date DATE = new Date();
+	private static final Instant DATE = Instant.now();
 
 	/*
 	 * Only here to mock some parameters passed to the log() method.
@@ -186,8 +184,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
 		assertThat(log.getId()).isNotNull();
 
-		// beware that stored date **can** be a java.sql.Timestamp
-		assertThat(log.getDate().getTime()).isEqualTo(DATE.getTime());
+		assertThat(log.getDate()).isEqualTo(DATE);
 		assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
 		assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
 		assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
@@ -218,8 +215,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 					}
 				});
 
-		// The value must be truncated because timestamps do not have the same precision as java.util.Date
-		final Date before = DateUtils.truncate(new Date(), Calendar.SECOND);
+		final Instant before = Instant.now();
 		
 		writeTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@SuppressWarnings("unchecked")
@@ -237,7 +233,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 			}
 		});
 		
-		final Date after = new Date();
+		final Instant after = Instant.now();
 
 		List<TestHistoryLog> logs = historyLogService.list();
 		
@@ -247,15 +243,15 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
 		assertThat(log.getId()).isNotNull();
 		
-		assertThat(log.getDate(), new TypeSafeMatcher<Date>() {
+		assertThat(log.getDate(), new TypeSafeMatcher<Instant>() {
 			@Override
 			public void describeTo(Description description) {
 				description.appendText("a date between ").appendValue(before).appendText(" and ").appendValue(after);
 			}
 
 			@Override
-			protected boolean matchesSafely(Date item) {
-				return !item.before(before) && !item.after(after);
+			protected boolean matchesSafely(Instant item) {
+				return !item.isBefore(before) && !item.isAfter(after);
 			}
 		});
 		assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
@@ -288,8 +284,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 					}
 				});
 
-		// The value must be truncated because timestamps do not have the same precision as java.util.Date
-		final Date before = DateUtils.truncate(new Date(), Calendar.SECOND);
+		final Instant before = Instant.now();
 		
 		writeTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			@SuppressWarnings("unchecked")
@@ -313,7 +308,7 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 			}
 		});
 		
-		final Date after = new Date();
+		final Instant after = Instant.now();
 
 		List<TestHistoryLog> logs = historyLogService.list();
 		
@@ -323,15 +318,15 @@ class TestHistoryLogService extends AbstractJpaMoreTestCase {
 
 		assertThat(log.getId()).isNotNull();
 		
-		assertThat(log.getDate(), new TypeSafeMatcher<Date>() {
+		assertThat(log.getDate(), new TypeSafeMatcher<Instant>() {
 			@Override
 			public void describeTo(Description description) {
 				description.appendText("a date between ").appendValue(before).appendText(" and ").appendValue(after);
 			}
 
 			@Override
-			protected boolean matchesSafely(Date item) {
-				return !item.before(before) && !item.after(after);
+			protected boolean matchesSafely(Instant item) {
+				return !item.isBefore(before) && !item.isAfter(after);
 			}
 		});
 		assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);

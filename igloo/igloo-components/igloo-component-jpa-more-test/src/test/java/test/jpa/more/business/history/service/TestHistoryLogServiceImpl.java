@@ -1,6 +1,6 @@
 package test.jpa.more.business.history.service;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import org.iglooproject.functional.Supplier2;
@@ -27,7 +27,7 @@ public class TestHistoryLogServiceImpl extends AbstractHistoryLogServiceImpl<Tes
 	}
 	
 	@Override
-	protected <T> TestHistoryLog newHistoryLog(Date date, TestHistoryEventType eventType, List<TestHistoryDifference> differences,
+	protected <T> TestHistoryLog newHistoryLog(Instant date, TestHistoryEventType eventType, List<TestHistoryDifference> differences,
 			T mainObject, TestHistoryLogAdditionalInformationBean additionalInformation) {
 		TestHistoryLog log = new TestHistoryLog(date, eventType, valueService.create(mainObject));
 		

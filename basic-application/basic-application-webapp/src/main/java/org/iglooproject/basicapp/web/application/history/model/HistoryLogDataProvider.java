@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.web.application.history.model;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -26,8 +26,8 @@ public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<Hist
 
 	private final IModel<? extends User> subjectModel;
 
-	private final IModel<Date> dateMinModel = new Model<>();
-	private final IModel<Date> dateMaxModel = new Model<>();
+	private final IModel<Instant> dateMinModel = new Model<>();
+	private final IModel<Instant> dateMaxModel = new Model<>();
 
 	private final IModel<? extends GenericEntity<?, ?>> objectModel;
 
@@ -63,11 +63,11 @@ public class HistoryLogDataProvider extends AbstractSearchQueryDataProvider<Hist
 				.sort(sortModel.getObject());
 	}
 
-	public IModel<Date> getDateMinModel() {
+	public IModel<Instant> getDateMinModel() {
 		return dateMinModel;
 	}
 
-	public IModel<Date> getDateMaxModel() {
+	public IModel<Instant> getDateMaxModel() {
 		return dateMaxModel;
 	}
 
