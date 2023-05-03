@@ -1,7 +1,7 @@
 package org.iglooproject.jpa.more.business.task.search;
 
+import java.time.Instant;
 import java.util.Collection;
-import java.util.Date;
 
 import org.iglooproject.jpa.more.business.search.query.AbstractHibernateSearchSearchQuery;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
@@ -46,19 +46,19 @@ public class QueuedTaskHolderSearchQueryImpl extends AbstractHibernateSearchSear
 	}
 
 	@Override
-	public IQueuedTaskHolderSearchQuery creationDate(Date creationDate) {
+	public IQueuedTaskHolderSearchQuery creationDate(Instant creationDate) {
 		must(matchRangeMax(QueuedTaskHolder.CREATION_DATE, creationDate));
 		return this;
 	}
 
 	@Override
-	public IQueuedTaskHolderSearchQuery startDate(Date startDate) {
+	public IQueuedTaskHolderSearchQuery startDate(Instant startDate) {
 		must(matchRangeMax(QueuedTaskHolder.START_DATE, startDate));
 		return this;
 	}
 
 	@Override
-	public IQueuedTaskHolderSearchQuery endDate(Date endDate) {
+	public IQueuedTaskHolderSearchQuery endDate(Instant endDate) {
 		must(matchRangeMax(QueuedTaskHolder.END_DATE, endDate));
 		return this;
 	}

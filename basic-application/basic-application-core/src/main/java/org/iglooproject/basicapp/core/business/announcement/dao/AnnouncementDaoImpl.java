@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.core.business.announcement.dao;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.iglooproject.basicapp.core.business.announcement.model.Announcement;
@@ -17,7 +17,7 @@ public class AnnouncementDaoImpl extends GenericEntityDaoImpl<Long, Announcement
 
 	@Override
 	public List<Announcement> listEnabled() {
-		Date now = new Date();
+		LocalDateTime now = LocalDateTime.now();
 		return new JPAQuery<>(getEntityManager())
 			.select(qAnnouncement)
 			.from(qAnnouncement)
@@ -29,8 +29,8 @@ public class AnnouncementDaoImpl extends GenericEntityDaoImpl<Long, Announcement
 	}
 
 	@Override
-	public Date getMostRecentPublicationStartDate() {
-		Date now = new Date();
+	public LocalDateTime getMostRecentPublicationStartDate() {
+		LocalDateTime now = LocalDateTime.now();
 		return new JPAQuery<>(getEntityManager())
 			.select(qAnnouncement.publication.startDateTime)
 			.from(qAnnouncement)

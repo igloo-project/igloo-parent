@@ -3,8 +3,8 @@ package org.iglooproject.export.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,11 +36,11 @@ class TestExcelGeneration {
 				.build();
 
 		List<Person> persons = new LinkedList<Person>();
-		persons.add(new Person("username1", "firstname1", "lastname1", new Date(), 24, 1.80, .88));
-		persons.add(new Person("username2", "firstname2", "lastname2", new Date(), 25, 1.70, .20));
-		persons.add(new Person("username3", "firstname3", "lastname3", new Date(), 32, 1.75, .50));
-		persons.add(new Person("username4", "firstname4", "lastname4", new Date(), 53, 1.72, .21));
-		persons.add(new Person("username5", "firstname5", "lastname5", new Date(), 19, 1.88, .23));
+		persons.add(new Person("username1", "firstname1", "lastname1", LocalDateTime.now(), 24, 1.80, .88));
+		persons.add(new Person("username2", "firstname2", "lastname2", LocalDateTime.now(), 25, 1.70, .20));
+		persons.add(new Person("username3", "firstname3", "lastname3", LocalDateTime.now(), 32, 1.75, .50));
+		persons.add(new Person("username4", "firstname4", "lastname4", LocalDateTime.now(), 53, 1.72, .21));
+		persons.add(new Person("username5", "firstname5", "lastname5", LocalDateTime.now(), 19, 1.88, .23));
 
 		PersonHSSFExport export = new PersonHSSFExport();
 		HSSFWorkbook workbook = export.generate(persons, columns);
@@ -82,11 +82,11 @@ class TestExcelGeneration {
 		columns.add("percentage");
 
 		List<Person> persons = new LinkedList<Person>();
-		persons.add(new Person("username1", "firstname1", "lastname1", new Date(), 24, 1.80, .88));
-		persons.add(new Person("username2", "firstname2", "lastname2", new Date(), 25, 1.70, .20));
-		persons.add(new Person("username3", "firstname3", "lastname3", new Date(), 32, 1.75, .50));
-		persons.add(new Person("username4", "firstname4", "lastname4", new Date(), 53, 1.72, .21));
-		persons.add(new Person("username5", "firstname5", "lastname5", new Date(), 19, 1.88, .23));
+		persons.add(new Person("username1", "firstname1", "lastname1", LocalDateTime.now(), 24, 1.80, .88));
+		persons.add(new Person("username2", "firstname2", "lastname2", LocalDateTime.now(), 25, 1.70, .20));
+		persons.add(new Person("username3", "firstname3", "lastname3", LocalDateTime.now(), 32, 1.75, .50));
+		persons.add(new Person("username4", "firstname4", "lastname4", LocalDateTime.now(), 53, 1.72, .21));
+		persons.add(new Person("username5", "firstname5", "lastname5", LocalDateTime.now(), 19, 1.88, .23));
 
 		PersonXSSFExport export = new PersonXSSFExport();
 		@SuppressWarnings("unused")

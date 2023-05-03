@@ -1,5 +1,8 @@
 package org.iglooproject.basicapp.web.application.administration.export;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -84,20 +87,23 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
 			addTextCell(row, columnIndex++, "Non");
 		}
 		
-		if (binding.creationDate().getSafely() != null) {
-			addDateCell(row, columnIndex++, binding.creationDate().getSafely());
+		Instant creationDate = binding.creationDate().getSafely();
+		if (creationDate != null) {
+			addLocalDateCell(row, columnIndex++, LocalDate.ofInstant(creationDate, ZoneId.systemDefault()));
 		} else {
 			addTextCell(row, columnIndex++, "");
 		}
 		
-		if (binding.lastUpdateDate().getSafely() != null) {
-			addDateCell(row, columnIndex++, binding.lastUpdateDate().getSafely());
+		Instant lastUpdateDate = binding.lastUpdateDate().getSafely();
+		if (lastUpdateDate != null) {
+			addLocalDateCell(row, columnIndex++, LocalDate.ofInstant(lastUpdateDate, ZoneId.systemDefault()));
 		} else {
 			addTextCell(row, columnIndex++, "");
 		}
 		
-		if (binding.lastLoginDate().getSafely() != null) {
-			addDateCell(row, columnIndex++, binding.lastLoginDate().getSafely());
+		Instant lastLoginDate = binding.lastLoginDate().getSafely();
+		if (lastLoginDate != null) {
+			addLocalDateCell(row, columnIndex++, LocalDate.ofInstant(lastLoginDate, ZoneId.systemDefault()));
 		} else {
 			addTextCell(row, columnIndex++, "");
 		}

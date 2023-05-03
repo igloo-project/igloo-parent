@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.core.business.announcement.service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.iglooproject.basicapp.core.business.announcement.dao.IAnnouncementDao;
@@ -75,7 +75,7 @@ public class AnnouncementServiceImpl extends GenericEntityServiceImpl<Long, Anno
 	}
 
 	@Override
-	public Date getMostRecentPublicationStartDate() {
+	public LocalDateTime getMostRecentPublicationStartDate() {
 		return dao.getMostRecentPublicationStartDate();
 	}
 

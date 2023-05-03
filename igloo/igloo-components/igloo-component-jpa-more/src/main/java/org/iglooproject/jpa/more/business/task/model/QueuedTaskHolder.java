@@ -1,7 +1,6 @@
 package org.iglooproject.jpa.more.business.task.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +18,6 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
-import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
@@ -79,19 +77,19 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	@Column(nullable = false)
 	@Field(name = CREATION_DATE)
 	@SortableField(forField = CREATION_DATE)
-	private Date creationDate;
+	private Instant creationDate;
 
 	@Field(name = TRIGGERING_DATE)
 	@SortableField(forField = TRIGGERING_DATE)
-	private Date triggeringDate = null;
+	private Instant triggeringDate = null;
 
 	@Field(name = START_DATE)
 	@SortableField(forField = START_DATE)
-	private Date startDate = null;
+	private Instant startDate = null;
 
 	@Field(name = END_DATE)
 	@SortableField(forField = END_DATE)
-	private Date endDate = null;
+	private Instant endDate = null;
 
 	@Version
 	@Column(name = "optLock")
@@ -167,36 +165,36 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 		this.taskType = taskType;
 	}
 
-	public Date getCreationDate() {
-		return CloneUtils.clone(creationDate);
+	public Instant getCreationDate() {
+		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = CloneUtils.clone(creationDate);
+	public void setCreationDate(Instant creationDate) {
+		this.creationDate = creationDate;
 	}
 
-	public Date getTriggeringDate() {
-		return CloneUtils.clone(triggeringDate);
+	public Instant getTriggeringDate() {
+		return triggeringDate;
 	}
 
-	public void setTriggeringDate(Date triggeringDate) {
-		this.triggeringDate = CloneUtils.clone(triggeringDate);
+	public void setTriggeringDate(Instant triggeringDate) {
+		this.triggeringDate = triggeringDate;
 	}
 
-	public Date getStartDate() {
-		return CloneUtils.clone(startDate);
+	public Instant getStartDate() {
+		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = CloneUtils.clone(startDate);
+	public void setStartDate(Instant startDate) {
+		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
-		return CloneUtils.clone(endDate);
+	public Instant getEndDate() {
+		return endDate;
 	}
 
-	public void setEndDate(Date completionDate) {
-		this.endDate = CloneUtils.clone(completionDate);
+	public void setEndDate(Instant endDate) {
+		this.endDate = endDate;
 	}
 
 	public String getSerializedTask() {
@@ -266,12 +264,11 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
 	@Override
 	protected ToStringHelper toStringHelper() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss z");
 		return super.toStringHelper()
 			.add("name", getName())
-			.add("creationDate", getCreationDate() != null ? dateFormat.format(getCreationDate()) : null)
-			.add("startDate", getStartDate() != null ? dateFormat.format(getStartDate()) : null)
-			.add("completionDate", getEndDate() != null ? dateFormat.format(getEndDate()) : null);
+			.add("creationDate", getCreationDate())
+			.add("startDate", getStartDate())
+			.add("completionDate", getEndDate());
 	}
 
 }

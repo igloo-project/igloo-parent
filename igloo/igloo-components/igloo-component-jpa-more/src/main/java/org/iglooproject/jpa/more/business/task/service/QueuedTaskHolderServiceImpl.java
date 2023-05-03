@@ -1,9 +1,7 @@
 package org.iglooproject.jpa.more.business.task.service;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -11,6 +9,7 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.task.dao.IQueuedTaskHolderDao;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Long, QueuedTaskHolder> implements
 		IQueuedTaskHolderService {
@@ -25,12 +24,12 @@ public class QueuedTaskHolderServiceImpl extends GenericEntityServiceImpl<Long, 
 
 	@Override
 	protected void createEntity(QueuedTaskHolder queuedTaskHolder) throws ServiceException, SecurityServiceException {
-		queuedTaskHolder.setCreationDate(new Date());
+		queuedTaskHolder.setCreationDate(Instant.now());
 		super.createEntity(queuedTaskHolder);
 	}
 
 	@Override
-	public Long count(Date since, TaskStatus... statuses) {
+	public Long count(Instant since, TaskStatus... statuses) {
 		return queuedTaskHolderDao.count(since, statuses);
 	}
 	

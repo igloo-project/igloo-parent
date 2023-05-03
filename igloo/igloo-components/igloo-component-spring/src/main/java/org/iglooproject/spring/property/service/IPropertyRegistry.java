@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileFilter;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -178,6 +182,22 @@ public interface IPropertyRegistry {
 	 * @see StringDateTimeConverter
 	 */
 	void registerDateTime(IPropertyRegistryKey<Date> propertyId, Date defaultValue);
+
+	void registerInstant(IPropertyRegistryKey<Instant> propertyId);
+
+	void registerInstant(IPropertyRegistryKey<Instant> propertyId, Instant defaultValue);
+
+	void registerLocalDate(IPropertyRegistryKey<LocalDate> propertyId);
+
+	void registerLocalDate(IPropertyRegistryKey<LocalDate> propertyId, LocalDate defaultValue);
+
+	void registerLocalDateTime(IPropertyRegistryKey<LocalDateTime> propertyId);
+
+	void registerLocalDateTime(IPropertyRegistryKey<LocalDateTime> propertyId, LocalDateTime defaultValue);
+
+	void registerLocalTime(IPropertyRegistryKey<LocalTime> propertyId);
+
+	void registerLocalTime(IPropertyRegistryKey<LocalTime> propertyId, LocalTime defaultValue);
 
 	/**
 	 * Property must use the following format : {@link Locale#toLanguageTag()}

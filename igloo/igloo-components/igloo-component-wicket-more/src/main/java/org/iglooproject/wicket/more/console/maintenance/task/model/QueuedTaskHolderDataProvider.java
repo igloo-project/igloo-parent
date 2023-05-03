@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.console.maintenance.task.model;
 
+import java.time.Instant;
 import java.util.Collection;
-import java.util.Date;
 
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
@@ -36,11 +36,11 @@ public class QueuedTaskHolderDataProvider extends AbstractSearchQueryDataProvide
 
 	private final IModel<Collection<String>> queueIdsModel = new CollectionModel<>();
 
-	private final IModel<Date> creationDateModel = new Model<>();
+	private final IModel<Instant> creationDateModel = new Model<>();
 
-	private final IModel<Date> startDateModel = new Model<>();
+	private final IModel<Instant> startDateModel = new Model<>();
 
-	private final IModel<Date> endDateModel = new Model<>();
+	private final IModel<Instant> endDateModel = new Model<>();
 
 	private final CompositeSortModel<QueuedTaskHolderSort> sortModel = new CompositeSortModel<>(
 			CompositingStrategy.LAST_ONLY,
@@ -78,15 +78,15 @@ public class QueuedTaskHolderDataProvider extends AbstractSearchQueryDataProvide
 		return queueIdsModel;
 	}
 
-	public IModel<Date> getCreationDateModel() {
+	public IModel<Instant> getCreationDateModel() {
 		return creationDateModel;
 	}
 
-	public IModel<Date> getStartDateModel() {
+	public IModel<Instant> getStartDateModel() {
 		return startDateModel;
 	}
 
-	public IModel<Date> getCompletionDateModel() {
+	public IModel<Instant> getCompletionDateModel() {
 		return endDateModel;
 	}
 

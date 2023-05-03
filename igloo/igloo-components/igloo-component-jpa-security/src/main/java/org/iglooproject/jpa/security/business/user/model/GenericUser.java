@@ -2,9 +2,9 @@ package org.iglooproject.jpa.security.business.user.model;
 
 import static org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl.EMPTY_PASSWORD_HASH;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Objects;
@@ -29,7 +29,6 @@ import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
-import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.search.bridge.GenericEntityCollectionIdFieldBridge;
@@ -86,15 +85,15 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 
 	@JsonIgnore
 	@Column(nullable = false)
-	private Date creationDate;
+	private Instant creationDate;
 
 	@JsonIgnore
 	@Column(nullable = false)
-	private Date lastUpdateDate;
+	private Instant lastUpdateDate;
 
 	@JsonIgnore
 	@Column
-	private Date lastLoginDate;
+	private Instant lastLoginDate;
 
 	/**
 	 * preferred locale for user, can be null
@@ -201,28 +200,28 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 		this.enabled = enabled;
 	}
 
-	public void setLastLoginDate(Date lastLoginDate) {
-		this.lastLoginDate = CloneUtils.clone(lastLoginDate);
+	public Instant getCreationDate() {
+		return creationDate;
 	}
 
-	public Date getLastLoginDate() {
-		return CloneUtils.clone(lastLoginDate);
-	}
-	
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = CloneUtils.clone(creationDate);
+	public void setCreationDate(Instant creationDate) {
+		this.creationDate = creationDate;
 	}
 
-	public Date getCreationDate() {
-		return CloneUtils.clone(creationDate);
-	}
-	
-	public Date getLastUpdateDate() {
-		return CloneUtils.clone(lastUpdateDate);
+	public Instant getLastUpdateDate() {
+		return lastUpdateDate;
 	}
 
-	public void setLastUpdateDate(Date lastUpdateDate) {
-		this.lastUpdateDate = CloneUtils.clone(lastUpdateDate);
+	public void setLastUpdateDate(Instant lastUpdateDate) {
+		this.lastUpdateDate = lastUpdateDate;
+	}
+
+	public Instant getLastLoginDate() {
+		return lastLoginDate;
+	}
+
+	public void setLastLoginDate(Instant lastLoginDate) {
+		this.lastLoginDate = lastLoginDate;
 	}
 
 	/**

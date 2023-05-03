@@ -1,5 +1,9 @@
 package org.iglooproject.basicapp.web.application;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Locale;
 
 import org.apache.wicket.Application;
@@ -24,8 +28,12 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationTechnicalUserListPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDetailPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupListPage;
+import org.iglooproject.basicapp.web.application.common.converter.LocalDateConverter;
+import org.iglooproject.basicapp.web.application.common.converter.LocalDateTimeConverter;
+import org.iglooproject.basicapp.web.application.common.converter.LocalTimeConverter;
 import org.iglooproject.basicapp.web.application.common.converter.PostalCodeConverter;
 import org.iglooproject.basicapp.web.application.common.renderer.AuthorityRenderer;
+import org.iglooproject.basicapp.web.application.common.renderer.InstantRenderer;
 import org.iglooproject.basicapp.web.application.common.renderer.UserGroupRenderer;
 import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
 import org.iglooproject.basicapp.web.application.common.template.favicon.ApplicationFaviconPackage;
@@ -131,6 +139,11 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 	@Override
 	protected IConverterLocator newConverterLocator() {
 		ConverterLocator converterLocator = new ConverterLocator();
+		
+		converterLocator.set(LocalDate.class, LocalDateConverter.get());
+		converterLocator.set(LocalDateTime.class, LocalDateTimeConverter.get());
+		converterLocator.set(LocalTime.class, LocalTimeConverter.get());
+		converterLocator.set(Instant.class, InstantRenderer.get());
 		
 		converterLocator.set(Authority.class, AuthorityRenderer.get());
 		converterLocator.set(User.class, UserRenderer.get());

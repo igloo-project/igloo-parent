@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.web.application.notification.service;
 
-import java.util.Date;
+import java.time.Instant;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
@@ -37,7 +37,7 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 	}
 
 	@Override
-	public INotificationContentDescriptor example(final User user, final Date date) {
+	public INotificationContentDescriptor example(final User user, final Instant date) {
 		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.example") {
 			@Override
 			public Object getSubjectParameter() {
@@ -88,7 +88,7 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 				return new UserPasswordRecoveryRequestHtmlNotificationPanel<>(
 					wicketId,
 					keyGenerator,
-					userModel, userModel, Model.of(new Date()),
+					userModel, userModel, Model.of(Instant.now()),
 					mapper.map(userModel, BindingModel.of(userModel, Bindings.user().passwordRecoveryRequest().token()))
 				);
 			}

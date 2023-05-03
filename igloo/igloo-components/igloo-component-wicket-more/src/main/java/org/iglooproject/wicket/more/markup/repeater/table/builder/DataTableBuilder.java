@@ -1,5 +1,6 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder;
 
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.commons.util.binding.ICoreBinding;
+import org.iglooproject.commons.util.time.IDateTimePattern;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.wicket.more.link.descriptor.generator.ILinkGenerator;
@@ -291,6 +293,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 	}
 	
 	@Override
+	public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel,
+			ICoreBinding<? super T, ? extends TemporalAccessor> binding, IDateTimePattern dateTimePattern) {
+		return addLabelColumn(headerModel, binding, Renderer.fromDateTimePattern(dateTimePattern));
+	}
+	
+	@Override
 	public <C> IAddedBootstrapBadgeColumnState<T, S, C> addBootstrapBadgeColumn(IModel<String> headerModel,
 			final ICoreBinding<? super T, C> binding, final IBootstrapRenderer<? super C> renderer) {
 		CoreBootstrapBadgeColumn<T, S, C> column = new CoreBootstrapBadgeColumn<>(headerModel, binding, renderer);
@@ -489,6 +497,12 @@ public final class DataTableBuilder<T, S extends ISort<?>> implements IColumnSta
 		public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, ICoreBinding<? super T, ? extends Date> binding,
 				IDatePattern datePattern) {
 			return DataTableBuilder.this.addLabelColumn(headerModel, binding, datePattern);
+		}
+
+		@Override
+		public IAddedLabelColumnState<T, S> addLabelColumn(IModel<String> headerModel, ICoreBinding<? super T, ? extends TemporalAccessor> binding,
+				IDateTimePattern dateTimePattern) {
+			return DataTableBuilder.this.addLabelColumn(headerModel, binding, dateTimePattern);
 		}
 
 		@Override

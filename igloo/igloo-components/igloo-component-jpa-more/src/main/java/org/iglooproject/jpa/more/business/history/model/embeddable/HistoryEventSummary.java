@@ -1,20 +1,16 @@
 package org.iglooproject.jpa.more.business.history.model.embeddable;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.SortableField;
-
-import org.iglooproject.commons.util.CloneUtils;
 
 /**
  * An {@link Embeddable embeddable} for storing limited information about an event:
@@ -39,11 +35,9 @@ public class HistoryEventSummary implements Serializable {
 
 	@Basic(optional = true) // Might be defined as nullable in some places (using @AttributeOverride)
 	@Column(nullable = false) // Non-nullable by default
-	@Temporal(TemporalType.TIMESTAMP)
 	@Field(name = DATE)
 	@SortableField(forField = DATE)
-	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
-	private Date date;
+	private Instant date;
 
 	@Embedded
 	@IndexedEmbedded(
@@ -55,14 +49,14 @@ public class HistoryEventSummary implements Serializable {
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue subject;
 
-	public Date getDate() {
-		return CloneUtils.clone(date);
+	public Instant getDate() {
+		return date;
 	}
 
-	public void setDate(Date date) {
-		this.date = CloneUtils.clone(date);
+	public void setDate(Instant date) {
+		this.date = date;
 	}
-	
+
 	public HistoryValue getSubject() {
 		return subject;
 	}

@@ -17,7 +17,6 @@ import org.iglooproject.wicket.more.rendering.TaskStatusRenderer;
 import igloo.console.maintenance.task.component.ConsoleMaintenanceTaskSearchPanel;
 import igloo.console.maintenance.task.component.ConsoleMaintenanceTaskTaskManagerPanel;
 import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
-import igloo.wicket.util.DatePattern;
 
 public class ConsoleMaintenanceTaskListPage extends ConsoleMaintenanceTemplate {
 
@@ -56,11 +55,11 @@ public class ConsoleMaintenanceTaskListPage extends ConsoleMaintenanceTemplate {
 			.addLabelColumn(new ResourceModel("console.maintenance.task.common.queue"), CoreJpaMoreBindings.queuedTaskHolder().queueId())
 				.showPlaceholder(new ResourceModel("console.maintenance.task.common.queue.default"))
 				.withClass("cell-w-200")
-			.addLabelColumn(new ResourceModel("console.maintenance.task.common.creationDate"), CoreJpaMoreBindings.queuedTaskHolder().creationDate(), DatePattern.SHORT_DATETIME)
+			.addLabelColumn(new ResourceModel("console.maintenance.task.common.creationDate"), CoreJpaMoreBindings.queuedTaskHolder().creationDate())
 				.withClass("cell-w-150")
-			.addLabelColumn(new ResourceModel("console.maintenance.task.common.startDate"), CoreJpaMoreBindings.queuedTaskHolder().startDate(), DatePattern.SHORT_DATETIME)
+			.addLabelColumn(new ResourceModel("console.maintenance.task.common.startDate"), CoreJpaMoreBindings.queuedTaskHolder().startDate())
 				.withClass("cell-w-150")
-			.addLabelColumn(new ResourceModel("console.maintenance.task.common.endDate"), CoreJpaMoreBindings.queuedTaskHolder().endDate(), DatePattern.SHORT_DATETIME)
+			.addLabelColumn(new ResourceModel("console.maintenance.task.common.endDate"), CoreJpaMoreBindings.queuedTaskHolder().endDate())
 				.withClass("cell-w-150")
 			.bootstrapCard()
 				.count("console.maintenance.task.common.count")

@@ -1,6 +1,9 @@
 package org.iglooproject.basicapp.web.application.notification.component;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -12,15 +15,13 @@ import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
 
 import igloo.wicket.component.CoreLabel;
-import igloo.wicket.component.DateLabel;
 import igloo.wicket.model.BindingModel;
-import igloo.wicket.util.DatePattern;
 
 public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<User> {
 	
 	private static final long serialVersionUID = -2406171975975069084L;
 	
-	public ExampleHtmlNotificationPanel(String id, IModel<User> userModel, IModel<Date> dateModel) {
+	public ExampleHtmlNotificationPanel(String id, IModel<User> userModel, IModel<Instant> dateModel) {
 		super(id, userModel);
 		
 		add(
@@ -28,9 +29,9 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 				.add(
 					new CoreLabel("user", userModel)
 						.showPlaceholder(),
-					new DateLabel("date", dateModel, DatePattern.SHORT_DATE)
+					new CoreLabel("date", () -> LocalDate.ofInstant(dateModel.getObject(), ZoneId.systemDefault()))
 						.showPlaceholder(),
-					new DateLabel("time", dateModel, DatePattern.TIME)
+					new CoreLabel("time", () -> LocalTime.ofInstant(dateModel.getObject(), ZoneId.systemDefault()))
 						.showPlaceholder()
 				)
 		);
@@ -60,7 +61,8 @@ public class ExampleHtmlNotificationPanel extends AbstractHtmlNotificationPanel<
 			new CoreLabel("firstname", BindingModel.of(userModel, Bindings.user().firstName())),
 			new CoreLabel("lastname", BindingModel.of(userModel, Bindings.user().lastName())),
 			new CoreLabel("email", BindingModel.of(userModel, Bindings.user().email())),
-			new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()), DatePattern.SHORT_DATETIME)
+			new CoreLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()))
+				.showPlaceholder()
 		);
 	}
 

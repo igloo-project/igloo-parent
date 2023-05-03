@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.web.application.console.notification.demo.page;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import org.apache.wicket.Session;
@@ -97,7 +97,7 @@ public class ConsoleNotificationDemoIndexPage extends ConsoleNotificationDemoTem
 				private static final long serialVersionUID = 1L;
 				@Override
 				public INotificationContentDescriptor getDescriptor() {
-					return descriptorService.example(getFirstInRange(User.class, DEFAULT_ID_RANGE), new Date());
+					return descriptorService.example(getFirstInRange(User.class, DEFAULT_ID_RANGE), Instant.now());
 				}
 			}
 			// Add new demo entries here

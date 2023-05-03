@@ -1,7 +1,8 @@
 package org.iglooproject.wicket.more.export.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.model.IModel;
@@ -24,7 +25,7 @@ public class ExportFileUtils {
 			@Override
 			public String getObject() {
 				return new StringBuilder(fileNamePrefixModel.getObject())
-						.append(new SimpleDateFormat(Application.get().getResourceSettings().getLocalizer().getString(FILE_NAME_DATE_PATTERN_KEY, null)).format(new Date()))
+						.append(DateTimeFormatter.ofPattern(Application.get().getResourceSettings().getLocalizer().getString(FILE_NAME_DATE_PATTERN_KEY, null)).withZone(ZoneId.systemDefault()).format(Instant.now()))
 						.append(".")
 						.append(extensionModel.getObject())
 						.toString();

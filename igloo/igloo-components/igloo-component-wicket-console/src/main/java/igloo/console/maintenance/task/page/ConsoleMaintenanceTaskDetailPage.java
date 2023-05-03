@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import igloo.bootstrap.common.BootstrapColor;
 import igloo.bootstrap.common.IBootstrapColor;
@@ -43,16 +44,12 @@ import igloo.console.maintenance.task.component.ConsoleMaintenanceTaskBatchRepor
 import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
 import igloo.wicket.action.IAjaxAction;
 import igloo.wicket.component.CoreLabel;
-import igloo.wicket.component.DateLabel;
 import igloo.wicket.component.DefaultPlaceholderPanel;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.component.PlaceholderContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.model.BindingModel;
-import igloo.wicket.util.DatePattern;
-
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate {
 
@@ -219,11 +216,11 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate
 			queue,
 			new PlaceholderContainer("defaultQueue")
 				.condition(Condition.componentVisible(queue)),
-			new DateLabel("creationDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().creationDate()), DatePattern.SHORT_DATETIME)
+			new CoreLabel("creationDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().creationDate()))
 				.showPlaceholder(),
-			new DateLabel("startDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().startDate()), DatePattern.SHORT_DATETIME)
+			new CoreLabel("startDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().startDate()))
 				.showPlaceholder(),
-			new DateLabel("endDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().endDate()), DatePattern.SHORT_DATETIME)
+			new CoreLabel("endDate", BindingModel.of(queuedTaskHolderModel, CoreJpaMoreBindings.queuedTaskHolder().endDate()))
 				.showPlaceholder(),
 			status,
 			new DefaultPlaceholderPanel("statusPlaceholder")

@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.core.business.notification.service;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.Locale;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -23,7 +23,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 
 	@Override
 	public void sendExampleNotification(User user) throws ServiceException {
-		Date date = new Date();
+		Instant date = Instant.now();
 		String url = notificationUrlBuilderService.getUserDescriptionUrl(user);
 		
 		try {
@@ -54,7 +54,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 	@Override
 	public void sendExampleNotification(User userTo, String from) throws ServiceException {
 		try {
-			Date date = new Date();
+			Instant date = Instant.now();
 			builder()
 				.sender("no-reply@basicapp.org")
 				.from(from)

@@ -1,6 +1,6 @@
 package org.iglooproject.jpa.more.business.history.service;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
@@ -44,7 +44,7 @@ public interface IGenericHistoryLogService<
 			IHistoryDifferenceHandler<? super T, ? super HL> ... differenceHandlers)
 			throws ServiceException, SecurityServiceException;
 	
-	<T> HL logNow(Date date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
+	<T> HL logNow(Instant date, HET eventType, List<HD> differences, T mainObject, HLAIB additionalInformation)
 			throws ServiceException, SecurityServiceException;
 
 }

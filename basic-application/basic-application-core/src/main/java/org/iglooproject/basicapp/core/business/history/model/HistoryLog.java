@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.core.business.history.model;
 
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
@@ -23,7 +23,7 @@ public class HistoryLog extends AbstractHistoryLog<HistoryLog, HistoryEventType,
 		// nothing to do
 	}
 
-	public HistoryLog(Date date, HistoryEventType eventType, HistoryValue mainObject) {
+	public HistoryLog(Instant date, HistoryEventType eventType, HistoryValue mainObject) {
 		super(date, eventType, mainObject);
 	}
 

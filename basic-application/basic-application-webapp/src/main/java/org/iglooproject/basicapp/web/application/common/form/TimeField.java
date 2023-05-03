@@ -1,5 +1,6 @@
 package org.iglooproject.basicapp.web.application.common.form;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Locale;
 
@@ -13,7 +14,7 @@ import org.iglooproject.wicket.more.util.convert.converters.PatternDateConverter
 
 import igloo.wicket.util.IDatePattern;
 
-public class TimeField extends TextField<Date> {
+public class TimeField extends TextField<LocalTime> {
 
 	private static final long serialVersionUID = 6545624080685881341L;
 
@@ -21,8 +22,8 @@ public class TimeField extends TextField<Date> {
 
 	private IConverter<Date> converter;
 
-	public TimeField(String id, IModel<Date> model, IDatePattern datePattern) {
-		super(id, model, Date.class);
+	public TimeField(String id, IModel<LocalTime> model, IDatePattern datePattern) {
+		super(id, model, LocalTime.class);
 		this.datePattern = datePattern;
 		
 		add(new MaskBehavior(Masks.TIME, Masks.timeOptions()));

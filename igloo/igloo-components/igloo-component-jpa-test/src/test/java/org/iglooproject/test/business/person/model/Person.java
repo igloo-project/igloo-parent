@@ -17,7 +17,7 @@
 
 package org.iglooproject.test.business.person.model;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +40,6 @@ import javax.persistence.OneToMany;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
-
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.test.business.company.model.Company;
 import org.iglooproject.test.business.project.model.Project;
@@ -70,7 +69,7 @@ public class Person extends GenericEntity<Long, Person> {
 	@JoinTable(joinColumns=@JoinColumn(name="persons_id"), inverseJoinColumns=@JoinColumn(name="project_id"))
 	private List<Project> workedProjects = new LinkedList<Project>();
 
-	private Date creationDate;
+	private Instant creationDate;
 
 	/**
 	 * cf {@link TestMetaModel}
@@ -187,11 +186,11 @@ public class Person extends GenericEntity<Long, Person> {
 		project.getTeam().remove(this);
 	}
 	
-	public Date getCreationDate() {
+	public Instant getCreationDate() {
 		return creationDate;
 	}
 	
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(Instant creationDate) {
 		this.creationDate = creationDate;
 	}
 

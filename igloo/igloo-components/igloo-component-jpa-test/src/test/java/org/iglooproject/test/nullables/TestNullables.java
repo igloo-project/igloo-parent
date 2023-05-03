@@ -2,7 +2,7 @@ package org.iglooproject.test.nullables;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Basic;
@@ -131,16 +131,16 @@ class TestNullables extends AbstractJpaCoreTestCase {
 		EntityNullable entity = new EntityNullable();
 		
 		// Simple
-		entity.getSimpleSection().setBasicFalseColumnFalse(new Date());
-		entity.getSimpleSection().setBasicFalseColumnTrue(new Date());
-		entity.getSimpleSection().setBasicTrueColumnFalse(new Date());
-		entity.getSimpleSection().setBasicTrueColumnTrue(new Date());
+		entity.getSimpleSection().setBasicFalseColumnFalse(Instant.now());
+		entity.getSimpleSection().setBasicFalseColumnTrue(Instant.now());
+		entity.getSimpleSection().setBasicTrueColumnFalse(Instant.now());
+		entity.getSimpleSection().setBasicTrueColumnTrue(Instant.now());
 		
 		// Overrides
-		entity.getOverridesSection().setBasicFalseColumnFalse(new Date());
-		entity.getOverridesSection().setBasicFalseColumnTrue(new Date());
-		entity.getOverridesSection().setBasicTrueColumnFalse(new Date());
-		entity.getOverridesSection().setBasicTrueColumnTrue(new Date());
+		entity.getOverridesSection().setBasicFalseColumnFalse(Instant.now());
+		entity.getOverridesSection().setBasicFalseColumnTrue(Instant.now());
+		entity.getOverridesSection().setBasicTrueColumnFalse(Instant.now());
+		entity.getOverridesSection().setBasicTrueColumnTrue(Instant.now());
 		
 		return entity;
 	}

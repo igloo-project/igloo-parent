@@ -9,7 +9,6 @@ import static org.iglooproject.basicapp.core.property.BasicApplicationCoreProper
 import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_VALIDATOR_ENABLED;
 
 import java.time.Instant;
-import java.util.Date;
 
 import org.iglooproject.basicapp.core.config.util.Environment;
 import org.iglooproject.functional.Suppliers2;
@@ -34,7 +33,7 @@ public class BasicApplicationCoreApplicationPropertyConfig implements IPropertyR
 			BUILD_DATE,
 			input -> {
 				Long epochMilli = java.util.Optional.ofNullable(Longs.tryParse(input)).orElse((Long) null);
-				return Date.from(Instant.ofEpochMilli(epochMilli != null ? epochMilli : 0));
+				return Instant.ofEpochMilli(epochMilli != null ? epochMilli : 0);
 			}
 		);
 		registry.registerString(BUILD_SHA);

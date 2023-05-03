@@ -7,6 +7,10 @@ import java.io.File;
 import java.io.FileFilter;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +28,10 @@ import org.iglooproject.functional.converter.StringDateConverter;
 import org.iglooproject.functional.converter.StringDateTimeConverter;
 import org.iglooproject.functional.converter.StringDirectoryFileCreatingConverter;
 import org.iglooproject.functional.converter.StringFileConverter;
+import org.iglooproject.functional.converter.StringInstantConverter;
+import org.iglooproject.functional.converter.StringLocalDateConverter;
+import org.iglooproject.functional.converter.StringLocalDateTimeConverter;
+import org.iglooproject.functional.converter.StringLocalTimeConverter;
 import org.iglooproject.functional.converter.StringLocaleConverter;
 import org.iglooproject.functional.converter.StringTimeConverter;
 import org.iglooproject.functional.converter.StringURIConverter;
@@ -336,6 +344,46 @@ public class PropertyServiceImpl implements IConfigurablePropertyService {
 	@Override
 	public void registerDateTime(IPropertyRegistryKey<Date> propertyId, Date defaultValue) {
 		registerProperty(propertyId, StringDateTimeConverter.get(), defaultValue);
+	}
+
+	@Override
+	public void registerInstant(IPropertyRegistryKey<Instant> propertyId) {
+		registerInstant(propertyId, null);
+	}
+
+	@Override
+	public void registerInstant(IPropertyRegistryKey<Instant> propertyId, Instant defaultValue) {
+		registerProperty(propertyId, StringInstantConverter.get(), defaultValue);
+	}
+
+	@Override
+	public void registerLocalDate(IPropertyRegistryKey<LocalDate> propertyId) {
+		registerLocalDate(propertyId, null);
+	}
+
+	@Override
+	public void registerLocalDate(IPropertyRegistryKey<LocalDate> propertyId, LocalDate defaultValue) {
+		registerProperty(propertyId, StringLocalDateConverter.get(), defaultValue);
+	}
+
+	@Override
+	public void registerLocalDateTime(IPropertyRegistryKey<LocalDateTime> propertyId) {
+		registerLocalDateTime(propertyId, null);
+	}
+
+	@Override
+	public void registerLocalDateTime(IPropertyRegistryKey<LocalDateTime> propertyId, LocalDateTime defaultValue) {
+		registerProperty(propertyId, StringLocalDateTimeConverter.get(), defaultValue);
+	}
+
+	@Override
+	public void registerLocalTime(IPropertyRegistryKey<LocalTime> propertyId) {
+		registerLocalTime(propertyId, null);
+	}
+
+	@Override
+	public void registerLocalTime(IPropertyRegistryKey<LocalTime> propertyId, LocalTime defaultValue) {
+		registerProperty(propertyId, StringLocalTimeConverter.get(), defaultValue);
 	}
 
 	@Override

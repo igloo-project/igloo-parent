@@ -26,8 +26,8 @@ import org.iglooproject.basicapp.web.application.common.util.Masks;
 import org.iglooproject.wicket.more.ajax.SerializableListener;
 import org.iglooproject.wicket.more.bindable.form.CacheWritingForm;
 import org.iglooproject.wicket.more.common.behavior.UpdateOnChangeAjaxEventBehavior;
-import org.iglooproject.wicket.more.markup.html.form.DatePicker;
 import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
+import org.iglooproject.wicket.more.markup.html.form.LocalDateDatePicker;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.mask.MaskBehavior;
 import org.slf4j.Logger;
@@ -112,22 +112,22 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 				.condition(typeServiceInterruptionCondition)
 				.add(
 					new CoreLabel("interruptionStartDateTitle", new ResourceModel("business.announcement.interruption.startDateTime")),
-					new DatePicker("interruptionStartDate", bindableModel.bind(Bindings.announcement().interruption().startDateTime()), DatePattern.SHORT_DATE)
+					new LocalDateDatePicker("interruptionStartDate", bindableModel.getInterruptionStartLocalDateModel())
 						.setLabel(new ResourceModel("business.announcement.interruption.startDateTime.date"))
 						.setRequired(true)
 						.add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
 						.add(new UpdateOnChangeAjaxEventBehavior()),
-					new TimeField("interruptionStartTime", bindableModel.getInterruptionStartTimeModel(), DatePattern.TIME)
+					new TimeField("interruptionStartTime", bindableModel.getInterruptionStartLocalTimeModel(), DatePattern.TIME)
 						.setLabel(new ResourceModel("business.announcement.interruption.startDateTime.time"))
 						.setRequired(true)
 						.add(new UpdateOnChangeAjaxEventBehavior()),
 					new CoreLabel("interruptionEndDateTitle", new ResourceModel("business.announcement.interruption.endDateTime")),
-					new DatePicker("interruptionEndDate", bindableModel.bind(Bindings.announcement().interruption().endDateTime()), DatePattern.SHORT_DATE)
+					new LocalDateDatePicker("interruptionEndDate", bindableModel.getInterruptionEndLocalDateModel())
 						.setLabel(new ResourceModel("business.announcement.interruption.endDateTime.date"))
 						.setRequired(true)
 						.add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
 						.add(new UpdateOnChangeAjaxEventBehavior()),
-					new TimeField("interruptionEndTime", bindableModel.getInterruptionEndTimeModel(), DatePattern.TIME)
+					new TimeField("interruptionEndTime", bindableModel.getInterruptionEndLocalTimeModel(), DatePattern.TIME)
 						.setLabel(new ResourceModel("business.announcement.interruption.endDateTime.time"))
 						.setRequired(true)
 						.add(new UpdateOnChangeAjaxEventBehavior())
@@ -151,22 +151,22 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 						.add(new UpdateOnChangeAjaxEventBehavior())
 				),
 			new CoreLabel("publicationStartDateTitle", new ResourceModel("business.announcement.publication.startDateTime")),
-			new DatePicker("publicationStartDate", bindableModel.bind(Bindings.announcement().publication().startDateTime()), DatePattern.SHORT_DATE)
+			new LocalDateDatePicker("publicationStartDate", bindableModel.getPublicationStartLocalDateModel())
 				.setLabel(new ResourceModel("business.announcement.publication.startDateTime.date"))
 				.setRequired(true)
 				.add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
 				.add(new UpdateOnChangeAjaxEventBehavior()),
-			new TimeField("publicationStartTime", bindableModel.getPublicationStartTimeModel(), DatePattern.TIME)
+			new TimeField("publicationStartTime", bindableModel.getPublicationStartLocalTimeModel(), DatePattern.TIME)
 				.setLabel(new ResourceModel("business.announcement.publication.startDateTime.time"))
 				.setRequired(true)
 				.add(new UpdateOnChangeAjaxEventBehavior()),
 			new CoreLabel("publicationEndDateTitle", new ResourceModel("business.announcement.publication.endDateTime")),
-			new DatePicker("publicationEndDate", bindableModel.bind(Bindings.announcement().publication().endDateTime()), DatePattern.SHORT_DATE)
+			new LocalDateDatePicker("publicationEndDate", bindableModel.getPublicationEndLocalDateModel())
 				.setLabel(new ResourceModel("business.announcement.publication.endDateTime.date"))
 				.setRequired(true)
 				.add(new MaskBehavior(Masks.DATE, Masks.dateOptions()))
 				.add(new UpdateOnChangeAjaxEventBehavior()),
-			new TimeField("publicationEndTime", bindableModel.getPublicationEndTimeModel(), DatePattern.TIME)
+			new TimeField("publicationEndTime", bindableModel.getPublicationEndLocalTimeModel(), DatePattern.TIME)
 				.setLabel(new ResourceModel("business.announcement.publication.endDateTime.time"))
 				.setRequired(true)
 				.add(new UpdateOnChangeAjaxEventBehavior()),

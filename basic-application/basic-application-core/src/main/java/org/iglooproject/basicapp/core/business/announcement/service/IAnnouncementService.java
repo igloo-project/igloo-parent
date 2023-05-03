@@ -1,6 +1,6 @@
 package org.iglooproject.basicapp.core.business.announcement.service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.iglooproject.basicapp.core.business.announcement.model.Announcement;
@@ -18,6 +18,6 @@ public interface IAnnouncementService extends IGenericEntityService<Long, Announ
 
 	List<Announcement> listEnabled();
 
-	Date getMostRecentPublicationStartDate();
+	LocalDateTime getMostRecentPublicationStartDate();
 
 }

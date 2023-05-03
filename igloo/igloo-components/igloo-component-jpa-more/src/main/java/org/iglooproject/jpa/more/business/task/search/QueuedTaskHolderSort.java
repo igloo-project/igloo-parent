@@ -8,15 +8,13 @@ import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 
-import com.google.common.collect.ImmutableList;
-
 public enum QueuedTaskHolderSort implements ISort<SortField> {
 
 	ID {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
-			return ImmutableList.of(
-					SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID_SORT)
+			return List.of(
+				SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID_SORT)
 			);
 		}
 		@Override
@@ -27,8 +25,8 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 	NAME {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
-			return ImmutableList.of(
-					SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, QueuedTaskHolder.NAME_SORT)
+			return List.of(
+				SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, QueuedTaskHolder.NAME_SORT)
 			);
 		}
 		@Override
@@ -39,10 +37,10 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 	CREATION_DATE {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
-			return ImmutableList.of(
-					SortUtils.luceneLongSortField(this, sortOrder, QueuedTaskHolder.END_DATE, NullSortValue.GREATEST),
-					SortUtils.luceneLongSortField(this, sortOrder, QueuedTaskHolder.START_DATE, NullSortValue.GREATEST),
-					SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, QueuedTaskHolder.CREATION_DATE)
+			return List.of(
+				SortUtils.luceneStringSortField(this, sortOrder, QueuedTaskHolder.END_DATE, NullSortValue.GREATEST),
+				SortUtils.luceneStringSortField(this, sortOrder, QueuedTaskHolder.START_DATE, NullSortValue.GREATEST),
+				SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, QueuedTaskHolder.CREATION_DATE)
 			);
 		}
 		@Override

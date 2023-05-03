@@ -1,6 +1,6 @@
 package test.jpa.more.business.history.model;
 
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
@@ -24,7 +24,7 @@ public class TestHistoryLog extends AbstractHistoryLog<TestHistoryLog, TestHisto
 		// nothing to do
 	}
 	
-	public TestHistoryLog(Date date, TestHistoryEventType eventType, HistoryValue mainObject) {
+	public TestHistoryLog(Instant date, TestHistoryEventType eventType, HistoryValue mainObject) {
 		super(date, eventType, mainObject);
 	}
 

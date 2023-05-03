@@ -1,6 +1,6 @@
 package test.jpa.more.business.entity.model;
 
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -12,8 +12,6 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
-
-import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
@@ -47,7 +45,7 @@ public class TestEntity extends GenericEntity<Long, TestEntity> {
 
 	@Field
 	@Column
-	private Date dateCreation;
+	private Instant dateCreation;
 
 	public TestEntity() {
 		super();
@@ -109,12 +107,12 @@ public class TestEntity extends GenericEntity<Long, TestEntity> {
 		this.classicInterceptorFlushDirty = classicInterceptorFlushDirty;
 	}
 
-	public Date getDateCreation() {
-		return CloneUtils.clone(dateCreation);
+	public Instant getDateCreation() {
+		return dateCreation;
 	}
 
-	public void setDateCreation(Date dateCreation) {
-		this.dateCreation = CloneUtils.clone(dateCreation);
+	public void setDateCreation(Instant dateCreation) {
+		this.dateCreation = dateCreation;
 	}
 
 

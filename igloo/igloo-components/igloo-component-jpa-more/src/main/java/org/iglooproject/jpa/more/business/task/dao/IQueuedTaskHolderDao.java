@@ -1,6 +1,6 @@
 package org.iglooproject.jpa.more.business.task.dao;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 import org.iglooproject.jpa.business.generic.dao.IGenericEntityDao;
@@ -9,7 +9,7 @@ import org.iglooproject.jpa.more.business.task.util.TaskStatus;
 
 public interface IQueuedTaskHolderDao extends IGenericEntityDao<Long, QueuedTaskHolder> {
 
-	Long count(Date since, TaskStatus... statuses);
+	Long count(Instant since, TaskStatus... statuses);
 	
 	Long count(TaskStatus... statuses);
 	

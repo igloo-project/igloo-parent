@@ -1,6 +1,6 @@
 package org.iglooproject.export.test.person;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Person {
 	
@@ -10,7 +10,7 @@ public class Person {
 	
 	String lastName;
 	
-	Date birthDate;
+	LocalDateTime birthDateTime;
 	
 	int age;
 	
@@ -19,12 +19,12 @@ public class Person {
 	double percentage;
 
 	public Person(String username, String firstName, String lastName,
-			Date birthDate, int age, double size, double percentage) {
+			LocalDateTime birthDateTime, int age, double size, double percentage) {
 		super();
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.birthDate = birthDate;
+		this.birthDateTime = birthDateTime;
 		this.age = age;
 		this.size = size;
 		this.percentage = percentage;
@@ -54,12 +54,12 @@ public class Person {
 		this.lastName = lastName;
 	}
 
-	public Date getBirthDate() {
-		return birthDate;
+	public LocalDateTime getBirthDateTime() {
+		return birthDateTime;
 	}
 
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
+	public void setBirthDateTime(LocalDateTime birthDateTime) {
+		this.birthDateTime = birthDateTime;
 	}
 
 	public int getAge() {

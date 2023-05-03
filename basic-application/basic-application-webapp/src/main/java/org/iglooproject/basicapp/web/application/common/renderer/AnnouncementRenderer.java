@@ -1,16 +1,18 @@
 package org.iglooproject.basicapp.web.application.common.renderer;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Locale;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.util.convert.IConverter;
+import org.apache.wicket.util.lang.Objects;
 import org.iglooproject.basicapp.core.business.announcement.model.Announcement;
-import org.iglooproject.basicapp.web.application.BasicApplicationSession;
 import org.iglooproject.wicket.more.rendering.EnumRenderer;
 
 import igloo.wicket.renderer.Renderer;
-import igloo.wicket.util.DatePattern;
 
 public abstract class AnnouncementRenderer extends Renderer<Announcement> {
 
@@ -45,7 +47,7 @@ public abstract class AnnouncementRenderer extends Renderer<Announcement> {
 			
 			switch(value.getType()) {
 			case SERVICE_INTERRUPTION:
-				return getInterruptionDescription(value.getInterruption().getStartDateTime(), value.getInterruption().getEndDateTime());
+				return getInterruptionDescription(value.getInterruption().getStartDateTime(), value.getInterruption().getEndDateTime(), locale);
 			case OTHER:
 				return value.getDescription().get(locale);
 			}
@@ -65,26 +67,26 @@ public abstract class AnnouncementRenderer extends Renderer<Announcement> {
 	private AnnouncementRenderer() {
 	}
 
-	protected String getInterruptionDescription(Date startDate, Date endDate) {
-		Locale locale = BasicApplicationSession.get().getLocale();
+	protected String getInterruptionDescription(LocalDateTime startDate, LocalDateTime endDate, Locale locale) {
+		IConverter<LocalDate> localDateConverter = Application.get().getConverterLocator().getConverter(LocalDate.class);
+		IConverter<LocalTime> localTimeConverter = Application.get().getConverterLocator().getConverter(LocalTime.class);
 		
-		String interruptionStartDate = Renderer.fromDatePattern(DatePattern.SHORT_DATE).render(startDate, locale);
-		String interruptionEndDate = Renderer.fromDatePattern(DatePattern.SHORT_DATE).render(endDate, locale);
-		String interruptionStartTime = Renderer.fromDatePattern(DatePattern.TIME).render(startDate, locale);
-		String interruptionEndTime = Renderer.fromDatePattern(DatePattern.TIME).render(endDate, locale);
-		
-		Calendar startCal = Calendar.getInstance();
-		startCal.setTime(startDate);
-		Calendar endCal = Calendar.getInstance();
-		endCal.setTime(endDate);
-		
-		if (startCal.get(Calendar.DAY_OF_WEEK) == endCal.get(Calendar.DAY_OF_WEEK)) {
+		if (Objects.equal(startDate.toLocalDate(), endDate.toLocalDate())) {
 			return new StringResourceModel("business.announcement.interruption.message.window.sameDay")
-				.setParameters(interruptionStartDate, interruptionStartTime, interruptionEndTime)
+				.setParameters(
+					localDateConverter.convertToString(startDate.toLocalDate(), locale),
+					localTimeConverter.convertToString(startDate.toLocalTime(), locale),
+					localTimeConverter.convertToString(endDate.toLocalTime(), locale)
+				)
 				.getString();
 		} else {
 			return new StringResourceModel("business.announcement.interruption.message.window")
-				.setParameters(interruptionStartDate, interruptionStartTime, interruptionEndDate, interruptionEndTime)
+				.setParameters(
+					localDateConverter.convertToString(startDate.toLocalDate(), locale),
+					localTimeConverter.convertToString(startDate.toLocalTime(), locale),
+					localDateConverter.convertToString(endDate.toLocalDate(), locale),
+					localTimeConverter.convertToString(endDate.toLocalTime(), locale)
+				)
 				.getString();
 		}
 	}

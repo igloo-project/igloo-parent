@@ -12,6 +12,8 @@ public abstract class DateState<TTable, TRow, TCell, TCellReference> extends Gen
 		ColumnFunctionBuildStateSwitcher<TTable, TRow, TCell, TCellReference, Date>,
 		BooleanState<TTable, TRow, TCell, TCellReference>,
 		DateState<TTable, TRow, TCell, TCellReference>,
+		LocalDateState<TTable, TRow, TCell, TCellReference>,
+		LocalDateTimeState<TTable, TRow, TCell, TCellReference>,
 		IntegerState<TTable, TRow, TCell, TCellReference>,
 		LongState<TTable, TRow, TCell, TCellReference>,
 		DoubleState<TTable, TRow, TCell, TCellReference>,

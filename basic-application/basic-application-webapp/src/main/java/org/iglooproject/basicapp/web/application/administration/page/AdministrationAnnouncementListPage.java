@@ -46,7 +46,6 @@ import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.model.Detachables;
-import igloo.wicket.util.DatePattern;
 
 public class AdministrationAnnouncementListPage extends AdministrationAnnouncementTemplate {
 
@@ -113,10 +112,10 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 					}
 				})
 					.withClass("cell-w-400")
-				.addLabelColumn(new ResourceModel("business.announcement.publication.startDateTime"), Bindings.announcement().publication().startDateTime(), DatePattern.REALLY_SHORT_DATETIME)
+				.addLabelColumn(new ResourceModel("business.announcement.publication.startDateTime"), Bindings.announcement().publication().startDateTime())
 					.withSort(AnnouncementSort.PUBLICATION_START_DATE_TIME, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
 					.withClass("cell-w-120")
-				.addLabelColumn(new ResourceModel("business.announcement.publication.endDateTime"), Bindings.announcement().publication().endDateTime(), DatePattern.REALLY_SHORT_DATETIME)
+				.addLabelColumn(new ResourceModel("business.announcement.publication.endDateTime"), Bindings.announcement().publication().endDateTime())
 					.withClass("cell-w-120")
 				.addActionColumn()
 					.addAction(ActionRenderers.edit(), new OneParameterModalOpenAjaxAction<IModel<Announcement>>(popup) {

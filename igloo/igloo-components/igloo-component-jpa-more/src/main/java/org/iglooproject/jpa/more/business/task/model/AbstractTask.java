@@ -1,10 +1,21 @@
 package org.iglooproject.jpa.more.business.task.model;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
+import org.iglooproject.commons.util.CloneUtils;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
+import org.iglooproject.jpa.more.business.task.transaction.OpenEntityManagerWithNoTransactionTransactionTemplate;
+import org.iglooproject.jpa.more.business.task.transaction.TaskExecutionTransactionTemplateConfig;
+import org.iglooproject.jpa.more.business.task.util.TaskResult;
+import org.iglooproject.jpa.more.business.task.util.TaskStatus;
+import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
+import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +30,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.iglooproject.commons.util.CloneUtils;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
-import org.iglooproject.jpa.more.business.task.transaction.OpenEntityManagerWithNoTransactionTransactionTemplate;
-import org.iglooproject.jpa.more.business.task.transaction.TaskExecutionTransactionTemplateConfig;
-import org.iglooproject.jpa.more.business.task.util.TaskResult;
-import org.iglooproject.jpa.more.business.task.util.TaskStatus;
-import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
-import org.iglooproject.jpa.util.EntityManagerUtils;
 
 public abstract class AbstractTask implements Runnable, Serializable {
 	private static final long serialVersionUID = 7734300264023051135L;
@@ -147,7 +147,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 							throw new IllegalArgumentException("No task found with id " + queuedTaskHolderId);
 						}
 	
-						queuedTaskHolder.setStartDate(new Date());
+						queuedTaskHolder.setStartDate(Instant.now());
 						queuedTaskHolder.setStatus(TaskStatus.RUNNING);
 						queuedTaskHolderService.update(queuedTaskHolder);
 	
@@ -340,7 +340,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	private void endTask(QueuedTaskHolder queuedTaskHolder, TaskStatus endingStatus)
 			throws JsonProcessingException, ServiceException, SecurityServiceException {
 		queuedTaskHolder.setStatus(endingStatus);
-		queuedTaskHolder.setEndDate(new Date());
+		queuedTaskHolder.setEndDate(Instant.now());
 		queuedTaskHolder.updateExecutionInformation(taskExecutionResult, queuedTaskHolderObjectMapper);
 		queuedTaskHolderService.update(queuedTaskHolder);
 	}

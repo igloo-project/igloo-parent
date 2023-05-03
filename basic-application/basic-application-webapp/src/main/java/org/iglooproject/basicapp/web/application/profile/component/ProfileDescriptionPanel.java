@@ -13,13 +13,11 @@ import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.wicket.component.CoreLabel;
-import igloo.wicket.component.DateLabel;
 import igloo.wicket.component.DefaultPlaceholderPanel;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.markup.html.link.EmailLink;
 import igloo.wicket.markup.html.panel.GenericPanel;
 import igloo.wicket.model.BindingModel;
-import igloo.wicket.util.DatePattern;
 
 public class ProfileDescriptionPanel extends GenericPanel<User> {
 
@@ -51,11 +49,11 @@ public class ProfileDescriptionPanel extends GenericPanel<User> {
 			new DefaultPlaceholderPanel("emailPlaceholder").condition(Condition.modelNotNull(emailModel)),
 			new CoreLabel("locale", BindingModel.of(userModel, Bindings.user().locale()))
 				.showPlaceholder(),
-			new DateLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()), DatePattern.SHORT_DATETIME)
+			new CoreLabel("creationDate", BindingModel.of(userModel, Bindings.user().creationDate()))
 				.showPlaceholder(),
-			new DateLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()), DatePattern.SHORT_DATETIME)
+			new CoreLabel("lastUpdateDate", BindingModel.of(userModel, Bindings.user().lastUpdateDate()))
 				.showPlaceholder(),
-			new DateLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()), DatePattern.SHORT_DATETIME)
+			new CoreLabel("lastLoginDate", BindingModel.of(userModel, Bindings.user().lastLoginDate()))
 				.showPlaceholder()
 		);
 	}

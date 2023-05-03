@@ -1,7 +1,7 @@
 package org.iglooproject.basicapp.core.business.history.search;
 
+import java.time.Instant;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.EnumUtils;
@@ -34,7 +34,7 @@ public class HistoryLogSearchQueryImpl extends AbstractHibernateSearchSearchQuer
 	}
 
 	@Override
-	public IHistoryLogSearchQuery date(Date dateMin, Date dateMax) {
+	public IHistoryLogSearchQuery date(Instant dateMin, Instant dateMax) {
 		must(matchRange(
 				AbstractHistoryLog.DATE,
 				dateMin,

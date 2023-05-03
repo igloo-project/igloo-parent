@@ -2,6 +2,8 @@ package org.iglooproject.imports.table.opencsv.mapping.column.builder;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.iglooproject.functional.Function2;
@@ -16,6 +18,8 @@ import org.iglooproject.imports.table.common.mapping.column.builder.state.BigDec
 import org.iglooproject.imports.table.common.mapping.column.builder.state.DateState;
 import org.iglooproject.imports.table.common.mapping.column.builder.state.DoubleState;
 import org.iglooproject.imports.table.common.mapping.column.builder.state.IntegerState;
+import org.iglooproject.imports.table.common.mapping.column.builder.state.LocalDateState;
+import org.iglooproject.imports.table.common.mapping.column.builder.state.LocalDateTimeState;
 import org.iglooproject.imports.table.common.mapping.column.builder.state.LongState;
 import org.iglooproject.imports.table.common.mapping.column.builder.state.StringState;
 import org.iglooproject.imports.table.common.mapping.column.builder.state.TypeState;
@@ -31,11 +35,24 @@ public class OpenCsvImportColumnBuilder extends AbstractTableImportColumnBuilder
 	private static final Function2<String, BigDecimal> BIG_DECIMAL_FORMAT_FUNCTION = input -> input == null ? null : new BigDecimal(input);
 	
 	private final Function2<? super String, ? extends Date> dateFormatFunction;
+	private final Function2<? super String, LocalDate> localDateFormatterFunction;
+	private final Function2<? super String, LocalDateTime> localDateTimeFormatterFunction;
 	
 	public OpenCsvImportColumnBuilder(Function2<? super String, ? extends Date> dateFormatFunction) {
+		this(dateFormatFunction, null, null);
+	}
+
+	public OpenCsvImportColumnBuilder(
+			Function2<? super String, ? extends Date> dateFormatFunction,
+			Function2<? super String, LocalDate> localDateFormatterFunction,
+			Function2<? super String, LocalDateTime> localDateTimeFormatterFunction) {
 		super();
 		this.dateFormatFunction = dateFormatFunction;
+		this.localDateFormatterFunction = localDateFormatterFunction;
+		this.localDateTimeFormatterFunction = localDateTimeFormatterFunction;
 	}
+
+
 
 	@Override
 	public OpenCsvTypeState withHeader(AbstractTableImportColumnSet<CsvTable, CsvRow, CsvCell, CsvCellReference> columnSet, String headerLabel,
@@ -90,6 +107,16 @@ public class OpenCsvImportColumnBuilder extends AbstractTableImportColumnBuilder
 		@Override
 		public DateState<CsvTable, CsvRow, CsvCell, CsvCellReference> asDate() {
 			return asString().toDate(dateFormatFunction);
+		}
+
+		@Override
+		public LocalDateState<CsvTable, CsvRow, CsvCell, CsvCellReference> asLocalDate() {
+			return asString().toLocalDate(localDateFormatterFunction);
+		}
+
+		@Override
+		public LocalDateTimeState<CsvTable, CsvRow, CsvCell, CsvCellReference> asLocalDateTime() {
+			return asString().toLocalDateTime(localDateTimeFormatterFunction);
 		}
 	}
 

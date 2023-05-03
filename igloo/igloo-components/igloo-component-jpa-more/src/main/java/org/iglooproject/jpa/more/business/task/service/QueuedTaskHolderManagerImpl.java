@@ -6,9 +6,9 @@ import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.queueNum
 import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.queueStartDelay;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -462,7 +462,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 			if (queuedTaskHolder != null) {
 				try {
 					queuedTaskHolder.setStatus(TaskStatus.INTERRUPTED);
-					queuedTaskHolder.setEndDate(new Date());
+					queuedTaskHolder.setEndDate(Instant.now());
 					queuedTaskHolder.resetExecutionInformation();
 					queuedTaskHolderService.update(queuedTaskHolder);
 				} catch (RuntimeException | ServiceException | SecurityServiceException e) {
