@@ -3,8 +3,6 @@ package org.iglooproject.jpa.more.business.search.query;
 import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +18,8 @@ import com.querydsl.core.types.dsl.CollectionPathBase;
 import com.querydsl.core.types.dsl.ComparableExpression;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.jpa.impl.JPAQuery;
+
+import jakarta.annotation.PostConstruct;
 
 public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?>>> extends AbstractSearchQuery<T, S> /* NOT Serializable */ {
 	

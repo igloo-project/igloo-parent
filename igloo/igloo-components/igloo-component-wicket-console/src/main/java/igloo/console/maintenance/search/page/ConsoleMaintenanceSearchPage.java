@@ -19,7 +19,10 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.functional.Suppliers2;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -48,6 +51,9 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 			.page(ConsoleMaintenanceSearchPage.class);
 	}
 
+	@SpringBean
+	private IHibernateSearchService hibernateSearchService;
+
 	private final IModel<Collection<Class<?>>> classesChoicesModel;
 
 	private final IModel<List<Class<?>>> classesModel = new ListModel<>(new ArrayList<>());
@@ -71,8 +77,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 					@Override
 					public void execute(AjaxRequestTarget target) {
 						try {
-							// TODO igloo-boot
-//							hibernateSearchService.reindexAll();
+							hibernateSearchService.reindexAll();
 							Session.get().success(getString("common.success"));
 						} catch(Exception e) {
 							LOGGER.error("Erreur lors la réindexation complète.", e);
@@ -96,16 +101,14 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected Collection<Class<?>> load() {
-				// TODO igloo-boot
-				return Collections.emptyList();
-//				try {
-//					return hibernateSearchService.getIndexedRootEntities();
-//				} catch (ServiceException e) {
-//					LOGGER.error("Erreur lors de la récupération de la liste des classes indexées.", e);
-//					Session.get().error(getString("console.maintenance.search.reindex.partial.error.getClasses"));
-//					reindexClassesForm.setVisibilityAllowed(false);
-//					return ImmutableList.of();
-//				}
+				try {
+					return hibernateSearchService.getIndexedRootEntities();
+				} catch (ServiceException e) {
+					LOGGER.error("Erreur lors de la récupération de la liste des classes indexées.", e);
+					Session.get().error(getString("console.maintenance.search.reindex.partial.error.getClasses"));
+					reindexClassesForm.setVisibilityAllowed(false);
+					return Collections.emptyList();
+				}
 			}
 		};
 		classesChoicesModel.getObject(); // early load
@@ -143,7 +146,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 							
 							if (entityIds.isEmpty()) {
 								//TODO igloo-boot
-//								hibernateSearchService.reindexClasses(classesModel.getObject());
+								hibernateSearchService.reindexClasses(classesModel.getObject());
 							} else {
 								for (Class<?> clazz : classesModel.getObject()) {
 									//TODO igloo-boot

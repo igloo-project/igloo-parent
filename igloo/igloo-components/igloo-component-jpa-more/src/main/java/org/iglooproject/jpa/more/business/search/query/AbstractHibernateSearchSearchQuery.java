@@ -72,23 +72,19 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	}
 	
 	protected Analyzer getAnalyzer(Class<?> clazz) {
-		return null;
-//		return this.factory.getAnalyzer(clazz);
+		return this.factory.getAnalyzer(clazz);
 	}
 	
 	protected Analyzer getDefaultAnalyzer() {
-		return null;
-//		return this.factory.getDefaultAnalyzer();
+		return this.factory.getDefaultAnalyzer();
 	}
 
 	protected QueryBuilder getDefaultQueryBuilder() {
-		return null;
-//		return this.factory.getDefaultQueryBuilder();
+		return this.factory.getDefaultQueryBuilder();
 	}
 	
 	protected IHibernateSearchLuceneQueryFactory getFactory() {
-		return null;
-//		return this.factory;
+		return this.factory;
 	}
 
 	protected FullTextEntityManager getFullTextEntityManager() {
