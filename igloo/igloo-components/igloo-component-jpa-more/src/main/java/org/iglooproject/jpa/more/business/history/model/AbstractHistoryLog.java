@@ -6,9 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.bindgen.Bindable;
+import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.SortableField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.ObjectPath;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.PropertyValue;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
@@ -88,31 +93,31 @@ public abstract class AbstractHistoryLog<
 	
 	//TODO: igloo-boot
 	@Embedded
-//	@IndexedEmbedded(prefix = SUBJECT_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(prefix = SUBJECT_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue subject;
 	
 	@Embedded
-//	@IndexedEmbedded(prefix = MAIN_OBJECT_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(prefix = MAIN_OBJECT_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	private HistoryValue mainObject;
 	
 	@Embedded
-//	@IndexedEmbedded(prefix = OBJECT1_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(prefix = OBJECT1_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue object1 = new HistoryValue();
 
 	@Embedded
-//	@IndexedEmbedded(prefix = OBJECT2_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(prefix = OBJECT2_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue object2 = new HistoryValue();
 
 	@Embedded
-//	@IndexedEmbedded(prefix = OBJECT3_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(prefix = OBJECT3_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue object3 = new HistoryValue();
 
 	@Embedded
-//	@IndexedEmbedded(prefix = OBJECT4_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(prefix = OBJECT4_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue object4 = new HistoryValue();
 	
@@ -229,7 +234,14 @@ public abstract class AbstractHistoryLog<
 	}
 	
 	//TODO: igloo-boot
-//	@IndexedEmbedded(prefix = ALL_OBJECTS_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(prefix = ALL_OBJECTS_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexingDependency(derivedFrom = {
+		@ObjectPath(@PropertyValue(propertyName = "mainObject")),
+		@ObjectPath(@PropertyValue(propertyName = "object1")),
+		@ObjectPath(@PropertyValue(propertyName = "object2")),
+		@ObjectPath(@PropertyValue(propertyName = "object3")),
+		@ObjectPath(@PropertyValue(propertyName = "object4"))
+	})
 	public Set<HistoryValue> getAllObjects() {
 		Set<HistoryValue> result = Sets.newLinkedHashSet();
 		for (HistoryValue value : new HistoryValue[] {mainObject, object1, object2, object3, object4}) {

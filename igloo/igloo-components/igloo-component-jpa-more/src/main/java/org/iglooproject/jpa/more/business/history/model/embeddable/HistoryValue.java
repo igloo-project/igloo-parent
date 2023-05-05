@@ -5,7 +5,10 @@ import java.io.Serializable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bindgen.Bindable;
+import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.ValueBridgeRef;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
+import org.iglooproject.jpa.more.business.history.search.HistoryEntityReferenceBridge;
 
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
@@ -36,6 +39,7 @@ public class HistoryValue implements Serializable {
 	
 	@Embedded
 	//TODO: igloo-boot
+	@GenericField(name = REFERENCE, valueBridge = @ValueBridgeRef(type = HistoryEntityReferenceBridge.class))
 //	@Field(name = REFERENCE, bridge = @FieldBridge(impl = NullEncodingGenericEntityReferenceFieldBridge.class), analyze = Analyze.NO)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryEntityReference reference;
