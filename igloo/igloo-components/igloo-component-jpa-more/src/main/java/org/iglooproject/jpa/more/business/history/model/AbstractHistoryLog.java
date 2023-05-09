@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.bindgen.Bindable;
-import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.IndexedEmbedded;
@@ -91,7 +90,6 @@ public abstract class AbstractHistoryLog<
 	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private HET eventType;
 	
-	//TODO: igloo-boot
 	@Embedded
 	@IndexedEmbedded(prefix = SUBJECT_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
@@ -233,7 +231,6 @@ public abstract class AbstractHistoryLog<
 		this.object4 = object4;
 	}
 	
-	//TODO: igloo-boot
 	@IndexedEmbedded(prefix = ALL_OBJECTS_PREFIX, includePaths = {HistoryValue.REFERENCE})
 	@IndexingDependency(derivedFrom = {
 		@ObjectPath(@PropertyValue(propertyName = "mainObject")),
@@ -269,7 +266,7 @@ public abstract class AbstractHistoryLog<
 	}
 	
 	@Transient
-	//TODO: igloo-boot
+	//TODO: igloo-boot : dépendent de l'attribut differences, donc dépendent du problème du @OrderColumn
 //	@IndexingDependency(derivedFrom = @ObjectPath(@PropertyValue(propertyName = "differences")))
 //	@Field(name = HAS_DIFFERENCES, analyze = Analyze.NO)
 	public boolean isDifferencesNonEmpty() {
