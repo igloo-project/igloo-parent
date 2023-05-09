@@ -8,7 +8,7 @@ import org.bindgen.Bindable;
 import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.ValueBridgeRef;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
-import org.iglooproject.jpa.more.business.history.search.HistoryEntityReferenceBridge;
+import org.iglooproject.jpa.search.bridge.GenericEntityReferenceIdBridge;
 
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
@@ -38,9 +38,7 @@ public class HistoryValue implements Serializable {
 	private String serialized;
 	
 	@Embedded
-	//TODO: igloo-boot
-	@GenericField(name = REFERENCE, valueBridge = @ValueBridgeRef(type = HistoryEntityReferenceBridge.class))
-//	@Field(name = REFERENCE, bridge = @FieldBridge(impl = NullEncodingGenericEntityReferenceFieldBridge.class), analyze = Analyze.NO)
+	@GenericField(name = REFERENCE, valueBridge = @ValueBridgeRef(type = GenericEntityReferenceIdBridge.class))
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryEntityReference reference;
 
