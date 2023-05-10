@@ -1,20 +1,19 @@
 package org.iglooproject.jpa.more.business.referencedata.model;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-
 import org.bindgen.Bindable;
 import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.SortableField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.DocumentId;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 import com.google.common.base.MoreObjects.ToStringHelper;
 
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
+import jakarta.persistence.Basic;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
 @Bindable

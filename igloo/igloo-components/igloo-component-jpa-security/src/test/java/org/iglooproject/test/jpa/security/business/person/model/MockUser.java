@@ -1,9 +1,9 @@
 package org.iglooproject.test.jpa.security.business.person.model;
 
-import jakarta.persistence.Entity;
-
-import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.iglooproject.jpa.security.business.user.model.GenericSimpleUser;
+
+import jakarta.persistence.Entity;
 
 @Entity
 @Indexed

@@ -22,6 +22,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.test.business.company.model.Company;
+import org.iglooproject.test.business.project.model.Project;
+
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -36,14 +43,6 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyEnumerated;
 import jakarta.persistence.OneToMany;
-
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
-
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.test.business.company.model.Company;
-import org.iglooproject.test.business.project.model.Project;
 
 @Entity
 @Indexed
