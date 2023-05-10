@@ -9,6 +9,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.util.CollectionModel;
 import org.iglooproject.jpa.more.business.search.query.ISearchQuery;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
+import org.iglooproject.jpa.more.business.task.search.IQueuedTaskHolderSearchQuery;
 import org.iglooproject.jpa.more.business.task.search.QueuedTaskHolderSort;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
@@ -96,18 +97,16 @@ public class QueuedTaskHolderDataProvider extends AbstractSearchQueryDataProvide
 
 	@Override
 	protected ISearchQuery<QueuedTaskHolder, QueuedTaskHolderSort> getSearchQuery() {
-		return null;
-		//TODO igloo-boot
-//		return createSearchQuery(IQueuedTaskHolderSearchQuery.class)
-//			.name(nameModel.getObject())
-//			.statuses(statusesModel.getObject())
-//			.results(resultsModel.getObject())
-//			.types(taskTypesModel.getObject())
-//			.queueIds(queueIdsModel.getObject())
-//			.creationDate(creationDateModel.getObject())
-//			.startDate(startDateModel.getObject())
-//			.endDate(endDateModel.getObject())
-//			.sort(sortModel.getObject());
+		return createSearchQuery(IQueuedTaskHolderSearchQuery.class)
+			.name(nameModel.getObject())
+			.statuses(statusesModel.getObject())
+			.results(resultsModel.getObject())
+			.types(taskTypesModel.getObject())
+			.queueIds(queueIdsModel.getObject())
+			.creationDate(creationDateModel.getObject())
+			.startDate(startDateModel.getObject())
+			.endDate(endDateModel.getObject())
+			.sort(sortModel.getObject());
 	}
 
 	@Override

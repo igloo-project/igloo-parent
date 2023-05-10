@@ -32,6 +32,7 @@ import com.google.common.collect.Sets;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
+//TODO igloo-boot
 @Repository("hibernateSearchDao")
 public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	

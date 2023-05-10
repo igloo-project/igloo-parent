@@ -52,6 +52,9 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 
 	@Id
 	@DocumentId
+	@Field // TODO: igloo-boot : @DocumentId n'implique plus d'index ID par défaut, à ça 2 solutions :
+	// * Faire un @Field
+	// * Faire une recherche spécifique pour les id (recommandé par HS) : https://docs.jboss.org/hibernate/search/6.0/reference/en-US/html_single/#search-dsl-predicate-id
 	@GeneratedValue
 	private Long id;
 

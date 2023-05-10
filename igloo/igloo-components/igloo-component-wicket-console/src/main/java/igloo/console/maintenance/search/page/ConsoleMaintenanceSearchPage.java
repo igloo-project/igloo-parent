@@ -21,6 +21,7 @@ import org.apache.wicket.model.util.ListModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.functional.Suppliers2;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.spring.util.StringUtils;
@@ -145,20 +146,18 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 							}
 							
 							if (entityIds.isEmpty()) {
-								//TODO igloo-boot
 								hibernateSearchService.reindexClasses(classesModel.getObject());
 							} else {
 								for (Class<?> clazz : classesModel.getObject()) {
-									//TODO igloo-boot
-//									for (Long entityId : entityIds) {
-//										try {
-//											@SuppressWarnings("unchecked")
-//											Class<GenericEntity<Long, ?>> genericEntityClazz = (Class<GenericEntity<Long, ?>>) clazz;
-//											hibernateSearchService.reindexEntity(genericEntityClazz, entityId);
-//										} catch (IllegalArgumentException e) {
-//											// On ignore les classes qui ne sont pas des GenericEntity.
-//										}
-//									}
+									for (Long entityId : entityIds) {
+										try {
+											@SuppressWarnings("unchecked")
+											Class<GenericEntity<Long, ?>> genericEntityClazz = (Class<GenericEntity<Long, ?>>) clazz;
+											hibernateSearchService.reindexEntity(genericEntityClazz, entityId);
+										} catch (IllegalArgumentException e) {
+											// On ignore les classes qui ne sont pas des GenericEntity.
+										}
+									}
 								}
 							}
 							

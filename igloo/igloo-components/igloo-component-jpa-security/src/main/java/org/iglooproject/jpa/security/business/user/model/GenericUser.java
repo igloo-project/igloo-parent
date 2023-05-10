@@ -22,9 +22,12 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Normalizer;
 import org.hibernate.search.annotations.SortableField;
+import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.ValueBridgeRef;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.search.bridge.GenericEntityIdBridge;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.user.util.GenericUserGroupComparator;
 import org.springframework.security.acls.model.Permission;
@@ -107,8 +110,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 
 	@ManyToMany
 	@SortComparator(GenericUserGroupComparator.class)
-	//TODO igloo-boot
-	//@Field(name = GROUPS, bridge = @FieldBridge(impl = GenericEntityCollectionIdFieldBridge.class), analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@KeywordField(name = GROUPS, valueBridge = @ValueBridgeRef(type = GenericEntityIdBridge.class))
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private SortedSet<G> groups = Sets.newTreeSet(GenericUserGroupComparator.get());
 
