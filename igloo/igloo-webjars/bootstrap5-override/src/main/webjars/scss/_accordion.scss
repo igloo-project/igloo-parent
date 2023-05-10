@@ -1,0 +1,13 @@
+[data-bs-toggle="collapse"] {
+	&.collapsed {
+		.d-none-collapse-show {
+			display: none !important;
+		}
+	}
+	
+	&:not(.collapsed) {
+		.d-none-collapse-collapsed {
+			display: none !important;
+		}
+	}
+}

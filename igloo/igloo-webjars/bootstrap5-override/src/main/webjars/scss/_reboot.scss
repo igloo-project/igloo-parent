@@ -11,6 +11,6 @@ p {
 	margin-bottom: 0;
 	
 	+ p {
-		margin-top: $paragraph-margin-bottom / 2;
+		margin-top: $paragraph-margin-bottom * .5;
 	}
 }

@@ -437,20 +437,20 @@ $content-h3-margin-top:                 $content-spacing * 1.5 !default;
 $content-h4-margin-top:                 $content-spacing * 1.25 !default;
 $content-h5-margin-top:                 $content-spacing !default;
 $content-h6-margin-top:                 $content-spacing !default;
-$content-list-spacing:                  $content-spacing / 2 !default;
-$content-list-item-spacing:             $content-spacing / 4 !default;
-$content-description-item-spacing:      $content-spacing / 2 !default;
+$content-list-spacing:                  $content-spacing * .5 !default;
+$content-list-item-spacing:             $content-spacing * .25 !default;
+$content-description-item-spacing:      $content-spacing * .5 !default;
 
-$content-spacing-sm:                    $content-spacing / 2 !default;
-$content-h1-margin-top-sm:              $content-h1-margin-top / 2 !default;
-$content-h2-margin-top-sm:              $content-h2-margin-top / 2 !default;
-$content-h3-margin-top-sm:              $content-h3-margin-top / 2 !default;
-$content-h4-margin-top-sm:              $content-h4-margin-top / 2 !default;
-$content-h5-margin-top-sm:              $content-h5-margin-top / 2 !default;
-$content-h6-margin-top-sm:              $content-h6-margin-top / 2 !default;
-$content-list-spacing-sm:               $content-list-spacing / 2 !default;
-$content-list-item-spacing-sm:          $content-list-item-spacing / 2 !default;
-$content-description-item-spacing-sm:   $content-description-item-spacing / 2 !default;
+$content-spacing-sm:                    $content-spacing * .5 !default;
+$content-h1-margin-top-sm:              $content-h1-margin-top * .5 !default;
+$content-h2-margin-top-sm:              $content-h2-margin-top * .5 !default;
+$content-h3-margin-top-sm:              $content-h3-margin-top * .5 !default;
+$content-h4-margin-top-sm:              $content-h4-margin-top * .5 !default;
+$content-h5-margin-top-sm:              $content-h5-margin-top * .5 !default;
+$content-h6-margin-top-sm:              $content-h6-margin-top * .5 !default;
+$content-list-spacing-sm:               $content-list-spacing * .5 !default;
+$content-list-item-spacing-sm:          $content-list-item-spacing * .5 !default;
+$content-description-item-spacing-sm:   $content-description-item-spacing * .5 !default;
 
 // Grid breakpoints
 //

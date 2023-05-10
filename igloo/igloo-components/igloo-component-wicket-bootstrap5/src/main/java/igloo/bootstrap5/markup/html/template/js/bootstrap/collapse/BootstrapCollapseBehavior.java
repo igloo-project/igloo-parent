@@ -21,6 +21,8 @@ public class BootstrapCollapseBehavior extends Behavior {
 
 	private final IModel<? extends IBootstrapCollapseOptions> optionsModel;
 
+	private Behavior targetBehavior;
+
 	private Condition showCondition = Condition.alwaysFalse(); // initial state
 
 	public BootstrapCollapseBehavior(Component target) {
@@ -63,7 +65,8 @@ public class BootstrapCollapseBehavior extends Behavior {
 	@Override
 	public void bind(Component component) {
 		super.bind(component);
-		target.add(new Behavior() {
+		
+		targetBehavior = new Behavior() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
@@ -78,7 +81,15 @@ public class BootstrapCollapseBehavior extends Behavior {
 			public boolean isEnabled(Component target) {
 				return BootstrapCollapseBehavior.this.isEnabled(component);
 			}
-		});
+		};
+		
+		target.add(targetBehavior);
+	}
+
+	@Override
+	public void unbind(Component component) {
+		super.unbind(component);
+		component.remove(targetBehavior);
 	}
 
 	public BootstrapCollapseBehavior show() {
