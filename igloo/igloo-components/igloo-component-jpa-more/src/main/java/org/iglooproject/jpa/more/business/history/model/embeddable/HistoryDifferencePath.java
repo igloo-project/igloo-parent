@@ -1,17 +1,16 @@
 package org.iglooproject.jpa.more.business.history.model.embeddable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.bindgen.Bindable;
+import org.iglooproject.commons.util.fieldpath.FieldPath;
+
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.bindgen.Bindable;
-
-import org.iglooproject.commons.util.fieldpath.FieldPath;
 
 @Embeddable
 @Bindable
