@@ -3,18 +3,17 @@ package org.iglooproject.jpa.more.business.history.model.embeddable;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.hibernate.search.engine.backend.types.Sortable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
+import org.iglooproject.commons.util.CloneUtils;
+
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.IndexedEmbedded;
-import org.hibernate.search.annotations.SortableField;
-
-import org.iglooproject.commons.util.CloneUtils;
 
 /**
  * An {@link Embeddable embeddable} for storing limited information about an event:
@@ -40,17 +39,16 @@ public class HistoryEventSummary implements Serializable {
 	@Basic(optional = true) // Might be defined as nullable in some places (using @AttributeOverride)
 	@Column(nullable = false) // Non-nullable by default
 	@Temporal(TemporalType.TIMESTAMP)
-	@Field(name = DATE)
-	@SortableField(forField = DATE)
+	@GenericField(name = DATE, sortable = Sortable.YES)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private Date date;
 
 	@Embedded
 	@IndexedEmbedded(
-			prefix = SUBJECT_PREFIX,
-			includePaths = {
-					HistoryValue.REFERENCE
-			}
+		name = SUBJECT,
+		includePaths = {
+			HistoryValue.REFERENCE
+		}
 	)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue subject;

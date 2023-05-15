@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.bindgen.Bindable;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.IndexedEmbedded;
-import org.hibernate.search.annotations.SortableField;
+import org.hibernate.search.engine.backend.types.Sortable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.ObjectPath;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.PropertyValue;
@@ -23,7 +22,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EnumType;
@@ -48,6 +46,8 @@ public abstract class AbstractHistoryLog<
 
 	public static final String DATE = "date";
 
+	public static final String EVENT_TYPE = "eventType";
+
 	private static final String SUBJECT = "subject";
 	private static final String SUBJECT_PREFIX = SUBJECT + ".";
 
@@ -55,7 +55,6 @@ public abstract class AbstractHistoryLog<
 	private static final String ALL_OBJECTS_PREFIX = ALL_OBJECTS + ".";
 
 	private static final String MAIN_OBJECT = "mainObject";
-	private static final String MAIN_OBJECT_PREFIX = MAIN_OBJECT + ".";
 	private static final String OBJECT1 = "object1";
 	private static final String OBJECT1_PREFIX = OBJECT1 + ".";
 	private static final String OBJECT2 = "object2";
@@ -80,42 +79,41 @@ public abstract class AbstractHistoryLog<
 	
 	@Basic(optional = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	@Field(name = DATE)
-	@SortableField(forField = DATE)
+	@GenericField(name = DATE, sortable = Sortable.YES)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private Date date;
 
 	@Basic(optional = false)
 	@Enumerated(EnumType.STRING)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@GenericField(name = EVENT_TYPE)
 	private HET eventType;
 	
 	@Embedded
-	@IndexedEmbedded(prefix = SUBJECT_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(name = SUBJECT, includePaths = {HistoryValue.REFERENCE})
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue subject;
 	
 	@Embedded
-	@IndexedEmbedded(prefix = MAIN_OBJECT_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(name = MAIN_OBJECT, includePaths = {HistoryValue.REFERENCE})
 	private HistoryValue mainObject;
 	
 	@Embedded
-	@IndexedEmbedded(prefix = OBJECT1_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(name = OBJECT1, includePaths = {HistoryValue.REFERENCE})
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue object1 = new HistoryValue();
 
 	@Embedded
-	@IndexedEmbedded(prefix = OBJECT2_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(name = OBJECT2, includePaths = {HistoryValue.REFERENCE})
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue object2 = new HistoryValue();
 
 	@Embedded
-	@IndexedEmbedded(prefix = OBJECT3_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(name = OBJECT3, includePaths = {HistoryValue.REFERENCE})
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue object3 = new HistoryValue();
 
 	@Embedded
-	@IndexedEmbedded(prefix = OBJECT4_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(name = OBJECT4, includePaths = {HistoryValue.REFERENCE})
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue object4 = new HistoryValue();
 	
@@ -231,13 +229,13 @@ public abstract class AbstractHistoryLog<
 		this.object4 = object4;
 	}
 	
-	@IndexedEmbedded(prefix = ALL_OBJECTS_PREFIX, includePaths = {HistoryValue.REFERENCE})
+	@IndexedEmbedded(name = ALL_OBJECTS, includePaths = {HistoryValue.REFERENCE})
 	@IndexingDependency(derivedFrom = {
-		@ObjectPath(@PropertyValue(propertyName = "mainObject")),
-		@ObjectPath(@PropertyValue(propertyName = "object1")),
-		@ObjectPath(@PropertyValue(propertyName = "object2")),
-		@ObjectPath(@PropertyValue(propertyName = "object3")),
-		@ObjectPath(@PropertyValue(propertyName = "object4"))
+		@ObjectPath(@PropertyValue(propertyName = MAIN_OBJECT)),
+		@ObjectPath(@PropertyValue(propertyName = OBJECT1)),
+		@ObjectPath(@PropertyValue(propertyName = OBJECT2)),
+		@ObjectPath(@PropertyValue(propertyName = OBJECT3)),
+		@ObjectPath(@PropertyValue(propertyName = OBJECT4))
 	})
 	public Set<HistoryValue> getAllObjects() {
 		Set<HistoryValue> result = Sets.newLinkedHashSet();
@@ -268,7 +266,7 @@ public abstract class AbstractHistoryLog<
 	@Transient
 	//TODO: igloo-boot : dépendent de l'attribut differences, donc dépendent du problème du @OrderColumn
 //	@IndexingDependency(derivedFrom = @ObjectPath(@PropertyValue(propertyName = "differences")))
-//	@Field(name = HAS_DIFFERENCES, analyze = Analyze.NO)
+//	@GenericField(name = HAS_DIFFERENCES)
 	public boolean isDifferencesNonEmpty() {
 		return !differences.isEmpty();
 	}

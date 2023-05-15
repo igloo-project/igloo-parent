@@ -5,12 +5,11 @@ import java.util.Date;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.JavaType;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Normalizer;
-import org.hibernate.search.annotations.SortableField;
+import org.hibernate.search.engine.backend.types.Sortable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.hibernate.type.descriptor.java.StringJavaType;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
@@ -57,40 +56,34 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
 	@Id
 	@GeneratedValue
-	@DocumentId
 	private Long id;
 
 	@Column(nullable = false)
-	@Field(name = NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
-	@Field(name = NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	@SortableField(forField = NAME_SORT)
+	@FullTextField(name = NAME, analyzer = HibernateSearchAnalyzer.TEXT)
+	@KeywordField(name = NAME_SORT, normalizer = HibernateSearchNormalizer.TEXT, sortable = Sortable.YES)
 	@JavaType(StringJavaType.class)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String name;
 
 	@Column(nullable = true)
-	@Field(name = QUEUE_ID, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@GenericField(name = QUEUE_ID)
 	private String queueId;
 
 	@Column(nullable = false)
-	@Field(name = TASK_TYPE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@GenericField(name = TASK_TYPE)
 	private String taskType;
 
 	@Column(nullable = false)
-	@Field(name = CREATION_DATE)
-	@SortableField(forField = CREATION_DATE)
+	@GenericField(name = CREATION_DATE, sortable = Sortable.YES)
 	private Date creationDate;
 
-	@Field(name = TRIGGERING_DATE)
-	@SortableField(forField = TRIGGERING_DATE)
+	@GenericField(name = TRIGGERING_DATE, sortable = Sortable.YES)
 	private Date triggeringDate = null;
 
-	@Field(name = START_DATE)
-	@SortableField(forField = START_DATE)
+	@GenericField(name = START_DATE, sortable = Sortable.YES)
 	private Date startDate = null;
 
-	@Field(name = END_DATE)
-	@SortableField(forField = END_DATE)
+	@GenericField(name = END_DATE, sortable = Sortable.YES)
 	private Date endDate = null;
 
 	@Version
@@ -103,13 +96,13 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	@Field(name = STATUS, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@GenericField(name = STATUS)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private TaskStatus status;
 	
 	@Column
 	@Enumerated(EnumType.STRING)
-	@Field(name = RESULT, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@GenericField(name = RESULT)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private TaskResult result;
 

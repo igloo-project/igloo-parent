@@ -1,10 +1,10 @@
 package org.iglooproject.test.search.model;
 
 import org.bindgen.Bindable;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import jakarta.persistence.Entity;
@@ -15,23 +15,24 @@ import jakarta.persistence.Id;
 @Indexed
 @Bindable
 public class Searchable {
-	
+
+	public static final String KEYWORD = "KEYWORD";
+
 	public static final String MULTIPLE_INDEXES = "multipleIndexes";
 	public static final String MULTIPLE_INDEXES_AUTOCOMPLETE = MULTIPLE_INDEXES + "Autocomplete";
 	
 	@Id
 	@GeneratedValue
-	@DocumentId
 	public Long id;
 
-	@Field()
+	@GenericField
 	public String autocomplete;
 
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@KeywordField(name = KEYWORD)
 	public String keyword;
 	
-	@Field(name = MULTIPLE_INDEXES, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
-	@Field(name = MULTIPLE_INDEXES_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_STEMMING))
+	@FullTextField(name = MULTIPLE_INDEXES, analyzer = HibernateSearchAnalyzer.TEXT)
+	@FullTextField(name = MULTIPLE_INDEXES_AUTOCOMPLETE, analyzer = HibernateSearchAnalyzer.TEXT_STEMMING)
 	public String multipleIndexes;
 	
 	public String notIndexed;

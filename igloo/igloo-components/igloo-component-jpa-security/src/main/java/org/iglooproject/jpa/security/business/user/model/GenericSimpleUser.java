@@ -2,15 +2,10 @@ package org.iglooproject.jpa.security.business.user.model;
 
 import java.util.SortedSet;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Transient;
-
 import org.bindgen.Bindable;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Normalizer;
-import org.hibernate.search.annotations.SortableField;
+import org.hibernate.search.engine.backend.types.Sortable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.iglooproject.functional.Joiners;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.mail.api.INotificationRecipient;
@@ -20,6 +15,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import igloo.hibernateconfig.api.HibernateSearchNormalizer;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 
 @MappedSuperclass
 @Bindable
@@ -38,19 +36,17 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 	public static final String EMAIL = "email";
 
 	@Column(nullable = false)
-	@Field(name = FIRST_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
-	@Field(name = FIRST_NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	@SortableField(forField = FIRST_NAME_SORT)
+	@FullTextField(name = FIRST_NAME, analyzer = HibernateSearchAnalyzer.TEXT)
+	@KeywordField(name = FIRST_NAME_SORT, normalizer = HibernateSearchNormalizer.TEXT, sortable = Sortable.YES)
 	private String firstName;
 
 	@Column(nullable = false)
-	@Field(name = LAST_NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
-	@Field(name = LAST_NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	@SortableField(forField = LAST_NAME_SORT)
+	@FullTextField(name = LAST_NAME, analyzer = HibernateSearchAnalyzer.TEXT)
+	@KeywordField(name = LAST_NAME_SORT, normalizer = HibernateSearchNormalizer.TEXT, sortable = Sortable.YES)
 	private String lastName;
 
 	@Column
-	@Field(name = EMAIL, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@FullTextField(name = EMAIL, analyzer = HibernateSearchAnalyzer.TEXT)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String email;
 

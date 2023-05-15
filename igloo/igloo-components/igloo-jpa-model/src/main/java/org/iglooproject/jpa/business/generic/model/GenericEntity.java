@@ -23,13 +23,9 @@ import java.io.Serializable;
 import java.util.Locale;
 import java.util.function.Function;
 
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Transient;
-
 import org.hibernate.Hibernate;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.SortableField;
+import org.hibernate.search.engine.backend.types.Sortable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.iglooproject.commons.util.ordering.SerializableCollator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +36,9 @@ import com.google.common.base.MoreObjects.ToStringHelper;
 import com.google.common.collect.Ordering;
 import com.querydsl.core.annotations.PropertyType;
 import com.querydsl.core.annotations.QueryType;
+
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 
 @MappedSuperclass
 public abstract class GenericEntity<K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
@@ -74,8 +73,7 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 
 	@Override
 	@QueryType(PropertyType.COMPARABLE)
-	@Field(name = ID_SORT, analyze = Analyze.NO)
-	@SortableField(forField = ID_SORT)
+	@GenericField(name = ID_SORT, sortable = Sortable.YES)
 	public abstract K getId();
 
 	public abstract void setId(K id);

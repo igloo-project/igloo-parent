@@ -5,21 +5,18 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.Field;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 
 import com.google.common.base.Verify;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
-import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 
 public class GenericEntityCollectionReference<K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
 		implements Serializable {
@@ -30,7 +27,7 @@ public class GenericEntityCollectionReference<K extends Comparable<K> & Serializ
 	private final Class<? extends E> entityClass;
 	
 	@Column(nullable = true)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@GenericField
 	private final List<K> entityIdList;
 	
 	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>

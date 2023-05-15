@@ -2,9 +2,9 @@ package test.jpa.more.business.entity.model;
 
 import java.util.Date;
 
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.DocumentId;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
@@ -22,11 +22,10 @@ public class TestEntity extends GenericEntity<Long, TestEntity> {
 	private static final long serialVersionUID = 3827488123984866455L;
 
 	@Id
-	@DocumentId
 	@GeneratedValue
 	private Long id;
 	
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
+	@FullTextField(analyzer = HibernateSearchAnalyzer.TEXT)
 	@Basic(optional = false)
 	private String label;
 	
@@ -36,15 +35,15 @@ public class TestEntity extends GenericEntity<Long, TestEntity> {
 	@Column
 	private String simplePropertyUpdateInterceptor;
 	
-	@Field
 	@Column
+	@GenericField
 	private String classicInterceptorSave;
 	
 	@Column
 	private String classicInterceptorFlushDirty;
 
-	@Field
 	@Column
+	@GenericField
 	private Date dateCreation;
 
 	public TestEntity() {

@@ -22,8 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.test.business.company.model.Company;
@@ -52,14 +51,13 @@ public class Person extends GenericEntity<Long, Person> {
 	private static final long serialVersionUID = -2471930493134125282L;
 
 	@Id
-	@DocumentId
 	@GeneratedValue
 	private Long id;
 
-	@Field
+	@GenericField
 	private String firstName;
 
-	@Field
+	@GenericField
 	private String lastName;
 
 	@ManyToOne

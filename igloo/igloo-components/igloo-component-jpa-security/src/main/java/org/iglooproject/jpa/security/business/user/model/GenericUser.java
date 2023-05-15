@@ -16,12 +16,10 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
 import org.hibernate.annotations.SortComparator;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Normalizer;
-import org.hibernate.search.annotations.SortableField;
+import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.ValueBridgeRef;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.iglooproject.commons.util.CloneUtils;
@@ -65,14 +63,12 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 
 	@Id
 	@GeneratedValue
-	@DocumentId
 	private Long id;
 
 	@Column(nullable = false)
 	@NaturalId(mutable = true)
-	@Field(name = USERNAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
-	@Field(name = USERNAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	@SortableField(forField = USERNAME_SORT)
+	@FullTextField(name = USERNAME, analyzer = HibernateSearchAnalyzer.TEXT)
+	@KeywordField(name = USERNAME_SORT, normalizer = HibernateSearchNormalizer.TEXT, sortable = Sortable.YES)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String username;
 
@@ -80,7 +76,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	private String passwordHash = EMPTY_PASSWORD_HASH;
 
 	@Column(nullable = false)
-	@Field(name = ENABLED)
+	@GenericField(name = ENABLED)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private boolean enabled = true;
 

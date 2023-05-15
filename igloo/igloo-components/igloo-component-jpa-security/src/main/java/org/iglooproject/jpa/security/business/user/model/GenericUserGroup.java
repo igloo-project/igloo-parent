@@ -13,11 +13,9 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.SortComparator;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Normalizer;
-import org.hibernate.search.annotations.SortableField;
+import org.hibernate.search.engine.backend.types.Sortable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.hibernate.type.descriptor.java.StringJavaType;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
@@ -51,17 +49,12 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 	public static final String NAME_SORT = "nameSort";
 
 	@Id
-	@DocumentId
-	@Field // TODO: igloo-boot : @DocumentId n'implique plus d'index ID par défaut, à ça 2 solutions :
-	// * Faire un @Field
-	// * Faire une recherche spécifique pour les id (recommandé par HS) : https://docs.jboss.org/hibernate/search/6.0/reference/en-US/html_single/#search-dsl-predicate-id
 	@GeneratedValue
 	private Long id;
 
 	@Column
-	@Field(name = NAME, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
-	@Field(name = NAME_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	@SortableField(forField = NAME_SORT)
+	@FullTextField(name = NAME, analyzer = HibernateSearchAnalyzer.TEXT)
+	@KeywordField(name = NAME_SORT, normalizer = HibernateSearchNormalizer.TEXT, sortable = Sortable.YES)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String name;
 

@@ -8,14 +8,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.Field;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.type.descriptor.java.ClassJavaType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 
 import com.google.common.base.Verify;
 
-import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Column;
@@ -38,7 +36,7 @@ public class GenericEntityReference<K extends Comparable<K> & Serializable, E ex
 	private /* final */ Class<? extends E> type;
 	
 	@Column(nullable = true)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@GenericField
 	private /* final */ K id;
 
 	public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>

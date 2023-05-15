@@ -1,15 +1,12 @@
 package org.iglooproject.jpa.more.business.referencedata.model;
 
 import org.bindgen.Bindable;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.SortableField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.DocumentId;
+import org.hibernate.search.engine.backend.types.Sortable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 import com.google.common.base.MoreObjects.ToStringHelper;
 
-import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import jakarta.persistence.Basic;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -27,7 +24,6 @@ public abstract class GenericReferenceData<E extends GenericReferenceData<?, ?>,
 	public static final String ENABLED = "enabled";
 
 	@Id
-	@DocumentId
 	@GeneratedValue
 	private Long id;
 
@@ -37,13 +33,12 @@ public abstract class GenericReferenceData<E extends GenericReferenceData<?, ?>,
 	public abstract T getLabel();
 	
 	@Basic(optional = false)
-	@Field(name = POSITION, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-	@SortableField(forField = POSITION)
+	@GenericField(name = POSITION, sortable = Sortable.YES)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private Integer position = 0;
 
-	@Field(name = ENABLED)
 	@Basic(optional = false)
+	@GenericField(name = ENABLED)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private boolean enabled = true;
 	
