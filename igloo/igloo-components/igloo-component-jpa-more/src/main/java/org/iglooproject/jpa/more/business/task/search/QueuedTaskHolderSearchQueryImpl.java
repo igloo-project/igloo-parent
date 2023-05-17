@@ -3,12 +3,12 @@ package org.iglooproject.jpa.more.business.task.search;
 import java.util.Collection;
 import java.util.Date;
 
-import org.iglooproject.jpa.more.business.search.query.AbstractHibernateSearchSearchQuery;
+import org.iglooproject.jpa.more.business.search.query.OldAbstractHibernateSearchSearchQuery;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
 
-public class QueuedTaskHolderSearchQueryImpl extends AbstractHibernateSearchSearchQuery<QueuedTaskHolder, QueuedTaskHolderSort>
+public class QueuedTaskHolderSearchQueryImpl extends OldAbstractHibernateSearchSearchQuery<QueuedTaskHolder, QueuedTaskHolderSort>
 		implements IQueuedTaskHolderSearchQuery {
 
 	public QueuedTaskHolderSearchQueryImpl() {

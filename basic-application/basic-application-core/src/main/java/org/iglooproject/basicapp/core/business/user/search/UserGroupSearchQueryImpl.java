@@ -5,7 +5,7 @@ import java.util.Set;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
-import org.iglooproject.jpa.more.business.search.query.AbstractHibernateSearchSearchQuery;
+import org.iglooproject.jpa.more.business.search.query.OldAbstractHibernateSearchSearchQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import com.google.common.collect.Sets;
 
 @Component
 @Scope("prototype")
-public class UserGroupSearchQueryImpl extends AbstractHibernateSearchSearchQuery<UserGroup, UserGroupSort> implements IUserGroupSearchQuery {
+public class UserGroupSearchQueryImpl extends OldAbstractHibernateSearchSearchQuery<UserGroup, UserGroupSort> implements IUserGroupSearchQuery {
 
 	public UserGroupSearchQueryImpl() {
 		super(UserGroup.class, UserGroupSort.NAME);

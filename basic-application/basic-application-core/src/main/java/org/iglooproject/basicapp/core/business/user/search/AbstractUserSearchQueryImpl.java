@@ -5,9 +5,9 @@ import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.commons.util.exception.IllegalSwitchValueException;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
-import org.iglooproject.jpa.more.business.search.query.AbstractHibernateSearchSearchQuery;
+import org.iglooproject.jpa.more.business.search.query.OldAbstractHibernateSearchSearchQuery;
 
-public abstract class AbstractUserSearchQueryImpl<U extends User> extends AbstractHibernateSearchSearchQuery<U, UserSort>
+public abstract class AbstractUserSearchQueryImpl<U extends User> extends OldAbstractHibernateSearchSearchQuery<U, UserSort>
 		implements IAbstractUserSearchQuery<U> /* NOT Serializable */ {
 
 	protected AbstractUserSearchQueryImpl(Class<? extends U> clazz) {

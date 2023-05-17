@@ -14,13 +14,13 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
-import org.iglooproject.jpa.more.business.search.query.AbstractHibernateSearchSearchQuery;
+import org.iglooproject.jpa.more.business.search.query.OldAbstractHibernateSearchSearchQuery;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class HistoryLogSearchQueryImpl extends AbstractHibernateSearchSearchQuery<HistoryLog, HistoryLogSort>
+public class HistoryLogSearchQueryImpl extends OldAbstractHibernateSearchSearchQuery<HistoryLog, HistoryLogSort>
 		implements IHistoryLogSearchQuery {
 
 	protected HistoryLogSearchQueryImpl() {

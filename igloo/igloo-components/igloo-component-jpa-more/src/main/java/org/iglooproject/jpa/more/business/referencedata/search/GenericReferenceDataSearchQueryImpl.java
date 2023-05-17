@@ -6,7 +6,7 @@ import org.apache.lucene.search.SortField;
 import org.iglooproject.commons.util.exception.IllegalSwitchValueException;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
-import org.iglooproject.jpa.more.business.search.query.AbstractHibernateSearchSearchQuery;
+import org.iglooproject.jpa.more.business.search.query.OldAbstractHibernateSearchSearchQuery;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
 
@@ -16,7 +16,7 @@ public abstract class GenericReferenceDataSearchQueryImpl
 		S extends ISort<SortField>,
 		Q extends IGenericReferenceDataSearchQuery<T, S, Q>
 		>
-		extends AbstractHibernateSearchSearchQuery<T, S> implements IGenericReferenceDataSearchQuery<T, S, Q> {
+		extends OldAbstractHibernateSearchSearchQuery<T, S> implements IGenericReferenceDataSearchQuery<T, S, Q> {
 
 	@SafeVarargs
 	public GenericReferenceDataSearchQueryImpl(Class<? extends T> clazz, S... defaultSorts) {
