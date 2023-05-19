@@ -66,26 +66,6 @@
 			<artifactId>jersey-spring6</artifactId>
 			<exclusions>
 				<exclusion>
-					<!-- Contains an outdated version of org.jboss.logging.Logger that messes up with the classpath
-						and makes Hibernate cry because it doesn't find
-						org.jboss.logging.Logger.debugf(Ljava/lang/String;I)V
-					 -->
-					<groupId>org.glassfish.hk2.external</groupId>
-					<artifactId>bean-validator</artifactId>
-				</exclusion>
-				<exclusion>
-					<!-- outdated version -->
-					<groupId>org.hibernate</groupId>
-					<artifactId>hibernate-validator</artifactId>
-				</exclusion>
-				<exclusion>
-					<!-- manual resolution of conflict 1.3.5 and 1.3.4
-					due to jersey-common/server and hk2-utils/runlevel
-					dependency mismatch -->
-					<groupId>jakarta.annotation</groupId>
-					<artifactId>jakarta.annotation-api</artifactId>
-				</exclusion>
-				<exclusion>
 					<groupId>org.springframework</groupId>
 					<artifactId>*</artifactId>
 				</exclusion>
