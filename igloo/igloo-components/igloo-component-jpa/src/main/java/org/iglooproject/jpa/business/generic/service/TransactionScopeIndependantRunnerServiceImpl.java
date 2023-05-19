@@ -3,7 +3,6 @@ package org.iglooproject.jpa.business.generic.service;
 import java.util.concurrent.Callable;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
@@ -11,7 +10,6 @@ import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-@Service
 public class TransactionScopeIndependantRunnerServiceImpl implements ITransactionScopeIndependantRunnerService {
 
 	private TransactionTemplate readOnlyTransactionTemplate;

@@ -17,9 +17,10 @@
 
 package org.iglooproject.test;
 
-import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
+import org.iglooproject.jpa.config.spring.IglooJpaConfiguration;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.test.business.JpaTestBusinessPackage;
 import org.iglooproject.test.business.company.model.Company;
 import org.iglooproject.test.business.company.service.ICompanyService;
 import org.iglooproject.test.business.label.service.ILabelService;
@@ -30,10 +31,29 @@ import org.iglooproject.test.business.project.model.Project;
 import org.iglooproject.test.business.project.service.IProjectService;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestPropertySource;
 
-@ContextConfiguration(classes = {}, initializers = ExtendedTestApplicationContextInitializer.class)
+@SpringBootTest
+@EnableAutoConfiguration
+@TestPropertySource(properties = {
+		"spring.jpa.igloo.component-path=true",
+		"spring.jpa.igloo.old-style-transaction-advisor=true",
+		"spring.jpa.properties.hibernate.search.backend.directory.type=local-heap"
+})
 public abstract class AbstractJpaCoreTestCase extends AbstractTestCase {
+
+	@SpringBootConfiguration
+	@Import(IglooJpaConfiguration.class)
+	@EntityScan(basePackageClasses = JpaTestBusinessPackage.class)
+	@ComponentScan(basePackageClasses = JpaTestBusinessPackage.class)
+	public static class Empty {
+	}
 	
 	@Autowired
 	protected ICompanyService companyService;

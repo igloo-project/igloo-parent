@@ -4,23 +4,20 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.metamodel.EntityType;
-import jakarta.persistence.metamodel.Metamodel;
-
-import org.springframework.stereotype.Repository;
-
-import com.google.common.collect.Lists;
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
-
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityCollectionReference;
 import org.iglooproject.jpa.business.generic.model.IReference;
 import org.iglooproject.jpa.business.generic.model.QGenericEntity;
 
-@Repository("entityDao")
+import com.google.common.collect.Lists;
+import com.querydsl.core.types.dsl.PathBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.Metamodel;
+
 public class EntityDaoImpl implements IEntityDao {
 
 	@PersistenceContext

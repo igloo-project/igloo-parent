@@ -33,14 +33,12 @@ import org.iglooproject.jpa.search.service.IHibernateSearchService;
 import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.google.common.collect.Lists;
@@ -66,13 +64,12 @@ import jakarta.persistence.metamodel.SingularAttribute;
 	EntityManagerExecutionListener.class
 })
 @TestPropertySource(properties = "igloo.profile=test")
-@ExtendWith(SpringExtension.class)
 public abstract class AbstractTestCase {
 	
 	@Autowired
 	private EntityManagerUtils entityManagerUtils;
 	
-	@Autowired
+	@Autowired(required = false)
 	private IHibernateSearchService hibernateSearchService;
 	
 	protected abstract void cleanAll() throws ServiceException, SecurityServiceException;
@@ -104,14 +101,16 @@ public abstract class AbstractTestCase {
 	 * otherwise it takes 500 milliseconds wheter there is 1000 or 10 000 objets to reindex
 	 */
 	protected void emptyIndexes() throws ServiceException {
-		Set<Class<?>> clazzes = hibernateSearchService.getIndexedRootEntities();
-		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
-		for (Class<?> clazz : clazzes) {
-			QueryBuilder builder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(clazz).get();
-			FullTextQuery query = fullTextEntityManager.createFullTextQuery(builder.all().createQuery(), clazz);
-			if (query.getResultSize() > 0) {
-				hibernateSearchService.reindexAll();
-				break;
+		if (hibernateSearchService != null) {
+			Set<Class<?>> clazzes = hibernateSearchService.getIndexedRootEntities();
+			FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
+			for (Class<?> clazz : clazzes) {
+				QueryBuilder builder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(clazz).get();
+				FullTextQuery query = fullTextEntityManager.createFullTextQuery(builder.all().createQuery(), clazz);
+				if (query.getResultSize() > 0) {
+					hibernateSearchService.reindexAll();
+					break;
+				}
 			}
 		}
 	}

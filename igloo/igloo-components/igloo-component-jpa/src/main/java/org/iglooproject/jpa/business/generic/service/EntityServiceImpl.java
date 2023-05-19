@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import org.iglooproject.jpa.business.generic.dao.IEntityDao;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityCollectionReference;
@@ -15,8 +11,9 @@ import org.iglooproject.jpa.business.generic.model.IReference;
 import org.iglooproject.jpa.business.generic.model.IReferenceable;
 import org.iglooproject.jpa.business.generic.query.IEntityReferenceQuery;
 import org.iglooproject.jpa.query.IQuery;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Service("entityService")
 public class EntityServiceImpl implements IEntityService {
 	
 	@Autowired

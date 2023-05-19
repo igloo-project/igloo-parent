@@ -17,15 +17,14 @@
 
 package org.iglooproject.jpa.util;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.PersistenceContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.EntityManagerHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceContext;
 
 /**
  * <p>Classe permettant de manipuler le EntityManager.</p>
@@ -34,7 +33,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * 
  * @author Open Wide
  */
-@Component
 public class EntityManagerUtils {
 	
 	@Autowired
