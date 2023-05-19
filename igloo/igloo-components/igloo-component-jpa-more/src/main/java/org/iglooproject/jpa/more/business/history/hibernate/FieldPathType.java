@@ -15,7 +15,8 @@ public class FieldPathType implements UserType<FieldPath> {
 
 	@Override
 	public int getSqlType() {
-		return SqlTypes.LONG32NVARCHAR;
+		// postgresql translate this type to text
+		return SqlTypes.LONG32VARCHAR;
 	}
 	
 	@Override
@@ -47,7 +48,8 @@ public class FieldPathType implements UserType<FieldPath> {
 	public void nullSafeSet(PreparedStatement st, FieldPath value, int index, SharedSessionContractImplementor session)
 			throws SQLException {
 		if (value == null) {
-			st.setNull(index, SqlTypes.LONG32NVARCHAR);
+			// postgresql only handle VARCHAR/LONGVARCHAR
+			st.setNull(index, SqlTypes.LONGVARCHAR);
 		} else {
 			st.setString(index, value.toString());
 		}

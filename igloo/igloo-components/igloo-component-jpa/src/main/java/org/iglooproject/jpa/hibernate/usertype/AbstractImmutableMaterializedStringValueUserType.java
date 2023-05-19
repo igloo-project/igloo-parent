@@ -26,7 +26,7 @@ public abstract class AbstractImmutableMaterializedStringValueUserType<T extends
 
 	@Override
 	public int getSqlType() {
-		return SqlTypes.NVARCHAR;
+		return SqlTypes.VARCHAR;
 	}
 	
 	@Override
@@ -58,7 +58,8 @@ public abstract class AbstractImmutableMaterializedStringValueUserType<T extends
 	public void nullSafeSet(PreparedStatement st, T value, int index, SharedSessionContractImplementor session)
 			throws SQLException {
 		if (value == null) {
-			st.setNull(index, SqlTypes.NVARCHAR);
+			// postgresql only handle VARCHAR/LONGVARCHAR
+			st.setNull(index, SqlTypes.VARCHAR);
 		} else {
 			st.setString(index, value.getValue());
 		}
