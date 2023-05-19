@@ -197,6 +197,10 @@ class TestStringUtils {
 		String str3 = "";
 		cleanStr = StringUtils.removeAccents(str3);
 		assertEquals("", cleanStr);
+
+		String str4 = "ç œ æ";
+		cleanStr = StringUtils.removeAccents(str4);
+		assertEquals("c oe ae", cleanStr);
 	}
 	
 	@Test

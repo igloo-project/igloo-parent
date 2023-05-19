@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter;
+
 import com.google.common.base.CharMatcher;
 
 /**
@@ -223,7 +225,17 @@ public final class StringUtils extends org.springframework.util.StringUtils {
 	 * @return chaîne sans accent
 	 */
 	public static String removeAccents(String text) {
-		return org.apache.commons.lang3.StringUtils.stripAccents(text);
+		if (text == null) {
+			return text;
+		}
+		
+		int length = text.length();
+		char[] input = text.toCharArray();
+		char[] output = new char[4 * length];
+		
+		int outputPos = ASCIIFoldingFilter.foldToASCII(input, 0, output, 0, length);
+		
+		return new String(output, 0, outputPos);
 	}
 	
 	/**
