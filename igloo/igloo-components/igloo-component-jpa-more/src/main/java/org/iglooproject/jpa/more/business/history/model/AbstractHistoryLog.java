@@ -1,7 +1,6 @@
 package org.iglooproject.jpa.more.business.history.model;
 
 import java.time.Instant;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -12,12 +11,10 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmb
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.ObjectPath;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.PropertyValue;
-import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 
 import com.google.common.base.MoreObjects.ToStringHelper;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -114,12 +111,6 @@ public abstract class AbstractHistoryLog<
 	
 	@Basic
 	private String comment;
-
-	//TODO: igloo-boot
-//	@OneToMany(mappedBy = "parentLog", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-//	@OrderColumn
-	@Transient
-	private List<HD> differences = Lists.newArrayList();
 
 	protected AbstractHistoryLog() {
 		// nothing to do
@@ -250,21 +241,11 @@ public abstract class AbstractHistoryLog<
 		this.comment = comment;
 	}
 
-	public List<HD> getDifferences() {
-		return Collections.unmodifiableList(differences);
-	}
+	public abstract List<HD> getDifferences();
 
-	public void setDifferences(List<HD> differences) {
-		CollectionUtils.replaceAll(this.differences, differences);
-	}
+	public abstract void setDifferences(List<HD> differences);
 	
-	@Transient
-	//TODO: igloo-boot : dépendent de l'attribut differences, donc dépendent du problème du @OrderColumn
-//	@IndexingDependency(derivedFrom = @ObjectPath(@PropertyValue(propertyName = "differences")))
-//	@GenericField(name = HAS_DIFFERENCES)
-	public boolean isDifferencesNonEmpty() {
-		return !differences.isEmpty();
-	}
+	public abstract boolean isDifferencesNonEmpty();
 
 	@Override
 	protected ToStringHelper toStringHelper() {
