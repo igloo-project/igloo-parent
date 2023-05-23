@@ -4,19 +4,22 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.Instant;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.PersistenceException;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.nullables.model.EntityNullable;
 import org.iglooproject.test.business.nullables.service.IEntityNullableService;
+import org.iglooproject.test.config.spring.SpringBootTestJpaOnly;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.PersistenceException;
+
+@SpringBootTestJpaOnly
 class TestNullables extends AbstractJpaCoreTestCase {
 
 	@Autowired
@@ -122,7 +125,7 @@ class TestNullables extends AbstractJpaCoreTestCase {
 		try {
 			entityNullableService.create(entityNullable);
 			fail();
-		} catch (PersistenceException e) {
+		} catch (PersistenceException|DataIntegrityViolationException e) {
 			// Success if creation fail with a not-null exception
 		}
 	}

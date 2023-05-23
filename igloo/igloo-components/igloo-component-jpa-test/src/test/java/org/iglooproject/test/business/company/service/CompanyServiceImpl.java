@@ -1,11 +1,10 @@
 package org.iglooproject.test.business.company.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.test.business.company.dao.ICompanyDao;
 import org.iglooproject.test.business.company.model.Company;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service("companyService")
 public class CompanyServiceImpl extends GenericEntityServiceImpl<Long, Company> implements ICompanyService {

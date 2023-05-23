@@ -58,7 +58,6 @@ import jakarta.persistence.metamodel.MapAttribute;
 import jakarta.persistence.metamodel.PluralAttribute;
 import jakarta.persistence.metamodel.SingularAttribute;
 
-@ContextConfiguration(initializers = ExtendedTestApplicationContextInitializer.class)
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	EntityManagerExecutionListener.class

@@ -1,9 +1,11 @@
 package org.iglooproject.jpa.more.util.transaction.service;
 
-import org.iglooproject.jpa.batch.util.IBeforeClearListener;
 import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
 import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationBeforeCommitTask;
 import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationTaskRollbackAware;
+
+import igloo.jpa.batch.util.IBeforeClearListener;
+import jakarta.persistence.EntityManager;
 
 public interface ITransactionSynchronizationTaskManagerService extends IBeforeClearListener {
 

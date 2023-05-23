@@ -3,7 +3,7 @@ package org.iglooproject.jpa.migration.rowmapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.iglooproject.jpa.batch.monitor.ProcessorMonitorContext;
+import igloo.jpa.batch.monitor.ProcessorMonitorContext;
 
 public abstract class AbstractResultRowMapper<T> extends AbstractRowMapper<RowResult> {
 

@@ -19,12 +19,12 @@ package org.iglooproject.test.business.person.dao;
 
 import java.util.List;
 
+import org.iglooproject.jpa.business.generic.dao.IGenericEntityDao;
+import org.iglooproject.test.business.person.model.Person;
+
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.SimpleExpression;
-
-import org.iglooproject.jpa.business.generic.dao.IGenericEntityDao;
-import org.iglooproject.test.business.person.model.Person;
 
 public interface IPersonDao extends IGenericEntityDao<Long, Person> {
 

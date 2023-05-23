@@ -5,8 +5,6 @@ import java.util.Properties;
 
 import org.igloo.hibernate.hbm.MetadataRegistryIntegrator;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
-import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
-import org.iglooproject.jpa.business.generic.CoreJpaBusinessGenericPackage;
 import org.iglooproject.jpa.business.generic.dao.EntityDaoImpl;
 import org.iglooproject.jpa.business.generic.dao.IEntityDao;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
@@ -23,10 +21,7 @@ import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
@@ -42,13 +37,6 @@ import com.google.common.collect.Lists;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(
-	basePackageClasses = {
-		CoreJpaBatchPackage.class
-	},
-	excludeFilters = @Filter(Configuration.class)
-)
-@EntityScan(basePackageClasses = CoreJpaBusinessGenericPackage.class)
 public class IglooJpaConfiguration {
 
 	@ConditionalOnProperty(name = "spring.jpa.igloo.component-path", havingValue = "true", matchIfMissing = false)

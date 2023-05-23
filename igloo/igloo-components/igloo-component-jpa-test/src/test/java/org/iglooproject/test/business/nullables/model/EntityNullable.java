@@ -1,14 +1,14 @@
 package org.iglooproject.test.business.nullables.model;
 
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.test.business.nullables.model.embeddable.NullablesSection;
+
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.test.business.nullables.model.embeddable.NullablesSection;
 
 @Entity
 public class EntityNullable extends GenericEntity<Long, EntityNullable> {

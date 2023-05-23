@@ -6,8 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import java.util.Collection;
 
 import org.apache.commons.lang3.mutable.MutableObject;
-import org.iglooproject.jpa.batch.executor.BatchExecutorCreator;
-import org.iglooproject.jpa.batch.runnable.ReadWriteBatchRunnable;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -25,6 +23,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+import igloo.jpa.batch.executor.BatchExecutorCreator;
+import igloo.jpa.batch.runnable.ReadWriteBatchRunnable;
 import test.jpa.more.business.entity.model.TestEntity;
 import test.jpa.more.business.entity.service.ITestEntityService;
 import test.jpa.more.business.util.transaction.model.TestCreateAfterCommitTask;

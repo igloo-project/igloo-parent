@@ -15,7 +15,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-jpa</artifactId>
+			<artifactId>igloo-component-jpa-batch</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

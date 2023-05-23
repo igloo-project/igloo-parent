@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.iglooproject.functional.Joiners;
-import org.iglooproject.jpa.batch.executor.SimpleHibernateBatchExecutor;
-import org.iglooproject.jpa.batch.runnable.ReadOnlyBatchRunnable;
-import org.iglooproject.jpa.batch.runnable.ReadWriteBatchRunnable;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.query.IQuery;
@@ -29,6 +26,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.querydsl.jpa.impl.JPAQuery;
+
+import igloo.jpa.batch.executor.SimpleHibernateBatchExecutor;
+import igloo.jpa.batch.runnable.ReadOnlyBatchRunnable;
+import igloo.jpa.batch.runnable.ReadWriteBatchRunnable;
 
 public abstract class AbstractTestSimpleHibernateBatchExecutor extends AbstractTestHibernateBatchExecutor {
 

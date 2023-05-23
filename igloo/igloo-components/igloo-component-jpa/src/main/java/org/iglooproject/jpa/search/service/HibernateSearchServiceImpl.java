@@ -11,11 +11,9 @@ import org.iglooproject.jpa.business.generic.service.IEntityService;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.search.dao.IHibernateSearchDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Sets;
 
-@Service("hibernateSearchService")
 public class HibernateSearchServiceImpl implements IHibernateSearchService {
 	
 	@Autowired
