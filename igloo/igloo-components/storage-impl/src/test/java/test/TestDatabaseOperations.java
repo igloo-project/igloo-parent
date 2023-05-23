@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.atIndex;
 import static org.assertj.core.api.Assertions.byLessThan;
 import static test.StorageAssertions.assertThat;
 
-import java.math.BigInteger;
 import java.nio.file.Path;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -223,7 +222,7 @@ class TestDatabaseOperations extends AbstractTest {
 		entityManager.persist(fichier2);
 		assertThatThrownBy(() -> entityManager.flush())
 			.isInstanceOf(PersistenceException.class)
-			.hasMessageContaining("ConstraintViolationException");
+			.hasMessageContaining("Unique index or primary key violation");
 	}
 
 	/**
@@ -834,8 +833,8 @@ class TestDatabaseOperations extends AbstractTest {
 		StorageUnit storageUnit = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
 		StorageConsistencyCheck check = doInWriteTransactionEntityManager(entityManagerFactory, em -> {
 			StorageConsistencyCheck c = new StorageConsistencyCheck();
-			c.setCheckFinishedOn(LocalDateTime.now());
-			c.setCheckStartedOn(LocalDateTime.now());
+			c.setCheckFinishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.MICROS));
+			c.setCheckStartedOn(LocalDateTime.now().truncatedTo(ChronoUnit.MICROS));
 			c.setCheckType(StorageUnitCheckType.LISTING_SIZE);
 			c.setStorageUnit(em.find(StorageUnit.class, storageUnit.getId()));
 			databaseOperations.createConsistencyCheck(c);
@@ -1237,7 +1236,7 @@ class TestDatabaseOperations extends AbstractTest {
 			assertThat(result).hasSize(1);
 			assertThat(result.get(0).get("createdby_type")).isEqualTo(GenericEntity.class.getName()).isEqualTo(fichier.getCreatedBy().getType().getName());
 			// java long is stored as sql biginteger 
-			assertThat(result.get(0).get("createdby_id")).isEqualTo(BigInteger.valueOf(1)).isEqualTo(BigInteger.valueOf(fichier.getCreatedBy().getId()));
+			assertThat(result.get(0).get("createdby_id")).isEqualTo(1l).isEqualTo(fichier.getCreatedBy().getId());
 			return null;
 		});
 	}

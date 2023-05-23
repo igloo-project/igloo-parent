@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.hibernate.HibernateException;
 import org.hibernate.annotations.Type;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.SqlTypes;
@@ -82,7 +81,7 @@ public abstract class AbstractImmutableMaterializedStringValueUserType<T extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T assemble(Serializable cached, Object owner) throws HibernateException {
+	public T assemble(Serializable cached, Object owner) {
 		return (T) cached; // type is immutable
 	}
 }
