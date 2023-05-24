@@ -379,6 +379,9 @@ public abstract class AbstractExcelTableExport extends AbstractExcelExport {
 		cell.setCellStyle(getRowStyle(STYLE_STANDARD_NAME, row.getRowNum()));
 		
 		if (text != null) {
+			if (text.length() > workbook.getSpreadsheetVersion().getMaxTextLength()) {
+				text = text.substring(0, workbook.getSpreadsheetVersion().getMaxTextLength());
+			}
 			cell.setCellValue(creationHelper.createRichTextString(normalizeLineBreaks(text)));
 		} else {
 			cell.setBlank();
