@@ -2,9 +2,11 @@ package org.iglooproject.jpa.business.generic.service;
 
 import java.util.concurrent.Callable;
 
+import jakarta.persistence.EntityManager;
+
 /**
  * This service must inherit from {@link ITransactionalAspectAwareService} for everything to work correctly even
- * if we are not in a transaction.
+ * if we are not in a transaction (i.e. to enforce both transaction and {@link EntityManager} creation).
  */
 public interface ITransactionScopeIndependantRunnerService extends ITransactionalAspectAwareService {
 

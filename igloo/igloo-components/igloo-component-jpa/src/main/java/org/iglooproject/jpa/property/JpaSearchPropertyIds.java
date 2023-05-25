@@ -3,7 +3,7 @@ package org.iglooproject.jpa.property;
 import org.iglooproject.spring.property.model.AbstractPropertyIds;
 import org.iglooproject.spring.property.model.ImmutablePropertyId;
 
-public final class JpaPropertyIds extends AbstractPropertyIds {
+public final class JpaSearchPropertyIds extends AbstractPropertyIds {
 
 	/*
 	 * Mutable Properties
