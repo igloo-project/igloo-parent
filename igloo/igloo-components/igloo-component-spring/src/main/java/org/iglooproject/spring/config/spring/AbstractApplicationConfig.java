@@ -42,7 +42,7 @@ public abstract class AbstractApplicationConfig {
 	}
 
 	@Bean
-	public static CorePropertyPlaceholderConfigurer environment(ConfigurableApplicationContext context) {
+	public static CorePropertyPlaceholderConfigurer corePropertyPlaceholderConfigurer(ConfigurableApplicationContext context) {
 		return new CorePropertyPlaceholderConfigurer();
 	}
 
