@@ -6,6 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
 
@@ -57,12 +58,15 @@ import test.jpa.more.business.history.model.TestHistoryLog;
 import test.jpa.more.business.history.model.atomic.TestHistoryEventType;
 import test.jpa.more.business.history.model.bean.TestHistoryLogAdditionalInformationBean;
 import test.jpa.more.business.history.service.ITestHistoryLogService;
+import test.jpa.more.config.spring.SpringBootTestJpaMoreHistoryLog;
 
+@SpringBootTestJpaMoreHistoryLog
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 class TestHistoryLogService extends AbstractJpaMoreTestCase {
 	
-	private static final Instant DATE = Instant.now();
+	// database precision is micros
+	private static final Instant DATE = Instant.now().truncatedTo(ChronoUnit.MICROS);
 
 	/*
 	 * Only here to mock some parameters passed to the log() method.

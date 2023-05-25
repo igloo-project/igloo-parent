@@ -7,11 +7,9 @@ import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.service.IConfigurablePropertyService;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
 import test.jpa.more.business.entity.service.ITestEntityService;
 
-@ContextConfiguration(classes = {})
 public abstract class AbstractJpaMoreTestCase extends AbstractTestCase {
 
 	@Autowired

@@ -5,9 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.iglooproject.spring.property.dao.IImmutablePropertyDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestPropertySource;
 
 import test.jpa.more.business.AbstractJpaMoreTestCase;
+import test.jpa.more.config.spring.SpringBootTestJpaMore;
 
+@SpringBootTestJpaMore
+@TestPropertySource(properties = {
+	"property.string.value=MyValue",
+	"property.long.value=1"
+})
 class TestImmutablePropertyDao extends AbstractJpaMoreTestCase {
 
 	@Autowired

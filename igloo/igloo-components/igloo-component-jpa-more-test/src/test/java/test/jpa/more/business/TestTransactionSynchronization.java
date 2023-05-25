@@ -30,7 +30,9 @@ import test.jpa.more.business.entity.service.ITestEntityService;
 import test.jpa.more.business.util.transaction.model.TestCreateAfterCommitTask;
 import test.jpa.more.business.util.transaction.model.TestDeleteOnRollbackTask;
 import test.jpa.more.business.util.transaction.model.TestUseEntityBeforeCommitOrClearTask;
+import test.jpa.more.config.spring.SpringBootTestJpaMoreBatchSearch;
 
+@SpringBootTestJpaMoreBatchSearch
 class TestTransactionSynchronization extends AbstractJpaMoreTestCase {
 
 	@Autowired

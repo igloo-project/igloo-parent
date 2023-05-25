@@ -18,8 +18,8 @@ import org.springframework.test.context.ContextConfiguration;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @EnableAutoConfiguration
-@ContextConfiguration(initializers = ExtendedTestApplicationContextInitializer.class)
 @SpringBootTest(classes = { TestConfiguration.class, JpaSearchTestConfiguration.class, JpaBatchTestConfiguration.class })
+@ContextConfiguration(initializers = ExtendedTestApplicationContextInitializer.class)
 public @interface SpringBootTestJpaBatchSearch {
 
 }

@@ -18,10 +18,17 @@ import org.iglooproject.spring.property.model.MutablePropertyValueMap;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 
 import test.jpa.more.business.AbstractJpaMoreTestCase;
 import test.jpa.more.business.property.TestPropertyServiceAndDao.TestPropertyServiceAndDaoConfig;
+import test.jpa.more.config.spring.SpringBootTestJpaMore;
 
+@SpringBootTestJpaMore
+@TestPropertySource(properties = {
+	"property.string.value=MyValue",
+	"property.long.value=1"
+})
 @ContextConfiguration(classes = TestPropertyServiceAndDaoConfig.class)
 class TestPropertyServiceAndDao extends AbstractJpaMoreTestCase {
 	
