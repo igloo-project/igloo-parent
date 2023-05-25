@@ -1,15 +1,20 @@
 package org.iglooproject.jpa.more.business.task.model;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 import org.bindgen.Bindable;
 import org.hibernate.annotations.JavaType;
+import org.hibernate.annotations.JdbcType;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.hibernate.type.descriptor.java.StringJavaType;
+import org.hibernate.type.descriptor.jdbc.LongVarcharJdbcType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
@@ -33,6 +38,8 @@ import jakarta.persistence.Version;
 @Bindable
 @Indexed
 public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
+
+	private static final DateTimeFormatter FORMATTER = new DateTimeFormatterBuilder().appendPattern("yyyy.MM.dd HH:mm:ss z").toFormatter();
 
 	private static final long serialVersionUID = 3926959721176678607L;
 
@@ -90,6 +97,7 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
 	@Column(nullable = false)
 	@JavaType(StringJavaType.class)
+	@JdbcType(LongVarcharJdbcType.class)
 	private String serializedTask;
 
 	@Column(nullable = false)
@@ -106,10 +114,12 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
 	@Column
 	@JavaType(StringJavaType.class)
+	@JdbcType(LongVarcharJdbcType.class)
 	private String stackTrace;
 
 	@Column
 	@JavaType(StringJavaType.class)
+	@JdbcType(LongVarcharJdbcType.class)
 	private String report;
 
 	protected QueuedTaskHolder() {
@@ -257,11 +267,12 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
 	@Override
 	protected ToStringHelper toStringHelper() {
+		DateTimeFormatter dateFormat = FORMATTER;
 		return super.toStringHelper()
 			.add("name", getName())
-			.add("creationDate", getCreationDate())
-			.add("startDate", getStartDate())
-			.add("completionDate", getEndDate());
+			.add("creationDate", getCreationDate() != null ? dateFormat.format(getCreationDate().atZone(ZoneId.systemDefault())) : null)
+			.add("startDate", getStartDate() != null ? dateFormat.format(getStartDate().atZone(ZoneId.systemDefault())) : null)
+			.add("completionDate", getEndDate() != null ? dateFormat.format(getEndDate().atZone(ZoneId.systemDefault())) : null);
 	}
 
 }
