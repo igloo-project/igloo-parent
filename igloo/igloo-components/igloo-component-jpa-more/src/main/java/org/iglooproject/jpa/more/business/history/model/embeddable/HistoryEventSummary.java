@@ -5,7 +5,6 @@ import java.time.Instant;
 
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
@@ -28,9 +27,6 @@ public class HistoryEventSummary implements Serializable {
 	private static final long serialVersionUID = 2512003373453632965L;
 
 	public static final String DATE = "date";
-	private static final String SUBJECT = "subject";
-	private static final String SUBJECT_PREFIX = SUBJECT + ".";
-	public static final String SUBJECT_REFERENCE = SUBJECT_PREFIX + HistoryValue.REFERENCE;
 
 	@Basic(optional = true) // Might be defined as nullable in some places (using @AttributeOverride)
 	@Column(nullable = false) // Non-nullable by default
@@ -38,12 +34,6 @@ public class HistoryEventSummary implements Serializable {
 	private Instant date;
 
 	@Embedded
-	@IndexedEmbedded(
-		name = SUBJECT,
-		includePaths = {
-			HistoryValue.REFERENCE
-		}
-	)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private HistoryValue subject;
 
