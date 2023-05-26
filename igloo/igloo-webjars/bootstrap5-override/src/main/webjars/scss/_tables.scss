@@ -59,7 +59,6 @@
 			@include button-outline-variant($dark);
 			margin-left: .125rem;
 			padding: 0 .125rem;
-			float: right;
 			
 			&.active {
 				@include button-outline-variant($component-active-bg);
