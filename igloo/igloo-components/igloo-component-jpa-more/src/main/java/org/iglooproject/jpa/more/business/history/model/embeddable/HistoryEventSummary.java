@@ -3,6 +3,7 @@ package org.iglooproject.jpa.more.business.history.model.embeddable;
 import java.io.Serializable;
 import java.time.Instant;
 
+import org.bindgen.Bindable;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 
@@ -22,6 +23,7 @@ import jakarta.persistence.Embedded;
  * {@link HistoryEventSummary}.
  */
 @Embeddable
+@Bindable
 public class HistoryEventSummary implements Serializable {
 
 	private static final long serialVersionUID = 2512003373453632965L;
