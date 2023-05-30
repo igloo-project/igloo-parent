@@ -15,8 +15,10 @@ import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.danekja.java.util.function.serializable.SerializableSupplier;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializableFunction2;
 import org.iglooproject.functional.SerializablePredicate2;
@@ -44,6 +46,26 @@ public abstract class Condition implements IModel<Boolean>, IDetachable {
 	private static final Joiner COMMA_JOINER = Joiner.on(',');
 	
 	public abstract boolean applies();
+	
+	/**
+	 * Create a {@link LoadableDetachableModel} for the given supplier.
+	 *
+	 * @param <T>
+	 * @param getter Used for the getObject() method.
+	 * @return the model
+	 */
+	public static Condition of(SerializableSupplier<Boolean> getter)
+	{
+		return new Condition()
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean applies() {
+				return getter.get();
+			}
+		};
+	}
 	
 	/**
 	 * @deprecated Provided only to satisfy the {@link IModel} interface. Use {@link #applies()} instead.
