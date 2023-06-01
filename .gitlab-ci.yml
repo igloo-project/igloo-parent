@@ -80,6 +80,9 @@ maven-deploy:
     - /^rl-.*$/
     - /^hf-.*$/
     - igloo-boot
+    - igloo-boot-dev
+    - /^igloo-boot-rl-.*$/
+    - /^igloo-boot-hf-.*$/
   except:
     variables:
       - $CHECK_DEPENDENCIES
