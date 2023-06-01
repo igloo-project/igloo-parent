@@ -67,11 +67,6 @@
 			<artifactId>igloo-component-hibernate-configurator-lucene</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-hibernate-configurator-elasticsearch</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
