@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>5.9.0</version>
+		<version>5.10.0</version>
 	</parent>
 	
 	<packaging>war</packaging>
@@ -39,11 +39,6 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-web-security</artifactId>
 			<version>${igloo.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-truevfs</artifactId>
-			<version>${igloo-commons.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
