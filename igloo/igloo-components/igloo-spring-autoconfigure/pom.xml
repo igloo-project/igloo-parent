@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>5.9.0-SNAPSHOT</version>
+		<version>5.9.0</version>
 	</parent>
 
 	<artifactId>igloo-spring-autoconfigure</artifactId>
@@ -42,35 +42,35 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-jpa</artifactId>
-			<version>5.9.0-SNAPSHOT</version>
+			<version>5.9.0</version>
 			<optional>true</optional>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-cache</artifactId>
-			<version>5.9.0-SNAPSHOT</version>
+			<version>5.9.0</version>
 			<optional>true</optional>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-bootstrap5</artifactId>
-			<version>5.9.0-SNAPSHOT</version>
+			<version>5.9.0</version>
 			<optional>true</optional>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-bootstrap4</artifactId>
-			<version>5.9.0-SNAPSHOT</version>
+			<version>5.9.0</version>
 			<optional>true</optional>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-console</artifactId>
-			<version>5.9.0-SNAPSHOT</version>
+			<version>5.9.0</version>
 			<optional>true</optional>
 		</dependency>
 		
@@ -94,7 +94,7 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-config-test</artifactId>
-			<version>5.9.0-SNAPSHOT</version>
+			<version>5.9.0</version>
 			<scope>test</scope>
 		</dependency>
 		
