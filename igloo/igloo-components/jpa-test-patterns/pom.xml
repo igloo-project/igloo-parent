@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>5.8.0</version>
+		<version>5.9.0</version>
 	</parent>
 
 	<artifactId>jpa-test-patterns</artifactId>
