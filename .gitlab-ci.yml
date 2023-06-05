@@ -30,7 +30,7 @@ maven-build:
   tags:
     - docker
   services:
-    - name: postgres:12
+    - name: postgres:14
       alias: postgresql
   variables:
     POSTGRES_USER: igloo_test
