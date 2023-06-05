@@ -15,7 +15,7 @@ public class PropertyIdsAutoConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public IMutablePropertyDao mutablePropertyDao(IImmutablePropertyDao immutablePropertyDao) {
+	public IMutablePropertyDao fallbackMutablePropertyDao(IImmutablePropertyDao immutablePropertyDao) {
 		return new FallbackMutablePropertyDaoImpl(immutablePropertyDao);
 	}
 

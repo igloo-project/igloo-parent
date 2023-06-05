@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.more.config.spring;
+package org.iglooproject.jpa.more.autoconfigure;
 
 import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.DATABASE_INITIALIZED;
 import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.IMAGE_MAGICK_CONVERT_BINARY_PATH;
@@ -6,15 +6,19 @@ import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
 
 import java.io.File;
 
+import org.iglooproject.spring.autoconfigure.PropertyIdsAutoConfiguration;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.property.service.IConfigurablePropertyService;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.util.StringUtils;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
-@Import(JpaMoreTaskApplicationPropertyRegistryConfig.class)
 @Configuration
-public class JpaMoreApplicationPropertyRegistryConfig implements IPropertyRegistryConfig {
+@AutoConfiguration(after = PropertyIdsAutoConfiguration.class)
+@ConditionalOnBean(IConfigurablePropertyService.class)
+public class JpaMorePropertyRegistryAutoConfiguration implements IPropertyRegistryConfig {
 
 	@Override
 	public void register(IPropertyRegistry registry) {

@@ -7,7 +7,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
-import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
 import org.iglooproject.jpa.more.config.spring.JpaMoreHistoryLogConfig;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.iglooproject.test.jpa.junit.JpaOnlyTestConfiguration;
@@ -25,13 +24,13 @@ import test.jpa.more.business.JpaMoreTestBusinessPackage;
 @Target(TYPE)
 @EnableAutoConfiguration
 @ContextConfiguration(initializers = ExtendedApplicationContextInitializer.class)
-@SpringBootTest(classes = { JpaMoreHistoryLogConfig.class, JpaOnlyTestConfiguration.class, JpaMoreTestApplicationPropertyConfig.class })
+@SpringBootTest(classes = { TestConfig.class, JpaMoreHistoryLogConfig.class, JpaOnlyTestConfiguration.class })
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	EntityManagerExecutionListener.class
 })
 @TestPropertySource(properties = "igloo.profile=test")
-@EntityScan(basePackageClasses = { JpaMoreTestBusinessPackage.class, CoreJpaMoreBusinessPackage.class })
+@EntityScan(basePackageClasses = { JpaMoreTestBusinessPackage.class })
 public @interface SpringBootTestJpaMoreHistoryLog {
 
 }

@@ -7,7 +7,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
-import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.iglooproject.test.jpa.junit.JpaOnlyTestConfiguration;
 import org.iglooproject.test.jpa.junit.JpaSearchTestConfiguration;
@@ -26,13 +25,13 @@ import test.jpa.more.business.JpaMoreTestBusinessPackage;
 @Target(TYPE)
 @EnableAutoConfiguration
 @ContextConfiguration(initializers = ExtendedApplicationContextInitializer.class)
-@SpringBootTest(classes = { JpaOnlyTestConfiguration.class, IglooJpaBatchConfiguration.class, JpaSearchTestConfiguration.class, JpaMoreTestApplicationPropertyConfig.class })
+@SpringBootTest(classes = { TestConfig.class, JpaOnlyTestConfiguration.class, IglooJpaBatchConfiguration.class, JpaSearchTestConfiguration.class })
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	EntityManagerExecutionListener.class
 })
 @TestPropertySource(properties = "igloo.profile=test")
-@EntityScan(basePackageClasses = { JpaMoreTestBusinessPackage.class, CoreJpaMoreBusinessPackage.class })
+@EntityScan(basePackageClasses = { JpaMoreTestBusinessPackage.class })
 public @interface SpringBootTestJpaMoreBatchSearch {
 
 }

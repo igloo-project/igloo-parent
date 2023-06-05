@@ -3,6 +3,7 @@ package org.igloo.spring.autoconfigure.task;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.iglooproject.jpa.more.autoconfigure.TaskPropertyRegistryConfig;
 import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
 import org.iglooproject.jpa.more.business.task.dao.IQueuedTaskHolderDao;
 import org.iglooproject.jpa.more.business.task.dao.QueuedTaskHolderDaoImpl;
@@ -14,7 +15,6 @@ import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderManagerImpl;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderServiceImpl;
 import org.iglooproject.jpa.more.config.spring.ImmutableTaskManagement;
-import org.iglooproject.jpa.more.config.spring.JpaMoreTaskApplicationPropertyRegistryConfig;
 import org.iglooproject.jpa.more.config.spring.TaskManagementConfigurer;
 import org.iglooproject.jpa.more.util.transaction.CoreJpaMoreUtilTransactionPackage;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 @ComponentScan(
 		basePackageClasses = { CoreJpaMoreBusinessPackage.class, CoreJpaMoreUtilTransactionPackage.class }
 )
-@Import(JpaMoreTaskApplicationPropertyRegistryConfig.class)
+@Import(TaskPropertyRegistryConfig.class)
 public class IglooTaskManagementAutoConfiguration {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(IglooTaskManagementAutoConfiguration.class);

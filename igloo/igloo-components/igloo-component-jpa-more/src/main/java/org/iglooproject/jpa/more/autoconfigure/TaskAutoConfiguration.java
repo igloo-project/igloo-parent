@@ -1,9 +1,8 @@
-package org.iglooproject.jpa.more.config.spring;
+package org.iglooproject.jpa.more.autoconfigure;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
 import org.iglooproject.jpa.more.business.task.dao.IQueuedTaskHolderDao;
 import org.iglooproject.jpa.more.business.task.dao.QueuedTaskHolderDaoImpl;
 import org.iglooproject.jpa.more.business.task.model.IQueueId;
@@ -11,20 +10,24 @@ import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderManagerImpl;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderServiceImpl;
+import org.iglooproject.jpa.more.config.spring.ImmutableTaskManagement;
+import org.iglooproject.jpa.more.config.spring.TaskManagementConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 
-@ComponentScan(basePackageClasses = { CoreJpaMoreBusinessPackage.class })
-public abstract class AbstractTaskManagementConfig {
+@Configuration
+@ConditionalOnBean(TaskManagementConfigurer.class)
+public class TaskAutoConfiguration {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTaskManagementConfig.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TaskAutoConfiguration.class);
 	
 	public static final String OBJECT_MAPPER_BEAN_NAME = "queuedTaskHolderObjectMapper";
 
@@ -65,11 +68,4 @@ public abstract class AbstractTaskManagementConfig {
 		return new QueuedTaskHolderManagerImpl(queueIds);
 	}
 
-	/**
-	 * Ensure that we have at least one configurer.
-	 */
-	@Bean
-	public TaskManagementConfigurer emptyTaskManagementConfigurer() {
-		return new TaskManagementConfigurer() {};
-	}
 }

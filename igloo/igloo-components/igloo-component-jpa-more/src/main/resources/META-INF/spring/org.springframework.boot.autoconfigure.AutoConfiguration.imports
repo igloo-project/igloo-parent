@@ -1,0 +1,4 @@
+org.iglooproject.jpa.more.autoconfigure.JpaMorePropertyRegistryAutoConfiguration
+org.iglooproject.jpa.more.autoconfigure.TaskPropertyRegistryConfig
+org.iglooproject.jpa.more.autoconfigure.JpaMoreAutoConfiguration
+org.iglooproject.jpa.more.autoconfigure.TaskAutoConfiguration

@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.more.config.spring;
+package org.iglooproject.jpa.more.autoconfigure;
 
 import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.QUEUE_NUMBER_OF_THREADS_TEMPLATE;
 import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.QUEUE_START_DELAY_TEMPLATE;
@@ -6,13 +6,19 @@ import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.QUEUE_ST
 import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.START_MODE;
 import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.STOP_TIMEOUT;
 
+import org.iglooproject.spring.autoconfigure.PropertyIdsAutoConfiguration;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
 import org.iglooproject.spring.config.util.TaskQueueStartMode;
+import org.iglooproject.spring.property.service.IConfigurablePropertyService;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class JpaMoreTaskApplicationPropertyRegistryConfig implements IPropertyRegistryConfig {
+@AutoConfiguration(after = PropertyIdsAutoConfiguration.class)
+@ConditionalOnBean(IConfigurablePropertyService.class)
+public class TaskPropertyRegistryConfig implements IPropertyRegistryConfig {
 
 	@Override
 	public void register(IPropertyRegistry registry) {

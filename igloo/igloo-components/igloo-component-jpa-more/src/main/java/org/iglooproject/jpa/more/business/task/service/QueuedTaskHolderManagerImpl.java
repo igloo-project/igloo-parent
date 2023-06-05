@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.more.autoconfigure.TaskAutoConfiguration;
 import org.iglooproject.jpa.more.business.task.event.QueuedTaskFinishedEvent;
 import org.iglooproject.jpa.more.business.task.model.AbstractTask;
 import org.iglooproject.jpa.more.business.task.model.IQueueId;
@@ -28,7 +29,6 @@ import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.service.impl.TaskConsumer;
 import org.iglooproject.jpa.more.business.task.service.impl.TaskQueue;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
-import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
 import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizationAfterCommitTask;
 import org.iglooproject.jpa.more.util.transaction.service.ITransactionSynchronizationTaskManagerService;
 import org.iglooproject.spring.config.util.TaskQueueStartMode;
@@ -68,7 +68,7 @@ public class QueuedTaskHolderManagerImpl implements IQueuedTaskHolderManager, Ap
 	private IQueuedTaskHolderService queuedTaskHolderService;
 
 	@Autowired
-	@Qualifier(AbstractTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
+	@Qualifier(TaskAutoConfiguration.OBJECT_MAPPER_BEAN_NAME)
 	private ObjectMapper queuedTaskHolderObjectMapper;
 
 	@Autowired
