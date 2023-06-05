@@ -10,7 +10,7 @@ stages:
 # - verify
   - dependencies
   - deploy
-# - analyze
+  - analyze
 
 maven-build:
   stage: build
@@ -72,7 +72,7 @@ maven-deploy:
     # TODO: igloo-boot
     - "apt-get update"
     - "apt-get install -y git"
-    - "mvn -U deploy -DskipTests -DperformRelease -Ddistribution=igloo-release"
+    - "mvn -U deploy -DperformRelease -Ddistribution=igloo-release"
   only:
     - /^master$/
     - /^dev$/
@@ -89,17 +89,17 @@ maven-deploy:
   tags:
     - docker
 
-#sonar-analyze:
-#  stage: analyze
-#  environment: staging
-#  script:
-#    - ./ci/sonar-branch.py | tee config
-#    - source config
-#    - mvn -U verify sonar:sonar
-#      -DskipTests
-#      -Dsonar.host.url="https://sonar.tools.kobalt.fr"
-#  except:
-#    variables:
-#      - $CHECK_DEPENDENCIES
-#  tags:
-#    - docker
+sonar-analyze:
+  needs: []
+  stage: analyze
+  environment: staging
+  script:
+    - mvn -U verify sonar:sonar
+      -Dsonar.projectBranch=igloo-boot
+      -DskipTests
+      -Dsonar.host.url="https://sonar.tools.kobalt.fr"
+  except:
+    variables:
+      - $CHECK_DEPENDENCIES
+  tags:
+    - docker
