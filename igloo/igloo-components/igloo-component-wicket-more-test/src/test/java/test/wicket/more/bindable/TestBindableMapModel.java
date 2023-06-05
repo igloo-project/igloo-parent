@@ -16,6 +16,9 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableMap;
 
+import test.wicket.more.config.spring.SpringBootTestWicketSimple;
+
+@SpringBootTestWicketSimple
 class TestBindableMapModel extends AbstractTestBindableModel {
 	
 	@Test

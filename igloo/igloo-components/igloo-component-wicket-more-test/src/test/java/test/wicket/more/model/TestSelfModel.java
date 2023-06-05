@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import igloo.wicket.model.BindingModel;
 import test.wicket.more.AbstractWicketMoreTestCase;
+import test.wicket.more.config.spring.SpringBootTestWicketSimple;
 
+@SpringBootTestWicketSimple
 public class TestSelfModel extends AbstractWicketMoreTestCase {
 
 	/**

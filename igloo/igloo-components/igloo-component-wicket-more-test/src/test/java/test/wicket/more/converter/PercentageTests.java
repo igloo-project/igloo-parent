@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import igloo.wicket.component.PercentageBigDecimalConverter;
 import test.wicket.more.AbstractWicketMoreTestCase;
+import test.wicket.more.config.spring.SpringBootTestWicketSimple;
 
+@SpringBootTestWicketSimple
 class PercentageTests extends AbstractWicketMoreTestCase {
 
 	@Test

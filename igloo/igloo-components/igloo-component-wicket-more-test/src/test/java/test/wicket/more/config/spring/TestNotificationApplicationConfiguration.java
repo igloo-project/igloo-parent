@@ -1,24 +1,34 @@
-package test.wicket.more.notification.config.spring;
+package test.wicket.more.config.spring;
 
 import java.util.concurrent.Callable;
 
+import org.apache.wicket.protocol.http.WebApplication;
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.security.service.IRunAsSystemService;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
+import test.wicket.more.notification.application.WicketMoreTestNotificationApplication;
 import test.wicket.more.notification.service.NotificationContentDescriptorFactoryImpl;
 
-/**
- * This configuration relies on notification-test.properties loading by configuration-bootstrap. This is done
- * with a custom test-notification igloo profile.
- */
 @Configuration
-public class NotificationTestConfig {
+@PropertySource(
+	name = IglooPropertySourcePriority.OVERRIDES,
+	value = "classpath:notification-test.properties",
+	encoding = "UTF-8"
+)
+public class TestNotificationApplicationConfiguration {
+
+	@Bean
+	public WebApplication application() {
+		return new WicketMoreTestNotificationApplication();
+	}
 
 	@Bean
 	@Primary

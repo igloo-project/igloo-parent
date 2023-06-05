@@ -16,6 +16,9 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableList;
 
+import test.wicket.more.config.spring.SpringBootTestWicketSimple;
+
+@SpringBootTestWicketSimple
 class TestBindableCollectionModel extends AbstractTestBindableModel {
 	
 	@Test

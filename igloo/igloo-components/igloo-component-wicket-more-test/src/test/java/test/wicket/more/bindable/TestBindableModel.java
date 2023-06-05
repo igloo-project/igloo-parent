@@ -9,6 +9,9 @@ import org.iglooproject.wicket.more.bindable.model.BindableModel;
 import org.iglooproject.wicket.more.bindable.model.IBindableModel;
 import org.junit.jupiter.api.Test;
 
+import test.wicket.more.config.spring.SpringBootTestWicketSimple;
+
+@SpringBootTestWicketSimple
 class TestBindableModel extends AbstractTestBindableModel {
 	
 	@Test

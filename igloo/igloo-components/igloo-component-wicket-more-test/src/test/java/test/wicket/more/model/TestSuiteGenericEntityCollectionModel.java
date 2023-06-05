@@ -23,11 +23,13 @@ import com.google.common.collect.Sets;
 
 import test.wicket.more.business.person.model.Person;
 import test.wicket.more.business.person.model.PersonComparator;
+import test.wicket.more.config.spring.SpringBootTestWicketSimple;
 import test.wicket.more.model.TestSuiteGenericEntityCollectionModel.TestGenericEntityCollectionModel;
 import test.wicket.more.model.TestSuiteGenericEntityCollectionModel.TestSessionThreadSafeGenericEntityArrayListModel;
 import test.wicket.more.model.TestSuiteGenericEntityCollectionModel.TestSessionThreadSafeGenericEntityHashSetModel;
 import test.wicket.more.model.TestSuiteGenericEntityCollectionModel.TestSessionThreadSafeGenericEntityTreeSetModel;
 
+@SpringBootTestWicketSimple
 @Suite
 @SelectClasses({
 	TestGenericEntityCollectionModel.class,
@@ -41,6 +43,7 @@ import test.wicket.more.model.TestSuiteGenericEntityCollectionModel.TestSessionT
  */
 public class TestSuiteGenericEntityCollectionModel {
 	
+	@SpringBootTestWicketSimple
 	public static class TestGenericEntityCollectionModel extends AbstractTestGenericEntityCollectionModel<Collection<Person>> {
 		public static Stream<Arguments> data() {
 			ImmutableList.Builder<Arguments> builder = ImmutableList.builder();
@@ -64,6 +67,7 @@ public class TestSuiteGenericEntityCollectionModel {
 		}
 	}
 	
+	@SpringBootTestWicketSimple
 	public static class TestSessionThreadSafeGenericEntityArrayListModel extends AbstractTestGenericEntityCollectionModel<List<Person>> {
 		public static Stream<Arguments> data() {
 			ImmutableList.Builder<Arguments> builder = ImmutableList.builder();
@@ -87,6 +91,7 @@ public class TestSuiteGenericEntityCollectionModel {
 		}
 	}
 	
+	@SpringBootTestWicketSimple
 	public static class TestSessionThreadSafeGenericEntityHashSetModel extends AbstractTestGenericEntityCollectionModel<Set<Person>> {
 		public static Stream<Arguments> data() {
 			ImmutableList.Builder<Arguments> builder = ImmutableList.builder();
@@ -110,6 +115,7 @@ public class TestSuiteGenericEntityCollectionModel {
 		}
 	}
 	
+	@SpringBootTestWicketSimple
 	public static class TestSessionThreadSafeGenericEntityTreeSetModel extends AbstractTestGenericEntityCollectionModel<SortedSet<Person>> {
 		public static Stream<Arguments> data() {
 			ImmutableList.Builder<Arguments> builder = ImmutableList.builder();

@@ -20,9 +20,11 @@ import com.google.common.collect.Ordering;
 import igloo.wicket.model.IMapModel;
 import igloo.wicket.model.MapCopyModel;
 import igloo.wicket.model.Models;
+import test.wicket.more.config.spring.SpringBootTestWicketSimple;
 import test.wicket.more.model.TestSerializableMapCopyModel.KeyEnum;
 import test.wicket.more.model.TestSerializableMapCopyModel.ValueEnum;
 
+@SpringBootTestWicketSimple
 public class TestSerializableMapCopyModel<M extends Map<KeyEnum, ValueEnum>>
 		extends AbstractTestMapModel<M> {
 

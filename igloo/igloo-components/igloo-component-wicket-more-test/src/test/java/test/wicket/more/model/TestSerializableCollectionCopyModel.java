@@ -18,8 +18,10 @@ import com.google.common.collect.Ordering;
 import igloo.wicket.model.CollectionCopyModel;
 import igloo.wicket.model.ICollectionModel;
 import igloo.wicket.model.Models;
+import test.wicket.more.config.spring.SpringBootTestWicketSimple;
 import test.wicket.more.model.TestSerializableCollectionCopyModel.ValueEnum;
 
+@SpringBootTestWicketSimple
 class TestSerializableCollectionCopyModel<C extends Collection<ValueEnum>>
 		extends AbstractTestCollectionModel<C> {
 	

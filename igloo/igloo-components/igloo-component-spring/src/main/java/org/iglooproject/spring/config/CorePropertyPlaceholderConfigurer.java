@@ -24,6 +24,7 @@ import org.springframework.core.env.ConfigurablePropertyResolver;
 import org.springframework.core.env.PropertyResolver;
 
 /**
+ * TODO igloo-boot: remove ?
  * <p>Gère la récupération des propriétés de configuration.</p>
  * 
  * <p>Ajout de fonctionnalités supplémentaires par rapport au configurer Spring permettant :
