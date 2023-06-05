@@ -11,12 +11,14 @@ import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConsta
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
+import org.iglooproject.test.jpa.security.config.spring.SpringBootTestJpaSecurity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+@SpringBootTestJpaSecurity
 class TestCoreJpaUserDetailsService extends AbstractJpaSecurityTestCase {
 
 	@Autowired

@@ -9,12 +9,14 @@ import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
+import org.iglooproject.test.jpa.security.config.spring.SpringBootTestJpaSecurity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+@SpringBootTestJpaSecurity
 class TestUserService extends AbstractJpaSecurityTestCase {
 
 	@Autowired

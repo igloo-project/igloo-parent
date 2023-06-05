@@ -9,8 +9,10 @@ import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConsta
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
+import org.iglooproject.test.jpa.security.config.spring.SpringBootTestJpaSecurity;
 import org.junit.jupiter.api.Test;
 
+@SpringBootTestJpaSecurity
 class TestUserGroupService extends AbstractJpaSecurityTestCase {
 
 	@Test

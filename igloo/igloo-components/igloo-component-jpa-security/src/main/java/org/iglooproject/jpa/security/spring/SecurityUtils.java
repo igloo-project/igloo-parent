@@ -1,4 +1,4 @@
-package org.igloo.spring.autoconfigure.security.util;
+package org.iglooproject.jpa.security.spring;
 
 import java.util.Collection;
 import java.util.Map;
