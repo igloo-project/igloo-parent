@@ -1,13 +1,14 @@
 package org.iglooproject.test.jpa.junit;
 
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
-import org.iglooproject.jpa.config.spring.IglooJpaConfiguration;
+import org.iglooproject.jpa.autoconfigure.JpaAutoConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@Import(IglooJpaConfiguration.class)
+@EnableAutoConfiguration
 @PropertySource(
 	name = IglooPropertySourcePriority.APPLICATION,
 	value = "classpath:igloo-component-jpa-test/jpa.properties",

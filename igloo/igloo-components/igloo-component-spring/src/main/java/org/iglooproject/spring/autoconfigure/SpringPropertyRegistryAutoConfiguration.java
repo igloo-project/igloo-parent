@@ -1,4 +1,4 @@
-package org.iglooproject.spring.config.spring;
+package org.iglooproject.spring.autoconfigure;
 
 import static org.iglooproject.spring.property.SpringPropertyIds.AVAILABLE_LOCALES;
 import static org.iglooproject.spring.property.SpringPropertyIds.CONFIGURATION_TYPE;
@@ -24,6 +24,7 @@ import java.util.Set;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.functional.converter.StringCollectionConverter;
 import org.iglooproject.functional.converter.StringLocaleConverter;
+import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
 import org.iglooproject.spring.config.util.MailSenderBehavior;
 import org.iglooproject.spring.notification.util.NotificationSendMode;
 import org.iglooproject.spring.property.SpringPropertyIds;
@@ -38,11 +39,11 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-@Import(SpringSecurityApplicationPropertyRegistryConfig.class)
+@Import(SecurityPropertyRegistryAutoConfiguration.class)
 @Configuration
-public class SpringApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
+public class SpringPropertyRegistryAutoConfiguration implements IPropertyRegistryConfig {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SpringApplicationPropertyRegistryConfig.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SpringPropertyRegistryAutoConfiguration.class);
 
 	@Override
 	public void register(IPropertyRegistry registry) {

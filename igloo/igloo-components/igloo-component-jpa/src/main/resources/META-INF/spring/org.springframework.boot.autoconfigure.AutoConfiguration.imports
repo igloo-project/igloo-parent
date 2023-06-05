@@ -1,0 +1,2 @@
+org.iglooproject.jpa.autoconfigure.JpaAutoConfiguration
+org.iglooproject.jpa.autoconfigure.HibernateSearchAutoConfiguration

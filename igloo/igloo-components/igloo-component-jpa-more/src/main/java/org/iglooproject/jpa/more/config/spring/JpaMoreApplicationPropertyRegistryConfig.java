@@ -6,7 +6,7 @@ import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
 
 import java.io.File;
 
-import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
+import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.util.StringUtils;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
 
 @Import(JpaMoreTaskApplicationPropertyRegistryConfig.class)
 @Configuration
-public class JpaMoreApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
+public class JpaMoreApplicationPropertyRegistryConfig implements IPropertyRegistryConfig {
 
 	@Override
 	public void register(IPropertyRegistry registry) {

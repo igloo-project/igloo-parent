@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.Supplier2;
 import org.iglooproject.sass.service.StaticResourceHelper;
-import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
+import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ import com.google.common.base.Converter;
 import com.google.common.primitives.Ints;
 
 @Configuration
-public class WicketMoreApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
+public class WicketMoreApplicationPropertyRegistryConfig implements IPropertyRegistryConfig {
 	
 	@Autowired
 	@Lazy

@@ -1,0 +1,5 @@
+org.iglooproject.spring.autoconfigure.PropertyIdsAutoConfiguration
+org.iglooproject.spring.autoconfigure.ConfigurationLoggerAutoConfiguration
+org.iglooproject.spring.autoconfigure.SpringInfoAutoConfiguration
+org.iglooproject.spring.autoconfigure.SecurityPropertyRegistryAutoConfiguration
+org.iglooproject.spring.autoconfigure.SpringPropertyRegistryAutoConfiguration

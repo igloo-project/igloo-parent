@@ -3,7 +3,6 @@ package org.igloo.spring.autoconfigure.task;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.igloo.spring.autoconfigure.property.IglooPropertyAutoConfiguration;
 import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
 import org.iglooproject.jpa.more.business.task.dao.IQueuedTaskHolderDao;
 import org.iglooproject.jpa.more.business.task.dao.QueuedTaskHolderDaoImpl;
@@ -22,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -40,7 +38,6 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 		basePackageClasses = { CoreJpaMoreBusinessPackage.class, CoreJpaMoreUtilTransactionPackage.class }
 )
 @Import(JpaMoreTaskApplicationPropertyRegistryConfig.class)
-@AutoConfigureAfter(IglooPropertyAutoConfiguration.class)
 public class IglooTaskManagementAutoConfiguration {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(IglooTaskManagementAutoConfiguration.class);

@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.config.spring;
+package org.iglooproject.jpa.autoconfigure;
 
 import java.util.List;
 import java.util.Properties;
@@ -22,11 +22,13 @@ import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -73,8 +75,9 @@ import jakarta.persistence.EntityManagerFactory;
  * Hibernate behaviors.</p>
  */
 @Configuration
+@ConditionalOnClass({ LocalContainerEntityManagerFactoryBean.class, EntityManager.class })
 @EnableTransactionManagement
-public class IglooJpaConfiguration {
+public class JpaAutoConfiguration {
 
 	@ConditionalOnProperty(name = "spring.jpa.igloo.component-path", havingValue = "true", matchIfMissing = false)
 	@Configuration

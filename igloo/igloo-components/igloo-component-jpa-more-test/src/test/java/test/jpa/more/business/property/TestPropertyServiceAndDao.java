@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.spring.config.spring.AbstractApplicationPropertyRegistryConfig;
+import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
 import org.iglooproject.spring.property.model.AbstractPropertyIds;
 import org.iglooproject.spring.property.model.IMutablePropertyValueMap;
 import org.iglooproject.spring.property.model.ImmutablePropertyId;
@@ -32,8 +32,7 @@ import test.jpa.more.config.spring.SpringBootTestJpaMore;
 @ContextConfiguration(classes = TestPropertyServiceAndDaoConfig.class)
 class TestPropertyServiceAndDao extends AbstractJpaMoreTestCase {
 	
-	public static class TestPropertyServiceAndDaoConfig extends AbstractApplicationPropertyRegistryConfig {
-
+	public static class TestPropertyServiceAndDaoConfig implements IPropertyRegistryConfig {
 		@Override
 		public void register(IPropertyRegistry registry) {
 			registry.registerString(PropertyIds.MUTABLE_STRING, "MyDefaultValue");
@@ -45,7 +44,6 @@ class TestPropertyServiceAndDao extends AbstractJpaMoreTestCase {
 			registry.registerLocalDateTime(PropertyIds.IMMUTABLE_DATETIME_WITH_DEFAULT, LocalDateTime.now());
 			registry.registerLocalDateTime(PropertyIds.MUTABLE_DATETIME_TEMPLATE, LocalDateTime.now());
 		}
-		
 	}
 	
 	private static class PropertyIds extends AbstractPropertyIds {

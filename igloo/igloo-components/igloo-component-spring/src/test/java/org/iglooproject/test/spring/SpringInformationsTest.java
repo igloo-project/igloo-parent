@@ -6,14 +6,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.regex.Pattern;
 
 import org.assertj.core.api.Condition;
+import org.iglooproject.config.bootstrap.autoconfigure.ManifestAutoConfiguration;
 import org.iglooproject.config.bootstrap.spring.annotations.ManifestPropertySource;
-import org.iglooproject.config.bootstrap.spring.config.ManifestPropertySourceConfiguration;
-import org.iglooproject.spring.config.spring.IglooVersionInfoConfig;
+import org.iglooproject.spring.autoconfigure.SpringInfoAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-@SpringJUnitConfig(classes = { ManifestPropertySourceConfiguration.class, IglooVersionInfoConfig.class })
+@SpringJUnitConfig(classes = { ManifestAutoConfiguration.class, SpringInfoAutoConfiguration.class })
 class SpringInformationsTest {
 
 	@Value("${igloo.version}")
@@ -22,7 +22,7 @@ class SpringInformationsTest {
 	private String buildUserName;
 
 	/**
-	 * @see IglooVersionInfoConfig
+	 * @see SpringInfoAutoConfiguration
 	 * @see ManifestPropertySource
 	 */
 	@Test

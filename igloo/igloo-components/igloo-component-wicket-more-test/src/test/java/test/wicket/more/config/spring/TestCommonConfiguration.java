@@ -3,8 +3,7 @@ package test.wicket.more.config.spring;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
-import org.iglooproject.spring.config.spring.SpringApplicationPropertyRegistryConfig;
-import org.iglooproject.test.jpa.junit.ApplicationPropertyTestConfiguration;
+import org.iglooproject.spring.autoconfigure.SpringPropertyRegistryAutoConfiguration;
 import org.iglooproject.test.jpa.junit.JpaOnlyTestConfiguration;
 import org.iglooproject.wicket.more.config.spring.WicketMoreApplicationPropertyRegistryConfig;
 import org.iglooproject.wicket.more.config.spring.WicketMoreServiceConfig;
@@ -33,8 +32,7 @@ import test.wicket.more.business.WicketMoreTestBusinessPackage;
 	JpaOnlyTestConfiguration.class,
 	WicketMoreServiceConfig.class,
 	WicketMoreApplicationPropertyRegistryConfig.class,
-	SpringApplicationPropertyRegistryConfig.class,
-	ApplicationPropertyTestConfiguration.class
+	SpringPropertyRegistryAutoConfiguration.class
 })
 @ComponentScan(basePackageClasses = WicketMoreTestBusinessPackage.class)
 @EntityScan(basePackageClasses = WicketMoreTestBusinessPackage.class)
