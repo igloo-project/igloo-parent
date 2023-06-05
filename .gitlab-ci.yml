@@ -1,5 +1,5 @@
 image:
-  name: maven:3.8-openjdk-17-slim
+  name: igloo-containers.tools.kobalt.fr/containers/maven-igloo:3.8-openjdk-17-slim
 
 variables:
   MAVEN_OPTS: "-Xmx1536m"
@@ -16,42 +16,32 @@ maven-build:
   stage: build
   environment: staging
   script:
-    # TODO: igloo-boot
-    - "apt-get update"
-    - "apt-get install -y git"
-    - "mvn -U -DskipTests clean package"
+    - "mvn -U clean package"
+  artifacts:
+    when: always
+    paths:
+      - "**/target/surefire-reports/TEST-*.xml"
+    reports:
+      junit:
+        - "**/target/surefire-reports/TEST-*.xml"
   except:
     variables:
       - $CHECK_DEPENDENCIES
   tags:
     - docker
-
-#maven-verify:postgresql12:
-#  stage: verify
-#  script:
-#    - mvn -U verify
-#  artifacts:
-#    when: always
-#    paths:
-#      - "**/target/surefire-reports/TEST-*.xml"
-#    reports:
-#      junit:
-#        - "**/target/surefire-reports/TEST-*.xml"
-#  tags:
-#    - docker
-#  services:
-#    - name: postgres:12
-#      alias: postgresql
-#  variables:
-#    POSTGRES_USER: igloo_test
-#    POSTGRES_PASSWORD: igloo_test
-#    TEST_DB_USER: igloo_test
-#    TEST_DB_PASSWORD: igloo_test
-#    TEST_DB_SCHEMA: public
-#    TEST_DB_NAME: igloo_test
-#    TEST_DB_TYPE: postgresql
-#    TEST_DB_HOST: postgresql
-#    TEST_DB_PORT: 5432
+  services:
+    - name: postgres:12
+      alias: postgresql
+  variables:
+    POSTGRES_USER: igloo_test
+    POSTGRES_PASSWORD: igloo_test
+    TEST_DB_USER: igloo_test
+    TEST_DB_PASSWORD: igloo_test
+    TEST_DB_SCHEMA: public
+    TEST_DB_NAME: igloo_test
+    TEST_DB_TYPE: postgresql
+    TEST_DB_HOST: postgresql
+    TEST_DB_PORT: 5432
 
 maven-dependencies:
   stage: dependencies
