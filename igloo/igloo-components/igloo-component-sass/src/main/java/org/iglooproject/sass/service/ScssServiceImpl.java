@@ -98,7 +98,7 @@ public class ScssServiceImpl implements IScssService, IScopeResolver {
 			WebjarsImporter webjarImporter = new WebjarsImporter();
 			IglooDartImporter iglooDartImporter = new IglooDartImporter(webjarImporter, this);
 			sassCompiler.registerImporter(iglooDartImporter.autoCanonicalize());
-			CompileSuccess compileSuccess = sassCompiler.compileFile(new File(path.toURI().getPath()));
+			CompileSuccess compileSuccess = sassCompiler.compile(path);
 			String compiledOutput = compileSuccess.getCss();
 			
 			if (configurationProvider.isAutoprefixerEnabled()) {
@@ -113,7 +113,7 @@ public class ScssServiceImpl implements IScssService, IScopeResolver {
 			updateImportedStylesheets(compileSuccess, compiledStylesheet);
 			
 			return compiledStylesheet;
-		} catch (RuntimeException | IOException | SassCompilationFailedException | AutoprefixerException | URISyntaxException e) {
+		} catch (RuntimeException | IOException | SassCompilationFailedException | AutoprefixerException e) {
 			throw new IllegalStateException(String.format("Error compiling %s", path), e);
 		}
 	}
