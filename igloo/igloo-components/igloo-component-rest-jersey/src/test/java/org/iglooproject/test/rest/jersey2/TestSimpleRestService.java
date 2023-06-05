@@ -7,9 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import org.iglooproject.test.rest.jersey2.business.person.model.Person;
 import org.iglooproject.test.rest.jersey2.business.person.service.IPersonService;
 import org.iglooproject.test.rest.jersey2.client.SimpleRestServiceClientServiceImpl;
+import org.iglooproject.test.rest.jersey2.config.spring.SpringBootTestJersey;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@SpringBootTestJersey
 class TestSimpleRestService extends AbstractRestServiceTestCase {
 	
 	@Autowired

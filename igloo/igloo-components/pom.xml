@@ -63,7 +63,7 @@
 		<module>igloo-component-wicket-more-jqplot</module>
 		
 		<module>igloo-component-web-security</module>
-		<module>igloo-component-rest-jersey2</module>
+		<module>igloo-component-rest-jersey</module>
 		<module>igloo-component-jpa-migration</module>
 		<module>igloo-component-elasticsearch-plugin</module>
 		

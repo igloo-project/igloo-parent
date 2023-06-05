@@ -41,7 +41,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
-				<artifactId>dependencies-jersey2</artifactId>
+				<artifactId>dependencies-jersey</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

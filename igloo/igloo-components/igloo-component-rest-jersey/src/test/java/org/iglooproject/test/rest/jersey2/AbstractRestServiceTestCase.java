@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 
-@TestExecutionListeners(listeners = MockServletTestExecutionListener.class)
-@ContextConfiguration(classes = {})
 @MockRestServer
 public abstract class AbstractRestServiceTestCase extends AbstractTestCase {
 	

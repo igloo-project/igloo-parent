@@ -3,7 +3,7 @@ package org.iglooproject.rest.jersey2;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.internal.scanning.PackageNamesScanner;
 
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
 
 public abstract class AbstractRestApplication extends ResourceConfig {
 	

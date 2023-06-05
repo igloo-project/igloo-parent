@@ -2,14 +2,14 @@ package org.iglooproject.rest.jersey2.client;
 
 import java.net.URI;
 
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
+
+import com.fasterxml.jackson.jakarta.rs.json.JacksonJsonProvider;
+
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.UriBuilder;
-
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
-
-import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 public abstract class AbstractRestClientServiceImpl {
 	
