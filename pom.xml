@@ -64,7 +64,8 @@
 			</activation>
 			<modules>
 				<module>igloo</module>
-				<module>basic-application</module>
+				<!-- TODO igloo-boot -->
+				<!-- <module>basic-application</module> -->
 			</modules>
 		</profile>
 		<profile>
