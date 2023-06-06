@@ -1,4 +1,4 @@
-package org.igloo.spring.autoconfigure.jpa;
+package org.iglooproject.jpa.autoconfigure;
 
 import java.net.URISyntaxException;
 
@@ -16,7 +16,7 @@ import jakarta.persistence.EntityManagerFactory;
  * spring and hibernate cache.
  */
 @ConditionalOnExpression("'${spring.jpa.properties.hibernate.javax.cache.uri:none}' != 'none'")
-public class IglooJpaCacheConfig {
+public class JpaCacheAutoConfiguration {
 
 	@Bean
 	public JpaCacheManagerWrapper jpaCacheManager(
@@ -24,7 +24,7 @@ public class IglooJpaCacheConfig {
 			@Value("${spring.jpa.properties.hibernate.javax.cache.provider}") String cacheProvider,
 			@Value("${spring.jpa.properties.hibernate.javax.cache.uri}") String locationUri) throws URISyntaxException {
 		if (CaffeineCachingProvider.class.getName().equals(cacheProvider)) {
-			return new JpaCacheManagerWrapper(org.igloo.spring.autoconfigure.jpa.JCacheLookup.lookup(locationUri));
+			return new JpaCacheManagerWrapper(org.iglooproject.jpa.autoconfigure.JCacheLookup.lookup(locationUri));
 		} else {
 			throw new IllegalStateException();
 		}

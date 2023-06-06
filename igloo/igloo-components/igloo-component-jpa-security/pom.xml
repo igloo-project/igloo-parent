@@ -13,7 +13,7 @@
 	<name>Igloo - Component - JPA - Spring Security support</name>
 
 	<properties>
-		<igloo.processors>${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor,${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>
@@ -46,6 +46,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
 		

@@ -1,4 +1,4 @@
-package igloo.jpa.batch.spring;
+package igloo.jpa.batch.autoconfigure;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -13,6 +13,6 @@ import igloo.jpa.batch.CoreJpaBatchPackage;
 	},
 	excludeFilters = @Filter(Configuration.class)
 )
-public class IglooJpaBatchConfiguration {
+public class JpaBatchAutoConfiguration {
 
 }

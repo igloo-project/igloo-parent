@@ -7,7 +7,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
-import org.iglooproject.jpa.more.config.spring.JpaMoreHistoryLogConfig;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.iglooproject.test.jpa.junit.JpaOnlyTestConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -24,7 +23,7 @@ import test.jpa.more.business.JpaMoreTestBusinessPackage;
 @Target(TYPE)
 @EnableAutoConfiguration
 @ContextConfiguration(initializers = ExtendedApplicationContextInitializer.class)
-@SpringBootTest(classes = { TestConfig.class, JpaMoreHistoryLogConfig.class, JpaOnlyTestConfiguration.class })
+@SpringBootTest(classes = { TestConfig.class, JpaOnlyTestConfiguration.class })
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	EntityManagerExecutionListener.class

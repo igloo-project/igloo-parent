@@ -1,15 +1,19 @@
-package org.iglooproject.jpa.more.config.spring;
+package org.iglooproject.jpa.more.autoconfigure;
 
 import org.hibernate.boot.MetadataBuilder;
 import org.hibernate.boot.spi.MetadataBuilderContributor;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.more.business.history.hibernate.FieldPathType;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class JpaMoreHistoryLogConfig {
+@AutoConfiguration(after = JpaMoreAutoConfiguration.class)
+@ConditionalOnBean(JpaMoreAutoConfiguration.class)
+public class HistoryLogAutoConfiguration {
 
 	@Bean
 	public HibernatePropertiesCustomizer typeCustomizer() {

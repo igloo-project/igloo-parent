@@ -1,5 +1,11 @@
 package org.iglooproject.jpa.more.autoconfigure;
 
+import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.QUEUE_NUMBER_OF_THREADS_TEMPLATE;
+import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.QUEUE_START_DELAY_TEMPLATE;
+import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.QUEUE_START_EXECUTION_CONTEXT_WAIT_READY_TEMPLATE;
+import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.START_MODE;
+import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.STOP_TIMEOUT;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -12,6 +18,9 @@ import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderManagerIm
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderServiceImpl;
 import org.iglooproject.jpa.more.config.spring.ImmutableTaskManagement;
 import org.iglooproject.jpa.more.config.spring.TaskManagementConfigurer;
+import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.config.util.TaskQueueStartMode;
+import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +34,7 @@ import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator
 
 @Configuration
 @ConditionalOnBean(TaskManagementConfigurer.class)
-public class TaskAutoConfiguration {
+public class TaskAutoConfiguration implements IPropertyRegistryConfig {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TaskAutoConfiguration.class);
 	
@@ -66,6 +75,15 @@ public class TaskAutoConfiguration {
 			configurer.configure(builder);
 		}
 		return new QueuedTaskHolderManagerImpl(queueIds);
+	}
+
+	@Override
+	public void register(IPropertyRegistry registry) {
+		registry.registerInteger(STOP_TIMEOUT, 70000);
+		registry.registerEnum(START_MODE, TaskQueueStartMode.class, TaskQueueStartMode.manual);
+		registry.registerInteger(QUEUE_NUMBER_OF_THREADS_TEMPLATE, 1);
+		registry.registerLong(QUEUE_START_DELAY_TEMPLATE, 0l);
+		registry.registerBoolean(QUEUE_START_EXECUTION_CONTEXT_WAIT_READY_TEMPLATE, true);
 	}
 
 }

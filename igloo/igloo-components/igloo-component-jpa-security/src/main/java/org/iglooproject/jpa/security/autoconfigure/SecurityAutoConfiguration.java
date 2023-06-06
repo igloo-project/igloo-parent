@@ -1,8 +1,9 @@
-package org.iglooproject.jpa.security.config.spring;
+package org.iglooproject.jpa.security.autoconfigure;
 
 import java.util.List;
 
 import org.iglooproject.commons.util.security.PermissionObject;
+import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.security.access.expression.method.CoreMethodSecurityExpressionHandler;
 import org.iglooproject.jpa.security.business.JpaSecurityBusinessPackage;
 import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
@@ -20,14 +21,15 @@ import org.iglooproject.jpa.security.service.NamedPermissionFactory;
 import org.iglooproject.jpa.security.spring.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
@@ -54,11 +56,17 @@ import com.google.common.collect.Lists;
 @Configuration
 @EntityScan(basePackageClasses = JpaSecurityBusinessPackage.class)
 @ComponentScan(basePackageClasses = JpaSecurityBusinessPackage.class)
-public class IglooSecurityConfiguration {
+@PropertySource(
+	name = IglooPropertySourcePriority.FRAMEWORK,
+	value = {
+		"classpath:igloo-component-jpa-security/jpa-security.properties"
+	},
+	encoding = "UTF-8"
+)
+public class SecurityAutoConfiguration {
 
-	@Value("${security.runAsKey}")
-	private String runAsKey;
-	
+	private static final String PARAMETER_SECURITY_RUN_AS_KEY = "security.runAsKey";
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -131,21 +139,17 @@ public class IglooSecurityConfiguration {
 	}
 
 	@Bean
-	public RunAsManager runAsManager() {
+	public RunAsManager runAsManager(Environment environment) {
 		CoreRunAsManagerImpl runAsManager = new CoreRunAsManagerImpl();
-		runAsManager.setKey(runAsKey);
+		runAsManager.setKey(environment.getProperty(PARAMETER_SECURITY_RUN_AS_KEY));
 		return runAsManager;
 	}
 
 	@Bean
-	public RunAsImplAuthenticationProvider runAsAuthenticationProvider() {
+	public RunAsImplAuthenticationProvider runAsAuthenticationProvider(Environment environment) {
 		RunAsImplAuthenticationProvider runAsAuthenticationProvider = new RunAsImplAuthenticationProvider();
-		runAsAuthenticationProvider.setKey(runAsKey);
+		runAsAuthenticationProvider.setKey(environment.getProperty(PARAMETER_SECURITY_RUN_AS_KEY));
 		return runAsAuthenticationProvider;
-	}
-
-	public String getRunAsKey() {
-		return runAsKey;
 	}
 	
 	// TODO igloo-boot: split @Secured

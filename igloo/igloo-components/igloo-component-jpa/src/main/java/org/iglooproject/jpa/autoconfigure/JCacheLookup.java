@@ -1,4 +1,4 @@
-package org.igloo.spring.autoconfigure.jpa;
+package org.iglooproject.jpa.autoconfigure;
 
 import java.net.URI;
 import java.net.URISyntaxException;

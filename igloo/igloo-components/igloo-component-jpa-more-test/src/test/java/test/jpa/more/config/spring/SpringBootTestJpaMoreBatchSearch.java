@@ -18,14 +18,13 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import igloo.jpa.batch.spring.IglooJpaBatchConfiguration;
 import test.jpa.more.business.JpaMoreTestBusinessPackage;
 
 @Retention(RUNTIME)
 @Target(TYPE)
 @EnableAutoConfiguration
 @ContextConfiguration(initializers = ExtendedApplicationContextInitializer.class)
-@SpringBootTest(classes = { TestConfig.class, JpaOnlyTestConfiguration.class, IglooJpaBatchConfiguration.class, JpaSearchTestConfiguration.class })
+@SpringBootTest(classes = { TestConfig.class, JpaOnlyTestConfiguration.class, JpaSearchTestConfiguration.class })
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	EntityManagerExecutionListener.class

@@ -62,5 +62,4 @@ public class TestCommonConfiguration {
 	public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
 		return new PhlocCssHtmlNotificationCssServiceImpl();
 	}
-
 }

@@ -7,6 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
+import org.iglooproject.jpa.security.autoconfigure.SecurityAutoConfiguration;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +20,7 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 
 @Retention(RUNTIME)
 @Target(TYPE)
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
 @SpringBootTest(classes = { TestCommonConfiguration.class, TestLinkDescriptorApplicationConfiguration.class })
 @ContextConfiguration(initializers = ExtendedTestApplicationContextInitializer.class)
 @TestExecutionListeners({

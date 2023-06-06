@@ -1,2 +1,3 @@
 org.iglooproject.jpa.autoconfigure.JpaAutoConfiguration
 org.iglooproject.jpa.autoconfigure.HibernateSearchAutoConfiguration
+org.iglooproject.jpa.autoconfigure.JpaCacheAutoConfiguration
