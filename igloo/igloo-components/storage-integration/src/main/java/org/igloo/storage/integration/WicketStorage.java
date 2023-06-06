@@ -41,7 +41,7 @@ public class WicketStorage {
 				try {
 					mountSupervision(app);
 				} catch (NoClassDefFoundError e) {
-					throw new IllegalStateException("Error mounting storage wicket supervision pages, check storage-micrometer and igloo-supervision-page dependencies", e);
+					throw new IllegalStateException("Error mounting storage wicket supervision pages, check storage-micrometer and igloo-monitoring-page dependencies", e);
 				}
 			}
 		}

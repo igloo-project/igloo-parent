@@ -363,7 +363,11 @@ public class DatabaseOperations {
 	}
 
 	private boolean isPostgresqlBackend() {
-		return ((String) entityManager().getEntityManagerFactory().unwrap(SessionFactory.class).getProperties().get("hibernate.dialect")).toLowerCase().contains("postgresql");
+		return ((String) entityManager().getEntityManagerFactory().
+				unwrap(SessionFactory.class)
+				.getProperties()
+				.get("jakarta.persistence.jdbc.driver"))
+			.toLowerCase().contains("postgresql");
 	}
 
 	@Nonnull

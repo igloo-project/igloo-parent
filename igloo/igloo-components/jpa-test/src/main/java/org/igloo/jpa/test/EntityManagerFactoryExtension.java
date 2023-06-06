@@ -4,10 +4,6 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-
 import org.igloo.hibernate.bootstrap.EntityManagerFactoryHelper;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
@@ -15,6 +11,10 @@ import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 
 public class EntityManagerFactoryExtension implements ParameterResolver {
 
@@ -31,8 +31,10 @@ public class EntityManagerFactoryExtension implements ParameterResolver {
 	@Override
 	public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
 			throws ParameterResolutionException {
-		return Arrays.asList(EntityManagerFactory.class, EntityManager.class, EntityTransaction.class)
-				.contains(parameterContext.getParameter().getType());
+		boolean isSupportedType = Arrays.asList(EntityManagerFactory.class, EntityManager.class, EntityTransaction.class)
+						.contains(parameterContext.getParameter().getType());
+		boolean isJdbcDriverAnnotation = parameterContext.getParameter().getAnnotation(JdbcDriver.class) != null;
+		return isSupportedType || isJdbcDriverAnnotation;
 	}
 
 	@Override
@@ -51,6 +53,13 @@ public class EntityManagerFactoryExtension implements ParameterResolver {
 			wrapper.t = wrapper.em.getTransaction();
 			wrapper.t.begin();
 			return wrapper.t;
+		} else if (parameterContext.getParameter().getAnnotation(JdbcDriver.class) != null) {
+			String driverClassName = (String) wrapper.emf.getProperties().get("jakarta.persistence.jdbc.driver");
+			try {
+				return Class.forName(driverClassName);
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException(String.format("%s driver not found", driverClassName), e);
+			}
 		} else {
 			throw new IllegalStateException("Unkown parameter " + parameterContext.toString());
 		}

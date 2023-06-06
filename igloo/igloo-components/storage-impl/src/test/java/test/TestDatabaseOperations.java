@@ -31,6 +31,7 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Assumptions;
 import org.hibernate.Session;
 import org.igloo.jpa.test.EntityManagerFactoryExtension;
+import org.igloo.jpa.test.JdbcDriver;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistencyCheck;
@@ -53,6 +54,7 @@ import org.iglooproject.jpa.business.generic.model.LongEntityReference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.postgresql.Driver;
 
 import com.google.common.base.Strings;
 
@@ -180,7 +182,7 @@ class TestDatabaseOperations extends AbstractTest {
 	 * Check {@link Fichier#uuid} unicity
 	 */
 	@Test
-	void testFichierUuidUnicityPersist(EntityManager entityManager, EntityTransaction transaction) {
+	void testFichierUuidUnicityPersist(EntityManager entityManager, EntityTransaction transaction, @JdbcDriver Class<?> jdbcDriver) {
 		StorageUnit storageUnit = new StorageUnit();
 		storageUnit.setId(1l);
 		storageUnit.setType(StorageUnitType.TYPE_1);
@@ -221,9 +223,10 @@ class TestDatabaseOperations extends AbstractTest {
 		entityManager.persist(fichier1);
 		entityManager.persist(fichier2);
 		assertThatThrownBy(() -> entityManager.flush())
-			.isInstanceOf(PersistenceException.class);
-			//TODO igloo-boot: failed on CI/CD, ok locally
-			//.hasMessageContaining("Unique index or primary key violation");
+			.isInstanceOf(PersistenceException.class)
+			.hasMessageContaining(jdbcDriver.equals(Driver.class) ?
+					"duplicate key value violates": // postgresql
+					"Unique index or primary key violation"); // h2
 	}
 
 	/**
@@ -1216,15 +1219,13 @@ class TestDatabaseOperations extends AbstractTest {
 	}
 
 	@Test
-	void testGetStorageCheckStatisticsNotSupported(EntityManagerFactory entityManagerFactory) {
+	void testGetStorageCheckStatisticsNotSupported(EntityManagerFactory entityManagerFactory, @JdbcDriver Class<?> driver) {
 		// only run without postgresql
-		Assumptions.assumeThat(
-				Optional.ofNullable(System.getenv("TEST_DB_TYPE")).filter(Predicate.not(Strings::isNullOrEmpty)).filter("postgresql"::equals)
-		).as("testGetStorageCheckStatistics only available with postgresql")
-		.isEmpty();
+		Assumptions.assumeThat(driver.equals(Driver.class)).as("testGetStorageCheckStatistics only available with postgresql").isFalse();
 		assertThatCode(() -> {
 			getStorageCheckStatistics(entityManagerFactory);
-		}).as("Exception explaining that method is not supported without postgresql").isInstanceOf(IllegalStateException.class).hasMessageContaining("postgresql");
+		}).as("Exception explaining that method is not supported without postgresql").isInstanceOf(IllegalStateException.class)
+		.hasMessageContaining("postgresql");
 	}
 
 	@SuppressWarnings("unchecked")
