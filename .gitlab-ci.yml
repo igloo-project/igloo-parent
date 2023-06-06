@@ -59,10 +59,7 @@ maven-deploy:
   stage: deploy
   environment: staging
   script:
-    # TODO: igloo-boot
-    - "apt-get update"
-    - "apt-get install -y git"
-    - "mvn -U deploy -DperformRelease -Ddistribution=igloo-release"
+    - "mvn -U deploy -DperformRelease -Ddistribution=igloo-release -DskipTests"
   only:
     - /^master$/
     - /^dev$/
