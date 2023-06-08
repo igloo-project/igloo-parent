@@ -1,4 +1,4 @@
-package org.iglooproject.wicket.more.config.spring;
+package org.iglooproject.wicket.more.autoconfigure;
 
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.AUTOCOMPLETE_LIMIT;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.AUTOPREFIXER_ENABLED;
@@ -21,21 +21,45 @@ import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET
 
 import java.util.concurrent.TimeUnit;
 
+import org.apache.wicket.Page;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.Supplier2;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.sass.service.StaticResourceHelper;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.wicket.more.WicketMorePackage;
+import org.iglooproject.wicket.more.link.service.DefaultLinkParameterConversionService;
+import org.iglooproject.wicket.more.link.service.ILinkParameterConversionService;
+import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssService;
+import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
+import org.iglooproject.wicket.more.notification.service.PhlocCssHtmlNotificationCssServiceImpl;
+import org.iglooproject.wicket.more.notification.service.WicketContextProviderImpl;
+import org.iglooproject.wicket.more.rendering.service.RendererServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.context.annotation.ComponentScan.Filter;
 
 import com.google.common.base.Converter;
 import com.google.common.primitives.Ints;
 
 @Configuration
-public class WicketMoreApplicationPropertyRegistryConfig implements IPropertyRegistryConfig {
+@ComponentScan(
+		basePackageClasses = WicketMorePackage.class,
+		excludeFilters = @Filter(Configuration.class)
+)
+@ConditionalOnClass(WebApplication.class)
+public class WicketMoreAutoConfiguration implements IPropertyRegistryConfig {
 	
 	@Autowired
 	@Lazy
@@ -82,6 +106,46 @@ public class WicketMoreApplicationPropertyRegistryConfig implements IPropertyReg
 		registry.registerEnum(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT, TimeUnit.class, TimeUnit.SECONDS);
 		
 		registry.registerInteger(AUTOCOMPLETE_LIMIT, 20);
+	}
+
+	// TODO igloo-boot ?
+	@Bean
+	@ConditionalOnMissingBean(WebApplication.class)
+	public WebApplication webApplication() {
+		return new WebApplication() {
+			@Override
+			public Class<? extends Page> getHomePage() {
+				return null;
+			}
+		};
+	}
+
+	@Bean
+	/* Use a proxy to fix a circular dependency.
+	 * There's no real notion of scope here, since the bean is a singleton: we just want it to be proxyfied so that
+	 * the circular dependency is broken.
+	 */
+	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
+	public IWicketContextProvider wicketContextProvider(WebApplication defaultApplication) {
+		return new WicketContextProviderImpl(defaultApplication);
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public IRendererService rendererService(IWicketContextProvider wicketContextProvider) {
+		return new RendererServiceImpl(wicketContextProvider);
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public ILinkParameterConversionService linkParameterConversionService() {
+		return new DefaultLinkParameterConversionService();
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean(IHtmlNotificationCssService.class)
+	public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
+		return new PhlocCssHtmlNotificationCssServiceImpl();
 	}
 
 }
