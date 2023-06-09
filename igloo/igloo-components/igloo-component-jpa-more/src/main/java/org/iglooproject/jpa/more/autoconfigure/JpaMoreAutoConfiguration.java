@@ -9,13 +9,13 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @AutoConfiguration(after = PropertyIdsAutoConfiguration.class)
 @Configuration
-@ComponentScan(basePackageClasses = CoreJpaMoreBusinessPackage.class)
 @EntityScan(basePackageClasses = CoreJpaMoreBusinessPackage.class)
+@Import(JpaMoreComponentScanConfig.class)
 public class JpaMoreAutoConfiguration {
 
 	public JpaMoreAutoConfiguration() {//NOSONAR
