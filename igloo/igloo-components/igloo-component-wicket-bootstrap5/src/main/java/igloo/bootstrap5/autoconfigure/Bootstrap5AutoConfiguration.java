@@ -1,4 +1,4 @@
-package org.igloo.spring.autoconfigure.bootstrap;
+package igloo.bootstrap5.autoconfigure;
 
 import org.apache.wicket.protocol.http.WebApplication;
 import org.iglooproject.wicket.more.autoconfigure.WicketMoreAutoConfiguration;
@@ -9,16 +9,16 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import igloo.console.WicketConsoleModule;
+import igloo.bootstrap5.application.WicketBootstrap5Module;
 
 @Configuration
 @ConditionalOnProperty(name = "igloo-ac.bootstrap5.disabled", havingValue = "false", matchIfMissing = true)
-@ConditionalOnClass(value = WicketConsoleModule.class)
+@ConditionalOnClass(value = WicketBootstrap5Module.class)
 @AutoConfigureAfter({ WicketMoreAutoConfiguration.class })
 @ConditionalOnBean(WebApplication.class)
-public class IglooWicketConsoleAutoConfiguration {
+public class Bootstrap5AutoConfiguration {
 	@Bean
-	public WicketConsoleModule consoleModule() {
-		return new WicketConsoleModule();
+	public WicketBootstrap5Module bootstrap5Module() {
+		return new WicketBootstrap5Module();
 	}
 }

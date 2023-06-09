@@ -75,7 +75,6 @@
 		
 		<module>igloo-monitoring-page</module>
 		<module>igloo-cache</module>
-		<module>igloo-spring-autoconfigure</module>
 		
 		<module>jpa-test-patterns</module>
 	</modules>

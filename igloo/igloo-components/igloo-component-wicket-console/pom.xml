@@ -14,7 +14,7 @@
 	<description>Wicket select2</description>
 
 	<properties>
-		<igloo.processors>${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor,${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>
@@ -40,6 +40,16 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>bindgen-functional</artifactId>
 			<version>${igloo-commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 	

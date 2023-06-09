@@ -131,11 +131,6 @@
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-spring-autoconfigure</artifactId>
-			<version>${igloo.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-hibernate-configurator-lucene</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
