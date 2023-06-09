@@ -12,8 +12,8 @@ import java.util.Properties;
 
 import org.iglooproject.config.bootstrap.spring.ILoggerConfiguration.LoggerImplementation;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcesLevels;
-import org.iglooproject.config.bootstrap.spring.config.IglooBootstrapPropertySourcesConfig;
-import org.iglooproject.config.bootstrap.spring.config.IglooPropertySourcesLevelsConfig;
+import org.iglooproject.config.bootstrap.spring.config.BootstrapPropertySourcesConfiguration;
+import org.iglooproject.config.bootstrap.spring.config.PropertySourcesLevelsConfiguration;
 import org.iglooproject.config.bootstrap.spring.env.CompositeProtocolResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +41,9 @@ import com.google.common.collect.Maps;
  * This initializer handles:
  * <ul>
  * <li>Loading of all {@link IglooPropertySourcesLevels} really early during context loading, to allow convenient
- * {@link PropertySource} ordering, by including {@link IglooPropertySourcesLevelsConfig}.</li>
+ * {@link PropertySource} ordering, by including {@link PropertySourcesLevelsConfiguration}.</li>
  * <li>Loading of bootstrap configuration as a {@link PropertySource} by including
- * {@link IglooBootstrapPropertySourcesConfig}.</li>
+ * {@link BootstrapPropertySourcesConfiguration}.</li>
  * <li>Build a custom log4j configuration, also based on bootstrap configuration.</li>
  * </ul>
  * </p>
@@ -72,9 +72,9 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 
 	private void registerIglooPropertySourcesLevels(ConfigurableApplicationContext applicationContext) {
 		registerBean(applicationContext,
-				IglooPropertySourcesLevelsConfig.class.getSimpleName(), IglooPropertySourcesLevelsConfig.class);
+				PropertySourcesLevelsConfiguration.class.getSimpleName(), PropertySourcesLevelsConfiguration.class);
 		registerBean(applicationContext,
-				IglooBootstrapPropertySourcesConfig.class.getSimpleName(), IglooBootstrapPropertySourcesConfig.class);
+				BootstrapPropertySourcesConfiguration.class.getSimpleName(), BootstrapPropertySourcesConfiguration.class);
 	}
 
 	protected void registerBean(ConfigurableApplicationContext applicationContext, String beanName, Class<?> beanClass) {

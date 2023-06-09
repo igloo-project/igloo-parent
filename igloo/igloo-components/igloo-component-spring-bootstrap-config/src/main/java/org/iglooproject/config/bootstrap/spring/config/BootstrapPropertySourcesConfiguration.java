@@ -19,6 +19,6 @@ import org.springframework.context.annotation.PropertySource;
 	ignoreResourceNotFound = true,
 	encoding = "UTF-8"
 )
-public class IglooBootstrapPropertySourcesConfig {
+public class BootstrapPropertySourcesConfiguration {
 
 }
