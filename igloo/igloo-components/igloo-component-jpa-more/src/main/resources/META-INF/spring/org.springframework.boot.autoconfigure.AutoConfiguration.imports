@@ -2,3 +2,4 @@ org.iglooproject.jpa.more.autoconfigure.JpaMorePropertyRegistryAutoConfiguration
 org.iglooproject.jpa.more.autoconfigure.JpaMoreAutoConfiguration
 org.iglooproject.jpa.more.autoconfigure.TaskAutoConfiguration
 org.iglooproject.jpa.more.autoconfigure.HistoryLogAutoConfiguration
+org.iglooproject.jpa.more.autoconfigure.JpaMoreModelAutoConfiguration

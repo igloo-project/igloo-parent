@@ -5,7 +5,6 @@ import java.util.List;
 import org.iglooproject.commons.util.security.PermissionObject;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.security.access.expression.method.CoreMethodSecurityExpressionHandler;
-import org.iglooproject.jpa.security.business.JpaSecurityBusinessPackage;
 import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
 import org.iglooproject.jpa.security.hierarchy.PermissionHierarchyImpl;
 import org.iglooproject.jpa.security.model.NamedPermission;
@@ -19,12 +18,11 @@ import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
 import org.iglooproject.jpa.security.service.ISecurityService;
 import org.iglooproject.jpa.security.service.NamedPermissionFactory;
 import org.iglooproject.jpa.security.spring.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
@@ -54,8 +52,6 @@ import com.google.common.collect.Lists;
  * Provides spring-security configuration. This implies a working JPA configuration. (TODO igloo-boot)
  */
 @Configuration
-@EntityScan(basePackageClasses = JpaSecurityBusinessPackage.class)
-@ComponentScan(basePackageClasses = JpaSecurityBusinessPackage.class)
 @PropertySource(
 	name = IglooPropertySourcePriority.FRAMEWORK,
 	value = {
@@ -63,6 +59,7 @@ import com.google.common.collect.Lists;
 	},
 	encoding = "UTF-8"
 )
+@Import(SecurityComponentScanConfiguration.class)
 public class SecurityAutoConfiguration {
 
 	private static final String PARAMETER_SECURITY_RUN_AS_KEY = "security.runAsKey";
@@ -73,17 +70,26 @@ public class SecurityAutoConfiguration {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean
 	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
 	public ISecurityService securityService() {
 		return new CoreSecurityServiceImpl();
 	}
 	
 	@Bean(name = "authenticationService")
+	@ConditionalOnMissingBean
 	public IAuthenticationService authenticationService() {
 		return new CoreAuthenticationServiceImpl();
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean
+	public AuthenticationUsernameComparison authenticationUsernameComparison() {
+		return AuthenticationUsernameComparison.CASE_SENSITIVE;
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
 	public UserDetailsService userDetailsService(AuthenticationUsernameComparison authenticationUsernameComparison) {
 		CoreJpaUserDetailsServiceImpl userDetailsService = new CoreJpaUserDetailsServiceImpl();
 		userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison);
@@ -115,27 +121,36 @@ public class SecurityAutoConfiguration {
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean
 	public PermissionFactory permissionFactory() {
 		return new NamedPermissionFactory(permissionClass());
 	}
 	
 	@Bean
-	public RoleHierarchy roleHierarchy(@Autowired @Qualifier("roleHierarchyAsString") String roleHierarchyAsString) {
+	public RoleHierarchy roleHierarchy(@Qualifier("roleHierarchyAsString") String roleHierarchyAsString) {
 		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
 		roleHierarchy.setHierarchy(roleHierarchyAsString);
 		return roleHierarchy;
 	}
 
-	protected String permissionHierarchyAsString() {
+	@Bean
+	public IPermissionHierarchy permissionHierarchy(PermissionFactory permissionFactory,
+			@Qualifier("permissionHierarchyAsString") String permissionHierarchyAsString) {
+		PermissionHierarchyImpl hierarchy = new PermissionHierarchyImpl(permissionFactory);
+		hierarchy.setHierarchy(permissionHierarchyAsString);
+		return hierarchy;
+	}
+
+	@Bean
+	@ConditionalOnMissingBean(name = "roleHierarchyAsString")
+	protected String roleHierarchyAsString() {
 		return SecurityUtils.defaultPermissionHierarchyAsString();
 	}
 
 	@Bean
-	@Autowired
-	public IPermissionHierarchy permissionHierarchy(PermissionFactory permissionFactory) {
-		PermissionHierarchyImpl hierarchy = new PermissionHierarchyImpl(permissionFactory);
-		hierarchy.setHierarchy(permissionHierarchyAsString());
-		return hierarchy;
+	@ConditionalOnMissingBean(name = "permissionHierarchyAsString")
+	protected String permissionHierarchyAsString() {
+		return SecurityUtils.defaultPermissionHierarchyAsString();
 	}
 
 	@Bean

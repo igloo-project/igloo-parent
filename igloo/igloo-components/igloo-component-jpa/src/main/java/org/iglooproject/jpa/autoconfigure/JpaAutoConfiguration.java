@@ -5,6 +5,8 @@ import java.util.Properties;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
+import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
+import org.hibernate.jpa.boot.spi.IntegratorProvider;
 import org.igloo.hibernate.hbm.MetadataRegistryIntegrator;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.business.generic.dao.EntityDaoImpl;
@@ -24,6 +26,7 @@ import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -47,7 +50,7 @@ import jakarta.persistence.EntityManagerFactory;
  * Provides additions to a classic spring-boot JPA Repository configuration.
  * 
  * <ul>
- * <li>(optional <code>spring.jpa.igloo.component-path=true</code>, default false) Customize database naming strategy.</li>
+ * <li>(optional <code>spring.jpa.igloo.component-path.enabled=true</code>, default false) Customize database naming strategy.</li>
  * <li>(optional <code>spring.jpa.igloo.old-style-transaction-advisor</code>, default false) Customize transaction
  * interceptors with the old-style {@link ITransactionalAspectAwareService} interface and method-name based behaviors.</li>
  * <li>Add {@link IEntityService} / {@link IEntityDao} / {@link IEntityReferenceQuery} beans.</li>
@@ -79,7 +82,7 @@ import jakarta.persistence.EntityManagerFactory;
 @EnableTransactionManagement
 public class JpaAutoConfiguration {
 
-	@ConditionalOnProperty(name = "spring.jpa.igloo.component-path", havingValue = "true", matchIfMissing = false)
+	@ConditionalOnProperty(name = "spring.jpa.igloo.component-path.enabled", havingValue = "true", matchIfMissing = false)
 	@Configuration
 	@PropertySource(
 		name = IglooPropertySourcePriority.FRAMEWORK,
@@ -89,6 +92,18 @@ public class JpaAutoConfiguration {
 		encoding = "UTF-8"
 	)
 	public static class JpaComponentPathConfiguration {
+	}
+
+	@ConditionalOnProperty(name = "spring.jpa.igloo.sequence-naming.enabled", havingValue = "true", matchIfMissing = false)
+	@Configuration
+	@PropertySource(
+		name = IglooPropertySourcePriority.FRAMEWORK,
+		value = {
+			"classpath:igloo-component-jpa/sequence-naming.properties"
+		},
+		encoding = "UTF-8"
+	)
+	public static class SequenceConfiguration {
 	}
 
 	@Bean
@@ -131,6 +146,16 @@ public class JpaAutoConfiguration {
 	@Bean
 	public MetadataRegistryIntegrator metdataRegistryIntegrator() {
 		return new MetadataRegistryIntegrator();
+	}
+
+	/**
+	 * Register {@link MetadataRegistryIntegrator} in Hibernate configuration.
+	 */
+	@Bean
+	public HibernatePropertiesCustomizer hibernateIntegratorProperty(MetadataRegistryIntegrator integrator) {
+		return p -> p.put(
+				EntityManagerFactoryBuilderImpl.INTEGRATOR_PROVIDER,
+				(IntegratorProvider) () -> List.of(integrator));
 	}
 
 	/**

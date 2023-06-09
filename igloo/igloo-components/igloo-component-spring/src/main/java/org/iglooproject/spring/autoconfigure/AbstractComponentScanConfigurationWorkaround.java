@@ -1,9 +1,7 @@
-package org.iglooproject.jpa.more.autoconfigure;
+package org.iglooproject.spring.autoconfigure;
 
 import java.util.Set;
 
-import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
-import org.iglooproject.jpa.more.util.CoreJpaMoreUtilPackage;
 import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -17,7 +15,6 @@ import org.springframework.context.annotation.AnnotationConfigUtils;
 import org.springframework.context.annotation.AnnotationScopeMetadataResolver;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.context.annotation.ScopeMetadata;
@@ -25,17 +22,20 @@ import org.springframework.context.annotation.ScopeMetadataResolver;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.core.type.AnnotationMetadata;
 
-// @ConditionalOnBean + @ComponentScan = 
-// see https://github.com/spring-projects/spring-boot/issues/1625
-@Configuration
-public class JpaMoreComponentScanConfig implements ImportBeanDefinitionRegistrar {
+/**
+ * <code>@ConditionalOnBean + @ComponentScan</code> is broken. see https://github.com/spring-projects/spring-boot/issues/1625.
+ * 
+ * This class provides a workaround. Implement {@link #getComponentScanPackages()} in your own <code>@Configuration</code>
+ * class and <code>@Import</code> it on your AutoConfiguration.
+ */
+public abstract class AbstractComponentScanConfigurationWorkaround implements ImportBeanDefinitionRegistrar {
 
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
 		AnnotationBeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
 		ScopeMetadataResolver scopeMetadataResolver = new AnnotationScopeMetadataResolver();
 		BeanDefinitionDefaults beanDefinitionDefaults = new BeanDefinitionDefaults();
-		for (Class<?> basePackageClass : new Class<?>[] { CoreJpaMoreBusinessPackage.class, CoreJpaMoreUtilPackage.class }) {
+		for (Class<?> basePackageClass : getComponentScanPackages()) {
 			ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(true);
 			Set<BeanDefinition> definitions = scanner.findCandidateComponents(basePackageClass.getPackage().getName());
 			// usage of ClassPathScanningCandidateComponentProvider extracted from ClassPathBeanDefinitionParser#doScan
@@ -57,6 +57,8 @@ public class JpaMoreComponentScanConfig implements ImportBeanDefinitionRegistrar
 			}
 		}
 	}
+
+	abstract protected Class<?>[] getComponentScanPackages();
 
 	/**
 	 * From {@link AnnotationConfigUtils}

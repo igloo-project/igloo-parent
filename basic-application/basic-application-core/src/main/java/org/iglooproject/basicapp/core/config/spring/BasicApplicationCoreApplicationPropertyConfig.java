@@ -13,11 +13,8 @@ import java.time.Instant;
 import org.iglooproject.basicapp.core.config.util.Environment;
 import org.iglooproject.functional.Suppliers2;
 import org.iglooproject.functional.converter.StringCollectionConverter;
-import org.iglooproject.jpa.more.business.parameter.dao.ParameterDaoImpl;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
-import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.google.common.base.Converter;
@@ -51,11 +48,6 @@ public class BasicApplicationCoreApplicationPropertyConfig implements IPropertyR
 			),
 			Lists.<String>newArrayList()
 		);
-	}
-
-	@Bean
-	public IMutablePropertyDao mutablePropertyDao() {
-		return new ParameterDaoImpl();
 	}
 
 }
