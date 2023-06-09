@@ -1,6 +1,5 @@
 package org.iglooproject.jpa.more.business.task.model;
 
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 
 import org.bindgen.Bindable;
@@ -258,12 +257,11 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
 	@Override
 	protected ToStringHelper toStringHelper() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss z");
 		return super.toStringHelper()
 			.add("name", getName())
-			.add("creationDate", getCreationDate() != null ? dateFormat.format(getCreationDate()) : null)
-			.add("startDate", getStartDate() != null ? dateFormat.format(getStartDate()) : null)
-			.add("completionDate", getEndDate() != null ? dateFormat.format(getEndDate()) : null);
+			.add("creationDate", getCreationDate())
+			.add("startDate", getStartDate())
+			.add("completionDate", getEndDate());
 	}
 
 }

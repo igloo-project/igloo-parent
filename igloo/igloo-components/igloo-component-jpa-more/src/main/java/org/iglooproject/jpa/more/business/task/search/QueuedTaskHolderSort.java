@@ -38,9 +38,9 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return List.of(
-				SortUtils.luceneLongSortField(this, sortOrder, QueuedTaskHolder.END_DATE, NullSortValue.GREATEST),
-				SortUtils.luceneLongSortField(this, sortOrder, QueuedTaskHolder.START_DATE, NullSortValue.GREATEST),
-				SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, QueuedTaskHolder.CREATION_DATE)
+				SortUtils.luceneStringSortField(this, sortOrder, QueuedTaskHolder.END_DATE, NullSortValue.GREATEST),
+				SortUtils.luceneStringSortField(this, sortOrder, QueuedTaskHolder.START_DATE, NullSortValue.GREATEST),
+				SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, QueuedTaskHolder.CREATION_DATE)
 			);
 		}
 		@Override
