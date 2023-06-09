@@ -13,6 +13,10 @@
 	<artifactId>basic-application-webapp</artifactId>
 	
 	<name>${archetypeFullApplicationName} - Web Application</name>
+
+	<properties>
+		<igloo.processors>${igloo.processor.bindgen}</igloo.processors>
+	</properties>
 	
 	<dependencies>
 		<dependency>
@@ -160,6 +164,11 @@
 			<version>${igloo.version}</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+		</dependency>
 	</dependencies>
 	
 	<build>
@@ -179,9 +188,6 @@
 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
-				<configuration>
-					<processors>${igloo.processor.bindgen}</processors>
-				</configuration>
 			</plugin>
 			<plugin>
 				<!-- generate SCSS at build-time; greatly speed-up application startup -->
@@ -189,11 +195,12 @@
 				<artifactId>exec-maven-plugin</artifactId>
 				<executions>
 					<execution>
+						<?m2e ignore ?>
 						<id>generate-scss</id>
 						<goals>
 							<goal>java</goal>
 						</goals>
-						<phase>prepare-package</phase>
+						<phase>process-classes</phase>
 						<configuration>
 							<mainClass>org.iglooproject.sass.cli.ScssMain</mainClass>
 							<arguments>
@@ -229,6 +236,13 @@
 			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-hibernate</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-wicket</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
@@ -258,6 +272,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-logging</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-quality-annotations</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

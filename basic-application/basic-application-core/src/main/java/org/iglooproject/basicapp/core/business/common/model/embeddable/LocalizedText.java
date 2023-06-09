@@ -3,20 +3,18 @@ package org.iglooproject.basicapp.core.business.common.model.embeddable;
 import java.util.Collection;
 import java.util.Locale;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Transient;
-
 import org.bindgen.Bindable;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Normalizer;
-import org.hibernate.search.annotations.SortableField;
+import org.hibernate.search.engine.backend.types.Sortable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.iglooproject.basicapp.core.business.common.util.BasicApplicationLocale;
 import org.iglooproject.jpa.more.business.localization.model.AbstractLocalizedText;
 
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import igloo.hibernateconfig.api.HibernateSearchNormalizer;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 
 @MappedSuperclass
 @Bindable
@@ -33,18 +31,16 @@ public class LocalizedText extends AbstractLocalizedText {
 	public static final String EN_SORT = "enSort";
 
 	@Column
-	@Field(name = FR, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_STEMMING))
-	@Field(name = FR_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	@Field(name = FR_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
-	@SortableField(forField = FR_SORT)
+	@FullTextField(name = FR, analyzer = HibernateSearchAnalyzer.TEXT_STEMMING)
+	@FullTextField(name = FR_AUTOCOMPLETE, analyzer = HibernateSearchAnalyzer.TEXT)
+	@KeywordField(name = FR_SORT, normalizer = HibernateSearchNormalizer.TEXT, sortable = Sortable.YES)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String fr;
 
 	@Column
-	@Field(name = EN, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT_STEMMING))
-	@Field(name = EN_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-	@Field(name = EN_AUTOCOMPLETE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.TEXT))
-	@SortableField(forField = EN_SORT)
+	@FullTextField(name = EN, analyzer = HibernateSearchAnalyzer.TEXT_STEMMING)
+	@FullTextField(name = EN_AUTOCOMPLETE, analyzer = HibernateSearchAnalyzer.TEXT)
+	@KeywordField(name = EN_SORT, normalizer = HibernateSearchNormalizer.TEXT, sortable = Sortable.YES)
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private String en;
 

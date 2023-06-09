@@ -1,6 +1,9 @@
 package org.iglooproject.basicapp.core.business.referencedata.model;
 
-import org.hibernate.search.annotations.IndexedEmbedded;
+import org.bindgen.Bindable;
+import org.hibernate.search.engine.backend.types.Sortable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.iglooproject.basicapp.core.business.common.model.embeddable.LocalizedText;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 
@@ -8,8 +11,10 @@ import com.querydsl.core.annotations.QueryInit;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 
 @MappedSuperclass
+@Bindable
 public class ReferenceData<E extends ReferenceData<?>> extends GenericReferenceData<E, LocalizedText> implements IReferenceDataBindingInterface {
 
 	private static final long serialVersionUID = -1779439527249543663L;
@@ -25,7 +30,7 @@ public class ReferenceData<E extends ReferenceData<?>> extends GenericReferenceD
 	public static final String CODE_SORT = "codeSort";
 
 	@Embedded
-	@IndexedEmbedded(prefix = LABEL_PREFIX)
+	@IndexedEmbedded(name = LABEL)
 	@QueryInit("*")
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private LocalizedText label;
@@ -52,10 +57,8 @@ public class ReferenceData<E extends ReferenceData<?>> extends GenericReferenceD
 	}
 
 	@Override
-	//TODO: igloo-boot
-//	@Field(name = CODE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
-//	@Field(name = CODE_SORT, normalizer = @Normalizer(definition = HibernateSearchNormalizer.TEXT))
-//	@SortableField(forField = CODE_SORT)
+	@Transient
+	@GenericField(name = CODE, sortable = Sortable.YES)
 	public String getCode() {
 		return null;
 	}

@@ -144,7 +144,7 @@ public class SecurityAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean(name = "roleHierarchyAsString")
 	protected String roleHierarchyAsString() {
-		return SecurityUtils.defaultPermissionHierarchyAsString();
+		return SecurityUtils.defaultRoleHierarchyAsString();
 	}
 
 	@Bean

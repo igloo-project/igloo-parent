@@ -1,13 +1,16 @@
 package org.iglooproject.jpa.more.business.task.model;
 
+import java.sql.Types;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
 import org.bindgen.Bindable;
+import org.hibernate.Length;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
@@ -95,9 +98,8 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	@Column(name = "optLock")
 	private int version;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = Length.LONG32)
 	@JavaType(StringJavaType.class)
-	@JdbcType(LongVarcharJdbcType.class)
 	private String serializedTask;
 
 	@Column(nullable = false)
@@ -112,14 +114,12 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private TaskResult result;
 
-	@Column
+	@Column(length = Length.LONG32)
 	@JavaType(StringJavaType.class)
-	@JdbcType(LongVarcharJdbcType.class)
 	private String stackTrace;
 
-	@Column
+	@Column(length = Length.LONG32)
 	@JavaType(StringJavaType.class)
-	@JdbcType(LongVarcharJdbcType.class)
 	private String report;
 
 	protected QueuedTaskHolder() {

@@ -1,5 +1,6 @@
 package test.core;
 
+import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
 import org.iglooproject.basicapp.core.business.referencedata.service.ICityService;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
@@ -38,6 +39,9 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 	@Autowired
 	private IMutablePropertyDao mutablePropertyDao;
 	
+	@Autowired
+	private IHistoryLogService historyLogService;
+	
 	@BeforeEach
 	@Override
 	public void init() throws ServiceException, SecurityServiceException {
@@ -47,6 +51,7 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
+		cleanEntities(historyLogService);
 		cleanEntities(userService);
 		cleanEntities(userGroupService);
 		cleanEntities(authorityService);

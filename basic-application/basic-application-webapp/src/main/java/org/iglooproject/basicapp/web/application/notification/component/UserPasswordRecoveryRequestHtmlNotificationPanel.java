@@ -1,6 +1,7 @@
 package org.iglooproject.basicapp.web.application.notification.component;
 
 import java.time.Instant;
+import java.util.Date;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -10,6 +11,7 @@ import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.ResourceKeyGenerator;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
+import org.iglooproject.basicapp.web.application.notification.model.InstantToDateModel;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
 import igloo.wicket.component.CoreLabel;
@@ -26,8 +28,9 @@ public class UserPasswordRecoveryRequestHtmlNotificationPanel<T extends User> ex
 
 	public UserPasswordRecoveryRequestHtmlNotificationPanel(String id, ResourceKeyGenerator resourceKeyGenerator,
 			ResourceKeyGenerator defaultResourceKeyGenerator, IModel<T> objectModel, IModel<User> authorModel,
-			IModel<Instant> dateModel, IPageLinkGenerator linkGenerator) {
+			IModel<Instant> instantModel, IPageLinkGenerator linkGenerator) {
 		super(id, objectModel);
+		IModel<Date> dateModel = new InstantToDateModel(instantModel);
 		
 		StringResourceModel descriptionTextModel = new StringResourceModel(resourceKeyGenerator.resourceKey("text"), objectModel)
 			.setParameters(dateModel, authorModel)

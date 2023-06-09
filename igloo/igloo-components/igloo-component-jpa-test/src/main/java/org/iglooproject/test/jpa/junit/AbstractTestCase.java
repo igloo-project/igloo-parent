@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.beans.PropertyDescriptor;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
@@ -319,6 +320,8 @@ public abstract class AbstractTestCase {
 		listeAutorisee.add(double.class);
 		listeAutorisee.add(boolean.class);
 		listeAutorisee.add(float.class);
+		listeAutorisee.add(Instant.class);
+		listeAutorisee.add(LocalDateTime.class);
 		for (Class<?> clazz : classesAutorisees) {
 			listeAutorisee.add(clazz);
 		}

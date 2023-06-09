@@ -24,7 +24,9 @@ import org.junit.jupiter.api.Test;
 import com.google.common.collect.ImmutableList;
 
 import igloo.wicket.component.CoreLabel;
+import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
+@SpringBootTestBasicApplicationWebapp
 class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

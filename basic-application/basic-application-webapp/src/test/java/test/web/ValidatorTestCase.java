@@ -9,6 +9,9 @@ import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.junit.jupiter.api.Test;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
+import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
+
+@SpringBootTestBasicApplicationWebapp
 class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	/**

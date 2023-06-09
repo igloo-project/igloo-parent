@@ -1,10 +1,10 @@
 package org.iglooproject.basicapp.core.business.user.model;
 
+import org.bindgen.Bindable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.Entity;
-
-import org.bindgen.Bindable;
-import org.hibernate.search.annotations.Indexed;
 
 @Indexed
 @Bindable

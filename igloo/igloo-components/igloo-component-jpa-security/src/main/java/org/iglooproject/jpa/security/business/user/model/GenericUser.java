@@ -62,6 +62,8 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 
 	@Id
 	@GeneratedValue
+	// TODO igloo-boot; with hibernate-search 6.x, there is no longer a default indexed identifier
+	@GenericField(name = "id", sortable = Sortable.YES)
 	private Long id;
 
 	@Column(nullable = false)

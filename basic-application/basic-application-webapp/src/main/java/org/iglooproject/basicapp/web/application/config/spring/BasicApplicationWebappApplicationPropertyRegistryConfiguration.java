@@ -11,7 +11,7 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BasicApplicationWebappApplicationPropertyRegistryConfig implements IPropertyRegistryConfig {
+public class BasicApplicationWebappApplicationPropertyRegistryConfiguration implements IPropertyRegistryConfig {
 
 	@Override
 	public void register(IPropertyRegistry registry) {

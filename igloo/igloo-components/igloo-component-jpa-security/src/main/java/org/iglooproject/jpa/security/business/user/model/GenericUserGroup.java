@@ -15,6 +15,7 @@ import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.SortComparator;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.hibernate.type.descriptor.java.StringJavaType;
 import org.iglooproject.commons.util.collections.CollectionUtils;
@@ -50,6 +51,8 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 
 	@Id
 	@GeneratedValue
+	// TODO igloo-boot; with hibernate-search 6.x, there is no longer a default indexed identifier
+	@GenericField(name = "id", sortable = Sortable.YES)
 	private Long id;
 
 	@Column

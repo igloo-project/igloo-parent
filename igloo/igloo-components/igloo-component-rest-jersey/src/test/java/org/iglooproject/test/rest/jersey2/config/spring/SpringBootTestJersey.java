@@ -6,7 +6,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
+import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.iglooproject.test.web.context.MockServletTestExecutionListener;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -20,7 +20,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 @Target(TYPE)
 @EnableAutoConfiguration
 @SpringBootTest(classes = RestClientTestConfiguration.class)
-@ContextConfiguration(initializers = ExtendedTestApplicationContextInitializer.class)
+@ContextConfiguration(initializers = ExtendedApplicationContextInitializer.class)
 @TestExecutionListeners({
 	DependencyInjectionTestExecutionListener.class,
 	MockServletTestExecutionListener.class,

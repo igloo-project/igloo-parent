@@ -21,13 +21,7 @@ public abstract class ReferenceDataSearchQueryImpl
 
 	@Override
 	public Q label(String label) {
-		must(matchAutocompleteIfGiven(label, ImmutableList.of(ReferenceData.LABEL_FR_AUTOCOMPLETE, ReferenceData.LABEL_EN_AUTOCOMPLETE)));
-		return thisAsQ();
-	}
-
-	@Override
-	public Q code(String code) {
-		must(matchIfGiven(ReferenceData.CODE, code));
+		must(matchAutocompleteIfGiven(label, ImmutableList.of(ReferenceData.LABEL_FR_AUTOCOMPLETE)));
 		return thisAsQ();
 	}
 

@@ -163,6 +163,12 @@
 			<optional>true</optional>
 		</dependency>
 		
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
 		<!-- Database pooling -->
 		<dependency>
 			<groupId>com.zaxxer</groupId>

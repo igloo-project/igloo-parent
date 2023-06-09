@@ -1,6 +1,7 @@
 package org.iglooproject.basicapp.core.business.notification.service;
 
 import java.time.Instant;
+import java.util.Date;
 import java.util.Locale;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -31,7 +32,7 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl imp
 				.content(contentDescriptorFactory.example(user, date))
 				.template("example.ftl")
 				.variable("userFullName", user.getFullName())
-				.variable("date", date)
+				.variable("date", Date.from(date))
 				.variable("url", url)
 				.send();
 		} catch (RuntimeException | ServiceException e) {

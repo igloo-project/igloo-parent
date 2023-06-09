@@ -6,6 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EntityScan(basePackageClasses = BasicApplicationCoreCommonBusinessPackage.class)
-public class BasicApplicationJpaConfiguration {
+public class BasicApplicationJpaModelConfiguration {
 
 }

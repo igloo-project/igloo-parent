@@ -15,4 +15,10 @@ public class BasicReferenceDataSearchQueryImpl
 		super(clazz);
 	}
 
+	@Override
+	public IBasicReferenceDataSearchQuery<T, S> code(String code) {
+		must(matchIfGiven(ReferenceData.CODE, code));
+		return this;
+	}
+
 }

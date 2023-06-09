@@ -35,7 +35,7 @@ public class DataUpgrade_InitDataFromExcel implements IDataUpgrade {
 		
 		try {
 			entityManagerUtils.openEntityManager();
-			importDataService.importDirectory("/init");
+			importDataService.importDirectory("init");
 			
 			hibernateSearchService.reindexAll();
 			LOGGER.info("Initialization complete");
