@@ -4,17 +4,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.util.lang.Classes;
 import org.apache.wicket.validation.ValidationError;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
 
-public class ComparableFormModelValidator<T extends Comparable<T>> implements IFormModelValidator {
+public class ComparableFormModelValidator<T extends Comparable<?>> implements IFormModelValidator {
 
 	private static final long serialVersionUID = 2750525584310932237L;
 
@@ -33,11 +33,11 @@ public class ComparableFormModelValidator<T extends Comparable<T>> implements IF
 		checkNotNull(formComponent2);
 		checkNotNull(comparator);
 		
-		this.components = ImmutableList.of(formComponent1, formComponent2);
+		this.components = List.of(formComponent1, formComponent2);
 		this.comparator = comparator;
 		this.errorRessourceKey = errorKey;
 	}
-	
+
 	@Override
 	public void detach() {
 		// Nothing to do here
