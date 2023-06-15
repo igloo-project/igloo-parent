@@ -289,11 +289,14 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		for (GenericConverter converter : converters) {
 			service.addConverter(converter);
 		}
+		customizeConversionService(service);
 		
 		DefaultConversionService.addDefaultConverters(service);
 		
 		return service;
 	}
+
+	protected abstract void customizeConversionService(GenericConversionService conversionService);
 
 	protected <E extends GenericEntity<Long, ?>> void afterImportItem(E item) {
 	}
