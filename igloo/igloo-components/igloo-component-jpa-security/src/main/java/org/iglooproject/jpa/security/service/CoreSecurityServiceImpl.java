@@ -1,9 +1,6 @@
 package org.iglooproject.jpa.security.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -24,19 +21,20 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
+import igloo.security.ICoreUserDetailsService;
+import igloo.security.UserDetails;
 
 public class CoreSecurityServiceImpl implements ISecurityService {
 
 	public static final String SYSTEM_USER_NAME = "system";
 	
 	@Autowired
-	protected UserDetailsService userDetailsService;
+	protected ICoreUserDetailsService userDetailsService;
 
 	@Autowired
 	protected RunAsImplAuthenticationProvider runAsAuthenticationProvider;
@@ -103,16 +101,12 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 
 	@Override
-	public List<GrantedAuthority> getAuthorities(Authentication authentication) {
-		if (authentication != null) {
-			return new ArrayList<>(authentication.getAuthorities());
-		} else {
-			return Collections.emptyList();
-		}
+	public Collection<GrantedAuthority> getAuthorities(Authentication authentication) {
+		return AuthenticationUtil.getAuthorities(authentication);
 	}
 
 	@Override
-	public List<GrantedAuthority> getAuthorities(IUser user) {
+	public Collection<GrantedAuthority> getAuthorities(IUser user) {
 		return getAuthorities(getAuthentication(user));
 	}
 
@@ -250,8 +244,8 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 	}
 	
 	@Override
-	public Collection<? extends Permission> getPermissions(Authentication authentication) {
-		return permissionEvaluator.getPermissions(authentication);
+	public Collection<Permission> getPermissions(Authentication authentication) {
+		return AuthenticationUtil.getPermissions(authentication);
 	}
 	
 	@Override

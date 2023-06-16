@@ -65,6 +65,9 @@
 		<module>igloo-component-rest-jersey</module>
 		<module>igloo-component-jpa-migration</module>
 		
+		<module>igloo-spring-security</module>
+		<module>igloo-spring-openidc</module>
+		
 		<module>storage-api</module>
 		<module>storage-impl</module>
 		<module>storage-model</module>

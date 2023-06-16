@@ -1,5 +1,7 @@
 package org.iglooproject.jpa.security.service;
 
+import static java.util.Optional.ofNullable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,12 +12,10 @@ import java.util.List;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.jpa.security.business.user.service.IGenericUserService;
 import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
-import org.iglooproject.jpa.security.model.CoreUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 
 public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?>> implements ICorePermissionEvaluator {
 
@@ -38,15 +38,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 	protected abstract boolean hasPermission(T user, Object targetDomainObject, Permission permission);
 	
 	protected T getUser(Authentication authentication) {
-		if (authentication == null) {
-			return null;
-		}
-
-		if (authentication.getPrincipal() instanceof UserDetails) {
-			return userService.getByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
-		}
-
-		return null;
+		return ofNullable(AuthenticationUtil.getUsername()).map(userService::getByUsername).orElse(null);
 	}
 	
 	@Override
@@ -108,18 +100,10 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 		return false;
 	}
 	
-	@Override
-	public Collection<? extends Permission> getPermissions(Authentication authentication) {
-		Collection<? extends Permission> userPermissions = getAnonymousPermissions();
-		if (authentication != null) {
-			Object userDetailsCandidate = authentication.getPrincipal();
-			if (userDetailsCandidate instanceof CoreUserDetails) {
-				CoreUserDetails userDetails = (CoreUserDetails) userDetailsCandidate;
-				userPermissions = userDetails.getPermissions();
-			}
-		}
-		
-		return userPermissions;
+	protected Collection<Permission> getPermissions(Authentication authentication) {
+		// TODO igloo-boot: behavior change.
+		// Previously, this method get anonymous permissions if authentication not available.
+		return AuthenticationUtil.getPermissions();
 	}
 	
 	@Override

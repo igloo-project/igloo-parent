@@ -1,7 +1,6 @@
 package org.iglooproject.jpa.security.service;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.iglooproject.jpa.security.business.user.model.IUser;
@@ -38,9 +37,9 @@ public interface ISecurityService extends IRunAsSystemService {
 
 	boolean isAnonymousAuthority(String grantedAuthoritySid);
 
-	List<GrantedAuthority> getAuthorities(Authentication authentication);
+	Collection<GrantedAuthority> getAuthorities(Authentication authentication);
 
-	List<GrantedAuthority> getAuthorities(IUser user);
+	Collection<GrantedAuthority> getAuthorities(IUser user);
 
 	SecurityContext buildSecureContext(String username);
 

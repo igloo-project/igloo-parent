@@ -48,6 +48,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.Lists;
 
+import igloo.security.ICoreUserDetailsService;
+
 /**
  * Provides spring-security configuration. This implies a working JPA configuration. (TODO igloo-boot)
  */
@@ -90,7 +92,7 @@ public class SecurityAutoConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public UserDetailsService userDetailsService(AuthenticationUsernameComparison authenticationUsernameComparison) {
+	public ICoreUserDetailsService userDetailsService(AuthenticationUsernameComparison authenticationUsernameComparison) {
 		CoreJpaUserDetailsServiceImpl userDetailsService = new CoreJpaUserDetailsServiceImpl();
 		userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison);
 		return userDetailsService;

@@ -27,13 +27,10 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.search.bridge.GenericEntityIdBridge;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.user.util.GenericUserGroupComparator;
-import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects.ToStringHelper;
 import com.google.common.collect.Sets;
-import com.querydsl.core.annotations.PropertyType;
-import com.querydsl.core.annotations.QueryType;
 
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import igloo.hibernateconfig.api.HibernateSearchNormalizer;
@@ -237,12 +234,6 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 
 	public void setLocale(Locale locale) {
 		this.locale = locale;
-	}
-
-	@Override
-	@QueryType(PropertyType.NONE)
-	public Set<Permission> getPermissions() {
-		return Sets.newHashSetWithExpectedSize(0);
 	}
 
 	@Override

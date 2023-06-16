@@ -1,7 +1,7 @@
 package org.iglooproject.basicapp.core.security.service;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
+import igloo.security.ICoreUserDetailsService;
 
-public interface IBasicApplicationUserDetailsService extends UserDetailsService {
+public interface IBasicApplicationUserDetailsService extends ICoreUserDetailsService {
 
 }

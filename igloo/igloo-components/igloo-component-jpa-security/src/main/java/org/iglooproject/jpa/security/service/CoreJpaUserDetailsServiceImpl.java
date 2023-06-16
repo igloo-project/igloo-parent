@@ -11,7 +11,6 @@ import org.iglooproject.jpa.security.business.user.model.IGroupedUser;
 import org.iglooproject.jpa.security.business.user.model.IUserGroup;
 import org.iglooproject.jpa.security.business.user.service.ISecurityUserService;
 import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
-import org.iglooproject.jpa.security.model.CoreUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
@@ -19,14 +18,16 @@ import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Sets;
 
-public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
+import igloo.security.CoreUserDetails;
+import igloo.security.ICoreUserDetailsService;
+import igloo.security.UserDetails;
+
+public class CoreJpaUserDetailsServiceImpl implements ICoreUserDetailsService {
 
 	public static final String EMPTY_PASSWORD_HASH = "*NO PASSWORD*";
 
@@ -108,11 +109,9 @@ public class CoreJpaUserDetailsServiceImpl implements UserDetailsService {
 		Set<Permission> permissions = Sets.newHashSet();
 		
 		addAuthorities(grantedAuthorities, user.getAuthorities());
-		permissions.addAll(user.getPermissions());
 		
 		for (IUserGroup userGroup : user.getGroups()) {
 			addAuthorities(grantedAuthorities, userGroup.getAuthorities());
-			permissions.addAll(userGroup.getPermissions());
 		}
 		
 		return new ImmutablePair<>(grantedAuthorities, permissions);

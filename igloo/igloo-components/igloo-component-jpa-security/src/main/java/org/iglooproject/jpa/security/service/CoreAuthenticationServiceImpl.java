@@ -34,7 +34,7 @@ public class CoreAuthenticationServiceImpl implements IAuthenticationService {
 
 	@Override
 	public Collection<? extends Permission> getPermissions() {
-		return securityService.getPermissions(AuthenticationUtil.getAuthentication());
+		return AuthenticationUtil.getPermissions();
 	}
 
 	@Override
