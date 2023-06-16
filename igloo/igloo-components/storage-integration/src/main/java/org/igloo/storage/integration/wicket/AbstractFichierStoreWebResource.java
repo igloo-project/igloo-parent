@@ -34,7 +34,9 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 	private Duration cacheDuration;
 	
 	private WebResponse.CacheScope cacheScope;
-
+	
+	private boolean disableCaching = false;
+	
 	public AbstractFichierStoreWebResource() {
 		super();
 		Injector.get().inject(this);
@@ -65,7 +67,7 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 					data.setError(HttpServletResponse.SC_NOT_FOUND);
 					close(stream);
 				}
-	
+				
 				data.setContentDisposition(contentDisposition);
 				Bytes length = stream.length();
 				if (length != null) {
@@ -82,14 +84,17 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 				}
 				data.setContentType(contentType);
 				data.setTextEncoding(textEncoding);
-	
+				
 				if (cacheDuration != null) {
 					data.setCacheDuration(cacheDuration);
 				}
 				if (cacheScope != null) {
 					data.setCacheScope(cacheScope);
 				}
-	
+				if (disableCaching) {
+					data.disableCaching();
+				}
+				
 				final InputStream s = inputStream;
 				data.setWriteCallback(new WriteCallback() {
 					@Override
@@ -135,5 +140,9 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 
 	public void setCacheScope(WebResponse.CacheScope cacheScope) {
 		this.cacheScope = cacheScope;
+	}
+	
+	public void disableCaching() {
+		this.disableCaching = true;
 	}
 }

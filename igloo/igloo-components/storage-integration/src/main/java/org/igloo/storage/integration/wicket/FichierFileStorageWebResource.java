@@ -73,6 +73,10 @@ public class FichierFileStorageWebResource extends AbstractFichierStoreWebResour
 		MAPPER_BUILDER
 			.imageResource(REFERENCE_ATTACHMENT);
 	
+	public FichierFileStorageWebResource() {
+		disableCaching();
+	}
+	
 	@Override
 	protected FichierStoreResourceStream getFileStoreResourceStream(PageParameters parameters) throws ServiceException,
 			SecurityServiceException {
