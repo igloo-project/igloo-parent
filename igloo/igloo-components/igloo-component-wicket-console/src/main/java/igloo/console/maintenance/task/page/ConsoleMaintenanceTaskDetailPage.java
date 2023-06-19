@@ -11,6 +11,7 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.jpa.more.autoconfigure.TaskAutoConfiguration;
 import org.iglooproject.jpa.more.business.task.model.AbstractTask;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
@@ -31,10 +32,13 @@ import org.iglooproject.wicket.more.rendering.TaskResultRenderer;
 import org.iglooproject.wicket.more.rendering.TaskStatusRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import igloo.bootstrap.common.BootstrapColor;
 import igloo.bootstrap.common.IBootstrapColor;
@@ -58,7 +62,8 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceTaskDetailPage.class);
 
 	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-		.enableDefaultTyping(DefaultTyping.NON_FINAL)
+		.registerModule(new JavaTimeModule())
+		.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, DefaultTyping.NON_FINAL)
 		.enable(SerializationFeature.INDENT_OUTPUT);
 
 	public static final ILinkDescriptorMapper<IPageLinkDescriptor, IModel<QueuedTaskHolder>> MAPPER =
@@ -72,6 +77,10 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate
 
 	@SpringBean
 	private IQueuedTaskHolderService queuedTaskHolderService;
+
+	@SpringBean(name = TaskAutoConfiguration.OBJECT_MAPPER_BEAN_NAME)
+	@Qualifier()
+	private ObjectMapper queuedTaskHolderObjectMapper;
 
 	public ConsoleMaintenanceTaskDetailPage(PageParameters parameters) {
 		super(parameters);

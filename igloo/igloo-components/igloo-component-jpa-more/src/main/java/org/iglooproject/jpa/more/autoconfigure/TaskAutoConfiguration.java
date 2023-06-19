@@ -35,6 +35,7 @@ import org.springframework.context.annotation.Scope;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 @ConditionalOnBean(TaskManagementConfigurer.class)
@@ -50,9 +51,9 @@ public class TaskAutoConfiguration implements IPropertyRegistryConfig {
 	 */
 	@Bean(name = OBJECT_MAPPER_BEAN_NAME)
 	public ObjectMapper queuedTaskHolderObjectMapper() {
-		return new ObjectMapper().activateDefaultTyping(
-				LaissezFaireSubTypeValidator.instance,
-				DefaultTyping.NON_FINAL);
+		return new ObjectMapper()
+			.registerModule(new JavaTimeModule())
+			.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, DefaultTyping.NON_FINAL);
 	}
 
 	@Bean
