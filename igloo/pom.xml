@@ -22,7 +22,6 @@
 		<module>igloo-parents</module>
 		<module>igloo-components</module>
 		<module>igloo-webjars</module>
-		<module>igloo-integration</module>
 	</modules>
 	
 </project>

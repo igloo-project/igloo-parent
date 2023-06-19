@@ -1,7 +1,5 @@
 package org.iglooproject.jpa.autoconfigure;
 
-import static org.iglooproject.jpa.property.JpaSearchPropertyIds.HIBERNATE_SEARCH_ELASTICSEARCH_ENABLED;
-import static org.iglooproject.jpa.property.JpaSearchPropertyIds.HIBERNATE_SEARCH_ELASTICSEARCH_HOST;
 import static org.iglooproject.jpa.property.JpaSearchPropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE;
 import static org.iglooproject.jpa.property.JpaSearchPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
 import static org.iglooproject.jpa.property.JpaSearchPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
@@ -66,8 +64,6 @@ public class HibernateSearchAutoConfiguration {
 			
 			registry.registerInteger(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE, 25);
 			registry.registerInteger(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS, 8);
-			registry.registerBoolean(HIBERNATE_SEARCH_ELASTICSEARCH_ENABLED, false);
-			registry.registerString(HIBERNATE_SEARCH_ELASTICSEARCH_HOST, "http://" + "127.0.0.1" + ":9220");
 		}
 	}
 }

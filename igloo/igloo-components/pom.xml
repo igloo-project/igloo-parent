@@ -25,7 +25,6 @@
 		<module>igloo-component-spring</module>
 		<module>igloo-component-spring-bootstrap-config</module>
 		<module>igloo-component-lucene-analyzers</module>
-		<module>igloo-component-elasticsearch-test</module>
 		
 		<module>igloo-component-web-test</module>
 		<module>igloo-component-web-jpa-test</module>
@@ -65,7 +64,6 @@
 		<module>igloo-component-web-security</module>
 		<module>igloo-component-rest-jersey</module>
 		<module>igloo-component-jpa-migration</module>
-		<module>igloo-component-elasticsearch-plugin</module>
 		
 		<module>storage-api</module>
 		<module>storage-impl</module>
