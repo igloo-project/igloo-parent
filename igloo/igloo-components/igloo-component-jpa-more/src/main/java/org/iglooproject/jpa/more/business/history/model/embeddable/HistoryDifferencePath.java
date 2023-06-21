@@ -4,11 +4,13 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.bindgen.Bindable;
+import org.hibernate.Length;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 
@@ -18,6 +20,7 @@ import jakarta.persistence.Embedded;
 public class HistoryDifferencePath {
 	
 	@Basic(optional = false)
+	@Column(length = Length.LONG32)
 	private FieldPath path;
 	
 	@Embedded

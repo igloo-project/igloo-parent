@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bindgen.Bindable;
+import org.hibernate.Length;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
@@ -19,6 +20,7 @@ import com.google.common.collect.Sets;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -110,6 +112,7 @@ public abstract class AbstractHistoryLog<
 	private HistoryValue object4 = new HistoryValue();
 	
 	@Basic
+	@Column(length = Length.LONG32)
 	private String comment;
 
 	protected AbstractHistoryLog() {

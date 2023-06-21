@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bindgen.Bindable;
+import org.hibernate.Length;
 import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.ValueBridgeRef;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
@@ -13,6 +14,7 @@ import org.iglooproject.jpa.search.bridge.GenericEntityReferenceIdBridge;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 
@@ -29,12 +31,14 @@ public class HistoryValue implements Serializable {
 	 * Human-readable string
 	 */
 	@Basic
+	@Column(length = Length.LONG32)
 	private String label;
 
 	/**
 	 * Machine-readable string (for instance MyEnum.VALUE.name())
 	 */
 	@Basic
+	@Column(length = Length.LONG32)
 	private String serialized;
 	
 	@Embedded
