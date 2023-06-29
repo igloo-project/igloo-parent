@@ -37,12 +37,12 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-bootstrap5</artifactId>
-			<version>${igloo.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-web-security</artifactId>
-			<version>${igloo.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
@@ -52,18 +52,18 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-cache</artifactId>
-			<version>${igloo.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>igloojs</artifactId>
-			<version>${igloo.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<!-- Remove on HTML emails overhaul -->
 		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>bootstrap4-override</artifactId>
-			<version>${igloo.version}</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bindgen</groupId>
@@ -77,7 +77,7 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-config-test</artifactId>
-			<version>${igloo.version}</version>
+			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -161,7 +161,7 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-more-test</artifactId>
-			<version>${igloo.version}</version>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		
