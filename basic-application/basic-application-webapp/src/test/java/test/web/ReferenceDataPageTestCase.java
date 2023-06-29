@@ -7,9 +7,10 @@ import org.iglooproject.basicapp.web.application.referencedata.page.ReferenceDat
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
-@EnableWebSecurity
+import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
+
+@SpringBootTestBasicApplicationWebapp
 class ReferenceDataPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

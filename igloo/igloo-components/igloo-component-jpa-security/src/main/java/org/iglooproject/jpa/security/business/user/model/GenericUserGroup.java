@@ -15,18 +15,16 @@ import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.SortComparator;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.hibernate.type.descriptor.java.StringJavaType;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.user.util.GenericUserComparator;
-import org.springframework.security.acls.model.Permission;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Sets;
-import com.querydsl.core.annotations.PropertyType;
-import com.querydsl.core.annotations.QueryType;
 
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import igloo.hibernateconfig.api.HibernateSearchNormalizer;
@@ -50,6 +48,8 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 
 	@Id
 	@GeneratedValue
+	// TODO igloo-boot; with hibernate-search 6.x, there is no longer a default indexed identifier
+	@GenericField(name = "id", sortable = Sortable.YES)
 	private Long id;
 
 	@Column
@@ -144,12 +144,6 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 
 	public void setLocked(boolean locked) {
 		this.locked = locked;
-	}
-
-	@Override
-	@QueryType(PropertyType.NONE)
-	public Set<Permission> getPermissions() {
-		return Sets.newHashSetWithExpectedSize(0);
 	}
 
 	@Override

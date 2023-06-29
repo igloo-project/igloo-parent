@@ -17,7 +17,9 @@ import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
-@EnableWebSecurity
+import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
+
+@SpringBootTestBasicApplicationWebapp
 class AdministrationBasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

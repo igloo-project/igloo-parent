@@ -1,6 +1,7 @@
 package org.iglooproject.basicapp.web.application.notification.service;
 
 import java.time.Instant;
+import java.util.Date;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
@@ -20,13 +21,11 @@ import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.notification.service.AbstractNotificationContentDescriptorFactory;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.google.common.collect.ImmutableList;
 
 import igloo.wicket.model.BindingModel;
 
-@Service("BasicApplicationNotificationPanelRendererService")
 public class BasicApplicationNotificationContentDescriptorFactoryImpl
 		extends AbstractNotificationContentDescriptorFactory
 		implements IBasicApplicationNotificationContentDescriptorFactory {
@@ -45,7 +44,7 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
 			}
 			@Override
 			public Iterable<?> getSubjectPositionalParameters() {
-				return ImmutableList.of(user.getFullName(), date);
+				return ImmutableList.of(user.getFullName(), Date.from(date));
 			}
 			@Override
 			public Component createComponent(String wicketId) {

@@ -10,14 +10,12 @@ import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.notification.service.AbstractNotificationUrlBuilderServiceImpl;
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * This service is used to generate the URL used in the text version of the notification emails.
  * 
  * It shouldn't be used for other purposes.
  */
-@Service("basicApplicationNotificationUrlBuilderService")
 public class BasicApplicationNotificationUrlBuilderServiceImpl extends AbstractNotificationUrlBuilderServiceImpl
 		implements IBasicApplicationNotificationUrlBuilderService {
 

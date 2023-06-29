@@ -9,17 +9,9 @@ import java.io.ObjectOutputStream;
 import org.apache.wicket.model.IDetachable;
 import org.apache.wicket.util.tester.WicketTester;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;
-import org.iglooproject.test.wicket.core.config.spring.WicketTestCommonConfig;
 import org.iglooproject.test.wicket.core.junit.IWicketTestCase;
 import org.javatuples.Tuple;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 
-@ContextConfiguration(classes = WicketTestCommonConfig.class)
-@TestExecutionListeners({DirtiesContextTestExecutionListener.class })
-@DirtiesContext
 public abstract class AbstractWicketTestCase<T extends WicketTester> extends AbstractTestCase implements IWicketTestCase<T> {
 	
 	protected T tester;

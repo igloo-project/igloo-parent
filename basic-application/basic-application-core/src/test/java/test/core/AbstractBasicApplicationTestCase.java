@@ -1,5 +1,6 @@
 package test.core;
 
+import org.iglooproject.basicapp.core.business.history.service.IHistoryLogService;
 import org.iglooproject.basicapp.core.business.referencedata.service.ICityService;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
@@ -14,14 +15,7 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
-import test.core.config.spring.BasicApplicationCoreTestCommonConfig;
-
-@ContextConfiguration(
-	classes = BasicApplicationCoreTestCommonConfig.class,
-	inheritInitializers = true
-)
 public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase {
 
 	@Autowired
@@ -45,6 +39,9 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 	@Autowired
 	private IMutablePropertyDao mutablePropertyDao;
 	
+	@Autowired
+	private IHistoryLogService historyLogService;
+	
 	@BeforeEach
 	@Override
 	public void init() throws ServiceException, SecurityServiceException {
@@ -54,6 +51,7 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 
 	@Override
 	protected void cleanAll() throws ServiceException, SecurityServiceException {
+		cleanEntities(historyLogService);
 		cleanEntities(userService);
 		cleanEntities(userGroupService);
 		cleanEntities(authorityService);

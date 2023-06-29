@@ -1,10 +1,12 @@
 package org.iglooproject.test.jpa.batch;
 
+import org.iglooproject.test.config.spring.SpringBootTestJpaBatchSearch;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.iglooproject.jpa.batch.executor.BatchExecutorCreator;
-import org.iglooproject.jpa.batch.executor.SimpleHibernateBatchExecutor;
+import igloo.jpa.batch.executor.BatchExecutorCreator;
+import igloo.jpa.batch.executor.SimpleHibernateBatchExecutor;
 
+@SpringBootTestJpaBatchSearch
 public class TestSimpleHibernateBatchExecutorCommitOnStep extends AbstractTestSimpleHibernateBatchExecutor {
 
 	@Autowired

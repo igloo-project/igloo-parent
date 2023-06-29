@@ -1,6 +1,5 @@
 package org.iglooproject.basicapp.core.business.upgrade.model;
 
-import org.iglooproject.basicapp.core.BasicApplicationCorePackage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.upgrade.model.IDataUpgrade;
@@ -10,8 +9,6 @@ import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import net.java.truevfs.access.TFile;
 
 @SuppressWarnings("squid:S00101") // class named on purpose, skip class name rule
 public class DataUpgrade_InitDataFromExcel implements IDataUpgrade {
@@ -38,9 +35,7 @@ public class DataUpgrade_InitDataFromExcel implements IDataUpgrade {
 		
 		try {
 			entityManagerUtils.openEntityManager();
-			importDataService.importDirectory(new TFile( // May be inside a Jar
-					BasicApplicationCorePackage.class.getResource("/init").toURI()
-			));
+			importDataService.importDirectory("init");
 			
 			hibernateSearchService.reindexAll();
 			LOGGER.info("Initialization complete");

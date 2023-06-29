@@ -66,6 +66,11 @@ public interface IStorageService {
 	 */
 	void removeFichier(@Nonnull Fichier fichier);
 
+	/**
+	 * Update {@code filename} of {@link Fichier}.
+	 */
+	void updateFichierFilename(@Nonnull Fichier fichier, @Nonnull String filename);
+
 	Fichier getFichierById(@Nonnull Long id);
 
 	/**

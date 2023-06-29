@@ -2,11 +2,10 @@ package org.iglooproject.jpa.more.util.init.service;
 
 import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.DATABASE_INITIALIZED;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,12 +14,10 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.filefilter.NameFileFilter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.iglooproject.commons.io.FileUtils;
 import org.iglooproject.commons.util.mime.MediaType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -46,10 +43,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
-
-import net.java.truevfs.access.TFileInputStream;
 
 public abstract class AbstractImportDataServiceImpl implements IImportDataService {
 	
@@ -82,84 +76,88 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+
 	@Override
-	public void importDirectory(File directory) throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
+	public void importDirectory(String classpathFolder) throws ServiceException, SecurityServiceException, IOException, Exception {
 		Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping = new HashMap<>();
 		
-		importBeforeReferenceData(directory, idsMapping);
+		importBeforeReferenceData(classpathFolder, idsMapping);
 		
-		File referenceDataFile = getFirstFile(directory, REFERENCE_DATA_FILE_NAMES);
-		
-		if (referenceDataFile != null) {
-			LOGGER.info("Importing {}", referenceDataFile.getName());
-			Workbook referenceDataWorkbook = getWorkbook(referenceDataFile);
-			importReferenceData(idsMapping, referenceDataWorkbook);
-			LOGGER.info("Import of {} complete", referenceDataFile.getName());
+		try (DataSource referenceData = getFirstInputStream(classpathFolder, REFERENCE_DATA_FILE_NAMES)) {
+			if (referenceData != null) {
+				LOGGER.info("Importing {}", referenceData.getFilename());
+				Workbook referenceDataWorkbook = getWorkbook(referenceData);
+				importReferenceData(idsMapping, referenceDataWorkbook);
+				LOGGER.info("Import of {} complete", referenceData.getFilename());
+			}
 		}
 		
-		importAfterReferenceData(directory, idsMapping);
+		importAfterReferenceData(classpathFolder, idsMapping);
 		
-		importBeforeBusinessData(directory, idsMapping);
-		
-		File businessDataFile = getFirstFile(directory, BUSINESS_DATA_FILE_NAMES);
-		
-		if (businessDataFile != null) {
-			LOGGER.info("Importing {}", businessDataFile.getName());
-			Workbook businessItemWorkbook = getWorkbook(businessDataFile);
-			importMainBusinessItems(idsMapping, businessItemWorkbook);
-			LOGGER.info("Import of {} complete", businessDataFile.getName());
+		importBeforeBusinessData(classpathFolder, idsMapping);
+
+		try (DataSource businessData = getFirstInputStream(classpathFolder, BUSINESS_DATA_FILE_NAMES)) {
+			if (businessData != null) {
+				LOGGER.info("Importing {}", businessData.getFilename());
+				Workbook businessItemWorkbook = getWorkbook(businessData);
+				importMainBusinessItems(idsMapping, businessItemWorkbook);
+				LOGGER.info("Import of {} complete", businessData.getFilename());
+			}
 		}
 		
-		importAfterBusinessData(directory, idsMapping);
+		importAfterBusinessData(classpathFolder, idsMapping);
 		
-		importFiles(directory, idsMapping);
+		importFiles(classpathFolder, idsMapping);
 		
 		propertyService.set(DATABASE_INITIALIZED, true);
 		
 		LOGGER.info("Import complete");
 	}
 	
-	protected File getFirstFile(File directory, List<String> fileNames) {
-		Objects.requireNonNull(directory);
+	protected DataSource getFirstInputStream(String classpathFolder, List<String> fileNames) {
+		Objects.requireNonNull(classpathFolder);
 		Objects.requireNonNull(fileNames);
 		
-		return FileUtils.listFiles(directory, new NameFileFilter(fileNames))
-			.stream()
-			.sorted(Comparator.comparing(File::getName, Ordering.explicit(fileNames).nullsLast()))
-			.findFirst()
-			.orElse(null);
+		String classpathFolderAbsolute = classpathFolder.endsWith("/") ? classpathFolder : classpathFolder + "/";
+		for (String fileName : fileNames) {
+			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(classpathFolderAbsolute + fileName);
+			if (is != null) {
+				return new DataSource(is, fileName);
+			}
+		}
+		return null;
 	}
 	
-	protected Workbook getWorkbook(File file) throws FileNotFoundException, IOException {
-		Objects.requireNonNull(file);
+	protected Workbook getWorkbook(DataSource dataSource) throws FileNotFoundException, IOException {
+		Objects.requireNonNull(dataSource);
 		
-		String fileExtension = FilenameUtils.getExtension(file.getPath());
+		String fileExtension = FilenameUtils.getExtension(dataSource.getFilename());
 		
 		if (MediaType.APPLICATION_MS_EXCEL.extension().equals(fileExtension)) {
-			return new HSSFWorkbook(new TFileInputStream(file));
+			return new HSSFWorkbook(dataSource.getInputStream());
 		} else if (MediaType.APPLICATION_OPENXML_EXCEL.extension().equals(fileExtension)) {
-			return new XSSFWorkbook(new TFileInputStream(file));
+			return new XSSFWorkbook(dataSource.getInputStream());
 		}
 		
 		throw new IllegalStateException();
 	}
 	
-	protected void importBeforeReferenceData(File directory, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
+	protected void importBeforeReferenceData(String classpathFolder, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
 			throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
 		// nothing, override if necessary
 	}
 	
-	protected void importAfterReferenceData(File directory, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
+	protected void importAfterReferenceData(String classpathFolder, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
 			throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
 		// nothing, override if necessary
 	}
 	
-	protected void importBeforeBusinessData(File directory, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
+	protected void importBeforeBusinessData(String classpathFolder, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
 			throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
 		// nothing, override if necessary
 	}
 	
-	protected void importAfterBusinessData(File directory, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
+	protected void importAfterBusinessData(String classpathFolder, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping)
 			throws ServiceException, SecurityServiceException, FileNotFoundException, IOException {
 		// nothing, override if necessary
 	}
@@ -189,7 +187,7 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 	
 	protected abstract void importMainBusinessItems(Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping, Workbook workbook);
 	
-	protected void importFiles(File directory, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping) 
+	protected void importFiles(String classpathFolder, Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping) 
 			throws ServiceException, SecurityServiceException {
 		// nothing, override if necessary
 	}
@@ -291,12 +289,38 @@ public abstract class AbstractImportDataServiceImpl implements IImportDataServic
 		for (GenericConverter converter : converters) {
 			service.addConverter(converter);
 		}
+		customizeConversionService(service);
 		
 		DefaultConversionService.addDefaultConverters(service);
 		
 		return service;
 	}
 
+	protected abstract void customizeConversionService(GenericConversionService conversionService);
+
 	protected <E extends GenericEntity<Long, ?>> void afterImportItem(E item) {
+	}
+
+	protected static class DataSource implements AutoCloseable {
+		private final InputStream inputStream;
+		private final String filename;
+		
+		public DataSource(InputStream inputStream, String filename) {
+			this.inputStream = inputStream;
+			this.filename = filename;
+		}
+		
+		public InputStream getInputStream() {
+			return inputStream;
+		}
+		
+		public String getFilename() {
+			return filename;
+		}
+		
+		@Override
+		public void close() throws Exception {
+			inputStream.close();
+		}
 	}
 }

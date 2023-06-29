@@ -15,13 +15,10 @@ import java.util.concurrent.Semaphore;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.hamcrest.CoreMatchers;
 import org.iglooproject.functional.Joiners;
-import org.iglooproject.jpa.batch.executor.BatchExecutorCreator;
-import org.iglooproject.jpa.batch.executor.MultithreadedBatchExecutor;
-import org.iglooproject.jpa.batch.runnable.ReadOnlyBatchRunnable;
-import org.iglooproject.jpa.batch.runnable.ReadWriteBatchRunnable;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.business.person.model.Person;
+import org.iglooproject.test.config.spring.SpringBootTestJpaBatchSearch;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +28,12 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
 import com.google.common.collect.Lists;
 
+import igloo.jpa.batch.executor.BatchExecutorCreator;
+import igloo.jpa.batch.executor.MultithreadedBatchExecutor;
+import igloo.jpa.batch.runnable.ReadOnlyBatchRunnable;
+import igloo.jpa.batch.runnable.ReadWriteBatchRunnable;
+
+@SpringBootTestJpaBatchSearch
 class TestMultithreadedBatchExecutor extends AbstractTestHibernateBatchExecutor {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestMultithreadedBatchExecutor.class);

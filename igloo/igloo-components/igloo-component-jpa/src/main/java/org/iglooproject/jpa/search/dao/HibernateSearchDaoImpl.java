@@ -1,7 +1,7 @@
 package org.iglooproject.jpa.search.dao;
 
-import static org.iglooproject.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE;
-import static org.iglooproject.jpa.property.JpaPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
+import static org.iglooproject.jpa.property.JpaSearchPropertyIds.HIBERNATE_SEARCH_REINDEX_BATCH_SIZE;
+import static org.iglooproject.jpa.property.JpaSearchPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -25,15 +25,12 @@ import org.iglooproject.spring.property.service.IPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Sets;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
-//TODO igloo-boot
-@Repository("hibernateSearchDao")
 public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateSearchDaoImpl.class);

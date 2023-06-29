@@ -5,11 +5,13 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.model.QPerson;
+import org.iglooproject.test.config.spring.SpringBootTestJpaOnly;
 import org.junit.jupiter.api.Test;
 
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 
+@SpringBootTestJpaOnly
 class TestQueryDSLSQLConstructs extends AbstractJpaCoreTestCase {
 	
 	@Test

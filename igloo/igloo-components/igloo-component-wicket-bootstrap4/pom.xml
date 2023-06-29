@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha2</version>
+		<version>6.0.0-Alpha3</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-bootstrap4</artifactId>
@@ -12,7 +12,7 @@
 	<name>Igloo - Component - Wicket - Bootstrap 4</name>
 	
 	<properties>
-		<igloo.processors>${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor,${igloo.processor.bindgen}</igloo.processors>
 		<processor.test.skip>true</processor.test.skip>
 	</properties>
 
@@ -60,6 +60,17 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-export</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 		
 		<!-- WiQuery -->

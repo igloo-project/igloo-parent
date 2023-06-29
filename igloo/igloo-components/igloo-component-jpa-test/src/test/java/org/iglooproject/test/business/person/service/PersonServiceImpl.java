@@ -17,9 +17,6 @@
 
 package org.iglooproject.test.business.person.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -27,6 +24,8 @@ import org.iglooproject.test.business.person.dao.IPersonDao;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.model.QPerson;
 import org.iglooproject.test.business.project.model.Project;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service("testPersonService")
 public class PersonServiceImpl extends GenericEntityServiceImpl<Long, Person>

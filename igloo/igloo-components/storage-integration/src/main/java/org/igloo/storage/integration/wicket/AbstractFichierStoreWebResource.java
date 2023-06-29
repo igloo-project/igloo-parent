@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.time.Duration;
 import java.time.Instant;
 
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.apache.wicket.Application;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.http.WebResponse;
@@ -21,6 +19,8 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 
 	private static final long serialVersionUID = 6019366659520380200L;
@@ -34,7 +34,9 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 	private Duration cacheDuration;
 	
 	private WebResponse.CacheScope cacheScope;
-
+	
+	private boolean disableCaching = false;
+	
 	public AbstractFichierStoreWebResource() {
 		super();
 		Injector.get().inject(this);
@@ -65,7 +67,7 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 					data.setError(HttpServletResponse.SC_NOT_FOUND);
 					close(stream);
 				}
-	
+				
 				data.setContentDisposition(contentDisposition);
 				Bytes length = stream.length();
 				if (length != null) {
@@ -82,14 +84,17 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 				}
 				data.setContentType(contentType);
 				data.setTextEncoding(textEncoding);
-	
+				
 				if (cacheDuration != null) {
 					data.setCacheDuration(cacheDuration);
 				}
 				if (cacheScope != null) {
 					data.setCacheScope(cacheScope);
 				}
-	
+				if (disableCaching) {
+					data.disableCaching();
+				}
+				
 				final InputStream s = inputStream;
 				data.setWriteCallback(new WriteCallback() {
 					@Override
@@ -135,5 +140,9 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 
 	public void setCacheScope(WebResponse.CacheScope cacheScope) {
 		this.cacheScope = cacheScope;
+	}
+	
+	public void disableCaching() {
+		this.disableCaching = true;
 	}
 }

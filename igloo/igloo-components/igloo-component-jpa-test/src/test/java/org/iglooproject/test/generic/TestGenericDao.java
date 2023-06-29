@@ -35,11 +35,14 @@ import org.iglooproject.test.business.person.model.PersonReference;
 import org.iglooproject.test.business.person.model.PersonSubTypeA;
 import org.iglooproject.test.business.person.model.PersonSubTypeB;
 import org.iglooproject.test.business.person.model.QPerson;
+import org.iglooproject.test.config.spring.SpringBootTestJpaOnly;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 
+@SpringBootTestJpaOnly
 class TestGenericDao extends AbstractJpaCoreTestCase {
 
 	@Autowired
@@ -162,7 +165,7 @@ class TestGenericDao extends AbstractJpaCoreTestCase {
 		try {
 			personService.refresh(person1);
 			fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException|InvalidDataAccessApiUsageException e) {
 		}
 
 		personService.create(person1);
@@ -171,7 +174,7 @@ class TestGenericDao extends AbstractJpaCoreTestCase {
 		try {
 			personService.refresh(person1);
 			fail("Faire un refresh sur un objet non persisté doit lever une exception");
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException|InvalidDataAccessApiUsageException e) {
 		}
 	}
 

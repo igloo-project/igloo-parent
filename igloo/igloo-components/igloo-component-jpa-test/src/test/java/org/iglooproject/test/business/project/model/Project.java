@@ -3,16 +3,16 @@ package org.iglooproject.test.business.project.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.spring.util.StringUtils;
+import org.iglooproject.test.business.company.model.Company;
+import org.iglooproject.test.business.person.model.Person;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.test.business.company.model.Company;
-import org.iglooproject.test.business.person.model.Person;
 
 @Entity
 public class Project extends GenericEntity<Long, Project> {

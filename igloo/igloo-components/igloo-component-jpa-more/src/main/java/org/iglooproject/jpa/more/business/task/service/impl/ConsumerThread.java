@@ -2,6 +2,16 @@ package org.iglooproject.jpa.more.business.task.service.impl;
 
 import java.io.IOException;
 
+import org.iglooproject.jpa.more.autoconfigure.TaskAutoConfiguration;
+import org.iglooproject.jpa.more.business.task.model.AbstractTask;
+import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
+import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
+import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
+import org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds;
+import org.iglooproject.jpa.more.rendering.service.IRendererService;
+import org.iglooproject.jpa.util.EntityManagerUtils;
+import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.spring.util.SpringBeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +21,6 @@ import org.springframework.context.ApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.primitives.Longs;
 import com.google.common.util.concurrent.RateLimiter;
-
-import org.iglooproject.jpa.more.business.task.model.AbstractTask;
-import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
-import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
-import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
-import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
-import org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds;
-import org.iglooproject.jpa.more.rendering.service.IRendererService;
-import org.iglooproject.jpa.util.EntityManagerUtils;
-import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.spring.util.SpringBeanUtils;
 
 /**
  * A consumer thread with the ability to try stopping gracefully.
@@ -43,7 +42,7 @@ class ConsumerThread extends Thread {
 	protected EntityManagerUtils entityManagerUtils;
 
 	@Autowired
-	@Qualifier(AbstractTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
+	@Qualifier(TaskAutoConfiguration.OBJECT_MAPPER_BEAN_NAME)
 	private ObjectMapper queuedTaskHolderObjectMapper;
 
 	@Autowired

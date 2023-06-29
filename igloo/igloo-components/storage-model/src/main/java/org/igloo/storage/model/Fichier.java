@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.bindgen.Bindable;
+import org.hibernate.Length;
 import org.igloo.storage.model.atomic.ChecksumType;
 import org.igloo.storage.model.atomic.FichierStatus;
 import org.igloo.storage.model.atomic.IFichierType;
@@ -67,14 +68,14 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	 * Ex : {@code fichiertype/hash/file.png}
 	 */
 	@Basic(optional = false)
-	@Column(nullable = false)
+	@Column(nullable = false, length = Length.LONG32)
 	private String relativePath;
 
 	/**
 	 * Raw filename
 	 */
 	@Basic(optional = false)
-	@Column(nullable = false)
+	@Column(nullable = false, length = Length.LONG32)
 	private String filename;
 
 	/**
@@ -85,7 +86,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	private Long size;
 
 	@Basic(optional = false)
-	@Column(nullable = false)
+	@Column(nullable = false, length = Length.LONG32)
 	private String checksum;
 
 	@Basic(optional = false)
@@ -94,7 +95,7 @@ public class Fichier extends GenericEntity<Long, Fichier> {
 	private ChecksumType checksumType;
 
 	@Basic(optional = false)
-	@Column(nullable = false)
+	@Column(nullable = false, length = Length.LONG32)
 	private String mimetype;
 
 	@Basic(optional = false)

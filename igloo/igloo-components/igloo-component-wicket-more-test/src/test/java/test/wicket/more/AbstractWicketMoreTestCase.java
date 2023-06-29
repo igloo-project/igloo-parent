@@ -7,11 +7,9 @@ import org.iglooproject.test.wicket.core.AbstractWicketTestCase;
 import org.iglooproject.wicket.more.test.WicketMoreWicketTester;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 
 import test.wicket.more.business.person.service.IPersonService;
 
-@ContextConfiguration(classes = {})
 public abstract class AbstractWicketMoreTestCase extends AbstractWicketTestCase<WicketMoreWicketTester> {
 	
 	@Autowired

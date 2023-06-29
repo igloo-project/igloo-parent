@@ -16,7 +16,9 @@ import igloo.wicket.model.CollectionCopyModel;
 import igloo.wicket.model.ICollectionModel;
 import test.wicket.more.business.person.model.Person;
 import test.wicket.more.business.person.model.PersonComparator;
+import test.wicket.more.config.spring.SpringBootTestWicketSimple;
 
+@SpringBootTestWicketSimple
 class TestGenericEntityCollectionCopyModel<C extends Collection<Person>>
 		extends AbstractTestGenericEntityCollectionModel<C> {
 

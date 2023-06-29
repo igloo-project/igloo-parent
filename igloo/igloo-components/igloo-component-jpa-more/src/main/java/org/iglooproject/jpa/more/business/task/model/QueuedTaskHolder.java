@@ -1,9 +1,12 @@
 package org.iglooproject.jpa.more.business.task.model;
 
-import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 import org.bindgen.Bindable;
+import org.hibernate.Length;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
@@ -34,6 +37,8 @@ import jakarta.persistence.Version;
 @Bindable
 @Indexed
 public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
+
+	private static final DateTimeFormatter FORMATTER = new DateTimeFormatterBuilder().appendPattern("yyyy.MM.dd HH:mm:ss z").toFormatter();
 
 	private static final long serialVersionUID = 3926959721176678607L;
 
@@ -89,7 +94,7 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	@Column(name = "optLock")
 	private int version;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = Length.LONG32)
 	@JavaType(StringJavaType.class)
 	private String serializedTask;
 
@@ -105,11 +110,11 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private TaskResult result;
 
-	@Column
+	@Column(length = Length.LONG32)
 	@JavaType(StringJavaType.class)
 	private String stackTrace;
 
-	@Column
+	@Column(length = Length.LONG32)
 	@JavaType(StringJavaType.class)
 	private String report;
 
@@ -258,12 +263,12 @@ public class QueuedTaskHolder extends GenericEntity<Long, QueuedTaskHolder> {
 
 	@Override
 	protected ToStringHelper toStringHelper() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss z");
+		DateTimeFormatter dateFormat = FORMATTER;
 		return super.toStringHelper()
 			.add("name", getName())
-			.add("creationDate", getCreationDate() != null ? dateFormat.format(getCreationDate()) : null)
-			.add("startDate", getStartDate() != null ? dateFormat.format(getStartDate()) : null)
-			.add("completionDate", getEndDate() != null ? dateFormat.format(getEndDate()) : null);
+			.add("creationDate", getCreationDate() != null ? dateFormat.format(getCreationDate().atZone(ZoneId.systemDefault())) : null)
+			.add("startDate", getStartDate() != null ? dateFormat.format(getStartDate().atZone(ZoneId.systemDefault())) : null)
+			.add("completionDate", getEndDate() != null ? dateFormat.format(getEndDate().atZone(ZoneId.systemDefault())) : null);
 	}
 
 }

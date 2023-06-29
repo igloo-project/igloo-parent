@@ -1,9 +1,6 @@
 package org.iglooproject.jpa.security.service;
 
-import java.util.Collection;
-
 import org.springframework.security.access.PermissionEvaluator;
-import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 
 public interface ICorePermissionEvaluator extends PermissionEvaluator {
@@ -14,7 +11,5 @@ public interface ICorePermissionEvaluator extends PermissionEvaluator {
 	boolean isSuperUser(Authentication authentication);
 
 	boolean hasPermission(Authentication authentication, Object requirePermission);
-
-	Collection<? extends Permission> getPermissions(Authentication authentication);
 
 }

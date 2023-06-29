@@ -19,18 +19,14 @@ import javax.annotation.Nullable;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.StandardBasicTypes;
-import org.hibernate.type.descriptor.java.JavaType;
-import org.hibernate.type.descriptor.java.spi.JavaTypeRegistry;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistencyCheck;
 import org.igloo.storage.model.StorageFailure;
 import org.igloo.storage.model.StorageUnit;
 import org.igloo.storage.model.atomic.FichierStatus;
-import org.igloo.storage.model.atomic.IFichierType;
 import org.igloo.storage.model.atomic.IStorageUnitType;
 import org.igloo.storage.model.atomic.StorageFailureStatus;
 import org.igloo.storage.model.atomic.StorageFailureType;
@@ -77,21 +73,10 @@ public class DatabaseOperations {
 
 	private final String storageUnitSequenceName;
 
-	private final JavaType<IFichierType> fichierTypeType;
-	private final JavaType<IStorageUnitType> storageUnitTypeType;
-	private final JavaType<FichierStatus> fichierStatusType;
-	private final JavaType<StorageFailureType> failureTypeType;
-	private final JavaType<StorageFailureStatus> failureStatusType;
-
 	public DatabaseOperations(EntityManagerFactory entityManagerFactory, String fichierSequenceName, String storageUnitSequenceName) {
 		this.entityManagerFactory = entityManagerFactory;
 		this.fichierSequenceName = fichierSequenceName;
 		this.storageUnitSequenceName = storageUnitSequenceName;
-		fichierTypeType = entityManagerFactory.unwrap(JavaTypeRegistry.class).findDescriptor(IFichierType.class);
-		storageUnitTypeType = entityManagerFactory.unwrap(JavaTypeRegistry.class).findDescriptor(IStorageUnitType.class);
-		fichierStatusType = entityManagerFactory.unwrap(JavaTypeRegistry.class).findDescriptor(FichierStatus.class);
-		failureTypeType = entityManagerFactory.unwrap(JavaTypeRegistry.class).findDescriptor(StorageFailureType.class);
-		failureStatusType = entityManagerFactory.unwrap(JavaTypeRegistry.class).findDescriptor(StorageFailureStatus.class);
 	}
 
 	public Fichier getFichierById(Long id) {
@@ -349,11 +334,10 @@ public class DatabaseOperations {
 	public List<StorageOrphanStatistic> getStorageOrphanStatistics() {
 		return ((NativeQuery<StorageOrphanStatistic>) entityManager().createNativeQuery(orphanStatisticsQuery.get()))
 				.addScalar(PARAMETER_STORAGE_UNIT_ID, StandardBasicTypes.LONG)
-				.addAttributeResult(PARAMETER_STORAGE_UNIT_TYPE, Fichier.class, "type")
+				.addAttributeResult(PARAMETER_STORAGE_UNIT_TYPE, StorageUnit.class, "type")
 				.addAttributeResult(PARAMETER_FAILURE_STATUS, StorageFailure.class, "status")
 				.addScalar(PARAMETER_COUNT, StandardBasicTypes.INTEGER)
-				.setParameter("missingEntityFailureType", StorageFailureType.MISSING_ENTITY,
-						entityManager().unwrap(SessionFactoryImplementor.class).resolveParameterBindType(StorageFailureType.class))
+				.setParameter("missingEntityFailureType", StorageFailureType.MISSING_ENTITY.name())
 				// deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with custom types
 				.setResultTransformer(Transformers.aliasToBean(StorageOrphanStatistic.class))
 				.getResultList();
@@ -379,7 +363,11 @@ public class DatabaseOperations {
 	}
 
 	private boolean isPostgresqlBackend() {
-		return ((String) entityManager().getEntityManagerFactory().unwrap(SessionFactory.class).getProperties().get("hibernate.dialect")).toLowerCase().contains("postgresql");
+		return ((String) entityManager().getEntityManagerFactory().
+				unwrap(SessionFactory.class)
+				.getProperties()
+				.get("jakarta.persistence.jdbc.driver"))
+			.toLowerCase().contains("postgresql");
 	}
 
 	@Nonnull

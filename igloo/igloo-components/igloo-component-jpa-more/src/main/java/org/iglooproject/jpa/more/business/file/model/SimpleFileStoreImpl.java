@@ -2,6 +2,7 @@ package org.iglooproject.jpa.more.business.file.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,8 +19,6 @@ import org.iglooproject.jpa.more.business.file.model.path.SimpleFileStorePathGen
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
-
-import net.java.truevfs.access.TFileInputStream;
 
 
 public class SimpleFileStoreImpl implements IFileStore {
@@ -58,9 +57,7 @@ public class SimpleFileStoreImpl implements IFileStore {
 	
 	@Override
 	public FileInformation addFile(File file, String fileKey, String extension) throws ServiceException, SecurityServiceException {
-		// Attention le fichier peut être contenu dans un zip d'où cette
-		// manipulation spécifique.
-		try (TFileInputStream fileInputStream = new TFileInputStream(file)) {
+		try (FileInputStream fileInputStream = new FileInputStream(file)) {
 			return addFile(fileInputStream, fileKey, extension);
 		} catch (RuntimeException | IOException e) {
 			throw new ServiceException(e);

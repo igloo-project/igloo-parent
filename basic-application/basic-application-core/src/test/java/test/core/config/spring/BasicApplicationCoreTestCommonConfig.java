@@ -1,6 +1,6 @@
 package test.core.config.spring;
 
-import org.iglooproject.basicapp.core.config.spring.BasicApplicationCoreCommonConfig;
+import org.iglooproject.basicapp.core.config.spring.BasicApplicationCoreCommonConfiguration;
 import org.iglooproject.jpa.more.rendering.service.EmptyRendererServiceImpl;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ import test.core.TestCorePackage;
 
 @Configuration
 @Import({
-	BasicApplicationCoreCommonConfig.class,
+	BasicApplicationCoreCommonConfiguration.class,
 })
 @ComponentScan(basePackageClasses = TestCorePackage.class)
 public class BasicApplicationCoreTestCommonConfig {

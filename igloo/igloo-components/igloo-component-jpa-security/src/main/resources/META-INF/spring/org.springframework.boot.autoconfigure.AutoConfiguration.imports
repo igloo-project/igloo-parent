@@ -1,0 +1,2 @@
+org.iglooproject.jpa.security.autoconfigure.SecurityAutoConfiguration
+org.iglooproject.jpa.security.autoconfigure.SecurityModelAutoConfiguration

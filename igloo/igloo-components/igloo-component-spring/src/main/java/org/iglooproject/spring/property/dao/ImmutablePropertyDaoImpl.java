@@ -1,17 +1,23 @@
 package org.iglooproject.spring.property.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
 
-import org.iglooproject.spring.config.CorePropertyPlaceholderConfigurer;
+public class ImmutablePropertyDaoImpl implements IImmutablePropertyDao, EnvironmentAware {
 
-public class ImmutablePropertyDaoImpl implements IImmutablePropertyDao {
-
-	@Autowired
-	private CorePropertyPlaceholderConfigurer configurer;
+	/**
+	 * Beware that Environment may or may not be a spring bean. We prefer {@link EnvironmentAware} interface usage.
+	 */
+	private Environment environment;
 
 	@Override
 	public String get(String key) {
-		return configurer.getProperty(key);
+		return environment.getProperty(key);
+	}
+
+	@Override
+	public void setEnvironment(Environment environment) {
+		this.environment = environment;
 	}
 
 }

@@ -22,8 +22,10 @@ import igloo.wicket.model.MapCopyModel;
 import igloo.wicket.model.Models;
 import test.wicket.more.business.person.model.Person;
 import test.wicket.more.business.person.model.PersonComparator;
+import test.wicket.more.config.spring.SpringBootTestWicketSimple;
 import test.wicket.more.model.TestGenericEntityKeyMapCopyModel.ValueEnum;
 
+@SpringBootTestWicketSimple
 public class TestGenericEntityKeyMapCopyModel<M extends Map<Person, ValueEnum>>
 		extends AbstractTestGenericEntityMapCopyModel<Person, ValueEnum, M> {
 

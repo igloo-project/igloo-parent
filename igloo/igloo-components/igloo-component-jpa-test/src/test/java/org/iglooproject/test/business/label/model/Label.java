@@ -1,10 +1,10 @@
 package org.iglooproject.test.business.label.model;
 
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 @Entity
 public class Label extends GenericEntity<String, Label> {

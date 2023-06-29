@@ -1,6 +1,7 @@
 package test.jpa.more.business;
 
 import jakarta.persistence.Query;
+import test.jpa.more.config.spring.SpringBootTestJpaMore;
 
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.collect.ImmutableList;
 
+@SpringBootTestJpaMore
 class QueuedTaskHolderServiceTest extends AbstractJpaMoreTestCase {
 
 	@Test

@@ -11,6 +11,9 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 
+import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
+
+@SpringBootTestBasicApplicationWebapp
 class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

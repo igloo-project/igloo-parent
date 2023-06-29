@@ -1,19 +1,19 @@
 package org.iglooproject.basicapp.core.business.user.model;
 
+import org.bindgen.Bindable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.iglooproject.basicapp.core.business.user.model.embeddable.UserAnnouncementInformation;
+import org.iglooproject.basicapp.core.business.user.model.embeddable.UserPasswordInformation;
+import org.iglooproject.basicapp.core.business.user.model.embeddable.UserPasswordRecoveryRequest;
+import org.iglooproject.jpa.security.business.user.model.GenericSimpleUser;
+import org.iglooproject.spring.util.StringUtils;
+
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Transient;
-
-import org.bindgen.Bindable;
-import org.hibernate.search.annotations.Indexed;
-import org.iglooproject.basicapp.core.business.user.model.embeddable.UserAnnouncementInformation;
-import org.iglooproject.basicapp.core.business.user.model.embeddable.UserPasswordInformation;
-import org.iglooproject.basicapp.core.business.user.model.embeddable.UserPasswordRecoveryRequest;
-import org.iglooproject.jpa.security.business.user.model.GenericSimpleUser;
-import org.iglooproject.spring.util.StringUtils;
 
 @Indexed
 @Bindable

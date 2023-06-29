@@ -1,9 +1,8 @@
 package org.iglooproject.test.jpa.junit;
+import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
-
-import org.iglooproject.jpa.util.EntityManagerUtils;
 
 
 public class EntityManagerExecutionListener extends AbstractTestExecutionListener {

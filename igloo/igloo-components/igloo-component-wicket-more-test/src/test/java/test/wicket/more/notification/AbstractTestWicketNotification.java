@@ -1,7 +1,5 @@
 package test.wicket.more.notification;
 
-import jakarta.mail.internet.MimeMessage;
-
 import org.iglooproject.spring.notification.service.INotificationBuilderBaseState;
 import org.iglooproject.spring.notification.service.NotificationBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.test.context.ContextConfiguration;
 
+import jakarta.mail.internet.MimeMessage;
 import test.wicket.more.AbstractWicketMoreTestCase;
-import test.wicket.more.notification.config.spring.WicketMoreTestNotificationWebappConfig;
 
-@ContextConfiguration(inheritLocations = false, classes = WicketMoreTestNotificationWebappConfig.class)
 public abstract class AbstractTestWicketNotification extends AbstractWicketMoreTestCase {
 
 	@Autowired

@@ -7,12 +7,11 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.iglooproject.spring.util.StringUtils;
-import org.springframework.test.context.ContextConfiguration;
 
 import test.wicket.more.AbstractWicketMoreTestCase;
-import test.wicket.more.link.descriptor.config.spring.WicketMoreTestLinkDescriptorWebappConfig;
+import test.wicket.more.config.spring.SpringBootTestWicketLinkDescriptor;
 
-@ContextConfiguration(inheritLocations = false, classes = WicketMoreTestLinkDescriptorWebappConfig.class)
+@SpringBootTestWicketLinkDescriptor
 public abstract class AbstractTestLinkDescriptor extends AbstractWicketMoreTestCase {
 	
 	protected static Matcher<String> hasPathAndQuery(String expectedPathRelativeToServlet) {

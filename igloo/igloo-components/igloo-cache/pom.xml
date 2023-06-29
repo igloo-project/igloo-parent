@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha2</version>
+		<version>6.0.0-Alpha3</version>
 	</parent>
 
 	<artifactId>igloo-cache</artifactId>
@@ -13,7 +13,7 @@
 	<name>Cache management wrapper</name>
 
 	<properties>
-		<igloo.processors>${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor,${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>
@@ -25,6 +25,17 @@
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-console</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 		
 		<dependency>

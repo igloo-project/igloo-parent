@@ -10,7 +10,9 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 
 import test.core.AbstractBasicApplicationTestCase;
+import test.core.config.spring.SpringBootTestBasicApplication;
 
+@SpringBootTestBasicApplication
 class TestUserService extends AbstractBasicApplicationTestCase {
 
 	@Test

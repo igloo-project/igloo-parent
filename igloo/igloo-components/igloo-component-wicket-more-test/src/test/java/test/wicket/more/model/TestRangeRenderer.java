@@ -14,7 +14,9 @@ import igloo.wicket.model.Models;
 import igloo.wicket.renderer.Renderer;
 import igloo.wicket.util.DatePattern;
 import test.wicket.more.AbstractWicketMoreTestCase;
+import test.wicket.more.config.spring.SpringBootTestWicketSimple;
 
+@SpringBootTestWicketSimple
 public class TestRangeRenderer extends AbstractWicketMoreTestCase {
 	
 	private static final String LOWER_TAG = "${start}";

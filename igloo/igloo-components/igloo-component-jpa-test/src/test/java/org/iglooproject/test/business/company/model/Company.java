@@ -3,6 +3,10 @@ package org.iglooproject.test.business.company.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.test.business.person.model.Person;
+import org.iglooproject.test.business.project.model.Project;
+
 import jakarta.persistence.Cacheable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -12,10 +16,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.test.business.person.model.Person;
-import org.iglooproject.test.business.project.model.Project;
 
 @Entity
 @Cacheable(true)

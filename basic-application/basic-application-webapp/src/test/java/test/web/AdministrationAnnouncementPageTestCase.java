@@ -8,6 +8,9 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.link.descriptor.LinkInvalidTargetRuntimeException;
 import org.junit.jupiter.api.Test;
 
+import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
+
+@SpringBootTestBasicApplicationWebapp
 class AdministrationAnnouncementPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

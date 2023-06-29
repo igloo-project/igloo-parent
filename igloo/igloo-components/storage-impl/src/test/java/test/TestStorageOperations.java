@@ -14,8 +14,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
-import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.igloo.storage.impl.StorageOperations;
 import org.igloo.storage.model.StorageUnit;
 import org.junit.jupiter.api.Test;

@@ -1,12 +1,22 @@
 package org.iglooproject.basicapp.web.application.config.spring;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.EnumSet;
+
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WicketFilter;
+import org.iglooproject.basicapp.core.business.notification.service.IBasicApplicationNotificationContentDescriptorFactory;
+import org.iglooproject.basicapp.core.business.notification.service.IBasicApplicationNotificationUrlBuilderService;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.basicapp.core.config.spring.BasicApplicationCoreCommonConfig;
+import org.iglooproject.basicapp.core.config.spring.BasicApplicationCoreCommonConfiguration;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
 import org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.NotificationScssResourceReference;
+import org.iglooproject.basicapp.web.application.notification.service.BasicApplicationNotificationContentDescriptorFactoryImpl;
+import org.iglooproject.basicapp.web.application.notification.service.BasicApplicationNotificationUrlBuilderServiceImpl;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssService;
@@ -14,18 +24,30 @@ import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.iglooproject.wicket.more.notification.service.PhlocCssHtmlNotificationCssServiceImpl;
 import org.iglooproject.wicket.more.rendering.BooleanRenderer;
 import org.iglooproject.wicket.more.rendering.service.RendererServiceImpl;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.Ordered;
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.web.WebApplicationInitializer;
+
+import igloo.wicket.servlet.filter.Log4jUrlFilter;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.SessionTrackingMode;
 
 @Configuration
 @EnableWebSecurity
 @Import({
-	BasicApplicationCoreCommonConfig.class,
-	BasicApplicationWebappApplicationPropertyRegistryConfig.class
+	BasicApplicationCoreCommonConfiguration.class,
+	BasicApplicationWebappApplicationPropertyRegistryConfiguration.class,
+	BasicApplicationSecurityConfiguration.class
 })
 @ComponentScan(
 	basePackageClasses = {
@@ -62,6 +84,73 @@ public class BasicApplicationWebappConfig {
 		IHtmlNotificationCssService service = new PhlocCssHtmlNotificationCssServiceImpl();
 		service.registerDefaultStyles(NotificationScssResourceReference.get());
 		return service;
+	}
+	
+	@Configuration
+	public static class WebXmlConfiguration {
+		private static final EnumSet<DispatcherType> allDispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE);
+		
+		private int log4jUrlFilterPrecedence = Ordered.HIGHEST_PRECEDENCE;
+		private int openEntityManagerInViewFilterPrecedence = Ordered.HIGHEST_PRECEDENCE + 1;
+		
+		private int wicketFilterPrecedence = Ordered.LOWEST_PRECEDENCE;
+		
+		@Bean
+		public FilterRegistrationBean<Log4jUrlFilter> log4jUrlFilter() {
+			FilterRegistrationBean<Log4jUrlFilter> bean = new FilterRegistrationBean<>();
+			bean.setFilter(new Log4jUrlFilter());
+			bean.setOrder(log4jUrlFilterPrecedence);
+			bean.setDispatcherTypes(allDispatcherTypes);
+			return bean;
+		}
+		
+		@Bean
+		public FilterRegistrationBean<OpenEntityManagerInViewFilter> openEntityManagerInViewFilter() {
+			FilterRegistrationBean<OpenEntityManagerInViewFilter> bean = new FilterRegistrationBean<>();
+			bean.setFilter(new OpenEntityManagerInViewFilter());
+			bean.setOrder(openEntityManagerInViewFilterPrecedence);
+			bean.setDispatcherTypes(allDispatcherTypes);
+			return bean;
+		}
+		
+		@Bean
+		public FilterRegistrationBean<WicketFilter> wicketFilter(WebApplication application) {
+			FilterRegistrationBean<WicketFilter> bean = new FilterRegistrationBean<>();
+			bean.setFilter(new WicketFilter(application));
+			bean.setOrder(wicketFilterPrecedence);
+			bean.setDispatcherTypes(allDispatcherTypes);
+			bean.addInitParameter("filterMappingUrlPattern", "/*");
+			
+			return bean;
+		}
+		
+		@Configuration
+//		@Order(Ordered.HIGHEST_PRECEDENCE)
+		public static class CommonInitializer implements ServletContextInitializer, WebApplicationInitializer {
+			@Override
+			public void onStartup(ServletContext servletContext) throws ServletException {
+				
+				servletContext.setResponseCharacterEncoding(StandardCharsets.UTF_8.displayName());
+				servletContext.setRequestCharacterEncoding(StandardCharsets.UTF_8.displayName());
+				servletContext.setSessionTimeout(480);
+				servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
+				//TODO: mpiva - ajouter les listeners
+//				servletContext.addListener(SLF4JLoggingListener.class);
+			}
+		}
+	}
+	
+	// TODO igloo-boot
+	@Configuration
+	public static class NotificationConfiguration {
+		@Bean
+		public IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory(IWicketContextProvider wicketContextProvider) {
+			return new BasicApplicationNotificationContentDescriptorFactoryImpl(wicketContextProvider);
+		}
+		@Bean
+		public IBasicApplicationNotificationUrlBuilderService notificationUrlBuilderService(IWicketContextProvider wicketContextProvider) {
+			return new BasicApplicationNotificationUrlBuilderServiceImpl(wicketContextProvider);
+		}
 	}
 
 }

@@ -9,8 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import test.wicket.more.config.spring.SpringBootTestWicketNotification;
 import test.wicket.more.notification.service.INotificationContentDescriptorFactory;
 
+@SpringBootTestWicketNotification
 class TestWicketNotification extends AbstractTestWicketNotification {
 
 	@Autowired

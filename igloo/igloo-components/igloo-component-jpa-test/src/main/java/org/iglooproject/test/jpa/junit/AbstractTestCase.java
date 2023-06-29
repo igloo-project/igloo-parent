@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.beans.PropertyDescriptor;
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
@@ -24,7 +25,6 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.iglooproject.config.bootstrap.spring.ExtendedTestApplicationContextInitializer;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -36,10 +36,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.google.common.collect.Lists;
 
@@ -58,12 +54,6 @@ import jakarta.persistence.metamodel.MapAttribute;
 import jakarta.persistence.metamodel.PluralAttribute;
 import jakarta.persistence.metamodel.SingularAttribute;
 
-@ContextConfiguration(initializers = ExtendedTestApplicationContextInitializer.class)
-@TestExecutionListeners({
-	DependencyInjectionTestExecutionListener.class,
-	EntityManagerExecutionListener.class
-})
-@TestPropertySource(properties = "igloo.profile=test")
 public abstract class AbstractTestCase {
 	
 	@Autowired
@@ -330,6 +320,8 @@ public abstract class AbstractTestCase {
 		listeAutorisee.add(double.class);
 		listeAutorisee.add(boolean.class);
 		listeAutorisee.add(float.class);
+		listeAutorisee.add(Instant.class);
+		listeAutorisee.add(LocalDateTime.class);
 		for (Class<?> clazz : classesAutorisees) {
 			listeAutorisee.add(clazz);
 		}

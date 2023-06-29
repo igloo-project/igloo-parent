@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({
-	BasicApplicationCoreCommonConfig.class
+	BasicApplicationCoreCommonConfiguration.class
 })
 @ComponentScan(
 	basePackageClasses = {

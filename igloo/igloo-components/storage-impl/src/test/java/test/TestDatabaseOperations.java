@@ -7,7 +7,6 @@ import static org.assertj.core.api.Assertions.atIndex;
 import static org.assertj.core.api.Assertions.byLessThan;
 import static test.StorageAssertions.assertThat;
 
-import java.math.BigInteger;
 import java.nio.file.Path;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,6 +31,7 @@ import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Assumptions;
 import org.hibernate.Session;
 import org.igloo.jpa.test.EntityManagerFactoryExtension;
+import org.igloo.jpa.test.JdbcDriver;
 import org.igloo.storage.impl.DatabaseOperations;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.StorageConsistencyCheck;
@@ -54,6 +54,7 @@ import org.iglooproject.jpa.business.generic.model.LongEntityReference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.postgresql.Driver;
 
 import com.google.common.base.Strings;
 
@@ -181,7 +182,7 @@ class TestDatabaseOperations extends AbstractTest {
 	 * Check {@link Fichier#uuid} unicity
 	 */
 	@Test
-	void testFichierUuidUnicityPersist(EntityManager entityManager, EntityTransaction transaction) {
+	void testFichierUuidUnicityPersist(EntityManager entityManager, EntityTransaction transaction, @JdbcDriver Class<?> jdbcDriver) {
 		StorageUnit storageUnit = new StorageUnit();
 		storageUnit.setId(1l);
 		storageUnit.setType(StorageUnitType.TYPE_1);
@@ -223,7 +224,9 @@ class TestDatabaseOperations extends AbstractTest {
 		entityManager.persist(fichier2);
 		assertThatThrownBy(() -> entityManager.flush())
 			.isInstanceOf(PersistenceException.class)
-			.hasMessageContaining("ConstraintViolationException");
+			.hasMessageContaining(jdbcDriver.equals(Driver.class) ?
+					"duplicate key value violates": // postgresql
+					"Unique index or primary key violation"); // h2
 	}
 
 	/**
@@ -834,8 +837,8 @@ class TestDatabaseOperations extends AbstractTest {
 		StorageUnit storageUnit = createStorageUnit(entityManagerFactory, 1, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
 		StorageConsistencyCheck check = doInWriteTransactionEntityManager(entityManagerFactory, em -> {
 			StorageConsistencyCheck c = new StorageConsistencyCheck();
-			c.setCheckFinishedOn(LocalDateTime.now());
-			c.setCheckStartedOn(LocalDateTime.now());
+			c.setCheckFinishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.MICROS));
+			c.setCheckStartedOn(LocalDateTime.now().truncatedTo(ChronoUnit.MICROS));
 			c.setCheckType(StorageUnitCheckType.LISTING_SIZE);
 			c.setStorageUnit(em.find(StorageUnit.class, storageUnit.getId()));
 			databaseOperations.createConsistencyCheck(c);
@@ -1216,15 +1219,13 @@ class TestDatabaseOperations extends AbstractTest {
 	}
 
 	@Test
-	void testGetStorageCheckStatisticsNotSupported(EntityManagerFactory entityManagerFactory) {
+	void testGetStorageCheckStatisticsNotSupported(EntityManagerFactory entityManagerFactory, @JdbcDriver Class<?> driver) {
 		// only run without postgresql
-		Assumptions.assumeThat(
-				Optional.ofNullable(System.getenv("TEST_DB_TYPE")).filter(Predicate.not(Strings::isNullOrEmpty)).filter("postgresql"::equals)
-		).as("testGetStorageCheckStatistics only available with postgresql")
-		.isEmpty();
+		Assumptions.assumeThat(driver.equals(Driver.class)).as("testGetStorageCheckStatistics only available with postgresql").isFalse();
 		assertThatCode(() -> {
 			getStorageCheckStatistics(entityManagerFactory);
-		}).as("Exception explaining that method is not supported without postgresql").isInstanceOf(IllegalStateException.class).hasMessageContaining("postgresql");
+		}).as("Exception explaining that method is not supported without postgresql").isInstanceOf(IllegalStateException.class)
+		.hasMessageContaining("postgresql");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1237,7 +1238,7 @@ class TestDatabaseOperations extends AbstractTest {
 			assertThat(result).hasSize(1);
 			assertThat(result.get(0).get("createdby_type")).isEqualTo(GenericEntity.class.getName()).isEqualTo(fichier.getCreatedBy().getType().getName());
 			// java long is stored as sql biginteger 
-			assertThat(result.get(0).get("createdby_id")).isEqualTo(BigInteger.valueOf(1)).isEqualTo(BigInteger.valueOf(fichier.getCreatedBy().getId()));
+			assertThat(result.get(0).get("createdby_id")).isEqualTo(1l).isEqualTo(fichier.getCreatedBy().getId());
 			return null;
 		});
 	}

@@ -1,12 +1,12 @@
 package org.iglooproject.test.business.person.model;
 
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 @Entity
 public class PersonReference extends GenericEntity<Long, PersonReference> {

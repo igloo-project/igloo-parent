@@ -9,12 +9,12 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.iglooproject.commons.util.CloneUtils;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.more.autoconfigure.TaskAutoConfiguration;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
 import org.iglooproject.jpa.more.business.task.transaction.OpenEntityManagerWithNoTransactionTransactionTemplate;
 import org.iglooproject.jpa.more.business.task.transaction.TaskExecutionTransactionTemplateConfig;
 import org.iglooproject.jpa.more.business.task.util.TaskResult;
 import org.iglooproject.jpa.more.business.task.util.TaskStatus;
-import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
 import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ public abstract class AbstractTask implements Runnable, Serializable {
 	protected IQueuedTaskHolderService queuedTaskHolderService;
 
 	@Autowired
-	@Qualifier(AbstractTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
+	@Qualifier(TaskAutoConfiguration.OBJECT_MAPPER_BEAN_NAME)
 	private ObjectMapper queuedTaskHolderObjectMapper;
 	
 	@JsonIgnore

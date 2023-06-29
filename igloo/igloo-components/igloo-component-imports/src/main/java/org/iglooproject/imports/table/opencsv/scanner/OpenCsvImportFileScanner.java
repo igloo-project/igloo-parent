@@ -2,6 +2,7 @@ package org.iglooproject.imports.table.opencsv.scanner;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,8 +20,6 @@ import org.iglooproject.imports.table.opencsv.model.CsvRow;
 import org.iglooproject.imports.table.opencsv.model.CsvTable;
 
 import com.opencsv.CSVReader;
-
-import net.java.truevfs.access.TFileInputStream;
 
 public class OpenCsvImportFileScanner implements ICsvImportFileScanner<CsvTable, CsvRow, CsvCell, CsvCellReference> {
 	
@@ -73,7 +72,7 @@ public class OpenCsvImportFileScanner implements ICsvImportFileScanner<CsvTable,
 		OpenCsvImportNavigator navigator = new OpenCsvImportNavigator(filename);
 		
 		try (
-				InputStream stream = new TFileInputStream(file);
+				InputStream stream = new FileInputStream(file);
 				Reader reader = createReader(stream, filename);
 				CSVReader csvReader = createCsvReader(reader, filename)
 		) {

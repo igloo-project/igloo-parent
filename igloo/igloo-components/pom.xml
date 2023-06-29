@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>6.0.0-Alpha2</version>
+		<version>6.0.0-Alpha3</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
@@ -25,7 +25,6 @@
 		<module>igloo-component-spring</module>
 		<module>igloo-component-spring-bootstrap-config</module>
 		<module>igloo-component-lucene-analyzers</module>
-		<module>igloo-component-elasticsearch-test</module>
 		
 		<module>igloo-component-web-test</module>
 		<module>igloo-component-web-jpa-test</module>
@@ -35,6 +34,7 @@
 		<module>igloo-hibernate</module>
 		<module>igloo-jpa-model</module>
 		<module>igloo-component-jpa</module>
+		<module>igloo-component-jpa-batch</module>
 		<module>igloo-component-jpa-test</module>
 		
 		<module>igloo-component-jpa-more</module>
@@ -62,9 +62,11 @@
 		<module>igloo-component-wicket-more-jqplot</module>
 		
 		<module>igloo-component-web-security</module>
-		<module>igloo-component-rest-jersey2</module>
+		<module>igloo-component-rest-jersey</module>
 		<module>igloo-component-jpa-migration</module>
-		<module>igloo-component-elasticsearch-plugin</module>
+		
+		<module>igloo-spring-security</module>
+		<module>igloo-spring-openidc</module>
 		
 		<module>storage-api</module>
 		<module>storage-impl</module>
@@ -74,7 +76,6 @@
 		
 		<module>igloo-monitoring-page</module>
 		<module>igloo-cache</module>
-		<module>igloo-spring-autoconfigure</module>
 		
 		<module>jpa-test-patterns</module>
 	</modules>

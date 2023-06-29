@@ -26,8 +26,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
-import jakarta.persistence.PersistenceException;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
@@ -35,11 +33,17 @@ import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.model.PersonSubTypeA;
 import org.iglooproject.test.business.person.model.PersonSubTypeB;
 import org.iglooproject.test.business.person.service.IPersonService;
+import org.iglooproject.test.config.spring.SpringBootTestJpaOnly;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.orm.jpa.JpaSystemException;
 
+import jakarta.persistence.PersistenceException;
+
+@SpringBootTestJpaOnly
 class TestGenericService extends AbstractJpaCoreTestCase {
 
 	@Autowired
@@ -86,7 +90,7 @@ class TestGenericService extends AbstractJpaCoreTestCase {
 		try {
 			personService.update(person1);
 			fail("Faire un update sur un objet non persisté doit lever une exception");
-		} catch (PersistenceException e) {	
+		} catch (PersistenceException|JpaSystemException e) {	
 		}
 	}
 
@@ -106,7 +110,7 @@ class TestGenericService extends AbstractJpaCoreTestCase {
 		try {
 			personService.refresh(person1);
 			fail("Faire un refresh sur un objet avec un identifiant null doit lever une exception");
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException|InvalidDataAccessApiUsageException e) {
 		}
 
 		personService.create(person1);
@@ -115,7 +119,7 @@ class TestGenericService extends AbstractJpaCoreTestCase {
 		try {
 			personService.refresh(person1);
 			fail("Faire un refresh sur un objet non persisté doit lever une exception");
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException|InvalidDataAccessApiUsageException e) {
 		}
 	}
 

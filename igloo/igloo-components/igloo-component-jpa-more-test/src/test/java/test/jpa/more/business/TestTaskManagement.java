@@ -34,7 +34,9 @@ import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.RateLimiter;
 
 import test.jpa.more.business.task.config.TestTaskManagementConfig;
+import test.jpa.more.config.spring.SpringBootTestJpaMore;
 
+@SpringBootTestJpaMore
 @ContextConfiguration(classes = TestTaskManagementConfig.class)
 class TestTaskManagement extends AbstractJpaMoreTestCase {
 

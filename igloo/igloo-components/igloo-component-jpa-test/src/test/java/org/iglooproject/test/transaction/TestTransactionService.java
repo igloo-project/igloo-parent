@@ -10,6 +10,7 @@ import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.company.model.Company;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.util.service.ServiceExceptionService;
+import org.iglooproject.test.config.spring.SpringBootTestJpaOnly;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Open Wide
  */
+@SpringBootTestJpaOnly
 class TestTransactionService extends AbstractJpaCoreTestCase {
 	
 	@Autowired

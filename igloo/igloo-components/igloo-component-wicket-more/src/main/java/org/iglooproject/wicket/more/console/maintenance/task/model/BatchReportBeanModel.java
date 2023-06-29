@@ -6,9 +6,9 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.iglooproject.jpa.more.autoconfigure.TaskAutoConfiguration;
 import org.iglooproject.jpa.more.business.task.model.BatchReportBean;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
-import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -29,7 +29,7 @@ public class BatchReportBeanModel<B extends BatchReportBean> extends LoadableDet
 		return new TaskBatchReportBeanModel<>(BatchReportBean.class, queuedTaskHolderModel);
 	}
 
-	@SpringBean(name = AbstractTaskManagementConfig.OBJECT_MAPPER_BEAN_NAME)
+	@SpringBean(name = TaskAutoConfiguration.OBJECT_MAPPER_BEAN_NAME)
 	private ObjectMapper queuedTaskHolderObjectMapper;
 
 	private final Class<B> clazz;

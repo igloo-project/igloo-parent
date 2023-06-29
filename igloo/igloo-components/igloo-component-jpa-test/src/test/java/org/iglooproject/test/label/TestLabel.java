@@ -7,10 +7,12 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.label.model.Label;
+import org.iglooproject.test.config.spring.SpringBootTestJpaOnly;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+@SpringBootTestJpaOnly
 class TestLabel extends AbstractJpaCoreTestCase {
 	
 	@Test

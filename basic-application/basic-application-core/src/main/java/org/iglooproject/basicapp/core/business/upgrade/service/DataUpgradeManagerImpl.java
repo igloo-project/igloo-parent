@@ -21,8 +21,6 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.google.common.collect.ImmutableList;
-
 @Service
 public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl implements IDataUpgradeManager {
 
@@ -35,7 +33,7 @@ public class DataUpgradeManagerImpl extends AbstractDataUpgradeServiceImpl imple
 
 	@Override
 	public List<IDataUpgrade> listDataUpgrades() {
-		return ImmutableList.<IDataUpgrade>of(
+		return List.<IDataUpgrade>of(
 			new DataUpgrade_InitDataFromExcel()
 		);
 	}

@@ -10,9 +10,11 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.company.model.Company;
 import org.iglooproject.test.business.person.model.Person;
+import org.iglooproject.test.config.spring.SpringBootTestJpaOnly;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
+@SpringBootTestJpaOnly
 class TestCascades extends AbstractJpaCoreTestCase {
 	
 	@Test

@@ -27,11 +27,13 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaCoreTestCase;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.person.service.IPersonService;
+import org.iglooproject.test.config.spring.SpringBootTestJpaOnly;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@SpringBootTestJpaOnly
 class TestGenericEntity extends AbstractJpaCoreTestCase {
 
 	@Autowired

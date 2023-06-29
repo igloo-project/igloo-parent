@@ -1,7 +1,10 @@
 package org.iglooproject.basicapp.core.business.referencedata.model;
 
 import org.bindgen.Bindable;
-import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.ObjectPath;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.PropertyValue;
 import org.iglooproject.basicapp.core.business.common.model.PostalCode;
 import org.iglooproject.basicapp.core.business.common.model.embeddable.LocalizedText;
 
@@ -38,6 +41,12 @@ public class City extends ReferenceData<City> {
 
 	public void setPostalCode(PostalCode postalCode) {
 		this.postalCode = postalCode;
+	}
+
+	@Override
+	@IndexingDependency(derivedFrom = @ObjectPath(@PropertyValue(propertyName = "postalCode")))
+	public String getCode() {
+		return getPostalCode().getValue();
 	}
 
 }

@@ -1,5 +1,15 @@
 package org.iglooproject.basicapp.core.business.announcement.model;
 
+import org.bindgen.Bindable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.iglooproject.basicapp.core.business.announcement.model.atomic.AnnouncementType;
+import org.iglooproject.basicapp.core.business.announcement.model.embeddable.AnnouncementDate;
+import org.iglooproject.basicapp.core.business.common.model.embeddable.LocalizedText;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventSummary;
+
+import com.google.common.base.MoreObjects.ToStringHelper;
+
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Cacheable;
@@ -10,16 +20,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-
-import org.bindgen.Bindable;
-import org.hibernate.search.annotations.Indexed;
-import org.iglooproject.basicapp.core.business.announcement.model.atomic.AnnouncementType;
-import org.iglooproject.basicapp.core.business.announcement.model.embeddable.AnnouncementDate;
-import org.iglooproject.basicapp.core.business.common.model.embeddable.LocalizedText;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEventSummary;
-
-import com.google.common.base.MoreObjects.ToStringHelper;
 
 @Entity
 @Bindable

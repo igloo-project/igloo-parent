@@ -15,8 +15,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 import igloo.wicket.component.CoreLabel;
+import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
-@EnableWebSecurity
+@SpringBootTestBasicApplicationWebapp
 class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

@@ -10,7 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import test.jpa.more.business.AbstractJpaMoreTestCase;
+import test.jpa.more.config.spring.SpringBootTestJpaMore;
 
+@SpringBootTestJpaMore
 class TestMutablePropertyDao extends AbstractJpaMoreTestCase {
 	
 	private static final String KEY = "property.string.value";
