@@ -106,7 +106,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 
 	@ManyToMany
 	@SortComparator(GenericUserGroupComparator.class)
-	@KeywordField(name = GROUPS, valueBridge = @ValueBridgeRef(type = GenericEntityIdBridge.class))
+	@GenericField(name = GROUPS, valueBridge = @ValueBridgeRef(type = GenericEntityIdBridge.class))
 	@SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
 	private SortedSet<G> groups = Sets.newTreeSet(GenericUserGroupComparator.get());
 
