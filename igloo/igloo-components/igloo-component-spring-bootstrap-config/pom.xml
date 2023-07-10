@@ -14,7 +14,7 @@
 	<description>Spring integration: configuration overriding management</description>
 	
 	<properties>
-		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor</igloo.processors>
+		<igloo.processors>${igloo.processor.spring}</igloo.processors>
 	</properties>
 
 	<dependencies>

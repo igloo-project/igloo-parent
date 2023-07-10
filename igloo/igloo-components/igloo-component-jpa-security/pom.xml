@@ -13,7 +13,7 @@
 	<name>Igloo - Component - JPA - Spring Security support</name>
 
 	<properties>
-		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor,${igloo.processor.querydsl},${igloo.processor.jpamodelgen},${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>${igloo.processor.spring},${igloo.processor.querydsl},${igloo.processor.jpamodelgen},${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>

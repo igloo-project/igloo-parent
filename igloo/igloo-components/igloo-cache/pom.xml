@@ -13,7 +13,7 @@
 	<name>Cache management wrapper</name>
 
 	<properties>
-		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor,${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>${igloo.processor.spring},${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>

@@ -12,7 +12,7 @@
 	<name>Igloo - Component - Wicket - Bootstrap 4</name>
 	
 	<properties>
-		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor,${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>${igloo.processor.spring},${igloo.processor.bindgen}</igloo.processors>
 		<processor.test.skip>true</processor.test.skip>
 	</properties>
 

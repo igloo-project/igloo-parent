@@ -13,7 +13,7 @@
 	<name>Storage Spring integration</name>
 	
 	<properties>
-		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor</igloo.processors>
+		<igloo.processors>${igloo.processor.spring}</igloo.processors>
 	</properties>
 
 	<dependencies>
