@@ -1,6 +1,7 @@
 package org.iglooproject.jpa.more.business.history.model;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -12,21 +13,27 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmb
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.ObjectPath;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.PropertyValue;
+import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 
 import com.google.common.base.MoreObjects.ToStringHelper;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderColumn;
 import jakarta.persistence.Transient;
 
 @Bindable
@@ -114,6 +121,10 @@ public abstract class AbstractHistoryLog<
 	@Basic
 	@Column(length = Length.LONG32)
 	private String comment;
+
+	@OneToMany(mappedBy = "parentLog", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OrderColumn
+	private List<HD> differences = Lists.newArrayList();
 
 	protected AbstractHistoryLog() {
 		// nothing to do
@@ -244,11 +255,21 @@ public abstract class AbstractHistoryLog<
 		this.comment = comment;
 	}
 
-	public abstract List<HD> getDifferences();
+	public List<HD> getDifferences() {
+		return Collections.unmodifiableList(differences);
+	}
 
-	public abstract void setDifferences(List<HD> differences);
+	public void setDifferences(List<HD> differences) {
+		CollectionUtils.replaceAll(this.differences, differences);
+	}
 	
-	public abstract boolean isDifferencesNonEmpty();
+	@Transient
+	//TODO: igloo-boot : dépendent de l'attribut differences, donc dépendent du problème du @OrderColumn
+//	@IndexingDependency(derivedFrom = @ObjectPath(@PropertyValue(propertyName = "differences")))
+//	@GenericField(name = HAS_DIFFERENCES)
+	public boolean isDifferencesNonEmpty() {
+		return !differences.isEmpty();
+	}
 
 	@Override
 	protected ToStringHelper toStringHelper() {
