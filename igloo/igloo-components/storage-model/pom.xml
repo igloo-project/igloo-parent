@@ -13,7 +13,7 @@
 	<name>Storage model</name>
 
 	<properties>
-		<igloo.processors>${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>${igloo.processor.querydsl},${igloo.processor.jpamodelgen},${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>
@@ -58,6 +58,16 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
 			<groupId>jakarta.annotation</groupId>
 			<artifactId>jakarta.annotation-api</artifactId>
 			<optional>true</optional>
@@ -75,6 +85,13 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-commons</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-hibernate</artifactId>

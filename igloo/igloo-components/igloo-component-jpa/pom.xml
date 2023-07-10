@@ -14,7 +14,7 @@
 	<description>Capitalisation des outils génériques pour la technologie JPA</description>
 
 	<properties>
-		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor,${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor,${igloo.processor.querydsl},${igloo.processor.jpamodelgen},${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>
@@ -202,6 +202,16 @@
 			<artifactId>querydsl-jpa</artifactId>
 			<classifier>jakarta</classifier>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<optional>true</optional>
+		</dependency>
 		<!-- Code generation only -->
 		<dependency>
 			<groupId>com.querydsl</groupId>
@@ -214,12 +224,6 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>

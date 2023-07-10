@@ -2,7 +2,7 @@ package org.iglooproject.wicket.more.model;
 
 import java.util.List;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

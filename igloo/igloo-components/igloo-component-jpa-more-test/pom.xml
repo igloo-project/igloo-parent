@@ -13,7 +13,7 @@
 	<name>Igloo - Component - JPA - More JPA fun - Test</name>
 
 	<properties>
-		<igloo.processors>${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>${igloo.processor.querydsl},${igloo.processor.jpamodelgen},${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>
@@ -37,6 +37,16 @@
 			<artifactId>querydsl-apt</artifactId>
 			<classifier>jakarta</classifier>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<optional>true</optional>
 		</dependency>
 		
 		<dependency>

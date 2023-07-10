@@ -164,6 +164,15 @@
 			<artifactId>querydsl-jpa</artifactId>
 			<classifier>jakarta</classifier>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<optional>true</optional>
+		</dependency>
 		
 		<!-- JDBC Driver -->
 		<dependency>
@@ -226,7 +235,7 @@
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
 				<configuration>
-					<processors>${igloo.processor.querydsl},${igloo.processor.bindgen}</processors>
+					<processors>${igloo.processor.querydsl},${igloo.processor.jpamodelgen},${igloo.processor.bindgen}</processors>
 				</configuration>
 			</plugin>
 			<plugin>

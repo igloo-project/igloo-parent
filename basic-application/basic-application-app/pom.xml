@@ -97,10 +97,6 @@
 			<classifier>jakarta</classifier>
 			<version>${querydsl.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-jpamodelgen</artifactId>
-		</dependency>
 		<!-- Already provided by spring boot starters but only in runtime scope. Hibernate-jpamodelgen need it with compile scope-->
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
