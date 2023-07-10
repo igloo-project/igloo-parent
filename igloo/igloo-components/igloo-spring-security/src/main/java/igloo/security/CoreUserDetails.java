@@ -36,4 +36,12 @@ public class CoreUserDetails extends User implements UserDetails {
 		return getUsername();
 	}
 
+	/**
+	 * This username is equal to local username.
+	 */
+	@Override
+	public String getRemoteUsername() {
+		return getUsername();
+	}
+
 }

@@ -21,29 +21,39 @@ public class OidcUserDetails extends DefaultOidcUser implements org.springframew
 
 	private static final long serialVersionUID = -2455798932693104211L;
 
+	/**
+	 * This attribute is needed when lookup is not exact (case insensitive) as we need to keep local username
+	 * reference.
+	 */
+	private final String localUsername;
+
 	private final Set<Permission> permissions;
 
-	public OidcUserDetails(Collection<? extends GrantedAuthority> authorities, Set<Permission> permissions,
-			OidcIdToken idToken, OidcUserInfo userInfo, String nameAttributeKey) {
+	public OidcUserDetails(String localUsername, Collection<? extends GrantedAuthority> authorities,
+			Set<Permission> permissions, OidcIdToken idToken, OidcUserInfo userInfo, String nameAttributeKey) {
 		super(authorities, idToken, userInfo, nameAttributeKey);
+		this.localUsername = localUsername;
 		this.permissions = Set.copyOf(permissions);
 	}
 
-	public OidcUserDetails(Collection<? extends GrantedAuthority> authorities, Set<Permission> permissions,
-			OidcIdToken idToken, OidcUserInfo userInfo) {
+	public OidcUserDetails(String localUsername, Collection<? extends GrantedAuthority> authorities,
+			Set<Permission> permissions, OidcIdToken idToken, OidcUserInfo userInfo) {
 		super(authorities, idToken, userInfo);
+		this.localUsername = localUsername;
 		this.permissions = Set.copyOf(permissions);
 	}
 
-	public OidcUserDetails(Collection<? extends GrantedAuthority> authorities, Set<Permission> permissions,
-			OidcIdToken idToken, String nameAttributeKey) {
+	public OidcUserDetails(String localUsername, Collection<? extends GrantedAuthority> authorities,
+			Set<Permission> permissions, OidcIdToken idToken, String nameAttributeKey) {
 		super(authorities, idToken, nameAttributeKey);
+		this.localUsername = localUsername;
 		this.permissions = Set.copyOf(permissions);
 	}
 
-	public OidcUserDetails(Collection<? extends GrantedAuthority> authorities, Set<Permission> permissions,
-			OidcIdToken idToken) {
+	public OidcUserDetails(String localUsername, Collection<? extends GrantedAuthority> authorities,
+			Set<Permission> permissions, OidcIdToken idToken) {
 		super(authorities, idToken);
+		this.localUsername = localUsername;
 		this.permissions = Set.copyOf(permissions);
 	}
 
@@ -52,8 +62,19 @@ public class OidcUserDetails extends DefaultOidcUser implements org.springframew
 		return null;
 	}
 
+	/**
+	 * This username is the local application username. It may differ from the remote username.
+	 */
 	@Override
 	public String getUsername() {
+		return this.localUsername;
+	}
+
+	/**
+	 * This username is the remote system username. It may differ from the local username.
+	 */
+	@Override
+	public String getRemoteUsername() {
 		return getPreferredUsername();
 	}
 
