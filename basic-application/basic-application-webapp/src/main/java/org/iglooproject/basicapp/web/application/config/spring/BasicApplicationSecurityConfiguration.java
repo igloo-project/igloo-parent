@@ -29,7 +29,6 @@ public class BasicApplicationSecurityConfiguration {
 			.headers(h -> h.disable())
 			.csrf(c -> c.disable())
 			.formLogin(f -> f.disable())
-			.securityContext(s -> s.requireExplicitSave(false))
 			.anonymous(a -> a.authorities(CoreAuthorityConstants.ROLE_ANONYMOUS))
 			.exceptionHandling(e -> e
 				.accessDeniedPage("/console/access-denied/")
@@ -51,7 +50,6 @@ public class BasicApplicationSecurityConfiguration {
 			.headers(h -> h.disable())
 			.csrf(c -> c.disable())
 			.formLogin(f -> f.disable())
-			.securityContext(s -> s.requireExplicitSave(false))
 			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.NEVER))
 			.exceptionHandling(e -> e.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
 			.authorizeHttpRequests(requests -> requests
@@ -73,7 +71,6 @@ public class BasicApplicationSecurityConfiguration {
 			.headers(h -> h.disable())
 			.csrf(c -> c.disable())
 			.formLogin(f -> f.disable())
-			.securityContext(s -> s.requireExplicitSave(false))
 			.anonymous(a -> a.authorities(CoreAuthorityConstants.ROLE_ANONYMOUS))
 			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation().changeSessionId())
 			.exceptionHandling(e -> e

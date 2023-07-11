@@ -8,7 +8,6 @@ import org.iglooproject.jpa.security.access.expression.method.CoreMethodSecurity
 import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
 import org.iglooproject.jpa.security.hierarchy.PermissionHierarchyImpl;
 import org.iglooproject.jpa.security.model.NamedPermission;
-import org.iglooproject.jpa.security.runas.CoreRunAsManagerImpl;
 import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
 import org.iglooproject.jpa.security.service.CoreAuthenticationServiceImpl;
 import org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl;
@@ -27,12 +26,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.core.env.Environment;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import org.springframework.security.access.intercept.RunAsImplAuthenticationProvider;
-import org.springframework.security.access.intercept.RunAsManager;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -63,8 +59,6 @@ import igloo.security.ICoreUserDetailsService;
 )
 @Import(SecurityComponentScanConfiguration.class)
 public class SecurityAutoConfiguration {
-
-	private static final String PARAMETER_SECURITY_RUN_AS_KEY = "security.runAsKey";
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -153,20 +147,6 @@ public class SecurityAutoConfiguration {
 	@ConditionalOnMissingBean(name = "permissionHierarchyAsString")
 	protected String permissionHierarchyAsString() {
 		return SecurityUtils.defaultPermissionHierarchyAsString();
-	}
-
-	@Bean
-	public RunAsManager runAsManager(Environment environment) {
-		CoreRunAsManagerImpl runAsManager = new CoreRunAsManagerImpl();
-		runAsManager.setKey(environment.getProperty(PARAMETER_SECURITY_RUN_AS_KEY));
-		return runAsManager;
-	}
-
-	@Bean
-	public RunAsImplAuthenticationProvider runAsAuthenticationProvider(Environment environment) {
-		RunAsImplAuthenticationProvider runAsAuthenticationProvider = new RunAsImplAuthenticationProvider();
-		runAsAuthenticationProvider.setKey(environment.getProperty(PARAMETER_SECURITY_RUN_AS_KEY));
-		return runAsAuthenticationProvider;
 	}
 	
 	// TODO igloo-boot: split @Secured
