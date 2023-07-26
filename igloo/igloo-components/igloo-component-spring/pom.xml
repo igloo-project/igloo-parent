@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha3</version>
+		<version>6.0.0-Alpha4</version>
 	</parent>
 
 	<artifactId>igloo-component-spring</artifactId>
@@ -14,7 +14,7 @@
 	<description>Capitalisation des outils génériques pour la technologie Spring</description>
 	
 	<properties>
-		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor</igloo.processors>
+		<igloo.processors>${igloo.processor.spring}</igloo.processors>
 	</properties>
 
 	<dependencies>

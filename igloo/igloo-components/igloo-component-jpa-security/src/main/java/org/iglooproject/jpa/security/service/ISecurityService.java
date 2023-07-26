@@ -7,7 +7,6 @@ import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 
 public interface ISecurityService extends IRunAsSystemService {
 
@@ -40,8 +39,6 @@ public interface ISecurityService extends IRunAsSystemService {
 	Collection<GrantedAuthority> getAuthorities(Authentication authentication);
 
 	Collection<GrantedAuthority> getAuthorities(IUser user);
-
-	SecurityContext buildSecureContext(String username);
 
 	void clearAuthentication();
 

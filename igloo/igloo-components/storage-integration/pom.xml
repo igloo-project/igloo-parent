@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha3</version>
+		<version>6.0.0-Alpha4</version>
 	</parent>
 
 	<artifactId>storage-integration</artifactId>
@@ -13,7 +13,7 @@
 	<name>Storage Spring integration</name>
 	
 	<properties>
-		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor</igloo.processors>
+		<igloo.processors>${igloo.processor.spring}</igloo.processors>
 	</properties>
 
 	<dependencies>

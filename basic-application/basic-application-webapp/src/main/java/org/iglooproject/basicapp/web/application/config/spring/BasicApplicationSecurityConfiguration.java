@@ -26,14 +26,13 @@ public class BasicApplicationSecurityConfiguration {
 	public SecurityFilterChain consoleSecurityFilterChain(HttpSecurity http) throws Exception {
 		return http
 			.securityMatcher(antMatcher("/console/**"))
-			.headers().disable()
-			.csrf().disable()
-			.formLogin().disable()
-			.securityContext().requireExplicitSave(false).and()
-			.anonymous().authorities(CoreAuthorityConstants.ROLE_ANONYMOUS).and()
-			.exceptionHandling()
+			.headers(h -> h.disable())
+			.csrf(c -> c.disable())
+			.formLogin(f -> f.disable())
+			.anonymous(a -> a.authorities(CoreAuthorityConstants.ROLE_ANONYMOUS))
+			.exceptionHandling(e -> e
 				.accessDeniedPage("/console/access-denied/")
-				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/console/login/")).and()
+				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/console/login/")))
 			.authorizeHttpRequests(requests -> requests
 				.requestMatchers(
 					antMatcher("/console/login/**"),
@@ -48,12 +47,11 @@ public class BasicApplicationSecurityConfiguration {
 	public SecurityFilterChain ressourcesSecurityFilterChain(HttpSecurity http) throws Exception {
 		return http
 			.securityMatcher(antMatcher("/wicket/resource/**"))
-			.headers().disable()
-			.csrf().disable()
-			.formLogin().disable()
-			.securityContext().requireExplicitSave(false).and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()
-			.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint()).and()
+			.headers(h -> h.disable())
+			.csrf(c -> c.disable())
+			.formLogin(f -> f.disable())
+			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.NEVER))
+			.exceptionHandling(e -> e.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
 			.authorizeHttpRequests(requests -> requests
 				.requestMatchers(
 					regexMatcher("^/wicket/resource/org.iglooproject.basicapp.web.application.common.template.resources.js.[^/]+.*"),
@@ -70,15 +68,14 @@ public class BasicApplicationSecurityConfiguration {
 	@Order(3)
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
-			.headers().disable()
-			.csrf().disable()
-			.formLogin().disable()
-			.securityContext().requireExplicitSave(false).and()
-			.anonymous().authorities(CoreAuthorityConstants.ROLE_ANONYMOUS).and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation().changeSessionId().and()
-			.exceptionHandling()
+			.headers(h -> h.disable())
+			.csrf(c -> c.disable())
+			.formLogin(f -> f.disable())
+			.anonymous(a -> a.authorities(CoreAuthorityConstants.ROLE_ANONYMOUS))
+			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation().changeSessionId())
+			.exceptionHandling(e -> e
 				.accessDeniedPage("/access-denied/")
-				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login/")).and()
+				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login/")))
 			.authorizeHttpRequests(requests -> requests
 				.requestMatchers(
 					antMatcher("/login/"),

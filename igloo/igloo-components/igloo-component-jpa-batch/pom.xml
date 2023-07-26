@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha3</version>
+		<version>6.0.0-Alpha4</version>
 	</parent>
 
 	<artifactId>igloo-component-jpa-batch</artifactId>
@@ -14,7 +14,7 @@
 	<description>Capitalisation des outils génériques pour la technologie JPA</description>
 
 	<properties>
-		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor,${igloo.processor.querydsl},${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>${igloo.processor.spring},${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>

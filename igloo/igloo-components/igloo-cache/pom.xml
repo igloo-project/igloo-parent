@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha3</version>
+		<version>6.0.0-Alpha4</version>
 	</parent>
 
 	<artifactId>igloo-cache</artifactId>
@@ -13,7 +13,7 @@
 	<name>Cache management wrapper</name>
 
 	<properties>
-		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor,${igloo.processor.bindgen}</igloo.processors>
+		<igloo.processors>${igloo.processor.spring},${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>

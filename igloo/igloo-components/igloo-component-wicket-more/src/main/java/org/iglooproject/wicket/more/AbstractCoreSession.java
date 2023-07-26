@@ -9,6 +9,7 @@ import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.Request;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -22,6 +23,7 @@ import org.iglooproject.wicket.more.model.threadsafe.SessionThreadSafeGenericEnt
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.acls.model.Permission;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -31,8 +33,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
+import org.springframework.security.web.authentication.switchuser.SwitchUserGrantedAuthority;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+
+import igloo.security.CoreUserDetails;
+import igloo.security.UserDetails;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends AuthenticatedWebSession {
 
@@ -51,6 +63,12 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	
 	@SpringBean(name = "propertyService")
 	protected IPropertyService propertyService;
+	
+	/**
+	 * Like {@link SwitchUserFilter} from spring-security, we initialize our own {@link SecurityContextRepository}
+	 * (instance from spring-security filter stack is not available).
+	 */
+	private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 	
 	private final IModel<U> userModel = new SessionThreadSafeGenericEntityModel<>();
 	
@@ -126,8 +144,7 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	protected Authentication doAuthenticate(String username, String password) {
 		Authentication authentication = authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		
+		setSpringSecurityContext(authentication);
 		return authentication;
 	}
 	
@@ -328,11 +345,41 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 	}
 
 	/**
+	 * Inspired from spring-security {@link SwitchUserFilter}.
+	 * 
 	 * @see AbstractCoreSession#authenticate(String, String)
 	 */
 	public void signInAs(String username) throws UsernameNotFoundException {
-		//TODO igloo-boot
-		throw new IllegalStateException("igloo-boot");
+		// on charge l'utilisateur
+		// on le passe dans une méthode surchargeable -> implémentation par défaut à faire
+		// Sitra -> revoir l'implémentation par défaut
+		if (!hasSignInAsPermissions(getUser(), userService.getByUsername(username))) {
+			throw new SecurityException("L'utilisateur n'a pas les permissions nécessaires");
+		}
+		UserDetails userDetails = (UserDetails) userDetailsService.loadUserByUsername(username);
+		Authentication previousAuthentication = SecurityContextHolder.getContext().getAuthentication();
+		if (previousAuthentication instanceof AnonymousAuthenticationToken) {
+			throw new IllegalStateException("Anonymous authentication cannot invoke sign-in-as.");
+		}
+		GrantedAuthority switchAuthority = new SwitchUserGrantedAuthority("ROLE_PREVIOUS_AUTHENTICATION", previousAuthentication);
+		Collection<GrantedAuthority> authorities = ImmutableList.<GrantedAuthority>builder()
+				.addAll(userDetails.getAuthorities())
+				.add(switchAuthority)
+				.build();
+		UserDetails targetUser = new CoreUserDetails(userDetails.getUsername(), "NO-PASSWORD", authorities, userDetails.getPermissions());
+		// create the new authentication token
+		UsernamePasswordAuthenticationToken targetUserRequest =
+				UsernamePasswordAuthenticationToken.authenticated(
+						targetUser,
+						targetUser.getPassword(),
+						targetUser.getAuthorities());
+		targetUserRequest.setDetails(targetUser);
+		setSpringSecurityContext(targetUserRequest);
+		originalAuthentication = previousAuthentication;
+		
+		doInitializeSession();
+		bind();
+		signIn(true);
 	}
 
 	public void signInAsMe() throws BadCredentialsException, SecurityException {
@@ -340,11 +387,18 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 			throw new BadCredentialsException("Pas d'authentification originelle");
 		}
 		
-		SecurityContextHolder.getContext().setAuthentication(originalAuthentication);
+		setSpringSecurityContext(originalAuthentication);
 		doInitializeSession();
 		bind();
 		signIn(true);
 		originalAuthentication = null;
+	}
+
+	private void setSpringSecurityContext(Authentication authentication) {
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		securityContextRepository.saveContext(SecurityContextHolder.getContext(),
+				(HttpServletRequest) RequestCycle.get().getRequest().getContainerRequest(),
+				(HttpServletResponse) RequestCycle.get().getResponse().getContainerResponse());
 	}
 
 }

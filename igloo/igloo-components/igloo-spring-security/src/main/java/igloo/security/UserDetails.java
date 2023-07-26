@@ -14,4 +14,6 @@ public interface UserDetails extends org.springframework.security.core.userdetai
 
 	public Collection<Permission> getPermissions();
 
+	String getRemoteUsername();
+
 }

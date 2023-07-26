@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha3</version>
+		<version>6.0.0-Alpha4</version>
 	</parent>
 
 	<artifactId>igloo-component-jpa-more</artifactId>
@@ -13,7 +13,7 @@
 	<name>Igloo - Component - JPA - More JPA fun</name>
 
 	<properties>
-		<igloo.processors>org.springframework.boot.autoconfigureprocessor.AutoConfigureAnnotationProcessor,${igloo.processor.querydsl},${igloo.processor.bindgen},${igloo.processor.immutables}</igloo.processors>
+		<igloo.processors>${igloo.processor.spring},${igloo.processor.querydsl},${igloo.processor.jpamodelgen},${igloo.processor.bindgen},${igloo.processor.immutables}</igloo.processors>
 	</properties>
 
 	<dependencies>
@@ -154,6 +154,16 @@
 			<artifactId>querydsl-apt</artifactId>
 			<classifier>jakarta</classifier>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.immutables</groupId>
