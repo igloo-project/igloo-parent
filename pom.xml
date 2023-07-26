@@ -9,7 +9,7 @@
 	</parent>
 	
 	<artifactId>igloo-parent</artifactId>
-	<version>6.0.0-Alpha4</version>
+	<version>6.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>Igloo - Parent</name>
