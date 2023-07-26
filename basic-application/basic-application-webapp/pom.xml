@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.0.0-Alpha4-SNAPSHOT</version>
+		<version>6.0.0-Alpha4</version>
 	</parent>
 	
 	<packaging>jar</packaging>
