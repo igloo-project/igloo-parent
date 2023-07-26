@@ -1,4 +1,5 @@
 $ui-datepicker-width:									19rem !default;
+$ui-datepicker-zindex:									$zindex-datepicker !default;
 
 $ui-datepicker-border-radius:							0 !default;
 $ui-datepicker-border:									none !default;
@@ -51,6 +52,7 @@ $ui-datepicker-footer-padding:							.5em .75em !default;
 	}
 	
 	width: $ui-datepicker-width;
+	z-index: $ui-datepicker-zindex !important;
 	padding: 0;
 	display: none;
 	
