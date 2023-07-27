@@ -79,7 +79,7 @@ maven-deploy:
     - docker
 
 sonar-analyze:
-  stage: analyze-report
+  stage: analyze
   environment: staging
   script:
     # override sonar.projectKey / sonar.projectName for not-master not-main branches
