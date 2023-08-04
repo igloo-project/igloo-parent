@@ -16,6 +16,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
 import org.hibernate.annotations.SortComparator;
+import org.hibernate.search.engine.backend.types.Projectable;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.ValueBridgeRef;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
@@ -62,7 +63,7 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	@Id
 	@GeneratedValue
 	// TODO igloo-boot; with hibernate-search 6.x, there is no longer a default indexed identifier
-	@GenericField(name = ID, sortable = Sortable.YES)
+	@GenericField(name = ID, sortable = Sortable.YES, projectable = Projectable.YES)
 	private Long id;
 
 	@Column(nullable = false)
