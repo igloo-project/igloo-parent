@@ -9,7 +9,6 @@ import org.hibernate.search.query.dsl.BooleanJunction;
 import org.iglooproject.basicapp.core.business.history.model.HistoryLog;
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
 import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
@@ -81,7 +80,7 @@ public class HistoryLogSearchQueryImpl extends AbstractHibernateSearchSearchQuer
 			BooleanJunction<?> junction = getDefaultQueryBuilder().bool();
 			shouldIfNotNull(
 				junction,
-				matchOneIfGiven(Bindings.historyLog().eventType(), allowedWithoutDifferencesEventTypes),
+				matchOneIfGiven(AbstractHistoryLog.EVENT_TYPE, allowedWithoutDifferencesEventTypes),
 				matchIfGiven(AbstractHistoryLog.HAS_DIFFERENCES, true)
 			);
 			must(junction.createQuery());

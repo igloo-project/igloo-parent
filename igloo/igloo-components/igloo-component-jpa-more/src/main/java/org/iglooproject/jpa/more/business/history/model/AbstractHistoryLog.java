@@ -51,6 +51,8 @@ public abstract class AbstractHistoryLog<
 
 	public static final String DATE = "date";
 
+	public static final String EVENT_TYPE = "eventType";
+
 	private static final String SUBJECT = "subject";
 	private static final String SUBJECT_PREFIX = SUBJECT + ".";
 
@@ -90,7 +92,7 @@ public abstract class AbstractHistoryLog<
 
 	@Basic(optional = false)
 	@Enumerated(EnumType.STRING)
-	@Field(analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
+	@Field(name = EVENT_TYPE, analyzer = @Analyzer(definition = HibernateSearchAnalyzer.KEYWORD))
 	private HET eventType;
 	
 	@Embedded
