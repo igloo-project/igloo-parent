@@ -25,7 +25,7 @@ public enum GenericEntitySort implements ISort<SortField> {
 			return List.of(
 				SortUtils.luceneSortField(
 					this, sortOrder, SortField.Type.LONG,
-					GenericEntity.ID_SORT
+					GenericEntity.ID
 				)
 			);
 		}

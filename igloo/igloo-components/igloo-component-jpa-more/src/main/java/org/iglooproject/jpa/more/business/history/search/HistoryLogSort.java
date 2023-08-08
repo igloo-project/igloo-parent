@@ -16,7 +16,7 @@ public enum HistoryLogSort implements ISort<SortField> {
 			return List.of(
 				SortUtils.luceneSortField(
 					this, sortOrder, SortField.Type.LONG,
-					GenericEntity.ID_SORT
+					GenericEntity.ID
 				)
 			);
 		}
@@ -35,7 +35,7 @@ public enum HistoryLogSort implements ISort<SortField> {
 				),
 				SortUtils.luceneSortField(
 					this, sortOrder, SortField.Type.LONG,
-					GenericEntity.ID_SORT
+					GenericEntity.ID
 				)
 			);
 		}
