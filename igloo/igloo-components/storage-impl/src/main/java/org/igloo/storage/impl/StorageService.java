@@ -152,6 +152,11 @@ public class StorageService implements IStorageService, IStorageStatisticsServic
 	}
 
 	@Override
+	public void updateFichierFilename(Fichier fichier, String filename) {
+		fichier.setFilename(filename);
+	}
+
+	@Override
 	public Fichier getFichierById(@Nonnull Long id) {
 		return databaseOperations.getFichierById(id);
 	}

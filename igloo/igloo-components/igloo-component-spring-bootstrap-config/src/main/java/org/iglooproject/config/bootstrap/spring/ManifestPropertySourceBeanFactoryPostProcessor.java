@@ -121,6 +121,12 @@ public class ManifestPropertySourceBeanFactoryPostProcessor implements Applicati
 	}
 
 	private Manifest findManifest(Class<?> clazz) {
+		// handle the case where spring @Configuration is a static inner class
+		Class<?> enclosingClass = clazz.getEnclosingClass();
+		while (enclosingClass != null) {
+			clazz = enclosingClass;
+			enclosingClass = enclosingClass.getEnclosingClass();
+		}
 		String className = clazz.getSimpleName();
 		String classRelativeFile = className + ".class";
 		URL clazzUrl = clazz.getResource(classRelativeFile);

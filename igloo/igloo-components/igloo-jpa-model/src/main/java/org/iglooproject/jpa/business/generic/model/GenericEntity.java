@@ -56,7 +56,9 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	static final Function<Object, Class<?>> GET_CLASS_FUNCTION;
 	public static final GenericEntityImplementation IMPLEMENTATION;
 
+	@Deprecated
 	public static final String ID_SORT = "idSort";
+	public static final String ID = ID_SORT;
 
 	@SuppressWarnings("rawtypes")
 	private static final Ordering<Comparable> DEFAULT_KEY_ORDERING = Ordering.natural().nullsLast();

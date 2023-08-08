@@ -3,12 +3,11 @@ package org.iglooproject.jpa.more.business.generic.model.search;
 import java.util.List;
 
 import org.apache.lucene.search.SortField;
-
-import com.google.common.collect.ImmutableList;
-
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
+
+import com.google.common.collect.ImmutableList;
 
 public enum GenericEntitySort implements ISort<SortField> {
 	
@@ -28,7 +27,7 @@ public enum GenericEntitySort implements ISort<SortField> {
 			return ImmutableList.of(
 					SortUtils.luceneSortField(
 							this, sortOrder, SortField.Type.LONG,
-							GenericEntity.ID_SORT
+							GenericEntity.ID
 					)
 			);
 		}

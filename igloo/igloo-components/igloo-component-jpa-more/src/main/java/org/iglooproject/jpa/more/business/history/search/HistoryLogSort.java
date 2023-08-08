@@ -3,13 +3,11 @@ package org.iglooproject.jpa.more.business.history.search;
 import java.util.List;
 
 import org.apache.lucene.search.SortField;
-
-import com.google.common.collect.ImmutableList;
-
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
+
+import com.google.common.collect.ImmutableList;
 
 public enum HistoryLogSort implements ISort<SortField> {
 	
@@ -19,7 +17,7 @@ public enum HistoryLogSort implements ISort<SortField> {
 			return ImmutableList.of(
 					SortUtils.luceneSortField(
 							this, sortOrder, SortField.Type.LONG,
-							GenericEntity.ID_SORT
+							AbstractHistoryLog.ID
 					)
 			);
 		}
@@ -38,7 +36,7 @@ public enum HistoryLogSort implements ISort<SortField> {
 					),
 					SortUtils.luceneSortField(
 							this, sortOrder, SortField.Type.LONG,
-							GenericEntity.ID_SORT
+							AbstractHistoryLog.ID
 					)
 			);
 		}

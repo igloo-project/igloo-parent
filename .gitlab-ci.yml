@@ -82,11 +82,28 @@ sonar-analyze:
   stage: analyze
   environment: staging
   script:
-    - ./ci/sonar-branch.py | tee config
-    - source config
-    - mvn -U verify sonar:sonar
+    # override sonar.projectKey / sonar.projectName for not-master not-main branches
+    - |
+      SONAR_OPTS=( "-Dsonar.host.url=https://sonar.tools.kobalt.fr" )
+      if [ "$CI_COMMIT_REF_NAME" != "master" -a "$CI_COMMIT_REF_NAME" != "main" ]; then
+        PROJECT_NAME="$( mvn -q help:evaluate -DforceStdout -Dexpression=project.name )"
+        PROJECT_ARTIFACT_ID="$( mvn -q help:evaluate -DforceStdout -Dexpression=project.artifactId )"
+        PROJECT_GROUP_ID="$( mvn -q help:evaluate -DforceStdout -Dexpression=project.groupId )"
+        SONAR_OPTS+=("-Dsonar.projectKey=$PROJECT_GROUP_ID:$PROJECT_ARTIFACT_ID:$CI_COMMIT_REF_NAME")
+        SONAR_OPTS+=("-Dsonar.projectName=$PROJECT_NAME ($CI_COMMIT_REF_NAME)")
+      fi
+    - mvn -U clean verify sonar:sonar
       -DskipTests
-      -Dsonar.host.url="https://sonar.tools.kobalt.fr"
+      -Dsonar.qualitygate.wait=true
+      "${SONAR_OPTS[@]}"
+  only:
+    - /^dev$/
+    - /^master$/
+    - /^main$/
+    - /^igloo-boot$/
+    - /^igloo-boot-dev$/
+    - /^hf-.*$/
+  allow_failure: true
   except:
     variables:
       - $CHECK_DEPENDENCIES
