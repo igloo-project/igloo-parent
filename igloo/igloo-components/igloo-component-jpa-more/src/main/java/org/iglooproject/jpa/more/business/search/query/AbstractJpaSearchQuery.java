@@ -45,6 +45,10 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
 		jpaQuery.innerJoin(target, alias);
 	}
 
+	public <P> void innerJoin(EntityPath<P> target, Path<P> alias) {
+		jpaQuery.innerJoin(target, alias);
+	}
+
 	// Junction appender
 	// 	>	Must
 	protected void must(BooleanExpression booleanExpression) {
