@@ -27,7 +27,6 @@ public class ReferenceData<E extends ReferenceData<?>> extends GenericReferenceD
 	public static final String LABEL_EN_SORT = LABEL_PREFIX + LocalizedText.EN_SORT;
 
 	public static final String CODE = "code";
-	public static final String CODE_SORT = "codeSort";
 
 	@Embedded
 	@IndexedEmbedded(name = LABEL)

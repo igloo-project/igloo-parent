@@ -125,7 +125,6 @@ public class BasicApplicationWebappConfig {
 		}
 		
 		@Configuration
-//		@Order(Ordered.HIGHEST_PRECEDENCE)
 		public static class CommonInitializer implements ServletContextInitializer, WebApplicationInitializer {
 			@Override
 			public void onStartup(ServletContext servletContext) throws ServletException {
@@ -134,13 +133,12 @@ public class BasicApplicationWebappConfig {
 				servletContext.setRequestCharacterEncoding(StandardCharsets.UTF_8.displayName());
 				servletContext.setSessionTimeout(480);
 				servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
-				//TODO: mpiva - ajouter les listeners
+				//TODO igloo-boot: mpiva - ajouter le listener historique ou basculer sur igloo-logging
 //				servletContext.addListener(SLF4JLoggingListener.class);
 			}
 		}
 	}
 	
-	// TODO igloo-boot
 	@Configuration
 	public static class NotificationConfiguration {
 		@Bean

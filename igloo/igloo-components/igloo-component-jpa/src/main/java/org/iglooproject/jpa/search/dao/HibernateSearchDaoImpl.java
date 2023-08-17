@@ -129,7 +129,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	@Override
 	public Set<Class<?>> getIndexedRootEntities(Class<?>... selection) {
 		return Search.mapping(entityManager.getEntityManagerFactory())
-			.allIndexedEntities() // TODO: igloo-boot : là je récupère toutes les entités indexées, c'est peut-être trop bourrin
+			.allIndexedEntities()
 			.stream()
 			.map(SearchIndexedEntity::javaClass)
 			.filter(indexedClass -> Set.of(selection).stream().anyMatch(selectionClass -> selectionClass.isAssignableFrom(indexedClass)))

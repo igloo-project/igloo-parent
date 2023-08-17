@@ -15,6 +15,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
+import org.iglooproject.basicapp.core.business.common.model.PostalCode;
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
@@ -30,6 +31,7 @@ import org.iglooproject.basicapp.web.application.administration.page.Administrat
 import org.iglooproject.basicapp.web.application.common.converter.LocalDateConverter;
 import org.iglooproject.basicapp.web.application.common.converter.LocalDateTimeConverter;
 import org.iglooproject.basicapp.web.application.common.converter.LocalTimeConverter;
+import org.iglooproject.basicapp.web.application.common.converter.PostalCodeConverter;
 import org.iglooproject.basicapp.web.application.common.renderer.AuthorityRenderer;
 import org.iglooproject.basicapp.web.application.common.renderer.InstantRenderer;
 import org.iglooproject.basicapp.web.application.common.renderer.UserGroupRenderer;
@@ -155,8 +157,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		converterLocator.set(HistoryValue.class, HistoryValueRenderer.get());
 		converterLocator.set(HistoryEventType.class, EnumRenderer.get());
 		
-		//TODO: igloo-boot
-//		converterLocator.set(PostalCode.class, PostalCodeConverter.get());
+		converterLocator.set(PostalCode.class, PostalCodeConverter.get());
 		
 		return new HibernateProxyAwareConverterLocator(converterLocator);
 	}

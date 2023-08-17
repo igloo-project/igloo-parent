@@ -44,11 +44,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.context.annotation.ComponentScan.Filter;
 
 import com.google.common.base.Converter;
 import com.google.common.primitives.Ints;
@@ -108,7 +108,6 @@ public class WicketMoreAutoConfiguration implements IPropertyRegistryConfig {
 		registry.registerInteger(AUTOCOMPLETE_LIMIT, 20);
 	}
 
-	// TODO igloo-boot ?
 	@Bean
 	@ConditionalOnMissingBean(WebApplication.class)
 	public WebApplication webApplication() {
