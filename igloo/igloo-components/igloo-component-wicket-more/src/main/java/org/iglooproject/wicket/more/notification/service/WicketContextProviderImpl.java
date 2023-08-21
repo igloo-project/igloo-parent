@@ -89,12 +89,11 @@ public class WicketContextProviderImpl implements IWicketContextProvider {
 			final ThreadContext initialContext = ThreadContext.get(false);
 
 			Application currentApplication = ThreadContext.getApplication();
+			Application targetApplication = getTargetApplication();
 			if (currentApplication != null
-					&& (application == null || currentApplication == application)) {
+					&& (targetApplication == null || currentApplication == targetApplication)) {
 				return ExecutionContexts.noOp().open();
 			}
-
-			WebApplication targetApplication = getTargetApplication();
 
 			ThreadContext.detach();
 			ThreadContext.setApplication(targetApplication);
