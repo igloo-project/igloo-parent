@@ -168,11 +168,6 @@
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<optional>true</optional>
-		</dependency>
 		
 		<!-- JDBC Driver -->
 		<dependency>

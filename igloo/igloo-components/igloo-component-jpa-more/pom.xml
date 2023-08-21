@@ -161,11 +161,6 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
 			<groupId>org.immutables</groupId>
 			<artifactId>value</artifactId>
 			<scope>provided</scope>
