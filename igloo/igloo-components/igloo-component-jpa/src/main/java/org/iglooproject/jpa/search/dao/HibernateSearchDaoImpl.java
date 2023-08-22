@@ -136,7 +136,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			.collect(Collectors.toCollection(() -> Sets.newTreeSet((o1, o2) -> GenericEntity.STRING_COLLATOR_FRENCH.compare(o1.getSimpleName(), o2.getSimpleName()))));
 	}
 	
-	//TODO: iglo-boot : migration vers api HS 6 OK
+	//TODO: igloo-boot : migration vers api HS 6 OK
 	@Override
 	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(E entity) {
 		if (entity != null) {
