@@ -45,11 +45,5 @@ public enum HistoryLogSort implements ISort<SortField> {
 			return SortOrder.DESC;
 		}
 	};
-	
-	@Override
-	public abstract List<SortField> getSortFields(SortOrder sortOrder);
-	
-	@Override
-	public abstract SortOrder getDefaultOrder();
 
 }
