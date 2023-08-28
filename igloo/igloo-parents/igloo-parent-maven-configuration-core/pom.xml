@@ -16,7 +16,7 @@
 
 	<properties>
 		<igloo.version>${project.version}</igloo.version>
-		<igloo-maven.version>5.12.0</igloo-maven.version>
+		<igloo-maven.version>5.12.1</igloo-maven.version>
 		<igloo-commons.version>5.12.0</igloo-commons.version>
 
 		<igloo.log4j.major-version>2</igloo.log4j.major-version>
