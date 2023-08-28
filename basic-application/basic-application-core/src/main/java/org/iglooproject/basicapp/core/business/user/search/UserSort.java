@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.lucene.search.SortField;
 import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
 
@@ -55,7 +54,7 @@ public enum UserSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return ImmutableList.of(
-				SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID_SORT)
+				SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, User.ID)
 			);
 		}
 		
@@ -64,11 +63,5 @@ public enum UserSort implements ISort<SortField> {
 			return SortOrder.DESC;
 		}
 	};
-
-	@Override
-	public abstract List<SortField> getSortFields(SortOrder sortOrder);
-
-	@Override
-	public abstract SortOrder getDefaultOrder();
 
 }

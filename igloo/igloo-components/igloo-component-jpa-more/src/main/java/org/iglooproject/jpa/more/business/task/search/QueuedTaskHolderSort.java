@@ -50,10 +50,4 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 		}
 	};
 
-	@Override
-	public abstract SortOrder getDefaultOrder();
-
-	@Override
-	public abstract List<SortField> getSortFields(SortOrder sortOrder);
-
 }

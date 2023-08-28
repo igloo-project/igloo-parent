@@ -36,10 +36,4 @@ public enum AnnouncementSort implements ISort<OrderSpecifier<?>> {
 		}
 	};
 
-	@Override
-	public abstract List<OrderSpecifier<?>> getSortFields(SortOrder sortOrder);
-
-	@Override
-	public abstract SortOrder getDefaultOrder();
-
 }

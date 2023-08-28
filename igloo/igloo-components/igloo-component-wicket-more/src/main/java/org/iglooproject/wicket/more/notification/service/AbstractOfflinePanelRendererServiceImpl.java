@@ -7,9 +7,11 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.core.util.string.ComponentRenderer;
 import org.apache.wicket.protocol.http.BufferedWebResponse;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.util.lang.Args;
+import org.iglooproject.commons.util.context.IExecutionContext;
 import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.slf4j.Logger;
@@ -64,7 +66,7 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 	 */
 	protected String renderComponent(final IOfflineComponentProvider<? extends Component> offlineComponent, final Locale locale, final String variation) {
 		Args.notNull(offlineComponent, "offlineComponent");
-		try (ITearDownHandle handle = wicketContextProvider.context(locale).open()) {
+		try (ITearDownHandle handle = context(locale).open()) {
 			RequestCycle.get().setMetaData(OfflineComponentClassMetadataKey.INSTANCE, offlineComponent.getComponentClass());
 			
 			Component component = offlineComponent.getComponent();
@@ -83,7 +85,7 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 	 */
 	protected String renderPage(final IOfflineComponentProvider<? extends Page> offlineComponent, final Locale locale, final String variation) {
 		Args.notNull(offlineComponent, "offlineComponent");
-		try (ITearDownHandle handle = wicketContextProvider.context(locale).open()) {
+		try (ITearDownHandle handle = context(locale).open()) {
 			Pair<Page, CharSequence> result = renderPage(offlineComponent);
 			if (!offlineComponent.getComponentClass().isInstance(result.getLeft())) {
 				LOGGER.warn("Component class {} does not match advertised class {}",
@@ -92,6 +94,14 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 			
 			return postProcessHtml(result.getLeft(), locale, variation, result.getRight().toString());
 		}
+	}
+
+	/**
+	 * Override this method if you need to customize your rendering context. A common usage is to bind context with
+	 * a customized {@link WebApplication}.
+	 */
+	protected IExecutionContext context(final Locale locale) {
+		return wicketContextProvider.context(locale);
 	}
 
 	/**
