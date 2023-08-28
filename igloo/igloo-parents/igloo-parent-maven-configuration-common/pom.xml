@@ -11,7 +11,7 @@
 
 	<groupId>org.iglooproject.parents</groupId>
 	<artifactId>igloo-parent-maven-configuration-common</artifactId>
-	<version>5.12.1-SNAPSHOT</version>
+	<version>5.12.1</version>
 	<packaging>pom</packaging>
 
 	<name>Igloo - Parent - Maven configuration - Common</name>
