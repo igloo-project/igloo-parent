@@ -36,6 +36,8 @@ import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.WebApplicationInitializer;
 
+import igloo.julhelper.servlet.JakartaJulLoggingListener;
+import igloo.log4j2jmx.servlet.JakartaLog4j2LoggingManagerListener;
 import igloo.wicket.servlet.filter.Log4jUrlFilter;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.ServletContext;
@@ -128,13 +130,12 @@ public class BasicApplicationWebappConfig {
 		public static class CommonInitializer implements ServletContextInitializer, WebApplicationInitializer {
 			@Override
 			public void onStartup(ServletContext servletContext) throws ServletException {
-				
 				servletContext.setResponseCharacterEncoding(StandardCharsets.UTF_8.displayName());
 				servletContext.setRequestCharacterEncoding(StandardCharsets.UTF_8.displayName());
 				servletContext.setSessionTimeout(480);
 				servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
-				//TODO igloo-boot: mpiva - ajouter le listener historique ou basculer sur igloo-logging
-//				servletContext.addListener(SLF4JLoggingListener.class);
+				servletContext.addListener(JakartaJulLoggingListener.class);
+				servletContext.addListener(JakartaLog4j2LoggingManagerListener.class);
 			}
 		}
 	}

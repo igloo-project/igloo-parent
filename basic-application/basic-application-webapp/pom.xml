@@ -83,14 +83,12 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>jul-helper</artifactId>
-			<version>1.0.2</version>
-			<scope>runtime</scope>
+			<version>1.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>log4j2-jmx-helper</artifactId>
-			<version>1.0.2</version>
-			<scope>runtime</scope>
+			<version>1.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
