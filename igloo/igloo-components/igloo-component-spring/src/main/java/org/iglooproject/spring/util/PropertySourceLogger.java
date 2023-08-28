@@ -16,7 +16,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import org.iglooproject.spring.config.CorePropertyPlaceholderConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +45,16 @@ public class PropertySourceLogger implements ApplicationListener<ContextRefreshe
 	
 	private static final String PROPERTY_IGLOO_PROPERTY_SOURCE_OUTPUT_FILE_NAME = "igloo.propertySource.outputFileName";
 	private static final Logger LOGGER = LoggerFactory.getLogger(PropertySourceLogger.class);
+	/**
+	 * {@value} is the name given to the {@link PropertySource} for the set of
+	 * {@linkplain #mergeProperties() merged properties} supplied to this configurer.
+	 */
+	public static final String LOCAL_PROPERTIES_PROPERTY_SOURCE_NAME = "localProperties";
+	/**
+	 * {@value} is the name given to the {@link PropertySource} that wraps the
+	 * {@linkplain #setEnvironment environment} supplied to this configurer.
+	 */
+	public static final String ENVIRONMENT_PROPERTIES_PROPERTY_SOURCE_NAME = "environmentProperties";
 	
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -104,10 +113,10 @@ public class PropertySourceLogger implements ApplicationListener<ContextRefreshe
 			final StringBuilder skippedProperties) {
 		// previously, configuration was partly loaded in environment (bootstrap) and in
 		// PropertySourcePlaceholderConfigurer. We try to load and to combine both.
-		CorePropertyPlaceholderConfigurer configurer = context.getBean(CorePropertyPlaceholderConfigurer.class);
+		ConfigurableEnvironment environment = context.getBean(ConfigurableEnvironment.class);
 		for (String propertyName : propertyNames) {
 			try {
-				String configurerProperty = configurer.getProperty(propertyName); // null if not resolved
+				String configurerProperty = environment.getProperty(propertyName); // null if not resolved
 				String envProperty = context.getEnvironment().getProperty(propertyName);
 				if (envProperty != null && ! Objects.equals(configurerProperty, envProperty)) {
 					properties.put(String.format("%s.configurer", propertyName), configurerProperty);
@@ -139,10 +148,10 @@ public class PropertySourceLogger implements ApplicationListener<ContextRefreshe
 					}
 				}
 		);
-		CorePropertyPlaceholderConfigurer configurer = context.getBean(CorePropertyPlaceholderConfigurer.class);
-		configurer.getAppliedPropertySources().forEach(
+		ConfigurableEnvironment environment = context.getBean(ConfigurableEnvironment.class);
+		environment.getPropertySources().forEach(
 				p -> {
-					if (CorePropertyPlaceholderConfigurer.ENVIRONMENT_PROPERTIES_PROPERTY_SOURCE_NAME.equals(p.getName())) {
+					if (ENVIRONMENT_PROPERTIES_PROPERTY_SOURCE_NAME.equals(p.getName())) {
 						// skipped
 					} else if (p instanceof EnumerablePropertySource<?>) {
 						propertyNames.addAll(Lists.newArrayList(((EnumerablePropertySource<?>) p).getPropertyNames()));
