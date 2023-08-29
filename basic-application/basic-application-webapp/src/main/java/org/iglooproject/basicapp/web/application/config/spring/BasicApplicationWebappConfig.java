@@ -34,7 +34,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.web.WebApplicationInitializer;
 
 import igloo.julhelper.servlet.JakartaJulLoggingListener;
 import igloo.log4j2jmx.servlet.JakartaLog4j2LoggingManagerListener;
@@ -127,7 +126,7 @@ public class BasicApplicationWebappConfig {
 		}
 		
 		@Configuration
-		public static class CommonInitializer implements ServletContextInitializer, WebApplicationInitializer {
+		public static class CommonInitializer implements ServletContextInitializer {
 			@Override
 			public void onStartup(ServletContext servletContext) throws ServletException {
 				servletContext.setResponseCharacterEncoding(StandardCharsets.UTF_8.displayName());
