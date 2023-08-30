@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.0.0-Alpha4</version>
+		<version>6.0.0-Alpha5</version>
 	</parent>
 	
 	<artifactId>basic-application-core</artifactId>
@@ -167,11 +167,6 @@
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<optional>true</optional>
 		</dependency>
 		
 		<!-- JDBC Driver -->

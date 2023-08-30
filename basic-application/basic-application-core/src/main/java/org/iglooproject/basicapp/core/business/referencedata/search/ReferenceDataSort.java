@@ -53,7 +53,7 @@ public enum ReferenceDataSort implements ISort<SortField> {
 			return ImmutableList.of(
 				SortUtils.luceneSortField(
 					this, sortOrder, SortField.Type.STRING,
-					ReferenceData.CODE_SORT
+					ReferenceData.CODE
 				)
 			);
 		}

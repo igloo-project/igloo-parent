@@ -129,14 +129,14 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	@Override
 	public Set<Class<?>> getIndexedRootEntities(Class<?>... selection) {
 		return Search.mapping(entityManager.getEntityManagerFactory())
-			.allIndexedEntities() // TODO: igloo-boot : là je récupère toutes les entités indexées, c'est peut-être trop bourrin
+			.allIndexedEntities()
 			.stream()
 			.map(SearchIndexedEntity::javaClass)
 			.filter(indexedClass -> Set.of(selection).stream().anyMatch(selectionClass -> selectionClass.isAssignableFrom(indexedClass)))
 			.collect(Collectors.toCollection(() -> Sets.newTreeSet((o1, o2) -> GenericEntity.STRING_COLLATOR_FRENCH.compare(o1.getSimpleName(), o2.getSimpleName()))));
 	}
 	
-	//TODO: iglo-boot : migration vers api HS 6 OK
+	//TODO: igloo-boot : migration vers api HS 6 OK
 	@Override
 	public <K extends Serializable & Comparable<K>, E extends GenericEntity<K, ?>> void reindexEntity(E entity) {
 		if (entity != null) {

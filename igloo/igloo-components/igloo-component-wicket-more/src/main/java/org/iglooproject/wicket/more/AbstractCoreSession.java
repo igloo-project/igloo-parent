@@ -382,6 +382,28 @@ public abstract class AbstractCoreSession<U extends GenericUser<U, ?>> extends A
 		signIn(true);
 	}
 
+	/**
+	 * Refresh the current authentication. Needed if UserDetailsService roles and permissions must be reloaded.
+	 * <p>
+	 * Update both Spring Security and Wicket contexts.
+	 */
+	public void refreshAuthentication() {
+		UserDetails userDetails = (UserDetails) userDetailsService.loadUserByUsername(getUsername());
+		UserDetails targetUser = new CoreUserDetails(userDetails.getUsername(), "NO-PASSWORD", userDetails.getAuthorities(), userDetails.getPermissions());
+		// create the new authentication token
+		UsernamePasswordAuthenticationToken targetUserRequest =
+				UsernamePasswordAuthenticationToken.authenticated(
+						targetUser,
+						targetUser.getPassword(),
+						targetUser.getAuthorities());
+		targetUserRequest.setDetails(targetUser);
+		setSpringSecurityContext(targetUserRequest);
+		
+		doInitializeSession();
+		bind();
+		signIn(true);
+	}
+
 	public void signInAsMe() throws BadCredentialsException, SecurityException {
 		if (originalAuthentication == null) {
 			throw new BadCredentialsException("Pas d'authentification originelle");

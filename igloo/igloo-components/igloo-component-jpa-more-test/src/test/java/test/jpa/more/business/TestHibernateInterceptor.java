@@ -16,7 +16,8 @@ class TestHibernateInterceptor extends AbstractJpaMoreTestCase {
 	
 	@Test
 	void testHibernateInterceptor() throws ServiceException, SecurityServiceException {
-		// TODO igloo-boot
+		// TODO igloo-boot - retrieve TestEntityInterceptor and add it to hibernate context and restore this tests
+		// and other deleted tests.
 		assumeThat(false).isTrue();
 		TestEntity entity1 = new TestEntity("entity1");
 		testEntityService.create(entity1);

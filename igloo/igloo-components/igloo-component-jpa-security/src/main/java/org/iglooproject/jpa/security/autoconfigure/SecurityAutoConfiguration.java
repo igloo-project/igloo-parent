@@ -47,7 +47,7 @@ import com.google.common.collect.Lists;
 import igloo.security.ICoreUserDetailsService;
 
 /**
- * Provides spring-security configuration. This implies a working JPA configuration. (TODO igloo-boot)
+ * Provides spring-security configuration. This implies a working JPA configuration.
  */
 @Configuration
 @PropertySource(
@@ -149,7 +149,6 @@ public class SecurityAutoConfiguration {
 		return SecurityUtils.defaultPermissionHierarchyAsString();
 	}
 	
-	// TODO igloo-boot: split @Secured
 	@Bean
 	public MethodSecurityExpressionHandler expressionHandler(ICorePermissionEvaluator corePermissionEvaluator) {
 		CoreMethodSecurityExpressionHandler methodSecurityExpressionHandler = new CoreMethodSecurityExpressionHandler();

@@ -39,11 +39,10 @@ public class CityListPanel extends AbstractReferenceDataSimpleListPanel<City, Re
 			.addLabelColumn(new ResourceModel("business.referenceData.label.en"), Bindings.city().label().en())
 				.withSort(ReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 				.withClass("cell-w-300")
-				.withClass(CELL_DISPLAY_LG);
-			//TODO: igloo-boot
-//			.addLabelColumn(new ResourceModel("business.city.postalCode.short"), Bindings.city().postalCode())
-//				.withSort(ReferenceDataSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
-//				.withClass("cell-w-120");
+				.withClass(CELL_DISPLAY_LG)
+			.addLabelColumn(new ResourceModel("business.city.postalCode.short"), Bindings.city().postalCode())
+				.withSort(ReferenceDataSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
+				.withClass("cell-w-120");
 	}
 
 	@Override

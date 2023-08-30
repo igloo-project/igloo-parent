@@ -24,6 +24,7 @@ import java.util.Locale;
 import java.util.function.Function;
 
 import org.hibernate.Hibernate;
+import org.hibernate.search.engine.backend.types.Projectable;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.iglooproject.commons.util.ordering.SerializableCollator;
@@ -55,7 +56,7 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	static final Function<Object, Class<?>> GET_CLASS_FUNCTION;
 	public static final GenericEntityImplementation IMPLEMENTATION;
 
-	public static final String ID_SORT = "idSort";
+	public static final String ID = "id";
 
 	@SuppressWarnings("rawtypes")
 	private static final Ordering<Comparable> DEFAULT_KEY_ORDERING = Ordering.natural().nullsLast();
@@ -73,7 +74,7 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 
 	@Override
 	@QueryType(PropertyType.COMPARABLE)
-	@GenericField(name = ID_SORT, sortable = Sortable.YES)
+	@GenericField(name = ID, sortable = Sortable.YES, projectable = Projectable.YES)
 	public abstract K getId();
 
 	public abstract void setId(K id);

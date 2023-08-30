@@ -236,6 +236,9 @@ public final class LuceneUtils {
 		return new RawLuceneQuery(sb.toString());
 	}
 	
+	/**
+	 * Igloo 6.0: NumericRangeQuery is no longer an available type and is removed from cases.
+	 */
 	@SuppressWarnings("unchecked")
 	public static String queryToString(Query luceneQuery) {
 		StringBuilder sb = new StringBuilder();
@@ -251,9 +254,6 @@ public final class LuceneUtils {
 			sb.append(formatPrefixQuery((PrefixQuery) luceneQuery));
 		} else if (luceneQuery instanceof WildcardQuery) {
 			sb.append(formatWildcardQuery((WildcardQuery) luceneQuery));
-		//TODO: igloo-boot
-//		} else if (luceneQuery instanceof NumericRangeQuery) {
-//			sb.append(formatNumericRangeQuery((NumericRangeQuery<? extends Number>) luceneQuery));
 		} else if (luceneQuery instanceof IToQueryStringAwareLuceneQuery) {
 			sb.append(((IToQueryStringAwareLuceneQuery) luceneQuery).toQueryString());
 		} else if (luceneQuery instanceof BoostQuery) {
@@ -363,12 +363,6 @@ public final class LuceneUtils {
 		sb.append(term.text());
 		return sb.toString();
 	}
-	
-	//TODO: igloo-boot
-//	private static String formatNumericRangeQuery(NumericRangeQuery<? extends Number> numericRangeQuery) {
-//		return toFilterRangeQuery(numericRangeQuery.getField(), numericRangeQuery.getMin(), numericRangeQuery.getMax(),
-//				numericRangeQuery.includesMin(), numericRangeQuery.includesMax()).getQuery();
-//	}
 	
 	private LuceneUtils() {
 	}

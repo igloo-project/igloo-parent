@@ -26,7 +26,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 })
 @TestPropertySource(properties = {
 	"igloo.profile=test",
-	// TODO igloo-boot: factorisation
 	"spring.jpa.properties.hibernate.search.enabled=false",
 	"spring.jpa.hibernate.ddl-auto=create-drop",
 	"spring.jpa.igloo.old-style-transaction-advisor=true"

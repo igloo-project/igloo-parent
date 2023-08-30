@@ -49,11 +49,6 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 		super(wicketContextProvider);
 	}
 	
-	@Override
-	protected IWicketContextProvider getWicketContextProvider() {
-		return super.getWicketContextProvider();
-	}
-	
 	private Locale getDefaultLocale() {
 		if (Session.exists()) {
 			return Session.get().getLocale();
@@ -176,7 +171,7 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 	}
 	
 	public IExecutionContext getExecutionContext(INotificationRecipient recipient) {
-		return getWicketContextProvider().context(recipient.getLocale());
+		return context(recipient.getLocale());
 	}
 
 	private class AddStyleAndTargetBlankAttributesNodeVisitor implements NodeVisitor {

@@ -14,7 +14,7 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 		@Override
 		public List<SortField> getSortFields(SortOrder sortOrder) {
 			return List.of(
-				SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID_SORT)
+				SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID)
 			);
 		}
 		@Override

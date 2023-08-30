@@ -101,8 +101,7 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 	}
 	
 	protected Collection<Permission> getPermissions(Authentication authentication) {
-		// TODO igloo-boot: behavior change.
-		// Previously, this method get anonymous permissions if authentication not available.
+		// Before 6.0, this method get anonymous permissions if authentication not available.
 		return AuthenticationUtil.getPermissions();
 	}
 	

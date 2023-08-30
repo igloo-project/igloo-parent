@@ -264,9 +264,8 @@ public abstract class AbstractHistoryLog<
 	}
 	
 	@Transient
-	//TODO: igloo-boot : dépendent de l'attribut differences, donc dépendent du problème du @OrderColumn
-//	@IndexingDependency(derivedFrom = @ObjectPath(@PropertyValue(propertyName = "differences")))
-//	@GenericField(name = HAS_DIFFERENCES)
+	@IndexingDependency(derivedFrom = @ObjectPath(@PropertyValue(propertyName = "differences")))
+	@GenericField(name = HAS_DIFFERENCES)
 	public boolean isDifferencesNonEmpty() {
 		return !differences.isEmpty();
 	}
