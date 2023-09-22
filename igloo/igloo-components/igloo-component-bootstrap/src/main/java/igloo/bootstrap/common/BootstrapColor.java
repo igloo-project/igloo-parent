@@ -2,14 +2,15 @@ package igloo.bootstrap.common;
 
 public enum BootstrapColor implements IBootstrapColor {
 
-	BRAND("brand"),
 	PRIMARY("primary"),
 	SECONDARY("secondary"),
 	SUCCESS("success"),
 	INFO("info"),
-	TODO("todo"),
 	WARNING("warning"),
-	DANGER("danger");
+	DANGER("danger"),
+	LIGHT("light"),
+	DARK("dark"),
+	BRAND("brand");
 
 	private final String cssClassSuffix;
 
