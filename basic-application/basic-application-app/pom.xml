@@ -20,7 +20,7 @@
 	
 	<properties>
 		<java.version>17</java.version>
-		<picocli.version>4.7.3</picocli.version>
+		<picocli.version>4.7.5</picocli.version>
 	</properties>
 	
 	<dependencies>
