@@ -30,7 +30,11 @@ class ModalMore extends bootstrap.Modal {
     }
 
     _ignoreTransitioning() {
-        this._isTransitioning = false;
+        this._isTransitioning = false
+    }
+
+    _initializeFocusTrap() {
+        return { activate: function() { }, deactivate: function() { } }
     }
 }
 
