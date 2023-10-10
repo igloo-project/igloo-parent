@@ -16,31 +16,20 @@
 }
 
 .btn-form-control-check {
-	color: $input-color;
-	background-color: $input-bg;
-	border: $input-border-width solid $input-border-color;
-	@include border-radius($input-border-radius, 0);
-	@include box-shadow($input-box-shadow);
-	@include transition($input-transition);
-	
-	.btn-check:active + &,
-	&:active {
-		filter: $form-check-input-active-filter;
-	}
-	
-	.btn-check:focus + &,
-	&:focus {
-		border-color: $form-check-input-focus-border;
-		outline: 0;
-		box-shadow: $form-check-input-focus-box-shadow;
-	}
-	
-	.btn-check:checked + &,
-	&.active {
-		color: $form-check-input-checked-color;
-		background-color: $form-check-input-checked-bg-color;
-		border-color: $form-check-input-checked-border-color;
-	}
+	--#{$prefix}btn-color: #{$input-color};
+	--#{$prefix}btn-bg: #{$input-bg};
+	--#{$prefix}btn-border-width: #{$input-border-width};
+	--#{$prefix}btn-border-color: #{$input-border-color};
+	--#{$prefix}btn-hover-color: #{$input-color};
+	--#{$prefix}btn-hover-bg: #{$gray-200};
+	--#{$prefix}btn-hover-border-color: #{$input-focus-border-color};
+	--#{$prefix}btn-focus-box-shadow: #{$input-focus-box-shadow};
+	--#{$prefix}btn-active-color: #{$component-active-color};
+	--#{$prefix}btn-active-bg: #{$component-active-bg};
+	--#{$prefix}btn-active-border-color: #{$component-active-bg};
+	--#{$prefix}btn-disabled-color: #{$input-color};
+	--#{$prefix}btn-disabled-bg: #{$input-bg};
+	--#{$prefix}btn-disabled-border-color: #{$input-border-color};
 }
 
 label.btn {

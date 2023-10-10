@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha5</version>
+		<version>6.0.0-Alpha6</version>
 	</parent>
 
 	<artifactId>igloo-component-bootstrap</artifactId>
@@ -51,6 +51,11 @@
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>jsr305</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.errorprone</groupId>
+			<artifactId>error_prone_annotations</artifactId>
+			<optional>true</optional>
 		</dependency>
 		
 		<dependency>
