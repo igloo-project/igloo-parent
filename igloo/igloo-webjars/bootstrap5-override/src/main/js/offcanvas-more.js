@@ -2,10 +2,10 @@
 
 import * as bootstrap from "bootstrap"
 
-class OffcanvasMore extends bootstrap.Offcanvas {
+class Offcanvas extends bootstrap.Offcanvas {
     _initializeFocusTrap() {
         return { activate: function() { }, deactivate: function() { } }
     }
 }
 
-export default OffcanvasMore
+export default Offcanvas

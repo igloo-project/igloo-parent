@@ -2,7 +2,7 @@
 
 import * as bootstrap from "bootstrap"
 
-class ModalMore extends bootstrap.Modal {
+class Modal extends bootstrap.Modal {
     show(relatedTarget) {
         this._appendToBody()
         // override current transitioning state
@@ -38,4 +38,4 @@ class ModalMore extends bootstrap.Modal {
     }
 }
 
-export default ModalMore
+export default Modal
