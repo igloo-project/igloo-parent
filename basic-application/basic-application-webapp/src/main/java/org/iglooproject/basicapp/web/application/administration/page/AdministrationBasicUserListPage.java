@@ -112,7 +112,7 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 				.badgePill()
 				.withClass("cell-w-100 text-center")
 			.addLabelColumn(new ResourceModel("business.user.username"), Bindings.user().username())
-				.withSideLink(AdministrationBasicUserDetailPage.MAPPER.setParameter2(new PageModel<>(this)))
+				.withLink(AdministrationBasicUserDetailPage.MAPPER.setParameter2(new PageModel<>(this)))
 				.withClass("cell-w-250")
 			.addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
 				.withSort(UserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
