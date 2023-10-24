@@ -5,7 +5,7 @@ import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOL
 
 import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
-import igloo.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
+import igloo.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5OverrideJavaScriptResourceReference;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.component.CoreLabel;
@@ -230,7 +230,8 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
         ConsoleConfiguration.get().getCssResourcesReferences()) {
       response.render(CssHeaderItem.forReference(cssResourceReference));
     }
-    response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
+    response.render(
+        JavaScriptHeaderItem.forReference(Bootstrap5OverrideJavaScriptResourceReference.get()));
   }
 
   @Override

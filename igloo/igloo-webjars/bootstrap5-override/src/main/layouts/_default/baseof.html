@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<title>{{ .Page.Title | markdownify }}</title>
+		<link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+		<!-- Bootstrap JS Override Mode -->
+		<script src="/dist/bootstrap.js"></script>
+		<!-- Bootstrap JS Vanilla Mode -->
+<!-- 		<script src="/bootstrap/dist/js/bootstrap.bundle.js"></script> -->
+	</head>
+	<body>
+		<div class="container my-5">
+			<div class="p-5 bg-body-secondary rounded-3">
+				<div class="card">
+					<div class="card-body">
+						<h1 class="mb-3">{{ .Title }}</h1>
+						{{ block "main" . }}{{ end }}
+					</div>
+				</div>
+			</div>
+			<div class="mt-4 text-end">
+				<a href="/">Home</a>
+			</div>
+		</div>
+	</body>
+</html>

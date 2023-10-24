@@ -1,0 +1,19 @@
+---
+publishDir: target/hugo/
+title: Bootstrap examples
+module:
+  mounts:
+    - source: node_modules/bootstrap
+      target: static/bootstrap
+    - source: node_modules/select2
+      target: static/select2
+    - source: node_modules/select2-theme-bootstrap5
+      target: static/select2-theme-bootstrap5
+    - source: node_modules/jquery
+      target: static/jquery
+    - source: src/main/generated-js/js/dist
+      target: static/dist
+    - source: src/main/examples
+      target: content
+    - source: src/main/layouts
+      target: layouts

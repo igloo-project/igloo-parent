@@ -1,9 +1,7 @@
-'use strict'
-
-import * as bootstrap from "bootstrap"
+import { default as BootstrapTooltip } from "bootstrap/js/src/tooltip"
 import { isVisible } from "bootstrap/js/src/util"
 
-class TooltipMore extends bootstrap.Tooltip {
+class Tooltip extends BootstrapTooltip {
     constructor(element, options) {
         super(element, options)
         this._disposeTooltipIntervalId = null
@@ -31,4 +29,4 @@ class TooltipMore extends bootstrap.Tooltip {
     }
 }
 
-export default TooltipMore
+export default Tooltip

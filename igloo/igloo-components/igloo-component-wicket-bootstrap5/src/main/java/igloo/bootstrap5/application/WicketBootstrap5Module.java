@@ -11,14 +11,9 @@ import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.IBootstrapTooltipOptions;
 import igloo.bootstrap5.markup.html.bootstrap.component.BootstrapBadge;
 import igloo.bootstrap5.markup.html.template.css.bootstrap.CoreBootstrap5CssScope;
-import igloo.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
-import igloo.bootstrap5.markup.html.template.js.bootstrap.confirm.BootstrapConfirmJavaScriptResourceReference;
-import igloo.bootstrap5.markup.html.template.js.bootstrap.modal.Bootstrap5ModalMoreJavaScriptResourceReference;
+import igloo.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5OverrideJavaScriptResourceReference;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.modal.component.Bootstrap5ModalPanel;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.modal.statement.BootstrapModal;
-import igloo.bootstrap5.markup.html.template.js.bootstrap.offcanvas.Bootstrap5OffcanvasMoreJavaScriptResourceReference;
-import igloo.bootstrap5.markup.html.template.js.bootstrap.tab.BootstrapTabMoreJavaScriptResourceReference;
-import igloo.bootstrap5.markup.html.template.js.bootstrap.tooltip.Bootstrap5TooltipMoreJavaScriptResourceReference;
 import java.util.function.Supplier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceBundles;
@@ -42,15 +37,7 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 
   @Override
   public void updateResourceBundles(ResourceBundles resourceBundles) {
-    resourceBundles.addJavaScriptBundle(
-        getClass(),
-        "bootstrap-bundle.js",
-        Bootstrap5JavaScriptResourceReference.get(),
-        Bootstrap5ModalMoreJavaScriptResourceReference.get(),
-        Bootstrap5OffcanvasMoreJavaScriptResourceReference.get(),
-        BootstrapTabMoreJavaScriptResourceReference.get(),
-        BootstrapConfirmJavaScriptResourceReference.get(),
-        Bootstrap5TooltipMoreJavaScriptResourceReference.get());
+    // nothing to do
   }
 
   @Override
@@ -60,7 +47,7 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 
   @Override
   public void updateResourceSettings(ResourceSettings resourceSettings) {
-    // Nothing
+    // nothing to do
   }
 
   @Override
@@ -118,14 +105,14 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
   public void modalRenderHead(Component component, IHeaderResponse response) {
     renderHead(component, response);
     response.render(
-        JavaScriptHeaderItem.forReference(Bootstrap5ModalMoreJavaScriptResourceReference.get()));
+        JavaScriptHeaderItem.forReference(Bootstrap5OverrideJavaScriptResourceReference.get()));
   }
 
   @Override
   public void confirmRenderHead(Component component, IHeaderResponse response) {
     renderHead(component, response);
     response.render(
-        JavaScriptHeaderItem.forReference(BootstrapConfirmJavaScriptResourceReference.get()));
+        JavaScriptHeaderItem.forReference(Bootstrap5OverrideJavaScriptResourceReference.get()));
     response.render(OnDomReadyHeaderItem.forScript(confirmStatement(component).render(true)));
   }
 
@@ -173,7 +160,8 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 
   @Override
   public void renderHead(Component component, IHeaderResponse response) {
-    response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
+    response.render(
+        JavaScriptHeaderItem.forReference(Bootstrap5OverrideJavaScriptResourceReference.get()));
   }
 
   @Override
@@ -191,7 +179,7 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
   public void tooltipRenderHead(
       Component component, IHeaderResponse response, IBootstrapTooltipOptions options) {
     response.render(
-        JavaScriptHeaderItem.forReference(Bootstrap5TooltipMoreJavaScriptResourceReference.get()));
+        JavaScriptHeaderItem.forReference(Bootstrap5OverrideJavaScriptResourceReference.get()));
     if (!StringUtils.hasText(options.getSelector())) {
       throw new IllegalStateException(
           "Option 'selector' is mandatory for " + BootstrapTooltipBehavior.class.getName());
@@ -199,14 +187,13 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 
     response.render(
         OnDomReadyHeaderItem.forScript(
-            "new TooltipMore(document.body, " + options.getJavaScriptOptions() + ");"));
+            "new bootstrap.Tooltip(document.body, " + options.getJavaScriptOptions() + ");"));
   }
 
   @Override
   public void tabRenderHead(Component component, IHeaderResponse response) {
-    response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
     response.render(
-        JavaScriptHeaderItem.forReference(BootstrapTabMoreJavaScriptResourceReference.get()));
+        JavaScriptHeaderItem.forReference(Bootstrap5OverrideJavaScriptResourceReference.get()));
     response.render(
         OnDomReadyHeaderItem.forScript("new bootstrap.Tab('#" + component.getMarkupId() + "');"));
   }
@@ -214,7 +201,8 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
   @Override
   public void popoverRenderHead(
       Component component, IHeaderResponse response, Supplier<CharSequence> options) {
-    response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
+    response.render(
+        JavaScriptHeaderItem.forReference(Bootstrap5OverrideJavaScriptResourceReference.get()));
     response.render(
         OnDomReadyHeaderItem.forScript(
             "new bootstrap.Popover(document.getElementById('"

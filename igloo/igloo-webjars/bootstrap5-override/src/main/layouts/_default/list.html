@@ -1,0 +1,7 @@
+{{ define "main" }}
+<ul class="list-group">
+{{ range .Pages }}
+  <li class="list-group-item"><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+{{ end }}
+</ul>
+{{ end }}

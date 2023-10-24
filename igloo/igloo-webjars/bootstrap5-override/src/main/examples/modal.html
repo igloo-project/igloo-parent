@@ -1,0 +1,46 @@
+---
+title: Modal
+---
+<div class="d-grid d-md-flex gap-2">
+	<button id="button1" class="btn btn-primary" type="button">
+		Open modal (js)
+	</button>
+	<button id="button2" class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+		Open modal (data attributes)
+	</button>
+</div>
+<div id="exampleModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div id="exampleModalLabel" class="modal-title fs-5">Title</div>
+				<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<label for="state" class="form-label">State</label>
+					<select name="state" class="form-control js-example-basic-single">
+						<option value="AL">Alabama</option>
+						<option value="WY">Wyoming</option>
+					</select>
+					<div class="form-text">Select2 drop down input field should be focusable if BS focus trap is fixed.</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+				<button class="btn btn-primary" type="button">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+{{< partial "jquery.html" >}}
+{{< partial "select2.html" >}}
+<script>
+	const button1El = document.getElementById("button1")
+	button1El.addEventListener("click", e => {
+		new bootstrap.Modal(document.getElementById('exampleModal')).show()
+	})
+	$(document).ready(function() {
+		$(".js-example-basic-single").select2();
+	});
+</script>

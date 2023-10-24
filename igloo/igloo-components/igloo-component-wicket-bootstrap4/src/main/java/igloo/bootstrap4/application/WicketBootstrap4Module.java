@@ -51,7 +51,7 @@ public class WicketBootstrap4Module implements IWicketModule, IBootstrapProvider
 
   @Override
   public void updateResourceSettings(ResourceSettings resourceSettings) {
-    // Nothing
+    // nothing to do
   }
 
   @Override
