@@ -2,6 +2,7 @@
 
 import resolve from '@rollup/plugin-node-resolve'
 import babel from '@rollup/plugin-babel'
+import { importManager } from "rollup-plugin-import-manager";
 
 
 const path = require('path')
@@ -20,8 +21,21 @@ const rollupConfig = {
       "bootstrap": "bootstrap"
     }
   },
-  external: ['bootstrap'],
+  external: [], // bootstrap must be included
   plugins: [
+    importManager({
+      units: [{
+        file: "**/modal.js",
+        createModule: "../../../../src/main/js/focustrap.js",
+        actions: {
+          "select": "defaultMembers",
+          "add": "FocusTrap",
+        },
+        replace: {
+          rawModule: "./util/focustrap"
+        }
+      }]
+    }),
     babel({
       exclude: 'node_modules/**',
       babelHelpers: 'bundled'

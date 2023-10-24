@@ -6,6 +6,7 @@ import BaseComponent from "bootstrap/js/src/base-component"
 import EventHandler from "bootstrap/js/src/dom/event-handler"
 import SelectorEngine from "bootstrap/js/src/dom/selector-engine"
 import Manipulator from "bootstrap/js/src/dom/manipulator"
+import Config from 'bootstrap/js/src/config'
 import { typeCheckConfig } from "bootstrap/js/src/util/index"
 
 const NAME = 'confirm'
@@ -66,7 +67,6 @@ class Confirm extends BaseComponent {
         EventHandler.on(this._element, EVENT_CLICK, event => {
             this._onClick(event)
         })
-        this._config = this._getConfig(config)
     }
 
     _onClick(event) {
@@ -134,17 +134,6 @@ class Confirm extends BaseComponent {
         EventHandler.trigger(this._element, EVENT_CONFIRM)
         this.modal.hide()
     }
-
-    _getConfig(config) {
-        config = {
-          ...Default,
-          ...Manipulator.getDataAttributes(this._element),
-          ...(typeof config === 'object' ? config : {})
-        }
-        typeCheckConfig(NAME, config, DefaultType)
-        return config
-    }
-    
 
     // Getters
     static get Default() {
