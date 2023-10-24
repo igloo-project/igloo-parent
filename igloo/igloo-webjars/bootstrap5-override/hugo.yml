@@ -1,8 +1,11 @@
 ---
 Params:
-  bootstrap: 5
 module:
   mounts:
+    - source: node_modules/bootstrap
+      target: static/bootstrap
+    - source: node_modules/select2
+      target: static/select2
     - source: src/main/generated-js/js/dist
       target: static/dist
     - source: src/main/examples

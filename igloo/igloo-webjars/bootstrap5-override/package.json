@@ -11,7 +11,7 @@
     "js-compile-tooltip-more": "rollup --environment SYMBOL:TooltipMore --environment FILE:tooltip-more --config ./rollup.config.js --sourcemap",
     "js-compile-confirm": "rollup --environment SYMBOL:Confirm --environment FILE:confirm --config ./rollup.config.js --sourcemap",
     "js-compile-tab-more": "rollup --environment SYMBOL:Tab --environment FILE:tab-more --config ./rollup.config.js --sourcemap",
-    "docs-serve": "hugo server --port 9001 --disableFastRender",
+    "docs-serve": "hugo --debug server --port 9001 --disableFastRender",
     "watch": "npm-run-all --parallel watch-*",
     "watch-js-main": "nodemon --watch src/main/js --ext js --exec \"npm-run-all js-compile\""
   },
@@ -27,10 +27,11 @@
     "@rollup/plugin-babel": "^5.3.1",
     "@babel/preset-env": "^7.18.2",
     "@babel/core": "^7.15.8",
-    "hugo-bin": "^0.86.0",
+    "hugo-bin": "^0.112.0",
     "rollup": "^2.72.1",
     "npm-run-all": "^4.1.5",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "select2": "^4.0.10"
   },
   "hugo-bin": {
     "buildTags": "extended"
