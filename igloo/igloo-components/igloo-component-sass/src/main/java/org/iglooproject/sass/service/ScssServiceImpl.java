@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -75,8 +76,10 @@ public class ScssServiceImpl implements IScssService, IScopeResolver {
 			Path outputFilename = StaticResourceHelper.getStaticResourcePath(configurationProvider.getResourcePath(), scope, path);
 			URL staticResource = Resources.getResource(outputFilename.toString());
 			String stylesheet = Resources.toString(staticResource, StandardCharsets.UTF_8);
-			// static never expires
-			ScssStylesheetInformation information = new ScssStylesheetInformation(scssPath.toString(), Long.MAX_VALUE);
+			// lastModifiedDate is used to generate filename for URL. We need to ensure that filename is unique so
+			// that browser resource caching can be done (one file name by generation) and be refreshed (filename
+			// changes for each restart)
+			ScssStylesheetInformation information = new ScssStylesheetInformation(scssPath.toString(), new Date().getTime());
 			information.setSource(stylesheet);
 			return information;
 		} catch (IllegalArgumentException e) {
