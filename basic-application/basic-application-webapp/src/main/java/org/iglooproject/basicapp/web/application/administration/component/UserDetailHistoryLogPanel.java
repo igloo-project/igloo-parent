@@ -30,8 +30,9 @@ public class UserDetailHistoryLogPanel extends GenericPanel<User> {
 		super(id, userModel);
 		setOutputMarkupPlaceholderTag(true);
 		
-		HistoryLogDataProvider dataProvider = HistoryLogDataProvider.object(userModel);
-		dataProvider.addMandatoryDifferencesEventType(HistoryEventType.UPDATE);
+		HistoryLogDataProvider dataProvider = new HistoryLogDataProvider();
+		dataProvider.getDataModel().getObject().setObject(userModel.getObject());
+		dataProvider.getDataModel().getObject().addMandatoryDifferencesEventType(HistoryEventType.UPDATE);
 		
 		add(
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())

@@ -16,7 +16,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.predicate.UserPredicates;
-import org.iglooproject.basicapp.core.business.user.search.UserSort;
+import org.iglooproject.basicapp.core.business.user.search.BasicUserSort;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.administration.component.BasicUserListSearchPanel;
@@ -115,12 +115,12 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 				.withLink(AdministrationBasicUserDetailPage.MAPPER.setParameter2(new PageModel<>(this)))
 				.withClass("cell-w-250")
 			.addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
-				.withSort(UserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+				.withSort(BasicUserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 				.withClass("cell-w-250")
 			.addLabelColumn(new ResourceModel("business.user.firstName"), Bindings.user().firstName())
-				.withSort(UserSort.FIRST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+				.withSort(BasicUserSort.FIRST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 				.withClass("cell-w-250")
-			.addColumn(new AbstractCoreColumn<BasicUser, UserSort>(new ResourceModel("business.user.email")) {
+			.addColumn(new AbstractCoreColumn<BasicUser, BasicUserSort>(new ResourceModel("business.user.email")) {
 				private static final long serialVersionUID = 1L;
 				@Override
 				public void populateItem(Item<ICellPopulator<BasicUser>> cellItem, String componentId, IModel<BasicUser> rowModel) {
@@ -149,7 +149,7 @@ public class AdministrationBasicUserListPage extends AdministrationUserListTempl
 			.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 		
 		add(
-			new BasicUserListSearchPanel("search", results, dataProvider),
+			new BasicUserListSearchPanel("search", results, dataProvider.getDataModel()),
 			results
 		);
 	}

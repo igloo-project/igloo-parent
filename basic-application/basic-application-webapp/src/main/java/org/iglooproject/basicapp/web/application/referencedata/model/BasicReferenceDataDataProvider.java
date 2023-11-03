@@ -1,74 +1,67 @@
 package org.iglooproject.basicapp.web.application.referencedata.model;
 
-import org.apache.lucene.search.SortField;
+import org.apache.wicket.model.Model;
 import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
+import org.iglooproject.basicapp.core.business.referencedata.search.BasicReferenceDataSearchQueryData;
+import org.iglooproject.basicapp.core.business.referencedata.search.BasicReferenceDataSort;
 import org.iglooproject.basicapp.core.business.referencedata.search.IBasicReferenceDataSearchQuery;
-import org.iglooproject.basicapp.core.business.referencedata.search.IReferenceDataSearchQuery;
-import org.iglooproject.basicapp.core.business.referencedata.search.ReferenceDataSort;
-import org.iglooproject.jpa.more.business.sort.ISort;
+import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.wicket.more.application.CoreWicketApplication;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
+import org.iglooproject.wicket.more.model.data.DataModel;
+import org.iglooproject.wicket.more.model.search.query.SearchQueryDataProvider;
 
 import com.google.common.collect.ImmutableMap;
 
-public abstract class BasicReferenceDataDataProvider<T extends ReferenceData<? super T>, S extends ISort<SortField>>
-		extends AbstractReferenceDataDataProvider<T, S> {
+import igloo.wicket.model.Detachables;
+import igloo.wicket.spring.SpringBeanLookupCache;
 
-	private static final long serialVersionUID = -1391750059166474629L;
+public class BasicReferenceDataDataProvider<T extends ReferenceData<? super T>> extends SearchQueryDataProvider<T, BasicReferenceDataSort, BasicReferenceDataSearchQueryData<T>, IBasicReferenceDataSearchQuery<T>> {
 
-	@SuppressWarnings("unchecked")
-	public static <T extends ReferenceData<? super T>, S extends ISort<SortField>> BasicReferenceDataDataProvider<T, S> forQueryType(
-			final Class<? extends IReferenceDataSearchQuery<T, S, ?>> queryType
-	) {
-		return new BasicReferenceDataDataProvider<T, S>((CompositeSortModel<S>) defaultSortModel()) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected IReferenceDataSearchQuery<T, S, ?> createSearchQuery() {
-				return createSearchQuery(queryType);
-			}
-		};
-	}
+	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unchecked")
-	public static <T extends ReferenceData<? super T>, S extends ISort<SortField>> BasicReferenceDataDataProvider<T, S> forItemType(
-		final Class<T> itemType
-	) {
-		return forItemType(itemType, (CompositeSortModel<S>) defaultSortModel());
-	}
+	private final SpringBeanLookupCache<IBasicReferenceDataSearchQuery<T>> referenceDataSearchQueryLookupCache;
 
-	public static <T extends ReferenceData<? super T>, S extends ISort<SortField>> BasicReferenceDataDataProvider<T, S> forItemType(
-		final Class<T> itemType,
-		CompositeSortModel<S> sortModel
-	) {
-		return new BasicReferenceDataDataProvider<T, S>(sortModel) {
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("unchecked")
-			@Override
-			protected IReferenceDataSearchQuery<T, S, ?> createSearchQuery() {
-				return CoreWicketApplication.get().getApplicationContext().getBean(
-					IBasicReferenceDataSearchQuery.class, itemType
-				);
-			}
-		};
-	}
+	private final CompositeSortModel<BasicReferenceDataSort> sortModel = new CompositeSortModel<>(
+		CompositingStrategy.LAST_ONLY,
+		ImmutableMap.of(
+			BasicReferenceDataSort.POSITION, BasicReferenceDataSort.POSITION.getDefaultOrder(),
+			BasicReferenceDataSort.LABEL_FR, BasicReferenceDataSort.LABEL_FR.getDefaultOrder(),
+			BasicReferenceDataSort.LABEL_EN, BasicReferenceDataSort.LABEL_EN.getDefaultOrder()
+		),
+		ImmutableMap.of(
+			BasicReferenceDataSort.ID, BasicReferenceDataSort.ID.getDefaultOrder()
+		)
+	);
 
-	private static CompositeSortModel<ReferenceDataSort> defaultSortModel() {
-		return new CompositeSortModel<>(
-			CompositingStrategy.LAST_ONLY,
-			ImmutableMap.of(
-				ReferenceDataSort.POSITION, ReferenceDataSort.POSITION.getDefaultOrder(),
-				ReferenceDataSort.LABEL_FR, ReferenceDataSort.LABEL_FR.getDefaultOrder(),
-				ReferenceDataSort.LABEL_EN, ReferenceDataSort.LABEL_EN.getDefaultOrder()
-			),
-			ImmutableMap.of(
-				ReferenceDataSort.ID, ReferenceDataSort.ID.getDefaultOrder()
-			)
+	public BasicReferenceDataDataProvider(Class<T> clazz) {
+		super(
+			new DataModel<>(() -> new BasicReferenceDataSearchQueryData<T>())
+				.bind(Bindings.basicReferenceDataSearchQueryData().label(), Model.of())
+				.bind(Bindings.basicReferenceDataSearchQueryData().enabledFilter(), Model.of())
+		);
+		this.referenceDataSearchQueryLookupCache = SpringBeanLookupCache.<IBasicReferenceDataSearchQuery<T>>of(
+			() -> CoreWicketApplication.get().getApplicationContext(),
+			IBasicReferenceDataSearchQuery.class,
+			clazz
 		);
 	}
 
-	private BasicReferenceDataDataProvider(CompositeSortModel<S> sortModel) {
-		super(sortModel);
+	@Override
+	public CompositeSortModel<BasicReferenceDataSort> getSortModel() {
+		return sortModel;
+	}
+
+	@Override
+	protected IBasicReferenceDataSearchQuery<T> searchQuery() {
+		return referenceDataSearchQueryLookupCache.get();
+	}
+
+	@Override
+	public void detach() {
+		super.detach();
+		Detachables.detach(referenceDataSearchQueryLookupCache);
 	}
 
 }

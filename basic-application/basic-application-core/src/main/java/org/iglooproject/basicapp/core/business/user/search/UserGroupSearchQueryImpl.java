@@ -1,41 +1,51 @@
 package org.iglooproject.basicapp.core.business.user.search;
 
-import java.util.Set;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
-import org.iglooproject.basicapp.core.business.user.model.User;
+import org.hibernate.search.engine.search.predicate.dsl.SearchPredicateFactory;
+import org.hibernate.search.engine.search.predicate.dsl.SimpleBooleanPredicateClausesCollector;
+import org.hibernate.search.mapper.orm.Search;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
-import org.iglooproject.jpa.more.business.search.query.OldAbstractHibernateSearchSearchQuery;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.iglooproject.jpa.more.business.sort.ISort;
+import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Sets;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
-@Component
-@Scope("prototype")
-public class UserGroupSearchQueryImpl extends OldAbstractHibernateSearchSearchQuery<UserGroup, UserGroupSort> implements IUserGroupSearchQuery {
+@Service
+public class UserGroupSearchQueryImpl implements IUserGroupSearchQuery {
 
-	public UserGroupSearchQueryImpl() {
-		super(UserGroup.class, UserGroupSort.NAME);
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	@Override
+	public Collection<UserGroup> list(UserGroupSearchQueryData data, Map<UserGroupSort, ISort.SortOrder> sorts, Integer offset, Integer limit) {
+		if (!checkLimit(limit)) {
+			return List.of();
+		}
+		
+		return Search.session(entityManager)
+			.search(UserGroup.class)
+			.where(predicateContributor(data))
+			.sort(sortContributor(sorts))
+			.fetchHits(offset, limit);
 	}
 
 	@Override
-	public IUserGroupSearchQuery user(User user) {
-		Set<Long> ids = Sets.newHashSet();
-		for (UserGroup userGroup : user.getGroups()) {
-			ids.add(userGroup.getId());
-		}
-		if (ids.isEmpty()) {
-			must(matchIfGiven(UserGroup.ID, -1L));
-		} else {
-			must(matchOneIfGiven(UserGroup.ID, ids));
-		}
-		return this;
+	public long size(UserGroupSearchQueryData data) {
+		return Search.session(entityManager)
+			.search(UserGroup.class)
+			.where(predicateContributor(data))
+			.fetchTotalHitCount();
 	}
-	
-	@Override
-	public IUserGroupSearchQuery name(String name) {
-		must(matchIfGiven(UserGroup.NAME, name));
-		return this;
+
+	private BiConsumer<? super SearchPredicateFactory, ? super SimpleBooleanPredicateClausesCollector<?>> predicateContributor(UserGroupSearchQueryData data) {
+		return (f, root) -> {
+			root.add(f.matchAll());
+		};
 	}
 
 }

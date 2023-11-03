@@ -118,6 +118,7 @@ public class AdministrationAnnouncementListPage extends AdministrationAnnounceme
 				.addLabelColumn(new ResourceModel("business.announcement.publication.endDateTime"), Bindings.announcement().publication().endDateTime())
 					.withClass("cell-w-120")
 				.addActionColumn()
+					.addLink(null, null)
 					.addAction(ActionRenderers.edit(), new OneParameterModalOpenAjaxAction<IModel<Announcement>>(popup) {
 						private static final long serialVersionUID = 1L;
 						@Override

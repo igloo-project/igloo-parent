@@ -1,48 +1,53 @@
 package org.iglooproject.basicapp.core.business.user.search;
 
+
+import static org.iglooproject.jpa.more.search.query.HibernateSearchUtils.toSortOrder;
+
 import java.util.List;
+import java.util.function.Function;
 
-import org.apache.lucene.search.SortField;
+import org.hibernate.search.engine.search.sort.dsl.SearchSortFactory;
+import org.hibernate.search.engine.search.sort.dsl.SortFinalStep;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.jpa.more.business.sort.SortUtils;
 
-import com.google.common.collect.ImmutableList;
+public enum UserGroupSort implements ISort<Function<SearchSortFactory, SortFinalStep>> {
 
-// TODO: switch to final List<SortField> attribute ?
-public enum UserGroupSort implements ISort<SortField> {
-	@SuppressWarnings("common-java:DuplicatedBlocks")
-	NAME {
+	SCORE {
 		@Override
-		public List<SortField> getSortFields(SortOrder sortOrder) {
-			return ImmutableList.of(
-				SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, UserGroup.NAME_SORT)
-			);
-		}
-		@Override
-		public SortOrder getDefaultOrder() {
-			return SortOrder.ASC;
-		}
-	},
-	@SuppressWarnings("common-java:DuplicatedBlocks")
-	ID {
-		@Override
-		public List<SortField> getSortFields(SortOrder sortOrder) {
-			return ImmutableList.of(
-				SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID)
+		public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
+			return List.of(
+				f -> f.score()
 			);
 		}
 		@Override
 		public SortOrder getDefaultOrder() {
 			return SortOrder.DESC;
 		}
+	},
+	ID {
+		@Override
+		public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
+			return List.of(
+				f -> f.field(UserGroup.ID).order(toSortOrder(this, sortOrder))
+			);
+		}
+		@Override
+		public SortOrder getDefaultOrder() {
+			return SortOrder.DESC;
+		}
+	},
+	NAME {
+		@Override
+		public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
+			return List.of(
+				f -> f.field(UserGroup.NAME_SORT).order(toSortOrder(this, sortOrder))
+			);
+		}
+		@Override
+		public SortOrder getDefaultOrder() {
+			return SortOrder.ASC;
+		}
 	};
-
-	@Override
-	public abstract List<SortField> getSortFields(SortOrder sortOrder);
-
-	@Override
-	public abstract SortOrder getDefaultOrder();
 
 }

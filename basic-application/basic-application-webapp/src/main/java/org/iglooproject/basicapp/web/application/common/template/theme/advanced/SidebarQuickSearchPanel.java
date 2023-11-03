@@ -38,7 +38,7 @@ public class SidebarQuickSearchPanel extends Panel {
 			new EnclosureContainer("quickSearchContainer")
 				.anyChildVisible()
 				.add(
-					new UserAjaxDropDownSingleChoice<>("user", searchUserModel, User.class)
+					new UserAjaxDropDownSingleChoice("user", searchUserModel)
 						.setRequired(true)
 						.setLabel(new ResourceModel("sidebar.quickSearch.user"))
 						.add(new LabelPlaceholderBehavior())

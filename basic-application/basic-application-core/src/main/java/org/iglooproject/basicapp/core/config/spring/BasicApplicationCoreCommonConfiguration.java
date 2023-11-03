@@ -1,13 +1,12 @@
 package org.iglooproject.basicapp.core.config.spring;
 
-import org.apache.lucene.search.SortField;
 import org.iglooproject.basicapp.core.BasicApplicationCorePackage;
-import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
+import org.iglooproject.basicapp.core.business.referencedata.model.Country;
 import org.iglooproject.basicapp.core.business.referencedata.search.BasicReferenceDataSearchQueryImpl;
+import org.iglooproject.basicapp.core.business.referencedata.search.CitySearchQueryImpl;
 import org.iglooproject.basicapp.core.business.referencedata.search.IBasicReferenceDataSearchQuery;
+import org.iglooproject.basicapp.core.business.referencedata.search.ICitySearchQuery;
 import org.iglooproject.config.bootstrap.spring.annotations.ManifestPropertySource;
-import org.iglooproject.jpa.more.business.sort.ISort;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
@@ -46,17 +44,23 @@ public class BasicApplicationCoreCommonConfiguration { //NOSONAR
 
 	public static final String PROFILE_TEST = "test";
 
-	@Bean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public <T extends ReferenceData<? super T>, S extends ISort<SortField>> IBasicReferenceDataSearchQuery<T, S> basicReferenceDataSearchQuery(Class<T> clazz) {
-		return new BasicReferenceDataSearchQueryImpl<>(clazz);
-	}
-
 	@Configuration
 	@ComponentScan(basePackages = "db.migration.init")
 	@ConditionalOnProperty(name = "migration.init.enabled", havingValue = "true", matchIfMissing = true)
 	public class JavaMigration {
 		
+	}
+
+	@Configuration
+	public class ReferenceData {
+		@Bean
+		public ICitySearchQuery citySearchQuery() {
+			return new CitySearchQueryImpl();
+		}
+		@Bean
+		public IBasicReferenceDataSearchQuery<Country> countryBasicReferenceDataSearchQuery() {
+			return new BasicReferenceDataSearchQueryImpl<>(Country.class);
+		}
 	}
 
 }

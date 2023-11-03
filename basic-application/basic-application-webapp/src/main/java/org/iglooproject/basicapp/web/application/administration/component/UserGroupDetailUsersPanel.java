@@ -53,7 +53,7 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 		setOutputMarkupId(true);
 		
 		dataProvider = new UserDataProvider();
-		dataProvider.getGroupModel().setObject(userGroupModel.getObject());
+		dataProvider.getDataModel().getObject().setGroup(userGroupModel.getObject());
 		
 		add(
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
@@ -112,7 +112,7 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 			add(
 				new Form<User>("form", userModel)
 					.add(
-						new UserAjaxDropDownSingleChoice<>("user", userModel, User.class)
+						new UserAjaxDropDownSingleChoice("user", userModel)
 							.setRequired(true)
 							.setLabel(new ResourceModel("business.user"))
 							.add(new LabelPlaceholderBehavior()),

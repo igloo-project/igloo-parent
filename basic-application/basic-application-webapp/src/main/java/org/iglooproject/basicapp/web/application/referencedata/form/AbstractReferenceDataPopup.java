@@ -10,7 +10,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
+import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
 import org.iglooproject.jpa.more.business.referencedata.service.IGenericReferenceDataService;
 import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
@@ -25,7 +25,7 @@ import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
 import igloo.wicket.model.Detachables;
 
-public abstract class AbstractReferenceDataPopup<T extends GenericReferenceData<? super T, ?>> extends AbstractAjaxModalPopupPanel<T> {
+public abstract class AbstractReferenceDataPopup<T extends ReferenceData<? super T>> extends AbstractAjaxModalPopupPanel<T> {
 
 	private static final long serialVersionUID = 8594171911880178857L;
 
@@ -39,7 +39,7 @@ public abstract class AbstractReferenceDataPopup<T extends GenericReferenceData<
 	protected final IModel<FormMode> formModeModel = new Model<>(FormMode.ADD);
 
 	public AbstractReferenceDataPopup(String id) {
-		super(id, new GenericEntityModel<Long, T>());
+		super(id, new GenericEntityModel<>());
 	}
 
 	@Override

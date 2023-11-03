@@ -51,7 +51,8 @@ public class BasicUserDetailGroupsPanel extends GenericPanel<BasicUser> {
 	public BasicUserDetailGroupsPanel(String id, final IModel<? extends BasicUser> userModel) {
 		super(id, userModel);
 		
-		this.dataProvider = new UserGroupDataProvider(userModel);
+		dataProvider = new UserGroupDataProvider();
+		dataProvider.getDataModel().getObject().setUser(userModel.getObject());
 		
 		add(
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())

@@ -51,7 +51,8 @@ public class TechnicalUserDetailGroupsPanel extends GenericPanel<TechnicalUser> 
 	public TechnicalUserDetailGroupsPanel(String id, final IModel<? extends TechnicalUser> userModel) {
 		super(id, userModel);
 		
-		this.dataProvider = new UserGroupDataProvider(userModel);
+		dataProvider = new UserGroupDataProvider();
+		dataProvider.getDataModel().getObject().setUser(userModel.getObject());
 		
 		add(
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())

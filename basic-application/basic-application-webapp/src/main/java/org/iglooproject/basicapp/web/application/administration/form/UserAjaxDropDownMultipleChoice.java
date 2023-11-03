@@ -1,51 +1,62 @@
 package org.iglooproject.basicapp.web.application.administration.form;
 
 import java.util.Collection;
+import java.util.Map;
 
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.search.IUserSearchQuery;
+import org.iglooproject.basicapp.core.business.user.search.UserSearchQueryData;
+import org.iglooproject.basicapp.core.business.user.search.UserSort;
 import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
 import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
+import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
 import org.iglooproject.wicket.more.markup.html.select2.AbstractLongIdGenericEntityChoiceProvider;
 import org.iglooproject.wicket.more.markup.html.select2.GenericSelect2AjaxDropDownMultipleChoice;
 import org.wicketstuff.select2.Response;
 
-public class UserAjaxDropDownMultipleChoice<U extends User, C extends Collection<U>> extends GenericSelect2AjaxDropDownMultipleChoice<U> {
+import com.google.common.collect.ImmutableMap;
+
+public class UserAjaxDropDownMultipleChoice<C extends Collection<User>> extends GenericSelect2AjaxDropDownMultipleChoice<User> {
 
 	private static final long serialVersionUID = 7076114890845943476L;
 
-	public UserAjaxDropDownMultipleChoice(String id, IModel<C> model, SerializableSupplier2<? extends C> collectionSupplier, Class<U> targetTypeClass) {
-		this(id, model, collectionSupplier, targetTypeClass, targetTypeClass);
+	public UserAjaxDropDownMultipleChoice(String id, IModel<C> model, SerializableSupplier2<? extends C> collectionSupplier) {
+		this(id, model, collectionSupplier, new ChoiceProvider());
 	}
 
-	public UserAjaxDropDownMultipleChoice(String id, IModel<C> model, SerializableSupplier2<? extends C> collectionSupplier, Class<U> targetTypeClass, Class<? extends U> searchTypeClass) {
-		this(id, model, collectionSupplier, new ChoiceProvider<>(targetTypeClass, searchTypeClass));
-	}
-
-	public UserAjaxDropDownMultipleChoice(String id, IModel<C> model, SerializableSupplier2<? extends C> collectionSupplier, ChoiceProvider<U> choiceProvider) {
+	public UserAjaxDropDownMultipleChoice(String id, IModel<C> model, SerializableSupplier2<? extends C> collectionSupplier, org.wicketstuff.select2.ChoiceProvider<User> choiceProvider) {
 		super(id, model, collectionSupplier, choiceProvider);
 	}
 
-	private static class ChoiceProvider<U extends User> extends AbstractLongIdGenericEntityChoiceProvider<U> {
+	private static class ChoiceProvider extends AbstractLongIdGenericEntityChoiceProvider<User> {
 		
 		private static final long serialVersionUID = 1L;
 		
-		private final Class<? extends U> searchTypeClass;
+		@SpringBean
+		private IUserSearchQuery searchQuery;
 		
-		public ChoiceProvider(Class<U> targetTypeClass, Class<? extends U> searchTypeClass) {
-			super(targetTypeClass, UserRenderer.get());
-			this.searchTypeClass = searchTypeClass;
+		public ChoiceProvider() {
+			super(User.class, UserRenderer.get());
+			Injector.get().inject(this);
 		}
 		
-		@SuppressWarnings("unchecked")
 		@Override
-		protected void query(String term, int offset, int limit, Response<U> response) {
-			response.addAll(
-				getBean(IUserSearchQuery.class, searchTypeClass)
-					.nameAutocomplete(term)
-					.list(offset, limit)
+		protected void query(String term, int offset, int limit, Response<User> response) {
+			UserSearchQueryData data = new UserSearchQueryData();
+			data.setTerm(term);
+			data.setEnabledFilter(EnabledFilter.ENABLED_ONLY);
+			Map<UserSort, SortOrder> sorts = ImmutableMap.of(
+				UserSort.SCORE, UserSort.SCORE.getDefaultOrder(),
+				UserSort.LAST_NAME, UserSort.LAST_NAME.getDefaultOrder(),
+				UserSort.FIRST_NAME, UserSort.FIRST_NAME.getDefaultOrder(),
+				UserSort.ID, UserSort.ID.getDefaultOrder()
 			);
+			response.addAll(searchQuery.list(data, sorts, offset, limit));
 		}
 	}
+
 }

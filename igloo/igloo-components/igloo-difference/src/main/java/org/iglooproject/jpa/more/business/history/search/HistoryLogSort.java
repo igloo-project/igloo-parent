@@ -1,48 +1,40 @@
 package org.iglooproject.jpa.more.business.history.search;
 
-import java.util.List;
+import static org.iglooproject.jpa.more.search.query.HibernateSearchUtils.toSortOrder;
 
-import org.apache.lucene.search.SortField;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import java.util.List;
+import java.util.function.Function;
+
+import org.hibernate.search.engine.search.sort.dsl.SearchSortFactory;
+import org.hibernate.search.engine.search.sort.dsl.SortFinalStep;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryLog;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.jpa.more.business.sort.SortUtils;
 
-public enum HistoryLogSort implements ISort<SortField> {
-	
+public enum HistoryLogSort implements ISort<Function<SearchSortFactory, SortFinalStep>> {
+
 	ID {
 		@Override
-		public List<SortField> getSortFields(SortOrder sortOrder) {
+		public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
 			return List.of(
-				SortUtils.luceneSortField(
-					this, sortOrder, SortField.Type.LONG,
-					GenericEntity.ID
-				)
+				f -> f.field(AbstractHistoryLog.ID).order(toSortOrder(this, sortOrder))
 			);
 		}
 		@Override
 		public SortOrder getDefaultOrder() {
-			return SortOrder.DESC;
+			return SortOrder.ASC;
 		}
 	},
 	DATE {
 		@Override
-		public List<SortField> getSortFields(SortOrder sortOrder) {
+		public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
 			return List.of(
-				SortUtils.luceneSortField(
-					this, sortOrder, SortField.Type.LONG,
-					AbstractHistoryLog.DATE
-				),
-				SortUtils.luceneSortField(
-					this, sortOrder, SortField.Type.LONG,
-					GenericEntity.ID
-				)
+				f -> f.field(AbstractHistoryLog.DATE).order(toSortOrder(this, sortOrder))
 			);
 		}
 		@Override
 		public SortOrder getDefaultOrder() {
-			return SortOrder.DESC;
+			return SortOrder.ASC;
 		}
 	};
-	
+
 }

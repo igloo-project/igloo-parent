@@ -1,9 +1,8 @@
 package org.iglooproject.basicapp.core.business.user.search;
 
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
-import org.springframework.context.annotation.Scope;
+import org.iglooproject.jpa.more.search.query.IHibernateSearchSearchQuery;
 
-@Scope("prototype")
-public interface ITechnicalUserSearchQuery extends IAbstractUserSearchQuery<TechnicalUser> {
+public interface ITechnicalUserSearchQuery extends IHibernateSearchSearchQuery<TechnicalUser, TechnicalUserSort, TechnicalUserSearchQueryData> {
 
 }

@@ -2,20 +2,25 @@ package org.iglooproject.basicapp.web.application.referencedata.component;
 
 import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
 
+import java.util.function.Function;
+
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.model.IModel;
+import org.hibernate.search.engine.search.sort.dsl.SearchSortFactory;
+import org.hibernate.search.engine.search.sort.dsl.SortFinalStep;
+import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
 import org.iglooproject.basicapp.web.application.common.renderer.ActionRenderers;
 import org.iglooproject.basicapp.web.application.referencedata.form.AbstractReferenceDataPopup;
 import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
 import org.iglooproject.jpa.more.business.sort.ISort;
+import org.iglooproject.jpa.more.search.query.IHibernateSearchSearchQuery;
+import org.iglooproject.jpa.more.search.query.ISearchQueryData;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
-import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IColumnState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IDecoratedBuildState;
-import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
+import org.iglooproject.wicket.more.model.search.query.SearchQueryDataProvider;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
@@ -25,11 +30,12 @@ import igloo.wicket.condition.Condition;
 
 public abstract class AbstractReferenceDataListPanel
 		<
-			T extends GenericReferenceData<? super T, ?>,
-			S extends ISort<?>,
-			D extends AbstractSearchQueryDataProvider<T, S>
+			T extends ReferenceData<? super T>,
+			S extends ISort<Function<SearchSortFactory, SortFinalStep>>,
+			D extends ISearchQueryData<T>,
+			P extends SearchQueryDataProvider<T, S, D, ? extends IHibernateSearchSearchQuery<T, S, D>>
 		>
-		extends AbstractReferenceDataSimpleListPanel<T, S, D> {
+		extends AbstractReferenceDataSimpleListPanel<T, S, D, P> {
 
 	private static final long serialVersionUID = -8240552205613934114L;
 
@@ -37,8 +43,8 @@ public abstract class AbstractReferenceDataListPanel
 
 	private final AbstractReferenceDataPopup<T> popup;
 
-	public AbstractReferenceDataListPanel(String id, D dataProvider, CompositeSortModel<S> sortModel, SerializableSupplier2<T> supplier) {
-		super(id, dataProvider, sortModel);
+	public AbstractReferenceDataListPanel(String id, P dataProvider, SerializableSupplier2<T> supplier) {
+		super(id, dataProvider);
 		
 		this.supplier = supplier;
 		
