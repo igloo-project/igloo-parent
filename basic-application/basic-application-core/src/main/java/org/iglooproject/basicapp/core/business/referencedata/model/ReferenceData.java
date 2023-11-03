@@ -1,8 +1,6 @@
 package org.iglooproject.basicapp.core.business.referencedata.model;
 
 import org.bindgen.Bindable;
-import org.hibernate.search.engine.backend.types.Sortable;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 import org.iglooproject.basicapp.core.business.common.model.embeddable.LocalizedText;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
@@ -11,7 +9,6 @@ import com.querydsl.core.annotations.QueryInit;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Transient;
 
 @MappedSuperclass
 @Bindable
@@ -25,8 +22,6 @@ public class ReferenceData<E extends ReferenceData<?>> extends GenericReferenceD
 	public static final String LABEL_FR_SORT = LABEL_PREFIX + LocalizedText.FR_SORT;
 	public static final String LABEL_EN_AUTOCOMPLETE = LABEL_PREFIX + LocalizedText.EN_AUTOCOMPLETE;
 	public static final String LABEL_EN_SORT = LABEL_PREFIX + LocalizedText.EN_SORT;
-
-	public static final String CODE = "code";
 
 	@Embedded
 	@IndexedEmbedded(name = LABEL)
@@ -53,13 +48,6 @@ public class ReferenceData<E extends ReferenceData<?>> extends GenericReferenceD
 	@Override
 	public void setLabel(LocalizedText label) {
 		this.label = (label == null ? null : new LocalizedText(label));
-	}
-
-	@Override
-	@Transient
-	@GenericField(name = CODE, sortable = Sortable.YES)
-	public String getCode() {
-		return null;
 	}
 
 }

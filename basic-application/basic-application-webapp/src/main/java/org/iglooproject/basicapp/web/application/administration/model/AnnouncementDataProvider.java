@@ -1,28 +1,26 @@
 package org.iglooproject.basicapp.web.application.administration.model;
 
-import org.apache.wicket.injection.Injector;
+import java.util.function.UnaryOperator;
+
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.announcement.model.Announcement;
+import org.iglooproject.basicapp.core.business.announcement.search.AnnouncementSearchQueryData;
 import org.iglooproject.basicapp.core.business.announcement.search.AnnouncementSort;
 import org.iglooproject.basicapp.core.business.announcement.search.IAnnouncementSearchQuery;
-import org.iglooproject.basicapp.core.business.announcement.service.IAnnouncementService;
-import org.iglooproject.jpa.more.business.search.query.ISearchQuery;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
-import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
-import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.model.data.DataModel;
+import org.iglooproject.wicket.more.model.search.query.SearchQueryDataProvider;
 
 import com.google.common.collect.ImmutableMap;
 
-import igloo.wicket.model.Detachables;
+public class AnnouncementDataProvider extends SearchQueryDataProvider<Announcement, AnnouncementSort, AnnouncementSearchQueryData, IAnnouncementSearchQuery> {
 
-public class AnnouncementDataProvider extends AbstractSearchQueryDataProvider<Announcement, AnnouncementSort> {
-
-	private static final long serialVersionUID = 2391048007215147522L;
+	private static final long serialVersionUID = 1L;
 
 	@SpringBean
-	private IAnnouncementService announcementService;
+	private IAnnouncementSearchQuery searchQuery;
 
 	private final CompositeSortModel<AnnouncementSort> sortModel = new CompositeSortModel<>(
 		CompositingStrategy.LAST_ONLY,
@@ -36,28 +34,25 @@ public class AnnouncementDataProvider extends AbstractSearchQueryDataProvider<An
 	);
 
 	public AnnouncementDataProvider() {
-		Injector.get().inject(this);
+		this(UnaryOperator.identity());
+	}
+
+	public AnnouncementDataProvider(UnaryOperator<DataModel<AnnouncementSearchQueryData>> dataModelOperator) {
+		this(dataModelOperator.apply(new DataModel<>(AnnouncementSearchQueryData::new)));
+	}
+
+	public AnnouncementDataProvider(IModel<AnnouncementSearchQueryData> dataModel) {
+		super(dataModel);
 	}
 
 	@Override
-	public IModel<Announcement> model(Announcement object) {
-		return GenericEntityModel.of(object);
-	}
-
 	public CompositeSortModel<AnnouncementSort> getSortModel() {
 		return sortModel;
 	}
 
 	@Override
-	protected ISearchQuery<Announcement, AnnouncementSort> getSearchQuery() {
-		return createSearchQuery(IAnnouncementSearchQuery.class)
-			.sort(sortModel.getObject());
-	}
-
-	@Override
-	public void detach() {
-		super.detach();
-		Detachables.detach(sortModel);
+	protected IAnnouncementSearchQuery searchQuery() {
+		return searchQuery;
 	}
 
 }

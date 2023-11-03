@@ -1,19 +1,70 @@
 package org.iglooproject.basicapp.web.application.administration.model;
 
+import java.util.function.UnaryOperator;
+
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
+import org.iglooproject.basicapp.core.business.user.search.BasicUserSearchQueryData;
+import org.iglooproject.basicapp.core.business.user.search.BasicUserSort;
 import org.iglooproject.basicapp.core.business.user.search.IBasicUserSearchQuery;
+import org.iglooproject.basicapp.core.util.binding.Bindings;
+import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
+import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
+import org.iglooproject.wicket.more.model.GenericEntityModel;
+import org.iglooproject.wicket.more.model.data.DataModel;
+import org.iglooproject.wicket.more.model.search.query.SearchQueryDataProvider;
 
-public class BasicUserDataProvider extends AbstractUserDataProvider<BasicUser> {
+import com.google.common.collect.ImmutableMap;
 
-	private static final long serialVersionUID = -8540890431031886412L;
+public class BasicUserDataProvider extends SearchQueryDataProvider<BasicUser, BasicUserSort, BasicUserSearchQueryData, IBasicUserSearchQuery> {
+
+	private static final long serialVersionUID = 1L;
+
+	@SpringBean
+	private IBasicUserSearchQuery searchQuery;
+
+	private final CompositeSortModel<BasicUserSort> sortModel = new CompositeSortModel<>(
+		CompositingStrategy.LAST_ONLY,
+		ImmutableMap.of(
+			BasicUserSort.SCORE, BasicUserSort.SCORE.getDefaultOrder(),
+			BasicUserSort.LAST_NAME, BasicUserSort.LAST_NAME.getDefaultOrder(),
+			BasicUserSort.FIRST_NAME, BasicUserSort.FIRST_NAME.getDefaultOrder(),
+			BasicUserSort.ID, BasicUserSort.ID.getDefaultOrder()
+		),
+		ImmutableMap.of(
+			BasicUserSort.ID, BasicUserSort.ID.getDefaultOrder()
+		)
+	);
 
 	public BasicUserDataProvider() {
-		super(BasicUser.class);
+		this(UnaryOperator.identity());
+	}
+
+	public BasicUserDataProvider(UnaryOperator<DataModel<BasicUserSearchQueryData>> dataModelOperator) {
+		this(
+			dataModelOperator.apply(
+				new DataModel<>(BasicUserSearchQueryData::new)
+					.bind(Bindings.basicUserDtoSearch().term(), Model.of())
+					.bind(Bindings.basicUserDtoSearch().group(), new GenericEntityModel<>())
+					.bind(Bindings.basicUserDtoSearch().enabledFilter(), Model.of())
+			)
+		);
+	}
+
+	public BasicUserDataProvider(IModel<BasicUserSearchQueryData> dataModel) {
+		super(dataModel);
 	}
 
 	@Override
-	protected IBasicUserSearchQuery createSearchQuery() {
-		return createSearchQuery(IBasicUserSearchQuery.class);
+	public CompositeSortModel<BasicUserSort> getSortModel() {
+		return sortModel;
+	}
+
+	@Override
+	protected IBasicUserSearchQuery searchQuery() {
+		return searchQuery;
 	}
 
 }

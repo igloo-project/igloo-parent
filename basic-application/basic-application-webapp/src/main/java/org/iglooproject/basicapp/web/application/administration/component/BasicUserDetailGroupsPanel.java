@@ -17,6 +17,7 @@ import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
+import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.administration.form.UserGroupDropDownSingleChoice;
 import org.iglooproject.basicapp.web.application.administration.model.UserGroupDataProvider;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationUserGroupDetailPage;
@@ -48,10 +49,12 @@ public class BasicUserDetailGroupsPanel extends GenericPanel<BasicUser> {
 
 	private final UserGroupDataProvider dataProvider;
 
-	public BasicUserDetailGroupsPanel(String id, final IModel<? extends BasicUser> userModel) {
+	public BasicUserDetailGroupsPanel(String id, final IModel<BasicUser> userModel) {
 		super(id, userModel);
 		
-		this.dataProvider = new UserGroupDataProvider(userModel);
+		dataProvider = new UserGroupDataProvider(dataModel ->
+			dataModel.bind(Bindings.userGroupSearchQueryData().basicUser(), userModel)
+		);
 		
 		add(
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())

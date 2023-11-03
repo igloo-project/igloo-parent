@@ -19,4 +19,9 @@ public class GenericEntityReferenceIdBridge implements ValueBridge<GenericEntity
 		return value.getType().getCanonicalName()+ "|" + value.getId().toString();
 	}
 
+	@Override
+	public boolean isCompatibleWith(ValueBridge<?, ?> other) {
+		return getClass().equals(other.getClass());
+	}
+
 }

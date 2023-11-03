@@ -67,7 +67,7 @@ public class ConsoleMaintenanceTaskListPage extends ConsoleMaintenanceTemplate {
 			.build("results", 30);
 		
 		add(
-			new ConsoleMaintenanceTaskSearchPanel("search", results, dataProvider),
+			new ConsoleMaintenanceTaskSearchPanel("search", results, dataProvider.getDataModel()),
 			results
 		);
 	}

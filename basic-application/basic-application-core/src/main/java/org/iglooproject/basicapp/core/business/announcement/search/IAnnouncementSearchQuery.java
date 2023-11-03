@@ -1,8 +1,8 @@
 package org.iglooproject.basicapp.core.business.announcement.search;
 
 import org.iglooproject.basicapp.core.business.announcement.model.Announcement;
-import org.iglooproject.jpa.more.business.search.query.ISearchQuery;
+import org.iglooproject.jpa.more.search.query.IJpaSearchQuery;
 
-public interface IAnnouncementSearchQuery extends ISearchQuery<Announcement, AnnouncementSort> {
+public interface IAnnouncementSearchQuery extends IJpaSearchQuery<Announcement, AnnouncementSort, AnnouncementSearchQueryData> {
 
 }

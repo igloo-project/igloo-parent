@@ -12,8 +12,6 @@ import java.util.Collection;
 import org.iglooproject.jpa.more.business.task.dao.IQueuedTaskHolderDao;
 import org.iglooproject.jpa.more.business.task.dao.QueuedTaskHolderDaoImpl;
 import org.iglooproject.jpa.more.business.task.model.IQueueId;
-import org.iglooproject.jpa.more.business.task.search.IQueuedTaskHolderSearchQuery;
-import org.iglooproject.jpa.more.business.task.search.QueuedTaskHolderSearchQueryImpl;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderManager;
 import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
 import org.iglooproject.jpa.more.business.task.service.QueuedTaskHolderManagerImpl;
@@ -26,11 +24,9 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
@@ -64,12 +60,6 @@ public class TaskAutoConfiguration implements IPropertyRegistryConfig {
 	@Bean
 	public IQueuedTaskHolderService queuedTaskHolderService(IQueuedTaskHolderDao queuedTaskHolderDao) {
 		return new QueuedTaskHolderServiceImpl(queuedTaskHolderDao);
-	}
-
-	@Bean
-	@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public IQueuedTaskHolderSearchQuery queuedTaskHolderSearchQuery() {
-		return new QueuedTaskHolderSearchQueryImpl();
 	}
 
 	@Bean

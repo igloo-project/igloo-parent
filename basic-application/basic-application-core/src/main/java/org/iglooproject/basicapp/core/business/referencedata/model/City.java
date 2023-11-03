@@ -1,12 +1,13 @@
 package org.iglooproject.basicapp.core.business.referencedata.model;
 
 import org.bindgen.Bindable;
+import org.hibernate.search.engine.backend.types.Sortable;
+import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.ValueBridgeRef;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexingDependency;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.ObjectPath;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.PropertyValue;
 import org.iglooproject.basicapp.core.business.common.model.PostalCode;
 import org.iglooproject.basicapp.core.business.common.model.embeddable.LocalizedText;
+import org.iglooproject.basicapp.core.config.hibernate.type.PostalCodeValueBridge;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Cacheable;
@@ -23,9 +24,10 @@ public class City extends ReferenceData<City> {
 
 	private static final long serialVersionUID = -5714475132350205234L;
 
-	public static final String LABEL_AUTOCOMPLETE = "labelAutocomplete";
+	public static final String POSTAL_CODE = "postalCode";
 
 	@Basic(optional = false)
+	@GenericField(name = POSTAL_CODE, valueBridge = @ValueBridgeRef(type = PostalCodeValueBridge.class), sortable = Sortable.YES)
 	private PostalCode postalCode;
 
 	public City() {
@@ -41,12 +43,6 @@ public class City extends ReferenceData<City> {
 
 	public void setPostalCode(PostalCode postalCode) {
 		this.postalCode = postalCode;
-	}
-
-	@Override
-	@IndexingDependency(derivedFrom = @ObjectPath(@PropertyValue(propertyName = "postalCode")))
-	public String getCode() {
-		return getPostalCode().getValue();
 	}
 
 }
