@@ -62,25 +62,6 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 		this.renderer = renderer;
 	}
 	
-	@Override
-	public final MarkupContainer create(String wicketId, IModel<T> rowModel) {
-		return new CoreActionColumnElementPanel<T>(wicketId, rowModel) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected Component getLink(String string, IModel<T> rowModel) {
-				L link = factory.create("link", rowModel);
-				decorateLink(link, rowModel);
-				return link;
-			}
-			@Override
-			protected PlaceholderContainer getPlaceholder(String string, IModel<T> rowModel) {
-				PlaceholderContainer placeholder = new PlaceholderContainer("linkPlaceholder");
-				decoratePlaceholder(placeholder, rowModel);
-				return placeholder;
-			}
-		};
-	}
-
 	protected void decorateLink(L link, IModel<T> rowModel) {
 		IBootstrapRendererModel rendererModel = renderer.asModel(rowModel);
 		IModel<String> tooltipModel = rendererModel.getTooltipModel();
@@ -136,6 +117,10 @@ public abstract class AbstractActionColumnElementBuilder<T, L extends AbstractLi
 								.and(showLabelCondition)
 								.thenShow()
 				);
+	}
+
+	public IOneParameterComponentFactory<? extends L, IModel<T>> getFactory() {
+		return factory;
 	}
 
 	public IBootstrapRenderer<? super T> getRenderer() {
