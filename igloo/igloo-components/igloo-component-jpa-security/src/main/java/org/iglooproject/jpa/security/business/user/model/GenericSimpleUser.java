@@ -2,12 +2,14 @@ package org.iglooproject.jpa.security.business.user.model;
 
 import java.util.SortedSet;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bindgen.Bindable;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.iglooproject.functional.Joiners;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.spring.util.StringUtils;
 
@@ -106,15 +108,40 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof GenericUser)) {
+			return false;
+		}
+		GenericSimpleUser<?, ?> other = (GenericSimpleUser<?, ?>) obj;
+		return new EqualsBuilder()
+			.appendSuper(super.equals(other))
+			.append(getLastName(), other.getLastName())
+			.append(getFirstName(), other.getFirstName())
+			.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+			.appendSuper(super.hashCode())
+			.append(getLastName())
+			.append(getFirstName())
+			.toHashCode();
+	}
+
+	@Override
 	public int compareTo(U user) {
-		if (this.equals(user)) {
-			return 0;
-		}
-		
-		if (GenericEntity.STRING_COLLATOR_FRENCH.compare(this.getLastName(), user.getLastName()) == 0) {
-			return STRING_COLLATOR_FRENCH.compare(this.getFirstName(), user.getFirstName());
-		}
-		return STRING_COLLATOR_FRENCH.compare(this.getLastName(), user.getLastName());
+		return new CompareToBuilder()
+			.appendSuper(super.compareTo(user))
+			.append(getLastName(), user.getLastName(), STRING_COLLATOR_FRENCH)
+			.append(getFirstName(), user.getFirstName(), STRING_COLLATOR_FRENCH)
+			.toComparison();
 	}
 
 	@Override

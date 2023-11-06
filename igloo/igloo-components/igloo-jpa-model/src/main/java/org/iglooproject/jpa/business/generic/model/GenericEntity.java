@@ -23,6 +23,9 @@ import java.io.Serializable;
 import java.util.Locale;
 import java.util.function.Function;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.Hibernate;
 import org.hibernate.search.engine.backend.types.Projectable;
 import org.hibernate.search.engine.backend.types.Sortable;
@@ -86,55 +89,54 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 		return getId() == null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public boolean equals(Object object) {
-		if (object == null) {
+	public boolean equals(Object obj) {
+		if (obj == null) {
 			return false;
 		}
-		if (object == this) {
+		if (obj == this) {
 			return true;
 		}
-		
 		// process class comparison; uses Hibernate for proxy handling if available
-		if (GET_CLASS_FUNCTION.apply(object) != GET_CLASS_FUNCTION.apply(this)) {
+		if (GET_CLASS_FUNCTION.apply(obj) != GET_CLASS_FUNCTION.apply(this)) {
 			return false;
 		}
 		
-		GenericEntity<K, E> entity = (GenericEntity<K, E>) object; // NOSONAR
-		K id = getId();
+		@SuppressWarnings("unchecked")
+		GenericEntity<K, E> entity = (GenericEntity<K, E>) obj; // NOSONAR
 		
-		if (id == null) {
+		if (entity.getId() == null) {
 			return false;
 		}
 		
-		return id.equals(entity.getId());
+		return new EqualsBuilder()
+			.append(getId(), entity.getId())
+			.isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		int hash = 7;
-		
-		K id = getId();
-		hash = 31 * hash + ((id == null) ? 0 : id.hashCode());
-		
-		return hash;
+		return new HashCodeBuilder()
+			.append(getId())
+			.toHashCode();
 	}
 
 	@Override
-	public int compareTo(E right) {
-		if (this == right) {
+	public int compareTo(E entity) {
+		if (this == entity) {
 			return 0;
 		}
 		
 		K leftId = getId();
-		K rightId = right.getId();
+		K rightId = entity.getId();
 		
 		if (leftId == null && rightId == null) {
 			throw new IllegalArgumentException("Cannot compare two different entities with null IDs");
 		}
 		
-		return DEFAULT_KEY_ORDERING.compare(leftId, rightId);
+		return new CompareToBuilder()
+			.append(leftId, rightId, DEFAULT_KEY_ORDERING)
+			.toComparison();
 	}
 
 	/**

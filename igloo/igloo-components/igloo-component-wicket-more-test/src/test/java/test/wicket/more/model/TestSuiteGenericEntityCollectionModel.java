@@ -1,5 +1,6 @@
 package test.wicket.more.model;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -106,7 +107,7 @@ public class TestSuiteGenericEntityCollectionModel {
 		
 		@Override
 		protected Set<Person> createCollection(SerializableSupplier2<? extends Set<Person>> supplier, Person... person) {
-			return Sets.newHashSet(person);
+			return Sets.newHashSet(Arrays.asList(person));
 		}
 		
 		@Override

@@ -11,6 +11,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
@@ -237,11 +240,37 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 	}
 
 	@Override
-	public int compareTo(U user) {
-		if (this.equals(user)) {
-			return 0;
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
 		}
-		return STRING_COLLATOR_FRENCH.compare(this.getUsername(), user.getUsername());
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof GenericUser)) {
+			return false;
+		}
+		GenericUser<?, ?> other = (GenericUser<?, ?>) obj;
+		return new EqualsBuilder()
+			.appendSuper(super.equals(other))
+			.append(getUsername(), other.getUsername())
+			.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+			.appendSuper(super.hashCode())
+			.append(getUsername())
+			.toHashCode();
+	}
+
+	@Override
+	public int compareTo(U user) {
+		return new CompareToBuilder()
+			.appendSuper(super.compareTo(user))
+			.append(getUsername(), user.getUsername(), STRING_COLLATOR_FRENCH)
+			.toComparison();
 	}
 
 	@Override
