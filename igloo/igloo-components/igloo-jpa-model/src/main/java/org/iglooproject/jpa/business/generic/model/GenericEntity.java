@@ -62,8 +62,8 @@ public abstract class GenericEntity<K extends Comparable<K> & Serializable, E ex
 	private static final Ordering<Comparable> DEFAULT_KEY_ORDERING = Ordering.natural().nullsLast();
 
 	public static final Ordering<String> STRING_COLLATOR_FRENCH = new SerializableCollator(Locale.FRENCH).nullsLast();
-	public static final Ordering<String> STRING_COLLATOR_ENGLISH = new SerializableCollator(Locale.FRENCH).nullsLast();
-	public static final Ordering<String> STRING_COLLATOR_ROOT = new SerializableCollator(Locale.FRENCH).nullsLast();
+	public static final Ordering<String> STRING_COLLATOR_ENGLISH = new SerializableCollator(Locale.ENGLISH).nullsLast();
+	public static final Ordering<String> STRING_COLLATOR_ROOT = new SerializableCollator(Locale.ROOT).nullsLast();
 
 	@Override
 	@Transient
