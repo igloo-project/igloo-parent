@@ -3,6 +3,9 @@ package org.iglooproject.test.business.project.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.test.business.company.model.Company;
@@ -73,11 +76,37 @@ public class Project extends GenericEntity<Long, Project> {
 	}
 
 	@Override
-	public int compareTo(Project project) {
-		if (this == project) {
-			return 0;
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
 		}
-		return StringUtils.removeAccents(this.getName()).compareToIgnoreCase(StringUtils.removeAccents(project.getName()));
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Project)) {
+			return false;
+		}
+		Project other = (Project) obj;
+		return new EqualsBuilder()
+			.append(StringUtils.removeAccents(getName()), StringUtils.removeAccents(other.getName()))
+			.appendSuper(super.equals(other))
+			.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+			.append(StringUtils.removeAccents(getName()))
+			.appendSuper(super.hashCode())
+			.toHashCode();
+	}
+
+	@Override
+	public int compareTo(Project project) {
+		return new CompareToBuilder()
+			.append(StringUtils.removeAccents(getName()), StringUtils.removeAccents(project.getName()))
+			.appendSuper(super.compareTo(project))
+			.toComparison();
 	}
 
 }

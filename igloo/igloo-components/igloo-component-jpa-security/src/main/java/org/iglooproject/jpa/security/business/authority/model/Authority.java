@@ -3,18 +3,21 @@ package org.iglooproject.jpa.security.business.authority.model;
 import java.util.Collections;
 import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bindgen.Bindable;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 import com.google.common.base.MoreObjects.ToStringHelper;
 import com.google.common.collect.Sets;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 @Entity
 @Bindable
@@ -74,11 +77,37 @@ public class Authority extends GenericEntity<Long, Authority> {
 	}
 
 	@Override
-	public int compareTo(Authority authority) {
-		if (this == authority) {
-			return 0;
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
 		}
-		return this.getName().compareToIgnoreCase(authority.getName());
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Authority)) {
+			return false;
+		}
+		Authority other = (Authority) obj;
+		return new EqualsBuilder()
+			.append(getName(), other.getName())
+			.appendSuper(super.equals(other))
+			.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+			.append(getName())
+			.appendSuper(super.hashCode())
+			.toHashCode();
+	}
+
+	@Override
+	public int compareTo(Authority authority) {
+		return new CompareToBuilder()
+			.append(getName(), authority.getName())
+			.appendSuper(super.compareTo(authority))
+			.toComparison();
 	}
 
 	@Override

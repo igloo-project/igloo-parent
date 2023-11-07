@@ -120,27 +120,27 @@ public abstract class GenericSimpleUser<U extends GenericSimpleUser<U, G>, G ext
 		}
 		GenericSimpleUser<?, ?> other = (GenericSimpleUser<?, ?>) obj;
 		return new EqualsBuilder()
-			.appendSuper(super.equals(other))
 			.append(getLastName(), other.getLastName())
 			.append(getFirstName(), other.getFirstName())
+			.appendSuper(super.equals(other))
 			.isEquals();
 	}
 
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-			.appendSuper(super.hashCode())
 			.append(getLastName())
 			.append(getFirstName())
+			.appendSuper(super.hashCode())
 			.toHashCode();
 	}
 
 	@Override
 	public int compareTo(U user) {
 		return new CompareToBuilder()
+			.append(getLastName(), user.getLastName())
+			.append(getFirstName(), user.getFirstName())
 			.appendSuper(super.compareTo(user))
-			.append(getLastName(), user.getLastName(), STRING_COLLATOR_FRENCH)
-			.append(getFirstName(), user.getFirstName(), STRING_COLLATOR_FRENCH)
 			.toComparison();
 	}
 

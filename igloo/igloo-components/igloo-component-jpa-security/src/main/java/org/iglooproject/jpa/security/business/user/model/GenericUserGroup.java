@@ -6,6 +6,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -144,11 +147,37 @@ public abstract class GenericUserGroup<G extends GenericUserGroup<G, U>, U exten
 	}
 
 	@Override
-	public int compareTo(G group) {
-		if (this == group) {
-			return 0;
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
 		}
-		return STRING_COLLATOR_FRENCH.compare(this.getName(), group.getName());
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof GenericUserGroup)) {
+			return false;
+		}
+		GenericUserGroup<?, ?> other = (GenericUserGroup<?, ?>) obj;
+		return new EqualsBuilder()
+			.append(getName(), other.getName())
+			.appendSuper(super.equals(other))
+			.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+			.append(getName())
+			.appendSuper(super.hashCode())
+			.toHashCode();
+	}
+
+	@Override
+	public int compareTo(G userGroup) {
+		return new CompareToBuilder()
+			.append(getName(), userGroup.getName())
+			.appendSuper(super.compareTo(userGroup))
+			.toComparison();
 	}
 
 }

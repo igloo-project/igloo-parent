@@ -3,6 +3,9 @@ package org.iglooproject.test.business.company.model;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.test.business.person.model.Person;
 import org.iglooproject.test.business.project.model.Project;
@@ -248,11 +251,37 @@ public class Company extends GenericEntity<Long, Company> {
 	}
 
 	@Override
-	public int compareTo(Company company) {
-		if (this == company) {
-			return 0;
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
 		}
-		return this.getName().compareToIgnoreCase(company.getName());
+		if (obj == this) {
+			return true;
+		}
+		if (!(obj instanceof Company)) {
+			return false;
+		}
+		Company other = (Company) obj;
+		return new EqualsBuilder()
+			.append(getName(), other.getName())
+			.appendSuper(super.equals(other))
+			.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+			.append(getName())
+			.appendSuper(super.hashCode())
+			.toHashCode();
+	}
+
+	@Override
+	public int compareTo(Company company) {
+		return new CompareToBuilder()
+			.append(getName(), company.getName())
+			.appendSuper(super.compareTo(company))
+			.toComparison();
 	}
 
 }

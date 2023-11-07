@@ -252,24 +252,24 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
 		}
 		GenericUser<?, ?> other = (GenericUser<?, ?>) obj;
 		return new EqualsBuilder()
-			.appendSuper(super.equals(other))
 			.append(getUsername(), other.getUsername())
+			.appendSuper(super.equals(other))
 			.isEquals();
 	}
 
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-			.appendSuper(super.hashCode())
 			.append(getUsername())
+			.appendSuper(super.hashCode())
 			.toHashCode();
 	}
 
 	@Override
 	public int compareTo(U user) {
 		return new CompareToBuilder()
+			.append(getUsername(), user.getUsername())
 			.appendSuper(super.compareTo(user))
-			.append(getUsername(), user.getUsername(), STRING_COLLATOR_FRENCH)
 			.toComparison();
 	}
 

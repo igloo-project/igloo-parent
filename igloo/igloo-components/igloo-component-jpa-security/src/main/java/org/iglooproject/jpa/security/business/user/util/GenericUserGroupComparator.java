@@ -1,8 +1,11 @@
 package org.iglooproject.jpa.security.business.user.util;
 
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import static org.iglooproject.jpa.business.generic.model.GenericEntity.STRING_COLLATOR_FRENCH;
+
 import org.iglooproject.jpa.business.generic.util.AbstractGenericEntityComparator;
 import org.iglooproject.jpa.security.business.user.model.GenericUserGroup;
+
+import com.google.common.collect.ComparisonChain;
 
 public class GenericUserGroupComparator extends AbstractGenericEntityComparator<Long, GenericUserGroup<?, ?>> {
 
@@ -16,10 +19,14 @@ public class GenericUserGroupComparator extends AbstractGenericEntityComparator<
 
 	@Override
 	protected int compareNotNullObjects(GenericUserGroup<?, ?> left, GenericUserGroup<?, ?> right) {
-		int order = GenericEntity.STRING_COLLATOR_FRENCH.compare(left.getName(), right.getName());
+		int order = ComparisonChain.start()
+			.compare(left.getName(), right.getName(), STRING_COLLATOR_FRENCH)
+			.result();
+		
 		if (order == 0) {
 			order = super.compareNotNullObjects(left, right);
 		}
+		
 		return order;
 	}
 
