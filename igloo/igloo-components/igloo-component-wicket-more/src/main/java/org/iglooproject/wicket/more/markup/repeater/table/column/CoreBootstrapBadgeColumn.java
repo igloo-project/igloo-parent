@@ -7,7 +7,6 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
@@ -20,7 +19,6 @@ import com.google.common.collect.Lists;
 
 import igloo.bootstrap.BootstrapRequestCycle;
 import igloo.bootstrap.renderer.IBootstrapRenderer;
-import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.factory.IDetachableFactory;
 import igloo.wicket.markup.html.panel.InvisiblePanel;
@@ -101,8 +99,7 @@ public class CoreBootstrapBadgeColumn<T, S extends ISort<?>, C> extends Abstract
 					@Override
 					public MarkupContainer getSideLink(String wicketId, IModel<T> rowModel) {
 						if (sideLinkGeneratorMapper != null) {
-							return decorate(sideLinkGeneratorMapper.map(rowModel).link(wicketId))
-									.add(new WebMarkupContainer("sideLinkIcon").add(new ClassAttributeAppender("fa fa-fw fa-share-square-o")));
+							return decorate(sideLinkGeneratorMapper.map(rowModel).link(wicketId));
 						}
 						return new InvisiblePanel(wicketId);
 					}

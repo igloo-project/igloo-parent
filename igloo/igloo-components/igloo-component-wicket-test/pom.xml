@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha6</version>
+		<version>6.0.0-Alpha7</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-test</artifactId>
@@ -16,6 +16,10 @@
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-tester</artifactId>
 		</dependency>
 		<dependency>
 			<!-- force commons-io version (override wicket-utils) -->

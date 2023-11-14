@@ -15,7 +15,6 @@ import org.iglooproject.wicket.more.markup.html.template.component.LinkGenerator
 import org.iglooproject.wicket.more.markup.html.template.component.SimpleBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
