@@ -89,7 +89,7 @@ public class ClipboardBehavior extends Behavior {
 	}
 
 	public ClipboardBehavior text(String text) {
-		return action(Model.of(text));
+		return text(Model.of(text));
 	}
 
 	public ClipboardBehavior text(IModel<String> textModel) {
