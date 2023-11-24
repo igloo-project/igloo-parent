@@ -36,6 +36,7 @@ import igloo.bootstrap5.markup.html.template.js.bootstrap.confirm.BootstrapConfi
 import igloo.bootstrap5.markup.html.template.js.bootstrap.modal.Bootstrap5ModalMoreJavaScriptResourceReference;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.modal.component.Bootstrap5ModalPanel;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.modal.statement.BootstrapModal;
+import igloo.bootstrap5.markup.html.template.js.bootstrap.offcanvas.Bootstrap5OffcanvasMoreJavaScriptResourceReference;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.tab.BootstrapTabMoreJavaScriptResourceReference;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.tooltip.Bootstrap5TooltipMoreJavaScriptResourceReference;
 
@@ -47,6 +48,7 @@ public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider
 			.addJavaScriptBundle(getClass(), "bootstrap-bundle.js",
 				Bootstrap5JavaScriptResourceReference.get(),
 				Bootstrap5ModalMoreJavaScriptResourceReference.get(),
+				Bootstrap5OffcanvasMoreJavaScriptResourceReference.get(),
 				BootstrapTabMoreJavaScriptResourceReference.get(),
 				BootstrapConfirmJavaScriptResourceReference.get(),
 				Bootstrap5TooltipMoreJavaScriptResourceReference.get()
