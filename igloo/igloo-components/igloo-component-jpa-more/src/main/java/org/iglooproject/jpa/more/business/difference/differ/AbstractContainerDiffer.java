@@ -33,7 +33,7 @@ public abstract class AbstractContainerDiffer implements Differ {
 		this.defaultStrategy = defaultStrategy;
 	}
 	
-	protected void addStrategy(Predicate2<? super DiffNode> predicate, AbstractContainerDifferStrategy<?, ?> strategy) {
+	public void addStrategy(Predicate2<? super DiffNode> predicate, AbstractContainerDifferStrategy<?, ?> strategy) {
 		strategies.put(predicate, strategy);
 	}
 
