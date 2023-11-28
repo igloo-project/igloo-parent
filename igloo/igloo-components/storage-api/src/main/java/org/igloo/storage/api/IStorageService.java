@@ -71,6 +71,7 @@ public interface IStorageService {
 	 */
 	void updateFichierFilename(@Nonnull Fichier fichier, @Nonnull String filename);
 
+	@Transactional(readOnly = true)
 	Fichier getFichierById(@Nonnull Long id);
 
 	/**
@@ -80,11 +81,11 @@ public interface IStorageService {
 	 * 
 	 * @throws FileNotFoundException if file cannot be found, is not readable or {@link Fichier#getStatus()} is {@link FichierStatus#INVALIDATED}.
 	 */
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	@Nonnull
 	File getFile(@Nonnull Fichier fichier) throws FileNotFoundException;
 
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	@Nonnull
 	File getFile(Fichier fichier, boolean checkTransient, boolean checkExists) throws FileNotFoundException;
 
@@ -109,7 +110,7 @@ public interface IStorageService {
 	 * Check creator of {@link Fichier}.
 	 * Check if {@link Fichier#getCreatedBy()} has same class type than <code>clazz</code> and same id than <code>id</code>
 	 */
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public boolean isCreatedBy(@Nonnull Fichier fichier, @Nonnull Class<?> clazz, Long id);
 
 }
