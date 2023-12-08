@@ -17,7 +17,6 @@ import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.behavior.BootstrapColorBehavior;
 import org.iglooproject.wicket.more.markup.html.factory.ConditionFactories;
 import org.iglooproject.wicket.more.markup.html.factory.DetachableFactories;
-import org.iglooproject.wicket.more.markup.repeater.table.column.CoreActionColumnElementPanel;
 import org.springframework.security.acls.model.Permission;
 
 import com.google.common.collect.ImmutableList;
