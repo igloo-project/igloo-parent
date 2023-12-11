@@ -7,7 +7,7 @@ import org.apache.wicket.model.IModel;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.markup.html.panel.GenericPanel;
 
-public class ConsoleMaintenanceEhCacheProgressBarPanel extends GenericPanel<Float> {
+public class ConsoleMaintenanceCacheProgressBarPanel extends GenericPanel<Float> {
 
 	private static final long serialVersionUID = 3992803188589160149L;
 
@@ -15,7 +15,7 @@ public class ConsoleMaintenanceEhCacheProgressBarPanel extends GenericPanel<Floa
 	private static final String CLASS_PROGRESS_WARNING = "bg-warning";
 	private static final String CLASS_PROGRESS_DANGER = "bg-danger";
 
-	public ConsoleMaintenanceEhCacheProgressBarPanel(String id, IModel<Float> valueModel, boolean sign, float low, float high) {
+	public ConsoleMaintenanceCacheProgressBarPanel(String id, IModel<Float> valueModel, boolean sign, float low, float high) {
 		super(id, valueModel);
 		
 		if (low > high) {
