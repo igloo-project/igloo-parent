@@ -104,13 +104,10 @@ public final class JpaConfigUtils {
 		}
 
 		boolean queryCacheEnabled = configuration.isQueryCacheEnabled();
-		HibernateCacheRegionFactory cacheRegionFactory = configuration.getEhCacheRegionFactory();
+		HibernateCacheRegionFactory cacheRegionFactory = configuration.getCacheRegionFactory();
 		if (!cacheRegionFactory.isDisabled()) {
 			properties.setProperty(AvailableSettings.CACHE_REGION_FACTORY, cacheRegionFactory.getRegionFactoryAlias());
-			if (cacheRegionFactory.isEhcache2()) {
-				// org.hibernate.cache.ehcache.ConfigSettings.EHCACHE_CONFIGURATION_RESOURCE_NAME
-				properties.setProperty("net.sf.ehcache.configurationResourceName", configuration.getEhCacheConfiguration());
-			} else if (cacheRegionFactory.isJcache()) {
+			if (cacheRegionFactory.isJcache()) {
 				properties.setProperty("hibernate.javax.cache.missing_cache_strategy", "create-warn");
 				properties.setProperty("hibernate.javax.cache.provider", cacheRegionFactory.getJcacheProvider());
 				properties.setProperty("hibernate.javax.cache.uri", configuration.getJcacheConfiguration());

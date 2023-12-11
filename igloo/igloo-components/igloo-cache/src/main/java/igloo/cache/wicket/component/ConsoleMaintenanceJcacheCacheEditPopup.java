@@ -11,6 +11,7 @@ import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.Cache;
 
 import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
 import igloo.cache.binding.CacheBindings;
@@ -19,7 +20,6 @@ import igloo.wicket.component.CoreLabel;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
 import igloo.wicket.model.BindingModel;
-import net.sf.ehcache.Cache;
 
 public class ConsoleMaintenanceJcacheCacheEditPopup extends AbstractAjaxModalPopupPanel<ICacheWrapper> {
 
