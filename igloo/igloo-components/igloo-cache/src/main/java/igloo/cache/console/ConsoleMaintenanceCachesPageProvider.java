@@ -16,7 +16,7 @@ public class ConsoleMaintenanceCachesPageProvider implements IConsolePageProvide
 	@Override
 	public void install(ConsoleConfiguration consoleConfiguration, ResourceSettings resourceSettings) {
 		consoleConfiguration.insertMenu(
-			new ConsoleMenuItem("maintenanceEhcacheMenuItem",
+			new ConsoleMenuItem("maintenanceCacheMenuItem",
 				"console.maintenance.caches", "caches", ConsoleMaintenanceCachesPage.class),
 			section -> "maintenanceMenuSection".equals(section.getName()),
 			menu -> "maintenanceGestionMenuItem".equals(menu.getName()),
