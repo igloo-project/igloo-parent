@@ -52,4 +52,6 @@ public final class SpringPropertyIds extends AbstractPropertyIds {
 	public static final ImmutablePropertyId<List<String>> NOTIFICATION_MAIL_FILTER_EMAILS = immutable("notification.mail.filter.emails");
 	public static final ImmutablePropertyId<List<String>> NOTIFICATION_MAIL_DISABLED_RECIPIENT_FALLBACK = immutable("notification.mail.disabledRecipientFallback");
 	
+	public static final ImmutablePropertyId<List<String>> PROPERTIES_HIDDEN = immutable("properties.hidden");
+	
 }
