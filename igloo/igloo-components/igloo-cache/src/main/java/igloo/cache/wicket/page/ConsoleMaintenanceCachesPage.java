@@ -35,7 +35,7 @@ import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.cache.binding.CacheBindings;
 import igloo.cache.monitor.CacheManagerWrapper;
 import igloo.cache.monitor.ICacheWrapper;
-import igloo.cache.wicket.component.ConsoleMaintenanceEhCacheProgressBarPanel;
+import igloo.cache.wicket.component.ConsoleMaintenanceCacheProgressBarPanel;
 import igloo.cache.wicket.component.ConsoleMaintenanceJcacheCacheEditPopup;
 import igloo.cache.wicket.model.CacheManagerListModel;
 import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
@@ -173,13 +173,13 @@ public class ConsoleMaintenanceCachesPage extends ConsoleMaintenanceTemplate {
 										);
 										
 										item.add(
-											new ConsoleMaintenanceEhCacheProgressBarPanel("progressBarObject",
+											new ConsoleMaintenanceCacheProgressBarPanel("progressBarObject",
 												BindingModel.of(
 														cacheModel,
 														CacheBindings.cache().cacheFillRatio()),
 												true, 0.7f, 0.9f
 											),
-											new ConsoleMaintenanceEhCacheProgressBarPanel("progressBarHit", 
+											new ConsoleMaintenanceCacheProgressBarPanel("progressBarHit",
 												BindingModel.of(cacheModel, CacheBindings.cache().cacheHitRatio()),
 												false, 0.2f, 0.6f
 											)

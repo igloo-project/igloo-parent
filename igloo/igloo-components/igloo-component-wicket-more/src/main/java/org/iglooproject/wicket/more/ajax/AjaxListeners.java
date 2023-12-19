@@ -15,6 +15,7 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxRequestTarget.IListener;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.repeater.RefreshingView;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -277,7 +278,17 @@ public final class AjaxListeners {
 				)
 		);
 	}
-	
+
+	public static AjaxRequestTarget.IListener clearInput(Form<?> form) {
+		return new SerializableListener() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onBeforeRespond(Map<String, Component> map, AjaxRequestTarget target) {
+				form.clearInput();
+			}
+		};
+	}
+
 	public static ImmutableSet.Builder<AjaxRequestTarget.IListener> chain() {
 		return ImmutableSet.builder();
 	}

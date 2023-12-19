@@ -1,5 +1,7 @@
 package igloo.console.maintenance.properties.page;
 
+import static org.iglooproject.spring.property.SpringPropertyIds.PROPERTIES_HIDDEN;
+
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -109,7 +111,12 @@ public class ConsoleMaintenancePropertiesPage extends ConsoleMaintenanceTemplate
 				item.setVisible(true);
 				item.add(
 					new CoreLabel("name", propertyIdModel.map(PropertyId::getKey)),
-					new CoreLabel("value", propertyIdValueModel)
+					new CoreLabel(
+						"value",
+						Condition.contains(Model.ofList(propertyService.get(PROPERTIES_HIDDEN)), propertyIdModel.map(PropertyId::getKey)).applies() ?
+							new ResourceModel("console.maintenance.properties.hiddenProperty") :
+							propertyIdValueModel
+					)
 				);
 			}
 		};
@@ -163,7 +170,11 @@ public class ConsoleMaintenancePropertiesPage extends ConsoleMaintenanceTemplate
 			protected void populateItem(ListItem<KeyValue<String, Object>> item) {
 				item.add(
 					new CoreLabel("name", item.getModel().map(KeyValue::getKey)),
-					new CoreLabel("value", item.getModel().map(KeyValue::getValue))
+					new CoreLabel(
+						"value",
+						Condition.contains(Model.ofList(propertyService.get(PROPERTIES_HIDDEN)), item.getModel().map(KeyValue::getKey)).applies() ?
+							new ResourceModel("console.maintenance.properties.hiddenProperty") :
+							item.getModel().map(KeyValue::getValue))
 				);
 			}
 		};

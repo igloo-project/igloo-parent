@@ -16,7 +16,6 @@ import org.springframework.cache.jcache.JCacheCache;
  * 
  * <p>You may use {@link ICacheWrapper#wrap(Cache)} to instantiate a concrete implementation. Allowed backends are:
  * <ul>
- * <li>EhCache2</li>
  * <li>Caffeine</li>
  * <li>JCache + Caffeine</li>
  * </ul>
