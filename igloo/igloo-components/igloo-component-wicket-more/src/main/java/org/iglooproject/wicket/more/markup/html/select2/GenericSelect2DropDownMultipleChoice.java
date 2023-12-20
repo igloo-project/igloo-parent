@@ -74,6 +74,8 @@ public class GenericSelect2DropDownMultipleChoice<T> extends ListMultipleChoice<
 		
 		if (isRequired()) {
 			Select2Utils.setRequiredSettings(getSettings());
+		} else {
+			Select2Utils.setOptionalSettings(getSettings());
 		}
 	}
 

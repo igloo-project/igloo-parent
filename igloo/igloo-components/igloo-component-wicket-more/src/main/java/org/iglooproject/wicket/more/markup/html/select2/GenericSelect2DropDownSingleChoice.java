@@ -61,6 +61,8 @@ public class GenericSelect2DropDownSingleChoice<T> extends DropDownChoice<T> {
 		
 		if (isRequired()) {
 			Select2Utils.setRequiredSettings(getSettings());
+		} else {
+			Select2Utils.setOptionalSettings(getSettings());
 		}
 	}
 

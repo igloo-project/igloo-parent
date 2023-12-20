@@ -23,6 +23,8 @@ public class GenericSelect2AjaxDropDownSingleChoice<T> extends Select2Choice<T> 
 		
 		if (isRequired()) {
 			Select2Utils.setRequiredSettings(getSettings());
+		} else {
+			Select2Utils.setOptionalSettings(getSettings());
 		}
 	}
 

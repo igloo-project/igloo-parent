@@ -29,6 +29,8 @@ public class GenericSelect2AjaxDropDownMultipleChoice<T> extends Select2MultiCho
 		
 		if (isRequired()) {
 			Select2Utils.setRequiredSettings(getSettings());
+		} else {
+			Select2Utils.setOptionalSettings(getSettings());
 		}
 	}
 
