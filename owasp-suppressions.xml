@@ -2,6 +2,15 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
    <suppress>
       <notes><![CDATA[
+      file name: select2-bootstrap-5-theme-1.3.0.jar
+      
+      We use select2 4.0.13 ; issues relates to select2 <= 4.0.5.
+      ]]></notes>
+      <packageUrl regex="true">^pkg:maven/org\.webjars\.npm/select2\-bootstrap\-5\-theme@.*$</packageUrl>
+      <cve>CVE-2016-10744</cve>
+   </suppress>
+   <suppress>
+      <notes><![CDATA[
       file name: jackson-databind-2.14.1.jar
 
       This vulnerability is a DOS when serializing cyclic objects. It is not reachable by external attackers.
