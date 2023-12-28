@@ -138,8 +138,8 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-commons-fileupload</artifactId>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-fileupload2-jakarta</artifactId>
 		</dependency>
 		
 		
