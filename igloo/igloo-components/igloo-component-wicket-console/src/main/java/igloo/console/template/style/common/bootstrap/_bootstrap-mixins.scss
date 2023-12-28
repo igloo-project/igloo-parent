@@ -13,6 +13,10 @@
 @import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/color-bg";
 @import "override/mixins/color-bg";
 
+@import "META-INF/resources/webjars/bootstrap/scss/mixins/color-mode";
+@import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/color-mode";
+@import "override/mixins/color-mode";
+
 @import "META-INF/resources/webjars/bootstrap/scss/mixins/color-scheme";
 @import "META-INF/resources/webjars/bootstrap5-override/scss/mixins/color-scheme";
 @import "override/mixins/color-scheme";
