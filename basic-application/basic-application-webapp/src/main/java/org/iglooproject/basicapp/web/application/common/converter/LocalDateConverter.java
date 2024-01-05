@@ -7,7 +7,7 @@ import org.apache.wicket.Localizer;
 import org.iglooproject.basicapp.core.util.time.DateTimePattern;
 import org.iglooproject.commons.util.time.IDateTimePattern;
 
-public class LocalDateConverter extends org.apache.wicket.util.convert.converter.LocalDateTimeConverter {
+public class LocalDateConverter extends org.apache.wicket.util.convert.converter.LocalDateConverter {
 
 	private static final long serialVersionUID = 729923484832534135L;
 
