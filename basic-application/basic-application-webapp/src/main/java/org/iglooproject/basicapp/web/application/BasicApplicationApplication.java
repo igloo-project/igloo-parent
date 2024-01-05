@@ -87,6 +87,7 @@ import igloo.console.navigation.page.ConsoleLoginFailurePage;
 import igloo.console.navigation.page.ConsoleLoginSuccessPage;
 import igloo.console.navigation.page.ConsoleSignInPage;
 import igloo.console.template.ConsoleConfiguration;
+import igloo.wicket.convert.EnumClassAwareConverterLocator;
 
 public class BasicApplicationApplication extends CoreWicketAuthenticatedApplication {
 	
@@ -159,7 +160,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 		
 		converterLocator.set(PostalCode.class, PostalCodeConverter.get());
 		
-		return new HibernateProxyAwareConverterLocator(converterLocator);
+		return new EnumClassAwareConverterLocator(new HibernateProxyAwareConverterLocator(converterLocator));
 	}
 
 	@Override
