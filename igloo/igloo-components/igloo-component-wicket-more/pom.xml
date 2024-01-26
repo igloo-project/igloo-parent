@@ -24,6 +24,11 @@
 		<!-- Igloo dependencies -->
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-juice</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-jquery</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -208,11 +213,6 @@
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>annotations</artifactId>
 			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>io.github.resilience4j</groupId>
-			<artifactId>resilience4j-all</artifactId>
 		</dependency>
 	</dependencies>
 	

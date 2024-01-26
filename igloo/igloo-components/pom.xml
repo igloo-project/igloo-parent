@@ -46,6 +46,7 @@
 		
 		<module>igloo-component-sass</module>
 		<module>igloo-component-autoprefixer</module>
+		<module>igloo-juice</module>
 		
 		<module>igloo-component-wicket-jquery</module>
 		<module>igloo-component-wicket</module>

@@ -1,15 +1,5 @@
 package org.iglooproject.wicket.more.notification.service;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpClient.Redirect;
-import java.net.http.HttpRequest;
-import java.net.http.HttpRequest.BodyPublishers;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
-import java.net.http.HttpTimeoutException;
-import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -39,16 +29,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.Iterables;
 
+import igloo.juice.JuiceInliner;
 import igloo.wicket.offline.IOfflineComponentProvider;
-import io.github.resilience4j.circuitbreaker.CircuitBreaker;
-import io.github.resilience4j.decorators.Decorators;
-import io.github.resilience4j.retry.Retry;
-import io.github.resilience4j.retry.RetryConfig;
 
 public abstract class AbstractNotificationContentDescriptorFactory extends AbstractWicketRendererServiceImpl {
 	
@@ -69,13 +53,8 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 	@Autowired
 	private IPropertyService propertyService;
 
-	private HttpClient inlinerHttpClient = HttpClient.newBuilder()
-		.followRedirects(Redirect.NORMAL)
-		.build();
-	private ObjectMapper inlinerObjectMapper = new ObjectMapper()
-		.configure(SerializationFeature.INDENT_OUTPUT, true)
-		.setSerializationInclusion(Include.NON_NULL);
-	
+	private JuiceInliner juiceInliner = new JuiceInliner();
+
 	protected AbstractNotificationContentDescriptorFactory(IWicketContextProvider wicketContextProvider) {
 		super(wicketContextProvider);
 	}
@@ -341,79 +320,7 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 	}
 	
 	private String postProcessJuice(String html) {
-		return postProcessJuice(html, null);
-	}
-
-	private String postProcessJuice(String html, String extraCss) {
-		try {
-			InlinerQuery query = new InlinerQuery();
-			query.setContent(html);
-			
-			InlinerOptions options = new InlinerOptions();
-			options.setExtraCss(extraCss);
-			options.setRemoveStyleTags(false);
-			query.setOptions(options);
-			
-			String rawQuery = inlinerObjectMapper.writeValueAsString(query);
-			
-			HttpRequest request = HttpRequest
-				.newBuilder(URI.create("http://localhost:8000/juice"))
-				.method("GET", BodyPublishers.ofString(rawQuery))
-				.header("Content-Type", "application/json")
-				.timeout(Duration.ofMinutes(1))
-				.build();
-			
-			CircuitBreaker circuitBreaker = CircuitBreaker.ofDefaults("juice-css");
-			
-			Retry retry =  Retry.of(
-				"juice-css",
-				RetryConfig.<HttpResponse<String>>custom()
-					.maxAttempts(3)
-					.waitDuration(Duration.ofMillis(500))
-					.retryOnResult(response -> response.statusCode() != 200)
-					.retryExceptions(IOException.class, HttpTimeoutException.class)
-					.build()
-			);
-			
-			HttpResponse<String> response = Decorators.ofCallable(() -> inlinerHttpClient.send(request, BodyHandlers.ofString()))
-				.withCircuitBreaker(circuitBreaker)
-				.withRetry(retry)
-				.call();
-			
-			if (response.statusCode() != 200) {
-				throw new IllegalStateException("Error inlining HTML CSS, response status code %s.".formatted(response.statusCode()));
-			}
-			
-			return response.body();
-		} catch (Exception e) {
-			if (e instanceof InterruptedException) { //NOSONAR
-				Thread.currentThread().interrupt();
-			}
-			throw new IllegalStateException("Error inlining HTML CSS", e);
-		}
-	}
-	
-	public static class InlinerQuery {
-		
-		private String content;
-		
-		private InlinerOptions options;
-		
-		public synchronized String getContent() {
-			return content;
-		}
-		
-		public synchronized void setContent(String content) {
-			this.content = content;
-		}
-		
-		public synchronized InlinerOptions getOptions() {
-			return options;
-		}
-		
-		public synchronized void setOptions(InlinerOptions options) {
-			this.options = options;
-		}
+		return juiceInliner.postProcessJuice(html, null);
 	}
 
 	/**
@@ -429,152 +336,9 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 			throw new IllegalStateException("Error inlining HTML CSS");
 		}
 		
-		return postProcessJuice(html, extraCss);
+		return juiceInliner.postProcessJuice(html, extraCss);
 	}
 
-	public static class InlinerOptions {
-		
-		private Boolean applyAttributesTableElements;
-		
-		private Boolean applyHeightAttributes;
-		
-		private Boolean applyStyleTags;
-		
-		private Boolean applyWidthAttributes;
-		
-		private String extraCss;
-		
-		private Boolean insertPreservedExtraCss;
-		
-		private Boolean inlinePseudoElements;
-		
-		private Boolean preserveFontFaces;
-		
-		private Boolean preserveImportant;
-		
-		private Boolean preserveMediaQueries;
-		
-		private Boolean preserveKeyFrames;
-		
-		private Boolean preservePseudos;
-		
-		private Boolean removeStyleTags;
-		
-		private Boolean xmlMode;
-		
-		public synchronized Boolean getApplyAttributesTableElements() {
-			return applyAttributesTableElements;
-		}
-		
-		public synchronized void setApplyAttributesTableElements(Boolean applyAttributesTableElements) {
-			this.applyAttributesTableElements = applyAttributesTableElements;
-		}
-		
-		public synchronized Boolean getApplyHeightAttributes() {
-			return applyHeightAttributes;
-		}
-		
-		public synchronized void setApplyHeightAttributes(Boolean applyHeightAttributes) {
-			this.applyHeightAttributes = applyHeightAttributes;
-		}
-		
-		public synchronized Boolean getApplyStyleTags() {
-			return applyStyleTags;
-		}
-		
-		public synchronized void setApplyStyleTags(Boolean applyStyleTags) {
-			this.applyStyleTags = applyStyleTags;
-		}
-		
-		public synchronized Boolean getApplyWidthAttributes() {
-			return applyWidthAttributes;
-		}
-		
-		public synchronized void setApplyWidthAttributes(Boolean applyWidthAttributes) {
-			this.applyWidthAttributes = applyWidthAttributes;
-		}
-		
-		public synchronized String getExtraCss() {
-			return extraCss;
-		}
-		
-		public synchronized void setExtraCss(String extraCss) {
-			this.extraCss = extraCss;
-		}
-		
-		public synchronized Boolean getInsertPreservedExtraCss() {
-			return insertPreservedExtraCss;
-		}
-		
-		public synchronized void setInsertPreservedExtraCss(Boolean insertPreservedExtraCss) {
-			this.insertPreservedExtraCss = insertPreservedExtraCss;
-		}
-		
-		public synchronized Boolean getInlinePseudoElements() {
-			return inlinePseudoElements;
-		}
-		
-		public synchronized void setInlinePseudoElements(Boolean inlinePseudoElements) {
-			this.inlinePseudoElements = inlinePseudoElements;
-		}
-		
-		public synchronized Boolean getPreserveFontFaces() {
-			return preserveFontFaces;
-		}
-		
-		public synchronized void setPreserveFontFaces(Boolean preserveFontFaces) {
-			this.preserveFontFaces = preserveFontFaces;
-		}
-		
-		public synchronized Boolean getPreserveImportant() {
-			return preserveImportant;
-		}
-		
-		public synchronized void setPreserveImportant(Boolean preserveImportant) {
-			this.preserveImportant = preserveImportant;
-		}
-		
-		public synchronized Boolean getPreserveMediaQueries() {
-			return preserveMediaQueries;
-		}
-		
-		public synchronized void setPreserveMediaQueries(Boolean preserveMediaQueries) {
-			this.preserveMediaQueries = preserveMediaQueries;
-		}
-		
-		public synchronized Boolean getPreserveKeyFrames() {
-			return preserveKeyFrames;
-		}
-		
-		public synchronized void setPreserveKeyFrames(Boolean preserveKeyFrames) {
-			this.preserveKeyFrames = preserveKeyFrames;
-		}
-		
-		public synchronized Boolean getPreservePseudos() {
-			return preservePseudos;
-		}
-		
-		public synchronized void setPreservePseudos(Boolean preservePseudos) {
-			this.preservePseudos = preservePseudos;
-		}
-		
-		public synchronized Boolean getRemoveStyleTags() {
-			return removeStyleTags;
-		}
-		
-		public synchronized void setRemoveStyleTags(Boolean removeStyleTags) {
-			this.removeStyleTags = removeStyleTags;
-		}
-		
-		public synchronized Boolean getXmlMode() {
-			return xmlMode;
-		}
-		
-		public synchronized void setXmlMode(Boolean xmlMode) {
-			this.xmlMode = xmlMode;
-		}
-	}
-	
 	/**
 	 * @deprecated Use {@link #postProcessJuice(String)} instead.
 	 */
