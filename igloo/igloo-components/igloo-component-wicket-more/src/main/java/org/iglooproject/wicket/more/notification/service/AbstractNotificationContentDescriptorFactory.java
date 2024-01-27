@@ -31,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Iterables;
 
-import igloo.juice.JuiceInliner;
+import igloo.juice.IJuiceInliner;
 import igloo.wicket.offline.IOfflineComponentProvider;
 
 public abstract class AbstractNotificationContentDescriptorFactory extends AbstractWicketRendererServiceImpl {
@@ -53,7 +53,8 @@ public abstract class AbstractNotificationContentDescriptorFactory extends Abstr
 	@Autowired
 	private IPropertyService propertyService;
 
-	private JuiceInliner juiceInliner = new JuiceInliner();
+	@Autowired
+	private IJuiceInliner juiceInliner;
 
 	protected AbstractNotificationContentDescriptorFactory(IWicketContextProvider wicketContextProvider) {
 		super(wicketContextProvider);

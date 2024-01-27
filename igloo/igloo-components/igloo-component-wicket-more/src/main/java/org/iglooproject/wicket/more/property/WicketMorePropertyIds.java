@@ -1,5 +1,7 @@
 package org.iglooproject.wicket.more.property;
 
+import java.net.URL;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.wicket.Application;
@@ -25,7 +27,13 @@ public final class WicketMorePropertyIds extends AbstractPropertyIds {
 	public static final ImmutablePropertyId<Boolean> AUTOPREFIXER_ENABLED = immutable("autoprefixer.enabled");
 	public static final ImmutablePropertyId<Boolean> SCSS_STATIC_ENABLED = immutable("scss.static.enabled");
 	public static final ImmutablePropertyId<String> SCSS_STATIC_RESOURCE_PATH = immutable("scss.static.resourcePath");
+
 	public static final ImmutablePropertyId<Boolean> NOTIFICATION_INLINER_JUICE_ENABLED = immutable("notification.inliner.juice.enabled");
+	public static final ImmutablePropertyId<URL> NOTIFICATION_INLINER_JUICE_URL = immutable("notification.inliner.juice.url");
+	public static final ImmutablePropertyId<Integer> NOTIFICATION_INLINER_JUICE_RETRY_MAX_ATTEMPTS = immutable("notification.inliner.juice.retry.maxAttempts");
+	public static final ImmutablePropertyId<Duration> NOTIFICATION_INLINER_JUICE_RETRY_WAIT_DURATION = immutable("notification.inliner.juice.retry.waitDuration");
+	public static final ImmutablePropertyId<Duration> NOTIFICATION_INLINER_JUICE_RETRY_REQUEST_TIMEOUT = immutable("notification.inliner.juice.requestTimeout");
+	public static final ImmutablePropertyId<String> NOTIFICATION_INLINER_JUICE_TOKEN = immutable("notification.inliner.juice.token");
 
 	public static final ImmutablePropertyId<String> WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME = immutable("wicket.backgroundThreadContextBuilder.url.scheme");
 	public static final ImmutablePropertyId<String> WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME = immutable("wicket.backgroundThreadContextBuilder.url.serverName");
