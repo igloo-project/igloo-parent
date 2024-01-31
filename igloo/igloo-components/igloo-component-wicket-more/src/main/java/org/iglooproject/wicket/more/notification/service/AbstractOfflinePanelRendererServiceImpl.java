@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import igloo.wicket.model.Detachables;
 import igloo.wicket.offline.IOfflineComponentProvider;
 import igloo.wicket.offline.OfflineComponentClassMetadataKey;
 
@@ -123,10 +124,11 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 		final Response originalResponse = requestCycle.getResponse();
 		BufferedWebResponse tempResponse = new BufferedWebResponse(null);
 		
+		Page component = null;
 		try {
 			requestCycle.setResponse(tempResponse);
 			requestCycle.setMetaData(OfflineComponentClassMetadataKey.INSTANCE, offlineComponent.getComponentClass());
-			Page component = offlineComponent.getComponent();
+			component = offlineComponent.getComponent();
 			if (!offlineComponent.getComponentClass().isInstance(component)) {
 				LOGGER.warn("Component class {} does not match advertised class {}",
 						component.getClass().getName(), offlineComponent.getComponentClass().getName());
@@ -134,9 +136,11 @@ abstract class AbstractOfflinePanelRendererServiceImpl {
 			component.renderPage();
 			return Pair.of(component, tempResponse.getText());
 		} finally {
+			if (component != null) {
+				component.detach();
+			}
 			requestCycle.setResponse(originalResponse);
 		}
-		
 	}
 	
 	protected abstract String postProcessHtml(Component component, String htmlBody, Locale locale, String variation);
