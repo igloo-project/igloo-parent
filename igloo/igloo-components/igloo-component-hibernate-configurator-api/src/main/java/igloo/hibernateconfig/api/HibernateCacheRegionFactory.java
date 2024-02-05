@@ -9,8 +9,6 @@ import java.util.stream.Collectors;
 public enum HibernateCacheRegionFactory {
 
 	JCACHE_CAFFEINE("jcache-caffeine", "jcache", "com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider"),
-	EHCACHE("ehcache", "ehcache", null),
-	EHCACHE_SINGLETON("ehcache-singleton", "ehcache-singleton", null),
 	NONE("none", null, null);
 
 	private static final  Map<String, HibernateCacheRegionFactory> MAPPING;
@@ -49,10 +47,6 @@ public enum HibernateCacheRegionFactory {
 
 	public boolean isDisabled() {
 		return NONE.equals(this);
-	}
-
-	public boolean isEhcache2() {
-		return EHCACHE.equals(this) || EHCACHE_SINGLETON.equals(this);
 	}
 
 	public boolean isJcache() {

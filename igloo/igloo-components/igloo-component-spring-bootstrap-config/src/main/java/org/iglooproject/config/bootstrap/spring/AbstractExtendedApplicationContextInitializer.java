@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,8 +29,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.ResourcePropertySource;
@@ -145,11 +142,7 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 
 	private LoggerImplementation getLoggerImplementation() {
 		String loggerFactoryClassName = LoggerFactory.getILoggerFactory().getClass().getName();
-		if (loggerFactoryClassName.equals(LoggerImplementation.LOG4J.slf4jLoggerFactoryClass)) {
-			return LoggerImplementation.LOG4J;
-		} else if (loggerFactoryClassName.equals(LoggerImplementation.RELOAD4J.slf4jLoggerFactoryClass)) {
-			return LoggerImplementation.RELOAD4J;
-		} else if (loggerFactoryClassName.equals(LoggerImplementation.LOG4J2.slf4jLoggerFactoryClass)) {
+		if (loggerFactoryClassName.equals(LoggerImplementation.LOG4J2.slf4jLoggerFactoryClass)) {
 			return LoggerImplementation.LOG4J2;
 		} else {
 			throw new IllegalStateException(String.format("Unknown LoggerFactory implementation %s", loggerFactoryClassName));
@@ -158,9 +151,6 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 
 	private String getLoggerConfigurationsPropertyName(ConfigurableApplicationContext applicationContext, LoggerImplementation implementation) {
 		switch (implementation) {
-		case LOG4J:
-		case RELOAD4J:
-			return LOG4J_CONFIGURATIONS_PROPERTY;
 		case LOG4J2:
 			return LOG4J2_CONFIGURATIONS_PROPERTY;
 		default:
@@ -179,10 +169,6 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 			List<String> loadedConfigurations = Lists.newArrayList();
 			List<String> ignoredConfigurations = Lists.newArrayList();
 			switch (implementation) {
-			case LOG4J:
-			case RELOAD4J:
-				loadLog4j1Configuration(applicationContext, log4jLocations, loadedConfigurations, ignoredConfigurations);
-				break;
 			case LOG4J2:
 				loadLog4j2Configuration(applicationContext, log4jLocations, loadedConfigurations, ignoredConfigurations);
 				break;
@@ -259,49 +245,6 @@ abstract class AbstractExtendedApplicationContextInitializer implements IApplica
 			}
 		} else {
 			reconfigure(LoggerImplementation.LOG4J2.configurationClass, null, locations);
-		}
-	}
-
-	/**
-	 * Perform resource lookup from Spring-style urls. Build a custom {@link Properties} to reload log4j configuration.				
-	 */
-	private void loadLog4j1Configuration(ConfigurableApplicationContext applicationContext,
-			List<String> log4jLocations, List<String> loadedConfigurations, List<String> ignoredConfigurations) throws IOException {
-		boolean hasSource = false;
-		MutablePropertySources sources = new MutablePropertySources();
-		List<String> propertyNames = new ArrayList<>();
-		for (String location : log4jLocations) {
-			if (applicationContext.getResource(location).exists()) {
-				loadedConfigurations.add(location);
-				LOGGER.info("Log4j : {} added", location);
-				hasSource = true;
-				ResourcePropertySource source = new ResourcePropertySource(applicationContext.getResource(location));
-				sources.addFirst(source);
-				propertyNames.addAll(Arrays.asList(source.getPropertyNames()));
-			} else {
-				ignoredConfigurations.add(location);
-				LOGGER.info("Log4j : {} not found", location);
-			}
-		}
-		
-		if (hasSource) {
-			PropertySourcesPropertyResolver resolver = new PropertySourcesPropertyResolver(sources);
-			resolver.setPlaceholderPrefix("#{");
-			resolver.setPlaceholderSuffix("}");
-			Properties properties = new Properties();
-			for (String propertyName : propertyNames) {
-				if (resolver.containsProperty(propertyName)) {
-					LOGGER.debug("Log4j : property resolved {} -> {}", propertyName, resolver.getProperty(propertyName));
-					properties.put(propertyName, resolver.getProperty(propertyName));
-				} else {
-					LOGGER.warn("Log4j : property {} cannot be resolved", propertyName);
-				}
-			}
-			reconfigure(LoggerImplementation.LOG4J.configurationClass, properties, null);
-		} else {
-			if (LOGGER.isWarnEnabled()) {
-				LOGGER.warn("Log4j : no additional files configured in {}", Joiner.on(",").join(log4jLocations));
-			}
 		}
 	}
 

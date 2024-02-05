@@ -15,7 +15,7 @@ class TestCache extends AbstractJpaCoreTestCase {
 	
 	@Test
 	void testCache() throws ServiceException, SecurityServiceException {
-		// cf ehcache-hibernate-company.xml
+		// cf src/test/resources caffeine.conf
 		
 		getStatistics().setStatisticsEnabled(true);
 		getStatistics().clear();

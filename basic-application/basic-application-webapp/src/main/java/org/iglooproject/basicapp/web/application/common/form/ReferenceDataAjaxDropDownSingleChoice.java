@@ -2,7 +2,7 @@ package org.iglooproject.basicapp.web.application.common.form;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
-import org.iglooproject.basicapp.core.business.referencedata.search.IReferenceDataSearchQuery;
+import org.iglooproject.basicapp.core.business.referencedata.search.IBasicReferenceDataSearchQuery;
 import org.iglooproject.basicapp.web.application.common.renderer.ReferenceDataRenderer;
 import org.iglooproject.wicket.more.markup.html.select2.AbstractLongIdGenericEntityChoiceProvider;
 import org.iglooproject.wicket.more.markup.html.select2.GenericSelect2AjaxDropDownSingleChoice;
@@ -43,7 +43,7 @@ public class ReferenceDataAjaxDropDownSingleChoice<T extends ReferenceData<? sup
 		@Override
 		protected void query(String term, int offset, int limit, Response<T> response) {
 			response.addAll(
-				getBean(IReferenceDataSearchQuery.class, clazz)
+				getBean(IBasicReferenceDataSearchQuery.class, clazz)
 					.label(term)
 					.list(offset, limit)
 			);

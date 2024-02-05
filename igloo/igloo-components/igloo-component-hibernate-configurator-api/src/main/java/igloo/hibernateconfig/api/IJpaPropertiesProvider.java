@@ -26,14 +26,12 @@ public interface IJpaPropertiesProvider {
 	Class<? extends Analyzer> getHibernateSearchDefaultAnalyzer();
 
 	String getHibernateSearchIndexingStrategy();
-	
-	boolean isHibernateSearchIndexInRam();
 
-	String getEhCacheConfiguration();
+	boolean isHibernateSearchIndexInRam();
 
 	String getJcacheConfiguration();
 
-	HibernateCacheRegionFactory getEhCacheRegionFactory();
+	HibernateCacheRegionFactory getCacheRegionFactory();
 
 	boolean isQueryCacheEnabled();
 

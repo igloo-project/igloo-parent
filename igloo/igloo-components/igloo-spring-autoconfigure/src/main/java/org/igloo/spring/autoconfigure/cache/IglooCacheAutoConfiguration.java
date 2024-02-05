@@ -29,7 +29,7 @@ import igloo.cache.spring.ICacheManagerRegistry;
  * <p>Cache configuration is done with spring boot <code>spring.cache</code> properties. Please note that hibernate
  * second-level cache is configured and initialized independantly.</p>
  * 
- * <p>Igloo supports ehcache2 (deprecated), caffeine and caffeine + jcache caches.</p>
+ * <p>Igloo supports caffeine and caffeine + jcache caches.</p>
  * 
  * <p>A not customized initialization use a <code>cacheManager</code> initialized by spring/spring-boot subsystem
  * (used for spring usage - {@link Cacheable} proxies, ...) and a <code>jpaCacheManager</code> (used for second-level

@@ -74,8 +74,8 @@
 		135deg,
 		$white,
 		$white 10px,
-		rgba($table-striped-bg, $table-striped-bg-factor) 10px,
-		rgba($table-striped-bg, $table-striped-bg-factor) 20px
+		$table-striped-bg 10px,
+		$table-striped-bg 20px
 	);
 }
 

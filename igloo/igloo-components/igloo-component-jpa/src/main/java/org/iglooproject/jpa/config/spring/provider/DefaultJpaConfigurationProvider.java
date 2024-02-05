@@ -43,27 +43,24 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 
 	@Value("${lucene.index.path}")
 	private String hibernateSearchIndexBase;
-	
+
 	@Value("${lucene.index.inRam:false}")
 	private boolean isHibernateSearchIndexInRam;
-	
+
 	@Value("${hibernate.search.analyzer:}") // Defaults to null
 	private Class<? extends Analyzer> hibernateSearchDefaultAnalyzer;
-	
+
 	@Value("${hibernate.search.indexing_strategy:}") // Defaults to an empty string
 	private String hibernateSearchIndexingStrategy;
 
 	@Value("#{dataSource}")
 	private DataSource dataSource;
 
-	@Value("${hibernate.ehCache.configurationLocation:}")
-	private String ehCacheConfiguration;
-	
 	@Value("${hibernate.jcache.configurationLocation:}")
 	private String jcacheConfiguration;
-	
+
 	@Value("#{T(igloo.hibernateconfig.api.HibernateCacheRegionFactory).fromString('${hibernate.cache:}')}")
-	private HibernateCacheRegionFactory ehCacheRegionFactory;
+	private HibernateCacheRegionFactory cacheRegionFactory;
 
 	@Value("${hibernate.queryCache.enabled}")
 	private boolean queryCacheEnabled;
@@ -73,13 +70,13 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 
 	@Value("${javax.persistence.validation.mode}")
 	private String validationMode;
-	
+
 	@Value("${hibernate.implicit_naming_strategy}")
 	private Class<ImplicitNamingStrategy> implicitNamingStrategy;
 
 	@Value("${hibernate.physical_naming_strategy}")
 	private Class<PhysicalNamingStrategy> physicalNamingStrategy;
-	
+
 	@Value("${hibernate.identifier_generator_strategy_provider:}") // Defaults to null
 	private Class<IdentifierGeneratorStrategyProvider> identifierGeneratorStrategyProvider;
 	
@@ -91,7 +88,7 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 
 	@Value("${hibernate.search.elasticsearch.enabled:false}")
 	private boolean isHibernateSearchElasticSearchEnabled;
-	
+
 	@Value("${hibernate.search.default.elasticsearch.host}")
 	private String elasticSearchHost;
 
@@ -103,7 +100,7 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	 */
 	@Value("${hibernate.xml_mapping_enabled:false}")
 	private boolean xmlMappingEnabled;
-	
+
 	@Resource(name = "hibernateDefaultExtraProperties")
 	private Properties defaultExtraProperties;
 
@@ -167,18 +164,13 @@ public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvide
 	}
 
 	@Override
-	public String getEhCacheConfiguration() {
-		return ehCacheConfiguration;
-	}
-
-	@Override
 	public String getJcacheConfiguration() {
 		return jcacheConfiguration;
 	}
 	
 	@Override
-	public HibernateCacheRegionFactory getEhCacheRegionFactory() {
-		return ehCacheRegionFactory;
+	public HibernateCacheRegionFactory getCacheRegionFactory() {
+		return cacheRegionFactory;
 	}
 
 	@Override

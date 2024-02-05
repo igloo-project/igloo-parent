@@ -24,7 +24,11 @@ public final class Select2Utils {
 		}
 		settings.setAllowClear(false);
 	}
-	
+
+	public static void setOptionalSettings(Settings settings) {
+		settings.setAllowClear(true);
+	}
+
 	public static void setDefaultAjaxSettings(Settings settings) {
 		setDefaultSettings(settings);
 		settings.setMinimumInputLength(AJAX_DEFAULT_MINIMUM_INPUT_LENGTH);
