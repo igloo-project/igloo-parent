@@ -15,11 +15,11 @@ import org.springframework.test.context.TestPropertySource;
  * <p><b>user.name<b> is overriden with <em>username<em></p>
  */
 @TestPropertySource(inheritProperties = true, properties = {
-	"igloo.profile=recette",
+	"igloo.profile=integration",
 	// needed as default configuration-default-bootstrap.properties references it
 	"igloo.applicationName=igloo-component-spring-bootstrap-config"
 })
-public class SpringBootstrapProfileRecetteTest extends AbstractSpringBoostrapProfileTest {
+public class SpringBootstrapProfileIntegrationTest extends AbstractSpringBoostrapProfileTest {
 
 	/**
 	 * <p>Test override precedence. default -&gt; preproduction</p>
@@ -33,7 +33,7 @@ public class SpringBootstrapProfileRecetteTest extends AbstractSpringBoostrapPro
 		Assertions.assertThat(deployment).isEqualTo("deployment");
 		
 		// this value is overriden
-		Assertions.assertThat(recette).isEqualTo("recette");
+		Assertions.assertThat(integration).isEqualTo("integration");
 		
 		// these profiles are not loaded !
 		Assertions.assertThat(test).isEqualTo("default");
