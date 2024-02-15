@@ -38,7 +38,7 @@ public class SpringBootstrapProfilePreproductionTest extends AbstractSpringBoost
 		// these profiles are not loaded !
 		Assertions.assertThat(test).isEqualTo("default");
 		Assertions.assertThat(development).isEqualTo("default");
-		Assertions.assertThat(recette).isEqualTo("default");
+		Assertions.assertThat(integration).isEqualTo("default");
 		Assertions.assertThat(qualification).isEqualTo("default");
 		Assertions.assertThat(production).isEqualTo("default");
 		
