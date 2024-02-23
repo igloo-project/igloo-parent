@@ -58,20 +58,10 @@
 			}
 		}
 		
-		&.development {
-			@include text-bg-variant($success);
-		}
-		
-		&.testing {
-			@include text-bg-variant($info);
-		}
-		
-		&.staging {
-			@include text-bg-variant($warning);
-		}
-		
-		&.production {
-			@include text-bg-variant($danger);
+		@each $environment, $value in $environment-colors {
+			&.environment-section-#{$environment} {
+				@include text-bg-variant($value);
+			}
 		}
 	}
 	

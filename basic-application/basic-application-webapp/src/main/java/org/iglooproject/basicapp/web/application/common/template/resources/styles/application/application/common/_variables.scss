@@ -1,3 +1,10 @@
 $static-root-url:										"../../../static" !default;
 
+$environment-colors: (
+	"development":	$success,
+	"testing":		$info,
+	"staging":		$warning,
+	"production":	$danger
+) !default;
+
 $layout-container-padding-x:							$grid-gutter-width * .5 !default;
