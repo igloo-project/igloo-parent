@@ -1,0 +1,9 @@
+.header-alert-section {
+	&.environment-section {
+		@each $environment, $value in $environment-colors {
+			&.environment-section-#{$environment} {
+				@include text-bg-variant($value);
+			}
+		}
+	}
+}
