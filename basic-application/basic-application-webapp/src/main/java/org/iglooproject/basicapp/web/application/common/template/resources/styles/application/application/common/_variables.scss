@@ -7,4 +7,4 @@ $environment-colors: (
 	"production":	$danger
 ) !default;
 
-$layout-container-padding-x:							$grid-gutter-width / 2 !default;
+$layout-container-padding-x:							$grid-gutter-width * .5 !default;
