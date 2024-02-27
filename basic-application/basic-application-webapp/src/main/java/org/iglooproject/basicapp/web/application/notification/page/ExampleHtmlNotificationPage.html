@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<tr>
+		<td>
+			<table class="card-section card-header" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
+					<tr>
+						<td>
+							<!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="width:600px;" ><![endif]-->
+							<div class="w-100">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+									<tbody>
+										<tr>
+											<td>
+												<div class="card-header-text card-header-title">
+													<wicket:message key="notification.panel.example.title" />
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!--[if mso | IE]></td></tr></table><![endif]-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table class="card-section card-body" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
+					<tr>
+						<td>
+							<!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="width:600px;" ><![endif]-->
+							<div class="w-100">
+								<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+									<tbody>
+										<tr>
+											<td>
+												<table class="alert alert-warning" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+													<tbody>
+														<tr>
+															<td>
+																<div wicket:id="intro">
+																	<wicket:message key="notification.panel.example.intro">
+																		<span wicket:id="user" class="fw-bold" />
+																		<span wicket:id="date" class="fw-bold" />
+																		<span wicket:id="time" class="fw-bold" />
+																	</wicket:message>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<br />
+												<div><wicket:message key="notification.panel.common.text.app" /></div>
+												<br />
+												<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+													<tbody>
+														<tr>
+															<td class="text-center">
+																<table class="btn btn-primary text-center" role="presentation" border="0" cellpadding="0" cellspacing="0" align="center">
+																	<tbody>
+																		<tr>
+																			<td>
+																				<a wicket:id="link">
+																					<wicket:message key="notification.panel.common.link.app" />
+																				</a>
+																			</td>
+																		</tr>
+																	</tbody>
+																</table>
+																<br />
+																<div class="small text-muted lh-sm">
+																	<wicket:message key="notification.panel.common.link.fallback">
+																		<a wicket:id="url" class="link-primary text-break-all" />
+																	</wicket:message>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<br />
+												<table class="table table-bordered" border="0" cellpadding="0" cellspacing="0" width="100%">
+													<tbody>
+														<tr>
+															<td style="width: 40%"><span class="text-secondary fw-bold"><wicket:message key="business.user.username" /></span></td>
+															<td style="width: 60%"><a wicket:id="userLink" /></td>
+														</tr>
+														<tr>
+															<td><span class="text-secondary fw-bold"><wicket:message key="business.user.lastName" /></span></td>
+															<td><span wicket:id="lastname" /></td>
+														</tr>
+														<tr>
+															<td><span class="text-secondary fw-bold"><wicket:message key="business.user.firstName" /></span></td>
+															<td><span wicket:id="firstname" /></td>
+														</tr>
+														<tr>
+															<td><span class="text-secondary fw-bold"><wicket:message key="business.user.enabled.state" /></span></td>
+															<td><span wicket:id="enabled" class="fw-bold" /></td>
+														</tr>
+														<tr>
+															<td><span class="text-secondary fw-bold"><wicket:message key="business.user.lastLoginDate" /></span></td>
+															<td><span wicket:id="lastLoginDate" /></td>
+														</tr>
+													</tbody>
+												</table>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!--[if mso | IE]></td></tr></table><![endif]-->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</td>
+	</tr>
+</wicket:extend>
+</html>

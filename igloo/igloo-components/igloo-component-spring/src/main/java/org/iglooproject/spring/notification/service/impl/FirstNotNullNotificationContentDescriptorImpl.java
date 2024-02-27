@@ -2,18 +2,20 @@ package org.iglooproject.spring.notification.service.impl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
+import org.iglooproject.spring.notification.model.INotificationContentBody;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
+import org.iglooproject.spring.notification.model.NotificationContentBody;
 
 import com.google.common.collect.ImmutableList;
 
 public class FirstNotNullNotificationContentDescriptorImpl implements INotificationContentDescriptor {
-	
+
 	private final Iterable<? extends INotificationContentDescriptor> chainedDescriptors;
 
-	public FirstNotNullNotificationContentDescriptorImpl(
-			Iterable<? extends INotificationContentDescriptor> chainedDescriptors) {
+	public FirstNotNullNotificationContentDescriptorImpl(Iterable<? extends INotificationContentDescriptor> chainedDescriptors) {
 		super();
 		this.chainedDescriptors = ImmutableList.copyOf(chainedDescriptors);
 	}
@@ -30,27 +32,36 @@ public class FirstNotNullNotificationContentDescriptorImpl implements INotificat
 	}
 
 	@Override
-	public String renderHtmlBody() throws NotificationContentRenderingException {
+	public INotificationContentBody renderBody() throws NotificationContentRenderingException {
+		MutableObject<String> plainText = new MutableObject<>();
+		MutableObject<String> htmlText = new MutableObject<>();
+		
 		for (INotificationContentDescriptor descriptor : chainedDescriptors) {
-			String body = descriptor.renderHtmlBody();
+			INotificationContentBody body = descriptor.renderBody();
+			
 			if (body != null) {
-				return body;
+				if (plainText.getValue() == null) {
+					plainText.setValue(body.getPlainText());
+				}
+				
+				if (htmlText.getValue() == null) {
+					htmlText.setValue(body.getHtmlText());
+				}
+				
+				if (plainText.getValue() != null && htmlText.getValue() != null) {
+					break;
+				}
 			}
 		}
-		return null;
+		
+		return NotificationContentBody.start()
+			.with(o -> {
+				o.setPlainText(plainText.getValue());
+				o.setHtmlText(htmlText.getValue());
+			})
+			.build();
 	}
 
-	@Override
-	public String renderTextBody() throws NotificationContentRenderingException {
-		for (INotificationContentDescriptor descriptor : chainedDescriptors) {
-			String body = descriptor.renderTextBody();
-			if (body != null) {
-				return body;
-			}
-		}
-		return null;
-	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof FirstNotNullNotificationContentDescriptorImpl) {
@@ -59,8 +70,8 @@ public class FirstNotNullNotificationContentDescriptorImpl implements INotificat
 			}
 			FirstNotNullNotificationContentDescriptorImpl other = (FirstNotNullNotificationContentDescriptorImpl) obj;
 			return new EqualsBuilder()
-					.append(chainedDescriptors, other.chainedDescriptors)
-					.build();
+				.append(chainedDescriptors, other.chainedDescriptors)
+				.build();
 		}
 		return false;
 	}
@@ -68,8 +79,8 @@ public class FirstNotNullNotificationContentDescriptorImpl implements INotificat
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(chainedDescriptors)
-				.build();
+			.append(chainedDescriptors)
+			.build();
 	}
 
 	@Override
@@ -82,4 +93,5 @@ public class FirstNotNullNotificationContentDescriptorImpl implements INotificat
 		
 		return new FirstNotNullNotificationContentDescriptorImpl(wrapped.build());
 	}
+
 }

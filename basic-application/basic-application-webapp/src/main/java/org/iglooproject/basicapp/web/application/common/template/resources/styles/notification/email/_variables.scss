@@ -1,0 +1,6 @@
+$environment-colors: (
+	"development":	$success,
+	"testing":		$info,
+	"staging":		$warning,
+	"production":	$danger
+) !default;

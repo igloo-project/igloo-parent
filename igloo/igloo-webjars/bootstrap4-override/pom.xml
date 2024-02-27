@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>org.iglooproject.webjars</groupId>
 		<artifactId>igloo-webjars</artifactId>
-		<version>6.0.0-Alpha8</version>
+		<version>6.0.0-Alpha9</version>
 	</parent>
 
 	<artifactId>bootstrap4-override</artifactId>
@@ -13,7 +13,7 @@
 
 	<name>bootstrap4-override</name>
 	<description>Bootstrap 4 overrides for Igloo</description>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>

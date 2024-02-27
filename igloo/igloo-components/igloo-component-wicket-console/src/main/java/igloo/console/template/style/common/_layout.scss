@@ -57,22 +57,6 @@
 				}
 			}
 		}
-		
-		&.development {
-			@include text-bg-variant($success);
-		}
-		
-		&.testing {
-			@include text-bg-variant($info);
-		}
-		
-		&.staging {
-			@include text-bg-variant($warning);
-		}
-		
-		&.production {
-			@include text-bg-variant($danger);
-		}
 	}
 	
 	&.announcements-section {

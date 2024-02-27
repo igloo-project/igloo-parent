@@ -1,5 +1,5 @@
 image:
-  name: igloo-containers.tools.kobalt.fr/containers/maven-igloo:3.8-openjdk-17-slim
+  name: maven:3.9-eclipse-temurin-17
 
 variables:
   MAVEN_OPTS: "-Xmx1536m"

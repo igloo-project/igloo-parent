@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * @see {@link http://www.w3.org/TR/css3-selectors/#specificity}
  */
+@Deprecated
 public class CssSelectorSpecificity implements Comparable<CssSelectorSpecificity> {
 
 	public static final CssSelectorSpecificity STYLE = new CssSelectorSpecificity(true, 0, 0, 0);

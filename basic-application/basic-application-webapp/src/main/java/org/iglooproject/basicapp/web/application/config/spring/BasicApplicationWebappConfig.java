@@ -14,7 +14,6 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.config.spring.BasicApplicationCoreCommonConfiguration;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 import org.iglooproject.basicapp.web.application.common.renderer.UserRenderer;
-import org.iglooproject.basicapp.web.application.common.template.resources.styles.notification.NotificationScssResourceReference;
 import org.iglooproject.basicapp.web.application.notification.service.BasicApplicationNotificationContentDescriptorFactoryImpl;
 import org.iglooproject.basicapp.web.application.notification.service.BasicApplicationNotificationUrlBuilderServiceImpl;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -83,7 +82,7 @@ public class BasicApplicationWebappConfig {
 	@Bean
 	public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
 		IHtmlNotificationCssService service = new PhlocCssHtmlNotificationCssServiceImpl();
-		service.registerDefaultStyles(NotificationScssResourceReference.get());
+//		service.registerDefaultStyles(NotificationEmailScssResourceReference.get());
 		return service;
 	}
 	

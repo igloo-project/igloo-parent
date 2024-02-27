@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>6.0.0-Alpha8</version>
+		<version>6.0.0-Alpha9</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
@@ -46,6 +46,7 @@
 		
 		<module>igloo-component-sass</module>
 		<module>igloo-component-autoprefixer</module>
+		<module>igloo-juice</module>
 		
 		<module>igloo-component-wicket-jquery</module>
 		<module>igloo-component-wicket</module>

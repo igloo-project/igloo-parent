@@ -4,6 +4,7 @@
 }
 
 body {
+	background-color: #FBFBFB;
 	@include text-break();
 }
 
@@ -11,6 +12,13 @@ p {
 	margin-bottom: 0;
 	
 	+ p {
-		margin-top: $paragraph-margin-bottom / 2;
+		margin-top: $paragraph-margin-bottom * .5;
 	}
+}
+
+iframe {
+	position: block;
+	border: 0;
+	width: 100%;
+	height: 100%;
 }

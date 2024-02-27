@@ -28,7 +28,7 @@ public class EnvironmentPanel extends GenericPanel<Environment> {
 		setOutputMarkupId(true);
 		
 		add(new EnumLabel<>("environment", environmentModel));
-		add(new ClassAttributeAppender(environmentModel));
+		add(new ClassAttributeAppender(() -> "environment-section-" + environmentModel.getObject()));
 	}
 
 	@Override

@@ -12,12 +12,12 @@ public class EmptyNotificationContentDescriptorFactoryImpl implements IBasicAppl
 		NotificationContentDescriptors.explicit("defaultSubject", "defaultTextBody", "defaultHtmlBody");
 
 	@Override
-	public INotificationContentDescriptor example(User user, Instant date) {
+	public INotificationContentDescriptor example(User user, Instant instant) {
 		return DEFAULT_DESCRIPTOR;
 	}
 
 	@Override
-	public INotificationContentDescriptor userPasswordRecoveryRequest(User user) {
+	public INotificationContentDescriptor userPasswordRecoveryRequest(User user, Instant instant) {
 		return DEFAULT_DESCRIPTOR;
 	}
 

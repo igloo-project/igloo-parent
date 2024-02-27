@@ -1,0 +1,64 @@
+@each $name, $value in (
+	start: left,
+	end: right,
+	center: center,
+) {
+	.text-#{$name} {
+		text-align: $value important($enable-important-utilities);
+	}
+}
+
+.text-break {
+	@include text-break($enable-important-utilities);
+}
+
+.text-break-all {
+	@include text-break-all($enable-important-utilities);
+}
+
+@each $value in (none underline line-through) {
+	.text-#{$value} {
+		text-decoration: $value important($enable-important-utilities);
+	}
+}
+
+@each $size, $value in $font-sizes {
+	.fs-#{$size} {
+		font-size: $value important($enable-important-utilities);
+	}
+}
+
+@each $name, $value in (
+	light: $font-weight-light,
+	lighter: $font-weight-lighter,
+	normal: $font-weight-normal,
+	bold: $font-weight-bold,
+	bolder: $font-weight-bolder
+) {
+	.fw-#{$name} {
+		font-weight: $value important($enable-important-utilities);
+	}
+}
+
+@each $value in (italic normal) {
+	.fst-#{$value} {
+		font-style: $value important($enable-important-utilities);
+	}
+}
+
+@each $size, $value in (
+	1: 1,
+	sm: $line-height-sm,
+	base: $line-height-base,
+	lg: $line-height-lg,
+) {
+	.lh-#{$size} {
+		line-height: $value important($enable-important-utilities);
+	}
+}
+
+@each $value in (none underline line-through) {
+	.text-decoration-#{$value} {
+		text-decoration: $value important($enable-important-utilities);
+	}
+}

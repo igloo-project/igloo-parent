@@ -6,6 +6,12 @@ import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOL
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.GLOBAL_FEEDBACK_AUTOHIDE_DELAY_VALUE;
+import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.NOTIFICATION_INLINER_JUICE_ENABLED;
+import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.NOTIFICATION_INLINER_JUICE_RETRY_MAX_ATTEMPTS;
+import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.NOTIFICATION_INLINER_JUICE_RETRY_REQUEST_TIMEOUT;
+import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.NOTIFICATION_INLINER_JUICE_RETRY_WAIT_DURATION;
+import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.NOTIFICATION_INLINER_JUICE_TOKEN;
+import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.NOTIFICATION_INLINER_JUICE_URL;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.SCSS_STATIC_ENABLED;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.SCSS_STATIC_RESOURCE_PATH;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_APPLICATION_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME_TEMPLATE;
@@ -19,10 +25,14 @@ import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_MAX_SIZE_PER_SESSION;
 import static org.iglooproject.wicket.more.property.WicketMorePropertyIds.WICKET_DISK_DATA_STORE_PATH;
 
+import java.net.URL;
+import java.time.Duration;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.iglooproject.functional.Function2;
 import org.iglooproject.functional.Functions2;
 import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -31,6 +41,7 @@ import org.iglooproject.sass.service.StaticResourceHelper;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.iglooproject.spring.property.service.IPropertyService;
+import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.WicketMorePackage;
 import org.iglooproject.wicket.more.link.service.DefaultLinkParameterConversionService;
 import org.iglooproject.wicket.more.link.service.ILinkParameterConversionService;
@@ -38,6 +49,7 @@ import org.iglooproject.wicket.more.notification.service.IHtmlNotificationCssSer
 import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.iglooproject.wicket.more.notification.service.PhlocCssHtmlNotificationCssServiceImpl;
 import org.iglooproject.wicket.more.notification.service.WicketContextProviderImpl;
+import org.iglooproject.wicket.more.property.WicketMorePropertyIds;
 import org.iglooproject.wicket.more.rendering.service.RendererServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -49,9 +61,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.util.function.ThrowingFunction;
+import org.springframework.util.function.ThrowingSupplier;
 
 import com.google.common.base.Converter;
 import com.google.common.primitives.Ints;
+
+import igloo.juice.IJuiceInliner;
+import igloo.juice.JuiceInliner;
 
 @Configuration
 @ComponentScan(
@@ -70,6 +87,8 @@ public class WicketMoreAutoConfiguration implements IPropertyRegistryConfig {
 		registry.registerBoolean(AUTOPREFIXER_ENABLED, true);
 		registry.registerBoolean(SCSS_STATIC_ENABLED, true);
 		registry.registerString(SCSS_STATIC_RESOURCE_PATH, StaticResourceHelper.DEFAULT_STATIC_SCSS_RESOURCE_PATH);
+		
+		registerJuice(registry);
 		
 		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SCHEME, "http");
 		registry.registerString(WICKET_DEFAULT_BACKGROUND_THREAD_CONTEXT_BUILDER_URL_SERVER_NAME, "localhost");
@@ -106,6 +125,39 @@ public class WicketMoreAutoConfiguration implements IPropertyRegistryConfig {
 		registry.registerEnum(CONSOLE_GLOBAL_FEEDBACK_AUTOHIDE_DELAY_UNIT, TimeUnit.class, TimeUnit.SECONDS);
 		
 		registry.registerInteger(AUTOCOMPLETE_LIMIT, 20);
+	}
+
+	private void registerJuice(IPropertyRegistry registry) {
+		registry.registerBoolean(NOTIFICATION_INLINER_JUICE_ENABLED, true);
+		
+		Function2<String, URL> urlConverter =
+				v -> Optional.ofNullable(v)
+				.filter(StringUtils::hasText)
+				.map(ThrowingFunction.of(URL::new))
+				.orElse(null);
+		registry.register(WicketMorePropertyIds.NOTIFICATION_INLINER_JUICE_URL,
+				urlConverter,
+				ThrowingSupplier.of(() -> new URL("http://localhost:8000")).get());
+		
+		Function2<String, String> notEmptyStringConverter =
+				v -> Optional.ofNullable(v).filter(StringUtils::hasText).orElse(null);
+		registry.register(NOTIFICATION_INLINER_JUICE_TOKEN, notEmptyStringConverter);
+		
+		Function2<String, Duration> requestTimeoutConverter =
+				v -> Optional.ofNullable(v)
+				.map(Duration::parse)
+				.orElse(null);
+		registry.register(WicketMorePropertyIds.NOTIFICATION_INLINER_JUICE_RETRY_REQUEST_TIMEOUT,
+				requestTimeoutConverter,
+				Duration.ofMinutes(1));
+		
+		registry.registerInteger(WicketMorePropertyIds.NOTIFICATION_INLINER_JUICE_RETRY_MAX_ATTEMPTS, 3);
+		Function2<String, Duration> waitDurationConverter =
+				v -> Optional.ofNullable(v).map(Duration::parse).orElse(null);
+		
+		registry.register(WicketMorePropertyIds.NOTIFICATION_INLINER_JUICE_RETRY_WAIT_DURATION,
+				waitDurationConverter,
+				Duration.ofMillis(500));
 	}
 
 	@Bean
@@ -147,4 +199,15 @@ public class WicketMoreAutoConfiguration implements IPropertyRegistryConfig {
 		return new PhlocCssHtmlNotificationCssServiceImpl();
 	}
 
+	@Bean
+	@ConditionalOnMissingBean
+	public IJuiceInliner juiceInliner(IPropertyService propertyService) {
+		return JuiceInliner.builder()
+				.inlinerUrl(propertyService.get(NOTIFICATION_INLINER_JUICE_URL))
+				.requestTimeout(propertyService.get(NOTIFICATION_INLINER_JUICE_RETRY_REQUEST_TIMEOUT))
+				.retryMaxAttempts(propertyService.get(NOTIFICATION_INLINER_JUICE_RETRY_MAX_ATTEMPTS))
+				.retryWaitDuration(propertyService.get(NOTIFICATION_INLINER_JUICE_RETRY_WAIT_DURATION))
+				.token(Optional.ofNullable(propertyService.get(NOTIFICATION_INLINER_JUICE_TOKEN)))
+				.build();
+	}
 }

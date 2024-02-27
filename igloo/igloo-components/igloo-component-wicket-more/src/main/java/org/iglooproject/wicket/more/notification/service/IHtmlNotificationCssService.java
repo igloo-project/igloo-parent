@@ -11,6 +11,8 @@ public interface IHtmlNotificationCssService {
 	
 	IHtmlNotificationCssRegistry getRegistry(String componentVariation) throws ServiceException;
 	
+	String getCss(String componentVariation) throws ServiceException;
+	
 	interface IHtmlNotificationCssRegistry {
 		
 		String getStyle(ComponentTag tag);

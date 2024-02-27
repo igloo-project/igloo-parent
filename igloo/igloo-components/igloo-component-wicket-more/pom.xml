@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha8</version>
+		<version>6.0.0-Alpha9</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-more</artifactId>
@@ -22,6 +22,11 @@
 		</dependency>
 		
 		<!-- Igloo dependencies -->
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-juice</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-jquery</artifactId>
@@ -138,8 +143,8 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-commons-fileupload</artifactId>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-fileupload2-jakarta</artifactId>
 		</dependency>
 		
 		
@@ -174,6 +179,12 @@
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>jquery-mask-plugin</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.iglooproject.webjars</groupId>
+			<artifactId>bootstrap-email</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		
 		<dependency>

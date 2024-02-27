@@ -15,6 +15,7 @@ import com.helger.css.decl.CSSSelectorSimpleMember;
 import com.helger.css.decl.ICSSSelectorMember;
 import com.helger.css.writer.CSSWriterSettings;
 
+@Deprecated
 public class PhlocCssMatchableHtmlTag {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PhlocCssMatchableHtmlTag.class);

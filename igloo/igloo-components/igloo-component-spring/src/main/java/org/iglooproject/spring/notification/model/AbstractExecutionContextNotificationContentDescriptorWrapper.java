@@ -8,44 +8,42 @@ import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
 
 public abstract class AbstractExecutionContextNotificationContentDescriptorWrapper implements INotificationContentDescriptor {
-	
+
 	private final INotificationContentDescriptor wrapped;
-	
+
 	private final IExecutionContext excecutionContext;
-	
-	public AbstractExecutionContextNotificationContentDescriptorWrapper(
-			INotificationContentDescriptor wrapped, IExecutionContext excecutionContext) {
+
+	public AbstractExecutionContextNotificationContentDescriptorWrapper(INotificationContentDescriptor wrapped, IExecutionContext excecutionContext) {
 		super();
 		this.wrapped = wrapped;
 		this.excecutionContext = excecutionContext;
 	}
-	
+
 	protected IExecutionContext getExecutionContext() {
 		return excecutionContext;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof AbstractExecutionContextNotificationContentDescriptorWrapper) {
 			if (obj == this) {
 				return true;
 			}
-			AbstractExecutionContextNotificationContentDescriptorWrapper other =
-					(AbstractExecutionContextNotificationContentDescriptorWrapper) obj;
+			AbstractExecutionContextNotificationContentDescriptorWrapper other = (AbstractExecutionContextNotificationContentDescriptorWrapper) obj;
 			return new EqualsBuilder()
-					.append(wrapped, other.wrapped)
-					.append(excecutionContext, other.excecutionContext)
-					.build();
+				.append(wrapped, other.wrapped)
+				.append(excecutionContext, other.excecutionContext)
+				.build();
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(wrapped)
-				.append(excecutionContext)
-				.build();
+			.append(wrapped)
+			.append(excecutionContext)
+			.build();
 	}
 
 	@Override
@@ -56,19 +54,13 @@ public abstract class AbstractExecutionContextNotificationContentDescriptorWrapp
 	}
 
 	@Override
-	public String renderHtmlBody() throws NotificationContentRenderingException {
+	public INotificationContentBody renderBody() throws NotificationContentRenderingException {
 		try (ITearDownHandle handle = excecutionContext.open()) {
-			return wrapped.renderHtmlBody();
-		}
-	}
-
-	@Override
-	public String renderTextBody() throws NotificationContentRenderingException {
-		try (ITearDownHandle handle = excecutionContext.open()) {
-			return wrapped.renderTextBody();
+			return wrapped.renderBody();
 		}
 	}
 
 	@Override
 	public abstract INotificationContentDescriptor withContext(INotificationRecipient recipient);
+
 }

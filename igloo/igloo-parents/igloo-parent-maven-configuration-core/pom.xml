@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-common</artifactId>
-		<version>6.0.0-Alpha8</version>
+		<version>6.0.0-Alpha9</version>
 		<relativePath>../igloo-parent-maven-configuration-common/pom.xml</relativePath>
 	</parent>
 
@@ -16,8 +16,8 @@
 
 	<properties>
 		<igloo.version>${project.version}</igloo.version>
-		<igloo-maven.version>6.0.0-Alpha8</igloo-maven.version>
-		<igloo-commons.version>6.0.0-Alpha8</igloo-commons.version>
+		<igloo-maven.version>6.0.0-Alpha9</igloo-maven.version>
+		<igloo-commons.version>6.0.0-Alpha9</igloo-commons.version>
 
 		<igloo.log4j.major-version>2</igloo.log4j.major-version>
 		<igloo.logging.artifact>igloo-component-core-logging-log4j${igloo.log4j.major-version}</igloo.logging.artifact>

@@ -11,9 +11,12 @@ import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.function.Failable;
 import org.iglooproject.mail.api.INotificationRecipient;
 import org.iglooproject.spring.notification.exception.NotificationContentRenderingException;
+import org.iglooproject.spring.notification.model.INotificationContentBody;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
+import org.iglooproject.spring.notification.model.NotificationContentBody;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.javatuples.LabelValue;
 import org.slf4j.Logger;
@@ -29,21 +32,21 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
 public class FreemarkerTemplateNotificationContentDescriptorImpl implements INotificationContentDescriptor {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(FreemarkerTemplateNotificationContentDescriptorImpl.class);
-	
+
 	private static final String ATTACHMENT_NAMES_VARIABLE_NAME = "attachments";
-	
+
 	private final Configuration templateConfiguration;
-	
+
 	private final String templateKey;
-	
+
 	private final Map<Locale, HashMap<String, Object>> templateVariablesByLocale = new HashMap<>();
-	
+
 	private final Collection<LabelValue<String, File>> attachments;
-	
+
 	private final Locale defaultLocale;
-	
+
 	@Autowired
 	private IPropertyService propertyService;
 
@@ -62,7 +65,7 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl implements INot
 	public String renderSubject() throws NotificationContentRenderingException {
 		return renderSubject(defaultLocale);
 	}
-	
+
 	private String renderSubject(Locale locale) throws NotificationContentRenderingException {
 		try {
 			return getMailElement(MailElement.SUBJECT, locale);
@@ -72,16 +75,13 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl implements INot
 	}
 
 	@Override
-	public String renderHtmlBody() {
-		return null;
+	public INotificationContentBody renderBody() throws NotificationContentRenderingException {
+		return NotificationContentBody.start()
+			.with(Failable.asConsumer(o -> o.setPlainText(renderBodyPlainText(defaultLocale))))
+			.build();
 	}
 
-	@Override
-	public String renderTextBody() throws NotificationContentRenderingException {
-		return renderTextBody(defaultLocale);
-	}
-
-	private String renderTextBody(Locale locale) throws NotificationContentRenderingException {
+	private String renderBodyPlainText(Locale locale) throws NotificationContentRenderingException {
 		try {
 			return getMailElement(MailElement.BODY_TEXT, locale);
 		} catch (TemplateException | IOException e) {
@@ -100,7 +100,7 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl implements INot
 		private final FreemarkerTemplateNotificationContentDescriptorImpl wrapped;
 		
 		private final Locale locale;
-
+		
 		public Wrapper(FreemarkerTemplateNotificationContentDescriptorImpl wrapped, Locale locale) {
 			super();
 			this.wrapped = wrapped;
@@ -115,9 +115,9 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl implements INot
 				}
 				Wrapper other = (Wrapper) obj;
 				return new EqualsBuilder()
-						.append(wrapped, other.wrapped)
-						.append(locale, other.locale)
-						.build();
+					.append(wrapped, other.wrapped)
+					.append(locale, other.locale)
+					.build();
 			}
 			return false;
 		}
@@ -125,26 +125,23 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl implements INot
 		@Override
 		public int hashCode() {
 			return new HashCodeBuilder()
-					.append(wrapped)
-					.append(locale)
-					.build();
+				.append(wrapped)
+				.append(locale)
+				.build();
 		}
-
+		
 		@Override
 		public String renderSubject() throws NotificationContentRenderingException {
 			return wrapped.renderSubject(locale);
 		}
-
+		
 		@Override
-		public String renderHtmlBody() throws NotificationContentRenderingException {
-			return wrapped.renderHtmlBody();
+		public INotificationContentBody renderBody() throws NotificationContentRenderingException {
+			return NotificationContentBody.start()
+				.with(Failable.asConsumer(o -> o.setPlainText(wrapped.renderBodyPlainText(locale))))
+				.build();
 		}
-
-		@Override
-		public String renderTextBody() throws NotificationContentRenderingException {
-			return wrapped.renderTextBody(locale);
-		}
-
+		
 		@Override
 		public INotificationContentDescriptor withContext(INotificationRecipient recipient) {
 			return wrapped.withContext(recipient);
@@ -172,7 +169,7 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl implements INot
 		}
 		templateVariablesByLocale.get(locale).putAll(variables);
 	}
-	
+
 	private Map<String, Object> getTemplateVariables(Locale locale) {
 		Map<String, Object> templateVariables = Maps.newHashMap();
 		
@@ -200,7 +197,7 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl implements INot
 		
 		return templateVariables;
 	}
-	
+
 	private String getMailElement(MailElement element, Locale locale)
 			throws IOException, TemplateException {
 		Map<String, Object> freemarkerModelMap = getTemplateVariables(locale);
@@ -210,7 +207,7 @@ public class FreemarkerTemplateNotificationContentDescriptorImpl implements INot
 		freemarkerModelMap.put(element.toString(), true);
 		return FreeMarkerTemplateUtils.processTemplateIntoString(templateConfiguration.getTemplate(templateKey, locale), freemarkerModelMap);
 	}
-	
+
 	private enum MailElement {
 		BODY_TEXT,
 		SUBJECT
