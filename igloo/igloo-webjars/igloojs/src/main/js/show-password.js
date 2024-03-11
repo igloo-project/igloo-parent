@@ -1,7 +1,7 @@
 'use strict'
 
 export function init(id) {
-	let el = document.getElementById(id);
+	const el = document.getElementById(id);
 	showPasswordElement(el, false);
 	el.addEventListener('click', () => {
 		showPasswordElement(el);
@@ -9,7 +9,7 @@ export function init(id) {
 }
 
 export function showPasswordElement(el, toggle = true) {
-	let target = document.getElementById(el.dataset.showPasswordTarget);
+	const target = document.getElementById(el.dataset.showPasswordTarget);
 	
 	if (!target) {
 		return;
@@ -19,7 +19,7 @@ export function showPasswordElement(el, toggle = true) {
 		el.classList.toggle('active');
 	}
 	
-	let active = el.classList.contains('active');
+	const active = el.classList.contains('active');
 	
 	el.setAttribute('aria-pressed', active ? 'true' : 'false')
 	target.type = active ? 'text' : 'password';
