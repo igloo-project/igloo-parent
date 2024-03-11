@@ -81,6 +81,10 @@ public class StorageService implements IStorageService, IStorageStatisticsServic
 	@Override
 	@Nonnull
 	public Fichier addFichier(@Nonnull String filename, @Nonnull IFichierType fichierType, @Nonnull InputStream inputStream, @Nullable GenericEntity<Long, ?> author) {
+		Objects.requireNonNull(filename);
+		Objects.requireNonNull(fichierType);
+		Objects.requireNonNull(inputStream);
+		
 		StorageUnit unit = selectStorageUnit(fichierType);
 		Fichier fichier = new Fichier();
 		fichier.setId(databaseOperations.generateFichier());
@@ -158,6 +162,8 @@ public class StorageService implements IStorageService, IStorageStatisticsServic
 
 	@Override
 	public Fichier getFichierById(@Nonnull Long id) {
+		Objects.requireNonNull(id);
+		
 		return databaseOperations.getFichierById(id);
 	}
 
