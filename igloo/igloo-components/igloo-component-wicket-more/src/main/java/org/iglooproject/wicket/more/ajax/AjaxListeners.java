@@ -283,7 +283,7 @@ public final class AjaxListeners {
 		return new SerializableListener() {
 			private static final long serialVersionUID = 1L;
 			@Override
-			public void onBeforeRespond(Map<String, Component> map, AjaxRequestTarget target) {
+			public void onAfterRespond(Map<String, Component> map, AjaxRequestTarget target) {
 				form.clearInput();
 			}
 		};
