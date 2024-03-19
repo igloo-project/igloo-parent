@@ -9,7 +9,7 @@
     "js-compile-focus": "rollup --environment SYMBOL:focus --environment FILE:focus --config rollup.config.mjs --sourcemap",
     "js-compile-show-password": "rollup --environment SYMBOL:showPassword --environment FILE:show-password --config rollup.config.mjs --sourcemap",
     "js-test": "npm-run-all js-test-*",
-    "js-test-karma": "karma start src/test/js/karma.conf.mjs"
+    "js-test-karma": "karma start src/test/js/karma.conf.js"
   },
   "author": "",
   "license": "ISC",

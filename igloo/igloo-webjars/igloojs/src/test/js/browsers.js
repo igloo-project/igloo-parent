@@ -1,7 +1,7 @@
 /* eslint-env node */
 /* eslint-disable camelcase */
 
-export const browsers = {
+const browsers = {
   safariMac: {
     base: 'BrowserStack',
     os: 'OS X',
@@ -74,4 +74,9 @@ export const browsers = {
   }
 }
 
-export const browsersKeys = Object.keys(browsers);
+const browsersKeys = Object.keys(browsers)
+
+module.exports = {
+  browsers,
+  browsersKeys
+}
