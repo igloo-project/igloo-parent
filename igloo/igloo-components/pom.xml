@@ -38,6 +38,7 @@
 		<module>igloo-component-jpa-test</module>
 		
 		<module>igloo-component-jpa-more</module>
+		<module>igloo-difference</module>
 		<module>igloo-component-jpa-more-test</module>
 		<module>igloo-component-jpa-security</module>
 		

@@ -8,52 +8,15 @@
 		<version>6.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>igloo-component-jpa-more</artifactId>
+	<artifactId>igloo-difference</artifactId>
 	
-	<name>Igloo - Component - JPA - More JPA fun</name>
+	<name>Igloo - Component - JPA Differences</name>
 
 	<properties>
-		<igloo.processors>${igloo.processor.spring},${igloo.processor.querydsl},${igloo.processor.jpamodelgen},${igloo.processor.bindgen},${igloo.processor.immutables}</igloo.processors>
+		<igloo.processors>${igloo.processor.spring},${igloo.processor.querydsl},${igloo.processor.jpamodelgen},${igloo.processor.bindgen}</igloo.processors>
 	</properties>
 
 	<dependencies>
-		
-		<!-- Igloo dependencies -->
-		
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-jpa</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-jpa-batch</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-batch-api</artifactId>
-			<version>${igloo-commons.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-bean-api</artifactId>
-			<version>${igloo-commons.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-component-commons-io</artifactId>
-			<version>${igloo-commons.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
@@ -65,75 +28,30 @@
 			<optional>true</optional>
 		</dependency>
 		
-		<!-- Jackson est utilisé pour sérialiser les tâches avant persistence -->
+		<!-- Diff -->
 		
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
+			<groupId>de.danielbechler</groupId>
+			<artifactId>java-object-diff</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jsr310</artifactId>
-		</dependency>
+		
+		<!-- Igloo dependencies -->
 		
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
-			<artifactId>igloo-lang</artifactId>
-			<version>${igloo-commons.version}</version>
+			<artifactId>igloo-component-jpa-more</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.hibernate.search</groupId>
-			<artifactId>hibernate-search-mapper-orm-orm6</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.hibernate.search</groupId>
-			<artifactId>hibernate-search-backend-lucene</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.search</groupId>
-			<artifactId>hibernate-search-v5migrationhelper-orm-orm6</artifactId>
-		</dependency>
-		
-		<!-- Bindgen -->
-		
-		<dependency>
-			<groupId>org.bindgen</groupId>
-			<artifactId>bindgen</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
 		<dependency>
 			<groupId>jakarta.annotation</groupId>
 			<artifactId>jakarta.annotation-api</artifactId>
 			<optional>true</optional>
 		</dependency>
 		
-		<!-- Excel Import -->
 		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-		</dependency>
-		
-		<!-- ImageInfo -->
-		
-		<dependency>
-			<groupId>org.devlib.schmidt</groupId>
-			<artifactId>imageinfo</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-exec</artifactId>
+			<groupId>org.bindgen</groupId>
+			<artifactId>bindgen</artifactId>
 		</dependency>
 		
 		<dependency>
@@ -153,31 +71,12 @@
 			<artifactId>hibernate-jpamodelgen</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>org.immutables</groupId>
-			<artifactId>value</artifactId>
-			<scope>provided</scope>
-		</dependency>
 		
 		<dependency>
 			<!-- upper bound dependency issue -->
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>annotations</artifactId>
 			<optional>true</optional>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<!-- upper bound dependency issue -->
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<optional>true</optional>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.google.errorprone</groupId>
-			<artifactId>error_prone_annotations</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
@@ -190,7 +89,7 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
