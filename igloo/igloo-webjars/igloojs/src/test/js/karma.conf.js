@@ -2,12 +2,16 @@
 
 'use strict'
 
-import babel from '@rollup/plugin-babel';
-import istanbul from 'rollup-plugin-istanbul';
-import nodeResolve from '@rollup/plugin-node-resolve';
-import path from 'path';
-import ip from 'ip';
-import {browsers, browsersKeys} from './browsers.mjs'
+const path = require('path')
+const ip = require('ip')
+const { babel } = require('@rollup/plugin-babel')
+const istanbul = require('rollup-plugin-istanbul')
+const { nodeResolve } = require('@rollup/plugin-node-resolve')
+
+const {
+  browsers,
+  browsersKeys
+} = require('./browsers')
 
 const ENV = process.env
 const BROWSERSTACK = Boolean(ENV.BROWSERSTACK)
@@ -150,7 +154,7 @@ conf.frameworks = frameworks
 conf.plugins = plugins
 conf.reporters = reporters
 
-export default karmaConfig => {
+module.exports = karmaConfig => {
   conf.logLevel = karmaConfig.LOG_ERROR
   karmaConfig.set(conf)
 }
