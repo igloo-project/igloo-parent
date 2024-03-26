@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.0.0-Alpha9</version>
+		<version>6.0.0-Alpha10</version>
 	</parent>
 	
 	<artifactId>basic-application-core</artifactId>
@@ -23,6 +23,11 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-jpa-more</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-difference</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>

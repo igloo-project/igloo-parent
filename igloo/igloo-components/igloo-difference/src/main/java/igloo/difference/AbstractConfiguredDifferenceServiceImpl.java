@@ -1,8 +1,8 @@
-package org.iglooproject.jpa.more.business.difference.service;
+package igloo.difference;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,6 @@ import java.util.concurrent.Callable;
 
 import org.bindgen.BindingRoot;
 import org.hibernate.proxy.HibernateProxy;
-import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.commons.util.context.IExecutionContext.ITearDownHandle;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.commons.util.fieldpath.FieldPathComponent;
@@ -26,15 +25,16 @@ import org.iglooproject.jpa.more.business.difference.factory.DefaultHistoryDiffe
 import org.iglooproject.jpa.more.business.difference.factory.IHistoryDifferenceFactory;
 import org.iglooproject.jpa.more.business.difference.inclusion.NonInheritingNodePathInclusionResolver;
 import org.iglooproject.jpa.more.business.difference.model.Difference;
+import org.iglooproject.jpa.more.business.difference.service.IDifferenceService;
 import org.iglooproject.jpa.more.business.difference.util.CompositeProxyInitializer;
 import org.iglooproject.jpa.more.business.difference.util.DiffUtils;
 import org.iglooproject.jpa.more.business.difference.util.IDifferenceFromReferenceGenerator;
 import org.iglooproject.jpa.more.business.difference.util.IProxyInitializer;
-import org.iglooproject.jpa.more.business.difference.util.TypeSafeBindingProxyInitializer;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
 import org.iglooproject.jpa.more.rendering.service.IRendererService;
 import org.iglooproject.jpa.util.HibernateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
@@ -46,6 +46,7 @@ import com.google.common.collect.Multimap;
 import de.danielbechler.diff.NodeQueryService;
 import de.danielbechler.diff.ObjectDiffer;
 import de.danielbechler.diff.ObjectDifferBuilder;
+import de.danielbechler.diff.differ.BeanDiffer;
 import de.danielbechler.diff.differ.Differ;
 import de.danielbechler.diff.differ.DifferDispatcher;
 import de.danielbechler.diff.differ.DifferFactory;
@@ -54,158 +55,186 @@ import de.danielbechler.diff.inclusion.InclusionResolver;
 import de.danielbechler.diff.instantiation.TypeInfo;
 import de.danielbechler.diff.introspection.Introspector;
 import de.danielbechler.diff.introspection.StandardIntrospector;
+import de.danielbechler.diff.introspection.TypeInfoResolver;
 import de.danielbechler.diff.node.DiffNode;
 import de.danielbechler.diff.node.DiffNode.Visitor;
 import de.danielbechler.diff.node.Visit;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import igloo.difference.model.DifferenceField;
+import igloo.difference.model.DifferenceFields;
+import igloo.difference.model.DifferenceMode;
 import jakarta.annotation.PostConstruct;
 
-@SuppressFBWarnings("squid:S1226")
-public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends GenericEntity<?, ?>> implements IDifferenceService<T> {
-	
+public abstract class AbstractConfiguredDifferenceServiceImpl<T extends GenericEntity<?, ?>>
+		implements IDifferenceService<T> {
+
 	@Autowired
 	private IEntityService entityService;
-	
+
 	@Autowired
 	private IRendererService rendererService;
-	
+
 	@Autowired
 	private ITransactionScopeIndependantRunnerService transactionScopeIndependantRunnerService;
-	
-	@Autowired
-	private DefaultHistoryDifferenceFactory<T> defaultHistoryDifferenceFactory;
-	
-	private IProxyInitializer<T> proxyInitializer;	
-	private Multimap<FieldPath, IHistoryDifferenceFactory<T>> specificHistoryDifferenceFactories;
 
-	@SuppressWarnings("rawtypes")
-	private List<Class<? extends GenericEntity>> genericEntityTypes;
+	@Autowired
+	@Qualifier("defaultHistoryDifferenceFactory")
+	private DefaultHistoryDifferenceFactory<T> defaultHistoryDifferenceFactory;
+
+	private IProxyInitializer<T> proxyInitializer;
+	private Multimap<FieldPath, IHistoryDifferenceFactory<T>> specificHistoryDifferenceFactories;
 
 	private IDifferenceFromReferenceGenerator<T> mainDifferenceGenerator;
 
 	private IDifferenceFromReferenceGenerator<T> minimalDifferenceGenerator;
 
+	private DifferenceConfigurer differenceConfigurer;
+
+	private final Map<FieldPath, DifferenceField> differenceFieldsByFieldPath = new HashMap<>();
+
+	protected AbstractConfiguredDifferenceServiceImpl(DifferenceFields fields) {
+		this.differenceConfigurer = new DifferenceConfigurer(fields);
+	}
+
 	@SuppressWarnings("unchecked")
 	@PostConstruct
 	protected void initialize() {
-		this.genericEntityTypes = entityService.listAssignableEntityTypes(GenericEntity.class);
-		
 		this.mainDifferenceGenerator = new AbstractDifferenceFromReferenceGenerator() {
 			@Override
 			protected ObjectDiffer createDiffer() {
 				return initializeDiffer(DiffUtils.builder()).build();
 			}
 		};
-		
+
 		this.minimalDifferenceGenerator = new AbstractDifferenceFromReferenceGenerator() {
 			@Override
 			protected ObjectDiffer createDiffer() {
 				return initializeMinimalDiffer(DiffUtils.builder()).build();
 			}
 		};
-		
+
 		List<IProxyInitializer<? super T>> initializers = Lists.newArrayList();
-		
-		// Initialization of the simple fields
-		Iterable<? extends ICoreBinding<? extends T, ?>> simpleFieldsBindingsList = getSimpleInitializationFieldsBindings();
-		initializers.add(new TypeSafeBindingProxyInitializer<T>(simpleFieldsBindingsList));
-		
+
 		// Customized initializations
 		Iterables.addAll(initializers, initializeInitializers());
-		
+
 		this.proxyInitializer = new CompositeProxyInitializer<>(initializers);
 
 		// Customized creation of the HistoryDifference items
-		ImmutableMultimap.Builder<FieldPath, IHistoryDifferenceFactory<T>> factoriesMapBuilder = ImmutableMultimap.builder();
+		ImmutableMultimap.Builder<FieldPath, IHistoryDifferenceFactory<T>> factoriesMapBuilder = ImmutableMultimap
+				.builder();
 		Multimap<IHistoryDifferenceFactory<T>, FieldPath> specificHistoryDifferenceFactoriesToFieldPaths = getSpecificHistoryDifferenceFactories();
-		for (Entry<IHistoryDifferenceFactory<T>, FieldPath> entry : specificHistoryDifferenceFactoriesToFieldPaths.entries()) {
+		for (Entry<IHistoryDifferenceFactory<T>, FieldPath> entry : specificHistoryDifferenceFactoriesToFieldPaths
+				.entries()) {
 			factoriesMapBuilder.putAll(entry.getValue(), entry.getKey());
 		}
 		specificHistoryDifferenceFactories = factoriesMapBuilder.build();
+
+		// register paths
+		differenceFieldsByFieldPath.putAll(differenceConfigurer.getPaths());
 	}
 
 	protected Multimap<IHistoryDifferenceFactory<T>, FieldPath> getSpecificHistoryDifferenceFactories() {
-		return ImmutableMultimap.<IHistoryDifferenceFactory<T>, FieldPath>of();
+		return ImmutableMultimap.<IHistoryDifferenceFactory<T>, FieldPath> of();
 	}
-	
-	protected abstract Iterable<? extends ICoreBinding<? extends T, ?>> getSimpleInitializationFieldsBindings();
 
-	protected ObjectDifferBuilder initializeDiffer(ObjectDifferBuilder builder) {
+	protected ObjectDifferBuilder initializeDiffer(final ObjectDifferBuilder builder) {
 		// Ignore Hibernate proxies fields
-		builder = builder.introspection()
-				.setDefaultIntrospector(new Introspector() {
-					private Introspector delegate = new StandardIntrospector();
-					@Override
-					public TypeInfo introspect(Class<?> type) {
-						if (HibernateProxy.class.isAssignableFrom(type)) {
-							type = type.getSuperclass();
-						}
-						return delegate.introspect(type);
-					}
-				})
-				.and();
+		builder.introspection().setDefaultIntrospector(new Introspector() {
+			private Introspector delegate = new StandardIntrospector();
 
-		for (@SuppressWarnings("rawtypes") Class<? extends GenericEntity> clazz : genericEntityTypes) {
-			builder = builder.inclusion().exclude()
-					.propertyNameOfType(clazz, "new", "displayName", "id", "nameForToString")
-					.and();
-		}
-		
-		builder = builder.differs().register(new DifferFactory() {
+			@Override
+			public TypeInfo introspect(Class<?> type) {
+				if (HibernateProxy.class.isAssignableFrom(type)) {
+					type = type.getSuperclass();
+				}
+				return delegate.introspect(type);
+			}
+		}).and();
+
+		// TODO modify java-object-diff to allow to ignore useEqual by path to
+		// ignore useEqual on root ?
+		// As we possibly register a root type -> useEqualsMethod, we need to
+		// ensure that root node is always compared
+		// by introspection. OverrideRootComparisonStrategyResolver handles this
+		// special case and delegates other cases
+		// to original behavior.
+		// This differ must be registered before collection differs so that it
+		// is applied after collection differs.
+		// (ObjectDiffBuilder behavior: custom differs tested first, last
+		// registered first, so we intend this order:
+		// (custom) MultimapDiffer, ExtendedCollectionDiffer, BeanDiffer with
+		// comparisonStrategy resolver first
+		// (java-object-diff) primitive, map, collection, BeanDiffer
+		// This is working as BeanDiffer excludes primitive types
+		builder.differs().register(new DifferFactory() {
 			@Override
 			public Differ createDiffer(DifferDispatcher differDispatcher, NodeQueryService nodeQueryService) {
-				ExtendedCollectionDiffer differ = new ExtendedCollectionDiffer(differDispatcher, nodeQueryService, nodeQueryService);
+				return new BeanDiffer(differDispatcher, nodeQueryService, nodeQueryService,
+						new OverrideRootComparisonStrategyResolver(nodeQueryService),
+						(TypeInfoResolver) builder.introspection());
+			}
+		});
+
+		builder.differs().register(new DifferFactory() {
+			@Override
+			public Differ createDiffer(DifferDispatcher differDispatcher, NodeQueryService nodeQueryService) {
+				ExtendedCollectionDiffer differ = new ExtendedCollectionDiffer(differDispatcher, nodeQueryService,
+						nodeQueryService);
 				return initializeCollectionDiffer(differ);
 			}
 		});
-		
-		builder = builder.differs().register(new DifferFactory() {
+
+		builder.differs().register(new DifferFactory() {
 			@Override
 			public Differ createDiffer(DifferDispatcher differDispatcher, NodeQueryService nodeQueryService) {
 				MultimapDiffer differ = new MultimapDiffer(differDispatcher, nodeQueryService, nodeQueryService);
 				return initializeMultimapDiffer(differ);
 			}
 		});
-		
+
+		differenceConfigurer.configureDiffer(builder);
+
 		return builder;
 	}
-	
+
 	protected Iterable<? extends BindingRoot<? super T, ?>> getMinimalDifferenceFieldsBindings() {
 		// By default, the minimal diff does not include any nodes
-		return ImmutableList.<BindingRoot<? super T, ?>>of();
+		return ImmutableList.<BindingRoot<? super T, ?>> of();
 	}
 
 	protected final ObjectDifferBuilder initializeMinimalDiffer(ObjectDifferBuilder builder) {
 		builder = initializeDiffer(builder);
-		
+
 		// Allows to include a node without having all its children included
 		NonInheritingNodePathInclusionResolver parentInclusionResolver = new NonInheritingNodePathInclusionResolver();
 		builder = builder.inclusion().resolveUsing(parentInclusionResolver).and();
-		
-		// We make sure, that if no nodes have been specified as included, all the other nodes won't be considered
+
+		// We make sure, that if no nodes have been specified as included, all
+		// the other nodes won't be considered
 		// as included "by default"
 		builder = builder.inclusion().resolveUsing(new InclusionResolver() {
 			@Override
 			public Inclusion getInclusion(DiffNode node) {
 				return Inclusion.DEFAULT; // Don't vote
 			}
+
 			@Override
 			public boolean enablesStrictIncludeMode() {
 				return true;
 			}
 		}).and();
-		
-		
+
 		for (BindingRoot<? super T, ?> binding : getMinimalDifferenceFieldsBindings()) {
 			FieldPath path = FieldPath.fromBinding(binding);
-			
+
 			// The node and all its children are included
-			builder = builder.inclusion().include().node(DiffUtils.toNodePath(path))
-					.and();
-			
+			builder = builder.inclusion().include().node(DiffUtils.toNodePath(path)).and();
+
 			// For it to work, we also need to include the potential parents.
-			// However we don't use the category system here nor the NodePathInclusionResolver because it would include
-			// all the children of the parent (the categories are inherited by the children and the NodePathInclusionResolver
+			// However we don't use the category system here nor the
+			// NodePathInclusionResolver because it would include
+			// all the children of the parent (the categories are inherited by
+			// the children and the NodePathInclusionResolver
 			// considers that we include all the children of a node.
 			path = path.parent().get();
 			while (!path.isRoot()) {
@@ -213,43 +242,55 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 				path = path.parent().get();
 			}
 		}
-		
+
 		return builder;
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	protected Iterable<? extends IProxyInitializer<? super T>> initializeInitializers() {
-		return Collections.emptyList();
+		return (Iterable<? extends IProxyInitializer<? super T>>) differenceConfigurer.initializeInitializers();
 	}
 
 	protected ExtendedCollectionDiffer initializeCollectionDiffer(ExtendedCollectionDiffer differ) {
+		differenceConfigurer.initializeCollectionDiffer(differ);
 		return differ;
 	}
 
 	protected MultimapDiffer initializeMultimapDiffer(MultimapDiffer differ) {
 		return differ;
 	}
-	
+
 	@Override
 	public <HD extends AbstractHistoryDifference<HD, ?>> List<HD> toHistoryDifferences(
 			final Supplier2<HD> historyDifferenceSupplier, final Difference<T> rootDifference) {
 		final Multimap<IHistoryDifferenceFactory<T>, DiffNode> factoriesToNodes = LinkedHashMultimap.create();
-		
-		// Lists the leaf nodes and attributes the nodes to specific factories if needed.
-		// A "leaf" is either a node without children or a node which is an element of a Collection or a Map.
+
+		// Lists the leaf nodes and attributes the nodes to specific factories
+		// if needed.
+		// A "leaf" is either a node without children or a node which is an
+		// element of a Collection or a Map.
 		rootDifference.getDiffNode().visitChildren(new Visitor() {
 			private Deque<FieldPathComponent> pathComponents = new LinkedList<>();
+
 			@Override
 			public void node(DiffNode node, Visit visit) {
 				visit.dontGoDeeper();
 				FieldPathComponent component = DiffUtils.toFieldPathComponent(node.getPath().getLastElementSelector());
 				pathComponents.addLast(component);
-				Collection<IHistoryDifferenceFactory<T>> specificFactories = specificHistoryDifferenceFactories.get(FieldPath.of(pathComponents));
+				FieldPath fieldPath = FieldPath.of(pathComponents);
+				Collection<IHistoryDifferenceFactory<T>> specificFactories = specificHistoryDifferenceFactories
+						.get(fieldPath);
 				if (!specificFactories.isEmpty()) {
 					for (IHistoryDifferenceFactory<T> specificFactory : specificFactories) {
 						factoriesToNodes.put(specificFactory, node);
 					}
 				} else {
-					if (component == FieldPathComponent.ITEM || !node.hasChildren()) {
+					boolean createHistoryDifference = true;
+					if (differenceFieldsByFieldPath.containsKey(fieldPath)) {
+						DifferenceField field = differenceFieldsByFieldPath.get(fieldPath);
+						createHistoryDifference = !field.isContainer() && !field.getMode().equals(DifferenceMode.DEEP);
+					}
+					if (component == FieldPathComponent.ITEM || createHistoryDifference) {
 						factoriesToNodes.put(defaultHistoryDifferenceFactory, node);
 					} else {
 						node.visitChildren(this);
@@ -258,20 +299,44 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 				pathComponents.removeLast();
 			}
 		});
-		
+
 		final List<HD> historyDifferences = Lists.newLinkedList();
 		try (ITearDownHandle handle = rendererService.context().open()) {
-			for (Map.Entry<IHistoryDifferenceFactory<T>, Collection<DiffNode>> entry : factoriesToNodes.asMap().entrySet()) {
+			for (Map.Entry<IHistoryDifferenceFactory<T>, Collection<DiffNode>> entry : factoriesToNodes.asMap()
+					.entrySet()) {
 				IHistoryDifferenceFactory<T> factory = entry.getKey();
 				Collection<DiffNode> nodes = entry.getValue();
-				historyDifferences.addAll(factory.create(historyDifferenceSupplier, rootDifference, nodes));
+				historyDifferences.addAll(factory.create(historyDifferenceSupplier, rootDifference, nodes,
+						this::needHistoryDifferenceCreation));
 			}
 		} catch (RuntimeException e) {
 			throw new IllegalStateException("Unexpected exception while computing HistoryDifferences", e);
 		}
 		return historyDifferences;
 	}
-	
+
+	/**
+	 * This method is passed as lambda to
+	 * {@link DefaultHistoryDifferenceFactory}. It allows to use field metadata
+	 * from {@link #differenceFieldsByFieldPath} to prevent History Difference
+	 * creation for deep field without child diff.
+	 * 
+	 * <p>
+	 * This is needed for Embeddable that switch from null to object without any
+	 * embedded values), as null -> Embeddable is a useless information if there
+	 * is no child difference.
+	 */
+	public boolean needHistoryDifferenceCreation(DiffNode diffNode) {
+		String path = PathHelper.normalizeNodePath(diffNode.getPath());
+		FieldPath fieldPath = FieldPath.fromString(path);
+		if (differenceFieldsByFieldPath.containsKey(fieldPath)) {
+			DifferenceField field = differenceFieldsByFieldPath.get(fieldPath);
+			return !field.isContainer() && !field.getMode().equals(DifferenceMode.DEEP);
+		}
+		// default behavior
+		return true;
+	}
+
 	private abstract class AbstractDifferenceFromReferenceGenerator implements IDifferenceFromReferenceGenerator<T> {
 		@Override
 		public Difference<T> diff(T modified, T reference) {
@@ -280,17 +345,21 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 
 		/**
 		 * Creates a differ.
-		 * <p> The differ must be instantiated each time we need it, as it's not thread safe.
-		 * <p> Moreover, it looks like it has an internal state which might not be cleaned up in case of errors.
+		 * <p>
+		 * The differ must be instantiated each time we need it, as it's not
+		 * thread safe.
+		 * <p>
+		 * Moreover, it looks like it has an internal state which might not be
+		 * cleaned up in case of errors.
 		 */
 		protected abstract ObjectDiffer createDiffer();
-		
+
 		@Override
 		public Difference<T> diffFromReference(T after) {
 			T before = transactionScopeIndependantRunnerService.run(getReferenceProviderAndInitializer(after));
 			return diff(after, before);
 		}
-		
+
 		private Callable<T> getReferenceProviderAndInitializer(T value) {
 			final GenericEntityReference<?, T> reference = GenericEntityReference.ofUnknownIdType(value);
 			return new Callable<T>() {
@@ -306,7 +375,7 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 				}
 			};
 		}
-		
+
 		@Override
 		public Callable<T> getReferenceProvider(T value) {
 			final GenericEntityReference<?, T> reference = GenericEntityReference.ofUnknownIdType(value);
@@ -322,20 +391,21 @@ public abstract class AbstractGenericEntityDifferenceServiceImpl<T extends Gener
 				}
 			};
 		}
-		
+
 		@Override
 		public void initializeReference(T reference) {
 			proxyInitializer.initialize(reference);
 		}
 	}
-	
+
 	@Override
 	public IDifferenceFromReferenceGenerator<T> getMainDifferenceGenerator() {
 		return mainDifferenceGenerator;
 	}
-	
+
 	@Override
 	public IDifferenceFromReferenceGenerator<T> getMinimalDifferenceGenerator() {
 		return minimalDifferenceGenerator;
 	}
+
 }

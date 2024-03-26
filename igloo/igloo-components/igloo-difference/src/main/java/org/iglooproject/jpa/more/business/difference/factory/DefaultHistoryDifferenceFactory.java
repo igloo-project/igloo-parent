@@ -10,9 +10,6 @@ import org.iglooproject.functional.Supplier2;
 import org.iglooproject.jpa.more.business.difference.model.Difference;
 import org.iglooproject.jpa.more.business.difference.util.DiffUtils;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 
@@ -35,8 +32,6 @@ import de.danielbechler.diff.node.Visit;
  * 	<li>OR which does not have any children
  * </ul>
  */
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public final class DefaultHistoryDifferenceFactory<T> extends AbstractHistoryDifferenceFactory<T> {
 	private Predicate2<? super DiffNode> branchFilter = input -> input.hasChanges();
 	
@@ -52,26 +47,31 @@ public final class DefaultHistoryDifferenceFactory<T> extends AbstractHistoryDif
 
 	@Override
 	public <HD extends AbstractHistoryDifference<HD, ?>> List<HD> create(Supplier2<HD> historyDifferenceSupplier,
-			Difference<T> rootDifference, Collection<DiffNode> nodes) {
+			Difference<T> rootDifference, Collection<DiffNode> nodes, Predicate2<? super DiffNode> dynamicNodeFilter) {
 		final List<HD> result = Lists.newLinkedList();
 		for (DiffNode node : nodes) {
 			FieldPath path = DiffUtils.toFieldPath(node.getPath());
-			result.add(create(historyDifferenceSupplier, rootDifference, rootDifference.getDiffNode(), node, path));
+			result.add(create(historyDifferenceSupplier, rootDifference, rootDifference.getDiffNode(), node, path,
+					dynamicNodeFilter));
 		}
 		return result;
 	}
 	
 	public <HD extends AbstractHistoryDifference<HD, ?>> HD create(Supplier2<HD> historyDifferenceSupplier,
-			Difference<T> rootDifference, DiffNode parentNode, DiffNode currentNode, FieldPath currentNodeRelativePath) {
-		HD difference = newHistoryDifference(historyDifferenceSupplier, rootDifference, parentNode,
-				currentNode, currentNodeRelativePath, toHistoryDifferenceAction(currentNode));
-		List<HD> subDifferences = createChildren(historyDifferenceSupplier, rootDifference, currentNode, FieldPath.ROOT);
+			Difference<T> rootDifference, DiffNode parentNode, DiffNode currentNode, FieldPath currentNodeRelativePath,
+			Predicate2<? super DiffNode> dynamicNodeFilter) {
+		HD difference = newHistoryDifference(historyDifferenceSupplier, rootDifference, parentNode, currentNode,
+				currentNodeRelativePath, toHistoryDifferenceAction(currentNode));
+		List<HD> subDifferences = createChildren(historyDifferenceSupplier, rootDifference, currentNode, FieldPath.ROOT,
+				dynamicNodeFilter);
 		add(difference, subDifferences);
 		return difference;
 	}
-	
-	public <HD extends AbstractHistoryDifference<HD, ?>> List<HD> createChildren(final Supplier2<HD> historyDifferenceSupplier,
-			final Difference<T> rootDifference, final DiffNode parentNode, final FieldPath parentRelativePath) {
+
+	public <HD extends AbstractHistoryDifference<HD, ?>> List<HD> createChildren(
+			final Supplier2<HD> historyDifferenceSupplier, final Difference<T> rootDifference,
+			final DiffNode parentNode, final FieldPath parentRelativePath,
+			Predicate2<? super DiffNode> dynamicNodeFilter) {
 		final List<HD> result = Lists.newLinkedList();
 		parentNode.visitChildren(new Visitor() {
 			@Override
@@ -80,10 +80,13 @@ public final class DefaultHistoryDifferenceFactory<T> extends AbstractHistoryDif
 				if (branchFilter.test(currentNode)) {
 					FieldPathComponent component = DiffUtils.toFieldPathComponent(currentNode.getPath().getLastElementSelector());
 					FieldPath currentNodeRelativePath = parentRelativePath.append(component);
-					if (nodeFilter.test(currentNode)) {
-						result.add(create(historyDifferenceSupplier, rootDifference, parentNode, currentNode, currentNodeRelativePath));
+					if ((dynamicNodeFilter == null || dynamicNodeFilter.test(currentNode))
+							&& nodeFilter.test(currentNode)) {
+						result.add(create(historyDifferenceSupplier, rootDifference, parentNode, currentNode,
+								currentNodeRelativePath, dynamicNodeFilter));
 					} else {
-						result.addAll(createChildren(historyDifferenceSupplier, rootDifference, currentNode, currentNodeRelativePath));
+						result.addAll(createChildren(historyDifferenceSupplier, rootDifference, currentNode,
+								currentNodeRelativePath, dynamicNodeFilter));
 					}
 				}
 			}

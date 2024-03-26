@@ -32,6 +32,7 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 	private void init() {
 		this.session = Search.session(entityManager);
 		this.pf = session.scope(mainClass).predicate();
+		addFilterBeforeCreateQuery();
 	}
 	
 	protected SearchPredicateFactory predicateFactory() {
@@ -48,6 +49,14 @@ public abstract class AbstractHibernateSearchSearchQuery<T, S extends ISort<Sort
 				.must(f)
 			.toPredicate()
 		);
+	}
+	
+	// List and count
+	/**
+	 * Allow to add filter before generating the full text query.
+	 */
+	protected void addFilterBeforeCreateQuery() {
+		// Nothing
 	}
 	
 	private SearchPredicate topLevelPredicate() {

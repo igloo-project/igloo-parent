@@ -3,12 +3,6 @@ package org.iglooproject.jpa.more.business.history.transaction;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
-
-import com.google.common.collect.Sets;
-
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.more.business.history.util.FactoredHistoryLogBeforeCommitWithDifferencesTask;
 import org.iglooproject.jpa.more.business.history.util.HistoryLogBeforeCommitWithDifferencesTask;
@@ -16,8 +10,11 @@ import org.iglooproject.jpa.more.util.transaction.model.ITransactionSynchronizat
 import org.iglooproject.jpa.more.util.transaction.model.TransactionSynchronizationTasks;
 import org.iglooproject.jpa.more.util.transaction.util.ITransactionSynchronizationTaskMerger;
 import org.iglooproject.spring.util.SpringBeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
-@Component
+import com.google.common.collect.Sets;
+
 public class HistoryLogTransactionSynchronizationTaskMerger implements ITransactionSynchronizationTaskMerger {
 	
 	@Autowired
