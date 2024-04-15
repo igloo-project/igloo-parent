@@ -74,9 +74,13 @@
 		135deg,
 		$white,
 		$white 10px,
-		$table-striped-bg 10px,
-		$table-striped-bg 20px
+		$gray-200 10px,
+		$gray-200 20px
 	);
+	
+	td {
+		background-color: transparent !important;
+	}
 }
 
 .add-in-container {

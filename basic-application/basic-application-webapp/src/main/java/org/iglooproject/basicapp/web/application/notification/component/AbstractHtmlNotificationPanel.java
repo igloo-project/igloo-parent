@@ -6,7 +6,9 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 
-public abstract class AbstractHtmlNotificationPanel<T> extends GenericPanel<T> {
+import igloo.bootstrap.IBootstrap4Component;
+
+public abstract class AbstractHtmlNotificationPanel<T> extends GenericPanel<T> implements IBootstrap4Component {
 
 	private static final long serialVersionUID = -3576134833190785445L;
 
