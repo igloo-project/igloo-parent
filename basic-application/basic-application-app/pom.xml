@@ -135,4 +135,22 @@
 
 	</repositories>
 
+	<distributionManagement>
+		<site>
+			<id>igloo</id>
+			<name>Igloo site</name>
+			<url>https://igloo-doc.readthedocs.org/</url>
+		</site>
+		<repository>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus Igloo Releases</name>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus Igloo Snapshots</name>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 </project>
