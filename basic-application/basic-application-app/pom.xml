@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>org.springframework.boot</groupId>
+		<groupId>org.iglooproject</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.0</version>
+		<version>6.0.0-UPDATE-SNAPSHOT</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	
@@ -19,8 +19,8 @@
 	<name>${archetypeFullApplicationName} - Web Application</name>
 	
 	<properties>
-		<java.version>17</java.version>
-		<picocli.version>4.7.5</picocli.version>
+		<igloo-maven.version>6.0.0-UPDATE-SNAPSHOT</igloo-maven.version>
+		<start-class>org.iglooproject.basicapp.app.SpringBootMain</start-class>
 	</properties>
 	
 	<dependencies>
@@ -28,12 +28,6 @@
 			<groupId>org.iglooproject.archetype</groupId>
 			<artifactId>basic-application-webapp</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		<!-- replace spring boot version -->
-		<dependency>
-			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>6.2.6.Final</version>
 		</dependency>
 		
 		<dependency>
@@ -93,11 +87,6 @@
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>info.picocli</groupId>
-			<artifactId>picocli</artifactId>
-			<version>${picocli.version}</version>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -134,5 +123,23 @@
 		</repository>
 
 	</repositories>
+
+	<distributionManagement>
+		<site>
+			<id>igloo</id>
+			<name>Igloo site</name>
+			<url>https://igloo-doc.readthedocs.org/</url>
+		</site>
+		<repository>
+			<id>nexus-igloo-releases</id>
+			<name>Nexus Igloo Releases</name>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-igloo-snapshots</id>
+			<name>Nexus Igloo Snapshots</name>
+			<url>https://nexus.tools.kobalt.fr/repository/igloo-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>

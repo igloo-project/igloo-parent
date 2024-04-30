@@ -215,39 +215,15 @@ public final class LuceneUtils {
 		return searchPatternFragments;
 	}
 	
-	public static RawLuceneQuery toFilterRangeQuery(String field, Number min, Number max) {
-		return toFilterRangeQuery(field, min, max, true, true);
-	}
-	
-	public static RawLuceneQuery toFilterRangeQuery(String field, Number min, Number max, boolean minInclusive, boolean maxInclusive) {
-		if (min == null && max == null) {
-			throw new IllegalArgumentException(String.format("Either min (%f) or max (%f) is needed", min, max));
-		}
-		StringBuilder sb = new StringBuilder();
-		if (StringUtils.hasText(field)) {
-			sb.append(field);
-			sb.append(":");
-		}
-		sb.append(minInclusive ? "[" : "{")
-			.append((min == null) ? "*" : min.toString())
-			.append(" TO ")
-			.append((max == null) ? "*" : max.toString())
-			.append(maxInclusive ? "]" : "}");
-		return new RawLuceneQuery(sb.toString());
-	}
-	
 	/**
 	 * Igloo 6.0: NumericRangeQuery is no longer an available type and is removed from cases.
 	 */
-	@SuppressWarnings("unchecked")
 	public static String queryToString(Query luceneQuery) {
 		StringBuilder sb = new StringBuilder();
 		if (luceneQuery instanceof BooleanQuery) {
 			sb.append(formatBooleanQuery((BooleanQuery) luceneQuery));
 		} else if (luceneQuery instanceof TermQuery) {
 			sb.append(formatTermQuery((TermQuery) luceneQuery));
-		} else if (luceneQuery instanceof RawLuceneQuery) {
-			sb.append(formatRawLuceneQuery((RawLuceneQuery) luceneQuery));
 		} else if (luceneQuery instanceof FuzzyQuery) {
 			sb.append(formatFuzzyQuery((FuzzyQuery) luceneQuery));
 		} else if (luceneQuery instanceof PrefixQuery) {
@@ -292,8 +268,7 @@ public final class LuceneUtils {
 			}
 			if (booleanQuerySb.length() > 0) {
 				if (booleanQuery.clauses().size() > 1
-						|| booleanQuerySb.charAt(0) == '-' || booleanQuerySb.charAt(0) == '+'
-						|| (booleanQuery.clauses().size() == 1 && (booleanQuery.clauses().get(0).getQuery() instanceof RawLuceneQuery))) {
+						|| booleanQuerySb.charAt(0) == '-' || booleanQuerySb.charAt(0) == '+') {
 					sb.append("(")
 						.append(booleanQuerySb.toString().trim())
 						.append(")");
@@ -315,16 +290,6 @@ public final class LuceneUtils {
 		sb.append("\"")
 			.append(QueryParser.escape(term.text()))
 			.append("\"");
-		return sb.toString();
-	}
-	
-	private static String formatRawLuceneQuery(RawLuceneQuery simpleQuery) {
-		StringBuilder sb = new StringBuilder();
-		if (StringUtils.hasText(simpleQuery.getQuery())) {
-			sb.append("(")
-				.append(simpleQuery.getQuery())
-				.append(")");
-		}
 		return sb.toString();
 	}
 	

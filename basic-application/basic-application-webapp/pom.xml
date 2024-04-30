@@ -108,6 +108,11 @@
 			<artifactId>jakarta.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<optional>true</optional>
+		</dependency>
 		
 		<!-- Only for packaging scss at build-time -->
 		<dependency>

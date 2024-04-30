@@ -173,6 +173,11 @@
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<optional>true</optional>
+		</dependency>
 		
 		<!-- JDBC Driver -->
 		<dependency>
@@ -296,6 +301,14 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-logging</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!--override checker-qual -->
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-quality-annotations</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

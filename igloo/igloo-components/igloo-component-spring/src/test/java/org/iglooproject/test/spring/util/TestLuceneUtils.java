@@ -15,9 +15,7 @@ import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.WildcardQuery;
-import org.assertj.core.api.Assertions;
 import org.iglooproject.spring.util.lucene.search.LuceneUtils;
-import org.iglooproject.spring.util.lucene.search.RawLuceneQuery;
 import org.junit.jupiter.api.Test;
 
 class TestLuceneUtils {
@@ -66,18 +64,6 @@ class TestLuceneUtils {
 		assertEquals("elephant OR de OR test", LuceneUtils.getQuery("éléphant de test", Operator.OR));
 		assertEquals("elephant OR de* OR test*", LuceneUtils.getQuery("éléphant de* test*", Operator.OR));
 		assertEquals("elephant OR test*", LuceneUtils.getQuery("éléphant * test*", Operator.OR));
-	}
-	
-	@Test
-	void testToFilterRangeQuery() {
-		// LAL - changed on 2018.03.06 - throw an exception for min and max == null
-		Assertions.assertThatCode(() -> LuceneUtils.toFilterRangeQuery("number", null, null)).isInstanceOf(IllegalArgumentException.class);
-		assertEquals("number:[* TO 5]", LuceneUtils.toFilterRangeQuery("number", null, 5).toString());
-		assertEquals("number:[5 TO *]", LuceneUtils.toFilterRangeQuery("number", 5, null).toString());
-		assertEquals("number:[1 TO 5]", LuceneUtils.toFilterRangeQuery("number", 1, 5).toString());
-		assertEquals("number:{1 TO 5]", LuceneUtils.toFilterRangeQuery("number", 1, 5, false, true).toString());
-		assertEquals("number:[1 TO 5}", LuceneUtils.toFilterRangeQuery("number", 1, 5, true, false).toString());
-		assertEquals("number:{1 TO 5}", LuceneUtils.toFilterRangeQuery("number", 1, 5, false, false).toString());
 	}
 	
 	@Test
@@ -143,11 +129,6 @@ class TestLuceneUtils {
 		Query parsedQuery = parser.parse(stringQuery);
 		
 		assertEquals(stringQuery, LuceneUtils.queryToString(parsedQuery));
-	}
-	
-	@Test
-	void testRawLuceneQueryToString() {
-		assertEquals("(field1:\"text1\")", LuceneUtils.queryToString(new RawLuceneQuery("field1:\"text1\"")));
 	}
 	
 	@Test

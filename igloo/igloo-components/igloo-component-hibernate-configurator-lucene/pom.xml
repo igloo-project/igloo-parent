@@ -16,7 +16,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.hibernate.search</groupId>
-			<artifactId>hibernate-search-mapper-orm-orm6</artifactId>
+			<artifactId>hibernate-search-mapper-orm</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -31,7 +31,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-analyzers-common</artifactId>
+			<artifactId>lucene-analysis-common</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

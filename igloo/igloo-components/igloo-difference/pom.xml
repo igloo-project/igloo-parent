@@ -71,6 +71,11 @@
 			<artifactId>hibernate-jpamodelgen</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<optional>true</optional>
+		</dependency>
 		
 		<dependency>
 			<!-- upper bound dependency issue -->
