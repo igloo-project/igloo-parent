@@ -6,7 +6,9 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
-import org.iglooproject.basicapp.web.application.referencedata.model.AbstractReferenceDataDataProvider;
+import org.iglooproject.basicapp.core.business.referencedata.search.BasicReferenceDataSort;
+import org.iglooproject.basicapp.core.util.binding.Bindings;
+import org.iglooproject.basicapp.web.application.referencedata.model.BasicReferenceDataDataProvider;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.wicket.more.markup.html.form.EnumDropDownSingleChoice;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
@@ -15,6 +17,7 @@ import org.wicketstuff.wiquery.core.events.StateEvent;
 
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.markup.html.form.PageableSearchForm;
+import igloo.wicket.model.BindingModel;
 
 public class BasicReferenceDataSearchPanel<T extends ReferenceData<? super T>> extends Panel {
 
@@ -22,8 +25,8 @@ public class BasicReferenceDataSearchPanel<T extends ReferenceData<? super T>> e
 
 	public BasicReferenceDataSearchPanel(
 		String id,
-		final AbstractReferenceDataDataProvider<T, ?> dataProvider,
-		final DecoratedCoreDataTablePanel<T, ?> table
+		BasicReferenceDataDataProvider<T> dataProvider,
+		DecoratedCoreDataTablePanel<T, BasicReferenceDataSort> table
 	) {
 		super(id);
 		
@@ -44,10 +47,10 @@ public class BasicReferenceDataSearchPanel<T extends ReferenceData<? super T>> e
 		);
 		
 		form.add(
-			new TextField<>("label", dataProvider.getLabelModel(), String.class)
+			new TextField<>("label", BindingModel.of(dataProvider.getDataModel(), Bindings.basicReferenceDataSearchQueryData().label()), String.class)
 				.setLabel(new ResourceModel("business.referenceData.label"))
 				.add(new LabelPlaceholderBehavior()),
-			new EnumDropDownSingleChoice<>("enabledFilter", dataProvider.getEnabledFilterModel(), EnabledFilter.class)
+			new EnumDropDownSingleChoice<>("enabledFilter", BindingModel.of(dataProvider.getDataModel(), Bindings.basicReferenceDataSearchQueryData().enabledFilter()), EnabledFilter.class)
 				.setLabel(new ResourceModel("business.referenceData.enabled.state"))
 				.add(new LabelPlaceholderBehavior())
 		);

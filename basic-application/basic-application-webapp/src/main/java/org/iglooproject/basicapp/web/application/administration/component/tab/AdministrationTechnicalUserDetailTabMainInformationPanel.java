@@ -11,7 +11,7 @@ public class AdministrationTechnicalUserDetailTabMainInformationPanel extends Ge
 
 	private static final long serialVersionUID = -6822072984820432812L;
 
-	public AdministrationTechnicalUserDetailTabMainInformationPanel(String id, final IModel<? extends TechnicalUser> userModel) {
+	public AdministrationTechnicalUserDetailTabMainInformationPanel(String id, IModel<TechnicalUser> userModel) {
 		super(id, userModel);
 		
 		add(

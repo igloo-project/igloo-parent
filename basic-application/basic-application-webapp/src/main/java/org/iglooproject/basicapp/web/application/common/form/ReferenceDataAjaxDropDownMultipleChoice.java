@@ -1,15 +1,26 @@
 package org.iglooproject.basicapp.web.application.common.form;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.apache.wicket.model.IModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
+import org.iglooproject.basicapp.core.business.referencedata.search.BasicReferenceDataSearchQueryData;
+import org.iglooproject.basicapp.core.business.referencedata.search.BasicReferenceDataSort;
 import org.iglooproject.basicapp.core.business.referencedata.search.IBasicReferenceDataSearchQuery;
 import org.iglooproject.basicapp.web.application.common.renderer.ReferenceDataRenderer;
 import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
+import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
+import org.iglooproject.wicket.more.application.CoreWicketApplication;
 import org.iglooproject.wicket.more.markup.html.select2.AbstractLongIdGenericEntityChoiceProvider;
 import org.iglooproject.wicket.more.markup.html.select2.GenericSelect2AjaxDropDownMultipleChoice;
 import org.wicketstuff.select2.Response;
+
+import com.google.common.collect.ImmutableMap;
+
+import igloo.wicket.model.Detachables;
+import igloo.wicket.spring.SpringBeanLookupCache;
 
 public class ReferenceDataAjaxDropDownMultipleChoice<T extends ReferenceData<? super T>, C extends Collection<T>> extends GenericSelect2AjaxDropDownMultipleChoice<T> {
 
@@ -37,21 +48,35 @@ public class ReferenceDataAjaxDropDownMultipleChoice<T extends ReferenceData<? s
 		
 		private static final long serialVersionUID = 1L;
 		
-		private final Class<T> clazz;
+		private final SpringBeanLookupCache<IBasicReferenceDataSearchQuery<T>> referenceDataSearchQueryLookupCache;
 		
 		public ChoiceProvider(Class<T> clazz) {
 			super(clazz, ReferenceDataRenderer.get());
-			this.clazz = clazz;
+			this.referenceDataSearchQueryLookupCache = SpringBeanLookupCache.<IBasicReferenceDataSearchQuery<T>>of(
+				() -> CoreWicketApplication.get().getApplicationContext(),
+				IBasicReferenceDataSearchQuery.class,
+				clazz
+			);
 		}
 		
-		@SuppressWarnings("unchecked")
 		@Override
 		protected void query(String term, int offset, int limit, Response<T> response) {
-			response.addAll(
-				getBean(IBasicReferenceDataSearchQuery.class, clazz)
-					.label(term)
-					.list(offset, limit)
+			BasicReferenceDataSearchQueryData<T> data = new BasicReferenceDataSearchQueryData<>();
+			data.setLabel(term);
+			data.setEnabledFilter(EnabledFilter.ENABLED_ONLY);
+			Map<BasicReferenceDataSort, SortOrder> sorts = ImmutableMap.of(
+				BasicReferenceDataSort.POSITION, BasicReferenceDataSort.POSITION.getDefaultOrder(),
+				BasicReferenceDataSort.LABEL_FR, BasicReferenceDataSort.LABEL_FR.getDefaultOrder(),
+				BasicReferenceDataSort.LABEL_EN, BasicReferenceDataSort.LABEL_EN.getDefaultOrder(),
+				BasicReferenceDataSort.ID, BasicReferenceDataSort.ID.getDefaultOrder()
 			);
+			response.addAll(referenceDataSearchQueryLookupCache.get().list(data, sorts, offset, limit));
+		}
+		
+		@Override
+		public void detach() {
+			super.detach();
+			Detachables.detach(referenceDataSearchQueryLookupCache);
 		}
 	}
 

@@ -16,6 +16,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.business.user.model.UserGroup;
 import org.iglooproject.basicapp.core.business.user.service.IUserGroupService;
+import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.administration.form.UserAjaxDropDownSingleChoice;
 import org.iglooproject.basicapp.web.application.administration.model.UserDataProvider;
 import org.iglooproject.basicapp.web.application.administration.template.AdministrationUserDetailTemplate;
@@ -52,8 +53,9 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 		super(id, userGroupModel);
 		setOutputMarkupId(true);
 		
-		dataProvider = new UserDataProvider();
-		dataProvider.getGroupModel().setObject(userGroupModel.getObject());
+		dataProvider = new UserDataProvider(dataModel ->
+			dataModel.bind(Bindings.userSearchQueryData().group(), userGroupModel)
+		);
 		
 		add(
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
@@ -112,7 +114,7 @@ public class UserGroupDetailUsersPanel extends GenericPanel<UserGroup> {
 			add(
 				new Form<User>("form", userModel)
 					.add(
-						new UserAjaxDropDownSingleChoice<>("user", userModel, User.class)
+						new UserAjaxDropDownSingleChoice("user", userModel)
 							.setRequired(true)
 							.setLabel(new ResourceModel("business.user"))
 							.add(new LabelPlaceholderBehavior()),

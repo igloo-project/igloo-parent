@@ -1,20 +1,22 @@
 package org.iglooproject.jpa.more.business.task.search;
 
-import java.util.List;
+import static org.iglooproject.jpa.more.search.query.HibernateSearchUtils.toSortOrder;
 
-import org.apache.lucene.search.SortField;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import java.util.List;
+import java.util.function.Function;
+
+import org.hibernate.search.engine.search.sort.dsl.SearchSortFactory;
+import org.hibernate.search.engine.search.sort.dsl.SortFinalStep;
 import org.iglooproject.jpa.more.business.sort.ISort;
-import org.iglooproject.jpa.more.business.sort.SortUtils;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
 
-public enum QueuedTaskHolderSort implements ISort<SortField> {
+public enum QueuedTaskHolderSort implements ISort<Function<SearchSortFactory, SortFinalStep>> {
 
 	ID {
 		@Override
-		public List<SortField> getSortFields(SortOrder sortOrder) {
+		public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
 			return List.of(
-				SortUtils.luceneSortField(this, sortOrder, SortField.Type.LONG, GenericEntity.ID)
+				f -> f.field(QueuedTaskHolder.ID).order(toSortOrder(this, sortOrder))
 			);
 		}
 		@Override
@@ -24,9 +26,9 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 	},
 	NAME {
 		@Override
-		public List<SortField> getSortFields(SortOrder sortOrder) {
+		public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
 			return List.of(
-				SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, QueuedTaskHolder.NAME_SORT)
+				f -> f.field(QueuedTaskHolder.NAME_SORT).order(toSortOrder(this, sortOrder))
 			);
 		}
 		@Override
@@ -36,11 +38,16 @@ public enum QueuedTaskHolderSort implements ISort<SortField> {
 	},
 	CREATION_DATE {
 		@Override
-		public List<SortField> getSortFields(SortOrder sortOrder) {
+		public List<Function<SearchSortFactory, SortFinalStep>> getSortFields(SortOrder sortOrder) {
+//			return List.of(
+//				SortUtils.luceneStringSortField(this, sortOrder, QueuedTaskHolder.END_DATE, NullSortValue.GREATEST),
+//				SortUtils.luceneStringSortField(this, sortOrder, QueuedTaskHolder.START_DATE, NullSortValue.GREATEST),
+//				SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, QueuedTaskHolder.CREATION_DATE)
+//			);
 			return List.of(
-				SortUtils.luceneStringSortField(this, sortOrder, QueuedTaskHolder.END_DATE, NullSortValue.GREATEST),
-				SortUtils.luceneStringSortField(this, sortOrder, QueuedTaskHolder.START_DATE, NullSortValue.GREATEST),
-				SortUtils.luceneSortField(this, sortOrder, SortField.Type.STRING, QueuedTaskHolder.CREATION_DATE)
+				f -> f.field(QueuedTaskHolder.END_DATE).order(toSortOrder(this, sortOrder)),
+				f -> f.field(QueuedTaskHolder.START_DATE).order(toSortOrder(this, sortOrder)),
+				f -> f.field(QueuedTaskHolder.CREATION_DATE).order(toSortOrder(this, sortOrder))
 			);
 		}
 		@Override

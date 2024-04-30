@@ -5,52 +5,41 @@ import static org.iglooproject.basicapp.web.application.common.util.CssClassCons
 import org.apache.wicket.Component;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.City;
-import org.iglooproject.basicapp.core.business.referencedata.search.ReferenceDataSort;
+import org.iglooproject.basicapp.core.business.referencedata.search.CitySearchQueryData;
+import org.iglooproject.basicapp.core.business.referencedata.search.CitySort;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
-import org.iglooproject.basicapp.web.application.referencedata.model.AbstractReferenceDataDataProvider;
-import org.iglooproject.basicapp.web.application.referencedata.model.BasicReferenceDataDataProvider;
+import org.iglooproject.basicapp.web.application.referencedata.model.CityDataProvider;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IColumnState;
 
-public class CityListPanel extends AbstractReferenceDataSimpleListPanel<City, ReferenceDataSort, AbstractReferenceDataDataProvider<City, ReferenceDataSort>> {
+public class CityListPanel extends AbstractReferenceDataSimpleListPanel<City, CitySort, CitySearchQueryData, CityDataProvider> {
 
 	private static final long serialVersionUID = -2165029373966420708L;
 
 	public CityListPanel(String id) {
-		this(id, BasicReferenceDataDataProvider.forItemType(City.class));
-	}
-
-	public CityListPanel(
-		String id,
-		AbstractReferenceDataDataProvider<City, ReferenceDataSort> dataProvider
-	) {
-		super(id, dataProvider, dataProvider.getSortModel());
+		super(id, new CityDataProvider());
 	}
 
 	@Override
-	protected IColumnState<City, ReferenceDataSort> addColumns(DataTableBuilder<City, ReferenceDataSort> builder) {
+	protected IColumnState<City, CitySort> addColumns(DataTableBuilder<City, CitySort> builder) {
 		return super.addColumns(builder)
 			.addLabelColumn(new ResourceModel("business.referenceData.label.fr"), Bindings.city().label().fr())
-				.withSort(ReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+				.withSort(CitySort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 				.withClass("cell-w-300")
 			.addLabelColumn(new ResourceModel("business.referenceData.label.en"), Bindings.city().label().en())
-				.withSort(ReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+				.withSort(CitySort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 				.withClass("cell-w-300")
 				.withClass(CELL_DISPLAY_LG)
 			.addLabelColumn(new ResourceModel("business.city.postalCode.short"), Bindings.city().postalCode())
-				.withSort(ReferenceDataSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
+				.withSort(CitySort.POSTAL_CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
 				.withClass("cell-w-120");
 	}
 
 	@Override
-	protected Component createSearchForm(
-		String wicketId,
-		AbstractReferenceDataDataProvider<City, ReferenceDataSort> dataProvider,
-		DecoratedCoreDataTablePanel<City, ReferenceDataSort> table
-	) {
+	protected Component createSearchForm(String wicketId, CityDataProvider dataProvider, DecoratedCoreDataTablePanel<City, CitySort> table) {
 		return new CitySearchPanel(wicketId, dataProvider, table);
 	}
 

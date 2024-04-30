@@ -3,28 +3,34 @@ package org.iglooproject.basicapp.web.application.referencedata.component;
 import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.TABLE_ROW_DISABLED;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
+import java.util.function.Function;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
+import org.hibernate.search.engine.search.sort.dsl.SearchSortFactory;
+import org.hibernate.search.engine.search.sort.dsl.SortFinalStep;
+import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
 import org.iglooproject.jpa.more.business.sort.ISort;
+import org.iglooproject.jpa.more.search.query.IHibernateSearchSearchQuery;
+import org.iglooproject.jpa.more.search.query.ISearchQueryData;
 import org.iglooproject.spring.property.service.IPropertyService;
-import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel.AddInPlacement;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IColumnState;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IDecoratedBuildState;
-import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
+import org.iglooproject.wicket.more.model.search.query.SearchQueryDataProvider;
 
 import igloo.wicket.model.Detachables;
 
 public abstract class AbstractReferenceDataSimpleListPanel
 		<
-			T extends GenericReferenceData<? super T, ?>,
-			S extends ISort<?>,
-			D extends AbstractSearchQueryDataProvider<T, S>
+			T extends ReferenceData<? super T>,
+			S extends ISort<Function<SearchSortFactory, SortFinalStep>>,
+			D extends ISearchQueryData<T>,
+			P extends SearchQueryDataProvider<T, S, D, ? extends IHibernateSearchSearchQuery<T, S, D>>
 		>
 		extends Panel {
 
@@ -33,18 +39,15 @@ public abstract class AbstractReferenceDataSimpleListPanel
 	@SpringBean
 	protected IPropertyService propertyService;
 
-	protected final D dataProvider;
-
-	protected final CompositeSortModel<S> sortModel;
+	protected final P dataProvider;
 
 	protected DecoratedCoreDataTablePanel<T, S> results;
 
-	public AbstractReferenceDataSimpleListPanel(String id, D dataProvider, CompositeSortModel<S> sortModel) {
+	public AbstractReferenceDataSimpleListPanel(String id, P dataProvider) {
 		super(id);
 		setOutputMarkupId(true);
 		
 		this.dataProvider = dataProvider;
-		this.sortModel = sortModel;
 	}
 
 	@Override
@@ -55,7 +58,7 @@ public abstract class AbstractReferenceDataSimpleListPanel
 			decorate(
 				addActionColumn(
 					addColumns(
-						DataTableBuilder.start(dataProvider, sortModel)
+						DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
 					)
 				)
 					.rows()
@@ -83,12 +86,12 @@ public abstract class AbstractReferenceDataSimpleListPanel
 			.addIn(AddInPlacement.HEADING_MAIN, (wicketId, table) -> createSearchForm(wicketId, dataProvider, table));
 	}
 
-	protected abstract Component createSearchForm(String wicketId, D dataProvider, DecoratedCoreDataTablePanel<T, S> table);
+	protected abstract Component createSearchForm(String wicketId, P dataProvider, DecoratedCoreDataTablePanel<T, S> table);
 
 	@Override
 	protected void onDetach() {
 		super.onDetach();
-		Detachables.detach(dataProvider, sortModel);
+		Detachables.detach(dataProvider);
 	}
 
 }

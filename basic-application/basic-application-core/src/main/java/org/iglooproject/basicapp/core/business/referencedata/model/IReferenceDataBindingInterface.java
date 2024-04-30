@@ -7,6 +7,4 @@ import org.iglooproject.jpa.more.business.referencedata.model.IGenericReferenceD
 @Bindable
 public interface IReferenceDataBindingInterface extends IGenericReferenceDataBindingInterface<LocalizedText> {
 
-	String getCode();
-
 }

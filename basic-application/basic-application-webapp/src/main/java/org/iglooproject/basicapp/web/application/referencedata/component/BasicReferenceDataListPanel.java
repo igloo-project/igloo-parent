@@ -6,11 +6,11 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.ResourceModel;
 import org.iglooproject.basicapp.core.business.referencedata.model.ReferenceData;
-import org.iglooproject.basicapp.core.business.referencedata.search.ReferenceDataSort;
+import org.iglooproject.basicapp.core.business.referencedata.search.BasicReferenceDataSearchQueryData;
+import org.iglooproject.basicapp.core.business.referencedata.search.BasicReferenceDataSort;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.referencedata.form.AbstractReferenceDataPopup;
 import org.iglooproject.basicapp.web.application.referencedata.form.BasicReferenceDataPopup;
-import org.iglooproject.basicapp.web.application.referencedata.model.AbstractReferenceDataDataProvider;
 import org.iglooproject.basicapp.web.application.referencedata.model.BasicReferenceDataDataProvider;
 import org.iglooproject.functional.SerializableSupplier2;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
@@ -19,8 +19,8 @@ import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IColumnState;
 
-public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>> 
-		extends AbstractReferenceDataListPanel<T, ReferenceDataSort, AbstractReferenceDataDataProvider<T, ReferenceDataSort>> {
+public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>>
+		extends AbstractReferenceDataListPanel<T, BasicReferenceDataSort, BasicReferenceDataSearchQueryData<T>, BasicReferenceDataDataProvider<T>> {
 
 	private static final long serialVersionUID = -4026683202098875499L;
 
@@ -29,21 +29,13 @@ public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>>
 		SerializableSupplier2<T> supplier,
 		Class<T> clazz
 	) {
-		this(id, supplier, BasicReferenceDataDataProvider.forItemType(clazz));
-	}
-
-	public BasicReferenceDataListPanel(
-		String id,
-		SerializableSupplier2<T> supplier,
-		AbstractReferenceDataDataProvider<T, ReferenceDataSort> dataProvider
-	) {
-		super(id, dataProvider, dataProvider.getSortModel(), supplier);
+		super(id, new BasicReferenceDataDataProvider<>(clazz), supplier);
 		setOutputMarkupId(true);
 	}
 
 	@Override
 	protected AbstractReferenceDataPopup<T> createPopup(String wicketId) {
-		return new BasicReferenceDataPopup<T>(wicketId) {
+		return new BasicReferenceDataPopup<>(wicketId) {
 			private static final long serialVersionUID = 1L;
 			@Override
 			protected void refresh(AjaxRequestTarget target) {
@@ -53,13 +45,13 @@ public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>>
 	}
 
 	@Override
-	protected IColumnState<T, ReferenceDataSort> addColumns(DataTableBuilder<T, ReferenceDataSort> builder) {
+	protected IColumnState<T, BasicReferenceDataSort> addColumns(DataTableBuilder<T, BasicReferenceDataSort> builder) {
 		return super.addColumns(builder)
 			.addLabelColumn(new ResourceModel("business.referenceData.label.fr"), Bindings.referenceData().label().fr())
-				.withSort(ReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
+				.withSort(BasicReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
 				.withClass("cell-w-300")
 			.addLabelColumn(new ResourceModel("business.referenceData.label.en"), Bindings.referenceData().label().en())
-				.withSort(ReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
+				.withSort(BasicReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
 				.withClass("cell-w-300")
 				.withClass(CELL_DISPLAY_MD);
 	}
@@ -67,10 +59,10 @@ public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>>
 	@Override
 	protected Component createSearchForm(
 		String wicketId,
-		AbstractReferenceDataDataProvider<T, ReferenceDataSort> dataProvider,
-		DecoratedCoreDataTablePanel<T, ReferenceDataSort> table
+		BasicReferenceDataDataProvider<T> dataProvider,
+		DecoratedCoreDataTablePanel<T, BasicReferenceDataSort> table
 	) {
-		return new BasicReferenceDataSearchPanel<T>(wicketId, dataProvider, table);
+		return new BasicReferenceDataSearchPanel<>(wicketId, dataProvider, table);
 	}
 
 }

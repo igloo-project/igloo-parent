@@ -11,7 +11,7 @@ public class AdministrationBasicUserDetailTabMainInformationPanel extends Generi
 
 	private static final long serialVersionUID = -3900528127687137340L;
 
-	public AdministrationBasicUserDetailTabMainInformationPanel(String id, final IModel<? extends BasicUser> userModel) {
+	public AdministrationBasicUserDetailTabMainInformationPanel(String id, IModel<BasicUser> userModel) {
 		super(id, userModel);
 		
 		add(

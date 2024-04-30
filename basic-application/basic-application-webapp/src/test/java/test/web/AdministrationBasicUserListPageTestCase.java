@@ -4,8 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.apache.wicket.util.tester.FormTester;
+import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
-import org.iglooproject.basicapp.core.business.user.search.UserSort;
+import org.iglooproject.basicapp.core.business.user.search.BasicUserSort;
 import org.iglooproject.basicapp.web.application.administration.form.UserGroupDropDownSingleChoice;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserDetailPage;
 import org.iglooproject.basicapp.web.application.administration.page.AdministrationBasicUserListPage;
@@ -100,14 +101,14 @@ class AdministrationBasicUserListPageTestCase extends AbstractBasicApplicationWe
 		
 		tester.assertVisible("results:dataTableContainer:dataTable:body:rows", SequenceGridView.class);
 		@SuppressWarnings("unchecked")
-		SequenceGridView<User> rows = (SequenceGridView<User>) tester.getComponentFromLastRenderedPage("results:dataTableContainer:dataTable:body:rows");
+		SequenceGridView<BasicUser> rows = (SequenceGridView<BasicUser>) tester.getComponentFromLastRenderedPage("results:dataTableContainer:dataTable:body:rows");
 		assertTrue(rows.getItems().hasNext());
 		
 		String userRowPath = rows.getItems().next().getPageRelativePath();
 		
 		tester.assertVisible(userRowPath + ":cells:2:cell", CoreLabelLinkColumnPanel.class);
 		@SuppressWarnings("unchecked")
-		CoreLabelLinkColumnPanel<User, UserSort> usernameCell = (CoreLabelLinkColumnPanel<User, UserSort>) tester.getComponentFromLastRenderedPage(userRowPath + ":cells:2:cell");
+		CoreLabelLinkColumnPanel<BasicUser, BasicUserSort> usernameCell = (CoreLabelLinkColumnPanel<BasicUser, BasicUserSort>) tester.getComponentFromLastRenderedPage(userRowPath + ":cells:2:cell");
 
 		tester.clickLink(usernameCell.getPageRelativePath() + ":link");
 		

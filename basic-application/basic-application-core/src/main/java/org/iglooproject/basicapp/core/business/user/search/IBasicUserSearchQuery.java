@@ -1,9 +1,8 @@
 package org.iglooproject.basicapp.core.business.user.search;
 
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
-import org.springframework.context.annotation.Scope;
+import org.iglooproject.jpa.more.search.query.IHibernateSearchSearchQuery;
 
-@Scope("prototype")
-public interface IBasicUserSearchQuery extends IAbstractUserSearchQuery<BasicUser> {
+public interface IBasicUserSearchQuery extends IHibernateSearchSearchQuery<BasicUser, BasicUserSort, BasicUserSearchQueryData> {
 
 }

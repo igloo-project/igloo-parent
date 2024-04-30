@@ -20,3 +20,21 @@
 @import "layout";
 @import "navbar";
 @import "sidenav";
+
+
+$dashborard-iframe-heights: (
+	xs: 10000px,
+	sm: 9000px,
+	md: 8000px,
+	lg: 7000px,
+	xl: 6000px,
+	2xl: 5000px
+) !default;
+
+@each $breakpoint, $height in $dashborard-iframe-heights {
+	@include media-breakpoint-up($breakpoint) {
+		> .dashboard-iframe {
+			height: $height;
+		}
+	}
+}

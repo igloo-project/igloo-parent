@@ -1,7 +1,7 @@
 package org.iglooproject.basicapp.web.application.administration.page;
 
+import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
 import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.CELL_DISPLAY_2XL;
-import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.TABLE_ROW_DISABLED;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import org.apache.poi.ss.usermodel.Workbook;
@@ -16,7 +16,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.predicate.UserPredicates;
-import org.iglooproject.basicapp.core.business.user.search.UserSort;
+import org.iglooproject.basicapp.core.business.user.search.TechnicalUserSort;
 import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.administration.component.TechnicalUserListSearchPanel;
@@ -115,12 +115,12 @@ public class AdministrationTechnicalUserListPage extends AdministrationUserListT
 				.withLink(AdministrationTechnicalUserDetailPage.MAPPER.setParameter2(new PageModel<>(this)))
 				.withClass("cell-w-250")
 			.addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
-				.withSort(UserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+				.withSort(TechnicalUserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 				.withClass("cell-w-250")
 			.addLabelColumn(new ResourceModel("business.user.firstName"), Bindings.user().firstName())
-				.withSort(UserSort.FIRST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+				.withSort(TechnicalUserSort.FIRST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
 				.withClass("cell-w-250")
-			.addColumn(new AbstractCoreColumn<TechnicalUser, UserSort>(new ResourceModel("business.user.email")) {
+			.addColumn(new AbstractCoreColumn<TechnicalUser, TechnicalUserSort>(new ResourceModel("business.user.email")) {
 				private static final long serialVersionUID = 1L;
 				@Override
 				public void populateItem(Item<ICellPopulator<TechnicalUser>> cellItem, String componentId, IModel<TechnicalUser> rowModel) {
@@ -141,7 +141,7 @@ public class AdministrationTechnicalUserListPage extends AdministrationUserListT
 				.withClass("cell-w-350")
 				.withClass(CELL_DISPLAY_2XL)
 			.rows()
-				.withClass(itemModel -> Condition.predicate(itemModel, UserPredicates.disabled()).then(TABLE_ROW_DISABLED).otherwise(""))
+				.withClass(itemModel -> Condition.predicate(itemModel, UserPredicates.disabled()).then(BTN_TABLE_ROW_ACTION).otherwise(""))
 				.end()
 			.bootstrapCard()
 				.ajaxPagers()
@@ -149,7 +149,7 @@ public class AdministrationTechnicalUserListPage extends AdministrationUserListT
 			.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 		
 		add(
-			new TechnicalUserListSearchPanel("search", results, dataProvider),
+			new TechnicalUserListSearchPanel("search", results, dataProvider.getDataModel()),
 			results
 		);
 	}

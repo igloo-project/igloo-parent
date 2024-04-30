@@ -3,6 +3,7 @@ package org.iglooproject.basicapp.web.application.administration.component;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.basicapp.core.business.history.model.atomic.HistoryEventType;
@@ -10,6 +11,8 @@ import org.iglooproject.basicapp.core.business.user.model.User;
 import org.iglooproject.basicapp.core.util.binding.Bindings;
 import org.iglooproject.basicapp.web.application.history.column.HistoryLogDetailColumn;
 import org.iglooproject.basicapp.web.application.history.model.HistoryLogDataProvider;
+import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
+import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEntityReference;
 import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
@@ -30,8 +33,10 @@ public class UserDetailHistoryLogPanel extends GenericPanel<User> {
 		super(id, userModel);
 		setOutputMarkupPlaceholderTag(true);
 		
-		HistoryLogDataProvider dataProvider = HistoryLogDataProvider.object(userModel);
-		dataProvider.addMandatoryDifferencesEventType(HistoryEventType.UPDATE);
+		HistoryLogDataProvider dataProvider = new HistoryLogDataProvider(dataModel ->
+			dataModel.bind(Bindings.historyLogSearchQueryData().allObjects(), LoadableDetachableModel.of(() -> HistoryEntityReference.from(GenericEntityReference.of(userModel.getObject()))))
+		);
+		dataProvider.getDataModel().getObject().addMandatoryDifferencesEventType(HistoryEventType.UPDATE);
 		
 		add(
 			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
