@@ -173,6 +173,11 @@
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<optional>true</optional>
+		</dependency>
 		
 		<!-- JDBC Driver -->
 		<dependency>
