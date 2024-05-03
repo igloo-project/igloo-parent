@@ -3,6 +3,7 @@ package org.iglooproject.spring.util.lucene.search;
 import java.util.Objects;
 
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.QueryVisitor;
 
 public final class RawLuceneQuery extends Query {
 	
@@ -19,6 +20,11 @@ public final class RawLuceneQuery extends Query {
 	@Override
 	public String toString(String field) {
 		return query;
+	}
+
+	@Override
+	public void visit(QueryVisitor visitor) {
+
 	}
 
 	@Override

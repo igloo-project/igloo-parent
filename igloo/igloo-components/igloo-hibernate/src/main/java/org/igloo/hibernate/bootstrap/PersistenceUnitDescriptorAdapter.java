@@ -17,6 +17,7 @@ import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import javax.sql.DataSource;
 
 import org.hibernate.bytecode.enhance.spi.EnhancementContext;
+import org.hibernate.bytecode.spi.ClassTransformer;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.jpa.boot.spi.PersistenceUnitDescriptor;
 
@@ -109,5 +110,10 @@ public class PersistenceUnitDescriptorAdapter implements PersistenceUnitDescript
 
 	@Override
 	public void pushClassTransformer(EnhancementContext enhancementContext) {
+	}
+
+	@Override
+	public ClassTransformer getClassTransformer() {
+		return null;
 	}
 }

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.1.0</version>
+		<version>3.2.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	
@@ -21,6 +21,10 @@
 	<properties>
 		<java.version>17</java.version>
 		<picocli.version>4.7.5</picocli.version>
+		<hibernate.version>6.5.0.Final</hibernate.version>
+		<guava.version>33.1.0-jre</guava.version>
+		<bindgen.version>6.0.0</bindgen.version>
+		<bindgen-functionnal.version>6.0.0-SNAPSHOT</bindgen-functionnal.version>
 	</properties>
 	
 	<dependencies>
@@ -33,7 +37,19 @@
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>6.2.6.Final</version>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-jcache</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>${hibernate.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -97,6 +113,21 @@
 			<groupId>info.picocli</groupId>
 			<artifactId>picocli</artifactId>
 			<version>${picocli.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bindgen</groupId>
+			<artifactId>bindgen</artifactId>
+			<version>${bindgen.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>bindgen-functional</artifactId>
+			<version>${bindgen-functionnal.version}</version>
 		</dependency>
 	</dependencies>
 
