@@ -6,18 +6,11 @@ import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser.Operator;
 import org.apache.lucene.queryparser.simple.SimpleQueryParser;
 import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.BoostQuery;
-import org.apache.lucene.search.FuzzyQuery;
-import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.WildcardQuery;
 import org.iglooproject.spring.util.StringUtils;
 
 import com.google.common.base.CharMatcher;
@@ -213,155 +206,6 @@ public final class LuceneUtils {
 		}
 		
 		return searchPatternFragments;
-	}
-	
-	public static RawLuceneQuery toFilterRangeQuery(String field, Number min, Number max) {
-		return toFilterRangeQuery(field, min, max, true, true);
-	}
-	
-	public static RawLuceneQuery toFilterRangeQuery(String field, Number min, Number max, boolean minInclusive, boolean maxInclusive) {
-		if (min == null && max == null) {
-			throw new IllegalArgumentException(String.format("Either min (%f) or max (%f) is needed", min, max));
-		}
-		StringBuilder sb = new StringBuilder();
-		if (StringUtils.hasText(field)) {
-			sb.append(field);
-			sb.append(":");
-		}
-		sb.append(minInclusive ? "[" : "{")
-			.append((min == null) ? "*" : min.toString())
-			.append(" TO ")
-			.append((max == null) ? "*" : max.toString())
-			.append(maxInclusive ? "]" : "}");
-		return new RawLuceneQuery(sb.toString());
-	}
-	
-	/**
-	 * Igloo 6.0: NumericRangeQuery is no longer an available type and is removed from cases.
-	 */
-	@SuppressWarnings("unchecked")
-	public static String queryToString(Query luceneQuery) {
-		StringBuilder sb = new StringBuilder();
-		if (luceneQuery instanceof BooleanQuery) {
-			sb.append(formatBooleanQuery((BooleanQuery) luceneQuery));
-		} else if (luceneQuery instanceof TermQuery) {
-			sb.append(formatTermQuery((TermQuery) luceneQuery));
-		} else if (luceneQuery instanceof RawLuceneQuery) {
-			sb.append(formatRawLuceneQuery((RawLuceneQuery) luceneQuery));
-		} else if (luceneQuery instanceof FuzzyQuery) {
-			sb.append(formatFuzzyQuery((FuzzyQuery) luceneQuery));
-		} else if (luceneQuery instanceof PrefixQuery) {
-			sb.append(formatPrefixQuery((PrefixQuery) luceneQuery));
-		} else if (luceneQuery instanceof WildcardQuery) {
-			sb.append(formatWildcardQuery((WildcardQuery) luceneQuery));
-		} else if (luceneQuery instanceof IToQueryStringAwareLuceneQuery) {
-			sb.append(((IToQueryStringAwareLuceneQuery) luceneQuery).toQueryString());
-		} else if (luceneQuery instanceof BoostQuery) {
-			sb.append(queryToString(((BoostQuery) luceneQuery).getQuery()));
-			sb.append(BOOST_PARAMETER_PREFIX);
-			sb.append(((BoostQuery) luceneQuery).getBoost());
-		} else {
-			throw new IllegalStateException(String.format("Query of type %1$s not supported",
-					luceneQuery.getClass().getName()));
-		}
-		
-		return sb.toString();
-	}
-	
-	private static String formatBooleanQuery(BooleanQuery booleanQuery) {
-		StringBuilder sb = new StringBuilder();
-		if (booleanQuery.clauses().size() > 0) {
-			StringBuilder booleanQuerySb = new StringBuilder();
-			for (BooleanClause clause : booleanQuery.clauses()) {
-				if (clause.getQuery() != null) {
-					String query = queryToString(clause.getQuery());
-					
-					if (StringUtils.hasText(query)) {
-						if (Occur.SHOULD.equals(clause.getOccur())) {
-							// dans Solr, on peut définir l'opérateur implicite en AND et il faut donc qu'on soit précis
-							if (booleanQuerySb.length() > 0) {
-								booleanQuerySb.append("OR ");
-							}
-						} else {
-							booleanQuerySb.append(clause.getOccur().toString());
-						}
-						booleanQuerySb.append(query);
-						booleanQuerySb.append(" ");
-					}
-				}
-			}
-			if (booleanQuerySb.length() > 0) {
-				if (booleanQuery.clauses().size() > 1
-						|| booleanQuerySb.charAt(0) == '-' || booleanQuerySb.charAt(0) == '+'
-						|| (booleanQuery.clauses().size() == 1 && (booleanQuery.clauses().get(0).getQuery() instanceof RawLuceneQuery))) {
-					sb.append("(")
-						.append(booleanQuerySb.toString().trim())
-						.append(")");
-				} else {
-					sb.append(booleanQuerySb);
-				}
-			}
-		}
-		return sb.toString();
-	}
-	
-	private static String formatTermQuery(TermQuery termQuery) {
-		StringBuilder sb = new StringBuilder();
-		Term term = termQuery.getTerm();
-		if (StringUtils.hasText(term.field())) {
-			sb.append(term.field());
-			sb.append(":");
-		}
-		sb.append("\"")
-			.append(QueryParser.escape(term.text()))
-			.append("\"");
-		return sb.toString();
-	}
-	
-	private static String formatRawLuceneQuery(RawLuceneQuery simpleQuery) {
-		StringBuilder sb = new StringBuilder();
-		if (StringUtils.hasText(simpleQuery.getQuery())) {
-			sb.append("(")
-				.append(simpleQuery.getQuery())
-				.append(")");
-		}
-		return sb.toString();
-	}
-	
-	private static String formatFuzzyQuery(FuzzyQuery fuzzyQuery) {
-		StringBuilder sb = new StringBuilder();
-		Term term = fuzzyQuery.getTerm();
-		if (StringUtils.hasText(term.field())) {
-			sb.append(term.field());
-			sb.append(":");
-		}
-		sb.append(QueryParser.escape(term.text()))
-			.append(FUZZY_PARAMETER_SUFFIX)
-			.append(fuzzyQuery.getMaxEdits());
-		return sb.toString();
-	}
-	
-	private static String formatPrefixQuery(PrefixQuery prefixQuery) {
-		StringBuilder sb = new StringBuilder();
-		Term prefix = prefixQuery.getPrefix();
-		if (StringUtils.hasText(prefix.field())) {
-			sb.append(prefix.field());
-			sb.append(":");
-		}
-		sb.append(QueryParser.escape(prefix.text()));
-		sb.append("*");
-		return sb.toString();
-	}
-	
-	private static String formatWildcardQuery(WildcardQuery wildcardQuery) {
-		StringBuilder sb = new StringBuilder();
-		Term term = wildcardQuery.getTerm();
-		if (StringUtils.hasText(term.field())) {
-			sb.append(term.field());
-			sb.append(":");
-		}
-		sb.append(term.text());
-		return sb.toString();
 	}
 	
 	private LuceneUtils() {

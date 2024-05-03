@@ -11,19 +11,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import jakarta.persistence.SharedCacheMode;
-import jakarta.persistence.ValidationMode;
-import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import javax.sql.DataSource;
 
 import org.hibernate.bytecode.enhance.spi.EnhancementContext;
 import org.hibernate.bytecode.spi.ClassTransformer;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.jpa.boot.spi.PersistenceUnitDescriptor;
+import org.hibernate.jpa.internal.enhance.EnhancingClassTransformerImpl;
+
+import jakarta.persistence.SharedCacheMode;
+import jakarta.persistence.ValidationMode;
+import jakarta.persistence.spi.PersistenceUnitTransactionType;
 
 public class PersistenceUnitDescriptorAdapter implements PersistenceUnitDescriptor {
 	private final String name = "persistenceUnitDescriptorAdapter@" + System.identityHashCode( this );
 	private Properties properties;
+	private ClassTransformer classTransformer;
 
 	@Override
 	public String getName() {
@@ -105,15 +108,20 @@ public class PersistenceUnitDescriptorAdapter implements PersistenceUnitDescript
 
 	@Override
 	public ClassLoader getTempClassLoader() {
-		return null;
+		return this.getClassLoader();
 	}
 
-	@Override
+	/**
+	 * Retrieved from hibernate implementation
+	 */
 	public void pushClassTransformer(EnhancementContext enhancementContext) {
+		this.classTransformer = new EnhancingClassTransformerImpl(enhancementContext);
 	}
 
-	@Override
+	/**
+	 * Retrieved from hibernate implementation
+	 */
 	public ClassTransformer getClassTransformer() {
-		return null;
+		return this.classTransformer;
 	}
 }
