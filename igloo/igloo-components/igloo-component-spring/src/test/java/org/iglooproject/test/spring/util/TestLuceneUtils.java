@@ -2,7 +2,19 @@ package org.iglooproject.test.spring.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.queryparser.classic.QueryParser.Operator;
+import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.BoostQuery;
+import org.apache.lucene.search.FuzzyQuery;
+import org.apache.lucene.search.PrefixQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.WildcardQuery;
 import org.iglooproject.spring.util.lucene.search.LuceneUtils;
 import org.junit.jupiter.api.Test;
 
@@ -54,4 +66,87 @@ class TestLuceneUtils {
 		assertEquals("elephant OR test*", LuceneUtils.getQuery("éléphant * test*", Operator.OR));
 	}
 	
+	@Test
+	void testBooleanQueryToString() throws ParseException {
+		BooleanQuery.Builder bq1Builder = new BooleanQuery.Builder();
+		TermQuery queryTerm = new TermQuery(new Term("field1", "text1"));
+		BoostQuery query = new BoostQuery(queryTerm, 2.0f);
+		
+		bq1Builder.add(query, Occur.MUST);
+		bq1Builder.add(new TermQuery(new Term("field2", "text2")), Occur.MUST_NOT);
+		
+		BooleanQuery.Builder bq2Builder = new BooleanQuery.Builder();
+		bq2Builder.add(new FuzzyQuery(new Term("field3", "text3"), 1), Occur.MUST);
+		bq2Builder.add(new FuzzyQuery(new Term("field4", "text4"), 2), Occur.SHOULD);
+		bq2Builder.add(new TermQuery(new Term("field4", "text4")), Occur.SHOULD);
+		bq2Builder.add(new WildcardQuery(new Term("field8", "t*t?")), Occur.MUST);
+		
+		BooleanQuery.Builder bq3Builder = new BooleanQuery.Builder();
+		bq3Builder.add(new PrefixQuery(new Term("field5", "text5")), Occur.SHOULD);
+		bq3Builder.add(new PrefixQuery(new Term("field6", "text6")), Occur.MUST_NOT);
+		
+		BooleanQuery.Builder bq4Builder = new BooleanQuery.Builder();
+		bq4Builder.add(new WildcardQuery(new Term("field7", "text?")), Occur.SHOULD);
+		bq4Builder.add(new WildcardQuery(new Term("field8", "t*t?")), Occur.MUST);
+		
+		BooleanQuery.Builder bq5Builder = new BooleanQuery.Builder();
+		bq5Builder.add(new TermQuery(new Term("", "text9")), Occur.MUST_NOT);
+		bq5Builder.add(new TermQuery(new Term("", "text10")), Occur.SHOULD);
+		
+		BooleanQuery.Builder bq6Builder = new BooleanQuery.Builder();
+		bq6Builder.add(new TermQuery(new Term("", "text11")), Occur.MUST_NOT);
+		bq6Builder.add(new TermQuery(new Term("", "text12")), Occur.MUST);
+		
+		BooleanQuery bq6Boolean = bq6Builder.build();
+		BoostQuery bq6 = new BoostQuery(bq6Boolean, 0.8f);
+		
+		BooleanQuery.Builder finalQueryBuilder = new BooleanQuery.Builder();
+		finalQueryBuilder.add(bq1Builder.build(), Occur.MUST);
+		finalQueryBuilder.add(bq2Builder.build(), Occur.SHOULD);
+		finalQueryBuilder.add(bq3Builder.build(), Occur.MUST_NOT);
+		finalQueryBuilder.add(bq4Builder.build(), Occur.SHOULD);
+		finalQueryBuilder.add(bq5Builder.build(), Occur.MUST);
+		finalQueryBuilder.add(bq6, Occur.SHOULD);
+		
+		String stringQuery = LuceneUtils.queryToString(finalQueryBuilder.build());
+		
+		QueryParser parser = new QueryParser("", new StandardAnalyzer());
+		Query parsedQuery = parser.parse(stringQuery);
+		assertEquals(parser.parse(finalQueryBuilder.build().toString()), parsedQuery);
+	}
+	
+	@Test
+	void testBooleanQueryWithOneClause() throws ParseException {
+		BooleanQuery.Builder bq1Builder = new BooleanQuery.Builder();
+		bq1Builder.add(new TermQuery(new Term("", "text9")), Occur.MUST_NOT);
+		
+		BooleanQuery.Builder finalQueryBuilder = new BooleanQuery.Builder();
+		finalQueryBuilder.add(bq1Builder.build(), Occur.MUST);
+		
+		String stringQuery = LuceneUtils.queryToString(finalQueryBuilder.build());
+		
+		QueryParser parser = new QueryParser("", new StandardAnalyzer());
+		Query parsedQuery = parser.parse(stringQuery);
+		
+		assertEquals(stringQuery, LuceneUtils.queryToString(parsedQuery));
+	}
+	
+	@Test
+	void testFuzzyQueryToString() {
+		assertEquals("field1:text1~1", LuceneUtils.queryToString(new FuzzyQuery(new Term("field1", "text1"), 1)));
+		assertEquals("text2~1", LuceneUtils.queryToString(new FuzzyQuery(new Term("", "text2"), 1)));
+	}
+	
+	@Test
+	void testPrefixQueryToString() {
+		assertEquals("field1:prefix1*", LuceneUtils.queryToString(new PrefixQuery(new Term("field1", "prefix1"))));
+		assertEquals("prefix2*", LuceneUtils.queryToString(new PrefixQuery(new Term("", "prefix2"))));
+	}
+	
+	@Test
+	void testWildcardQueryToString() {
+		assertEquals("field1:t?xt1", LuceneUtils.queryToString(new WildcardQuery(new Term("field1", "t?xt1"))));
+		assertEquals("t*t2", LuceneUtils.queryToString(new WildcardQuery(new Term("", "t*t2"))));
+		assertEquals("text3", LuceneUtils.queryToString(new WildcardQuery(new Term("", "text3"))));
+	}
 }

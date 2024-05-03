@@ -15,8 +15,6 @@
 	<name>Igloo - Parent</name>
 	
 	<properties>
-<!--		TODO: igloo-boot-->
-		<enforcer.skip>true</enforcer.skip>
 		
 		<masterBranchName>igloo-boot</masterBranchName>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

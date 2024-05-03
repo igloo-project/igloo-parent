@@ -17,8 +17,6 @@
 	<name>Igloo - Parent - Maven configuration - Common</name>
 
 	<properties>
-<!--		TODO: igloo-boot-->
-		<enforcer.skip>true</enforcer.skip>
 		<masterBranchName>main</masterBranchName>
 	</properties>
 
