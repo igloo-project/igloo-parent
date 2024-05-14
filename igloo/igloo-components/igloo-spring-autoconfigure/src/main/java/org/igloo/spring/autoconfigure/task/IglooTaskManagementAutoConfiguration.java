@@ -1,7 +1,7 @@
 package org.igloo.spring.autoconfigure.task;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TreeSet;
 
 import org.igloo.spring.autoconfigure.property.IglooPropertyAutoConfiguration;
 import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
@@ -78,7 +78,7 @@ public class IglooTaskManagementAutoConfiguration {
 	public IQueuedTaskHolderManager queuedTaskHolderManager(
 			@Autowired(required = false) Collection<? extends IQueueId> queueIdsBean,
 			Collection<TaskManagementConfigurer> configurers) {
-		Collection<IQueueId> queueIds = new ArrayList<>();
+		Collection<IQueueId> queueIds = new TreeSet<>();
 		if (queueIdsBean != null) {
 			LOGGER.warn("Please replace existing IQueueId collection beans by a TaskConfigurer bean.");
 			queueIds.addAll(queueIdsBean);
@@ -86,6 +86,7 @@ public class IglooTaskManagementAutoConfiguration {
 		ImmutableTaskManagement.Builder builder = ImmutableTaskManagement.builder();
 		for (TaskManagementConfigurer configurer : configurers) {
 			configurer.configure(builder);
+			queueIds.addAll(builder.build().queueIds());
 		}
 		return new QueuedTaskHolderManagerImpl(queueIds);
 	}
