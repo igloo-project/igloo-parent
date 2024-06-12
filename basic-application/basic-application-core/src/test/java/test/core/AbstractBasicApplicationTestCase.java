@@ -16,6 +16,7 @@ import org.iglooproject.test.jpa.junit.AbstractTestCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
+//@Testcontainers
 public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase {
 
 	@Autowired
@@ -41,12 +42,24 @@ public abstract class AbstractBasicApplicationTestCase extends AbstractTestCase 
 	
 	@Autowired
 	private IHistoryLogService historyLogService;
+
+//	@Container
+//	@ServiceConnection
+//	static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.2-alpine");
+
+//	@Bean
+//	@ServiceConnection
+//	@RestartScope
+//	public PostgreSQLContainer<?> postgreSQLContainer() {
+//		return new PostgreSQLContainer<>("postgres:15.2-alpine");
+//	}
 	
 	@BeforeEach
 	@Override
 	public void init() throws ServiceException, SecurityServiceException {
 		super.init();
 		initAuthorities();
+//		postgreSQLContainer.start();
 	}
 
 	@Override

@@ -14,24 +14,25 @@ import test.core.AbstractBasicApplicationTestCase;
 import test.core.PSQLTestContainerConfiguration;
 import test.core.config.spring.SpringBootTestBasicApplication;
 
+
 @SpringBootTestBasicApplication
 @Import(PSQLTestContainerConfiguration.class)
-class TestUserService extends AbstractBasicApplicationTestCase {
+class TestContainer2SpringBoot extends AbstractBasicApplicationTestCase {
 	
 	@Test
 	void testUser() throws ServiceException, SecurityServiceException {
-		
+
 		{
 			User user = new User();
 			user.setUsername("test");
 			user.setFirstName("firstname");
 			user.setLastName("lastname");
-			
+
 			userService.create(user);
 		}
-		
+
 		List<User> userList = userService.list();
-		
+
 		assertEquals(1, userList.size());
 		assertEquals("test", userList.get(0).getUsername());
 		assertEquals("firstname", userList.get(0).getFirstName());
