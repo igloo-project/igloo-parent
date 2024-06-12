@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import org.iglooproject.basicapp.core.business.user.model.User;
+import org.iglooproject.basicapp.core.business.user.service.IUserService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
 import test.core.AbstractBasicApplicationTestCase;
@@ -19,6 +21,9 @@ import test.core.config.spring.SpringBootTestBasicApplication;
 @SpringBootTestBasicApplication
 @Import(PSQLTestContainerConfiguration.class)
 class TestContainerSpringBoot extends AbstractBasicApplicationTestCase {
+	
+	@Autowired
+	IUserService userService;
 	
 	@Test
 	void testUser() throws ServiceException, SecurityServiceException {

@@ -10,7 +10,12 @@ public class PSQLTestContainerConfiguration {
 	@Bean
 	@ServiceConnection
 	public PostgreSQLContainer<?> postgreSQLContainer() {
-		return new PostgreSQLContainer<>("postgres:15.2-alpine")
+		PostgreSQLContainer self = new PostgreSQLContainer<>("postgres:15.2-alpine")
+			.withDatabaseName("basic_application_test")
+			.withUsername("basic_application_test")
+			.withPassword("basic_application_test")
+			.withExposedPorts(5432)
 			.withReuse(true);
+		return self;
 	}
 }
