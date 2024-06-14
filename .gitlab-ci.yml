@@ -33,8 +33,6 @@ maven-build:
     - name: postgres:14
       alias: postgresql
     - name: docker:dind
-      # explicitly disable tls to avoid docker startup interruption
-      command: [ "--tls=false" ]
   variables:
     POSTGRES_USER: igloo_test
     POSTGRES_PASSWORD: igloo_test
