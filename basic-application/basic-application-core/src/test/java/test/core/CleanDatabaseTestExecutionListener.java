@@ -20,7 +20,7 @@ public class CleanDatabaseTestExecutionListener implements TestExecutionListener
 
 	@Override
 	public int getOrder() {
-		// Ensures that this TestExecutionListener is run before SqlScriptExecutionTestListener which handles @Sql.
-		return Ordered.HIGHEST_PRECEDENCE;
+		// Ensures that this TestExecutionListener is run before SqlScriptsTestExecutionListener which handles @Sql.
+		return 5000 - 1000; // 5000 = SqlScriptsTestExecutionListener#order
 	}
 }
