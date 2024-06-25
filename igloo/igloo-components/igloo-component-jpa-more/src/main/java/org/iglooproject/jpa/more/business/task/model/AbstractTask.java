@@ -3,8 +3,19 @@ package org.iglooproject.jpa.more.business.task.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
+import org.iglooproject.commons.util.CloneUtils;
+import org.iglooproject.jpa.exception.SecurityServiceException;
+import org.iglooproject.jpa.exception.ServiceException;
+import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
+import org.iglooproject.jpa.more.business.task.transaction.OpenEntityManagerWithNoTransactionTransactionTemplate;
+import org.iglooproject.jpa.more.business.task.transaction.TaskExecutionTransactionTemplateConfig;
+import org.iglooproject.jpa.more.business.task.util.TaskResult;
+import org.iglooproject.jpa.more.business.task.util.TaskStatus;
+import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
+import org.iglooproject.jpa.util.EntityManagerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +30,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.iglooproject.commons.util.CloneUtils;
-import org.iglooproject.jpa.exception.SecurityServiceException;
-import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.more.business.task.service.IQueuedTaskHolderService;
-import org.iglooproject.jpa.more.business.task.transaction.OpenEntityManagerWithNoTransactionTransactionTemplate;
-import org.iglooproject.jpa.more.business.task.transaction.TaskExecutionTransactionTemplateConfig;
-import org.iglooproject.jpa.more.business.task.util.TaskResult;
-import org.iglooproject.jpa.more.business.task.util.TaskStatus;
-import org.iglooproject.jpa.more.config.spring.AbstractTaskManagementConfig;
-import org.iglooproject.jpa.util.EntityManagerUtils;
 
 public abstract class AbstractTask implements Runnable, Serializable {
 	private static final long serialVersionUID = 7734300264023051135L;
@@ -198,43 +198,57 @@ public abstract class AbstractTask implements Runnable, Serializable {
 			}
 			
 			onBeforeExecute();
-	
-			taskExecutionResult = taskExecutionTransactionTemplate.execute(new TransactionCallback<TaskExecutionResult>() {
-				@Override
-				public TaskExecutionResult doInTransaction(TransactionStatus status) {
-					try {
-						/*
-						 * The result may contain a business exception, caught in doTask.
-						 * We don't have to propagate it, the task will be considered in error and onFailStatus()
-						 * will be called.
-						 */
-						TaskExecutionResult executionResult = doTask();
-						Objects.requireNonNull(executionResult, "executionResult must not be null");
-						
-						/*
-						 * If the task execution caught a business exception in doTask without propagating it
-						 * (so as to preserve a batch report), we roll back the transaction.
-						 */
-						if (TaskResult.FATAL.equals(executionResult.getResult())) {
+
+			// save batch report if transaction end emits an exception
+			AtomicReference<BatchReportBean> batchReportBean = new AtomicReference<>();
+			try {
+				taskExecutionResult = taskExecutionTransactionTemplate.execute(new TransactionCallback<TaskExecutionResult>() {
+					@Override
+					public TaskExecutionResult doInTransaction(TransactionStatus status) {
+						try {
+							/*
+							 * The result may contain a business exception, caught in doTask.
+							 * We don't have to propagate it, the task will be considered in error and onFailStatus()
+							 * will be called.
+							 */
+							TaskExecutionResult executionResult = doTask();
+							batchReportBean.set(executionResult.getReport());
+							Objects.requireNonNull(executionResult, "executionResult must not be null");
+
+							/*
+							 * If the task execution caught a business exception in doTask without propagating it
+							 * (so as to preserve a batch report), we roll back the transaction.
+							 */
+							if (TaskResult.FATAL.equals(executionResult.getResult())) {
+								status.setRollbackOnly();
+							}
+
+							return executionResult;
+						} catch (InterruptedException e) {
 							status.setRollbackOnly();
-						}
-						
-						return executionResult;
-					} catch (InterruptedException e) {
-						status.setRollbackOnly();
-						Thread.currentThread().interrupt();
-						return TaskExecutionResult.failed(e);
-					} catch (Exception e) {
-						status.setRollbackOnly();
-						return TaskExecutionResult.failed(e);
-					} finally {
-						if (Thread.currentThread().isInterrupted()) {
-							// Save the information (seems to be cleared by the transaction template)
-							interruptedFlag.setTrue();
+							Thread.currentThread().interrupt();
+							return TaskExecutionResult.failed(e);
+						} catch (Exception e) {
+							status.setRollbackOnly();
+							return TaskExecutionResult.failed(e);
+						} finally {
+							if (Thread.currentThread().isInterrupted()) {
+								// Save the information (seems to be cleared by the transaction template)
+								interruptedFlag.setTrue();
+							}
 						}
 					}
+				});
+			} catch (RuntimeException rollbackException) {
+				// real usecase: UnexpectedRollbackException
+				// if nested calls trigger and catch a rollback exception
+				// this exception is triggered when the whole transaction want to be committed
+				taskExecutionResult.setResult(TaskResult.FATAL);
+				if (batchReportBean.get() != null) {
+					taskExecutionResult.setReport(batchReportBean.get());
 				}
-			});
+				taskExecutionResult.setThrowable(rollbackException);
+			}
 			
 			// Should not happen, but just in case...
 			if (taskExecutionResult == null) {
