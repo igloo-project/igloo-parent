@@ -208,6 +208,14 @@
 				<scope>import</scope>
 				<version>${igloo-maven.version}</version>
 			</dependency>
+			<!-- Override rhino-->
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-html</artifactId>
+				<type>pom</type>
+				<scope>import</scope>
+				<version>${igloo-maven.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
