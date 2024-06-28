@@ -112,6 +112,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!-- Override rhino-->
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-html</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	
