@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.0.0-SNAPSHOT</version>
+		<version>6.0.0-UPDATE-SNAPSHOT</version>
 	</parent>
 	
 	<packaging>jar</packaging>
@@ -283,6 +283,14 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-quality-annotations</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- Override rhino-->
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-html</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
