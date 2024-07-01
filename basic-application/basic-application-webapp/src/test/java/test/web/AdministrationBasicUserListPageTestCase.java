@@ -17,11 +17,14 @@ import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceGridView;
 import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTablePanel;
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelLinkColumnPanel;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
 
 import igloo.wicket.component.CountLabel;
+import test.core.PSQLTestContainerConfiguration;
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
 @SpringBootTestBasicApplicationWebapp
+@Import(PSQLTestContainerConfiguration.class)
 class AdministrationBasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

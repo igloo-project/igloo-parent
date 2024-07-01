@@ -15,10 +15,13 @@ import org.iglooproject.wicket.more.markup.html.template.component.LinkGenerator
 import org.iglooproject.wicket.more.markup.html.template.component.SimpleBreadCrumbElementPanel;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
 
+import test.core.PSQLTestContainerConfiguration;
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
 @SpringBootTestBasicApplicationWebapp
+@Import(PSQLTestContainerConfiguration.class)
 class AdministrationBasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

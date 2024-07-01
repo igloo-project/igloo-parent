@@ -11,12 +11,15 @@ import org.iglooproject.basicapp.web.application.profile.page.ProfilePage;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 import igloo.wicket.component.CoreLabel;
+import test.core.PSQLTestContainerConfiguration;
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
 @SpringBootTestBasicApplicationWebapp
+@Import(PSQLTestContainerConfiguration.class)
 class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

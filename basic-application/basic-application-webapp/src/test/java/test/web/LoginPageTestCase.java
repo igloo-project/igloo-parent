@@ -10,10 +10,13 @@ import org.iglooproject.basicapp.web.application.security.password.page.Security
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
 
+import test.core.PSQLTestContainerConfiguration;
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
 @SpringBootTestBasicApplicationWebapp
+@Import(PSQLTestContainerConfiguration.class)
 class LoginPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

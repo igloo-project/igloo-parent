@@ -11,6 +11,7 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.jdbc.Sql;
 
 import test.core.AbstractBasicApplicationTestCase;
 import test.core.PSQLTestContainerConfiguration;
@@ -22,6 +23,7 @@ class TestUserService extends AbstractBasicApplicationTestCase {
 	
 	@Autowired
 	IUserService userService;
+	
 	@Test
 	void testUser() throws ServiceException, SecurityServiceException {
 		
@@ -40,5 +42,19 @@ class TestUserService extends AbstractBasicApplicationTestCase {
 		assertEquals("test", userList.get(0).getUsername());
 		assertEquals("firstname", userList.get(0).getFirstName());
 		assertEquals("lastname", userList.get(0).getLastName());
+	}
+
+	@Test
+	@Sql(scripts = {"/scripts/userUpdate.sql"})
+	void testUpdateUser() throws ServiceException, SecurityServiceException {
+		User user = userService.getByUsername("basicUser");
+		user.setUsername("newUserName");
+		userService.update(user);
+		
+		entityManagerReset();
+
+		User userBdd = userService.getById(user.getId());
+
+		assertEquals("newUserName", userBdd.getUsername());
 	}
 }

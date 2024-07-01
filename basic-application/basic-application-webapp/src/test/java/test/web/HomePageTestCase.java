@@ -20,13 +20,16 @@ import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.more.markup.html.template.model.NavigationMenuItem;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
 
 import com.google.common.collect.ImmutableList;
 
 import igloo.wicket.component.CoreLabel;
+import test.core.PSQLTestContainerConfiguration;
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
 @SpringBootTestBasicApplicationWebapp
+@Import(PSQLTestContainerConfiguration.class)
 class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	@Test

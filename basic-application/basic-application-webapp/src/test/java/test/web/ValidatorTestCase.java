@@ -7,11 +7,14 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
+import test.core.PSQLTestContainerConfiguration;
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
 @SpringBootTestBasicApplicationWebapp
+@Import(PSQLTestContainerConfiguration.class)
 class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
 
 	/**
