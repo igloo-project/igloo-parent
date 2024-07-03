@@ -20,6 +20,7 @@ import org.iglooproject.imports.table.opencsv.model.CsvRow;
 import org.iglooproject.imports.table.opencsv.model.CsvTable;
 
 import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 
 public class OpenCsvImportFileScanner implements ICsvImportFileScanner<CsvTable, CsvRow, CsvCell, CsvCellReference> {
 	
@@ -78,7 +79,7 @@ public class OpenCsvImportFileScanner implements ICsvImportFileScanner<CsvTable,
 		) {
 			CsvTable sheet = new CsvTable(csvReader.readAll());
 			visitor.visitTable(navigator, sheet);
-		} catch (IOException e) {
+		} catch (IOException | CsvException e) {
 			throw new TableImportFileException(e, navigator.getLocation(null, null, null));
 		}
 	}
@@ -96,7 +97,7 @@ public class OpenCsvImportFileScanner implements ICsvImportFileScanner<CsvTable,
 		) {
 			CsvTable sheet = new CsvTable(csvReader.readAll());
 			visitor.visitTable(navigator, sheet);
-		} catch (IOException e) {
+		} catch (IOException | CsvException e) {
 			throw new TableImportFileException(e, navigator.getLocation(null, null, null));
 		}
 	}
