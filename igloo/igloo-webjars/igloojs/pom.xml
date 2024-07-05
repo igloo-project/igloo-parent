@@ -16,7 +16,7 @@
 
 	<properties>
 		<frontend.npm.arguments>run js</frontend.npm.arguments>
-		<node.version>v20.11.1</node.version>
+		<node.version>v20.15.0</node.version>
 	</properties>
 
 	<dependencies>
