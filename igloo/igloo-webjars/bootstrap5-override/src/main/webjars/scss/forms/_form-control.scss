@@ -240,3 +240,7 @@ textarea.form-control {
 .form-file-btn-sm {
 	@include form-file-btn-size($btn-padding-y-sm, $btn-padding-x-sm, $btn-font-size-sm, $btn-border-radius-sm);
 }
+
+.form-file-btn-xs {
+	@include form-file-btn-size($btn-padding-y-xs, $btn-padding-x-xs, $btn-font-size-xs, $btn-border-radius-xs);
+}
