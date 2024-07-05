@@ -70,7 +70,6 @@ maven-deploy:
     - /^master$/
     - /^dev$/
     - /^ft-.*-deploy$/
-    - /^rl-.*$/
     - /^hf-.*$/
   except:
     variables:
