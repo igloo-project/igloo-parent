@@ -2,12 +2,20 @@ package test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.notNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -41,6 +49,7 @@ class TestService extends AbstractTest {
 	EntityManagerFactoryExtension extension = AbstractTest.initEntityManagerExtension();
 
 	protected StorageOperations storageOperations = mock(StorageOperations.class);
+//	protected DatabseOperations databaseOperations = mock(DatabaseOperations.class);
 
 	@BeforeEach
 	void init(EntityManagerFactory entityManagerFactory) {
@@ -50,16 +59,51 @@ class TestService extends AbstractTest {
 	}
 
 	@Test
-	void testAdd() throws IOException {
+	void testAdd_FilenameNull() {
+		String filename = null;
+		FichierType1 type = FichierType1.CONTENT1;
+		InputStream inputStream = new ByteArrayInputStream(FILE_CONTENT.getBytes(StandardCharsets.UTF_8));
+		
+		assertThatNullPointerException().isThrownBy(() ->
+			storageService.addFichier(filename, type, inputStream, null)
+		);
+	}
+
+	@Test
+	void testAdd_FichierTypeNull() {
+		String filename = FILENAME;
+		FichierType1 type = null;
+		InputStream inputStream = new ByteArrayInputStream(FILE_CONTENT.getBytes(StandardCharsets.UTF_8));
+		
+		assertThatNullPointerException().isThrownBy(() ->
+			storageService.addFichier(filename, type, inputStream, null)
+		);
+	}
+
+	@Test
+	void testAdd_InputStreamNull() {
+		String filename = FILENAME;
+		FichierType1 type = FichierType1.CONTENT1;
+		InputStream inputStream = null;
+		
+		assertThatNullPointerException().isThrownBy(() ->
+			storageService.addFichier(filename, type, inputStream, null)
+		);
+	}
+
+	@Test
+	void testAdd_ok() throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		doAnswer(AdditionalAnswers.<InputStream, Path>answerVoid((a, b) -> { IOUtils.copy(a, baos); }))
 			.when(storageOperations).copy(any(), any());
-		Fichier fichier = createFichier("filename.txt", FichierType1.CONTENT1, FILE_CONTENT);
-
-		verify(storageOperations).copy(any(), Mockito.eq(Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath())));
+		
+		Fichier fichier = createFichier(FILENAME, FichierType1.CONTENT1, FILE_CONTENT);
+		
 		verify(storageOperations, times(1)).copy(any(), any());
+		verify(storageOperations, times(1)).copy(any(), Mockito.eq(Path.of(fichier.getStorageUnit().getPath(), fichier.getRelativePath())));
 		verifyNoMoreInteractions(storageOperations);
-
+		
+		assertThat(fichier).isNotNull();
 		assertThat(baos.toByteArray()).isEqualTo(FILE_CONTENT.getBytes(StandardCharsets.UTF_8)).hasSize((int) FILE_SIZE);
 		assertThat(fichier.getChecksum()).isEqualTo(FILE_CHECKSUM_SHA_256);
 		assertThat(fichier.getSize()).isEqualTo(FILE_SIZE);
@@ -70,7 +114,7 @@ class TestService extends AbstractTest {
 	}
 
 	@Test
-	void testAddRollback() throws IOException {
+	void testAdd_Rollback() throws IOException {
 		Runnable action = () -> {
 			createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, (f) -> { throw new IllegalStateException("Triggered rollback"); });
 		};
@@ -82,7 +126,7 @@ class TestService extends AbstractTest {
 	}
 
 	@Test
-	void testGet() throws IOException {
+	void testGetFile() throws IOException {
 		Fichier fichier = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT);
 		Mockito.reset(storageOperations); // Get rid of creation operation
 
@@ -94,7 +138,7 @@ class TestService extends AbstractTest {
 	}
 
 	@Test
-	void testGetInvalidated() throws IOException {
+	void testGetFile_Invalidated() throws IOException {
 		Fichier fichier = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, (f) -> f.setStatus(FichierStatus.INVALIDATED));
 		Mockito.reset(storageOperations); // Get rid of creation operation
 
@@ -111,7 +155,7 @@ class TestService extends AbstractTest {
 	}
 
 	@Test
-	void testGetTransient() throws IOException {
+	void testGetFile_Transient() throws IOException {
 		Fichier fichier = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, (f) -> f.setStatus(FichierStatus.TRANSIENT));
 		Mockito.reset(storageOperations); // Get rid of creation operation
 
@@ -123,7 +167,7 @@ class TestService extends AbstractTest {
 	}
 
 	@Test
-	void testRemove() {
+	void testRemoveFichier() {
 		Fichier fichierToRemove = transactionTemplate.execute((t) -> {
 			Fichier fichier = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT);
 			Mockito.reset(storageOperations); // Get rid of creation operation
@@ -136,16 +180,16 @@ class TestService extends AbstractTest {
 		});
 		// check physical removal is called
 		verify(storageOperations, times(1)).removePhysicalFile(
-				Mockito.any(), // log message
-				Mockito.eq(fichierToRemove.getId()), // id
-				argThat((a) -> { assertThat(a).toString().contains(fichierToRemove.getRelativePath()); } ) // path
+			Mockito.any(), // log message
+			Mockito.eq(fichierToRemove.getId()), // id
+			argThat((a) -> { assertThat(a).toString().contains(fichierToRemove.getRelativePath()); } ) // path
 		);
 
 		verifyNoMoreInteractions(storageOperations);
 	}
 
 	@Test
-	void testRemoveRollback(EntityManagerFactory entityManagerFactory) throws IOException {
+	void testRemoveFichier_Rollback(EntityManagerFactory entityManagerFactory) throws IOException {
 		Runnable action = () -> {
 			Fichier fichier = transactionTemplate.execute((t) -> createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT));
 			Mockito.reset(storageOperations);
@@ -162,7 +206,16 @@ class TestService extends AbstractTest {
 	}
 
 	@Test
-	void testValidate() {
+	void testGetFichierById_IdNull() {
+		Long id = null;
+		
+		assertThatNullPointerException().isThrownBy(() ->
+			storageService.getFichierById(id)
+		);
+	}
+
+	@Test
+	void testValidateFichier() {
 		Fichier fichier = transactionTemplate.execute((t) -> {
 			Fichier fichierToInvalidate = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT);
 			Mockito.reset(storageOperations); // Get rid of creation operation
@@ -177,7 +230,22 @@ class TestService extends AbstractTest {
 	}
 
 	@Test
-	void testInvalidate() {
+	void testValidateFichier_AlreadyAlive() {
+		Fichier fichier = transactionTemplate.execute((t) -> {
+			Fichier fichierToInvalidate = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, (f) -> f.setStatus(FichierStatus.ALIVE));
+			Mockito.reset(storageOperations); // Get rid of creation operation
+			storageService.validateFichier(fichierToInvalidate);
+			return fichierToInvalidate;
+		});
+
+		assertThat(fichier).isNotNull();
+		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.ALIVE);
+		assertThat(fichier.getValidationDate()).isNull(); // We did not initialized it
+		Mockito.verifyNoInteractions(storageOperations);
+	}
+
+	@Test
+	void testInvalidateFichier() {
 		Fichier fichier = transactionTemplate.execute((t) -> {
 			Fichier fichierToInvalidate = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT);
 			storageService.validateFichier(fichierToInvalidate);
@@ -189,6 +257,22 @@ class TestService extends AbstractTest {
 		assertThat(fichier).isNotNull();
 		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.INVALIDATED);
 		assertThat(fichier.getInvalidationDate()).isNotNull();
+		Mockito.verifyNoInteractions(storageOperations);
+	}
+
+	@Test
+	void testInvalidateFichier_AlreadyInvalided() {
+		Fichier fichier = transactionTemplate.execute((t) -> {
+			Fichier fichierToInvalidate = createFichier("filename", FichierType1.CONTENT1, FILE_CONTENT, (f) -> f.setStatus(FichierStatus.INVALIDATED));
+			storageService.validateFichier(fichierToInvalidate);
+			Mockito.reset(storageOperations); // Get rid of creation/validation operation
+			storageService.invalidateFichier(fichierToInvalidate);
+			return fichierToInvalidate;
+		});
+
+		assertThat(fichier).isNotNull();
+		assertThat(fichier.getStatus()).isEqualTo(FichierStatus.INVALIDATED);
+		assertThat(fichier.getInvalidationDate()).isNull(); // We did not initialized it
 		Mockito.verifyNoInteractions(storageOperations);
 	}
 

@@ -1,7 +1,7 @@
 package org.iglooproject.jpa.more.config.spring;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TreeSet;
 
 import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
 import org.iglooproject.jpa.more.business.task.dao.IQueuedTaskHolderDao;
@@ -53,7 +53,7 @@ public abstract class AbstractTaskManagementConfig {
 	public IQueuedTaskHolderManager queuedTaskHolderManager(
 			@Autowired(required = false) Collection<? extends IQueueId> queueIdsBean,
 			Collection<TaskManagementConfigurer> configurers) {
-		Collection<IQueueId> queueIds = new ArrayList<>();
+		Collection<IQueueId> queueIds = new TreeSet<>();
 		if (queueIdsBean != null) {
 			LOGGER.warn("Please replace existing IQueueId collection beans by a TaskConfigurer bean.");
 			queueIds.addAll(queueIdsBean);
@@ -61,6 +61,7 @@ public abstract class AbstractTaskManagementConfig {
 		ImmutableTaskManagement.Builder builder = ImmutableTaskManagement.builder();
 		for (TaskManagementConfigurer configurer : configurers) {
 			configurer.configure(builder);
+			queueIds.addAll(builder.build().queueIds());
 		}
 		return new QueuedTaskHolderManagerImpl(queueIds);
 	}
