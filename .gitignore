@@ -13,6 +13,7 @@ gitlab-ci.build.conf
 /out/
 *.iml
 bin/
+.sass-cache
 
 # npm
 node_modules/

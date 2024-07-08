@@ -46,6 +46,7 @@ import com.google.common.io.Resources;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
@@ -80,9 +81,17 @@ public class DatabaseOperations {
 	}
 
 	public Fichier getFichierById(Long id) {
-		return entityManager().createQuery("SELECT f from Fichier f where f.id = :id", Fichier.class)
+		List<Fichier> fichiers = entityManager().createQuery("SELECT f from Fichier f where f.id = :id", Fichier.class)
 			.setParameter("id", id)
-			.getSingleResult();
+			.getResultList();
+		
+		// Different from getSingleResult as it does not throw an exception if not Fichier is found.
+		if (fichiers == null || fichiers.isEmpty()) {
+			return null;
+		} else if (fichiers.size() > 1) {
+			throw new NonUniqueResultException();
+		}
+		return fichiers.get(0);
 	}
 
 	public Fichier getAttachedFichier(Fichier fichier) {

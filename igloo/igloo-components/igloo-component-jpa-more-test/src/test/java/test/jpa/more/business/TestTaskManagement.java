@@ -1,11 +1,13 @@
 package test.jpa.more.business;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -34,6 +36,7 @@ import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.RateLimiter;
 
 import test.jpa.more.business.task.config.TestTaskManagementConfig;
+import test.jpa.more.business.task.model.TestQueueId;
 import test.jpa.more.config.spring.SpringBootTestJpaMore;
 
 @SpringBootTestJpaMore
@@ -192,6 +195,12 @@ class TestTaskManagement extends AbstractJpaMoreTestCase {
 				throw new IllegalStateException(MessageFormat.format("Task queue not empty after {0} tries.", tryCount));
 			}
 		}
+	}
+	
+	@Test
+	void testInitQueue() {
+		assertThat(manager.getQueueIds())
+			.containsExactlyInAnyOrderElementsOf(List.of(TestQueueId.values()));
 	}
 	
 	@Test

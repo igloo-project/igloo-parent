@@ -33,6 +33,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.Ordered;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -78,11 +79,17 @@ import jakarta.persistence.EntityManagerFactory;
  * <p>This bean allows to store {@link Metadata} Hibernate object during {@link EntityManagerFactory} initialization.
  * This object is really helpful to perform some advanced Hibernate customization. This bean does not modify default
  * Hibernate behaviors.</p>
+ * 
+ * <p>Order for transaction management is modified from LOWEST_PRECEDENCE (last to be called) to
+ * LOWEST_PRECEDENCE - 1.000.000, to allow to push other interceptors after transaction management. Authorization
+ * related orders can be found in AuthorizationInterceptorsOrder and are from 200 to 600.</p>
  */
 @Configuration
 @ConditionalOnClass({ LocalContainerEntityManagerFactoryBean.class, EntityManager.class })
-@EnableTransactionManagement
+@EnableTransactionManagement(order = JpaAutoConfiguration.TRANSACTION_PROXY_ORDER)
 public class JpaAutoConfiguration {
+
+	public static final int TRANSACTION_PROXY_ORDER = Ordered.LOWEST_PRECEDENCE - 1_000_000;
 
 	@ConditionalOnProperty(name = "spring.jpa.igloo.component-path.enabled", havingValue = "true", matchIfMissing = false)
 	@Configuration
@@ -115,6 +122,7 @@ public class JpaAutoConfiguration {
 		
 		advisor.setExpression("this(" + ITransactionalAspectAwareService.class.getName() + ")");
 		advisor.setAdvice(defaultTransactionInterceptor(transactionManager));
+		advisor.setOrder(TRANSACTION_PROXY_ORDER + 1); // call after @Transactional annotation
 		
 		return advisor;
 	}

@@ -6,8 +6,8 @@ import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.QUEUE_ST
 import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.START_MODE;
 import static org.iglooproject.jpa.more.property.JpaMoreTaskPropertyIds.STOP_TIMEOUT;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TreeSet;
 
 import org.iglooproject.jpa.more.business.task.dao.IQueuedTaskHolderDao;
 import org.iglooproject.jpa.more.business.task.dao.QueuedTaskHolderDaoImpl;
@@ -66,7 +66,7 @@ public class TaskAutoConfiguration implements IPropertyRegistryConfig {
 	public IQueuedTaskHolderManager queuedTaskHolderManager(
 			@Autowired(required = false) Collection<? extends IQueueId> queueIdsBean,
 			Collection<TaskManagementConfigurer> configurers) {
-		Collection<IQueueId> queueIds = new ArrayList<>();
+		Collection<IQueueId> queueIds = new TreeSet<>();
 		if (queueIdsBean != null) {
 			LOGGER.warn("Please replace existing IQueueId collection beans by a TaskConfigurer bean.");
 			queueIds.addAll(queueIdsBean);
@@ -74,6 +74,7 @@ public class TaskAutoConfiguration implements IPropertyRegistryConfig {
 		ImmutableTaskManagement.Builder builder = ImmutableTaskManagement.builder();
 		for (TaskManagementConfigurer configurer : configurers) {
 			configurer.configure(builder);
+			queueIds.addAll(builder.build().queueIds());
 		}
 		return new QueuedTaskHolderManagerImpl(queueIds);
 	}

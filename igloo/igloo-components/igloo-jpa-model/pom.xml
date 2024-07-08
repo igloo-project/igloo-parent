@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha11</version>
+		<version>6.0.0-Alpha12</version>
 	</parent>
 	
 	<artifactId>igloo-jpa-model</artifactId>
@@ -30,12 +30,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.search</groupId>
-			<artifactId>hibernate-search-mapper-orm-orm6</artifactId>
+			<artifactId>hibernate-search-mapper-orm</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.search</groupId>
-			<artifactId>hibernate-search-v5migrationhelper-orm-orm6</artifactId>
+			<artifactId>hibernate-search-v5migrationhelper-orm</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -89,6 +89,11 @@
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>

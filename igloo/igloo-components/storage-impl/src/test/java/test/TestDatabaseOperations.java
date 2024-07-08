@@ -81,6 +81,28 @@ class TestDatabaseOperations extends AbstractTest {
 		databaseOperations = new DatabaseOperations(entityManagerFactory, "fichier_id_seq", "storageunit_id_seq");
 	}
 
+	@Test
+	void testGetFichierById_NotFound(EntityManagerFactory entityManagerFactory) {
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			Fichier fichier = databaseOperations.getFichierById(-1l);
+			assertThat(fichier).isNull();
+			return null;
+		});
+	}
+
+	@Test
+	void testGetFichierById_Ok(EntityManagerFactory entityManagerFactory) {
+		StorageUnit storageUnit = createStorageUnit(entityManagerFactory, 1l, StorageUnitType.TYPE_1, StorageUnitStatus.ALIVE);
+		Fichier fichierExpected = createFichier(entityManagerFactory, storageUnit, 1l, FichierStatus.ALIVE);;
+		
+		doInReadTransactionEntityManager(entityManagerFactory, em -> {
+			Fichier fichier = databaseOperations.getFichierById(fichierExpected.getId());
+			assertThat(fichier).isNotNull();
+			assertThat(fichier).isEqualTo(fichierExpected);
+			return null;
+		});
+	}
+
 	/**
 	 * Check that hibernate maps correctly {@link IFichierType}
 	 */

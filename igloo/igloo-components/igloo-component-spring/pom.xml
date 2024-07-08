@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha11</version>
+		<version>6.0.0-Alpha12</version>
 	</parent>
 
 	<artifactId>igloo-component-spring</artifactId>
@@ -109,7 +109,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-analyzers-common</artifactId>
+			<artifactId>lucene-analysis-common</artifactId>
 		</dependency>
 		
 		<dependency>
