@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Objects;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.injection.Injector;
@@ -14,6 +15,7 @@ import org.apache.wicket.request.resource.ContentDisposition;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.AbstractResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
+import org.danekja.java.util.function.serializable.SerializableConsumer;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.slf4j.Logger;
@@ -37,9 +39,18 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 	
 	private boolean disableCaching = false;
 	
-	public AbstractFichierStoreWebResource() {
+	private final SerializableConsumer<ResourceResponse> resourceResponseConsumer;
+	
+	protected AbstractFichierStoreWebResource() {
+		this(data -> { });
+	}
+	
+	protected AbstractFichierStoreWebResource(SerializableConsumer<ResourceResponse> resourceResponseConsumer) {
 		super();
 		Injector.get().inject(this);
+		this.resourceResponseConsumer = ((SerializableConsumer<ResourceResponse>) data ->
+			data.getHeaders().addHeader("Content-Security-Policy", "default-src 'none'"))
+				.andThen(Objects.requireNonNull(resourceResponseConsumer));
 	}
 	
 	protected abstract FichierStoreResourceStream getFileStoreResourceStream(PageParameters parameters)
@@ -56,7 +67,7 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 			if (lastModifiedTime != null) {
 				data.setLastModified(lastModifiedTime);
 			}
-	
+			
 			// performance check; don't bother to do anything if the resource is
 			// still cached by client
 			if (data.dataNeedsToBeWritten(attributes)) {
@@ -107,6 +118,8 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 					}
 				});
 			}
+			
+			resourceResponseConsumer.accept(data);
 		} catch (RuntimeException | ServiceException | SecurityServiceException e) {
 			LOGGER.error("Unable to open the FileStoreResourceStream", e);
 		}
@@ -145,4 +158,5 @@ public abstract class AbstractFichierStoreWebResource extends AbstractResource {
 	public void disableCaching() {
 		this.disableCaching = true;
 	}
+
 }
