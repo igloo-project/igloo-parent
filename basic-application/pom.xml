@@ -20,8 +20,8 @@
 	</properties>
 	
 	<modules>
-		<module>basic-application-core</module>
-		<module>basic-application-webapp</module>
+		<module>basic-application-back</module>
+		<module>basic-application-front</module>
 		<module>basic-application-app</module>
 	</modules>
 	
