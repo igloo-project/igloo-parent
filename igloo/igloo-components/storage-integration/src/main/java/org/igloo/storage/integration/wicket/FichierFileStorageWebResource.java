@@ -10,6 +10,7 @@ import org.apache.wicket.request.resource.ContentDisposition;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.danekja.java.util.function.serializable.SerializableConsumer;
 import org.igloo.storage.api.IStorageService;
 import org.igloo.storage.model.Fichier;
 import org.igloo.storage.model.FichierBinding;
@@ -74,6 +75,11 @@ public class FichierFileStorageWebResource extends AbstractFichierStoreWebResour
 			.imageResource(REFERENCE_ATTACHMENT);
 	
 	public FichierFileStorageWebResource() {
+		this(data -> { });
+	}
+	
+	public FichierFileStorageWebResource(SerializableConsumer<ResourceResponse> resourceResponseConsumer) {
+		super(resourceResponseConsumer);
 		disableCaching();
 	}
 	
