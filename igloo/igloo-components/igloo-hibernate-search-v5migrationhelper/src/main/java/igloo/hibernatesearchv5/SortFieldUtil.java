@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.search.util;
+package igloo.hibernatesearchv5;
 
 import java.util.Collection;
 

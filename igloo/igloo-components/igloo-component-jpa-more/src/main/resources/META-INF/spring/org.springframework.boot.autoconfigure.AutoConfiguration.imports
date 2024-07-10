@@ -2,4 +2,3 @@ org.iglooproject.jpa.more.autoconfigure.JpaMorePropertyRegistryAutoConfiguration
 org.iglooproject.jpa.more.autoconfigure.JpaMoreAutoConfiguration
 org.iglooproject.jpa.more.autoconfigure.TaskAutoConfiguration
 org.iglooproject.jpa.more.autoconfigure.JpaMoreModelAutoConfiguration
-org.iglooproject.jpa.more.autoconfigure.HibernateSearchJpaMoreAutoConfiguration

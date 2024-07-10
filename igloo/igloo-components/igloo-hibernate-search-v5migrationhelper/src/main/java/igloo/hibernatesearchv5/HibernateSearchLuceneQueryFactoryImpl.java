@@ -1,10 +1,11 @@
-package org.iglooproject.jpa.more.business.search.query;
+package igloo.hibernatesearchv5;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryparser.simple.SimpleQueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.Query;
@@ -26,6 +27,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
+@Deprecated
 public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLuceneQueryFactory {
 
 	private static final Function2<BindingRoot<?, String>, String> BINDING_TO_PATH_FUNCTION =
@@ -104,7 +106,8 @@ public class HibernateSearchLuceneQueryFactoryImpl implements IHibernateSearchLu
 	}
 	
 	protected Analyzer createAnalyzer(FullTextEntityManager fullTextEntityManager, Class<?> clazz) {
-		return hibernateSearchService.getAnalyzer(clazz);
+		// Igloo 6.x: no longer any « smart » lookup
+		return new StandardAnalyzer();
 	}
 	
 	// 	Any/all

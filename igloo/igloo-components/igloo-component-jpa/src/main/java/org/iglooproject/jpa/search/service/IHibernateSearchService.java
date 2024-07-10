@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.business.generic.service.ITransactionalAspectAwareService;
@@ -27,9 +26,5 @@ public interface IHibernateSearchService extends ITransactionalAspectAwareServic
 	Set<Class<?>> getIndexedRootEntities(Collection<Class<?>> classes) throws ServiceException;
 
 	void flushToIndexes();
-
-	Analyzer getAnalyzer(String analyzerName);
-
-	Analyzer getAnalyzer(Class<?> entityType);
 
 }

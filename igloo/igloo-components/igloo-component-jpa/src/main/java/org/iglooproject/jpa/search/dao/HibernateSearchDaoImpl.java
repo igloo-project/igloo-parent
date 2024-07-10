@@ -7,17 +7,13 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.hibernate.CacheMode;
 import org.hibernate.Hibernate;
-import org.hibernate.search.MassIndexer;
-import org.hibernate.search.SearchFactory;
-import org.hibernate.search.batchindexing.MassIndexerProgressMonitor;
-import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.entity.SearchIndexedEntity;
+import org.hibernate.search.mapper.orm.massindexing.MassIndexer;
 import org.hibernate.search.mapper.orm.session.SearchSession;
+import org.hibernate.search.mapper.pojo.massindexing.MassIndexingMonitor;
 //import org.hibernate.search.jpa.Search;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -40,45 +36,6 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	
 	@PersistenceContext
 	private EntityManager entityManager;
-	
-	public HibernateSearchDaoImpl() {
-	}
-	
-	@Override
-	public Analyzer getAnalyzer(String analyzerName) {
-//		V5MigrationOrmSearchIntegratorAdapter searchIntegrator = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(V5MigrationOrmSearchIntegratorAdapter.class);
-//		SearchIntegration integration = searchIntegrator.getIntegration(LuceneEmbeddedIndexManagerType.INSTANCE);
-//		return integration.getAnalyzerRegistry().getAnalyzerReference(analyzerName).unwrap(LuceneAnalyzerReference.class).getAnalyzer();
-		return new StandardAnalyzer();
-	}
-	
-	@Override
-	public Analyzer getAnalyzer(Class<?> entityType) {
-//		SearchFactory searchFactory = Search.getFullTextEntityManager(getEntityManager()).getSearchFactory();
-//		ExtendedSearchIntegrator searchIntegrator = searchFactory.unwrap(ExtendedSearchIntegrator.class);
-//		IndexedTypeIdentifier indexedType = getIndexBoundType(entityType, searchIntegrator);
-//		
-//		return Search.getFullTextEntityManager(getEntityManager()).getSearchFactory().unwrap(SearchIntegrator.class).getAnalyzer(indexedType);
-		return new StandardAnalyzer();
-	}
-
-	/**
-	 * Extracted from ConnectedQueryContextBuilder
-	 */
-//	private IndexedTypeIdentifier getIndexBoundType(Class<?> entityType, ExtendedSearchIntegrator factory) {
-//		IndexedTypeIdentifier realtype = new PojoIndexedTypeIdentifier( entityType );
-//		if ( factory.getIndexBinding( realtype ) != null ) {
-//			return realtype;
-//		}
-//
-//		IndexedTypeSet indexedSubTypes = factory.getIndexedTypesPolymorphic( realtype.asTypeSet() );
-//
-//		if ( !indexedSubTypes.isEmpty() ) {
-//			return indexedSubTypes.iterator().next();
-//		}
-//
-//		return null;
-//	}
 
 	@Override
 	public void reindexAll() throws ServiceException {
@@ -88,10 +45,8 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	@Override
 	public void reindexClasses(Class<?>... classes) throws ServiceException {
 		try {
-			FullTextEntityManager fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(entityManager);
-			
-			reindexClasses(fullTextEntityManager, getIndexedRootEntities(fullTextEntityManager.getSearchFactory(),
-					classes.length > 0 ? classes : new Class<?>[] { Object.class }));
+			SearchSession searchSession = Search.session(entityManager);
+			reindexClasses(searchSession, getIndexedRootEntities(classes.length > 0 ? classes : new Class<?>[] { Object.class }));
 		} catch (RuntimeException | InterruptedException e) {
 			if (e instanceof InterruptedException) {
 				Thread.currentThread().interrupt();
@@ -100,7 +55,7 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		}
 	}
 	
-	protected void reindexClasses(FullTextEntityManager fullTextEntityManager, Set<Class<?>> entityClasses)
+	protected void reindexClasses(SearchSession fullTextEntityManager, Set<Class<?>> entityClasses)
 			throws InterruptedException {
 		int batchSize = propertyService.get(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE);
 		int loadThreads = propertyService.get(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS);
@@ -114,11 +69,11 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 			Thread t = new Thread(progressMonitor);
 			LOGGER.info(String.format("Reindexing %1$s.", clazz));
 			t.start();
-			MassIndexer indexer = fullTextEntityManager.createIndexer(clazz);
+			MassIndexer indexer = fullTextEntityManager.massIndexer(clazz);
 			indexer.batchSizeToLoadObjects(batchSize)
 					.threadsToLoadObjects(loadThreads)
 					.cacheMode(CacheMode.NORMAL)
-					.progressMonitor(progressMonitor)
+					.monitor(progressMonitor)
 					.startAndWait();
 			progressMonitor.stop();
 			t.interrupt();
@@ -145,61 +100,18 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		}
 	}
 	
-	/**
-	 * @see MassIndexerImpl#toRootEntities
-	 */
-	protected Set<Class<?>> getIndexedRootEntities(SearchFactory searchFactory, Class<?>... selection) {
-		return getIndexedRootEntities(selection);
-//		ExtendedSearchIntegrator searchIntegrator = searchFactory.unwrap(ExtendedSearchIntegrator.class);
-//		
-//		Set<Class<?>> entities = new HashSet<>();
-//		
-//		// first build the "entities" set containing all indexed subtypes of "selection".
-//		for (Class<?> entityType : selection) {
-//			IndexedTypeSet targetedClasses = searchIntegrator.getIndexedTypesPolymorphic(IndexedTypeSets.fromClass(entityType));
-//			if (targetedClasses.isEmpty()) {
-//				String msg = entityType.getName() + " is not an indexed entity or a subclass of an indexed entity";
-//				throw new IllegalArgumentException(msg);
-//			}
-//			entities.addAll(targetedClasses.toPojosSet());
-//		}
-//		
-//		Set<Class<?>> cleaned = new HashSet<>();
-//		Set<Class<?>> toRemove = new HashSet<>();
-//		
-//		//now remove all repeated types to avoid duplicate loading by polymorphic query loading
-//		for (Class<?> type : entities) {
-//			boolean typeIsOk = true;
-//			for (Class<?> existing : cleaned) {
-//				if (existing.isAssignableFrom(type)) {
-//					typeIsOk = false;
-//					break;
-//				}
-//				if (type.isAssignableFrom(existing)) {
-//					toRemove.add(existing);
-//				}
-//			}
-//			if (typeIsOk) {
-//				cleaned.add(type);
-//			}
-//		}
-//		cleaned.removeAll(toRemove);
-//		
-//		return cleaned;
-	}
-	
 	protected EntityManager getEntityManager() {
 		return entityManager;
 	}
 	
-	private static final class ProgressMonitor implements MassIndexerProgressMonitor, Runnable {
+	private static final class ProgressMonitor implements MassIndexingMonitor, Runnable {
 		
 		private static final Logger LOGGER = LoggerFactory.getLogger(ProgressMonitor.class);
 		
 		private long documentsAdded;
-		private int documentsBuilt;
-		private int entitiesLoaded;
-		private int totalCount;
+		private long documentsBuilt;
+		private long entitiesLoaded;
+		private long totalCount;
 		private boolean indexingCompleted;
 		private boolean stopped;
 		
@@ -209,12 +121,12 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 		}
 		
 		@Override
-		public void documentsBuilt(int number) {
+		public void documentsBuilt(long number) {
 			this.documentsBuilt += number;
 		}
 		
 		@Override
-		public void entitiesLoaded(int size) {
+		public void entitiesLoaded(long size) {
 			this.entitiesLoaded += size;
 		}
 		
@@ -265,6 +177,6 @@ public class HibernateSearchDaoImpl implements IHibernateSearchDao {
 	
 	@Override
 	public void flushToIndexes() {
-		org.hibernate.search.jpa.Search.getFullTextEntityManager(entityManager).flushToIndexes();
+		Search.session(entityManager).indexingPlan().execute();
 	}
 }
