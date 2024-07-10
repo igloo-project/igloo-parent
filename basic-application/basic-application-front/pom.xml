@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	
 	<modelVersion>4.0.0</modelVersion>
@@ -12,7 +13,7 @@
 	
 	<artifactId>basic-application-front</artifactId>
 	
-	<name>${archetypeFullApplicationName} - Web Application</name>
+	<name>Basic Application - Front</name>
 
 	<properties>
 		<igloo.processors>${igloo.processor.bindgen}</igloo.processors>
@@ -27,22 +28,22 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-more</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-console</artifactId> 
-			<version>${project.version}</version>
+			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-bootstrap5</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-web-security</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
@@ -52,18 +53,18 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-cache</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>igloojs</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo.version}</version>
 		</dependency>
 		<!-- Remove on HTML emails overhaul -->
 		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>bootstrap4-override</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bindgen</groupId>
@@ -77,7 +78,7 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-config-test</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -159,7 +160,7 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-wicket-more-test</artifactId>
-			<version>${project.version}</version>
+			<version>${igloo.version}</version>
 			<scope>test</scope>
 		</dependency>
 		
