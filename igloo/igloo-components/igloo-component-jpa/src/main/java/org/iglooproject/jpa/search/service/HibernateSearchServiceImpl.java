@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.business.generic.service.IEntityService;
@@ -21,16 +20,6 @@ public class HibernateSearchServiceImpl implements IHibernateSearchService {
 	
 	@Autowired
 	private IEntityService entityService;
-	
-	@Override
-	public Analyzer getAnalyzer(String analyzerName) {
-		return hibernateSearchDao.getAnalyzer(analyzerName);
-	}
-	
-	@Override
-	public Analyzer getAnalyzer(Class<?> entityType) {
-		return hibernateSearchDao.getAnalyzer(entityType);
-	}
 	
 	@Override
 	public void reindexAll() throws ServiceException {

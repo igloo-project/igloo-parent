@@ -34,11 +34,6 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate.search</groupId>
-			<artifactId>hibernate-search-v5migrationhelper-orm</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 		</dependency>

@@ -110,11 +110,6 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate.search</groupId>
-			<artifactId>hibernate-search-v5migrationhelper-orm</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
 		</dependency>

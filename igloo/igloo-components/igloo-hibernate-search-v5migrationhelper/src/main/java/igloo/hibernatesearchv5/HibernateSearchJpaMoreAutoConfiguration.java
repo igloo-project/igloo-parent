@@ -1,9 +1,7 @@
-package org.iglooproject.jpa.more.autoconfigure;
+package igloo.hibernatesearchv5;
 
 import org.hibernate.search.mapper.orm.Search;
 import org.iglooproject.jpa.autoconfigure.JpaAutoConfiguration;
-import org.iglooproject.jpa.more.business.search.query.HibernateSearchLuceneQueryFactoryImpl;
-import org.iglooproject.jpa.more.business.search.query.IHibernateSearchLuceneQueryFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import org.hibernate.search.engine.search.common.ValueConvert;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.util.common.SearchException;
-import org.iglooproject.jpa.more.autoconfigure.HibernateSearchJpaMoreAutoConfiguration;
 import org.iglooproject.jpa.more.autoconfigure.JpaMoreAutoConfiguration;
 import org.iglooproject.jpa.more.autoconfigure.JpaMoreModelAutoConfiguration;
 import org.iglooproject.jpa.more.autoconfigure.JpaMorePropertyRegistryAutoConfiguration;
@@ -20,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
@@ -29,8 +27,10 @@ import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
+import igloo.hibernatesearchv5.HibernateSearchJpaMoreAutoConfiguration;
 import jakarta.persistence.EntityManager;
 import test.search.EnumCollectionEntity.MyEnum;
+import test.search.TestBridge.TestConfiguration;
 
 /**
  * Tests demonstrating bridge behavior for Hibernate search. It show how to use {@link GenericEntityIdBridge},

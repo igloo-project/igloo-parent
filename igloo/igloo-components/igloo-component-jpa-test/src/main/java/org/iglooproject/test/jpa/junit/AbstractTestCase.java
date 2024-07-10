@@ -21,10 +21,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hibernate.internal.SessionImpl;
 import org.hibernate.metamodel.model.domain.internal.EmbeddableTypeImpl;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.FullTextQuery;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.search.mapper.orm.Search;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -92,15 +89,11 @@ public abstract class AbstractTestCase {
 	 */
 	protected void emptyIndexes() throws ServiceException {
 		if (hibernateSearchService != null) {
-			Set<Class<?>> clazzes = hibernateSearchService.getIndexedRootEntities();
-			FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(getEntityManager());
-			for (Class<?> clazz : clazzes) {
-				QueryBuilder builder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(clazz).get();
-				FullTextQuery query = fullTextEntityManager.createFullTextQuery(builder.all().createQuery(), clazz);
-				if (query.getResultSize() > 0) {
-					hibernateSearchService.reindexAll();
-					break;
-				}
+			try {
+				Search.session(getEntityManager()).massIndexer().startAndWait();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				throw new ServiceException("Thread is interrupted.");
 			}
 		}
 	}

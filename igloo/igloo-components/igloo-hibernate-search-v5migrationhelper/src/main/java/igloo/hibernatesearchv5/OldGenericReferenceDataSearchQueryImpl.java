@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.more.business.referencedata.search;
+package igloo.hibernatesearchv5;
 
 import java.util.Map;
 
@@ -6,7 +6,8 @@ import org.apache.lucene.search.SortField;
 import org.iglooproject.commons.util.exception.IllegalSwitchValueException;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
 import org.iglooproject.jpa.more.business.referencedata.model.GenericReferenceData;
-import org.iglooproject.jpa.more.business.search.query.OldAbstractHibernateSearchSearchQuery;
+import org.iglooproject.jpa.more.business.referencedata.search.GenericReferenceDataSearchQueryImpl;
+import org.iglooproject.jpa.more.business.referencedata.search.IGenericReferenceDataSearchQuery;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.ISort.SortOrder;
 

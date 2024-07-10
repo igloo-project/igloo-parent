@@ -1,4 +1,4 @@
-package org.iglooproject.jpa.more.business.search.query;
+package igloo.hibernatesearchv5;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,9 +21,10 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.search.query.engine.spi.FacetManager;
 import org.hibernate.search.query.facet.Facet;
 import org.hibernate.search.query.facet.FacetingRequest;
+import org.iglooproject.jpa.more.business.search.query.AbstractSearchQuery;
+import org.iglooproject.jpa.more.business.search.query.SearchQueryDefaultResult;
 import org.iglooproject.jpa.more.business.sort.ISort;
 import org.iglooproject.jpa.more.business.sort.SortUtils;
-import org.iglooproject.jpa.search.util.SortFieldUtil;
 import org.iglooproject.spring.util.lucene.search.LuceneUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
