@@ -11,6 +11,7 @@ stages:
   - dependencies
   - deploy
   - analyze
+  - init
 
 maven-build:
   stage: build
@@ -52,6 +53,63 @@ maven-dependencies:
   only:
     variables:
       - $CHECK_DEPENDENCIES
+  tags:
+    - docker
+
+# test project initialisation from basic-app
+# Generate project named basic-application
+# Diff with basic-application to check
+# Build new project
+# Not done: test are not launched
+test-init:
+  stage: build
+  needs: []
+  script:
+  - apt-get update
+  # add hatch and xmllint
+  - apt-get install -y python3 pipx libxml2-utils
+  - pipx install hatch
+  - cd tools/igloo-project-init
+  - /root/.local/bin/hatch fmt
+  - /root/.local/bin/hatch run types:check
+  - >
+    /root/.local/bin/hatch run igloo-project-init
+    -v --debug --check-diff --check-build
+    --igloo-url "$CI_PROJECT_DIR"
+    basic-application org.iglooproject.archetype 6.0.0-SNAPSHOT basicapp
+    BasicApplication basicApplication "Basic Application" basic_application
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "api"
+    when: never
+  - if: $CI_COMMIT_BRANCH == "dev"
+  - if: $CI_COMMIT_BRANCH == "master"
+  - if: $CI_COMMIT_BRANCH == "main"
+  - if: $CI_COMMIT_BRANCH == "igloo-boot"
+  - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
+  - if: $CI_COMMIT_BRANCH == "ft-basicapp-refactor"
+  tags:
+  - docker
+
+basic-application-init:
+  stage: build
+  script:
+  - apt-get update
+  # add hatch and xmllint
+  - apt-get install -y python3 pipx libxml2-utils
+  - pipx install hatch
+  - cd tools/igloo-project-init
+  - export GIT_USER="token"
+  - export GIT_PASSWORD="$GIT_ACCESS_TOKEN"
+  - >
+    /root/.local/bin/hatch run igloo-project-init
+    -v --debug --check-diff --check-build
+    --igloo-url "$CI_PROJECT_DIR" --igloo-branch basic-app-refactor
+    --target-url "$GIT_HTTPS_REPO_PROJECT" --target-branch main
+    "$ARTIFACT_ID" "$GROUP_ID" "$VERSION" "$PACKAGE"
+    "$ARCHETYPE_APPLICATION_NAME_PREFIX" "$ARCHETYPE_SPRING_ANNOTATION_VALUE_PREFIX" "$ARCHETYPE_FULL_APPLICTION_NAME" "$ARCHETYPE_DATABASE_PREFIX"
+  rules:
+  - if: '$CI_PIPELINE_SOURCE == "api"'
+    when: always
   tags:
     - docker
 
