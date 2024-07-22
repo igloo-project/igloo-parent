@@ -5,11 +5,11 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
+import com.google.common.collect.Lists;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -48,9 +48,6 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import com.google.common.collect.Lists;
-
 import test.jpa.more.business.AbstractJpaMoreTestCase;
 import test.jpa.more.business.entity.model.TestEntity;
 import test.jpa.more.business.history.model.TestHistoryDifference;
@@ -64,278 +61,313 @@ import test.jpa.more.config.spring.SpringBootTestJpaMoreHistoryLog;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 class TestHistoryLogService extends AbstractJpaMoreTestCase {
-	
-	// database precision is micros
-	private static final Instant DATE = Instant.now().truncatedTo(ChronoUnit.MICROS);
 
-	/*
-	 * Only here to mock some parameters passed to the log() method.
-	 * The Spring context is still used for most beans.
-	 */
-	
-	@Mock(answer = Answers.RETURNS_MOCKS)
-	private IDifferenceFromReferenceGenerator<TestEntity> differenceGeneratorMock;
-	
-	@Mock
-	private IHistoryDifferenceGenerator<TestEntity> historyDifferenceGeneratorMock;
-	
-	@Autowired
-	private ITestHistoryLogService historyLogService;
-	
-	@Autowired
-	private IEntityService entityService;
-	
-	@Autowired
-	private ITransactionSynchronizationTaskManagerService transactionSynchronizationService;
+  // database precision is micros
+  private static final Instant DATE = Instant.now().truncatedTo(ChronoUnit.MICROS);
 
-	private TransactionTemplate writeTransactionTemplate;
-	
-	private HistoryValue entityHistoryValueBefore;
-	private HistoryValue entityHistoryValueAfter;
-	
-	private HistoryValue stringHistoryValueAfter = new HistoryValue("after");
-	
-	private HistoryValue createExpectedHistoryValue(TestEntity entity) {
-		return new HistoryValue(entity.toString(), GenericEntityReference.of(entity));
-	}
-	
-	@Autowired
-	private void setTransactionTemplate(PlatformTransactionManager transactionManager) {
-		DefaultTransactionAttribute writeTransactionAttribute =
-				new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRED);
-		writeTransactionAttribute.setReadOnly(false);
-		writeTransactionTemplate = new TransactionTemplate(transactionManager, writeTransactionAttribute);
-	}
-	
-	@BeforeEach
-	public void initValues() throws ServiceException, SecurityServiceException {
-		TestEntity before = new TestEntity("beforeEntity");
-		TestEntity after = new TestEntity("afterEntity");
-		testEntityService.create(before);
-		testEntityService.create(after);
-		entityHistoryValueBefore = createExpectedHistoryValue(before);
-		entityHistoryValueAfter = createExpectedHistoryValue(after);
-	}
-	
-	@BeforeEach
-	public void initMocks() {
-		// Make the difference generation fail if the modified object is not attached to the session
-		AssertionError error = new AssertionError("Attempt to compute differences on an object that was not attached to the session");
-		when(differenceGeneratorMock.diff(
-				MockitoHamcrest.argThat(not(this.<TestEntity>isAttachedToSession())), ArgumentMatchers.<TestEntity>any()
-		)).thenThrow(error);
-		when(differenceGeneratorMock.diffFromReference(
-				MockitoHamcrest.argThat(not(this.<TestEntity>isAttachedToSession()))
-		)).thenThrow(error);
-	}
-	
-	@Override
-	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		cleanEntities(historyLogService);
-		super.cleanAll();
-	}
+  /*
+   * Only here to mock some parameters passed to the log() method.
+   * The Spring context is still used for most beans.
+   */
 
-	private List<TestHistoryDifference> createExpectedDifferences() {
-		TestHistoryDifference difference1 = new TestHistoryDifference(
-				new HistoryDifferencePath(FieldPath.fromString(".somePropertyIJustInvented")),
-				HistoryDifferenceEventType.ADDED,
-				entityHistoryValueBefore, entityHistoryValueAfter
-		);
-		TestHistoryDifference difference2 = new TestHistoryDifference(
-				new HistoryDifferencePath(FieldPath.fromString(".somePropertyIJustInvented2").item(), new HistoryValue("1")),
-				HistoryDifferenceEventType.REMOVED,
-				null, stringHistoryValueAfter
-		);
-		return Lists.newArrayList(
-				difference1,
-				difference2
-		);
-	}
-	
-	private Matcher<Collection<TestHistoryDifference>> matchesExpectedDifferences() {
-		return new TestHistoryDifferenceCollectionMatcher<>(
-				TestHistoryDifferenceDescription.builder()
-				.put(FieldPath.fromString(".somePropertyIJustInvented"), HistoryDifferenceEventType.ADDED)
-				.putItem(FieldPath.fromString(".somePropertyIJustInvented2"), 1, HistoryDifferenceEventType.REMOVED)
-				.build()
-		);
-	}
+  @Mock(answer = Answers.RETURNS_MOCKS)
+  private IDifferenceFromReferenceGenerator<TestEntity> differenceGeneratorMock;
 
-	@Test
-	void logNow() throws ServiceException, SecurityServiceException {
-		TestEntity object = new TestEntity("object");
-		testEntityService.create(object);
-		
-		TestEntity secondaryObject = new TestEntity("secondaryObject");
-		testEntityService.create(secondaryObject);
-		
-		List<TestHistoryDifference> differences = createExpectedDifferences();
-		
-		historyLogService.logNow(DATE, TestHistoryEventType.EVENT1, differences, object,
-				TestHistoryLogAdditionalInformationBean.of(secondaryObject));
-		
-		HistoryValue expectedObjectHistoryValue = createExpectedHistoryValue(object);
-		HistoryValue expectedSecondaryObjectHistoryValue = createExpectedHistoryValue(secondaryObject);
+  @Mock private IHistoryDifferenceGenerator<TestEntity> historyDifferenceGeneratorMock;
 
-		entityService.flush();
-		entityService.clear();
+  @Autowired private ITestHistoryLogService historyLogService;
 
-		List<TestHistoryLog> logs = historyLogService.list();
-		
-		assertThat(logs).hasSize(1);
-		
-		TestHistoryLog log = logs.iterator().next();
+  @Autowired private IEntityService entityService;
 
-		assertThat(log.getId()).isNotNull();
+  @Autowired
+  private ITransactionSynchronizationTaskManagerService transactionSynchronizationService;
 
-		assertThat(log.getDate()).isEqualTo(DATE);
-		assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
-		assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
-		assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
-		assertThat(log.getDifferences(), matchesExpectedDifferences());
-	}
+  private TransactionTemplate writeTransactionTemplate;
 
-	@Test
-	void logBeforeCommit() throws ServiceException, SecurityServiceException {
-		final TestEntity object = new TestEntity("object");
-		testEntityService.create(object);
-		
-		final TestEntity secondaryObject = new TestEntity("secondaryObject");
-		testEntityService.create(secondaryObject);
-		
-		HistoryValue expectedObjectHistoryValue = createExpectedHistoryValue(object);
-		HistoryValue expectedSecondaryObjectHistoryValue = createExpectedHistoryValue(secondaryObject);
+  private HistoryValue entityHistoryValueBefore;
+  private HistoryValue entityHistoryValueAfter;
 
-		entityService.flush();
-		entityService.clear();
-		
-		Mockito.when(historyDifferenceGeneratorMock.toHistoryDifferences(
-						ArgumentMatchers.<Supplier2<TestHistoryDifference>>any(), ArgumentMatchers.<Difference<TestEntity>>any()
-				))
-				.then(new Answer<List<TestHistoryDifference>>() {
-					@Override
-					public List<TestHistoryDifference> answer(InvocationOnMock invocation) throws Throwable {
-						return createExpectedDifferences();
-					}
-				});
+  private HistoryValue stringHistoryValueAfter = new HistoryValue("after");
 
-		final Instant before = Instant.now();
-		
-		writeTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			@SuppressWarnings("unchecked")
-			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus status) {
-				TestEntity objectReloaded = entityService.getEntity(object);
-				TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
-				try {
-					historyLogService.logWithDifferences(TestHistoryEventType.EVENT1, objectReloaded,
-							TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
-							differenceGeneratorMock, historyDifferenceGeneratorMock);
-				} catch (ServiceException|SecurityServiceException e) {
-					throw new IllegalStateException(e);
-				}
-			}
-		});
-		
-		final Instant after = Instant.now();
+  private HistoryValue createExpectedHistoryValue(TestEntity entity) {
+    return new HistoryValue(entity.toString(), GenericEntityReference.of(entity));
+  }
 
-		List<TestHistoryLog> logs = historyLogService.list();
-		
-		assertThat(logs).hasSize(1);
-		
-		TestHistoryLog log = logs.iterator().next();
+  @Autowired
+  private void setTransactionTemplate(PlatformTransactionManager transactionManager) {
+    DefaultTransactionAttribute writeTransactionAttribute =
+        new DefaultTransactionAttribute(TransactionAttribute.PROPAGATION_REQUIRED);
+    writeTransactionAttribute.setReadOnly(false);
+    writeTransactionTemplate =
+        new TransactionTemplate(transactionManager, writeTransactionAttribute);
+  }
 
-		assertThat(log.getId()).isNotNull();
-		
-		assertThat(log.getDate(), new TypeSafeMatcher<Instant>() {
-			@Override
-			public void describeTo(Description description) {
-				description.appendText("a date between ").appendValue(before).appendText(" and ").appendValue(after);
-			}
+  @BeforeEach
+  public void initValues() throws ServiceException, SecurityServiceException {
+    TestEntity before = new TestEntity("beforeEntity");
+    TestEntity after = new TestEntity("afterEntity");
+    testEntityService.create(before);
+    testEntityService.create(after);
+    entityHistoryValueBefore = createExpectedHistoryValue(before);
+    entityHistoryValueAfter = createExpectedHistoryValue(after);
+  }
 
-			@Override
-			protected boolean matchesSafely(Instant item) {
-				return !item.isBefore(before) && !item.isAfter(after);
-			}
-		});
-		assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
-		assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
-		assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
-		assertThat(log.getDifferences(), matchesExpectedDifferences());
-	}
+  @BeforeEach
+  public void initMocks() {
+    // Make the difference generation fail if the modified object is not attached to the session
+    AssertionError error =
+        new AssertionError(
+            "Attempt to compute differences on an object that was not attached to the session");
+    when(differenceGeneratorMock.diff(
+            MockitoHamcrest.argThat(not(this.<TestEntity>isAttachedToSession())),
+            ArgumentMatchers.<TestEntity>any()))
+        .thenThrow(error);
+    when(differenceGeneratorMock.diffFromReference(
+            MockitoHamcrest.argThat(not(this.<TestEntity>isAttachedToSession()))))
+        .thenThrow(error);
+  }
 
-	@Test
-	void logBeforeClear() throws ServiceException, SecurityServiceException {
-		final TestEntity object = new TestEntity("object");
-		testEntityService.create(object);
-		
-		final TestEntity secondaryObject = new TestEntity("secondaryObject");
-		testEntityService.create(secondaryObject);
-		
-		HistoryValue expectedObjectHistoryValue = createExpectedHistoryValue(object);
-		HistoryValue expectedSecondaryObjectHistoryValue = createExpectedHistoryValue(secondaryObject);
+  @Override
+  protected void cleanAll() throws ServiceException, SecurityServiceException {
+    cleanEntities(historyLogService);
+    super.cleanAll();
+  }
 
-		entityService.flush();
-		entityService.clear();
-		
-		Mockito.when(historyDifferenceGeneratorMock.toHistoryDifferences(
-					ArgumentMatchers.<Supplier2<TestHistoryDifference>>any(), ArgumentMatchers.<Difference<TestEntity>>any()
-				))
-				.then(new Answer<List<TestHistoryDifference>>() {
-					@Override
-					public List<TestHistoryDifference> answer(InvocationOnMock invocation) throws Throwable {
-						return createExpectedDifferences();
-					}
-				});
+  private List<TestHistoryDifference> createExpectedDifferences() {
+    TestHistoryDifference difference1 =
+        new TestHistoryDifference(
+            new HistoryDifferencePath(FieldPath.fromString(".somePropertyIJustInvented")),
+            HistoryDifferenceEventType.ADDED,
+            entityHistoryValueBefore,
+            entityHistoryValueAfter);
+    TestHistoryDifference difference2 =
+        new TestHistoryDifference(
+            new HistoryDifferencePath(
+                FieldPath.fromString(".somePropertyIJustInvented2").item(), new HistoryValue("1")),
+            HistoryDifferenceEventType.REMOVED,
+            null,
+            stringHistoryValueAfter);
+    return Lists.newArrayList(difference1, difference2);
+  }
 
-		final Instant before = Instant.now();
-		
-		writeTransactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			@SuppressWarnings("unchecked")
-			@Override
-			protected void doInTransactionWithoutResult(TransactionStatus status) {
-				TestEntity objectReloaded = entityService.getEntity(object);
-				TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
-				try {
-					historyLogService.logWithDifferences(TestHistoryEventType.EVENT1, objectReloaded,
-							TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
-							differenceGeneratorMock, historyDifferenceGeneratorMock);
-					
-					// Simulate a batch treatment, that flushes and clears the session repeatedly
-					entityService.flush();
-					transactionSynchronizationService.beforeClear();
-					entityService.clear();
-					
-				} catch (ServiceException|SecurityServiceException e) {
-					throw new IllegalStateException(e);
-				}
-			}
-		});
-		
-		final Instant after = Instant.now();
+  private Matcher<Collection<TestHistoryDifference>> matchesExpectedDifferences() {
+    return new TestHistoryDifferenceCollectionMatcher<>(
+        TestHistoryDifferenceDescription.builder()
+            .put(
+                FieldPath.fromString(".somePropertyIJustInvented"),
+                HistoryDifferenceEventType.ADDED)
+            .putItem(
+                FieldPath.fromString(".somePropertyIJustInvented2"),
+                1,
+                HistoryDifferenceEventType.REMOVED)
+            .build());
+  }
 
-		List<TestHistoryLog> logs = historyLogService.list();
-		
-		assertThat(logs).hasSize(1);
-		
-		TestHistoryLog log = logs.iterator().next();
+  @Test
+  void logNow() throws ServiceException, SecurityServiceException {
+    TestEntity object = new TestEntity("object");
+    testEntityService.create(object);
 
-		assertThat(log.getId()).isNotNull();
-		
-		assertThat(log.getDate(), new TypeSafeMatcher<Instant>() {
-			@Override
-			public void describeTo(Description description) {
-				description.appendText("a date between ").appendValue(before).appendText(" and ").appendValue(after);
-			}
+    TestEntity secondaryObject = new TestEntity("secondaryObject");
+    testEntityService.create(secondaryObject);
 
-			@Override
-			protected boolean matchesSafely(Instant item) {
-				return !item.isBefore(before) && !item.isAfter(after);
-			}
-		});
-		assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
-		assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
-		assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
-		assertThat(log.getDifferences(), matchesExpectedDifferences());
-	}
+    List<TestHistoryDifference> differences = createExpectedDifferences();
+
+    historyLogService.logNow(
+        DATE,
+        TestHistoryEventType.EVENT1,
+        differences,
+        object,
+        TestHistoryLogAdditionalInformationBean.of(secondaryObject));
+
+    HistoryValue expectedObjectHistoryValue = createExpectedHistoryValue(object);
+    HistoryValue expectedSecondaryObjectHistoryValue = createExpectedHistoryValue(secondaryObject);
+
+    entityService.flush();
+    entityService.clear();
+
+    List<TestHistoryLog> logs = historyLogService.list();
+
+    assertThat(logs).hasSize(1);
+
+    TestHistoryLog log = logs.iterator().next();
+
+    assertThat(log.getId()).isNotNull();
+
+    assertThat(log.getDate()).isEqualTo(DATE);
+    assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
+    assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
+    assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
+    assertThat(log.getDifferences(), matchesExpectedDifferences());
+  }
+
+  @Test
+  void logBeforeCommit() throws ServiceException, SecurityServiceException {
+    final TestEntity object = new TestEntity("object");
+    testEntityService.create(object);
+
+    final TestEntity secondaryObject = new TestEntity("secondaryObject");
+    testEntityService.create(secondaryObject);
+
+    HistoryValue expectedObjectHistoryValue = createExpectedHistoryValue(object);
+    HistoryValue expectedSecondaryObjectHistoryValue = createExpectedHistoryValue(secondaryObject);
+
+    entityService.flush();
+    entityService.clear();
+
+    Mockito.when(
+            historyDifferenceGeneratorMock.toHistoryDifferences(
+                ArgumentMatchers.<Supplier2<TestHistoryDifference>>any(),
+                ArgumentMatchers.<Difference<TestEntity>>any()))
+        .then(
+            new Answer<List<TestHistoryDifference>>() {
+              @Override
+              public List<TestHistoryDifference> answer(InvocationOnMock invocation)
+                  throws Throwable {
+                return createExpectedDifferences();
+              }
+            });
+
+    final Instant before = Instant.now();
+
+    writeTransactionTemplate.execute(
+        new TransactionCallbackWithoutResult() {
+          @SuppressWarnings("unchecked")
+          @Override
+          protected void doInTransactionWithoutResult(TransactionStatus status) {
+            TestEntity objectReloaded = entityService.getEntity(object);
+            TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
+            try {
+              historyLogService.logWithDifferences(
+                  TestHistoryEventType.EVENT1,
+                  objectReloaded,
+                  TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
+                  differenceGeneratorMock,
+                  historyDifferenceGeneratorMock);
+            } catch (ServiceException | SecurityServiceException e) {
+              throw new IllegalStateException(e);
+            }
+          }
+        });
+
+    final Instant after = Instant.now();
+
+    List<TestHistoryLog> logs = historyLogService.list();
+
+    assertThat(logs).hasSize(1);
+
+    TestHistoryLog log = logs.iterator().next();
+
+    assertThat(log.getId()).isNotNull();
+
+    assertThat(
+        log.getDate(),
+        new TypeSafeMatcher<Instant>() {
+          @Override
+          public void describeTo(Description description) {
+            description
+                .appendText("a date between ")
+                .appendValue(before)
+                .appendText(" and ")
+                .appendValue(after);
+          }
+
+          @Override
+          protected boolean matchesSafely(Instant item) {
+            return !item.isBefore(before) && !item.isAfter(after);
+          }
+        });
+    assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
+    assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
+    assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
+    assertThat(log.getDifferences(), matchesExpectedDifferences());
+  }
+
+  @Test
+  void logBeforeClear() throws ServiceException, SecurityServiceException {
+    final TestEntity object = new TestEntity("object");
+    testEntityService.create(object);
+
+    final TestEntity secondaryObject = new TestEntity("secondaryObject");
+    testEntityService.create(secondaryObject);
+
+    HistoryValue expectedObjectHistoryValue = createExpectedHistoryValue(object);
+    HistoryValue expectedSecondaryObjectHistoryValue = createExpectedHistoryValue(secondaryObject);
+
+    entityService.flush();
+    entityService.clear();
+
+    Mockito.when(
+            historyDifferenceGeneratorMock.toHistoryDifferences(
+                ArgumentMatchers.<Supplier2<TestHistoryDifference>>any(),
+                ArgumentMatchers.<Difference<TestEntity>>any()))
+        .then(
+            new Answer<List<TestHistoryDifference>>() {
+              @Override
+              public List<TestHistoryDifference> answer(InvocationOnMock invocation)
+                  throws Throwable {
+                return createExpectedDifferences();
+              }
+            });
+
+    final Instant before = Instant.now();
+
+    writeTransactionTemplate.execute(
+        new TransactionCallbackWithoutResult() {
+          @SuppressWarnings("unchecked")
+          @Override
+          protected void doInTransactionWithoutResult(TransactionStatus status) {
+            TestEntity objectReloaded = entityService.getEntity(object);
+            TestEntity secondaryObjectReloaded = entityService.getEntity(secondaryObject);
+            try {
+              historyLogService.logWithDifferences(
+                  TestHistoryEventType.EVENT1,
+                  objectReloaded,
+                  TestHistoryLogAdditionalInformationBean.of(secondaryObjectReloaded),
+                  differenceGeneratorMock,
+                  historyDifferenceGeneratorMock);
+
+              // Simulate a batch treatment, that flushes and clears the session repeatedly
+              entityService.flush();
+              transactionSynchronizationService.beforeClear();
+              entityService.clear();
+
+            } catch (ServiceException | SecurityServiceException e) {
+              throw new IllegalStateException(e);
+            }
+          }
+        });
+
+    final Instant after = Instant.now();
+
+    List<TestHistoryLog> logs = historyLogService.list();
+
+    assertThat(logs).hasSize(1);
+
+    TestHistoryLog log = logs.iterator().next();
+
+    assertThat(log.getId()).isNotNull();
+
+    assertThat(
+        log.getDate(),
+        new TypeSafeMatcher<Instant>() {
+          @Override
+          public void describeTo(Description description) {
+            description
+                .appendText("a date between ")
+                .appendValue(before)
+                .appendText(" and ")
+                .appendValue(after);
+          }
+
+          @Override
+          protected boolean matchesSafely(Instant item) {
+            return !item.isBefore(before) && !item.isAfter(after);
+          }
+        });
+    assertThat(log.getEventType()).isEqualTo(TestHistoryEventType.EVENT1);
+    assertThat(log.getMainObject()).isEqualTo(expectedObjectHistoryValue);
+    assertThat(log.getObject1()).isEqualTo(expectedSecondaryObjectHistoryValue);
+    assertThat(log.getDifferences(), matchesExpectedDifferences());
+  }
 }

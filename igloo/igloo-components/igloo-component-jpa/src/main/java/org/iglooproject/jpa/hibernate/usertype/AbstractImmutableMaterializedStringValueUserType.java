@@ -4,84 +4,85 @@ import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import org.hibernate.annotations.Type;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.usertype.UserType;
 
 /**
- * 
  * A Hibernate {@link UserType} for {@link AbstractMaterializedPrimitiveValue} stored as text.
- * 
- * <p><strong>CAUTION</strong>: in order for this {@link UserType} to be used by Hibernate, you must either register
- * it as the default for your {@link AbstractMaterializedPrimitiveValue} by configuring your type contributor
- * or declaring your field with {@link Type} annotation.
- * 
+ *
+ * <p><strong>CAUTION</strong>: in order for this {@link UserType} to be used by Hibernate, you must
+ * either register it as the default for your {@link AbstractMaterializedPrimitiveValue} by
+ * configuring your type contributor or declaring your field with {@link Type} annotation.
+ *
  * @see AbstractMaterializedPrimitiveValue
  */
-public abstract class AbstractImmutableMaterializedStringValueUserType<T extends AbstractMaterializedPrimitiveValue<String, T>>
-		implements UserType<T> {
+public abstract class AbstractImmutableMaterializedStringValueUserType<
+        T extends AbstractMaterializedPrimitiveValue<String, T>>
+    implements UserType<T> {
 
-	@Override
-	public int getSqlType() {
-		return SqlTypes.VARCHAR;
-	}
-	
-	@Override
-	public abstract Class<T> returnedClass();
+  @Override
+  public int getSqlType() {
+    return SqlTypes.VARCHAR;
+  }
 
-	protected abstract T instantiate(String value);
+  @Override
+  public abstract Class<T> returnedClass();
 
-	@Override
-	public boolean equals(T x, T y) {
-		return (x == y) || (x != null && y != null && x.equals(y));
-	}
+  protected abstract T instantiate(String value);
 
-	@Override
-	public int hashCode(T x) {
-		return x.hashCode();
-	}
+  @Override
+  public boolean equals(T x, T y) {
+    return (x == y) || (x != null && y != null && x.equals(y));
+  }
 
-	@Override
-	public T nullSafeGet(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner)
-			throws SQLException {
-		String columnValue = rs.getString(position);
-		if (rs.wasNull()) {
-			return null;
-		}
-		return instantiate(columnValue);
-	}
-	
-	@Override
-	public void nullSafeSet(PreparedStatement st, T value, int index, SharedSessionContractImplementor session)
-			throws SQLException {
-		if (value == null) {
-			// postgresql only handle VARCHAR/LONGVARCHAR
-			st.setNull(index, SqlTypes.VARCHAR);
-		} else {
-			st.setString(index, value.getValue());
-		}
-	}
+  @Override
+  public int hashCode(T x) {
+    return x.hashCode();
+  }
 
-	@Override
-	public T deepCopy(T value) {
-		return value; // type is immutable
-	}
+  @Override
+  public T nullSafeGet(
+      ResultSet rs, int position, SharedSessionContractImplementor session, Object owner)
+      throws SQLException {
+    String columnValue = rs.getString(position);
+    if (rs.wasNull()) {
+      return null;
+    }
+    return instantiate(columnValue);
+  }
 
-	@Override
-	public boolean isMutable() {
-		return false;
-	}
+  @Override
+  public void nullSafeSet(
+      PreparedStatement st, T value, int index, SharedSessionContractImplementor session)
+      throws SQLException {
+    if (value == null) {
+      // postgresql only handle VARCHAR/LONGVARCHAR
+      st.setNull(index, SqlTypes.VARCHAR);
+    } else {
+      st.setString(index, value.getValue());
+    }
+  }
 
-	@Override
-	public Serializable disassemble(T value) {
-		return value; // type is immutable
-	}
+  @Override
+  public T deepCopy(T value) {
+    return value; // type is immutable
+  }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public T assemble(Serializable cached, Object owner) {
-		return (T) cached; // type is immutable
-	}
+  @Override
+  public boolean isMutable() {
+    return false;
+  }
+
+  @Override
+  public Serializable disassemble(T value) {
+    return value; // type is immutable
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  public T assemble(Serializable cached, Object owner) {
+    return (T) cached; // type is immutable
+  }
 }

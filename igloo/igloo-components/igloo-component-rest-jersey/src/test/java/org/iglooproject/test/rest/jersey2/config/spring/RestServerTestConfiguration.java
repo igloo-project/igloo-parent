@@ -5,6 +5,4 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import(RestCommonTestConfiguration.class)
-public class RestServerTestConfiguration {
-
-}
+public class RestServerTestConfiguration {}

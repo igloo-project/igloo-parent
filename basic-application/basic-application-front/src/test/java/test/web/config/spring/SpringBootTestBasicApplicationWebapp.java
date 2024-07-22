@@ -5,7 +5,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,14 +17,12 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 @Target(TYPE)
 @SpringBootTest
 @ContextConfiguration(
-	classes = BasicApplicationWebappTestCommonConfig.class,
-	initializers = ExtendedApplicationContextInitializer.class
-)
+    classes = BasicApplicationWebappTestCommonConfig.class,
+    initializers = ExtendedApplicationContextInitializer.class)
 @TestPropertySource(properties = "igloo.profile=test")
-@TestExecutionListeners(listeners = {
-		DependencyInjectionTestExecutionListener.class,
-		EntityManagerExecutionListener.class
-})
-public @interface SpringBootTestBasicApplicationWebapp {
-
-}
+@TestExecutionListeners(
+    listeners = {
+      DependencyInjectionTestExecutionListener.class,
+      EntityManagerExecutionListener.class
+    })
+public @interface SpringBootTestBasicApplicationWebapp {}

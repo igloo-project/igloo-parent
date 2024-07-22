@@ -6,10 +6,10 @@ import org.iglooproject.jpa.exception.ServiceException;
 
 public interface IDatabaseConsistencyCheckService extends ITransactionalAspectAwareService {
 
-	void checkOnStartup(boolean allowCreateMissingElements) throws ServiceException, SecurityServiceException;
+  void checkOnStartup(boolean allowCreateMissingElements)
+      throws ServiceException, SecurityServiceException;
 
-	void checkDatabaseAccess();
+  void checkDatabaseAccess();
 
-	void checkDatabaseConsistency() throws ServiceException, SecurityServiceException;
-
+  void checkDatabaseConsistency() throws ServiceException, SecurityServiceException;
 }

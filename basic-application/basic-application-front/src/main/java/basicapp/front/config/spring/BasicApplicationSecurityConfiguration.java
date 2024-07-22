@@ -21,97 +21,113 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 @EnableWebSecurity
 public class BasicApplicationSecurityConfiguration {
 
-	@Bean
-	@Order(1)
-	public SecurityFilterChain consoleSecurityFilterChain(HttpSecurity http) throws Exception {
-		return http
-			.securityMatcher(antMatcher("/console/**"))
-			.headers(h -> h.disable())
-			.csrf(c -> c.disable())
-			.formLogin(f -> f.disable())
-			.anonymous(a -> a.authorities(CoreAuthorityConstants.ROLE_ANONYMOUS))
-			.exceptionHandling(e -> e
-				.accessDeniedPage("/console/access-denied/")
-				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/console/login/")))
-			.authorizeHttpRequests(requests -> requests
-				.requestMatchers(
-					antMatcher("/console/login/**"),
-					antMatcher("/console/access-denied/**")).permitAll()
-				.requestMatchers(antMatcher("/console/**")).hasAnyAuthority(CoreAuthorityConstants.ROLE_ADMIN)
-			)
-			.build();
-	}
+  @Bean
+  @Order(1)
+  public SecurityFilterChain consoleSecurityFilterChain(HttpSecurity http) throws Exception {
+    return http.securityMatcher(antMatcher("/console/**"))
+        .headers(h -> h.disable())
+        .csrf(c -> c.disable())
+        .formLogin(f -> f.disable())
+        .anonymous(a -> a.authorities(CoreAuthorityConstants.ROLE_ANONYMOUS))
+        .exceptionHandling(
+            e ->
+                e.accessDeniedPage("/console/access-denied/")
+                    .authenticationEntryPoint(
+                        new LoginUrlAuthenticationEntryPoint("/console/login/")))
+        .authorizeHttpRequests(
+            requests ->
+                requests
+                    .requestMatchers(
+                        antMatcher("/console/login/**"), antMatcher("/console/access-denied/**"))
+                    .permitAll()
+                    .requestMatchers(antMatcher("/console/**"))
+                    .hasAnyAuthority(CoreAuthorityConstants.ROLE_ADMIN))
+        .build();
+  }
 
-	@Bean
-	@Order(2)
-	public SecurityFilterChain ressourcesSecurityFilterChain(HttpSecurity http) throws Exception {
-		return http
-			.securityMatcher(antMatcher("/wicket/resource/**"))
-			.headers(h -> h.disable())
-			.csrf(c -> c.disable())
-			.formLogin(f -> f.disable())
-			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.NEVER))
-			.exceptionHandling(e -> e.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
-			.authorizeHttpRequests(requests -> requests
-				.requestMatchers(
-					regexMatcher("^/wicket/resource/basicapp.front.common.template.resources.js.[^/]+.*"),
-					regexMatcher("^/wicket/resource/basicapp.front.common.template.resources.styles.[^/]+.*"),
-					regexMatcher("^/wicket/resource/basicapp.front.common.template.resources.images.[^/]+.*")
-				).hasAnyAuthority(CoreAuthorityConstants.ROLE_ANONYMOUS)
-				.requestMatchers(regexMatcher("^/wicket/resource/basicapp.front.[^/]+.*")).hasAnyAuthority(CoreAuthorityConstants.ROLE_AUTHENTICATED)
-				.requestMatchers(antMatcher("/wicket/resource/**")).hasAnyAuthority(CoreAuthorityConstants.ROLE_ANONYMOUS)
-			)
-			.build();
-	}
+  @Bean
+  @Order(2)
+  public SecurityFilterChain ressourcesSecurityFilterChain(HttpSecurity http) throws Exception {
+    return http.securityMatcher(antMatcher("/wicket/resource/**"))
+        .headers(h -> h.disable())
+        .csrf(c -> c.disable())
+        .formLogin(f -> f.disable())
+        .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.NEVER))
+        .exceptionHandling(e -> e.authenticationEntryPoint(new Http403ForbiddenEntryPoint()))
+        .authorizeHttpRequests(
+            requests ->
+                requests
+                    .requestMatchers(
+                        regexMatcher(
+                            "^/wicket/resource/basicapp.front.common.template.resources.js.[^/]+.*"),
+                        regexMatcher(
+                            "^/wicket/resource/basicapp.front.common.template.resources.styles.[^/]+.*"),
+                        regexMatcher(
+                            "^/wicket/resource/basicapp.front.common.template.resources.images.[^/]+.*"))
+                    .hasAnyAuthority(CoreAuthorityConstants.ROLE_ANONYMOUS)
+                    .requestMatchers(regexMatcher("^/wicket/resource/basicapp.front.[^/]+.*"))
+                    .hasAnyAuthority(CoreAuthorityConstants.ROLE_AUTHENTICATED)
+                    .requestMatchers(antMatcher("/wicket/resource/**"))
+                    .hasAnyAuthority(CoreAuthorityConstants.ROLE_ANONYMOUS))
+        .build();
+  }
 
-	@Bean
-	@Order(3)
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http
-			.headers(h -> h.disable())
-			.csrf(c -> c.disable())
-			.formLogin(f -> f.disable())
-			.anonymous(a -> a.authorities(CoreAuthorityConstants.ROLE_ANONYMOUS))
-			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation().changeSessionId())
-			.exceptionHandling(e -> e
-				.accessDeniedPage("/access-denied/")
-				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login/")))
-			.authorizeHttpRequests(requests -> requests
-				.requestMatchers(
-					antMatcher("/login/"),
-					antMatcher("/login/failure/"),
-					antMatcher("/access-denied/"),
-					antMatcher("/security/password/recovery/request/creation/"),
-					antMatcher("/security/password/recovery/request/reset/"),
-					antMatcher("/security/password/creation/"),
-					antMatcher("/security/password/reset/"),
-					antMatcher("/maintenance/")).permitAll()
-				.requestMatchers(antMatcher("/**")).hasAnyAuthority(CoreAuthorityConstants.ROLE_AUTHENTICATED)
-			)
-			.build();
-	}
+  @Bean
+  @Order(3)
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    return http.headers(h -> h.disable())
+        .csrf(c -> c.disable())
+        .formLogin(f -> f.disable())
+        .anonymous(a -> a.authorities(CoreAuthorityConstants.ROLE_ANONYMOUS))
+        .sessionManagement(
+            s ->
+                s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                    .sessionFixation()
+                    .changeSessionId())
+        .exceptionHandling(
+            e ->
+                e.accessDeniedPage("/access-denied/")
+                    .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login/")))
+        .authorizeHttpRequests(
+            requests ->
+                requests
+                    .requestMatchers(
+                        antMatcher("/login/"),
+                        antMatcher("/login/failure/"),
+                        antMatcher("/access-denied/"),
+                        antMatcher("/security/password/recovery/request/creation/"),
+                        antMatcher("/security/password/recovery/request/reset/"),
+                        antMatcher("/security/password/creation/"),
+                        antMatcher("/security/password/reset/"),
+                        antMatcher("/maintenance/"))
+                    .permitAll()
+                    .requestMatchers(antMatcher("/**"))
+                    .hasAnyAuthority(CoreAuthorityConstants.ROLE_AUTHENTICATED))
+        .build();
+  }
 
-	@Bean
-	public WebSecurityCustomizer webSecurityCustomizer(ICorePermissionEvaluator corePermissionEvaluator) {
-		CoreWebSecurityExpressionHandler webSecurityExpressionHandler = new CoreWebSecurityExpressionHandler();
-		webSecurityExpressionHandler.setCorePermissionEvaluator(corePermissionEvaluator);
-		return web -> web
-			.expressionHandler(webSecurityExpressionHandler)
-			.ignoring()
-			.requestMatchers(
-				antMatcher("/static/**"),
-				antMatcher("/monitoring/**"),
-				antMatcher("/webjars/**"),
-				antMatcher("/android-chrome-192x192.png"),
-				antMatcher("/android-chrome-512x512.png"),
-				antMatcher("/apple-touch-icon.png"),
-				antMatcher("/browserconfig.xml"),
-				antMatcher("/favicon.ico"),
-				antMatcher("/favicon-16x16.png"),
-				antMatcher("/favicon-32x32.png"),
-				antMatcher("/mstile-150x150.png"),
-				antMatcher("/safari-pinned-tab.svg"),
-				antMatcher("/site.webmanifest"));
-	}
-
+  @Bean
+  public WebSecurityCustomizer webSecurityCustomizer(
+      ICorePermissionEvaluator corePermissionEvaluator) {
+    CoreWebSecurityExpressionHandler webSecurityExpressionHandler =
+        new CoreWebSecurityExpressionHandler();
+    webSecurityExpressionHandler.setCorePermissionEvaluator(corePermissionEvaluator);
+    return web ->
+        web.expressionHandler(webSecurityExpressionHandler)
+            .ignoring()
+            .requestMatchers(
+                antMatcher("/static/**"),
+                antMatcher("/monitoring/**"),
+                antMatcher("/webjars/**"),
+                antMatcher("/android-chrome-192x192.png"),
+                antMatcher("/android-chrome-512x512.png"),
+                antMatcher("/apple-touch-icon.png"),
+                antMatcher("/browserconfig.xml"),
+                antMatcher("/favicon.ico"),
+                antMatcher("/favicon-16x16.png"),
+                antMatcher("/favicon-32x32.png"),
+                antMatcher("/mstile-150x150.png"),
+                antMatcher("/safari-pinned-tab.svg"),
+                antMatcher("/site.webmanifest"));
+  }
 }

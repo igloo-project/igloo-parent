@@ -6,13 +6,12 @@ import org.apache.wicket.request.resource.ResourceReference;
 
 public interface IHeaderItemSpecificOrder {
 
-	Integer order(RecordedHeaderItem recordedeaderItem);
+  Integer order(RecordedHeaderItem recordedeaderItem);
 
-	default ResourceReference getResourceReference(RecordedHeaderItem recordedeaderItem) {
-		if (recordedeaderItem.getItem() instanceof IReferenceHeaderItem) {
-			return ((IReferenceHeaderItem) recordedeaderItem.getItem()).getReference();
-		}
-		return null;
-	}
-
+  default ResourceReference getResourceReference(RecordedHeaderItem recordedeaderItem) {
+    if (recordedeaderItem.getItem() instanceof IReferenceHeaderItem) {
+      return ((IReferenceHeaderItem) recordedeaderItem.getItem()).getReference();
+    }
+    return null;
+  }
 }

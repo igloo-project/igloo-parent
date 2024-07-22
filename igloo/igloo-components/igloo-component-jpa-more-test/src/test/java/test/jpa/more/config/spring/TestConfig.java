@@ -8,16 +8,19 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-
 import test.jpa.more.business.JpaMoreTestBusinessPackage;
 
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(basePackageClasses = { CoreJpaMoreUtilTransactionPackage.class, JpaMoreTestBusinessPackage.class })
-@EntityScan(basePackageClasses = { JpaMoreTestBusinessPackage.class })
+@ComponentScan(
+    basePackageClasses = {
+      CoreJpaMoreUtilTransactionPackage.class,
+      JpaMoreTestBusinessPackage.class
+    })
+@EntityScan(basePackageClasses = {JpaMoreTestBusinessPackage.class})
 public class TestConfig {
-	@Bean
-	public IRendererService rendererService() {
-	return new EmptyRendererServiceImpl();
-	}
+  @Bean
+  public IRendererService rendererService() {
+    return new EmptyRendererServiceImpl();
+  }
 }

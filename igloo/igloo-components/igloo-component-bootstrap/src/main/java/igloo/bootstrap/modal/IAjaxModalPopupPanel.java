@@ -4,6 +4,5 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 
 public interface IAjaxModalPopupPanel extends IModalPopupPanel {
 
-	void show(AjaxRequestTarget target);
-
+  void show(AjaxRequestTarget target);
 }

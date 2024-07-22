@@ -1,7 +1,12 @@
 package basicapp.front.administration.form;
 
+import basicapp.back.business.user.model.BasicUser;
+import basicapp.back.business.user.search.BasicUserSearchQueryData;
+import basicapp.back.business.user.search.BasicUserSort;
+import basicapp.back.business.user.search.IBasicUserSearchQuery;
+import basicapp.front.common.renderer.UserRenderer;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
-
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.more.business.generic.model.search.EnabledFilter;
@@ -10,49 +15,44 @@ import org.iglooproject.wicket.more.markup.html.select2.AbstractLongIdGenericEnt
 import org.iglooproject.wicket.more.markup.html.select2.GenericSelect2AjaxDropDownSingleChoice;
 import org.wicketstuff.select2.Response;
 
-import com.google.common.collect.ImmutableMap;
+public class BasicUserAjaxDropDownSingleChoice
+    extends GenericSelect2AjaxDropDownSingleChoice<BasicUser> {
 
-import basicapp.back.business.user.model.BasicUser;
-import basicapp.back.business.user.search.BasicUserSearchQueryData;
-import basicapp.back.business.user.search.BasicUserSort;
-import basicapp.back.business.user.search.IBasicUserSearchQuery;
-import basicapp.front.common.renderer.UserRenderer;
+  private static final long serialVersionUID = 7076114890845943476L;
 
-public class BasicUserAjaxDropDownSingleChoice extends GenericSelect2AjaxDropDownSingleChoice<BasicUser> {
+  public BasicUserAjaxDropDownSingleChoice(String id, IModel<BasicUser> model) {
+    this(id, model, new ChoiceProvider());
+  }
 
-	private static final long serialVersionUID = 7076114890845943476L;
+  public BasicUserAjaxDropDownSingleChoice(
+      String id,
+      IModel<BasicUser> model,
+      org.wicketstuff.select2.ChoiceProvider<BasicUser> choiceProvider) {
+    super(id, model, choiceProvider);
+  }
 
-	public BasicUserAjaxDropDownSingleChoice(String id, IModel<BasicUser> model) {
-		this(id, model, new ChoiceProvider());
-	}
+  private static class ChoiceProvider extends AbstractLongIdGenericEntityChoiceProvider<BasicUser> {
 
-	public BasicUserAjaxDropDownSingleChoice(String id, IModel<BasicUser> model, org.wicketstuff.select2.ChoiceProvider<BasicUser> choiceProvider) {
-		super(id, model, choiceProvider);
-	}
+    private static final long serialVersionUID = 1L;
 
-	private static class ChoiceProvider extends AbstractLongIdGenericEntityChoiceProvider<BasicUser> {
-		
-		private static final long serialVersionUID = 1L;
-		
-		@SpringBean
-		private IBasicUserSearchQuery searchQuery;
-		
-		public ChoiceProvider() {
-			super(BasicUser.class, UserRenderer.get());
-		}
-		
-		@Override
-		protected void query(String term, int offset, int limit, Response<BasicUser> response) {
-			BasicUserSearchQueryData data = new BasicUserSearchQueryData();
-			data.setTerm(term);
-			data.setEnabledFilter(EnabledFilter.ENABLED_ONLY);
-			Map<BasicUserSort, SortOrder> sorts = ImmutableMap.of(
-				BasicUserSort.SCORE, BasicUserSort.SCORE.getDefaultOrder(),
-				BasicUserSort.LAST_NAME, BasicUserSort.LAST_NAME.getDefaultOrder(),
-				BasicUserSort.FIRST_NAME, BasicUserSort.FIRST_NAME.getDefaultOrder(),
-				BasicUserSort.ID, BasicUserSort.ID.getDefaultOrder()
-			);
-			response.addAll(searchQuery.list(data, sorts, offset, limit));
-		}
-	}
+    @SpringBean private IBasicUserSearchQuery searchQuery;
+
+    public ChoiceProvider() {
+      super(BasicUser.class, UserRenderer.get());
+    }
+
+    @Override
+    protected void query(String term, int offset, int limit, Response<BasicUser> response) {
+      BasicUserSearchQueryData data = new BasicUserSearchQueryData();
+      data.setTerm(term);
+      data.setEnabledFilter(EnabledFilter.ENABLED_ONLY);
+      Map<BasicUserSort, SortOrder> sorts =
+          ImmutableMap.of(
+              BasicUserSort.SCORE, BasicUserSort.SCORE.getDefaultOrder(),
+              BasicUserSort.LAST_NAME, BasicUserSort.LAST_NAME.getDefaultOrder(),
+              BasicUserSort.FIRST_NAME, BasicUserSort.FIRST_NAME.getDefaultOrder(),
+              BasicUserSort.ID, BasicUserSort.ID.getDefaultOrder());
+      response.addAll(searchQuery.list(data, sorts, offset, limit));
+    }
+  }
 }

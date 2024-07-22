@@ -4,16 +4,16 @@ import org.iglooproject.wicket.more.css.scss.ScssResourceReference;
 
 public final class NotificationEmailScssResourceReference extends ScssResourceReference {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	private static final NotificationEmailScssResourceReference INSTANCE = new NotificationEmailScssResourceReference();
+  private static final NotificationEmailScssResourceReference INSTANCE =
+      new NotificationEmailScssResourceReference();
 
-	private NotificationEmailScssResourceReference() {
-		super(NotificationEmailScssResourceReference.class, "notification-email.scss");
-	}
+  private NotificationEmailScssResourceReference() {
+    super(NotificationEmailScssResourceReference.class, "notification-email.scss");
+  }
 
-	public static NotificationEmailScssResourceReference get() {
-		return INSTANCE;
-	}
-
+  public static NotificationEmailScssResourceReference get() {
+    return INSTANCE;
+  }
 }

@@ -5,6 +5,5 @@ import org.iglooproject.test.business.person.model.PersonReference;
 import org.springframework.stereotype.Repository;
 
 @Repository("personReferenceDao")
-public class PersonReferenceDaoImpl extends GenericEntityDaoImpl<Long, PersonReference> implements IPersonReferenceDao {
-
-}
+public class PersonReferenceDaoImpl extends GenericEntityDaoImpl<Long, PersonReference>
+    implements IPersonReferenceDao {}

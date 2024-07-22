@@ -7,16 +7,15 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 /**
  * Minimal configuration with initializer setting to enable bootstrap mechanism.
- * 
+ *
  * @see ExtendedApplicationContextInitializer
  * @see ExtendedApplicationContextInitializer
  */
 @Configuration
 public class BootstrapSpringConfig {
-	
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer configurer() {
-		return new PropertySourcesPlaceholderConfigurer();
-	}
 
+  @Bean
+  public static PropertySourcesPlaceholderConfigurer configurer() {
+    return new PropertySourcesPlaceholderConfigurer();
+  }
 }

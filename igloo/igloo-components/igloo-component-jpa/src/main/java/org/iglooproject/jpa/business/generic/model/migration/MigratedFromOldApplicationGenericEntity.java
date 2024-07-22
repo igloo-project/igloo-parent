@@ -1,37 +1,35 @@
 package org.iglooproject.jpa.business.generic.model.migration;
 
-import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-
+import java.io.Serializable;
 import org.iglooproject.jpa.business.generic.model.PredefinedIdGenericEntity;
 
 /**
  * This class should only be used as a temporary measure to migrate entities from an old application
  * to a new one.
- * 
- * It allows us to keep the old id as the new id.
+ *
+ * <p>It allows us to keep the old id as the new id.
  *
  * @see MigratedFromOldApplicationSequenceGenerator
  */
 @MappedSuperclass
-public abstract class MigratedFromOldApplicationGenericEntity<K extends Serializable & Comparable<K>, E extends PredefinedIdGenericEntity<K, E>>
-		extends PredefinedIdGenericEntity<K, E> implements IMigratedFromOldApplicationEntity<K> {
+public abstract class MigratedFromOldApplicationGenericEntity<
+        K extends Serializable & Comparable<K>, E extends PredefinedIdGenericEntity<K, E>>
+    extends PredefinedIdGenericEntity<K, E> implements IMigratedFromOldApplicationEntity<K> {
 
-	private static final long serialVersionUID = 2034570162020079499L;
-	
-	@Column(nullable = false)
-	private boolean migrated = false;
+  private static final long serialVersionUID = 2034570162020079499L;
 
-	@Override
-	public boolean isMigrated() {
-		return migrated;
-	}
+  @Column(nullable = false)
+  private boolean migrated = false;
 
-	@Override
-	public void setMigrated(boolean migrated) {
-		this.migrated = migrated;
-	}
+  @Override
+  public boolean isMigrated() {
+    return migrated;
+  }
 
+  @Override
+  public void setMigrated(boolean migrated) {
+    this.migrated = migrated;
+  }
 }

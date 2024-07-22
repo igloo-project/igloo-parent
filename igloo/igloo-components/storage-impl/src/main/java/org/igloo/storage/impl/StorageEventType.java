@@ -1,9 +1,7 @@
 package org.igloo.storage.impl;
 
 public enum StorageEventType {
+  ADD,
 
-	ADD,
-
-	DELETE;
-
+  DELETE;
 }

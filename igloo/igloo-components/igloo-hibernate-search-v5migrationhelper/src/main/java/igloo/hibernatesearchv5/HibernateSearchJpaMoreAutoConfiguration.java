@@ -12,13 +12,16 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 @AutoConfiguration(after = JpaAutoConfiguration.class)
-@ConditionalOnClass({ Search.class, LocalContainerEntityManagerFactoryBean.class })
-@ConditionalOnProperty(name = "spring.jpa.properties.hibernate.search.enabled", matchIfMissing = true, havingValue = "true")
+@ConditionalOnClass({Search.class, LocalContainerEntityManagerFactoryBean.class})
+@ConditionalOnProperty(
+    name = "spring.jpa.properties.hibernate.search.enabled",
+    matchIfMissing = true,
+    havingValue = "true")
 public class HibernateSearchJpaMoreAutoConfiguration {
-	@Bean
-	@ConditionalOnMissingBean
-	@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public IHibernateSearchLuceneQueryFactory hibernateSearchLuceneQueryFactory() {
-		return new HibernateSearchLuceneQueryFactoryImpl();
-	}
+  @Bean
+  @ConditionalOnMissingBean
+  @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+  public IHibernateSearchLuceneQueryFactory hibernateSearchLuceneQueryFactory() {
+    return new HibernateSearchLuceneQueryFactoryImpl();
+  }
 }

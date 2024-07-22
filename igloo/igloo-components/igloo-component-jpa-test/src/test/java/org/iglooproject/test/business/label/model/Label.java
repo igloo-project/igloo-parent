@@ -1,49 +1,43 @@
 package org.iglooproject.test.business.label.model;
 
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 @Entity
 public class Label extends GenericEntity<String, Label> {
 
-	private static final long serialVersionUID = -2200458949166945096L;
-	
-	@Id
-	private String id;
-	
-	/**
-	 * 2022-01: value is a reserved name with h2 2.x
-	 */
-	@Column(name = "_value")
-	private String value;
+  private static final long serialVersionUID = -2200458949166945096L;
 
-	public Label() {
-	}
-	
-	public Label(String id, String value) {
-		this.id = id;
-		this.value = value;
-	}
-	
-	@Override
-	public String getId() {
-		return id;
-	}
+  @Id private String id;
 
-	@Override
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public String getValue() {
-		return value;
-	}
+  /** 2022-01: value is a reserved name with h2 2.x */
+  @Column(name = "_value")
+  private String value;
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+  public Label() {}
 
+  public Label(String id, String value) {
+    this.id = id;
+    this.value = value;
+  }
+
+  @Override
+  public String getId() {
+    return id;
+  }
+
+  @Override
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
+  }
 }

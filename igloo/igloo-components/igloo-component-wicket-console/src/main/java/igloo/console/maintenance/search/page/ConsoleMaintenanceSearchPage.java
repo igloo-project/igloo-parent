@@ -1,11 +1,17 @@
 package igloo.console.maintenance.search.page;
 
+import com.google.common.collect.Sets;
+import igloo.bootstrap.confirm.AjaxConfirmLink;
+import igloo.bootstrap.modal.WorkInProgressPopup;
+import igloo.console.common.component.JavaClassesDropDownMultipleChoice;
+import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
+import igloo.wicket.action.IAjaxAction;
+import igloo.wicket.model.Detachables;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -32,164 +38,168 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Sets;
-
-import igloo.bootstrap.confirm.AjaxConfirmLink;
-import igloo.bootstrap.modal.WorkInProgressPopup;
-import igloo.console.common.component.JavaClassesDropDownMultipleChoice;
-import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
-import igloo.wicket.action.IAjaxAction;
-import igloo.wicket.model.Detachables;
-
 public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 
-	private static final long serialVersionUID = 2718354274888156322L;
+  private static final long serialVersionUID = 2718354274888156322L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceSearchPage.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceSearchPage.class);
 
-	public static final IPageLinkDescriptor linkDescriptor() {
-		return LinkDescriptorBuilder.start()
-			.page(ConsoleMaintenanceSearchPage.class);
-	}
+  public static final IPageLinkDescriptor linkDescriptor() {
+    return LinkDescriptorBuilder.start().page(ConsoleMaintenanceSearchPage.class);
+  }
 
-	@SpringBean
-	private IHibernateSearchService hibernateSearchService;
+  @SpringBean private IHibernateSearchService hibernateSearchService;
 
-	private final IModel<Collection<Class<?>>> classesChoicesModel;
+  private final IModel<Collection<Class<?>>> classesChoicesModel;
 
-	private final IModel<List<Class<?>>> classesModel = new ListModel<>(new ArrayList<>());
-	private final IModel<String> idsModel = new Model<>();
+  private final IModel<List<Class<?>>> classesModel = new ListModel<>(new ArrayList<>());
+  private final IModel<String> idsModel = new Model<>();
 
-	public ConsoleMaintenanceSearchPage(PageParameters parameters) {
-		super(parameters);
-		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.search")));
-		
-		WorkInProgressPopup loadingPopup = new WorkInProgressPopup("loadingPopup", new ResourceModel("common.action.loading"));
-		add(loadingPopup);
-		
-		add(
-			AjaxConfirmLink.<Void>build()
-				.title(new ResourceModel("common.action.confirm.title"))
-				.content(new ResourceModel("common.action.confirm.content"))
-				.confirm()
-				.onClick(new IAjaxAction() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public void execute(AjaxRequestTarget target) {
-						try {
-							hibernateSearchService.reindexAll();
-							Session.get().success(getString("common.success"));
-						} catch(Exception e) {
-							LOGGER.error("Erreur lors la réindexation complète.", e);
-							Session.get().error(getString("common.error.unexpected"));
-						}
-						setResponsePage(ConsoleMaintenanceSearchPage.class);
-					}
-					@Override
-					public void updateAjaxAttributes(AjaxRequestAttributes attributes) {
-						IAjaxAction.super.updateAjaxAttributes(attributes);
-						loadingPopup.updateAjaxAttributes(attributes);
-					}
-				})
-				.create("reindexContent")
-		);
-		
-		Form<?> reindexClassesForm = new Form<>("reindexClassesForm");
-		add(reindexClassesForm);
-		
-		classesChoicesModel = new LoadableDetachableModel<Collection<Class<?>>>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected Collection<Class<?>> load() {
-				try {
-					return hibernateSearchService.getIndexedRootEntities();
-				} catch (ServiceException e) {
-					LOGGER.error("Erreur lors de la récupération de la liste des classes indexées.", e);
-					Session.get().error(getString("console.maintenance.search.reindex.partial.error.getClasses"));
-					reindexClassesForm.setVisibilityAllowed(false);
-					return Collections.emptyList();
-				}
-			}
-		};
-		classesChoicesModel.getObject(); // early load
-		
-		reindexClassesForm.add(
-			new JavaClassesDropDownMultipleChoice("classes", classesModel, Suppliers2.arrayList(), classesChoicesModel)
-				.setRequired(true)
-				.setLabel(new ResourceModel("console.maintenance.search.reindex.partial.form.classes"))
-				.add(new LabelPlaceholderBehavior()),
-			
-			new TextArea<>("ids", idsModel)
-				.setLabel(new ResourceModel("console.maintenance.search.reindex.partial.form.ids"))
-				.add(new AttributeModifier("placeholder", new ResourceModel("console.maintenance.search.reindex.partial.form.ids.placeholder"))),
-			
-			AjaxConfirmLink.<Void>build()
-				.title(new ResourceModel("common.action.confirm.title"))
-				.content(new ResourceModel("common.action.confirm.content"))
-				.submit(reindexClassesForm)
-				.confirm()
-				.onClick(new IAjaxAction() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public void execute(AjaxRequestTarget target) {
-						try {
-							Set<Long> entityIds = Sets.newTreeSet();
-							for (String entityIdString : StringUtils.splitAsList(StringUtils.normalizeNewLines(idsModel.getObject()),StringUtils.NEW_LINE_ANTISLASH_N)) {
-								if (StringUtils.hasText(entityIdString)) {
-									try {
-										entityIds.add(Long.parseLong(StringUtils.trimWhitespace(entityIdString)));
-									} catch (NumberFormatException e) {
-										// On ignore les id saisis qui ne sont pas numériques
-									}
-								}
-							}
-							
-							if (entityIds.isEmpty()) {
-								hibernateSearchService.reindexClasses(classesModel.getObject());
-							} else {
-								for (Class<?> clazz : classesModel.getObject()) {
-									for (Long entityId : entityIds) {
-										try {
-											@SuppressWarnings("unchecked")
-											Class<GenericEntity<Long, ?>> genericEntityClazz = (Class<GenericEntity<Long, ?>>) clazz;
-											hibernateSearchService.reindexEntity(genericEntityClazz, entityId);
-										} catch (IllegalArgumentException e) {
-											// On ignore les classes qui ne sont pas des GenericEntity.
-										}
-									}
-								}
-							}
-							
-							classesModel.getObject().clear();
-							idsModel.setObject(null);
-							
-							Session.get().success(getString("common.success"));
-						} catch (Exception e) {
-							LOGGER.error("Erreur lors la réindexation d'entités.", e);
-							Session.get().error(getString("common.error.unexpected"));
-						}
-						setResponsePage(ConsoleMaintenanceSearchPage.class);
-					}
-					@Override
-					public void updateAjaxAttributes(AjaxRequestAttributes attributes) {
-						IAjaxAction.super.updateAjaxAttributes(attributes);
-						loadingPopup.updateAjaxAttributes(attributes);
-					}
-				})
-				.create("reindexClasses")
-		);
-	}
+  public ConsoleMaintenanceSearchPage(PageParameters parameters) {
+    super(parameters);
 
-	@Override
-	protected void onDetach() {
-		super.onDetach();
-		Detachables.detach(classesChoicesModel, classesModel, idsModel);
-	}
+    addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.search")));
 
-	@Override
-	protected Class<? extends WebPage> getSecondMenuPage() {
-		return ConsoleMaintenanceSearchPage.class;
-	}
+    WorkInProgressPopup loadingPopup =
+        new WorkInProgressPopup("loadingPopup", new ResourceModel("common.action.loading"));
+    add(loadingPopup);
 
+    add(
+        AjaxConfirmLink.<Void>build()
+            .title(new ResourceModel("common.action.confirm.title"))
+            .content(new ResourceModel("common.action.confirm.content"))
+            .confirm()
+            .onClick(
+                new IAjaxAction() {
+                  private static final long serialVersionUID = 1L;
+
+                  @Override
+                  public void execute(AjaxRequestTarget target) {
+                    try {
+                      hibernateSearchService.reindexAll();
+                      Session.get().success(getString("common.success"));
+                    } catch (Exception e) {
+                      LOGGER.error("Erreur lors la réindexation complète.", e);
+                      Session.get().error(getString("common.error.unexpected"));
+                    }
+                    setResponsePage(ConsoleMaintenanceSearchPage.class);
+                  }
+
+                  @Override
+                  public void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                    IAjaxAction.super.updateAjaxAttributes(attributes);
+                    loadingPopup.updateAjaxAttributes(attributes);
+                  }
+                })
+            .create("reindexContent"));
+
+    Form<?> reindexClassesForm = new Form<>("reindexClassesForm");
+    add(reindexClassesForm);
+
+    classesChoicesModel =
+        new LoadableDetachableModel<Collection<Class<?>>>() {
+          private static final long serialVersionUID = 1L;
+
+          @Override
+          protected Collection<Class<?>> load() {
+            try {
+              return hibernateSearchService.getIndexedRootEntities();
+            } catch (ServiceException e) {
+              LOGGER.error("Erreur lors de la récupération de la liste des classes indexées.", e);
+              Session.get()
+                  .error(getString("console.maintenance.search.reindex.partial.error.getClasses"));
+              reindexClassesForm.setVisibilityAllowed(false);
+              return Collections.emptyList();
+            }
+          }
+        };
+    classesChoicesModel.getObject(); // early load
+
+    reindexClassesForm.add(
+        new JavaClassesDropDownMultipleChoice(
+                "classes", classesModel, Suppliers2.arrayList(), classesChoicesModel)
+            .setRequired(true)
+            .setLabel(new ResourceModel("console.maintenance.search.reindex.partial.form.classes"))
+            .add(new LabelPlaceholderBehavior()),
+        new TextArea<>("ids", idsModel)
+            .setLabel(new ResourceModel("console.maintenance.search.reindex.partial.form.ids"))
+            .add(
+                new AttributeModifier(
+                    "placeholder",
+                    new ResourceModel(
+                        "console.maintenance.search.reindex.partial.form.ids.placeholder"))),
+        AjaxConfirmLink.<Void>build()
+            .title(new ResourceModel("common.action.confirm.title"))
+            .content(new ResourceModel("common.action.confirm.content"))
+            .submit(reindexClassesForm)
+            .confirm()
+            .onClick(
+                new IAjaxAction() {
+                  private static final long serialVersionUID = 1L;
+
+                  @Override
+                  public void execute(AjaxRequestTarget target) {
+                    try {
+                      Set<Long> entityIds = Sets.newTreeSet();
+                      for (String entityIdString :
+                          StringUtils.splitAsList(
+                              StringUtils.normalizeNewLines(idsModel.getObject()),
+                              StringUtils.NEW_LINE_ANTISLASH_N)) {
+                        if (StringUtils.hasText(entityIdString)) {
+                          try {
+                            entityIds.add(
+                                Long.parseLong(StringUtils.trimWhitespace(entityIdString)));
+                          } catch (NumberFormatException e) {
+                            // On ignore les id saisis qui ne sont pas numériques
+                          }
+                        }
+                      }
+
+                      if (entityIds.isEmpty()) {
+                        hibernateSearchService.reindexClasses(classesModel.getObject());
+                      } else {
+                        for (Class<?> clazz : classesModel.getObject()) {
+                          for (Long entityId : entityIds) {
+                            try {
+                              @SuppressWarnings("unchecked")
+                              Class<GenericEntity<Long, ?>> genericEntityClazz =
+                                  (Class<GenericEntity<Long, ?>>) clazz;
+                              hibernateSearchService.reindexEntity(genericEntityClazz, entityId);
+                            } catch (IllegalArgumentException e) {
+                              // On ignore les classes qui ne sont pas des GenericEntity.
+                            }
+                          }
+                        }
+                      }
+
+                      classesModel.getObject().clear();
+                      idsModel.setObject(null);
+
+                      Session.get().success(getString("common.success"));
+                    } catch (Exception e) {
+                      LOGGER.error("Erreur lors la réindexation d'entités.", e);
+                      Session.get().error(getString("common.error.unexpected"));
+                    }
+                    setResponsePage(ConsoleMaintenanceSearchPage.class);
+                  }
+
+                  @Override
+                  public void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+                    IAjaxAction.super.updateAjaxAttributes(attributes);
+                    loadingPopup.updateAjaxAttributes(attributes);
+                  }
+                })
+            .create("reindexClasses"));
+  }
+
+  @Override
+  protected void onDetach() {
+    super.onDetach();
+    Detachables.detach(classesChoicesModel, classesModel, idsModel);
+  }
+
+  @Override
+  protected Class<? extends WebPage> getSecondMenuPage() {
+    return ConsoleMaintenanceSearchPage.class;
+  }
 }

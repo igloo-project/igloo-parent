@@ -1,8 +1,10 @@
 package org.iglooproject.wicket.more.link.descriptor.builder.impl.parameter;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import igloo.wicket.factory.IDetachableFactory;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.wicket.model.IDetachable;
 import org.bindgen.BindingRoot;
 import org.iglooproject.functional.SerializablePredicate2;
@@ -19,137 +21,145 @@ import org.iglooproject.wicket.more.link.descriptor.parameter.mapping.factory.IL
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.ConditionLinkParameterValidator;
 import org.iglooproject.wicket.more.link.descriptor.parameter.validator.factory.ILinkParameterValidatorFactory;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
-import igloo.wicket.factory.IDetachableFactory;
-
 /**
  * A base for implementing all interfaces that extend {@link IChosenParameterState}.
- * 
- * <p>In order to keep things simple, it is expected that multiple interfaces are implemented at once. For example,
- * the implementation for two available parameters will implement {@link ITwoMappableParameterOneChosenParameterState}
- * <strong>and</strong> {@link ITwoMappableParameterTwoChosenParameterState}. This implies that generics must be left aside
- * (we use raw types).
+ *
+ * <p>In order to keep things simple, it is expected that multiple interfaces are implemented at
+ * once. For example, the implementation for two available parameters will implement {@link
+ * ITwoMappableParameterOneChosenParameterState} <strong>and</strong> {@link
+ * ITwoMappableParameterTwoChosenParameterState}. This implies that generics must be left aside (we
+ * use raw types).
  */
 @SuppressWarnings("rawtypes")
 public abstract class AbstractChosenParameterStateImpl<TSelf, TInitialState>
-		implements IChosenParameterState, IOneChosenParameterState {
-	
-	private final List<Integer> parameterIndices;
+    implements IChosenParameterState, IOneChosenParameterState {
 
-	public AbstractChosenParameterStateImpl() {
-		this.parameterIndices = Lists.newArrayList();
-	}
-	
-	protected abstract LinkParameterTypeInformation<?> getParameterTypeInformation(int index);
-	
-	public List<Integer> getParameterIndices() {
-		return Collections.unmodifiableList(parameterIndices);
-	}
-	
-	private void addDynamicParameter(int index) {
-		parameterIndices.add(index);
-	}
-	
-	private int getFirstIndex() {
-		return parameterIndices.get(0);
-	}
-	
-	@Override
-	@SuppressWarnings("unchecked")
-	public IAddedParameterMappingState<TInitialState> map(String parameterName) {
-		LinkParameterTypeInformation<?> typeInfo = getParameterTypeInformation(getFirstIndex());
-		if (typeInfo.getTypeDescriptorSupplier().get().isCollection()) {
-			return map(CollectionLinkParameterMappingEntry.factory(
-					parameterName, typeInfo.getTypeDescriptorSupplier(), (SerializableSupplier2) typeInfo.getEmptyValueSupplier()
-			));
-		} else {
-			return map(SimpleLinkParameterMappingEntry.factory(
-					parameterName, typeInfo.getTypeDescriptorSupplier()
-			));
-		}
-	}
+  private final List<Integer> parameterIndices;
 
-	@Override
-	public abstract IAddedParameterMappingState<TInitialState> map(ILinkParameterMappingEntryFactory parameterMappingEntryFactory);
+  public AbstractChosenParameterStateImpl() {
+    this.parameterIndices = Lists.newArrayList();
+  }
 
-	@Override
-	public IAddedParameterMappingState<TInitialState> renderInUrl(String parameterName) {
-		return map(InjectOnlyLinkParameterMappingEntry.factory(parameterName));
-	}
+  protected abstract LinkParameterTypeInformation<?> getParameterTypeInformation(int index);
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public IAddedParameterMappingState<TInitialState> renderInUrl(String parameterName, BindingRoot binding) {
-		return map(InjectOnlyLinkParameterMappingEntry.factory(parameterName, binding));
-	}
+  public List<Integer> getParameterIndices() {
+    return Collections.unmodifiableList(parameterIndices);
+  }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public TInitialState validator(SerializablePredicate2 predicate) {
-		// (ILinkParameterValidatorFactory) cast to raw-type needed in java 8
-		return validator((ILinkParameterValidatorFactory) ConditionLinkParameterValidator.predicateFactory(predicate));
-	}
+  private void addDynamicParameter(int index) {
+    parameterIndices.add(index);
+  }
 
-	@Override
-	public TInitialState permission(String permissionName) {
-		return validator(ConditionLinkParameterValidator.anyPermissionFactory(ImmutableList.of(permissionName)));
-	}
+  private int getFirstIndex() {
+    return parameterIndices.get(0);
+  }
 
-	@Override
-	public TInitialState permission(String firstPermissionName, String... otherPermissionNames) {
-		return validator(ConditionLinkParameterValidator.anyPermissionFactory(Lists.asList(firstPermissionName, otherPermissionNames)));
-	}
+  @Override
+  @SuppressWarnings("unchecked")
+  public IAddedParameterMappingState<TInitialState> map(String parameterName) {
+    LinkParameterTypeInformation<?> typeInfo = getParameterTypeInformation(getFirstIndex());
+    if (typeInfo.getTypeDescriptorSupplier().get().isCollection()) {
+      return map(
+          CollectionLinkParameterMappingEntry.factory(
+              parameterName,
+              typeInfo.getTypeDescriptorSupplier(),
+              (SerializableSupplier2) typeInfo.getEmptyValueSupplier()));
+    } else {
+      return map(
+          SimpleLinkParameterMappingEntry.factory(
+              parameterName, typeInfo.getTypeDescriptorSupplier()));
+    }
+  }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public TInitialState permission(BindingRoot binding, String firstPermissionName,
-			String... otherPermissionNames) {
-		// (ILinkParameterValidatorFactory) cast to raw-type needed in java 8
-		return validator((ILinkParameterValidatorFactory) ConditionLinkParameterValidator.anyPermissionFactory(binding,
-				Lists.asList(firstPermissionName, otherPermissionNames)));
-	}
+  @Override
+  public abstract IAddedParameterMappingState<TInitialState> map(
+      ILinkParameterMappingEntryFactory parameterMappingEntryFactory);
 
-	@Override
-	public abstract TInitialState validator(ILinkParameterValidatorFactory parameterValidatorFactory);
+  @Override
+  public IAddedParameterMappingState<TInitialState> renderInUrl(String parameterName) {
+    return map(InjectOnlyLinkParameterMappingEntry.factory(parameterName));
+  }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public TInitialState validator(IDetachableFactory conditionFactory) {
-		// (ILinkParameterValidatorFactory) cast to raw-type needed in java 8
-		return validator((ILinkParameterValidatorFactory) ConditionLinkParameterValidator.fromConditionFactory(conditionFactory));
-	}
+  @SuppressWarnings("unchecked")
+  @Override
+  public IAddedParameterMappingState<TInitialState> renderInUrl(
+      String parameterName, BindingRoot binding) {
+    return map(InjectOnlyLinkParameterMappingEntry.factory(parameterName, binding));
+  }
 
-	@Override
-	public abstract IDetachable page(IDetachableFactory pageClassFactory);
+  @SuppressWarnings("unchecked")
+  @Override
+  public TInitialState validator(SerializablePredicate2 predicate) {
+    // (ILinkParameterValidatorFactory) cast to raw-type needed in java 8
+    return validator(
+        (ILinkParameterValidatorFactory)
+            ConditionLinkParameterValidator.predicateFactory(predicate));
+  }
 
-	@Override
-	public abstract IDetachable resource(IDetachableFactory resourceReferenceFactory);
+  @Override
+  public TInitialState permission(String permissionName) {
+    return validator(
+        ConditionLinkParameterValidator.anyPermissionFactory(ImmutableList.of(permissionName)));
+  }
 
-	@Override
-	public abstract IDetachable imageResource(IDetachableFactory resourceReferenceFactory);
+  @Override
+  public TInitialState permission(String firstPermissionName, String... otherPermissionNames) {
+    return validator(
+        ConditionLinkParameterValidator.anyPermissionFactory(
+            Lists.asList(firstPermissionName, otherPermissionNames)));
+  }
 
-	protected abstract TSelf thisAsTSelf();
+  @SuppressWarnings("unchecked")
+  @Override
+  public TInitialState permission(
+      BindingRoot binding, String firstPermissionName, String... otherPermissionNames) {
+    // (ILinkParameterValidatorFactory) cast to raw-type needed in java 8
+    return validator(
+        (ILinkParameterValidatorFactory)
+            ConditionLinkParameterValidator.anyPermissionFactory(
+                binding, Lists.asList(firstPermissionName, otherPermissionNames)));
+  }
 
-	public TSelf andFirst() {
-		addDynamicParameter(0);
-		return thisAsTSelf();
-	}
+  @Override
+  public abstract TInitialState validator(ILinkParameterValidatorFactory parameterValidatorFactory);
 
-	public TSelf andSecond() {
-		addDynamicParameter(1);
-		return thisAsTSelf();
-	}
+  @SuppressWarnings("unchecked")
+  @Override
+  public TInitialState validator(IDetachableFactory conditionFactory) {
+    // (ILinkParameterValidatorFactory) cast to raw-type needed in java 8
+    return validator(
+        (ILinkParameterValidatorFactory)
+            ConditionLinkParameterValidator.fromConditionFactory(conditionFactory));
+  }
 
-	public TSelf andThird() {
-		addDynamicParameter(2);
-		return thisAsTSelf();
-	}
+  @Override
+  public abstract IDetachable page(IDetachableFactory pageClassFactory);
 
-	public TSelf andFourth() {
-		addDynamicParameter(3);
-		return thisAsTSelf();
-	}
+  @Override
+  public abstract IDetachable resource(IDetachableFactory resourceReferenceFactory);
 
+  @Override
+  public abstract IDetachable imageResource(IDetachableFactory resourceReferenceFactory);
+
+  protected abstract TSelf thisAsTSelf();
+
+  public TSelf andFirst() {
+    addDynamicParameter(0);
+    return thisAsTSelf();
+  }
+
+  public TSelf andSecond() {
+    addDynamicParameter(1);
+    return thisAsTSelf();
+  }
+
+  public TSelf andThird() {
+    addDynamicParameter(2);
+    return thisAsTSelf();
+  }
+
+  public TSelf andFourth() {
+    addDynamicParameter(3);
+    return thisAsTSelf();
+  }
 }

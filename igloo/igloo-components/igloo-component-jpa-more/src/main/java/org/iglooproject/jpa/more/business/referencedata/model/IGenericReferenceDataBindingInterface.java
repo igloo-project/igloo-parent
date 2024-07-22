@@ -6,22 +6,21 @@ import org.iglooproject.jpa.business.generic.model.IGenericEntityBindingInterfac
 @Bindable
 public interface IGenericReferenceDataBindingInterface<T> extends IGenericEntityBindingInterface {
 
-	@Override
-	Long getId();
+  @Override
+  Long getId();
 
-	@Override
-	boolean isNew();
+  @Override
+  boolean isNew();
 
-	T getLabel();
+  T getLabel();
 
-	Integer getPosition();
+  Integer getPosition();
 
-	boolean isEnabled();
+  boolean isEnabled();
 
-	boolean isEditable();
+  boolean isEditable();
 
-	boolean isDisableable();
+  boolean isDisableable();
 
-	boolean isDeleteable();
-
+  boolean isDeleteable();
 }

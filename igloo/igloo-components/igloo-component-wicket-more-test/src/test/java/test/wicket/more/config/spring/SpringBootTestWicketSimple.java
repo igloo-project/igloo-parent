@@ -5,7 +5,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.jpa.security.autoconfigure.SecurityAutoConfiguration;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
@@ -21,18 +20,13 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 @Retention(RUNTIME)
 @Target(TYPE)
 @EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
-@SpringBootTest(classes = { TestCommonConfiguration.class, TestSimpleApplicationConfiguration.class })
+@SpringBootTest(classes = {TestCommonConfiguration.class, TestSimpleApplicationConfiguration.class})
 @ContextConfiguration(initializers = ExtendedApplicationContextInitializer.class)
 @TestExecutionListeners({
-	DependencyInjectionTestExecutionListener.class,
-	EntityManagerExecutionListener.class,
-	DirtiesContextTestExecutionListener.class
+  DependencyInjectionTestExecutionListener.class,
+  EntityManagerExecutionListener.class,
+  DirtiesContextTestExecutionListener.class
 })
 @DirtiesContext
-@TestPropertySource(properties = {
-	"igloo.profile=test",
-	"configurationType=development"
-})
-public @interface SpringBootTestWicketSimple {
-
-}
+@TestPropertySource(properties = {"igloo.profile=test", "configurationType=development"})
+public @interface SpringBootTestWicketSimple {}

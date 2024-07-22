@@ -19,28 +19,27 @@ import org.springframework.context.annotation.ScopedProxyMode;
 @ComponentScan(basePackageClasses = JpaSecurityTestBusinessPackage.class)
 public class TestJpaSecurityConfiguration {
 
-	@Bean
-	public String roleHierarchyAsString() {
-		return SecurityUtils.defaultRoleHierarchyAsString() +
-				"ROLE_ADMIN > ROLE_GROUP_1\n" +
-				"ROLE_ADMIN > ROLE_GROUP_2\n" +
-				"ROLE_GROUP_1 > ROLE_GROUP_3\n";
-	}
+  @Bean
+  public String roleHierarchyAsString() {
+    return SecurityUtils.defaultRoleHierarchyAsString()
+        + "ROLE_ADMIN > ROLE_GROUP_1\n"
+        + "ROLE_ADMIN > ROLE_GROUP_2\n"
+        + "ROLE_GROUP_1 > ROLE_GROUP_3\n";
+  }
 
-	@Bean
-	public String permissionHierarchyAsString() {
-		return SecurityUtils.defaultPermissionHierarchyAsString();
-	}
+  @Bean
+  public String permissionHierarchyAsString() {
+    return SecurityUtils.defaultPermissionHierarchyAsString();
+  }
 
-	@Bean
-	public AuthenticationUsernameComparison authenticationUsernameComparison() {
-		return AuthenticationUsernameComparison.CASE_INSENSITIVE;
-	}
+  @Bean
+  public AuthenticationUsernameComparison authenticationUsernameComparison() {
+    return AuthenticationUsernameComparison.CASE_INSENSITIVE;
+  }
 
-	@Bean
-	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-	public ICorePermissionEvaluator permissionEvaluator() {
-		return new TestCorePermissionEvaluator();
-	}
-
+  @Bean
+  @Scope(proxyMode = ScopedProxyMode.INTERFACES)
+  public ICorePermissionEvaluator permissionEvaluator() {
+    return new TestCorePermissionEvaluator();
+  }
 }

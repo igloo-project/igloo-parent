@@ -11,10 +11,7 @@ import org.springframework.context.annotation.PropertySource;
 @ConditionalOnBean(ManifestPropertySourceBeanFactoryPostProcessor.class)
 @ManifestPropertySource(prefix = "igloo.component-spring")
 @PropertySource(
-	name = IglooPropertySourcePriority.COMPONENT,
-	value = "classpath:igloo-component-spring.properties",
-	encoding = "UTF-8"
-)
-public class SpringInfoAutoConfiguration {
-
-}
+    name = IglooPropertySourcePriority.COMPONENT,
+    value = "classpath:igloo-component-spring.properties",
+    encoding = "UTF-8")
+public class SpringInfoAutoConfiguration {}

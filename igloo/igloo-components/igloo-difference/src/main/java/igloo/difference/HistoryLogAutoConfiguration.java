@@ -19,28 +19,28 @@ import org.springframework.context.annotation.Scope;
 @ConditionalOnBean(JpaMoreAutoConfiguration.class)
 public class HistoryLogAutoConfiguration {
 
-	@SuppressWarnings("rawtypes")
-	@Bean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public DefaultHistoryDifferenceFactory<?> defaultHistoryDifferenceFactory() {
-		return new DefaultHistoryDifferenceFactory();
-	}
+  @SuppressWarnings("rawtypes")
+  @Bean
+  @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+  public DefaultHistoryDifferenceFactory<?> defaultHistoryDifferenceFactory() {
+    return new DefaultHistoryDifferenceFactory();
+  }
 
-	@Bean
-	public HistoryLogTransactionSynchronizationTaskMerger historyLogTransactionSynchronizationTaskMerger() {
-		return new HistoryLogTransactionSynchronizationTaskMerger();
-	}
+  @Bean
+  public HistoryLogTransactionSynchronizationTaskMerger
+      historyLogTransactionSynchronizationTaskMerger() {
+    return new HistoryLogTransactionSynchronizationTaskMerger();
+  }
 
-	@Bean
-	public MetadataBuilderContributor historyLogMetadataBuilderContributor() {
-		return new TypeMetadataBuilderContributor();
-	}
+  @Bean
+  public MetadataBuilderContributor historyLogMetadataBuilderContributor() {
+    return new TypeMetadataBuilderContributor();
+  }
 
-	public static class TypeMetadataBuilderContributor implements MetadataBuilderContributor {
-		@Override
-		public void contribute(MetadataBuilder metadataBuilder) {
-			metadataBuilder.applyBasicType(new FieldPathType(), FieldPath.class.getName());
-		}
-	}
-
+  public static class TypeMetadataBuilderContributor implements MetadataBuilderContributor {
+    @Override
+    public void contribute(MetadataBuilder metadataBuilder) {
+      metadataBuilder.applyBasicType(new FieldPathType(), FieldPath.class.getName());
+    }
+  }
 }

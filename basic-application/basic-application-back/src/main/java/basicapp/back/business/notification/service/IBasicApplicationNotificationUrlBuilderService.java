@@ -1,11 +1,10 @@
 package basicapp.back.business.notification.service;
 
+import basicapp.back.business.user.model.User;
 import org.iglooproject.spring.notification.service.INotificationUrlBuilderService;
 
-import basicapp.back.business.user.model.User;
+public interface IBasicApplicationNotificationUrlBuilderService
+    extends INotificationUrlBuilderService {
 
-public interface IBasicApplicationNotificationUrlBuilderService extends INotificationUrlBuilderService {
-
-	String getUserDescriptionUrl(User user);
-
+  String getUserDescriptionUrl(User user);
 }

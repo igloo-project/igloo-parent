@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("entityNullableService")
-public class EntityNullableServiceImpl extends GenericEntityServiceImpl<Long, EntityNullable> implements IEntityNullableService {
+public class EntityNullableServiceImpl extends GenericEntityServiceImpl<Long, EntityNullable>
+    implements IEntityNullableService {
 
-	@Autowired
-	public EntityNullableServiceImpl(IEntityNullableDao entityNullableDao) {
-		super(entityNullableDao);
-	}
+  @Autowired
+  public EntityNullableServiceImpl(IEntityNullableDao entityNullableDao) {
+    super(entityNullableDao);
+  }
 }

@@ -6,5 +6,4 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EntityScan(basePackageClasses = CoreJpaMoreBusinessPackage.class)
-public class JpaMoreModelAutoConfiguration {
-}
+public class JpaMoreModelAutoConfiguration {}

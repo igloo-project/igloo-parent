@@ -7,12 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("personReferenceService")
-public class PersonReferenceServiceImpl extends GenericEntityServiceImpl<Long, PersonReference> implements
-		IPersonReferenceService {
+public class PersonReferenceServiceImpl extends GenericEntityServiceImpl<Long, PersonReference>
+    implements IPersonReferenceService {
 
-	@Autowired
-	public PersonReferenceServiceImpl(IPersonReferenceDao genericDao) {
-		super(genericDao);
-	}
-
+  @Autowired
+  public PersonReferenceServiceImpl(IPersonReferenceDao genericDao) {
+    super(genericDao);
+  }
 }

@@ -1,7 +1,12 @@
 package basicapp.front.administration.model;
 
+import basicapp.back.business.user.model.UserGroup;
+import basicapp.back.business.user.search.IUserGroupSearchQuery;
+import basicapp.back.business.user.search.UserGroupSearchQueryData;
+import basicapp.back.business.user.search.UserGroupSort;
+import basicapp.back.util.binding.Bindings;
+import com.google.common.collect.ImmutableMap;
 import java.util.function.UnaryOperator;
-
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -11,61 +16,51 @@ import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.iglooproject.wicket.more.model.data.DataModel;
 import org.iglooproject.wicket.more.model.search.query.SearchQueryDataProvider;
 
-import com.google.common.collect.ImmutableMap;
+public class UserGroupDataProvider
+    extends SearchQueryDataProvider<
+        UserGroup, UserGroupSort, UserGroupSearchQueryData, IUserGroupSearchQuery> {
 
-import basicapp.back.business.user.model.UserGroup;
-import basicapp.back.business.user.search.IUserGroupSearchQuery;
-import basicapp.back.business.user.search.UserGroupSearchQueryData;
-import basicapp.back.business.user.search.UserGroupSort;
-import basicapp.back.util.binding.Bindings;
+  private static final long serialVersionUID = 1L;
 
-public class UserGroupDataProvider extends SearchQueryDataProvider<UserGroup, UserGroupSort, UserGroupSearchQueryData, IUserGroupSearchQuery> {
+  @SpringBean private IUserGroupSearchQuery searchQuery;
 
-	private static final long serialVersionUID = 1L;
+  private final CompositeSortModel<UserGroupSort> sortModel =
+      new CompositeSortModel<>(
+          CompositingStrategy.LAST_ONLY,
+          ImmutableMap.of(
+              UserGroupSort.SCORE, UserGroupSort.SCORE.getDefaultOrder(),
+              UserGroupSort.NAME, UserGroupSort.NAME.getDefaultOrder(),
+              UserGroupSort.ID, UserGroupSort.ID.getDefaultOrder()),
+          ImmutableMap.of(UserGroupSort.ID, UserGroupSort.ID.getDefaultOrder()));
 
-	@SpringBean
-	private IUserGroupSearchQuery searchQuery;
+  public UserGroupDataProvider() {
+    this(UnaryOperator.identity());
+  }
 
-	private final CompositeSortModel<UserGroupSort> sortModel = new CompositeSortModel<>(
-		CompositingStrategy.LAST_ONLY,
-		ImmutableMap.of(
-			UserGroupSort.SCORE, UserGroupSort.SCORE.getDefaultOrder(),
-			UserGroupSort.NAME, UserGroupSort.NAME.getDefaultOrder(),
-			UserGroupSort.ID, UserGroupSort.ID.getDefaultOrder()
-		),
-		ImmutableMap.of(
-			UserGroupSort.ID, UserGroupSort.ID.getDefaultOrder()
-		)
-	);
+  public UserGroupDataProvider(
+      UnaryOperator<DataModel<UserGroupSearchQueryData>> dataModelOperator) {
+    this(
+        dataModelOperator.apply(
+            new DataModel<>(UserGroupSearchQueryData::new)
+                .bind(Bindings.userGroupSearchQueryData().name(), Model.of())
+                .bind(Bindings.userGroupSearchQueryData().user(), new GenericEntityModel<>())
+                .bind(Bindings.userGroupSearchQueryData().basicUser(), new GenericEntityModel<>())
+                .bind(
+                    Bindings.userGroupSearchQueryData().technicalUser(),
+                    new GenericEntityModel<>())));
+  }
 
-	public UserGroupDataProvider() {
-		this(UnaryOperator.identity());
-	}
+  public UserGroupDataProvider(IModel<UserGroupSearchQueryData> dataModel) {
+    super(dataModel);
+  }
 
-	public UserGroupDataProvider(UnaryOperator<DataModel<UserGroupSearchQueryData>> dataModelOperator) {
-		this(
-			dataModelOperator.apply(
-				new DataModel<>(UserGroupSearchQueryData::new)
-					.bind(Bindings.userGroupSearchQueryData().name(), Model.of())
-					.bind(Bindings.userGroupSearchQueryData().user(), new GenericEntityModel<>())
-					.bind(Bindings.userGroupSearchQueryData().basicUser(), new GenericEntityModel<>())
-					.bind(Bindings.userGroupSearchQueryData().technicalUser(), new GenericEntityModel<>())
-			)
-		);
-	}
+  @Override
+  public CompositeSortModel<UserGroupSort> getSortModel() {
+    return sortModel;
+  }
 
-	public UserGroupDataProvider(IModel<UserGroupSearchQueryData> dataModel) {
-		super(dataModel);
-	}
-
-	@Override
-	public CompositeSortModel<UserGroupSort> getSortModel() {
-		return sortModel;
-	}
-
-	@Override
-	protected IUserGroupSearchQuery searchQuery() {
-		return searchQuery;
-	}
-
+  @Override
+  protected IUserGroupSearchQuery searchQuery() {
+    return searchQuery;
+  }
 }

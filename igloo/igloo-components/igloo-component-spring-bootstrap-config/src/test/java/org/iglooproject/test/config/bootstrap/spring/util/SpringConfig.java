@@ -5,6 +5,4 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import(BootstrapSpringConfig.class)
-public class SpringConfig {
-
-}
+public class SpringConfig {}

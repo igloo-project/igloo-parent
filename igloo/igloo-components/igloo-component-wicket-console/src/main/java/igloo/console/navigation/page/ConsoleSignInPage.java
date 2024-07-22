@@ -1,5 +1,7 @@
 package igloo.console.navigation.page;
 
+import igloo.console.template.ConsoleAccessTemplate;
+import igloo.igloojs.showpassword.ShowPasswordBehavior;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -22,85 +24,80 @@ import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import igloo.console.template.ConsoleAccessTemplate;
-import igloo.igloojs.showpassword.ShowPasswordBehavior;
-
 public class ConsoleSignInPage extends ConsoleAccessTemplate {
 
-	private static final long serialVersionUID = 3401416708867386953L;
+  private static final long serialVersionUID = 3401416708867386953L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleSignInPage.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleSignInPage.class);
 
-	public static final IPageLinkDescriptor linkDescriptor() {
-		return LinkDescriptorBuilder.start()
-			.page(ConsoleSignInPage.class);
-	}
-	
-	public ConsoleSignInPage(PageParameters parameters) {
-		super(parameters);
-	}
+  public static final IPageLinkDescriptor linkDescriptor() {
+    return LinkDescriptorBuilder.start().page(ConsoleSignInPage.class);
+  }
 
-	@Override
-	protected IModel<String> getTitleModel() {
-		return new ResourceModel("console.signIn.welcomeText");
-	}
+  public ConsoleSignInPage(PageParameters parameters) {
+    super(parameters);
+  }
 
-	@Override
-	protected Component getContentComponent(String wicketId) {
-		return new ContentFragment(wicketId);
-	}
+  @Override
+  protected IModel<String> getTitleModel() {
+    return new ResourceModel("console.signIn.welcomeText");
+  }
 
-	private class ContentFragment extends Fragment {
-		
-		private static final long serialVersionUID = 1L;
-		
-		public ContentFragment(String id) {
-			super(id, "content", ConsoleSignInPage.this);
-			
-			IModel<String> usernameModel = Model.of();
-			IModel<String> passwordModel = Model.of();
-			
-			Form<Void> form = new Form<Void>("form") {
-				private static final long serialVersionUID = 1L;
-				@Override
-				protected void onSubmit() {
-					try {
-						AbstractCoreSession.get().signIn(usernameModel.getObject(), passwordModel.getObject());
-						throw new RestartResponseException(ConsoleLoginSuccessPage.class);
-					} catch (BadCredentialsException e) { // NOSONAR
-						Session.get().error(getString("console.signIn.error.authentication"));
-					} catch (UsernameNotFoundException | AccountStatusException e) { // NOSONAR
-						Session.get().error(getString("console.signIn.error.authentication"));
-					} catch (RestartResponseException e) { // NOSONAR
-						throw e;
-					} catch (Exception e) {
-						LOGGER.error("Unknown error during authentification", e);
-						Session.get().error(getString("console.signIn.error.authentication"));
-					}
-					
-					throw new RestartResponseException(ConsoleLoginFailurePage.class);
-				}
-			};
-			add(form);
-			
-			PasswordTextField password = new PasswordTextField("password", passwordModel);
-			
-			form
-				.add(
-					new TextField<>("username", usernameModel)
-						.setRequired(true)
-						.setLabel(new ResourceModel("console.signIn.username"))
-						.add(new LabelPlaceholderBehavior())
-						.setOutputMarkupId(true),
-					password
-						.setRequired(true)
-						.setLabel(new ResourceModel("console.signIn.password"))
-						.add(new LabelPlaceholderBehavior())
-						.setOutputMarkupId(true),
-					new BlankLink("showPassword")
-						.add(new ShowPasswordBehavior(password))
-				);
-		}
-	}
+  @Override
+  protected Component getContentComponent(String wicketId) {
+    return new ContentFragment(wicketId);
+  }
 
+  private class ContentFragment extends Fragment {
+
+    private static final long serialVersionUID = 1L;
+
+    public ContentFragment(String id) {
+      super(id, "content", ConsoleSignInPage.this);
+
+      IModel<String> usernameModel = Model.of();
+      IModel<String> passwordModel = Model.of();
+
+      Form<Void> form =
+          new Form<Void>("form") {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected void onSubmit() {
+              try {
+                AbstractCoreSession.get()
+                    .signIn(usernameModel.getObject(), passwordModel.getObject());
+                throw new RestartResponseException(ConsoleLoginSuccessPage.class);
+              } catch (BadCredentialsException e) { // NOSONAR
+                Session.get().error(getString("console.signIn.error.authentication"));
+              } catch (UsernameNotFoundException | AccountStatusException e) { // NOSONAR
+                Session.get().error(getString("console.signIn.error.authentication"));
+              } catch (RestartResponseException e) { // NOSONAR
+                throw e;
+              } catch (Exception e) {
+                LOGGER.error("Unknown error during authentification", e);
+                Session.get().error(getString("console.signIn.error.authentication"));
+              }
+
+              throw new RestartResponseException(ConsoleLoginFailurePage.class);
+            }
+          };
+      add(form);
+
+      PasswordTextField password = new PasswordTextField("password", passwordModel);
+
+      form.add(
+          new TextField<>("username", usernameModel)
+              .setRequired(true)
+              .setLabel(new ResourceModel("console.signIn.username"))
+              .add(new LabelPlaceholderBehavior())
+              .setOutputMarkupId(true),
+          password
+              .setRequired(true)
+              .setLabel(new ResourceModel("console.signIn.password"))
+              .add(new LabelPlaceholderBehavior())
+              .setOutputMarkupId(true),
+          new BlankLink("showPassword").add(new ShowPasswordBehavior(password)));
+    }
+  }
 }

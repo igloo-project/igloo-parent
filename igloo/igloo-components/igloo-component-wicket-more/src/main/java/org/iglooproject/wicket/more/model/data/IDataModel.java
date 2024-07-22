@@ -5,6 +5,5 @@ import org.bindgen.BindingRoot;
 
 public interface IDataModel<T> extends IModel<T> {
 
-	<V> IDataModel<T> bind(BindingRoot<? super T, V> binding, IModel<V> model);
-
+  <V> IDataModel<T> bind(BindingRoot<? super T, V> binding, IModel<V> model);
 }

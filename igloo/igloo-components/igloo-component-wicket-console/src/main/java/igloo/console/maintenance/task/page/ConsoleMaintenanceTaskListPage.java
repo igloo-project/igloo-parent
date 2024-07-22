@@ -1,5 +1,8 @@
 package igloo.console.maintenance.task.page;
 
+import igloo.console.maintenance.task.component.ConsoleMaintenanceTaskSearchPanel;
+import igloo.console.maintenance.task.component.ConsoleMaintenanceTaskTaskManagerPanel;
+import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -14,67 +17,69 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuild
 import org.iglooproject.wicket.more.rendering.TaskResultRenderer;
 import org.iglooproject.wicket.more.rendering.TaskStatusRenderer;
 
-import igloo.console.maintenance.task.component.ConsoleMaintenanceTaskSearchPanel;
-import igloo.console.maintenance.task.component.ConsoleMaintenanceTaskTaskManagerPanel;
-import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
-
 public class ConsoleMaintenanceTaskListPage extends ConsoleMaintenanceTemplate {
 
-	private static final long serialVersionUID = -4085517848301335018L;
+  private static final long serialVersionUID = -4085517848301335018L;
 
-	public static final IPageLinkDescriptor linkDescriptor() {
-		return LinkDescriptorBuilder.start()
-			.page(ConsoleMaintenanceTaskListPage.class);
-	}
+  public static final IPageLinkDescriptor linkDescriptor() {
+    return LinkDescriptorBuilder.start().page(ConsoleMaintenanceTaskListPage.class);
+  }
 
-	public ConsoleMaintenanceTaskListPage(PageParameters parameters) {
-		super(parameters);
-		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.tasks")));
-		
-		add(new ConsoleMaintenanceTaskTaskManagerPanel("taskManager"));
-		
-		QueuedTaskHolderDataProvider dataProvider = new QueuedTaskHolderDataProvider();
-		
-		DecoratedCoreDataTablePanel<QueuedTaskHolder, ?> results = DataTableBuilder.start(dataProvider)
-			.addBootstrapBadgeColumn(
-				new ResourceModel("console.maintenance.task.common.status"),
-				CoreJpaMoreBindings.queuedTaskHolder().status(),
-				TaskStatusRenderer.get()
-			)
-				.withClass("cell-w-200")
-			.addBootstrapBadgeColumn(
-				new ResourceModel("console.maintenance.task.common.result"),
-				CoreJpaMoreBindings.queuedTaskHolder().result(),
-				TaskResultRenderer.get()
-			)
-				.withClass("cell-w-150")
-			.addLabelColumn(new ResourceModel("console.maintenance.task.common.name"), CoreJpaMoreBindings.queuedTaskHolder().name())
-				.withLink(ConsoleMaintenanceTaskDetailPage.MAPPER)
-				.withClass("cell-w-200")
-			.addLabelColumn(new ResourceModel("console.maintenance.task.common.queue"), CoreJpaMoreBindings.queuedTaskHolder().queueId())
-				.showPlaceholder(new ResourceModel("console.maintenance.task.common.queue.default"))
-				.withClass("cell-w-200")
-			.addLabelColumn(new ResourceModel("console.maintenance.task.common.creationDate"), CoreJpaMoreBindings.queuedTaskHolder().creationDate())
-				.withClass("cell-w-150")
-			.addLabelColumn(new ResourceModel("console.maintenance.task.common.startDate"), CoreJpaMoreBindings.queuedTaskHolder().startDate())
-				.withClass("cell-w-150")
-			.addLabelColumn(new ResourceModel("console.maintenance.task.common.endDate"), CoreJpaMoreBindings.queuedTaskHolder().endDate())
-				.withClass("cell-w-150")
-			.bootstrapCard()
-				.count("console.maintenance.task.common.count")
-				.ajaxPagers()
-			.build("results", 30);
-		
-		add(
-			new ConsoleMaintenanceTaskSearchPanel("search", results, dataProvider.getDataModel()),
-			results
-		);
-	}
+  public ConsoleMaintenanceTaskListPage(PageParameters parameters) {
+    super(parameters);
 
-	@Override
-	protected Class<? extends WebPage> getSecondMenuPage() {
-		return ConsoleMaintenanceTaskListPage.class;
-	}
+    addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.tasks")));
 
+    add(new ConsoleMaintenanceTaskTaskManagerPanel("taskManager"));
+
+    QueuedTaskHolderDataProvider dataProvider = new QueuedTaskHolderDataProvider();
+
+    DecoratedCoreDataTablePanel<QueuedTaskHolder, ?> results =
+        DataTableBuilder.start(dataProvider)
+            .addBootstrapBadgeColumn(
+                new ResourceModel("console.maintenance.task.common.status"),
+                CoreJpaMoreBindings.queuedTaskHolder().status(),
+                TaskStatusRenderer.get())
+            .withClass("cell-w-200")
+            .addBootstrapBadgeColumn(
+                new ResourceModel("console.maintenance.task.common.result"),
+                CoreJpaMoreBindings.queuedTaskHolder().result(),
+                TaskResultRenderer.get())
+            .withClass("cell-w-150")
+            .addLabelColumn(
+                new ResourceModel("console.maintenance.task.common.name"),
+                CoreJpaMoreBindings.queuedTaskHolder().name())
+            .withLink(ConsoleMaintenanceTaskDetailPage.MAPPER)
+            .withClass("cell-w-200")
+            .addLabelColumn(
+                new ResourceModel("console.maintenance.task.common.queue"),
+                CoreJpaMoreBindings.queuedTaskHolder().queueId())
+            .showPlaceholder(new ResourceModel("console.maintenance.task.common.queue.default"))
+            .withClass("cell-w-200")
+            .addLabelColumn(
+                new ResourceModel("console.maintenance.task.common.creationDate"),
+                CoreJpaMoreBindings.queuedTaskHolder().creationDate())
+            .withClass("cell-w-150")
+            .addLabelColumn(
+                new ResourceModel("console.maintenance.task.common.startDate"),
+                CoreJpaMoreBindings.queuedTaskHolder().startDate())
+            .withClass("cell-w-150")
+            .addLabelColumn(
+                new ResourceModel("console.maintenance.task.common.endDate"),
+                CoreJpaMoreBindings.queuedTaskHolder().endDate())
+            .withClass("cell-w-150")
+            .bootstrapCard()
+            .count("console.maintenance.task.common.count")
+            .ajaxPagers()
+            .build("results", 30);
+
+    add(
+        new ConsoleMaintenanceTaskSearchPanel("search", results, dataProvider.getDataModel()),
+        results);
+  }
+
+  @Override
+  protected Class<? extends WebPage> getSecondMenuPage() {
+    return ConsoleMaintenanceTaskListPage.class;
+  }
 }

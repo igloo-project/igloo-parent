@@ -4,7 +4,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.iglooproject.test.jpa.junit.JpaSearchTestConfiguration;
@@ -15,19 +14,15 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-/**
- * Tests with batch and hibernate search
- */
+/** Tests with batch and hibernate search */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @EnableAutoConfiguration
-@SpringBootTest(classes = { TestConfiguration.class, JpaSearchTestConfiguration.class })
+@SpringBootTest(classes = {TestConfiguration.class, JpaSearchTestConfiguration.class})
 @ContextConfiguration(initializers = ExtendedApplicationContextInitializer.class)
 @TestExecutionListeners({
-	DependencyInjectionTestExecutionListener.class,
-	EntityManagerExecutionListener.class
+  DependencyInjectionTestExecutionListener.class,
+  EntityManagerExecutionListener.class
 })
 @TestPropertySource(properties = "igloo.profile=test")
-public @interface SpringBootTestJpaBatchSearch {
-
-}
+public @interface SpringBootTestJpaBatchSearch {}

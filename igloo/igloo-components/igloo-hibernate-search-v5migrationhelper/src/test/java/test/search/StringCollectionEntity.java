@@ -1,26 +1,22 @@
 package test.search;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hibernate.search.engine.backend.types.Projectable;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
+import org.hibernate.search.engine.backend.types.Projectable;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 @Entity
 @Indexed
 public class StringCollectionEntity {
 
-	@Id
-	@GeneratedValue
-	private Long id;
+  @Id @GeneratedValue private Long id;
 
-	@ElementCollection
-	@GenericField(projectable = Projectable.YES)
-	public List<String> strings = new ArrayList<>();
+  @ElementCollection
+  @GenericField(projectable = Projectable.YES)
+  public List<String> strings = new ArrayList<>();
 }

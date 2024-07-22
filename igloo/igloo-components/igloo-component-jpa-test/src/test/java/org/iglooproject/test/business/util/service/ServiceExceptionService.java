@@ -7,16 +7,15 @@ import org.iglooproject.test.transaction.CheckedException;
 
 public interface ServiceExceptionService extends ITransactionalAspectAwareService {
 
-	void dontThrow() throws ServiceException, SecurityServiceException;
+  void dontThrow() throws ServiceException, SecurityServiceException;
 
-	void throwServiceException() throws ServiceException, SecurityServiceException;
+  void throwServiceException() throws ServiceException, SecurityServiceException;
 
-	void throwServiceInheritedException() throws ServiceException, SecurityServiceException;
+  void throwServiceInheritedException() throws ServiceException, SecurityServiceException;
 
-	void throwUncheckedException() throws ServiceException, SecurityServiceException;
+  void throwUncheckedException() throws ServiceException, SecurityServiceException;
 
-	void throwCheckedException() throws ServiceException, SecurityServiceException, CheckedException;
+  void throwCheckedException() throws ServiceException, SecurityServiceException, CheckedException;
 
-	long size();
-
+  long size();
 }

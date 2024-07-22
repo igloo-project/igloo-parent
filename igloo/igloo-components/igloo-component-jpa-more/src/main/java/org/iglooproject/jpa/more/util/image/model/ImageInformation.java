@@ -1,48 +1,46 @@
 package org.iglooproject.jpa.more.util.image.model;
 
 public class ImageInformation {
-	
-	private boolean isSizeDetected = false;
-	
-	private Integer width;
-	
-	private Integer height;
-	
-	private boolean isThumbnailAvailable = false;
-	
-	public ImageInformation() {
-	}
 
-	public boolean isSizeDetected() {
-		return isSizeDetected;
-	}
+  private boolean isSizeDetected = false;
 
-	public void setSizeDetected(boolean isSizeDetected) {
-		this.isSizeDetected = isSizeDetected;
-	}
+  private Integer width;
 
-	public Integer getWidth() {
-		return width;
-	}
+  private Integer height;
 
-	public void setWidth(Integer width) {
-		this.width = width;
-	}
+  private boolean isThumbnailAvailable = false;
 
-	public Integer getHeight() {
-		return height;
-	}
+  public ImageInformation() {}
 
-	public void setHeight(Integer height) {
-		this.height = height;
-	}
+  public boolean isSizeDetected() {
+    return isSizeDetected;
+  }
 
-	public boolean isThumbnailAvailable() {
-		return isThumbnailAvailable;
-	}
+  public void setSizeDetected(boolean isSizeDetected) {
+    this.isSizeDetected = isSizeDetected;
+  }
 
-	public void setThumbnailAvailable(boolean isThumbnailAvailable) {
-		this.isThumbnailAvailable = isThumbnailAvailable;
-	}
+  public Integer getWidth() {
+    return width;
+  }
 
+  public void setWidth(Integer width) {
+    this.width = width;
+  }
+
+  public Integer getHeight() {
+    return height;
+  }
+
+  public void setHeight(Integer height) {
+    this.height = height;
+  }
+
+  public boolean isThumbnailAvailable() {
+    return isThumbnailAvailable;
+  }
+
+  public void setThumbnailAvailable(boolean isThumbnailAvailable) {
+    this.isThumbnailAvailable = isThumbnailAvailable;
+  }
 }

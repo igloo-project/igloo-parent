@@ -9,94 +9,96 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.usertype.UserType;
 import org.iglooproject.jpa.business.generic.model.IMappableInterface;
 
-public class InterfaceEnumMapperType<T extends IMappableInterface&Serializable> implements UserType<T> {
+public class InterfaceEnumMapperType<T extends IMappableInterface & Serializable>
+    implements UserType<T> {
 
-	private final Class<T> type;
+  private final Class<T> type;
 
-	private final Map<String, T> mapping;
+  private final Map<String, T> mapping;
 
-	public InterfaceEnumMapperType(Class<T> type, Set<Class<? extends T>> enumTypes) {
-		this.type = type;
-		Map<String, T> builder = new HashMap<>();
-		for (Class<? extends T> enumType : enumTypes) {
-			// if there is a class cast problem, it'll be triggered at start time
-			// builder refuses duplicates key, so we are protected against key reuse
-			// (Class<Enum>) (Class<?>) and (Iterable<Enum>) are needed outside eclipse
-			for (Enum enumValue : (Iterable<Enum>) EnumSet.allOf((Class<Enum>) (Class<?>) enumType)) {
-				builder.put(enumValue.name(), (T) enumValue);
-			}
-		}
-		mapping = Map.copyOf(builder);
-	}
+  public InterfaceEnumMapperType(Class<T> type, Set<Class<? extends T>> enumTypes) {
+    this.type = type;
+    Map<String, T> builder = new HashMap<>();
+    for (Class<? extends T> enumType : enumTypes) {
+      // if there is a class cast problem, it'll be triggered at start time
+      // builder refuses duplicates key, so we are protected against key reuse
+      // (Class<Enum>) (Class<?>) and (Iterable<Enum>) are needed outside eclipse
+      for (Enum enumValue : (Iterable<Enum>) EnumSet.allOf((Class<Enum>) (Class<?>) enumType)) {
+        builder.put(enumValue.name(), (T) enumValue);
+      }
+    }
+    mapping = Map.copyOf(builder);
+  }
 
-	private T instantiate(String columnValue) {
-		return mapping.get(columnValue);
-	}
+  private T instantiate(String columnValue) {
+    return mapping.get(columnValue);
+  }
 
-	@Override
-	public int getSqlType() {
-		return SqlTypes.VARCHAR;
-	}
+  @Override
+  public int getSqlType() {
+    return SqlTypes.VARCHAR;
+  }
 
-	@Override
-	public Class<T> returnedClass() {
-		return type;
-	}
+  @Override
+  public Class<T> returnedClass() {
+    return type;
+  }
 
-	@Override
-	public boolean equals(T x, T y) {
-		return Objects.equals(x, y);
-	}
+  @Override
+  public boolean equals(T x, T y) {
+    return Objects.equals(x, y);
+  }
 
-	@Override
-	public int hashCode(T x) {
-		return x.hashCode();
-	}
+  @Override
+  public int hashCode(T x) {
+    return x.hashCode();
+  }
 
-	@Override
-	public T nullSafeGet(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner)
-			throws SQLException {
-		String columnValue = rs.getString(position);
-		if (rs.wasNull()) {
-			return null;
-		}
-		return instantiate(columnValue);
-	}
+  @Override
+  public T nullSafeGet(
+      ResultSet rs, int position, SharedSessionContractImplementor session, Object owner)
+      throws SQLException {
+    String columnValue = rs.getString(position);
+    if (rs.wasNull()) {
+      return null;
+    }
+    return instantiate(columnValue);
+  }
 
-	@Override
-	public void nullSafeSet(PreparedStatement st, T value, int index, SharedSessionContractImplementor session)
-			throws SQLException {
-		if (value == null) {
-			// postgresql only handle VARCHAR/LONGVARCHAR
-			st.setNull(index, SqlTypes.VARCHAR);
-		} else {
-			st.setString(index, value.getName());
-		}
-	}
+  @Override
+  public void nullSafeSet(
+      PreparedStatement st, T value, int index, SharedSessionContractImplementor session)
+      throws SQLException {
+    if (value == null) {
+      // postgresql only handle VARCHAR/LONGVARCHAR
+      st.setNull(index, SqlTypes.VARCHAR);
+    } else {
+      st.setString(index, value.getName());
+    }
+  }
 
-	@Override
-	public T deepCopy(T value) {
-		return value; // type is immutable
-	}
+  @Override
+  public T deepCopy(T value) {
+    return value; // type is immutable
+  }
 
-	@Override
-	public boolean isMutable() {
-		return false;
-	}
+  @Override
+  public boolean isMutable() {
+    return false;
+  }
 
-	@Override
-	public Serializable disassemble(T value) {
-		return value; // type is immutable
-	}
+  @Override
+  public Serializable disassemble(T value) {
+    return value; // type is immutable
+  }
 
-	@Override
-	public T assemble(Serializable cached, Object owner) {
-		return (T) cached; // type is immutable
-	}
+  @Override
+  public T assemble(Serializable cached, Object owner) {
+    return (T) cached; // type is immutable
+  }
 }

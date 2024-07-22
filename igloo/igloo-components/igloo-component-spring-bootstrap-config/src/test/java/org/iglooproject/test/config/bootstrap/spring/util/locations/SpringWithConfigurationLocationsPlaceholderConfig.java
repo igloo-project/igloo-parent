@@ -6,10 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource(
-	name = IglooPropertySourcePriority.APPLICATION,
-	value = "classpath:configuration-app-placeholder.properties",
-	encoding = "UTF-8"
-)
-public class SpringWithConfigurationLocationsPlaceholderConfig {
-
-}
+    name = IglooPropertySourcePriority.APPLICATION,
+    value = "classpath:configuration-app-placeholder.properties",
+    encoding = "UTF-8")
+public class SpringWithConfigurationLocationsPlaceholderConfig {}

@@ -5,14 +5,13 @@ import java.util.concurrent.ExecutionException;
 
 public interface IBatchRunnable<E> {
 
-	void preExecute();
+  void preExecute();
 
-	void executePartition(List<E> partition);
+  void executePartition(List<E> partition);
 
-	void postExecute();
-	
-	void onError(ExecutionException exception);
-	
-	Writeability getWriteability();
+  void postExecute();
 
+  void onError(ExecutionException exception);
+
+  Writeability getWriteability();
 }

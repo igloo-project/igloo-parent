@@ -3,6 +3,16 @@ package basicapp.front.common.template;
 import static basicapp.front.property.BasicApplicationWebappPropertyIds.MAINTENANCE_URL;
 import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
 
+import basicapp.back.security.service.IBasicApplicationAuthenticationService;
+import basicapp.front.BasicApplicationSession;
+import basicapp.front.common.component.ApplicationAccessEnvironmentPanel;
+import basicapp.front.common.template.resources.styles.application.application.applicationaccess.ApplicationAccessScssResourceReference;
+import igloo.bootstrap.BootstrapRequestCycle;
+import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
+import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
+import igloo.wicket.behavior.ClassAttributeAppender;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.markup.html.panel.InvisiblePanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -19,95 +29,84 @@ import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackP
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-import basicapp.back.security.service.IBasicApplicationAuthenticationService;
-import basicapp.front.BasicApplicationSession;
-import basicapp.front.common.component.ApplicationAccessEnvironmentPanel;
-import basicapp.front.common.template.resources.styles.application.application.applicationaccess.ApplicationAccessScssResourceReference;
-import igloo.bootstrap.BootstrapRequestCycle;
-import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
-import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
-import igloo.wicket.behavior.ClassAttributeAppender;
-import igloo.wicket.component.CoreLabel;
-import igloo.wicket.markup.html.panel.InvisiblePanel;
-
 public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate {
 
-	private static final long serialVersionUID = 3342562716259012460L;
+  private static final long serialVersionUID = 3342562716259012460L;
 
-	@SpringBean
-	private IPropertyService propertyService;
+  @SpringBean private IPropertyService propertyService;
 
-	@SpringBean
-	private IBasicApplicationAuthenticationService authenticationService;
+  @SpringBean private IBasicApplicationAuthenticationService authenticationService;
 
-	public ApplicationAccessTemplate(PageParameters parameters) {
-		super(parameters);
-		
-		if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE)) && !authenticationService.hasAdminRole() && hasMaintenanceRestriction()) {
-			throw new RedirectToUrlException(propertyService.get(MAINTENANCE_URL));
-		}
-		
-		add(
-			new TransparentWebMarkupContainer("htmlElement")
-				.add(AttributeAppender.append("lang", BasicApplicationSession.get().getLocale().getLanguage()))
-		);
-		
-		add(
-			new TransparentWebMarkupContainer("bodyElement")
-				.add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel()))
-		);
-		
-		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
-		add(createHeadPageTitle("headPageTitle"));
-		
-		add(new ApplicationAccessEnvironmentPanel("environment"));
-		
-		add(new CoreLabel("title", getTitleModel()));
-		
-		add(new AnimatedGlobalFeedbackPanel("feedback"));
-		
-		add(new BootstrapTooltipBehavior(getBootstrapTooltipOptionsModel()));
-	}
-	
-	@Override
-	protected void onInitialize() {
-		super.onInitialize();
-		
-		add(getContentComponent("content"));
-		add(getFooterComponent("footer"));
-	}
+  public ApplicationAccessTemplate(PageParameters parameters) {
+    super(parameters);
 
-	protected abstract IModel<String> getTitleModel();
+    if (Boolean.TRUE.equals(propertyService.get(MAINTENANCE))
+        && !authenticationService.hasAdminRole()
+        && hasMaintenanceRestriction()) {
+      throw new RedirectToUrlException(propertyService.get(MAINTENANCE_URL));
+    }
 
-	protected abstract Component getContentComponent(String wicketId);
+    add(
+        new TransparentWebMarkupContainer("htmlElement")
+            .add(
+                AttributeAppender.append(
+                    "lang", BasicApplicationSession.get().getLocale().getLanguage())));
 
-	protected Component getFooterComponent(String wicketId) {
-		return new InvisiblePanel(wicketId);
-	}
+    add(
+        new TransparentWebMarkupContainer("bodyElement")
+            .add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel())));
 
-	protected boolean hasMaintenanceRestriction() {
-		return true;
-	}
+    addHeadPageTitlePrependedElement(
+        new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
+    add(createHeadPageTitle("headPageTitle"));
 
-	@Override
-	protected Class<? extends WebPage> getFirstMenuPage() {
-		return null;
-	}
+    add(new ApplicationAccessEnvironmentPanel("environment"));
 
-	@Override
-	protected Class<? extends WebPage> getSecondMenuPage() {
-		return null;
-	}
+    add(new CoreLabel("title", getTitleModel()));
 
-	protected IModel<BootstrapTooltipOptions> getBootstrapTooltipOptionsModel() {
-		return BootstrapTooltipOptions::get;
-	}
+    add(new AnimatedGlobalFeedbackPanel("feedback"));
 
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		BootstrapRequestCycle.getSettings().renderHead(getPage(), response);
-		response.render(CssHeaderItem.forReference(ApplicationAccessScssResourceReference.get()));
-	}
+    add(new BootstrapTooltipBehavior(getBootstrapTooltipOptionsModel()));
+  }
 
+  @Override
+  protected void onInitialize() {
+    super.onInitialize();
+
+    add(getContentComponent("content"));
+    add(getFooterComponent("footer"));
+  }
+
+  protected abstract IModel<String> getTitleModel();
+
+  protected abstract Component getContentComponent(String wicketId);
+
+  protected Component getFooterComponent(String wicketId) {
+    return new InvisiblePanel(wicketId);
+  }
+
+  protected boolean hasMaintenanceRestriction() {
+    return true;
+  }
+
+  @Override
+  protected Class<? extends WebPage> getFirstMenuPage() {
+    return null;
+  }
+
+  @Override
+  protected Class<? extends WebPage> getSecondMenuPage() {
+    return null;
+  }
+
+  protected IModel<BootstrapTooltipOptions> getBootstrapTooltipOptionsModel() {
+    return BootstrapTooltipOptions::get;
+  }
+
+  @Override
+  public void renderHead(IHeaderResponse response) {
+    super.renderHead(response);
+    BootstrapRequestCycle.getSettings().renderHead(getPage(), response);
+    response.render(CssHeaderItem.forReference(ApplicationAccessScssResourceReference.get()));
+  }
 }

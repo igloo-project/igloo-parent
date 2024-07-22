@@ -16,31 +16,29 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource(
-	name = IglooPropertySourcePriority.APPLICATION,
-	value = "classpath:notification-test.properties",
-	encoding = "UTF-8"
-)
-@Import({ NotificationTestConfig.class })
+    name = IglooPropertySourcePriority.APPLICATION,
+    value = "classpath:notification-test.properties",
+    encoding = "UTF-8")
+@Import({NotificationTestConfig.class})
 public class TestConfig {
-	
-	@Bean
-	public IMutablePropertyDao mutablePropertyDao() {
-		return new StubMutablePropertyDao();
-	}
 
-	@Bean
-	public IImmutablePropertyDao immutablePropertyDao() {
-		return new ImmutablePropertyDaoImpl();
-	}
+  @Bean
+  public IMutablePropertyDao mutablePropertyDao() {
+    return new StubMutablePropertyDao();
+  }
 
-	@Bean
-	public IConfigurablePropertyService propertyService() {
-		return new PropertyServiceImpl();
-	}
+  @Bean
+  public IImmutablePropertyDao immutablePropertyDao() {
+    return new ImmutablePropertyDaoImpl();
+  }
 
-	@Bean
-	public IPropertyRegistryConfig propertyRegistryConfig() {
-		return new SpringPropertyRegistryAutoConfiguration();
-	}
+  @Bean
+  public IConfigurablePropertyService propertyService() {
+    return new PropertyServiceImpl();
+  }
 
+  @Bean
+  public IPropertyRegistryConfig propertyRegistryConfig() {
+    return new SpringPropertyRegistryAutoConfiguration();
+  }
 }

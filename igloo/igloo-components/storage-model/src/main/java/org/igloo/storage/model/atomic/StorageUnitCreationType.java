@@ -1,11 +1,7 @@
 package org.igloo.storage.model.atomic;
 
-/**
- * Disable or enable StorageUnit autocreation.
- */
+/** Disable or enable StorageUnit autocreation. */
 public enum StorageUnitCreationType {
-
-	MANUAL,
-	AUTOMATIC;
-
+  MANUAL,
+  AUTOMATIC;
 }

@@ -4,8 +4,7 @@ import java.io.Serializable;
 
 public interface INotificationContentBody extends Serializable {
 
-	String getPlainText();
+  String getPlainText();
 
-	String getHtmlText();
-
+  String getHtmlText();
 }

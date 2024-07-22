@@ -5,10 +5,9 @@ import org.iglooproject.jpa.exception.ServiceException;
 
 public interface IMutablePropertyDao {
 
-	String getInTransaction(String key);
+  String getInTransaction(String key);
 
-	void setInTransaction(String key, String value) throws ServiceException, SecurityServiceException;
+  void setInTransaction(String key, String value) throws ServiceException, SecurityServiceException;
 
-	void cleanInTransaction();
-
+  void cleanInTransaction();
 }

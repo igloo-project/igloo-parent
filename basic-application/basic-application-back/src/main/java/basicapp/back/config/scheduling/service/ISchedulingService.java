@@ -4,6 +4,5 @@ import org.iglooproject.jpa.business.generic.service.ITransactionalAspectAwareSe
 
 public interface ISchedulingService extends ITransactionalAspectAwareService {
 
-	void temporaryFilesCleaning();
-
+  void temporaryFilesCleaning();
 }

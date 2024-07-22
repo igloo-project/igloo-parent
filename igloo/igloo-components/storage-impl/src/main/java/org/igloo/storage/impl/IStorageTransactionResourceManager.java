@@ -5,7 +5,9 @@ import java.util.List;
 
 public interface IStorageTransactionResourceManager {
 
-	void addEvent(Long id, StorageEventType type, Path path);
-	List<StorageEvent> getEvents();
-	void unbind();
+  void addEvent(Long id, StorageEventType type, Path path);
+
+  List<StorageEvent> getEvents();
+
+  void unbind();
 }

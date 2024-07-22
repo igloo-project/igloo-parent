@@ -1,25 +1,5 @@
 package igloo.bootstrap5.application;
 
-import java.util.function.Supplier;
-
-import org.apache.wicket.Component;
-import org.apache.wicket.ResourceBundles;
-import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.settings.ResourceSettings;
-import org.iglooproject.functional.SerializableSupplier2;
-import org.iglooproject.sass.service.IScssService;
-import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.more.application.IWicketModule;
-import org.wicketstuff.wiquery.core.events.Event;
-import org.wicketstuff.wiquery.core.events.MouseEvent;
-import org.wicketstuff.wiquery.core.javascript.JsScope;
-import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
-import org.wicketstuff.wiquery.core.javascript.JsStatement;
-import org.wicketstuff.wiquery.core.javascript.JsUtils;
-
 import igloo.bootstrap.BootstrapVersion;
 import igloo.bootstrap.IBootstrapProvider;
 import igloo.bootstrap.badge.IBootstrapBadge;
@@ -39,155 +19,208 @@ import igloo.bootstrap5.markup.html.template.js.bootstrap.modal.statement.Bootst
 import igloo.bootstrap5.markup.html.template.js.bootstrap.offcanvas.Bootstrap5OffcanvasMoreJavaScriptResourceReference;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.tab.BootstrapTabMoreJavaScriptResourceReference;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.tooltip.Bootstrap5TooltipMoreJavaScriptResourceReference;
+import java.util.function.Supplier;
+import org.apache.wicket.Component;
+import org.apache.wicket.ResourceBundles;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.settings.ResourceSettings;
+import org.iglooproject.functional.SerializableSupplier2;
+import org.iglooproject.sass.service.IScssService;
+import org.iglooproject.spring.util.StringUtils;
+import org.iglooproject.wicket.more.application.IWicketModule;
+import org.wicketstuff.wiquery.core.events.Event;
+import org.wicketstuff.wiquery.core.events.MouseEvent;
+import org.wicketstuff.wiquery.core.javascript.JsScope;
+import org.wicketstuff.wiquery.core.javascript.JsScopeEvent;
+import org.wicketstuff.wiquery.core.javascript.JsStatement;
+import org.wicketstuff.wiquery.core.javascript.JsUtils;
 
 public class WicketBootstrap5Module implements IWicketModule, IBootstrapProvider {
 
-	@Override
-	public void updateResourceBundles(ResourceBundles resourceBundles) {
-		resourceBundles
-			.addJavaScriptBundle(getClass(), "bootstrap-bundle.js",
-				Bootstrap5JavaScriptResourceReference.get(),
-				Bootstrap5ModalMoreJavaScriptResourceReference.get(),
-				Bootstrap5OffcanvasMoreJavaScriptResourceReference.get(),
-				BootstrapTabMoreJavaScriptResourceReference.get(),
-				BootstrapConfirmJavaScriptResourceReference.get(),
-				Bootstrap5TooltipMoreJavaScriptResourceReference.get()
-			);
-	}
+  @Override
+  public void updateResourceBundles(ResourceBundles resourceBundles) {
+    resourceBundles.addJavaScriptBundle(
+        getClass(),
+        "bootstrap-bundle.js",
+        Bootstrap5JavaScriptResourceReference.get(),
+        Bootstrap5ModalMoreJavaScriptResourceReference.get(),
+        Bootstrap5OffcanvasMoreJavaScriptResourceReference.get(),
+        BootstrapTabMoreJavaScriptResourceReference.get(),
+        BootstrapConfirmJavaScriptResourceReference.get(),
+        Bootstrap5TooltipMoreJavaScriptResourceReference.get());
+  }
 
-	@Override
-	public void registerImportScopes(IScssService scssService) {
-		scssService.registerImportScope("core-bs5", CoreBootstrap5CssScope.class);
-	}
+  @Override
+  public void registerImportScopes(IScssService scssService) {
+    scssService.registerImportScope("core-bs5", CoreBootstrap5CssScope.class);
+  }
 
-	@Override
-	public void updateResourceSettings(ResourceSettings resourceSettings) {
-		// Nothing
-	}
+  @Override
+  public void updateResourceSettings(ResourceSettings resourceSettings) {
+    // Nothing
+  }
 
-	@Override
-	public BootstrapVersion getVersion() {
-		return BootstrapVersion.BOOTSTRAP_5;
-	}
+  @Override
+  public BootstrapVersion getVersion() {
+    return BootstrapVersion.BOOTSTRAP_5;
+  }
 
-	@Override
-	public void openModalOnClickRenderHead(Component component, IHeaderResponse response,
-			IModalPopupPanel modal, JsStatement onModalStart, JsStatement onModalComplete,
-			JsStatement onModalShow, JsStatement onModalHide) {
-		modalRenderHead(component, response);
-		
-		JsStatement bindClickStatement = getBindClickStatement(component, modal, onModalStart, onModalComplete);
-		if (bindClickStatement != null) {
-			response.render(OnDomReadyHeaderItem.forScript(bindClickStatement.render()));
-			
-			Event onShow = new Event(BootstrapModalEvent.SHOW) {
-				private static final long serialVersionUID = -5947286377954553132L;
-				
-				@Override
-				public JsScope callback() {
-					return JsScopeEvent.quickScope(onModalShow);
-				}
-			};
-			Event onHide = new Event(BootstrapModalEvent.HIDE) {
-				private static final long serialVersionUID = -5947286377954553132L;
-				
-				@Override
-				public JsScope callback() {
-					return JsScopeEvent.quickScope(onModalHide);
-				}
-			};
-			
-			// enregistrement des événements onShow et onHide
-			// TODO: are these events still bindable ?
-			response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(modal.getContainer()).chain(onShow).render()));
-			response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(modal.getContainer()).chain(onHide).render()));
-		}
-	}
+  @Override
+  public void openModalOnClickRenderHead(
+      Component component,
+      IHeaderResponse response,
+      IModalPopupPanel modal,
+      JsStatement onModalStart,
+      JsStatement onModalComplete,
+      JsStatement onModalShow,
+      JsStatement onModalHide) {
+    modalRenderHead(component, response);
 
-	@Override
-	public void modalRenderHead(Component component, IHeaderResponse response) {
-		renderHead(component, response);
-		response.render(JavaScriptHeaderItem.forReference(Bootstrap5ModalMoreJavaScriptResourceReference.get()));
-	}
+    JsStatement bindClickStatement =
+        getBindClickStatement(component, modal, onModalStart, onModalComplete);
+    if (bindClickStatement != null) {
+      response.render(OnDomReadyHeaderItem.forScript(bindClickStatement.render()));
 
-	@Override
-	public void confirmRenderHead(Component component, IHeaderResponse response) {
-		renderHead(component, response);
-		response.render(JavaScriptHeaderItem.forReference(BootstrapConfirmJavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(confirmStatement(component).render(true)));
-	}
+      Event onShow =
+          new Event(BootstrapModalEvent.SHOW) {
+            private static final long serialVersionUID = -5947286377954553132L;
 
-	@Override
-	public JsStatement confirmStatement(Component component) {
-		return new JsStatement().append("new Confirm(document.getElementById(" + JsUtils.quotes(component.getMarkupId()) + "))").append(";");
-	}
+            @Override
+            public JsScope callback() {
+              return JsScopeEvent.quickScope(onModalShow);
+            }
+          };
+      Event onHide =
+          new Event(BootstrapModalEvent.HIDE) {
+            private static final long serialVersionUID = -5947286377954553132L;
 
-	private JsStatement getBindClickStatement(Component component, IModalPopupPanel modal,
-			JsStatement onModalStart, JsStatement onModalComplete) {
-		if (!component.isEnabledInHierarchy()) {
-			return null;
-		}
-		
-		Event event = new Event(MouseEvent.CLICK) {
-			private static final long serialVersionUID = 1410592312776274815L;
-			
-			@Override
-			public JsScope callback() {
-				JsStatement jsStatement = new JsStatement();
-				if (onModalStart != null) {
-					jsStatement.append(onModalStart.render(true));
-				}
-				jsStatement.append(modal.getBootstrapModal().show(modal.getContainer()).render(true));
-				if (onModalComplete != null) {
-					jsStatement.append(onModalComplete.render(true));
-				}
-				return JsScope.quickScope(jsStatement);
-			}
-		};
-		return new JsStatement().$(component).chain(event);
-	}
+            @Override
+            public JsScope callback() {
+              return JsScopeEvent.quickScope(onModalHide);
+            }
+          };
 
-	@Override
-	public Class<?> modalMarkupClass() {
-		return Bootstrap5ModalPanel.class;
-	}
+      // enregistrement des événements onShow et onHide
+      // TODO: are these events still bindable ?
+      response.render(
+          OnDomReadyHeaderItem.forScript(
+              new JsStatement().$(modal.getContainer()).chain(onShow).render()));
+      response.render(
+          OnDomReadyHeaderItem.forScript(
+              new JsStatement().$(modal.getContainer()).chain(onHide).render()));
+    }
+  }
 
-	@Override
-	public void renderHead(Component component, IHeaderResponse response) {
-		response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
-	}
+  @Override
+  public void modalRenderHead(Component component, IHeaderResponse response) {
+    renderHead(component, response);
+    response.render(
+        JavaScriptHeaderItem.forReference(Bootstrap5ModalMoreJavaScriptResourceReference.get()));
+  }
 
-	@Override
-	public IBootstrapModal createModal() {
-		return new BootstrapModal();
-	}
+  @Override
+  public void confirmRenderHead(Component component, IHeaderResponse response) {
+    renderHead(component, response);
+    response.render(
+        JavaScriptHeaderItem.forReference(BootstrapConfirmJavaScriptResourceReference.get()));
+    response.render(OnDomReadyHeaderItem.forScript(confirmStatement(component).render(true)));
+  }
 
-	@Override
-	public <T> SerializableSupplier2<IBootstrapBadge<T, BootstrapBadge<T>>> badgeSupplier(String id, IModel<T> model, final IBootstrapRenderer<? super T> renderer) {
-		return () -> new BootstrapBadge<T>(id, model, renderer);
-	}
+  @Override
+  public JsStatement confirmStatement(Component component) {
+    return new JsStatement()
+        .append(
+            "new Confirm(document.getElementById(" + JsUtils.quotes(component.getMarkupId()) + "))")
+        .append(";");
+  }
 
-	@Override
-	public void tooltipRenderHead(Component component, IHeaderResponse response, IBootstrapTooltipOptions options) {
-		response.render(JavaScriptHeaderItem.forReference(Bootstrap5TooltipMoreJavaScriptResourceReference.get()));
-		if (!StringUtils.hasText(options.getSelector())) {
-			throw new IllegalStateException("Option 'selector' is mandatory for " + BootstrapTooltipBehavior.class.getName());
-		}
-		
-		response.render(OnDomReadyHeaderItem.forScript("new TooltipMore(document.body, " + options.getJavaScriptOptions() + ");"));
-	}
+  private JsStatement getBindClickStatement(
+      Component component,
+      IModalPopupPanel modal,
+      JsStatement onModalStart,
+      JsStatement onModalComplete) {
+    if (!component.isEnabledInHierarchy()) {
+      return null;
+    }
 
-	@Override
-	public void tabRenderHead(Component component, IHeaderResponse response) {
-		response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
-		response.render(JavaScriptHeaderItem.forReference(BootstrapTabMoreJavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript("new bootstrap.Tab('#" + component.getMarkupId() + "');"));
-	}
+    Event event =
+        new Event(MouseEvent.CLICK) {
+          private static final long serialVersionUID = 1410592312776274815L;
 
-	@Override
-	public void popoverRenderHead(Component component, IHeaderResponse response, Supplier<CharSequence> options) {
-		response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript("new bootstrap.Popover(document.getElementById('" + component.getMarkupId() + "'), " + options.get() + ");"));
-	}
+          @Override
+          public JsScope callback() {
+            JsStatement jsStatement = new JsStatement();
+            if (onModalStart != null) {
+              jsStatement.append(onModalStart.render(true));
+            }
+            jsStatement.append(modal.getBootstrapModal().show(modal.getContainer()).render(true));
+            if (onModalComplete != null) {
+              jsStatement.append(onModalComplete.render(true));
+            }
+            return JsScope.quickScope(jsStatement);
+          }
+        };
+    return new JsStatement().$(component).chain(event);
+  }
 
+  @Override
+  public Class<?> modalMarkupClass() {
+    return Bootstrap5ModalPanel.class;
+  }
+
+  @Override
+  public void renderHead(Component component, IHeaderResponse response) {
+    response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
+  }
+
+  @Override
+  public IBootstrapModal createModal() {
+    return new BootstrapModal();
+  }
+
+  @Override
+  public <T> SerializableSupplier2<IBootstrapBadge<T, BootstrapBadge<T>>> badgeSupplier(
+      String id, IModel<T> model, final IBootstrapRenderer<? super T> renderer) {
+    return () -> new BootstrapBadge<T>(id, model, renderer);
+  }
+
+  @Override
+  public void tooltipRenderHead(
+      Component component, IHeaderResponse response, IBootstrapTooltipOptions options) {
+    response.render(
+        JavaScriptHeaderItem.forReference(Bootstrap5TooltipMoreJavaScriptResourceReference.get()));
+    if (!StringUtils.hasText(options.getSelector())) {
+      throw new IllegalStateException(
+          "Option 'selector' is mandatory for " + BootstrapTooltipBehavior.class.getName());
+    }
+
+    response.render(
+        OnDomReadyHeaderItem.forScript(
+            "new TooltipMore(document.body, " + options.getJavaScriptOptions() + ");"));
+  }
+
+  @Override
+  public void tabRenderHead(Component component, IHeaderResponse response) {
+    response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
+    response.render(
+        JavaScriptHeaderItem.forReference(BootstrapTabMoreJavaScriptResourceReference.get()));
+    response.render(
+        OnDomReadyHeaderItem.forScript("new bootstrap.Tab('#" + component.getMarkupId() + "');"));
+  }
+
+  @Override
+  public void popoverRenderHead(
+      Component component, IHeaderResponse response, Supplier<CharSequence> options) {
+    response.render(JavaScriptHeaderItem.forReference(Bootstrap5JavaScriptResourceReference.get()));
+    response.render(
+        OnDomReadyHeaderItem.forScript(
+            "new bootstrap.Popover(document.getElementById('"
+                + component.getMarkupId()
+                + "'), "
+                + options.get()
+                + ");"));
+  }
 }

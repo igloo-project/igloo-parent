@@ -5,73 +5,83 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.wicket.model.IModel;
 
 public class WorkingCopyModel<T> implements IModel<T> {
-	
-	private static final long serialVersionUID = -4049247716740595168L;
 
-	private final IModel<T> reference;
-	private final IModel<T> workingCopy;
-	
-	public static <T> WorkingCopyModel<T> of(IModel<T> reference, IModel<T> workingCopy) {
-		return new WorkingCopyModel<>(reference, workingCopy);
-	}
-	
-	public WorkingCopyModel(IModel<T> reference, IModel<T> workingCopy) {
-		this.reference = reference;
-		this.workingCopy = workingCopy;
-		read();
-	}
+  private static final long serialVersionUID = -4049247716740595168L;
 
-	@Override
-	public boolean equals(Object obj) {
-		return new EqualsBuilder().appendSuper(super.equals(obj)).isEquals();
-	}
+  private final IModel<T> reference;
+  private final IModel<T> workingCopy;
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().appendSuper(super.hashCode()).hashCode();
-	}
+  public static <T> WorkingCopyModel<T> of(IModel<T> reference, IModel<T> workingCopy) {
+    return new WorkingCopyModel<>(reference, workingCopy);
+  }
 
-	@Override
-	public void detach() {
-		this.reference.detach();
-		this.workingCopy.detach();
-	}
+  public WorkingCopyModel(IModel<T> reference, IModel<T> workingCopy) {
+    this.reference = reference;
+    this.workingCopy = workingCopy;
+    read();
+  }
 
-	@Override
-	public T getObject() {
-		return workingCopy.getObject();
-	}
+  @Override
+  public boolean equals(Object obj) {
+    return new EqualsBuilder().appendSuper(super.equals(obj)).isEquals();
+  }
 
-	@Override
-	public void setObject(T object) {
-		workingCopy.setObject(object);
-	}
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().appendSuper(super.hashCode()).hashCode();
+  }
 
-	public void read() {
-		try {
-			workingCopy.setObject(reference.getObject());
-		} catch (RuntimeException e) {
-			throw new IllegalStateException("Exception while reading from " + tryToString(reference) + " to " + tryToString(workingCopy), e);
-		}
-	}
+  @Override
+  public void detach() {
+    this.reference.detach();
+    this.workingCopy.detach();
+  }
 
-	public void write() {
-		try {
-			reference.setObject(workingCopy.getObject());
-		} catch (RuntimeException e) {
-			throw new IllegalStateException("Exception while writing from " + tryToString(workingCopy) + " to " + tryToString(reference), e);
-		}
-	}
+  @Override
+  public T getObject() {
+    return workingCopy.getObject();
+  }
 
-	private String tryToString(IModel<?> model) {
-		try {
-			return String.valueOf(model);
-		} catch (RuntimeException e) {
-			return "<Unexpected exception while calling String.valueOf(model)>";
-		}
-	}
+  @Override
+  public void setObject(T object) {
+    workingCopy.setObject(object);
+  }
 
-	public IModel<T> getReferenceModel() {
-		return reference;
-	}
+  public void read() {
+    try {
+      workingCopy.setObject(reference.getObject());
+    } catch (RuntimeException e) {
+      throw new IllegalStateException(
+          "Exception while reading from "
+              + tryToString(reference)
+              + " to "
+              + tryToString(workingCopy),
+          e);
+    }
+  }
+
+  public void write() {
+    try {
+      reference.setObject(workingCopy.getObject());
+    } catch (RuntimeException e) {
+      throw new IllegalStateException(
+          "Exception while writing from "
+              + tryToString(workingCopy)
+              + " to "
+              + tryToString(reference),
+          e);
+    }
+  }
+
+  private String tryToString(IModel<?> model) {
+    try {
+      return String.valueOf(model);
+    } catch (RuntimeException e) {
+      return "<Unexpected exception while calling String.valueOf(model)>";
+    }
+  }
+
+  public IModel<T> getReferenceModel() {
+    return reference;
+  }
 }

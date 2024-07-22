@@ -4,38 +4,38 @@ import de.danielbechler.diff.node.DiffNode;
 import de.danielbechler.diff.path.NodePath;
 
 public class Difference<T> {
-	
-	private final T before;
 
-	private final T after;
-	
-	private final DiffNode diffNode;
+  private final T before;
 
-	public Difference(T before, T after, DiffNode diffNode) {
-		super();
-		this.before = before;
-		this.after = after;
-		this.diffNode = diffNode;
-	}
+  private final T after;
 
-	public T getBefore() {
-		return before;
-	}
+  private final DiffNode diffNode;
 
-	public T getAfter() {
-		return after;
-	}
+  public Difference(T before, T after, DiffNode diffNode) {
+    super();
+    this.before = before;
+    this.after = after;
+    this.diffNode = diffNode;
+  }
 
-	public DiffNode getDiffNode() {
-		return diffNode;
-	}
-	
-	public boolean hasChange(NodePath path) {
-		DiffNode nodeForPath = diffNode.getChild(path);
-		return nodeForPath != null && nodeForPath.hasChanges();
-	}
-	
-	public boolean hasChanges() {
-		return diffNode.hasChanges();
-	}
+  public T getBefore() {
+    return before;
+  }
+
+  public T getAfter() {
+    return after;
+  }
+
+  public DiffNode getDiffNode() {
+    return diffNode;
+  }
+
+  public boolean hasChange(NodePath path) {
+    DiffNode nodeForPath = diffNode.getChild(path);
+    return nodeForPath != null && nodeForPath.hasChanges();
+  }
+
+  public boolean hasChanges() {
+    return diffNode.hasChanges();
+  }
 }

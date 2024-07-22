@@ -1,5 +1,3 @@
 package igloo.bootstrap;
 
-public class IOption {
-
-}
+public class IOption {}

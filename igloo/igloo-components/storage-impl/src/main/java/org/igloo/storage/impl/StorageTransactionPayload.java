@@ -7,14 +7,13 @@ import java.util.List;
 
 public class StorageTransactionPayload {
 
-	private final List<StorageEvent> events = new LinkedList<>();
+  private final List<StorageEvent> events = new LinkedList<>();
 
-	public void addEvent(Long id, StorageEventType type, Path path) {
-		events.add(new StorageEvent(id, type, path));
-	}
+  public void addEvent(Long id, StorageEventType type, Path path) {
+    events.add(new StorageEvent(id, type, path));
+  }
 
-	public List<StorageEvent> getEvents() {
-		return Collections.unmodifiableList(events);
-	}
-
+  public List<StorageEvent> getEvents() {
+    return Collections.unmodifiableList(events);
+  }
 }

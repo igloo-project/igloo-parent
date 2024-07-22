@@ -6,19 +6,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * <p><b>Not part of public API ; do not use.</b></p>
- * 
- * <p>This class uses {@link CompositePropertySourceFactory} to allow to load properties from a resolved placeholder
- * *${igloo.configurationLocations}* that is a list of resources paths.</p>
+ * <b>Not part of public API ; do not use.</b>
+ *
+ * <p>This class uses {@link CompositePropertySourceFactory} to allow to load properties from a
+ * resolved placeholder *${igloo.configurationLocations}* that is a list of resources paths.
  */
 @Configuration
 @PropertySource(
-	name = IglooPropertySourcePriority.BOOTSTRAP,
-	value = "composite:${igloo.configurationLocations}",
-	factory = CompositePropertySourceFactory.class,
-	ignoreResourceNotFound = true,
-	encoding = "UTF-8"
-)
-public class BootstrapPropertySourcesConfiguration {
-
-}
+    name = IglooPropertySourcePriority.BOOTSTRAP,
+    value = "composite:${igloo.configurationLocations}",
+    factory = CompositePropertySourceFactory.class,
+    ignoreResourceNotFound = true,
+    encoding = "UTF-8")
+public class BootstrapPropertySourcesConfiguration {}

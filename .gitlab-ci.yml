@@ -16,6 +16,7 @@ maven-build:
   stage: build
   environment: staging
   script:
+    - "mvn spotless:check"
     - "mvn -U clean package"
   artifacts:
     when: always

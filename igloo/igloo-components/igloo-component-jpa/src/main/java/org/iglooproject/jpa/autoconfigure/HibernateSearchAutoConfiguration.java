@@ -4,6 +4,7 @@ import static org.iglooproject.jpa.property.JpaSearchPropertyIds.HIBERNATE_SEARC
 import static org.iglooproject.jpa.property.JpaSearchPropertyIds.HIBERNATE_SEARCH_REINDEX_LOAD_THREADS;
 import static org.iglooproject.jpa.property.JpaSearchPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
 
+import com.google.common.primitives.Ints;
 import org.apache.lucene.search.BooleanQuery;
 import org.hibernate.search.mapper.orm.Search;
 import org.iglooproject.functional.Functions2;
@@ -25,45 +26,48 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
-import com.google.common.primitives.Ints;
-
 /**
- * <p>Configuration Hibernate search Igloo helpers. This configuration implies:</p>
- * 
+ * Configuration Hibernate search Igloo helpers. This configuration implies:
+ *
  * <ul>
- * <li>A running Hibernate + Hibernate search environment (Spring Boot JPA Repository with
- * <code>spring.jpa.properties.hibernate.search.enabled!=false</code>.</li>
- * <li>{@link JpaAutoConfiguration} helpers ({@link IEntityService}): use {@link JpaAutoConfiguration}.</li>
- * <li>{@link IPropertyService} and {@link JpaSearchPropertyIds} for reindexation configuration behaviors:
- * use {@link JpaSearchPropertyRegistryConfig}.</li>
+ *   <li>A running Hibernate + Hibernate search environment (Spring Boot JPA Repository with <code>
+ *       spring.jpa.properties.hibernate.search.enabled!=false</code>.
+ *   <li>{@link JpaAutoConfiguration} helpers ({@link IEntityService}): use {@link
+ *       JpaAutoConfiguration}.
+ *   <li>{@link IPropertyService} and {@link JpaSearchPropertyIds} for reindexation configuration
+ *       behaviors: use {@link JpaSearchPropertyRegistryConfig}.
  * </ul>
- * 
- * <p>These helpers implies to use {@link GenericEntity} base class.</p>
+ *
+ * <p>These helpers implies to use {@link GenericEntity} base class.
  */
 @AutoConfiguration(after = JpaAutoConfiguration.class)
-@ConditionalOnClass({ Search.class, LocalContainerEntityManagerFactoryBean.class })
-@ConditionalOnProperty(name = "spring.jpa.properties.hibernate.search.enabled", matchIfMissing = true, havingValue = "true")
+@ConditionalOnClass({Search.class, LocalContainerEntityManagerFactoryBean.class})
+@ConditionalOnProperty(
+    name = "spring.jpa.properties.hibernate.search.enabled",
+    matchIfMissing = true,
+    havingValue = "true")
 public class HibernateSearchAutoConfiguration {
-	@Bean
-	public IHibernateSearchService hibernateSearchService() {
-		return new HibernateSearchServiceImpl();
-	}
-	@Bean
-	public IHibernateSearchDao hibernateSearchDao() {
-		return new HibernateSearchDaoImpl();
-	}
-	@Configuration
-	public static class JpaSearchPropertyRegistryConfig implements IPropertyRegistryConfig {
-		@Override
-		public void register(IPropertyRegistry registry) {
-			registry.register(
-				LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT,
-				Functions2.from(Ints.stringConverter()),
-				(Supplier2<? extends Integer>) () -> BooleanQuery.getMaxClauseCount()
-			);
-			
-			registry.registerInteger(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE, 25);
-			registry.registerInteger(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS, 8);
-		}
-	}
+  @Bean
+  public IHibernateSearchService hibernateSearchService() {
+    return new HibernateSearchServiceImpl();
+  }
+
+  @Bean
+  public IHibernateSearchDao hibernateSearchDao() {
+    return new HibernateSearchDaoImpl();
+  }
+
+  @Configuration
+  public static class JpaSearchPropertyRegistryConfig implements IPropertyRegistryConfig {
+    @Override
+    public void register(IPropertyRegistry registry) {
+      registry.register(
+          LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT,
+          Functions2.from(Ints.stringConverter()),
+          (Supplier2<? extends Integer>) () -> BooleanQuery.getMaxClauseCount());
+
+      registry.registerInteger(HIBERNATE_SEARCH_REINDEX_BATCH_SIZE, 25);
+      registry.registerInteger(HIBERNATE_SEARCH_REINDEX_LOAD_THREADS, 8);
+    }
+  }
 }

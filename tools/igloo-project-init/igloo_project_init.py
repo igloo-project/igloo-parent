@@ -444,6 +444,9 @@ def generate_project(
         ["mvn", "archetype:generate", f"-DoutputDirectory={project}", *java_args], **subprocess_args()
     )
     project_path = project.joinpath(definition.artifact_id)
+    subprocess.check_call(
+        ["mvn", "spotless:check"], cwd=project_path, **subprocess_args()
+    )
     logger.info("Project %s:%s generated into %s", definition.group_id, definition.artifact_id, project_path)
     # generated folder contains `artifact_id` folder
     return project_path

@@ -5,6 +5,5 @@ import org.iglooproject.test.business.nullables.model.EntityNullable;
 import org.springframework.stereotype.Repository;
 
 @Repository("entityNullableDao")
-public class EntityNullableDaoImpl extends GenericEntityDaoImpl<Long, EntityNullable> implements IEntityNullableDao {
-
-}
+public class EntityNullableDaoImpl extends GenericEntityDaoImpl<Long, EntityNullable>
+    implements IEntityNullableDao {}

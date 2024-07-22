@@ -9,28 +9,27 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.toolbar.Custom
 
 public interface IBuildState<T, S extends ISort<?>> {
 
-	CustomizableToolbarBuilder<T, S> addTopToolbar();
+  CustomizableToolbarBuilder<T, S> addTopToolbar();
 
-	CustomizableToolbarBuilder<T, S> addBottomToolbar();
+  CustomizableToolbarBuilder<T, S> addBottomToolbar();
 
-	IDataTableRowsState<T, S> rows();
+  IDataTableRowsState<T, S> rows();
 
-	IDataTableTableState<T, S> table();
+  IDataTableTableState<T, S> table();
 
-	IBuildState<T, S> withNoRecordsResourceKey(String noRecordsResourceKey);
+  IBuildState<T, S> withNoRecordsResourceKey(String noRecordsResourceKey);
 
-	IBuildState<T, S> hideHeadersToolbar();
+  IBuildState<T, S> hideHeadersToolbar();
 
-	IBuildState<T, S> hideNoRecordsToolbar();
+  IBuildState<T, S> hideNoRecordsToolbar();
 
-	IBuildState<T, S> withFactory(IDataTableFactory<T, S> factory);
+  IBuildState<T, S> withFactory(IDataTableFactory<T, S> factory);
 
-	CoreDataTable<T, S> build(String id);
+  CoreDataTable<T, S> build(String id);
 
-	CoreDataTable<T, S> build(String id, long rowsPerPage);
+  CoreDataTable<T, S> build(String id, long rowsPerPage);
 
-	IDecoratedBuildState<T, S> decorate();
+  IDecoratedBuildState<T, S> decorate();
 
-	IDecoratedBuildState<T, S> bootstrapCard();
-
+  IDecoratedBuildState<T, S> bootstrapCard();
 }

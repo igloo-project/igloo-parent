@@ -1,7 +1,11 @@
 package igloo.console.common.component;
 
+import igloo.bootstrap.common.BootstrapColor;
+import igloo.bootstrap.modal.OneParameterModalOpenAjaxAction;
+import igloo.console.common.form.PropertyIdEditPopup;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.Models;
 import java.util.Collection;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -16,75 +20,65 @@ import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.Bootst
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.model.ReadOnlyCollectionModel;
 
-import igloo.bootstrap.common.BootstrapColor;
-import igloo.bootstrap.modal.OneParameterModalOpenAjaxAction;
-import igloo.console.common.form.PropertyIdEditPopup;
-import igloo.wicket.condition.Condition;
-import igloo.wicket.model.Models;
-
 public class PropertyIdListPanel extends Panel {
 
-	private static final long serialVersionUID = -3170379589959735719L;
-	
-	@SpringBean
-	private IPropertyService propertyService;
-	
-	public PropertyIdListPanel(String id, Collection<PropertyId<?>> propertyIds){
-		this(
-				id,
-				new LoadableDetachableModel<Collection<PropertyId<?>>>() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					protected Collection<PropertyId<?>> load() {
-						return propertyIds;
-					}
-				}
-		);
-	}
+  private static final long serialVersionUID = -3170379589959735719L;
 
-	public PropertyIdListPanel(String id, IModel<? extends Collection<PropertyId<?>>> propertyIdsModel) {
-		super(id, propertyIdsModel);
-		setOutputMarkupId(true);
-		
-		PropertyIdEditPopup modifyPopup = new PropertyIdEditPopup("editPopup");
-		add(modifyPopup);
-		
-		add(
-				DataTableBuilder.start(
-						ReadOnlyCollectionModel.of(propertyIdsModel, Models.serializableModelFactory())
-				)
-						.addLabelColumn(
-								new ResourceModel("common.propertyId.key"),
-								p -> p.getKey()
-						)
-						.addLabelColumn(
-								new ResourceModel("common.propertyId.value"),
-								p -> propertyService.getAsString(p)
-						)
-						.addActionColumn()
-								.addAction(
-										BootstrapRenderer.constant("common.propertyId.action.edit", "fa fa-fw fa-pencil-alt", BootstrapColor.PRIMARY),
-										new OneParameterModalOpenAjaxAction<IModel<? extends PropertyId<?>>>(modifyPopup) {
-											private static final long serialVersionUID = 1L;
-											@Override
-											protected void onShow(AjaxRequestTarget target, IModel<? extends PropertyId<?>> parameter) {
-												modifyPopup.init(parameter);
-											}
-										}
-								)
-										.whenPredicate(Predicates2.instanceOf(MutablePropertyId.class))
-										.withClassOnElements("btn-table-row-action")
-								.end()
-						.bootstrapCard()
-								.title("common.propertyIds")
-								.responsive(Condition.alwaysTrue())
-								.build("results")
-		);
-	}
+  @SpringBean private IPropertyService propertyService;
 
-	@Override
-	protected void onDetach() {
-		super.onDetach();
-	}
+  public PropertyIdListPanel(String id, Collection<PropertyId<?>> propertyIds) {
+    this(
+        id,
+        new LoadableDetachableModel<Collection<PropertyId<?>>>() {
+          private static final long serialVersionUID = 1L;
 
+          @Override
+          protected Collection<PropertyId<?>> load() {
+            return propertyIds;
+          }
+        });
+  }
+
+  public PropertyIdListPanel(
+      String id, IModel<? extends Collection<PropertyId<?>>> propertyIdsModel) {
+    super(id, propertyIdsModel);
+    setOutputMarkupId(true);
+
+    PropertyIdEditPopup modifyPopup = new PropertyIdEditPopup("editPopup");
+    add(modifyPopup);
+
+    add(
+        DataTableBuilder.start(
+                ReadOnlyCollectionModel.of(propertyIdsModel, Models.serializableModelFactory()))
+            .addLabelColumn(new ResourceModel("common.propertyId.key"), p -> p.getKey())
+            .addLabelColumn(
+                new ResourceModel("common.propertyId.value"), p -> propertyService.getAsString(p))
+            .addActionColumn()
+            .addAction(
+                BootstrapRenderer.constant(
+                    "common.propertyId.action.edit",
+                    "fa fa-fw fa-pencil-alt",
+                    BootstrapColor.PRIMARY),
+                new OneParameterModalOpenAjaxAction<IModel<? extends PropertyId<?>>>(modifyPopup) {
+                  private static final long serialVersionUID = 1L;
+
+                  @Override
+                  protected void onShow(
+                      AjaxRequestTarget target, IModel<? extends PropertyId<?>> parameter) {
+                    modifyPopup.init(parameter);
+                  }
+                })
+            .whenPredicate(Predicates2.instanceOf(MutablePropertyId.class))
+            .withClassOnElements("btn-table-row-action")
+            .end()
+            .bootstrapCard()
+            .title("common.propertyIds")
+            .responsive(Condition.alwaysTrue())
+            .build("results"));
+  }
+
+  @Override
+  protected void onDetach() {
+    super.onDetach();
+  }
 }

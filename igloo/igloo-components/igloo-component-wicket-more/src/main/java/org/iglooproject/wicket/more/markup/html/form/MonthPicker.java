@@ -1,7 +1,7 @@
 package org.iglooproject.wicket.more.markup.html.form;
 
+import igloo.wicket.util.DatePattern;
 import java.util.Date;
-
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
@@ -15,108 +15,114 @@ import org.iglooproject.wicket.more.util.convert.converters.PatternDateConverter
 import org.wicketstuff.wiquery.core.javascript.JsQuery;
 import org.wicketstuff.wiquery.ui.datepicker.DateOption;
 
-import igloo.wicket.util.DatePattern;
-
 public class MonthPicker extends TextField<Date> {
 
-	private static final long serialVersionUID = -573676335913472856L;
+  private static final long serialVersionUID = -573676335913472856L;
 
-	private final DatePattern monthPattern;
+  private final DatePattern monthPattern;
 
-	private final MonthPickerOptions options;
+  private final MonthPickerOptions options;
 
-	private IConverter<Date> converter;
+  private IConverter<Date> converter;
 
-	public MonthPicker(String id, IModel<Date> model, DatePattern monthPattern) {
-		super(id, model, Date.class);
-		
-		this.monthPattern = monthPattern;
-		this.options = new MonthPickerOptions(this);
-		
-		setChangeYear(true);
-		
-		setPrevText("");
-		setNextText("");
-		
-		setShowButtonPanel(true);
-	}
+  public MonthPicker(String id, IModel<Date> model, DatePattern monthPattern) {
+    super(id, model, Date.class);
 
-	@Override
-	public void onInitialize() {
-		super.onInitialize();
-		this.setDateFormat(getString(monthPattern.getJavascriptPatternKey()));
-	}
+    this.monthPattern = monthPattern;
+    this.options = new MonthPickerOptions(this);
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <C> IConverter<C> getConverter(Class<C> type) {
-		if (Date.class.isAssignableFrom(type)) {
-			if (converter == null) {
-				converter = new PatternDateConverter(monthPattern, getString(monthPattern.getJavaPatternKey()));
-			}
-			return (IConverter<C>) converter;
-		} else {
-			return super.getConverter(type);
-		}
-	}
+    setChangeYear(true);
 
-	public MonthPicker setDateFormat(String dateFormat) {
-		options.setDateFormat(dateFormat);
-		return this;
-	}
-	
-	public MonthPicker setChangeYear(boolean changeYear) {
-		options.setChangeYear(changeYear);
-		return this;
-	}
-	
-	public MonthPicker setYearRange(String yearRange) {
-		options.setYearRange(yearRange);
-		return this;
-	}
-	
-	public MonthPicker setMinDate(DateOption minDate) {
-		options.setMinDate(minDate);
-		return this;
-	}
-	
-	public MonthPicker setMaxDate(DateOption maxDate) {
-		options.setMaxDate(maxDate);
-		return this;
-	}
+    setPrevText("");
+    setNextText("");
 
-	public MonthPicker setPrevText(String prevText) {
-		options.setPrevText(prevText);
-		return this;
-	}
+    setShowButtonPanel(true);
+  }
 
-	public MonthPicker setNextText(String nextText) {
-		options.setNextText(nextText);
-		return this;
-	}
+  @Override
+  public void onInitialize() {
+    super.onInitialize();
+    this.setDateFormat(getString(monthPattern.getJavascriptPatternKey()));
+  }
 
-	public MonthPicker setShowButtonPanel(boolean showButtonPanel) {
-		options.setShowButtonPanel(showButtonPanel);
-		return this;
-	}
+  @SuppressWarnings("unchecked")
+  @Override
+  public <C> IConverter<C> getConverter(Class<C> type) {
+    if (Date.class.isAssignableFrom(type)) {
+      if (converter == null) {
+        converter =
+            new PatternDateConverter(monthPattern, getString(monthPattern.getJavaPatternKey()));
+      }
+      return (IConverter<C>) converter;
+    } else {
+      return super.getConverter(type);
+    }
+  }
 
-	@Override
-	protected void detachModel() {
-		super.detachModel();
-		options.detach();
-		converter = null;
-	}
+  public MonthPicker setDateFormat(String dateFormat) {
+    options.setDateFormat(dateFormat);
+    return this;
+  }
 
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		response.render(JavaScriptHeaderItem.forReference(MonthPickerJavaScriptResourceReference.get()));
-		
-		MonthPickerLanguageResourceReference mpl = MonthPickerLanguageResourceReference.get(getLocale());
-		if (mpl != null) {
-			response.render(JavaScriptHeaderItem.forReference(mpl));
-		}
-		
-		response.render(OnDomReadyHeaderItem.forScript(new JsQuery(this).$()
-				.chain("monthpicker", options.getJavaScriptOptions()).render().toString()));
-	}
+  public MonthPicker setChangeYear(boolean changeYear) {
+    options.setChangeYear(changeYear);
+    return this;
+  }
+
+  public MonthPicker setYearRange(String yearRange) {
+    options.setYearRange(yearRange);
+    return this;
+  }
+
+  public MonthPicker setMinDate(DateOption minDate) {
+    options.setMinDate(minDate);
+    return this;
+  }
+
+  public MonthPicker setMaxDate(DateOption maxDate) {
+    options.setMaxDate(maxDate);
+    return this;
+  }
+
+  public MonthPicker setPrevText(String prevText) {
+    options.setPrevText(prevText);
+    return this;
+  }
+
+  public MonthPicker setNextText(String nextText) {
+    options.setNextText(nextText);
+    return this;
+  }
+
+  public MonthPicker setShowButtonPanel(boolean showButtonPanel) {
+    options.setShowButtonPanel(showButtonPanel);
+    return this;
+  }
+
+  @Override
+  protected void detachModel() {
+    super.detachModel();
+    options.detach();
+    converter = null;
+  }
+
+  @Override
+  public void renderHead(IHeaderResponse response) {
+    response.render(
+        JavaScriptHeaderItem.forReference(MonthPickerJavaScriptResourceReference.get()));
+
+    MonthPickerLanguageResourceReference mpl =
+        MonthPickerLanguageResourceReference.get(getLocale());
+    if (mpl != null) {
+      response.render(JavaScriptHeaderItem.forReference(mpl));
+    }
+
+    response.render(
+        OnDomReadyHeaderItem.forScript(
+            new JsQuery(this)
+                .$()
+                .chain("monthpicker", options.getJavaScriptOptions())
+                .render()
+                .toString()));
+  }
 }

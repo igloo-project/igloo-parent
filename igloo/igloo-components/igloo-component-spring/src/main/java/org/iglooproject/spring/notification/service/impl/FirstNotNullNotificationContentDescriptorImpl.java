@@ -1,5 +1,6 @@
 package org.iglooproject.spring.notification.service.impl;
 
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.mutable.MutableObject;
@@ -9,89 +10,86 @@ import org.iglooproject.spring.notification.model.INotificationContentBody;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.iglooproject.spring.notification.model.NotificationContentBody;
 
-import com.google.common.collect.ImmutableList;
+public class FirstNotNullNotificationContentDescriptorImpl
+    implements INotificationContentDescriptor {
 
-public class FirstNotNullNotificationContentDescriptorImpl implements INotificationContentDescriptor {
+  private final Iterable<? extends INotificationContentDescriptor> chainedDescriptors;
 
-	private final Iterable<? extends INotificationContentDescriptor> chainedDescriptors;
+  public FirstNotNullNotificationContentDescriptorImpl(
+      Iterable<? extends INotificationContentDescriptor> chainedDescriptors) {
+    super();
+    this.chainedDescriptors = ImmutableList.copyOf(chainedDescriptors);
+  }
 
-	public FirstNotNullNotificationContentDescriptorImpl(Iterable<? extends INotificationContentDescriptor> chainedDescriptors) {
-		super();
-		this.chainedDescriptors = ImmutableList.copyOf(chainedDescriptors);
-	}
+  @Override
+  public String renderSubject() throws NotificationContentRenderingException {
+    for (INotificationContentDescriptor descriptor : chainedDescriptors) {
+      String subject = descriptor.renderSubject();
+      if (subject != null) {
+        return subject;
+      }
+    }
+    return null;
+  }
 
-	@Override
-	public String renderSubject() throws NotificationContentRenderingException {
-		for (INotificationContentDescriptor descriptor : chainedDescriptors) {
-			String subject = descriptor.renderSubject();
-			if (subject != null) {
-				return subject;
-			}
-		}
-		return null;
-	}
+  @Override
+  public INotificationContentBody renderBody() throws NotificationContentRenderingException {
+    MutableObject<String> plainText = new MutableObject<>();
+    MutableObject<String> htmlText = new MutableObject<>();
 
-	@Override
-	public INotificationContentBody renderBody() throws NotificationContentRenderingException {
-		MutableObject<String> plainText = new MutableObject<>();
-		MutableObject<String> htmlText = new MutableObject<>();
-		
-		for (INotificationContentDescriptor descriptor : chainedDescriptors) {
-			INotificationContentBody body = descriptor.renderBody();
-			
-			if (body != null) {
-				if (plainText.getValue() == null) {
-					plainText.setValue(body.getPlainText());
-				}
-				
-				if (htmlText.getValue() == null) {
-					htmlText.setValue(body.getHtmlText());
-				}
-				
-				if (plainText.getValue() != null && htmlText.getValue() != null) {
-					break;
-				}
-			}
-		}
-		
-		return NotificationContentBody.start()
-			.with(o -> {
-				o.setPlainText(plainText.getValue());
-				o.setHtmlText(htmlText.getValue());
-			})
-			.build();
-	}
+    for (INotificationContentDescriptor descriptor : chainedDescriptors) {
+      INotificationContentBody body = descriptor.renderBody();
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof FirstNotNullNotificationContentDescriptorImpl) {
-			if (obj == this) {
-				return true;
-			}
-			FirstNotNullNotificationContentDescriptorImpl other = (FirstNotNullNotificationContentDescriptorImpl) obj;
-			return new EqualsBuilder()
-				.append(chainedDescriptors, other.chainedDescriptors)
-				.build();
-		}
-		return false;
-	}
-	
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder()
-			.append(chainedDescriptors)
-			.build();
-	}
+      if (body != null) {
+        if (plainText.getValue() == null) {
+          plainText.setValue(body.getPlainText());
+        }
 
-	@Override
-	public INotificationContentDescriptor withContext(INotificationRecipient recipient) {
-		ImmutableList.Builder<INotificationContentDescriptor> wrapped = ImmutableList.builder();
-		
-		for (INotificationContentDescriptor current : chainedDescriptors) {
-			wrapped.add(current.withContext(recipient));
-		}
-		
-		return new FirstNotNullNotificationContentDescriptorImpl(wrapped.build());
-	}
+        if (htmlText.getValue() == null) {
+          htmlText.setValue(body.getHtmlText());
+        }
 
+        if (plainText.getValue() != null && htmlText.getValue() != null) {
+          break;
+        }
+      }
+    }
+
+    return NotificationContentBody.start()
+        .with(
+            o -> {
+              o.setPlainText(plainText.getValue());
+              o.setHtmlText(htmlText.getValue());
+            })
+        .build();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof FirstNotNullNotificationContentDescriptorImpl) {
+      if (obj == this) {
+        return true;
+      }
+      FirstNotNullNotificationContentDescriptorImpl other =
+          (FirstNotNullNotificationContentDescriptorImpl) obj;
+      return new EqualsBuilder().append(chainedDescriptors, other.chainedDescriptors).build();
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(chainedDescriptors).build();
+  }
+
+  @Override
+  public INotificationContentDescriptor withContext(INotificationRecipient recipient) {
+    ImmutableList.Builder<INotificationContentDescriptor> wrapped = ImmutableList.builder();
+
+    for (INotificationContentDescriptor current : chainedDescriptors) {
+      wrapped.add(current.withContext(recipient));
+    }
+
+    return new FirstNotNullNotificationContentDescriptorImpl(wrapped.build());
+  }
 }

@@ -4,8 +4,7 @@ import org.iglooproject.rest.jersey2.AbstractRestApplication;
 
 public class SimpleRestApplication extends AbstractRestApplication {
 
-	public SimpleRestApplication() {
-		super(SimpleRestApplication.class);
-	}
-
+  public SimpleRestApplication() {
+    super(SimpleRestApplication.class);
+  }
 }

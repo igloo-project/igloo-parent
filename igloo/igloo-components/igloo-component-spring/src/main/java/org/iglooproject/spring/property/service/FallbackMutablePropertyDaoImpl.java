@@ -7,27 +7,28 @@ import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 
 public class FallbackMutablePropertyDaoImpl implements IMutablePropertyDao {
 
-	private final IImmutablePropertyDao immutablePropertyDao;
+  private final IImmutablePropertyDao immutablePropertyDao;
 
-	public FallbackMutablePropertyDaoImpl(IImmutablePropertyDao immutablePropertyDao) {
-		this.immutablePropertyDao = immutablePropertyDao;
-	}
+  public FallbackMutablePropertyDaoImpl(IImmutablePropertyDao immutablePropertyDao) {
+    this.immutablePropertyDao = immutablePropertyDao;
+  }
 
-	@Override
-	public String getInTransaction(String key) {
-		return immutablePropertyDao.get(key);
-	}
+  @Override
+  public String getInTransaction(String key) {
+    return immutablePropertyDao.get(key);
+  }
 
-	@Override
-	public void setInTransaction(String key, String value) throws ServiceException, SecurityServiceException {
-		throw new RuntimeException(String.format(
-				"%s does not support mutability",
-				FallbackMutablePropertyDaoImpl.class.getSimpleName()));
-	}
+  @Override
+  public void setInTransaction(String key, String value)
+      throws ServiceException, SecurityServiceException {
+    throw new RuntimeException(
+        String.format(
+            "%s does not support mutability",
+            FallbackMutablePropertyDaoImpl.class.getSimpleName()));
+  }
 
-	@Override
-	public void cleanInTransaction() {
-		// Nothing persisted, nothing to clean
-	}
-
+  @Override
+  public void cleanInTransaction() {
+    // Nothing persisted, nothing to clean
+  }
 }

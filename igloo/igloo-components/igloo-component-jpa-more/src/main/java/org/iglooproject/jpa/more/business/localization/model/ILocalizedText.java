@@ -5,6 +5,5 @@ import java.util.Locale;
 
 public interface ILocalizedText extends Serializable, Cloneable {
 
-	String get(Locale locale);
-
+  String get(Locale locale);
 }

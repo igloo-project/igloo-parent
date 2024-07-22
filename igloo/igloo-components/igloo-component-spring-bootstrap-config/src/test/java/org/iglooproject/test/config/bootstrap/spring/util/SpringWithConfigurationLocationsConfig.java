@@ -10,20 +10,17 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource(
-	name = IglooPropertySourcePriority.APPLICATION,
-	value = {
-		"classpath:configuration-app.properties",
-		"classpath:configuration-app-${igloo.applicationName}.properties",
-		"classpath:configuration-app-${user.name}.properties",
-		"classpath:configuration-app-placeholder.properties",
-	},
-	encoding = "UTF-8"
-)
+    name = IglooPropertySourcePriority.APPLICATION,
+    value = {
+      "classpath:configuration-app.properties",
+      "classpath:configuration-app-${igloo.applicationName}.properties",
+      "classpath:configuration-app-${user.name}.properties",
+      "classpath:configuration-app-placeholder.properties",
+    },
+    encoding = "UTF-8")
 @Import({
-	SpringWithConfigurationLocationsOverrideConfig.class,
-	SpringWithConfigurationLocationsDefaultConfig.class,
-	SpringWithConfigurationLocationsPlaceholderConfig.class
+  SpringWithConfigurationLocationsOverrideConfig.class,
+  SpringWithConfigurationLocationsDefaultConfig.class,
+  SpringWithConfigurationLocationsPlaceholderConfig.class
 })
-public class SpringWithConfigurationLocationsConfig {
-
-}
+public class SpringWithConfigurationLocationsConfig {}

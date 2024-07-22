@@ -7,11 +7,10 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 @Configuration
 public class BasicApplicationCoreNotificationConfig {
 
-	@Bean
-	public FreeMarkerConfigurationFactoryBean freemarkerMailConfiguration() {
-		FreeMarkerConfigurationFactoryBean configuration = new FreeMarkerConfigurationFactoryBean();
-		configuration.setTemplateLoaderPath("classpath:notification");
-		return configuration;
-	}
-
+  @Bean
+  public FreeMarkerConfigurationFactoryBean freemarkerMailConfiguration() {
+    FreeMarkerConfigurationFactoryBean configuration = new FreeMarkerConfigurationFactoryBean();
+    configuration.setTemplateLoaderPath("classpath:notification");
+    return configuration;
+  }
 }

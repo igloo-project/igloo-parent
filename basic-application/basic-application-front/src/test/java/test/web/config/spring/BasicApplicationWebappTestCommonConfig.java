@@ -1,14 +1,11 @@
 package test.web.config.spring;
 
+import basicapp.front.config.spring.BasicApplicationWebappConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import basicapp.front.config.spring.BasicApplicationWebappConfig;
-
 @Configuration
 @Import({
-	BasicApplicationWebappConfig.class,
+  BasicApplicationWebappConfig.class,
 })
-public class BasicApplicationWebappTestCommonConfig {
-
-}
+public class BasicApplicationWebappTestCommonConfig {}

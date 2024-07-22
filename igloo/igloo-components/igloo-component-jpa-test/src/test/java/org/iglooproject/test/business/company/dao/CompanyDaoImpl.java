@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository("companyDao")
 public class CompanyDaoImpl extends GenericEntityDaoImpl<Long, Company> implements ICompanyDao {
 
-	public CompanyDaoImpl() {
-		super();
-	}
+  public CompanyDaoImpl() {
+    super();
+  }
 }
