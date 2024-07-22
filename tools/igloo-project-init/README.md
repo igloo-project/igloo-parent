@@ -18,7 +18,7 @@ curl --location --request POST 'https://gitlab.tools.kobalt.fr/api/v4/projects/i
         {"key":"VERSION", "variable_type" : "env_var", "value" : "0.1-SNAPSHOT"},
         {"key":"PACKAGE", "variable_type" : "env_var", "value" : "fr.hello.basicapp"},
         {"key":"ARCHETYPE_APPLICATION_NAME_PREFIX", "variable_type" : "env_var", "value" : "HelloBasicapp"},
-        {"key":"ARCHETYPE_SPRING_ANNOTATION_VALUE_PREFIX", "variable_type" : "env_var", "value" : "HelloBasicapp"},
+        {"key":"ARCHETYPE_SPRING_ANNOTATION_VALUE_PREFIX", "variable_type" : "env_var", "value" : "helloBasicapp"},
         {"key":"ARCHETYPE_FULL_APPLICTION_NAME", "variable_type" : "env_var", "value" : "Customer - Hello Basicapp"},
         {"key":"ARCHETYPE_DATABASE_PREFIX", "variable_type" : "env_var", "value" : "hello_basicapp"},
         {"key":"GIT_HTTPS_REPO_PROJECT", "variable_type" : "env_var", "value" : "https://gitlab.tools.kobalt.fr/kobalt/hello-basicapp.git"},
