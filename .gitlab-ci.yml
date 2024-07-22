@@ -94,7 +94,6 @@ test-init:
   - if: $CI_COMMIT_BRANCH == "main"
   - if: $CI_COMMIT_BRANCH == "igloo-boot"
   - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
-  - if: $CI_COMMIT_BRANCH == "ft-basicapp-refactor"
   tags:
   - docker
 
