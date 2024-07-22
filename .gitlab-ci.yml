@@ -110,9 +110,10 @@ basic-application-init:
   - '[ "$DRY_RUN" == "true" ] && DRY_RUN_ARGS=--dry-run || DRY_RUN_ARGS=""'
   - >
     /root/.local/bin/hatch run igloo-project-init
-    -v --debug --check-diff --check-build
+    -v --debug --check-build
     --igloo-url "$CI_PROJECT_DIR" $DRY_RUN_ARGS
     --target-url "$GIT_HTTPS_REPO_PROJECT" --target-branch ${TARGET_BRANCH:-main}
+    --target-username kobalt-admin --target-email infra@kobalt.fr
     "$ARTIFACT_ID" "$GROUP_ID" "$VERSION" "$PACKAGE"
     "$ARCHETYPE_APPLICATION_NAME_PREFIX" "$ARCHETYPE_SPRING_ANNOTATION_VALUE_PREFIX" "$ARCHETYPE_FULL_APPLICTION_NAME" "$ARCHETYPE_DATABASE_PREFIX"
   rules:

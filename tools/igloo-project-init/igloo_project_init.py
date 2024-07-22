@@ -115,6 +115,8 @@ class ArchetypeDefinition:
 @click.option("--dry-run", "-n", type=click.BOOL, default=False, help="Dry run, do not push project", is_flag=True)
 @click.option("--igloo-url", default="https://github.com/igloo-project/igloo-parent", help="Igloo repository URL")
 @click.option("--igloo-branch", help="Igloo repository branch")
+@click.option("--target-username", default=None)
+@click.option("--target-email", default=None)
 @click.option("--debug", type=click.BOOL, default=False, help="Display command outputs", is_flag=True)
 @click.option("--check-build", type=click.BOOL, default=False, help="Check that target project build", is_flag=True)
 @click.option(
@@ -148,6 +150,8 @@ def main(
     archetype_underscore_name: str,
     target_url: str,
     target_branch: str,
+    target_username: str,
+    target_email: str,
     igloo_url: str,
     igloo_branch: str,
     tmp_dir: pathlib.Path,
@@ -213,7 +217,7 @@ def main(
                 check_build = check_test
             check(project_path, check_build, check_test)
         if target_url:
-            setup_git(igloo_clone, project_path, target_url, target_branch, dry_run)
+            setup_git(igloo_clone, project_path, target_url, target_branch, target_username, target_email, dry_run)
         if check_diff:
             perform_diff(igloo_clone, project_path)
     finally:
@@ -225,7 +229,7 @@ def main(
 
 
 def check(project_path: pathlib.Path, check_build: bool, check_test: bool):
-    """Check that generated project build and (conditionaly) pass tests."""
+    """Check that generated project build and (conditionaly)it compass tests."""
     if not (check_build or check_test):
         raise click.exceptions.Abort("Either check_build or check_test must be True. Both are False.")
     logger.debug("Checking project build (build=%s, test=%s).", check_build, check_test)
@@ -286,9 +290,19 @@ def subprocess_args(also_stderr: bool = False) -> typing.Mapping:
 
 
 def setup_git(
-    igloo_path: pathlib.Path, project_path: pathlib.Path, target_remote_url: str, remote_branch: str, dry_run: bool
+    igloo_path: pathlib.Path,
+    project_path: pathlib.Path,
+    target_remote_url: str,
+    remote_branch: str,
+    target_username: str,
+    target_email: str,
+    dry_run: bool,
 ):
     """Push project to remote repository. If `dry_run` is true, push is performed with `--dry-run` option."""
+    if target_username:
+        subprocess.check_call(["git", "config", "--global", "user.name", target_username])
+    if target_email:
+        subprocess.check_call(["git", "config", "--global", "user.email", target_email])
     logger.debug("Git project init (branch %s).", remote_branch)
     logger.debug("Added .gitignore file from igloo project.")
     shutil.copy(igloo_path.joinpath(".gitignore"), project_path.joinpath(".gitignore"))
