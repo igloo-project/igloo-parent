@@ -7,7 +7,7 @@ Igloo project init pipeline allows to automate the initialization of BasicApplic
 You have to call like this to create pipeline with appropriate permissions for target repository (GIT_HTTPS_REPO_PROJECT and PRIVATE-TOKEN) :
 
 ```
-curl --location --request POST 'https://gitlab.tools.kobalt.fr/api/v4/projects/kobalt%2Figloo-project-init/pipeline' \
+curl --location --request POST 'https://gitlab.tools.kobalt.fr/api/v4/projects/igloo-project%2Figloo-parent/pipeline' \
 --header 'PRIVATE-TOKEN: XXX' \
 --header 'Content-Type: application/json' \
 --data-raw '{
@@ -22,8 +22,9 @@ curl --location --request POST 'https://gitlab.tools.kobalt.fr/api/v4/projects/k
         {"key":"ARCHETYPE_FULL_APPLICTION_NAME", "variable_type" : "env_var", "value" : "Customer - Hello Basicapp"},
         {"key":"ARCHETYPE_DATABASE_PREFIX", "variable_type" : "env_var", "value" : "hello_basicapp"},
         {"key":"GIT_HTTPS_REPO_PROJECT", "variable_type" : "env_var", "value" : "https://gitlab.tools.kobalt.fr/kobalt/hello-basicapp.git"},
+        {"key":"TARGET_BRANCH", "variable_type" : "env_var", "value" : "alternative-branch"},
         {"key":"GIT_ACCESS_TOKEN", "variable_type" : "env_var", "value" : "XXX"},
-        {"key":"DRY_RUN", "variable_type" : "env_var", "value" : "True"}
+        {"key":"DRY_RUN", "variable_type" : "env_var", "value" : "true"}
     ]
 }'
 ```

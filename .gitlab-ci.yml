@@ -5,9 +5,8 @@ variables:
   MAVEN_OPTS: "-Xmx1536m"
 
 stages:
+  # build includes tests
   - build
-# TODO: igloo-boot
-# - verify
   - dependencies
   - deploy
   - analyze
@@ -25,9 +24,12 @@ maven-build:
     reports:
       junit:
         - "**/target/surefire-reports/TEST-*.xml"
-  except:
-    variables:
-      - $CHECK_DEPENDENCIES
+  rules:
+  - if: $CHECK_DEPENDENCIES
+    when: never
+  - if: $CI_PIPELINE_SOURCE == 'api'
+    when: never
+  - when: on_success
   tags:
     - docker
   services:
@@ -50,9 +52,10 @@ maven-dependencies:
   script:
     - "source gitlab-ci.build.conf"
     - "./ci/maven-dependencies.sh"
-  only:
-    variables:
-      - $CHECK_DEPENDENCIES
+  rules:
+  - if: $CHECK_DEPENDENCIES
+  - if: $CI_PIPELINE_SOURCE == 'api'
+    when: never
   tags:
     - docker
 
@@ -79,7 +82,9 @@ test-init:
     basic-application org.iglooproject.archetype 6.0.0-SNAPSHOT basicapp
     BasicApplication basicApplication "Basic Application" basic_application
   rules:
-  - if: $CI_PIPELINE_SOURCE == "api"
+  - if: $CHECK_DEPENDENCIES
+    when: never
+  - if: $CI_PIPELINE_SOURCE == 'api'
     when: never
   - if: $CI_COMMIT_BRANCH == "dev"
   - if: $CI_COMMIT_BRANCH == "master"
@@ -100,16 +105,16 @@ basic-application-init:
   - cd tools/igloo-project-init
   - export GIT_USER="token"
   - export GIT_PASSWORD="$GIT_ACCESS_TOKEN"
+  - '[ "$DRY_RUN" == "true" ] && DRY_RUN_ARGS=--dry-run || DRY_RUN_ARGS=""'
   - >
     /root/.local/bin/hatch run igloo-project-init
     -v --debug --check-diff --check-build
-    --igloo-url "$CI_PROJECT_DIR" --igloo-branch basic-app-refactor
-    --target-url "$GIT_HTTPS_REPO_PROJECT" --target-branch main
+    --igloo-url "$CI_PROJECT_DIR" $DRY_RUN_ARGS
+    --target-url "$GIT_HTTPS_REPO_PROJECT" --target-branch ${TARGET_BRANCH:-main}
     "$ARTIFACT_ID" "$GROUP_ID" "$VERSION" "$PACKAGE"
     "$ARCHETYPE_APPLICATION_NAME_PREFIX" "$ARCHETYPE_SPRING_ANNOTATION_VALUE_PREFIX" "$ARCHETYPE_FULL_APPLICTION_NAME" "$ARCHETYPE_DATABASE_PREFIX"
   rules:
-  - if: '$CI_PIPELINE_SOURCE == "api"'
-    when: always
+  - if: $CI_PIPELINE_SOURCE == 'api'
   tags:
     - docker
 
@@ -118,17 +123,19 @@ maven-deploy:
   environment: staging
   script:
     - "mvn -U deploy -DperformRelease -Ddistribution=igloo-release -DskipTests"
-  only:
-    - /^master$/
-    - /^dev$/
-    - /^ft-.*-deploy$/
-    - /^hf-.*$/
-    - igloo-boot
-    - igloo-boot-dev
-    - /^igloo-boot-hf-.*$/
-  except:
-    variables:
-      - $CHECK_DEPENDENCIES
+  rules:
+  - if: $CI_PIPELINE_SOURCE == 'api'
+    when: never
+  - if: $CHECK_DEPENDENCIES
+    when: never
+  - if: $CI_COMMIT_BRANCH == "main"
+  - if: $CI_COMMIT_BRANCH == "master"
+  - if: $CI_COMMIT_BRANCH == "dev"
+  - if: $CI_COMMIT_BRANCH == "igloo-boot"
+  - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
+  - if: $CI_COMMIT_BRANCH == /^ft-.*-deploy$/
+  - if: $CI_COMMIT_BRANCH == /^hf-.*$/
+  - if: $CI_COMMIT_BRANCH == /^igloo-boot-hf-.*$/
   tags:
     - docker
 
@@ -141,8 +148,11 @@ sonar-analyze:
       -Dsonar.projectBranch=igloo-boot
       -DskipTests
       -Dsonar.host.url="https://sonar.tools.kobalt.fr"
-  except:
-    variables:
-      - $CHECK_DEPENDENCIES
+  rules:
+  - if: $CI_PIPELINE_SOURCE == 'api'
+    when: never
+  - if: $CHECK_DEPENDENCIES
+    when: never
+  - when: on_success
   tags:
     - docker
