@@ -1,7 +1,8 @@
 package org.iglooproject.basicapp.web.application.notification.service;
 
+import com.google.common.collect.ImmutableList;
+import igloo.wicket.model.BindingModel;
 import java.util.Date;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -22,81 +23,86 @@ import org.iglooproject.wicket.more.notification.service.IWicketContextProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.ImmutableList;
-
-import igloo.wicket.model.BindingModel;
-
 @Service("BasicApplicationNotificationPanelRendererService")
 public class BasicApplicationNotificationContentDescriptorFactoryImpl
-		extends AbstractNotificationContentDescriptorFactory
-		implements IBasicApplicationNotificationContentDescriptorFactory {
-	
-	@Autowired
-	public BasicApplicationNotificationContentDescriptorFactoryImpl(IWicketContextProvider contextProvider) {
-		super(contextProvider);
-	}
+    extends AbstractNotificationContentDescriptorFactory
+    implements IBasicApplicationNotificationContentDescriptorFactory {
 
-	@Override
-	public INotificationContentDescriptor example(final User user, final Date date) {
-		return new AbstractSimpleWicketNotificationDescriptor("notification.panel.example") {
-			@Override
-			public Object getSubjectParameter() {
-				return user;
-			}
-			@Override
-			public Iterable<?> getSubjectPositionalParameters() {
-				return ImmutableList.of(user.getFullName(), date);
-			}
-			@Override
-			public Component createComponent(String wicketId) {
-				return new ExampleHtmlNotificationPanel(wicketId, GenericEntityModel.of(user), Model.of(date));
-			}
-			@Override
-			public Class<? extends Component> getComponentClass() {
-				return ExampleHtmlNotificationPanel.class;
-			}
-		};
-	}
+  @Autowired
+  public BasicApplicationNotificationContentDescriptorFactoryImpl(
+      IWicketContextProvider contextProvider) {
+    super(contextProvider);
+  }
 
-	@Override
-	public INotificationContentDescriptor userPasswordRecoveryRequest(final User user) {
-		final ITwoParameterLinkDescriptorMapper<? extends IPageLinkGenerator, User, String> mapper;
-		switch (user.getPasswordRecoveryRequest().getType()) {
-		case CREATION:
-			mapper = SecurityPasswordCreationPage.MAPPER;
-			break;
-		case RESET:
-			mapper = SecurityPasswordResetPage.MAPPER;
-			break;
-		default:
-			throw new IllegalStateException("Recovery request type unknown.");
-		}
-		
-		final ResourceKeyGenerator keyGenerator =
-			ResourceKeyGenerator.of("notification.panel.user.password.recovery.request")
-				.append(user.getPasswordRecoveryRequest().getType().name())
-				.append(user.getPasswordRecoveryRequest().getInitiator().name());
-		
-		return new AbstractSimpleWicketNotificationDescriptor(keyGenerator.resourceKey()) {
-			@Override
-			public IModel<?> getSubjectParameter() {
-				return GenericEntityModel.of(user);
-			}
-			@Override
-			public Component createComponent(String wicketId) {
-				IModel<User> userModel = GenericEntityModel.of(user);
-				return new UserPasswordRecoveryRequestHtmlNotificationPanel<>(
-					wicketId,
-					keyGenerator,
-					userModel, userModel, Model.of(new Date()),
-					mapper.map(userModel, BindingModel.of(userModel, Bindings.user().passwordRecoveryRequest().token()))
-				);
-			}
-			@Override
-			public Class<? extends Component> getComponentClass() {
-				return UserPasswordRecoveryRequestHtmlNotificationPanel.class;
-			}
-		};
-	}
+  @Override
+  public INotificationContentDescriptor example(final User user, final Date date) {
+    return new AbstractSimpleWicketNotificationDescriptor("notification.panel.example") {
+      @Override
+      public Object getSubjectParameter() {
+        return user;
+      }
 
+      @Override
+      public Iterable<?> getSubjectPositionalParameters() {
+        return ImmutableList.of(user.getFullName(), date);
+      }
+
+      @Override
+      public Component createComponent(String wicketId) {
+        return new ExampleHtmlNotificationPanel(
+            wicketId, GenericEntityModel.of(user), Model.of(date));
+      }
+
+      @Override
+      public Class<? extends Component> getComponentClass() {
+        return ExampleHtmlNotificationPanel.class;
+      }
+    };
+  }
+
+  @Override
+  public INotificationContentDescriptor userPasswordRecoveryRequest(final User user) {
+    final ITwoParameterLinkDescriptorMapper<? extends IPageLinkGenerator, User, String> mapper;
+    switch (user.getPasswordRecoveryRequest().getType()) {
+      case CREATION:
+        mapper = SecurityPasswordCreationPage.MAPPER;
+        break;
+      case RESET:
+        mapper = SecurityPasswordResetPage.MAPPER;
+        break;
+      default:
+        throw new IllegalStateException("Recovery request type unknown.");
+    }
+
+    final ResourceKeyGenerator keyGenerator =
+        ResourceKeyGenerator.of("notification.panel.user.password.recovery.request")
+            .append(user.getPasswordRecoveryRequest().getType().name())
+            .append(user.getPasswordRecoveryRequest().getInitiator().name());
+
+    return new AbstractSimpleWicketNotificationDescriptor(keyGenerator.resourceKey()) {
+      @Override
+      public IModel<?> getSubjectParameter() {
+        return GenericEntityModel.of(user);
+      }
+
+      @Override
+      public Component createComponent(String wicketId) {
+        IModel<User> userModel = GenericEntityModel.of(user);
+        return new UserPasswordRecoveryRequestHtmlNotificationPanel<>(
+            wicketId,
+            keyGenerator,
+            userModel,
+            userModel,
+            Model.of(new Date()),
+            mapper.map(
+                userModel,
+                BindingModel.of(userModel, Bindings.user().passwordRecoveryRequest().token())));
+      }
+
+      @Override
+      public Class<? extends Component> getComponentClass() {
+        return UserPasswordRecoveryRequestHtmlNotificationPanel.class;
+      }
+    };
+  }
 }

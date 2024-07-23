@@ -1,5 +1,3 @@
 package igloo.wicket.feedback;
 
-public interface IFeedbackPanel {
-
-}
+public interface IFeedbackPanel {}

@@ -6,10 +6,10 @@ import org.iglooproject.jpa.security.business.user.dao.GenericUserGroupDaoImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserGroupDaoImpl extends GenericUserGroupDaoImpl<UserGroup, User> implements IUserGroupDao {
+public class UserGroupDaoImpl extends GenericUserGroupDaoImpl<UserGroup, User>
+    implements IUserGroupDao {
 
-	public UserGroupDaoImpl() {
-		super();
-	}
-
+  public UserGroupDaoImpl() {
+    super();
+  }
 }

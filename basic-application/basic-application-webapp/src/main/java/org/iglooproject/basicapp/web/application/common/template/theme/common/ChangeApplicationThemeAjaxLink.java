@@ -10,30 +10,30 @@ import org.iglooproject.spring.property.service.IPropertyService;
 
 public class ChangeApplicationThemeAjaxLink extends AjaxLink<Void> {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@SpringBean
-	private IPropertyService propertyService;
+  @SpringBean private IPropertyService propertyService;
 
-	public ChangeApplicationThemeAjaxLink(String id) {
-		super(id);
-	}
+  public ChangeApplicationThemeAjaxLink(String id) {
+    super(id);
+  }
 
-	@Override
-	public void onClick(AjaxRequestTarget target) {
-		try {
-			BasicApplicationApplicationTheme applicationTheme = propertyService.get(BasicApplicationWebappPropertyIds.APPLICATION_THEME);
-			
-			if (applicationTheme == null) {
-				return;
-			}
-			
-			propertyService.set(BasicApplicationWebappPropertyIds.APPLICATION_THEME, applicationTheme.next());
-			
-			throw HomePage.linkDescriptor().newRestartResponseException();
-		} catch (Exception e) {
-			throw new IllegalStateException("Error on updating application theme.", e);
-		}
-	}
+  @Override
+  public void onClick(AjaxRequestTarget target) {
+    try {
+      BasicApplicationApplicationTheme applicationTheme =
+          propertyService.get(BasicApplicationWebappPropertyIds.APPLICATION_THEME);
 
+      if (applicationTheme == null) {
+        return;
+      }
+
+      propertyService.set(
+          BasicApplicationWebappPropertyIds.APPLICATION_THEME, applicationTheme.next());
+
+      throw HomePage.linkDescriptor().newRestartResponseException();
+    } catch (Exception e) {
+      throw new IllegalStateException("Error on updating application theme.", e);
+    }
+  }
 }

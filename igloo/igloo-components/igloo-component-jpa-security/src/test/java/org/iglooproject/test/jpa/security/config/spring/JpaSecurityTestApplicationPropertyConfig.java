@@ -7,13 +7,11 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 
 public class JpaSecurityTestApplicationPropertyConfig extends AbstractApplicationPropertyConfig {
 
-	@Override
-	public void register(IPropertyRegistry registry) {
-	}
+  @Override
+  public void register(IPropertyRegistry registry) {}
 
-	@Override
-	public IMutablePropertyDao mutablePropertyDao() {
-		return new ParameterDaoImpl();
-	}
-
+  @Override
+  public IMutablePropertyDao mutablePropertyDao() {
+    return new ParameterDaoImpl();
+  }
 }

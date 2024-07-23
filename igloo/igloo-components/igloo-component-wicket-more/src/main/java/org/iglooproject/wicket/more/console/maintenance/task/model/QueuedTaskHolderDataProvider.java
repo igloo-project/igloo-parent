@@ -1,8 +1,9 @@
 package org.iglooproject.wicket.more.console.maintenance.task.model;
 
+import com.google.common.collect.ImmutableMap;
+import igloo.wicket.model.Detachables;
 import java.util.Collection;
 import java.util.Date;
-
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -18,110 +19,105 @@ import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.Co
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 
-import com.google.common.collect.ImmutableMap;
+public class QueuedTaskHolderDataProvider
+    extends AbstractSearchQueryDataProvider<QueuedTaskHolder, QueuedTaskHolderSort> {
 
-import igloo.wicket.model.Detachables;
+  private static final long serialVersionUID = -1886156254057416250L;
 
-public class QueuedTaskHolderDataProvider extends AbstractSearchQueryDataProvider<QueuedTaskHolder, QueuedTaskHolderSort> {
+  private final IModel<String> nameModel = new Model<>();
 
-	private static final long serialVersionUID = -1886156254057416250L;
+  private final IModel<Collection<TaskStatus>> statusesModel = new CollectionModel<>();
 
-	private final IModel<String> nameModel = new Model<>();
+  private final IModel<Collection<TaskResult>> resultsModel = new CollectionModel<>();
 
-	private final IModel<Collection<TaskStatus>> statusesModel = new CollectionModel<>();
+  private final IModel<Collection<String>> taskTypesModel = new CollectionModel<>();
 
-	private final IModel<Collection<TaskResult>> resultsModel = new CollectionModel<>();
+  private final IModel<Collection<String>> queueIdsModel = new CollectionModel<>();
 
-	private final IModel<Collection<String>> taskTypesModel = new CollectionModel<>();
+  private final IModel<Date> creationDateModel = new Model<>();
 
-	private final IModel<Collection<String>> queueIdsModel = new CollectionModel<>();
+  private final IModel<Date> startDateModel = new Model<>();
 
-	private final IModel<Date> creationDateModel = new Model<>();
+  private final IModel<Date> endDateModel = new Model<>();
 
-	private final IModel<Date> startDateModel = new Model<>();
+  private final CompositeSortModel<QueuedTaskHolderSort> sortModel =
+      new CompositeSortModel<>(
+          CompositingStrategy.LAST_ONLY,
+          ImmutableMap.of(
+              QueuedTaskHolderSort.CREATION_DATE,
+              QueuedTaskHolderSort.CREATION_DATE.getDefaultOrder()),
+          ImmutableMap.of(
+              QueuedTaskHolderSort.CREATION_DATE,
+                  QueuedTaskHolderSort.CREATION_DATE.getDefaultOrder(),
+              QueuedTaskHolderSort.ID, QueuedTaskHolderSort.ID.getDefaultOrder()));
 
-	private final IModel<Date> endDateModel = new Model<>();
+  public QueuedTaskHolderDataProvider() {
+    super();
+    Injector.get().inject(this);
+  }
 
-	private final CompositeSortModel<QueuedTaskHolderSort> sortModel = new CompositeSortModel<>(
-			CompositingStrategy.LAST_ONLY,
-			ImmutableMap.of(
-				QueuedTaskHolderSort.CREATION_DATE, QueuedTaskHolderSort.CREATION_DATE.getDefaultOrder()
-			),
-			ImmutableMap.of(
-				QueuedTaskHolderSort.CREATION_DATE, QueuedTaskHolderSort.CREATION_DATE.getDefaultOrder(),
-				QueuedTaskHolderSort.ID, QueuedTaskHolderSort.ID.getDefaultOrder()
-			)
-	);
+  public IModel<String> getNameModel() {
+    return nameModel;
+  }
 
-	public QueuedTaskHolderDataProvider() {
-		super();
-		Injector.get().inject(this);
-	}
+  public IModel<Collection<TaskStatus>> getStatusesModel() {
+    return statusesModel;
+  }
 
-	public IModel<String> getNameModel() {
-		return nameModel;
-	}
+  public IModel<Collection<TaskResult>> getResultsModel() {
+    return resultsModel;
+  }
 
-	public IModel<Collection<TaskStatus>> getStatusesModel() {
-		return statusesModel;
-	}
+  public IModel<Collection<String>> getTaskTypesModel() {
+    return taskTypesModel;
+  }
 
-	public IModel<Collection<TaskResult>> getResultsModel() {
-		return resultsModel;
-	}
+  public IModel<Collection<String>> getQueueIdsModel() {
+    return queueIdsModel;
+  }
 
-	public IModel<Collection<String>> getTaskTypesModel() {
-		return taskTypesModel;
-	}
-	
-	public IModel<Collection<String>> getQueueIdsModel() {
-		return queueIdsModel;
-	}
+  public IModel<Date> getCreationDateModel() {
+    return creationDateModel;
+  }
 
-	public IModel<Date> getCreationDateModel() {
-		return creationDateModel;
-	}
+  public IModel<Date> getStartDateModel() {
+    return startDateModel;
+  }
 
-	public IModel<Date> getStartDateModel() {
-		return startDateModel;
-	}
+  public IModel<Date> getCompletionDateModel() {
+    return endDateModel;
+  }
 
-	public IModel<Date> getCompletionDateModel() {
-		return endDateModel;
-	}
+  @Override
+  public IModel<QueuedTaskHolder> model(QueuedTaskHolder object) {
+    return new GenericEntityModel<>(object);
+  }
 
-	@Override
-	public IModel<QueuedTaskHolder> model(QueuedTaskHolder object) {
-		return new GenericEntityModel<>(object);
-	}
+  @Override
+  protected ISearchQuery<QueuedTaskHolder, QueuedTaskHolderSort> getSearchQuery() {
+    return createSearchQuery(IQueuedTaskHolderSearchQuery.class)
+        .name(nameModel.getObject())
+        .statuses(statusesModel.getObject())
+        .results(resultsModel.getObject())
+        .types(taskTypesModel.getObject())
+        .queueIds(queueIdsModel.getObject())
+        .creationDate(creationDateModel.getObject())
+        .startDate(startDateModel.getObject())
+        .endDate(endDateModel.getObject())
+        .sort(sortModel.getObject());
+  }
 
-	@Override
-	protected ISearchQuery<QueuedTaskHolder, QueuedTaskHolderSort> getSearchQuery() {
-		return createSearchQuery(IQueuedTaskHolderSearchQuery.class)
-			.name(nameModel.getObject())
-			.statuses(statusesModel.getObject())
-			.results(resultsModel.getObject())
-			.types(taskTypesModel.getObject())
-			.queueIds(queueIdsModel.getObject())
-			.creationDate(creationDateModel.getObject())
-			.startDate(startDateModel.getObject())
-			.endDate(endDateModel.getObject())
-			.sort(sortModel.getObject());
-	}
-
-	@Override
-	public void detach() {
-		super.detach();
-		Detachables.detach(
-			nameModel,
-			statusesModel,
-			resultsModel,
-			taskTypesModel,
-			queueIdsModel,
-			creationDateModel,
-			startDateModel,
-			endDateModel
-		);
-	}
-
+  @Override
+  public void detach() {
+    super.detach();
+    Detachables.detach(
+        nameModel,
+        statusesModel,
+        resultsModel,
+        taskTypesModel,
+        queueIdsModel,
+        creationDateModel,
+        startDateModel,
+        endDateModel);
+  }
 }

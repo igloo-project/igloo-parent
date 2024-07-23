@@ -9,13 +9,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JpaMoreTestApplicationPropertyConfig extends AbstractApplicationPropertyConfig {
 
-	@Override
-	public void register(IPropertyRegistry registry) {
-	}
+  @Override
+  public void register(IPropertyRegistry registry) {}
 
-	@Override
-	public IMutablePropertyDao mutablePropertyDao() {
-		return new ParameterDaoImpl();
-	}
-
+  @Override
+  public IMutablePropertyDao mutablePropertyDao() {
+    return new ParameterDaoImpl();
+  }
 }

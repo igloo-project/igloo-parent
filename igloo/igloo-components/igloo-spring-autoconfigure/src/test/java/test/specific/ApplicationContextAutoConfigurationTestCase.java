@@ -14,36 +14,30 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Base class used to check that {@link EnableIglooAutoConfiguration} triggers IglooFlywayAutoConfiguration properly. 
- * 
- * This class uses ApplicationContextRunner to initialize contexts with suitable configurations,
+ * Base class used to check that {@link EnableIglooAutoConfiguration} triggers
+ * IglooFlywayAutoConfiguration properly.
+ *
+ * <p>This class uses ApplicationContextRunner to initialize contexts with suitable configurations,
  * which are declared at the bottom of the file.
- *  
  */
 class ApplicationContextAutoConfigurationTestCase {
 
-	/**
-	 * Check that autoconfiguration from {@link IglooPropertyAutoConfiguration} is triggered with EnableIglooAutoConfiguration
-	 */
-	@Test
-	void testIglooApplicationConfigAutoConfigure() {
-		new ApplicationContextRunner()
-			.withAllowBeanDefinitionOverriding(true)
-			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-			.withInitializer(new ExtendedTestApplicationContextInitializer())
-			.withPropertyValues("igloo.profile=test")
-			.run(
-				context -> assertThat(context).hasSingleBean(ConfigurationLogger.class)
-			);
-	}
-	
-	@Configuration
-	@EnableIglooAutoConfiguration(
-		exclude = {
-			IglooBootstrap4AutoConfiguration.class,
-			IglooJpaSecurityAutoConfiguration.class
-		}
-	)
-	public static class TestConfig {}
+  /**
+   * Check that autoconfiguration from {@link IglooPropertyAutoConfiguration} is triggered with
+   * EnableIglooAutoConfiguration
+   */
+  @Test
+  void testIglooApplicationConfigAutoConfigure() {
+    new ApplicationContextRunner()
+        .withAllowBeanDefinitionOverriding(true)
+        .withConfiguration(AutoConfigurations.of(TestConfig.class))
+        .withInitializer(new ExtendedTestApplicationContextInitializer())
+        .withPropertyValues("igloo.profile=test")
+        .run(context -> assertThat(context).hasSingleBean(ConfigurationLogger.class));
+  }
 
+  @Configuration
+  @EnableIglooAutoConfiguration(
+      exclude = {IglooBootstrap4AutoConfiguration.class, IglooJpaSecurityAutoConfiguration.class})
+  public static class TestConfig {}
 }

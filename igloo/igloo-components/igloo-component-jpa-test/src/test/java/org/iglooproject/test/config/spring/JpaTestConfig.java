@@ -11,22 +11,15 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource(
-	name = IglooPropertySourcePriority.APPLICATION,
-	value = {
-		ConfigurationPropertiesUrlConstants.JPA_COMMON,
-		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
-		"classpath:igloo-jpa.properties"
-	},
-	encoding = "UTF-8"
-)
-@Import({
-	JpaTestJpaConfig.class,
-	JpaTestApplicationPropertyConfig.class
-})
+    name = IglooPropertySourcePriority.APPLICATION,
+    value = {
+      ConfigurationPropertiesUrlConstants.JPA_COMMON,
+      ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
+      "classpath:igloo-jpa.properties"
+    },
+    encoding = "UTF-8")
+@Import({JpaTestJpaConfig.class, JpaTestApplicationPropertyConfig.class})
 @ComponentScan(
-	basePackageClasses = JpaTestBusinessPackage.class,
-	excludeFilters = @Filter(Configuration.class)
-)
-public class JpaTestConfig extends AbstractApplicationConfig {
-
-}
+    basePackageClasses = JpaTestBusinessPackage.class,
+    excludeFilters = @Filter(Configuration.class))
+public class JpaTestConfig extends AbstractApplicationConfig {}

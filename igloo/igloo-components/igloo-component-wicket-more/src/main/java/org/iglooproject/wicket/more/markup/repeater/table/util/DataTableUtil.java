@@ -6,15 +6,13 @@ import org.apache.wicket.markup.repeater.Item;
 
 public final class DataTableUtil {
 
-	private DataTableUtil() {
-	}
+  private DataTableUtil() {}
 
-	public static <E> MarkupContainer getRowItem(Item<ICellPopulator<E>> cellItem) {
-		if (cellItem != null) {
-			// cellItem.getParent() => RepeatingView
-			return cellItem.getParent().getParent();
-		}
-		return null;
-	}
-
+  public static <E> MarkupContainer getRowItem(Item<ICellPopulator<E>> cellItem) {
+    if (cellItem != null) {
+      // cellItem.getParent() => RepeatingView
+      return cellItem.getParent().getParent();
+    }
+    return null;
+  }
 }

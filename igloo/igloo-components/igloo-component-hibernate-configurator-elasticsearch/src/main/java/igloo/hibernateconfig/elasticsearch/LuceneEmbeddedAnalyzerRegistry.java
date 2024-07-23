@@ -4,6 +4,5 @@ import org.apache.lucene.analysis.Analyzer;
 
 public interface LuceneEmbeddedAnalyzerRegistry {
 
-	Analyzer getRegistryAnalyzer(String analyzerName);
-
+  Analyzer getRegistryAnalyzer(String analyzerName);
 }

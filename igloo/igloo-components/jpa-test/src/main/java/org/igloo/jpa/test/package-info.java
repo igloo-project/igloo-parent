@@ -1,6 +1,6 @@
 /**
  * Provides utilities to setup an hibernate test context with jupiter.
- * 
+ *
  * <pre><code>
  * class MyTestClass {
  *     {@literal @RegisterExtension}
@@ -12,7 +12,7 @@
  *         AvailableSettings.LOADED_CLASSES, Arrays.asList(OrphanOwner.class, OrphanItem.class),
  *         AvailableSettings.XML_MAPPING_ENABLED, Boolean.FALSE.toString()
  *     );
- *     
+ *
  *     ...
  * }
  * </code></pre>

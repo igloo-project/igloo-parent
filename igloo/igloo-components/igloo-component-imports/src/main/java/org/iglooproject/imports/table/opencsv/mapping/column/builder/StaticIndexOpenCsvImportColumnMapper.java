@@ -9,19 +9,22 @@ import org.iglooproject.imports.table.opencsv.model.CsvCellReference;
 import org.iglooproject.imports.table.opencsv.model.CsvRow;
 import org.iglooproject.imports.table.opencsv.model.CsvTable;
 
-/*package*/ class StaticIndexOpenCsvImportColumnMapper implements ITableImportColumnMapper<CsvTable, CsvRow, CsvCell, CsvCellReference> {
-	
-	private final int columnIndex;
+/*package*/ class StaticIndexOpenCsvImportColumnMapper
+    implements ITableImportColumnMapper<CsvTable, CsvRow, CsvCell, CsvCellReference> {
 
-	public StaticIndexOpenCsvImportColumnMapper(int columnIndex) {
-		super();
-		
-		this.columnIndex = columnIndex;
-	}
-	
-	@Override
-	public Function2<? super CsvRow, CsvCellReference> tryMap(CsvTable sheet, ITableImportNavigator<CsvTable, CsvRow, CsvCell, CsvCellReference> navigator,
-			ITableImportEventHandler eventHandler) {
-		return row -> row == null ? null : new CsvCellReference(row.getIndex(), columnIndex);
-	}
+  private final int columnIndex;
+
+  public StaticIndexOpenCsvImportColumnMapper(int columnIndex) {
+    super();
+
+    this.columnIndex = columnIndex;
+  }
+
+  @Override
+  public Function2<? super CsvRow, CsvCellReference> tryMap(
+      CsvTable sheet,
+      ITableImportNavigator<CsvTable, CsvRow, CsvCell, CsvCellReference> navigator,
+      ITableImportEventHandler eventHandler) {
+    return row -> row == null ? null : new CsvCellReference(row.getIndex(), columnIndex);
+  }
 }

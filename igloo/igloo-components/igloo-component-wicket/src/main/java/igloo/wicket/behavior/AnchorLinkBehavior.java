@@ -7,22 +7,21 @@ import org.apache.wicket.model.Model;
 
 public class AnchorLinkBehavior extends AttributeAppender {
 
-	private static final long serialVersionUID = -1051427671590955890L;
-	
-	private static final String HREF_ATTRIBUTE = "href";
-	private static final String SEPARATOR = "#";
+  private static final long serialVersionUID = -1051427671590955890L;
 
-	public AnchorLinkBehavior(IModel<?> appendModel) {
-		super(HREF_ATTRIBUTE, appendModel, SEPARATOR);
-	}
-	
-	public AnchorLinkBehavior(String appendString) {
-		super(HREF_ATTRIBUTE, Model.of(appendString), SEPARATOR);
-	}
-	
-	@Override
-	public boolean isEnabled(Component component) {
-		return component.isEnabledInHierarchy();
-	}
+  private static final String HREF_ATTRIBUTE = "href";
+  private static final String SEPARATOR = "#";
 
+  public AnchorLinkBehavior(IModel<?> appendModel) {
+    super(HREF_ATTRIBUTE, appendModel, SEPARATOR);
+  }
+
+  public AnchorLinkBehavior(String appendString) {
+    super(HREF_ATTRIBUTE, Model.of(appendString), SEPARATOR);
+  }
+
+  @Override
+  public boolean isEnabled(Component component) {
+    return component.isEnabledInHierarchy();
+  }
 }

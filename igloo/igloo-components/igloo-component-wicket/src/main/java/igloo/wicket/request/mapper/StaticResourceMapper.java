@@ -10,38 +10,38 @@ import org.apache.wicket.util.lang.Args;
 
 public class StaticResourceMapper extends AbstractMapper {
 
-	private final String[] mountSegments;
+  private final String[] mountSegments;
 
-	private final Class<?> scope;
-	
-	public StaticResourceMapper(String path, Class<?> scope) {
-		Args.notEmpty(path, "path");
-		Args.notNull(scope, "scope");
-		
-		this.scope = scope;
-		this.mountSegments = getMountSegments(path);
-	}
+  private final Class<?> scope;
 
-	@Override
-	public IRequestHandler mapRequest(Request request) {
-		final Url url = new Url(request.getUrl());
-		
-		if (!urlStartsWith(url, mountSegments)) {
-			return null;
-		}
-		
-		url.removeLeadingSegments(mountSegments.length);
-		
-		return new ResourceStreamRequestHandler(new PackageResourceStream(scope, url.getPath()));
-	}
+  public StaticResourceMapper(String path, Class<?> scope) {
+    Args.notEmpty(path, "path");
+    Args.notNull(scope, "scope");
 
-	@Override
-	public int getCompatibilityScore(Request request) {
-		return 0;
-	}
+    this.scope = scope;
+    this.mountSegments = getMountSegments(path);
+  }
 
-	@Override
-	public Url mapHandler(IRequestHandler requestHandler) {
-		return null;
-	}
+  @Override
+  public IRequestHandler mapRequest(Request request) {
+    final Url url = new Url(request.getUrl());
+
+    if (!urlStartsWith(url, mountSegments)) {
+      return null;
+    }
+
+    url.removeLeadingSegments(mountSegments.length);
+
+    return new ResourceStreamRequestHandler(new PackageResourceStream(scope, url.getPath()));
+  }
+
+  @Override
+  public int getCompatibilityScore(Request request) {
+    return 0;
+  }
+
+  @Override
+  public Url mapHandler(IRequestHandler requestHandler) {
+    return null;
+  }
 }

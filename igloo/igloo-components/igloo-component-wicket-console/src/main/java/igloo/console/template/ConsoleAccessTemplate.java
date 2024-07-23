@@ -1,5 +1,9 @@
 package igloo.console.template;
 
+import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
+import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.markup.html.panel.InvisiblePanel;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.head.CssHeaderItem;
@@ -18,81 +22,79 @@ import org.iglooproject.wicket.more.markup.html.feedback.AnimatedGlobalFeedbackP
 import org.iglooproject.wicket.more.markup.html.template.AbstractWebPageTemplate;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 
-import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
-import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
-import igloo.wicket.component.CoreLabel;
-import igloo.wicket.markup.html.panel.InvisiblePanel;
-
 public abstract class ConsoleAccessTemplate extends AbstractWebPageTemplate {
 
-	private static final long serialVersionUID = 3342562716259012460L;
+  private static final long serialVersionUID = 3342562716259012460L;
 
-	@SpringBean
-	private IPropertyService propertyService;
+  @SpringBean private IPropertyService propertyService;
 
-	@SpringBean
-	private IAuthenticationService authenticationService;
+  @SpringBean private IAuthenticationService authenticationService;
 
-	public ConsoleAccessTemplate(PageParameters parameters) {
-		super(parameters);
-		
-		add(
-			new TransparentWebMarkupContainer("htmlElement")
-				.add(AttributeAppender.append("lang", AbstractCoreSession.get().getLocale().getLanguage()))
-		);
-		
-		addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
-		add(createHeadPageTitle("headPageTitle"));
-		
-		add(new CoreLabel("title", getTitleModel()));
-		
-		add(ConsoleConfiguration.get().getConsoleAccessHeaderAdditionalContentComponentFactory().create("headerAdditionalContent"));
-		
-		add(new AnimatedGlobalFeedbackPanel("feedback"));
-		
-		add(new BootstrapTooltipBehavior(getBootstrapTooltipOptionsModel()));
-	}
-	
-	@Override
-	protected void onInitialize() {
-		super.onInitialize();
-		
-		add(getContentComponent("content"));
-		add(getFooterComponent("footer"));
-	}
+  public ConsoleAccessTemplate(PageParameters parameters) {
+    super(parameters);
 
-	protected abstract IModel<String> getTitleModel();
+    add(
+        new TransparentWebMarkupContainer("htmlElement")
+            .add(
+                AttributeAppender.append(
+                    "lang", AbstractCoreSession.get().getLocale().getLanguage())));
 
-	protected abstract Component getContentComponent(String wicketId);
+    addHeadPageTitlePrependedElement(
+        new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
+    add(createHeadPageTitle("headPageTitle"));
 
-	protected Component getFooterComponent(String wicketId) {
-		return new InvisiblePanel(wicketId);
-	}
+    add(new CoreLabel("title", getTitleModel()));
 
-	protected boolean hasMaintenanceRestriction() {
-		return true;
-	}
+    add(
+        ConsoleConfiguration.get()
+            .getConsoleAccessHeaderAdditionalContentComponentFactory()
+            .create("headerAdditionalContent"));
 
-	@Override
-	protected Class<? extends WebPage> getFirstMenuPage() {
-		return null;
-	}
+    add(new AnimatedGlobalFeedbackPanel("feedback"));
 
-	@Override
-	protected Class<? extends WebPage> getSecondMenuPage() {
-		return null;
-	}
+    add(new BootstrapTooltipBehavior(getBootstrapTooltipOptionsModel()));
+  }
 
-	protected IModel<BootstrapTooltipOptions> getBootstrapTooltipOptionsModel() {
-		return BootstrapTooltipOptions::get;
-	}
+  @Override
+  protected void onInitialize() {
+    super.onInitialize();
 
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		for (ResourceReference cssResourceReference : ConsoleConfiguration.get().getConsoleAccessCssResourcesReferences()) {
-			response.render(CssHeaderItem.forReference(cssResourceReference));
-		}
-	}
+    add(getContentComponent("content"));
+    add(getFooterComponent("footer"));
+  }
 
+  protected abstract IModel<String> getTitleModel();
+
+  protected abstract Component getContentComponent(String wicketId);
+
+  protected Component getFooterComponent(String wicketId) {
+    return new InvisiblePanel(wicketId);
+  }
+
+  protected boolean hasMaintenanceRestriction() {
+    return true;
+  }
+
+  @Override
+  protected Class<? extends WebPage> getFirstMenuPage() {
+    return null;
+  }
+
+  @Override
+  protected Class<? extends WebPage> getSecondMenuPage() {
+    return null;
+  }
+
+  protected IModel<BootstrapTooltipOptions> getBootstrapTooltipOptionsModel() {
+    return BootstrapTooltipOptions::get;
+  }
+
+  @Override
+  public void renderHead(IHeaderResponse response) {
+    super.renderHead(response);
+    for (ResourceReference cssResourceReference :
+        ConsoleConfiguration.get().getConsoleAccessCssResourcesReferences()) {
+      response.render(CssHeaderItem.forReference(cssResourceReference));
+    }
+  }
 }

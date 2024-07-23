@@ -13,35 +13,32 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Base class used to check that {@link EnableIglooAutoConfiguration} triggers IglooTaskManagerAutoConfiguration properly. 
- * 
- * This class uses ApplicationContextRunner to initialize contexts with suitable configurations,
+ * Base class used to check that {@link EnableIglooAutoConfiguration} triggers
+ * IglooTaskManagerAutoConfiguration properly.
+ *
+ * <p>This class uses ApplicationContextRunner to initialize contexts with suitable configurations,
  * which are declared at the bottom of the file.
- *  
  */
 class TaskManagementAutoConfigurationTestCase {
 
-	/**
-	 * Check that autoconfiguration from {@link QueuedTaskHolderManagerImpl} is triggered with EnableIglooAutoConfiguration
-	 */
-	@Test
-	void testIglooTaskManagementAutoConfigure() {
-		new ApplicationContextRunner()
-			.withAllowBeanDefinitionOverriding(true)
-			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-			.run(
-				context -> assertThat(context).hasSingleBean(QueuedTaskHolderManagerImpl.class)
-			);
-	}
-	
-	@Configuration
-	@EnableIglooAutoConfiguration(
-		exclude = {
-			IglooBootstrap4AutoConfiguration.class,
-			IglooJpaSecurityAutoConfiguration.class,
-			IglooApplicationConfigAutoConfiguration.class
-		}
-	)
-	public static class TestConfig {}
+  /**
+   * Check that autoconfiguration from {@link QueuedTaskHolderManagerImpl} is triggered with
+   * EnableIglooAutoConfiguration
+   */
+  @Test
+  void testIglooTaskManagementAutoConfigure() {
+    new ApplicationContextRunner()
+        .withAllowBeanDefinitionOverriding(true)
+        .withConfiguration(AutoConfigurations.of(TestConfig.class))
+        .run(context -> assertThat(context).hasSingleBean(QueuedTaskHolderManagerImpl.class));
+  }
 
+  @Configuration
+  @EnableIglooAutoConfiguration(
+      exclude = {
+        IglooBootstrap4AutoConfiguration.class,
+        IglooJpaSecurityAutoConfiguration.class,
+        IglooApplicationConfigAutoConfiguration.class
+      })
+  public static class TestConfig {}
 }

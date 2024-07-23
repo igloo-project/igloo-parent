@@ -2,7 +2,6 @@ package igloo.hibernateconfig.api;
 
 import java.util.List;
 import java.util.Properties;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
@@ -13,66 +12,66 @@ import org.hibernate.jpa.spi.IdentifierGeneratorStrategyProvider;
 
 public interface IJpaPropertiesProvider {
 
-	Class<? extends Dialect> getDialect();
+  Class<? extends Dialect> getDialect();
 
-	String getHbm2Ddl();
+  String getHbm2Ddl();
 
-	String getHbm2DdlImportFiles();
+  String getHbm2DdlImportFiles();
 
-	Integer getDefaultBatchSize();
+  Integer getDefaultBatchSize();
 
-	String getHibernateSearchIndexBase();
+  String getHibernateSearchIndexBase();
 
-	Class<? extends Analyzer> getHibernateSearchDefaultAnalyzer();
+  Class<? extends Analyzer> getHibernateSearchDefaultAnalyzer();
 
-	String getHibernateSearchIndexingStrategy();
+  String getHibernateSearchIndexingStrategy();
 
-	boolean isHibernateSearchIndexInRam();
+  boolean isHibernateSearchIndexInRam();
 
-	String getJcacheConfiguration();
+  String getJcacheConfiguration();
 
-	HibernateCacheRegionFactory getCacheRegionFactory();
+  HibernateCacheRegionFactory getCacheRegionFactory();
 
-	boolean isQueryCacheEnabled();
+  boolean isQueryCacheEnabled();
 
-	String getValidationMode();
+  String getValidationMode();
 
-	boolean isCreateEmptyCompositesEnabled();
+  boolean isCreateEmptyCompositesEnabled();
 
-	Class<? extends ImplicitNamingStrategy> getImplicitNamingStrategy();
+  Class<? extends ImplicitNamingStrategy> getImplicitNamingStrategy();
 
-	Class<? extends PhysicalNamingStrategy> getPhysicalNamingStrategy();
+  Class<? extends PhysicalNamingStrategy> getPhysicalNamingStrategy();
 
-	Class<? extends IdentifierGeneratorStrategyProvider> getIdentifierGeneratorStrategyProvider();
+  Class<? extends IdentifierGeneratorStrategyProvider> getIdentifierGeneratorStrategyProvider();
 
-	Boolean isNewGeneratorMappingsEnabled();
+  Boolean isNewGeneratorMappingsEnabled();
 
-	String getDefaultSchema();
+  String getDefaultSchema();
 
-	boolean isHibernateSearchElasticSearchEnabled();
+  boolean isHibernateSearchElasticSearchEnabled();
 
-	void setHibernateSearchElasticSearchEnabled(boolean isElasticSearchEnabled);
+  void setHibernateSearchElasticSearchEnabled(boolean isElasticSearchEnabled);
 
-	String getElasticSearchHost();
+  String getElasticSearchHost();
 
-	void setElasticSearchHost(String elasticSearchHost);
+  void setElasticSearchHost(String elasticSearchHost);
 
-	String getElasticSearchIndexSchemaManagementStrategy();
+  String getElasticSearchIndexSchemaManagementStrategy();
 
-	void setElasticSearchIndexSchemaManagementStrategy(String elasticSearchIndexSchemaManagementStrategy);
+  void setElasticSearchIndexSchemaManagementStrategy(
+      String elasticSearchIndexSchemaManagementStrategy);
 
-	Properties getDefaultExtraProperties();
+  Properties getDefaultExtraProperties();
 
-	void setDefaultExtraProperties(Properties defaultExtraProperties);
+  void setDefaultExtraProperties(Properties defaultExtraProperties);
 
-	Properties getExtraProperties();
+  Properties getExtraProperties();
 
-	void setExtraProperties(Properties extraProperties);
+  void setExtraProperties(Properties extraProperties);
 
-	IntegratorProvider getIntegratorProvider();
+  IntegratorProvider getIntegratorProvider();
 
-	List<TypeContributor> getTypeContributors();
+  List<TypeContributor> getTypeContributors();
 
-	boolean isXmlMappingEnabled();
-
+  boolean isXmlMappingEnabled();
 }

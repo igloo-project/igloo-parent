@@ -12,20 +12,18 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 @AuthorizeInstantiation(CoreAuthorityConstants.ROLE_ADMIN)
 public abstract class ReferenceDataTemplate extends MainTemplate {
 
-	private static final long serialVersionUID = -5226976873952135450L;
+  private static final long serialVersionUID = -5226976873952135450L;
 
-	public ReferenceDataTemplate(PageParameters parameters) {
-		super(parameters);
-		
-		addBreadCrumbElement(new BreadCrumbElement(
-			new ResourceModel("navigation.referenceData"),
-			ReferenceDataPage.linkDescriptor()
-		));
-	}
+  public ReferenceDataTemplate(PageParameters parameters) {
+    super(parameters);
 
-	@Override
-	protected Class<? extends WebPage> getFirstMenuPage() {
-		return ReferenceDataPage.class;
-	}
+    addBreadCrumbElement(
+        new BreadCrumbElement(
+            new ResourceModel("navigation.referenceData"), ReferenceDataPage.linkDescriptor()));
+  }
 
+  @Override
+  protected Class<? extends WebPage> getFirstMenuPage() {
+    return ReferenceDataPage.class;
+  }
 }

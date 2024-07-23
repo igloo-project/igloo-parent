@@ -12,32 +12,26 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 import test.jpa.more.business.JpaMoreTestBusinessPackage;
 
 @Configuration
 @PropertySource(
-	name = IglooPropertySourcePriority.APPLICATION,
-	value = {
-		ConfigurationPropertiesUrlConstants.JPA_COMMON,
-		ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
-		"classpath:jpa-more-test.properties",
-		"classpath:property-test.properties",
-	},
-	encoding = "UTF-8"
-)
-@Import({
-	JpaMoreTestJpaConfig.class,
-	JpaMoreTestApplicationPropertyConfig.class
-})
-@ComponentScan(basePackageClasses = { JpaMoreTestBusinessPackage.class })
+    name = IglooPropertySourcePriority.APPLICATION,
+    value = {
+      ConfigurationPropertiesUrlConstants.JPA_COMMON,
+      ConfigurationPropertiesUrlConstants.JPA_SEARCH_LUCENE_COMMON,
+      "classpath:jpa-more-test.properties",
+      "classpath:property-test.properties",
+    },
+    encoding = "UTF-8")
+@Import({JpaMoreTestJpaConfig.class, JpaMoreTestApplicationPropertyConfig.class})
+@ComponentScan(basePackageClasses = {JpaMoreTestBusinessPackage.class})
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 public class JpaMoreTestConfig extends AbstractApplicationConfig {
 
-	@Bean
-	public IRendererService rendererService() {
-		return new EmptyRendererServiceImpl();
-	}
-
+  @Bean
+  public IRendererService rendererService() {
+    return new EmptyRendererServiceImpl();
+  }
 }

@@ -8,27 +8,24 @@ import org.iglooproject.wicket.more.test.WicketMoreWicketTester;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-
 import test.wicket.more.business.person.service.IPersonService;
 import test.wicket.more.config.spring.SimpleWicketMoreTestWebappConfig;
 
 @ContextConfiguration(classes = SimpleWicketMoreTestWebappConfig.class)
-public abstract class AbstractWicketMoreTestCase extends AbstractWicketTestCase<WicketMoreWicketTester> {
-	
-	@Autowired
-	private IPersonService personService;
+public abstract class AbstractWicketMoreTestCase
+    extends AbstractWicketTestCase<WicketMoreWicketTester> {
 
-	@Autowired
-	private WebApplication application;
+  @Autowired private IPersonService personService;
 
-	@BeforeEach
-	public void setUp() throws ServiceException, SecurityServiceException {
-		setWicketTester(new WicketMoreWicketTester(application));
-	}
+  @Autowired private WebApplication application;
 
-	@Override
-	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		cleanEntities(personService);
-	}
+  @BeforeEach
+  public void setUp() throws ServiceException, SecurityServiceException {
+    setWicketTester(new WicketMoreWicketTester(application));
+  }
 
+  @Override
+  protected void cleanAll() throws ServiceException, SecurityServiceException {
+    cleanEntities(personService);
+  }
 }

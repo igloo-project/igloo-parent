@@ -11,37 +11,35 @@ import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
 
-	/**
-	 * Test the UserPasswordValidator when username = password which shouldn't be allowed
-	 */
-	@Test
-	void userPasswordValidator() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrator);
-		
-		tester.startPage(AdministrationTechnicalUserListPage.class);
-		tester.assertRenderedPage(AdministrationTechnicalUserListPage.class);
-		
-		// Open popup
-		tester.executeAjaxEvent("headerElementsSection:actionsContainer:add", MouseEvent.CLICK.getEventLabel());
-		
-		String addPopupPath = tester.modalPath("addPopup");
-		String addPopupFormPath = tester.modalFormPath("addPopup");
-		
-		FormTester form = tester.newFormTester(addPopupFormPath);
-		
-		// Necessary because the submission button is outside the form
-		Component submitButton = tester.getComponentFromLastRenderedPage(addPopupPath + ":footer:save");
-		
-		form.setValue(form.getForm().get("firstName"), USER_PASSWORD);
-		form.setValue(form.getForm().get("lastName"), USER_PASSWORD);
-		form.setValue(form.getForm().get("username"), USER_PASSWORD);
-		form.setValue(form.getForm().get("addContainer:passwordContainer:password"), USER_PASSWORD);
-		LocaleDropDownChoice localeField = (LocaleDropDownChoice) form.getForm().get("locale");
-		form.select(localeField.getId(), 0);
-		
-		form.submit(submitButton);
-		
-		tester.assertErrorMessages("Le mot de passe n'est pas valide.");
-	}
+  /** Test the UserPasswordValidator when username = password which shouldn't be allowed */
+  @Test
+  void userPasswordValidator() throws ServiceException, SecurityServiceException {
+    authenticateUser(administrator);
 
+    tester.startPage(AdministrationTechnicalUserListPage.class);
+    tester.assertRenderedPage(AdministrationTechnicalUserListPage.class);
+
+    // Open popup
+    tester.executeAjaxEvent(
+        "headerElementsSection:actionsContainer:add", MouseEvent.CLICK.getEventLabel());
+
+    String addPopupPath = tester.modalPath("addPopup");
+    String addPopupFormPath = tester.modalFormPath("addPopup");
+
+    FormTester form = tester.newFormTester(addPopupFormPath);
+
+    // Necessary because the submission button is outside the form
+    Component submitButton = tester.getComponentFromLastRenderedPage(addPopupPath + ":footer:save");
+
+    form.setValue(form.getForm().get("firstName"), USER_PASSWORD);
+    form.setValue(form.getForm().get("lastName"), USER_PASSWORD);
+    form.setValue(form.getForm().get("username"), USER_PASSWORD);
+    form.setValue(form.getForm().get("addContainer:passwordContainer:password"), USER_PASSWORD);
+    LocaleDropDownChoice localeField = (LocaleDropDownChoice) form.getForm().get("locale");
+    form.select(localeField.getId(), 0);
+
+    form.submit(submitButton);
+
+    tester.assertErrorMessages("Le mot de passe n'est pas valide.");
+  }
 }

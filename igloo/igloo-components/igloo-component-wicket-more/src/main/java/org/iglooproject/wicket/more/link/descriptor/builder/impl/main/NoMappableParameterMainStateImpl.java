@@ -1,7 +1,8 @@
 package org.iglooproject.wicket.more.link.descriptor.builder.impl.main;
 
+import com.google.common.collect.ImmutableList;
+import igloo.wicket.model.ModelFactories;
 import java.util.Collection;
-
 import org.apache.wicket.Page;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -15,147 +16,139 @@ import org.iglooproject.wicket.more.link.descriptor.builder.state.main.IOneMappa
 import org.javatuples.Tuple;
 import org.springframework.core.convert.TypeDescriptor;
 
-import com.google.common.collect.ImmutableList;
+public final class NoMappableParameterMainStateImpl<
+        TLateTargetDefinitionPageLinkDescriptor,
+        TLateTargetDefinitionResourceLinkDescriptor,
+        TLateTargetDefinitionImageResourceLinkDescriptor>
+    extends AbstractMainStateImpl<
+        INoMappableParameterMainState<
+            TLateTargetDefinitionPageLinkDescriptor,
+            TLateTargetDefinitionResourceLinkDescriptor,
+            TLateTargetDefinitionImageResourceLinkDescriptor>,
+        TLateTargetDefinitionPageLinkDescriptor,
+        TLateTargetDefinitionResourceLinkDescriptor,
+        TLateTargetDefinitionImageResourceLinkDescriptor>
+    implements INoMappableParameterMainState<
+        TLateTargetDefinitionPageLinkDescriptor,
+        TLateTargetDefinitionResourceLinkDescriptor,
+        TLateTargetDefinitionImageResourceLinkDescriptor> {
 
-import igloo.wicket.model.ModelFactories;
+  public NoMappableParameterMainStateImpl(
+      BuilderTargetFactories<
+              TLateTargetDefinitionPageLinkDescriptor,
+              TLateTargetDefinitionResourceLinkDescriptor,
+              TLateTargetDefinitionImageResourceLinkDescriptor>
+          targetFactories) {
+    super(targetFactories);
+  }
 
-public final class NoMappableParameterMainStateImpl
-		<
-		TLateTargetDefinitionPageLinkDescriptor,
-		TLateTargetDefinitionResourceLinkDescriptor,
-		TLateTargetDefinitionImageResourceLinkDescriptor
-		>
-		extends AbstractMainStateImpl
-				<
-				INoMappableParameterMainState
-						<
-						TLateTargetDefinitionPageLinkDescriptor,
-						TLateTargetDefinitionResourceLinkDescriptor,
-						TLateTargetDefinitionImageResourceLinkDescriptor
-						>,
-				TLateTargetDefinitionPageLinkDescriptor,
-				TLateTargetDefinitionResourceLinkDescriptor,
-				TLateTargetDefinitionImageResourceLinkDescriptor
-				>
-		implements INoMappableParameterMainState
-				<
-				TLateTargetDefinitionPageLinkDescriptor,
-				TLateTargetDefinitionResourceLinkDescriptor,
-				TLateTargetDefinitionImageResourceLinkDescriptor
-				> {
+  @Override
+  public <TParam1>
+      IOneMappableParameterMainState<
+              TParam1,
+              TLateTargetDefinitionPageLinkDescriptor,
+              TLateTargetDefinitionResourceLinkDescriptor,
+              TLateTargetDefinitionImageResourceLinkDescriptor>
+          model(Class<TParam1> clazz) {
+    return new OneMappableParameterMainStateImpl<>(
+        this, LinkParameterTypeInformation.valueOf(clazz));
+  }
 
-	public NoMappableParameterMainStateImpl(
-			BuilderTargetFactories<
-					TLateTargetDefinitionPageLinkDescriptor,
-					TLateTargetDefinitionResourceLinkDescriptor,
-					TLateTargetDefinitionImageResourceLinkDescriptor
-					> targetFactories) {
-		super(targetFactories);
-	}
-	
-	@Override
-	public <TParam1> IOneMappableParameterMainState<
-			TParam1,
-			TLateTargetDefinitionPageLinkDescriptor,
-			TLateTargetDefinitionResourceLinkDescriptor,
-			TLateTargetDefinitionImageResourceLinkDescriptor
-			> model(Class<TParam1> clazz) {
-		return new OneMappableParameterMainStateImpl<>(
-				this, LinkParameterTypeInformation.valueOf(clazz)
-		);
-	}
-	
-	@Override
-	public <TParam1 extends Collection<TElement>, TElement> IOneMappableParameterMainState<
-			TParam1,
-			TLateTargetDefinitionPageLinkDescriptor,
-			TLateTargetDefinitionResourceLinkDescriptor,
-			TLateTargetDefinitionImageResourceLinkDescriptor
-			> model(Class<? super TParam1> clazz, Class<TElement> elementType) {
-		return new OneMappableParameterMainStateImpl<>(
-				this, LinkParameterTypeInformation.collection(clazz, elementType)
-		);
-	}
-	
-	@Override
-	public <TParam1 extends Collection<?>> IOneMappableParameterMainState<
-			TParam1,
-			TLateTargetDefinitionPageLinkDescriptor,
-			TLateTargetDefinitionResourceLinkDescriptor,
-			TLateTargetDefinitionImageResourceLinkDescriptor
-			> model(Class<? super TParam1> clazz, TypeDescriptor elementTypeDescriptor) {
-		return new OneMappableParameterMainStateImpl<>(
-				this, LinkParameterTypeInformation.collection(clazz, elementTypeDescriptor)
-		);
-	}
-	
-	@Override
-	public <TParam1 extends Collection<?>> IOneMappableParameterMainState<
-			TParam1,
-			TLateTargetDefinitionPageLinkDescriptor,
-			TLateTargetDefinitionResourceLinkDescriptor,
-			TLateTargetDefinitionImageResourceLinkDescriptor
-			> model(Class<? super TParam1> clazz, TypeDescriptor elementTypeDescriptor,
-						SerializableSupplier2<? extends TParam1> emptyCollectionSupplier) {
-		return new OneMappableParameterMainStateImpl<>(
-				this, LinkParameterTypeInformation.collection(clazz, elementTypeDescriptor, emptyCollectionSupplier)
-		);
-	}
-	
-	private <TTarget, TLinkDescriptor> TLinkDescriptor createLinkDescriptor(
-			IBuilderLinkDescriptorFactory<TTarget, TLinkDescriptor> linkDescriptorFactory,
-			IModel<? extends TTarget> targetModel) {
-		return mapperLinkDescriptorFactory(
-				linkDescriptorFactory,
-				ModelFactories.<IModel<? extends TTarget>, Tuple>constant(targetModel),
-				ImmutableList.<Integer>of()
-				)
-				.create(new Tuple() {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public int getSize() {
-						return 0;
-					}
-				});
-	}
-	
-	@Override
-	public TLateTargetDefinitionPageLinkDescriptor page(IModel<? extends Class<? extends Page>> pageClassModel) {
-		return createLinkDescriptor(
-				getTargetFactories().getLateTargetDefinitionPageLinkDescriptorFactory(),
-				pageClassModel
-		);
-	}
+  @Override
+  public <TParam1 extends Collection<TElement>, TElement>
+      IOneMappableParameterMainState<
+              TParam1,
+              TLateTargetDefinitionPageLinkDescriptor,
+              TLateTargetDefinitionResourceLinkDescriptor,
+              TLateTargetDefinitionImageResourceLinkDescriptor>
+          model(Class<? super TParam1> clazz, Class<TElement> elementType) {
+    return new OneMappableParameterMainStateImpl<>(
+        this, LinkParameterTypeInformation.collection(clazz, elementType));
+  }
 
-	@Override
-	public TLateTargetDefinitionResourceLinkDescriptor resource(IModel<? extends ResourceReference> resourceReferenceModel) {
-		return createLinkDescriptor(
-				getTargetFactories().getLateTargetDefinitionResourceLinkDescriptorFactory(),
-				resourceReferenceModel
-		);
-	}
+  @Override
+  public <TParam1 extends Collection<?>>
+      IOneMappableParameterMainState<
+              TParam1,
+              TLateTargetDefinitionPageLinkDescriptor,
+              TLateTargetDefinitionResourceLinkDescriptor,
+              TLateTargetDefinitionImageResourceLinkDescriptor>
+          model(Class<? super TParam1> clazz, TypeDescriptor elementTypeDescriptor) {
+    return new OneMappableParameterMainStateImpl<>(
+        this, LinkParameterTypeInformation.collection(clazz, elementTypeDescriptor));
+  }
 
-	@Override
-	public TLateTargetDefinitionImageResourceLinkDescriptor imageResource(IModel<? extends ResourceReference> resourceReferenceModel) {
-		return createLinkDescriptor(
-				getTargetFactories().getLateTargetDefinitionImageResourceLinkDescriptorFactory(),
-				resourceReferenceModel
-		);
-	}
+  @Override
+  public <TParam1 extends Collection<?>>
+      IOneMappableParameterMainState<
+              TParam1,
+              TLateTargetDefinitionPageLinkDescriptor,
+              TLateTargetDefinitionResourceLinkDescriptor,
+              TLateTargetDefinitionImageResourceLinkDescriptor>
+          model(
+              Class<? super TParam1> clazz,
+              TypeDescriptor elementTypeDescriptor,
+              SerializableSupplier2<? extends TParam1> emptyCollectionSupplier) {
+    return new OneMappableParameterMainStateImpl<>(
+        this,
+        LinkParameterTypeInformation.collection(
+            clazz, elementTypeDescriptor, emptyCollectionSupplier));
+  }
 
-	@Override
-	public TLateTargetDefinitionPageLinkDescriptor page(Class<? extends Page> pageClass) {
-		return page(Model.of(pageClass));
-	}
+  private <TTarget, TLinkDescriptor> TLinkDescriptor createLinkDescriptor(
+      IBuilderLinkDescriptorFactory<TTarget, TLinkDescriptor> linkDescriptorFactory,
+      IModel<? extends TTarget> targetModel) {
+    return mapperLinkDescriptorFactory(
+            linkDescriptorFactory,
+            ModelFactories.<IModel<? extends TTarget>, Tuple>constant(targetModel),
+            ImmutableList.<Integer>of())
+        .create(
+            new Tuple() {
+              private static final long serialVersionUID = 1L;
 
-	@Override
-	public TLateTargetDefinitionResourceLinkDescriptor resource(ResourceReference resourceReference) {
-		return resource(Model.of(resourceReference));
-	}
+              @Override
+              public int getSize() {
+                return 0;
+              }
+            });
+  }
 
-	@Override
-	public TLateTargetDefinitionImageResourceLinkDescriptor imageResource(ResourceReference resourceReference) {
-		return imageResource(Model.of(resourceReference));
-	}
+  @Override
+  public TLateTargetDefinitionPageLinkDescriptor page(
+      IModel<? extends Class<? extends Page>> pageClassModel) {
+    return createLinkDescriptor(
+        getTargetFactories().getLateTargetDefinitionPageLinkDescriptorFactory(), pageClassModel);
+  }
 
+  @Override
+  public TLateTargetDefinitionResourceLinkDescriptor resource(
+      IModel<? extends ResourceReference> resourceReferenceModel) {
+    return createLinkDescriptor(
+        getTargetFactories().getLateTargetDefinitionResourceLinkDescriptorFactory(),
+        resourceReferenceModel);
+  }
+
+  @Override
+  public TLateTargetDefinitionImageResourceLinkDescriptor imageResource(
+      IModel<? extends ResourceReference> resourceReferenceModel) {
+    return createLinkDescriptor(
+        getTargetFactories().getLateTargetDefinitionImageResourceLinkDescriptorFactory(),
+        resourceReferenceModel);
+  }
+
+  @Override
+  public TLateTargetDefinitionPageLinkDescriptor page(Class<? extends Page> pageClass) {
+    return page(Model.of(pageClass));
+  }
+
+  @Override
+  public TLateTargetDefinitionResourceLinkDescriptor resource(ResourceReference resourceReference) {
+    return resource(Model.of(resourceReference));
+  }
+
+  @Override
+  public TLateTargetDefinitionImageResourceLinkDescriptor imageResource(
+      ResourceReference resourceReference) {
+    return imageResource(Model.of(resourceReference));
+  }
 }

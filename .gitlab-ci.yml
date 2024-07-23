@@ -15,6 +15,7 @@ maven-build:
   stage: build
   environment: staging
   script:
+    - "mvn spotless:check"
     - "mvn -U -DskipTests clean package"
   except:
     variables:

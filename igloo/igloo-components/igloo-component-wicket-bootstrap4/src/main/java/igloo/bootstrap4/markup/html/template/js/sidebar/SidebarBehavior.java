@@ -7,15 +7,14 @@ import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 
 public class SidebarBehavior extends Behavior {
 
-	private static final long serialVersionUID = -2815649505603347770L;
+  private static final long serialVersionUID = -2815649505603347770L;
 
-	public SidebarBehavior() {
-		super();
-	}
+  public SidebarBehavior() {
+    super();
+  }
 
-	@Override
-	public void renderHead(Component component, IHeaderResponse response) {
-		response.render(JavaScriptHeaderItem.forReference(SidebarJavaScriptResourceReference.get()));
-	}
-
+  @Override
+  public void renderHead(Component component, IHeaderResponse response) {
+    response.render(JavaScriptHeaderItem.forReference(SidebarJavaScriptResourceReference.get()));
+  }
 }

@@ -1,6 +1,6 @@
 /*
  * Copied from com.querydsl.core.group.GOne<T>, which is unfortunately private. Copyright was:
- * 
+ *
  * Copyright 2015, The Querydsl Team (http://www.querydsl.com/team)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,32 +21,32 @@ import com.querydsl.core.types.Expression;
 
 class GOne<T> extends AbstractGroupExpression<T, T> {
 
-    private static final long serialVersionUID = 3518868612387641383L;
+  private static final long serialVersionUID = 3518868612387641383L;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public GOne(Expression<T> expr) {
-        super((Class) expr.getType(), expr);
-    }
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  public GOne(Expression<T> expr) {
+    super((Class) expr.getType(), expr);
+  }
 
-    @Override
-    public GroupCollector<T,T> createGroupCollector() {
-        return new GroupCollector<T,T>() {
-            private boolean first = true;
+  @Override
+  public GroupCollector<T, T> createGroupCollector() {
+    return new GroupCollector<T, T>() {
+      private boolean first = true;
 
-            private T val;
+      private T val;
 
-            @Override
-            public void add(T o) {
-                if (first) {
-                    val = o;
-                    first = false;
-                }
-            }
+      @Override
+      public void add(T o) {
+        if (first) {
+          val = o;
+          first = false;
+        }
+      }
 
-            @Override
-            public T get() {
-                return val;
-            }
-        };
-    }
+      @Override
+      public T get() {
+        return val;
+      }
+    };
+  }
 }

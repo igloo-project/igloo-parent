@@ -1,5 +1,3 @@
 package igloo.bootstrap.js.type;
 
-public interface JsObjectType extends JsAnyType {
-
-}
+public interface JsObjectType extends JsAnyType {}

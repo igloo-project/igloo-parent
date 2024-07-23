@@ -9,12 +9,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BasicApplicationCoreTaskManagementConfig {
 
-	@Configuration
-	public static class ApplicationTaskManagementConfigurer implements TaskManagementConfigurer {
-		@Override
-		public void configure(Builder taskManagement) {
-			taskManagement.addAllQueueIds(EnumUtils.getEnumList(BasicApplicationTaskQueueId.class));
-		}
-	}
-
+  @Configuration
+  public static class ApplicationTaskManagementConfigurer implements TaskManagementConfigurer {
+    @Override
+    public void configure(Builder taskManagement) {
+      taskManagement.addAllQueueIds(EnumUtils.getEnumList(BasicApplicationTaskQueueId.class));
+    }
+  }
 }

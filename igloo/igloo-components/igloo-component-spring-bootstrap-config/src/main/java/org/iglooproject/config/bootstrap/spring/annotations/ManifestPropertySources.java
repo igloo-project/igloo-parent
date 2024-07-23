@@ -12,6 +12,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface ManifestPropertySources {
 
-	ManifestPropertySource[] value();
-
+  ManifestPropertySource[] value();
 }

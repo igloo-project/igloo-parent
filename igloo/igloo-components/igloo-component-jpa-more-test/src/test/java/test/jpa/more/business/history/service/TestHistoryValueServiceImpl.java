@@ -4,6 +4,4 @@ import org.iglooproject.jpa.more.business.history.service.AbstractHistoryValueSe
 import org.springframework.stereotype.Service;
 
 @Service
-public class TestHistoryValueServiceImpl extends AbstractHistoryValueServiceImpl {
-	
-}
+public class TestHistoryValueServiceImpl extends AbstractHistoryValueServiceImpl {}

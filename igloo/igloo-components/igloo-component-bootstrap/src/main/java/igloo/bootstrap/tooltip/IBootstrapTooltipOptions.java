@@ -2,8 +2,7 @@ package igloo.bootstrap.tooltip;
 
 public interface IBootstrapTooltipOptions {
 
-	CharSequence getJavaScriptOptions();
+  CharSequence getJavaScriptOptions();
 
-	String getSelector();
-
+  String getSelector();
 }

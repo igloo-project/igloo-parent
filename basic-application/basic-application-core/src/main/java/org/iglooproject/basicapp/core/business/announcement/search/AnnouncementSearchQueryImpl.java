@@ -9,11 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 public class AnnouncementSearchQueryImpl
-		extends AbstractJpaSearchQuery<Announcement, AnnouncementSort>
-		implements IAnnouncementSearchQuery {
+    extends AbstractJpaSearchQuery<Announcement, AnnouncementSort>
+    implements IAnnouncementSearchQuery {
 
-	protected AnnouncementSearchQueryImpl() {
-		super(QAnnouncement.announcement);
-	}
-
+  protected AnnouncementSearchQueryImpl() {
+    super(QAnnouncement.announcement);
+  }
 }

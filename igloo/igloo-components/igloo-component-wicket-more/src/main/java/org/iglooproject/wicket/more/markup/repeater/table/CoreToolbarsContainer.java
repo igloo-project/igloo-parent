@@ -8,41 +8,42 @@ import org.apache.wicket.util.visit.IVisitor;
 
 public class CoreToolbarsContainer extends WebMarkupContainer {
 
-	private static final long serialVersionUID = 2842680043238970230L;
+  private static final long serialVersionUID = 2842680043238970230L;
 
-	private final RepeatingView toolbars;
+  private final RepeatingView toolbars;
 
-	public CoreToolbarsContainer(final String id) {
-		super(id);
-		toolbars = new RepeatingView("toolbars");
-		add(toolbars);
-	}
+  public CoreToolbarsContainer(final String id) {
+    super(id);
+    toolbars = new RepeatingView("toolbars");
+    add(toolbars);
+  }
 
-	public RepeatingView getRepeatingView() {
-		return toolbars;
-	}
+  public RepeatingView getRepeatingView() {
+    return toolbars;
+  }
 
-	@Override
-	public void onConfigure() {
-		super.onConfigure();
+  @Override
+  public void onConfigure() {
+    super.onConfigure();
 
-		toolbars.configure();
+    toolbars.configure();
 
-		Boolean visible = toolbars.visitChildren(new IVisitor<Component, Boolean>() {
-			@Override
-			public void component(Component object, IVisit<Boolean> visit) {
-				object.configure();
-				if (object.isVisible()) {
-					visit.stop(Boolean.TRUE);
-				} else {
-					visit.dontGoDeeper();
-				}
-			}
-		});
-		if (visible == null) {
-			visible = false;
-		}
-		setVisible(visible);
-	}
-
+    Boolean visible =
+        toolbars.visitChildren(
+            new IVisitor<Component, Boolean>() {
+              @Override
+              public void component(Component object, IVisit<Boolean> visit) {
+                object.configure();
+                if (object.isVisible()) {
+                  visit.stop(Boolean.TRUE);
+                } else {
+                  visit.dontGoDeeper();
+                }
+              }
+            });
+    if (visible == null) {
+      visible = false;
+    }
+    setVisible(visible);
+  }
 }

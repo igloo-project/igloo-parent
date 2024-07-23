@@ -8,15 +8,14 @@ import org.iglooproject.wicket.more.markup.html.form.GenericEntityRendererToChoi
 
 public abstract class UserChoiceRenderer extends ChoiceRenderer<User> {
 
-	private static final long serialVersionUID = -4657800061123148721L;
+  private static final long serialVersionUID = -4657800061123148721L;
 
-	private static final AbstractGenericEntityChoiceRenderer<User> INSTANCE = GenericEntityRendererToChoiceRenderer.of(UserRenderer.get());
+  private static final AbstractGenericEntityChoiceRenderer<User> INSTANCE =
+      GenericEntityRendererToChoiceRenderer.of(UserRenderer.get());
 
-	public static AbstractGenericEntityChoiceRenderer<User> get() {
-		return INSTANCE;
-	}
+  public static AbstractGenericEntityChoiceRenderer<User> get() {
+    return INSTANCE;
+  }
 
-	private UserChoiceRenderer() {
-	}
-
+  private UserChoiceRenderer() {}
 }

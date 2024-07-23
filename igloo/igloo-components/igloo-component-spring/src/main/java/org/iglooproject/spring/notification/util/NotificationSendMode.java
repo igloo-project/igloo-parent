@@ -2,23 +2,21 @@ package org.iglooproject.spring.notification.util;
 
 public enum NotificationSendMode {
 
-	/**
-	 * Standard mode, email notifications are sent to targeted recipients
-	 */
-	SEND,
+  /** Standard mode, email notifications are sent to targeted recipients */
+  SEND,
 
-	/**
-	 * Filtered mode, email notifications are sent to configured list of recipients
-	 * see property <b>notification.mail.filter.emails<b>
-	 * 
-	 * Usually used for preproduction and qualification environments
-	 */
-	FILTER_RECIPIENTS,
+  /**
+   * Filtered mode, email notifications are sent to configured list of recipients see property
+   * <b>notification.mail.filter.emails<b>
+   *
+   * <p>Usually used for preproduction and qualification environments
+   */
+  FILTER_RECIPIENTS,
 
-	/**
-	 * No email notifications is sent by the application
-	 * 
-	 * Usually used for tests
-	 */
-	NO_EMAIL;
+  /**
+   * No email notifications is sent by the application
+   *
+   * <p>Usually used for tests
+   */
+  NO_EMAIL;
 }

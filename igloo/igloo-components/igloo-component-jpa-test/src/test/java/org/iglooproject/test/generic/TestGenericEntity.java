@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2009-2010 Open Wide
  * Contact: contact@openwide.fr
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,53 +34,52 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 class TestGenericEntity extends AbstractJpaCoreTestCase {
 
-	@Autowired
-	protected IPersonService personService;
+  @Autowired protected IPersonService personService;
 
-	@Test
-	public void testGenericEntity() throws ServiceException, SecurityServiceException {
-		Person person = new Person("FirstName", "LastName");
-		
-		assertNull(person.getId());
-		assertTrue(person.isNew());
+  @Test
+  public void testGenericEntity() throws ServiceException, SecurityServiceException {
+    Person person = new Person("FirstName", "LastName");
 
-		personService.create(person);
+    assertNull(person.getId());
+    assertTrue(person.isNew());
 
-		assertFalse(person.isNew());
-		
-		Long oldId = person.getId();
-		
-		person.setId(2L);
-		assertEquals(2, person.getId().intValue());
+    personService.create(person);
 
-		person.setId(oldId);
+    assertFalse(person.isNew());
 
-		Person person1 = new Person("FirstName1", "LastName1");
-		personService.create(person1);
+    Long oldId = person.getId();
 
-		Person person2 = personService.getById(person.getId());
+    person.setId(2L);
+    assertEquals(2, person.getId().intValue());
 
-		assertFalse(person.equals(person1));
-		assertTrue(person.equals(person2));
+    person.setId(oldId);
 
-		Person person4 = person;
+    Person person1 = new Person("FirstName1", "LastName1");
+    personService.create(person1);
 
-		assertFalse(person.compareTo(person1) == 0);
-		assertTrue(person.compareTo(person4) == 0);
+    Person person2 = personService.getById(person.getId());
 
-		assertEquals("LastName", person.getLastName());
-		assertEquals("FirstName", person.getFirstName());
-	}
-	
-	@BeforeEach
-	@Override
-	public void init() throws ServiceException, SecurityServiceException {
-		super.init();
-	}
-	
-	@AfterEach
-	@Override
-	public void close() throws ServiceException, SecurityServiceException {
-		super.close();
-	}
+    assertFalse(person.equals(person1));
+    assertTrue(person.equals(person2));
+
+    Person person4 = person;
+
+    assertFalse(person.compareTo(person1) == 0);
+    assertTrue(person.compareTo(person4) == 0);
+
+    assertEquals("LastName", person.getLastName());
+    assertEquals("FirstName", person.getFirstName());
+  }
+
+  @BeforeEach
+  @Override
+  public void init() throws ServiceException, SecurityServiceException {
+    super.init();
+  }
+
+  @AfterEach
+  @Override
+  public void close() throws ServiceException, SecurityServiceException {
+    super.close();
+  }
 }

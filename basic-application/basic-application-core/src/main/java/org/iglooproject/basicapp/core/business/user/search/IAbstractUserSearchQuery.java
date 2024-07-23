@@ -9,12 +9,11 @@ import org.springframework.context.annotation.Scope;
 @Scope("prototype")
 public interface IAbstractUserSearchQuery<U extends User> extends ISearchQuery<U, UserSort> {
 
-	IAbstractUserSearchQuery<U> nameAutocomplete(String terms);
+  IAbstractUserSearchQuery<U> nameAutocomplete(String terms);
 
-	IAbstractUserSearchQuery<U> name(String name);
+  IAbstractUserSearchQuery<U> name(String name);
 
-	IAbstractUserSearchQuery<U> group(UserGroup group);
+  IAbstractUserSearchQuery<U> group(UserGroup group);
 
-	IAbstractUserSearchQuery<U> enabled(EnabledFilter enabledFilter);
-
+  IAbstractUserSearchQuery<U> enabled(EnabledFilter enabledFilter);
 }

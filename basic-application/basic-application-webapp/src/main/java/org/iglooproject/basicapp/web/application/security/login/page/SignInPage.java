@@ -13,34 +13,30 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 
 public class SignInPage extends ApplicationAccessTemplate {
 
-	private static final long serialVersionUID = 7361718534092594202L;
-	
-	public static ILinkDescriptor linkDescriptor() {
-		return LinkDescriptorBuilder.start()
-			.page(SignInPage.class);
-	}
+  private static final long serialVersionUID = 7361718534092594202L;
 
-	public SignInPage(PageParameters parameters) {
-		super(parameters);
-		
-		addHeadPageTitlePrependedElement(new BreadCrumbElement(
-			new ResourceModel("signIn.pageTitle")
-		));
-	}
+  public static ILinkDescriptor linkDescriptor() {
+    return LinkDescriptorBuilder.start().page(SignInPage.class);
+  }
 
-	@Override
-	protected IModel<String> getTitleModel() {
-		return new ResourceModel("signIn.welcomeText");
-	}
+  public SignInPage(PageParameters parameters) {
+    super(parameters);
 
-	@Override
-	protected Component getContentComponent(String wicketId) {
-		return new SignInContentPanel(wicketId);
-	}
+    addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("signIn.pageTitle")));
+  }
 
-	@Override
-	protected Component getFooterComponent(String wicketId) {
-		return new SignInFooterPanel(wicketId);
-	}
+  @Override
+  protected IModel<String> getTitleModel() {
+    return new ResourceModel("signIn.welcomeText");
+  }
 
+  @Override
+  protected Component getContentComponent(String wicketId) {
+    return new SignInContentPanel(wicketId);
+  }
+
+  @Override
+  protected Component getFooterComponent(String wicketId) {
+    return new SignInFooterPanel(wicketId);
+  }
 }

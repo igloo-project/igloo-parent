@@ -6,18 +6,17 @@ import org.wicketstuff.wiquery.core.javascript.JsStatement;
 
 public interface IBootstrapModal extends ChainableStatement {
 
-	IBootstrapModal setBackdrop(BootstrapModalBackdrop static1);
+  IBootstrapModal setBackdrop(BootstrapModalBackdrop static1);
 
-	IBootstrapModal setKeyboard(Boolean b);
+  IBootstrapModal setKeyboard(Boolean b);
 
-	IBootstrapModal setFocus(Boolean focus);
+  IBootstrapModal setFocus(Boolean focus);
 
-	void addCancelBehavior(Component component);
+  void addCancelBehavior(Component component);
 
-	JsStatement show(Component modal);
+  JsStatement show(Component modal);
 
-	JsStatement hide(Component modal);
+  JsStatement hide(Component modal);
 
-	JsStatement modal(Component modal);
-
+  JsStatement modal(Component modal);
 }

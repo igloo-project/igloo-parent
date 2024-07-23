@@ -9,14 +9,14 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SpringSecurityApplicationPropertyRegistryConfig extends AbstractApplicationPropertyRegistryConfig {
+public class SpringSecurityApplicationPropertyRegistryConfig
+    extends AbstractApplicationPropertyRegistryConfig {
 
-	@Override
-	public void register(IPropertyRegistry registry) {
-		registry.registerInteger(PASSWORD_EXPIRATION_DAYS, 90);
-		registry.registerInteger(PASSWORD_HISTORY_COUNT, 4);
-		registry.registerInteger(PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT, 50);
-		registry.registerInteger(PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES, 15);
-	}
-
+  @Override
+  public void register(IPropertyRegistry registry) {
+    registry.registerInteger(PASSWORD_EXPIRATION_DAYS, 90);
+    registry.registerInteger(PASSWORD_HISTORY_COUNT, 4);
+    registry.registerInteger(PASSWORD_RECOVERY_REQUEST_TOKEN_RANDOM_COUNT, 50);
+    registry.registerInteger(PASSWORD_RECOVERY_REQUEST_EXPIRATION_MINUTES, 15);
+  }
 }

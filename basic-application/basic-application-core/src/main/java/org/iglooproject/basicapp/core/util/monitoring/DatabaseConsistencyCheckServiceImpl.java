@@ -10,22 +10,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class DatabaseConsistencyCheckServiceImpl implements IDatabaseConsistencyCheckService {
 
-	@Autowired
-	private IUserService userService;
+  @Autowired private IUserService userService;
 
-	@Override
-	public void checkDatabaseAccess() {
-		userService.count();
-	}
+  @Override
+  public void checkDatabaseAccess() {
+    userService.count();
+  }
 
-	@Override
-	public void checkDatabaseConsistency() throws ServiceException, SecurityServiceException {
-		// rien
-	}
+  @Override
+  public void checkDatabaseConsistency() throws ServiceException, SecurityServiceException {
+    // rien
+  }
 
-	@Override
-	public void checkOnStartup(boolean allowCreateMissingElements) throws ServiceException, SecurityServiceException {
-		// rien
-	}
-
+  @Override
+  public void checkOnStartup(boolean allowCreateMissingElements)
+      throws ServiceException, SecurityServiceException {
+    // rien
+  }
 }

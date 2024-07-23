@@ -10,9 +10,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 public class JpaSearchJpaTestConfig extends AbstractConfiguredJpaConfig {
 
-	@Override
-	public JpaPackageScanProvider applicationJpaPackageScanProvider() {
-		return new JpaPackageScanProvider(JpaTestSearchPackage.class.getPackage());
-	}
-
+  @Override
+  public JpaPackageScanProvider applicationJpaPackageScanProvider() {
+    return new JpaPackageScanProvider(JpaTestSearchPackage.class.getPackage());
+  }
 }

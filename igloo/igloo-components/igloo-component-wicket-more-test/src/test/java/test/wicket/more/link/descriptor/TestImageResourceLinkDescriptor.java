@@ -7,45 +7,43 @@ import org.iglooproject.wicket.more.link.descriptor.ILinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IResourceLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.state.terminal.ILateTargetDefinitionTerminalState;
-
 import test.wicket.more.link.descriptor.application.WicketMoreTestLinkDescriptorApplication;
 import test.wicket.more.link.descriptor.resource.TestLinkDescriptorNoParameterResource;
 import test.wicket.more.link.descriptor.resource.TestLinkDescriptorOneParameterResource;
 
 public class TestImageResourceLinkDescriptor extends AbstractAnyTargetTestLinkDescriptor {
 
-	@Override
-	protected ILinkDescriptor buildWithNullTarget(
-			ILateTargetDefinitionTerminalState<
-					IPageLinkDescriptor, IResourceLinkDescriptor, IImageResourceLinkDescriptor
-					> builder) {
-		return builder.imageResource(Model.of((ResourceReference) null));
-	}
+  @Override
+  protected ILinkDescriptor buildWithNullTarget(
+      ILateTargetDefinitionTerminalState<
+              IPageLinkDescriptor, IResourceLinkDescriptor, IImageResourceLinkDescriptor>
+          builder) {
+    return builder.imageResource(Model.of((ResourceReference) null));
+  }
 
-	@Override
-	protected ILinkDescriptor buildWithNoParameterTarget(
-			ILateTargetDefinitionTerminalState<
-					IPageLinkDescriptor, IResourceLinkDescriptor, IImageResourceLinkDescriptor
-					> builder) {
-		return builder.imageResource(TestLinkDescriptorNoParameterResource.REFERENCE);
-	}
+  @Override
+  protected ILinkDescriptor buildWithNoParameterTarget(
+      ILateTargetDefinitionTerminalState<
+              IPageLinkDescriptor, IResourceLinkDescriptor, IImageResourceLinkDescriptor>
+          builder) {
+    return builder.imageResource(TestLinkDescriptorNoParameterResource.REFERENCE);
+  }
 
-	@Override
-	protected ILinkDescriptor buildWithOneParameterTarget(
-			ILateTargetDefinitionTerminalState<
-					IPageLinkDescriptor, IResourceLinkDescriptor, IImageResourceLinkDescriptor
-					> builder) {
-		return builder.imageResource(TestLinkDescriptorOneParameterResource.REFERENCE);
-	}
+  @Override
+  protected ILinkDescriptor buildWithOneParameterTarget(
+      ILateTargetDefinitionTerminalState<
+              IPageLinkDescriptor, IResourceLinkDescriptor, IImageResourceLinkDescriptor>
+          builder) {
+    return builder.imageResource(TestLinkDescriptorOneParameterResource.REFERENCE);
+  }
 
-	@Override
-	protected String getNoParameterTargetPathPrefix() {
-		return WicketMoreTestLinkDescriptorApplication.RESOURCE_NO_PARAMETER_PATH_PREFIX;
-	}
+  @Override
+  protected String getNoParameterTargetPathPrefix() {
+    return WicketMoreTestLinkDescriptorApplication.RESOURCE_NO_PARAMETER_PATH_PREFIX;
+  }
 
-	@Override
-	protected String getOneParameterTargetPathPrefix() {
-		return WicketMoreTestLinkDescriptorApplication.RESOURCE_ONE_PARAMETER_PATH_PREFIX;
-	}
-	
+  @Override
+  protected String getOneParameterTargetPathPrefix() {
+    return WicketMoreTestLinkDescriptorApplication.RESOURCE_ONE_PARAMETER_PATH_PREFIX;
+  }
 }

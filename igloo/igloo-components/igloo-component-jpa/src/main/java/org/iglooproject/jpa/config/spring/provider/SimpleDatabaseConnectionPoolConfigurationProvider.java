@@ -3,124 +3,126 @@ package org.iglooproject.jpa.config.spring.provider;
 import java.sql.Driver;
 
 public class SimpleDatabaseConnectionPoolConfigurationProvider
-		implements IDatabaseConnectionJndiConfigurationProvider, IDatabaseConnectionPoolConfigurationProvider {
+    implements IDatabaseConnectionJndiConfigurationProvider,
+        IDatabaseConnectionPoolConfigurationProvider {
 
-	private String jndiName;
+  private String jndiName;
 
-	private DatasourceProvider provider;
+  private DatasourceProvider provider;
 
-	private Class<Driver> driverClass;
+  private Class<Driver> driverClass;
 
-	private String url;
+  private String url;
 
-	private String user;
+  private String user;
 
-	private String password;
+  private String password;
 
-	private int minIdle;
+  private int minIdle;
 
-	private int maxPoolSize;
+  private int maxPoolSize;
 
-	private String validationQuery;
+  private String validationQuery;
 
-	private String initSql;
+  private String initSql;
 
-	@Override
-	public String getJndiName() {
-		return jndiName;
-	}
+  @Override
+  public String getJndiName() {
+    return jndiName;
+  }
 
-	public void setJndiName(String jndiName) {
-		this.jndiName = jndiName;
-	}
+  public void setJndiName(String jndiName) {
+    this.jndiName = jndiName;
+  }
 
-	@Override
-	public DatasourceProvider getProvider() {
-		return provider;
-	}
+  @Override
+  public DatasourceProvider getProvider() {
+    return provider;
+  }
 
-	public void setProvider(DatasourceProvider provider) {
-		this.provider = provider;
-	}
+  public void setProvider(DatasourceProvider provider) {
+    this.provider = provider;
+  }
 
-	@Override
-	public Class<Driver> getDriverClass() {
-		return driverClass;
-	}
+  @Override
+  public Class<Driver> getDriverClass() {
+    return driverClass;
+  }
 
-	public SimpleDatabaseConnectionPoolConfigurationProvider setDriverClass(Class<Driver> driverClass) {
-		this.driverClass = driverClass;
-		return this;
-	}
+  public SimpleDatabaseConnectionPoolConfigurationProvider setDriverClass(
+      Class<Driver> driverClass) {
+    this.driverClass = driverClass;
+    return this;
+  }
 
-	@Override
-	public String getUrl() {
-		return url;
-	}
+  @Override
+  public String getUrl() {
+    return url;
+  }
 
-	public SimpleDatabaseConnectionPoolConfigurationProvider setUrl(String url) {
-		this.url = url;
-		return this;
-	}
+  public SimpleDatabaseConnectionPoolConfigurationProvider setUrl(String url) {
+    this.url = url;
+    return this;
+  }
 
-	@Override
-	public String getUser() {
-		return user;
-	}
+  @Override
+  public String getUser() {
+    return user;
+  }
 
-	public SimpleDatabaseConnectionPoolConfigurationProvider setUser(String user) {
-		this.user = user;
-		return this;
-	}
+  public SimpleDatabaseConnectionPoolConfigurationProvider setUser(String user) {
+    this.user = user;
+    return this;
+  }
 
-	@Override
-	public String getPassword() {
-		return password;
-	}
+  @Override
+  public String getPassword() {
+    return password;
+  }
 
-	public SimpleDatabaseConnectionPoolConfigurationProvider setPassword(String password) {
-		this.password = password;
-		return this;
-	}
+  public SimpleDatabaseConnectionPoolConfigurationProvider setPassword(String password) {
+    this.password = password;
+    return this;
+  }
 
-	@Override
-	public int getMinIdle() {
-		return minIdle;
-	}
+  @Override
+  public int getMinIdle() {
+    return minIdle;
+  }
 
-	public SimpleDatabaseConnectionPoolConfigurationProvider setMinIdle(int minIdle) {
-		this.minIdle = minIdle;
-		return this;
-	}
+  public SimpleDatabaseConnectionPoolConfigurationProvider setMinIdle(int minIdle) {
+    this.minIdle = minIdle;
+    return this;
+  }
 
-	@Override
-	public int getMaxPoolSize() {
-		return maxPoolSize;
-	}
+  @Override
+  public int getMaxPoolSize() {
+    return maxPoolSize;
+  }
 
-	public SimpleDatabaseConnectionPoolConfigurationProvider setMaxPoolSize(int maxPoolSize) {
-		this.maxPoolSize = maxPoolSize;
-		return this;
-	}
+  public SimpleDatabaseConnectionPoolConfigurationProvider setMaxPoolSize(int maxPoolSize) {
+    this.maxPoolSize = maxPoolSize;
+    return this;
+  }
 
-	@Override
-	public String getValidationQuery() {
-		return validationQuery;
-	}
+  @Override
+  public String getValidationQuery() {
+    return validationQuery;
+  }
 
-	public SimpleDatabaseConnectionPoolConfigurationProvider setValidationQuery(String validationQuery) {
-		this.validationQuery = validationQuery;
-		return this;
-	}
+  public SimpleDatabaseConnectionPoolConfigurationProvider setValidationQuery(
+      String validationQuery) {
+    this.validationQuery = validationQuery;
+    return this;
+  }
 
-	@Override
-	public String getInitSql() {
-		return initSql;
-	}
+  @Override
+  public String getInitSql() {
+    return initSql;
+  }
 
-	public SimpleDatabaseConnectionPoolConfigurationProvider setInitSql(String initSql) {
-		this.initSql = initSql;
-		return this;
-	}
-
+  public SimpleDatabaseConnectionPoolConfigurationProvider setInitSql(String initSql) {
+    this.initSql = initSql;
+    return this;
+  }
 }

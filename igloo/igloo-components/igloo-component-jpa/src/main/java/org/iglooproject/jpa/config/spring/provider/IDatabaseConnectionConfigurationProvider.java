@@ -4,8 +4,7 @@ import java.sql.Driver;
 
 public interface IDatabaseConnectionConfigurationProvider {
 
-	Class<Driver> getDriverClass();
+  Class<Driver> getDriverClass();
 
-	DatasourceProvider getProvider();
-
+  DatasourceProvider getProvider();
 }

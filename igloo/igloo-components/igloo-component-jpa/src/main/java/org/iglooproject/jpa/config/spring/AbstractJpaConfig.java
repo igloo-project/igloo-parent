@@ -5,7 +5,6 @@ import static org.iglooproject.jpa.property.JpaPropertyIds.LUCENE_BOOLEAN_QUERY_
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-
 import org.apache.lucene.search.BooleanQuery;
 import org.igloo.hibernate.hbm.MetadataRegistryIntegrator;
 import org.iglooproject.jpa.batch.CoreJpaBatchPackage;
@@ -33,96 +32,89 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
-/**
- * L'implémentation de cette classe doit être annotée {@link EnableAspectJAutoProxy}
- */
+/** L'implémentation de cette classe doit être annotée {@link EnableAspectJAutoProxy} */
 @ComponentScan(
-	basePackageClasses = {
-		CoreJpaBatchPackage.class,
-		CoreJpaBusinessGenericPackage.class,
-		CoreJpaSearchPackage.class,
-		CoreJpaUtilPackage.class
-	},
-	excludeFilters = @Filter(Configuration.class)
-)
+    basePackageClasses = {
+      CoreJpaBatchPackage.class,
+      CoreJpaBusinessGenericPackage.class,
+      CoreJpaSearchPackage.class,
+      CoreJpaUtilPackage.class
+    },
+    excludeFilters = @Filter(Configuration.class))
 @Import(FlywayPropertyRegistryConfig.class)
 public abstract class AbstractJpaConfig {
 
-	@Autowired
-	protected IDatabaseConnectionConfigurationProvider databaseConfigurationProvider;
+  @Autowired protected IDatabaseConnectionConfigurationProvider databaseConfigurationProvider;
 
-	@Autowired
-	protected IJpaConfigurationProvider jpaConfigurationProvider;
-	
-	@Autowired
-	private IPropertyService propertyService;
-	
-	@PostConstruct
-	public void init() {
-		BooleanQuery.setMaxClauseCount(propertyService.get(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT));
-	}
+  @Autowired protected IJpaConfigurationProvider jpaConfigurationProvider;
 
-	@Bean
-	public MetadataRegistryIntegrator metdataRegistryIntegrator() {
-		return new MetadataRegistryIntegrator();
-	}
+  @Autowired private IPropertyService propertyService;
 
-	/**
-	 * Placeholder when flyway is not enabled
-	 */
-	@Bean(value = { "flyway", "databaseInitialization" })
-	@Profile("!flyway")
-	public Object notFlyway() {
-		return new Object();
-	}
+  @PostConstruct
+  public void init() {
+    BooleanQuery.setMaxClauseCount(propertyService.get(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT));
+  }
 
-	@Bean(name = "hibernateDefaultExtraProperties")
-	public PropertiesFactoryBean hibernateDefaultExtraProperties(@Value("${hibernate.defaultExtraPropertiesUrl}") Resource defaultExtraPropertiesUrl) {
-		PropertiesFactoryBean f = new PropertiesFactoryBean();
-		f.setIgnoreResourceNotFound(false);
-		f.setFileEncoding("UTF-8");
-		f.setLocations(defaultExtraPropertiesUrl);
-		return f;
-	}
+  @Bean
+  public MetadataRegistryIntegrator metdataRegistryIntegrator() {
+    return new MetadataRegistryIntegrator();
+  }
 
-	@Bean(name = "hibernateExtraProperties")
-	public PropertiesFactoryBean hibernateExtraProperties(@Value("${hibernate.extraPropertiesUrl}") Resource extraPropertiesUrl) {
-		PropertiesFactoryBean f = new PropertiesFactoryBean();
-		f.setIgnoreResourceNotFound(true);
-		f.setFileEncoding("UTF-8");
-		f.setLocations(extraPropertiesUrl);
-		return f;
-	}
+  /** Placeholder when flyway is not enabled */
+  @Bean(value = {"flyway", "databaseInitialization"})
+  @Profile("!flyway")
+  public Object notFlyway() {
+    return new Object();
+  }
 
-	/**
-	 * Déclaration explicite de close comme destroyMethod (Spring doit la prendre en compte auto-magiquement même
-	 * si non configurée).
-	 */
-	@Bean(destroyMethod = "close")
-	public DataSource dataSource() {
-		return JpaConfigUtils.dataSource(databaseConfigurationProvider);
-	}
+  @Bean(name = "hibernateDefaultExtraProperties")
+  public PropertiesFactoryBean hibernateDefaultExtraProperties(
+      @Value("${hibernate.defaultExtraPropertiesUrl}") Resource defaultExtraPropertiesUrl) {
+    PropertiesFactoryBean f = new PropertiesFactoryBean();
+    f.setIgnoreResourceNotFound(false);
+    f.setFileEncoding("UTF-8");
+    f.setLocations(defaultExtraPropertiesUrl);
+    return f;
+  }
 
-	@Bean
-	@DependsOn("databaseInitialization")
-	public abstract LocalContainerEntityManagerFactoryBean entityManagerFactory();
+  @Bean(name = "hibernateExtraProperties")
+  public PropertiesFactoryBean hibernateExtraProperties(
+      @Value("${hibernate.extraPropertiesUrl}") Resource extraPropertiesUrl) {
+    PropertiesFactoryBean f = new PropertiesFactoryBean();
+    f.setIgnoreResourceNotFound(true);
+    f.setFileEncoding("UTF-8");
+    f.setLocations(extraPropertiesUrl);
+    return f;
+  }
 
-	@Bean
-	public abstract JpaPackageScanProvider applicationJpaPackageScanProvider();
+  /**
+   * Déclaration explicite de close comme destroyMethod (Spring doit la prendre en compte
+   * auto-magiquement même si non configurée).
+   */
+  @Bean(destroyMethod = "close")
+  public DataSource dataSource() {
+    return JpaConfigUtils.dataSource(databaseConfigurationProvider);
+  }
 
-	@Bean
-	public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-		return new JpaTransactionManager(entityManagerFactory);
-	}
+  @Bean
+  @DependsOn("databaseInitialization")
+  public abstract LocalContainerEntityManagerFactoryBean entityManagerFactory();
 
-	@Bean
-	public Advisor transactionAdvisor(PlatformTransactionManager transactionManager) {
-		return JpaConfigUtils.defaultTransactionAdvisor(transactionManager);
-	}
+  @Bean
+  public abstract JpaPackageScanProvider applicationJpaPackageScanProvider();
 
-	@Bean
-	public JpaPackageScanProvider coreJpaPackageScanProvider() {
-		return new JpaPackageScanProvider(CoreJpaBusinessGenericPackage.class.getPackage());
-	}
+  @Bean
+  public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+    return new JpaTransactionManager(entityManagerFactory);
+  }
 
+  @Bean
+  public Advisor transactionAdvisor(PlatformTransactionManager transactionManager) {
+    return JpaConfigUtils.defaultTransactionAdvisor(transactionManager);
+  }
+
+  @Bean
+  public JpaPackageScanProvider coreJpaPackageScanProvider() {
+    return new JpaPackageScanProvider(CoreJpaBusinessGenericPackage.class.getPackage());
+  }
 }

@@ -4,6 +4,5 @@ import java.util.concurrent.Callable;
 
 public interface IRunAsSystemService {
 
-	<T> T runAsSystem(Callable<T> task);
-
+  <T> T runAsSystem(Callable<T> task);
 }

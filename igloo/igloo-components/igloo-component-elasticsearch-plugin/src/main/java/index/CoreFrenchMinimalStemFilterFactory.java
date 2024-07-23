@@ -10,14 +10,14 @@ import org.iglooproject.lucene.analysis.french.CoreFrenchMinimalStemFilter;
 
 public class CoreFrenchMinimalStemFilterFactory extends AbstractTokenFilterFactory {
 
-	@Inject
-	public CoreFrenchMinimalStemFilterFactory(IndexSettings indexSettings, @Assisted String name, @Assisted Settings settings) {
-		super(indexSettings, name, settings);
-	}
+  @Inject
+  public CoreFrenchMinimalStemFilterFactory(
+      IndexSettings indexSettings, @Assisted String name, @Assisted Settings settings) {
+    super(indexSettings, name, settings);
+  }
 
-	@Override
-	public TokenStream create(TokenStream input) {
-		return new CoreFrenchMinimalStemFilter(input);
-	}
-
+  @Override
+  public TokenStream create(TokenStream input) {
+    return new CoreFrenchMinimalStemFilter(input);
+  }
 }

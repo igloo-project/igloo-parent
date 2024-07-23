@@ -1,8 +1,9 @@
 package igloo.bootstrap5.markup.html.template.js.bootstrap.collapse;
 
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.Detachables;
 import java.util.Map;
 import java.util.Objects;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
@@ -10,102 +11,100 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.iglooproject.spring.util.StringUtils;
 
-import igloo.wicket.condition.Condition;
-import igloo.wicket.model.Detachables;
-
 public class BootstrapCollapseBehavior extends Behavior {
 
-	private static final long serialVersionUID = -3585588282665433689L;
+  private static final long serialVersionUID = -3585588282665433689L;
 
-	private final Component target;
+  private final Component target;
 
-	private final IModel<? extends IBootstrapCollapseOptions> optionsModel;
+  private final IModel<? extends IBootstrapCollapseOptions> optionsModel;
 
-	private Behavior targetBehavior;
+  private Behavior targetBehavior;
 
-	private Condition showCondition = Condition.alwaysFalse(); // initial state
+  private Condition showCondition = Condition.alwaysFalse(); // initial state
 
-	public BootstrapCollapseBehavior(Component target) {
-		this(target, LoadableDetachableModel.of(BootstrapCollapseOptions::get));
-	}
+  public BootstrapCollapseBehavior(Component target) {
+    this(target, LoadableDetachableModel.of(BootstrapCollapseOptions::get));
+  }
 
-	public BootstrapCollapseBehavior(Component target, IModel<? extends IBootstrapCollapseOptions> optionsModel) {
-		super();
-		this.target = Objects.requireNonNull(target);
-		this.optionsModel = Objects.requireNonNull(optionsModel);
-	}
+  public BootstrapCollapseBehavior(
+      Component target, IModel<? extends IBootstrapCollapseOptions> optionsModel) {
+    super();
+    this.target = Objects.requireNonNull(target);
+    this.optionsModel = Objects.requireNonNull(optionsModel);
+  }
 
-	@Override
-	public void onComponentTag(Component component, ComponentTag tag) {
-		boolean show = showCondition.applies();
-		
-		tag.put("data-bs-toggle", "collapse");
-		
-		if (tag.getName().equals("a")) {
-			tag.put("href", "#" + target.getMarkupId());
-			tag.put("role", "button");
-		} else {
-			tag.put("data-bs-target", "#" + target.getMarkupId());
-		}
-		
-		for (Map.Entry<String, String> entry : optionsModel.getObject().entrySet()) {
-			String key = entry.getKey();
-			String value = entry.getValue();
-			if (StringUtils.hasText(key) && value != null) {
-				tag.put(key, value);
-			}
-		}
-		
-		tag.append("class", show ? "" : "collapsed", " ");
-		
-		tag.put("aria-expanded", show);
-		tag.put("aria-controls", target.getMarkupId());
-	}
+  @Override
+  public void onComponentTag(Component component, ComponentTag tag) {
+    boolean show = showCondition.applies();
 
-	@Override
-	public void bind(Component component) {
-		super.bind(component);
-		
-		targetBehavior = new Behavior() {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public void onComponentTag(Component target, ComponentTag tag) {
-				boolean show = showCondition.applies();
-				
-				tag.append("class", "collapse", " ");
-				tag.append("class", show ? "show" : "", " ");
-			}
-			
-			@Override
-			public boolean isEnabled(Component target) {
-				return BootstrapCollapseBehavior.this.isEnabled(component);
-			}
-		};
-		
-		target.add(targetBehavior);
-	}
+    tag.put("data-bs-toggle", "collapse");
 
-	@Override
-	public void unbind(Component component) {
-		super.unbind(component);
-		component.remove(targetBehavior);
-	}
+    if (tag.getName().equals("a")) {
+      tag.put("href", "#" + target.getMarkupId());
+      tag.put("role", "button");
+    } else {
+      tag.put("data-bs-target", "#" + target.getMarkupId());
+    }
 
-	public BootstrapCollapseBehavior show() {
-		showCondition = Condition.alwaysTrue();
-		return this;
-	}
+    for (Map.Entry<String, String> entry : optionsModel.getObject().entrySet()) {
+      String key = entry.getKey();
+      String value = entry.getValue();
+      if (StringUtils.hasText(key) && value != null) {
+        tag.put(key, value);
+      }
+    }
 
-	public BootstrapCollapseBehavior show(IModel<Boolean> showModel) {
-		this.showCondition = Condition.isTrue(Objects.requireNonNull(showModel));
-		return this;
-	}
+    tag.append("class", show ? "" : "collapsed", " ");
 
-	@Override
-	public void detach(Component component) {
-		super.detach(component);
-		Detachables.detach(optionsModel, showCondition);
-	}
+    tag.put("aria-expanded", show);
+    tag.put("aria-controls", target.getMarkupId());
+  }
 
+  @Override
+  public void bind(Component component) {
+    super.bind(component);
+
+    targetBehavior =
+        new Behavior() {
+          private static final long serialVersionUID = 1L;
+
+          @Override
+          public void onComponentTag(Component target, ComponentTag tag) {
+            boolean show = showCondition.applies();
+
+            tag.append("class", "collapse", " ");
+            tag.append("class", show ? "show" : "", " ");
+          }
+
+          @Override
+          public boolean isEnabled(Component target) {
+            return BootstrapCollapseBehavior.this.isEnabled(component);
+          }
+        };
+
+    target.add(targetBehavior);
+  }
+
+  @Override
+  public void unbind(Component component) {
+    super.unbind(component);
+    component.remove(targetBehavior);
+  }
+
+  public BootstrapCollapseBehavior show() {
+    showCondition = Condition.alwaysTrue();
+    return this;
+  }
+
+  public BootstrapCollapseBehavior show(IModel<Boolean> showModel) {
+    this.showCondition = Condition.isTrue(Objects.requireNonNull(showModel));
+    return this;
+  }
+
+  @Override
+  public void detach(Component component) {
+    super.detach(component);
+    Detachables.detach(optionsModel, showCondition);
+  }
 }

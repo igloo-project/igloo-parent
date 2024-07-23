@@ -3,7 +3,6 @@ package org.igloo.spring.autoconfigure.search;
 import static org.iglooproject.jpa.property.JpaPropertyIds.LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT;
 
 import javax.annotation.PostConstruct;
-
 import org.apache.lucene.search.BooleanQuery;
 import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
 import org.iglooproject.jpa.search.CoreJpaSearchPackage;
@@ -18,31 +17,34 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.hsearch.disabled", havingValue = "false", matchIfMissing = true)
-@ComponentScan(
-	basePackageClasses = {
-			CoreJpaSearchPackage.class
-	}
-)
+@ConditionalOnProperty(
+    name = "igloo-ac.hsearch.disabled",
+    havingValue = "false",
+    matchIfMissing = true)
+@ComponentScan(basePackageClasses = {CoreJpaSearchPackage.class})
 @AutoConfigureAfter(IglooJpaAutoConfiguration.class)
 public class IglooHibernateSearchAutoConfiguration {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(IglooHibernateSearchAutoConfiguration.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(IglooHibernateSearchAutoConfiguration.class);
 
-	@Autowired(required = false)
-	private IPropertyService propertyService;
+  @Autowired(required = false)
+  private IPropertyService propertyService;
 
-	@PostConstruct
-	public void init() {
-		try {
-			BooleanQuery.setMaxClauseCount(propertyService.get(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT));
-		} catch (PropertyServiceIncompleteRegistrationException e) {
-			LOGGER.warn(String.format("Property boolean query max clause count doesn't exists, value is set to %d",
-					BooleanQuery.getMaxClauseCount()));
-		} catch  (NullPointerException e) {
-			LOGGER.warn(String.format("Property service is null, boolean query max clause count value is set to %d",
-					BooleanQuery.getMaxClauseCount()));
-		}
-	}
-
+  @PostConstruct
+  public void init() {
+    try {
+      BooleanQuery.setMaxClauseCount(propertyService.get(LUCENE_BOOLEAN_QUERY_MAX_CLAUSE_COUNT));
+    } catch (PropertyServiceIncompleteRegistrationException e) {
+      LOGGER.warn(
+          String.format(
+              "Property boolean query max clause count doesn't exists, value is set to %d",
+              BooleanQuery.getMaxClauseCount()));
+    } catch (NullPointerException e) {
+      LOGGER.warn(
+          String.format(
+              "Property service is null, boolean query max clause count value is set to %d",
+              BooleanQuery.getMaxClauseCount()));
+    }
+  }
 }

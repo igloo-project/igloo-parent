@@ -6,7 +6,8 @@ import org.hibernate.search.spi.IndexedTypeIdentifier;
 
 public interface ClientSideAnalyzerProvider {
 
-	Analyzer getAnalyzer(String analyzerName);
-	Analyzer getAnalyzer(ExtendedSearchIntegrator searchIntegrator, IndexedTypeIdentifier indexedType);
+  Analyzer getAnalyzer(String analyzerName);
 
+  Analyzer getAnalyzer(
+      ExtendedSearchIntegrator searchIntegrator, IndexedTypeIdentifier indexedType);
 }

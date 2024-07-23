@@ -4,6 +4,5 @@ import org.apache.wicket.request.resource.PackageResource;
 
 public interface ICssResourceReference {
 
-	public PackageResource getResource();
-
+  public PackageResource getResource();
 }

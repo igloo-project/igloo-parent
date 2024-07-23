@@ -1,5 +1,3 @@
 package test.core;
 
-public final class TestCorePackage {
-
-}
+public final class TestCorePackage {}

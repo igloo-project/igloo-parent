@@ -4,6 +4,5 @@ import java.util.Locale;
 
 public interface ICoreApplication {
 
-	Locale getNumberFormatLocale();
-
+  Locale getNumberFormatLocale();
 }

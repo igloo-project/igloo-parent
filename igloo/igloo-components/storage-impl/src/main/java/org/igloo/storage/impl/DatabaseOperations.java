@@ -1,5 +1,7 @@
 package org.igloo.storage.impl;
 
+import com.google.common.base.Suppliers;
+import com.google.common.io.Resources;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.PreparedStatement;
@@ -14,7 +16,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
@@ -23,7 +24,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
@@ -53,369 +53,463 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 
-import com.google.common.base.Suppliers;
-import com.google.common.io.Resources;
-
 public class DatabaseOperations {
 
-	private static final String PARAMETER_FAILURE_STATUS = "failureStatus";
-	private static final String PARAMETER_FAILURE_TYPE = "failureType";
-	private static final String PARAMETER_SIZE = "size";
-	private static final String PARAMETER_COUNT = "count";
-	private static final String PARAMETER_FICHIER_STATUS = "fichierStatus";
-	private static final String PARAMETER_FICHIER_TYPE = "fichierType";
-	private static final String PARAMETER_STORAGE_UNIT_TYPE = "storageUnitType";
-	private static final String PARAMETER_STORAGE_UNIT_ID = "storageUnitId";
-	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseOperations.class);
+  private static final String PARAMETER_FAILURE_STATUS = "failureStatus";
+  private static final String PARAMETER_FAILURE_TYPE = "failureType";
+  private static final String PARAMETER_SIZE = "size";
+  private static final String PARAMETER_COUNT = "count";
+  private static final String PARAMETER_FICHIER_STATUS = "fichierStatus";
+  private static final String PARAMETER_FICHIER_TYPE = "fichierType";
+  private static final String PARAMETER_STORAGE_UNIT_TYPE = "storageUnitType";
+  private static final String PARAMETER_STORAGE_UNIT_ID = "storageUnitId";
+  private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseOperations.class);
 
-	private Supplier<String> lastCheckStatisticsQuery = Suppliers.memoize(() -> readSqlResource("last-check-statistics.sql"));
-	private Supplier<String> orphanStatisticsQuery = Suppliers.memoize(() -> readSqlResource("orphan-statistics.sql"));
-	private Supplier<String> unitStatisticsQuery = Suppliers.memoize(() -> readSqlResource("unit-statistics.sql"));
-	private Supplier<String> failureStatisticsQuery = Suppliers.memoize(() -> readSqlResource("failure-statistics.sql"));
-	private Supplier<String> storageUnitSplitQuery = Suppliers.memoize(() -> readSqlResource("storage-unit-split.sql"));
+  private Supplier<String> lastCheckStatisticsQuery =
+      Suppliers.memoize(() -> readSqlResource("last-check-statistics.sql"));
+  private Supplier<String> orphanStatisticsQuery =
+      Suppliers.memoize(() -> readSqlResource("orphan-statistics.sql"));
+  private Supplier<String> unitStatisticsQuery =
+      Suppliers.memoize(() -> readSqlResource("unit-statistics.sql"));
+  private Supplier<String> failureStatisticsQuery =
+      Suppliers.memoize(() -> readSqlResource("failure-statistics.sql"));
+  private Supplier<String> storageUnitSplitQuery =
+      Suppliers.memoize(() -> readSqlResource("storage-unit-split.sql"));
 
-	private final EntityManagerFactory entityManagerFactory;
+  private final EntityManagerFactory entityManagerFactory;
 
-	private final String fichierSequenceName;
+  private final String fichierSequenceName;
 
-	private final String storageUnitSequenceName;
+  private final String storageUnitSequenceName;
 
-	private final Type fichierTypeType;
-	private final Type storageUnitTypeType;
-	private final Type fichierStatusType;
-	private final Type failureTypeType;
-	private final Type failureStatusType;
+  private final Type fichierTypeType;
+  private final Type storageUnitTypeType;
+  private final Type fichierStatusType;
+  private final Type failureTypeType;
+  private final Type failureStatusType;
 
-	public DatabaseOperations(EntityManagerFactory entityManagerFactory, String fichierSequenceName, String storageUnitSequenceName) {
-		this.entityManagerFactory = entityManagerFactory;
-		this.fichierSequenceName = fichierSequenceName;
-		this.storageUnitSequenceName = storageUnitSequenceName;
-		fichierTypeType = entityManagerFactory.unwrap(SessionFactory.class).getTypeHelper().basic(StorageHibernateConstants.TYPE_FICHIER_TYPE);
-		storageUnitTypeType = entityManagerFactory.unwrap(SessionFactory.class).getTypeHelper().basic(StorageHibernateConstants.TYPE_STORAGE_UNIT_TYPE);
-		Properties fichierTypeTypeProperties = new Properties();
-		fichierTypeTypeProperties.setProperty(EnumType.ENUM, FichierStatus.class.getName());
-		fichierTypeTypeProperties.setProperty(EnumType.NAMED, Boolean.TRUE.toString());
-		fichierStatusType = entityManagerFactory.unwrap(SessionFactory.class).getTypeHelper().custom(EnumType.class, fichierTypeTypeProperties);
-		Properties failureTypeTypeProperties = new Properties();
-		failureTypeTypeProperties.setProperty(EnumType.ENUM, StorageFailureType.class.getName());
-		failureTypeTypeProperties.setProperty(EnumType.NAMED, Boolean.TRUE.toString());
-		failureTypeType = entityManagerFactory.unwrap(SessionFactory.class).getTypeHelper().custom(EnumType.class, failureTypeTypeProperties);
-		Properties failureStatusTypeProperties = new Properties();
-		failureStatusTypeProperties.setProperty(EnumType.ENUM, StorageFailureStatus.class.getName());
-		failureStatusTypeProperties.setProperty(EnumType.NAMED, Boolean.TRUE.toString());
-		failureStatusType = entityManagerFactory.unwrap(SessionFactory.class).getTypeHelper().custom(EnumType.class, failureStatusTypeProperties);
-	}
+  public DatabaseOperations(
+      EntityManagerFactory entityManagerFactory,
+      String fichierSequenceName,
+      String storageUnitSequenceName) {
+    this.entityManagerFactory = entityManagerFactory;
+    this.fichierSequenceName = fichierSequenceName;
+    this.storageUnitSequenceName = storageUnitSequenceName;
+    fichierTypeType =
+        entityManagerFactory
+            .unwrap(SessionFactory.class)
+            .getTypeHelper()
+            .basic(StorageHibernateConstants.TYPE_FICHIER_TYPE);
+    storageUnitTypeType =
+        entityManagerFactory
+            .unwrap(SessionFactory.class)
+            .getTypeHelper()
+            .basic(StorageHibernateConstants.TYPE_STORAGE_UNIT_TYPE);
+    Properties fichierTypeTypeProperties = new Properties();
+    fichierTypeTypeProperties.setProperty(EnumType.ENUM, FichierStatus.class.getName());
+    fichierTypeTypeProperties.setProperty(EnumType.NAMED, Boolean.TRUE.toString());
+    fichierStatusType =
+        entityManagerFactory
+            .unwrap(SessionFactory.class)
+            .getTypeHelper()
+            .custom(EnumType.class, fichierTypeTypeProperties);
+    Properties failureTypeTypeProperties = new Properties();
+    failureTypeTypeProperties.setProperty(EnumType.ENUM, StorageFailureType.class.getName());
+    failureTypeTypeProperties.setProperty(EnumType.NAMED, Boolean.TRUE.toString());
+    failureTypeType =
+        entityManagerFactory
+            .unwrap(SessionFactory.class)
+            .getTypeHelper()
+            .custom(EnumType.class, failureTypeTypeProperties);
+    Properties failureStatusTypeProperties = new Properties();
+    failureStatusTypeProperties.setProperty(EnumType.ENUM, StorageFailureStatus.class.getName());
+    failureStatusTypeProperties.setProperty(EnumType.NAMED, Boolean.TRUE.toString());
+    failureStatusType =
+        entityManagerFactory
+            .unwrap(SessionFactory.class)
+            .getTypeHelper()
+            .custom(EnumType.class, failureStatusTypeProperties);
+  }
 
-	public Fichier getFichierById(Long id) {
-		List<Fichier> fichiers = entityManager().createQuery("SELECT f from Fichier f where f.id = :id", Fichier.class)
-			.setParameter("id", id)
-			.getResultList();
-		
-		// Different from getSingleResult as it does not throw an exception if not Fichier is found.
-		if (fichiers == null || fichiers.isEmpty()) {
-			return null;
-		} else if (fichiers.size() > 1) {
-			throw new NonUniqueResultException();
-		}
-		return fichiers.get(0);
-	}
+  public Fichier getFichierById(Long id) {
+    List<Fichier> fichiers =
+        entityManager()
+            .createQuery("SELECT f from Fichier f where f.id = :id", Fichier.class)
+            .setParameter("id", id)
+            .getResultList();
 
-	public Fichier getAttachedFichier(Fichier fichier) {
-		if (entityManager().contains(fichier)) {
-			return fichier;
-		} else {
-			return entityManager().find(Fichier.class, fichier.getId());
-		}
-	}
+    // Different from getSingleResult as it does not throw an exception if not Fichier is found.
+    if (fichiers == null || fichiers.isEmpty()) {
+      return null;
+    } else if (fichiers.size() > 1) {
+      throw new NonUniqueResultException();
+    }
+    return fichiers.get(0);
+  }
 
-	public long generateStorageUnit() {
-		return entityManager().unwrap(Session.class).doReturningWork(c -> {
-			PreparedStatement statement = c.prepareStatement("SELECT nextval(?)");
-			statement.setString(1, storageUnitSequenceName);
-			ResultSet rs = statement.executeQuery();
-			rs.next();
-			return rs.getLong(1);
-		});
-	}
+  public Fichier getAttachedFichier(Fichier fichier) {
+    if (entityManager().contains(fichier)) {
+      return fichier;
+    } else {
+      return entityManager().find(Fichier.class, fichier.getId());
+    }
+  }
 
-	public long generateFichier() {
-		return entityManager().unwrap(Session.class).doReturningWork(c -> {
-			PreparedStatement statement = c.prepareStatement("SELECT nextval(?)");
-			statement.setString(1, fichierSequenceName);
-			ResultSet rs = statement.executeQuery();
-			rs.next();
-			return rs.getLong(1);
-		});
-	}
+  public long generateStorageUnit() {
+    return entityManager()
+        .unwrap(Session.class)
+        .doReturningWork(
+            c -> {
+              PreparedStatement statement = c.prepareStatement("SELECT nextval(?)");
+              statement.setString(1, storageUnitSequenceName);
+              ResultSet rs = statement.executeQuery();
+              rs.next();
+              return rs.getLong(1);
+            });
+  }
 
-	public void createStorageUnit(StorageUnit unit) {
-		entityManager().persist(unit);
-	}
+  public long generateFichier() {
+    return entityManager()
+        .unwrap(Session.class)
+        .doReturningWork(
+            c -> {
+              PreparedStatement statement = c.prepareStatement("SELECT nextval(?)");
+              statement.setString(1, fichierSequenceName);
+              ResultSet rs = statement.executeQuery();
+              rs.next();
+              return rs.getLong(1);
+            });
+  }
 
-	public StorageUnit splitStorageUnit(StorageUnit original, Long id, String newPath) {
-		if (!entityManager().contains(original)) {
-			original = entityManager().find(StorageUnit.class, original.getId());
-		}
-		if (!StorageUnitStatus.ALIVE.equals(original.getStatus())) {
-			throw new IllegalStateException(String.format("Original status %s unexpected for StorageUnit split", original.getStatus()));
-		}
-		StorageUnit newUnit = new StorageUnit();
-		newUnit.setId(id);
-		newUnit.setCheckChecksumDelay(original.getCheckChecksumDelay());
-		newUnit.setCheckDelay(original.getCheckDelay());
-		newUnit.setCheckType(original.getCheckType());
-		newUnit.setCreationDate(LocalDateTime.now());
-		newUnit.setPath(newPath);
-		newUnit.setSplitDuration(original.getSplitDuration());
-		newUnit.setSplitSize(original.getSplitSize());
-		newUnit.setStatus(StorageUnitStatus.ALIVE);
-		newUnit.setType(original.getType());
-		original.setStatus(StorageUnitStatus.ARCHIVED);
-		entityManager().persist(newUnit);
-		return newUnit;
-	}
+  public void createStorageUnit(StorageUnit unit) {
+    entityManager().persist(unit);
+  }
 
-	@Nonnull
-	public Set<Fichier> listUnitAliveFichiers(@Nonnull StorageUnit unit) {
-		Objects.requireNonNull(unit, "unit cannot be null");
-		return entityManager().createQuery("SELECT f FROM Fichier f where f.storageUnit = :unit AND f.status != :invalidatedStatus ORDER BY f.id DESC", Fichier.class)
-				.setParameter("unit", unit)
-				.setParameter("invalidatedStatus", FichierStatus.INVALIDATED)
-				.getResultStream()
-				.collect(Collectors.toUnmodifiableSet());
-	}
+  public StorageUnit splitStorageUnit(StorageUnit original, Long id, String newPath) {
+    if (!entityManager().contains(original)) {
+      original = entityManager().find(StorageUnit.class, original.getId());
+    }
+    if (!StorageUnitStatus.ALIVE.equals(original.getStatus())) {
+      throw new IllegalStateException(
+          String.format(
+              "Original status %s unexpected for StorageUnit split", original.getStatus()));
+    }
+    StorageUnit newUnit = new StorageUnit();
+    newUnit.setId(id);
+    newUnit.setCheckChecksumDelay(original.getCheckChecksumDelay());
+    newUnit.setCheckDelay(original.getCheckDelay());
+    newUnit.setCheckType(original.getCheckType());
+    newUnit.setCreationDate(LocalDateTime.now());
+    newUnit.setPath(newPath);
+    newUnit.setSplitDuration(original.getSplitDuration());
+    newUnit.setSplitSize(original.getSplitSize());
+    newUnit.setStatus(StorageUnitStatus.ALIVE);
+    newUnit.setType(original.getType());
+    original.setStatus(StorageUnitStatus.ARCHIVED);
+    entityManager().persist(newUnit);
+    return newUnit;
+  }
 
-	public StorageUnit loadAliveStorageUnit(IStorageUnitType storageUnitType) {
-		return entityManager()
-			.createQuery("SELECT s FROM StorageUnit s WHERE s.type = :type AND s.status = :status ORDER BY s.id DESC", StorageUnit.class)
-			.setParameter("type", storageUnitType)
-			.setParameter("status", StorageUnitStatus.ALIVE)
-			.getResultStream()
-			.findFirst()
-			.orElseThrow();
-	}
+  @Nonnull
+  public Set<Fichier> listUnitAliveFichiers(@Nonnull StorageUnit unit) {
+    Objects.requireNonNull(unit, "unit cannot be null");
+    return entityManager()
+        .createQuery(
+            "SELECT f FROM Fichier f where f.storageUnit = :unit AND f.status != :invalidatedStatus ORDER BY f.id DESC",
+            Fichier.class)
+        .setParameter("unit", unit)
+        .setParameter("invalidatedStatus", FichierStatus.INVALIDATED)
+        .getResultStream()
+        .collect(Collectors.toUnmodifiableSet());
+  }
 
-	/**
-	 * Create or update an existing failure.
-	 */
-	public void triggerFailure(StorageFailure failure) {
-		try {
-			@Nonnull
-			StorageFailure storedFailure = entityManager().createQuery("SELECT f FROM StorageFailure f WHERE f.path = :path ORDER BY f.id DESC", StorageFailure.class)
-				.setParameter("path", failure.getPath())
-				.getSingleResult();
-			// failure is known and acknowledged; we ignore subsequent checks
-			// except type failure change
-			if (failure.getType().equals(storedFailure.getType()) && StorageFailureStatus.ACKNOWLEDGED.equals(storedFailure.getStatus())) {
-				LOGGER.debug("Failure {} already acknowledged. Ignored.", failure);
-				return;
-			}
-			// a failure must not be reported on multiple unit; only misconfiguration may trigger this case
-			// (an absolute path cannot be linked to multiple units)
-			if (!failure.getConsistencyCheck().getStorageUnit().equals(storedFailure.getConsistencyCheck().getStorageUnit())) {
-				throw new IllegalStateException(String.format("Failure reported for %s in unit %d and already stored for unit %d", failure.getPath(), failure.getConsistencyCheck().getStorageUnit().getId(), storedFailure.getConsistencyCheck().getStorageUnit().getId()));
-			}
-			// else storedFailure is updated
-			if (StorageFailureStatus.ALIVE.equals(storedFailure.getStatus())) {
-				LOGGER.debug("Failure {} updates an already existing failure.", failure);
-				// if failure is already detected, keep creation time
-				failure.setCreationTime(storedFailure.getCreationTime());
-			} else {
-				LOGGER.debug("Failure {} replaces an already fixed or acknowlegded failure", failure);
-			}
-			failure.setId(storedFailure.getId());
-			entityManager().merge(failure);
-		} catch (NoResultException e) {
-			entityManager().persist(failure);
-		}
-	}
+  public StorageUnit loadAliveStorageUnit(IStorageUnitType storageUnitType) {
+    return entityManager()
+        .createQuery(
+            "SELECT s FROM StorageUnit s WHERE s.type = :type AND s.status = :status ORDER BY s.id DESC",
+            StorageUnit.class)
+        .setParameter("type", storageUnitType)
+        .setParameter("status", StorageUnitStatus.ALIVE)
+        .getResultStream()
+        .findFirst()
+        .orElseThrow();
+  }
 
-	/**
-	 * <p>Clean current failures linked with {@link StorageUnit} targetted by <code>consistencyCheck</code> and not
-	 * linked with this <code>consistencyCheck</code>. It allows to resolve as {@link StorageFailureStatus#FIXED} all
-	 * failures not updated by the provided {@link StorageConsistencyCheck}.</p>
-	 * 
-	 * @param alsoCleanChecksumMismatch <code>true</code>, cleaned {@link StorageFailureStatus} includes checksum
-	 * mismatch failure. If <code>false</code>, there are excluded.
-	 */
-	public Integer cleanFailures(StorageConsistencyCheck consistencyCheck, boolean alsoCleanChecksumMismatch) {
-		Map<String, Object> params = new HashMap<>();
-		String query = "UPDATE StorageFailure SET status = :fixedStatus "
-				// match same unit
-				+ "WHERE id IN (SELECT f.id FROM StorageFailure f JOIN StorageConsistencyCheck c ON f.consistencyCheck_id = c.id WHERE c.storageUnit_id = :unitId) "
-				// other consistencyCheck and status ALIVE
-				+ "AND consistencyCheck_id != :consistencyCheckId AND status = :aliveStatus";
-		params.put("fixedStatus", StorageFailureStatus.FIXED.name());
-		params.put("aliveStatus", StorageFailureStatus.ALIVE.name());
-		params.put("unitId", consistencyCheck.getStorageUnit().getId());
-		params.put("consistencyCheckId", consistencyCheck.getId());
-		if (!alsoCleanChecksumMismatch) {
-			query += " AND type != :checksumMismatchType";
-			params.put("checksumMismatchType", StorageFailureType.CHECKSUM_MISMATCH.name());
-		}
-		Query nativeQuery = entityManager().createNativeQuery(query);
-		params.forEach(nativeQuery::setParameter);
-		return nativeQuery.executeUpdate();
-	}
+  /** Create or update an existing failure. */
+  public void triggerFailure(StorageFailure failure) {
+    try {
+      @Nonnull
+      StorageFailure storedFailure =
+          entityManager()
+              .createQuery(
+                  "SELECT f FROM StorageFailure f WHERE f.path = :path ORDER BY f.id DESC",
+                  StorageFailure.class)
+              .setParameter("path", failure.getPath())
+              .getSingleResult();
+      // failure is known and acknowledged; we ignore subsequent checks
+      // except type failure change
+      if (failure.getType().equals(storedFailure.getType())
+          && StorageFailureStatus.ACKNOWLEDGED.equals(storedFailure.getStatus())) {
+        LOGGER.debug("Failure {} already acknowledged. Ignored.", failure);
+        return;
+      }
+      // a failure must not be reported on multiple unit; only misconfiguration may trigger this
+      // case
+      // (an absolute path cannot be linked to multiple units)
+      if (!failure
+          .getConsistencyCheck()
+          .getStorageUnit()
+          .equals(storedFailure.getConsistencyCheck().getStorageUnit())) {
+        throw new IllegalStateException(
+            String.format(
+                "Failure reported for %s in unit %d and already stored for unit %d",
+                failure.getPath(),
+                failure.getConsistencyCheck().getStorageUnit().getId(),
+                storedFailure.getConsistencyCheck().getStorageUnit().getId()));
+      }
+      // else storedFailure is updated
+      if (StorageFailureStatus.ALIVE.equals(storedFailure.getStatus())) {
+        LOGGER.debug("Failure {} updates an already existing failure.", failure);
+        // if failure is already detected, keep creation time
+        failure.setCreationTime(storedFailure.getCreationTime());
+      } else {
+        LOGGER.debug("Failure {} replaces an already fixed or acknowlegded failure", failure);
+      }
+      failure.setId(storedFailure.getId());
+      entityManager().merge(failure);
+    } catch (NoResultException e) {
+      entityManager().persist(failure);
+    }
+  }
 
-	public void createFichier(Fichier fichier) {
-		entityManager().persist(fichier);
-	}
+  /**
+   * Clean current failures linked with {@link StorageUnit} targetted by <code>consistencyCheck
+   * </code> and not linked with this <code>consistencyCheck</code>. It allows to resolve as {@link
+   * StorageFailureStatus#FIXED} all failures not updated by the provided {@link
+   * StorageConsistencyCheck}.
+   *
+   * @param alsoCleanChecksumMismatch <code>true</code>, cleaned {@link StorageFailureStatus}
+   *     includes checksum mismatch failure. If <code>false</code>, there are excluded.
+   */
+  public Integer cleanFailures(
+      StorageConsistencyCheck consistencyCheck, boolean alsoCleanChecksumMismatch) {
+    Map<String, Object> params = new HashMap<>();
+    String query =
+        "UPDATE StorageFailure SET status = :fixedStatus "
+            // match same unit
+            + "WHERE id IN (SELECT f.id FROM StorageFailure f JOIN StorageConsistencyCheck c ON f.consistencyCheck_id = c.id WHERE c.storageUnit_id = :unitId) "
+            // other consistencyCheck and status ALIVE
+            + "AND consistencyCheck_id != :consistencyCheckId AND status = :aliveStatus";
+    params.put("fixedStatus", StorageFailureStatus.FIXED.name());
+    params.put("aliveStatus", StorageFailureStatus.ALIVE.name());
+    params.put("unitId", consistencyCheck.getStorageUnit().getId());
+    params.put("consistencyCheckId", consistencyCheck.getId());
+    if (!alsoCleanChecksumMismatch) {
+      query += " AND type != :checksumMismatchType";
+      params.put("checksumMismatchType", StorageFailureType.CHECKSUM_MISMATCH.name());
+    }
+    Query nativeQuery = entityManager().createNativeQuery(query);
+    params.forEach(nativeQuery::setParameter);
+    return nativeQuery.executeUpdate();
+  }
 
-	public void removeFichier(Fichier fichier) {
-		entityManager().remove(fichier);
-	}
+  public void createFichier(Fichier fichier) {
+    entityManager().persist(fichier);
+  }
 
-	public StorageUnit getStorageUnit(Long storageUnitId) {
-		return entityManager().find(StorageUnit.class, storageUnitId);
-	}
+  public void removeFichier(Fichier fichier) {
+    entityManager().remove(fichier);
+  }
 
-	public void createConsistencyCheck(StorageConsistencyCheck consistencyCheck) {
-		entityManager().persist(consistencyCheck);
-	}
+  public StorageUnit getStorageUnit(Long storageUnitId) {
+    return entityManager().find(StorageUnit.class, storageUnitId);
+  }
 
-	public List<StorageUnit> listStorageUnits() {
-		return entityManager().createQuery("SELECT s FROM StorageUnit s ORDER BY s.id ASC", StorageUnit.class).getResultList();
-	}
+  public void createConsistencyCheck(StorageConsistencyCheck consistencyCheck) {
+    entityManager().persist(consistencyCheck);
+  }
 
-	@Nullable
-	public StorageConsistencyCheck getLastCheck(StorageUnit unit) {
-		try {
-			return entityManager().createQuery("SELECT s FROM StorageConsistencyCheck s WHERE storageUnit = :storageUnit ORDER BY s.checkFinishedOn DESC", StorageConsistencyCheck.class)
-					.setParameter("storageUnit", unit)
-					.setMaxResults(1)
-					.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
+  public List<StorageUnit> listStorageUnits() {
+    return entityManager()
+        .createQuery("SELECT s FROM StorageUnit s ORDER BY s.id ASC", StorageUnit.class)
+        .getResultList();
+  }
 
-	@Nullable
-	public StorageConsistencyCheck getLastCheckChecksum(StorageUnit unit) {
-		try {
-			return entityManager().createQuery("SELECT s FROM StorageConsistencyCheck s WHERE checkType = :checkType AND storageUnit = :storageUnit ORDER BY s.checkFinishedOn DESC", StorageConsistencyCheck.class)
-					.setParameter("checkType", StorageUnitCheckType.LISTING_SIZE_CHECKSUM)
-					.setParameter("storageUnit", unit)
-					.setMaxResults(1)
-					.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
+  @Nullable
+  public StorageConsistencyCheck getLastCheck(StorageUnit unit) {
+    try {
+      return entityManager()
+          .createQuery(
+              "SELECT s FROM StorageConsistencyCheck s WHERE storageUnit = :storageUnit ORDER BY s.checkFinishedOn DESC",
+              StorageConsistencyCheck.class)
+          .setParameter("storageUnit", unit)
+          .setMaxResults(1)
+          .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
 
-	@Nonnull
-	public List<Fichier> listInvalidated(@Nullable Integer limit) {
-		TypedQuery<Fichier> query = entityManager().createQuery("SELECT f FROM Fichier f WHERE f.status = :invalidatedStatus ORDER BY f.id ASC", Fichier.class);
-		query.setParameter("invalidatedStatus", FichierStatus.INVALIDATED);
-		if (limit != null) {
-			query.setMaxResults(limit);
-		}
-		return query.getResultList();
-	}
+  @Nullable
+  public StorageConsistencyCheck getLastCheckChecksum(StorageUnit unit) {
+    try {
+      return entityManager()
+          .createQuery(
+              "SELECT s FROM StorageConsistencyCheck s WHERE checkType = :checkType AND storageUnit = :storageUnit ORDER BY s.checkFinishedOn DESC",
+              StorageConsistencyCheck.class)
+          .setParameter("checkType", StorageUnitCheckType.LISTING_SIZE_CHECKSUM)
+          .setParameter("storageUnit", unit)
+          .setMaxResults(1)
+          .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
+  }
 
-	@Nonnull
-	public List<Fichier> listTransient(@Nullable Integer limit, @Nonnull LocalDateTime maxCreationDate) {
-		Objects.requireNonNull(maxCreationDate, "maxCreationDate must not be null");
-		TypedQuery<Fichier> query = entityManager().createQuery("SELECT f FROM Fichier f WHERE f.status = :transientStatus AND f.creationDate < :maxCreationDate ORDER BY f.id ASC", Fichier.class);
-		query.setParameter("transientStatus", FichierStatus.TRANSIENT);
-		query.setParameter("maxCreationDate", maxCreationDate);
-		if (limit != null) {
-			query.setMaxResults(limit);
-		}
-		return query.getResultList();
-	}
+  @Nonnull
+  public List<Fichier> listInvalidated(@Nullable Integer limit) {
+    TypedQuery<Fichier> query =
+        entityManager()
+            .createQuery(
+                "SELECT f FROM Fichier f WHERE f.status = :invalidatedStatus ORDER BY f.id ASC",
+                Fichier.class);
+    query.setParameter("invalidatedStatus", FichierStatus.INVALIDATED);
+    if (limit != null) {
+      query.setMaxResults(limit);
+    }
+    return query.getResultList();
+  }
 
-	/**
-	 * List {@link StorageUnit} that need to be split. Listing is based upon {@link StorageUnit#getSplitSize()} or
-	 * {@link StorageUnit#getSplitDuration()}. Null values implies NO automatic split.
-	 */
-	@SuppressWarnings("unchecked")
-	@Nonnull
-	public List<StorageUnit> listStorageUnitsToSplit() {
-		return entityManager().createNativeQuery(storageUnitSplitQuery.get(), StorageUnit.class).getResultList();
-	}
+  @Nonnull
+  public List<Fichier> listTransient(
+      @Nullable Integer limit, @Nonnull LocalDateTime maxCreationDate) {
+    Objects.requireNonNull(maxCreationDate, "maxCreationDate must not be null");
+    TypedQuery<Fichier> query =
+        entityManager()
+            .createQuery(
+                "SELECT f FROM Fichier f WHERE f.status = :transientStatus AND f.creationDate < :maxCreationDate ORDER BY f.id ASC",
+                Fichier.class);
+    query.setParameter("transientStatus", FichierStatus.TRANSIENT);
+    query.setParameter("maxCreationDate", maxCreationDate);
+    if (limit != null) {
+      query.setMaxResults(limit);
+    }
+    return query.getResultList();
+  }
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
-	public List<StorageStatistic> getStorageStatistics() {
-		return ((NativeQuery<StorageStatistic>) entityManager().createNativeQuery(unitStatisticsQuery.get()))
-				.addScalar(PARAMETER_STORAGE_UNIT_ID, LongType.INSTANCE)
-				.addScalar(PARAMETER_STORAGE_UNIT_TYPE, storageUnitTypeType)
-				.addScalar(PARAMETER_FICHIER_TYPE, fichierTypeType)
-				.addScalar(PARAMETER_FICHIER_STATUS, fichierStatusType)
-				.addScalar(PARAMETER_COUNT, IntegerType.INSTANCE)
-				.addScalar(PARAMETER_SIZE, LongType.INSTANCE)
-				// deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with custom types
-				.setResultTransformer(Transformers.aliasToBean(StorageStatistic.class))
-				.getResultList();
-	}
+  /**
+   * List {@link StorageUnit} that need to be split. Listing is based upon {@link
+   * StorageUnit#getSplitSize()} or {@link StorageUnit#getSplitDuration()}. Null values implies NO
+   * automatic split.
+   */
+  @SuppressWarnings("unchecked")
+  @Nonnull
+  public List<StorageUnit> listStorageUnitsToSplit() {
+    return entityManager()
+        .createNativeQuery(storageUnitSplitQuery.get(), StorageUnit.class)
+        .getResultList();
+  }
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
-	public List<StorageFailureStatistic> getStorageFailureStatistics() {
-		return ((NativeQuery<StorageFailureStatistic>) entityManager().createNativeQuery(failureStatisticsQuery.get()))
-				.addScalar(PARAMETER_STORAGE_UNIT_ID, LongType.INSTANCE)
-				.addScalar(PARAMETER_STORAGE_UNIT_TYPE, storageUnitTypeType)
-				.addScalar(PARAMETER_FICHIER_TYPE, fichierTypeType)
-				.addScalar(PARAMETER_FICHIER_STATUS, fichierStatusType)
-				.addScalar(PARAMETER_FAILURE_TYPE, failureTypeType)
-				.addScalar(PARAMETER_FAILURE_STATUS, failureStatusType)
-				.addScalar(PARAMETER_COUNT, IntegerType.INSTANCE)
-				.addScalar(PARAMETER_SIZE, LongType.INSTANCE)
-				// deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with custom types
-				.setResultTransformer(Transformers.aliasToBean(StorageFailureStatistic.class))
-				.getResultList();
-	}
+  @SuppressWarnings({"unchecked", "deprecation"})
+  public List<StorageStatistic> getStorageStatistics() {
+    return ((NativeQuery<StorageStatistic>)
+            entityManager().createNativeQuery(unitStatisticsQuery.get()))
+        .addScalar(PARAMETER_STORAGE_UNIT_ID, LongType.INSTANCE)
+        .addScalar(PARAMETER_STORAGE_UNIT_TYPE, storageUnitTypeType)
+        .addScalar(PARAMETER_FICHIER_TYPE, fichierTypeType)
+        .addScalar(PARAMETER_FICHIER_STATUS, fichierStatusType)
+        .addScalar(PARAMETER_COUNT, IntegerType.INSTANCE)
+        .addScalar(PARAMETER_SIZE, LongType.INSTANCE)
+        // deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with
+        // custom types
+        .setResultTransformer(Transformers.aliasToBean(StorageStatistic.class))
+        .getResultList();
+  }
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
-	public List<StorageOrphanStatistic> getStorageOrphanStatistics() {
-		return ((NativeQuery<StorageOrphanStatistic>) entityManager().createNativeQuery(orphanStatisticsQuery.get()))
-				.addScalar(PARAMETER_STORAGE_UNIT_ID, LongType.INSTANCE)
-				.addScalar(PARAMETER_STORAGE_UNIT_TYPE, storageUnitTypeType)
-				.addScalar(PARAMETER_FAILURE_STATUS, failureStatusType)
-				.addScalar(PARAMETER_COUNT, IntegerType.INSTANCE)
-				.setParameter("missingEntityFailureType", StorageFailureType.MISSING_ENTITY, failureTypeType)
-				// deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with custom types
-				.setResultTransformer(Transformers.aliasToBean(StorageOrphanStatistic.class))
-				.getResultList();
-	}
+  @SuppressWarnings({"unchecked", "deprecation"})
+  public List<StorageFailureStatistic> getStorageFailureStatistics() {
+    return ((NativeQuery<StorageFailureStatistic>)
+            entityManager().createNativeQuery(failureStatisticsQuery.get()))
+        .addScalar(PARAMETER_STORAGE_UNIT_ID, LongType.INSTANCE)
+        .addScalar(PARAMETER_STORAGE_UNIT_TYPE, storageUnitTypeType)
+        .addScalar(PARAMETER_FICHIER_TYPE, fichierTypeType)
+        .addScalar(PARAMETER_FICHIER_STATUS, fichierStatusType)
+        .addScalar(PARAMETER_FAILURE_TYPE, failureTypeType)
+        .addScalar(PARAMETER_FAILURE_STATUS, failureStatusType)
+        .addScalar(PARAMETER_COUNT, IntegerType.INSTANCE)
+        .addScalar(PARAMETER_SIZE, LongType.INSTANCE)
+        // deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with
+        // custom types
+        .setResultTransformer(Transformers.aliasToBean(StorageFailureStatistic.class))
+        .getResultList();
+  }
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
-	public List<StorageCheckStatistic> getStorageCheckStatistics() {
-		if (!isPostgresqlBackend()) {
-			throw new IllegalStateException("getStorageCheckStatistics need postgresql backend");
-		}
-		return ((NativeQuery<StorageCheckStatistic>) entityManager().createNativeQuery(lastCheckStatisticsQuery.get()))
-				.addScalar(PARAMETER_STORAGE_UNIT_ID, LongType.INSTANCE)
-				.addScalar(PARAMETER_STORAGE_UNIT_TYPE, storageUnitTypeType)
-				.addScalar("lastOn", LocalDateTimeType.INSTANCE)
-				.addScalar("lastChecksumOn", LocalDateTimeType.INSTANCE)
-				.addScalar("lastDuration", DurationType.INSTANCE)
-				.addScalar("lastChecksumDuration", DurationType.INSTANCE)
-				.addScalar("lastAge", DurationType.INSTANCE)
-				.addScalar("lastChecksumAge", DurationType.INSTANCE)
-				// deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with custom types
-				.setResultTransformer(Transformers.aliasToBean(StorageCheckStatistic.class))
-				.getResultList();
-	}
+  @SuppressWarnings({"unchecked", "deprecation"})
+  public List<StorageOrphanStatistic> getStorageOrphanStatistics() {
+    return ((NativeQuery<StorageOrphanStatistic>)
+            entityManager().createNativeQuery(orphanStatisticsQuery.get()))
+        .addScalar(PARAMETER_STORAGE_UNIT_ID, LongType.INSTANCE)
+        .addScalar(PARAMETER_STORAGE_UNIT_TYPE, storageUnitTypeType)
+        .addScalar(PARAMETER_FAILURE_STATUS, failureStatusType)
+        .addScalar(PARAMETER_COUNT, IntegerType.INSTANCE)
+        .setParameter(
+            "missingEntityFailureType", StorageFailureType.MISSING_ENTITY, failureTypeType)
+        // deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with
+        // custom types
+        .setResultTransformer(Transformers.aliasToBean(StorageOrphanStatistic.class))
+        .getResultList();
+  }
 
-	private boolean isPostgresqlBackend() {
-		return ((String) entityManager().getEntityManagerFactory().unwrap(SessionFactory.class).getProperties().get("hibernate.dialect")).toLowerCase().contains("postgresql");
-	}
+  @SuppressWarnings({"unchecked", "deprecation"})
+  public List<StorageCheckStatistic> getStorageCheckStatistics() {
+    if (!isPostgresqlBackend()) {
+      throw new IllegalStateException("getStorageCheckStatistics need postgresql backend");
+    }
+    return ((NativeQuery<StorageCheckStatistic>)
+            entityManager().createNativeQuery(lastCheckStatisticsQuery.get()))
+        .addScalar(PARAMETER_STORAGE_UNIT_ID, LongType.INSTANCE)
+        .addScalar(PARAMETER_STORAGE_UNIT_TYPE, storageUnitTypeType)
+        .addScalar("lastOn", LocalDateTimeType.INSTANCE)
+        .addScalar("lastChecksumOn", LocalDateTimeType.INSTANCE)
+        .addScalar("lastDuration", DurationType.INSTANCE)
+        .addScalar("lastChecksumDuration", DurationType.INSTANCE)
+        .addScalar("lastAge", DurationType.INSTANCE)
+        .addScalar("lastChecksumAge", DurationType.INSTANCE)
+        // deprecated, but JPA SqlResultSetMapping provides no way to map enum/interfaces with
+        // custom types
+        .setResultTransformer(Transformers.aliasToBean(StorageCheckStatistic.class))
+        .getResultList();
+  }
 
-	@Nonnull
-	private EntityManager entityManager() {
-		return Optional.ofNullable(EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory)).orElseThrow();
-	}
+  private boolean isPostgresqlBackend() {
+    return ((String)
+            entityManager()
+                .getEntityManagerFactory()
+                .unwrap(SessionFactory.class)
+                .getProperties()
+                .get("hibernate.dialect"))
+        .toLowerCase()
+        .contains("postgresql");
+  }
 
-	/**
-	 * Read query from a resource file; remove full line comment (i.e. line begins with --)
-	 */
-	private static String readSqlResource(String sqlFilename) {
-		try {
-			List<String> content = Resources.readLines(Resources.getResource("igloo-storage/" + sqlFilename), StandardCharsets.UTF_8);
-			return content.stream().filter(l -> !l.strip().startsWith("--")).collect(Collectors.joining("\n"));
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
-	}
+  @Nonnull
+  private EntityManager entityManager() {
+    return Optional.ofNullable(
+            EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory))
+        .orElseThrow();
+  }
 
+  /** Read query from a resource file; remove full line comment (i.e. line begins with --) */
+  private static String readSqlResource(String sqlFilename) {
+    try {
+      List<String> content =
+          Resources.readLines(
+              Resources.getResource("igloo-storage/" + sqlFilename), StandardCharsets.UTF_8);
+      return content.stream()
+          .filter(l -> !l.strip().startsWith("--"))
+          .collect(Collectors.joining("\n"));
+    } catch (IOException e) {
+      throw new IllegalStateException(e);
+    }
+  }
 }

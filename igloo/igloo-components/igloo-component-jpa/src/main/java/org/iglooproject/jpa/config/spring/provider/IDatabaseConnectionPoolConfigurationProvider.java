@@ -2,23 +2,23 @@ package org.iglooproject.jpa.config.spring.provider;
 
 import java.sql.Driver;
 
-public interface IDatabaseConnectionPoolConfigurationProvider extends IDatabaseConnectionConfigurationProvider {
+public interface IDatabaseConnectionPoolConfigurationProvider
+    extends IDatabaseConnectionConfigurationProvider {
 
-	@Override
-	Class<Driver> getDriverClass();
+  @Override
+  Class<Driver> getDriverClass();
 
-	String getUrl();
+  String getUrl();
 
-	String getUser();
+  String getUser();
 
-	String getPassword();
+  String getPassword();
 
-	int getMinIdle();
+  int getMinIdle();
 
-	int getMaxPoolSize();
+  int getMaxPoolSize();
 
-	String getValidationQuery();
+  String getValidationQuery();
 
-	String getInitSql();
-
+  String getInitSql();
 }

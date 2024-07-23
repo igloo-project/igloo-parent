@@ -8,15 +8,15 @@ import org.springframework.security.acls.model.Permission;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CityPermissionEvaluatorImpl extends AbstractGenericPermissionEvaluator<City> implements ICityPermissionEvaluator {
+public class CityPermissionEvaluatorImpl extends AbstractGenericPermissionEvaluator<City>
+    implements ICityPermissionEvaluator {
 
-	@Override
-	public boolean hasPermission(User user, City city, Permission permission) {
-		if (is(permission, READ)) {
-			return true;
-		}
-		
-		return false;
-	}
+  @Override
+  public boolean hasPermission(User user, City city, Permission permission) {
+    if (is(permission, READ)) {
+      return true;
+    }
 
+    return false;
+  }
 }

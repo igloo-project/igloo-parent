@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserGroupServiceImpl extends GenericUserGroupServiceImpl<UserGroup, User>
-		implements IUserGroupService {
+    implements IUserGroupService {
 
-	@Autowired
-	public UserGroupServiceImpl(IUserGroupDao userGroupDao) {
-		super(userGroupDao);
-	}
-
+  @Autowired
+  public UserGroupServiceImpl(IUserGroupDao userGroupDao) {
+    super(userGroupDao);
+  }
 }

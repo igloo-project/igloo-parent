@@ -14,27 +14,23 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource(
-	name = IglooPropertySourcePriority.APPLICATION,
-	value = {
-		ConfigurationPropertiesUrlConstants.JPA_COMMON,
-		ConfigurationPropertiesUrlConstants.JPA_SECURITY_COMMON,
-		"classpath:jpa-security-test.properties"
-	},
-	encoding = "UTF-8"
-)
-@ComponentScan(basePackageClasses = {
-		JpaSecurityTestBusinessPackage.class
-})
+    name = IglooPropertySourcePriority.APPLICATION,
+    value = {
+      ConfigurationPropertiesUrlConstants.JPA_COMMON,
+      ConfigurationPropertiesUrlConstants.JPA_SECURITY_COMMON,
+      "classpath:jpa-security-test.properties"
+    },
+    encoding = "UTF-8")
+@ComponentScan(basePackageClasses = {JpaSecurityTestBusinessPackage.class})
 @Import({
-	JpaSecurityTestJpaConfig.class,
-	JpaSecurityTestSecurityConfig.class,
-	JpaSecurityTestApplicationPropertyConfig.class
+  JpaSecurityTestJpaConfig.class,
+  JpaSecurityTestSecurityConfig.class,
+  JpaSecurityTestApplicationPropertyConfig.class
 })
 public class JpaSecurityTestConfig extends AbstractApplicationConfig {
 
-	@Bean
-	public IRendererService rendererService() {
-		return new EmptyRendererServiceImpl();
-	}
-
+  @Bean
+  public IRendererService rendererService() {
+    return new EmptyRendererServiceImpl();
+  }
 }

@@ -1,5 +1,3 @@
 package org.iglooproject.test.search;
 
-public class JpaTestSearchPackage {
-
-}
+public class JpaTestSearchPackage {}

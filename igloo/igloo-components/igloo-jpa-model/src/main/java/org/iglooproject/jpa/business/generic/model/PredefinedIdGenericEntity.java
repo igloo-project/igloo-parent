@@ -1,7 +1,6 @@
 package org.iglooproject.jpa.business.generic.model;
 
 import java.io.Serializable;
-
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
@@ -11,21 +10,20 @@ import javax.persistence.Transient;
  * @see <a href="#PredefinedIdSequenceGenerator">PredefinedIdSequenceGenerator</a>
  */
 @MappedSuperclass
-public abstract class PredefinedIdGenericEntity<K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
-		extends GenericEntity<K, E> implements IPredefinedIdEntity<K> {
+public abstract class PredefinedIdGenericEntity<
+        K extends Serializable & Comparable<K>, E extends GenericEntity<K, E>>
+    extends GenericEntity<K, E> implements IPredefinedIdEntity<K> {
 
-	private static final long serialVersionUID = -3040517787818182582L;
+  private static final long serialVersionUID = -3040517787818182582L;
 
-	@Transient
-	private K predefinedId;
-	
-	@Override
-	public K getPredefinedId() {
-		return predefinedId;
-	}
+  @Transient private K predefinedId;
 
-	public void setPredefinedId(K oldApplicationId) {
-		this.predefinedId = oldApplicationId;
-	}
+  @Override
+  public K getPredefinedId() {
+    return predefinedId;
+  }
 
+  public void setPredefinedId(K oldApplicationId) {
+    this.predefinedId = oldApplicationId;
+  }
 }

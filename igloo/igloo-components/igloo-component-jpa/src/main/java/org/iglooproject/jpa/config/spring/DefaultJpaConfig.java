@@ -18,33 +18,32 @@ import org.springframework.context.annotation.ScopedProxyMode;
 
 @Configuration
 @PropertySource(
-	name = IglooPropertySourcePriority.COMPONENT,
-	value = "classpath:igloo-component-jpa.properties",
-	encoding = "UTF-8"
-)
+    name = IglooPropertySourcePriority.COMPONENT,
+    value = "classpath:igloo-component-jpa.properties",
+    encoding = "UTF-8")
 public class DefaultJpaConfig {
 
-	public static final Logger LOGGER = LoggerFactory.getLogger(DefaultJpaConfig.class);
+  public static final Logger LOGGER = LoggerFactory.getLogger(DefaultJpaConfig.class);
 
-	@Bean
-	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-	public IJpaConfigurationProvider defaultJpaCoreConfigurationProvider() {
-		return new DefaultJpaConfigurationProvider();
-	}
+  @Bean
+  @Scope(proxyMode = ScopedProxyMode.INTERFACES)
+  public IJpaConfigurationProvider defaultJpaCoreConfigurationProvider() {
+    return new DefaultJpaConfigurationProvider();
+  }
 
-	@Bean
-	public IDatabaseConnectionConfigurationProvider defaultDatabaseConnectionPoolConfigurationProvider(
-			@Value("${db.datasourceProvider:}") DatasourceProvider datasourceProvider) {
-		if (DatasourceProvider.JNDI.equals(datasourceProvider)) {
-			LOGGER.info("JDBC pool configuration: using jndi");
-			return new DatabaseConnectionJndiConfigurationProvider();
-		} else if (DatasourceProvider.APPLICATION.equals(datasourceProvider)) {
-			LOGGER.info("JDBC pool configuration: using application pool");
-			return new DatabaseConnectionPoolConfigurationProvider();
-		} else {
-			throw new IllegalStateException(String.format("JDBC pool configuration: unknown provider %s",
-					datasourceProvider.name()));
-		}
-	}
-
+  @Bean
+  public IDatabaseConnectionConfigurationProvider
+      defaultDatabaseConnectionPoolConfigurationProvider(
+          @Value("${db.datasourceProvider:}") DatasourceProvider datasourceProvider) {
+    if (DatasourceProvider.JNDI.equals(datasourceProvider)) {
+      LOGGER.info("JDBC pool configuration: using jndi");
+      return new DatabaseConnectionJndiConfigurationProvider();
+    } else if (DatasourceProvider.APPLICATION.equals(datasourceProvider)) {
+      LOGGER.info("JDBC pool configuration: using application pool");
+      return new DatabaseConnectionPoolConfigurationProvider();
+    } else {
+      throw new IllegalStateException(
+          String.format("JDBC pool configuration: unknown provider %s", datasourceProvider.name()));
+    }
+  }
 }

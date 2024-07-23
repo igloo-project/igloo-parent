@@ -19,58 +19,60 @@ import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IColumnState;
 
-public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>> 
-		extends AbstractReferenceDataListPanel<T, ReferenceDataSort, AbstractReferenceDataDataProvider<T, ReferenceDataSort>> {
+public class BasicReferenceDataListPanel<T extends ReferenceData<? super T>>
+    extends AbstractReferenceDataListPanel<
+        T, ReferenceDataSort, AbstractReferenceDataDataProvider<T, ReferenceDataSort>> {
 
-	private static final long serialVersionUID = -4026683202098875499L;
+  private static final long serialVersionUID = -4026683202098875499L;
 
-	public BasicReferenceDataListPanel(
-		String id,
-		SerializableSupplier2<T> supplier,
-		Class<T> clazz
-	) {
-		this(id, supplier, BasicReferenceDataDataProvider.forItemType(clazz));
-	}
+  public BasicReferenceDataListPanel(String id, SerializableSupplier2<T> supplier, Class<T> clazz) {
+    this(id, supplier, BasicReferenceDataDataProvider.forItemType(clazz));
+  }
 
-	public BasicReferenceDataListPanel(
-		String id,
-		SerializableSupplier2<T> supplier,
-		AbstractReferenceDataDataProvider<T, ReferenceDataSort> dataProvider
-	) {
-		super(id, dataProvider, dataProvider.getSortModel(), supplier);
-		setOutputMarkupId(true);
-	}
+  public BasicReferenceDataListPanel(
+      String id,
+      SerializableSupplier2<T> supplier,
+      AbstractReferenceDataDataProvider<T, ReferenceDataSort> dataProvider) {
+    super(id, dataProvider, dataProvider.getSortModel(), supplier);
+    setOutputMarkupId(true);
+  }
 
-	@Override
-	protected AbstractReferenceDataPopup<T> createPopup(String wicketId) {
-		return new BasicReferenceDataPopup<T>(wicketId) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected void refresh(AjaxRequestTarget target) {
-				target.add(results);
-			}
-		};
-	}
+  @Override
+  protected AbstractReferenceDataPopup<T> createPopup(String wicketId) {
+    return new BasicReferenceDataPopup<T>(wicketId) {
+      private static final long serialVersionUID = 1L;
 
-	@Override
-	protected IColumnState<T, ReferenceDataSort> addColumns(DataTableBuilder<T, ReferenceDataSort> builder) {
-		return super.addColumns(builder)
-			.addLabelColumn(new ResourceModel("business.referenceData.label.fr"), Bindings.referenceData().label().fr())
-				.withSort(ReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
-				.withClass("cell-w-300")
-			.addLabelColumn(new ResourceModel("business.referenceData.label.en"), Bindings.referenceData().label().en())
-				.withSort(ReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
-				.withClass("cell-w-300")
-				.withClass(CELL_DISPLAY_MD);
-	}
+      @Override
+      protected void refresh(AjaxRequestTarget target) {
+        target.add(results);
+      }
+    };
+  }
 
-	@Override
-	protected Component createSearchForm(
-		String wicketId,
-		AbstractReferenceDataDataProvider<T, ReferenceDataSort> dataProvider,
-		DecoratedCoreDataTablePanel<T, ReferenceDataSort> table
-	) {
-		return new BasicReferenceDataSearchPanel<T>(wicketId, dataProvider, table);
-	}
+  @Override
+  protected IColumnState<T, ReferenceDataSort> addColumns(
+      DataTableBuilder<T, ReferenceDataSort> builder) {
+    return super.addColumns(builder)
+        .addLabelColumn(
+            new ResourceModel("business.referenceData.label.fr"),
+            Bindings.referenceData().label().fr())
+        .withSort(
+            ReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
+        .withClass("cell-w-300")
+        .addLabelColumn(
+            new ResourceModel("business.referenceData.label.en"),
+            Bindings.referenceData().label().en())
+        .withSort(
+            ReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.NONE_DEFAULT_REVERSE)
+        .withClass("cell-w-300")
+        .withClass(CELL_DISPLAY_MD);
+  }
 
+  @Override
+  protected Component createSearchForm(
+      String wicketId,
+      AbstractReferenceDataDataProvider<T, ReferenceDataSort> dataProvider,
+      DecoratedCoreDataTablePanel<T, ReferenceDataSort> table) {
+    return new BasicReferenceDataSearchPanel<T>(wicketId, dataProvider, table);
+  }
 }

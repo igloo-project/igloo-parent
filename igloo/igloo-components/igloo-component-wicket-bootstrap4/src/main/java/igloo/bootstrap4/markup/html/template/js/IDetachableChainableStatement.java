@@ -5,9 +5,8 @@ import org.wicketstuff.wiquery.core.javascript.ChainableStatement;
 
 public interface IDetachableChainableStatement extends ChainableStatement, IDetachable {
 
-	@Override
-	default void detach() {
-		// nothing to do
-	}
-
+  @Override
+  default void detach() {
+    // nothing to do
+  }
 }

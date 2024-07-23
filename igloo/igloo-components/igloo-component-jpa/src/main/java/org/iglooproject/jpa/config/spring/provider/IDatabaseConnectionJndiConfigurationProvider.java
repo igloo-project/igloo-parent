@@ -2,11 +2,11 @@ package org.iglooproject.jpa.config.spring.provider;
 
 import java.sql.Driver;
 
-public interface IDatabaseConnectionJndiConfigurationProvider extends IDatabaseConnectionConfigurationProvider {
+public interface IDatabaseConnectionJndiConfigurationProvider
+    extends IDatabaseConnectionConfigurationProvider {
 
-	String getJndiName();
+  String getJndiName();
 
-	@Override
-	Class<Driver> getDriverClass();
-
+  @Override
+  Class<Driver> getDriverClass();
 }

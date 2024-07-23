@@ -1,14 +1,12 @@
 package igloo.cache.spring;
 
-import java.util.List;
-
 import igloo.cache.monitor.CacheManagerWrapper;
+import java.util.List;
 
 /**
  * @see CacheManagerRegistry
  */
 public interface ICacheManagerRegistry {
 
-	List<CacheManagerWrapper> getCacheManagers();
-
+  List<CacheManagerWrapper> getCacheManagers();
 }

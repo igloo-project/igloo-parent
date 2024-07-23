@@ -12,22 +12,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class SassConfigurationProvider implements ISassConfigurationProvider {
 
-	@Autowired
-	private IPropertyService propertyService;
+  @Autowired private IPropertyService propertyService;
 
-	@Override
-	public boolean isAutoprefixerEnabled() {
-		return propertyService.get(AUTOPREFIXER_ENABLED);
-	}
+  @Override
+  public boolean isAutoprefixerEnabled() {
+    return propertyService.get(AUTOPREFIXER_ENABLED);
+  }
 
-	@Override
-	public boolean useStatic() {
-		return propertyService.get(SCSS_STATIC_ENABLED);
-	}
+  @Override
+  public boolean useStatic() {
+    return propertyService.get(SCSS_STATIC_ENABLED);
+  }
 
-	@Override
-	public String getResourcePath() {
-		return propertyService.get(SCSS_STATIC_RESOURCE_PATH);
-	}
-
+  @Override
+  public String getResourcePath() {
+    return propertyService.get(SCSS_STATIC_RESOURCE_PATH);
+  }
 }

@@ -4,6 +4,14 @@ import static org.iglooproject.basicapp.web.application.common.util.CssClassCons
 import static org.iglooproject.basicapp.web.application.common.util.CssClassConstants.TABLE_ROW_DISABLED;
 import static org.iglooproject.basicapp.web.application.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
+import igloo.bootstrap.modal.AjaxModalOpenBehavior;
+import igloo.bootstrap.modal.OneParameterModalOpenAjaxAction;
+import igloo.wicket.action.IOneParameterAjaxAction;
+import igloo.wicket.component.EnclosureContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.feedback.FeedbackUtils;
+import igloo.wicket.model.Detachables;
+import igloo.wicket.util.DatePattern;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -39,133 +47,150 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-import igloo.bootstrap.modal.AjaxModalOpenBehavior;
-import igloo.bootstrap.modal.OneParameterModalOpenAjaxAction;
-import igloo.wicket.action.IOneParameterAjaxAction;
-import igloo.wicket.component.EnclosureContainer;
-import igloo.wicket.condition.Condition;
-import igloo.wicket.feedback.FeedbackUtils;
-import igloo.wicket.model.Detachables;
-import igloo.wicket.util.DatePattern;
-
 public class AdministrationAnnouncementListPage extends AdministrationAnnouncementTemplate {
 
-	private static final long serialVersionUID = -4746355629579854697L;
+  private static final long serialVersionUID = -4746355629579854697L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AdministrationAnnouncementListPage.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(AdministrationAnnouncementListPage.class);
 
-	@SpringBean
-	private IAnnouncementService announcementService;
+  @SpringBean private IAnnouncementService announcementService;
 
-	@SpringBean
-	private IPropertyService propertyService;
+  @SpringBean private IPropertyService propertyService;
 
-	public static final IPageLinkDescriptor linkDescriptor() {
-		return LinkDescriptorBuilder.start()
-			.page(AdministrationAnnouncementListPage.class);
-	}
+  public static final IPageLinkDescriptor linkDescriptor() {
+    return LinkDescriptorBuilder.start().page(AdministrationAnnouncementListPage.class);
+  }
 
-	private final AnnouncementDataProvider dataProvider = new AnnouncementDataProvider();
+  private final AnnouncementDataProvider dataProvider = new AnnouncementDataProvider();
 
-	public AdministrationAnnouncementListPage(PageParameters parameters) {
-		super(parameters);
-		
-		AnnouncementPopup popup = new AnnouncementPopup("popup");
-		add(popup);
-		
-		EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
-		add(headerElementsSection.anyChildVisible());
-		
-		headerElementsSection
-			.add(
-				new EnclosureContainer("actionsContainer")
-					.anyChildVisible()
-					.add(
-						new BlankLink("add")
-							.add(
-								new AjaxModalOpenBehavior(popup, MouseEvent.CLICK) {
-									private static final long serialVersionUID = 1L;
-									@Override
-									protected void onShow(AjaxRequestTarget target) {
-										popup.setUpAdd(new Announcement());
-									}
-								}
-							)
-					)
-			);
-		
-		DecoratedCoreDataTablePanel<?, ?> results =
-			DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
-				.addBootstrapBadgeColumn(Model.of(), Bindings.announcement(), AnnouncementEnabledRenderer.get())
-					.badgePill()
-					.hideLabel()
-					.withClass("cell-w-60 text-center")
-				.addLabelColumn(new ResourceModel("business.announcement.id"), Bindings.announcement().id())
-					.withSort(AnnouncementSort.ID, SortIconStyle.NUMERIC, CycleMode.DEFAULT_REVERSE)
-					.withClass("cell-w-60")
-				.addLabelColumn(new ResourceModel("business.announcement.type"), Bindings.announcement().type(), EnumRenderer.get())
-					.withClass("cell-w-100")
-				.addColumn(new AbstractCoreColumn<Announcement, AnnouncementSort>(new ResourceModel("business.announcement.message")) {
-					private static final long serialVersionUID = 1L;
-					@Override
-					public void populateItem(Item<ICellPopulator<Announcement>> cellItem, String componentId, IModel<Announcement> rowModel) {
-						cellItem.add(new AnnouncementMessagePanel(componentId, rowModel));
-					}
-				})
-					.withClass("cell-w-400")
-				.addLabelColumn(new ResourceModel("business.announcement.publication.startDateTime"), Bindings.announcement().publication().startDateTime(), DatePattern.REALLY_SHORT_DATETIME)
-					.withSort(AnnouncementSort.PUBLICATION_START_DATE_TIME, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
-					.withClass("cell-w-120")
-				.addLabelColumn(new ResourceModel("business.announcement.publication.endDateTime"), Bindings.announcement().publication().endDateTime(), DatePattern.REALLY_SHORT_DATETIME)
-					.withClass("cell-w-120")
-				.addActionColumn()
-					.addAction(ActionRenderers.edit(), new OneParameterModalOpenAjaxAction<IModel<Announcement>>(popup) {
-						private static final long serialVersionUID = 1L;
-						@Override
-						protected void onShow(AjaxRequestTarget target, IModel<Announcement> announcementModel) {
-							super.onShow(target, announcementModel);
-							popup.setUpEdit(announcementModel.getObject());
-						}
-					})
-					.addConfirmAction(ActionRenderers.delete())
-						.title(new ResourceModel("administration.announcement.action.delete.confirmation.title"))
-						.content(new ResourceModel("administration.announcement.action.delete.confirmation.content"))
-						.confirm()
-						.onClick(new IOneParameterAjaxAction<IModel<Announcement>>() {
-							private static final long serialVersionUID = 1L;
-							@Override
-							public void execute(AjaxRequestTarget target, IModel<Announcement> parameter) {
-								try {
-									announcementService.delete(parameter.getObject());
-									Session.get().success(getString("common.success"));
-									throw new RestartResponseException(getPage());
-								} catch (RestartResponseException e) {
-									throw e;
-								} catch (Exception e) {
-									LOGGER.error("Error when deleting an announcement.", e);
-									Session.get().error(getString("common.error.unexpected"));
-									FeedbackUtils.refreshFeedback(target, getPage());
-								}
-							}
-						})
-					.withClassOnElements(BTN_TABLE_ROW_ACTION)
-					.end()
-					.withClass("cell-w-actions-2x cell-w-fit")
-				.rows()
-					.withClass(itemModel -> Condition.predicate(itemModel, AnnouncementPredicates.disabled()).then(TABLE_ROW_DISABLED).otherwise(""))
-					.end()
-				.bootstrapCard()
-					.count("administration.announcement.list.count")
-					.ajaxPagers()
-				.build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
-		
-		add(results);
-	}
+  public AdministrationAnnouncementListPage(PageParameters parameters) {
+    super(parameters);
 
-	@Override
-	protected void onDetach() {
-		super.onDetach();
-		Detachables.detach(dataProvider);
-	}
+    AnnouncementPopup popup = new AnnouncementPopup("popup");
+    add(popup);
 
+    EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
+    add(headerElementsSection.anyChildVisible());
+
+    headerElementsSection.add(
+        new EnclosureContainer("actionsContainer")
+            .anyChildVisible()
+            .add(
+                new BlankLink("add")
+                    .add(
+                        new AjaxModalOpenBehavior(popup, MouseEvent.CLICK) {
+                          private static final long serialVersionUID = 1L;
+
+                          @Override
+                          protected void onShow(AjaxRequestTarget target) {
+                            popup.setUpAdd(new Announcement());
+                          }
+                        })));
+
+    DecoratedCoreDataTablePanel<?, ?> results =
+        DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
+            .addBootstrapBadgeColumn(
+                Model.of(), Bindings.announcement(), AnnouncementEnabledRenderer.get())
+            .badgePill()
+            .hideLabel()
+            .withClass("cell-w-60 text-center")
+            .addLabelColumn(
+                new ResourceModel("business.announcement.id"), Bindings.announcement().id())
+            .withSort(AnnouncementSort.ID, SortIconStyle.NUMERIC, CycleMode.DEFAULT_REVERSE)
+            .withClass("cell-w-60")
+            .addLabelColumn(
+                new ResourceModel("business.announcement.type"),
+                Bindings.announcement().type(),
+                EnumRenderer.get())
+            .withClass("cell-w-100")
+            .addColumn(
+                new AbstractCoreColumn<Announcement, AnnouncementSort>(
+                    new ResourceModel("business.announcement.message")) {
+                  private static final long serialVersionUID = 1L;
+
+                  @Override
+                  public void populateItem(
+                      Item<ICellPopulator<Announcement>> cellItem,
+                      String componentId,
+                      IModel<Announcement> rowModel) {
+                    cellItem.add(new AnnouncementMessagePanel(componentId, rowModel));
+                  }
+                })
+            .withClass("cell-w-400")
+            .addLabelColumn(
+                new ResourceModel("business.announcement.publication.startDateTime"),
+                Bindings.announcement().publication().startDateTime(),
+                DatePattern.REALLY_SHORT_DATETIME)
+            .withSort(
+                AnnouncementSort.PUBLICATION_START_DATE_TIME,
+                SortIconStyle.DEFAULT,
+                CycleMode.DEFAULT_REVERSE)
+            .withClass("cell-w-120")
+            .addLabelColumn(
+                new ResourceModel("business.announcement.publication.endDateTime"),
+                Bindings.announcement().publication().endDateTime(),
+                DatePattern.REALLY_SHORT_DATETIME)
+            .withClass("cell-w-120")
+            .addActionColumn()
+            .addAction(
+                ActionRenderers.edit(),
+                new OneParameterModalOpenAjaxAction<IModel<Announcement>>(popup) {
+                  private static final long serialVersionUID = 1L;
+
+                  @Override
+                  protected void onShow(
+                      AjaxRequestTarget target, IModel<Announcement> announcementModel) {
+                    super.onShow(target, announcementModel);
+                    popup.setUpEdit(announcementModel.getObject());
+                  }
+                })
+            .addConfirmAction(ActionRenderers.delete())
+            .title(
+                new ResourceModel("administration.announcement.action.delete.confirmation.title"))
+            .content(
+                new ResourceModel("administration.announcement.action.delete.confirmation.content"))
+            .confirm()
+            .onClick(
+                new IOneParameterAjaxAction<IModel<Announcement>>() {
+                  private static final long serialVersionUID = 1L;
+
+                  @Override
+                  public void execute(AjaxRequestTarget target, IModel<Announcement> parameter) {
+                    try {
+                      announcementService.delete(parameter.getObject());
+                      Session.get().success(getString("common.success"));
+                      throw new RestartResponseException(getPage());
+                    } catch (RestartResponseException e) {
+                      throw e;
+                    } catch (Exception e) {
+                      LOGGER.error("Error when deleting an announcement.", e);
+                      Session.get().error(getString("common.error.unexpected"));
+                      FeedbackUtils.refreshFeedback(target, getPage());
+                    }
+                  }
+                })
+            .withClassOnElements(BTN_TABLE_ROW_ACTION)
+            .end()
+            .withClass("cell-w-actions-2x cell-w-fit")
+            .rows()
+            .withClass(
+                itemModel ->
+                    Condition.predicate(itemModel, AnnouncementPredicates.disabled())
+                        .then(TABLE_ROW_DISABLED)
+                        .otherwise(""))
+            .end()
+            .bootstrapCard()
+            .count("administration.announcement.list.count")
+            .ajaxPagers()
+            .build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
+
+    add(results);
+  }
+
+  @Override
+  protected void onDetach() {
+    super.onDetach();
+    Detachables.detach(dataProvider);
+  }
 }

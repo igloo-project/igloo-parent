@@ -1,8 +1,10 @@
 package org.iglooproject.jpa.more.config.spring;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import java.util.Collection;
 import java.util.TreeSet;
-
 import org.iglooproject.jpa.more.business.CoreJpaMoreBusinessPackage;
 import org.iglooproject.jpa.more.business.task.dao.IQueuedTaskHolderDao;
 import org.iglooproject.jpa.more.business.task.dao.QueuedTaskHolderDaoImpl;
@@ -17,60 +19,54 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
-import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
-
-@ComponentScan(basePackageClasses = { CoreJpaMoreBusinessPackage.class })
+@ComponentScan(basePackageClasses = {CoreJpaMoreBusinessPackage.class})
 public abstract class AbstractTaskManagementConfig {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTaskManagementConfig.class);
-	
-	public static final String OBJECT_MAPPER_BEAN_NAME = "queuedTaskHolderObjectMapper";
+  private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTaskManagementConfig.class);
 
-	/**
-	 * Base configuration for task serialization. We use a permissive deserializer config as data are internally
-	 * managed by application.
-	 */
-	@Bean(name = OBJECT_MAPPER_BEAN_NAME)
-	public ObjectMapper queuedTaskHolderObjectMapper() {
-		return new ObjectMapper().activateDefaultTyping(
-				LaissezFaireSubTypeValidator.instance,
-				DefaultTyping.NON_FINAL);
-	}
+  public static final String OBJECT_MAPPER_BEAN_NAME = "queuedTaskHolderObjectMapper";
 
-	@Bean
-	public IQueuedTaskHolderDao queuedTaskHolderDao() {
-		return new QueuedTaskHolderDaoImpl();
-	}
+  /**
+   * Base configuration for task serialization. We use a permissive deserializer config as data are
+   * internally managed by application.
+   */
+  @Bean(name = OBJECT_MAPPER_BEAN_NAME)
+  public ObjectMapper queuedTaskHolderObjectMapper() {
+    return new ObjectMapper()
+        .activateDefaultTyping(LaissezFaireSubTypeValidator.instance, DefaultTyping.NON_FINAL);
+  }
 
-	@Bean
-	public IQueuedTaskHolderService queuedTaskHolderService(IQueuedTaskHolderDao queuedTaskHolderDao) {
-		return new QueuedTaskHolderServiceImpl(queuedTaskHolderDao);
-	}
+  @Bean
+  public IQueuedTaskHolderDao queuedTaskHolderDao() {
+    return new QueuedTaskHolderDaoImpl();
+  }
 
-	@Bean
-	public IQueuedTaskHolderManager queuedTaskHolderManager(
-			@Autowired(required = false) Collection<? extends IQueueId> queueIdsBean,
-			Collection<TaskManagementConfigurer> configurers) {
-		Collection<IQueueId> queueIds = new TreeSet<>();
-		if (queueIdsBean != null) {
-			LOGGER.warn("Please replace existing IQueueId collection beans by a TaskConfigurer bean.");
-			queueIds.addAll(queueIdsBean);
-		}
-		ImmutableTaskManagement.Builder builder = ImmutableTaskManagement.builder();
-		for (TaskManagementConfigurer configurer : configurers) {
-			configurer.configure(builder);
-			queueIds.addAll(builder.build().queueIds());
-		}
-		return new QueuedTaskHolderManagerImpl(queueIds);
-	}
+  @Bean
+  public IQueuedTaskHolderService queuedTaskHolderService(
+      IQueuedTaskHolderDao queuedTaskHolderDao) {
+    return new QueuedTaskHolderServiceImpl(queuedTaskHolderDao);
+  }
 
-	/**
-	 * Ensure that we have at least one configurer.
-	 */
-	@Bean
-	public TaskManagementConfigurer emptyTaskManagementConfigurer() {
-		return new TaskManagementConfigurer() {};
-	}
+  @Bean
+  public IQueuedTaskHolderManager queuedTaskHolderManager(
+      @Autowired(required = false) Collection<? extends IQueueId> queueIdsBean,
+      Collection<TaskManagementConfigurer> configurers) {
+    Collection<IQueueId> queueIds = new TreeSet<>();
+    if (queueIdsBean != null) {
+      LOGGER.warn("Please replace existing IQueueId collection beans by a TaskConfigurer bean.");
+      queueIds.addAll(queueIdsBean);
+    }
+    ImmutableTaskManagement.Builder builder = ImmutableTaskManagement.builder();
+    for (TaskManagementConfigurer configurer : configurers) {
+      configurer.configure(builder);
+      queueIds.addAll(builder.build().queueIds());
+    }
+    return new QueuedTaskHolderManagerImpl(queueIds);
+  }
+
+  /** Ensure that we have at least one configurer. */
+  @Bean
+  public TaskManagementConfigurer emptyTaskManagementConfigurer() {
+    return new TaskManagementConfigurer() {};
+  }
 }

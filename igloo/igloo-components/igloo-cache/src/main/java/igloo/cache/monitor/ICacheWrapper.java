@@ -6,80 +6,86 @@ import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.cache.jcache.JCacheCache;
 
 /**
- * <p>Provide a common interface for Spring {@link Cache} to allow monitoring:
+ * Provide a common interface for Spring {@link Cache} to allow monitoring:
+ *
  * <ul>
- * <li>Add a <code>getName()</code> method;</li>
- * <li>Provide statistics method (hits, puts, evictions, current size);</li>
- * <li>Provide getter and setter to change runtime-value for maximum size.</li>
+ *   <li>Add a <code>getName()</code> method;
+ *   <li>Provide statistics method (hits, puts, evictions, current size);
+ *   <li>Provide getter and setter to change runtime-value for maximum size.
  * </ul>
- * </p>
- * 
- * <p>You may use {@link ICacheWrapper#wrap(Cache)} to instantiate a concrete implementation. Allowed backends are:
+ *
+ * <p>You may use {@link ICacheWrapper#wrap(Cache)} to instantiate a concrete implementation.
+ * Allowed backends are:
+ *
  * <ul>
- * <li>Caffeine</li>
- * <li>JCache + Caffeine</li>
+ *   <li>Caffeine
+ *   <li>JCache + Caffeine
  * </ul>
- * </p>
  */
 @Bindable
 public interface ICacheWrapper {
 
-	static ICacheWrapper wrap(Cache cache) {
-		if (cache instanceof JCacheCache) {
-			// caffeine jcache cache
-			return new igloo.cache.monitor.CaffeineCacheWrapper(((JCacheCache) cache).getName(), ((JCacheCache) cache).getNativeCache().unwrap(com.github.benmanes.caffeine.cache.Cache.class));
-		} else if (cache instanceof CaffeineCache) {
-			// caffeine cache
-			return new igloo.cache.monitor.CaffeineCacheWrapper(cache.getName(), ((CaffeineCache) cache).getNativeCache());
-		} else {
-			throw new IllegalStateException(String.format("Not supported type %s", cache.getClass().getName()));
-		}
-	}
+  static ICacheWrapper wrap(Cache cache) {
+    if (cache instanceof JCacheCache) {
+      // caffeine jcache cache
+      return new igloo.cache.monitor.CaffeineCacheWrapper(
+          ((JCacheCache) cache).getName(),
+          ((JCacheCache) cache)
+              .getNativeCache()
+              .unwrap(com.github.benmanes.caffeine.cache.Cache.class));
+    } else if (cache instanceof CaffeineCache) {
+      // caffeine cache
+      return new igloo.cache.monitor.CaffeineCacheWrapper(
+          cache.getName(), ((CaffeineCache) cache).getNativeCache());
+    } else {
+      throw new IllegalStateException(
+          String.format("Not supported type %s", cache.getClass().getName()));
+    }
+  }
 
-	void clear();
+  void clear();
 
-	String getName();
+  String getName();
 
-	long getCacheHits();
+  long getCacheHits();
 
-	long getCacheMisses();
+  long getCacheMisses();
 
-	long getCachePuts();
+  long getCachePuts();
 
-	long getCacheEvictions();
+  long getCacheEvictions();
 
-	long getMaxSize();
+  long getMaxSize();
 
-	void setMaxSize(long maxSize);
+  void setMaxSize(long maxSize);
 
-	Long getCurrentSize();
+  Long getCurrentSize();
 
-	default long getCacheGets() {
-		return getCacheHits() + getCacheMisses();
-	}
+  default long getCacheGets() {
+    return getCacheHits() + getCacheMisses();
+  }
 
-	default float getCacheHitRatio() {
-		if (getCacheHits() + getCacheMisses() == 0) {
-			return 0;
-		}
-		
-		return getCacheHits() / (getCacheHits() + getCacheMisses() + 0F);
-	}
+  default float getCacheHitRatio() {
+    if (getCacheHits() + getCacheMisses() == 0) {
+      return 0;
+    }
 
-	default float getCacheMissRatio() {
-		if (getCacheHits() + getCacheMisses() == 0) {
-			return 0;
-		}
-		
-		return getCacheMisses() / (getCacheHits() + getCacheMisses() + 0F);
-	}
+    return getCacheHits() / (getCacheHits() + getCacheMisses() + 0F);
+  }
 
-	default Float getCacheFillRatio() {
-		if (getCurrentSize() == null || Long.valueOf(0).equals(getMaxSize())) {
-			// corner cases
-			return null;
-		}
-		return getCurrentSize() / (getMaxSize() + 0F);
-	}
+  default float getCacheMissRatio() {
+    if (getCacheHits() + getCacheMisses() == 0) {
+      return 0;
+    }
 
+    return getCacheMisses() / (getCacheHits() + getCacheMisses() + 0F);
+  }
+
+  default Float getCacheFillRatio() {
+    if (getCurrentSize() == null || Long.valueOf(0).equals(getMaxSize())) {
+      // corner cases
+      return null;
+    }
+    return getCurrentSize() / (getMaxSize() + 0F);
+  }
 }

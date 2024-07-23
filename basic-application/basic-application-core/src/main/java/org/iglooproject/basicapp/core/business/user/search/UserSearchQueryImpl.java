@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class UserSearchQueryImpl<U extends User> extends AbstractUserSearchQueryImpl<U> implements IUserSearchQuery<U> {
+public class UserSearchQueryImpl<U extends User> extends AbstractUserSearchQueryImpl<U>
+    implements IUserSearchQuery<U> {
 
-	protected UserSearchQueryImpl(Class<U> clazz) {
-		super(clazz);
-	}
-
+  protected UserSearchQueryImpl(Class<U> clazz) {
+    super(clazz);
+  }
 }

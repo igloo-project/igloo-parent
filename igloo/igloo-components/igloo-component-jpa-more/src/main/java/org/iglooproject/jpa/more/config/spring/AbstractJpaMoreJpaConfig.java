@@ -16,32 +16,30 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-@Import({
-	JpaMoreApplicationPropertyRegistryConfig.class
-})
-@ComponentScan(basePackageClasses = { CoreJpaMoreBusinessPackage.class, CoreJpaMoreUtilPackage.class })
+@Import({JpaMoreApplicationPropertyRegistryConfig.class})
+@ComponentScan(
+    basePackageClasses = {CoreJpaMoreBusinessPackage.class, CoreJpaMoreUtilPackage.class})
 public abstract class AbstractJpaMoreJpaConfig extends AbstractJpaConfig {
 
-	@Bean
-	public TransactionTemplate transactionTemplate(PlatformTransactionManager transactionManager) {
-		return new TransactionTemplate(transactionManager);
-	}
+  @Bean
+  public TransactionTemplate transactionTemplate(PlatformTransactionManager transactionManager) {
+    return new TransactionTemplate(transactionManager);
+  }
 
-	@Bean
-	public JpaPackageScanProvider jpaMorePackageScanProvider() {
-		return new JpaPackageScanProvider(CoreJpaMoreBusinessPackage.class.getPackage());
-	}
+  @Bean
+  public JpaPackageScanProvider jpaMorePackageScanProvider() {
+    return new JpaPackageScanProvider(CoreJpaMoreBusinessPackage.class.getPackage());
+  }
 
-	@Bean
-	@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public IHibernateSearchLuceneQueryFactory hibernateSearchLuceneQueryFactory() {
-		return new HibernateSearchLuceneQueryFactoryImpl();
-	}
-	
-	@Bean
-	@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public IQueuedTaskHolderSearchQuery queuedTaskHolderSearchQuery() {
-		return new QueuedTaskHolderSearchQueryImpl();
-	}
+  @Bean
+  @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+  public IHibernateSearchLuceneQueryFactory hibernateSearchLuceneQueryFactory() {
+    return new HibernateSearchLuceneQueryFactoryImpl();
+  }
 
+  @Bean
+  @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+  public IQueuedTaskHolderSearchQuery queuedTaskHolderSearchQuery() {
+    return new QueuedTaskHolderSearchQueryImpl();
+  }
 }

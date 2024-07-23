@@ -4,6 +4,7 @@ import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConsta
 
 public class BasicApplicationAuthorityConstants extends CoreAuthorityConstants {
 
-	// Add contants of the form public static final String ROLE_MY_ROLE_NAME = "ROLE_MY_ROLE_NAME"; here
+  // Add contants of the form public static final String ROLE_MY_ROLE_NAME = "ROLE_MY_ROLE_NAME";
+  // here
 
 }

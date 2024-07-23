@@ -7,14 +7,11 @@ import javax.persistence.ManyToOne;
 @Entity
 public class OrphanItem {
 
-	@Id
-	public Long id;
+  @Id public Long id;
 
-	/**
-	 * <p>This sides owns the relationship (owner_id field), but orphanRemoval is triggered when this entity is
-	 * removed from its {@link OrphanOwner#items} collection.</p>
-	 */
-	@ManyToOne
-	public OrphanOwner owner;
-
+  /**
+   * This sides owns the relationship (owner_id field), but orphanRemoval is triggered when this
+   * entity is removed from its {@link OrphanOwner#items} collection.
+   */
+  @ManyToOne public OrphanOwner owner;
 }

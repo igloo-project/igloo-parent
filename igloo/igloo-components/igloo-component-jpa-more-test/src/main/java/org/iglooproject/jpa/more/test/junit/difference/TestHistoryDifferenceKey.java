@@ -11,65 +11,70 @@ import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifferenc
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 
 public class TestHistoryDifferenceKey {
-	
-	private final FieldPath fieldPath;
-	
-	private final GenericEntityReference<?, ?> keyAsGenericEntityReference;
-	
-	private final String keyAsString;
 
-	@SuppressWarnings("rawtypes")
-	public TestHistoryDifferenceKey(FieldPath fieldPath, Object key) {
-		super();
-		this.fieldPath = fieldPath;
-		if (key instanceof GenericEntity) {
-			keyAsGenericEntityReference = GenericEntityReference.ofUnknownIdType((GenericEntity)key);
-			keyAsString = null;
-		} else if (key != null) {
-			keyAsGenericEntityReference = null;
-			keyAsString = key.toString();
-		} else {
-			keyAsGenericEntityReference = null;
-			keyAsString = null;
-		}
-	}
-	
-	public TestHistoryDifferenceKey(AbstractHistoryDifference<?, ?> input) {
-		super();
-		this.fieldPath = input.getPath().getPath();
-		HistoryValue key = input.getPath().getKey();
-		if (key != null && key.getReference() != null) {
-			keyAsGenericEntityReference = key.getReference();
-			keyAsString = null;
-		} else {
-			keyAsGenericEntityReference = null;
-			keyAsString = key == null ? null : key.getLabel();
-		}
-	}
+  private final FieldPath fieldPath;
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(fieldPath).append(keyAsGenericEntityReference).append(keyAsString).build();
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof TestHistoryDifferenceKey) {
-			TestHistoryDifferenceKey other = (TestHistoryDifferenceKey) obj;
-			return new EqualsBuilder()
-					.append(fieldPath, other.fieldPath)
-					.append(keyAsGenericEntityReference, other.keyAsGenericEntityReference)
-					.append(keyAsString, other.keyAsString)
-					.build();
-		}
-		return false;
-	}
-	
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-				.append(fieldPath).append(keyAsGenericEntityReference).append(keyAsString)
-				.build();
-	}
+  private final GenericEntityReference<?, ?> keyAsGenericEntityReference;
 
+  private final String keyAsString;
+
+  @SuppressWarnings("rawtypes")
+  public TestHistoryDifferenceKey(FieldPath fieldPath, Object key) {
+    super();
+    this.fieldPath = fieldPath;
+    if (key instanceof GenericEntity) {
+      keyAsGenericEntityReference = GenericEntityReference.ofUnknownIdType((GenericEntity) key);
+      keyAsString = null;
+    } else if (key != null) {
+      keyAsGenericEntityReference = null;
+      keyAsString = key.toString();
+    } else {
+      keyAsGenericEntityReference = null;
+      keyAsString = null;
+    }
+  }
+
+  public TestHistoryDifferenceKey(AbstractHistoryDifference<?, ?> input) {
+    super();
+    this.fieldPath = input.getPath().getPath();
+    HistoryValue key = input.getPath().getKey();
+    if (key != null && key.getReference() != null) {
+      keyAsGenericEntityReference = key.getReference();
+      keyAsString = null;
+    } else {
+      keyAsGenericEntityReference = null;
+      keyAsString = key == null ? null : key.getLabel();
+    }
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder()
+        .append(fieldPath)
+        .append(keyAsGenericEntityReference)
+        .append(keyAsString)
+        .build();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof TestHistoryDifferenceKey) {
+      TestHistoryDifferenceKey other = (TestHistoryDifferenceKey) obj;
+      return new EqualsBuilder()
+          .append(fieldPath, other.fieldPath)
+          .append(keyAsGenericEntityReference, other.keyAsGenericEntityReference)
+          .append(keyAsString, other.keyAsString)
+          .build();
+    }
+    return false;
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        .append(fieldPath)
+        .append(keyAsGenericEntityReference)
+        .append(keyAsString)
+        .build();
+  }
 }

@@ -5,15 +5,11 @@ import org.iglooproject.basicapp.web.application.BasicApplicationApplication;
 
 public class SidebarNavbarPanel extends Panel {
 
-	private static final long serialVersionUID = -3741272240940846720L;
+  private static final long serialVersionUID = -3741272240940846720L;
 
-	public SidebarNavbarPanel(String id) {
-		super(id);
-		
-		add(
-			BasicApplicationApplication.get().getHomePageLinkDescriptor()
-				.link("home")
-		);
-	}
+  public SidebarNavbarPanel(String id) {
+    super(id);
 
+    add(BasicApplicationApplication.get().getHomePageLinkDescriptor().link("home"));
+  }
 }

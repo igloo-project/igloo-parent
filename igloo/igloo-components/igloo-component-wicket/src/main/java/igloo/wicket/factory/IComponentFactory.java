@@ -6,11 +6,10 @@ import org.apache.wicket.model.IDetachable;
 @FunctionalInterface
 public interface IComponentFactory<C extends Component> extends IDetachable {
 
-	C create(String wicketId);
+  C create(String wicketId);
 
-	@Override
-	default void detach() {
-		// nothing to do
-	}
-
+  @Override
+  default void detach() {
+    // nothing to do
+  }
 }

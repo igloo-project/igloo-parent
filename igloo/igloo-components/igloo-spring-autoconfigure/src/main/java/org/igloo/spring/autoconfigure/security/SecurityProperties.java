@@ -5,14 +5,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "security")
 public class SecurityProperties {
 
-	private String runAsKey;
+  private String runAsKey;
 
-	public String getRunAsKey() {
-		return runAsKey;
-	}
+  public String getRunAsKey() {
+    return runAsKey;
+  }
 
-	public void setRunAsKey(String runAsKey) {
-		this.runAsKey = runAsKey;
-	}
-
+  public void setRunAsKey(String runAsKey) {
+    this.runAsKey = runAsKey;
+  }
 }

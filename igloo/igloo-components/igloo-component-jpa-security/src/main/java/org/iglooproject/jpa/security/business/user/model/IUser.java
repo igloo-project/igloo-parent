@@ -1,7 +1,6 @@
 package org.iglooproject.jpa.security.business.user.model;
 
 import java.util.Set;
-
 import org.bindgen.Bindable;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.springframework.security.acls.model.Permission;
@@ -9,16 +8,15 @@ import org.springframework.security.acls.model.Permission;
 @Bindable
 public interface IUser {
 
-	Long getId();
+  Long getId();
 
-	String getUsername();
+  String getUsername();
 
-	Set<Authority> getAuthorities();
+  Set<Authority> getAuthorities();
 
-	Set<Permission> getPermissions();
+  Set<Permission> getPermissions();
 
-	boolean isEnabled();
+  boolean isEnabled();
 
-	String getPasswordHash();
-
+  String getPasswordHash();
 }

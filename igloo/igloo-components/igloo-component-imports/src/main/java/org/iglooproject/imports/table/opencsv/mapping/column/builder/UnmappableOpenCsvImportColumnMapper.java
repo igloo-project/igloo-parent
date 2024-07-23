@@ -9,12 +9,14 @@ import org.iglooproject.imports.table.opencsv.model.CsvCellReference;
 import org.iglooproject.imports.table.opencsv.model.CsvRow;
 import org.iglooproject.imports.table.opencsv.model.CsvTable;
 
-/*package*/ final class UnmappableOpenCsvImportColumnMapper implements ITableImportColumnMapper<CsvTable, CsvRow, CsvCell, CsvCellReference> {
+/*package*/ final class UnmappableOpenCsvImportColumnMapper
+    implements ITableImportColumnMapper<CsvTable, CsvRow, CsvCell, CsvCellReference> {
 
-	@Override
-	public Function2<? super CsvRow, CsvCellReference> tryMap(CsvTable sheet, ITableImportNavigator<CsvTable, CsvRow, CsvCell, CsvCellReference> navigator,
-			ITableImportEventHandler eventHandler) {
-		return null;
-	}
-
+  @Override
+  public Function2<? super CsvRow, CsvCellReference> tryMap(
+      CsvTable sheet,
+      ITableImportNavigator<CsvTable, CsvRow, CsvCell, CsvCellReference> navigator,
+      ITableImportEventHandler eventHandler) {
+    return null;
+  }
 }

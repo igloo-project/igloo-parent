@@ -4,8 +4,7 @@ import org.iglooproject.jpa.security.business.user.model.GenericUser;
 
 public interface ISecurityUserService<U extends GenericUser<U, ?>> {
 
-	U getByUsername(String username);
+  U getByUsername(String username);
 
-	U getByUsernameCaseInsensitive(String username);
-
+  U getByUsernameCaseInsensitive(String username);
 }

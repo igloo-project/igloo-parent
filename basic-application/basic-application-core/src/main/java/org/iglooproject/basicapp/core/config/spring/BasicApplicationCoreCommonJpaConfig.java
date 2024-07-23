@@ -28,32 +28,30 @@ import org.springframework.context.annotation.Scope;
 @EnableAspectJAutoProxy
 public class BasicApplicationCoreCommonJpaConfig {
 
-	/**
-	 * Déclaration des packages de scan pour l'application.
-	 */
-	@Bean
-	public JpaPackageScanProvider applicationJpaPackageScanProvider() {
-		return new JpaPackageScanProvider(
-			BasicApplicationCoreCommonBusinessPackage.class.getPackage(),
-			HibernateConfigPackage.class.getPackage() // Typedef config
-		);
-	}
+  /** Déclaration des packages de scan pour l'application. */
+  @Bean
+  public JpaPackageScanProvider applicationJpaPackageScanProvider() {
+    return new JpaPackageScanProvider(
+        BasicApplicationCoreCommonBusinessPackage.class.getPackage(),
+        HibernateConfigPackage.class.getPackage() // Typedef config
+        );
+  }
 
-	@Bean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public <T extends ReferenceData<? super T>, S extends ISort<SortField>> IBasicReferenceDataSearchQuery<T, S> basicReferenceDataSearchQuery(Class<T> clazz) {
-		return new BasicReferenceDataSearchQueryImpl<>(clazz);
-	}
+  @Bean
+  @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+  public <T extends ReferenceData<? super T>, S extends ISort<SortField>>
+      IBasicReferenceDataSearchQuery<T, S> basicReferenceDataSearchQuery(Class<T> clazz) {
+    return new BasicReferenceDataSearchQueryImpl<>(clazz);
+  }
 
-	@Bean
-	public TypeContributor applicationTypeContributor() {
-		return (typeContributions, serviceRegistry) -> {
-			typeContributions.contributeType(new TextType(), "string", String.class.getName());
-			typeContributions.contributeType(new PostalCodeType(), PostalCode.class.getName());
-			typeContributions.contributeType(new EmailAddressType(), EmailAddress.class.getName());
-			typeContributions.contributeType(new PhoneNumberType(), PhoneNumber.class.getName());
-			typeContributions.contributeType(new FieldPathType(), FieldPath.class.getName());
-		};
-	}
-
+  @Bean
+  public TypeContributor applicationTypeContributor() {
+    return (typeContributions, serviceRegistry) -> {
+      typeContributions.contributeType(new TextType(), "string", String.class.getName());
+      typeContributions.contributeType(new PostalCodeType(), PostalCode.class.getName());
+      typeContributions.contributeType(new EmailAddressType(), EmailAddress.class.getName());
+      typeContributions.contributeType(new PhoneNumberType(), PhoneNumber.class.getName());
+      typeContributions.contributeType(new FieldPathType(), FieldPath.class.getName());
+    };
+  }
 }

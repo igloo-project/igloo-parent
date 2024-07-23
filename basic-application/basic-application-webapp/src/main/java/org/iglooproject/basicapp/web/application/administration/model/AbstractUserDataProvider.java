@@ -1,5 +1,7 @@
 package org.iglooproject.basicapp.web.application.administration.model;
 
+import com.google.common.collect.ImmutableMap;
+import igloo.wicket.model.Detachables;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -14,86 +16,74 @@ import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.Co
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 
-import com.google.common.collect.ImmutableMap;
+public abstract class AbstractUserDataProvider<U extends User>
+    extends AbstractSearchQueryDataProvider<U, UserSort> {
 
-import igloo.wicket.model.Detachables;
+  private static final long serialVersionUID = -8540890431031886412L;
 
-public abstract class AbstractUserDataProvider<U extends User> extends AbstractSearchQueryDataProvider<U, UserSort> {
+  private final Class<U> clazz;
 
-	private static final long serialVersionUID = -8540890431031886412L;
+  private final IModel<String> nameModel = Model.of();
 
-	private final Class<U> clazz;
+  private final IModel<UserGroup> groupModel = new GenericEntityModel<>();
 
-	private final IModel<String> nameModel = Model.of();
+  private final IModel<EnabledFilter> enabledFilterModel = new Model<>(EnabledFilter.ENABLED_ONLY);
 
-	private final IModel<UserGroup> groupModel = new GenericEntityModel<>();
+  private final CompositeSortModel<UserSort> sortModel =
+      new CompositeSortModel<>(
+          CompositingStrategy.LAST_ONLY,
+          ImmutableMap.of(
+              UserSort.LAST_NAME, UserSort.LAST_NAME.getDefaultOrder(),
+              UserSort.FIRST_NAME, UserSort.FIRST_NAME.getDefaultOrder(),
+              UserSort.ID, UserSort.ID.getDefaultOrder()),
+          ImmutableMap.of(UserSort.ID, UserSort.ID.getDefaultOrder()));
 
-	private final IModel<EnabledFilter> enabledFilterModel = new Model<>(EnabledFilter.ENABLED_ONLY);
+  public AbstractUserDataProvider(Class<U> clazz) {
+    super();
+    Injector.get().inject(this);
 
-	private final CompositeSortModel<UserSort> sortModel = new CompositeSortModel<>(
-		CompositingStrategy.LAST_ONLY,
-		ImmutableMap.of(
-			UserSort.LAST_NAME, UserSort.LAST_NAME.getDefaultOrder(),
-			UserSort.FIRST_NAME, UserSort.FIRST_NAME.getDefaultOrder(),
-			UserSort.ID, UserSort.ID.getDefaultOrder()
-		),
-		ImmutableMap.of(
-			UserSort.ID, UserSort.ID.getDefaultOrder()
-		)
-	);
+    this.clazz = clazz;
+  }
 
-	public AbstractUserDataProvider(Class<U> clazz) {
-		super();
-		Injector.get().inject(this);
-		
-		this.clazz = clazz;
-	}
+  @Override
+  public IModel<U> model(U item) {
+    return new GenericEntityModel<>(item);
+  }
 
-	@Override
-	public IModel<U> model(U item) {
-		return new GenericEntityModel<>(item);
-	}
+  public Class<U> getClazz() {
+    return clazz;
+  }
 
-	public Class<U> getClazz() {
-		return clazz;
-	}
+  public IModel<String> getNameModel() {
+    return nameModel;
+  }
 
-	public IModel<String> getNameModel() {
-		return nameModel;
-	}
+  public IModel<UserGroup> getGroupModel() {
+    return groupModel;
+  }
 
-	public IModel<UserGroup> getGroupModel() {
-		return groupModel;
-	}
+  public IModel<EnabledFilter> getEnabledFilterModel() {
+    return enabledFilterModel;
+  }
 
-	public IModel<EnabledFilter> getEnabledFilterModel() {
-		return enabledFilterModel;
-	}
+  public CompositeSortModel<UserSort> getSortModel() {
+    return sortModel;
+  }
 
-	public CompositeSortModel<UserSort> getSortModel() {
-		return sortModel;
-	}
+  protected abstract IAbstractUserSearchQuery<U> createSearchQuery();
 
-	protected abstract IAbstractUserSearchQuery<U> createSearchQuery();
+  @Override
+  protected ISearchQuery<U, UserSort> getSearchQuery() {
+    return createSearchQuery()
+        .name(nameModel.getObject())
+        .group(groupModel.getObject())
+        .enabled(enabledFilterModel.getObject())
+        .sort(sortModel.getObject());
+  }
 
-	@Override
-	protected ISearchQuery<U, UserSort> getSearchQuery() {
-		return createSearchQuery()
-			.name(nameModel.getObject())
-			.group(groupModel.getObject())
-			.enabled(enabledFilterModel.getObject())
-			.sort(sortModel.getObject());
-	}
-
-	@Override
-	public void detach() {
-		super.detach();
-		Detachables.detach(
-			nameModel,
-			groupModel,
-			enabledFilterModel,
-			sortModel
-		);
-	}
-
+  @Override
+  public void detach() {
+    super.detach();
+    Detachables.detach(nameModel, groupModel, enabledFilterModel, sortModel);
+  }
 }

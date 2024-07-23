@@ -18,28 +18,23 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @PropertySource(
-	name = IglooPropertySourcePriority.APPLICATION,
-	value = {
-		ConfigurationPropertiesUrlConstants.JPA_COMMON,
-		ConfigurationPropertiesUrlConstants.JERSEY_MOCK_COMMON,
-		"classpath:rest-client.properties"
-	},
-	encoding = "UTF-8"
-)
-@Import({
-	RestClientTestJpaConfig.class,
-	RestClientTestApplicationPropertyConfig.class
-})
+    name = IglooPropertySourcePriority.APPLICATION,
+    value = {
+      ConfigurationPropertiesUrlConstants.JPA_COMMON,
+      ConfigurationPropertiesUrlConstants.JERSEY_MOCK_COMMON,
+      "classpath:rest-client.properties"
+    },
+    encoding = "UTF-8")
+@Import({RestClientTestJpaConfig.class, RestClientTestApplicationPropertyConfig.class})
 @ComponentScan(
-	basePackageClasses = { RestTestBusinessPackage.class, RestClientPackage.class },
-	excludeFilters = @Filter(Configuration.class)
-)
+    basePackageClasses = {RestTestBusinessPackage.class, RestClientPackage.class},
+    excludeFilters = @Filter(Configuration.class))
 @EnableTransactionManagement
 public class RestClientTestCoreCommonConfig extends AbstractApplicationConfig {
 
-	@Bean
-	public AbstractMockServlet restServerTestResource(@Value("${jersey.mock.http.port}") Integer httpPort) {
-		return new MockServlet("http://localhost/", httpPort, "/api", "/rest");
-	}
-
+  @Bean
+  public AbstractMockServlet restServerTestResource(
+      @Value("${jersey.mock.http.port}") Integer httpPort) {
+    return new MockServlet("http://localhost/", httpPort, "/api", "/rest");
+  }
 }

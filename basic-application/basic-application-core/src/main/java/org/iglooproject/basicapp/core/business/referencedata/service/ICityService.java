@@ -6,6 +6,5 @@ import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 
 public interface ICityService extends IGenericEntityService<Long, City> {
 
-	City getByLabelAndPostalCode(String label, PostalCode postalCode);
-
+  City getByLabelAndPostalCode(String label, PostalCode postalCode);
 }

@@ -1,5 +1,7 @@
 package org.iglooproject.basicapp.web.application.security.password.component;
 
+import igloo.wicket.feedback.FeedbackUtils;
+import igloo.wicket.model.Detachables;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -22,80 +24,78 @@ import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import igloo.wicket.feedback.FeedbackUtils;
-import igloo.wicket.model.Detachables;
-
 public class SecurityPasswordRecoveryRequestCreationContentPanel extends Panel {
 
-	private static final long serialVersionUID = 5387181871353260812L;
+  private static final long serialVersionUID = 5387181871353260812L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityPasswordRecoveryRequestCreationContentPanel.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(SecurityPasswordRecoveryRequestCreationContentPanel.class);
 
-	@SpringBean
-	private IUserService userService;
+  @SpringBean private IUserService userService;
 
-	@SpringBean
-	private ISecurityManagementService securityManagementService;
+  @SpringBean private ISecurityManagementService securityManagementService;
 
-	private final IModel<String> emailModel = Model.of();
+  private final IModel<String> emailModel = Model.of();
 
-	public SecurityPasswordRecoveryRequestCreationContentPanel(String wicketId) {
-		super(wicketId);
-		
-		Form<?> form = new Form<>("form");
-		add(form);
-		
-		form.add(
-			new TextField<>("email", emailModel)
-				.setLabel(new ResourceModel("business.user.email"))
-				.setRequired(true)
-				.add(EmailAddressValidator.getInstance())
-				.add(new LabelPlaceholderBehavior())
-				.setOutputMarkupId(true)
-		);
-		
-		form.add(
-			new AjaxButton("validate", form) {
-				private static final long serialVersionUID = 1L;
-				
-				@Override
-				protected void onSubmit(AjaxRequestTarget target) {
-					try {
-						User user = userService.getByEmailCaseInsensitive(emailModel.getObject());
-						
-						if (user != null && user.isEnabled() && user.isNotificationEnabled()) {
-							securityManagementService.initiatePasswordRecoveryRequest(
-								user,
-								user.hasPasswordHash() ? UserPasswordRecoveryRequestType.RESET : UserPasswordRecoveryRequestType.CREATION,
-								UserPasswordRecoveryRequestInitiator.USER
-							);
-						}
-						
-						Session.get().success(getString("security.password.recovery.request.creation.validate.success"));
-						
-						throw CoreWicketAuthenticatedApplication.get().getSignInPageLinkDescriptor().newRestartResponseException();
-					} catch (RestartResponseException e) {
-						throw e;
-					} catch (Exception e) {
-						LOGGER.error("Error occurred while requesting password creation.", e);
-						Session.get().error(getString("common.error.unexpected"));
-					}
-					
-					FeedbackUtils.refreshFeedback(target, getPage());
-				}
-				
-				@Override
-				protected void onError(AjaxRequestTarget target) {
-					FeedbackUtils.refreshFeedback(target, getPage());
-				}
-			}
-		);
-	}
+  public SecurityPasswordRecoveryRequestCreationContentPanel(String wicketId) {
+    super(wicketId);
 
-	@Override
-	protected void onDetach() {
-		super.onDetach();
-		Detachables.detach(emailModel);
-	}
+    Form<?> form = new Form<>("form");
+    add(form);
 
+    form.add(
+        new TextField<>("email", emailModel)
+            .setLabel(new ResourceModel("business.user.email"))
+            .setRequired(true)
+            .add(EmailAddressValidator.getInstance())
+            .add(new LabelPlaceholderBehavior())
+            .setOutputMarkupId(true));
+
+    form.add(
+        new AjaxButton("validate", form) {
+          private static final long serialVersionUID = 1L;
+
+          @Override
+          protected void onSubmit(AjaxRequestTarget target) {
+            try {
+              User user = userService.getByEmailCaseInsensitive(emailModel.getObject());
+
+              if (user != null && user.isEnabled() && user.isNotificationEnabled()) {
+                securityManagementService.initiatePasswordRecoveryRequest(
+                    user,
+                    user.hasPasswordHash()
+                        ? UserPasswordRecoveryRequestType.RESET
+                        : UserPasswordRecoveryRequestType.CREATION,
+                    UserPasswordRecoveryRequestInitiator.USER);
+              }
+
+              Session.get()
+                  .success(
+                      getString("security.password.recovery.request.creation.validate.success"));
+
+              throw CoreWicketAuthenticatedApplication.get()
+                  .getSignInPageLinkDescriptor()
+                  .newRestartResponseException();
+            } catch (RestartResponseException e) {
+              throw e;
+            } catch (Exception e) {
+              LOGGER.error("Error occurred while requesting password creation.", e);
+              Session.get().error(getString("common.error.unexpected"));
+            }
+
+            FeedbackUtils.refreshFeedback(target, getPage());
+          }
+
+          @Override
+          protected void onError(AjaxRequestTarget target) {
+            FeedbackUtils.refreshFeedback(target, getPage());
+          }
+        });
+  }
+
+  @Override
+  protected void onDetach() {
+    super.onDetach();
+    Detachables.detach(emailModel);
+  }
 }

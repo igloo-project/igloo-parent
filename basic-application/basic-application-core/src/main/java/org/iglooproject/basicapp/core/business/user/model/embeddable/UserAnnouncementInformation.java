@@ -2,12 +2,10 @@ package org.iglooproject.basicapp.core.business.user.model.embeddable;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Basic;
 import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import org.bindgen.Bindable;
 import org.iglooproject.commons.util.CloneUtils;
 
@@ -15,29 +13,28 @@ import org.iglooproject.commons.util.CloneUtils;
 @Bindable
 public class UserAnnouncementInformation implements Serializable {
 
-	private static final long serialVersionUID = 635631181343124656L;
+  private static final long serialVersionUID = 635631181343124656L;
 
-	@Basic(optional = false)
-	private boolean open = true;
+  @Basic(optional = false)
+  private boolean open = true;
 
-	@Basic
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastActionDate;
+  @Basic
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date lastActionDate;
 
-	public boolean isOpen() {
-		return open;
-	}
+  public boolean isOpen() {
+    return open;
+  }
 
-	public void setOpen(boolean open) {
-		this.open = open;
-	}
+  public void setOpen(boolean open) {
+    this.open = open;
+  }
 
-	public Date getLastActionDate() {
-		return CloneUtils.clone(lastActionDate);
-	}
+  public Date getLastActionDate() {
+    return CloneUtils.clone(lastActionDate);
+  }
 
-	public void setLastActionDate(Date lastActionDate) {
-		this.lastActionDate = CloneUtils.clone(lastActionDate);
-	}
-
+  public void setLastActionDate(Date lastActionDate) {
+    this.lastActionDate = CloneUtils.clone(lastActionDate);
+  }
 }

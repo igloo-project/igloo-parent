@@ -6,11 +6,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DefaultJpaSecurityConfig {
 
-	@Value("${security.runAsKey}")
-	private String runAsKey;
+  @Value("${security.runAsKey}")
+  private String runAsKey;
 
-	public String getRunAsKey() {
-		return runAsKey;
-	}
-
+  public String getRunAsKey() {
+    return runAsKey;
+  }
 }

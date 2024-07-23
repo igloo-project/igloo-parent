@@ -5,15 +5,14 @@ import org.iglooproject.basicapp.core.business.user.search.ITechnicalUserSearchQ
 
 public class TechnicalUserDataProvider extends AbstractUserDataProvider<TechnicalUser> {
 
-	private static final long serialVersionUID = -8540890431031886412L;
+  private static final long serialVersionUID = -8540890431031886412L;
 
-	public TechnicalUserDataProvider() {
-		super(TechnicalUser.class);
-	}
+  public TechnicalUserDataProvider() {
+    super(TechnicalUser.class);
+  }
 
-	@Override
-	protected ITechnicalUserSearchQuery createSearchQuery() {
-		return createSearchQuery(ITechnicalUserSearchQuery.class);
-	}
-
+  @Override
+  protected ITechnicalUserSearchQuery createSearchQuery() {
+    return createSearchQuery(ITechnicalUserSearchQuery.class);
+  }
 }

@@ -17,20 +17,17 @@ import org.springframework.test.context.TestExecutionListeners;
 @ContextConfiguration(classes = RestClientTestCoreCommonConfig.class)
 @MockRestServer
 public abstract class AbstractRestServiceTestCase extends AbstractTestCase {
-	
-	@Autowired
-	private IPersonService personService;
-	
-	@Autowired
-	private MockServlet serverResource;
 
-	@Override
-	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		cleanEntities(personService);
-	}
+  @Autowired private IPersonService personService;
 
-	public AbstractMockJpaRestServlet getServerResource() {
-		return serverResource;
-	}
+  @Autowired private MockServlet serverResource;
 
+  @Override
+  protected void cleanAll() throws ServiceException, SecurityServiceException {
+    cleanEntities(personService);
+  }
+
+  public AbstractMockJpaRestServlet getServerResource() {
+    return serverResource;
+  }
 }

@@ -1,9 +1,10 @@
 package org.igloo.spring.autoconfigure.security;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
-
 import org.igloo.spring.autoconfigure.jpa.IglooJpaAutoConfiguration;
 import org.igloo.spring.autoconfigure.security.stub.StubSecurityUserServiceImpl;
 import org.igloo.spring.autoconfigure.security.util.SecurityUtils;
@@ -60,241 +61,244 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.jpa-security.disabled", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(
+    name = "igloo-ac.jpa-security.disabled",
+    havingValue = "false",
+    matchIfMissing = true)
 @Import(IglooJpaSecurityRunAsConfig.class)
-@AutoConfigureAfter({ IglooJpaAutoConfiguration.class })
-@ComponentScan(basePackageClasses = {
-		JpaSecurityBusinessPackage.class,
-		JpaSecurityServicePackage.class
-		
-})
+@AutoConfigureAfter({IglooJpaAutoConfiguration.class})
+@ComponentScan(
+    basePackageClasses = {JpaSecurityBusinessPackage.class, JpaSecurityServicePackage.class})
 public class IglooJpaSecurityAutoConfiguration {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(IglooJpaSecurityAutoConfiguration.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(IglooJpaSecurityAutoConfiguration.class);
 
-	/**
-	 * N'est pas basculé en configuration car on n'est pas censé basculer d'un
-	 * mode à un autre au cours de la vie de l'application. Doit être décidé au
-	 * début, avec mise en place des contraintes nécessaires à la création
-	 * d'utilisateur si on choisit le mode CASE INSENSITIVE. Cette méthode n'a
-	 * pas besoin d'être annotée {@link Bean}
-	 * 
-	 * @see AuthenticationUsernameComparison
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	public AuthenticationUsernameComparison authenticationUsernameComparison() {
-		return AuthenticationUsernameComparison.CASE_SENSITIVE;
-	}
-	
-	@SuppressWarnings("rawtypes")
-	@Bean
-	@ConditionalOnMissingBean
-	public ISecurityUserService<?> userServiceImpl() {
-		return new StubSecurityUserServiceImpl();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public PasswordEncoder passwordEncoder() {
-		PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		return passwordEncoder;
-	}
+  /**
+   * N'est pas basculé en configuration car on n'est pas censé basculer d'un mode à un autre au
+   * cours de la vie de l'application. Doit être décidé au début, avec mise en place des contraintes
+   * nécessaires à la création d'utilisateur si on choisit le mode CASE INSENSITIVE. Cette méthode
+   * n'a pas besoin d'être annotée {@link Bean}
+   *
+   * @see AuthenticationUsernameComparison
+   */
+  @Bean
+  @ConditionalOnMissingBean
+  public AuthenticationUsernameComparison authenticationUsernameComparison() {
+    return AuthenticationUsernameComparison.CASE_SENSITIVE;
+  }
 
-	@Bean
-	@ConditionalOnMissingBean
-	public ISecurityService securityService() {
-		return new CoreSecurityServiceImpl();
-	}
-	
-	@Bean(name = "authenticationService")
-	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-	@ConditionalOnMissingBean
-	public IAuthenticationService authenticationService() {
-		return new CoreAuthenticationServiceImpl();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public UserDetailsService userDetailsService(AuthenticationUsernameComparison authenticationUsernameComparison) {
-		CoreJpaUserDetailsServiceImpl detailsService = new CoreJpaUserDetailsServiceImpl();
-		detailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
-		return detailsService;
-	}
+  @SuppressWarnings("rawtypes")
+  @Bean
+  @ConditionalOnMissingBean
+  public ISecurityUserService<?> userServiceImpl() {
+    return new StubSecurityUserServiceImpl();
+  }
 
-	@Bean(name = "mainAuthenticationProvider")
-	@ConditionalOnMissingBean(name = "mainAuthenticationProvider")
-	public AuthenticationProvider mainAuthenticationProvider(UserDetailsService userDetailsService,
-			PasswordEncoder passwordEncoder) {
-		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-		provider.setUserDetailsService(userDetailsService);
-		provider.setPasswordEncoder(passwordEncoder);
-		return provider;
-	}
-	
-	/**
-	 * authenticationProviders are injected by type lookup. This bean can be overriden by declaring a new bean
-	 * with a new method name, an alias for <em>authenticationManager</em> and a @{@link Primary} annotation.
-	 */
-	@Bean
-	@ConditionalOnMissingBean(name = "authenticationManager")
-	public AuthenticationManager authenticationManager(List<AuthenticationProvider> authenticationProviders) {
-		List<AuthenticationProvider> providers = Lists.newArrayList();
-		providers.addAll(authenticationProviders);
-		return new ProviderManager(providers);
-	}
-	
-	public Class<? extends Permission> permissionClass() {
-		return NamedPermission.class;
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public PermissionFactory permissionFactory() {
-		return new NamedPermissionFactory(permissionClass());
-	}
+  @Bean
+  @ConditionalOnMissingBean
+  public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    return passwordEncoder;
+  }
 
-	/**
-	 * Le {@link ScopedProxyMode} est nécessaire si on désire utiliser les
-	 * annotations de sécurité. En effet, l'activation des annotations de
-	 * sécurité nécessite la construction du sous-système de sécurité dès le
-	 * début de l'instantiation des beans (de manière à pouvoir mettre en place
-	 * les intercepteurs de sécurité). Or le système de sécurité provoque le
-	 * chargement du entitymanager et d'autres beans alors que leur dépendances
-	 * ne sont pas prêtes. La mise en place d'un proxy permet de reporter à plus
-	 * tard l'instanciation du système de sécurité.
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-	public ICorePermissionEvaluator permissionEvaluator() {
-		LOGGER.warn("No permissions found, please define your own.");
-		return new ICorePermissionEvaluator() {
-			
-			@Override
-			public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType,
-					Object permission) {
-				return false;
-			}
-			
-			@Override
-			public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-				return false;
-			}
-			
-			@Override
-			public boolean isSuperUser(Authentication authentication) {
-				return false;
-			}
-			
-			@Override
-			public boolean hasPermission(Authentication authentication, Object requirePermission) {
-				return false;
-			}
-			
-			@Override
-			public Collection<? extends Permission> getPermissions(Authentication authentication) {
-				return null;
-			}
-		};
-	}
+  @Bean
+  @ConditionalOnMissingBean
+  public ISecurityService securityService() {
+    return new CoreSecurityServiceImpl();
+  }
 
-	@Bean
-	public MethodSecurityExpressionHandler expressionHandler(ICorePermissionEvaluator corePermissionEvaluator) {
-		CoreMethodSecurityExpressionHandler methodSecurityExpressionHandler = new CoreMethodSecurityExpressionHandler();
-		methodSecurityExpressionHandler.setCorePermissionEvaluator(corePermissionEvaluator);
-		
-		// Discover parameter name using the @PermissionObject annotation, too
-		methodSecurityExpressionHandler.setParameterNameDiscoverer(new DefaultSecurityParameterNameDiscoverer(
-				ImmutableList.of(
-						new AnnotationParameterNameDiscoverer(PermissionObject.class.getName())
-				)
-		));
-		
-		return methodSecurityExpressionHandler;
-	}
-	
-	protected String roleHierarchyAsString() {
-		return SecurityUtils.defaultRoleHierarchyAsString();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public RoleHierarchy roleHierarchy() {
-		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-		roleHierarchy.setHierarchy(roleHierarchyAsString());
-		return roleHierarchy;
-	}
-	
-	protected String permissionHierarchyAsString() {
-		return SecurityUtils.defaultPermissionHierarchyAsString();
-	}
+  @Bean(name = "authenticationService")
+  @Scope(proxyMode = ScopedProxyMode.INTERFACES)
+  @ConditionalOnMissingBean
+  public IAuthenticationService authenticationService() {
+    return new CoreAuthenticationServiceImpl();
+  }
 
-	@Bean
-	@ConditionalOnMissingBean
-	public IPermissionHierarchy permissionHierarchy(PermissionFactory permissionFactory) {
-		PermissionHierarchyImpl hierarchy = new PermissionHierarchyImpl(permissionFactory);
-		hierarchy.setHierarchy(permissionHierarchyAsString());
-		return hierarchy;
-	}
+  @Bean
+  @ConditionalOnMissingBean
+  public UserDetailsService userDetailsService(
+      AuthenticationUsernameComparison authenticationUsernameComparison) {
+    CoreJpaUserDetailsServiceImpl detailsService = new CoreJpaUserDetailsServiceImpl();
+    detailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
+    return detailsService;
+  }
 
-	@Bean
-	@ConditionalOnMissingBean
-	public RunAsManager runAsManager(SecurityProperties securityProperties) {
-		CoreRunAsManagerImpl runAsManager = new CoreRunAsManagerImpl();
-		runAsManager.setKey(securityProperties.getRunAsKey());
-		return runAsManager;
-	}
+  @Bean(name = "mainAuthenticationProvider")
+  @ConditionalOnMissingBean(name = "mainAuthenticationProvider")
+  public AuthenticationProvider mainAuthenticationProvider(
+      UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    provider.setUserDetailsService(userDetailsService);
+    provider.setPasswordEncoder(passwordEncoder);
+    return provider;
+  }
 
-	@Bean
-	@ConditionalOnMissingBean
-	public RunAsImplAuthenticationProvider runAsAuthenticationProvider(SecurityProperties securityProperties) {
-		RunAsImplAuthenticationProvider runAsAuthenticationProvider = new RunAsImplAuthenticationProvider();
-		runAsAuthenticationProvider.setKey(securityProperties.getRunAsKey());
-		return runAsAuthenticationProvider;
-	}
-	
-	@Bean
-	public JpaPackageScanProvider jpaSecurityPackageScanProvider() {
-		return new JpaPackageScanProvider(JpaSecurityBusinessPackage.class.getPackage());
-	}
+  /**
+   * authenticationProviders are injected by type lookup. This bean can be overriden by declaring a
+   * new bean with a new method name, an alias for <em>authenticationManager</em> and a @{@link
+   * Primary} annotation.
+   */
+  @Bean
+  @ConditionalOnMissingBean(name = "authenticationManager")
+  public AuthenticationManager authenticationManager(
+      List<AuthenticationProvider> authenticationProviders) {
+    List<AuthenticationProvider> providers = Lists.newArrayList();
+    providers.addAll(authenticationProviders);
+    return new ProviderManager(providers);
+  }
 
-	@Configuration
-	@EnableGlobalMethodSecurity(order = 0, prePostEnabled = true, securedEnabled = true)
-	public static class JpaGlobalMethodSecurity extends GlobalMethodSecurityConfiguration {
-		@Autowired
-		private ApplicationContext applicationContext;
-		
-		@Autowired
-		@Qualifier("runAsManager")
-		private RunAsManager runAsManager;
-		
-		@Autowired
-		@Qualifier("expressionHandler")
-		private MethodSecurityExpressionHandler methodSecurityExpressionHandler;
-		
-		@Override
-		protected RunAsManager runAsManager() {
-			return runAsManager;
-		}
-		
-		@Override
-		protected MethodSecurityExpressionHandler createExpressionHandler() {
-			return methodSecurityExpressionHandler;
-		}
-		
-		/**
-		 * Load authenticationManager bean as late as possible
-		 * (do not use an @Autowired attribute here, as it silently breaks transaction interceptors)
-		 */
-		@Override
-		protected AuthenticationManager authenticationManager() throws Exception {
-			return applicationContext.getBean("authenticationManager", AuthenticationManager.class);
-		}
-	}
+  public Class<? extends Permission> permissionClass() {
+    return NamedPermission.class;
+  }
 
+  @Bean
+  @ConditionalOnMissingBean
+  public PermissionFactory permissionFactory() {
+    return new NamedPermissionFactory(permissionClass());
+  }
+
+  /**
+   * Le {@link ScopedProxyMode} est nécessaire si on désire utiliser les annotations de sécurité. En
+   * effet, l'activation des annotations de sécurité nécessite la construction du sous-système de
+   * sécurité dès le début de l'instantiation des beans (de manière à pouvoir mettre en place les
+   * intercepteurs de sécurité). Or le système de sécurité provoque le chargement du entitymanager
+   * et d'autres beans alors que leur dépendances ne sont pas prêtes. La mise en place d'un proxy
+   * permet de reporter à plus tard l'instanciation du système de sécurité.
+   */
+  @Bean
+  @ConditionalOnMissingBean
+  @Scope(proxyMode = ScopedProxyMode.INTERFACES)
+  public ICorePermissionEvaluator permissionEvaluator() {
+    LOGGER.warn("No permissions found, please define your own.");
+    return new ICorePermissionEvaluator() {
+
+      @Override
+      public boolean hasPermission(
+          Authentication authentication,
+          Serializable targetId,
+          String targetType,
+          Object permission) {
+        return false;
+      }
+
+      @Override
+      public boolean hasPermission(
+          Authentication authentication, Object targetDomainObject, Object permission) {
+        return false;
+      }
+
+      @Override
+      public boolean isSuperUser(Authentication authentication) {
+        return false;
+      }
+
+      @Override
+      public boolean hasPermission(Authentication authentication, Object requirePermission) {
+        return false;
+      }
+
+      @Override
+      public Collection<? extends Permission> getPermissions(Authentication authentication) {
+        return null;
+      }
+    };
+  }
+
+  @Bean
+  public MethodSecurityExpressionHandler expressionHandler(
+      ICorePermissionEvaluator corePermissionEvaluator) {
+    CoreMethodSecurityExpressionHandler methodSecurityExpressionHandler =
+        new CoreMethodSecurityExpressionHandler();
+    methodSecurityExpressionHandler.setCorePermissionEvaluator(corePermissionEvaluator);
+
+    // Discover parameter name using the @PermissionObject annotation, too
+    methodSecurityExpressionHandler.setParameterNameDiscoverer(
+        new DefaultSecurityParameterNameDiscoverer(
+            ImmutableList.of(
+                new AnnotationParameterNameDiscoverer(PermissionObject.class.getName()))));
+
+    return methodSecurityExpressionHandler;
+  }
+
+  protected String roleHierarchyAsString() {
+    return SecurityUtils.defaultRoleHierarchyAsString();
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public RoleHierarchy roleHierarchy() {
+    RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+    roleHierarchy.setHierarchy(roleHierarchyAsString());
+    return roleHierarchy;
+  }
+
+  protected String permissionHierarchyAsString() {
+    return SecurityUtils.defaultPermissionHierarchyAsString();
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public IPermissionHierarchy permissionHierarchy(PermissionFactory permissionFactory) {
+    PermissionHierarchyImpl hierarchy = new PermissionHierarchyImpl(permissionFactory);
+    hierarchy.setHierarchy(permissionHierarchyAsString());
+    return hierarchy;
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public RunAsManager runAsManager(SecurityProperties securityProperties) {
+    CoreRunAsManagerImpl runAsManager = new CoreRunAsManagerImpl();
+    runAsManager.setKey(securityProperties.getRunAsKey());
+    return runAsManager;
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public RunAsImplAuthenticationProvider runAsAuthenticationProvider(
+      SecurityProperties securityProperties) {
+    RunAsImplAuthenticationProvider runAsAuthenticationProvider =
+        new RunAsImplAuthenticationProvider();
+    runAsAuthenticationProvider.setKey(securityProperties.getRunAsKey());
+    return runAsAuthenticationProvider;
+  }
+
+  @Bean
+  public JpaPackageScanProvider jpaSecurityPackageScanProvider() {
+    return new JpaPackageScanProvider(JpaSecurityBusinessPackage.class.getPackage());
+  }
+
+  @Configuration
+  @EnableGlobalMethodSecurity(order = 0, prePostEnabled = true, securedEnabled = true)
+  public static class JpaGlobalMethodSecurity extends GlobalMethodSecurityConfiguration {
+    @Autowired private ApplicationContext applicationContext;
+
+    @Autowired
+    @Qualifier("runAsManager")
+    private RunAsManager runAsManager;
+
+    @Autowired
+    @Qualifier("expressionHandler")
+    private MethodSecurityExpressionHandler methodSecurityExpressionHandler;
+
+    @Override
+    protected RunAsManager runAsManager() {
+      return runAsManager;
+    }
+
+    @Override
+    protected MethodSecurityExpressionHandler createExpressionHandler() {
+      return methodSecurityExpressionHandler;
+    }
+
+    /**
+     * Load authenticationManager bean as late as possible (do not use an @Autowired attribute here,
+     * as it silently breaks transaction interceptors)
+     */
+    @Override
+    protected AuthenticationManager authenticationManager() throws Exception {
+      return applicationContext.getBean("authenticationManager", AuthenticationManager.class);
+    }
+  }
 }

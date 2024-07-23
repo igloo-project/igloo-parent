@@ -3,6 +3,4 @@ package test.wicket.more.bindable;
 import org.bindgen.Bindable;
 
 @Bindable
-class SimplePropertyValue {
-	
-}
+class SimplePropertyValue {}

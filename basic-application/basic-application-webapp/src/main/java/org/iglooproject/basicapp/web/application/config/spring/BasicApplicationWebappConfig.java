@@ -1,7 +1,8 @@
 package org.iglooproject.basicapp.web.application.config.spring;
 
+import igloo.wicket.renderer.Renderer;
+import igloo.wicket.util.DatePattern;
 import java.util.Date;
-
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -23,55 +24,46 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
-import igloo.wicket.renderer.Renderer;
-import igloo.wicket.util.DatePattern;
-
 @Configuration
 @EnableWebSecurity
 @Import({
-	BasicApplicationCoreCommonConfig.class,
-	BasicApplicationWebappSecurityConfig.class,
-	BasicApplicationWebappApplicationPropertyRegistryConfig.class
+  BasicApplicationCoreCommonConfig.class,
+  BasicApplicationWebappSecurityConfig.class,
+  BasicApplicationWebappApplicationPropertyRegistryConfig.class
 })
 @ComponentScan(
-	basePackageClasses = {
-		BasicApplicationApplication.class
-	},
-	excludeFilters = @Filter(Configuration.class)
-)
+    basePackageClasses = {BasicApplicationApplication.class},
+    excludeFilters = @Filter(Configuration.class))
 public class BasicApplicationWebappConfig {
 
-	@Bean(name = { "BasicApplicationApplication", "application" })
-	public BasicApplicationApplication application() {
-		return new BasicApplicationApplication();
-	}
+  @Bean(name = {"BasicApplicationApplication", "application"})
+  public BasicApplicationApplication application() {
+    return new BasicApplicationApplication();
+  }
 
-	@Bean
-	public IRendererService rendererService(IWicketContextProvider wicketContextProvider) {
-		RendererServiceImpl rendererService = new RendererServiceImpl(wicketContextProvider);
-		
-		rendererService.registerRenderer(Boolean.class, BooleanRenderer.get());
-		rendererService.registerRenderer(boolean.class, BooleanRenderer.get());
-		
-		Renderer<Date> shortDateRenderer = Renderer.fromDatePattern(DatePattern.SHORT_DATE);
-		rendererService.registerRenderer(Date.class, shortDateRenderer);
-		rendererService.registerRenderer(java.sql.Date.class, shortDateRenderer);
-		
-		rendererService.registerRenderer(User.class, UserRenderer.get());
-		rendererService.registerRenderer(TechnicalUser.class, UserRenderer.get());
-		rendererService.registerRenderer(BasicUser.class, UserRenderer.get());
-		
-		return rendererService;
-	}
+  @Bean
+  public IRendererService rendererService(IWicketContextProvider wicketContextProvider) {
+    RendererServiceImpl rendererService = new RendererServiceImpl(wicketContextProvider);
 
-	/**
-	 * Override parent bean declaration so that we add our custom styles.
-	 */
-	@Bean
-	public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
-		IHtmlNotificationCssService service = new PhlocCssHtmlNotificationCssServiceImpl();
-		service.registerDefaultStyles(NotificationScssResourceReference.get());
-		return service;
-	}
+    rendererService.registerRenderer(Boolean.class, BooleanRenderer.get());
+    rendererService.registerRenderer(boolean.class, BooleanRenderer.get());
 
+    Renderer<Date> shortDateRenderer = Renderer.fromDatePattern(DatePattern.SHORT_DATE);
+    rendererService.registerRenderer(Date.class, shortDateRenderer);
+    rendererService.registerRenderer(java.sql.Date.class, shortDateRenderer);
+
+    rendererService.registerRenderer(User.class, UserRenderer.get());
+    rendererService.registerRenderer(TechnicalUser.class, UserRenderer.get());
+    rendererService.registerRenderer(BasicUser.class, UserRenderer.get());
+
+    return rendererService;
+  }
+
+  /** Override parent bean declaration so that we add our custom styles. */
+  @Bean
+  public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
+    IHtmlNotificationCssService service = new PhlocCssHtmlNotificationCssServiceImpl();
+    service.registerDefaultStyles(NotificationScssResourceReference.get());
+    return service;
+  }
 }

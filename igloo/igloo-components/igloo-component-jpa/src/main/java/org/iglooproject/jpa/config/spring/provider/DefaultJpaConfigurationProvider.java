@@ -1,13 +1,12 @@
 package org.iglooproject.jpa.config.spring.provider;
 
+import igloo.hibernateconfig.api.HibernateCacheRegionFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import javax.annotation.Resource;
 import javax.persistence.spi.PersistenceProvider;
 import javax.sql.DataSource;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.hibernate.boot.model.TypeContributor;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
@@ -19,273 +18,270 @@ import org.hibernate.jpa.spi.IdentifierGeneratorStrategyProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
-import igloo.hibernateconfig.api.HibernateCacheRegionFactory;
-
 public class DefaultJpaConfigurationProvider implements IJpaConfigurationProvider {
 
-	@Autowired
-	private List<JpaPackageScanProvider> jpaPackageScanProviders;
+  @Autowired private List<JpaPackageScanProvider> jpaPackageScanProviders;
 
-	@Value("${db.dialect}")
-	private Class<Dialect> dialect;
+  @Value("${db.dialect}")
+  private Class<Dialect> dialect;
 
-	@Value("${db.schema}")
-	private String defaultSchema;
+  @Value("${db.schema}")
+  private String defaultSchema;
 
-	@Value("${hibernate.hbm2ddl.auto}")
-	private String hbm2Ddl;
+  @Value("${hibernate.hbm2ddl.auto}")
+  private String hbm2Ddl;
 
-	@Value("${hibernate.hbm2ddl.import_files}")
-	private String hbm2DdlImportFiles;
+  @Value("${hibernate.hbm2ddl.import_files}")
+  private String hbm2DdlImportFiles;
 
-	@Value("${hibernate.defaultBatchSize}")
-	private Integer defaultBatchSize;
+  @Value("${hibernate.defaultBatchSize}")
+  private Integer defaultBatchSize;
 
-	@Value("${lucene.index.path}")
-	private String hibernateSearchIndexBase;
+  @Value("${lucene.index.path}")
+  private String hibernateSearchIndexBase;
 
-	@Value("${lucene.index.inRam:false}")
-	private boolean isHibernateSearchIndexInRam;
+  @Value("${lucene.index.inRam:false}")
+  private boolean isHibernateSearchIndexInRam;
 
-	@Value("${hibernate.search.analyzer:}") // Defaults to null
-	private Class<? extends Analyzer> hibernateSearchDefaultAnalyzer;
+  @Value("${hibernate.search.analyzer:}") // Defaults to null
+  private Class<? extends Analyzer> hibernateSearchDefaultAnalyzer;
 
-	@Value("${hibernate.search.indexing_strategy:}") // Defaults to an empty string
-	private String hibernateSearchIndexingStrategy;
+  @Value("${hibernate.search.indexing_strategy:}") // Defaults to an empty string
+  private String hibernateSearchIndexingStrategy;
 
-	@Value("#{dataSource}")
-	private DataSource dataSource;
+  @Value("#{dataSource}")
+  private DataSource dataSource;
 
-	@Value("${hibernate.jcache.configurationLocation:}")
-	private String jcacheConfiguration;
+  @Value("${hibernate.jcache.configurationLocation:}")
+  private String jcacheConfiguration;
 
-	@Value("#{T(igloo.hibernateconfig.api.HibernateCacheRegionFactory).fromString('${hibernate.cache:}')}")
-	private HibernateCacheRegionFactory cacheRegionFactory;
+  @Value(
+      "#{T(igloo.hibernateconfig.api.HibernateCacheRegionFactory).fromString('${hibernate.cache:}')}")
+  private HibernateCacheRegionFactory cacheRegionFactory;
 
-	@Value("${hibernate.queryCache.enabled}")
-	private boolean queryCacheEnabled;
+  @Value("${hibernate.queryCache.enabled}")
+  private boolean queryCacheEnabled;
 
-	@Autowired(required=false)
-	private PersistenceProvider persistenceProvider;
+  @Autowired(required = false)
+  private PersistenceProvider persistenceProvider;
 
-	@Value("${javax.persistence.validation.mode}")
-	private String validationMode;
+  @Value("${javax.persistence.validation.mode}")
+  private String validationMode;
 
-	@Value("${hibernate.implicit_naming_strategy}")
-	private Class<ImplicitNamingStrategy> implicitNamingStrategy;
+  @Value("${hibernate.implicit_naming_strategy}")
+  private Class<ImplicitNamingStrategy> implicitNamingStrategy;
 
-	@Value("${hibernate.physical_naming_strategy}")
-	private Class<PhysicalNamingStrategy> physicalNamingStrategy;
+  @Value("${hibernate.physical_naming_strategy}")
+  private Class<PhysicalNamingStrategy> physicalNamingStrategy;
 
-	@Value("${hibernate.identifier_generator_strategy_provider:}") // Defaults to null
-	private Class<IdentifierGeneratorStrategyProvider> identifierGeneratorStrategyProvider;
-	
-	@Value("${hibernate.id.new_generator_mappings}")
-	private Boolean isNewGeneratorMappingsEnabled;
+  @Value("${hibernate.identifier_generator_strategy_provider:}") // Defaults to null
+  private Class<IdentifierGeneratorStrategyProvider> identifierGeneratorStrategyProvider;
 
-	@Value("${hibernate.create_empty_composites.enabled}")
-	private boolean createEmptyCompositesEnabled;
+  @Value("${hibernate.id.new_generator_mappings}")
+  private Boolean isNewGeneratorMappingsEnabled;
 
-	@Value("${hibernate.search.elasticsearch.enabled:false}")
-	private boolean isHibernateSearchElasticSearchEnabled;
+  @Value("${hibernate.create_empty_composites.enabled}")
+  private boolean createEmptyCompositesEnabled;
 
-	@Value("${hibernate.search.default.elasticsearch.host}")
-	private String elasticSearchHost;
+  @Value("${hibernate.search.elasticsearch.enabled:false}")
+  private boolean isHibernateSearchElasticSearchEnabled;
 
-	@Value("${hibernate.search.default.elasticsearch.index_schema_management_strategy}")
-	private String elasticSearchIndexSchemaManagementStrategy;
+  @Value("${hibernate.search.default.elasticsearch.host}")
+  private String elasticSearchHost;
 
-	/**
-	 * If set to true, dom4j and jaxb dependencies must be provided on classpath
-	 */
-	@Value("${hibernate.xml_mapping_enabled:false}")
-	private boolean xmlMappingEnabled;
+  @Value("${hibernate.search.default.elasticsearch.index_schema_management_strategy}")
+  private String elasticSearchIndexSchemaManagementStrategy;
 
-	@Resource(name = "hibernateDefaultExtraProperties")
-	private Properties defaultExtraProperties;
+  /** If set to true, dom4j and jaxb dependencies must be provided on classpath */
+  @Value("${hibernate.xml_mapping_enabled:false}")
+  private boolean xmlMappingEnabled;
 
-	@Resource(name = "hibernateExtraProperties")
-	private Properties extraProperties;
+  @Resource(name = "hibernateDefaultExtraProperties")
+  private Properties defaultExtraProperties;
 
-	@Autowired(required = false)
-	private List<Integrator> integrators;
+  @Resource(name = "hibernateExtraProperties")
+  private Properties extraProperties;
 
-	@Autowired(required = false)
-	private List<TypeContributor> typeContributors;
+  @Autowired(required = false)
+  private List<Integrator> integrators;
 
-	@Override
-	public List<JpaPackageScanProvider> getJpaPackageScanProviders() {
-		return jpaPackageScanProviders;
-	}
+  @Autowired(required = false)
+  private List<TypeContributor> typeContributors;
 
-	@Override
-	public Class<Dialect> getDialect() {
-		return dialect;
-	}
+  @Override
+  public List<JpaPackageScanProvider> getJpaPackageScanProviders() {
+    return jpaPackageScanProviders;
+  }
 
-	@Override
-	public String getHbm2Ddl() {
-		return hbm2Ddl;
-	}
+  @Override
+  public Class<Dialect> getDialect() {
+    return dialect;
+  }
 
-	@Override
-	public String getHbm2DdlImportFiles() {
-		return hbm2DdlImportFiles;
-	}
+  @Override
+  public String getHbm2Ddl() {
+    return hbm2Ddl;
+  }
 
-	@Override
-	public Integer getDefaultBatchSize() {
-		return defaultBatchSize;
-	}
+  @Override
+  public String getHbm2DdlImportFiles() {
+    return hbm2DdlImportFiles;
+  }
 
-	@Override
-	public String getHibernateSearchIndexBase() {
-		return hibernateSearchIndexBase;
-	}
-	
-	@Override
-	public boolean isHibernateSearchIndexInRam() {
-		return isHibernateSearchIndexInRam;
-	}
+  @Override
+  public Integer getDefaultBatchSize() {
+    return defaultBatchSize;
+  }
 
-	@Override
-	public Class<? extends Analyzer> getHibernateSearchDefaultAnalyzer() {
-		return hibernateSearchDefaultAnalyzer;
-	}
-	
-	@Override
-	public String getHibernateSearchIndexingStrategy() {
-		return hibernateSearchIndexingStrategy;
-	}
+  @Override
+  public String getHibernateSearchIndexBase() {
+    return hibernateSearchIndexBase;
+  }
 
-	@Override
-	public DataSource getDataSource() {
-		return dataSource;
-	}
+  @Override
+  public boolean isHibernateSearchIndexInRam() {
+    return isHibernateSearchIndexInRam;
+  }
 
-	@Override
-	public String getJcacheConfiguration() {
-		return jcacheConfiguration;
-	}
-	
-	@Override
-	public HibernateCacheRegionFactory getCacheRegionFactory() {
-		return cacheRegionFactory;
-	}
+  @Override
+  public Class<? extends Analyzer> getHibernateSearchDefaultAnalyzer() {
+    return hibernateSearchDefaultAnalyzer;
+  }
 
-	@Override
-	public boolean isQueryCacheEnabled() {
-		return queryCacheEnabled;
-	}
+  @Override
+  public String getHibernateSearchIndexingStrategy() {
+    return hibernateSearchIndexingStrategy;
+  }
 
-	@Override
-	public PersistenceProvider getPersistenceProvider() {
-		return persistenceProvider;
-	}
+  @Override
+  public DataSource getDataSource() {
+    return dataSource;
+  }
 
-	@Override
-	public String getValidationMode() {
-		return validationMode;
-	}
+  @Override
+  public String getJcacheConfiguration() {
+    return jcacheConfiguration;
+  }
 
-	@Override
-	public Class<? extends ImplicitNamingStrategy> getImplicitNamingStrategy() {
-		return implicitNamingStrategy;
-	}
+  @Override
+  public HibernateCacheRegionFactory getCacheRegionFactory() {
+    return cacheRegionFactory;
+  }
 
-	@Override
-	public Class<? extends PhysicalNamingStrategy> getPhysicalNamingStrategy() {
-		return physicalNamingStrategy;
-	}
+  @Override
+  public boolean isQueryCacheEnabled() {
+    return queryCacheEnabled;
+  }
 
-	@Override
-	public Class<? extends IdentifierGeneratorStrategyProvider> getIdentifierGeneratorStrategyProvider() {
-		return identifierGeneratorStrategyProvider;
-	}
+  @Override
+  public PersistenceProvider getPersistenceProvider() {
+    return persistenceProvider;
+  }
 
-	@Override
-	public Boolean isNewGeneratorMappingsEnabled() {
-		return isNewGeneratorMappingsEnabled;
-	}
+  @Override
+  public String getValidationMode() {
+    return validationMode;
+  }
 
-	@Override
-	public boolean isCreateEmptyCompositesEnabled() {
-		return createEmptyCompositesEnabled;
-	}
+  @Override
+  public Class<? extends ImplicitNamingStrategy> getImplicitNamingStrategy() {
+    return implicitNamingStrategy;
+  }
 
-	@Override
-	public boolean isXmlMappingEnabled() {
-		return xmlMappingEnabled;
-	}
+  @Override
+  public Class<? extends PhysicalNamingStrategy> getPhysicalNamingStrategy() {
+    return physicalNamingStrategy;
+  }
 
-	@Override
-	public boolean isHibernateSearchElasticSearchEnabled() {
-		return isHibernateSearchElasticSearchEnabled;
-	}
+  @Override
+  public Class<? extends IdentifierGeneratorStrategyProvider>
+      getIdentifierGeneratorStrategyProvider() {
+    return identifierGeneratorStrategyProvider;
+  }
 
-	@Override
-	public void setHibernateSearchElasticSearchEnabled(boolean isElasticSearchEnabled) {
-		this.isHibernateSearchElasticSearchEnabled = isElasticSearchEnabled;
-	}
+  @Override
+  public Boolean isNewGeneratorMappingsEnabled() {
+    return isNewGeneratorMappingsEnabled;
+  }
 
-	@Override
-	public String getElasticSearchHost() {
-		return elasticSearchHost;
-	}
+  @Override
+  public boolean isCreateEmptyCompositesEnabled() {
+    return createEmptyCompositesEnabled;
+  }
 
-	@Override
-	public void setElasticSearchHost(String elasticSearchHost) {
-		this.elasticSearchHost = elasticSearchHost;
-	}
+  @Override
+  public boolean isXmlMappingEnabled() {
+    return xmlMappingEnabled;
+  }
 
-	@Override
-	public String getElasticSearchIndexSchemaManagementStrategy() {
-		return elasticSearchIndexSchemaManagementStrategy;
-	}
+  @Override
+  public boolean isHibernateSearchElasticSearchEnabled() {
+    return isHibernateSearchElasticSearchEnabled;
+  }
 
-	@Override
-	public void setElasticSearchIndexSchemaManagementStrategy(String elasticSearchIndexSchemaManagementStrategy) {
-		this.elasticSearchIndexSchemaManagementStrategy = elasticSearchIndexSchemaManagementStrategy;
-	}
+  @Override
+  public void setHibernateSearchElasticSearchEnabled(boolean isElasticSearchEnabled) {
+    this.isHibernateSearchElasticSearchEnabled = isElasticSearchEnabled;
+  }
 
-	@Override
-	public String getDefaultSchema() {
-		return defaultSchema;
-	}
+  @Override
+  public String getElasticSearchHost() {
+    return elasticSearchHost;
+  }
 
-	@Override
-	public Properties getDefaultExtraProperties() {
-		return defaultExtraProperties;
-	}
+  @Override
+  public void setElasticSearchHost(String elasticSearchHost) {
+    this.elasticSearchHost = elasticSearchHost;
+  }
 
-	@Override
-	public void setDefaultExtraProperties(Properties defaultExtraProperties) {
-		this.defaultExtraProperties = defaultExtraProperties;
-	}
+  @Override
+  public String getElasticSearchIndexSchemaManagementStrategy() {
+    return elasticSearchIndexSchemaManagementStrategy;
+  }
 
-	@Override
-	public Properties getExtraProperties() {
-		return extraProperties;
-	}
+  @Override
+  public void setElasticSearchIndexSchemaManagementStrategy(
+      String elasticSearchIndexSchemaManagementStrategy) {
+    this.elasticSearchIndexSchemaManagementStrategy = elasticSearchIndexSchemaManagementStrategy;
+  }
 
-	@Override
-	public void setExtraProperties(Properties extraProperties) {
-		this.extraProperties = extraProperties;
-	}
+  @Override
+  public String getDefaultSchema() {
+    return defaultSchema;
+  }
 
-	@Override
-	public IntegratorProvider getIntegratorProvider() {
-		// do a snapshot; this method is called once during context startup.
-		final List<Integrator> integratorsSnapshot = new ArrayList<>();
-		if (integrators != null) {
-			integratorsSnapshot.addAll(integrators);
-		}
-		return () -> integratorsSnapshot;
-	}
+  @Override
+  public Properties getDefaultExtraProperties() {
+    return defaultExtraProperties;
+  }
 
-	@Override
-	public List<TypeContributor> getTypeContributors() {
-		return typeContributors;
-	}
+  @Override
+  public void setDefaultExtraProperties(Properties defaultExtraProperties) {
+    this.defaultExtraProperties = defaultExtraProperties;
+  }
 
+  @Override
+  public Properties getExtraProperties() {
+    return extraProperties;
+  }
+
+  @Override
+  public void setExtraProperties(Properties extraProperties) {
+    this.extraProperties = extraProperties;
+  }
+
+  @Override
+  public IntegratorProvider getIntegratorProvider() {
+    // do a snapshot; this method is called once during context startup.
+    final List<Integrator> integratorsSnapshot = new ArrayList<>();
+    if (integrators != null) {
+      integratorsSnapshot.addAll(integrators);
+    }
+    return () -> integratorsSnapshot;
+  }
+
+  @Override
+  public List<TypeContributor> getTypeContributors() {
+    return typeContributors;
+  }
 }
