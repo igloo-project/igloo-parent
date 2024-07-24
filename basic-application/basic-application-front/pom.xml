@@ -15,9 +15,10 @@
 	
 	<name>Basic Application - Front</name>
 
-	<properties>
-		<igloo.processors>${igloo.processor.bindgen}</igloo.processors>
-	</properties>
+	<!--
+		Do not declare properties; it breaks jgitflow release
+		https://bitbucket.org/atlassian/jgit-flow/src/3695cbf0e073a66264e5641bd5dd7da4b246ae3c/jgitflow-maven-plugin/src/main/java/com/atlassian/maven/plugins/jgitflow/rewrite/ArtifactReleaseVersionChange.java#lines-205
+	-->
 	
 	<dependencies>
 		<dependency>
@@ -187,6 +188,9 @@
 			<plugin>
 				<groupId>org.bsc.maven</groupId>
 				<artifactId>maven-processor-plugin</artifactId>
+				<configuration>
+					<processors>${igloo.processor.bindgen}</processors>
+				</configuration>
 			</plugin>
 			<plugin>
 				<!-- generate SCSS at build-time; greatly speed-up application startup -->
