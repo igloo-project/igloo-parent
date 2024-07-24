@@ -350,22 +350,20 @@ def format_pom(project_path: pathlib.Path):
     output = subprocess.check_output(["xmllint", "--format", str(pom_file)], env=env, encoding="utf-8")
     pom_file.write_text(output)
     logger.info("Root pom reformatted.")
+    subprocess.check_call(["mvn", "spotless:apply"], cwd=project_path, **subprocess_args())
+    logger.info("Spotless applied.")
 
 
 def override_versions(igloo_clone: pathlib.Path, igloo_version: str):
     """Setup igloo.version property, then use a placeholder version for basic-application. It is needed
     so that archetype building does not mix up basic-application and igloo versions."""
-    subprocess.check_call(
-        [
-            "mvn",
-            "versions:set-property",
-            "-DgenerateBackupPoms=false",
-            "-Dproperty=igloo.version",
-            f"-DnewVersion={igloo_version}",
-        ],
-        cwd=igloo_clone,
-        **subprocess_args(),
-    )
+    # replace <versionPlaceholderDoNotRemove /> line with igloo.version declaration
+    pom_file = igloo_clone.joinpath("basic-application", "pom.xml")
+    basicapp_pom = pom_file.read_text()
+    igloo_version_sub = re.compile("^(.*)<versionPlaceholderDoNotRemove />.*$", re.MULTILINE)
+    updated_pom = igloo_version_sub.sub(f"\\1<igloo.version>{igloo_version}</igloo.version>", basicapp_pom)
+    pom_file.write_text(updated_pom)
+    # update basicapp version
     subprocess.check_call(
         [
             "mvn",
@@ -375,6 +373,7 @@ def override_versions(igloo_clone: pathlib.Path, igloo_version: str):
             "-DartifactId=basic-application*",
             f"-DnewVersion={OVERRIDE_VERSION}",
             "-DgenerateBackupPoms=false",
+            "-DskipResolution=true"
         ],
         cwd=igloo_clone,
         **subprocess_args(),
@@ -444,9 +443,6 @@ def generate_project(
         ["mvn", "archetype:generate", f"-DoutputDirectory={project}", *java_args], **subprocess_args()
     )
     project_path = project.joinpath(definition.artifact_id)
-    subprocess.check_call(
-        ["mvn", "spotless:check"], cwd=project_path, **subprocess_args()
-    )
     logger.info("Project %s:%s generated into %s", definition.group_id, definition.artifact_id, project_path)
     # generated folder contains `artifact_id` folder
     return project_path

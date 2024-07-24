@@ -16,7 +16,7 @@
 	<name>Basic Application</name>
 
 	<properties>
-		<igloo.version>${project.version}</igloo.version>
+		<versionPlaceholderDoNotRemove /><!-- KEEP; used for init substitution -->
 	</properties>
 	
 	<modules>
