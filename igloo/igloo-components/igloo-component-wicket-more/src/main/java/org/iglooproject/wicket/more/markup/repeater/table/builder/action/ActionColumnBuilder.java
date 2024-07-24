@@ -1,9 +1,18 @@
 package org.iglooproject.wicket.more.markup.repeater.table.builder.action;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import igloo.bootstrap.renderer.IBootstrapRenderer;
+import igloo.wicket.action.AjaxActions;
+import igloo.wicket.action.IAjaxAction;
+import igloo.wicket.action.IOneParameterAction;
+import igloo.wicket.action.IOneParameterAjaxAction;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.factory.IDetachableFactory;
+import igloo.wicket.factory.IOneParameterComponentFactory;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.link.AbstractLink;
@@ -27,515 +36,558 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.I
 import org.iglooproject.wicket.more.markup.repeater.table.builder.action.state.IActionColumnNoParameterBuildState;
 import org.springframework.security.acls.model.Permission;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+public abstract class ActionColumnBuilder<T, I>
+    implements IActionColumnNoParameterBuildState<T, I>, IActionColumnBuildState<T, I> {
 
-import igloo.bootstrap.renderer.IBootstrapRenderer;
-import igloo.wicket.action.AjaxActions;
-import igloo.wicket.action.IAjaxAction;
-import igloo.wicket.action.IOneParameterAction;
-import igloo.wicket.action.IOneParameterAjaxAction;
-import igloo.wicket.condition.Condition;
-import igloo.wicket.factory.IDetachableFactory;
-import igloo.wicket.factory.IOneParameterComponentFactory;
+  private final List<AbstractActionColumnElementBuilder<T, ?, ?>> builders = Lists.newArrayList();
 
-public abstract class ActionColumnBuilder<T, I> implements IActionColumnNoParameterBuildState<T, I>, IActionColumnBuildState<T, I> {
+  private final List<
+          IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>>
+      cssClassOnElementsModelFactories = Lists.newArrayList();
 
-	private final List<AbstractActionColumnElementBuilder<T, ?, ?>> builders = Lists.newArrayList();
+  public ActionColumnBuilder() {}
 
-	private final List<IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> cssClassOnElementsModelFactories = Lists.newArrayList();
+  private abstract class ActionColumnBuilderWrapper
+      implements IActionColumnNoParameterBuildState<T, I>, IActionColumnBuildState<T, I> {
 
-	public ActionColumnBuilder() {
-	}
+    @Override
+    public IActionColumnAddedLinkState<T, I> addLink(
+        IBootstrapRenderer<? super T> renderer,
+        ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
+      return ActionColumnBuilder.this.addLink(renderer, mapper);
+    }
 
-	private abstract class ActionColumnBuilderWrapper implements IActionColumnNoParameterBuildState<T, I>, IActionColumnBuildState<T, I> {
-		
-		@Override
-		public IActionColumnAddedLinkState<T, I> addLink(IBootstrapRenderer<? super T> renderer,
-				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
-			return ActionColumnBuilder.this.addLink(renderer, mapper);
-		}
-		
-		@Override
-		public <C> IActionColumnAddedLinkState<T, I> addLink(IBootstrapRenderer<? super T> renderer,
-				ICoreBinding<? super T, C> binding,
-				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
-			return ActionColumnBuilder.this.addLink(renderer, binding, mapper);
-		}
-		
-		@Override
-		public IActionColumnAddedLinkState<T, I> addLabelledLink(IBootstrapRenderer<? super T> renderer,
-				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
-			return ActionColumnBuilder.this.addLabelledLink(renderer, mapper);
-		}
-		
-		@Override
-		public <C> IActionColumnAddedLinkState<T, I> addLabelledLink(IBootstrapRenderer<? super T> renderer,
-				ICoreBinding<? super T, C> binding,
-				ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
-			return ActionColumnBuilder.this.addLabelledLink(renderer, binding, mapper);
-		}
-		
-		@Override
-		public IActionColumnAddedAjaxActionState<T, I> addAction(IBootstrapRenderer<? super T> renderer,
-				IOneParameterAjaxAction<? super IModel<T>> action) {
-			return ActionColumnBuilder.this.addAction(renderer, action);
-		}
-		
-		@Override
-		public IActionColumnAddedAjaxActionState<T, I> addLabelledAction(IBootstrapRenderer<? super T> renderer,
-				IOneParameterAjaxAction<? super IModel<T>> action) {
-			return ActionColumnBuilder.this.addLabelledAction(renderer, action);
-		}
-		
-		@Override
-		public IActionColumnAddedActionState<T, I> addAction(IBootstrapRenderer<? super T> renderer,
-				IOneParameterAction<? super IModel<T>> action) {
-			return ActionColumnBuilder.this.addAction(renderer, action);
-		}
-		
-		@Override
-		public IActionColumnAddedActionState<T, I> addLabelledAction(IBootstrapRenderer<? super T> renderer,
-				IOneParameterAction<? super IModel<T>> action) {
-			return ActionColumnBuilder.this.addLabelledAction(renderer, action);
-		}
-		
-		@Override
-		public IActionColumnConfirmActionBuilderStepStart<T, I> addConfirmAction(IBootstrapRenderer<? super T> renderer) {
-			return ActionColumnBuilder.this.addConfirmAction(renderer);
-		}
-		
-		@Override
-		public IActionColumnAddedActionState<T, I> addAction(IBootstrapRenderer<? super T> renderer,
-				IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
-			return ActionColumnBuilder.this.addAction(renderer, factory);
-		}
-		
-		@Override
-		public IActionColumnAddedActionState<T, I> addLabelledAction(IBootstrapRenderer<? super T> renderer,
-				IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
-			return ActionColumnBuilder.this.addLabelledAction(renderer, factory);
-		}
-		
-		@Override
-		public IActionColumnBuildState<T, I> withClassOnElements(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories) {
-			return ActionColumnBuilder.this.withClassOnElements(valueModelFactories);
-		}
-		
-		@Override
-		public IActionColumnBuildState<T, I> withClassOnElements(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory) {
-			return ActionColumnBuilder.this.withClassOnElements(valueModelFactory);
-		}
-		
-		@Override
-		public IActionColumnBuildState<T, I> withClassOnElements(IModel<? extends String> valueModel) {
-			return ActionColumnBuilder.this.withClassOnElements(valueModel);
-		}
-		
-		@Override
-		public IActionColumnBuildState<T, I> withClassOnElements(String firstValue, String... otherValues) {
-			return ActionColumnBuilder.this.withClassOnElements(firstValue, otherValues);
-		}
-		
-		@Override
-		public IActionColumnNoParameterBuildState<T, I> addAction(IBootstrapRenderer<? super T> renderer, IAjaxAction action) {
-			return ActionColumnBuilder.this.addAction(renderer, action);
-		}
-		
-		@Override
-		public I end() {
-			return ActionColumnBuilder.this.end();
-		}
-		
-	}
+    @Override
+    public <C> IActionColumnAddedLinkState<T, I> addLink(
+        IBootstrapRenderer<? super T> renderer,
+        ICoreBinding<? super T, C> binding,
+        ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
+      return ActionColumnBuilder.this.addLink(renderer, binding, mapper);
+    }
 
-	private abstract class ActionColumnAddedElementState<NextState extends IActionColumnAddedElementState<T, I>>
-			extends ActionColumnBuilderWrapper implements IActionColumnAddedElementState<T, I> {
-		
-		protected abstract NextState getNextState();
-		
-		protected abstract AbstractActionColumnElementBuilder<T, ?, ?> getElementBuilder();
-		
-		@Override
-		public NextState showLabel() {
-			getElementBuilder().showLabel();
-			return getNextState();
-		}
-		
-		@Override
-		public NextState showLabel(Condition showLabelCondition) {
-			getElementBuilder().showLabel(showLabelCondition);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState hideLabel() {
-			getElementBuilder().hideLabel();
-			return getNextState();
-		}
-		
-		@Override
-		public NextState hideLabel(Condition hideLabelCondition) {
-			getElementBuilder().hideLabel(hideLabelCondition);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState showTooltip() {
-			getElementBuilder().showTooltip();
-			return getNextState();
-		}
-		
-		@Override
-		public NextState showTooltip(Condition showTooltipCondition) {
-			getElementBuilder().showTooltip(showTooltipCondition);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState hideTooltip() {
-			getElementBuilder().hideTooltip();
-			return getNextState();
-		}
-		
-		@Override
-		public NextState hideTooltip(Condition hideTooltipCondition) {
-			getElementBuilder().hideTooltip(hideTooltipCondition);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState showIcon() {
-			getElementBuilder().showIcon();
-			return getNextState();
-		}
-		
-		@Override
-		public NextState showIcon(Condition showIconCondition) {
-			getElementBuilder().showIcon(showIconCondition);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState hideIcon() {
-			getElementBuilder().hideIcon();
-			return getNextState();
-		}
-		
-		@Override
-		public NextState hideIcon(Condition hideIconCondition) {
-			getElementBuilder().hideIcon(hideIconCondition);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState showPlaceholder() {
-			getElementBuilder().showPlaceholder();
-			return getNextState();
-		}
-		
-		@Override
-		public NextState showPlaceholder(Condition showPlaceholderCondition) {
-			getElementBuilder().showPlaceholder(showPlaceholderCondition);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState hidePlaceholder() {
-			getElementBuilder().hidePlaceholder();
-			return getNextState();
-		}
-		
-		@Override
-		public NextState hidePlaceholder(Condition hidePlaceholderCondition) {
-			getElementBuilder().hidePlaceholder(hidePlaceholderCondition);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState withClass(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories) {
-			getElementBuilder().withClass(valueModelFactories);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState withClass(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory) {
-			getElementBuilder().withClass(valueModelFactory);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState withClass(IModel<? extends String> valueModel) {
-			getElementBuilder().withClass(valueModel);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState withClass(String firstValue, String... otherValues) {
-			getElementBuilder().withClass(firstValue, otherValues);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState when(final IDetachableFactory<? super IModel<? extends T>, ? extends Condition> conditionFactory) {
-			getElementBuilder().when(conditionFactory);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState when(final Condition condition) {
-			getElementBuilder().when(condition);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState whenPredicate(final SerializablePredicate2<? super T> predicate) {
-			getElementBuilder().whenPredicate(predicate);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState whenPermission(final String permission) {
-			getElementBuilder().whenPermission(permission);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState whenPermission(final Permission permission) {
-			getElementBuilder().whenPermission(permission);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState add(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>> behaviorFactories) {
-			getElementBuilder().add(behaviorFactories);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState add(IDetachableFactory<? super IModel<? extends T>, ? extends Behavior> behaviorFactory) {
-			getElementBuilder().add(behaviorFactory);
-			return getNextState();
-		}
-		
-		@Override
-		public NextState add(Behavior firstBehavior, Behavior... otherBehaviors) {
-			getElementBuilder().add(firstBehavior, otherBehaviors);
-			return getNextState();
-		}
-	}
+    @Override
+    public IActionColumnAddedLinkState<T, I> addLabelledLink(
+        IBootstrapRenderer<? super T> renderer,
+        ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
+      return ActionColumnBuilder.this.addLabelledLink(renderer, mapper);
+    }
 
-	private class ActionColumnAddedLinkState extends ActionColumnAddedElementState<IActionColumnAddedLinkState<T, I>>
-			implements IActionColumnAddedLinkState<T, I> {
-		
-		private final ActionColumnLinkBuilder<T> elementBuilder;
-		
-		public ActionColumnAddedLinkState(ActionColumnLinkBuilder<T> elementBuilder) {
-			super();
-			this.elementBuilder = Objects.requireNonNull(elementBuilder);
-		}
-		
-		@Override
-		public ActionColumnLinkBuilder<T> getElementBuilder() {
-			return elementBuilder;
-		}
-		
-		@Override
-		protected IActionColumnAddedLinkState<T, I> getNextState() {
-			return this;
-		}
+    @Override
+    public <C> IActionColumnAddedLinkState<T, I> addLabelledLink(
+        IBootstrapRenderer<? super T> renderer,
+        ICoreBinding<? super T, C> binding,
+        ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
+      return ActionColumnBuilder.this.addLabelledLink(renderer, binding, mapper);
+    }
 
-		@Override
-		public IActionColumnAddedLinkState<T, I> hideIfInvalid() {
-			getElementBuilder().hideIfInvalid();
-			return getNextState();
-		}
-	}
+    @Override
+    public IActionColumnAddedAjaxActionState<T, I> addAction(
+        IBootstrapRenderer<? super T> renderer, IOneParameterAjaxAction<? super IModel<T>> action) {
+      return ActionColumnBuilder.this.addAction(renderer, action);
+    }
 
-	private class ActionColumnAddedAjaxActionState extends ActionColumnAddedElementState<IActionColumnAddedAjaxActionState<T, I>>
-			implements IActionColumnAddedAjaxActionState<T, I> {
-		
-		private final AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder;
-		
-		public ActionColumnAddedAjaxActionState(AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder) {
-			super();
-			this.elementBuilder = Objects.requireNonNull(elementBuilder);
-		}
-		
-		@Override
-		public AbstractActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
-			return elementBuilder;
-		}
-		
-		@Override
-		protected IActionColumnAddedAjaxActionState<T, I> getNextState() {
-			return this;
-		}
-	}
+    @Override
+    public IActionColumnAddedAjaxActionState<T, I> addLabelledAction(
+        IBootstrapRenderer<? super T> renderer, IOneParameterAjaxAction<? super IModel<T>> action) {
+      return ActionColumnBuilder.this.addLabelledAction(renderer, action);
+    }
 
-	private class ActionColumnAddedActionState extends ActionColumnAddedElementState<IActionColumnAddedActionState<T, I>>
-			implements IActionColumnAddedActionState<T, I> {
-		
-		private final AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder;
-		
-		public ActionColumnAddedActionState(AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder) {
-			super();
-			this.elementBuilder = Objects.requireNonNull(elementBuilder);
-		}
-		
-		@Override
-		public AbstractActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
-			return elementBuilder;
-		}
-		
-		@Override
-		protected IActionColumnAddedActionState<T, I> getNextState() {
-			return this;
-		}
-	}
+    @Override
+    public IActionColumnAddedActionState<T, I> addAction(
+        IBootstrapRenderer<? super T> renderer, IOneParameterAction<? super IModel<T>> action) {
+      return ActionColumnBuilder.this.addAction(renderer, action);
+    }
 
-	private class ActionColumnAddedConfirmActionState extends ActionColumnAddedElementState<IActionColumnAddedConfirmActionState<T, I>>
-			implements IActionColumnAddedConfirmActionState<T, I> {
-		
-		private final AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder;
-		
-		public ActionColumnAddedConfirmActionState(AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder) {
-			super();
-			this.elementBuilder = Objects.requireNonNull(elementBuilder);
-		}
-		
-		@Override
-		public AbstractActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
-			return elementBuilder;
-		}
-		
-		@Override
-		protected IActionColumnAddedConfirmActionState<T, I> getNextState() {
-			return this;
-		}
-	}
+    @Override
+    public IActionColumnAddedActionState<T, I> addLabelledAction(
+        IBootstrapRenderer<? super T> renderer, IOneParameterAction<? super IModel<T>> action) {
+      return ActionColumnBuilder.this.addLabelledAction(renderer, action);
+    }
 
-	@Override
-	public IActionColumnAddedLinkState<T, I> addLink(IBootstrapRenderer<? super T> renderer,
-			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
-		ActionColumnLinkBuilder<T> factory = new ActionColumnLinkBuilder<>(renderer, mapper);
-		builders.add(factory);
-		return new ActionColumnAddedLinkState(factory);
-	}
+    @Override
+    public IActionColumnConfirmActionBuilderStepStart<T, I> addConfirmAction(
+        IBootstrapRenderer<? super T> renderer) {
+      return ActionColumnBuilder.this.addConfirmAction(renderer);
+    }
 
-	@Override
-	public <C> IActionColumnAddedLinkState<T, I> addLink(IBootstrapRenderer<? super T> renderer,
-			ICoreBinding<? super T, C> binding,
-			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
-		return addLink(renderer, new BindingOneParameterLinkDescriptorMapper<>(binding, mapper));
-	}
+    @Override
+    public IActionColumnAddedActionState<T, I> addAction(
+        IBootstrapRenderer<? super T> renderer,
+        IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
+      return ActionColumnBuilder.this.addAction(renderer, factory);
+    }
 
-	@Override
-	public IActionColumnAddedLinkState<T, I> addLabelledLink(IBootstrapRenderer<? super T> renderer,
-			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
-		return addLink(renderer, mapper).showLabel();
-	}
+    @Override
+    public IActionColumnAddedActionState<T, I> addLabelledAction(
+        IBootstrapRenderer<? super T> renderer,
+        IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
+      return ActionColumnBuilder.this.addLabelledAction(renderer, factory);
+    }
 
-	@Override
-	public <C> IActionColumnAddedLinkState<T, I> addLabelledLink(IBootstrapRenderer<? super T> renderer,
-			ICoreBinding<? super T, C> binding,
-			ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
-		return addLabelledLink(renderer, new BindingOneParameterLinkDescriptorMapper<>(binding, mapper));
-	}
+    @Override
+    public IActionColumnBuildState<T, I> withClassOnElements(
+        Collection<
+                ? extends
+                    IDetachableFactory<
+                        ? super IModel<? extends T>, ? extends IModel<? extends String>>>
+            valueModelFactories) {
+      return ActionColumnBuilder.this.withClassOnElements(valueModelFactories);
+    }
 
-	@Override
-	public IActionColumnAddedAjaxActionState<T, I> addAction(IBootstrapRenderer<? super T> renderer,
-			IOneParameterAjaxAction<? super IModel<T>> action) {
-		AbstractActionColumnElementBuilder<T, ?, ?> builder =
-				new ActionColumnSimpleElementBuilder<>(renderer, new ActionColumnAjaxActionFactory<T>(action));
-		builders.add(builder);
-		return new ActionColumnAddedAjaxActionState(builder);
-	}
+    @Override
+    public IActionColumnBuildState<T, I> withClassOnElements(
+        IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>
+            valueModelFactory) {
+      return ActionColumnBuilder.this.withClassOnElements(valueModelFactory);
+    }
 
-	@Override
-	public IActionColumnAddedAjaxActionState<T, I> addLabelledAction(IBootstrapRenderer<? super T> renderer,
-			IOneParameterAjaxAction<? super IModel<T>> action) {
-		return addAction(renderer, action).showLabel();
-	}
+    @Override
+    public IActionColumnBuildState<T, I> withClassOnElements(IModel<? extends String> valueModel) {
+      return ActionColumnBuilder.this.withClassOnElements(valueModel);
+    }
 
-	@Override
-	public IActionColumnAddedActionState<T, I> addAction(IBootstrapRenderer<? super T> renderer,
-			IOneParameterAction<? super IModel<T>> action) {
-		return addAction(renderer, new ActionColumnActionFactory<T>(action));
-	}
+    @Override
+    public IActionColumnBuildState<T, I> withClassOnElements(
+        String firstValue, String... otherValues) {
+      return ActionColumnBuilder.this.withClassOnElements(firstValue, otherValues);
+    }
 
-	@Override
-	public IActionColumnAddedActionState<T, I> addLabelledAction(IBootstrapRenderer<? super T> renderer,
-			IOneParameterAction<? super IModel<T>> action) {
-		return addAction(renderer, action).showLabel();
-	}
+    @Override
+    public IActionColumnNoParameterBuildState<T, I> addAction(
+        IBootstrapRenderer<? super T> renderer, IAjaxAction action) {
+      return ActionColumnBuilder.this.addAction(renderer, action);
+    }
 
-	@Override
-	public IActionColumnConfirmActionBuilderStepStart<T, I> addConfirmAction(IBootstrapRenderer<? super T> renderer) {
-		return new ActionColumnConfirmActionBuilder<>(this, renderer);
-	}
+    @Override
+    public I end() {
+      return ActionColumnBuilder.this.end();
+    }
+  }
 
-	public IActionColumnAddedConfirmActionState<T, I> addConfirmAction(IBootstrapRenderer<? super T> renderer,
-			IOneParameterComponentFactory<? extends AjaxLink<T>, IModel<T>> ajaxConfirmLinkFactory) {
-		AbstractActionColumnElementBuilder<T, ?, ?> builder = new ActionColumnSimpleElementBuilder<>(renderer, ajaxConfirmLinkFactory);
-		builders.add(builder);
-		return new ActionColumnAddedConfirmActionState(builder);
-	}
-	
-	@Override
-	public IActionColumnAddedActionState<T, I> addAction(IBootstrapRenderer<? super T> renderer,
-			IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
-		AbstractActionColumnElementBuilder<T, ?, ?> builder =
-				new ActionColumnSimpleElementBuilder<>(renderer, factory);
-		builders.add(builder);
-		return new ActionColumnAddedActionState(builder);
-	}
-	
-	@Override
-	public IActionColumnAddedActionState<T, I> addLabelledAction(IBootstrapRenderer<? super T> renderer,
-			IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
-		return addAction(renderer, factory).showLabel();
-	}
-	
+  private abstract class ActionColumnAddedElementState<
+          NextState extends IActionColumnAddedElementState<T, I>>
+      extends ActionColumnBuilderWrapper implements IActionColumnAddedElementState<T, I> {
 
-	@Override
-	public IActionColumnNoParameterBuildState<T, I> addAction(IBootstrapRenderer<? super T> renderer, IAjaxAction action) {
-		return addAction(renderer, AjaxActions.ignoreParameter(action));
-	}
+    protected abstract NextState getNextState();
 
-	@Override
-	public IActionColumnBuildState<T, I> withClassOnElements(Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>> valueModelFactories) {
-		this.cssClassOnElementsModelFactories.addAll(valueModelFactories);
-		return this;
-	}
+    protected abstract AbstractActionColumnElementBuilder<T, ?, ?> getElementBuilder();
 
-	@Override
-	public IActionColumnBuildState<T, I> withClassOnElements(IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>> valueModelFactory) {
-		return withClassOnElements(ImmutableList.of(Objects.requireNonNull(valueModelFactory)));
-	}
+    @Override
+    public NextState showLabel() {
+      getElementBuilder().showLabel();
+      return getNextState();
+    }
 
-	@Override
-	public IActionColumnBuildState<T, I> withClassOnElements(IModel<? extends String> valueModel) {
-		return withClassOnElements(DetachableFactories.constant(valueModel));
-	}
+    @Override
+    public NextState showLabel(Condition showLabelCondition) {
+      getElementBuilder().showLabel(showLabelCondition);
+      return getNextState();
+    }
 
-	@Override
-	public IActionColumnBuildState<T, I> withClassOnElements(String firstValue, String... otherValues) {
-		Lists.asList(Objects.requireNonNull(firstValue), otherValues)
-			.stream()
-			.map(Model::of)
-			.forEach(this::withClassOnElements);
-		return this;
-	}
+    @Override
+    public NextState hideLabel() {
+      getElementBuilder().hideLabel();
+      return getNextState();
+    }
 
-	@Override
-	public I end() {
-		for (AbstractActionColumnElementBuilder<T, ?, ?> builder : builders) {
-			builder.withClass(cssClassOnElementsModelFactories);
-		}
-		return onEnd(builders);
-	}
+    @Override
+    public NextState hideLabel(Condition hideLabelCondition) {
+      getElementBuilder().hideLabel(hideLabelCondition);
+      return getNextState();
+    }
 
-	protected abstract I onEnd(List<AbstractActionColumnElementBuilder<T, ?, ?>> builders);
+    @Override
+    public NextState showTooltip() {
+      getElementBuilder().showTooltip();
+      return getNextState();
+    }
 
+    @Override
+    public NextState showTooltip(Condition showTooltipCondition) {
+      getElementBuilder().showTooltip(showTooltipCondition);
+      return getNextState();
+    }
+
+    @Override
+    public NextState hideTooltip() {
+      getElementBuilder().hideTooltip();
+      return getNextState();
+    }
+
+    @Override
+    public NextState hideTooltip(Condition hideTooltipCondition) {
+      getElementBuilder().hideTooltip(hideTooltipCondition);
+      return getNextState();
+    }
+
+    @Override
+    public NextState showIcon() {
+      getElementBuilder().showIcon();
+      return getNextState();
+    }
+
+    @Override
+    public NextState showIcon(Condition showIconCondition) {
+      getElementBuilder().showIcon(showIconCondition);
+      return getNextState();
+    }
+
+    @Override
+    public NextState hideIcon() {
+      getElementBuilder().hideIcon();
+      return getNextState();
+    }
+
+    @Override
+    public NextState hideIcon(Condition hideIconCondition) {
+      getElementBuilder().hideIcon(hideIconCondition);
+      return getNextState();
+    }
+
+    @Override
+    public NextState showPlaceholder() {
+      getElementBuilder().showPlaceholder();
+      return getNextState();
+    }
+
+    @Override
+    public NextState showPlaceholder(Condition showPlaceholderCondition) {
+      getElementBuilder().showPlaceholder(showPlaceholderCondition);
+      return getNextState();
+    }
+
+    @Override
+    public NextState hidePlaceholder() {
+      getElementBuilder().hidePlaceholder();
+      return getNextState();
+    }
+
+    @Override
+    public NextState hidePlaceholder(Condition hidePlaceholderCondition) {
+      getElementBuilder().hidePlaceholder(hidePlaceholderCondition);
+      return getNextState();
+    }
+
+    @Override
+    public NextState withClass(
+        Collection<
+                ? extends
+                    IDetachableFactory<
+                        ? super IModel<? extends T>, ? extends IModel<? extends String>>>
+            valueModelFactories) {
+      getElementBuilder().withClass(valueModelFactories);
+      return getNextState();
+    }
+
+    @Override
+    public NextState withClass(
+        IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>
+            valueModelFactory) {
+      getElementBuilder().withClass(valueModelFactory);
+      return getNextState();
+    }
+
+    @Override
+    public NextState withClass(IModel<? extends String> valueModel) {
+      getElementBuilder().withClass(valueModel);
+      return getNextState();
+    }
+
+    @Override
+    public NextState withClass(String firstValue, String... otherValues) {
+      getElementBuilder().withClass(firstValue, otherValues);
+      return getNextState();
+    }
+
+    @Override
+    public NextState when(
+        final IDetachableFactory<? super IModel<? extends T>, ? extends Condition>
+            conditionFactory) {
+      getElementBuilder().when(conditionFactory);
+      return getNextState();
+    }
+
+    @Override
+    public NextState when(final Condition condition) {
+      getElementBuilder().when(condition);
+      return getNextState();
+    }
+
+    @Override
+    public NextState whenPredicate(final SerializablePredicate2<? super T> predicate) {
+      getElementBuilder().whenPredicate(predicate);
+      return getNextState();
+    }
+
+    @Override
+    public NextState whenPermission(final String permission) {
+      getElementBuilder().whenPermission(permission);
+      return getNextState();
+    }
+
+    @Override
+    public NextState whenPermission(final Permission permission) {
+      getElementBuilder().whenPermission(permission);
+      return getNextState();
+    }
+
+    @Override
+    public NextState add(
+        Collection<? extends IDetachableFactory<? super IModel<? extends T>, ? extends Behavior>>
+            behaviorFactories) {
+      getElementBuilder().add(behaviorFactories);
+      return getNextState();
+    }
+
+    @Override
+    public NextState add(
+        IDetachableFactory<? super IModel<? extends T>, ? extends Behavior> behaviorFactory) {
+      getElementBuilder().add(behaviorFactory);
+      return getNextState();
+    }
+
+    @Override
+    public NextState add(Behavior firstBehavior, Behavior... otherBehaviors) {
+      getElementBuilder().add(firstBehavior, otherBehaviors);
+      return getNextState();
+    }
+  }
+
+  private class ActionColumnAddedLinkState
+      extends ActionColumnAddedElementState<IActionColumnAddedLinkState<T, I>>
+      implements IActionColumnAddedLinkState<T, I> {
+
+    private final ActionColumnLinkBuilder<T> elementBuilder;
+
+    public ActionColumnAddedLinkState(ActionColumnLinkBuilder<T> elementBuilder) {
+      super();
+      this.elementBuilder = Objects.requireNonNull(elementBuilder);
+    }
+
+    @Override
+    public ActionColumnLinkBuilder<T> getElementBuilder() {
+      return elementBuilder;
+    }
+
+    @Override
+    protected IActionColumnAddedLinkState<T, I> getNextState() {
+      return this;
+    }
+
+    @Override
+    public IActionColumnAddedLinkState<T, I> hideIfInvalid() {
+      getElementBuilder().hideIfInvalid();
+      return getNextState();
+    }
+  }
+
+  private class ActionColumnAddedAjaxActionState
+      extends ActionColumnAddedElementState<IActionColumnAddedAjaxActionState<T, I>>
+      implements IActionColumnAddedAjaxActionState<T, I> {
+
+    private final AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder;
+
+    public ActionColumnAddedAjaxActionState(
+        AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder) {
+      super();
+      this.elementBuilder = Objects.requireNonNull(elementBuilder);
+    }
+
+    @Override
+    public AbstractActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
+      return elementBuilder;
+    }
+
+    @Override
+    protected IActionColumnAddedAjaxActionState<T, I> getNextState() {
+      return this;
+    }
+  }
+
+  private class ActionColumnAddedActionState
+      extends ActionColumnAddedElementState<IActionColumnAddedActionState<T, I>>
+      implements IActionColumnAddedActionState<T, I> {
+
+    private final AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder;
+
+    public ActionColumnAddedActionState(
+        AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder) {
+      super();
+      this.elementBuilder = Objects.requireNonNull(elementBuilder);
+    }
+
+    @Override
+    public AbstractActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
+      return elementBuilder;
+    }
+
+    @Override
+    protected IActionColumnAddedActionState<T, I> getNextState() {
+      return this;
+    }
+  }
+
+  private class ActionColumnAddedConfirmActionState
+      extends ActionColumnAddedElementState<IActionColumnAddedConfirmActionState<T, I>>
+      implements IActionColumnAddedConfirmActionState<T, I> {
+
+    private final AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder;
+
+    public ActionColumnAddedConfirmActionState(
+        AbstractActionColumnElementBuilder<T, ?, ?> elementBuilder) {
+      super();
+      this.elementBuilder = Objects.requireNonNull(elementBuilder);
+    }
+
+    @Override
+    public AbstractActionColumnElementBuilder<T, ?, ?> getElementBuilder() {
+      return elementBuilder;
+    }
+
+    @Override
+    protected IActionColumnAddedConfirmActionState<T, I> getNextState() {
+      return this;
+    }
+  }
+
+  @Override
+  public IActionColumnAddedLinkState<T, I> addLink(
+      IBootstrapRenderer<? super T> renderer,
+      ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
+    ActionColumnLinkBuilder<T> factory = new ActionColumnLinkBuilder<>(renderer, mapper);
+    builders.add(factory);
+    return new ActionColumnAddedLinkState(factory);
+  }
+
+  @Override
+  public <C> IActionColumnAddedLinkState<T, I> addLink(
+      IBootstrapRenderer<? super T> renderer,
+      ICoreBinding<? super T, C> binding,
+      ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
+    return addLink(renderer, new BindingOneParameterLinkDescriptorMapper<>(binding, mapper));
+  }
+
+  @Override
+  public IActionColumnAddedLinkState<T, I> addLabelledLink(
+      IBootstrapRenderer<? super T> renderer,
+      ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<T>> mapper) {
+    return addLink(renderer, mapper).showLabel();
+  }
+
+  @Override
+  public <C> IActionColumnAddedLinkState<T, I> addLabelledLink(
+      IBootstrapRenderer<? super T> renderer,
+      ICoreBinding<? super T, C> binding,
+      ILinkDescriptorMapper<? extends ILinkGenerator, ? super IModel<C>> mapper) {
+    return addLabelledLink(
+        renderer, new BindingOneParameterLinkDescriptorMapper<>(binding, mapper));
+  }
+
+  @Override
+  public IActionColumnAddedAjaxActionState<T, I> addAction(
+      IBootstrapRenderer<? super T> renderer, IOneParameterAjaxAction<? super IModel<T>> action) {
+    AbstractActionColumnElementBuilder<T, ?, ?> builder =
+        new ActionColumnSimpleElementBuilder<>(
+            renderer, new ActionColumnAjaxActionFactory<T>(action));
+    builders.add(builder);
+    return new ActionColumnAddedAjaxActionState(builder);
+  }
+
+  @Override
+  public IActionColumnAddedAjaxActionState<T, I> addLabelledAction(
+      IBootstrapRenderer<? super T> renderer, IOneParameterAjaxAction<? super IModel<T>> action) {
+    return addAction(renderer, action).showLabel();
+  }
+
+  @Override
+  public IActionColumnAddedActionState<T, I> addAction(
+      IBootstrapRenderer<? super T> renderer, IOneParameterAction<? super IModel<T>> action) {
+    return addAction(renderer, new ActionColumnActionFactory<T>(action));
+  }
+
+  @Override
+  public IActionColumnAddedActionState<T, I> addLabelledAction(
+      IBootstrapRenderer<? super T> renderer, IOneParameterAction<? super IModel<T>> action) {
+    return addAction(renderer, action).showLabel();
+  }
+
+  @Override
+  public IActionColumnConfirmActionBuilderStepStart<T, I> addConfirmAction(
+      IBootstrapRenderer<? super T> renderer) {
+    return new ActionColumnConfirmActionBuilder<>(this, renderer);
+  }
+
+  public IActionColumnAddedConfirmActionState<T, I> addConfirmAction(
+      IBootstrapRenderer<? super T> renderer,
+      IOneParameterComponentFactory<? extends AjaxLink<T>, IModel<T>> ajaxConfirmLinkFactory) {
+    AbstractActionColumnElementBuilder<T, ?, ?> builder =
+        new ActionColumnSimpleElementBuilder<>(renderer, ajaxConfirmLinkFactory);
+    builders.add(builder);
+    return new ActionColumnAddedConfirmActionState(builder);
+  }
+
+  @Override
+  public IActionColumnAddedActionState<T, I> addAction(
+      IBootstrapRenderer<? super T> renderer,
+      IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
+    AbstractActionColumnElementBuilder<T, ?, ?> builder =
+        new ActionColumnSimpleElementBuilder<>(renderer, factory);
+    builders.add(builder);
+    return new ActionColumnAddedActionState(builder);
+  }
+
+  @Override
+  public IActionColumnAddedActionState<T, I> addLabelledAction(
+      IBootstrapRenderer<? super T> renderer,
+      IOneParameterComponentFactory<? extends AbstractLink, IModel<T>> factory) {
+    return addAction(renderer, factory).showLabel();
+  }
+
+  @Override
+  public IActionColumnNoParameterBuildState<T, I> addAction(
+      IBootstrapRenderer<? super T> renderer, IAjaxAction action) {
+    return addAction(renderer, AjaxActions.ignoreParameter(action));
+  }
+
+  @Override
+  public IActionColumnBuildState<T, I> withClassOnElements(
+      Collection<
+              ? extends
+                  IDetachableFactory<
+                      ? super IModel<? extends T>, ? extends IModel<? extends String>>>
+          valueModelFactories) {
+    this.cssClassOnElementsModelFactories.addAll(valueModelFactories);
+    return this;
+  }
+
+  @Override
+  public IActionColumnBuildState<T, I> withClassOnElements(
+      IDetachableFactory<? super IModel<? extends T>, ? extends IModel<? extends String>>
+          valueModelFactory) {
+    return withClassOnElements(ImmutableList.of(Objects.requireNonNull(valueModelFactory)));
+  }
+
+  @Override
+  public IActionColumnBuildState<T, I> withClassOnElements(IModel<? extends String> valueModel) {
+    return withClassOnElements(DetachableFactories.constant(valueModel));
+  }
+
+  @Override
+  public IActionColumnBuildState<T, I> withClassOnElements(
+      String firstValue, String... otherValues) {
+    Lists.asList(Objects.requireNonNull(firstValue), otherValues).stream()
+        .map(Model::of)
+        .forEach(this::withClassOnElements);
+    return this;
+  }
+
+  @Override
+  public I end() {
+    for (AbstractActionColumnElementBuilder<T, ?, ?> builder : builders) {
+      builder.withClass(cssClassOnElementsModelFactories);
+    }
+    return onEnd(builders);
+  }
+
+  protected abstract I onEnd(List<AbstractActionColumnElementBuilder<T, ?, ?>> builders);
 }

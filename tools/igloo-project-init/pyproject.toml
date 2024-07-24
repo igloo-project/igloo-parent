@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "igloo-project-init"
+dynamic = ["version"]
+description = ''
+requires-python = ">=3.11"
+keywords = []
+authors = [
+  { name = "Kobalt", email = "contact@kobalt.fr" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "click",
+  "colorlog"
+]
+
+[project.scripts]
+igloo-project-init = "igloo_project_init:main"
+
+[project.urls]
+Documentation = "https://gitlab.tools.kobalt.fr/kobalt/igloo-project"
+Source = "https://gitlab.tools.kobalt.fr/kobalt/igloo-project"
+
+[tool.hatch.version]
+path = "igloo_project_init.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:igloo_project_init.py}"
+
+
+[tool.ruff.lint.extend-per-file-ignores]
+"**" = ["TRY003", "EM101", "FBT001", "FBT002", "S607"]

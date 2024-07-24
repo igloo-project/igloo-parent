@@ -5,7 +5,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.iglooproject.test.jpa.junit.JpaOnlyTestConfiguration;
@@ -20,12 +19,10 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 @Target(TYPE)
 @EnableAutoConfiguration
 @ContextConfiguration(initializers = ExtendedApplicationContextInitializer.class)
-@SpringBootTest(classes = { TestConfig.class, JpaOnlyTestConfiguration.class })
+@SpringBootTest(classes = {TestConfig.class, JpaOnlyTestConfiguration.class})
 @TestExecutionListeners({
-	DependencyInjectionTestExecutionListener.class,
-	EntityManagerExecutionListener.class
+  DependencyInjectionTestExecutionListener.class,
+  EntityManagerExecutionListener.class
 })
 @TestPropertySource(properties = "igloo.profile=test")
-public @interface SpringBootTestJpaMore {
-
-}
+public @interface SpringBootTestJpaMore {}

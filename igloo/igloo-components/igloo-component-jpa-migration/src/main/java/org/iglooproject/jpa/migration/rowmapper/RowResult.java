@@ -1,13 +1,11 @@
 package org.iglooproject.jpa.migration.rowmapper;
 
 public enum RowResult {
+  DONE,
 
-	DONE,
+  DONE_WITH_ERROR,
 
-	DONE_WITH_ERROR,
+  FAILED,
 
-	FAILED,
-
-	NOT_APPLICABLE;
-
+  NOT_APPLICABLE;
 }

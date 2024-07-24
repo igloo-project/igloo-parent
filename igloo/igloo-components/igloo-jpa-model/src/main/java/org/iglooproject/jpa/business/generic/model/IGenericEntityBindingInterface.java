@@ -5,8 +5,7 @@ import org.bindgen.Bindable;
 @Bindable
 public interface IGenericEntityBindingInterface {
 
-	Object getId();
+  Object getId();
 
-	boolean isNew();
-
+  boolean isNew();
 }

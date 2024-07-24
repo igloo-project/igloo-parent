@@ -1,7 +1,6 @@
 package org.iglooproject.test.spring.notification;
 
 import jakarta.mail.internet.MimeMessage;
-
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.spring.notification.service.INotificationBuilderBaseState;
 import org.iglooproject.spring.notification.service.NotificationBuilder;
@@ -21,46 +20,43 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 @ContextConfiguration(
-		classes = { TestConfig.class },
-		initializers = { ExtendedApplicationContextInitializer.class }
-)
-@TestPropertySource(properties = {
-		"notification.mail.sender.behavior=EXPLICIT",
-		"notification.mail.from=" + AbstractTestNotification.CONFIG_FROM
-})
+    classes = {TestConfig.class},
+    initializers = {ExtendedApplicationContextInitializer.class})
+@TestPropertySource(
+    properties = {
+      "notification.mail.sender.behavior=EXPLICIT",
+      "notification.mail.from=" + AbstractTestNotification.CONFIG_FROM
+    })
 @ExtendWith(SpringExtension.class)
 public abstract class AbstractTestNotification {
 
-	protected static final String CONFIG_FROM = "Example From <from-config@example.com>";
+  protected static final String CONFIG_FROM = "Example From <from-config@example.com>";
 
-	@Autowired
-	private ApplicationContext applicationContext;
+  @Autowired private ApplicationContext applicationContext;
 
-	@Autowired
-	private JavaMailSender javaMailSender;
+  @Autowired private JavaMailSender javaMailSender;
 
-	@BeforeEach
-	public void resetJavaMailSenderMock() {
-		Mockito.reset(javaMailSender);
-		JavaMailSender real = new JavaMailSenderImpl();
-		Mockito.when(javaMailSender.createMimeMessage()).then(invocation -> real.createMimeMessage());
-	}
+  @BeforeEach
+  public void resetJavaMailSenderMock() {
+    Mockito.reset(javaMailSender);
+    JavaMailSender real = new JavaMailSenderImpl();
+    Mockito.when(javaMailSender.createMimeMessage()).then(invocation -> real.createMimeMessage());
+  }
 
-	protected JavaMailSender getJavaMailSenderMock() {
-		return javaMailSender;
-	}
+  protected JavaMailSender getJavaMailSenderMock() {
+    return javaMailSender;
+  }
 
-	protected ArgumentCaptor<MimeMessage> mockitoSend(VerificationMode verificationMode) {
-		ArgumentCaptor<MimeMessage> argument = ArgumentCaptor.forClass(MimeMessage.class);
-		Mockito.verify(javaMailSender, verificationMode).send(argument.capture());
-		return argument;
-	}
+  protected ArgumentCaptor<MimeMessage> mockitoSend(VerificationMode verificationMode) {
+    ArgumentCaptor<MimeMessage> argument = ArgumentCaptor.forClass(MimeMessage.class);
+    Mockito.verify(javaMailSender, verificationMode).send(argument.capture());
+    return argument;
+  }
 
-	protected INotificationBuilderBaseState createNotificationBuilder() {
-		INotificationBuilderBaseState builder = NotificationBuilder.create().init(applicationContext);
-		return builder;
-	}
-
+  protected INotificationBuilderBaseState createNotificationBuilder() {
+    INotificationBuilderBaseState builder = NotificationBuilder.create().init(applicationContext);
+    return builder;
+  }
 }

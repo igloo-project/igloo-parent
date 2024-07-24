@@ -8,9 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @EnableAutoConfiguration
 @PropertySource(
-	name = IglooPropertySourcePriority.APPLICATION,
-	value = "classpath:igloo-component-jpa-test/jpa.properties",
-	encoding = "UTF-8"
-)
-public class JpaOnlyTestConfiguration {
-}
+    name = IglooPropertySourcePriority.APPLICATION,
+    value = "classpath:igloo-component-jpa-test/jpa.properties",
+    encoding = "UTF-8")
+public class JpaOnlyTestConfiguration {}

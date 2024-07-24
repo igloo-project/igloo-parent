@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha12</version>
+		<version>6.0.0-Alpha13</version>
 	</parent>
 
 	<artifactId>igloo-component-jpa-more</artifactId>
@@ -90,10 +90,6 @@
 		<dependency>
 			<groupId>org.hibernate.search</groupId>
 			<artifactId>hibernate-search-backend-lucene</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.search</groupId>
-			<artifactId>hibernate-search-v5migrationhelper-orm</artifactId>
 		</dependency>
 		
 		<!-- Bindgen -->

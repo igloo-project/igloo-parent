@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("projectService")
-public class ProjectServiceImpl extends GenericEntityServiceImpl<Long, Project> implements IProjectService {
+public class ProjectServiceImpl extends GenericEntityServiceImpl<Long, Project>
+    implements IProjectService {
 
-	@Autowired
-	public ProjectServiceImpl(IProjectDao projectDao) {
-		super(projectDao);
-	}
+  @Autowired
+  public ProjectServiceImpl(IProjectDao projectDao) {
+    super(projectDao);
+  }
 }

@@ -4,6 +4,5 @@ import org.apache.wicket.model.IModel;
 
 public interface IActionColumnConfirmActionBuilderStepNo<T, I> {
 
-	IActionColumnConfirmActionBuilderStepOnclick<T, I> no(IModel<String> noLabelModel);
-
+  IActionColumnConfirmActionBuilderStepOnclick<T, I> no(IModel<String> noLabelModel);
 }

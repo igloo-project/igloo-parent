@@ -3,86 +3,92 @@ package org.iglooproject.export.test.person;
 import java.time.LocalDateTime;
 
 public class Person {
-	
-	String username;
-	
-	String firstName;
-	
-	String lastName;
-	
-	LocalDateTime birthDateTime;
-	
-	int age;
-	
-	double size;
-	
-	double percentage;
 
-	public Person(String username, String firstName, String lastName,
-			LocalDateTime birthDateTime, int age, double size, double percentage) {
-		super();
-		this.username = username;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.birthDateTime = birthDateTime;
-		this.age = age;
-		this.size = size;
-		this.percentage = percentage;
-	}
+  String username;
 
-	public String getUsername() {
-		return username;
-	}
+  String firstName;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+  String lastName;
 
-	public String getFirstName() {
-		return firstName;
-	}
+  LocalDateTime birthDateTime;
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+  int age;
 
-	public String getLastName() {
-		return lastName;
-	}
+  double size;
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+  double percentage;
 
-	public LocalDateTime getBirthDateTime() {
-		return birthDateTime;
-	}
+  public Person(
+      String username,
+      String firstName,
+      String lastName,
+      LocalDateTime birthDateTime,
+      int age,
+      double size,
+      double percentage) {
+    super();
+    this.username = username;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.birthDateTime = birthDateTime;
+    this.age = age;
+    this.size = size;
+    this.percentage = percentage;
+  }
 
-	public void setBirthDateTime(LocalDateTime birthDateTime) {
-		this.birthDateTime = birthDateTime;
-	}
+  public String getUsername() {
+    return username;
+  }
 
-	public int getAge() {
-		return age;
-	}
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-	public void setAge(int age) {
-		this.age = age;
-	}
+  public String getFirstName() {
+    return firstName;
+  }
 
-	public double getSize() {
-		return size;
-	}
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-	public void setSize(double size) {
-		this.size = size;
-	}
+  public String getLastName() {
+    return lastName;
+  }
 
-	public double getPercentage() {
-		return percentage;
-	}
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
-	public void setPercentage(double percentage) {
-		this.percentage = percentage;
-	}
+  public LocalDateTime getBirthDateTime() {
+    return birthDateTime;
+  }
+
+  public void setBirthDateTime(LocalDateTime birthDateTime) {
+    this.birthDateTime = birthDateTime;
+  }
+
+  public int getAge() {
+    return age;
+  }
+
+  public void setAge(int age) {
+    this.age = age;
+  }
+
+  public double getSize() {
+    return size;
+  }
+
+  public void setSize(double size) {
+    this.size = size;
+  }
+
+  public double getPercentage() {
+    return percentage;
+  }
+
+  public void setPercentage(double percentage) {
+    this.percentage = percentage;
+  }
 }

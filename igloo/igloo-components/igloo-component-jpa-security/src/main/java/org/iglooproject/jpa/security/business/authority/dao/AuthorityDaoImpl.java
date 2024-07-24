@@ -6,15 +6,15 @@ import org.iglooproject.jpa.security.business.authority.model.QAuthority;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AuthorityDaoImpl extends GenericEntityDaoImpl<Long, Authority> implements IAuthorityDao {
+public class AuthorityDaoImpl extends GenericEntityDaoImpl<Long, Authority>
+    implements IAuthorityDao {
 
-	public AuthorityDaoImpl() {
-		super();
-	}
+  public AuthorityDaoImpl() {
+    super();
+  }
 
-	@Override
-	public Authority getByName(String name) {
-		return super.getByField(QAuthority.authority, QAuthority.authority.name, name);
-	}
-
+  @Override
+  public Authority getByName(String name) {
+    return super.getByField(QAuthority.authority, QAuthority.authority.name, name);
+  }
 }

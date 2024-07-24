@@ -15,17 +15,16 @@ import org.springframework.context.annotation.Import;
 @Import(JpaMoreComponentScanConfiguration.class)
 public class JpaMoreAutoConfiguration {
 
-	public JpaMoreAutoConfiguration() {//NOSONAR
-		//nothing
-	}
+  public JpaMoreAutoConfiguration() { // NOSONAR
+    // nothing
+  }
 
-	@ConditionalOnBean(IConfigurablePropertyService.class)
-	@Configuration
-	public static class JpaMutablePropertyService {
-		@Bean
-		public IMutablePropertyDao mutablePropertyDao() {
-			return new ParameterDaoImpl();
-		}
-	}
-
+  @ConditionalOnBean(IConfigurablePropertyService.class)
+  @Configuration
+  public static class JpaMutablePropertyService {
+    @Bean
+    public IMutablePropertyDao mutablePropertyDao() {
+      return new ParameterDaoImpl();
+    }
+  }
 }

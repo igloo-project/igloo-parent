@@ -6,6 +6,5 @@ import org.iglooproject.jpa.query.IQuery;
 
 public interface IEntityReferenceQuery<T extends GenericEntity<?, ?>> extends IQuery<T> {
 
-	EntityReferenceQueryImpl<T> setReference(GenericEntityCollectionReference<?, T> reference);
-
+  EntityReferenceQueryImpl<T> setReference(GenericEntityCollectionReference<?, T> reference);
 }

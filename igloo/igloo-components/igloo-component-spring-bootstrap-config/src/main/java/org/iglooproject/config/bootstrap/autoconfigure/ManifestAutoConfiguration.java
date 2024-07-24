@@ -6,20 +6,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * <p>This configuration allow to inject MANIFEST.MF informations as properties.</p>
- * 
+ * This configuration allow to inject MANIFEST.MF informations as properties.
+ *
  * @see ManifestPropertySource
  * @see ManifestPropertySourceBeanFactoryPostProcessor
  */
 @Configuration
 public class ManifestAutoConfiguration {
 
-	public ManifestAutoConfiguration() {// NOSONAR
-		// nothing, constructor is needed by spring despite this class has no method
-	}
+  public ManifestAutoConfiguration() { // NOSONAR
+    // nothing, constructor is needed by spring despite this class has no method
+  }
 
-	@Bean
-	public static ManifestPropertySourceBeanFactoryPostProcessor manifestPropertySourceConfigurer() {
-		return new ManifestPropertySourceBeanFactoryPostProcessor();
-	}
+  @Bean
+  public static ManifestPropertySourceBeanFactoryPostProcessor manifestPropertySourceConfigurer() {
+    return new ManifestPropertySourceBeanFactoryPostProcessor();
+  }
 }

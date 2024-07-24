@@ -7,30 +7,29 @@ import java.io.Serializable;
 
 public class CsvCell implements Serializable {
 
-	private static final long serialVersionUID = 6841374847525985451L;
-	
-	private final CsvRow row;
-	
-	private final int index;
+  private static final long serialVersionUID = 6841374847525985451L;
 
-	public CsvCell(CsvRow row, int index) {
-		super();
-		checkNotNull(row);
-		checkPositionIndex(index, row.getContent().size());
-		this.row = row;
-		this.index = index;
-	}
+  private final CsvRow row;
 
-	public CsvRow getRow() {
-		return row;
-	}
-	
-	public String getContent() {
-		return row.getContent().get(index);
-	}
+  private final int index;
 
-	public int getIndex() {
-		return index;
-	}
-	
+  public CsvCell(CsvRow row, int index) {
+    super();
+    checkNotNull(row);
+    checkPositionIndex(index, row.getContent().size());
+    this.row = row;
+    this.index = index;
+  }
+
+  public CsvRow getRow() {
+    return row;
+  }
+
+  public String getContent() {
+    return row.getContent().get(index);
+  }
+
+  public int getIndex() {
+    return index;
+  }
 }

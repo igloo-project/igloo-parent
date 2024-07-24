@@ -1,60 +1,58 @@
 package org.iglooproject.test.business.nullables.model.embeddable;
 
-import java.time.Instant;
-
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.time.Instant;
 
 @Embeddable
 public class NullablesSection {
 
-	@Basic(optional = false)
-	@Column(nullable = false)
-	private Instant basicFalseColumnFalse;
+  @Basic(optional = false)
+  @Column(nullable = false)
+  private Instant basicFalseColumnFalse;
 
-	@Basic(optional = false)
-	@Column(nullable = true)
-	private Instant basicFalseColumnTrue;
+  @Basic(optional = false)
+  @Column(nullable = true)
+  private Instant basicFalseColumnTrue;
 
-	@Basic(optional = true)
-	@Column(nullable = false)
-	private Instant basicTrueColumnFalse;
+  @Basic(optional = true)
+  @Column(nullable = false)
+  private Instant basicTrueColumnFalse;
 
-	@Basic(optional = true)
-	@Column(nullable = true)
-	private Instant basicTrueColumnTrue;
+  @Basic(optional = true)
+  @Column(nullable = true)
+  private Instant basicTrueColumnTrue;
 
-	public Instant getBasicFalseColumnFalse() {
-		return basicFalseColumnFalse;
-	}
+  public Instant getBasicFalseColumnFalse() {
+    return basicFalseColumnFalse;
+  }
 
-	public void setBasicFalseColumnFalse(Instant basicFalseColumnFalse) {
-		this.basicFalseColumnFalse = basicFalseColumnFalse;
-	}
+  public void setBasicFalseColumnFalse(Instant basicFalseColumnFalse) {
+    this.basicFalseColumnFalse = basicFalseColumnFalse;
+  }
 
-	public Instant getBasicFalseColumnTrue() {
-		return basicFalseColumnTrue;
-	}
+  public Instant getBasicFalseColumnTrue() {
+    return basicFalseColumnTrue;
+  }
 
-	public void setBasicFalseColumnTrue(Instant basicFalseColumnTrue) {
-		this.basicFalseColumnTrue = basicFalseColumnTrue;
-	}
+  public void setBasicFalseColumnTrue(Instant basicFalseColumnTrue) {
+    this.basicFalseColumnTrue = basicFalseColumnTrue;
+  }
 
-	public Instant getBasicTrueColumnFalse() {
-		return basicTrueColumnFalse;
-	}
+  public Instant getBasicTrueColumnFalse() {
+    return basicTrueColumnFalse;
+  }
 
-	public void setBasicTrueColumnFalse(Instant basicTrueColumnFalse) {
-		this.basicTrueColumnFalse = basicTrueColumnFalse;
-	}
+  public void setBasicTrueColumnFalse(Instant basicTrueColumnFalse) {
+    this.basicTrueColumnFalse = basicTrueColumnFalse;
+  }
 
-	public Instant getBasicTrueColumnTrue() {
-		return basicTrueColumnTrue;
-	}
+  public Instant getBasicTrueColumnTrue() {
+    return basicTrueColumnTrue;
+  }
 
-	public void setBasicTrueColumnTrue(Instant basicTrueColumnTrue) {
-		this.basicTrueColumnTrue = basicTrueColumnTrue;
-	}
-
+  public void setBasicTrueColumnTrue(Instant basicTrueColumnTrue) {
+    this.basicTrueColumnTrue = basicTrueColumnTrue;
+  }
 }

@@ -5,7 +5,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.iglooproject.test.jpa.junit.JpaOnlyTestConfiguration;
@@ -16,20 +15,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-
 import test.jpa.more.business.JpaMoreTestBusinessPackage;
 
 @Retention(RUNTIME)
 @Target(TYPE)
 @EnableAutoConfiguration
 @ContextConfiguration(initializers = ExtendedApplicationContextInitializer.class)
-@SpringBootTest(classes = { TestConfig.class, JpaOnlyTestConfiguration.class })
+@SpringBootTest(classes = {TestConfig.class, JpaOnlyTestConfiguration.class})
 @TestExecutionListeners({
-	DependencyInjectionTestExecutionListener.class,
-	EntityManagerExecutionListener.class
+  DependencyInjectionTestExecutionListener.class,
+  EntityManagerExecutionListener.class
 })
 @TestPropertySource(properties = "igloo.profile=test")
-@EntityScan(basePackageClasses = { JpaMoreTestBusinessPackage.class })
-public @interface SpringBootTestJpaMoreHistoryLog {
-
-}
+@EntityScan(basePackageClasses = {JpaMoreTestBusinessPackage.class})
+public @interface SpringBootTestJpaMoreHistoryLog {}

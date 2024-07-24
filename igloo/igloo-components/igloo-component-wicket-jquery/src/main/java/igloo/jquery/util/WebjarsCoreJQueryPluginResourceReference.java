@@ -3,44 +3,45 @@ package igloo.jquery.util;
 import static de.agilecoders.wicket.webjars.util.Helper.prependWebjarsPathIfMissing;
 import static de.agilecoders.wicket.webjars.util.WebjarsVersion.useRecent;
 
+import de.agilecoders.wicket.webjars.request.resource.IWebjarsResourceReference;
 import java.util.Locale;
 
-import de.agilecoders.wicket.webjars.request.resource.IWebjarsResourceReference;
+public class WebjarsCoreJQueryPluginResourceReference
+    extends AbstractCoreJQueryPluginResourceReference implements IWebjarsResourceReference {
 
-public class WebjarsCoreJQueryPluginResourceReference extends AbstractCoreJQueryPluginResourceReference
-		implements IWebjarsResourceReference {
+  private static final long serialVersionUID = 919512467032103146L;
 
-	private static final long serialVersionUID = 919512467032103146L;
+  private final String originalName;
 
-	private final String originalName;
+  public WebjarsCoreJQueryPluginResourceReference(final String name) {
+    super(
+        WebjarsCoreJQueryPluginResourceReference.class,
+        useRecent(prependWebjarsPathIfMissing(name)));
+    this.originalName = name;
+  }
 
-	public WebjarsCoreJQueryPluginResourceReference(final String name) {
-		super(WebjarsCoreJQueryPluginResourceReference.class, useRecent(prependWebjarsPathIfMissing(name)));
-		this.originalName = name;
-	}
+  @Override
+  public final String getOriginalName() {
+    return originalName;
+  }
 
-	@Override
-	public final String getOriginalName() {
-		return originalName;
-	}
+  @Override
+  public final Locale getLocale() {
+    return null;
+  }
 
-	@Override
-	public final Locale getLocale() {
-		return null;
-	}
+  @Override
+  public final String getStyle() {
+    return null;
+  }
 
-	@Override
-	public final String getStyle() {
-		return null;
-	}
+  @Override
+  public final String getVariation() {
+    return null;
+  }
 
-	@Override
-	public final String getVariation() {
-		return null;
-	}
-
-	@Override
-	public String toString() {
-		return "[webjars js resource] " + getOriginalName() + " (resolved name: " + getName() + ")";
-	}
+  @Override
+  public String toString() {
+    return "[webjars js resource] " + getOriginalName() + " (resolved name: " + getName() + ")";
+  }
 }

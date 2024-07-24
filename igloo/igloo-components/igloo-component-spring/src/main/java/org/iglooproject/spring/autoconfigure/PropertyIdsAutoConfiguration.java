@@ -13,20 +13,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class PropertyIdsAutoConfiguration {
 
-	@Bean
-	@ConditionalOnMissingBean
-	public IMutablePropertyDao fallbackMutablePropertyDao(IImmutablePropertyDao immutablePropertyDao) {
-		return new FallbackMutablePropertyDaoImpl(immutablePropertyDao);
-	}
+  @Bean
+  @ConditionalOnMissingBean
+  public IMutablePropertyDao fallbackMutablePropertyDao(
+      IImmutablePropertyDao immutablePropertyDao) {
+    return new FallbackMutablePropertyDaoImpl(immutablePropertyDao);
+  }
 
-	@Bean
-	public IImmutablePropertyDao immutablePropertyDao() {
-		return new ImmutablePropertyDaoImpl();
-	}
+  @Bean
+  public IImmutablePropertyDao immutablePropertyDao() {
+    return new ImmutablePropertyDaoImpl();
+  }
 
-	@Bean
-	public IConfigurablePropertyService propertyService() {
-		return new PropertyServiceImpl();
-	}
-
+  @Bean
+  public IConfigurablePropertyService propertyService() {
+    return new PropertyServiceImpl();
+  }
 }

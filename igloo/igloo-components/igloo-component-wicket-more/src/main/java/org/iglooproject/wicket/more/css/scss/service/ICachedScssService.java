@@ -5,8 +5,8 @@ import org.iglooproject.sass.service.IScssService;
 
 public interface ICachedScssService extends IScssService {
 
-	ScssStylesheetInformation getCachedCompiledStylesheet(Class<?> scope, String path, boolean checkCacheEntryUpToDate);
+  ScssStylesheetInformation getCachedCompiledStylesheet(
+      Class<?> scope, String path, boolean checkCacheEntryUpToDate);
 
-	String getCacheKey(Class<?> scope, String path);
-
+  String getCacheKey(Class<?> scope, String path);
 }

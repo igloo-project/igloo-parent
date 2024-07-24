@@ -10,26 +10,26 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 
-@ContextConfiguration(classes = { ManifestAutoConfiguration.class, TestManifestConfiguration.class })
+@ContextConfiguration(classes = {ManifestAutoConfiguration.class, TestManifestConfiguration.class})
 class ManifestPropertySourceTest extends AbstractTestCase {
 
-	@Configuration
-	@ManifestPropertySource(prefix = "test")
-	public static class TestManifestConfiguration {
-	}
+  @Configuration
+  @ManifestPropertySource(prefix = "test")
+  public static class TestManifestConfiguration {}
 
-	@Value("${test.Implementation-Version}")
-	private String version;
-	@Value("${test.Implementation-Title}")
-	private String title;
-	@Value("${test.Built-By}")
-	private String builtBy;
+  @Value("${test.Implementation-Version}")
+  private String version;
 
-	@Test
-	void manifest() {
-		Assertions.assertThat(version).isEqualTo("test-version");
-		Assertions.assertThat(title).isEqualTo("test-title");
-		Assertions.assertThat(builtBy).isEqualTo("test-builtBy");
-	}
+  @Value("${test.Implementation-Title}")
+  private String title;
 
+  @Value("${test.Built-By}")
+  private String builtBy;
+
+  @Test
+  void manifest() {
+    Assertions.assertThat(version).isEqualTo("test-version");
+    Assertions.assertThat(title).isEqualTo("test-title");
+    Assertions.assertThat(builtBy).isEqualTo("test-builtBy");
+  }
 }

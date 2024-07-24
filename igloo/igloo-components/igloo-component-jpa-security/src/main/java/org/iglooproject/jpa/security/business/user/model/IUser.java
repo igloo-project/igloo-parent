@@ -1,21 +1,19 @@
 package org.iglooproject.jpa.security.business.user.model;
 
 import java.util.Set;
-
 import org.bindgen.Bindable;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 
 @Bindable
 public interface IUser {
 
-	Long getId();
+  Long getId();
 
-	String getUsername();
+  String getUsername();
 
-	Set<Authority> getAuthorities();
+  Set<Authority> getAuthorities();
 
-	boolean isEnabled();
+  boolean isEnabled();
 
-	String getPasswordHash();
-
+  String getPasswordHash();
 }

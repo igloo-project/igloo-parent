@@ -1,116 +1,103 @@
 package test.jpa.more.business.entity.model;
 
-import java.time.Instant;
-
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
-import org.iglooproject.jpa.business.generic.model.GenericEntity;
-
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import java.time.Instant;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 @Entity
 @Indexed
 public class TestEntity extends GenericEntity<Long, TestEntity> {
-	private static final long serialVersionUID = 3827488123984866455L;
+  private static final long serialVersionUID = 3827488123984866455L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
-	
-	@FullTextField(analyzer = HibernateSearchAnalyzer.TEXT)
-	@Basic(optional = false)
-	private String label;
-	
-	@Column
-	private String simplePropertyUpdate;
-	
-	@Column
-	private String simplePropertyUpdateInterceptor;
-	
-	@Column
-	@GenericField
-	private String classicInterceptorSave;
-	
-	@Column
-	private String classicInterceptorFlushDirty;
+  @Id @GeneratedValue private Long id;
 
-	@Column
-	@GenericField
-	private Instant dateCreation;
+  @FullTextField(analyzer = HibernateSearchAnalyzer.TEXT)
+  @Basic(optional = false)
+  private String label;
 
-	public TestEntity() {
-		super();
-	}
+  @Column private String simplePropertyUpdate;
 
-	public TestEntity(String label) {
-		super();
-		
-		this.label = label;
-	}
+  @Column private String simplePropertyUpdateInterceptor;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+  @Column @GenericField private String classicInterceptorSave;
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+  @Column private String classicInterceptorFlushDirty;
 
-	public String getLabel() {
-		return label;
-	}
+  @Column @GenericField private Instant dateCreation;
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+  public TestEntity() {
+    super();
+  }
 
-	public String getSimplePropertyUpdate() {
-		return simplePropertyUpdate;
-	}
+  public TestEntity(String label) {
+    super();
 
-	public void setSimplePropertyUpdate(String simplePropertyUpdate) {
-		this.simplePropertyUpdate = simplePropertyUpdate;
-	}
+    this.label = label;
+  }
 
-	public String getSimplePropertyUpdateInterceptor() {
-		return simplePropertyUpdateInterceptor;
-	}
+  @Override
+  public Long getId() {
+    return id;
+  }
 
-	public void setSimplePropertyUpdateInterceptor(String simplePropertyUpdateInterceptor) {
-		this.simplePropertyUpdateInterceptor = simplePropertyUpdateInterceptor;
-	}
+  @Override
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	public String getClassicInterceptorSave() {
-		return classicInterceptorSave;
-	}
+  public String getLabel() {
+    return label;
+  }
 
-	public void setClassicInterceptorSave(String classicInterceptorSave) {
-		this.classicInterceptorSave = classicInterceptorSave;
-	}
+  public void setLabel(String label) {
+    this.label = label;
+  }
 
-	public String getClassicInterceptorFlushDirty() {
-		return classicInterceptorFlushDirty;
-	}
+  public String getSimplePropertyUpdate() {
+    return simplePropertyUpdate;
+  }
 
-	public void setClassicInterceptorFlushDirty(String classicInterceptorFlushDirty) {
-		this.classicInterceptorFlushDirty = classicInterceptorFlushDirty;
-	}
+  public void setSimplePropertyUpdate(String simplePropertyUpdate) {
+    this.simplePropertyUpdate = simplePropertyUpdate;
+  }
 
-	public Instant getDateCreation() {
-		return dateCreation;
-	}
+  public String getSimplePropertyUpdateInterceptor() {
+    return simplePropertyUpdateInterceptor;
+  }
 
-	public void setDateCreation(Instant dateCreation) {
-		this.dateCreation = dateCreation;
-	}
+  public void setSimplePropertyUpdateInterceptor(String simplePropertyUpdateInterceptor) {
+    this.simplePropertyUpdateInterceptor = simplePropertyUpdateInterceptor;
+  }
 
+  public String getClassicInterceptorSave() {
+    return classicInterceptorSave;
+  }
 
+  public void setClassicInterceptorSave(String classicInterceptorSave) {
+    this.classicInterceptorSave = classicInterceptorSave;
+  }
+
+  public String getClassicInterceptorFlushDirty() {
+    return classicInterceptorFlushDirty;
+  }
+
+  public void setClassicInterceptorFlushDirty(String classicInterceptorFlushDirty) {
+    this.classicInterceptorFlushDirty = classicInterceptorFlushDirty;
+  }
+
+  public Instant getDateCreation() {
+    return dateCreation;
+  }
+
+  public void setDateCreation(Instant dateCreation) {
+    this.dateCreation = dateCreation;
+  }
 }

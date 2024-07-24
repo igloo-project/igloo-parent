@@ -4,6 +4,5 @@ import java.io.Serializable;
 
 public interface IWOption<T> extends IWVisitable, Serializable {
 
-	T option();
-
+  T option();
 }

@@ -5,24 +5,23 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 
 public abstract class AbstractChoiceRendererChoiceProvider<T> extends ChoiceProvider<T> {
 
-	private static final long serialVersionUID = -4654743240914954744L;
-	
-	protected final IChoiceRenderer<? super T> choiceRenderer;
+  private static final long serialVersionUID = -4654743240914954744L;
 
-	public AbstractChoiceRendererChoiceProvider(IChoiceRenderer<? super T> choiceRenderer) {
-		super();
-		Injector.get().inject(this);
-		this.choiceRenderer = choiceRenderer;
-	}
+  protected final IChoiceRenderer<? super T> choiceRenderer;
 
-	@Override
-	public String getIdValue(T object) {
-		return choiceRenderer.getIdValue(object, 0 /* unused */);
-	}
+  public AbstractChoiceRendererChoiceProvider(IChoiceRenderer<? super T> choiceRenderer) {
+    super();
+    Injector.get().inject(this);
+    this.choiceRenderer = choiceRenderer;
+  }
 
-	@Override
-	public String getDisplayValue(T object) {
-		return (String) choiceRenderer.getDisplayValue(object);
-	}
+  @Override
+  public String getIdValue(T object) {
+    return choiceRenderer.getIdValue(object, 0 /* unused */);
+  }
 
+  @Override
+  public String getDisplayValue(T object) {
+    return (String) choiceRenderer.getDisplayValue(object);
+  }
 }

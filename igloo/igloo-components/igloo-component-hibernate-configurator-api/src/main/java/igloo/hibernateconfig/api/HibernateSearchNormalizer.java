@@ -2,9 +2,7 @@ package igloo.hibernateconfig.api;
 
 public final class HibernateSearchNormalizer {
 
-	public static final String TEXT = "text";
+  public static final String TEXT = "text";
 
-	private HibernateSearchNormalizer() {
-	}
-
+  private HibernateSearchNormalizer() {}
 }

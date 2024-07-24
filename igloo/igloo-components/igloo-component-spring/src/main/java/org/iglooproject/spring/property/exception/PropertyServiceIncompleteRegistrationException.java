@@ -2,10 +2,9 @@ package org.iglooproject.spring.property.exception;
 
 public class PropertyServiceIncompleteRegistrationException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public PropertyServiceIncompleteRegistrationException(String message) {
-		super(message);
-	}
-
+  public PropertyServiceIncompleteRegistrationException(String message) {
+    super(message);
+  }
 }

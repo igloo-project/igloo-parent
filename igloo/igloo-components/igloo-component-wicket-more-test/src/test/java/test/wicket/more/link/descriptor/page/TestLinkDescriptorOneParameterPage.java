@@ -5,10 +5,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class TestLinkDescriptorOneParameterPage extends Page {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public TestLinkDescriptorOneParameterPage(PageParameters parameters) {
-		super(parameters);
-	}
-
+  public TestLinkDescriptorOneParameterPage(PageParameters parameters) {
+    super(parameters);
+  }
 }

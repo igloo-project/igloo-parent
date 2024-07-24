@@ -8,6 +8,4 @@ import java.lang.annotation.Target;
 
 @Retention(RUNTIME)
 @Target(ElementType.PARAMETER)
-public @interface JdbcDriver {
-
-}
+public @interface JdbcDriver {}

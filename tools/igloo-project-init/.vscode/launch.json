@@ -1,0 +1,17 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "igloo_project_init",
+            "console": "integratedTerminal",
+            "args": ["-vvv", "--no-clean", "--igloo-branch", "ft-basicapp-refactor", "artifactId", "groupId", "packagename", "1.0-SNAPSHOT", "ApplicationName", "applicationName", "Application Name", "application_name", "git@host:group/repo"],
+            "env": {"JAVA_HOME": "/usr/lib/jvm/java-17-openjdk"}
+        }
+    ]
+}

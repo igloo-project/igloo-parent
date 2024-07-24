@@ -11,6 +11,4 @@ import org.springframework.context.annotation.Import;
 @Import(JpaOnlyTestConfiguration.class)
 @ComponentScan(basePackageClasses = JpaTestBusinessPackage.class)
 @EntityScan(basePackageClasses = JpaTestBusinessPackage.class)
-public class TestConfiguration {
-
-}
+public class TestConfiguration {}

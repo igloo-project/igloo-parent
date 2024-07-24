@@ -8,11 +8,10 @@ import org.springframework.stereotype.Service;
 
 @Service("labelService")
 public class LabelServiceImpl extends GenericEntityServiceImpl<String, Label>
-		implements ILabelService {
+    implements ILabelService {
 
-	@Autowired
-	public LabelServiceImpl(ILabelDao labelDao) {
-		super(labelDao);
-	}
-
+  @Autowired
+  public LabelServiceImpl(ILabelDao labelDao) {
+    super(labelDao);
+  }
 }

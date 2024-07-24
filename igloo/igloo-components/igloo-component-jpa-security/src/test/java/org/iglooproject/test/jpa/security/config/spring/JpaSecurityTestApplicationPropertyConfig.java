@@ -5,8 +5,6 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 
 public class JpaSecurityTestApplicationPropertyConfig implements IPropertyRegistryConfig {
 
-	@Override
-	public void register(IPropertyRegistry registry) {
-	}
-
+  @Override
+  public void register(IPropertyRegistry registry) {}
 }

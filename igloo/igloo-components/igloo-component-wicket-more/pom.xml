@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.iglooproject.components</groupId>
 		<artifactId>igloo-components</artifactId>
-		<version>6.0.0-Alpha12</version>
+		<version>6.0.0-Alpha13</version>
 	</parent>
 
 	<artifactId>igloo-component-wicket-more</artifactId>
@@ -214,6 +214,12 @@
 			<artifactId>annotations</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+		<!-- fix upper bound dependencies error-->
+		<dependency>
+			<groupId>org.mozilla</groupId>
+			<artifactId>rhino</artifactId>
+		</dependency>
 	</dependencies>
 	
 	<build>
@@ -305,6 +311,14 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-quality-annotations</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!--override micrometer-->
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-tools</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

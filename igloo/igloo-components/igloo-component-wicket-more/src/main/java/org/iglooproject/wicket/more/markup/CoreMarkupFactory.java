@@ -7,13 +7,12 @@ import org.iglooproject.wicket.more.markup.parser.filter.InlineEnclosureComponen
 
 public class CoreMarkupFactory extends MarkupFactory {
 
-	public CoreMarkupFactory() { }
+  public CoreMarkupFactory() {}
 
-	@Override
-	public MarkupParser newMarkupParser(MarkupResourceStream resource) {
-		MarkupParser parser = super.newMarkupParser(resource);
-		parser.add(new InlineEnclosureComponentHandler(resource));
-		return parser;
-	}
-
+  @Override
+  public MarkupParser newMarkupParser(MarkupResourceStream resource) {
+    MarkupParser parser = super.newMarkupParser(resource);
+    parser.add(new InlineEnclosureComponentHandler(resource));
+    return parser;
+  }
 }

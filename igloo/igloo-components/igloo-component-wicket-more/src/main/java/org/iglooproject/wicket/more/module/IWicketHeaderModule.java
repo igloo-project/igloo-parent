@@ -5,8 +5,7 @@ import org.apache.wicket.markup.head.IHeaderResponse;
 
 public interface IWicketHeaderModule {
 
-	default void renderHead(Component component, IHeaderResponse response) {
-		// nothing to do
-	}
-
+  default void renderHead(Component component, IHeaderResponse response) {
+    // nothing to do
+  }
 }

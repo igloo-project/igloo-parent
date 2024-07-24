@@ -1,27 +1,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	
 	<modelVersion>4.0.0</modelVersion>
-	<!-- KEEPME and empty.property as used to manage automatic generation and versionning -->
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-core-project</artifactId>
 		<relativePath>../igloo/igloo-parents/igloo-parent-core-project/pom.xml</relativePath>
-		<version>6.0.0-Alpha12</version><!-- KEEPME: archetype parent.version -->
+		<version>6.0.0-Alpha13</version><!-- KEEPME: archetype parent.version -->
 	</parent>
 	
 	<groupId>org.iglooproject.archetype</groupId>
 	<artifactId>basic-application</artifactId>
+	<version>6.0.0-Alpha13</version>
 	<packaging>pom</packaging>
 	
-	<name>${archetypeFullApplicationName}</name>
+	<name>Basic Application</name>
 
 	<properties>
-		<empty.property /><!-- KEEPME: archetype igloo.version -->
+		<versionPlaceholderDoNotRemove /><!-- KEEP; used for init substitution -->
 	</properties>
 	
 	<modules>
-		<module>basic-application-core</module>
-		<module>basic-application-webapp</module>
+		<module>basic-application-back</module>
+		<module>basic-application-front</module>
 		<module>basic-application-app</module>
 	</modules>
 	

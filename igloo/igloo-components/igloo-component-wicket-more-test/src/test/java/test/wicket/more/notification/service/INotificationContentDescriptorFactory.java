@@ -4,6 +4,5 @@ import org.iglooproject.spring.notification.model.INotificationContentDescriptor
 
 public interface INotificationContentDescriptorFactory {
 
-	INotificationContentDescriptor simpleContent(String content);
-
+  INotificationContentDescriptor simpleContent(String content);
 }

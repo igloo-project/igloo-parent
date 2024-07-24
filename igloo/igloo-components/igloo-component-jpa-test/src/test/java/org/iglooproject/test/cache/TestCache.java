@@ -14,44 +14,44 @@ import org.junit.jupiter.api.Test;
 
 @SpringBootTestJpaCache
 class TestCache extends AbstractJpaCoreTestCase {
-	
-	@Test
-	void testCache() throws ServiceException, SecurityServiceException {
-		// cf src/test/resources caffeine.conf
-		
-		getStatistics().setStatisticsEnabled(true);
-		getStatistics().clear();
-		Company company = new Company("Company Test Persist");
-		Person person = new Person("Persist", "Numéro");
-		companyService.create(company);
-		personService.create(person);
-		
-		entityManagerReset();
-		company = companyService.getById(company.getId());
-		
-		assertEquals(1, getStatistics().getSecondLevelCacheHitCount());
-		assertEquals(0, getStatistics().getSecondLevelCacheMissCount());
-		
-		entityManagerReset();
-		company = companyService.getById(company.getId());
-		
-		assertEquals(2, getStatistics().getSecondLevelCacheHitCount());
-		assertEquals(0, getStatistics().getSecondLevelCacheMissCount());
-		
-		entityManagerReset();
-		company = companyService.getById(company.getId());
-		
-		assertEquals(3, getStatistics().getSecondLevelCacheHitCount());
-		assertEquals(0, getStatistics().getSecondLevelCacheMissCount());
-		
-		personService.getById(person.getId());
-		
-		// l'entité Person n'a pas l'annotation @Cache donc ne provoque pas de cache hit
-		assertEquals(3, getStatistics().getSecondLevelCacheHitCount());
-		assertEquals(0, getStatistics().getSecondLevelCacheMissCount());
-	}
-	
-	protected Statistics getStatistics() {
-		return ((SessionImpl) getEntityManager().getDelegate()).getSessionFactory().getStatistics();
-	}
+
+  @Test
+  void testCache() throws ServiceException, SecurityServiceException {
+    // cf src/test/resources caffeine.conf
+
+    getStatistics().setStatisticsEnabled(true);
+    getStatistics().clear();
+    Company company = new Company("Company Test Persist");
+    Person person = new Person("Persist", "Numéro");
+    companyService.create(company);
+    personService.create(person);
+
+    entityManagerReset();
+    company = companyService.getById(company.getId());
+
+    assertEquals(1, getStatistics().getSecondLevelCacheHitCount());
+    assertEquals(0, getStatistics().getSecondLevelCacheMissCount());
+
+    entityManagerReset();
+    company = companyService.getById(company.getId());
+
+    assertEquals(2, getStatistics().getSecondLevelCacheHitCount());
+    assertEquals(0, getStatistics().getSecondLevelCacheMissCount());
+
+    entityManagerReset();
+    company = companyService.getById(company.getId());
+
+    assertEquals(3, getStatistics().getSecondLevelCacheHitCount());
+    assertEquals(0, getStatistics().getSecondLevelCacheMissCount());
+
+    personService.getById(person.getId());
+
+    // l'entité Person n'a pas l'annotation @Cache donc ne provoque pas de cache hit
+    assertEquals(3, getStatistics().getSecondLevelCacheHitCount());
+    assertEquals(0, getStatistics().getSecondLevelCacheMissCount());
+  }
+
+  protected Statistics getStatistics() {
+    return ((SessionImpl) getEntityManager().getDelegate()).getSessionFactory().getStatistics();
+  }
 }

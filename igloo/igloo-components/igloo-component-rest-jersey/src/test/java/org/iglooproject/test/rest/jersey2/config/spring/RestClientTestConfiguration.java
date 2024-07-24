@@ -14,9 +14,9 @@ import org.springframework.context.annotation.Import;
 @ComponentScan(basePackageClasses = RestClientPackage.class)
 public class RestClientTestConfiguration {
 
-	@Bean
-	public AbstractMockServlet restServerTestResource(@Value("${jersey.mock.http.port}") Integer httpPort) {
-		return new MockServlet("http://localhost/", httpPort, "/api", "/rest");
-	}
-
+  @Bean
+  public AbstractMockServlet restServerTestResource(
+      @Value("${jersey.mock.http.port}") Integer httpPort) {
+    return new MockServlet("http://localhost/", httpPort, "/api", "/rest");
+  }
 }

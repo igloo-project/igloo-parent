@@ -5,11 +5,9 @@ import org.iglooproject.test.business.label.model.Label;
 import org.springframework.stereotype.Repository;
 
 @Repository("labelDao")
-public class LabelDaoImpl extends GenericEntityDaoImpl<String, Label> implements
-		ILabelDao {
+public class LabelDaoImpl extends GenericEntityDaoImpl<String, Label> implements ILabelDao {
 
-	public LabelDaoImpl() {
-		super();
-	}
-
+  public LabelDaoImpl() {
+    super();
+  }
 }

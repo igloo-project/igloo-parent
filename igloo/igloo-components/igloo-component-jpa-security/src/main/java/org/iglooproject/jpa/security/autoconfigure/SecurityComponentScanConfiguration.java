@@ -5,9 +5,10 @@ import org.iglooproject.spring.autoconfigure.AbstractComponentScanConfigurationW
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SecurityComponentScanConfiguration extends AbstractComponentScanConfigurationWorkaround {
-	@Override
-	protected Class<?>[] getComponentScanPackages() {
-		return new Class<?>[] { JpaSecurityBusinessPackage.class };
-	}
+public class SecurityComponentScanConfiguration
+    extends AbstractComponentScanConfigurationWorkaround {
+  @Override
+  protected Class<?>[] getComponentScanPackages() {
+    return new Class<?>[] {JpaSecurityBusinessPackage.class};
+  }
 }

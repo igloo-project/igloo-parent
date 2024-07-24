@@ -5,7 +5,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -21,15 +20,14 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 @SpringBootTest(classes = TestJpaSecurityConfiguration.class)
 @ContextConfiguration(initializers = ExtendedApplicationContextInitializer.class)
 @TestExecutionListeners({
-	DependencyInjectionTestExecutionListener.class,
-	EntityManagerExecutionListener.class
+  DependencyInjectionTestExecutionListener.class,
+  EntityManagerExecutionListener.class
 })
-@TestPropertySource(properties = {
-	"igloo.profile=test",
-	"spring.jpa.properties.hibernate.search.enabled=false",
-	"spring.jpa.hibernate.ddl-auto=create-drop",
-	"spring.jpa.igloo.old-style-transaction-advisor=true"
-})
-public @interface SpringBootTestJpaSecurity {
-
-}
+@TestPropertySource(
+    properties = {
+      "igloo.profile=test",
+      "spring.jpa.properties.hibernate.search.enabled=false",
+      "spring.jpa.hibernate.ddl-auto=create-drop",
+      "spring.jpa.igloo.old-style-transaction-advisor=true"
+    })
+public @interface SpringBootTestJpaSecurity {}

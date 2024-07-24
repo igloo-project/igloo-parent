@@ -14,23 +14,16 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableAutoConfiguration
-@Import({
-	JpaOnlyTestConfiguration.class
-})
+@Import({JpaOnlyTestConfiguration.class})
 @EntityScan(basePackageClasses = RestTestBusinessPackage.class)
-@ComponentScan(
-	basePackageClasses = { RestTestBusinessPackage.class }
-)
+@ComponentScan(basePackageClasses = {RestTestBusinessPackage.class})
 @PropertySource(
-	name = IglooPropertySourcePriority.APPLICATION,
-	value = {
-		ConfigurationPropertiesUrlConstants.JPA_COMMON,
-		ConfigurationPropertiesUrlConstants.JERSEY_MOCK_COMMON,
-		"classpath:rest-common.properties"
-	},
-	encoding = "UTF-8"
-)
+    name = IglooPropertySourcePriority.APPLICATION,
+    value = {
+      ConfigurationPropertiesUrlConstants.JPA_COMMON,
+      ConfigurationPropertiesUrlConstants.JERSEY_MOCK_COMMON,
+      "classpath:rest-common.properties"
+    },
+    encoding = "UTF-8")
 @EnableTransactionManagement
-public class RestCommonTestConfiguration {
-
-}
+public class RestCommonTestConfiguration {}

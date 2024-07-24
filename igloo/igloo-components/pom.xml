@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.iglooproject.parents</groupId>
 		<artifactId>igloo-parent-maven-configuration-core</artifactId>
-		<version>6.0.0-Alpha12</version>
+		<version>6.0.0-Alpha13</version>
 		<relativePath>../igloo-parents/igloo-parent-maven-configuration-core/pom.xml</relativePath>
 	</parent>
 	
@@ -61,7 +61,6 @@
 		<module>igloo-component-bootstrap</module>
 		<module>igloo-component-wicket-bootstrap4</module>
 		<module>igloo-component-wicket-bootstrap5</module>
-		<module>igloo-component-wicket-more-jqplot</module>
 		
 		<module>igloo-component-web-security</module>
 		<module>igloo-component-rest-jersey</module>
@@ -78,6 +77,7 @@
 		
 		<module>igloo-monitoring-page</module>
 		<module>igloo-cache</module>
+		<module>igloo-hibernate-search-v5migrationhelper</module>
 		
 		<module>jpa-test-patterns</module>
 	</modules>

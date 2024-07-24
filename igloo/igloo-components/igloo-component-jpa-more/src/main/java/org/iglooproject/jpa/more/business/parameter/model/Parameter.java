@@ -1,77 +1,70 @@
 package org.iglooproject.jpa.more.business.parameter.model;
 
+import com.google.common.base.MoreObjects.ToStringHelper;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.JavaType;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.type.descriptor.java.StringJavaType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
-import com.google.common.base.MoreObjects.ToStringHelper;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-
 @Entity
 @Bindable
 public class Parameter extends GenericEntity<Long, Parameter> {
-	
-	private static final long serialVersionUID = 4739408616523513971L;
 
-	@Id
-	@GeneratedValue
-	private Long id;
+  private static final long serialVersionUID = 4739408616523513971L;
 
-	@NaturalId
-	@Column(nullable = false, unique = true)
-	private String name;
+  @Id @GeneratedValue private Long id;
 
-	@Column
-	@JavaType(StringJavaType.class)
-	private String stringValue;
-	
-	public Parameter() {
-		super();
-	}
+  @NaturalId
+  @Column(nullable = false, unique = true)
+  private String name;
 
-	public Parameter(String name, String value) {
-		super();
-		setName(name);
-		setStringValue(value);
-	}
+  @Column
+  @JavaType(StringJavaType.class)
+  private String stringValue;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+  public Parameter() {
+    super();
+  }
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+  public Parameter(String name, String value) {
+    super();
+    setName(name);
+    setStringValue(value);
+  }
 
-	public String getName() {
-		return name;
-	}
+  @Override
+  public Long getId() {
+    return id;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  @Override
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	public String getStringValue() {
-		return stringValue;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setStringValue(String stringValue) {
-		this.stringValue = stringValue;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	@Override
-	protected ToStringHelper toStringHelper() {
-		return super.toStringHelper()
-			.add("name", getName())
-			.add("value", getStringValue());
-	}
+  public String getStringValue() {
+    return stringValue;
+  }
 
+  public void setStringValue(String stringValue) {
+    this.stringValue = stringValue;
+  }
+
+  @Override
+  protected ToStringHelper toStringHelper() {
+    return super.toStringHelper().add("name", getName()).add("value", getStringValue());
+  }
 }

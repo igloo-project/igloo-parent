@@ -4,10 +4,9 @@ import org.springframework.context.ApplicationEvent;
 
 public class QueuedTaskFinishedEvent extends ApplicationEvent {
 
-	private static final long serialVersionUID = 8649861744549925604L;
+  private static final long serialVersionUID = 8649861744549925604L;
 
-	public QueuedTaskFinishedEvent(Long queuedTaskId) {
-		super(queuedTaskId);
-	}
-
+  public QueuedTaskFinishedEvent(Long queuedTaskId) {
+    super(queuedTaskId);
+  }
 }
