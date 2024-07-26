@@ -15,43 +15,45 @@ import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuilder;
 import org.iglooproject.wicket.more.markup.repeater.table.builder.state.IColumnState;
 
-public class CityListPanel extends AbstractReferenceDataSimpleListPanel<City, ReferenceDataSort, AbstractReferenceDataDataProvider<City, ReferenceDataSort>> {
+public class CityListPanel
+    extends AbstractReferenceDataSimpleListPanel<
+        City, ReferenceDataSort, AbstractReferenceDataDataProvider<City, ReferenceDataSort>> {
 
-	private static final long serialVersionUID = -2165029373966420708L;
+  private static final long serialVersionUID = -2165029373966420708L;
 
-	public CityListPanel(String id) {
-		this(id, BasicReferenceDataDataProvider.forItemType(City.class));
-	}
+  public CityListPanel(String id) {
+    this(id, BasicReferenceDataDataProvider.forItemType(City.class));
+  }
 
-	public CityListPanel(
-		String id,
-		AbstractReferenceDataDataProvider<City, ReferenceDataSort> dataProvider
-	) {
-		super(id, dataProvider, dataProvider.getSortModel());
-	}
+  public CityListPanel(
+      String id, AbstractReferenceDataDataProvider<City, ReferenceDataSort> dataProvider) {
+    super(id, dataProvider, dataProvider.getSortModel());
+  }
 
-	@Override
-	protected IColumnState<City, ReferenceDataSort> addColumns(DataTableBuilder<City, ReferenceDataSort> builder) {
-		return super.addColumns(builder)
-			.addLabelColumn(new ResourceModel("business.referenceData.label.fr"), Bindings.city().label().fr())
-				.withSort(ReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-				.withClass("cell-w-300")
-			.addLabelColumn(new ResourceModel("business.referenceData.label.en"), Bindings.city().label().en())
-				.withSort(ReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
-				.withClass("cell-w-300")
-				.withClass(CELL_DISPLAY_LG)
-			.addLabelColumn(new ResourceModel("business.city.postalCode.short"), Bindings.city().postalCode())
-				.withSort(ReferenceDataSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
-				.withClass("cell-w-120");
-	}
+  @Override
+  protected IColumnState<City, ReferenceDataSort> addColumns(
+      DataTableBuilder<City, ReferenceDataSort> builder) {
+    return super.addColumns(builder)
+        .addLabelColumn(
+            new ResourceModel("business.referenceData.label.fr"), Bindings.city().label().fr())
+        .withSort(ReferenceDataSort.LABEL_FR, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+        .withClass("cell-w-300")
+        .addLabelColumn(
+            new ResourceModel("business.referenceData.label.en"), Bindings.city().label().en())
+        .withSort(ReferenceDataSort.LABEL_EN, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+        .withClass("cell-w-300")
+        .withClass(CELL_DISPLAY_LG)
+        .addLabelColumn(
+            new ResourceModel("business.city.postalCode.short"), Bindings.city().postalCode())
+        .withSort(ReferenceDataSort.CODE, SortIconStyle.DEFAULT, CycleMode.DEFAULT_REVERSE)
+        .withClass("cell-w-120");
+  }
 
-	@Override
-	protected Component createSearchForm(
-		String wicketId,
-		AbstractReferenceDataDataProvider<City, ReferenceDataSort> dataProvider,
-		DecoratedCoreDataTablePanel<City, ReferenceDataSort> table
-	) {
-		return new CitySearchPanel(wicketId, dataProvider, table);
-	}
-
+  @Override
+  protected Component createSearchForm(
+      String wicketId,
+      AbstractReferenceDataDataProvider<City, ReferenceDataSort> dataProvider,
+      DecoratedCoreDataTablePanel<City, ReferenceDataSort> table) {
+    return new CitySearchPanel(wicketId, dataProvider, table);
+  }
 }

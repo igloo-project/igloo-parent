@@ -4,16 +4,16 @@ import de.agilecoders.wicket.webjars.request.resource.WebjarsJavaScriptResourceR
 
 public class FocusJavaScriptResourceReference extends WebjarsJavaScriptResourceReference {
 
-	private static final long serialVersionUID = 1882027963958939537L;
+  private static final long serialVersionUID = 1882027963958939537L;
 
-	private static final FocusJavaScriptResourceReference INSTANCE = new FocusJavaScriptResourceReference();
+  private static final FocusJavaScriptResourceReference INSTANCE =
+      new FocusJavaScriptResourceReference();
 
-	public static FocusJavaScriptResourceReference get() {
-		return INSTANCE;
-	}
+  public static FocusJavaScriptResourceReference get() {
+    return INSTANCE;
+  }
 
-	public FocusJavaScriptResourceReference() {
-		super("igloojs/current/dist/focus.js");
-	}
-
+  public FocusJavaScriptResourceReference() {
+    super("igloojs/current/dist/focus.js");
+  }
 }

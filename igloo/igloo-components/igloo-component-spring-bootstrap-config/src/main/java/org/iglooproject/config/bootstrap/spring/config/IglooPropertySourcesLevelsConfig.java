@@ -5,6 +5,4 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @IglooPropertySourcesLevels
-public class IglooPropertySourcesLevelsConfig {
-
-}
+public class IglooPropertySourcesLevelsConfig {}

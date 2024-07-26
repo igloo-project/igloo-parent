@@ -1,7 +1,7 @@
 package test.web;
 
+import com.google.common.collect.ImmutableSet;
 import java.util.Set;
-
 import org.apache.wicket.Localizer;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -30,138 +30,143 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import com.google.common.collect.ImmutableSet;
-
 import test.web.config.spring.BasicApplicationWebappTestCommonConfig;
 
 @ContextConfiguration(classes = BasicApplicationWebappTestCommonConfig.class)
 @TestPropertySource(properties = "igloo.profile=test")
 @ExtendWith(SpringExtension.class)
-public abstract class AbstractBasicApplicationWebappTestCase extends AbstractWicketTestCase<BasicApplicationWicketTester> {
+public abstract class AbstractBasicApplicationWebappTestCase
+    extends AbstractWicketTestCase<BasicApplicationWicketTester> {
 
-	protected static final String USER_PASSWORD = "USER_PASSWORD";
+  protected static final String USER_PASSWORD = "USER_PASSWORD";
 
-	protected UserGroup users;
+  protected UserGroup users;
 
-	protected UserGroup administrators;
+  protected UserGroup administrators;
 
-	protected BasicUser basicUser;
+  protected BasicUser basicUser;
 
-	protected TechnicalUser administrator;
+  protected TechnicalUser administrator;
 
-	@Autowired
-	protected IUserService userService;
+  @Autowired protected IUserService userService;
 
-	@Autowired
-	protected IUserGroupService userGroupService;
+  @Autowired protected IUserGroupService userGroupService;
 
-	@Autowired
-	protected IAuthorityService authorityService;
+  @Autowired protected IAuthorityService authorityService;
 
-	@Autowired
-	protected IBasicApplicationAuthenticationService authenticationService;
+  @Autowired protected IBasicApplicationAuthenticationService authenticationService;
 
-	@Autowired
-	protected IHistoryLogService historyLogService;
+  @Autowired protected IHistoryLogService historyLogService;
 
-	@Autowired
-	protected PasswordEncoder passwordEncoder;
+  @Autowired protected PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private IMutablePropertyDao mutablePropertyDao;
+  @Autowired private IMutablePropertyDao mutablePropertyDao;
 
-	@Autowired
-	private WebApplication application;
+  @Autowired private WebApplication application;
 
-	@BeforeEach
-	public void setUp() throws ServiceException, SecurityServiceException {
-		initAuthorities();
-		initUserGroups();
-		initUsers();
-		
-		setWicketTester(new BasicApplicationWicketTester(application));
-	}
+  @BeforeEach
+  public void setUp() throws ServiceException, SecurityServiceException {
+    initAuthorities();
+    initUserGroups();
+    initUsers();
 
-	@Override
-	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		entityManagerClear();
-		
-		cleanEntities(userService);
-		cleanEntities(userGroupService);
-		cleanEntities(authorityService);
-		cleanEntities(historyLogService);
-		
-		mutablePropertyDao.cleanInTransaction();
-		
-		authenticationService.signOut();
-		
-		emptyIndexes();
-	}
+    setWicketTester(new BasicApplicationWicketTester(application));
+  }
 
-	private void initAuthorities() throws ServiceException, SecurityServiceException {
-		authorityService.create(new Authority(CoreAuthorityConstants.ROLE_ADMIN));
-		authorityService.create(new Authority(CoreAuthorityConstants.ROLE_AUTHENTICATED));
-	}
+  @Override
+  protected void cleanAll() throws ServiceException, SecurityServiceException {
+    entityManagerClear();
 
-	private void initUserGroups() throws ServiceException, SecurityServiceException {
-		users = new UserGroup("Users");
-		administrators = new UserGroup("Administrators");
-		
-		userGroupService.create(users);
-		userGroupService.create(administrators);
-	}
+    cleanEntities(userService);
+    cleanEntities(userGroupService);
+    cleanEntities(authorityService);
+    cleanEntities(historyLogService);
 
-	private void initUsers() throws ServiceException, SecurityServiceException {
-		basicUser = createUser("basicUser", UserTypeDescriptor.BASIC_USER,
-			ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_AUTHENTICATED), ImmutableSet.of(users));
-		createUser("basicUser2", UserTypeDescriptor.BASIC_USER,
-				ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_AUTHENTICATED), ImmutableSet.of(users));
-		
-		administrator = createUser("administrator", UserTypeDescriptor.TECHNICAL_USER,
-			ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_ADMIN), ImmutableSet.of(administrators));
-	}
+    mutablePropertyDao.cleanInTransaction();
 
-	private <U extends User> U createUser(String username, UserTypeDescriptor<U> type, Set<String> authorities, Set<UserGroup> userGroups)
-		throws ServiceException, SecurityServiceException {
-		
-		U user = type.getSupplier().get();
-		user.setUsername(username);
-		user.setFirstName(username);
-		user.setLastName(username);
-		if (authorities != null) {
-			for (String authority : authorities) {
-				user.addAuthority(authorityService.getByName(authority));
-			}
-		}
-		
-		userService.create(user);
-		userService.setPasswords(user, USER_PASSWORD);
-		
-		if (userGroups != null) {
-			for (UserGroup userGroup : userGroups) {
-				userGroupService.addUser(userGroup, user);
-			}
-		}
-		
-		return user;
-	}
+    authenticationService.signOut();
 
-	protected void authenticateUser(User user) throws ServiceException, SecurityServiceException {
-		if (AuthenticatedWebSession.exists()) {
-			AuthenticatedWebSession.get().invalidate();
-		}
-		
-		AbstractCoreSession<?> session = AbstractCoreSession.get();
-		User loggedInUser = null;
-		
-		session.signIn(user.getUsername(), USER_PASSWORD);
-		loggedInUser = (User) session.getUser();
-		userService.onSignIn(loggedInUser);
-	}
+    emptyIndexes();
+  }
 
-	// Depends on the tester.getSession.getLocale()
-	protected static String localize(String key) {
-		return Localizer.get().getString(key, null);
-	}
+  private void initAuthorities() throws ServiceException, SecurityServiceException {
+    authorityService.create(new Authority(CoreAuthorityConstants.ROLE_ADMIN));
+    authorityService.create(new Authority(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+  }
+
+  private void initUserGroups() throws ServiceException, SecurityServiceException {
+    users = new UserGroup("Users");
+    administrators = new UserGroup("Administrators");
+
+    userGroupService.create(users);
+    userGroupService.create(administrators);
+  }
+
+  private void initUsers() throws ServiceException, SecurityServiceException {
+    basicUser =
+        createUser(
+            "basicUser",
+            UserTypeDescriptor.BASIC_USER,
+            ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_AUTHENTICATED),
+            ImmutableSet.of(users));
+    createUser(
+        "basicUser2",
+        UserTypeDescriptor.BASIC_USER,
+        ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_AUTHENTICATED),
+        ImmutableSet.of(users));
+
+    administrator =
+        createUser(
+            "administrator",
+            UserTypeDescriptor.TECHNICAL_USER,
+            ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_ADMIN),
+            ImmutableSet.of(administrators));
+  }
+
+  private <U extends User> U createUser(
+      String username,
+      UserTypeDescriptor<U> type,
+      Set<String> authorities,
+      Set<UserGroup> userGroups)
+      throws ServiceException, SecurityServiceException {
+
+    U user = type.getSupplier().get();
+    user.setUsername(username);
+    user.setFirstName(username);
+    user.setLastName(username);
+    if (authorities != null) {
+      for (String authority : authorities) {
+        user.addAuthority(authorityService.getByName(authority));
+      }
+    }
+
+    userService.create(user);
+    userService.setPasswords(user, USER_PASSWORD);
+
+    if (userGroups != null) {
+      for (UserGroup userGroup : userGroups) {
+        userGroupService.addUser(userGroup, user);
+      }
+    }
+
+    return user;
+  }
+
+  protected void authenticateUser(User user) throws ServiceException, SecurityServiceException {
+    if (AuthenticatedWebSession.exists()) {
+      AuthenticatedWebSession.get().invalidate();
+    }
+
+    AbstractCoreSession<?> session = AbstractCoreSession.get();
+    User loggedInUser = null;
+
+    session.signIn(user.getUsername(), USER_PASSWORD);
+    loggedInUser = (User) session.getUser();
+    userService.onSignIn(loggedInUser);
+  }
+
+  // Depends on the tester.getSession.getLocale()
+  protected static String localize(String key) {
+    return Localizer.get().getString(key, null);
+  }
 }

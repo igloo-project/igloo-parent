@@ -9,20 +9,18 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 
 public class ProfileTemplate extends MainTemplate {
 
-	private static final long serialVersionUID = 1029271113953538262L;
+  private static final long serialVersionUID = 1029271113953538262L;
 
-	public ProfileTemplate(PageParameters parameters) {
-		super(parameters);
-		
-		addBreadCrumbElement(new BreadCrumbElement(
-			new ResourceModel("navigation.profile"),
-			ProfilePage.linkDescriptor()
-		));
-	}
+  public ProfileTemplate(PageParameters parameters) {
+    super(parameters);
 
-	@Override
-	protected Class<? extends WebPage> getFirstMenuPage() {
-		return ProfilePage.class;
-	}
+    addBreadCrumbElement(
+        new BreadCrumbElement(
+            new ResourceModel("navigation.profile"), ProfilePage.linkDescriptor()));
+  }
 
+  @Override
+  protected Class<? extends WebPage> getFirstMenuPage() {
+    return ProfilePage.class;
+  }
 }

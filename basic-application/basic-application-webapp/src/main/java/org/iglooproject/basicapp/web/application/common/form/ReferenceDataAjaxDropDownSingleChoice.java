@@ -8,46 +8,37 @@ import org.iglooproject.wicket.more.markup.html.select2.AbstractLongIdGenericEnt
 import org.iglooproject.wicket.more.markup.html.select2.GenericSelect2AjaxDropDownSingleChoice;
 import org.wicketstuff.select2.Response;
 
-public class ReferenceDataAjaxDropDownSingleChoice<T extends ReferenceData<? super T>> extends GenericSelect2AjaxDropDownSingleChoice<T> {
+public class ReferenceDataAjaxDropDownSingleChoice<T extends ReferenceData<? super T>>
+    extends GenericSelect2AjaxDropDownSingleChoice<T> {
 
-	private static final long serialVersionUID = 7076114890845943476L;
+  private static final long serialVersionUID = 7076114890845943476L;
 
-	public ReferenceDataAjaxDropDownSingleChoice(
-		String id,
-		IModel<T> model,
-		Class<T> clazz
-	) {
-		this(id, model, new ChoiceProvider<>(clazz));
-	}
+  public ReferenceDataAjaxDropDownSingleChoice(String id, IModel<T> model, Class<T> clazz) {
+    this(id, model, new ChoiceProvider<>(clazz));
+  }
 
-	public ReferenceDataAjaxDropDownSingleChoice(
-		String id,
-		IModel<T> model,
-		ChoiceProvider<T> choiceProvider
-	) {
-		super(id, model, choiceProvider);
-	}
+  public ReferenceDataAjaxDropDownSingleChoice(
+      String id, IModel<T> model, ChoiceProvider<T> choiceProvider) {
+    super(id, model, choiceProvider);
+  }
 
-	private static class ChoiceProvider<T extends ReferenceData<? super T>> extends AbstractLongIdGenericEntityChoiceProvider<T> {
-		
-		private static final long serialVersionUID = 1L;
-		
-		private final Class<T> clazz;
-		
-		public ChoiceProvider(Class<T> clazz) {
-			super(clazz, ReferenceDataRenderer.get());
-			this.clazz = clazz;
-		}
-		
-		@SuppressWarnings("unchecked")
-		@Override
-		protected void query(String term, int offset, int limit, Response<T> response) {
-			response.addAll(
-				getBean(IBasicReferenceDataSearchQuery.class, clazz)
-					.label(term)
-					.list(offset, limit)
-			);
-		}
-	}
+  private static class ChoiceProvider<T extends ReferenceData<? super T>>
+      extends AbstractLongIdGenericEntityChoiceProvider<T> {
 
+    private static final long serialVersionUID = 1L;
+
+    private final Class<T> clazz;
+
+    public ChoiceProvider(Class<T> clazz) {
+      super(clazz, ReferenceDataRenderer.get());
+      this.clazz = clazz;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void query(String term, int offset, int limit, Response<T> response) {
+      response.addAll(
+          getBean(IBasicReferenceDataSearchQuery.class, clazz).label(term).list(offset, limit));
+    }
+  }
 }

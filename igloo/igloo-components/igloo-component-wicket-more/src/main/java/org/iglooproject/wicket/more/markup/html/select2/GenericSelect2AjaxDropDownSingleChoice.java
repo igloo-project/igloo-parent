@@ -9,32 +9,32 @@ import org.wicketstuff.select2.Settings;
 
 public class GenericSelect2AjaxDropDownSingleChoice<T> extends Select2Choice<T> {
 
-	private static final long serialVersionUID = 6355575209286187233L;
+  private static final long serialVersionUID = 6355575209286187233L;
 
-	protected GenericSelect2AjaxDropDownSingleChoice(String id, IModel<T> model, ChoiceProvider<T> choiceProvider) {
-		super(id, model, choiceProvider);
-		
-		fillSelect2Settings(getSettings());
-	}
+  protected GenericSelect2AjaxDropDownSingleChoice(
+      String id, IModel<T> model, ChoiceProvider<T> choiceProvider) {
+    super(id, model, choiceProvider);
 
-	@Override
-	protected void onConfigure() {
-		super.onConfigure();
-		
-		if (isRequired()) {
-			Select2Utils.setRequiredSettings(getSettings());
-		} else {
-			Select2Utils.setOptionalSettings(getSettings());
-		}
-	}
+    fillSelect2Settings(getSettings());
+  }
 
-	protected void fillSelect2Settings(Settings settings) {
-		Select2Utils.setDefaultAjaxSettings(settings);
-	}
+  @Override
+  protected void onConfigure() {
+    super.onConfigure();
 
-	public GenericSelect2AjaxDropDownSingleChoice<T> setWidth(IDropDownChoiceWidth width) {
-		getSettings().setWidth(width.getWidth());
-		return this;
-	}
+    if (isRequired()) {
+      Select2Utils.setRequiredSettings(getSettings());
+    } else {
+      Select2Utils.setOptionalSettings(getSettings());
+    }
+  }
 
+  protected void fillSelect2Settings(Settings settings) {
+    Select2Utils.setDefaultAjaxSettings(settings);
+  }
+
+  public GenericSelect2AjaxDropDownSingleChoice<T> setWidth(IDropDownChoiceWidth width) {
+    getSettings().setWidth(width.getWidth());
+    return this;
+  }
 }

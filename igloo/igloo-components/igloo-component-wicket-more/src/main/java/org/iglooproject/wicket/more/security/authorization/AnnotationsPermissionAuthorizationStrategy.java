@@ -12,60 +12,60 @@ import org.springframework.security.acls.model.Permission;
 
 public class AnnotationsPermissionAuthorizationStrategy implements IAuthorizationStrategy {
 
-	private IAuthenticationService authenticationService;
+  private IAuthenticationService authenticationService;
 
-	private PermissionFactory permissionFactory;
+  private PermissionFactory permissionFactory;
 
-	public AnnotationsPermissionAuthorizationStrategy(IAuthenticationService authenticationService,
-			PermissionFactory permissionFactory) {
-		this.authenticationService = authenticationService;
-		this.permissionFactory = permissionFactory;
-	}
+  public AnnotationsPermissionAuthorizationStrategy(
+      IAuthenticationService authenticationService, PermissionFactory permissionFactory) {
+    this.authenticationService = authenticationService;
+    this.permissionFactory = permissionFactory;
+  }
 
-	@Override
-	public boolean isActionAuthorized(Component component, Action action) {
-		final Class<? extends Component> componentClass = component.getClass();
+  @Override
+  public boolean isActionAuthorized(Component component, Action action) {
+    final Class<? extends Component> componentClass = component.getClass();
 
-		final AuthorizeActionIfPermission permissionAnnotation =
-				componentClass.getAnnotation(AuthorizeActionIfPermission.class);
-		if (permissionAnnotation != null) {
-			if (action.getName().equals(permissionAnnotation.action())) {
-				String[] permissionNames = permissionAnnotation.permissions();
-				for (String permissionName : permissionNames) {
-					Permission permission = permissionFactory.buildFromName(permissionName);
-					if (authenticationService.hasPermission(permission)) {
-						return true;
-					}
-				}
-				return false;
-			}
-		}
-		
-		return true;
-	}
+    final AuthorizeActionIfPermission permissionAnnotation =
+        componentClass.getAnnotation(AuthorizeActionIfPermission.class);
+    if (permissionAnnotation != null) {
+      if (action.getName().equals(permissionAnnotation.action())) {
+        String[] permissionNames = permissionAnnotation.permissions();
+        for (String permissionName : permissionNames) {
+          Permission permission = permissionFactory.buildFromName(permissionName);
+          if (authenticationService.hasPermission(permission)) {
+            return true;
+          }
+        }
+        return false;
+      }
+    }
 
-	@Override
-	public <T extends IRequestableComponent> boolean isInstantiationAuthorized(Class<T> componentClass) {
-		final AuthorizeInstantiationIfPermission authorizeInstantiationAnnotation =
-				componentClass.getAnnotation(AuthorizeInstantiationIfPermission.class);
-		if (authorizeInstantiationAnnotation != null) {
-			String[] permissionNames = authorizeInstantiationAnnotation.permissions();
-			for (String permissionName : permissionNames) {
-				Permission permission = permissionFactory.buildFromName(permissionName);
-				if (authenticationService.hasPermission(permission)) {
-					return true;
-				}
-			}
-			return false;
-		}
+    return true;
+  }
 
-		return true;
-	}
+  @Override
+  public <T extends IRequestableComponent> boolean isInstantiationAuthorized(
+      Class<T> componentClass) {
+    final AuthorizeInstantiationIfPermission authorizeInstantiationAnnotation =
+        componentClass.getAnnotation(AuthorizeInstantiationIfPermission.class);
+    if (authorizeInstantiationAnnotation != null) {
+      String[] permissionNames = authorizeInstantiationAnnotation.permissions();
+      for (String permissionName : permissionNames) {
+        Permission permission = permissionFactory.buildFromName(permissionName);
+        if (authenticationService.hasPermission(permission)) {
+          return true;
+        }
+      }
+      return false;
+    }
 
-	@Override
-	public boolean isResourceAuthorized(IResource resource, PageParameters parameters) {
-		// TODO 0.10 : implémenter un truc intelligent là-dessus
-		return true;
-	}
+    return true;
+  }
 
+  @Override
+  public boolean isResourceAuthorized(IResource resource, PageParameters parameters) {
+    // TODO 0.10 : implémenter un truc intelligent là-dessus
+    return true;
+  }
 }

@@ -12,20 +12,20 @@ import org.springframework.security.acls.model.Permission;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ReferenceDataPermissionEvaluatorImpl extends AbstractGenericPermissionEvaluator<ReferenceData<?>> implements IReferenceDataPermissionEvaluator {
+public class ReferenceDataPermissionEvaluatorImpl
+    extends AbstractGenericPermissionEvaluator<ReferenceData<?>>
+    implements IReferenceDataPermissionEvaluator {
 
-	@Override
-	public boolean hasPermission(User user, ReferenceData<?> referenceData, Permission permission) {
-		if (is(permission, READ)) {
-			return true;
-		} else if (is(permission, CREATE)) {
-			return hasRole(user, ROLE_ADMIN);
-		} else if (is(permission, WRITE)) {
-			return hasRole(user, ROLE_ADMIN)
-				&& ReferenceDataPredicates.editable().apply(referenceData);
-		}
-		
-		return false;
-	}
+  @Override
+  public boolean hasPermission(User user, ReferenceData<?> referenceData, Permission permission) {
+    if (is(permission, READ)) {
+      return true;
+    } else if (is(permission, CREATE)) {
+      return hasRole(user, ROLE_ADMIN);
+    } else if (is(permission, WRITE)) {
+      return hasRole(user, ROLE_ADMIN) && ReferenceDataPredicates.editable().apply(referenceData);
+    }
 
+    return false;
+  }
 }

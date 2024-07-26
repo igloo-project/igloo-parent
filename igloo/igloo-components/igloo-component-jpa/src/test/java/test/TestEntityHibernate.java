@@ -5,46 +5,47 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 public class TestEntityHibernate extends GenericEntity<Long, TestEntityHibernate> {
 
-	private static final long serialVersionUID = 5968050124765460930L;
+  private static final long serialVersionUID = 5968050124765460930L;
 
-	public TestEntityHibernate() {}
+  public TestEntityHibernate() {}
 
-	private Long id;
+  private Long id;
 
-	@Override
-	public Long getId() {
-		return id;
-	}
+  @Override
+  public Long getId() {
+    return id;
+  }
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
+  @Override
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-	/**
-	 * This method is the old equals implementation from GenericEntity, without lambda static switching.
-	 */
-	@Override
-	public boolean equals(Object object) {
-		if (object == null) {
-			return false;
-		}
-		if (object == this) {
-			return true;
-		}
-		
-		// process class comparison; old code without lambda-controlled static switch
-		if (Hibernate.getClass(object) != Hibernate.getClass(this)) {
-			return false;
-		}
+  /**
+   * This method is the old equals implementation from GenericEntity, without lambda static
+   * switching.
+   */
+  @Override
+  public boolean equals(Object object) {
+    if (object == null) {
+      return false;
+    }
+    if (object == this) {
+      return true;
+    }
 
-		TestEntityHibernate entity = (TestEntityHibernate) object; 
-		Long id = getId();
+    // process class comparison; old code without lambda-controlled static switch
+    if (Hibernate.getClass(object) != Hibernate.getClass(this)) {
+      return false;
+    }
 
-		if (id == null) {
-			return false;
-		}
+    TestEntityHibernate entity = (TestEntityHibernate) object;
+    Long id = getId();
 
-		return id.equals(entity.getId());
-	}
+    if (id == null) {
+      return false;
+    }
+
+    return id.equals(entity.getId());
+  }
 }

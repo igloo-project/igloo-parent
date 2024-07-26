@@ -9,15 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({
-	BasicApplicationWebappConfig.class,
-	WicketMoreApplicationPropertyRegistryConfig.class
-})
+@Import({BasicApplicationWebappConfig.class, WicketMoreApplicationPropertyRegistryConfig.class})
 public class BasicApplicationWebappTestCommonConfig {
 
-	@Bean
-	public WebApplication application() {
-		return new BasicApplicationApplication();
-	}
-
+  @Bean
+  public WebApplication application() {
+    return new BasicApplicationApplication();
+  }
 }

@@ -10,35 +10,40 @@ import org.wicketstuff.select2.Select2Behavior;
 
 public class LabelPlaceholderBehavior extends Behavior {
 
-	private static final long serialVersionUID = 7392345869664046823L;
+  private static final long serialVersionUID = 7392345869664046823L;
 
-	private static final String PLACEHOLDER_ATTRIBUTE = "placeholder";
-	private static final String DATA_PLACEHOLDER_ATTRIBUTE = "data-placeholder";
+  private static final String PLACEHOLDER_ATTRIBUTE = "placeholder";
+  private static final String DATA_PLACEHOLDER_ATTRIBUTE = "data-placeholder";
 
-	public LabelPlaceholderBehavior() {
-		super();
-	}
+  public LabelPlaceholderBehavior() {
+    super();
+  }
 
-	@Override
-	public void bind(Component component) {
-		super.bind(component);
-		
-		boolean isSelect2Component = !component.getBehaviors(Select2Behavior.class).isEmpty();
-		component.add(new AttributeModifier(isSelect2Component ? DATA_PLACEHOLDER_ATTRIBUTE : PLACEHOLDER_ATTRIBUTE, new LabelPlaceholderModel()));
-	}
+  @Override
+  public void bind(Component component) {
+    super.bind(component);
 
-	private static class LabelPlaceholderModel extends ComponentModel<String> {
-		private static final long serialVersionUID = 8627941143273996086L;
-		
-		@Override
-		protected String getObject(Component component) {
-			if (!(component instanceof FormComponent)) {
-				throw new IllegalStateException("Behavior " + getClass().getName()
-						+ " can only be added to an instance of a FormComponent");
-			}
-			FormComponent<?> formComponent = (FormComponent<?>) component;
-			IModel<String> labelModel = formComponent.getLabel();
-			return labelModel == null ? null : labelModel.getObject();
-		}
-	}
+    boolean isSelect2Component = !component.getBehaviors(Select2Behavior.class).isEmpty();
+    component.add(
+        new AttributeModifier(
+            isSelect2Component ? DATA_PLACEHOLDER_ATTRIBUTE : PLACEHOLDER_ATTRIBUTE,
+            new LabelPlaceholderModel()));
+  }
+
+  private static class LabelPlaceholderModel extends ComponentModel<String> {
+    private static final long serialVersionUID = 8627941143273996086L;
+
+    @Override
+    protected String getObject(Component component) {
+      if (!(component instanceof FormComponent)) {
+        throw new IllegalStateException(
+            "Behavior "
+                + getClass().getName()
+                + " can only be added to an instance of a FormComponent");
+      }
+      FormComponent<?> formComponent = (FormComponent<?>) component;
+      IModel<String> labelModel = formComponent.getLabel();
+      return labelModel == null ? null : labelModel.getObject();
+    }
+  }
 }

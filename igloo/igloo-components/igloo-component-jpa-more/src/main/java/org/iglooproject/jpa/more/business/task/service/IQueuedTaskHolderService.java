@@ -2,7 +2,6 @@ package org.iglooproject.jpa.more.business.task.service;
 
 import java.util.Date;
 import java.util.List;
-
 import org.iglooproject.jpa.business.generic.service.IGenericEntityService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -11,26 +10,28 @@ import org.iglooproject.jpa.more.business.task.util.TaskStatus;
 
 public interface IQueuedTaskHolderService extends IGenericEntityService<Long, QueuedTaskHolder> {
 
-	Long count(Date since, TaskStatus... statuses);
+  Long count(Date since, TaskStatus... statuses);
 
-	Long count(TaskStatus... statuses);
-	
-	QueuedTaskHolder getNextTaskForExecution(String taskType);
+  Long count(TaskStatus... statuses);
 
-	QueuedTaskHolder getRandomStalledTask(String taskType, int executionTimeLimitInSeconds);
+  QueuedTaskHolder getNextTaskForExecution(String taskType);
 
-	List<String> listTypes();
+  QueuedTaskHolder getRandomStalledTask(String taskType, int executionTimeLimitInSeconds);
 
-	boolean isReloadable(QueuedTaskHolder task);
+  List<String> listTypes();
 
-	boolean isCancellable(QueuedTaskHolder task);
+  boolean isReloadable(QueuedTaskHolder task);
 
-	/**
-	 * Gets the tasks that may be run
-	 * @param queueId
-	 * @return
-	 * @throws ServiceException
-	 * @throws SecurityServiceException
-	 */
-	List<QueuedTaskHolder> getListConsumable(String queueId) throws ServiceException, SecurityServiceException;
+  boolean isCancellable(QueuedTaskHolder task);
+
+  /**
+   * Gets the tasks that may be run
+   *
+   * @param queueId
+   * @return
+   * @throws ServiceException
+   * @throws SecurityServiceException
+   */
+  List<QueuedTaskHolder> getListConsumable(String queueId)
+      throws ServiceException, SecurityServiceException;
 }

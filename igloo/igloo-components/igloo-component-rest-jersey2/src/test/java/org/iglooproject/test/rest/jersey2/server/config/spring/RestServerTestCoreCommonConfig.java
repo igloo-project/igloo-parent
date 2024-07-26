@@ -12,28 +12,16 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-/**
- * This configuration relies on bootstrap-configuration.properties enforcing igloo.profile=test
- */
+/** This configuration relies on bootstrap-configuration.properties enforcing igloo.profile=test */
 @Configuration
 @PropertySource(
-	name = IglooPropertySourcePriority.APPLICATION,
-	value = {
-		ConfigurationPropertiesUrlConstants.JPA_COMMON,
-		"classpath:rest-server.properties"
-	},
-	encoding = "UTF-8"
-)
-@Import({
-	RestServerTestJpaConfig.class,
-	RestServerTestApplicationPropertyConfig.class
-})
+    name = IglooPropertySourcePriority.APPLICATION,
+    value = {ConfigurationPropertiesUrlConstants.JPA_COMMON, "classpath:rest-server.properties"},
+    encoding = "UTF-8")
+@Import({RestServerTestJpaConfig.class, RestServerTestApplicationPropertyConfig.class})
 @ComponentScan(
-	basePackageClasses = { RestTestBusinessPackage.class, RestServerPackage.class },
-	excludeFilters = @Filter(Configuration.class)
-)
+    basePackageClasses = {RestTestBusinessPackage.class, RestServerPackage.class},
+    excludeFilters = @Filter(Configuration.class))
 // fonctionnement de l'annotation @Transactional
 @EnableTransactionManagement
-public class RestServerTestCoreCommonConfig extends AbstractApplicationConfig {
-
-}
+public class RestServerTestCoreCommonConfig extends AbstractApplicationConfig {}

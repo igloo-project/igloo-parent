@@ -10,17 +10,16 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 @Configuration
 public class NotificationTestConfig {
 
-	@Bean
-	@Primary
-	public JavaMailSender javaMailSenderMock() {
-		return Mockito.mock(JavaMailSender.class);
-	}
+  @Bean
+  @Primary
+  public JavaMailSender javaMailSenderMock() {
+    return Mockito.mock(JavaMailSender.class);
+  }
 
-	@Bean
-	public FreeMarkerConfigurationFactoryBean freemarkerMailConfiguration() {
-		FreeMarkerConfigurationFactoryBean configuration = new FreeMarkerConfigurationFactoryBean();
-		configuration.setTemplateLoaderPath("classpath:notification");
-		return configuration;
-	}
-
+  @Bean
+  public FreeMarkerConfigurationFactoryBean freemarkerMailConfiguration() {
+    FreeMarkerConfigurationFactoryBean configuration = new FreeMarkerConfigurationFactoryBean();
+    configuration.setTemplateLoaderPath("classpath:notification");
+    return configuration;
+  }
 }

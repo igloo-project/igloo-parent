@@ -1,63 +1,60 @@
 package org.iglooproject.wicket.more.model;
 
-import java.util.Collection;
-import java.util.Iterator;
-
-import org.apache.wicket.model.IModel;
-
 import igloo.wicket.model.CollectionCopyModel;
 import igloo.wicket.model.IItemModelAwareCollectionModel;
+import java.util.Collection;
+import java.util.Iterator;
+import org.apache.wicket.model.IModel;
 
 public class WorkingCopyCollectionModel<T, C extends Collection<T>, M extends IModel<T>>
-		extends WorkingCopyModel<C>
-		implements IItemModelAwareCollectionModel<T, C, M> {
-	
-	private static final long serialVersionUID = -4049247716740595168L;
+    extends WorkingCopyModel<C> implements IItemModelAwareCollectionModel<T, C, M> {
 
-	private final IItemModelAwareCollectionModel<T, C, M> collectionWorkingCopy;
-	
-	public WorkingCopyCollectionModel(IModel<C> reference, CollectionCopyModel<T, C, M> workingCopy) {
-		super(reference, workingCopy);
-		this.collectionWorkingCopy = workingCopy;
-	}
+  private static final long serialVersionUID = -4049247716740595168L;
 
-	@Override
-	public C getObject() {
-		return collectionWorkingCopy.getObject();
-	}
+  private final IItemModelAwareCollectionModel<T, C, M> collectionWorkingCopy;
 
-	@Override
-	public void setObject(C object) {
-		collectionWorkingCopy.setObject(object);
-	}
-	
-	@Override
-	public Iterator<M> iterator(long offset, long limit) {
-		return collectionWorkingCopy.iterator(offset, limit);
-	}
-	
-	@Override
-	public Iterator<M> iterator() {
-		return collectionWorkingCopy.iterator();
-	}
-	
-	@Override
-	public long size() {
-		return collectionWorkingCopy.size();
-	}
+  public WorkingCopyCollectionModel(IModel<C> reference, CollectionCopyModel<T, C, M> workingCopy) {
+    super(reference, workingCopy);
+    this.collectionWorkingCopy = workingCopy;
+  }
 
-	@Override
-	public void add(T item) {
-		collectionWorkingCopy.add(item);
-	}
-	
-	@Override
-	public void remove(T item) {
-		collectionWorkingCopy.remove(item);
-	}
+  @Override
+  public C getObject() {
+    return collectionWorkingCopy.getObject();
+  }
 
-	@Override
-	public void clear() {
-		collectionWorkingCopy.clear();
-	}
+  @Override
+  public void setObject(C object) {
+    collectionWorkingCopy.setObject(object);
+  }
+
+  @Override
+  public Iterator<M> iterator(long offset, long limit) {
+    return collectionWorkingCopy.iterator(offset, limit);
+  }
+
+  @Override
+  public Iterator<M> iterator() {
+    return collectionWorkingCopy.iterator();
+  }
+
+  @Override
+  public long size() {
+    return collectionWorkingCopy.size();
+  }
+
+  @Override
+  public void add(T item) {
+    collectionWorkingCopy.add(item);
+  }
+
+  @Override
+  public void remove(T item) {
+    collectionWorkingCopy.remove(item);
+  }
+
+  @Override
+  public void clear() {
+    collectionWorkingCopy.clear();
+  }
 }

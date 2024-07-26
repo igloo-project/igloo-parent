@@ -14,24 +14,25 @@ import org.wicketstuff.wiquery.core.javascript.JsStatement;
 @Deprecated
 public class ScrollToTopBehavior extends Behavior {
 
-	private static final long serialVersionUID = -4834541827215125178L;
+  private static final long serialVersionUID = -4834541827215125178L;
 
-	private ScrollToTop scrollToTop;
-	
-	public ScrollToTopBehavior() {
-		this(new ScrollToTop());
-	}
-	
-	public ScrollToTopBehavior(ScrollToTop scrollToTop) {
-		Args.notNull(scrollToTop, "scrollToTop");
-		this.scrollToTop = scrollToTop;
-	}
+  private ScrollToTop scrollToTop;
 
-	@Override
-	public void renderHead(Component component, IHeaderResponse response) {
-		response.render(JavaScriptHeaderItem.forReference(ScrollToTopJavaScriptResourceReference.get()));
-		response.render(OnDomReadyHeaderItem.forScript(new JsStatement().$(component).chain(scrollToTop).render()));
-		super.renderHead(component, response);
-	}
+  public ScrollToTopBehavior() {
+    this(new ScrollToTop());
+  }
 
+  public ScrollToTopBehavior(ScrollToTop scrollToTop) {
+    Args.notNull(scrollToTop, "scrollToTop");
+    this.scrollToTop = scrollToTop;
+  }
+
+  @Override
+  public void renderHead(Component component, IHeaderResponse response) {
+    response.render(
+        JavaScriptHeaderItem.forReference(ScrollToTopJavaScriptResourceReference.get()));
+    response.render(
+        OnDomReadyHeaderItem.forScript(new JsStatement().$(component).chain(scrollToTop).render()));
+    super.renderHead(component, response);
+  }
 }

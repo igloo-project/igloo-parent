@@ -5,22 +5,16 @@ import org.iglooproject.wicket.more.config.spring.AbstractWebappConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-
 import test.wicket.more.application.WicketMoreTestApplication;
 
-/**
- * Stub.
- */
+/** Stub. */
 @Configuration
-@Import({
-	WicketMoreTestCoreCommonConfig.class
-})
+@Import({WicketMoreTestCoreCommonConfig.class})
 public class SimpleWicketMoreTestWebappConfig extends AbstractWebappConfig {
 
-	@Override
-	@Bean
-	public WebApplication application() {
-		return new WicketMoreTestApplication();
-	}
-
+  @Override
+  @Bean
+  public WebApplication application() {
+    return new WicketMoreTestApplication();
+  }
 }

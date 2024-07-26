@@ -5,11 +5,10 @@ import org.apache.wicket.model.IDetachable;
 @FunctionalInterface
 public interface IAction extends IDetachable {
 
-	void execute();
+  void execute();
 
-	@Override
-	default void detach() {
-		// nothing to do
-	}
-
+  @Override
+  default void detach() {
+    // nothing to do
+  }
 }

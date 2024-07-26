@@ -12,29 +12,26 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 
 public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
 
-	private static final long serialVersionUID = 547223775134254240L;
+  private static final long serialVersionUID = 547223775134254240L;
 
-	public static final IPageLinkDescriptor linkDescriptor() {
-		return LinkDescriptorBuilder.start()
-			.page(SecurityPasswordExpirationPage.class);
-	}
+  public static final IPageLinkDescriptor linkDescriptor() {
+    return LinkDescriptorBuilder.start().page(SecurityPasswordExpirationPage.class);
+  }
 
-	public SecurityPasswordExpirationPage(PageParameters parameters) {
-		super(parameters);
-		
-		addHeadPageTitlePrependedElement(new BreadCrumbElement(
-			new ResourceModel("security.password.expiration.pageTitle")
-		));
-	}
+  public SecurityPasswordExpirationPage(PageParameters parameters) {
+    super(parameters);
 
-	@Override
-	protected IModel<String> getTitleModel() {
-		return new ResourceModel("security.password.expiration.pageTitle");
-	}
+    addHeadPageTitlePrependedElement(
+        new BreadCrumbElement(new ResourceModel("security.password.expiration.pageTitle")));
+  }
 
-	@Override
-	protected Component getContentComponent(String wicketId) {
-		return new SecurityPasswordExpirationContentPanel(wicketId);
-	}
+  @Override
+  protected IModel<String> getTitleModel() {
+    return new ResourceModel("security.password.expiration.pageTitle");
+  }
 
+  @Override
+  protected Component getContentComponent(String wicketId) {
+    return new SecurityPasswordExpirationContentPanel(wicketId);
+  }
 }

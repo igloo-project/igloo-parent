@@ -5,6 +5,4 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import(WicketTestApplicationPropertyConfig.class)
-public class WicketTestCommonConfig {
-
-}
+public class WicketTestCommonConfig {}

@@ -11,16 +11,19 @@ import org.iglooproject.spring.property.service.IPropertyRegistry;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BasicApplicationWebappApplicationPropertyRegistryConfig implements IPropertyRegistryConfig {
+public class BasicApplicationWebappApplicationPropertyRegistryConfig
+    implements IPropertyRegistryConfig {
 
-	@Override
-	public void register(IPropertyRegistry registry) {
-		registry.registerEnum(APPLICATION_THEME, BasicApplicationApplicationTheme.class, BasicApplicationApplicationTheme.ADVANCED);
-		
-		registry.registerInteger(PORTFOLIO_ITEMS_PER_PAGE, 20);
-		registry.registerInteger(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION, 20);
-		
-		registry.registerString(MAINTENANCE_URL);
-	}
+  @Override
+  public void register(IPropertyRegistry registry) {
+    registry.registerEnum(
+        APPLICATION_THEME,
+        BasicApplicationApplicationTheme.class,
+        BasicApplicationApplicationTheme.ADVANCED);
 
+    registry.registerInteger(PORTFOLIO_ITEMS_PER_PAGE, 20);
+    registry.registerInteger(PORTFOLIO_ITEMS_PER_PAGE_DESCRIPTION, 20);
+
+    registry.registerString(MAINTENANCE_URL);
+  }
 }

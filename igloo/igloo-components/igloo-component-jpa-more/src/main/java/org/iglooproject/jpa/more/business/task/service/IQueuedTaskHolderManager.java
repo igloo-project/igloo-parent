@@ -1,49 +1,45 @@
 package org.iglooproject.jpa.more.business.task.service;
 
 import java.util.Collection;
-
-import org.springframework.transaction.annotation.Transactional;
-
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.more.business.task.model.AbstractTask;
 import org.iglooproject.jpa.more.business.task.model.IQueueId;
 import org.iglooproject.jpa.more.business.task.model.QueuedTaskHolder;
-
+import org.springframework.transaction.annotation.Transactional;
 
 public interface IQueuedTaskHolderManager {
-	
-	boolean isAvailableForAction();
 
-	boolean isActive();
+  boolean isAvailableForAction();
 
-	boolean isTaskQueueActive(String queueId);
+  boolean isActive();
 
-	int getNumberOfTaskConsumer(String queueId);
+  boolean isTaskQueueActive(String queueId);
 
-	int getNumberOfWaitingTasks();
+  int getNumberOfTaskConsumer(String queueId);
 
-	int getNumberOfWaitingTasks(String queueId);
+  int getNumberOfWaitingTasks();
 
-	int getNumberOfRunningTasks();
+  int getNumberOfWaitingTasks(String queueId);
 
-	int getNumberOfRunningTasks(String queueId);
+  int getNumberOfRunningTasks();
 
-	Collection<IQueueId> getQueueIds();
+  int getNumberOfRunningTasks(String queueId);
 
-	void start();
+  Collection<IQueueId> getQueueIds();
 
-	void stop();
+  void start();
 
-	@Transactional
-	QueuedTaskHolder submit(AbstractTask task) throws ServiceException;
+  void stop();
 
-	@Transactional
-	void reload(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException;
+  @Transactional
+  QueuedTaskHolder submit(AbstractTask task) throws ServiceException;
 
-	@Transactional
-	void cancel(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException;
+  @Transactional
+  void reload(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException;
 
-	void onTaskFinish(Long id);
+  @Transactional
+  void cancel(Long queuedTaskHolderId) throws ServiceException, SecurityServiceException;
 
+  void onTaskFinish(Long id);
 }

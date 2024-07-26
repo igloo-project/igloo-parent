@@ -4,6 +4,5 @@ import org.igloo.storage.model.Fichier;
 
 public interface IFichierPathStrategy {
 
-	String getPath(Fichier fichier);
-
+  String getPath(Fichier fichier);
 }

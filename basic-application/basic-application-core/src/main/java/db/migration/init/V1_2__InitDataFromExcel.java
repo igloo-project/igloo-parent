@@ -9,9 +9,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class V1_2__InitDataFromExcel extends AbstractDataUpgradeMigration {
 
-	@Override
-	protected Class<? extends IDataUpgrade> getDataUpgradeClass() {
-		return DataUpgrade_InitDataFromExcel.class;
-	}
-
+  @Override
+  protected Class<? extends IDataUpgrade> getDataUpgradeClass() {
+    return DataUpgrade_InitDataFromExcel.class;
+  }
 }

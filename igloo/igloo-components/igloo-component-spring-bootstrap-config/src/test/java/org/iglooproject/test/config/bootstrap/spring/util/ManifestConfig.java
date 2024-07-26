@@ -8,6 +8,4 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ManifestPropertySource(prefix = "test")
 @Import(ManifestPropertySourceConfiguration.class)
-public class ManifestConfig extends AbstractBootstrapTestCase {
-
-}
+public class ManifestConfig extends AbstractBootstrapTestCase {}

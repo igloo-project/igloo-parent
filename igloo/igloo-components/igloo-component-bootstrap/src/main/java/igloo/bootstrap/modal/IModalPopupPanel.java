@@ -4,14 +4,13 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 
 public interface IModalPopupPanel {
 
-	String getContainerMarkupId();
+  String getContainerMarkupId();
 
-	WebMarkupContainer getContainer();
+  WebMarkupContainer getContainer();
 
-	IBootstrapModal getBootstrapModal();
+  IBootstrapModal getBootstrapModal();
 
-	void configure();
+  void configure();
 
-	boolean determineVisibility();
-
+  boolean determineVisibility();
 }

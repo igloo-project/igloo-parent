@@ -5,6 +5,5 @@ import org.iglooproject.jpa.security.service.IAuthenticationService;
 
 public interface IBasicApplicationAuthenticationService extends IAuthenticationService {
 
-	User getUser();
-
+  User getUser();
 }

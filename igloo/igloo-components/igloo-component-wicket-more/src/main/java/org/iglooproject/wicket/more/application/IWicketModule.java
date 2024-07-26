@@ -6,10 +6,9 @@ import org.iglooproject.sass.service.IScssService;
 
 public interface IWicketModule {
 
-	void updateResourceBundles(ResourceBundles resourceBundles);
+  void updateResourceBundles(ResourceBundles resourceBundles);
 
-	void updateResourceSettings(ResourceSettings resourceSettings);
+  void updateResourceSettings(ResourceSettings resourceSettings);
 
-	void registerImportScopes(IScssService scssService);
-
+  void registerImportScopes(IScssService scssService);
 }

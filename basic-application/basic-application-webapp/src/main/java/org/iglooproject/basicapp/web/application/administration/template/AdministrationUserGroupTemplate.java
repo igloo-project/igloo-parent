@@ -8,20 +8,19 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 
 public class AdministrationUserGroupTemplate extends AdministrationTemplate {
 
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	public AdministrationUserGroupTemplate(PageParameters parameters) {
-		super(parameters);
-		
-		addBreadCrumbElement(new BreadCrumbElement(
-			new ResourceModel("navigation.administration.userGroup"),
-			AdministrationUserGroupListPage.linkDescriptor()
-		));
-	}
+  public AdministrationUserGroupTemplate(PageParameters parameters) {
+    super(parameters);
 
-	@Override
-	protected Class<? extends WebPage> getSecondMenuPage() {
-		return AdministrationUserGroupListPage.class;
-	}
+    addBreadCrumbElement(
+        new BreadCrumbElement(
+            new ResourceModel("navigation.administration.userGroup"),
+            AdministrationUserGroupListPage.linkDescriptor()));
+  }
 
+  @Override
+  protected Class<? extends WebPage> getSecondMenuPage() {
+    return AdministrationUserGroupListPage.class;
+  }
 }

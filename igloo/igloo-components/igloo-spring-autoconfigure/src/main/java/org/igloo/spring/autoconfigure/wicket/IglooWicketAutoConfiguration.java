@@ -22,53 +22,51 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 
-
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.wicket.disabled", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(
+    name = "igloo-ac.wicket.disabled",
+    havingValue = "false",
+    matchIfMissing = true)
 @ConditionalOnClass(WebApplication.class)
-@Import({
-	WicketMoreServiceConfig.class,
-	WicketMoreApplicationPropertyRegistryConfig.class
-})
+@Import({WicketMoreServiceConfig.class, WicketMoreApplicationPropertyRegistryConfig.class})
 public class IglooWicketAutoConfiguration {
-	
-	@Bean
-	@ConditionalOnMissingBean(WebApplication.class)
-	public WebApplication webApplication() {
-		return new WebApplication() {
-			@Override
-			public Class<? extends Page> getHomePage() {
-				return null;
-			}
-		};
-	}
 
-	@Bean
-	/* Use a proxy to fix a circular dependency.
-	 * There's no real notion of scope here, since the bean is a singleton: we just want it to be proxyfied so that
-	 * the circular dependency is broken.
-	 */
-	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-	public IWicketContextProvider wicketContextProvider(WebApplication defaultApplication) {
-		return new WicketContextProviderImpl(defaultApplication);
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public IRendererService rendererService(IWicketContextProvider wicketContextProvider) {
-		return new RendererServiceImpl(wicketContextProvider);
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public ILinkParameterConversionService linkParameterConversionService() {
-		return new DefaultLinkParameterConversionService();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean(IHtmlNotificationCssService.class)
-	public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
-		return new PhlocCssHtmlNotificationCssServiceImpl();
-	}
+  @Bean
+  @ConditionalOnMissingBean(WebApplication.class)
+  public WebApplication webApplication() {
+    return new WebApplication() {
+      @Override
+      public Class<? extends Page> getHomePage() {
+        return null;
+      }
+    };
+  }
 
+  @Bean
+  /* Use a proxy to fix a circular dependency.
+   * There's no real notion of scope here, since the bean is a singleton: we just want it to be proxyfied so that
+   * the circular dependency is broken.
+   */
+  @Scope(proxyMode = ScopedProxyMode.INTERFACES)
+  public IWicketContextProvider wicketContextProvider(WebApplication defaultApplication) {
+    return new WicketContextProviderImpl(defaultApplication);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public IRendererService rendererService(IWicketContextProvider wicketContextProvider) {
+    return new RendererServiceImpl(wicketContextProvider);
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public ILinkParameterConversionService linkParameterConversionService() {
+    return new DefaultLinkParameterConversionService();
+  }
+
+  @Bean
+  @ConditionalOnMissingBean(IHtmlNotificationCssService.class)
+  public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
+    return new PhlocCssHtmlNotificationCssServiceImpl();
+  }
 }

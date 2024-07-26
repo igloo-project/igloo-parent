@@ -9,9 +9,8 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = JpaSearchTestConfig.class, inheritInitializers = true)
 public abstract class AbstractJpaSearchTestCase extends AbstractTestCase {
 
-	@Override
-	protected void cleanAll() throws ServiceException, SecurityServiceException {
-		// no-op
-	}
-
+  @Override
+  protected void cleanAll() throws ServiceException, SecurityServiceException {
+    // no-op
+  }
 }

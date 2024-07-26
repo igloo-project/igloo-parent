@@ -1,5 +1,3 @@
 package org.iglooproject.jpa.querydsl.group;
 
-public class TableGroupByBuilder {
-
-}
+public class TableGroupByBuilder {}

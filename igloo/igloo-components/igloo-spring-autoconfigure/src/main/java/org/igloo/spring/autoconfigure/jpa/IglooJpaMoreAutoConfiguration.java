@@ -21,36 +21,36 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.jpa-more.disabled", havingValue = "false", matchIfMissing = true)
-@ConditionalOnBean({ IglooJpaAutoConfiguration.class })
-@AutoConfigureAfter({ IglooJpaAutoConfiguration.class })
-@Import({
-	IglooJpaMoreComponentScanConfig.class,
-	JpaMoreApplicationPropertyRegistryConfig.class
-})
+@ConditionalOnProperty(
+    name = "igloo-ac.jpa-more.disabled",
+    havingValue = "false",
+    matchIfMissing = true)
+@ConditionalOnBean({IglooJpaAutoConfiguration.class})
+@AutoConfigureAfter({IglooJpaAutoConfiguration.class})
+@Import({IglooJpaMoreComponentScanConfig.class, JpaMoreApplicationPropertyRegistryConfig.class})
 public class IglooJpaMoreAutoConfiguration {
 
-	@Bean
-	@ConditionalOnMissingBean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(IJpaConfigurationProvider jpaConfigurationProvider) {
-		return JpaConfigUtils.entityManagerFactory(jpaConfigurationProvider);
-	}
+  @Bean
+  @ConditionalOnMissingBean
+  public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+      IJpaConfigurationProvider jpaConfigurationProvider) {
+    return JpaConfigUtils.entityManagerFactory(jpaConfigurationProvider);
+  }
 
-	@Bean
-	public TransactionTemplate transactionTemplate(PlatformTransactionManager transactionManager) {
-		return new TransactionTemplate(transactionManager);
-	}
+  @Bean
+  public TransactionTemplate transactionTemplate(PlatformTransactionManager transactionManager) {
+    return new TransactionTemplate(transactionManager);
+  }
 
-	@Bean
-	public JpaPackageScanProvider jpaMorePackageScanProvider() {
-		return new JpaPackageScanProvider(CoreJpaMoreBusinessPackage.class.getPackage());
-	}
+  @Bean
+  public JpaPackageScanProvider jpaMorePackageScanProvider() {
+    return new JpaPackageScanProvider(CoreJpaMoreBusinessPackage.class.getPackage());
+  }
 
-	@Bean
-	@ConditionalOnMissingBean
-	@Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public IHibernateSearchLuceneQueryFactory hibernateSearchLuceneQueryFactory() {
-		return new HibernateSearchLuceneQueryFactoryImpl();
-	}
-
+  @Bean
+  @ConditionalOnMissingBean
+  @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+  public IHibernateSearchLuceneQueryFactory hibernateSearchLuceneQueryFactory() {
+    return new HibernateSearchLuceneQueryFactoryImpl();
+  }
 }

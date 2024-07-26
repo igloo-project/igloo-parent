@@ -6,26 +6,24 @@ import javax.persistence.Entity;
 @Entity
 public class PersonSubTypeB extends Person {
 
-	private static final long serialVersionUID = 5763892592246291007L;
+  private static final long serialVersionUID = 5763892592246291007L;
 
-	@Column
-	private int specificData;
+  @Column private int specificData;
 
-	public PersonSubTypeB() {
-		super();
-	}
+  public PersonSubTypeB() {
+    super();
+  }
 
-	public PersonSubTypeB(String firstName, String lastName, int specificData) {
-		super(firstName, lastName);
-		this.specificData = specificData;
-	}
+  public PersonSubTypeB(String firstName, String lastName, int specificData) {
+    super(firstName, lastName);
+    this.specificData = specificData;
+  }
 
-	public int getSpecificData() {
-		return specificData;
-	}
+  public int getSpecificData() {
+    return specificData;
+  }
 
-	public void setSpecificData(int specificData) {
-		this.specificData = specificData;
-	}
-
+  public void setSpecificData(int specificData) {
+    this.specificData = specificData;
+  }
 }

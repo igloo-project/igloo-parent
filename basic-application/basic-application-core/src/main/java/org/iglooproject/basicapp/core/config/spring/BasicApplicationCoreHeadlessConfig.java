@@ -13,29 +13,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({
-	BasicApplicationCoreCommonConfig.class
-})
-@ComponentScan(
-	basePackageClasses = {
-		BasicApplicationCorePackage.class
-	}
-)
+@Import({BasicApplicationCoreCommonConfig.class})
+@ComponentScan(basePackageClasses = {BasicApplicationCorePackage.class})
 public class BasicApplicationCoreHeadlessConfig {
 
-	@Bean
-	public IRendererService rendererService() {
-		return new EmptyRendererServiceImpl();
-	}
+  @Bean
+  public IRendererService rendererService() {
+    return new EmptyRendererServiceImpl();
+  }
 
-	@Bean
-	public IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory() {
-		return new EmptyNotificationContentDescriptorFactoryImpl();
-	}
+  @Bean
+  public IBasicApplicationNotificationContentDescriptorFactory contentDescriptorFactory() {
+    return new EmptyNotificationContentDescriptorFactoryImpl();
+  }
 
-	@Bean
-	public IBasicApplicationNotificationUrlBuilderService notificationUrlBuilderService() {
-		return new EmptyNotificationUrlBuilderServiceImpl();
-	}
-
+  @Bean
+  public IBasicApplicationNotificationUrlBuilderService notificationUrlBuilderService() {
+    return new EmptyNotificationUrlBuilderServiceImpl();
+  }
 }

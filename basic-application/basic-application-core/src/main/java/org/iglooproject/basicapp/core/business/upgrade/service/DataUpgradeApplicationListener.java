@@ -11,31 +11,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataUpgradeApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DataUpgradeApplicationListener.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(DataUpgradeApplicationListener.class);
 
-	@Autowired
-	private IDataUpgradeManager dataUpgradeManager;
+  @Autowired private IDataUpgradeManager dataUpgradeManager;
 
-	/**
-	 * Automatically launches data upgrades at startup
-	 */
-	@Override
-	public void onApplicationEvent(ContextRefreshedEvent event) {
-		if (
-				event != null && event.getSource() != null
-			&&	AbstractApplicationContext.class.isAssignableFrom(event.getSource().getClass())
-			&&	((AbstractApplicationContext) event.getSource()).getParent() == null
-		) {
-			init();
-		}
-	}
+  /** Automatically launches data upgrades at startup */
+  @Override
+  public void onApplicationEvent(ContextRefreshedEvent event) {
+    if (event != null
+        && event.getSource() != null
+        && AbstractApplicationContext.class.isAssignableFrom(event.getSource().getClass())
+        && ((AbstractApplicationContext) event.getSource()).getParent() == null) {
+      init();
+    }
+  }
 
-	private void init() {
-		try {
-			dataUpgradeManager.autoPerformDataUpgrades();
-		} catch (Exception e) {
-			LOGGER.error("Error executing data upgrades", e);
-		}
-	}
-
+  private void init() {
+    try {
+      dataUpgradeManager.autoPerformDataUpgrades();
+    } catch (Exception e) {
+      LOGGER.error("Error executing data upgrades", e);
+    }
+  }
 }

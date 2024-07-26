@@ -16,10 +16,9 @@ package org.iglooproject.jpa.security.hierarchy;
 
 public class CycleInPermissionHierarchyException extends RuntimeException {
 
-	private static final long serialVersionUID = -4970510612118296707L;
+  private static final long serialVersionUID = -4970510612118296707L;
 
-	public CycleInPermissionHierarchyException() {
-		super("Exception thrown because of a cycle in the permission hierarchy definition!");
-	}
-
+  public CycleInPermissionHierarchyException() {
+    super("Exception thrown because of a cycle in the permission hierarchy definition!");
+  }
 }

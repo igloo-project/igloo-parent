@@ -8,16 +8,11 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-@TestExecutionListeners({
-	DependencyInjectionTestExecutionListener.class
-})
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class})
 @ExtendWith(SpringExtension.class)
 public abstract class AbstractTestCase {
 
-	@Autowired
-	protected ConfigurableApplicationContext applicationContext;
+  @Autowired protected ConfigurableApplicationContext applicationContext;
 
-	@Autowired
-	protected ConfigurableEnvironment environment;
-
+  @Autowired protected ConfigurableEnvironment environment;
 }

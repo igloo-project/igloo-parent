@@ -10,21 +10,19 @@ import org.junit.jupiter.api.Test;
 
 class AdministrationAnnouncementPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
-	@Test
-	void initPage() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrator);
-		
-		tester.startPage(AdministrationAnnouncementListPage.class);
-		tester.assertRenderedPage(AdministrationAnnouncementListPage.class);
-	}
+  @Test
+  void initPage() throws ServiceException, SecurityServiceException {
+    authenticateUser(administrator);
 
-	@Test
-	void accessUnauthorizedLinkDescriptor() throws ServiceException, SecurityServiceException {
-		authenticateUser(basicUser);
-		assertThrows(
-			LinkInvalidTargetRuntimeException.class,
-			() -> tester.executeUrl(AdministrationAnnouncementListPage.linkDescriptor().fullUrl())
-		);
-	}
+    tester.startPage(AdministrationAnnouncementListPage.class);
+    tester.assertRenderedPage(AdministrationAnnouncementListPage.class);
+  }
 
+  @Test
+  void accessUnauthorizedLinkDescriptor() throws ServiceException, SecurityServiceException {
+    authenticateUser(basicUser);
+    assertThrows(
+        LinkInvalidTargetRuntimeException.class,
+        () -> tester.executeUrl(AdministrationAnnouncementListPage.linkDescriptor().fullUrl()));
+  }
 }

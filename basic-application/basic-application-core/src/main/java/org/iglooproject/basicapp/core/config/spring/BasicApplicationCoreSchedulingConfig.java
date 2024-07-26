@@ -10,12 +10,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 public class BasicApplicationCoreSchedulingConfig {
 
-	@Autowired
-	private ISchedulingService schedulingService;
+  @Autowired private ISchedulingService schedulingService;
 
-	@Scheduled(cron = "${tmp.clean.cron}")
-	public void temporaryFilesCleaning() {
-		schedulingService.temporaryFilesCleaning();
-	}
-
+  @Scheduled(cron = "${tmp.clean.cron}")
+  public void temporaryFilesCleaning() {
+    schedulingService.temporaryFilesCleaning();
+  }
 }

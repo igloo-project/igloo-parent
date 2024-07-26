@@ -5,6 +5,5 @@ import org.iglooproject.jpa.security.business.user.model.GenericUser;
 
 public interface IGenericUserDao<U extends GenericUser<?, ?>> extends IGenericEntityDao<Long, U> {
 
-	U getByUsernameCaseInsensitive(String username);
-
+  U getByUsernameCaseInsensitive(String username);
 }

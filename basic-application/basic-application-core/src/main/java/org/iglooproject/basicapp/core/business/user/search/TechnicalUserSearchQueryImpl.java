@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-public class TechnicalUserSearchQueryImpl extends AbstractUserSearchQueryImpl<TechnicalUser> implements ITechnicalUserSearchQuery {
+public class TechnicalUserSearchQueryImpl extends AbstractUserSearchQueryImpl<TechnicalUser>
+    implements ITechnicalUserSearchQuery {
 
-	protected TechnicalUserSearchQueryImpl() {
-		super(TechnicalUser.class);
-	}
-
+  protected TechnicalUserSearchQueryImpl() {
+    super(TechnicalUser.class);
+  }
 }

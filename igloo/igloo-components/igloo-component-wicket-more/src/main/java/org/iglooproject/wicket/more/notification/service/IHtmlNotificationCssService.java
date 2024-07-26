@@ -6,18 +6,18 @@ import org.iglooproject.wicket.more.css.ICssResourceReference;
 import org.jsoup.nodes.Node;
 
 public interface IHtmlNotificationCssService {
-	
-	void registerStyles(String componentVariation, ICssResourceReference cssResourceReference) throws ServiceException;
-	
-	IHtmlNotificationCssRegistry getRegistry(String componentVariation) throws ServiceException;
-	
-	interface IHtmlNotificationCssRegistry {
-		
-		String getStyle(ComponentTag tag);
-		
-		String getStyle(Node node);
-	
-	}
 
-	void registerDefaultStyles(ICssResourceReference cssResourceReference);
+  void registerStyles(String componentVariation, ICssResourceReference cssResourceReference)
+      throws ServiceException;
+
+  IHtmlNotificationCssRegistry getRegistry(String componentVariation) throws ServiceException;
+
+  interface IHtmlNotificationCssRegistry {
+
+    String getStyle(ComponentTag tag);
+
+    String getStyle(Node node);
+  }
+
+  void registerDefaultStyles(ICssResourceReference cssResourceReference);
 }

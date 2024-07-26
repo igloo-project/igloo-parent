@@ -4,6 +4,7 @@ import static org.iglooproject.basicapp.core.property.BasicApplicationCoreProper
 import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 import static org.iglooproject.basicapp.core.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
 
+import com.google.common.collect.ImmutableMap;
 import org.iglooproject.basicapp.core.business.user.model.BasicUser;
 import org.iglooproject.basicapp.core.business.user.model.TechnicalUser;
 import org.iglooproject.basicapp.core.security.model.BasicApplicationPermission;
@@ -34,115 +35,117 @@ import org.springframework.security.access.intercept.RunAsImplAuthenticationProv
 import org.springframework.security.access.intercept.RunAsManager;
 import org.springframework.security.acls.domain.PermissionFactory;
 
-import com.google.common.collect.ImmutableMap;
-
 @Configuration
 @Import(DefaultJpaSecurityConfig.class)
 public class BasicApplicationCoreSecurityConfig {
 
-	@Autowired
-	protected DefaultJpaSecurityConfig defaultJpaSecurityConfig;
+  @Autowired protected DefaultJpaSecurityConfig defaultJpaSecurityConfig;
 
-	@Autowired
-	protected IPropertyService propertyService;
+  @Autowired protected IPropertyService propertyService;
 
-	@Bean
-	@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-	public ICorePermissionEvaluator permissionEvaluator() {
-		return new BasicApplicationPermissionEvaluator();
-	}
+  @Bean
+  @Scope(proxyMode = ScopedProxyMode.INTERFACES)
+  public ICorePermissionEvaluator permissionEvaluator() {
+    return new BasicApplicationPermissionEvaluator();
+  }
 
-	@Bean
-	public IBasicApplicationAuthenticationService authenticationService() {
-		return new BasicApplicationAuthenticationServiceImpl();
-	}
+  @Bean
+  public IBasicApplicationAuthenticationService authenticationService() {
+    return new BasicApplicationAuthenticationServiceImpl();
+  }
 
-	@Bean
-	public IBasicApplicationSecurityService securityService() {
-		return new BasicApplicationSecurityServiceImpl();
-	}
+  @Bean
+  public IBasicApplicationSecurityService securityService() {
+    return new BasicApplicationSecurityServiceImpl();
+  }
 
-	@Bean
-	public AuthenticationUsernameComparison authenticationUsernameComparison() {
-		return AuthenticationUsernameComparison.CASE_SENSITIVE;
-	}
+  @Bean
+  public AuthenticationUsernameComparison authenticationUsernameComparison() {
+    return AuthenticationUsernameComparison.CASE_SENSITIVE;
+  }
 
-	@Bean
-	public IBasicApplicationUserDetailsService userDetailsService() {
-		BasicApplicationUserDetailsServiceImpl userDetailsService = new BasicApplicationUserDetailsServiceImpl();
-		userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
-		return userDetailsService;
-	}
+  @Bean
+  public IBasicApplicationUserDetailsService userDetailsService() {
+    BasicApplicationUserDetailsServiceImpl userDetailsService =
+        new BasicApplicationUserDetailsServiceImpl();
+    userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison());
+    return userDetailsService;
+  }
 
-	@Bean
-	public PermissionFactory permissionFactory() {
-		return new NamedPermissionFactory(BasicApplicationPermission.ALL);
-	}
+  @Bean
+  public PermissionFactory permissionFactory() {
+    return new NamedPermissionFactory(BasicApplicationPermission.ALL);
+  }
 
-	@Bean
-	public RunAsManager runAsManager() {
-		CoreRunAsManagerImpl runAsManager = new CoreRunAsManagerImpl();
-		runAsManager.setKey(defaultJpaSecurityConfig.getRunAsKey());
-		return runAsManager;
-	}
+  @Bean
+  public RunAsManager runAsManager() {
+    CoreRunAsManagerImpl runAsManager = new CoreRunAsManagerImpl();
+    runAsManager.setKey(defaultJpaSecurityConfig.getRunAsKey());
+    return runAsManager;
+  }
 
-	@Bean
-	public RunAsImplAuthenticationProvider runAsAuthenticationProvider() {
-		RunAsImplAuthenticationProvider runAsAuthenticationProvider = new RunAsImplAuthenticationProvider();
-		runAsAuthenticationProvider.setKey(defaultJpaSecurityConfig.getRunAsKey());
-		return runAsAuthenticationProvider;
-	}
+  @Bean
+  public RunAsImplAuthenticationProvider runAsAuthenticationProvider() {
+    RunAsImplAuthenticationProvider runAsAuthenticationProvider =
+        new RunAsImplAuthenticationProvider();
+    runAsAuthenticationProvider.setKey(defaultJpaSecurityConfig.getRunAsKey());
+    return runAsAuthenticationProvider;
+  }
 
-	@Bean
-	public ISecurityManagementService securityManagementService() {
-		int passwordLengthMin = propertyService.get(SECURITY_PASSWORD_LENGTH_MIN);
-		int passwordLengthMax = propertyService.get(SECURITY_PASSWORD_LENGTH_MAX);
-		
-		return new SecurityManagementServiceImpl(
-			SecurityOptions.create(securityOptions -> securityOptions
-				.passwordUserRecovery()
-				.passwordUserUpdate()
-				.passwordRules(
-					rules -> rules
-						.minMaxLength(passwordLengthMin, passwordLengthMax)
-						.forbiddenUsername()
-						.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
-				)
-			),
-			ImmutableMap.<Class<? extends GenericUser<?, ?>>, SecurityOptions>builder()
-				.put(
-					TechnicalUser.class,
-					SecurityOptions.create(securityOptions -> securityOptions
-						.passwordAdminRecovery()
-						.passwordAdminUpdate()
-						.passwordUserRecovery()
-						.passwordUserUpdate()
-						.passwordRules(
-							rules -> rules
-								.minMaxLength(passwordLengthMin, passwordLengthMax)
-								.forbiddenUsername()
-								.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
-							
-						)
-					)
-				)
-				.put(
-					BasicUser.class,
-					SecurityOptions.create(securityOptions -> securityOptions
-						.passwordExpiration()
-						.passwordHistory()
-						.passwordUserRecovery()
-						.passwordUserUpdate()
-						.passwordRules(
-							rules -> rules
-								.minMaxLength(passwordLengthMin, passwordLengthMax)
-								.forbiddenUsername()
-								.forbiddenPasswords(propertyService.get(SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS))
-						)
-					)
-				)
-				.build()
-		);
-	}
+  @Bean
+  public ISecurityManagementService securityManagementService() {
+    int passwordLengthMin = propertyService.get(SECURITY_PASSWORD_LENGTH_MIN);
+    int passwordLengthMax = propertyService.get(SECURITY_PASSWORD_LENGTH_MAX);
 
+    return new SecurityManagementServiceImpl(
+        SecurityOptions.create(
+            securityOptions ->
+                securityOptions
+                    .passwordUserRecovery()
+                    .passwordUserUpdate()
+                    .passwordRules(
+                        rules ->
+                            rules
+                                .minMaxLength(passwordLengthMin, passwordLengthMax)
+                                .forbiddenUsername()
+                                .forbiddenPasswords(
+                                    propertyService.get(
+                                        SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS)))),
+        ImmutableMap.<Class<? extends GenericUser<?, ?>>, SecurityOptions>builder()
+            .put(
+                TechnicalUser.class,
+                SecurityOptions.create(
+                    securityOptions ->
+                        securityOptions
+                            .passwordAdminRecovery()
+                            .passwordAdminUpdate()
+                            .passwordUserRecovery()
+                            .passwordUserUpdate()
+                            .passwordRules(
+                                rules ->
+                                    rules
+                                        .minMaxLength(passwordLengthMin, passwordLengthMax)
+                                        .forbiddenUsername()
+                                        .forbiddenPasswords(
+                                            propertyService.get(
+                                                SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS)))))
+            .put(
+                BasicUser.class,
+                SecurityOptions.create(
+                    securityOptions ->
+                        securityOptions
+                            .passwordExpiration()
+                            .passwordHistory()
+                            .passwordUserRecovery()
+                            .passwordUserUpdate()
+                            .passwordRules(
+                                rules ->
+                                    rules
+                                        .minMaxLength(passwordLengthMin, passwordLengthMax)
+                                        .forbiddenUsername()
+                                        .forbiddenPasswords(
+                                            propertyService.get(
+                                                SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS)))))
+            .build());
+  }
 }

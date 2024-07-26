@@ -1,7 +1,15 @@
 package igloo.console.maintenance.data.page;
 
+import igloo.bootstrap.confirm.ConfirmLink;
+import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
+import igloo.wicket.action.IOneParameterAction;
+import igloo.wicket.component.CoreLabel;
+import igloo.wicket.component.DateLabel;
+import igloo.wicket.component.PlaceholderContainer;
+import igloo.wicket.condition.Condition;
+import igloo.wicket.model.BindingModel;
+import igloo.wicket.util.DatePattern;
 import java.util.List;
-
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
@@ -26,105 +34,111 @@ import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import igloo.bootstrap.confirm.ConfirmLink;
-import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
-import igloo.wicket.action.IOneParameterAction;
-import igloo.wicket.component.CoreLabel;
-import igloo.wicket.component.DateLabel;
-import igloo.wicket.component.PlaceholderContainer;
-import igloo.wicket.condition.Condition;
-import igloo.wicket.model.BindingModel;
-import igloo.wicket.util.DatePattern;
-
 public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
 
-	private static final long serialVersionUID = -6149952103369498125L;
+  private static final long serialVersionUID = -6149952103369498125L;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceDataPage.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleMaintenanceDataPage.class);
 
-	private static final DataUpgradeRecordBinding dataUpgradeRecordBinding = new DataUpgradeRecordBinding();
+  private static final DataUpgradeRecordBinding dataUpgradeRecordBinding =
+      new DataUpgradeRecordBinding();
 
-	@SpringBean
-	private IPropertyService propertyService;
+  @SpringBean private IPropertyService propertyService;
 
-	@SpringBean
-	private IDataUpgradeRecordService dataUpgradeRecordService;
+  @SpringBean private IDataUpgradeRecordService dataUpgradeRecordService;
 
-	@SpringBean
-	private IAbstractDataUpgradeService dataUpgradeService;
+  @SpringBean private IAbstractDataUpgradeService dataUpgradeService;
 
-	public ConsoleMaintenanceDataPage(PageParameters parameters) {
-		super(parameters);
-		
-		if (dataUpgradeService == null) {
-			throw new RestartResponseException(getFirstMenuPage());
-		}
-		
-		addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.data")));
-		
-		IModel<List<IDataUpgrade>> dataUpgrades = new LoadableDetachableModel<List<IDataUpgrade>>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected List<IDataUpgrade> load() {
-				return dataUpgradeService.listDataUpgrades();
-			}
-		};
-		
-		ListView<IDataUpgrade> dataUpgradeListView = new ListView<IDataUpgrade>("dataUpgrades", dataUpgrades) {
-			private static final long serialVersionUID = 1L;
-			@Override
-			protected void populateItem(ListItem<IDataUpgrade> item) {
-				IModel<DataUpgradeRecord> recordModel = GenericEntityModel.of(dataUpgradeRecordService.getByDataUpgrade(item.getModelObject()));
-				
-				item.add(
-					new CoreLabel("name", item.getModel().map(IDataUpgrade::getName)),
-					new DateLabel("executionDate", BindingModel.of(recordModel, dataUpgradeRecordBinding.executionDate()), DatePattern.SHORT_DATETIME)
-						.showPlaceholder(),
-					new BooleanIcon("autoPerform",BindingModel.of(recordModel, dataUpgradeRecordBinding.autoPerform()))
-						.hideIfNullOrFalse()
-				);
-				
-				Component executeLink = ConfirmLink.<IDataUpgrade>build()
-					.title(new ResourceModel("common.action.confirm.title"))
-					.content(new ResourceModel("common.action.confirm.content"))
-					.confirm()
-					.onClick(new IOneParameterAction<IModel<IDataUpgrade>>() {
-						private static final long serialVersionUID = 1L;
-						@Override
-						public void execute(IModel<IDataUpgrade> parameter) {
-							try {
-								dataUpgradeService.executeDataUpgrade(parameter.getObject());
-								Session.get().success(getString("common.success"));
-							} catch (Exception e) {
-								LOGGER.error("Erreur lors de l'exécution de la mise à jour '" + getModelObject() +"'", e);
-								Session.get().error(getString("common.error.unexpected"));
-							}
-							setResponsePage(getPage());
-						}
-					})
-					.create("execute", item.getModel());
-				
-				item.add(
-					executeLink
-						.add(new AttributeModifier("title", getString("console.maintenance.data.dataUpgrade.execute")))
-						.add(Condition.isTrue(BindingModel.of(recordModel, dataUpgradeRecordBinding.done())).thenHide()),
-					new PlaceholderContainer("alreadyExecutedContainer")
-						.condition(Condition.componentVisible(executeLink))
-				);
-			}
-		};
-		
-		add(
-			dataUpgradeListView
-				.add(Condition.collectionModelNotEmpty(dataUpgrades).thenShow()),
-			new PlaceholderContainer("emptyList")
-				.condition(Condition.componentVisible(dataUpgradeListView))
-		);
-	}
+  public ConsoleMaintenanceDataPage(PageParameters parameters) {
+    super(parameters);
 
-	@Override
-	protected Class<? extends WebPage> getSecondMenuPage() {
-		return ConsoleMaintenanceDataPage.class;
-	}
+    if (dataUpgradeService == null) {
+      throw new RestartResponseException(getFirstMenuPage());
+    }
 
+    addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.data")));
+
+    IModel<List<IDataUpgrade>> dataUpgrades =
+        new LoadableDetachableModel<List<IDataUpgrade>>() {
+          private static final long serialVersionUID = 1L;
+
+          @Override
+          protected List<IDataUpgrade> load() {
+            return dataUpgradeService.listDataUpgrades();
+          }
+        };
+
+    ListView<IDataUpgrade> dataUpgradeListView =
+        new ListView<IDataUpgrade>("dataUpgrades", dataUpgrades) {
+          private static final long serialVersionUID = 1L;
+
+          @Override
+          protected void populateItem(ListItem<IDataUpgrade> item) {
+            IModel<DataUpgradeRecord> recordModel =
+                GenericEntityModel.of(
+                    dataUpgradeRecordService.getByDataUpgrade(item.getModelObject()));
+
+            item.add(
+                new CoreLabel("name", item.getModel().map(IDataUpgrade::getName)),
+                new DateLabel(
+                        "executionDate",
+                        BindingModel.of(recordModel, dataUpgradeRecordBinding.executionDate()),
+                        DatePattern.SHORT_DATETIME)
+                    .showPlaceholder(),
+                new BooleanIcon(
+                        "autoPerform",
+                        BindingModel.of(recordModel, dataUpgradeRecordBinding.autoPerform()))
+                    .hideIfNullOrFalse());
+
+            Component executeLink =
+                ConfirmLink.<IDataUpgrade>build()
+                    .title(new ResourceModel("common.action.confirm.title"))
+                    .content(new ResourceModel("common.action.confirm.content"))
+                    .confirm()
+                    .onClick(
+                        new IOneParameterAction<IModel<IDataUpgrade>>() {
+                          private static final long serialVersionUID = 1L;
+
+                          @Override
+                          public void execute(IModel<IDataUpgrade> parameter) {
+                            try {
+                              dataUpgradeService.executeDataUpgrade(parameter.getObject());
+                              Session.get().success(getString("common.success"));
+                            } catch (Exception e) {
+                              LOGGER.error(
+                                  "Erreur lors de l'exécution de la mise à jour '"
+                                      + getModelObject()
+                                      + "'",
+                                  e);
+                              Session.get().error(getString("common.error.unexpected"));
+                            }
+                            setResponsePage(getPage());
+                          }
+                        })
+                    .create("execute", item.getModel());
+
+            item.add(
+                executeLink
+                    .add(
+                        new AttributeModifier(
+                            "title", getString("console.maintenance.data.dataUpgrade.execute")))
+                    .add(
+                        Condition.isTrue(
+                                BindingModel.of(recordModel, dataUpgradeRecordBinding.done()))
+                            .thenHide()),
+                new PlaceholderContainer("alreadyExecutedContainer")
+                    .condition(Condition.componentVisible(executeLink)));
+          }
+        };
+
+    add(
+        dataUpgradeListView.add(Condition.collectionModelNotEmpty(dataUpgrades).thenShow()),
+        new PlaceholderContainer("emptyList")
+            .condition(Condition.componentVisible(dataUpgradeListView)));
+  }
+
+  @Override
+  protected Class<? extends WebPage> getSecondMenuPage() {
+    return ConsoleMaintenanceDataPage.class;
+  }
 }

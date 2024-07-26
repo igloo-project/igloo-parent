@@ -20,65 +20,78 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 class AdministrationBasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
-	@Test
-	void initPage() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrator);
-		
-		String url = AdministrationUserDetailTemplate.mapper()
-			.ignoreParameter2()
-			.map(GenericEntityModel.of(basicUser)).url();
-		tester.executeUrl(url);
-		
-		tester.assertRenderedPage(AdministrationBasicUserDetailPage.class);
-	}
+  @Test
+  void initPage() throws ServiceException, SecurityServiceException {
+    authenticateUser(administrator);
 
-	@Test
-	void breadcrumb() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrator);
-		
-		String url = AdministrationUserDetailTemplate.mapper()
-			.ignoreParameter2()
-			.map(GenericEntityModel.of(basicUser)).url();
-		tester.executeUrl(url);
-		
-		tester.assertRenderedPage(AdministrationBasicUserDetailPage.class);
-		
-		tester.assertVisible(tester.breadCrumbPath(), BreadCrumbListView.class);
-		
-		String administrationBreadCrumbPath = tester.breadCrumbElementPath(0);
-		tester.assertVisible(administrationBreadCrumbPath, SimpleBreadCrumbElementPanel.class);
-		
-		String administrationBasicUserBreadCrumbPath = tester.breadCrumbElementPath(1);
-		tester.assertVisible(administrationBasicUserBreadCrumbPath, LinkGeneratorBreadCrumbElementPanel.class);
-		tester.assertEnabled(administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink", Link.class);
-		@SuppressWarnings("unchecked")
-		Link<Void> administrationBasicUserLink = (Link<Void>) tester.getComponentFromLastRenderedPage(administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink");
-		String administrationBasicUserLabel = (String) administrationBasicUserLink.getBody().getObject();
-		assertEquals(localize("navigation.administration.user.basicUser"), administrationBasicUserLabel);
-		
-		tester.clickLink(administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink");
-		tester.assertRenderedPage(AdministrationBasicUserListPage.class);
-	}
+    String url =
+        AdministrationUserDetailTemplate.mapper()
+            .ignoreParameter2()
+            .map(GenericEntityModel.of(basicUser))
+            .url();
+    tester.executeUrl(url);
 
-	@Test
-	void desactivateUser() throws ServiceException, SecurityServiceException {
-		authenticateUser(administrator);
-		
-		String url = AdministrationUserDetailTemplate.mapper()
-			.ignoreParameter2()
-			.map(GenericEntityModel.of(basicUser)).url();
-		tester.executeUrl(url);
-		
-		assertTrue(basicUser.isEnabled());
-		
-		tester.assertInvisible("headerElementsSection:actionsContainer:enable");
-		tester.assertEnabled("headerElementsSection:actionsContainer:disable");
-		
-		tester.executeAjaxEvent("headerElementsSection:actionsContainer:disable", "confirm.bs.confirm");
-		
-		tester.assertEnabled("headerElementsSection:actionsContainer:enable");
-		tester.assertInvisible("headerElementsSection:actionsContainer:disable");
-		
-		assertFalse(basicUser.isEnabled());
-	}
+    tester.assertRenderedPage(AdministrationBasicUserDetailPage.class);
+  }
+
+  @Test
+  void breadcrumb() throws ServiceException, SecurityServiceException {
+    authenticateUser(administrator);
+
+    String url =
+        AdministrationUserDetailTemplate.mapper()
+            .ignoreParameter2()
+            .map(GenericEntityModel.of(basicUser))
+            .url();
+    tester.executeUrl(url);
+
+    tester.assertRenderedPage(AdministrationBasicUserDetailPage.class);
+
+    tester.assertVisible(tester.breadCrumbPath(), BreadCrumbListView.class);
+
+    String administrationBreadCrumbPath = tester.breadCrumbElementPath(0);
+    tester.assertVisible(administrationBreadCrumbPath, SimpleBreadCrumbElementPanel.class);
+
+    String administrationBasicUserBreadCrumbPath = tester.breadCrumbElementPath(1);
+    tester.assertVisible(
+        administrationBasicUserBreadCrumbPath, LinkGeneratorBreadCrumbElementPanel.class);
+    tester.assertEnabled(
+        administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink", Link.class);
+    @SuppressWarnings("unchecked")
+    Link<Void> administrationBasicUserLink =
+        (Link<Void>)
+            tester.getComponentFromLastRenderedPage(
+                administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink");
+    String administrationBasicUserLabel =
+        (String) administrationBasicUserLink.getBody().getObject();
+    assertEquals(
+        localize("navigation.administration.user.basicUser"), administrationBasicUserLabel);
+
+    tester.clickLink(administrationBasicUserBreadCrumbPath + ":breadCrumbElementLink");
+    tester.assertRenderedPage(AdministrationBasicUserListPage.class);
+  }
+
+  @Test
+  void desactivateUser() throws ServiceException, SecurityServiceException {
+    authenticateUser(administrator);
+
+    String url =
+        AdministrationUserDetailTemplate.mapper()
+            .ignoreParameter2()
+            .map(GenericEntityModel.of(basicUser))
+            .url();
+    tester.executeUrl(url);
+
+    assertTrue(basicUser.isEnabled());
+
+    tester.assertInvisible("headerElementsSection:actionsContainer:enable");
+    tester.assertEnabled("headerElementsSection:actionsContainer:disable");
+
+    tester.executeAjaxEvent("headerElementsSection:actionsContainer:disable", "confirm.bs.confirm");
+
+    tester.assertEnabled("headerElementsSection:actionsContainer:enable");
+    tester.assertInvisible("headerElementsSection:actionsContainer:disable");
+
+    assertFalse(basicUser.isEnabled());
+  }
 }

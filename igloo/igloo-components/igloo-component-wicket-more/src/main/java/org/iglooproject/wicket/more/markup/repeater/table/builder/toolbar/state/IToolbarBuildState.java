@@ -5,6 +5,5 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuild
 
 public interface IToolbarBuildState<T, S extends ISort<?>> {
 
-	DataTableBuilder<T, S> end();
-
+  DataTableBuilder<T, S> end();
 }

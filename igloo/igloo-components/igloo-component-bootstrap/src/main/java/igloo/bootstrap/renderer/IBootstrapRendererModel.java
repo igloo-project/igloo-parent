@@ -1,15 +1,13 @@
 package igloo.bootstrap.renderer;
 
-import org.apache.wicket.model.IModel;
-
 import igloo.bootstrap.common.IBootstrapColor;
+import org.apache.wicket.model.IModel;
 
 public interface IBootstrapRendererModel extends IModel<String> {
 
-	IModel<String> getIconCssClassModel();
+  IModel<String> getIconCssClassModel();
 
-	IModel<IBootstrapColor> getColorModel();
+  IModel<IBootstrapColor> getColorModel();
 
-	IModel<String> getTooltipModel();
-
+  IModel<String> getTooltipModel();
 }

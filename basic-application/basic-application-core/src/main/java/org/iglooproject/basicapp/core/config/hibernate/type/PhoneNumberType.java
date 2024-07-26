@@ -5,14 +5,13 @@ import org.iglooproject.jpa.hibernate.usertype.AbstractImmutableMaterializedStri
 
 public class PhoneNumberType extends AbstractImmutableMaterializedStringValueUserType<PhoneNumber> {
 
-	@Override
-	public Class<PhoneNumber> returnedClass() {
-		return PhoneNumber.class;
-	}
+  @Override
+  public Class<PhoneNumber> returnedClass() {
+    return PhoneNumber.class;
+  }
 
-	@Override
-	protected PhoneNumber instantiate(String value) {
-		return PhoneNumber.buildClean(value);
-	}
-
+  @Override
+  protected PhoneNumber instantiate(String value) {
+    return PhoneNumber.buildClean(value);
+  }
 }

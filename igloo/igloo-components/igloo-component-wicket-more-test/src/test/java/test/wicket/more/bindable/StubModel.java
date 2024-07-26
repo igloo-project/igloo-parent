@@ -4,47 +4,49 @@ import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableFunction2;
 
 class StubModel<T> implements IModel<T> {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unchecked")
-	public static <T> SerializableFunction2<T, StubModel<T>> factory() {
-		return (SerializableFunction2<T, StubModel<T>>) (Object) Factory.INSTANCE;
-	}
-	
-	@SuppressWarnings({"rawtypes", "unchecked"}) // SerializableModelFactory works for any T extending Serializable
-	private enum Factory implements SerializableFunction2<Object, StubModel> {
-		INSTANCE;
-		
-		@Override
-		public StubModel apply(Object input) {
-			return new StubModel(input);
-		}
-	}
-	
-	private T value;
+  @SuppressWarnings("unchecked")
+  public static <T> SerializableFunction2<T, StubModel<T>> factory() {
+    return (SerializableFunction2<T, StubModel<T>>) (Object) Factory.INSTANCE;
+  }
 
-	public StubModel() {
-		super();
-	}
+  @SuppressWarnings({
+    "rawtypes",
+    "unchecked"
+  }) // SerializableModelFactory works for any T extending Serializable
+  private enum Factory implements SerializableFunction2<Object, StubModel> {
+    INSTANCE;
 
-	public StubModel(T value) {
-		super();
-		this.value = value;
-	}
+    @Override
+    public StubModel apply(Object input) {
+      return new StubModel(input);
+    }
+  }
 
-	@Override
-	public void detach() {
-		// Does nothing
-	}
+  private T value;
 
-	@Override
-	public T getObject() {
-		return value;
-	}
+  public StubModel() {
+    super();
+  }
 
-	@Override
-	public void setObject(T object) {
-		this.value = object;
-	}
+  public StubModel(T value) {
+    super();
+    this.value = value;
+  }
 
+  @Override
+  public void detach() {
+    // Does nothing
+  }
+
+  @Override
+  public T getObject() {
+    return value;
+  }
+
+  @Override
+  public void setObject(T object) {
+    this.value = object;
+  }
 }

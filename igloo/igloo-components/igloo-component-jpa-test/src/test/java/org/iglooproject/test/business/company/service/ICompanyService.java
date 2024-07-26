@@ -5,8 +5,10 @@ import org.iglooproject.test.business.company.model.Company;
 
 public interface ICompanyService extends IGenericEntityService<Long, Company> {
 
-//	void addEmployee(Company company, Person employee) throws ServiceException, SecurityServiceException;
-//	
-//	void addProject(Company company, Project project) throws ServiceException, SecurityServiceException;
+  //	void addEmployee(Company company, Person employee) throws ServiceException,
+  // SecurityServiceException;
+  //
+  //	void addProject(Company company, Project project) throws ServiceException,
+  // SecurityServiceException;
 
 }

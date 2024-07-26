@@ -1,5 +1,7 @@
 package org.iglooproject.basicapp.web.application.administration.model;
 
+import com.google.common.collect.ImmutableMap;
+import igloo.wicket.model.Detachables;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.iglooproject.basicapp.core.business.user.model.User;
@@ -12,63 +14,52 @@ import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.Co
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 
-import com.google.common.collect.ImmutableMap;
+public class UserGroupDataProvider
+    extends AbstractSearchQueryDataProvider<UserGroup, UserGroupSort> {
 
-import igloo.wicket.model.Detachables;
+  private static final long serialVersionUID = 7805366114079528005L;
 
-public class UserGroupDataProvider extends AbstractSearchQueryDataProvider<UserGroup, UserGroupSort> {
+  private final IModel<? extends User> userModel;
 
-	private static final long serialVersionUID = 7805366114079528005L;
+  private final IModel<String> nameModel = new Model<>();
 
-	private final IModel<? extends User> userModel;
+  private final CompositeSortModel<UserGroupSort> sortModel =
+      new CompositeSortModel<>(
+          CompositingStrategy.LAST_ONLY,
+          ImmutableMap.of(
+              UserGroupSort.NAME, UserGroupSort.NAME.getDefaultOrder(),
+              UserGroupSort.ID, UserGroupSort.ID.getDefaultOrder()),
+          ImmutableMap.of(UserGroupSort.ID, UserGroupSort.ID.getDefaultOrder()));
 
-	private final IModel<String> nameModel = new Model<>();
+  public UserGroupDataProvider(IModel<? extends User> userModel) {
+    super();
+    this.userModel = userModel;
+  }
 
-	private final CompositeSortModel<UserGroupSort> sortModel = new CompositeSortModel<>(
-		CompositingStrategy.LAST_ONLY,
-		ImmutableMap.of(
-			UserGroupSort.NAME, UserGroupSort.NAME.getDefaultOrder(),
-			UserGroupSort.ID, UserGroupSort.ID.getDefaultOrder()
-		),
-		ImmutableMap.of(
-			UserGroupSort.ID, UserGroupSort.ID.getDefaultOrder()
-		)
-	);
+  public IModel<String> getNameModel() {
+    return nameModel;
+  }
 
-	public UserGroupDataProvider(IModel<? extends User> userModel) {
-		super();
-		this.userModel = userModel;
-	}
+  @Override
+  public IModel<UserGroup> model(UserGroup userGroup) {
+    return GenericEntityModel.of(userGroup);
+  }
 
-	public IModel<String> getNameModel() {
-		return nameModel;
-	}
-	
-	@Override
-	public IModel<UserGroup> model(UserGroup userGroup) {
-		return GenericEntityModel.of(userGroup);
-	}
+  public CompositeSortModel<UserGroupSort> getSortModel() {
+    return sortModel;
+  }
 
-	public CompositeSortModel<UserGroupSort> getSortModel() {
-		return sortModel;
-	}
+  @Override
+  protected ISearchQuery<UserGroup, UserGroupSort> getSearchQuery() {
+    return createSearchQuery(IUserGroupSearchQuery.class)
+        .user(userModel.getObject())
+        .name(nameModel.getObject())
+        .sort(sortModel.getObject());
+  }
 
-	@Override
-	protected ISearchQuery<UserGroup, UserGroupSort> getSearchQuery() {
-		return createSearchQuery(IUserGroupSearchQuery.class)
-			.user(userModel.getObject())
-			.name(nameModel.getObject())
-			.sort(sortModel.getObject());
-	}
-
-	@Override
-	public void detach() {
-		super.detach();
-		Detachables.detach(
-			userModel,
-			nameModel,
-			sortModel
-		);
-	}
-
+  @Override
+  public void detach() {
+    super.detach();
+    Detachables.detach(userModel, nameModel, sortModel);
+  }
 }

@@ -13,35 +13,32 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.intercept.RunAsManager;
 
 /**
- * Base class used to check that {@link EnableIglooAutoConfiguration} triggers IglooFlywayAutoConfiguration properly. 
- * 
- * This class uses ApplicationContextRunner to initialize contexts with suitable configurations,
+ * Base class used to check that {@link EnableIglooAutoConfiguration} triggers
+ * IglooFlywayAutoConfiguration properly.
+ *
+ * <p>This class uses ApplicationContextRunner to initialize contexts with suitable configurations,
  * which are declared at the bottom of the file.
- *  
  */
 class JpaSecurityAutoConfigurationTestCase {
 
-	/**
-	 * Check that autoconfiguration from {@link IglooJpaSecurityAutoConfiguration} is triggered with EnableIglooAutoConfiguration
-	 */
-	@Test
-	void testIglooJpaSecurityAutoConfigure() {
-		new ApplicationContextRunner()
-			.withAllowBeanDefinitionOverriding(true)
-			.withConfiguration(AutoConfigurations.of(TestConfig.class))
-			.withPropertyValues("security.runAsKey=aaa")
-			.run(
-				context -> assertThat(context).hasSingleBean(RunAsManager.class)
-			);
-	}
-	
-	@Configuration
-	@EnableIglooAutoConfiguration(
-		exclude = {
-			IglooBootstrap4AutoConfiguration.class,
-			IglooApplicationConfigAutoConfiguration.class
-		}
-	)
-	public static class TestConfig {}
+  /**
+   * Check that autoconfiguration from {@link IglooJpaSecurityAutoConfiguration} is triggered with
+   * EnableIglooAutoConfiguration
+   */
+  @Test
+  void testIglooJpaSecurityAutoConfigure() {
+    new ApplicationContextRunner()
+        .withAllowBeanDefinitionOverriding(true)
+        .withConfiguration(AutoConfigurations.of(TestConfig.class))
+        .withPropertyValues("security.runAsKey=aaa")
+        .run(context -> assertThat(context).hasSingleBean(RunAsManager.class));
+  }
 
+  @Configuration
+  @EnableIglooAutoConfiguration(
+      exclude = {
+        IglooBootstrap4AutoConfiguration.class,
+        IglooApplicationConfigAutoConfiguration.class
+      })
+  public static class TestConfig {}
 }

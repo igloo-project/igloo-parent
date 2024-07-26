@@ -4,27 +4,26 @@ import java.io.Serializable;
 
 public class TaskExecutionTransactionTemplateConfig implements Serializable {
 
-	private static final long serialVersionUID = 9011212624970034026L;
+  private static final long serialVersionUID = 9011212624970034026L;
 
-	private final boolean transactional;
-	
-	private final boolean readOnly;
+  private final boolean transactional;
 
-	public TaskExecutionTransactionTemplateConfig() {
-		this(true, false);
-	}
+  private final boolean readOnly;
 
-	public TaskExecutionTransactionTemplateConfig(boolean transactional, boolean readOnly) {
-		this.transactional = transactional;
-		this.readOnly = readOnly;
-	}
+  public TaskExecutionTransactionTemplateConfig() {
+    this(true, false);
+  }
 
-	public boolean isTransactional() {
-		return transactional;
-	}
+  public TaskExecutionTransactionTemplateConfig(boolean transactional, boolean readOnly) {
+    this.transactional = transactional;
+    this.readOnly = readOnly;
+  }
 
-	public boolean isReadOnly() {
-		return readOnly;
-	}
-	
+  public boolean isTransactional() {
+    return transactional;
+  }
+
+  public boolean isReadOnly() {
+    return readOnly;
+  }
 }

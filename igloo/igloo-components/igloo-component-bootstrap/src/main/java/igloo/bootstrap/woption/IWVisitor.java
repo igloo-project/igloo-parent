@@ -2,6 +2,5 @@ package igloo.bootstrap.woption;
 
 public interface IWVisitor {
 
-	void visit(IWVisitable visitable);
-
+  void visit(IWVisitable visitable);
 }

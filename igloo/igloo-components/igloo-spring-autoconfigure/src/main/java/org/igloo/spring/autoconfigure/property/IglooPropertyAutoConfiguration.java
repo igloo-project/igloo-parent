@@ -18,53 +18,58 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(name = "igloo-ac.property.disabled", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(
+    name = "igloo-ac.property.disabled",
+    havingValue = "false",
+    matchIfMissing = true)
 public class IglooPropertyAutoConfiguration {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(IglooPropertyAutoConfiguration.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(IglooPropertyAutoConfiguration.class);
 
-	@ConditionalOnMissingBean
-	@Bean
-	public CorePropertyPlaceholderConfigurer corePropertyPlaceholderConfigurer() {
-		return new CorePropertyPlaceholderConfigurer();
-	}
+  @ConditionalOnMissingBean
+  @Bean
+  public CorePropertyPlaceholderConfigurer corePropertyPlaceholderConfigurer() {
+    return new CorePropertyPlaceholderConfigurer();
+  }
 
-	@Bean
-	public IImmutablePropertyDao immutablePropertyDao() {
-		return new ImmutablePropertyDaoImpl();
-	}
+  @Bean
+  public IImmutablePropertyDao immutablePropertyDao() {
+    return new ImmutablePropertyDaoImpl();
+  }
 
-	@ConditionalOnMissingBean
-	@Bean
-	public IPropertyService propertyService() {
-		return new PropertyServiceImpl();
-	}
+  @ConditionalOnMissingBean
+  @Bean
+  public IPropertyService propertyService() {
+    return new PropertyServiceImpl();
+  }
 
-	@Bean
-	public ConfigurationLogger configurationLogger(@Value("${propertyNamesForInfoLogLevel}") String propertyNamesForInfoLogLevel) {
-		ConfigurationLogger configurationLogger = new ConfigurationLogger();
-		
-		configurationLogger.setPropertyNamesForInfoLogLevel(propertyNamesForInfoLogLevel);
-		
-		return configurationLogger;
-	}
+  @Bean
+  public ConfigurationLogger configurationLogger(
+      @Value("${propertyNamesForInfoLogLevel}") String propertyNamesForInfoLogLevel) {
+    ConfigurationLogger configurationLogger = new ConfigurationLogger();
 
-	@Bean
-	public PropertySourceLogger propertySourceLogger() {
-		return new PropertySourceLogger();
-	}
+    configurationLogger.setPropertyNamesForInfoLogLevel(propertyNamesForInfoLogLevel);
 
-	@ConditionalOnMissingBean
-	@Bean
-	public IPropertyRegistryConfig propertyRegistryConfig() {
-		return new IPropertyRegistryConfig() {
-			
-			@Override
-			public void register(IPropertyRegistry registry) {
-				LOGGER.warn("Please define at least one {} bean. No property registered.",
-						IPropertyRegistry.class.getSimpleName());
-			}
-		};
-	}
+    return configurationLogger;
+  }
 
+  @Bean
+  public PropertySourceLogger propertySourceLogger() {
+    return new PropertySourceLogger();
+  }
+
+  @ConditionalOnMissingBean
+  @Bean
+  public IPropertyRegistryConfig propertyRegistryConfig() {
+    return new IPropertyRegistryConfig() {
+
+      @Override
+      public void register(IPropertyRegistry registry) {
+        LOGGER.warn(
+            "Please define at least one {} bean. No property registered.",
+            IPropertyRegistry.class.getSimpleName());
+      }
+    };
+  }
 }

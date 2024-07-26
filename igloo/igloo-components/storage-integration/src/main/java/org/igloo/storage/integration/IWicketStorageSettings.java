@@ -2,10 +2,9 @@ package org.igloo.storage.integration;
 
 public interface IWicketStorageSettings {
 
-	String getMountPath();
+  String getMountPath();
 
-	String getDownloadMountPath();
+  String getDownloadMountPath();
 
-	boolean isSupervisionPagesEnabled();
-
+  boolean isSupervisionPagesEnabled();
 }

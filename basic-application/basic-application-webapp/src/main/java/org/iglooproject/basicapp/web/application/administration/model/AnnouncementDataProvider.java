@@ -1,5 +1,7 @@
 package org.iglooproject.basicapp.web.application.administration.model;
 
+import com.google.common.collect.ImmutableMap;
+import igloo.wicket.model.Detachables;
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -13,51 +15,43 @@ import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.Co
 import org.iglooproject.wicket.more.model.AbstractSearchQueryDataProvider;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
 
-import com.google.common.collect.ImmutableMap;
+public class AnnouncementDataProvider
+    extends AbstractSearchQueryDataProvider<Announcement, AnnouncementSort> {
 
-import igloo.wicket.model.Detachables;
+  private static final long serialVersionUID = 2391048007215147522L;
 
-public class AnnouncementDataProvider extends AbstractSearchQueryDataProvider<Announcement, AnnouncementSort> {
+  @SpringBean private IAnnouncementService announcementService;
 
-	private static final long serialVersionUID = 2391048007215147522L;
+  private final CompositeSortModel<AnnouncementSort> sortModel =
+      new CompositeSortModel<>(
+          CompositingStrategy.LAST_ONLY,
+          ImmutableMap.of(
+              AnnouncementSort.PUBLICATION_START_DATE_TIME,
+                  AnnouncementSort.PUBLICATION_START_DATE_TIME.getDefaultOrder(),
+              AnnouncementSort.ID, AnnouncementSort.ID.getDefaultOrder()),
+          ImmutableMap.of(AnnouncementSort.ID, AnnouncementSort.ID.getDefaultOrder()));
 
-	@SpringBean
-	private IAnnouncementService announcementService;
+  public AnnouncementDataProvider() {
+    Injector.get().inject(this);
+  }
 
-	private final CompositeSortModel<AnnouncementSort> sortModel = new CompositeSortModel<>(
-		CompositingStrategy.LAST_ONLY,
-		ImmutableMap.of(
-			AnnouncementSort.PUBLICATION_START_DATE_TIME, AnnouncementSort.PUBLICATION_START_DATE_TIME.getDefaultOrder(),
-			AnnouncementSort.ID, AnnouncementSort.ID.getDefaultOrder()
-		),
-		ImmutableMap.of(
-			AnnouncementSort.ID, AnnouncementSort.ID.getDefaultOrder()
-		)
-	);
+  @Override
+  public IModel<Announcement> model(Announcement object) {
+    return GenericEntityModel.of(object);
+  }
 
-	public AnnouncementDataProvider() {
-		Injector.get().inject(this);
-	}
+  public CompositeSortModel<AnnouncementSort> getSortModel() {
+    return sortModel;
+  }
 
-	@Override
-	public IModel<Announcement> model(Announcement object) {
-		return GenericEntityModel.of(object);
-	}
+  @Override
+  protected ISearchQuery<Announcement, AnnouncementSort> getSearchQuery() {
+    return createSearchQuery(IAnnouncementSearchQuery.class).sort(sortModel.getObject());
+  }
 
-	public CompositeSortModel<AnnouncementSort> getSortModel() {
-		return sortModel;
-	}
-
-	@Override
-	protected ISearchQuery<Announcement, AnnouncementSort> getSearchQuery() {
-		return createSearchQuery(IAnnouncementSearchQuery.class)
-			.sort(sortModel.getObject());
-	}
-
-	@Override
-	public void detach() {
-		super.detach();
-		Detachables.detach(sortModel);
-	}
-
+  @Override
+  public void detach() {
+    super.detach();
+    Detachables.detach(sortModel);
+  }
 }

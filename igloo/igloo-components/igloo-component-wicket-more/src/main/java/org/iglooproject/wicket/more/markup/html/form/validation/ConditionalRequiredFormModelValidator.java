@@ -1,102 +1,107 @@
 package org.iglooproject.wicket.more.markup.html.form.validation;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import igloo.wicket.condition.Condition;
 import java.util.Collection;
-
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.validation.ValidationError;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-
-import igloo.wicket.condition.Condition;
-
 public class ConditionalRequiredFormModelValidator implements IFormModelValidator {
 
-	private static final long serialVersionUID = 8629253911243139638L;
+  private static final long serialVersionUID = 8629253911243139638L;
 
-	private final Condition condition;
-	
-	private final Collection<FormComponent<?>> formComponents;
+  private final Condition condition;
 
-	private boolean emptyMode;
+  private final Collection<FormComponent<?>> formComponents;
 
-	private boolean oneRequired;
+  private boolean emptyMode;
 
-	private String errorRessourceKey;
+  private boolean oneRequired;
 
-	private FormComponent<?> formComponentOnError;
+  private String errorRessourceKey;
 
-	public ConditionalRequiredFormModelValidator(Condition condition, FormComponent<?> formComponent, FormComponent<?> ... otherFormComponents) {
-		this(condition, ImmutableList.<FormComponent<?>>builder().add(formComponent).add(otherFormComponents).build());
-	}
+  private FormComponent<?> formComponentOnError;
 
-	public ConditionalRequiredFormModelValidator(Condition condition, Collection<FormComponent<?>> formComponents) {
-		super();
-		this.condition = condition;
-		this.formComponents = ImmutableList.copyOf(formComponents);
-	}
-	
-	@Override
-	public void detach() {
-		condition.detach();
-	}
-	
-	@Override
-	public void validate(Form<?> form) {
-		if (condition.applies()) {
-			for (FormComponent<?> formComponent : formComponents) {
-				boolean onError = doCheck(formComponent);
-				if (oneRequired && onError) {
-					return;
-				}
-			}
-		}
-	}
+  public ConditionalRequiredFormModelValidator(
+      Condition condition,
+      FormComponent<?> formComponent,
+      FormComponent<?>... otherFormComponents) {
+    this(
+        condition,
+        ImmutableList.<FormComponent<?>>builder()
+            .add(formComponent)
+            .add(otherFormComponents)
+            .build());
+  }
 
-	private boolean doCheck(FormComponent<?> formComponent) {
-		boolean onError = false;
-		formComponent.setRequired(true);
-		
-		if (
-				(emptyMode && formComponent.checkRequired())
-			||	(!emptyMode && !formComponent.checkRequired())
-		) {
-			ValidationError validationError = new ValidationError();
-			if (errorRessourceKey != null) {
-				validationError.addKey(errorRessourceKey);
-			}
-			(formComponentOnError != null ? formComponentOnError : formComponent).error(validationError.addKey(emptyMode ? "EmptyRequired" : "Required"));
-			onError = true;
-		}
-		
-		formComponent.setRequired(false);
-		return onError;
-	}
+  public ConditionalRequiredFormModelValidator(
+      Condition condition, Collection<FormComponent<?>> formComponents) {
+    super();
+    this.condition = condition;
+    this.formComponents = ImmutableList.copyOf(formComponents);
+  }
 
-	public ConditionalRequiredFormModelValidator emptyMode() {
-		this.emptyMode = true;
-		return this;
-	}
+  @Override
+  public void detach() {
+    condition.detach();
+  }
 
-	public ConditionalRequiredFormModelValidator oneRequired() {
-		this.oneRequired = true;
-		return this;
-	}
+  @Override
+  public void validate(Form<?> form) {
+    if (condition.applies()) {
+      for (FormComponent<?> formComponent : formComponents) {
+        boolean onError = doCheck(formComponent);
+        if (oneRequired && onError) {
+          return;
+        }
+      }
+    }
+  }
 
-	public ConditionalRequiredFormModelValidator errorRessourceKey(String errorRessourceKey) {
-		this.errorRessourceKey = errorRessourceKey;
-		return this;
-	}
+  private boolean doCheck(FormComponent<?> formComponent) {
+    boolean onError = false;
+    formComponent.setRequired(true);
 
-	public ConditionalRequiredFormModelValidator formComponentOnError(FormComponent<?> formComponentOnError) {
-		this.formComponentOnError = formComponentOnError;
-		return this;
-	}
+    if ((emptyMode && formComponent.checkRequired())
+        || (!emptyMode && !formComponent.checkRequired())) {
+      ValidationError validationError = new ValidationError();
+      if (errorRessourceKey != null) {
+        validationError.addKey(errorRessourceKey);
+      }
+      (formComponentOnError != null ? formComponentOnError : formComponent)
+          .error(validationError.addKey(emptyMode ? "EmptyRequired" : "Required"));
+      onError = true;
+    }
 
-	@Override
-	public FormComponent<?>[] getDependentFormComponents() {
-		return Iterables.toArray(formComponents, FormComponent.class);
-	}
+    formComponent.setRequired(false);
+    return onError;
+  }
 
+  public ConditionalRequiredFormModelValidator emptyMode() {
+    this.emptyMode = true;
+    return this;
+  }
+
+  public ConditionalRequiredFormModelValidator oneRequired() {
+    this.oneRequired = true;
+    return this;
+  }
+
+  public ConditionalRequiredFormModelValidator errorRessourceKey(String errorRessourceKey) {
+    this.errorRessourceKey = errorRessourceKey;
+    return this;
+  }
+
+  public ConditionalRequiredFormModelValidator formComponentOnError(
+      FormComponent<?> formComponentOnError) {
+    this.formComponentOnError = formComponentOnError;
+    return this;
+  }
+
+  @Override
+  public FormComponent<?>[] getDependentFormComponents() {
+    return Iterables.toArray(formComponents, FormComponent.class);
+  }
 }

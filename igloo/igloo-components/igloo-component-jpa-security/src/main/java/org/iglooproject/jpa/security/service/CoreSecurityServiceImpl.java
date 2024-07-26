@@ -1,12 +1,14 @@
 package org.iglooproject.jpa.security.service;
 
+import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
-
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.iglooproject.jpa.security.runas.RunAsSystemToken;
@@ -27,236 +29,238 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 public class CoreSecurityServiceImpl implements ISecurityService {
 
-	public static final String SYSTEM_USER_NAME = "system";
-	
-	@Autowired
-	protected UserDetailsService userDetailsService;
+  public static final String SYSTEM_USER_NAME = "system";
 
-	@Autowired
-	protected RunAsImplAuthenticationProvider runAsAuthenticationProvider;
+  @Autowired protected UserDetailsService userDetailsService;
 
-	@Autowired
-	protected ICorePermissionEvaluator permissionEvaluator;
-	
-	@Autowired
-	protected RoleHierarchy roleHierarchy;
+  @Autowired protected RunAsImplAuthenticationProvider runAsAuthenticationProvider;
 
-	@Autowired
-	private IAuthenticationService authenticationService;
-	
-	@Override
-	public boolean hasRole(Authentication authentication, String role) {
-		if (authentication != null && role != null) {
-			return authentication.getAuthorities().contains(new SimpleGrantedAuthority(role));
-		}
-		return false;
-	}
+  @Autowired protected ICorePermissionEvaluator permissionEvaluator;
 
-	@Override
-	public boolean hasRole(IUser user, String role) {
-		if (user == null) {
-			return false;
-		}
+  @Autowired protected RoleHierarchy roleHierarchy;
 
-		return hasRole(getAuthentication(user), role);
-	}
+  @Autowired private IAuthenticationService authenticationService;
 
-	@Override
-	public boolean hasSystemRole(Authentication authentication) {
-		return hasRole(authentication, CoreAuthorityConstants.ROLE_SYSTEM);
-	}
+  @Override
+  public boolean hasRole(Authentication authentication, String role) {
+    if (authentication != null && role != null) {
+      return authentication.getAuthorities().contains(new SimpleGrantedAuthority(role));
+    }
+    return false;
+  }
 
-	@Override
-	public boolean hasSystemRole(IUser user) {
-		return hasRole(user, CoreAuthorityConstants.ROLE_SYSTEM);
-	}
+  @Override
+  public boolean hasRole(IUser user, String role) {
+    if (user == null) {
+      return false;
+    }
 
-	@Override
-	public boolean hasAdminRole(Authentication authentication) {
-		return hasRole(authentication, CoreAuthorityConstants.ROLE_ADMIN);
-	}
+    return hasRole(getAuthentication(user), role);
+  }
 
-	@Override
-	public boolean hasAdminRole(IUser user) {
-		return hasRole(user, CoreAuthorityConstants.ROLE_ADMIN);
-	}
+  @Override
+  public boolean hasSystemRole(Authentication authentication) {
+    return hasRole(authentication, CoreAuthorityConstants.ROLE_SYSTEM);
+  }
 
-	@Override
-	public boolean hasAuthenticatedRole(Authentication authentication) {
-		return hasRole(authentication, CoreAuthorityConstants.ROLE_AUTHENTICATED);
-	}
+  @Override
+  public boolean hasSystemRole(IUser user) {
+    return hasRole(user, CoreAuthorityConstants.ROLE_SYSTEM);
+  }
 
-	@Override
-	public boolean hasAuthenticatedRole(IUser user) {
-		return hasRole(user, CoreAuthorityConstants.ROLE_AUTHENTICATED);
-	}
+  @Override
+  public boolean hasAdminRole(Authentication authentication) {
+    return hasRole(authentication, CoreAuthorityConstants.ROLE_ADMIN);
+  }
 
-	@Override
-	public boolean isAnonymousAuthority(String grantedAuthoritySid) {
-		return CoreAuthorityConstants.ROLE_ANONYMOUS.equals(grantedAuthoritySid);
-	}
+  @Override
+  public boolean hasAdminRole(IUser user) {
+    return hasRole(user, CoreAuthorityConstants.ROLE_ADMIN);
+  }
 
-	@Override
-	public List<GrantedAuthority> getAuthorities(Authentication authentication) {
-		if (authentication != null) {
-			return new ArrayList<>(authentication.getAuthorities());
-		} else {
-			return Collections.emptyList();
-		}
-	}
+  @Override
+  public boolean hasAuthenticatedRole(Authentication authentication) {
+    return hasRole(authentication, CoreAuthorityConstants.ROLE_AUTHENTICATED);
+  }
 
-	@Override
-	public List<GrantedAuthority> getAuthorities(IUser user) {
-		return getAuthorities(getAuthentication(user));
-	}
+  @Override
+  public boolean hasAuthenticatedRole(IUser user) {
+    return hasRole(user, CoreAuthorityConstants.ROLE_AUTHENTICATED);
+  }
 
-	@Override
-	public SecurityContext buildSecureContext(String username) {
-		SecurityContext secureContext = new SecurityContextImpl();
-		secureContext.setAuthentication(getAuthentication(username));
+  @Override
+  public boolean isAnonymousAuthority(String grantedAuthoritySid) {
+    return CoreAuthorityConstants.ROLE_ANONYMOUS.equals(grantedAuthoritySid);
+  }
 
-		return secureContext;
-	}
-	
-	protected void authenticateAs(IUser user) {
-		authenticateAs(user.getUsername());
-	}
+  @Override
+  public List<GrantedAuthority> getAuthorities(Authentication authentication) {
+    if (authentication != null) {
+      return new ArrayList<>(authentication.getAuthorities());
+    } else {
+      return Collections.emptyList();
+    }
+  }
 
-	protected void authenticateAs(String username, String... additionalAuthorities) {
-		clearAuthentication();
+  @Override
+  public List<GrantedAuthority> getAuthorities(IUser user) {
+    return getAuthorities(getAuthentication(user));
+  }
 
-		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+  @Override
+  public SecurityContext buildSecureContext(String username) {
+    SecurityContext secureContext = new SecurityContextImpl();
+    secureContext.setAuthentication(getAuthentication(username));
 
-		Set<GrantedAuthority> authorities = Sets.newHashSet(userDetails.getAuthorities());
-		if (additionalAuthorities != null) {
-			for (String additionalAuthority : additionalAuthorities) {
-				authorities.add(new SimpleGrantedAuthority(additionalAuthority));
-			}
-		}
+    return secureContext;
+  }
 
-		Authentication authentication = new RunAsUserToken(runAsAuthenticationProvider.getKey(), userDetails,
-				UserConstants.NO_CREDENTIALS, authorities, UsernamePasswordAuthenticationToken.class);
+  protected void authenticateAs(IUser user) {
+    authenticateAs(user.getUsername());
+  }
 
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-	}
+  protected void authenticateAs(String username, String... additionalAuthorities) {
+    clearAuthentication();
 
-	protected void authenticateAsSystem() {
-		RunAsSystemToken runAsSystem = new RunAsSystemToken(runAsAuthenticationProvider.getKey(),
-				UserConstants.SYSTEM_USER_NAME,
-				roleHierarchy.getReachableGrantedAuthorities(Lists.newArrayList(new SimpleGrantedAuthority(CoreAuthorityConstants.ROLE_SYSTEM))));
-		AuthenticationUtil.setAuthentication(runAsAuthenticationProvider.authenticate(runAsSystem));
-	}
+    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-	@Override
-	public void clearAuthentication() {
-		SecurityContextHolder.getContext().setAuthentication(null);
-	}
-	
-	/**
-	 * Exécute une {@link Callable} en tant qu'utilisateur système. Le
-	 * contexte de sécurité est modifié au début de la tâche et rétabli à la fin
-	 * de la tâche.
-	 * 
-	 * @param task
-	 *            un objet de type {@link Callable}
-	 * 
-	 * @return l'objet retourné par la méthode {@link Callable#call()}
-	 */
-	@Override
-	public <T> T runAsSystem(Callable<T> task) {
-		Authentication originalAuthentication = AuthenticationUtil.getAuthentication();
-		authenticateAsSystem();
-		try {
-			return task.call();
-		} catch (Exception e) {
-			if (e instanceof InterruptedException) {
-				Thread.currentThread().interrupt();
-			}
-			throw new RuntimeException(e);
-		} finally {
-			AuthenticationUtil.setAuthentication(originalAuthentication);
-		}
-	}
+    Set<GrantedAuthority> authorities = Sets.newHashSet(userDetails.getAuthorities());
+    if (additionalAuthorities != null) {
+      for (String additionalAuthority : additionalAuthorities) {
+        authorities.add(new SimpleGrantedAuthority(additionalAuthority));
+      }
+    }
 
-	@Override
-	public <T> T runAs(Callable<T> task, String username, String... additionalAuthorities) {
-		Authentication originalAuthentication = AuthenticationUtil.getAuthentication();
-		authenticateAs(username, additionalAuthorities);
-		try {
-			return task.call();
-		} catch (Exception e) {
-			if (e instanceof InterruptedException) {
-				Thread.currentThread().interrupt();
-			}
-			throw new RuntimeException(e);
-		} finally {
-			AuthenticationUtil.setAuthentication(originalAuthentication);
-		}
-	}
+    Authentication authentication =
+        new RunAsUserToken(
+            runAsAuthenticationProvider.getKey(),
+            userDetails,
+            UserConstants.NO_CREDENTIALS,
+            authorities,
+            UsernamePasswordAuthenticationToken.class);
 
-	protected Authentication getAuthentication(IUser user) {
-		return getAuthentication(user.getUsername());
-	}
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+  }
 
-	protected Authentication getAuthentication(String username) {
-		// Si on demande la personne actuellement loggée, on retourne directement l'authentication de la session
-		Authentication authentication = authenticationService.getAuthentication();
-		
-		if (authentication != null && (authentication.getPrincipal() instanceof UserDetails)) {
-			UserDetails details = (UserDetails)authentication.getPrincipal();
-			
-			if (Objects.equal(details.getUsername(), username)) {
-				return authentication;
-			}
-		}
-		
-		try {
-			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-			
-			authentication = new RunAsUserToken(runAsAuthenticationProvider.getKey(), userDetails,
-					"no-credentials", userDetails.getAuthorities(), UsernamePasswordAuthenticationToken.class);
-			
-			return authentication;
-		} catch (DisabledException e) {
-			return null;
-		}
-	}
+  protected void authenticateAsSystem() {
+    RunAsSystemToken runAsSystem =
+        new RunAsSystemToken(
+            runAsAuthenticationProvider.getKey(),
+            UserConstants.SYSTEM_USER_NAME,
+            roleHierarchy.getReachableGrantedAuthorities(
+                Lists.newArrayList(
+                    new SimpleGrantedAuthority(CoreAuthorityConstants.ROLE_SYSTEM))));
+    AuthenticationUtil.setAuthentication(runAsAuthenticationProvider.authenticate(runAsSystem));
+  }
 
-	@Override
-	public boolean hasPermission(Authentication authentication, Object securedObject,
-			Permission requirePermission) {
-		return permissionEvaluator.hasPermission(authentication, securedObject, requirePermission);
-	}
+  @Override
+  public void clearAuthentication() {
+    SecurityContextHolder.getContext().setAuthentication(null);
+  }
 
-	@Override
-	public boolean hasPermission(IUser user, Object securedObject, Permission requirePermission) {
-		return hasPermission(getAuthentication(user), securedObject, requirePermission);
-	}
+  /**
+   * Exécute une {@link Callable} en tant qu'utilisateur système. Le contexte de sécurité est
+   * modifié au début de la tâche et rétabli à la fin de la tâche.
+   *
+   * @param task un objet de type {@link Callable}
+   * @return l'objet retourné par la méthode {@link Callable#call()}
+   */
+  @Override
+  public <T> T runAsSystem(Callable<T> task) {
+    Authentication originalAuthentication = AuthenticationUtil.getAuthentication();
+    authenticateAsSystem();
+    try {
+      return task.call();
+    } catch (Exception e) {
+      if (e instanceof InterruptedException) {
+        Thread.currentThread().interrupt();
+      }
+      throw new RuntimeException(e);
+    } finally {
+      AuthenticationUtil.setAuthentication(originalAuthentication);
+    }
+  }
 
-	@Override
-	public boolean hasPermission(Authentication authentication, Permission permission) {
-		return permissionEvaluator.hasPermission(authentication, permission);
-	}
-	
-	@Override
-	public boolean hasPermission(IUser user, Permission permission) {
-		return hasPermission(getAuthentication(user), permission);
-	}
-	
-	@Override
-	public Collection<? extends Permission> getPermissions(Authentication authentication) {
-		return permissionEvaluator.getPermissions(authentication);
-	}
-	
-	@Override
-	public boolean isSuperUser(Authentication authentication) {
-		return permissionEvaluator.isSuperUser(authentication);
-	}
-	
+  @Override
+  public <T> T runAs(Callable<T> task, String username, String... additionalAuthorities) {
+    Authentication originalAuthentication = AuthenticationUtil.getAuthentication();
+    authenticateAs(username, additionalAuthorities);
+    try {
+      return task.call();
+    } catch (Exception e) {
+      if (e instanceof InterruptedException) {
+        Thread.currentThread().interrupt();
+      }
+      throw new RuntimeException(e);
+    } finally {
+      AuthenticationUtil.setAuthentication(originalAuthentication);
+    }
+  }
+
+  protected Authentication getAuthentication(IUser user) {
+    return getAuthentication(user.getUsername());
+  }
+
+  protected Authentication getAuthentication(String username) {
+    // Si on demande la personne actuellement loggée, on retourne directement l'authentication de la
+    // session
+    Authentication authentication = authenticationService.getAuthentication();
+
+    if (authentication != null && (authentication.getPrincipal() instanceof UserDetails)) {
+      UserDetails details = (UserDetails) authentication.getPrincipal();
+
+      if (Objects.equal(details.getUsername(), username)) {
+        return authentication;
+      }
+    }
+
+    try {
+      UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+      authentication =
+          new RunAsUserToken(
+              runAsAuthenticationProvider.getKey(),
+              userDetails,
+              "no-credentials",
+              userDetails.getAuthorities(),
+              UsernamePasswordAuthenticationToken.class);
+
+      return authentication;
+    } catch (DisabledException e) {
+      return null;
+    }
+  }
+
+  @Override
+  public boolean hasPermission(
+      Authentication authentication, Object securedObject, Permission requirePermission) {
+    return permissionEvaluator.hasPermission(authentication, securedObject, requirePermission);
+  }
+
+  @Override
+  public boolean hasPermission(IUser user, Object securedObject, Permission requirePermission) {
+    return hasPermission(getAuthentication(user), securedObject, requirePermission);
+  }
+
+  @Override
+  public boolean hasPermission(Authentication authentication, Permission permission) {
+    return permissionEvaluator.hasPermission(authentication, permission);
+  }
+
+  @Override
+  public boolean hasPermission(IUser user, Permission permission) {
+    return hasPermission(getAuthentication(user), permission);
+  }
+
+  @Override
+  public Collection<? extends Permission> getPermissions(Authentication authentication) {
+    return permissionEvaluator.getPermissions(authentication);
+  }
+
+  @Override
+  public boolean isSuperUser(Authentication authentication) {
+    return permissionEvaluator.isSuperUser(authentication);
+  }
 }

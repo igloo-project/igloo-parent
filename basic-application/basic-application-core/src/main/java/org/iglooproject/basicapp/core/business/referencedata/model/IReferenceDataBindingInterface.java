@@ -5,8 +5,8 @@ import org.iglooproject.basicapp.core.business.common.model.embeddable.Localized
 import org.iglooproject.jpa.more.business.referencedata.model.IGenericReferenceDataBindingInterface;
 
 @Bindable
-public interface IReferenceDataBindingInterface extends IGenericReferenceDataBindingInterface<LocalizedText> {
+public interface IReferenceDataBindingInterface
+    extends IGenericReferenceDataBindingInterface<LocalizedText> {
 
-	String getCode();
-
+  String getCode();
 }

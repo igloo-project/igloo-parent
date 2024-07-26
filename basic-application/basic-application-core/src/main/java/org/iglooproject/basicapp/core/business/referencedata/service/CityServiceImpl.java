@@ -10,17 +10,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class CityServiceImpl extends GenericEntityServiceImpl<Long, City> implements ICityService {
 
-	private ICityDao dao;
+  private ICityDao dao;
 
-	@Autowired
-	public CityServiceImpl(ICityDao dao) {
-		super(dao);
-		this.dao = dao;
-	}
+  @Autowired
+  public CityServiceImpl(ICityDao dao) {
+    super(dao);
+    this.dao = dao;
+  }
 
-	@Override
-	public City getByLabelAndPostalCode(String label, PostalCode postalCode) {
-		return dao.getByLabelAndPostalCode(label, postalCode);
-	}
-
+  @Override
+  public City getByLabelAndPostalCode(String label, PostalCode postalCode) {
+    return dao.getByLabelAndPostalCode(label, postalCode);
+  }
 }
