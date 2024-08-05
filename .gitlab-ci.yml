@@ -82,7 +82,7 @@ test-init:
     /root/.local/bin/hatch run igloo-project-init
     -v --debug --check-diff --check-build
     --igloo-url "$CI_PROJECT_DIR"
-    basic-application org.iglooproject.archetype 6.0.0-SNAPSHOT basicapp
+    basic-application org.iglooproject.archetype 6.0.0-Alpha14 basicapp
     BasicApplication basicApplication "Basic Application" basic_application
   rules:
   - if: $CHECK_DEPENDENCIES
