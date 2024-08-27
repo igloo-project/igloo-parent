@@ -3,9 +3,7 @@ package basicapp.back.business.notification.service;
 import basicapp.back.business.user.model.User;
 import java.time.Instant;
 import java.util.Date;
-import java.util.Locale;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.mail.api.SimpleRecipient;
 import org.iglooproject.spring.notification.service.AbstractNotificationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,22 +32,6 @@ public class NotificationServiceImpl extends AbstractNotificationServiceImpl
           .variable("userFullName", user.getFullName())
           .variable("date", Date.from(instant))
           .variable("url", url)
-          .send();
-    } catch (RuntimeException | ServiceException e) {
-      throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);
-    }
-  }
-
-  @Override
-  public void sendExampleNotification(User userTo, String from) throws ServiceException {
-    try {
-      Instant instant = Instant.now();
-
-      builder()
-          .sender("no-reply@basicapp.org")
-          .from(from)
-          .to(new SimpleRecipient(Locale.FRANCE, userTo.getEmail(), userTo.getFullName()))
-          .content(contentDescriptorFactory.example(userTo, instant))
           .send();
     } catch (RuntimeException | ServiceException e) {
       throw new ServiceException(ERROR_EXCEPTION_MESSAGE, e);

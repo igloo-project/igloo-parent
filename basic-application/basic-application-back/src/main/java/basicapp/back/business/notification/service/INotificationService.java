@@ -7,7 +7,5 @@ public interface INotificationService {
 
   void sendExampleNotification(User user) throws ServiceException;
 
-  void sendExampleNotification(User userTo, String from) throws ServiceException;
-
   void sendUserPasswordRecoveryRequest(User user) throws ServiceException;
 }
