@@ -3,6 +3,7 @@ package basicapp.front.administration.component;
 import static basicapp.front.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
 import basicapp.back.business.history.model.atomic.HistoryEventType;
+import basicapp.back.business.history.search.HistoryLogSort;
 import basicapp.back.business.user.model.User;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.history.column.HistoryLogDetailColumn;
@@ -14,7 +15,6 @@ import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEntityReference;
-import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.markup.html.sort.SortIconStyle;
 import org.iglooproject.wicket.more.markup.html.sort.TableSortLink.CycleMode;

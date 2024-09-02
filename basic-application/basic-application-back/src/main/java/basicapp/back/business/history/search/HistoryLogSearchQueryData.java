@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Set;
 import org.bindgen.Bindable;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryEntityReference;
@@ -18,6 +19,8 @@ public class HistoryLogSearchQueryData implements ISearchQueryData<HistoryLog> {
   private Instant dateMin;
 
   private Instant dateMax;
+
+  private Set<HistoryEventType> eventTypes = EnumSet.noneOf(HistoryEventType.class);
 
   private User subject;
 
@@ -36,10 +39,6 @@ public class HistoryLogSearchQueryData implements ISearchQueryData<HistoryLog> {
   private Collection<HistoryEventType> mandatoryDifferencesEventTypes =
       EnumSet.noneOf(HistoryEventType.class);
 
-  public User getSubject() {
-    return subject;
-  }
-
   public void setDateMin(Instant dateMin) {
     this.dateMin = dateMin;
   }
@@ -50,6 +49,22 @@ public class HistoryLogSearchQueryData implements ISearchQueryData<HistoryLog> {
 
   public void setDateMax(Instant dateMax) {
     this.dateMax = dateMax;
+  }
+
+  public Set<HistoryEventType> getEventTypes() {
+    return Collections.unmodifiableSet(eventTypes);
+  }
+
+  public void setEventTypes(Set<HistoryEventType> eventTypes) {
+    CollectionUtils.replaceAll(this.eventTypes, eventTypes);
+  }
+
+  public void addEventType(HistoryEventType eventType) {
+    eventTypes.add(eventType);
+  }
+
+  public User getSubject() {
+    return subject;
   }
 
   public void setSubject(User subject) {
