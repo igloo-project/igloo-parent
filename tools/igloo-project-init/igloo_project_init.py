@@ -6,7 +6,8 @@ Igloo branch can be configured by command-line argument.
 * ARTIFACT_ID: project's artifactId (e.g. basic-application)
 * GROUP_ID: project's groupId (e.g. igloo)
 * PACKAGE: project's base package (e.g. basicapp)
-* VERSION: project's version (e.g. 1.0-SNAPSHOT)
+* VERSION: project's version (e.g. 1.0-SNAPSHOT). Use 'CURRENT_IGLOO_VERSION' if you want
+  application to use igloo version
 * ARCHETYPE_CAMEL_CASE_NAME: Camel case application name (e.g. BasicApplication)
 * ARCHETYPE_BEAN_NAME: Spring bean name (e.g. basicApplication)
 * ARCHETYPE_FULL_NAME: Application full name (e.g. BasicApplication)
@@ -200,6 +201,8 @@ def main(
         igloo_clone = clone_igloo_project(igloo_url, igloo_branch, workdir)
         # retrieve current version
         igloo_version = extract_version(workdir, igloo_clone)
+        if version.lower() == 'current_igloo_version':
+            version = igloo_version
         # split basic-application version -> __OVERRIDE_VERSION__ and setup igloo.version
         override_versions(igloo_clone, igloo_version)
         # configure archetype generation ; we setup the placeholder version

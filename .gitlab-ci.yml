@@ -10,7 +10,7 @@ stages:
   - dependencies
   - deploy
   - analyze
-  # - init
+  - init
 
 maven-build:
   stage: build
@@ -65,61 +65,62 @@ maven-dependencies:
 # Diff with basic-application to check
 # Build new project
 # Not done: test are not launched
-# test-init:
-#   stage: build
-#   needs: []
-#   script:
-#   - apt-get update
-#   # add hatch and xmllint
-#   - apt-get install -y python3 pipx libxml2-utils
-#   - pipx install hatch
-#   - cd tools/igloo-project-init
-#   - /root/.local/bin/hatch fmt
-#   - /root/.local/bin/hatch run types:check
-#   # check forbidden logger name in log4j2 properties
-#   - grep -qEr '.*basicapp.*=' --include log4j2*properties --exclude-dir target && { echo "Do not use basicapp in logger name (incompatible with project init)"; exit 1; }
-#   - >
-#     /root/.local/bin/hatch run igloo-project-init
-#     -v --debug --check-diff --check-build
-#     --igloo-url "$CI_PROJECT_DIR"
-#     basic-application org.iglooproject.archetype 6.0.0-Alpha14 basicapp
-#     BasicApplication basicApplication "Basic Application" basic_application
-#   rules:
-#   - if: $CHECK_DEPENDENCIES
-#     when: never
-#   - if: $CI_PIPELINE_SOURCE == 'api'
-#     when: never
-#   - if: $CI_COMMIT_BRANCH == "dev"
-#   - if: $CI_COMMIT_BRANCH == "master"
-#   - if: $CI_COMMIT_BRANCH == "main"
-#   - if: $CI_COMMIT_BRANCH == "igloo-boot"
-#   - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
-#   tags:
-#   - docker
-# 
-# basic-application-init:
-#   stage: build
-#   script:
-#   - apt-get update
-#   # add hatch and xmllint
-#   - apt-get install -y python3 pipx libxml2-utils
-#   - pipx install hatch
-#   - cd tools/igloo-project-init
-#   - export GIT_USER="token"
-#   - export GIT_PASSWORD="$GIT_ACCESS_TOKEN"
-#   - '[ "$DRY_RUN" == "true" ] && DRY_RUN_ARGS=--dry-run || DRY_RUN_ARGS=""'
-#   - >
-#     /root/.local/bin/hatch run igloo-project-init
-#     -v --debug --check-build
-#     --igloo-url "$CI_PROJECT_DIR" $DRY_RUN_ARGS
-#     --target-url "$GIT_HTTPS_REPO_PROJECT" --target-branch ${TARGET_BRANCH:-main}
-#     --target-username kobalt-admin --target-email infra@kobalt.fr
-#     "$ARTIFACT_ID" "$GROUP_ID" "$VERSION" "$PACKAGE"
-#     "$ARCHETYPE_APPLICATION_NAME_PREFIX" "$ARCHETYPE_SPRING_ANNOTATION_VALUE_PREFIX" "$ARCHETYPE_FULL_APPLICTION_NAME" "$ARCHETYPE_DATABASE_PREFIX"
-#   rules:
-#   - if: $CI_PIPELINE_SOURCE == 'api'
-#   tags:
-#     - docker
+# Need to launched after deploy as igloo artifacts are needed.
+test-init:
+  stage: init
+  needs: ['maven-deploy']
+  script:
+  - apt-get update
+  # add hatch and xmllint
+  - apt-get install -y python3 pipx libxml2-utils
+  - pipx install hatch
+  - cd tools/igloo-project-init
+  - /root/.local/bin/hatch fmt
+  - /root/.local/bin/hatch run types:check
+  # check forbidden logger name in log4j2 properties
+  - grep -qEr '.*basicapp.*=' --include log4j2*properties --exclude-dir target && { echo "Do not use basicapp in logger name (incompatible with project init)"; exit 1; }
+  - >
+    /root/.local/bin/hatch run igloo-project-init
+    -v --debug --check-diff --check-build
+    --igloo-url "$CI_PROJECT_DIR"
+    basic-application org.iglooproject.archetype CURRENT_IGLOO_VERSION basicapp
+    BasicApplication basicApplication "Basic Application" basic_application
+  rules:
+  - if: $CHECK_DEPENDENCIES
+    when: never
+  - if: $CI_PIPELINE_SOURCE == 'api'
+    when: never
+  - if: $CI_COMMIT_BRANCH == "dev"
+  - if: $CI_COMMIT_BRANCH == "master"
+  - if: $CI_COMMIT_BRANCH == "main"
+  - if: $CI_COMMIT_BRANCH == "igloo-boot"
+  - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
+  tags:
+  - docker
+
+basic-application-init:
+  stage: build
+  script:
+  - apt-get update
+  # add hatch and xmllint
+  - apt-get install -y python3 pipx libxml2-utils
+  - pipx install hatch
+  - cd tools/igloo-project-init
+  - export GIT_USER="token"
+  - export GIT_PASSWORD="$GIT_ACCESS_TOKEN"
+  - '[ "$DRY_RUN" == "true" ] && DRY_RUN_ARGS=--dry-run || DRY_RUN_ARGS=""'
+  - >
+    /root/.local/bin/hatch run igloo-project-init
+    -v --debug --check-build
+    --igloo-url "$CI_PROJECT_DIR" $DRY_RUN_ARGS
+    --target-url "$GIT_HTTPS_REPO_PROJECT" --target-branch ${TARGET_BRANCH:-main}
+    --target-username kobalt-admin --target-email infra@kobalt.fr
+    "$ARTIFACT_ID" "$GROUP_ID" "$VERSION" "$PACKAGE"
+    "$ARCHETYPE_APPLICATION_NAME_PREFIX" "$ARCHETYPE_SPRING_ANNOTATION_VALUE_PREFIX" "$ARCHETYPE_FULL_APPLICTION_NAME" "$ARCHETYPE_DATABASE_PREFIX"
+  rules:
+  - if: $CI_PIPELINE_SOURCE == 'api'
+  tags:
+    - docker
 
 maven-deploy:
   stage: deploy
