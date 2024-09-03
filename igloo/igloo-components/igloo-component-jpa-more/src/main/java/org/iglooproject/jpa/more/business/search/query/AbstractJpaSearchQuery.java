@@ -206,4 +206,8 @@ public abstract class AbstractJpaSearchQuery<T, S extends ISort<OrderSpecifier<?
     }
     return null;
   }
+
+  protected JPAQuery<T> getJpaQuery() {
+    return jpaQuery;
+  }
 }
