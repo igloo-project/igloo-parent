@@ -16,12 +16,12 @@ public class MaintenancePage extends ApplicationAccessTemplate {
     super(parameters);
 
     addHeadPageTitlePrependedElement(
-        new BreadCrumbElement(new ResourceModel("maintenance.pageTitle")));
+        new BreadCrumbElement(new ResourceModel("navigation.maintenance")));
   }
 
   @Override
   protected IModel<String> getTitleModel() {
-    return new ResourceModel("maintenance.help.title");
+    return new ResourceModel("maintenance.title");
   }
 
   @Override

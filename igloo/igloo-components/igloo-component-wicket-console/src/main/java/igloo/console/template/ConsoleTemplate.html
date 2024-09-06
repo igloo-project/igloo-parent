@@ -21,7 +21,7 @@
 								<span class="navbar-toggler-icon" />
 							</button>
 							
-							<span class="navbar-brand"><wicket:message key="common.console" /></span>
+							<span class="navbar-brand"><wicket:message key="console.common.console" /></span>
 						</div>
 						
 						<div class="navbar-body collapse navbar-collapse" id="navbarSupportedContent">
@@ -29,7 +29,7 @@
 								<li class="nav-item">
 									<a wicket:id="applicationHomePageLink" class="nav-link">
 										<span class="fa fa-fw fa-home" />
-										<wicket:message key="common.application" />
+										<wicket:message key="console.common.application" />
 									</a>
 								</li>
 								<li wicket:id="navbarNavItems" class="nav-item">
@@ -70,7 +70,7 @@
 			<main class="main-section">
 				<div class="main-body">
 					<div class="content-container">
-						<div class="content-pre-header-section">
+						<div wicket:enclosure-component="breadCrumb" class="content-pre-header-section">
 							<div class="content-pre-header-container">
 								<div class="content-pre-header">
 									<div wicket:id="breadCrumb" />
@@ -90,7 +90,7 @@
 								<div class="row g-2 align-items-center justify-content-end">
 									<div class="col-auto">
 										<div class="footer-description-info">
-											<h6 class="footer-title"><wicket:message key="common.rootPageTitle" /></h6>
+											<h6 class="footer-title"><wicket:message key="console.common.application.name" /></h6>
 											<div wicket:id="applicationVersion" class="footer-info-version-app" />
 											<div wicket:id="iglooVersion" class="footer-info-version-igloo" />
 										</div>

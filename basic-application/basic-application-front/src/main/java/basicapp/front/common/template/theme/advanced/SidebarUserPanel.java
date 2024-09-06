@@ -62,7 +62,7 @@ public class SidebarUserPanel extends Panel {
                     .add(
                         new CoreLabel("originalAuthentication", originalAuthenticationNameModel)
                             .hideIfEmpty(),
-                        new AjaxLink<Void>("signInAsMe") {
+                        new AjaxLink<Void>("signInAsUndo") {
                           private static final long serialVersionUID = 1L;
 
                           @Override
@@ -70,7 +70,7 @@ public class SidebarUserPanel extends Panel {
                             try {
                               BasicApplicationSession.get().signInAsMe();
                               BasicApplicationSession.get()
-                                  .success(getString("authentication.back.success"));
+                                  .success(getString("authentication.signInAs.undo.success"));
                             } catch (Exception e) {
                               LOGGER.error("Erreur lors de la reconnexion de l'utilisateur.", e);
                               Session.get().error(getString("common.error.unknown"));

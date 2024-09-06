@@ -8,7 +8,6 @@ import igloo.wicket.component.PlaceholderContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.model.BindingModel;
 import java.util.List;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -28,7 +27,6 @@ import org.iglooproject.jpa.more.business.upgrade.service.IDataUpgradeRecordServ
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
-import org.iglooproject.wicket.more.model.GenericEntityModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +52,8 @@ public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
       throw new RestartResponseException(getFirstMenuPage());
     }
 
-    addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.data")));
+    addBreadCrumbElement(
+        new BreadCrumbElement(new ResourceModel("console.navigation.maintenance.data")));
 
     IModel<List<IDataUpgrade>> dataUpgrades =
         new LoadableDetachableModel<List<IDataUpgrade>>() {
@@ -72,22 +71,26 @@ public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
 
           @Override
           protected void populateItem(ListItem<IDataUpgrade> item) {
-            IModel<DataUpgradeRecord> recordModel =
-                GenericEntityModel.of(
-                    dataUpgradeRecordService.getByDataUpgrade(item.getModelObject()));
+            IModel<DataUpgradeRecord> dataUpgradeRecordModel =
+                LoadableDetachableModel.of(
+                    () -> dataUpgradeRecordService.getByDataUpgrade(item.getModelObject()));
 
             item.add(
-                new CoreLabel("name", item.getModel().map(IDataUpgrade::getName)),
+                new CoreLabel(
+                    "name",
+                    BindingModel.of(dataUpgradeRecordModel, dataUpgradeRecordBinding.name())),
                 new CoreLabel(
                         "executionDate",
-                        BindingModel.of(recordModel, dataUpgradeRecordBinding.executionDate()))
+                        BindingModel.of(
+                            dataUpgradeRecordModel, dataUpgradeRecordBinding.executionDate()))
                     .showPlaceholder(),
                 new BooleanIcon(
                         "autoPerform",
-                        BindingModel.of(recordModel, dataUpgradeRecordBinding.autoPerform()))
+                        BindingModel.of(
+                            dataUpgradeRecordModel, dataUpgradeRecordBinding.autoPerform()))
                     .hideIfNullOrFalse());
 
-            Component executeLink =
+            Component runLink =
                 ConfirmLink.<IDataUpgrade>build()
                     .title(new ResourceModel("common.action.confirm.title"))
                     .content(new ResourceModel("common.action.confirm.content"))
@@ -115,16 +118,12 @@ public class ConsoleMaintenanceDataPage extends ConsoleMaintenanceTemplate {
                     .create("execute", item.getModel());
 
             item.add(
-                executeLink
-                    .add(
-                        new AttributeModifier(
-                            "title", getString("console.maintenance.data.dataUpgrade.execute")))
-                    .add(
-                        Condition.isTrue(
-                                BindingModel.of(recordModel, dataUpgradeRecordBinding.done()))
-                            .thenHide()),
-                new PlaceholderContainer("alreadyExecutedContainer")
-                    .condition(Condition.componentVisible(executeLink)));
+                runLink.add(
+                    Condition.isTrue(
+                            BindingModel.of(
+                                dataUpgradeRecordModel, dataUpgradeRecordBinding.done()))
+                        .thenHide()),
+                new PlaceholderContainer("done").condition(Condition.componentVisible(runLink)));
           }
         };
 

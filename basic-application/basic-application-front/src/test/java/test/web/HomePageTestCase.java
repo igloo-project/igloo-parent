@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import basicapp.front.common.template.theme.advanced.SidebarMenuPanel;
 import basicapp.front.navigation.page.HomePage;
 import com.google.common.collect.ImmutableList;
-import igloo.wicket.component.CoreLabel;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -30,9 +29,6 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
   void initPage() {
     tester.startPage(HomePage.class);
     tester.assertRenderedPage(HomePage.class);
-
-    tester.assertVisible("pageTitle", CoreLabel.class);
-    tester.assertLabel("pageTitle", localize("home.pageTitle"));
   }
 
   @Test
@@ -40,10 +36,6 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
     tester.getSession().setLocale(Locale.ENGLISH);
     tester.startPage(HomePage.class);
     tester.assertRenderedPage(HomePage.class);
-
-    tester.assertVisible("pageTitle", CoreLabel.class);
-
-    tester.assertLabel("pageTitle", "Home");
   }
 
   @Test
@@ -168,12 +160,12 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
     // SubMenu
     ADMINISTRATION_BASIC_USER(
         ADMINISTRATION,
-        localize("navigation.administration.user.basicUser"),
+        localize("navigation.administration.basicUser"),
         0,
         CoreAuthorityConstants.ROLE_ADMIN),
     ADMINISTRATION_TECHNICAL_USER(
         ADMINISTRATION,
-        localize("navigation.administration.user.technicalUser"),
+        localize("navigation.administration.technicalUser"),
         1,
         CoreAuthorityConstants.ROLE_ADMIN),
     ADMINISTRATION_USERGROUP(

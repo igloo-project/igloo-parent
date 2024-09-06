@@ -6,21 +6,13 @@ import basicapp.back.business.user.model.BasicUser;
 import basicapp.back.business.user.model.TechnicalUser;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.UserGroup;
-import basicapp.front.administration.page.AdministrationAnnouncementListPage;
-import basicapp.front.administration.page.AdministrationBasicUserDetailPage;
-import basicapp.front.administration.page.AdministrationBasicUserListPage;
-import basicapp.front.administration.page.AdministrationTechnicalUserDetailPage;
-import basicapp.front.administration.page.AdministrationTechnicalUserListPage;
-import basicapp.front.administration.page.AdministrationUserGroupDetailPage;
-import basicapp.front.administration.page.AdministrationUserGroupListPage;
+import basicapp.front.announcement.page.AnnouncementListPage;
 import basicapp.front.common.converter.LocalDateConverter;
 import basicapp.front.common.converter.LocalDateTimeConverter;
 import basicapp.front.common.converter.LocalTimeConverter;
 import basicapp.front.common.converter.PostalCodeConverter;
 import basicapp.front.common.renderer.AuthorityRenderer;
 import basicapp.front.common.renderer.InstantRenderer;
-import basicapp.front.common.renderer.UserGroupRenderer;
-import basicapp.front.common.renderer.UserRenderer;
 import basicapp.front.common.template.favicon.ApplicationFaviconPackage;
 import basicapp.front.common.template.resources.BasicApplicationResourcesPackage;
 import basicapp.front.common.template.resources.styles.application.application.applicationaccess.ApplicationAccessScssResourceReference;
@@ -50,6 +42,14 @@ import basicapp.front.security.password.page.SecurityPasswordExpirationPage;
 import basicapp.front.security.password.page.SecurityPasswordRecoveryRequestCreationPage;
 import basicapp.front.security.password.page.SecurityPasswordRecoveryRequestResetPage;
 import basicapp.front.security.password.page.SecurityPasswordResetPage;
+import basicapp.front.user.page.BasicUserDetailPage;
+import basicapp.front.user.page.BasicUserListPage;
+import basicapp.front.user.page.TechnicalUserDetailPage;
+import basicapp.front.user.page.TechnicalUserListPage;
+import basicapp.front.user.renderer.UserRenderer;
+import basicapp.front.usergroup.page.UserGroupDetailPage;
+import basicapp.front.usergroup.page.UserGroupListPage;
+import basicapp.front.usergroup.renderer.UserGroupRenderer;
 import com.google.common.collect.ImmutableList;
 import igloo.console.navigation.page.ConsoleAccessDeniedPage;
 import igloo.console.navigation.page.ConsoleLoginFailurePage;
@@ -193,19 +193,17 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
     mountPage("/reference-data/", ReferenceDataPage.class);
 
     // Administration
-    mountPage("/administration/basic-user/", AdministrationBasicUserListPage.class);
+    mountPage("/administration/basic-user/", BasicUserListPage.class);
     mountParameterizedPage(
-        "/administration/basic-user/${" + CommonParameters.ID + "}/",
-        AdministrationBasicUserDetailPage.class);
-    mountPage("/administration/technical-user/", AdministrationTechnicalUserListPage.class);
+        "/administration/basic-user/${" + CommonParameters.ID + "}/", BasicUserDetailPage.class);
+    mountPage("/administration/technical-user/", TechnicalUserListPage.class);
     mountParameterizedPage(
         "/administration/technical-user/${" + CommonParameters.ID + "}/",
-        AdministrationTechnicalUserDetailPage.class);
-    mountPage("/administration/user-group/", AdministrationUserGroupListPage.class);
+        TechnicalUserDetailPage.class);
+    mountPage("/administration/user-group/", UserGroupListPage.class);
     mountParameterizedPage(
-        "/administration/user-group/${" + CommonParameters.ID + "}/",
-        AdministrationUserGroupDetailPage.class);
-    mountPage("/administration/announcement/", AdministrationAnnouncementListPage.class);
+        "/administration/user-group/${" + CommonParameters.ID + "}/", UserGroupDetailPage.class);
+    mountPage("/administration/announcement/", AnnouncementListPage.class);
 
     // Console sign in
     mountPage("/console/login/", ConsoleSignInPage.class);
@@ -215,7 +213,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
 
     // Console
     ConsoleConfiguration consoleConfiguration =
-        ConsoleConfiguration.build("console", propertyService, getResourceSettings());
+        ConsoleConfiguration.build("console", getResourceSettings());
     consoleConfiguration.addCssResourceReference(ConsoleScssResourceReference.get());
     consoleConfiguration.addConsoleAccessCssResourceReference(
         ConsoleAccessScssResourceReference.get());
@@ -229,7 +227,7 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
     ConsoleMenuSection notificationMenuSection =
         new ConsoleMenuSection(
             "notificationMenuSection",
-            "console.notifications",
+            "console.navigation.notification",
             "notification",
             ConsoleNotificationDemoListPage.class);
     consoleConfiguration.addMenuSection(notificationMenuSection);

@@ -41,7 +41,7 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
     super(parameters);
 
     addHeadPageTitlePrependedElement(
-        new BreadCrumbElement(new ResourceModel("security.password.creation.pageTitle")));
+        new BreadCrumbElement(new ResourceModel("security.password.creation.title")));
 
     final IModel<String> tokenModel = Model.of("");
 
@@ -64,7 +64,7 @@ public class SecurityPasswordCreationPage extends SecurityPasswordTemplate {
 
   @Override
   protected IModel<String> getTitleModel() {
-    return new ResourceModel("security.password.creation.pageTitle");
+    return new ResourceModel("security.password.creation.title");
   }
 
   @Override

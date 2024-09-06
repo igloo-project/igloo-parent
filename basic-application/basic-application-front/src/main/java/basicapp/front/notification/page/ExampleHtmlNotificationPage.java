@@ -4,10 +4,10 @@ import basicapp.back.business.user.model.User;
 import basicapp.back.util.binding.Bindings;
 import basicapp.back.util.time.DateTimePattern;
 import basicapp.front.BasicApplicationApplication;
-import basicapp.front.administration.template.AdministrationUserDetailTemplate;
-import basicapp.front.common.renderer.UserEnabledRenderer;
 import basicapp.front.notification.model.InstantToDateModel;
 import basicapp.front.notification.template.AbstractHtmlNotificationPage;
+import basicapp.front.user.renderer.UserEnabledRenderer;
+import basicapp.front.user.template.UserDetailTemplate;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.model.BindingModel;
 import igloo.wicket.renderer.Renderer;
@@ -57,7 +57,7 @@ public class ExampleHtmlNotificationPage extends AbstractHtmlNotificationPage<Us
             "userLink",
             LoadableDetachableModel.of(
                 () ->
-                    AdministrationUserDetailTemplate.mapper()
+                    UserDetailTemplate.mapper()
                         .ignoreParameter2()
                         .map(userModel)
                         .bypassPermissions()

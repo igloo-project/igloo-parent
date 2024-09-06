@@ -17,11 +17,11 @@ public class ConsoleMaintenanceCachesPageProvider implements IConsolePageProvide
     consoleConfiguration.insertMenu(
         new ConsoleMenuItem(
             "maintenanceCacheMenuItem",
-            "console.maintenance.caches",
+            "console.navigation.maintenance.caches",
             "caches",
             ConsoleMaintenanceCachesPage.class),
         section -> "maintenanceMenuSection".equals(section.getName()),
-        menu -> "maintenanceGestionMenuItem".equals(menu.getName()),
+        menu -> "maintenanceManagementMenuItem".equals(menu.getName()),
         false,
         true);
     resourceSettings

@@ -40,7 +40,9 @@ public abstract class ConsoleAccessTemplate extends AbstractWebPageTemplate {
                     "lang", AbstractCoreSession.get().getLocale().getLanguage())));
 
     addHeadPageTitlePrependedElement(
-        new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
+        new BreadCrumbElement(new ResourceModel("console.common.application.name")));
+    addHeadPageTitlePrependedElement(
+        new BreadCrumbElement(new ResourceModel("console.common.console")));
     add(createHeadPageTitle("headPageTitle"));
 
     add(new CoreLabel("title", getTitleModel()));

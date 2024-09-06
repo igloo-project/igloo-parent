@@ -22,12 +22,12 @@ public class SignInPage extends ApplicationAccessTemplate {
   public SignInPage(PageParameters parameters) {
     super(parameters);
 
-    addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("signIn.pageTitle")));
+    addHeadPageTitlePrependedElement(new BreadCrumbElement(new ResourceModel("navigation.signIn")));
   }
 
   @Override
   protected IModel<String> getTitleModel() {
-    return new ResourceModel("signIn.welcomeText");
+    return new ResourceModel("signIn.title");
   }
 
   @Override

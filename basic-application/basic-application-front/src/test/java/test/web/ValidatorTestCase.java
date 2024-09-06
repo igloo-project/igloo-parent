@@ -1,6 +1,6 @@
 package test.web;
 
-import basicapp.front.administration.page.AdministrationTechnicalUserListPage;
+import basicapp.front.user.page.TechnicalUserListPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.util.tester.FormTester;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -18,8 +18,8 @@ class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
   void userPasswordValidator() throws ServiceException, SecurityServiceException {
     authenticateUser(administrator);
 
-    tester.startPage(AdministrationTechnicalUserListPage.class);
-    tester.assertRenderedPage(AdministrationTechnicalUserListPage.class);
+    tester.startPage(TechnicalUserListPage.class);
+    tester.assertRenderedPage(TechnicalUserListPage.class);
 
     // Open popup
     tester.executeAjaxEvent(

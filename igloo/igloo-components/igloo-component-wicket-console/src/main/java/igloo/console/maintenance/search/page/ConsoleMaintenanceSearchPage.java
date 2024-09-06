@@ -58,7 +58,8 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
   public ConsoleMaintenanceSearchPage(PageParameters parameters) {
     super(parameters);
 
-    addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.search")));
+    addBreadCrumbElement(
+        new BreadCrumbElement(new ResourceModel("console.navigation.maintenance.search")));
 
     WorkInProgressPopup loadingPopup =
         new WorkInProgressPopup("loadingPopup", new ResourceModel("common.action.loading"));
@@ -66,7 +67,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
 
     add(
         AjaxConfirmLink.<Void>build()
-            .title(new ResourceModel("common.action.confirm.title"))
+            .title(new ResourceModel("console.maintenance.search.common.action.reindex"))
             .content(new ResourceModel("common.action.confirm.content"))
             .confirm()
             .onClick(
@@ -131,7 +132,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
                     new ResourceModel(
                         "console.maintenance.search.reindex.partial.form.ids.placeholder"))),
         AjaxConfirmLink.<Void>build()
-            .title(new ResourceModel("common.action.confirm.title"))
+            .title(new ResourceModel("console.maintenance.search.common.action.reindex"))
             .content(new ResourceModel("common.action.confirm.content"))
             .submit(reindexClassesForm)
             .confirm()

@@ -2,8 +2,8 @@ package test.web;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import basicapp.front.administration.form.UserPasswordEditPopup;
 import basicapp.front.profile.page.ProfilePage;
+import basicapp.front.user.popup.UserPasswordEditPopup;
 import igloo.wicket.component.CoreLabel;
 import org.apache.wicket.Component;
 import org.apache.wicket.feedback.ExactLevelFeedbackMessageFilter;
@@ -42,9 +42,7 @@ class ProfilePageTestCase extends AbstractBasicApplicationWebappTestCase {
     // The elements present in AbstractModalPopupPanel.html should be visible (such as the header)
     // Header
     tester.assertVisible(passwordEditPopupPath() + ":header", CoreLabel.class);
-    tester.assertLabel(
-        passwordEditPopupPath() + ":header",
-        localize("administration.user.action.password.edit.title"));
+    tester.assertLabel(passwordEditPopupPath() + ":header", localize("user.password.edit.title"));
     // Body elements should be invisible
     tester.assertInvisible(passwordEditPopupFormPath());
     // Footer elements should be invisible

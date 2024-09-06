@@ -4,7 +4,7 @@ import basicapp.back.business.user.model.User;
 import basicapp.back.security.service.ISecurityManagementService;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.BasicApplicationSession;
-import basicapp.front.administration.form.UserPasswordEditPopup;
+import basicapp.front.user.popup.UserPasswordEditPopup;
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.DefaultPlaceholderPanel;

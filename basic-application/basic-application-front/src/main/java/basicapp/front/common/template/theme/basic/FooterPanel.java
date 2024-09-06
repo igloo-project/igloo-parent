@@ -24,7 +24,7 @@ public class FooterPanel extends Panel {
     add(
         new CoreLabel(
                 "version",
-                new StringResourceModel("common.version")
+                new StringResourceModel("common.application.version")
                     .setParameters(
                         ApplicationPropertyModel.of(SpringPropertyIds.VERSION),
                         Condition.modelNotNull(
@@ -35,11 +35,12 @@ public class FooterPanel extends Panel {
                                     .asModel(
                                         ApplicationPropertyModel.of(
                                             BasicApplicationCorePropertyIds.BUILD_DATE)))
-                            .otherwise(new ResourceModel("common.version.date.placeholder"))))
+                            .otherwise(
+                                new ResourceModel("common.application.version.date.placeholder"))))
             .add(
                 new AttributeModifier(
                     "title",
-                    new StringResourceModel("common.version.full")
+                    new StringResourceModel("common.application.version.full")
                         .setParameters(
                             ApplicationPropertyModel.of(SpringPropertyIds.VERSION),
                             ApplicationPropertyModel.of(SpringPropertyIds.IGLOO_VERSION)))),
@@ -48,7 +49,7 @@ public class FooterPanel extends Panel {
                 Condition.hasText(
                         ApplicationPropertyModel.of(BasicApplicationCorePropertyIds.BUILD_SHA))
                     .then(ApplicationPropertyModel.of(BasicApplicationCorePropertyIds.BUILD_SHA))
-                    .otherwise(new ResourceModel("common.build.sha.placeholder")))
+                    .otherwise(new ResourceModel("common.application.build.sha.placeholder")))
             .hideIfEmpty()
             .add(Condition.role(CoreAuthorityConstants.ROLE_ADMIN).thenShow()));
 

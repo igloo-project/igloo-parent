@@ -18,6 +18,7 @@ import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
+import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AccountStatusException;
@@ -36,11 +37,14 @@ public class ConsoleSignInPage extends ConsoleAccessTemplate {
 
   public ConsoleSignInPage(PageParameters parameters) {
     super(parameters);
+
+    addHeadPageTitlePrependedElement(
+        new BreadCrumbElement(new ResourceModel("console.navigation.signIn")));
   }
 
   @Override
   protected IModel<String> getTitleModel() {
-    return new ResourceModel("console.signIn.welcomeText");
+    return new ResourceModel("console.signIn.title");
   }
 
   @Override
@@ -89,12 +93,12 @@ public class ConsoleSignInPage extends ConsoleAccessTemplate {
       form.add(
           new TextField<>("username", usernameModel)
               .setRequired(true)
-              .setLabel(new ResourceModel("console.signIn.username"))
+              .setLabel(new ResourceModel("console.signIn.form.username"))
               .add(new LabelPlaceholderBehavior())
               .setOutputMarkupId(true),
           password
               .setRequired(true)
-              .setLabel(new ResourceModel("console.signIn.password"))
+              .setLabel(new ResourceModel("console.signIn.form.password"))
               .add(new LabelPlaceholderBehavior())
               .setOutputMarkupId(true),
           new BlankLink("showPassword").add(new ShowPasswordBehavior(password)));

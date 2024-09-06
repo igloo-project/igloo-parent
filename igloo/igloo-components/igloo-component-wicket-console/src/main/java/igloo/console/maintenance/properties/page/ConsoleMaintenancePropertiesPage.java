@@ -51,7 +51,7 @@ public class ConsoleMaintenancePropertiesPage extends ConsoleMaintenanceTemplate
     super(parameters);
 
     addBreadCrumbElement(
-        new BreadCrumbElement(new ResourceModel("console.maintenance.properties")));
+        new BreadCrumbElement(new ResourceModel("console.navigation.maintenance.properties")));
 
     IModel<String> filterModel = new Model<>();
 
@@ -59,7 +59,7 @@ public class ConsoleMaintenancePropertiesPage extends ConsoleMaintenanceTemplate
 
     add(
         new TextField<>("filter", filterModel)
-            .setLabel(new ResourceModel("console.maintenance.properties.filter"))
+            .setLabel(new ResourceModel("console.maintenance.properties.common.search.property"))
             .add(new LabelPlaceholderBehavior())
             .add(
                 new AjaxFormComponentUpdatingBehavior(KeyboardEvent.KEYUP.getEventLabel()) {
@@ -116,7 +116,7 @@ public class ConsoleMaintenancePropertiesPage extends ConsoleMaintenanceTemplate
                                 Model.ofList(propertyService.get(PROPERTIES_HIDDEN)),
                                 propertyIdModel.map(PropertyId::getKey))
                             .applies()
-                        ? new ResourceModel("console.maintenance.properties.hiddenProperty")
+                        ? new ResourceModel("console.maintenance.properties.common.property.hidden")
                         : propertyIdValueModel));
           }
         };
@@ -187,7 +187,7 @@ public class ConsoleMaintenancePropertiesPage extends ConsoleMaintenanceTemplate
                                 Model.ofList(propertyService.get(PROPERTIES_HIDDEN)),
                                 item.getModel().map(KeyValue::getKey))
                             .applies()
-                        ? new ResourceModel("console.maintenance.properties.hiddenProperty")
+                        ? new ResourceModel("console.maintenance.properties.common.property.hidden")
                         : item.getModel().map(KeyValue::getValue)));
           }
         };
@@ -206,7 +206,6 @@ public class ConsoleMaintenancePropertiesPage extends ConsoleMaintenanceTemplate
             filterPredicate.and(Predicates2.contains(Pattern.compile("(?i)^.*" + split + ".*$")));
       }
     }
-    ;
     return filterPredicate;
   }
 

@@ -24,12 +24,12 @@ public class SecurityPasswordRecoveryRequestCreationPage extends SecurityPasswor
 
     addHeadPageTitlePrependedElement(
         new BreadCrumbElement(
-            new ResourceModel("security.password.recovery.request.creation.pageTitle")));
+            new ResourceModel("security.password.recovery.request.creation.title")));
   }
 
   @Override
   protected IModel<String> getTitleModel() {
-    return new ResourceModel("security.password.recovery.request.creation.pageTitle");
+    return new ResourceModel("security.password.recovery.request.creation.title");
   }
 
   @Override

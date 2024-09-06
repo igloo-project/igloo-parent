@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div wicket:id="passwordEditPopup" />
+	
+	<div class="content-header-section">
+		<div class="content-header-container">
+			<div class="content-header">
+				<div class="row g-2 align-items-center">
+					<div class="col-auto">
+						<a wicket:id="backToSourcePage" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
+							<span class="fa fa-fw fa-arrow-left" />
+						</a>
+						<a wicket:id="backToList" class="btn btn-sm btn-outline-secondary" wicket:message="title:common.backToList">
+							<span class="fa fa-fw fa-arrow-left" />
+						</a>
+					</div>
+					<div class="col-auto">
+						<h1 wicket:id="title" class="content-header-title" />
+					</div>
+				</div>
+				
+				<div wicket:id="headerElementsSection" class="content-header-elements-section">
+					<div class="row g-2 align-items-center">
+						<div wicket:id="informationContainer" class="col-auto">
+							<div class="row g-2 align-items-center">
+								<div class="col-auto">
+									<span wicket:id="enabled" class="fs-6" />
+								</div>
+							</div>
+						</div>
+						<div wicket:id="actionsContainer" class="col-auto ms-auto">
+							<div class="row g-2 align-items-center">
+								<div wicket:enclosure-component="passwordEdit" class="col-auto">
+									<button wicket:id="passwordEdit" class="btn btn-primary" type="button">
+										<span class="fa fa-fw fa-key" />
+										<wicket:message key="user.common.action.password.edit" />
+									</button>
+								</div>
+								<div wicket:enclosure-component="passwordReset" class="col-auto">
+									<button wicket:id="passwordReset" class="btn btn-primary" type="button">
+										<span class="fa fa-fw fa-unlock-alt" />
+										<wicket:message key="user.common.action.password.recovery.reset" />
+									</button>
+								</div>
+								<div wicket:enclosure-component="enable" class="col-auto">
+									<button wicket:id="enable" class="btn btn-success" type="button">
+										<span class="fa fa-fw fa-check" />
+										<wicket:message key="common.action.enable" />
+									</button>
+								</div>
+								<div wicket:enclosure-component="disable" class="col-auto">
+									<button wicket:id="disable" class="btn btn-danger" type="button">
+										<span class="fa fa-fw fa-times" />
+										<wicket:message key="common.action.disable" />
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="content-tabs-section">
+		<div class="content-tabs-container">
+			<ul class="nav nav-pills-outline hstack gap-2" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button wicket:id="generalTab" class="nav-link" type="button">
+						<wicket:message key="user.detail.tab.general" />
+					</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button wicket:id="securityTab" class="nav-link" type="button">
+						<wicket:message key="user.detail.tab.security" />
+					</button>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="content-body-section">
+		<div class="content-body-container">
+			<div class="content-body">
+				<div class="tab-content">
+					<div wicket:id="general" class="tab-pane fade" />
+					<div wicket:id="security" class="tab-pane fade" />
+				</div>
+			</div>
+		</div>
+	</div>
+</wicket:extend>
+</html>

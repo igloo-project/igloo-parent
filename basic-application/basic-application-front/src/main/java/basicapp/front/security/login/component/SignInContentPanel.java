@@ -75,12 +75,12 @@ public class SignInContentPanel extends Panel {
     form.add(
         new TextField<>("username", usernameModel)
             .setRequired(true)
-            .setLabel(new ResourceModel("signIn.username"))
+            .setLabel(new ResourceModel("signIn.form.username"))
             .add(new LabelPlaceholderBehavior())
             .setOutputMarkupId(true),
         password
             .setRequired(true)
-            .setLabel(new ResourceModel("signIn.password"))
+            .setLabel(new ResourceModel("signIn.form.password"))
             .add(new LabelPlaceholderBehavior())
             .setOutputMarkupId(true),
         new BlankLink("showPassword").add(new ShowPasswordBehavior(password)));

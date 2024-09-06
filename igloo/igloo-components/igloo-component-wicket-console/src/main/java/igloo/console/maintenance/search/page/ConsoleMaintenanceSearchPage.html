@@ -9,7 +9,7 @@
 			<div class="content-header-container">
 				<div class="content-header">
 					<h1 class="content-header-title">
-						<wicket:message key="console.maintenance.search" />
+						<wicket:message key="console.maintenance.search.title" />
 					</h1>
 				</div>
 			</div>
@@ -22,19 +22,19 @@
 							<div class="card card-main">
 								<div class="card-header">
 									<div class="card-header-title">
-										<wicket:message key="console.maintenance.search.reindex.title" />
+										<wicket:message key="console.maintenance.search.reindex.full.title" />
 									</div>
 								</div>
 								<div class="card-body">
 									<div class="alert alert-info">
-										<wicket:message key="console.maintenance.search.reindex.description" />
+										<wicket:message key="console.maintenance.search.reindex.full.help" />
 									</div>
 									<div class="card-action card-action-bottom">
 										<div class="row row-action justify-content-end">
 											<div class="col-auto">
 												<button wicket:id="reindexContent" class="btn btn-danger" type="button">
 													<span class="fa fa-fw fa-sync" />
-													<wicket:message key="console.maintenance.search.reindex.action" />
+													<wicket:message key="console.maintenance.search.common.action.reindex" />
 												</button>
 											</div>
 										</div>
@@ -53,7 +53,7 @@
 									<div class="card-body">
 										<form wicket:id="reindexClassesForm">
 											<div class="alert alert-info mb-3">
-												<wicket:message key="console.maintenance.search.reindex.partial.description" />
+												<wicket:message key="console.maintenance.search.reindex.partial.help" />
 											</div>
 											<div class="row row-form">
 												<div class="col-12">
@@ -76,7 +76,7 @@
 													<div class="col-auto">
 														<button wicket:id="reindexClasses" class="btn btn-warning" type="button">
 															<span class="fa fa-fw fa-sync" />
-															<wicket:message key="console.maintenance.search.reindex.action" />
+															<wicket:message key="console.maintenance.search.common.action.reindex" />
 														</button>
 													</div>
 												</div>

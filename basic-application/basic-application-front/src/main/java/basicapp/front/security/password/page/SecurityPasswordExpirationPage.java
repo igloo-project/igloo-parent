@@ -22,12 +22,12 @@ public class SecurityPasswordExpirationPage extends SecurityPasswordTemplate {
     super(parameters);
 
     addHeadPageTitlePrependedElement(
-        new BreadCrumbElement(new ResourceModel("security.password.expiration.pageTitle")));
+        new BreadCrumbElement(new ResourceModel("security.password.expiration.title")));
   }
 
   @Override
   protected IModel<String> getTitleModel() {
-    return new ResourceModel("security.password.expiration.pageTitle");
+    return new ResourceModel("security.password.expiration.title");
   }
 
   @Override

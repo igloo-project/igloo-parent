@@ -4,7 +4,7 @@ import basicapp.back.business.referencedata.model.ReferenceData;
 import basicapp.back.business.referencedata.search.BasicReferenceDataSearchQueryData;
 import basicapp.back.business.referencedata.search.BasicReferenceDataSort;
 import basicapp.back.business.referencedata.search.IBasicReferenceDataSearchQuery;
-import basicapp.front.common.renderer.ReferenceDataRenderer;
+import basicapp.front.referencedata.renderer.ReferenceDataRenderer;
 import com.google.common.collect.ImmutableMap;
 import igloo.wicket.model.Detachables;
 import igloo.wicket.spring.SpringBeanLookupCache;

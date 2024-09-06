@@ -46,7 +46,7 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
     super(parameters);
 
     addHeadPageTitlePrependedElement(
-        new BreadCrumbElement(new ResourceModel("security.password.reset.pageTitle")));
+        new BreadCrumbElement(new ResourceModel("security.password.reset.title")));
 
     final IModel<String> tokenModel = Model.of("");
 
@@ -78,7 +78,7 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 
   @Override
   protected IModel<String> getTitleModel() {
-    return new ResourceModel("security.password.reset.pageTitle");
+    return new ResourceModel("security.password.reset.title");
   }
 
   @Override

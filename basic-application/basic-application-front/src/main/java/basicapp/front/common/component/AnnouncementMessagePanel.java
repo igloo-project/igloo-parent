@@ -3,7 +3,7 @@ package basicapp.front.common.component;
 import basicapp.back.business.announcement.model.Announcement;
 import basicapp.back.business.announcement.model.atomic.AnnouncementType;
 import basicapp.back.business.announcement.predicate.AnnouncementPredicates;
-import basicapp.front.common.renderer.AnnouncementRenderer;
+import basicapp.front.announcement.renderer.AnnouncementRenderer;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
