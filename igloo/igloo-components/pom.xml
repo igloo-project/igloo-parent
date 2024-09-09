@@ -68,6 +68,7 @@
 		
 		<module>igloo-spring-security</module>
 		<module>igloo-spring-openidc</module>
+		<module>igloo-spring-actuator</module>
 		
 		<module>storage-api</module>
 		<module>storage-impl</module>

@@ -29,6 +29,9 @@ import com.google.common.base.Converter;
 import com.google.common.primitives.Ints;
 import igloo.juice.IJuiceInliner;
 import igloo.juice.JuiceInliner;
+import igloo.juice.JuiceInliner.Builder;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
+import io.github.resilience4j.retry.RetryRegistry;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Optional;
@@ -208,13 +211,23 @@ public class WicketMoreAutoConfiguration implements IPropertyRegistryConfig {
 
   @Bean
   @ConditionalOnMissingBean
-  public IJuiceInliner juiceInliner(IPropertyService propertyService) {
-    return JuiceInliner.builder()
-        .inlinerUrl(propertyService.get(NOTIFICATION_INLINER_JUICE_URL))
-        .requestTimeout(propertyService.get(NOTIFICATION_INLINER_JUICE_RETRY_REQUEST_TIMEOUT))
-        .retryMaxAttempts(propertyService.get(NOTIFICATION_INLINER_JUICE_RETRY_MAX_ATTEMPTS))
-        .retryWaitDuration(propertyService.get(NOTIFICATION_INLINER_JUICE_RETRY_WAIT_DURATION))
-        .token(Optional.ofNullable(propertyService.get(NOTIFICATION_INLINER_JUICE_TOKEN)))
-        .build();
+  public IJuiceInliner juiceInliner(
+      IPropertyService propertyService,
+      @Autowired(required = false) RetryRegistry retryRegistry,
+      @Autowired(required = false) CircuitBreakerRegistry circuitBreakerRegistry) {
+    Builder builder =
+        JuiceInliner.builder()
+            .inlinerUrl(propertyService.get(NOTIFICATION_INLINER_JUICE_URL))
+            .requestTimeout(propertyService.get(NOTIFICATION_INLINER_JUICE_RETRY_REQUEST_TIMEOUT))
+            .retryMaxAttempts(propertyService.get(NOTIFICATION_INLINER_JUICE_RETRY_MAX_ATTEMPTS))
+            .retryWaitDuration(propertyService.get(NOTIFICATION_INLINER_JUICE_RETRY_WAIT_DURATION))
+            .token(Optional.ofNullable(propertyService.get(NOTIFICATION_INLINER_JUICE_TOKEN)));
+    if (retryRegistry != null) {
+      builder.retryRegistry(retryRegistry);
+    }
+    if (circuitBreakerRegistry != null) {
+      builder.circuitBreakerRegistry(circuitBreakerRegistry);
+    }
+    return builder.build();
   }
 }
