@@ -68,6 +68,11 @@
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-spring-actuator</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.bindgen</groupId>
 			<artifactId>bindgen</artifactId>
 		</dependency>
@@ -234,6 +239,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-commons</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-tools</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
