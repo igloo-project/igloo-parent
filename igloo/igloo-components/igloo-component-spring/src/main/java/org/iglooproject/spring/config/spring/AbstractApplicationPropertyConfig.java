@@ -1,10 +1,12 @@
 package org.iglooproject.spring.config.spring;
 
+import org.iglooproject.spring.config.util.LocaleTimeZoneCharsetCheckerListener;
 import org.iglooproject.spring.property.dao.IImmutablePropertyDao;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.spring.property.dao.ImmutablePropertyDaoImpl;
 import org.iglooproject.spring.property.service.IConfigurablePropertyService;
 import org.iglooproject.spring.property.service.PropertyServiceImpl;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 public abstract class AbstractApplicationPropertyConfig
@@ -21,5 +23,11 @@ public abstract class AbstractApplicationPropertyConfig
   @Bean
   public IConfigurablePropertyService propertyService() {
     return new PropertyServiceImpl();
+  }
+
+  @Bean
+  public LocaleTimeZoneCharsetCheckerListener localeTimeZoneCharsetCheckerListener(
+      ApplicationContext applicationContext) {
+    return new LocaleTimeZoneCharsetCheckerListener(applicationContext);
   }
 }

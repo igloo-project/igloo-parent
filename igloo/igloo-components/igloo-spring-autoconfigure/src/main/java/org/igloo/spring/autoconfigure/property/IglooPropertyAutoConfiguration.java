@@ -2,6 +2,7 @@ package org.igloo.spring.autoconfigure.property;
 
 import org.iglooproject.spring.config.CorePropertyPlaceholderConfigurer;
 import org.iglooproject.spring.config.spring.IPropertyRegistryConfig;
+import org.iglooproject.spring.config.util.LocaleTimeZoneCharsetCheckerListener;
 import org.iglooproject.spring.property.dao.IImmutablePropertyDao;
 import org.iglooproject.spring.property.dao.ImmutablePropertyDaoImpl;
 import org.iglooproject.spring.property.service.IPropertyRegistry;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -71,5 +73,11 @@ public class IglooPropertyAutoConfiguration {
             IPropertyRegistry.class.getSimpleName());
       }
     };
+  }
+
+  @Bean
+  public LocaleTimeZoneCharsetCheckerListener localeTimeZoneCharsetCheckerListener(
+      ApplicationContext applicationContext) {
+    return new LocaleTimeZoneCharsetCheckerListener(applicationContext);
   }
 }
