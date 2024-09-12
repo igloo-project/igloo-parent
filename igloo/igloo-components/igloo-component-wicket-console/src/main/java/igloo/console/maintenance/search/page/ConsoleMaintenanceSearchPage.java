@@ -76,7 +76,9 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
                   @Override
                   public void execute(AjaxRequestTarget target) {
                     try {
+                      LOGGER.warn("Indexation - Start");
                       hibernateSearchService.reindexAll();
+                      LOGGER.warn("Indexation - Done");
                       Session.get().success(getString("common.success"));
                     } catch (Exception e) {
                       LOGGER.error("Erreur lors la réindexation complète.", e);
@@ -140,6 +142,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
                   @Override
                   public void execute(AjaxRequestTarget target) {
                     try {
+                      LOGGER.warn("Indexation - Start");
                       Set<Long> entityIds = Sets.newTreeSet();
                       for (String entityIdString :
                           StringUtils.splitAsList(
@@ -175,6 +178,7 @@ public class ConsoleMaintenanceSearchPage extends ConsoleMaintenanceTemplate {
                       classesModel.getObject().clear();
                       idsModel.setObject(null);
 
+                      LOGGER.warn("Indexation - Done");
                       Session.get().success(getString("common.success"));
                     } catch (Exception e) {
                       LOGGER.error("Erreur lors la réindexation d'entités.", e);
