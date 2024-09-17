@@ -29,16 +29,21 @@ import java.util.Locale;
 import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.wicket.Application;
+import org.apache.wicket.DefaultPageManagerProvider;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.SecurePackageResourceGuard;
+import org.apache.wicket.pageStore.FilePageStore;
+import org.apache.wicket.pageStore.IPageStore;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.resource.PackageResource;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.request.resource.caching.FilenameWithVersionResourceCachingStrategy;
 import org.apache.wicket.request.resource.caching.version.LastModifiedResourceVersion;
 import org.apache.wicket.resource.JQueryResourceReference;
+import org.apache.wicket.serialize.java.DeflatedJavaSerializer;
+import org.apache.wicket.settings.StoreSettings;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.apache.wicket.util.lang.Bytes;
 import org.apache.wicket.util.resource.IResourceStream;
@@ -160,6 +165,20 @@ public abstract class CoreWicketApplication extends WebApplication
             e);
       }
     }
+
+    setPageManagerProvider(
+        new DefaultPageManagerProvider(this) {
+          @Override
+          protected IPageStore newPersistentStore() {
+            StoreSettings storeSettings = application.getStoreSettings();
+            Bytes maxSizePerSession = storeSettings.getMaxSizePerSession();
+            File fileStoreFolder = storeSettings.getFileStoreFolder();
+
+            return new FilePageStore(application.getName(), fileStoreFolder, maxSizePerSession);
+          }
+        });
+
+    getFrameworkSettings().setSerializer(new DeflatedJavaSerializer(getApplicationKey()));
 
     updateJavaScriptLibrarySettings();
 
