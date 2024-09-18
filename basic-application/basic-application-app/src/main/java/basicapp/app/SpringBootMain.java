@@ -15,6 +15,11 @@ public class SpringBootMain extends SpringBootServletInitializer {
     doConfigure(new SpringApplicationBuilder()).run(args);
   }
 
+  @Override
+  protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+    return SpringBootMain.doConfigure(application);
+  }
+
   /** Common configuration. */
   public static SpringApplicationBuilder doConfigure(SpringApplicationBuilder application) {
     return application
