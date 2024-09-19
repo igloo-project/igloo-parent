@@ -69,7 +69,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
       throw new RedirectToUrlException(propertyService.get(MAINTENANCE_URL));
     }
 
-    if (securityManagementService.isPasswordExpired(BasicApplicationSession.get().getUser())) {
+    if (BasicApplicationSession.get().getOriginalAuthentication() == null
+        && securityManagementService.isPasswordExpired(BasicApplicationSession.get().getUser())) {
       throw SecurityPasswordExpirationPage.linkDescriptor().newRestartResponseException();
     }
 
