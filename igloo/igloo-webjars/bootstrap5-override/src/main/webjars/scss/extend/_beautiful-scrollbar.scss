@@ -1,6 +1,7 @@
 @mixin beautiful-scrollbar($important: false) {
 	&::-webkit-scrollbar {
 		width: 6px important($important);
+		height: 6px important($important);
 	}
 	 
 	&::-webkit-scrollbar-track {
