@@ -1,9 +1,10 @@
 package basicapp.front.user.panel;
 
-import basicapp.back.business.user.model.BasicUser;
-import basicapp.back.business.user.service.IUserService;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_BASIC_WRITE;
+
+import basicapp.back.business.user.model.User;
 import basicapp.back.util.binding.Bindings;
-import basicapp.front.user.popup.BasicUserPopup;
+import basicapp.front.user.popup.BasicUserSavePopup;
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.DefaultPlaceholderPanel;
@@ -14,22 +15,18 @@ import igloo.wicket.markup.html.panel.GenericPanel;
 import igloo.wicket.model.BindingModel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.wicket.more.markup.html.image.BooleanIcon;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-public class BasicUserDetailGeneralDescriptionPanel extends GenericPanel<BasicUser> {
+public class BasicUserDetailGeneralDescriptionPanel extends GenericPanel<User> {
 
-  private static final long serialVersionUID = 8651898170121443991L;
+  private static final long serialVersionUID = 1L;
 
-  @SpringBean private IUserService userService;
-
-  public BasicUserDetailGeneralDescriptionPanel(
-      String id, final IModel<? extends BasicUser> userModel) {
+  public BasicUserDetailGeneralDescriptionPanel(String id, IModel<User> userModel) {
     super(id, userModel);
 
-    BasicUserPopup editPopup = new BasicUserPopup("editPopup");
+    BasicUserSavePopup editPopup = new BasicUserSavePopup("editPopup");
     add(editPopup);
 
     IModel<String> emailModel = BindingModel.of(userModel, Bindings.user().email());
@@ -64,6 +61,7 @@ public class BasicUserDetailGeneralDescriptionPanel extends GenericPanel<BasicUs
                           protected void onShow(AjaxRequestTarget target) {
                             editPopup.setUpEdit(getModelObject());
                           }
-                        })));
+                        })
+                    .add(Condition.permission(userModel, USER_BASIC_WRITE).thenShow())));
   }
 }

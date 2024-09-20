@@ -2,8 +2,6 @@ package basicapp.front.config.spring;
 
 import basicapp.back.business.notification.service.IBasicApplicationNotificationContentDescriptorFactory;
 import basicapp.back.business.notification.service.IBasicApplicationNotificationUrlBuilderService;
-import basicapp.back.business.user.model.BasicUser;
-import basicapp.back.business.user.model.TechnicalUser;
 import basicapp.back.business.user.model.User;
 import basicapp.back.config.spring.BasicApplicationCoreCommonConfiguration;
 import basicapp.front.BasicApplicationApplication;
@@ -65,8 +63,6 @@ public class BasicApplicationWebappConfig {
     rendererService.registerRenderer(boolean.class, BooleanRenderer.get());
 
     rendererService.registerRenderer(User.class, UserRenderer.get());
-    rendererService.registerRenderer(TechnicalUser.class, UserRenderer.get());
-    rendererService.registerRenderer(BasicUser.class, UserRenderer.get());
 
     return rendererService;
   }
@@ -75,7 +71,7 @@ public class BasicApplicationWebappConfig {
   @Bean
   public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
     IHtmlNotificationCssService service = new PhlocCssHtmlNotificationCssServiceImpl();
-    //		service.registerDefaultStyles(NotificationEmailScssResourceReference.get());
+//    service.registerDefaultStyles(NotificationEmailScssResourceReference.get());
     return service;
   }
 

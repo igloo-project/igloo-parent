@@ -1,20 +1,23 @@
 package basicapp.front.user.page;
 
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_USER_READ;
 import static basicapp.front.common.util.CssClassConstants.CELL_DISPLAY_2XL;
 import static basicapp.front.common.util.CssClassConstants.TABLE_ROW_DISABLED;
 import static basicapp.front.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
 
-import basicapp.back.business.user.model.BasicUser;
+import basicapp.back.business.user.model.User;
+import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.business.user.predicate.UserPredicates;
-import basicapp.back.business.user.search.BasicUserSort;
-import basicapp.back.business.user.service.IUserService;
+import basicapp.back.business.user.search.IUserSearchQuery;
+import basicapp.back.business.user.search.UserSort;
+import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.user.export.UserExcelTableExport;
-import basicapp.front.user.model.BasicUserDataProvider;
+import basicapp.front.user.model.UserDataProvider;
 import basicapp.front.user.panel.BasicUserListSearchPanel;
-import basicapp.front.user.popup.BasicUserPopup;
+import basicapp.front.user.popup.BasicUserSavePopup;
 import basicapp.front.user.renderer.UserEnabledRenderer;
-import basicapp.front.user.template.UserListTemplate;
+import basicapp.front.user.template.UserTemplate;
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
@@ -24,6 +27,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -46,15 +50,19 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuild
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-public class BasicUserListPage extends UserListTemplate<BasicUser> {
+public class BasicUserListPage extends UserTemplate {
 
-  private static final long serialVersionUID = 8009837891166387406L;
+  private static final long serialVersionUID = 1L;
 
-  public static final IPageLinkDescriptor linkDescriptor() {
-    return LinkDescriptorBuilder.start().page(BasicUserListPage.class);
+  public static IPageLinkDescriptor linkDescriptor() {
+    return LinkDescriptorBuilder.start()
+        .validator(Condition.permission(GLOBAL_USER_READ))
+        .page(BasicUserListPage.class);
   }
 
-  @SpringBean private IUserService userService;
+  @SpringBean private IUserSearchQuery userSearchQuery;
+
+  @SpringBean private IUserControllerService userControllerService;
 
   @SpringBean private IPropertyService propertyService;
 
@@ -64,9 +72,10 @@ public class BasicUserListPage extends UserListTemplate<BasicUser> {
     addBreadCrumbElement(
         new BreadCrumbElement(new ResourceModel("navigation.administration.basicUser")));
 
-    BasicUserDataProvider dataProvider = new BasicUserDataProvider();
+    UserDataProvider dataProvider = new UserDataProvider();
+    dataProvider.getDataModel().getObject().setType(UserType.BASIC);
 
-    BasicUserPopup addPopup = new BasicUserPopup("addPopup");
+    BasicUserSavePopup addPopup = new BasicUserSavePopup("addPopup");
     add(addPopup);
 
     ExcelExportWorkInProgressModalPopupPanel loadingPopup =
@@ -96,11 +105,12 @@ public class BasicUserListPage extends UserListTemplate<BasicUser> {
 
                           @Override
                           protected void onShow(AjaxRequestTarget target) {
-                            addPopup.setUpAdd(new BasicUser());
+                            addPopup.setUpAdd(new User());
                           }
-                        })));
+                        })
+                    .add(Condition.permission(GLOBAL_USER_READ).thenShow())));
 
-    DecoratedCoreDataTablePanel<BasicUser, ?> results =
+    DecoratedCoreDataTablePanel<User, ?> results =
         DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
             .addBootstrapBadgeColumn(Model.of(), Bindings.user(), UserEnabledRenderer.get())
             .badgePill()
@@ -109,22 +119,21 @@ public class BasicUserListPage extends UserListTemplate<BasicUser> {
             .withLink(BasicUserDetailPage.MAPPER.setParameter2(new PageModel<>(this)))
             .withClass("cell-w-250")
             .addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
-            .withSort(BasicUserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+            .withSort(UserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
             .withClass("cell-w-250")
             .addLabelColumn(
                 new ResourceModel("business.user.firstName"), Bindings.user().firstName())
-            .withSort(BasicUserSort.FIRST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+            .withSort(UserSort.FIRST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
             .withClass("cell-w-250")
             .addColumn(
-                new AbstractCoreColumn<BasicUser, BasicUserSort>(
-                    new ResourceModel("business.user.email")) {
+                new AbstractCoreColumn<>(new ResourceModel("business.user.email")) {
                   private static final long serialVersionUID = 1L;
 
                   @Override
                   public void populateItem(
-                      Item<ICellPopulator<BasicUser>> cellItem,
+                      Item<ICellPopulator<User>> cellItem,
                       String componentId,
-                      IModel<BasicUser> rowModel) {
+                      IModel<User> rowModel) {
                     IModel<String> emailModel = BindingModel.of(rowModel, Bindings.user().email());
                     cellItem.add(
                         new EmailLink(componentId, emailModel) {
@@ -153,5 +162,10 @@ public class BasicUserListPage extends UserListTemplate<BasicUser> {
             .build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 
     add(new BasicUserListSearchPanel("search", results, dataProvider.getDataModel()), results);
+  }
+
+  @Override
+  protected Class<? extends WebPage> getSecondMenuPage() {
+    return BasicUserListPage.class;
   }
 }

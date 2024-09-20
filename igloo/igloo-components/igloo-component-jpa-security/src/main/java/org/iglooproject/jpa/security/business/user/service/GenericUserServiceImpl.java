@@ -7,7 +7,6 @@ import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.user.dao.IGenericUserDao;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.spring.util.StringUtils;
@@ -36,16 +35,6 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U, ?>>
 
     user.setCreationDate(now);
     user.setLastUpdateDate(now);
-
-    if (user.getAuthorities().isEmpty()) {
-      Authority defaultAuthority =
-          authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED);
-      if (defaultAuthority != null) {
-        user.addAuthority(defaultAuthority);
-      } else {
-        throw new ServiceException("Default authority ROLE_AUTHENTICATED has not been created yet");
-      }
-    }
 
     super.createEntity(user);
   }

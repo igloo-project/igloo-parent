@@ -90,7 +90,7 @@ public class BasicApplicationNotificationContentDescriptorFactoryImpl
       @Override
       public Page createPage(Locale locale) {
         IModel<User> userModel = GenericEntityModel.of(user);
-        return new UserPasswordRecoveryRequestHtmlNotificationPage<>(
+        return new UserPasswordRecoveryRequestHtmlNotificationPage(
             keyGenerator,
             userModel,
             userModel,

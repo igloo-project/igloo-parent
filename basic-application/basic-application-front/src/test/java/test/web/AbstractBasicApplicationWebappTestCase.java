@@ -1,16 +1,11 @@
 package test.web;
 
 import basicapp.back.business.history.service.IHistoryLogService;
-import basicapp.back.business.user.model.BasicUser;
-import basicapp.back.business.user.model.TechnicalUser;
+import basicapp.back.business.role.service.IRoleService;
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.model.UserGroup;
-import basicapp.back.business.user.service.IUserGroupService;
-import basicapp.back.business.user.service.IUserService;
-import basicapp.back.business.user.typedescriptor.UserTypeDescriptor;
-import basicapp.back.security.model.BasicApplicationAuthorityConstants;
+import basicapp.back.business.user.model.atomic.UserType;
+import basicapp.back.business.user.service.business.IUserService;
 import basicapp.back.security.service.IBasicApplicationAuthenticationService;
-import com.google.common.collect.ImmutableSet;
 import java.util.Set;
 import org.apache.wicket.Localizer;
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
@@ -26,23 +21,20 @@ import org.iglooproject.wicket.more.AbstractCoreSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import test.core.TestEntityDatabaseHelper;
 
 public abstract class AbstractBasicApplicationWebappTestCase
     extends AbstractWicketTestCase<BasicApplicationWicketTester> {
 
   protected static final String USER_PASSWORD = "USER_PASSWORD";
 
-  protected UserGroup users;
+  protected User basicUser;
 
-  protected UserGroup administrators;
+  protected User administrator;
 
-  protected BasicUser basicUser;
-
-  protected TechnicalUser administrator;
+  private static int userUniqueToken = 0;
 
   @Autowired protected IUserService userService;
-
-  @Autowired protected IUserGroupService userGroupService;
 
   @Autowired protected IAuthorityService authorityService;
 
@@ -56,10 +48,13 @@ public abstract class AbstractBasicApplicationWebappTestCase
 
   @Autowired private WebApplication application;
 
+  @Autowired private TestEntityDatabaseHelper entityDatabaseHelper;
+
+  @Autowired private IRoleService roleService;
+
   @BeforeEach
   public void setUp() throws ServiceException, SecurityServiceException {
     initAuthorities();
-    initUserGroups();
     initUsers();
 
     setWicketTester(new BasicApplicationWicketTester(application));
@@ -70,9 +65,9 @@ public abstract class AbstractBasicApplicationWebappTestCase
     entityManagerClear();
 
     cleanEntities(userService);
-    cleanEntities(userGroupService);
     cleanEntities(authorityService);
     cleanEntities(historyLogService);
+    cleanEntities(roleService);
 
     mutablePropertyDao.cleanInTransaction();
 
@@ -86,62 +81,29 @@ public abstract class AbstractBasicApplicationWebappTestCase
     authorityService.create(new Authority(CoreAuthorityConstants.ROLE_AUTHENTICATED));
   }
 
-  private void initUserGroups() throws ServiceException, SecurityServiceException {
-    users = new UserGroup("Users");
-    administrators = new UserGroup("Administrators");
-
-    userGroupService.create(users);
-    userGroupService.create(administrators);
-  }
-
   private void initUsers() throws ServiceException, SecurityServiceException {
     basicUser =
-        createUser(
-            "basicUser",
-            UserTypeDescriptor.BASIC_USER,
-            ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_AUTHENTICATED),
-            ImmutableSet.of(users));
-    createUser(
-        "basicUser2",
-        UserTypeDescriptor.BASIC_USER,
-        ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_AUTHENTICATED),
-        ImmutableSet.of(users));
+        entityDatabaseHelper.createUser(
+            u -> {
+              u.setType(UserType.BASIC);
+              u.setUsername("basicUser");
+            },
+            true);
 
-    administrator =
-        createUser(
-            "administrator",
-            UserTypeDescriptor.TECHNICAL_USER,
-            ImmutableSet.of(BasicApplicationAuthorityConstants.ROLE_ADMIN),
-            ImmutableSet.of(administrators));
+    entityDatabaseHelper.createUser(
+        u -> {
+          u.setType(UserType.BASIC);
+          u.setUsername("basicUser2");
+        },
+        true);
+
+    administrator = entityDatabaseHelper.createUser(u -> u.setUsername("technicalUser"), true);
   }
 
-  private <U extends User> U createUser(
-      String username,
-      UserTypeDescriptor<U> type,
-      Set<String> authorities,
-      Set<UserGroup> userGroups)
+  protected void addPermissions(User user, String... permissions)
       throws ServiceException, SecurityServiceException {
-
-    U user = type.getSupplier().get();
-    user.setUsername(username);
-    user.setFirstName(username);
-    user.setLastName(username);
-    if (authorities != null) {
-      for (String authority : authorities) {
-        user.addAuthority(authorityService.getByName(authority));
-      }
-    }
-
-    userService.create(user);
-    userService.setPasswords(user, USER_PASSWORD);
-
-    if (userGroups != null) {
-      for (UserGroup userGroup : userGroups) {
-        userGroupService.addUser(userGroup, user);
-      }
-    }
-
-    return user;
+    user.addRole(entityDatabaseHelper.createRole(r -> r.setPermissions(Set.of(permissions)), true));
+    userService.update(user);
   }
 
   protected void authenticateUser(User user) throws ServiceException, SecurityServiceException {

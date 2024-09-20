@@ -1,6 +1,7 @@
 package basicapp.front.user.form;
 
 import basicapp.back.business.user.model.User;
+import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.business.user.search.IUserSearchQuery;
 import basicapp.back.business.user.search.UserSearchQueryData;
 import basicapp.back.business.user.search.UserSort;
@@ -25,7 +26,15 @@ public class UserAjaxDropDownMultipleChoice<C extends Collection<User>>
 
   public UserAjaxDropDownMultipleChoice(
       String id, IModel<C> model, SerializableSupplier2<? extends C> collectionSupplier) {
-    this(id, model, collectionSupplier, new ChoiceProvider());
+    this(id, model, collectionSupplier, new ChoiceProvider(null));
+  }
+
+  public UserAjaxDropDownMultipleChoice(
+      String id,
+      IModel<C> model,
+      UserType userType,
+      SerializableSupplier2<? extends C> collectionSupplier) {
+    this(id, model, collectionSupplier, new ChoiceProvider(userType));
   }
 
   public UserAjaxDropDownMultipleChoice(
@@ -42,8 +51,11 @@ public class UserAjaxDropDownMultipleChoice<C extends Collection<User>>
 
     @SpringBean private IUserSearchQuery searchQuery;
 
-    public ChoiceProvider() {
+    private final UserType userType;
+
+    public ChoiceProvider(UserType userType) {
       super(User.class, UserRenderer.get());
+      this.userType = userType;
       Injector.get().inject(this);
     }
 
@@ -51,7 +63,10 @@ public class UserAjaxDropDownMultipleChoice<C extends Collection<User>>
     protected void query(String term, int offset, int limit, Response<User> response) {
       UserSearchQueryData data = new UserSearchQueryData();
       data.setTerm(term);
-      data.setEnabledFilter(EnabledFilter.ENABLED_ONLY);
+      if (userType != null) {
+        data.setType(userType);
+      }
+      data.setActive(EnabledFilter.ENABLED_ONLY);
       Map<UserSort, SortOrder> sorts =
           ImmutableMap.of(
               UserSort.SCORE, UserSort.SCORE.getDefaultOrder(),

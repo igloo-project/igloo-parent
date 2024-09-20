@@ -8,7 +8,7 @@ import org.iglooproject.wicket.more.markup.html.bootstrap.common.renderer.Bootst
 
 public abstract class UserEnabledRenderer extends BootstrapRenderer<User> {
 
-  private static final long serialVersionUID = 8417578372352258838L;
+  private static final long serialVersionUID = 1L;
 
   private static final UserEnabledRenderer INSTANCE =
       new UserEnabledRenderer() {

@@ -12,7 +12,7 @@ import basicapp.back.business.notification.service.INotificationService;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
-import basicapp.back.business.user.service.IUserService;
+import basicapp.back.business.user.service.business.IUserService;
 import basicapp.back.security.model.SecurityOptions;
 import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.ImmutableList;
@@ -154,12 +154,6 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
     Instant now = Instant.now();
 
     return now.isAfter(expirationDate);
-  }
-
-  @Override
-  public void updatePassword(User user, String password)
-      throws ServiceException, SecurityServiceException {
-    updatePassword(user, password, user);
   }
 
   @Override

@@ -1,17 +1,15 @@
 package org.iglooproject.jpa.security.service;
 
-import com.google.common.collect.Sets;
 import igloo.security.CoreUserDetails;
 import igloo.security.ICoreUserDetailsService;
 import igloo.security.UserDetails;
 import java.util.Collection;
 import java.util.Set;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
 import org.iglooproject.jpa.security.business.user.model.IGroupedUser;
-import org.iglooproject.jpa.security.business.user.model.IUserGroup;
+import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.iglooproject.jpa.security.business.user.service.ISecurityUserService;
 import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +18,10 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
 
-public class CoreJpaUserDetailsServiceImpl implements ICoreUserDetailsService {
+public abstract class CoreJpaUserDetailsServiceImpl implements ICoreUserDetailsService {
 
   public static final String EMPTY_PASSWORD_HASH = "*NO PASSWORD*";
 
@@ -49,7 +46,7 @@ public class CoreJpaUserDetailsServiceImpl implements ICoreUserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username)
       throws UsernameNotFoundException, DataAccessException {
-    IGroupedUser<?> user = getUserByUsername(username);
+    IUser user = getUserByUsername(username);
 
     if (user == null) {
       throw new UsernameNotFoundException(
@@ -58,6 +55,8 @@ public class CoreJpaUserDetailsServiceImpl implements ICoreUserDetailsService {
 
     Pair<Set<GrantedAuthority>, Set<Permission>> authoritiesAndPermissions =
         getAuthoritiesAndPermissions(user);
+
+    // TODO RFO est-ce qu'on dégage les hiearchies ?
     Collection<? extends GrantedAuthority> expandedGrantedAuthorities =
         roleHierarchy.getReachableGrantedAuthorities(authoritiesAndPermissions.getLeft());
     addCustomPermissionsFromAuthorities(
@@ -108,26 +107,15 @@ public class CoreJpaUserDetailsServiceImpl implements ICoreUserDetailsService {
     // Does nothing by default
   }
 
-  protected Pair<Set<GrantedAuthority>, Set<Permission>> getAuthoritiesAndPermissions(
-      IGroupedUser<?> user) {
-    Set<GrantedAuthority> grantedAuthorities = Sets.newHashSet();
-    Set<Permission> permissions = Sets.newHashSet();
-
-    addAuthorities(grantedAuthorities, user.getAuthorities());
-
-    for (IUserGroup userGroup : user.getGroups()) {
-      addAuthorities(grantedAuthorities, userGroup.getAuthorities());
-    }
-
-    return new ImmutablePair<>(grantedAuthorities, permissions);
-  }
-
-  protected void addAuthorities(
-      Set<GrantedAuthority> grantedAuthorities, Set<Authority> authorities) {
-    for (Authority authority : authorities) {
-      grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
-    }
-  }
+  /**
+   * Override this in order to define how to get User Authority Spring Security and User Permission
+   * Spring ACL for logged-in user
+   *
+   * @param user connected user
+   * @return pair with set of user authority and user permissions
+   */
+  protected abstract Pair<Set<GrantedAuthority>, Set<Permission>> getAuthoritiesAndPermissions(
+      IUser user);
 
   protected void addPermissions(Set<Permission> permissions, Collection<String> permissionNames) {
     for (String permissionName : permissionNames) {

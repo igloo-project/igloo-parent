@@ -1,10 +1,6 @@
 package basicapp.front.security.password.component;
 
-import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
-import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
-import basicapp.back.business.user.service.IUserService;
-import basicapp.back.security.service.ISecurityManagementService;
+import basicapp.back.business.user.service.controller.IUserControllerService;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.model.Detachables;
 import org.apache.wicket.RestartResponseException;
@@ -31,9 +27,7 @@ public class SecurityPasswordRecoveryRequestResetContentPanel extends Panel {
   private static final Logger LOGGER =
       LoggerFactory.getLogger(SecurityPasswordRecoveryRequestResetContentPanel.class);
 
-  @SpringBean private IUserService userService;
-
-  @SpringBean private ISecurityManagementService securityManagementService;
+  @SpringBean private IUserControllerService userControllerService;
 
   private final IModel<String> emailModel = Model.of();
 
@@ -58,16 +52,7 @@ public class SecurityPasswordRecoveryRequestResetContentPanel extends Panel {
           @Override
           protected void onSubmit(AjaxRequestTarget target) {
             try {
-              User user = userService.getByEmailCaseInsensitive(emailModel.getObject());
-
-              if (user != null && user.isEnabled() && user.isNotificationEnabled()) {
-                securityManagementService.initiatePasswordRecoveryRequest(
-                    user,
-                    user.hasPasswordHash()
-                        ? UserPasswordRecoveryRequestType.RESET
-                        : UserPasswordRecoveryRequestType.CREATION,
-                    UserPasswordRecoveryRequestInitiator.USER);
-              }
+              userControllerService.initPasswordRecoveryRequest(emailModel.getObject());
 
               Session.get()
                   .success(getString("security.password.recovery.request.reset.validate.success"));

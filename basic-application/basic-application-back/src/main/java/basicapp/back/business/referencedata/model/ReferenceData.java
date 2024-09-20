@@ -40,6 +40,7 @@ public class ReferenceData<E extends ReferenceData<?>>
   public LocalizedText getLabel() {
     if (label == null) {
       label = new LocalizedText();
+      label = new LocalizedText();
     }
     return label;
   }

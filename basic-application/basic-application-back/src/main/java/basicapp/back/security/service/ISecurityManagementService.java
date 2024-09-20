@@ -33,8 +33,6 @@ public interface ISecurityManagementService extends ITransactionalAspectAwareSer
 
   boolean isPasswordRecoveryRequestExpired(User user);
 
-  void updatePassword(User user, String password) throws ServiceException, SecurityServiceException;
-
   void updatePassword(User user, String password, User author)
       throws ServiceException, SecurityServiceException;
 

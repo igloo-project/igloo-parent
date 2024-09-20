@@ -1,13 +1,16 @@
 package basicapp.front.user.template;
 
+import basicapp.back.security.model.BasicApplicationPermissionConstants;
 import basicapp.front.common.template.MainTemplate;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
+import basicapp.front.user.page.BasicUserListPage;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
+import org.iglooproject.wicket.more.security.authorization.AuthorizeInstantiationIfPermission;
 
-@AuthorizeInstantiation(CoreAuthorityConstants.ROLE_ADMIN)
+@AuthorizeInstantiationIfPermission(
+    permissions = BasicApplicationPermissionConstants.GLOBAL_USER_READ)
 public abstract class UserTemplate extends MainTemplate {
 
   private static final long serialVersionUID = 1L;
@@ -16,5 +19,10 @@ public abstract class UserTemplate extends MainTemplate {
     super(parameters);
 
     addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration")));
+  }
+
+  @Override
+  protected Class<? extends WebPage> getFirstMenuPage() {
+    return BasicUserListPage.class;
   }
 }

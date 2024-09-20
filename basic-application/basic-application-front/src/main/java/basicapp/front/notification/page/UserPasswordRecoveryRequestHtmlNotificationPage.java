@@ -16,14 +16,14 @@ import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 
-public class UserPasswordRecoveryRequestHtmlNotificationPage<T extends User>
-    extends AbstractHtmlNotificationPage<T> {
+public class UserPasswordRecoveryRequestHtmlNotificationPage
+    extends AbstractHtmlNotificationPage<User> {
 
   private static final long serialVersionUID = 1L;
 
   public UserPasswordRecoveryRequestHtmlNotificationPage(
       ResourceKeyGenerator resourceKeyGenerator,
-      IModel<T> objectModel,
+      IModel<User> objectModel,
       IModel<User> authorModel,
       IModel<Instant> instantModel,
       IPageLinkGenerator linkGenerator,
@@ -41,7 +41,7 @@ public class UserPasswordRecoveryRequestHtmlNotificationPage<T extends User>
   public UserPasswordRecoveryRequestHtmlNotificationPage(
       ResourceKeyGenerator resourceKeyGenerator,
       ResourceKeyGenerator defaultResourceKeyGenerator,
-      IModel<T> objectModel,
+      IModel<User> objectModel,
       IModel<User> authorModel,
       IModel<Instant> instantModel,
       IPageLinkGenerator linkGenerator,

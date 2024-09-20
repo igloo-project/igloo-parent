@@ -1,7 +1,6 @@
 package basicapp.front.console.notification.demo.page;
 
 import basicapp.back.business.notification.service.INotificationService;
-import basicapp.back.business.user.model.BasicUser;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
@@ -94,7 +93,7 @@ public class ConsoleNotificationDemoListPage extends ConsoleNotificationDemoTemp
 
           @Override
           public INotificationContentDescriptor getDescriptor() {
-            User user = new BasicUser();
+            User user = new User();
             user.setId(1L);
             user.setUsername("dwight.schrute");
             user.setLastName("Schrute");

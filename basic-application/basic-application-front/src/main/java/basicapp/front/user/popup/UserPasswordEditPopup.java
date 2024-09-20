@@ -2,14 +2,11 @@ package basicapp.front.user.popup;
 
 import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 
-import basicapp.back.business.user.model.TechnicalUser;
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.service.IUserService;
-import basicapp.back.business.user.typedescriptor.UserTypeDescriptor;
-import basicapp.back.security.service.IBasicApplicationAuthenticationService;
-import basicapp.back.security.service.ISecurityManagementService;
+import basicapp.back.business.user.predicate.UserPredicates;
+import basicapp.back.security.service.controller.ISecurityManagementControllerService;
+import basicapp.back.util.binding.Bindings;
 import basicapp.front.BasicApplicationSession;
-import basicapp.front.common.model.UserTypeDescriptorModel;
 import basicapp.front.common.validator.UserPasswordValidator;
 import igloo.bootstrap.modal.AbstractAjaxModalPopupPanel;
 import igloo.igloojs.showpassword.ShowPasswordBehavior;
@@ -18,7 +15,9 @@ import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.markup.html.panel.DelegatedMarkupPanel;
+import igloo.wicket.model.BindingModel;
 import igloo.wicket.model.Detachables;
+import java.util.Objects;
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -37,19 +36,13 @@ import org.iglooproject.wicket.more.model.ApplicationPropertyModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopupPanel<U> {
+public class UserPasswordEditPopup extends AbstractAjaxModalPopupPanel<User> {
 
   private static final long serialVersionUID = -4580284817084080271L;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UserPasswordEditPopup.class);
 
-  @SpringBean private IUserService userService;
-
-  @SpringBean private IBasicApplicationAuthenticationService authenticationService;
-
-  @SpringBean private ISecurityManagementService securityManagementService;
-
-  private final IModel<? extends UserTypeDescriptor<? extends User>> userTypeDescriptorModel;
+  @SpringBean private ISecurityManagementControllerService securityManagementControllerService;
 
   private ModelValidatingForm<?> form;
 
@@ -58,14 +51,12 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
 
   private final Condition isOldPasswordRequired;
 
-  public UserPasswordEditPopup(String id, IModel<U> userModel) {
+  public UserPasswordEditPopup(String id, IModel<User> userModel) {
     super(id, userModel);
-
-    this.userTypeDescriptorModel = UserTypeDescriptorModel.fromUser(getModel());
 
     this.isOldPasswordRequired =
         Condition.or(
-                Condition.isEqual(userModel.map(User::getClass), Model.of(TechnicalUser.class)),
+                Condition.predicate(userModel, UserPredicates.technical()),
                 Condition.role(CoreAuthorityConstants.ROLE_ADMIN))
             .negate();
   }
@@ -97,17 +88,11 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
         new BlankLink("showNewPassword").add(new ShowPasswordBehavior(newPassword)),
         new CoreLabel(
             "passwordHelp",
-            new StringResourceModel(
-                    "security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
-                .setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
-                .setDefaultValue(
-                    new StringResourceModel("user.common.form.password.help")
-                        .setParameters(
-                            ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN)))));
+            new StringResourceModel("user.common.form.password.help")
+                .setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))));
 
     form.add(
-        new UserPasswordValidator(
-                userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), newPassword)
+        new UserPasswordValidator(BindingModel.of(getModel(), Bindings.user().type()), newPassword)
             .userModel(getModel()));
 
     return body;
@@ -124,16 +109,20 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
           @Override
           protected void onSubmit(AjaxRequestTarget target) {
             try {
-              IModel<U> userModel = UserPasswordEditPopup.this.getModel();
-              U user = userModel.getObject();
+              IModel<User> userModel = UserPasswordEditPopup.this.getModel();
+              User user = userModel.getObject();
 
               String oldPassword = oldPasswordModel.getObject();
               String newPassword = newPasswordModel.getObject();
 
               if (!isOldPasswordRequired.applies()
-                  || securityManagementService.checkPassword(oldPassword, user)) {
-                securityManagementService.updatePassword(
-                    user, newPassword, BasicApplicationSession.get().getUser());
+                  || securityManagementControllerService.checkPassword(oldPassword, user)) {
+                User author = BasicApplicationSession.get().getUser();
+                if (Objects.equals(user, author)) {
+                  securityManagementControllerService.updatePassword(user, newPassword);
+                } else {
+                  securityManagementControllerService.updatePassword(user, newPassword, author);
+                }
 
                 Session.get().success(getString("common.success"));
                 closePopup(target);
@@ -164,7 +153,6 @@ public class UserPasswordEditPopup<U extends User> extends AbstractAjaxModalPopu
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(
-        userTypeDescriptorModel, oldPasswordModel, newPasswordModel, isOldPasswordRequired);
+    Detachables.detach(oldPasswordModel, newPasswordModel, isOldPasswordRequired);
   }
 }

@@ -1,7 +1,6 @@
 package org.iglooproject.jpa.security.autoconfigure;
 
 import com.google.common.collect.Lists;
-import igloo.security.ICoreUserDetailsService;
 import java.util.List;
 import org.iglooproject.commons.util.security.PermissionObject;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
@@ -11,7 +10,6 @@ import org.iglooproject.jpa.security.hierarchy.PermissionHierarchyImpl;
 import org.iglooproject.jpa.security.model.NamedPermission;
 import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
 import org.iglooproject.jpa.security.service.CoreAuthenticationServiceImpl;
-import org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImpl;
 import org.iglooproject.jpa.security.service.CoreSecurityServiceImpl;
 import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
@@ -76,14 +74,23 @@ public class SecurityAutoConfiguration {
     return AuthenticationUsernameComparison.CASE_SENSITIVE;
   }
 
-  @Bean
-  @ConditionalOnMissingBean
-  public ICoreUserDetailsService userDetailsService(
-      AuthenticationUsernameComparison authenticationUsernameComparison) {
-    CoreJpaUserDetailsServiceImpl userDetailsService = new CoreJpaUserDetailsServiceImpl();
-    userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison);
-    return userDetailsService;
-  }
+  // TODO RFO à supprimer ? de toute façon à déclarer dans les projet
+  //
+  //  @Bean
+  //  @ConditionalOnMissingBean
+  //  public ICoreUserDetailsService userDetailsService(
+  //      AuthenticationUsernameComparison authenticationUsernameComparison) {
+  //    CoreJpaUserDetailsServiceImpl userDetailsService =
+  //        new CoreJpaUserDetailsServiceImpl() {
+  //          @Override
+  //          protected Pair<Set<GrantedAuthority>, Set<Permission>> getAuthoritiesAndPermissions(
+  //              IUser user) {
+  //            return null;
+  //          }
+  //        };
+  //    userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison);
+  //    return userDetailsService;
+  //  }
 
   @Bean
   public AuthenticationProvider daoAuthenticationProvider(

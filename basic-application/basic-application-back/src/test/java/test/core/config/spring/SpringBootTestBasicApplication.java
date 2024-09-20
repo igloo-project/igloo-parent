@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 import org.iglooproject.config.bootstrap.spring.ExtendedApplicationContextInitializer;
 import org.iglooproject.test.jpa.junit.EntityManagerExecutionListener;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
@@ -20,7 +21,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 @TestExecutionListeners(
     listeners = {
       DependencyInjectionTestExecutionListener.class,
-      EntityManagerExecutionListener.class
+      EntityManagerExecutionListener.class,
+      WithSecurityContextTestExecutionListener.class
     })
 @TestPropertySource(properties = {"igloo.profile=test"})
 public @interface SpringBootTestBasicApplication {}

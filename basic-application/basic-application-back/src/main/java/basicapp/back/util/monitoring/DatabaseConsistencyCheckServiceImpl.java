@@ -1,6 +1,6 @@
 package basicapp.back.util.monitoring;
 
-import basicapp.back.business.user.service.IUserService;
+import basicapp.back.business.user.service.business.IUserService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.jpa.util.IDatabaseConsistencyCheckService;

@@ -3,7 +3,7 @@ package basicapp.front.announcement.popup;
 import basicapp.back.business.announcement.model.Announcement;
 import basicapp.back.business.announcement.model.atomic.AnnouncementType;
 import basicapp.back.business.announcement.predicate.AnnouncementPredicates;
-import basicapp.back.business.announcement.service.IAnnouncementService;
+import basicapp.back.business.announcement.service.controller.IAnnouncementControllerService;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.announcement.model.AnnouncementBindableModel;
 import basicapp.front.announcement.page.AnnouncementListPage;
@@ -47,7 +47,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AnnouncementPopup.class);
 
-  @SpringBean private IAnnouncementService announcementService;
+  @SpringBean private IAnnouncementControllerService announcementControllerService;
 
   private final AnnouncementBindableModel bindableModel;
 
@@ -101,7 +101,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
                               Map<String, Component> map, AjaxRequestTarget target) {
                             bindableModel.writeAll();
                             Announcement announcement = getModelObject();
-                            announcementService.cleanWithoutSaving(announcement);
+                            announcementControllerService.cleanWithoutSaving(announcement);
                             bindableModel.readAll();
                             target.add(formContainer);
                           }
@@ -221,7 +221,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
             try {
               Announcement announcement = AnnouncementPopup.this.getModelObject();
 
-              announcementService.saveAnnouncement(announcement);
+              announcementControllerService.saveAnnouncement(announcement);
 
               Session.get().success(getString("common.success"));
               throw AnnouncementListPage.linkDescriptor().newRestartResponseException();

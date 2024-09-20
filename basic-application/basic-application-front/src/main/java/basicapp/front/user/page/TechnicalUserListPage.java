@@ -3,18 +3,20 @@ package basicapp.front.user.page;
 import static basicapp.front.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
 import static basicapp.front.common.util.CssClassConstants.CELL_DISPLAY_2XL;
 import static basicapp.front.property.BasicApplicationWebappPropertyIds.PORTFOLIO_ITEMS_PER_PAGE;
+import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants.ROLE_ADMIN;
 
-import basicapp.back.business.user.model.TechnicalUser;
+import basicapp.back.business.user.model.User;
+import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.business.user.predicate.UserPredicates;
-import basicapp.back.business.user.search.TechnicalUserSort;
-import basicapp.back.business.user.service.IUserService;
+import basicapp.back.business.user.search.UserSort;
+import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.user.export.UserExcelTableExport;
-import basicapp.front.user.model.TechnicalUserDataProvider;
+import basicapp.front.user.model.UserDataProvider;
 import basicapp.front.user.panel.TechnicalUserListSearchPanel;
-import basicapp.front.user.popup.TechnicalUserPopup;
+import basicapp.front.user.popup.TechnicalUserSavePopup;
 import basicapp.front.user.renderer.UserEnabledRenderer;
-import basicapp.front.user.template.UserListTemplate;
+import basicapp.front.user.template.UserTemplate;
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
@@ -22,8 +24,10 @@ import igloo.wicket.markup.html.link.EmailLink;
 import igloo.wicket.model.BindingModel;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -46,17 +50,18 @@ import org.iglooproject.wicket.more.markup.repeater.table.builder.DataTableBuild
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 import org.wicketstuff.wiquery.core.events.MouseEvent;
 
-public class TechnicalUserListPage extends UserListTemplate<TechnicalUser> {
+@AuthorizeInstantiation(ROLE_ADMIN)
+public class TechnicalUserListPage extends UserTemplate {
 
-  private static final long serialVersionUID = -4333618200257840036L;
+  private static final long serialVersionUID = 1L;
 
-  public static final IPageLinkDescriptor linkDescriptor() {
+  public static IPageLinkDescriptor linkDescriptor() {
     return LinkDescriptorBuilder.start().page(TechnicalUserListPage.class);
   }
 
-  @SpringBean private IUserService userService;
-
   @SpringBean private IPropertyService propertyService;
+
+  @SpringBean private IUserControllerService userControllerService;
 
   public TechnicalUserListPage(PageParameters parameters) {
     super(parameters);
@@ -64,9 +69,10 @@ public class TechnicalUserListPage extends UserListTemplate<TechnicalUser> {
     addBreadCrumbElement(
         new BreadCrumbElement(new ResourceModel("navigation.administration.technicalUser")));
 
-    TechnicalUserDataProvider dataProvider = new TechnicalUserDataProvider();
+    UserDataProvider dataProvider = new UserDataProvider();
+    dataProvider.getDataModel().getObject().setType(UserType.TECHNICAL);
 
-    TechnicalUserPopup addPopup = new TechnicalUserPopup("addPopup");
+    TechnicalUserSavePopup addPopup = new TechnicalUserSavePopup("addPopup");
     add(addPopup);
 
     ExcelExportWorkInProgressModalPopupPanel loadingPopup =
@@ -96,11 +102,11 @@ public class TechnicalUserListPage extends UserListTemplate<TechnicalUser> {
 
                           @Override
                           protected void onShow(AjaxRequestTarget target) {
-                            addPopup.setUpAdd(new TechnicalUser());
+                            addPopup.setUpAdd(new User());
                           }
                         })));
 
-    DecoratedCoreDataTablePanel<TechnicalUser, ?> results =
+    DecoratedCoreDataTablePanel<User, ?> results =
         DataTableBuilder.start(dataProvider, dataProvider.getSortModel())
             .addBootstrapBadgeColumn(Model.of(), Bindings.user(), UserEnabledRenderer.get())
             .badgePill()
@@ -109,24 +115,21 @@ public class TechnicalUserListPage extends UserListTemplate<TechnicalUser> {
             .withLink(TechnicalUserDetailPage.MAPPER.setParameter2(new PageModel<>(this)))
             .withClass("cell-w-250")
             .addLabelColumn(new ResourceModel("business.user.lastName"), Bindings.user().lastName())
-            .withSort(
-                TechnicalUserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+            .withSort(UserSort.LAST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
             .withClass("cell-w-250")
             .addLabelColumn(
                 new ResourceModel("business.user.firstName"), Bindings.user().firstName())
-            .withSort(
-                TechnicalUserSort.FIRST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
+            .withSort(UserSort.FIRST_NAME, SortIconStyle.ALPHABET, CycleMode.DEFAULT_REVERSE)
             .withClass("cell-w-250")
             .addColumn(
-                new AbstractCoreColumn<TechnicalUser, TechnicalUserSort>(
-                    new ResourceModel("business.user.email")) {
+                new AbstractCoreColumn<>(new ResourceModel("business.user.email")) {
                   private static final long serialVersionUID = 1L;
 
                   @Override
                   public void populateItem(
-                      Item<ICellPopulator<TechnicalUser>> cellItem,
+                      Item<ICellPopulator<User>> cellItem,
                       String componentId,
-                      IModel<TechnicalUser> rowModel) {
+                      IModel<User> rowModel) {
                     IModel<String> emailModel = BindingModel.of(rowModel, Bindings.user().email());
                     cellItem.add(
                         new EmailLink(componentId, emailModel) {
@@ -155,5 +158,10 @@ public class TechnicalUserListPage extends UserListTemplate<TechnicalUser> {
             .build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 
     add(new TechnicalUserListSearchPanel("search", results, dataProvider.getDataModel()), results);
+  }
+
+  @Override
+  protected Class<? extends WebPage> getSecondMenuPage() {
+    return TechnicalUserListPage.class;
   }
 }

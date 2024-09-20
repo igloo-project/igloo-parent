@@ -1,5 +1,6 @@
 package test.web;
 
+import basicapp.front.profile.page.ProfilePage;
 import basicapp.front.user.page.TechnicalUserListPage;
 import org.apache.wicket.Component;
 import org.apache.wicket.util.tester.FormTester;
@@ -15,7 +16,7 @@ class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
 
   /** Test the UserPasswordValidator when username = password which shouldn't be allowed */
   @Test
-  void userPasswordValidator() throws ServiceException, SecurityServiceException {
+  void technicalUserPasswordValidator() throws ServiceException, SecurityServiceException {
     authenticateUser(administrator);
 
     tester.startPage(TechnicalUserListPage.class);
@@ -43,5 +44,33 @@ class ValidatorTestCase extends AbstractBasicApplicationWebappTestCase {
     form.submit(submitButton);
 
     tester.assertErrorMessages("Le mot de passe n'est pas valide.");
+  }
+
+  @Test
+  void basicUserPasswordValidator() throws ServiceException, SecurityServiceException {
+    authenticateUser(basicUser);
+
+    tester.startPage(ProfilePage.class);
+    tester.assertRenderedPage(ProfilePage.class);
+
+    // Open popup
+    tester.executeAjaxEvent("description:passwordEdit", MouseEvent.CLICK.getEventLabel());
+
+    String addPopupPath = tester.modalPath("description:passwordEditPopup");
+    String addPopupFormPath = tester.modalFormPath("description:passwordEditPopup");
+
+    FormTester form = tester.newFormTester(addPopupFormPath);
+
+    // Necessary because the submission button is outside the form
+    Component submitButton = tester.getComponentFromLastRenderedPage(addPopupPath + ":footer:save");
+
+    form.setValue(form.getForm().get("oldPasswordContainer:oldPassword"), USER_PASSWORD);
+    form.setValue(form.getForm().get("newPassword"), "1234");
+
+    form.submit(submitButton);
+
+    tester.assertErrorMessages(
+        "Le mot de passe doit contenir au minimum 10 caractères.",
+        "Le mot de passe n'est pas valide.");
   }
 }

@@ -8,26 +8,16 @@ import basicapp.back.business.referencedata.model.CityBinding;
 import basicapp.back.business.referencedata.model.IReferenceDataBindingInterfaceBinding;
 import basicapp.back.business.referencedata.search.CitySearchQueryDataBinding;
 import basicapp.back.business.referencedata.search.IBasicReferenceDataSearchQueryDataBindingInterfaceBinding;
+import basicapp.back.business.role.model.RoleBinding;
 import basicapp.back.business.user.model.UserBinding;
-import basicapp.back.business.user.model.UserGroupBinding;
-import basicapp.back.business.user.search.BasicUserSearchQueryDataBinding;
-import basicapp.back.business.user.search.TechnicalUserSearchQueryDataBinding;
-import basicapp.back.business.user.search.UserGroupSearchQueryDataBinding;
 import basicapp.back.business.user.search.UserSearchQueryDataBinding;
 
 public final class Bindings {
 
   private static final UserBinding USER = new UserBinding();
+  private static final RoleBinding ROLE = new RoleBinding();
   private static final UserSearchQueryDataBinding USER_SEARCH_QUERY_DATA =
       new UserSearchQueryDataBinding();
-  private static final BasicUserSearchQueryDataBinding BASIC_USER_SEARCH_QUERY_DATA =
-      new BasicUserSearchQueryDataBinding();
-  private static final TechnicalUserSearchQueryDataBinding TECHNICAL_USER_SEARCH_QUERY_DATA =
-      new TechnicalUserSearchQueryDataBinding();
-
-  private static final UserGroupBinding USER_GROUP = new UserGroupBinding();
-  private static final UserGroupSearchQueryDataBinding USER_GROUP_SEARCH_QUERY_DATA =
-      new UserGroupSearchQueryDataBinding();
 
   private static final HistoryLogBinding HISTORY_LOG = new HistoryLogBinding();
   private static final HistoryLogSearchQueryDataBinding HISTORY_LOG_SEARCH_QUERY_DATA =
@@ -49,24 +39,12 @@ public final class Bindings {
     return USER;
   }
 
+  public static RoleBinding role() {
+    return ROLE;
+  }
+
   public static UserSearchQueryDataBinding userSearchQueryData() {
     return USER_SEARCH_QUERY_DATA;
-  }
-
-  public static BasicUserSearchQueryDataBinding basicUserDtoSearch() {
-    return BASIC_USER_SEARCH_QUERY_DATA;
-  }
-
-  public static TechnicalUserSearchQueryDataBinding technicalUserDtoSearch() {
-    return TECHNICAL_USER_SEARCH_QUERY_DATA;
-  }
-
-  public static UserGroupBinding userGroup() {
-    return USER_GROUP;
-  }
-
-  public static UserGroupSearchQueryDataBinding userGroupSearchQueryData() {
-    return USER_GROUP_SEARCH_QUERY_DATA;
   }
 
   public static HistoryLogBinding historyLog() {

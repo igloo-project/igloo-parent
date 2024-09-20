@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	<wicket:panel>
+		<div wicket:id="editPopup"></div>
+		
+		<div class="card card-main">
+			<div class="card-header">
+				<div class="card-header-title">
+					<wicket:message key="business.user.roles" />
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row g-3">
+					<div class="col-12">
+						<div class="row row-description-group description-group">
+							<div class="col-12">
+								<div class="description-value">
+									<ul wicket:enclosure-component="roles" class="list-unstyled m-0">
+										<li wicket:id="roles">
+											<div class="row g-1 align-items-baseline flex-text-break">
+												<div class="col-auto">
+													<span wicket:id="roleCheck" />
+												</div>
+												<div class="col">
+													<span wicket:id="roleName" />
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div wicket:id="actionsContainer" class="card-action card-action-bottom">
+					<div class="row row-action justify-content-end">
+						<div wicket:enclosure-component="edit" class="col-auto">
+							<button wicket:id="edit" class="btn btn-primary" type="button">
+								<span class="fa fa-fw fa-pencil-alt" />
+								<wicket:message key="common.action.edit" />
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</wicket:panel>
+</html>

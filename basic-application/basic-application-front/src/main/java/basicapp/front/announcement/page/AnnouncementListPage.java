@@ -7,7 +7,7 @@ import static basicapp.front.property.BasicApplicationWebappPropertyIds.PORTFOLI
 import basicapp.back.business.announcement.model.Announcement;
 import basicapp.back.business.announcement.predicate.AnnouncementPredicates;
 import basicapp.back.business.announcement.search.AnnouncementSort;
-import basicapp.back.business.announcement.service.IAnnouncementService;
+import basicapp.back.business.announcement.service.controller.IAnnouncementControllerService;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.announcement.model.AnnouncementDataProvider;
 import basicapp.front.announcement.popup.AnnouncementPopup;
@@ -52,11 +52,11 @@ public class AnnouncementListPage extends AnnouncementTemplate {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AnnouncementListPage.class);
 
-  @SpringBean private IAnnouncementService announcementService;
+  @SpringBean private IAnnouncementControllerService announcementControllerService;
 
   @SpringBean private IPropertyService propertyService;
 
-  public static final IPageLinkDescriptor linkDescriptor() {
+  public static IPageLinkDescriptor linkDescriptor() {
     return LinkDescriptorBuilder.start().page(AnnouncementListPage.class);
   }
 
@@ -146,13 +146,13 @@ public class AnnouncementListPage extends AnnouncementTemplate {
             .content(new ResourceModel("common.action.confirm.content"))
             .confirm()
             .onClick(
-                new IOneParameterAjaxAction<IModel<Announcement>>() {
+                new IOneParameterAjaxAction<>() {
                   private static final long serialVersionUID = 1L;
 
                   @Override
                   public void execute(AjaxRequestTarget target, IModel<Announcement> parameter) {
                     try {
-                      announcementService.delete(parameter.getObject());
+                      announcementControllerService.deleteAnnouncement(parameter.getObject());
                       Session.get().success(getString("common.success"));
                       throw new RestartResponseException(getPage());
                     } catch (RestartResponseException e) {

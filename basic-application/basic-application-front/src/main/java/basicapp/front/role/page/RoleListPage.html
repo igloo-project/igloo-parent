@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div class="content-header-section">
+		<div class="content-header-container">
+			<div class="content-header">
+				<h1 class="content-header-title"><wicket:message key="role.list.title" /></h1>
+				<div wicket:id="headerElementsSection" class="content-header-elements-section">
+					<div class="row g-2 align-items-center">
+						<div wicket:id="actionsContainer" class="col-auto ms-auto">
+							<div class="row g-2 align-items-center">
+								<div wicket:enclosure-component="add" class="col-auto">
+									<a wicket:id="add" class="btn btn-primary btn-table-row-action">
+										<span class="fa fa-fw fa-plus"></span>
+										<wicket:message key="common.action.add" />
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content-body-section">
+		<div class="content-body-container">
+			<div class="content-body">
+				<div class="row g-2">
+					<div class="col-6">
+						<div wicket:id="results" class="card card-main" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</wicket:extend>
+</html>

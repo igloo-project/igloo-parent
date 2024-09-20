@@ -1,11 +1,11 @@
 package basicapp.front.user.panel;
 
-import basicapp.back.business.user.model.BasicUser;
-import basicapp.back.business.user.search.BasicUserSearchQueryData;
+import basicapp.back.business.user.model.User;
+import basicapp.back.business.user.model.atomic.UserType;
+import basicapp.back.business.user.search.UserSearchQueryData;
 import basicapp.back.util.binding.Bindings;
-import basicapp.front.user.form.BasicUserAjaxDropDownSingleChoice;
+import basicapp.front.user.form.UserAjaxDropDownSingleChoice;
 import basicapp.front.user.page.BasicUserDetailPage;
-import basicapp.front.usergroup.form.UserGroupDropDownSingleChoice;
 import igloo.wicket.markup.html.form.PageableSearchForm;
 import igloo.wicket.model.BindingModel;
 import igloo.wicket.model.Detachables;
@@ -28,33 +28,28 @@ import org.iglooproject.wicket.more.model.GenericEntityModel;
 
 public class BasicUserListSearchPanel extends Panel {
 
-  private static final long serialVersionUID = -4624527265796845060L;
+  private static final long serialVersionUID = 1L;
 
-  private final IModel<BasicUser> quickAccessModel = new GenericEntityModel<>();
+  private final IModel<User> quickAccessModel = new GenericEntityModel<>();
 
   public BasicUserListSearchPanel(
-      String id, IPageable pageable, IModel<BasicUserSearchQueryData> dataModel) {
+      String id, IPageable pageable, IModel<UserSearchQueryData> dataModel) {
     super(id);
 
     add(
         new PageableSearchForm<>("form", pageable)
             .add(
-                new TextField<String>(
-                        "name", BindingModel.of(dataModel, Bindings.basicUserDtoSearch().term()))
+                new TextField<>(
+                        "name", BindingModel.of(dataModel, Bindings.userSearchQueryData().term()))
                     .setLabel(new ResourceModel("business.user.name"))
-                    .add(new LabelPlaceholderBehavior()),
-                new UserGroupDropDownSingleChoice(
-                        "userGroup",
-                        BindingModel.of(dataModel, Bindings.basicUserDtoSearch().group()))
-                    .setLabel(new ResourceModel("business.user.group"))
                     .add(new LabelPlaceholderBehavior()),
                 new EnumDropDownSingleChoice<>(
                         "enabledFilter",
-                        BindingModel.of(dataModel, Bindings.basicUserDtoSearch().enabledFilter()),
+                        BindingModel.of(dataModel, Bindings.userSearchQueryData().active()),
                         EnabledFilter.class)
                     .setLabel(new ResourceModel("business.user.enabled.state"))
                     .add(new LabelPlaceholderBehavior()),
-                new BasicUserAjaxDropDownSingleChoice("quickAccess", quickAccessModel)
+                new UserAjaxDropDownSingleChoice("quickAccess", quickAccessModel, UserType.BASIC)
                     .setLabel(new ResourceModel("common.quickAccess"))
                     .add(new LabelPlaceholderBehavior())
                     .add(

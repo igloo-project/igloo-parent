@@ -3,8 +3,9 @@ package basicapp.front.common.validator;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import basicapp.back.business.user.model.User;
+import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.property.BasicApplicationCorePropertyIds;
-import basicapp.back.security.service.ISecurityManagementService;
+import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -42,25 +43,23 @@ public class UserPasswordValidator implements IFormModelValidator {
 
   private static final String COMMON_ERROR = "COMMON_ERROR";
 
-  private final IModel<? extends Class<? extends User>> userClassModel;
+  private final IModel<UserType> userTypeModel;
 
   private IModel<? extends User> userModel;
 
   private final FormComponent<String> passwordFormComponent;
 
-  @SpringBean private ISecurityManagementService securityManagementService;
+  @SpringBean private ISecurityManagementControllerService securityManagementController;
 
   @SpringBean private PasswordEncoder passwordEncoder;
 
   @SpringBean private IPropertyService propertyService;
 
   public UserPasswordValidator(
-      IModel<? extends Class<? extends User>> userClassModel,
-      FormComponent<String> passwordFormComponent) {
+      IModel<UserType> userTypeModel, FormComponent<String> passwordFormComponent) {
     super();
     Injector.get().inject(this);
-
-    this.userClassModel = checkNotNull(userClassModel);
+    this.userTypeModel = checkNotNull(userTypeModel);
     this.passwordFormComponent = checkNotNull(passwordFormComponent);
   }
 
@@ -80,7 +79,6 @@ public class UserPasswordValidator implements IFormModelValidator {
       return;
     }
 
-    Class<? extends User> userClass = userClassModel.getObject();
     User user = userModel != null ? userModel.getObject() : null;
     String username = Bindings.user().username().getSafelyWithRoot(user);
 
@@ -88,7 +86,9 @@ public class UserPasswordValidator implements IFormModelValidator {
 
     List<Rule> passwordRules =
         Lists.newArrayList(
-            securityManagementService.getSecurityOptions(userClass).getPasswordRules());
+            securityManagementController
+                .getSecurityOptions(userTypeModel.getObject())
+                .getPasswordRules());
 
     if (StringUtils.hasText(username)) {
       passwordData.setUsername(username);
@@ -114,7 +114,7 @@ public class UserPasswordValidator implements IFormModelValidator {
     }
 
     if (user != null
-        && securityManagementService.getSecurityOptions(user).isPasswordHistoryEnabled()
+        && securityManagementController.getSecurityOptions(user).isPasswordHistoryEnabled()
         && user.getPasswordInformation().getHistory() != null
         && !user.getPasswordInformation().getHistory().isEmpty()) {
       for (String historyPasswordHash : user.getPasswordInformation().getHistory()) {
@@ -150,6 +150,6 @@ public class UserPasswordValidator implements IFormModelValidator {
 
   @Override
   public void detach() {
-    Detachables.detach(userClassModel, userModel);
+    Detachables.detach(userModel);
   }
 }

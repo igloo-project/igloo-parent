@@ -1,7 +1,7 @@
 package basicapp.front.security.password.page;
 
 import basicapp.back.business.user.model.User;
-import basicapp.back.security.service.ISecurityManagementService;
+import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.front.BasicApplicationApplication;
 import basicapp.front.BasicApplicationSession;
 import basicapp.front.security.password.component.SecurityPasswordResetContentPanel;
@@ -40,7 +40,7 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
 
   private final IModel<User> userModel = new GenericEntityModel<>();
 
-  @SpringBean private ISecurityManagementService securityManagementService;
+  @SpringBean private ISecurityManagementControllerService securityManagementControllerService;
 
   public SecurityPasswordResetPage(PageParameters parameters) {
     super(parameters);
@@ -68,7 +68,8 @@ public class SecurityPasswordResetPage extends SecurityPasswordTemplate {
           .newRestartResponseException();
     }
 
-    if (securityManagementService.isPasswordRecoveryRequestExpired(userModel.getObject())) {
+    if (securityManagementControllerService.isPasswordRecoveryRequestExpired(
+        userModel.getObject())) {
       BasicApplicationSession.get().error(getString("security.password.reset.expired"));
       throw BasicApplicationApplication.get()
           .getHomePageLinkDescriptor()
