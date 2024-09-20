@@ -18,7 +18,7 @@ maven-build:
   environment: staging
   script:
     - "mvn spotless:check"
-    - "mvn -U clean package"
+    - "mvn -U clean package -Ddocker-app=true"
   artifacts:
     when: always
     paths:

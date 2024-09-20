@@ -23,6 +23,47 @@
 		<start-class>basicapp.app.SpringBootMain</start-class>
 	</properties>
 	
+	<profiles>
+		<profile>
+			<id>docker-app</id>
+			<activation>
+				<property>
+					<name>docker-app</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<docker>
+								<publishRegistry>
+									<username>${env.DOCKER_USERNAME}</username>
+									<password>${env.DOCKER_PASSWORD}</password>
+									<url>${env.DOCKER_URL}</url>
+								</publishRegistry>
+							</docker>
+							<image>
+								<name>${env.DOCKER_PREFIX}/${project.artifactId}:latest</name>
+							</image>
+							<publish>true</publish>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>build-image</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.iglooproject.archetype</groupId>
