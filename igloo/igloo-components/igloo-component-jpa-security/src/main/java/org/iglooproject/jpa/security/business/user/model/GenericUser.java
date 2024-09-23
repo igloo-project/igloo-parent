@@ -4,45 +4,31 @@ import static org.iglooproject.jpa.security.service.CoreJpaUserDetailsServiceImp
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.MoreObjects.ToStringHelper;
-import com.google.common.collect.Sets;
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import igloo.hibernateconfig.api.HibernateSearchNormalizer;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.MappedSuperclass;
 import java.time.Instant;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
-import java.util.SortedSet;
 import org.bindgen.Bindable;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
-import org.hibernate.annotations.SortComparator;
 import org.hibernate.search.engine.backend.types.Sortable;
-import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.ValueBridgeRef;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
-import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
-import org.iglooproject.jpa.search.bridge.GenericEntityIdBridge;
-import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.jpa.security.business.user.util.GenericUserGroupComparator;
 
 @Indexed
 @MappedSuperclass
 @Bindable
 @NaturalIdCache
-public abstract class GenericUser<U extends GenericUser<U, G>, G extends GenericUserGroup<G, U>>
-    extends GenericEntity<Long, U> implements IGroupedUser<G> {
+public abstract class GenericUser<U extends GenericUser<U>> extends GenericEntity<Long, U>
+    implements IUser {
 
   private static final long serialVersionUID = 1803671157183603979L;
 
@@ -52,8 +38,6 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
   public static final String USERNAME_SORT = "usernameSort";
 
   public static final String ENABLED = "enabled";
-
-  public static final String GROUPS = "groups";
 
   @Id @GeneratedValue private Long id;
 
@@ -87,17 +71,6 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
   /** preferred locale for user, can be null */
   @JsonIgnore @Column private Locale locale;
 
-  @JsonIgnore
-  @ManyToMany
-  @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-  private Set<Authority> authorities = new LinkedHashSet<>();
-
-  @ManyToMany
-  @SortComparator(GenericUserGroupComparator.class)
-  @GenericField(name = GROUPS, valueBridge = @ValueBridgeRef(type = GenericEntityIdBridge.class))
-  @SuppressWarnings("squid:S1845") // attribute name differs only by case on purpose
-  private SortedSet<G> groups = Sets.newTreeSet(GenericUserGroupComparator.get());
-
   public GenericUser() {}
 
   public GenericUser(String username, String passwordHash) {
@@ -125,42 +98,6 @@ public abstract class GenericUser<U extends GenericUser<U, G>, G extends Generic
   }
 
   public abstract String getFullName();
-
-  @Override
-  public Set<Authority> getAuthorities() {
-    return Collections.unmodifiableSet(authorities);
-  }
-
-  public void setAuthorities(Collection<Authority> authorities) {
-    CollectionUtils.replaceAll(this.authorities, authorities);
-  }
-
-  public void addAuthority(Authority authority) {
-    this.authorities.add(authority);
-  }
-
-  public void removeAuthority(Authority authority) {
-    this.authorities.remove(authority);
-  }
-
-  @Override
-  public SortedSet<G> getGroups() {
-    return Collections.unmodifiableSortedSet(groups);
-  }
-
-  public void setGroups(Collection<G> groups) {
-    CollectionUtils.replaceAll(this.groups, groups);
-  }
-
-  @Override
-  public void addGroup(G group) {
-    this.groups.add(group);
-  }
-
-  @Override
-  public void removeGroup(G group) {
-    this.groups.remove(group);
-  }
 
   @Override
   public String getPasswordHash() {

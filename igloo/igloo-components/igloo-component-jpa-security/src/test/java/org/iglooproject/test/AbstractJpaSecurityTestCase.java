@@ -10,8 +10,6 @@ import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.jpa.security.service.ISecurityService;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
-import org.iglooproject.test.jpa.security.business.person.model.MockUserGroup;
-import org.iglooproject.test.jpa.security.business.person.service.IMockUserGroupService;
 import org.iglooproject.test.jpa.security.business.person.service.IMockUserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,8 +35,6 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
   public static final String ROLE_GROUP_3 = "ROLE_GROUP_3";
 
   @Autowired protected IMockUserService mockUserService;
-
-  @Autowired protected IMockUserGroupService mockUserGroupService;
 
   @Autowired protected IAuthorityService authorityService;
 
@@ -74,7 +70,6 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
   @Override
   protected void cleanAll() throws ServiceException, SecurityServiceException {
     cleanEntities(mockUserService);
-    cleanEntities(mockUserGroupService);
     cleanEntities(authorityService);
   }
 
@@ -92,22 +87,14 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
     user.setLastName(lastName);
     user.setEmail(email);
 
-    user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+    // TODO remonter le type plus haut ?
+    //    user.set
+    //    user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 
     mockUserService.create(user);
     mockUserService.setPasswords(user, DEFAULT_PASSWORD);
 
     return user;
-  }
-
-  protected MockUserGroup createMockUserGroup(String name)
-      throws ServiceException, SecurityServiceException {
-    MockUserGroup userGroup = new MockUserGroup();
-    userGroup.setName(name);
-
-    mockUserGroupService.create(userGroup);
-
-    return userGroup;
   }
 
   protected Authority createAuthority(String name)

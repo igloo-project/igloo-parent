@@ -44,11 +44,11 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 
   private final SecurityOptions securityOptionsDefault;
 
-  private final Map<Class<? extends GenericUser<?, ?>>, SecurityOptions> securityOptionsUsers;
+  private final Map<Class<? extends GenericUser<?>>, SecurityOptions> securityOptionsUsers;
 
   public SecurityManagementServiceImpl(
       SecurityOptions securityOptionsDefault,
-      ImmutableMap<Class<? extends GenericUser<?, ?>>, SecurityOptions> securityOptionsUsers) {
+      ImmutableMap<Class<? extends GenericUser<?>>, SecurityOptions> securityOptionsUsers) {
     this.securityOptionsDefault = securityOptionsDefault;
     this.securityOptionsUsers = ImmutableMap.copyOf(securityOptionsUsers);
   }

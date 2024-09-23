@@ -30,7 +30,9 @@ class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
     assertFalse(authenticationService.isLoggedIn());
 
     MockUser user = createMockUser(System.getProperty("user.name"), "firstName", "lastName");
-    user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+
+    // TODO RFO authorities
+    // user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
     mockUserService.update(user);
 
     /*
@@ -60,7 +62,8 @@ class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
   @Test
   void testAuthenticationRoles() throws ServiceException, SecurityServiceException {
     MockUser user = createMockUser(System.getProperty("user.name"), "firstName", "lastName");
-    user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+    // TODO RFO AUTHORITIES !
+    // user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
     mockUserService.update(user);
 
     authenticateAs(user);
@@ -98,7 +101,8 @@ class TestCoreAuthenticationService extends AbstractJpaSecurityTestCase {
   @Test
   void testSecurityProxy() throws ServiceException, SecurityServiceException {
     MockUser user = createMockUser(System.getProperty("user.name"), "firstName", "lastName");
-    user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+    // TODO RFO AUTHORITIES
+    // user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
     mockUserService.update(user);
     authenticateAs(user);
 

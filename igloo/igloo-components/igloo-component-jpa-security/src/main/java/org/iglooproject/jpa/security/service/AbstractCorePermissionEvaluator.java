@@ -16,7 +16,7 @@ import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 
-public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?>>
+public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T>>
     implements ICorePermissionEvaluator {
 
   @Autowired private PermissionFactory permissionFactory;

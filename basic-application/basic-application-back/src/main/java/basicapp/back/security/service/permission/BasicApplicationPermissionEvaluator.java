@@ -1,7 +1,6 @@
 package basicapp.back.security.service.permission;
 
 import basicapp.back.business.announcement.model.Announcement;
-import basicapp.back.business.referencedata.model.City;
 import basicapp.back.business.referencedata.model.ReferenceData;
 import basicapp.back.business.role.model.Role;
 import basicapp.back.business.user.model.User;
@@ -13,8 +12,6 @@ import org.springframework.security.acls.model.Permission;
 public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionEvaluator<User> {
 
   @Autowired private IUserPermissionEvaluator userPermissionEvaluator;
-
-  @Autowired private ICityPermissionEvaluator cityPermissionEvaluator;
 
   @Autowired private IReferenceDataPermissionEvaluator referenceDataPermissionEvaluator;
 
@@ -34,9 +31,6 @@ public class BasicApplicationPermissionEvaluator extends AbstractCorePermissionE
 
     if (targetDomainObject instanceof User) {
       return userPermissionEvaluator.hasPermission(user, (User) targetDomainObject, permission);
-    }
-    if (targetDomainObject instanceof City) {
-      return cityPermissionEvaluator.hasPermission(user, (City) targetDomainObject, permission);
     }
     if (targetDomainObject instanceof ReferenceData) {
       return referenceDataPermissionEvaluator.hasPermission(

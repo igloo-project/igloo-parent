@@ -3,8 +3,7 @@ package org.iglooproject.jpa.security.business.user.util;
 import org.iglooproject.jpa.business.generic.util.AbstractGenericEntityComparator;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
 
-public class GenericUserComparator
-    extends AbstractGenericEntityComparator<Long, GenericUser<?, ?>> {
+public class GenericUserComparator extends AbstractGenericEntityComparator<Long, GenericUser<?>> {
 
   private static final long serialVersionUID = 5465095061690808293L;
 
@@ -15,7 +14,7 @@ public class GenericUserComparator
   }
 
   @Override
-  protected int compareNotNullObjects(GenericUser<?, ?> left, GenericUser<?, ?> right) {
+  protected int compareNotNullObjects(GenericUser<?> left, GenericUser<?> right) {
     @SuppressWarnings({
       "unchecked",
       "rawtypes"

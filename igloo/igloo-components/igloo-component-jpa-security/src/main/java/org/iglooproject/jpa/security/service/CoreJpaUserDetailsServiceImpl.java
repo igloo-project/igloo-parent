@@ -8,7 +8,6 @@ import java.util.Set;
 import org.apache.commons.lang3.tuple.Pair;
 import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
-import org.iglooproject.jpa.security.business.user.model.IGroupedUser;
 import org.iglooproject.jpa.security.business.user.model.IUser;
 import org.iglooproject.jpa.security.business.user.service.ISecurityUserService;
 import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
@@ -77,7 +76,7 @@ public abstract class CoreJpaUserDetailsServiceImpl implements ICoreUserDetailsS
         expandedReachablePermissions);
   }
 
-  protected IGroupedUser<?> getUserByUsername(String username) {
+  protected IUser getUserByUsername(String username) {
     if (AuthenticationUsernameComparison.CASE_INSENSITIVE.equals(
         authenticationUsernameComparison)) {
       return userService.getByUsernameCaseInsensitive(username);

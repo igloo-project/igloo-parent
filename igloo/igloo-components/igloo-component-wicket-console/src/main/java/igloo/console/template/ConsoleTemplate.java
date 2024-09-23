@@ -165,7 +165,7 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
                   @Override
                   protected String load() {
                     String userFullName = null;
-                    GenericUser<?, ?> user = AbstractCoreSession.get().getUser();
+                    GenericUser<?> user = AbstractCoreSession.get().getUser();
                     if (user != null) {
                       userFullName = user.getFullName();
                     }

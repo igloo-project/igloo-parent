@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.concurrent.Callable;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.config.spring.SpringBootTestJpaSecurity;
@@ -19,7 +18,8 @@ class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
   @Test
   void testRoleHierarchy() throws ServiceException, SecurityServiceException {
     MockUser admin = createMockUser("admin", "firstName", "lastName");
-    admin.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN));
+    // TODO RFO AUTH
+    // admin.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN));
     mockUserService.update(admin);
 
     authenticateAs(admin);
@@ -27,9 +27,10 @@ class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
     assertTrue(securityService.hasAdminRole(admin));
     assertTrue(securityService.hasAuthenticatedRole(admin));
 
+    // TODO AUTH
     MockUser authenticated = createMockUser("authenticated", "firstName", "lastName");
-    authenticated.addAuthority(
-        authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
+    //    authenticated.addAuthority(
+    //        authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
     mockUserService.update(authenticated);
 
     authenticateAs(authenticated);

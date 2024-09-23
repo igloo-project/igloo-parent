@@ -20,9 +20,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Transient;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
 import java.util.SortedSet;
 import org.bindgen.Bindable;
 import org.hibernate.annotations.SortComparator;
@@ -31,7 +29,6 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericFie
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.iglooproject.commons.util.collections.CollectionUtils;
 import org.iglooproject.jpa.search.bridge.GenericEntityIdBridge;
-import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.jpa.security.business.user.model.GenericSimpleUser;
 import org.iglooproject.spring.util.StringUtils;
 
@@ -40,7 +37,7 @@ import org.iglooproject.spring.util.StringUtils;
 @Cacheable
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity(name = "user_")
-public class User extends GenericSimpleUser<User, UserGroup> {
+public class User extends GenericSimpleUser<User> {
 
   private static final long serialVersionUID = 1508647513049577617L;
 
@@ -123,54 +120,5 @@ public class User extends GenericSimpleUser<User, UserGroup> {
     } else {
       return getEmail();
     }
-  }
-
-  // TODO RFO
-  @Deprecated
-  @Override
-  public SortedSet<UserGroup> getGroups() {
-    return super.getGroups();
-  }
-
-  @Deprecated
-  @Override
-  public void setGroups(Collection<UserGroup> groups) {
-    super.setGroups(groups);
-  }
-
-  @Deprecated
-  @Override
-  public Set<Authority> getAuthorities() {
-    return super.getAuthorities();
-  }
-
-  @Deprecated
-  @Override
-  public void setAuthorities(Collection<Authority> authorities) {
-    super.setAuthorities(authorities);
-  }
-
-  @Deprecated
-  @Override
-  public void addAuthority(Authority authority) {
-    super.addAuthority(authority);
-  }
-
-  @Deprecated
-  @Override
-  public void removeAuthority(Authority authority) {
-    super.removeAuthority(authority);
-  }
-
-  @Deprecated
-  @Override
-  public void addGroup(UserGroup group) {
-    super.addGroup(group);
-  }
-
-  @Deprecated
-  @Override
-  public void removeGroup(UserGroup group) {
-    super.removeGroup(group);
   }
 }

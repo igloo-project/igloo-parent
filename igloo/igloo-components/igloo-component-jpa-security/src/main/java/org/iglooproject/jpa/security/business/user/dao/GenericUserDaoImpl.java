@@ -6,7 +6,7 @@ import org.iglooproject.jpa.business.generic.dao.GenericEntityDaoImpl;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.jpa.security.business.user.model.QGenericUser;
 
-public abstract class GenericUserDaoImpl<U extends GenericUser<?, ?>>
+public abstract class GenericUserDaoImpl<U extends GenericUser<U>>
     extends GenericEntityDaoImpl<Long, U> implements IGenericUserDao<U> {
 
   public GenericUserDaoImpl() {
