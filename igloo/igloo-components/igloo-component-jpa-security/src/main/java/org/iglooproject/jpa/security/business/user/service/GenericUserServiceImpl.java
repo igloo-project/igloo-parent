@@ -5,7 +5,6 @@ import java.util.Locale;
 import org.iglooproject.jpa.business.generic.service.GenericEntityServiceImpl;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
 import org.iglooproject.jpa.security.business.user.dao.IGenericUserDao;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.spring.util.StringUtils;
@@ -16,9 +15,7 @@ public abstract class GenericUserServiceImpl<U extends GenericUser<U>>
     extends GenericEntityServiceImpl<Long, U>
     implements IGenericUserService<U>, ISecurityUserService<U> {
 
-  private IGenericUserDao<U> dao;
-
-  @Autowired private IAuthorityService authorityService;
+  private final IGenericUserDao<U> dao;
 
   @Autowired private PasswordEncoder passwordEncoder;
 

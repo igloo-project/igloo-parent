@@ -71,7 +71,7 @@ public class BasicApplicationWebappConfig {
   @Bean
   public IHtmlNotificationCssService htmlNotificationCssService() throws ServiceException {
     IHtmlNotificationCssService service = new PhlocCssHtmlNotificationCssServiceImpl();
-//    service.registerDefaultStyles(NotificationEmailScssResourceReference.get());
+    //    service.registerDefaultStyles(NotificationEmailScssResourceReference.get());
     return service;
   }
 

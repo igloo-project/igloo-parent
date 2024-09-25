@@ -25,6 +25,9 @@ public class MockUserServiceImpl extends GenericUserServiceImpl<MockUser>
   public void protectedMethodRoleAuthenticated() {}
 
   @Override
+  public void protectedMethodRoleAnonymous() {}
+
+  @Override
   public Long countEnabled() {
     return dao.countEnabled();
   }

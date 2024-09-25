@@ -1,10 +1,8 @@
 package org.iglooproject.test.jpa.security.config.spring;
 
-
 import igloo.security.ICoreUserDetailsService;
 import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
 import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
-import org.iglooproject.jpa.security.spring.SecurityUtils;
 import org.iglooproject.test.jpa.security.business.JpaSecurityTestBusinessPackage;
 import org.iglooproject.test.jpa.security.service.TestCorePermissionEvaluator;
 import org.iglooproject.test.jpa.security.service.TestJpaSecurityUserDetailsServiceImpl;
@@ -21,19 +19,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 @EntityScan(basePackageClasses = JpaSecurityTestBusinessPackage.class)
 @ComponentScan(basePackageClasses = JpaSecurityTestBusinessPackage.class)
 public class TestJpaSecurityConfiguration {
-
-  @Bean
-  public String roleHierarchyAsString() {
-    return SecurityUtils.defaultRoleHierarchyAsString()
-        + "ROLE_ADMIN > ROLE_GROUP_1\n"
-        + "ROLE_ADMIN > ROLE_GROUP_2\n"
-        + "ROLE_GROUP_1 > ROLE_GROUP_3\n";
-  }
-
-  @Bean
-  public String permissionHierarchyAsString() {
-    return SecurityUtils.defaultPermissionHierarchyAsString();
-  }
 
   @Bean
   public AuthenticationUsernameComparison authenticationUsernameComparison() {

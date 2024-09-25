@@ -9,7 +9,6 @@ import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorit
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
-import basicapp.back.business.user.predicate.UserPredicates;
 import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;

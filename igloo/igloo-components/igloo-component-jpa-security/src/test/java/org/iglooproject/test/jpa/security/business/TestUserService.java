@@ -19,40 +19,6 @@ class TestUserService extends AbstractJpaSecurityTestCase {
 
   @Autowired private UserDetailsService userDetailsService;
 
-  // TODO RFO reprendre ça dans la basic app avec la methode save des roles
-  @Test
-  void testAuthorities() throws ServiceException, SecurityServiceException {
-    //    MockUser person1 = createMockUser("login1", "firstName1", "lastName1");
-    //    MockUser person2 = createMockUser("login2", "firstName2", "lastName2");
-    //
-    //    Authority adminAuthority = authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN);
-    //    Authority group1Authority = authorityService.getByName(ROLE_GROUP_1);
-    //
-    //    person1.addAuthority(adminAuthority);
-    //    person1.addAuthority(group1Authority);
-    //
-    //    mockUserService.update(person1);
-    //
-    //    assertEquals(3, person1.getAuthorities().size());
-    //
-    //    person2.addAuthority(adminAuthority);
-    //    person2.addAuthority(group1Authority);
-    //
-    //    mockUserService.update(person2);
-    //
-    //    assertEquals(3, person2.getAuthorities().size());
-    //
-    //    mockUserService.delete(person1);
-    //
-    //    assertEquals(3, person2.getAuthorities().size());
-    //
-    //    person2.removeAuthority(adminAuthority);
-    //
-    //    mockUserService.update(person2);
-    //
-    //    assertEquals(2, person2.getAuthorities().size());
-  }
-
   @Test
   void testCaseInsensitiveUsernameFetch() throws ServiceException, SecurityServiceException {
     MockUser user1 = createMockUser("Login1", "firstName1", "lastName1");

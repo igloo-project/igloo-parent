@@ -12,9 +12,6 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.authority.model.Authority;
-import org.iglooproject.jpa.security.business.authority.service.IAuthorityService;
-import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.spring.property.dao.IMutablePropertyDao;
 import org.iglooproject.test.wicket.core.AbstractWicketTestCase;
 import org.iglooproject.wicket.more.AbstractCoreSession;
@@ -36,8 +33,6 @@ public abstract class AbstractBasicApplicationWebappTestCase
 
   @Autowired protected IUserService userService;
 
-  @Autowired protected IAuthorityService authorityService;
-
   @Autowired protected IBasicApplicationAuthenticationService authenticationService;
 
   @Autowired protected IHistoryLogService historyLogService;
@@ -54,7 +49,6 @@ public abstract class AbstractBasicApplicationWebappTestCase
 
   @BeforeEach
   public void setUp() throws ServiceException, SecurityServiceException {
-    initAuthorities();
     initUsers();
 
     setWicketTester(new BasicApplicationWicketTester(application));
@@ -65,7 +59,6 @@ public abstract class AbstractBasicApplicationWebappTestCase
     entityManagerClear();
 
     cleanEntities(userService);
-    cleanEntities(authorityService);
     cleanEntities(historyLogService);
     cleanEntities(roleService);
 
@@ -74,11 +67,6 @@ public abstract class AbstractBasicApplicationWebappTestCase
     authenticationService.signOut();
 
     emptyIndexes();
-  }
-
-  private void initAuthorities() throws ServiceException, SecurityServiceException {
-    authorityService.create(new Authority(CoreAuthorityConstants.ROLE_ADMIN));
-    authorityService.create(new Authority(CoreAuthorityConstants.ROLE_AUTHENTICATED));
   }
 
   private void initUsers() throws ServiceException, SecurityServiceException {

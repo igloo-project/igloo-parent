@@ -1,21 +1,22 @@
 package org.iglooproject.jpa.security.service;
 
+import static org.iglooproject.spring.property.SpringSecurityPropertyIds.ROLES_SYSTEM;
+
 import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import igloo.security.CoreUserDetails;
 import igloo.security.ICoreUserDetailsService;
 import igloo.security.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.business.user.model.IUser;
-import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
 import org.iglooproject.jpa.security.util.UserConstants;
+import org.iglooproject.spring.property.service.IPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,11 +33,9 @@ public class CoreSecurityServiceImpl implements ISecurityService {
 
   @Autowired protected ICorePermissionEvaluator permissionEvaluator;
 
-  @Autowired protected RoleHierarchy roleHierarchy;
-
-  @Autowired protected IPermissionHierarchy permissionHierarchy;
-
   @Autowired private IAuthenticationService authenticationService;
+
+  @Autowired private IPropertyService propertyService;
 
   @Override
   public boolean hasRole(Authentication authentication, String role) {
@@ -109,19 +108,23 @@ public class CoreSecurityServiceImpl implements ISecurityService {
     SecurityContextHolder.getContext().setAuthentication(authentication);
   }
 
+  /**
+   * 2024-09-25 igloo system hierarchies was deleted. Projects must defined all roles in
+   * ROLES_SYSTEM property to authenticate system with all roles
+   */
   protected void authenticateAsSystem() {
-    Collection<? extends GrantedAuthority> reachableGrantedAuthorities =
-        roleHierarchy.getReachableGrantedAuthorities(
-            Lists.newArrayList(new SimpleGrantedAuthority(CoreAuthorityConstants.ROLE_SYSTEM)));
+    List<? extends GrantedAuthority> rolesSystem =
+        propertyService.get(ROLES_SYSTEM).stream().map(SimpleGrantedAuthority::new).toList();
+
     UserDetails userDetails =
         new CoreUserDetails(
             UserConstants.SYSTEM_USER_NAME,
             UserConstants.NO_CREDENTIALS,
-            reachableGrantedAuthorities,
+            rolesSystem,
             Collections.emptyList());
     UsernamePasswordAuthenticationToken authentication =
         UsernamePasswordAuthenticationToken.authenticated(
-            userDetails, UserConstants.NO_CREDENTIALS, reachableGrantedAuthorities);
+            userDetails, UserConstants.NO_CREDENTIALS, rolesSystem);
     authentication.setDetails(userDetails);
     AuthenticationUtil.setAuthentication(authentication);
   }

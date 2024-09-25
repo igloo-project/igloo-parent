@@ -13,5 +13,8 @@ public interface IMockUserService extends IGenericUserService<MockUser> {
   @Secured(CoreAuthorityConstants.ROLE_AUTHENTICATED)
   void protectedMethodRoleAuthenticated();
 
+  @Secured(CoreAuthorityConstants.ROLE_ANONYMOUS)
+  void protectedMethodRoleAnonymous();
+
   Long countEnabled();
 }

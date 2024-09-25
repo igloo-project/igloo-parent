@@ -9,7 +9,6 @@ import basicapp.front.common.converter.LocalDateConverter;
 import basicapp.front.common.converter.LocalDateTimeConverter;
 import basicapp.front.common.converter.LocalTimeConverter;
 import basicapp.front.common.converter.PostalCodeConverter;
-import basicapp.front.common.renderer.AuthorityRenderer;
 import basicapp.front.common.renderer.InstantRenderer;
 import basicapp.front.common.renderer.RoleRenderer;
 import basicapp.front.common.template.favicon.ApplicationFaviconPackage;
@@ -72,7 +71,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
-import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.application.CoreWicketAuthenticatedApplication;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
@@ -147,7 +145,6 @@ public class BasicApplicationApplication extends CoreWicketAuthenticatedApplicat
     converterLocator.set(LocalTime.class, LocalTimeConverter.get());
     converterLocator.set(Instant.class, InstantRenderer.get());
 
-    converterLocator.set(Authority.class, AuthorityRenderer.get());
     converterLocator.set(User.class, UserRenderer.get());
     converterLocator.set(Role.class, RoleRenderer.get());
 

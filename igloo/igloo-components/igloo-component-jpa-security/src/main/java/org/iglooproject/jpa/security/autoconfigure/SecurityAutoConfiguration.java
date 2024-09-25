@@ -5,8 +5,6 @@ import java.util.List;
 import org.iglooproject.commons.util.security.PermissionObject;
 import org.iglooproject.config.bootstrap.spring.annotations.IglooPropertySourcePriority;
 import org.iglooproject.jpa.security.access.expression.method.CoreMethodSecurityExpressionHandler;
-import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
-import org.iglooproject.jpa.security.hierarchy.PermissionHierarchyImpl;
 import org.iglooproject.jpa.security.model.NamedPermission;
 import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
 import org.iglooproject.jpa.security.service.CoreAuthenticationServiceImpl;
@@ -15,8 +13,6 @@ import org.iglooproject.jpa.security.service.IAuthenticationService;
 import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
 import org.iglooproject.jpa.security.service.ISecurityService;
 import org.iglooproject.jpa.security.service.NamedPermissionFactory;
-import org.iglooproject.jpa.security.spring.SecurityUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +22,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -74,25 +68,6 @@ public class SecurityAutoConfiguration {
     return AuthenticationUsernameComparison.CASE_SENSITIVE;
   }
 
-  //  // TODO RFO à supprimer ? de toute façon à déclarer dans les projet. MAis besoin dans les
-  // tests...
-  //  // A checker avec Laurent
-  //  @Bean
-  //  @ConditionalOnMissingBean
-  //  public ICoreUserDetailsService userDetailsService(
-  //      AuthenticationUsernameComparison authenticationUsernameComparison) {
-  //    CoreJpaUserDetailsServiceImpl userDetailsService =
-  //        new CoreJpaUserDetailsServiceImpl() {
-  //          @Override
-  //          protected Pair<Set<GrantedAuthority>, Set<Permission>> getAuthoritiesAndPermissions(
-  //              IUser user) {
-  //            return Pair.of(Set.of(), Set.of());
-  //          }
-  //        };
-  //    userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison);
-  //    return userDetailsService;
-  //  }
-
   @Bean
   public AuthenticationProvider daoAuthenticationProvider(
       UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
@@ -124,35 +99,6 @@ public class SecurityAutoConfiguration {
   @ConditionalOnMissingBean
   public PermissionFactory permissionFactory() {
     return new NamedPermissionFactory(permissionClass());
-  }
-
-  @Bean
-  public RoleHierarchy roleHierarchy(
-      @Qualifier("roleHierarchyAsString") String roleHierarchyAsString) {
-    RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-    roleHierarchy.setHierarchy(roleHierarchyAsString);
-    return roleHierarchy;
-  }
-
-  @Bean
-  public IPermissionHierarchy permissionHierarchy(
-      PermissionFactory permissionFactory,
-      @Qualifier("permissionHierarchyAsString") String permissionHierarchyAsString) {
-    PermissionHierarchyImpl hierarchy = new PermissionHierarchyImpl(permissionFactory);
-    hierarchy.setHierarchy(permissionHierarchyAsString);
-    return hierarchy;
-  }
-
-  @Bean
-  @ConditionalOnMissingBean(name = "roleHierarchyAsString")
-  protected String roleHierarchyAsString() {
-    return SecurityUtils.defaultRoleHierarchyAsString();
-  }
-
-  @Bean
-  @ConditionalOnMissingBean(name = "permissionHierarchyAsString")
-  protected String permissionHierarchyAsString() {
-    return SecurityUtils.defaultPermissionHierarchyAsString();
   }
 
   @Bean

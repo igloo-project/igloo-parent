@@ -8,7 +8,6 @@ import org.iglooproject.commons.util.binding.ICoreBinding;
 import org.iglooproject.jpa.more.business.difference.service.AbstractGenericEntityDifferenceServiceImpl;
 import org.springframework.stereotype.Service;
 
-// TODO RFO nouveau patterne difference service ?
 @Service
 public class UserDifferenceServiceImpl extends AbstractGenericEntityDifferenceServiceImpl<User>
     implements IUserDifferenceService {
