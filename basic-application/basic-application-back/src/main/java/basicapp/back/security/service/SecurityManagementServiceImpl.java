@@ -12,6 +12,7 @@ import basicapp.back.business.notification.service.INotificationService;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
+import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.business.user.service.business.IUserService;
 import basicapp.back.security.model.SecurityOptions;
 import com.google.common.collect.EvictingQueue;
@@ -23,8 +24,6 @@ import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.user.model.GenericUser;
-import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +43,11 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 
   private final SecurityOptions securityOptionsDefault;
 
-  private final Map<Class<? extends GenericUser<?>>, SecurityOptions> securityOptionsUsers;
+  private final Map<UserType, SecurityOptions> securityOptionsUsers;
 
   public SecurityManagementServiceImpl(
       SecurityOptions securityOptionsDefault,
-      ImmutableMap<Class<? extends GenericUser<?>>, SecurityOptions> securityOptionsUsers) {
+      ImmutableMap<UserType, SecurityOptions> securityOptionsUsers) {
     this.securityOptionsDefault = securityOptionsDefault;
     this.securityOptionsUsers = ImmutableMap.copyOf(securityOptionsUsers);
   }
@@ -59,9 +58,9 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
   }
 
   @Override
-  public SecurityOptions getSecurityOptions(Class<? extends User> clazz) {
-    if (securityOptionsUsers.containsKey(clazz)) {
-      return securityOptionsUsers.get(clazz);
+  public SecurityOptions getSecurityOptions(UserType userType) {
+    if (securityOptionsUsers.containsKey(userType)) {
+      return securityOptionsUsers.get(userType);
     }
     return getSecurityOptionsDefault();
   }
@@ -71,7 +70,7 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
     if (user == null) {
       return getSecurityOptionsDefault();
     }
-    return getSecurityOptions(HibernateUtils.unwrap(user).getClass());
+    return getSecurityOptions(user.getType());
   }
 
   @Override

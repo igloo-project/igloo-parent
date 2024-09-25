@@ -3,6 +3,7 @@ package basicapp.back.security.service.controller;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
+import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.security.model.BasicApplicationSecurityExpressionConstants;
 import basicapp.back.security.model.SecurityOptions;
 import org.iglooproject.commons.util.security.PermissionObject;
@@ -12,7 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 public interface ISecurityManagementControllerService {
 
-  SecurityOptions getSecurityOptions(Class<? extends User> clazz);
+  SecurityOptions getSecurityOptions(UserType userType);
 
   SecurityOptions getSecurityOptions(User user);
 

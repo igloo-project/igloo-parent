@@ -3,6 +3,7 @@ package basicapp.back.security.service;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
+import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.security.model.SecurityOptions;
 import org.iglooproject.jpa.business.generic.service.ITransactionalAspectAwareService;
 import org.iglooproject.jpa.exception.SecurityServiceException;
@@ -12,7 +13,7 @@ public interface ISecurityManagementService extends ITransactionalAspectAwareSer
 
   SecurityOptions getSecurityOptionsDefault();
 
-  SecurityOptions getSecurityOptions(Class<? extends User> clazz);
+  SecurityOptions getSecurityOptions(UserType userType);
 
   SecurityOptions getSecurityOptions(User user);
 
