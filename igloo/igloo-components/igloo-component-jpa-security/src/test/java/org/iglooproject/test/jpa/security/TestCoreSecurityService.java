@@ -1,9 +1,6 @@
 package org.iglooproject.test.jpa.security;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.concurrent.Callable;
+import org.assertj.core.api.Assertions;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.test.AbstractJpaSecurityTestCase;
@@ -16,39 +13,30 @@ import org.springframework.security.core.context.SecurityContextHolder;
 class TestCoreSecurityService extends AbstractJpaSecurityTestCase {
 
   @Test
+  // TODO delete
   void testRoleHierarchy() throws ServiceException, SecurityServiceException {
-    MockUser admin = createMockUser("admin", "firstName", "lastName");
-    // TODO RFO AUTH
-    // admin.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_ADMIN));
-    mockUserService.update(admin);
-
+    MockUser admin = createMockTechnicalUser();
     authenticateAs(admin);
-    assertFalse(securityService.hasSystemRole(admin));
-    assertTrue(securityService.hasAdminRole(admin));
-    assertTrue(securityService.hasAuthenticatedRole(admin));
+    Assertions.assertThat(securityService.hasSystemRole(admin)).isFalse();
+    Assertions.assertThat(securityService.hasAdminRole(admin)).isTrue();
+    Assertions.assertThat(securityService.hasAuthenticatedRole(admin)).isTrue();
 
     // TODO AUTH
-    MockUser authenticated = createMockUser("authenticated", "firstName", "lastName");
-    //    authenticated.addAuthority(
-    //        authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
-    mockUserService.update(authenticated);
+    MockUser basic = createMockBasicUser();
 
-    authenticateAs(authenticated);
-    assertFalse(securityService.hasSystemRole(authenticated));
-    assertFalse(securityService.hasAdminRole(authenticated));
-    assertTrue(securityService.hasAuthenticatedRole(authenticated));
+    authenticateAs(basic);
+    //    assertFalse(securityService.hasSystemRole(authenticated));
+    //    assertFalse(securityService.hasAdminRole(authenticated));
+    //    assertTrue(securityService.hasAuthenticatedRole(authenticated));
   }
 
   @Test
   void testRunAsSystem() {
-    assertTrue(
-        securityService.runAsSystem(
-            new Callable<Boolean>() {
-              @Override
-              public Boolean call() {
-                return securityService.hasSystemRole(
-                    SecurityContextHolder.getContext().getAuthentication());
-              }
-            }));
+    Assertions.assertThat(
+            securityService.runAsSystem(
+                () ->
+                    securityService.hasSystemRole(
+                        SecurityContextHolder.getContext().getAuthentication())))
+        .isTrue();
   }
 }

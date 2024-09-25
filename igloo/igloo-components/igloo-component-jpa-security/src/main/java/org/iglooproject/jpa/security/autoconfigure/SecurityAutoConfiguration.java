@@ -74,8 +74,9 @@ public class SecurityAutoConfiguration {
     return AuthenticationUsernameComparison.CASE_SENSITIVE;
   }
 
-  // TODO RFO à supprimer ? de toute façon à déclarer dans les projet
-  //
+  //  // TODO RFO à supprimer ? de toute façon à déclarer dans les projet. MAis besoin dans les
+  // tests...
+  //  // A checker avec Laurent
   //  @Bean
   //  @ConditionalOnMissingBean
   //  public ICoreUserDetailsService userDetailsService(
@@ -85,7 +86,7 @@ public class SecurityAutoConfiguration {
   //          @Override
   //          protected Pair<Set<GrantedAuthority>, Set<Permission>> getAuthoritiesAndPermissions(
   //              IUser user) {
-  //            return null;
+  //            return Pair.of(Set.of(), Set.of());
   //          }
   //        };
   //    userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison);

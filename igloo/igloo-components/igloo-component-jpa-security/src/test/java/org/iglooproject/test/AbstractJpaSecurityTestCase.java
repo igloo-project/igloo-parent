@@ -11,6 +11,7 @@ import org.iglooproject.jpa.security.service.ISecurityService;
 import org.iglooproject.test.jpa.junit.AbstractTestCase;
 import org.iglooproject.test.jpa.security.business.person.model.MockUser;
 import org.iglooproject.test.jpa.security.business.person.service.IMockUserService;
+import org.iglooproject.test.jpa.security.service.TestJpaSecurityUserDetailsServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,19 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
     cleanEntities(authorityService);
   }
 
+  protected MockUser createMockBasicUser() throws ServiceException, SecurityServiceException {
+    return createMockUser(
+        System.getProperty("user.name"), "firstName", "lastName", "test@example.com");
+  }
+
+  protected MockUser createMockTechnicalUser() throws ServiceException, SecurityServiceException {
+    return createMockUser(
+        TestJpaSecurityUserDetailsServiceImpl.TECHNICAL_USERNAME,
+        "firstName",
+        "lastName",
+        "test@example.com");
+  }
+
   protected MockUser createMockUser(String username, String firstName, String lastName)
       throws ServiceException, SecurityServiceException {
     return createMockUser(username, firstName, lastName, "test@example.com");
@@ -87,8 +101,7 @@ public abstract class AbstractJpaSecurityTestCase extends AbstractTestCase {
     user.setLastName(lastName);
     user.setEmail(email);
 
-    // TODO remonter le type plus haut ?
-    //    user.set
+    // TODO RFO remonter le type plus haut ?
     //    user.addAuthority(authorityService.getByName(CoreAuthorityConstants.ROLE_AUTHENTICATED));
 
     mockUserService.create(user);

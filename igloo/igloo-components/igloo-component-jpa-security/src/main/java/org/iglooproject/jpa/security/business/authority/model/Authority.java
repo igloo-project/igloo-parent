@@ -15,6 +15,7 @@ import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 @Entity
 @Bindable
+// TODO RFO supprimer l'entité ? Besoin pour les hierarches
 public class Authority extends GenericEntity<Long, Authority> {
 
   private static final long serialVersionUID = -7704280784189665811L;

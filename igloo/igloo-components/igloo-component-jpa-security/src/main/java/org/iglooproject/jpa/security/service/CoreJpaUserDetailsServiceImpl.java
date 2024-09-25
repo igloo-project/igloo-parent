@@ -20,14 +20,17 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
 
+// TODO RFO ajouter une doc sur le fait de l'avoir passé abstrait
 public abstract class CoreJpaUserDetailsServiceImpl implements ICoreUserDetailsService {
 
   public static final String EMPTY_PASSWORD_HASH = "*NO PASSWORD*";
 
   @Autowired private ISecurityUserService<?> userService;
 
+  // TODO RFO supprimer + bean
   @Autowired private RoleHierarchy roleHierarchy;
 
+  // TODO RFO supprimer + bean
   @Autowired private IPermissionHierarchy permissionHierarchy;
 
   @Autowired private PermissionFactory permissionFactory;
@@ -42,6 +45,8 @@ public abstract class CoreJpaUserDetailsServiceImpl implements ICoreUserDetailsS
     this.authenticationUsernameComparison = authenticationUsernameComparison;
   }
 
+  // TODO RFO tester l'accès à anounymopus
+  //
   @Override
   public UserDetails loadUserByUsername(String username)
       throws UsernameNotFoundException, DataAccessException {
@@ -55,7 +60,11 @@ public abstract class CoreJpaUserDetailsServiceImpl implements ICoreUserDetailsS
     Pair<Set<GrantedAuthority>, Set<Permission>> authoritiesAndPermissions =
         getAuthoritiesAndPermissions(user);
 
-    // TODO RFO est-ce qu'on dégage les hiearchies ?
+    // TODO RFO est-ce qu'on dégage les hierarchies ?
+    // TODO ajouter le role anonymous au set de Authority
+    // TODO ajouter les propertiees dans springSecuritypropertiesID -> igloo.system.roles
+    // TODO ajouter dans la basicApp la properties
+    // TODO supprimer le roleHierarchieImpl, verifier que spring pousse un NullRoleHierarchy
     Collection<? extends GrantedAuthority> expandedGrantedAuthorities =
         roleHierarchy.getReachableGrantedAuthorities(authoritiesAndPermissions.getLeft());
     addCustomPermissionsFromAuthorities(

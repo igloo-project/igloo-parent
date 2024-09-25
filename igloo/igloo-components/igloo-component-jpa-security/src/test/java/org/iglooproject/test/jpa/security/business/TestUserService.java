@@ -19,7 +19,7 @@ class TestUserService extends AbstractJpaSecurityTestCase {
 
   @Autowired private UserDetailsService userDetailsService;
 
-  // TODO RFO reprendre ça
+  // TODO RFO reprendre ça dans la basic app avec la methode save des roles
   @Test
   void testAuthorities() throws ServiceException, SecurityServiceException {
     //    MockUser person1 = createMockUser("login1", "firstName1", "lastName1");

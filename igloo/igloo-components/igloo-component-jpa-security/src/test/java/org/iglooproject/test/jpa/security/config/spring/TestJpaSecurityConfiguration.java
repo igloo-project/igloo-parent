@@ -1,10 +1,13 @@
 package org.iglooproject.test.jpa.security.config.spring;
 
+
+import igloo.security.ICoreUserDetailsService;
 import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
 import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
 import org.iglooproject.jpa.security.spring.SecurityUtils;
 import org.iglooproject.test.jpa.security.business.JpaSecurityTestBusinessPackage;
 import org.iglooproject.test.jpa.security.service.TestCorePermissionEvaluator;
+import org.iglooproject.test.jpa.security.service.TestJpaSecurityUserDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -41,5 +44,14 @@ public class TestJpaSecurityConfiguration {
   @Scope(proxyMode = ScopedProxyMode.INTERFACES)
   public ICorePermissionEvaluator permissionEvaluator() {
     return new TestCorePermissionEvaluator();
+  }
+
+  @Bean
+  public ICoreUserDetailsService userDetailsService(
+      AuthenticationUsernameComparison authenticationUsernameComparison) {
+    TestJpaSecurityUserDetailsServiceImpl userDetailsService =
+        new TestJpaSecurityUserDetailsServiceImpl();
+    userDetailsService.setAuthenticationUsernameComparison(authenticationUsernameComparison);
+    return userDetailsService;
   }
 }

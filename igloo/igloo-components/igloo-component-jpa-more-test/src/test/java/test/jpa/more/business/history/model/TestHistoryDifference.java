@@ -18,7 +18,7 @@ import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 @Access(AccessType.FIELD)
 @Table(
     indexes = {
-      @Index(name = "idx_HistoryDifference_parentLog", columnList = "parentLog_id"),
+      @Index(name = "HistoryDifference_parentLog", columnList = "parentLog_id"),
       @Index(name = "idx_HistoryDifference_parentDifference", columnList = "parentDifference_id")
     })
 public class TestHistoryDifference

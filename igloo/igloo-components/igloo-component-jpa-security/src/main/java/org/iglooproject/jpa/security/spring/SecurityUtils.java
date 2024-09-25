@@ -7,6 +7,7 @@ import java.util.Map;
 import org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants;
 import org.iglooproject.jpa.security.model.CorePermissionConstants;
 
+// TODO RFO a suprimer
 public class SecurityUtils {
 
   public static String defaultPermissionHierarchyAsString() {
