@@ -3,13 +3,11 @@ package basicapp.front.role.page;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_ROLE_READ;
 
 import basicapp.back.business.role.model.Role;
-import basicapp.back.util.binding.Bindings;
 import basicapp.front.role.component.RoleSaveFooterPanel;
 import basicapp.front.role.component.RoleSavePermissionsPanel;
 import basicapp.front.role.component.RoleSaveTitlePanel;
 import basicapp.front.role.template.RoleTemplate;
 import igloo.wicket.condition.Condition;
-import igloo.wicket.model.BindingModel;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
@@ -33,7 +31,8 @@ public class RoleAddPage extends RoleTemplate {
     super(parameters);
 
     addBreadCrumbElement(
-        new BreadCrumbElement(new ResourceModel("role.add"), RoleAddPage.linkDescriptor()));
+        new BreadCrumbElement(
+            new ResourceModel("navigation.administration.role.add"), RoleAddPage.linkDescriptor()));
 
     IModel<Role> roleModel = new GenericEntityModel<>(new Role());
 
@@ -42,8 +41,7 @@ public class RoleAddPage extends RoleTemplate {
 
     form.add(
         new RoleSaveTitlePanel("title", roleModel),
-        new RoleSavePermissionsPanel(
-            "permissions", BindingModel.of(roleModel, Bindings.role().permissions())),
+        new RoleSavePermissionsPanel("permissions", roleModel),
         new RoleSaveFooterPanel("footer", roleModel));
   }
 

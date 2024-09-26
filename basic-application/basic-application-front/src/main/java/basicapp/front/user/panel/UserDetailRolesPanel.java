@@ -1,11 +1,11 @@
 package basicapp.front.user.panel;
 
-import static basicapp.back.security.model.BasicApplicationPermissionConstants.ROLE_WRITE;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_WRITE;
 
 import basicapp.back.business.role.model.Role;
 import basicapp.back.business.user.model.User;
 import basicapp.front.role.model.RoleDataProvider;
-import basicapp.front.user.popup.UserRoleEditPopup;
+import basicapp.front.user.popup.UserRolesEditPopup;
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.EnclosureContainer;
@@ -25,7 +25,7 @@ public class UserDetailRolesPanel extends GenericPanel<User> {
   public UserDetailRolesPanel(String id, final IModel<? extends User> userModel) {
     super(id, userModel);
 
-    UserRoleEditPopup editPopup = new UserRoleEditPopup("editPopup", getModel());
+    UserRolesEditPopup editPopup = new UserRolesEditPopup("editPopup", getModel());
     add(editPopup);
 
     add(
@@ -35,9 +35,9 @@ public class UserDetailRolesPanel extends GenericPanel<User> {
           @Override
           protected void populateItem(Item<Role> item) {
             item.add(
-                new CoreLabel("roleName", item.getModel()),
+                new CoreLabel("name", item.getModel()),
                 new BooleanIcon(
-                    "roleCheck",
+                    "check",
                     () -> userModel.getObject().getRoles().contains(item.getModelObject())));
           }
         });
@@ -48,6 +48,6 @@ public class UserDetailRolesPanel extends GenericPanel<User> {
             .add(
                 new BlankLink("edit")
                     .add(new AjaxModalOpenBehavior(editPopup, MouseEvent.CLICK))
-                    .add(Condition.permission(userModel, ROLE_WRITE).thenShow())));
+                    .add(Condition.permission(userModel, USER_WRITE).thenShow())));
   }
 }

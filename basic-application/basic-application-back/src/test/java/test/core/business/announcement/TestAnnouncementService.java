@@ -133,7 +133,7 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
 
     @WithUserDetails(value = ADMIN_USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Test
-    void testSaveAnnouncement_TechnicalUserAuthenticate_doesNotThrowException() {
+    void testSaveAnnouncement_technicalUserAuthenticate_doesNotThrowException() {
       Assertions.assertThatCode(
               () ->
                   announcementControllerService.saveAnnouncement(
@@ -146,11 +146,51 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
         setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Test
     void
-        testSaveAnnouncement_UserWithoutPermissionsAuthenticate_throwAuthorizationDeniedException() {
+        testSaveAnnouncement_userWithoutPermissionsAuthenticate_throwAuthorizationDeniedException() {
       Assertions.assertThatThrownBy(
               () ->
                   announcementControllerService.saveAnnouncement(
                       entityDatabaseHelper.createAnnouncement(null, false)))
+          .isInstanceOf(AuthorizationDeniedException.class);
+    }
+  }
+
+  @Nested
+  class TestDeleteAnnoucement {
+    @WithUserDetails(
+        value = BASIC_USERNAME_WITH_PERMISSIONS,
+        setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Test
+    void testDeleteAnnoucement() throws SecurityServiceException, ServiceException {
+      Announcement announcement = entityDatabaseHelper.createAnnouncement(null, true);
+      entityManagerReset();
+      Assertions.assertThat(announcementService.list()).size().isEqualTo(1);
+      announcementControllerService.deleteAnnouncement(
+          announcementService.getById(announcement.getId()));
+      entityManagerReset();
+      Assertions.assertThat(announcementService.list()).isEmpty();
+    }
+
+    @WithUserDetails(value = ADMIN_USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Test
+    void TestDeleteAnnoucement_technicalUserAuthenticate_doesNotThrowException() {
+      Assertions.assertThatCode(
+              () ->
+                  announcementControllerService.deleteAnnouncement(
+                      entityDatabaseHelper.createAnnouncement(null, true)))
+          .doesNotThrowAnyException();
+    }
+
+    @WithUserDetails(
+        value = BASIC_USERNAME_WITHOUT_PERMISSIONS,
+        setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @Test
+    void
+        TestDeleteAnnoucement_UserWithoutPermissionsAuthenticate_throwAuthorizationDeniedException() {
+      Assertions.assertThatThrownBy(
+              () ->
+                  announcementControllerService.deleteAnnouncement(
+                      entityDatabaseHelper.createAnnouncement(null, true)))
           .isInstanceOf(AuthorizationDeniedException.class);
     }
   }
@@ -237,45 +277,5 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
     Assertions.assertThat(announcementControllerService.listEnabled())
         .containsExactlyInAnyOrder(
             announcementEnable, announcementStartToday, announcementFinishToday_plusDays1min);
-  }
-
-  @Nested
-  class TestDeleteAnnoucement {
-    @WithUserDetails(
-        value = BASIC_USERNAME_WITH_PERMISSIONS,
-        setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @Test
-    void testDeleteAnnoucement() throws SecurityServiceException, ServiceException {
-      Announcement announcement = entityDatabaseHelper.createAnnouncement(null, true);
-      entityManagerReset();
-      Assertions.assertThat(announcementService.list()).size().isEqualTo(1);
-      announcementControllerService.deleteAnnouncement(
-          announcementService.getById(announcement.getId()));
-      entityManagerReset();
-      Assertions.assertThat(announcementService.list()).isEmpty();
-    }
-
-    @WithUserDetails(value = ADMIN_USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @Test
-    void TestDeleteAnnoucement_TechnicalUserAuthenticate_doesNotThrowException() {
-      Assertions.assertThatCode(
-              () ->
-                  announcementControllerService.deleteAnnouncement(
-                      entityDatabaseHelper.createAnnouncement(null, true)))
-          .doesNotThrowAnyException();
-    }
-
-    @WithUserDetails(
-        value = BASIC_USERNAME_WITHOUT_PERMISSIONS,
-        setupBefore = TestExecutionEvent.TEST_EXECUTION)
-    @Test
-    void
-        TestDeleteAnnoucement_UserWithoutPermissionsAuthenticate_throwAuthorizationDeniedException() {
-      Assertions.assertThatThrownBy(
-              () ->
-                  announcementControllerService.deleteAnnouncement(
-                      entityDatabaseHelper.createAnnouncement(null, true)))
-          .isInstanceOf(AuthorizationDeniedException.class);
-    }
   }
 }

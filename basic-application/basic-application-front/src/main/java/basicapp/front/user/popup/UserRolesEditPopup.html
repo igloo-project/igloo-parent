@@ -4,13 +4,13 @@
 	<wicket:panel>
 		<div wicket:id="body">
 			<form wicket:id="form">
-				<div wicket:id="rolesGroup" class="row row-form">
+				<div wicket:id="roles" class="row row-form">
 					<div class="col-12">
 						<div wicket:id="roles" class="row row-form-group form-group">
 							<div class="col-12">
 								<div class="form-check">
-									<input wicket:id="roleCheck" class="form-check-input" type="checkbox" />
-									<label wicket:for="roleCheck" class="form-check-label"><wicket:label /></label>
+									<input wicket:id="role" class="form-check-input" type="checkbox" />
+									<label wicket:for="role" class="form-check-label"><wicket:label /></label>
 								</div>
 							</div>
 						</div>
@@ -18,14 +18,13 @@
 				</div>
 			</form>
 		</div>
-		
 		<div wicket:id="footer">
 			<button wicket:id="cancel" class="btn btn-outline-secondary" type="button">
 				<wicket:message key="common.cancel" />
 			</button>
 			<button wicket:id="save" class="btn btn-success" type="button">
 				<span class="fa fa-fw fa-check" />
-				<span wicket:id="validateLabel" />
+				<wicket:message key="common.action.save" />
 			</button>
 		</div>
 	</wicket:panel>

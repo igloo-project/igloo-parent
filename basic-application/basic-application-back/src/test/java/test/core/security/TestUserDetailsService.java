@@ -29,7 +29,7 @@ public class TestUserDetailsService extends AbstractBasicApplicationTestCase {
   @Autowired private ICoreUserDetailsService userDetailsService;
 
   @Test
-  void testGetAuthoritiesAndPermissions_TechnicalUser()
+  void testGetAuthoritiesAndPermissions_technicalUser()
       throws SecurityServiceException, ServiceException {
     entityDatabaseHelper.createRole(
         r ->
@@ -64,7 +64,7 @@ public class TestUserDetailsService extends AbstractBasicApplicationTestCase {
   }
 
   @Test
-  void testGetAuthoritiesAndPermissions_BasicUser()
+  void testGetAuthoritiesAndPermissions_basicUser()
       throws SecurityServiceException, ServiceException {
     entityDatabaseHelper.createRole(
         r ->

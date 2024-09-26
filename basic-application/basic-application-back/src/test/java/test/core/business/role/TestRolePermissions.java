@@ -23,7 +23,7 @@ public class TestRolePermissions {
   @Nested
   class CanReadRole {
     @Test
-    void canReadRole_WithPermission() {
+    void canReadRole_withPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -34,7 +34,7 @@ public class TestRolePermissions {
     }
 
     @Test
-    void canWriteRole_NoPermission() {
+    void canReadRole_noPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -48,7 +48,7 @@ public class TestRolePermissions {
   @Nested
   class CanWriteRole {
     @Test
-    void canWriteRole_WithPermission() {
+    void canWriteRole_withPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -64,7 +64,7 @@ public class TestRolePermissions {
     }
 
     @Test
-    void canWriteRole_NoPermission() {
+    void canWriteRole_noPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -81,7 +81,7 @@ public class TestRolePermissions {
     }
 
     @Test
-    void canWriteRole_OnlyRead() {
+    void canWriteRole_onlyRead() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -97,7 +97,7 @@ public class TestRolePermissions {
     }
 
     @Test
-    void canWriteRole_OnlyWrite() {
+    void canWriteRole_onlyWrite() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 

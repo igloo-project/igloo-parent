@@ -41,11 +41,11 @@ import org.iglooproject.wicket.more.markup.html.template.js.jquery.plugins.mask.
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement> {
+public class AnnouncementSavePopup extends AbstractAjaxModalPopupPanel<Announcement> {
 
   private static final long serialVersionUID = -757028645835449815L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AnnouncementPopup.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(AnnouncementSavePopup.class);
 
   @SpringBean private IAnnouncementControllerService announcementControllerService;
 
@@ -53,11 +53,11 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
 
   private Form<Announcement> form;
 
-  public AnnouncementPopup(String id) {
+  public AnnouncementSavePopup(String id) {
     this(id, new AnnouncementBindableModel());
   }
 
-  public AnnouncementPopup(String id, AnnouncementBindableModel bindableModel) {
+  public AnnouncementSavePopup(String id, AnnouncementBindableModel bindableModel) {
     super(id, bindableModel);
     this.bindableModel = bindableModel;
   }
@@ -219,7 +219,7 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
           @Override
           protected void onSubmit(AjaxRequestTarget target) {
             try {
-              Announcement announcement = AnnouncementPopup.this.getModelObject();
+              Announcement announcement = AnnouncementSavePopup.this.getModelObject();
 
               announcementControllerService.saveAnnouncement(announcement);
 
@@ -261,12 +261,8 @@ public class AnnouncementPopup extends AbstractAjaxModalPopupPanel<Announcement>
     getModel().setObject(announcement);
   }
 
-  protected Condition addModeCondition() {
+  private Condition addModeCondition() {
     return Condition.isTrueOrNull(BindingModel.of(getModel(), Bindings.announcement().isNew()));
-  }
-
-  protected Condition editModeCondition() {
-    return addModeCondition().negate();
   }
 
   @Override

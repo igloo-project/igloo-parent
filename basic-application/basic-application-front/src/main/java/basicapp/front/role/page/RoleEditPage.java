@@ -45,14 +45,14 @@ public class RoleEditPage extends RoleTemplate {
 
     addBreadCrumbElement(
         new BreadCrumbElement(
-            new StringResourceModel("role.edit", roleModel), RoleDetailPage.MAPPER.map(roleModel)));
+            new StringResourceModel("navigation.administration.role.edit", roleModel),
+            RoleDetailPage.MAPPER.map(roleModel)));
 
     Form<Role> form = new Form<>("form", roleModel);
 
     form.add(
         new RoleSaveTitlePanel("title", roleModel),
-        new RoleSavePermissionsPanel(
-            "permissions", BindingModel.of(roleModel, Bindings.role().permissions())),
+        new RoleSavePermissionsPanel("permissions", roleModel),
         new RoleSaveFooterPanel("footer", roleModel));
 
     add(new CoreLabel("role", BindingModel.of(roleModel, Bindings.role())), form);

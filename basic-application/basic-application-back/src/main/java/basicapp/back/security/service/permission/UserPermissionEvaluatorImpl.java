@@ -2,10 +2,8 @@ package basicapp.back.security.service.permission;
 
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.ADMIN_EDIT_PASSWORD;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.ADMIN_RECOVERY_PASSWORD;
-import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_ROLE_WRITE;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_USER_READ;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_USER_WRITE;
-import static basicapp.back.security.model.BasicApplicationPermissionConstants.ROLE_WRITE;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_BASIC_WRITE;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_CLOSE_ANNONCEMENT;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_DISABLE;
@@ -15,6 +13,7 @@ import static basicapp.back.security.model.BasicApplicationPermissionConstants.U
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_READ;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_RECOVERY_PASSWORD;
 import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_TECHNICAL_WRITE;
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_WRITE;
 import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants.ROLE_ADMIN;
 
 import basicapp.back.business.user.model.User;
@@ -42,32 +41,20 @@ public class UserPermissionEvaluatorImpl extends AbstractGenericPermissionEvalua
     if (is(permission, USER_READ)) {
       return canReadUser(user, targetUser);
     }
+    if (is(permission, USER_WRITE)) {
+      return canWriteUser(user, targetUser);
+    }
     if (is(permission, USER_TECHNICAL_WRITE)) {
       return canWriteTechicalUser(user);
     }
     if (is(permission, USER_BASIC_WRITE)) {
       return canWriteBasicUser(user, targetUser);
     }
-    if (is(permission, USER_OPEN_ANNONCEMENT)) {
-      return canOpenAnnouncement(user, targetUser);
-    }
-    if (is(permission, USER_CLOSE_ANNONCEMENT)) {
-      return canCloseAnnouncement(user, targetUser);
-    }
-    if (is(permission, ROLE_WRITE)) {
-      return canAffectRoles(user);
-    }
-    if (is(permission, USER_DISABLE)) {
-      return canDisableUser(user, targetUser);
-    }
     if (is(permission, USER_ENABLE)) {
       return canEnableUser(user, targetUser);
     }
-    if (is(permission, ADMIN_EDIT_PASSWORD)) {
-      return canAdminEditPassword(user, targetUser);
-    }
-    if (is(permission, ADMIN_RECOVERY_PASSWORD)) {
-      return canAdminRecoveryPassword(user, targetUser);
+    if (is(permission, USER_DISABLE)) {
+      return canDisableUser(user, targetUser);
     }
     if (is(permission, USER_EDIT_PASSWORD)) {
       return canUserEditPassword(user, targetUser);
@@ -75,17 +62,19 @@ public class UserPermissionEvaluatorImpl extends AbstractGenericPermissionEvalua
     if (is(permission, USER_RECOVERY_PASSWORD)) {
       return canUserRecoveryPassword(user, targetUser);
     }
+    if (is(permission, ADMIN_EDIT_PASSWORD)) {
+      return canAdminEditPassword(user, targetUser);
+    }
+    if (is(permission, ADMIN_RECOVERY_PASSWORD)) {
+      return canAdminRecoveryPassword(user, targetUser);
+    }
+    if (is(permission, USER_OPEN_ANNONCEMENT)) {
+      return canOpenAnnouncement(user, targetUser);
+    }
+    if (is(permission, USER_CLOSE_ANNONCEMENT)) {
+      return canCloseAnnouncement(user, targetUser);
+    }
     return false;
-  }
-
-  @VisibleForTesting
-  public boolean canOpenAnnouncement(User user, User targetUser) {
-    return Objects.equals(user, targetUser) && UserPredicates.announcementClose().apply(targetUser);
-  }
-
-  @VisibleForTesting
-  public boolean canCloseAnnouncement(User user, User targetUser) {
-    return Objects.equals(user, targetUser) && UserPredicates.announcementOpen().apply(targetUser);
   }
 
   @VisibleForTesting
@@ -119,8 +108,14 @@ public class UserPermissionEvaluatorImpl extends AbstractGenericPermissionEvalua
   }
 
   @VisibleForTesting
-  public boolean canAffectRoles(User user) {
-    return hasPermission(user, GLOBAL_ROLE_WRITE);
+  public boolean canEnableUser(User user, User targetUser) {
+    if (targetUser.isEnabled()) {
+      return false;
+    }
+
+    return UserPredicates.technical().apply(targetUser)
+        ? hasRole(user, ROLE_ADMIN)
+        : hasPermission(user, GLOBAL_USER_WRITE);
   }
 
   @VisibleForTesting
@@ -134,32 +129,8 @@ public class UserPermissionEvaluatorImpl extends AbstractGenericPermissionEvalua
         : hasPermission(user, GLOBAL_USER_WRITE);
   }
 
-  @VisibleForTesting
-  public boolean canEnableUser(User user, User targetUser) {
-    if (targetUser.isEnabled()) {
-      return false;
-    }
-
-    return UserPredicates.technical().apply(targetUser)
-        ? hasRole(user, ROLE_ADMIN)
-        : hasPermission(user, GLOBAL_USER_WRITE);
-  }
-
   private boolean canAdminEditPassword(User user, User targetUser) {
     if (!securityManagementService.getSecurityOptions(targetUser).isPasswordAdminUpdateEnabled()) {
-      return false;
-    }
-
-    return UserPredicates.technical().apply(targetUser)
-        ? hasRole(user, ROLE_ADMIN)
-        : hasPermission(user, GLOBAL_USER_WRITE);
-  }
-
-  @VisibleForTesting
-  public boolean canAdminRecoveryPassword(User user, User targetUser) {
-    if (!securityManagementService
-        .getSecurityOptions(targetUser)
-        .isPasswordAdminRecoveryEnabled()) {
       return false;
     }
 
@@ -182,5 +153,28 @@ public class UserPermissionEvaluatorImpl extends AbstractGenericPermissionEvalua
       return false;
     }
     return securityManagementService.getSecurityOptions(targetUser).isPasswordUserRecoveryEnabled();
+  }
+
+  @VisibleForTesting
+  public boolean canAdminRecoveryPassword(User user, User targetUser) {
+    if (!securityManagementService
+        .getSecurityOptions(targetUser)
+        .isPasswordAdminRecoveryEnabled()) {
+      return false;
+    }
+
+    return UserPredicates.technical().apply(targetUser)
+        ? hasRole(user, ROLE_ADMIN)
+        : hasPermission(user, GLOBAL_USER_WRITE);
+  }
+
+  @VisibleForTesting
+  public boolean canOpenAnnouncement(User user, User targetUser) {
+    return Objects.equals(user, targetUser) && UserPredicates.announcementClose().apply(targetUser);
+  }
+
+  @VisibleForTesting
+  public boolean canCloseAnnouncement(User user, User targetUser) {
+    return Objects.equals(user, targetUser) && UserPredicates.announcementOpen().apply(targetUser);
   }
 }

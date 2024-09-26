@@ -17,13 +17,11 @@ import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Check;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.ReuseIfModelsEqualStrategy;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.functional.Suppliers2;
@@ -32,17 +30,17 @@ import org.iglooproject.wicket.more.markup.repeater.sequence.SequenceView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserRoleEditPopup extends AbstractAjaxModalPopupPanel<User> {
+public class UserRolesEditPopup extends AbstractAjaxModalPopupPanel<User> {
 
   private static final long serialVersionUID = 1L;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(UserRoleEditPopup.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(UserRolesEditPopup.class);
 
   @SpringBean private IUserControllerService userControllerService;
 
-  private Form<User> userForm;
+  private Form<User> form;
 
-  public UserRoleEditPopup(String id, IModel<User> userModel) {
+  public UserRolesEditPopup(String id, IModel<User> userModel) {
     super(id, userModel);
   }
 
@@ -53,47 +51,46 @@ public class UserRoleEditPopup extends AbstractAjaxModalPopupPanel<User> {
 
   @Override
   protected Component createBody(String wicketId) {
-    DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserRoleEditPopup.class);
+    DelegatedMarkupPanel body = new DelegatedMarkupPanel(wicketId, UserRolesEditPopup.class);
 
-    userForm = new Form<>("form", getModel());
-    body.add(
-        userForm.add(
-            new CheckGroup<>(
-                    "rolesGroup",
-                    BindingModel.of(userForm.getModel(), Bindings.user().roles()),
-                    Suppliers2.treeSet())
-                .add(
-                    new SequenceView<>("roles", new RoleDataProvider()) {
-                      private static final long serialVersionUID = 1L;
+    form = new Form<>("form", getModel());
+    body.add(form);
 
-                      @Override
-                      protected void populateItem(Item<Role> item) {
-                        item.add(
-                            new Check<>("roleCheck", item.getModel())
-                                .setLabel(RoleRenderer.get().asModel(item.getModel())));
-                      }
-                    }.setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance()))
-                .setRenderBodyOnly(false)));
+    form.add(
+        new CheckGroup<>(
+                "roles",
+                BindingModel.of(form.getModel(), Bindings.user().roles()),
+                Suppliers2.treeSet())
+            .add(
+                new SequenceView<>("roles", new RoleDataProvider()) {
+                  private static final long serialVersionUID = 1L;
+
+                  @Override
+                  protected void populateItem(Item<Role> item) {
+                    item.add(
+                        new Check<>("role", item.getModel())
+                            .setLabel(RoleRenderer.get().asModel(item.getModel())));
+                  }
+                }.setItemReuseStrategy(ReuseIfModelsEqualStrategy.getInstance()))
+            .setRenderBodyOnly(false));
 
     return body;
   }
 
   @Override
   protected Component createFooter(String wicketId) {
-    DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserRoleEditPopup.class);
+    DelegatedMarkupPanel footer = new DelegatedMarkupPanel(wicketId, UserRolesEditPopup.class);
 
-    // Validate button
-    AjaxButton validate =
-        new AjaxButton("save", userForm) {
+    footer.add(
+        new AjaxButton("save", form) {
           private static final long serialVersionUID = 1L;
 
           @Override
           protected void onSubmit(AjaxRequestTarget target) {
-            User user = UserRoleEditPopup.this.getModelObject();
-
             try {
-              userControllerService.affectRoles(user);
-              Session.get().success(getString("user.roles.edit.success"));
+              User user = UserRolesEditPopup.this.getModelObject();
+              userControllerService.updateRoles(user);
+              Session.get().success(getString("common.success"));
               closePopup(target);
               target.add(getPage());
             } catch (RestartResponseException e) { // NOSONAR
@@ -109,13 +106,8 @@ public class UserRoleEditPopup extends AbstractAjaxModalPopupPanel<User> {
           protected void onError(AjaxRequestTarget target) {
             FeedbackUtils.refreshFeedback(target, getPage());
           }
-        };
-    Label validateLabel;
-    validateLabel = new CoreLabel("validateLabel", new ResourceModel("common.action.save"));
-    validate.add(validateLabel);
-    footer.add(validate);
+        });
 
-    // Cancel button
     BlankLink cancel = new BlankLink("cancel");
     addCancelBehavior(cancel);
     footer.add(cancel);

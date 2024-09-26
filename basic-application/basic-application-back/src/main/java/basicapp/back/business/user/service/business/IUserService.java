@@ -12,15 +12,7 @@ public interface IUserService extends IGenericUserService<User> {
   void saveTechnicalUser(User user, String password)
       throws SecurityServiceException, ServiceException;
 
-  void onSignIn(User user) throws ServiceException, SecurityServiceException;
-
-  void onSignInFail(User user) throws ServiceException, SecurityServiceException;
-
-  User getByEmailCaseInsensitive(String email);
-
-  void affectRoles(User user) throws SecurityServiceException, ServiceException;
-
-  User getAuthenticatedUser();
+  void updateRoles(User user) throws SecurityServiceException, ServiceException;
 
   void enable(User user) throws ServiceException, SecurityServiceException;
 
@@ -32,4 +24,12 @@ public interface IUserService extends IGenericUserService<User> {
 
   void initPasswordRecoveryRequest(String emailModel)
       throws SecurityServiceException, ServiceException;
+
+  void onSignIn(User user) throws ServiceException, SecurityServiceException;
+
+  void onSignInFail(User user) throws ServiceException, SecurityServiceException;
+
+  User getByEmailCaseInsensitive(String email);
+
+  User getAuthenticatedUser();
 }

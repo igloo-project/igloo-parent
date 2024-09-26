@@ -24,7 +24,7 @@ public class TestReferenceDataPermissions {
   @Nested
   class CanReadReferenceData {
     @Test
-    void canReadReferenceData_WithPermission() {
+    void canReadReferenceData_withPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -35,7 +35,7 @@ public class TestReferenceDataPermissions {
     }
 
     @Test
-    void canWriteReferenceData_NoPermission() {
+    void canWriteReferenceData_noPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -47,10 +47,10 @@ public class TestReferenceDataPermissions {
   }
 
   @Nested
-  class CanWriteCreateReferenceData {
+  class CanWriteReferenceData {
 
     @Test
-    void canWriteReferenceData_UpdateReferenceData_NoEditable_returnFalse() {
+    void canWriteReferenceData_updateReferenceData_noEditable_returnFalse() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -63,7 +63,7 @@ public class TestReferenceDataPermissions {
     }
 
     @Test
-    void canWriteReferenceData_UpdateReferenceData_Editable_withPermissions_returnTrue() {
+    void canWriteReferenceData_updateReferenceData_editable_withPermissions_returnTrue() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -84,7 +84,7 @@ public class TestReferenceDataPermissions {
     }
 
     @Test
-    void canWriteReferenceData_CreateReferenceData_NoEditable_withPermissions_returnTrue() {
+    void canWriteReferenceData_createReferenceData_noEditable_withPermissions_returnTrue() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -104,7 +104,7 @@ public class TestReferenceDataPermissions {
     }
 
     @Test
-    void canWriteReferenceData_UpdateReferenceData_Editable_NoPermission_returnFalse() {
+    void canWriteReferenceData_updateReferenceData_editable_noPermission_returnFalse() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -126,7 +126,7 @@ public class TestReferenceDataPermissions {
     }
 
     @Test
-    void canWriteReferenceData_UpdateReferenceData_Editable_OnlyRead_returnFalse() {
+    void canWriteReferenceData_updateReferenceData_editable_onlyRead_returnFalse() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -147,7 +147,7 @@ public class TestReferenceDataPermissions {
     }
 
     @Test
-    void canWriteReferenceData_UpdateReferenceData_Editable_OnlyWrite_returnFalse() {
+    void canWriteReferenceData_updateReferenceData_editable_onlyWrite_returnFalse() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 

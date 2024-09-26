@@ -1,15 +1,17 @@
 package basicapp.front.role.component;
 
+import basicapp.back.business.role.model.Role;
 import basicapp.back.security.model.BasicApplicationPermissionCategoryEnum;
 import basicapp.back.security.model.BasicApplicationPermissionUtils;
+import basicapp.back.util.binding.Bindings;
 import basicapp.front.common.renderer.PermissionNameRenderer;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.markup.html.form.CheckGroup;
+import igloo.wicket.model.BindingModel;
 import igloo.wicket.model.Models;
 import igloo.wicket.model.ReadOnlyMapModel;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.apache.wicket.markup.html.form.Check;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
@@ -25,14 +27,17 @@ public class RoleSavePermissionsPanel extends Panel {
 
   private static final long serialVersionUID = 1L;
 
-  public RoleSavePermissionsPanel(String id, IModel<Set<String>> permissionsModel) {
+  public RoleSavePermissionsPanel(String id, IModel<Role> roleModel) {
     super(id);
 
     IModel<Map<BasicApplicationPermissionCategoryEnum, List<String>>> mapModel =
         LoadableDetachableModel.of(() -> BasicApplicationPermissionUtils.PERMISSIONS);
 
     add(
-        new CheckGroup<>("permissionsGroup", permissionsModel, Suppliers2.<String>hashSet())
+        new CheckGroup<>(
+                "permissions",
+                BindingModel.of(roleModel, Bindings.role().permissions()),
+                Suppliers2.<String>hashSet())
             .add(
                 new MapView<>(
                     "categories",
@@ -56,12 +61,13 @@ public class RoleSavePermissionsPanel extends Panel {
                           @Override
                           protected void populateItem(Item<String> item) {
                             item.add(
-                                new Check<>("permissionCheck", item.getModel())
+                                new Check<>("permission", item.getModel())
                                     .setLabel(
                                         PermissionNameRenderer.get().asModel(item.getModel())));
                           }
                         });
                   }
-                }));
+                })
+            .setRenderBodyOnly(false));
   }
 }

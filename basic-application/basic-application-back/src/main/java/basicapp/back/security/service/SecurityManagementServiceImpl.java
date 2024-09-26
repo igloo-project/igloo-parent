@@ -53,24 +53,32 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
   }
 
   @Override
-  public SecurityOptions getSecurityOptionsDefault() {
-    return securityOptionsDefault;
-  }
-
-  @Override
-  public SecurityOptions getSecurityOptions(UserType userType) {
-    if (securityOptionsUsers.containsKey(userType)) {
-      return securityOptionsUsers.get(userType);
+  public void updatePassword(User user, String password, User author)
+      throws ServiceException, SecurityServiceException {
+    if (user == null || !StringUtils.hasText(password)) {
+      return;
     }
-    return getSecurityOptionsDefault();
-  }
 
-  @Override
-  public SecurityOptions getSecurityOptions(User user) {
-    if (user == null) {
-      return getSecurityOptionsDefault();
+    userService.setPasswords(user, password);
+    user.getPasswordInformation().setLastUpdateDate(Instant.now());
+
+    if (getSecurityOptions(user).isPasswordHistoryEnabled()) {
+      EvictingQueue<String> historyQueue =
+          EvictingQueue.create(propertyService.get(PASSWORD_HISTORY_COUNT));
+
+      for (String oldPassword : user.getPasswordInformation().getHistory()) {
+        historyQueue.offer(oldPassword);
+      }
+      historyQueue.offer(user.getPasswordHash());
+
+      user.getPasswordInformation().setHistory(ImmutableList.copyOf(historyQueue));
     }
-    return getSecurityOptions(user.getType());
+
+    user.getPasswordRecoveryRequest().reset();
+    userService.update(user);
+
+    historyLogService.log(
+        HistoryEventType.PASSWORD_UPDATE, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
@@ -120,6 +128,12 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
   }
 
   @Override
+  public boolean checkPassword(String password, User user)
+      throws ServiceException, SecurityServiceException {
+    return passwordEncoder.matches(password, user.getPasswordHash());
+  }
+
+  @Override
   public boolean isPasswordExpired(User user) {
     if (user == null
         || user.getPasswordInformation().getLastUpdateDate() == null
@@ -156,37 +170,23 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
   }
 
   @Override
-  public void updatePassword(User user, String password, User author)
-      throws ServiceException, SecurityServiceException {
-    if (user == null || !StringUtils.hasText(password)) {
-      return;
-    }
-
-    userService.setPasswords(user, password);
-    user.getPasswordInformation().setLastUpdateDate(Instant.now());
-
-    if (getSecurityOptions(user).isPasswordHistoryEnabled()) {
-      EvictingQueue<String> historyQueue =
-          EvictingQueue.create(propertyService.get(PASSWORD_HISTORY_COUNT));
-
-      for (String oldPassword : user.getPasswordInformation().getHistory()) {
-        historyQueue.offer(oldPassword);
-      }
-      historyQueue.offer(user.getPasswordHash());
-
-      user.getPasswordInformation().setHistory(ImmutableList.copyOf(historyQueue));
-    }
-
-    user.getPasswordRecoveryRequest().reset();
-    userService.update(user);
-
-    historyLogService.log(
-        HistoryEventType.PASSWORD_UPDATE, user, HistoryLogAdditionalInformationBean.empty());
+  public SecurityOptions getSecurityOptionsDefault() {
+    return securityOptionsDefault;
   }
 
   @Override
-  public boolean checkPassword(String password, User user)
-      throws ServiceException, SecurityServiceException {
-    return passwordEncoder.matches(password, user.getPasswordHash());
+  public SecurityOptions getSecurityOptions(UserType userType) {
+    if (securityOptionsUsers.containsKey(userType)) {
+      return securityOptionsUsers.get(userType);
+    }
+    return getSecurityOptionsDefault();
+  }
+
+  @Override
+  public SecurityOptions getSecurityOptions(User user) {
+    if (user == null) {
+      return getSecurityOptionsDefault();
+    }
+    return getSecurityOptions(user.getType());
   }
 }

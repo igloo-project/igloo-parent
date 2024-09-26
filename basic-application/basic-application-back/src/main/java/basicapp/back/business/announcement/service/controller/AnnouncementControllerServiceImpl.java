@@ -25,6 +25,12 @@ public class AnnouncementControllerServiceImpl implements IAnnouncementControlle
   }
 
   @Override
+  public void deleteAnnouncement(Announcement announcement)
+      throws SecurityServiceException, ServiceException {
+    announcementService.deleteAnnouncement(announcement);
+  }
+
+  @Override
   public void cleanWithoutSaving(Announcement announcement) {
     announcementService.cleanWithoutSaving(announcement);
   }
@@ -37,11 +43,5 @@ public class AnnouncementControllerServiceImpl implements IAnnouncementControlle
   @Override
   public boolean isOpen() {
     return announcementService.isOpen();
-  }
-
-  @Override
-  public void deleteAnnouncement(Announcement announcement)
-      throws SecurityServiceException, ServiceException {
-    announcementService.deleteAnnouncement(announcement);
   }
 }

@@ -19,7 +19,6 @@ public class AnnouncementTemplate extends MainTemplate {
     super(parameters);
 
     addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("navigation.administration")));
-
     addBreadCrumbElement(
         new BreadCrumbElement(
             new ResourceModel("navigation.administration.announcement"),

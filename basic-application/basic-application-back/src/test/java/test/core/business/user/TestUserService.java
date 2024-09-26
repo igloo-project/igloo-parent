@@ -64,43 +64,6 @@ class TestUserService extends AbstractBasicApplicationTestCase {
         GLOBAL_USER_READ);
   }
 
-  @Test
-  void testListUser() throws ServiceException, SecurityServiceException {
-    Role role1 =
-        entityDatabaseHelper.createRole(
-            r ->
-                r.setPermissions(
-                    ImmutableSortedSet.of(GLOBAL_REFERENCE_DATA_READ, GLOBAL_REFERENCE_DATA_WRITE)),
-            true);
-
-    Role role2 =
-        entityDatabaseHelper.createRole(
-            r -> r.setPermissions(ImmutableSortedSet.of(GLOBAL_ROLE_WRITE, GLOBAL_ROLE_READ)),
-            true);
-
-    User user =
-        entityDatabaseHelper.createUser(
-            u -> {
-              u.setUsername("test");
-              u.setFirstName("firstname");
-              u.setLastName("lastname");
-              u.setType(UserType.BASIC);
-              u.setRoles(ImmutableSortedSet.of(role1, role2));
-            },
-            true);
-
-    entityManagerReset();
-    List<User> userList = userService.list();
-
-    Assertions.assertThat(userList).size().isEqualTo(4);
-    User userBdd = userService.getById(user.getId());
-    Assertions.assertThat(userBdd.getUsername()).isEqualTo("test");
-    Assertions.assertThat(userBdd.getFirstName()).isEqualTo("firstname");
-    Assertions.assertThat(userBdd.getLastName()).isEqualTo("lastname");
-    Assertions.assertThat(userBdd.getType()).isEqualTo(UserType.BASIC);
-    Assertions.assertThat(userBdd.getRoles()).containsExactlyInAnyOrder(role1, role2);
-  }
-
   @Nested
   class saveUser {
     @WithUserDetails(value = ADMIN_USERNAME, setupBefore = TestExecutionEvent.TEST_EXECUTION)
@@ -233,5 +196,42 @@ class TestUserService extends AbstractBasicApplicationTestCase {
                       entityDatabaseHelper.createUser(null, false), USER_EDIT_PASSWORD))
           .isInstanceOf(AuthorizationDeniedException.class);
     }
+  }
+
+  @Test
+  void testListUser() throws ServiceException, SecurityServiceException {
+    Role role1 =
+        entityDatabaseHelper.createRole(
+            r ->
+                r.setPermissions(
+                    ImmutableSortedSet.of(GLOBAL_REFERENCE_DATA_READ, GLOBAL_REFERENCE_DATA_WRITE)),
+            true);
+
+    Role role2 =
+        entityDatabaseHelper.createRole(
+            r -> r.setPermissions(ImmutableSortedSet.of(GLOBAL_ROLE_WRITE, GLOBAL_ROLE_READ)),
+            true);
+
+    User user =
+        entityDatabaseHelper.createUser(
+            u -> {
+              u.setUsername("test");
+              u.setFirstName("firstname");
+              u.setLastName("lastname");
+              u.setType(UserType.BASIC);
+              u.setRoles(ImmutableSortedSet.of(role1, role2));
+            },
+            true);
+
+    entityManagerReset();
+    List<User> userList = userService.list();
+
+    Assertions.assertThat(userList).size().isEqualTo(4);
+    User userBdd = userService.getById(user.getId());
+    Assertions.assertThat(userBdd.getUsername()).isEqualTo("test");
+    Assertions.assertThat(userBdd.getFirstName()).isEqualTo("firstname");
+    Assertions.assertThat(userBdd.getLastName()).isEqualTo("lastname");
+    Assertions.assertThat(userBdd.getType()).isEqualTo(UserType.BASIC);
+    Assertions.assertThat(userBdd.getRoles()).containsExactlyInAnyOrder(role1, role2);
   }
 }

@@ -22,7 +22,7 @@ public class TestAnnouncementPermissions {
   @Nested
   class CanWriteAnnouncement {
     @Test
-    void canWriteAnnouncement_WithPermission() {
+    void canWriteAnnouncement_withPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -34,7 +34,7 @@ public class TestAnnouncementPermissions {
     }
 
     @Test
-    void canWriteAnnouncement_NoPermission() {
+    void canWriteAnnouncement_noPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -49,7 +49,7 @@ public class TestAnnouncementPermissions {
   @Nested
   class CanRemoveAnnouncement {
     @Test
-    void canRemoveAnnouncement_WithPermission() {
+    void canRemoveAnnouncement_withPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 
@@ -61,7 +61,7 @@ public class TestAnnouncementPermissions {
     }
 
     @Test
-    void canRemoveAnnouncement_NoPermission() {
+    void canRemoveAnnouncement_noPermission() {
       User authenticated = new User();
       authenticated.setType(UserType.BASIC);
 

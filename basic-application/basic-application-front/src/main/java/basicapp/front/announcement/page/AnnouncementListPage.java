@@ -10,7 +10,7 @@ import basicapp.back.business.announcement.search.AnnouncementSort;
 import basicapp.back.business.announcement.service.controller.IAnnouncementControllerService;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.announcement.model.AnnouncementDataProvider;
-import basicapp.front.announcement.popup.AnnouncementPopup;
+import basicapp.front.announcement.popup.AnnouncementSavePopup;
 import basicapp.front.announcement.renderer.AnnouncementEnabledRenderer;
 import basicapp.front.announcement.template.AnnouncementTemplate;
 import basicapp.front.common.component.AnnouncementMessagePanel;
@@ -21,7 +21,6 @@ import igloo.wicket.action.IOneParameterAjaxAction;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
-import igloo.wicket.model.Detachables;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -60,13 +59,13 @@ public class AnnouncementListPage extends AnnouncementTemplate {
     return LinkDescriptorBuilder.start().page(AnnouncementListPage.class);
   }
 
-  private final AnnouncementDataProvider dataProvider = new AnnouncementDataProvider();
-
   public AnnouncementListPage(PageParameters parameters) {
     super(parameters);
 
-    AnnouncementPopup popup = new AnnouncementPopup("popup");
-    add(popup);
+    AnnouncementDataProvider dataProvider = new AnnouncementDataProvider();
+
+    AnnouncementSavePopup savePopup = new AnnouncementSavePopup("savePopup");
+    add(savePopup);
 
     EnclosureContainer headerElementsSection = new EnclosureContainer("headerElementsSection");
     add(headerElementsSection.anyChildVisible());
@@ -77,12 +76,12 @@ public class AnnouncementListPage extends AnnouncementTemplate {
             .add(
                 new BlankLink("add")
                     .add(
-                        new AjaxModalOpenBehavior(popup, MouseEvent.CLICK) {
+                        new AjaxModalOpenBehavior(savePopup, MouseEvent.CLICK) {
                           private static final long serialVersionUID = 1L;
 
                           @Override
                           protected void onShow(AjaxRequestTarget target) {
-                            popup.setUpAdd(new Announcement());
+                            savePopup.setUpAdd(new Announcement());
                           }
                         })));
 
@@ -131,14 +130,14 @@ public class AnnouncementListPage extends AnnouncementTemplate {
             .addActionColumn()
             .addAction(
                 ActionRenderers.edit(),
-                new OneParameterModalOpenAjaxAction<IModel<Announcement>>(popup) {
+                new OneParameterModalOpenAjaxAction<IModel<Announcement>>(savePopup) {
                   private static final long serialVersionUID = 1L;
 
                   @Override
                   protected void onShow(
                       AjaxRequestTarget target, IModel<Announcement> announcementModel) {
                     super.onShow(target, announcementModel);
-                    popup.setUpEdit(announcementModel.getObject());
+                    savePopup.setUpEdit(announcementModel.getObject());
                   }
                 })
             .addConfirmAction(ActionRenderers.delete())
@@ -180,11 +179,5 @@ public class AnnouncementListPage extends AnnouncementTemplate {
             .build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 
     add(results);
-  }
-
-  @Override
-  protected void onDetach() {
-    super.onDetach();
-    Detachables.detach(dataProvider);
   }
 }

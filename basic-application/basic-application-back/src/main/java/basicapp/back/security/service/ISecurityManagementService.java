@@ -11,11 +11,8 @@ import org.iglooproject.jpa.exception.ServiceException;
 
 public interface ISecurityManagementService extends ITransactionalAspectAwareService {
 
-  SecurityOptions getSecurityOptionsDefault();
-
-  SecurityOptions getSecurityOptions(UserType userType);
-
-  SecurityOptions getSecurityOptions(User user);
+  void updatePassword(User user, String password, User author)
+      throws ServiceException, SecurityServiceException;
 
   void initiatePasswordRecoveryRequest(
       User user,
@@ -30,13 +27,16 @@ public interface ISecurityManagementService extends ITransactionalAspectAwareSer
       User author)
       throws ServiceException, SecurityServiceException;
 
+  boolean checkPassword(String password, User user)
+      throws ServiceException, SecurityServiceException;
+
   boolean isPasswordExpired(User user);
 
   boolean isPasswordRecoveryRequestExpired(User user);
 
-  void updatePassword(User user, String password, User author)
-      throws ServiceException, SecurityServiceException;
+  SecurityOptions getSecurityOptionsDefault();
 
-  boolean checkPassword(String password, User user)
-      throws ServiceException, SecurityServiceException;
+  SecurityOptions getSecurityOptions(UserType userType);
+
+  SecurityOptions getSecurityOptions(User user);
 }

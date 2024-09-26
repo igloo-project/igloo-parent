@@ -29,7 +29,7 @@ public class TestAnnouncementServiceMock {
   @Mock private IAnnouncementDao announcementDao;
 
   @Nested
-  class testSaveAnnouncement {
+  class TestSaveAnnouncement {
     @Test
     void testSaveAnnouncement_announcementNull_throwNullPointerException() {
       Assertions.assertThatThrownBy(() -> announcementService.saveAnnouncement(null))
@@ -74,7 +74,7 @@ public class TestAnnouncementServiceMock {
   }
 
   @Nested
-  class testCleanAnnouncement {
+  class TestCleanAnnouncement {
     @Test
     void cleanWithoutSaving_announcementNull_doNothing() {
       Assertions.assertThatCode(() -> announcementService.cleanWithoutSaving(null))

@@ -96,36 +96,9 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
   }
 
   @Override
-  public void onSignIn(User user) throws ServiceException, SecurityServiceException {
-    historyLogService.log(
-        HistoryEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
-  }
-
-  @Override
-  public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
-    historyLogService.log(
-        HistoryEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
-  }
-
-  @Override
-  public User getByEmailCaseInsensitive(String email) {
-    if (!StringUtils.hasText(StringUtils.lowerCase(email))) {
-      return null;
-    }
-    return userDao.getByEmailCaseInsensitive(email);
-  }
-
-  @Override
-  public void affectRoles(User user) throws SecurityServiceException, ServiceException {
+  public void updateRoles(User user) throws SecurityServiceException, ServiceException {
     Objects.requireNonNull(user);
     update(user);
-  }
-
-  @Override
-  public User getAuthenticatedUser() {
-    return Optional.ofNullable(authenticationService.getUsername())
-        .map(username -> HibernateUtils.unwrap(getByUsername(username)))
-        .orElse(null);
   }
 
   @Override
@@ -177,5 +150,32 @@ public class UserServiceImpl extends GenericSimpleUserServiceImpl<User> implemen
               : UserPasswordRecoveryRequestType.CREATION,
           UserPasswordRecoveryRequestInitiator.USER);
     }
+  }
+
+  @Override
+  public void onSignIn(User user) throws ServiceException, SecurityServiceException {
+    historyLogService.log(
+        HistoryEventType.SIGN_IN, user, HistoryLogAdditionalInformationBean.empty());
+  }
+
+  @Override
+  public void onSignInFail(User user) throws ServiceException, SecurityServiceException {
+    historyLogService.log(
+        HistoryEventType.SIGN_IN_FAIL, user, HistoryLogAdditionalInformationBean.empty());
+  }
+
+  @Override
+  public User getByEmailCaseInsensitive(String email) {
+    if (!StringUtils.hasText(StringUtils.lowerCase(email))) {
+      return null;
+    }
+    return userDao.getByEmailCaseInsensitive(email);
+  }
+
+  @Override
+  public User getAuthenticatedUser() {
+    return Optional.ofNullable(authenticationService.getUsername())
+        .map(username -> HibernateUtils.unwrap(getByUsername(username)))
+        .orElse(null);
   }
 }

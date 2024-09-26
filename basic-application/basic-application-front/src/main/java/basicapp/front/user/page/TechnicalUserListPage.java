@@ -56,7 +56,9 @@ public class TechnicalUserListPage extends UserTemplate {
   private static final long serialVersionUID = 1L;
 
   public static IPageLinkDescriptor linkDescriptor() {
-    return LinkDescriptorBuilder.start().page(TechnicalUserListPage.class);
+    return LinkDescriptorBuilder.start()
+        .validator(Condition.role(ROLE_ADMIN))
+        .page(TechnicalUserListPage.class);
   }
 
   @SpringBean private IPropertyService propertyService;

@@ -13,6 +13,5 @@ public interface IRoleControllerService {
   @PreAuthorize(ROLE_WRITE)
   void saveRole(@PermissionObject Role role) throws ServiceException, SecurityServiceException;
 
-  // no PreAuthorize, use only for unicity validator
   Role getByTitle(String title);
 }

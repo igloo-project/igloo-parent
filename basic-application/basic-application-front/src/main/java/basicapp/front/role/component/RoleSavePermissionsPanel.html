@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <wicket:panel>
-	<div wicket:id="permissionsGroup">
-		<div wicket:id="categories" class="col-lg-4">
+	<div wicket:id="permissions" class="row g-4">
+		<div wicket:id="categories" class="col-lg-6 col-2xl-4">
 			<div class="card card-main">
 				<div class="card-header">
 					<h4 class="card-header-title">
@@ -12,13 +12,13 @@
 				</div>
 				<div class="list-group list-group-flush">
 					<wicket:container wicket:id="permissions">
-						<label wicket:for="permissionCheck" class="list-group-item mb-0">
+						<label wicket:for="permission" class="list-group-item mb-0">
 							<span class="row row-action align-items-baseline">
 								<span class="col">
 									<wicket:label />
 								</span>
 								<span class="col-auto ml-auto">
-									<input wicket:id="permissionCheck" type="checkbox" class="form-check-input" />
+									<input wicket:id="permission" class="form-check-input" type="checkbox" />
 								</span>
 							</span>
 						</label>

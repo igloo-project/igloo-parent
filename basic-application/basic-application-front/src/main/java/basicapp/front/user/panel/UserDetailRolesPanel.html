@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 	<wicket:panel>
-		<div wicket:id="editPopup"></div>
+		<div wicket:id="editPopup" />
 		
 		<div class="card card-main">
 			<div class="card-header">
@@ -20,10 +20,10 @@
 										<li wicket:id="roles">
 											<div class="row g-1 align-items-baseline flex-text-break">
 												<div class="col-auto">
-													<span wicket:id="roleCheck" />
+													<span wicket:id="check" />
 												</div>
 												<div class="col">
-													<span wicket:id="roleName" />
+													<span wicket:id="name" />
 												</div>
 											</div>
 										</li>
@@ -33,7 +33,6 @@
 						</div>
 					</div>
 				</div>
-				
 				<div wicket:id="actionsContainer" class="card-action card-action-bottom">
 					<div class="row row-action justify-content-end">
 						<div wicket:enclosure-component="edit" class="col-auto">

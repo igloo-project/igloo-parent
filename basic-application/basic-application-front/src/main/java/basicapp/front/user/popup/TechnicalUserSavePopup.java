@@ -44,7 +44,6 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 import org.iglooproject.spring.property.SpringPropertyIds;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
-import org.iglooproject.wicket.more.markup.html.form.FormMode;
 import org.iglooproject.wicket.more.markup.html.form.LocaleDropDownChoice;
 import org.iglooproject.wicket.more.markup.html.form.ModelValidatingForm;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
@@ -78,11 +77,9 @@ public class TechnicalUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
 
   @SpringBean protected IPropertyService propertyService;
 
-  protected final IModel<FormMode> formModeModel = new Model<>(FormMode.ADD);
+  private final IModel<String> passwordModel = Model.of();
 
-  protected ModelValidatingForm<User> form;
-
-  protected final IModel<String> passwordModel = Model.of();
+  private ModelValidatingForm<User> form;
 
   public TechnicalUserSavePopup(String id) {
     super(id, new GenericEntityModel<>());
@@ -215,12 +212,7 @@ public class TechnicalUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
           protected void onError(AjaxRequestTarget target) {
             FeedbackUtils.refreshFeedback(target, getPage());
           }
-        }.add(
-            new CoreLabel(
-                "label",
-                addModeCondition()
-                    .then(new ResourceModel("common.action.create"))
-                    .otherwise(new ResourceModel("common.action.save")))));
+        });
 
     BlankLink cancel = new BlankLink("cancel");
     addCancelBehavior(cancel);
@@ -233,31 +225,23 @@ public class TechnicalUserSavePopup extends AbstractAjaxModalPopupPanel<User> {
     if (user.getLocale() == null) {
       user.setLocale(propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
     }
-
     getModel().setObject(user);
-    formModeModel.setObject(FormMode.ADD);
   }
 
   public void setUpEdit(User user) {
     if (user.getLocale() == null) {
       user.setLocale(propertyService.get(SpringPropertyIds.DEFAULT_LOCALE));
     }
-
     getModel().setObject(user);
-    formModeModel.setObject(FormMode.EDIT);
   }
 
   private Condition addModeCondition() {
-    return FormMode.ADD.condition(formModeModel);
-  }
-
-  private Condition editModeCondition() {
-    return FormMode.EDIT.condition(formModeModel);
+    return Condition.isTrueOrNull(BindingModel.of(getModel(), Bindings.user().isNew()));
   }
 
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(formModeModel, passwordModel);
+    Detachables.detach(passwordModel);
   }
 }
