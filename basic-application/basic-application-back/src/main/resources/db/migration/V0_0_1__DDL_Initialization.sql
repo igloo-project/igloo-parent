@@ -1,5 +1,4 @@
 create sequence Announcement_id_seq start with 1 increment by 1;
-create sequence Authority_id_seq start with 1 increment by 1;
 create sequence City_id_seq start with 1 increment by 1;
 create sequence DataUpgradeRecord_id_seq start with 1 increment by 1;
 create sequence HistoryDifference_id_seq start with 1 increment by 1;
@@ -9,8 +8,6 @@ create sequence QueuedTaskHolder_id_seq start with 1 increment by 1;
 create sequence Role_id_seq start with 1 increment by 1;
 create sequence user__id_seq start with 1 increment by 1;
 create table Announcement (id bigint not null, creation_date timestamp(6) with time zone not null, creation_subject_label text, creation_subject_reference_id bigint, creation_subject_reference_type varchar(255), creation_subject_serialized text, description_en varchar(255), description_fr varchar(255), enabled boolean not null, interruption_endDateTime timestamp(6), interruption_startDateTime timestamp(6), modification_date timestamp(6) with time zone not null, modification_subject_label text, modification_subject_reference_id bigint, modification_subject_reference_type varchar(255), modification_subject_serialized text, publication_endDateTime timestamp(6) not null, publication_startDateTime timestamp(6) not null, title_en varchar(255), title_fr varchar(255), type varchar(255) not null check (type in ('SERVICE_INTERRUPTION','OTHER')), primary key (id));
-create table Authority (id bigint not null, name varchar(255), primary key (id));
-create table Authority_customPermissionNames (Authority_id bigint not null, customPermissionNames varchar(255));
 create table City (id bigint not null, deleteable boolean not null, disableable boolean not null, editable boolean not null, enabled boolean not null, position integer not null, label_en varchar(255), label_fr varchar(255), postalCode bytea not null, primary key (id), unique (label_fr, postalcode));
 create table DataUpgradeRecord (id bigint not null, autoPerform boolean not null, done boolean not null, executionDate timestamp(6) with time zone, name varchar(255) not null, primary key (id), unique (name));
 create table HistoryDifference (id bigint not null, after_label text, after_reference_id bigint, after_reference_type varchar(255), after_serialized text, before_label text, before_reference_id bigint, before_reference_type varchar(255), before_serialized text, eventType varchar(255) not null check (eventType in ('ADDED','UPDATED','REMOVED','UNTOUCHED')), path_key_label text, path_key_reference_id bigint, path_key_reference_type varchar(255), path_key_serialized text, path_path bytea not null, parentDifference_id bigint, parentLog_id bigint, differences_ORDER integer, primary key (id));
@@ -25,7 +22,6 @@ create table user__Role (users_id bigint not null, roles_id bigint not null, pri
 create index idx_HistoryDifference_parentLog on HistoryDifference (parentLog_id);
 create index idx_HistoryDifference_parentDifference on HistoryDifference (parentDifference_id);
 create index user__role_role_id_idx on user__Role (roles_id);
-alter table if exists Authority_customPermissionNames add constraint FK6uqor94s0128ryjrrdw84f67x foreign key (Authority_id) references Authority;
 alter table if exists HistoryDifference add constraint FKbs6nv5pjsfuj7na52g16pfbrw foreign key (parentDifference_id) references HistoryDifference;
 alter table if exists HistoryDifference add constraint FK77dlplmm50qgjbl1cqv4nrgoi foreign key (parentLog_id) references HistoryLog;
 alter table if exists Role_permissions add constraint FK1r7f38f77hj0tgnruphe4t90m foreign key (Role_id) references Role;
