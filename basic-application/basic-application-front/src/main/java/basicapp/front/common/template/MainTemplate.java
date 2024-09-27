@@ -9,15 +9,15 @@ import basicapp.back.security.service.IBasicApplicationAuthenticationService;
 import basicapp.back.security.service.ISecurityManagementService;
 import basicapp.front.BasicApplicationApplication;
 import basicapp.front.BasicApplicationSession;
-import basicapp.front.administration.page.AdministrationAnnouncementListPage;
-import basicapp.front.administration.page.AdministrationBasicUserListPage;
-import basicapp.front.administration.page.AdministrationTechnicalUserListPage;
-import basicapp.front.administration.page.AdministrationUserGroupListPage;
+import basicapp.front.announcement.page.AnnouncementListPage;
 import basicapp.front.common.component.AnnouncementsPanel;
 import basicapp.front.common.template.theme.BasicApplicationApplicationTheme;
 import basicapp.front.common.template.theme.common.BootstrapBreakpointPanel;
 import basicapp.front.referencedata.page.ReferenceDataPage;
 import basicapp.front.security.password.page.SecurityPasswordExpirationPage;
+import basicapp.front.user.page.BasicUserListPage;
+import basicapp.front.user.page.TechnicalUserListPage;
+import basicapp.front.usergroup.page.UserGroupListPage;
 import com.google.common.collect.ImmutableList;
 import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
@@ -69,7 +69,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
       throw new RedirectToUrlException(propertyService.get(MAINTENANCE_URL));
     }
 
-    if (securityManagementService.isPasswordExpired(BasicApplicationSession.get().getUser())) {
+    if (BasicApplicationSession.get().getOriginalAuthentication() == null
+        && securityManagementService.isPasswordExpired(BasicApplicationSession.get().getUser())) {
       throw SecurityPasswordExpirationPage.linkDescriptor().newRestartResponseException();
     }
 
@@ -84,7 +85,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
             .add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel())));
 
     addHeadPageTitlePrependedElement(
-        new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
+        new BreadCrumbElement(new ResourceModel("common.application.name")));
     add(createHeadPageTitle("headPageTitle"));
 
     add(new AnnouncementsPanel("announcements"));
@@ -118,15 +119,14 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
             .iconClasses(Model.of("fa fa-fw fa-cogs"))
             .subMenuForceOpen()
             .subMenuItems(
-                AdministrationBasicUserListPage.linkDescriptor()
+                BasicUserListPage.linkDescriptor()
+                    .navigationMenuItem(new ResourceModel("navigation.administration.basicUser")),
+                TechnicalUserListPage.linkDescriptor()
                     .navigationMenuItem(
-                        new ResourceModel("navigation.administration.user.basicUser")),
-                AdministrationTechnicalUserListPage.linkDescriptor()
-                    .navigationMenuItem(
-                        new ResourceModel("navigation.administration.user.technicalUser")),
-                AdministrationUserGroupListPage.linkDescriptor()
+                        new ResourceModel("navigation.administration.technicalUser")),
+                UserGroupListPage.linkDescriptor()
                     .navigationMenuItem(new ResourceModel("navigation.administration.userGroup")),
-                AdministrationAnnouncementListPage.linkDescriptor()
+                AnnouncementListPage.linkDescriptor()
                     .navigationMenuItem(
                         new ResourceModel("navigation.administration.announcement"))),
         LinkDescriptorBuilder.start()

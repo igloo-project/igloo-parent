@@ -1,5 +1,6 @@
 package igloo.cache.wicket.page;
 
+import com.google.common.collect.ImmutableList;
 import igloo.bootstrap.confirm.AjaxConfirmLink;
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.cache.binding.CacheBindings;
@@ -16,7 +17,8 @@ import igloo.wicket.condition.Condition;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.model.BindingModel;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -28,8 +30,9 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.ResourceModel;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.iglooproject.functional.Predicates2;
+import org.iglooproject.spring.util.StringUtils;
 import org.iglooproject.wicket.more.markup.html.form.LabelPlaceholderBehavior;
 import org.iglooproject.wicket.more.markup.html.link.BlankLink;
 import org.iglooproject.wicket.more.markup.html.model.PercentageFloatToBigDecimalModel;
@@ -71,7 +74,8 @@ public class ConsoleMaintenanceCachesPage extends ConsoleMaintenanceTemplate {
   public ConsoleMaintenanceCachesPage(PageParameters parameters) {
     super(parameters);
 
-    addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.caches")));
+    addBreadCrumbElement(
+        new BreadCrumbElement(new ResourceModel("console.navigation.maintenance.caches")));
 
     add(new ClipboardBehavior());
 
@@ -95,12 +99,16 @@ public class ConsoleMaintenanceCachesPage extends ConsoleMaintenanceTemplate {
                 () ->
                     item.getModelObject().getCacheManager().getCacheNames().stream()
                         .map(n -> item.getModelObject().getCacheManager().getCache(n))
-                        .collect(Collectors.toList());
+                        .filter(
+                            Predicates2.compose(
+                                getFilterPredicate(filterModel.getObject()), Cache::getName))
+                        .collect(ImmutableList.toImmutableList());
 
             item.add(
                 new CoreLabel("name", cacheManagerNameModel),
                 new TextField<>("filter", filterModel)
-                    .setLabel(new ResourceModel("console.maintenance.caches.cacheManager.filter"))
+                    .setLabel(
+                        new ResourceModel("console.maintenance.caches.cacheManager.search.name"))
                     .add(new LabelPlaceholderBehavior())
                     .add(
                         new AjaxFormComponentUpdatingBehavior(KeyboardEvent.KEYUP.getEventLabel()) {
@@ -112,11 +120,9 @@ public class ConsoleMaintenanceCachesPage extends ConsoleMaintenanceTemplate {
                           }
                         }),
                 AjaxConfirmLink.<CacheManagerWrapper>build()
-                    .title(new ResourceModel("common.action.confirm.title"))
-                    .content(
-                        new StringResourceModel(
-                                "console.maintenance.caches.cacheManager.purge.confirm")
-                            .setParameters(cacheManagerNameModel))
+                    .title(
+                        new ResourceModel("console.maintenance.caches.cacheManager.action.purge"))
+                    .content(new ResourceModel("common.action.confirm.content"))
                     .yesNo()
                     .onClick(
                         new IAjaxAction() {
@@ -226,11 +232,10 @@ public class ConsoleMaintenanceCachesPage extends ConsoleMaintenanceTemplate {
 
                             item.add(
                                 AjaxConfirmLink.<Cache>build()
-                                    .title(new ResourceModel("common.action.confirm.title"))
-                                    .content(
-                                        new StringResourceModel(
-                                                "console.maintenance.caches.cacheManager.cache.clear.confirm.content")
-                                            .setParameters(cacheNameModel))
+                                    .title(
+                                        new ResourceModel(
+                                            "console.maintenance.caches.cacheManager.cache.action.clear"))
+                                    .content(new ResourceModel("common.action.confirm.content"))
                                     .yesNo()
                                     .onClick(
                                         new IAjaxAction() {
@@ -258,6 +263,17 @@ public class ConsoleMaintenanceCachesPage extends ConsoleMaintenanceTemplate {
                     .setOutputMarkupId(true));
           }
         }.setReuseItems(true));
+  }
+
+  private Predicate<String> getFilterPredicate(String filter) {
+    Predicate<String> filterPredicate = Predicates2.alwaysTrue();
+    if (StringUtils.hasText(filter)) {
+      for (String split : filter.split("\\s+")) {
+        filterPredicate =
+            filterPredicate.and(Predicates2.contains(Pattern.compile("(?i)^.*" + split + ".*$")));
+      }
+    }
+    return filterPredicate;
   }
 
   @Override

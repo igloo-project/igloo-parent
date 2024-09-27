@@ -3,8 +3,8 @@ package basicapp.front.common.template.theme.advanced;
 import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants.ROLE_ADMIN;
 
 import basicapp.back.business.user.model.User;
-import basicapp.front.administration.form.UserAjaxDropDownSingleChoice;
-import basicapp.front.administration.template.AdministrationUserDetailTemplate;
+import basicapp.front.user.form.UserAjaxDropDownSingleChoice;
+import basicapp.front.user.template.UserDetailTemplate;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.model.Detachables;
@@ -50,7 +50,7 @@ public class SidebarQuickSearchPanel extends Panel {
                                   public void onBeforeRespond(
                                       Map<String, Component> map, AjaxRequestTarget target) {
                                     IPageLinkDescriptor linkDescriptor =
-                                        AdministrationUserDetailTemplate.mapper()
+                                        UserDetailTemplate.mapper()
                                             .setParameter2(
                                                 new ComponentPageModel(
                                                     SidebarQuickSearchPanel.this))

@@ -4,10 +4,8 @@ import basicapp.front.common.component.FeatureNotYetAvailablePanel;
 import basicapp.front.common.component.NavTabsPanel;
 import basicapp.front.referencedata.component.CityListPanel;
 import basicapp.front.referencedata.template.ReferenceDataTemplate;
-import igloo.wicket.component.CoreLabel;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
@@ -22,8 +20,6 @@ public class ReferenceDataPage extends ReferenceDataTemplate {
 
   public ReferenceDataPage(PageParameters parameters) {
     super(parameters);
-
-    add(new CoreLabel("pageTitle", new ResourceModel("navigation.referenceData")));
 
     add(
         new NavTabsPanel("tabs")

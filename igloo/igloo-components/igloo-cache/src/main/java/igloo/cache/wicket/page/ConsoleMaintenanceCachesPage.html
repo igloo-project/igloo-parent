@@ -7,7 +7,7 @@
 			<div class="content-header-container">
 				<div class="content-header">
 					<h1 class="content-header-title">
-						<wicket:message key="console.maintenance.caches" />
+						<wicket:message key="console.maintenance.caches.title" />
 					</h1>
 				</div>
 			</div>
@@ -31,7 +31,7 @@
 										<div class="col-auto ms-auto">
 											<button wicket:id="purge" class="btn btn-danger" type="button">
 												<span class="fa fa-fw fa-trash" />
-												<wicket:message key="console.maintenance.caches.cacheManager.purge" />
+												<wicket:message key="console.maintenance.caches.cacheManager.action.purge" />
 											</button>
 										</div>
 									</div>
@@ -41,7 +41,7 @@
 										<table class="table table-bordered">
 											<thead class="table-light">
 												<tr>
-													<th class="cell-w-40s0"><wicket:message key="console.maintenance.caches.cacheManager.cache.nom" /></th>
+													<th class="cell-w-40s0"><wicket:message key="console.maintenance.caches.cacheManager.cache.name" /></th>
 													<th class="cell-w-80"><wicket:message key="console.maintenance.caches.cacheManager.cache.evictionCount" /></th>
 													<th class="cell-w-80"><wicket:message key="console.maintenance.caches.cacheManager.cache.cacheHits" /></th>
 													<th class="cell-w-80"><wicket:message key="console.maintenance.caches.cacheManager.cache.cacheMisses" /></th>
@@ -58,7 +58,7 @@
 														<span wicket:id="name" />
 														<div class="input-group input-group-sm">
 															<input wicket:id="nameInput" class="form-control" type="text" />
-															<button wicket:id="copy" class="btn btn-outline-secondary" type="button" wicket:message="title:console.maintenance.caches.cacheManager.cache.nom.copy">
+															<button wicket:id="copy" class="btn btn-outline-secondary" type="button" wicket:message="title:console.maintenance.caches.cacheManager.cache.name.action.copy">
 																<span class="fa fa-fw fa-clipboard" />
 															</button>
 														</div>
@@ -81,7 +81,7 @@
 															</div>
 															<div class="col-table-action">
 																<button wicket:id="clear" class="btn btn-table-row-action btn-danger" type="button"
-																	wicket:message="title:console.maintenance.caches.cacheManager.cache.clear">
+																	wicket:message="title:console.maintenance.caches.cacheManager.cache.action.clear">
 																	<span class="fa fa-fw fa-trash" />
 																</button>
 															</div>

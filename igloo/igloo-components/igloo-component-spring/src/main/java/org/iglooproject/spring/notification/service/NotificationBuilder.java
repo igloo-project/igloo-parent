@@ -810,13 +810,13 @@ public class NotificationBuilder
   private String getDefaultSender(String from) {
     MailSenderBehavior behavior = propertyService.get(NOTIFICATION_MAIL_SENDER_BEHAVIOR);
     switch (behavior) {
-        /** Do not override builder value */
+      /** Do not override builder value */
       case EXPLICIT:
         return null;
-        /** Use value from configuration */
+      /** Use value from configuration */
       case FALLBACK_TO_CONFIGURATION:
         return propertyService.get(NOTIFICATION_MAIL_SENDER);
-        /** Use value from From: */
+      /** Use value from From: */
       case FALLBACK_TO_FROM:
         return from;
       default:

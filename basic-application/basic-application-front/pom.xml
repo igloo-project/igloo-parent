@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.0.0-Alpha15</version>
+		<version>6.0.0-Alpha16</version>
 	</parent>
 	
 	<packaging>jar</packaging>
@@ -65,6 +65,11 @@
 		<dependency>
 			<groupId>org.iglooproject.webjars</groupId>
 			<artifactId>bootstrap4-override</artifactId>
+			<version>${igloo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.iglooproject.components</groupId>
+			<artifactId>igloo-spring-actuator</artifactId>
 			<version>${igloo.version}</version>
 		</dependency>
 		<dependency>
@@ -234,6 +239,13 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-commons</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-tools</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

@@ -10,7 +10,7 @@ import igloo.bootstrap.common.IBootstrapColor;
 import igloo.bootstrap.confirm.AjaxConfirmLink;
 import igloo.bootstrap5.markup.html.bootstrap.component.BootstrapBadge;
 import igloo.console.maintenance.task.component.ConsoleMaintenanceTaskBatchReportPanel;
-import igloo.console.maintenance.template.ConsoleMaintenanceTemplate;
+import igloo.console.maintenance.task.template.ConsoleMaintenanceTaskTemplate;
 import igloo.wicket.action.IAjaxAction;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.DefaultPlaceholderPanel;
@@ -53,7 +53,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate {
+public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTaskTemplate {
 
   private static final long serialVersionUID = 7622945973237519021L;
 
@@ -87,10 +87,6 @@ public class ConsoleMaintenanceTaskDetailPage extends ConsoleMaintenanceTemplate
 
     IModel<QueuedTaskHolder> queuedTaskHolderModel = new GenericEntityModel<>();
 
-    addBreadCrumbElement(
-        new BreadCrumbElement(
-            new ResourceModel("console.maintenance.tasks"),
-            ConsoleMaintenanceTaskListPage.linkDescriptor()));
     addBreadCrumbElement(
         new BreadCrumbElement(new ResourceModel("console.maintenance.task.common.task")));
 

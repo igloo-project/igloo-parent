@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<wicket:extend>
+	<div class="content-container">
+		<div class="content-header-section">
+			<div class="content-header-container">
+				<div class="content-header">
+					<h1 class="content-header-title">
+						<wicket:message key="console.maintenance.management.title" />
+					</h1>
+				</div>
+			</div>
+		</div>
+		<div class="content-body-section">
+			<div class="content-body-container">
+				<div class="content-body">
+					<div class="row g-4">
+						<div class="col-xl-6">
+							<div wicket:id="card" class="card card-main">
+								<div class="card-header">
+									<div class="card-header-title">
+										<wicket:message key="console.maintenance.management.maintenance.title" />
+									</div>
+								</div>
+								<div class="card-body">
+									<wicket:container wicket:id="enabledContainer">
+										<div class="alert alert-danger">
+											<wicket:message key="console.maintenance.management.maintenance.intro.enabled" />
+										</div>
+										<div class="card-action card-action-bottom">
+											<div class="row row-action justify-content-end">
+												<div class="col-auto">
+													<button wicket:id="disabled" class="btn btn-success" type="button">
+														<span class="fa fa-fw fa-store-alt" />
+														<wicket:message key="console.maintenance.management.maintenance.action.disabled" />
+													</button>
+												</div>
+											</div>
+										</div>
+									</wicket:container>
+									<wicket:container wicket:id="disabledContainer">
+										<div class="alert alert-success">
+											<wicket:message key="console.maintenance.management.maintenance.intro.disabled" />
+										</div>
+										<div class="card-action card-action-bottom">
+											<div class="row row-action justify-content-end">
+												<div class="col-auto">
+													<button wicket:id="enabled" class="btn btn-danger" type="button">
+														<span class="fa fa-fw fa-store-alt-slash" />
+														<wicket:message key="console.maintenance.management.maintenance.action.enabled" />
+													</button>
+												</div>
+											</div>
+										</div>
+									</wicket:container>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</wicket:extend>
+</html>

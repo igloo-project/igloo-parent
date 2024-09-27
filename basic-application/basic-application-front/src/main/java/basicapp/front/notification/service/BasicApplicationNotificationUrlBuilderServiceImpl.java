@@ -2,7 +2,7 @@ package basicapp.front.notification.service;
 
 import basicapp.back.business.notification.service.IBasicApplicationNotificationUrlBuilderService;
 import basicapp.back.business.user.model.User;
-import basicapp.front.administration.template.AdministrationUserDetailTemplate;
+import basicapp.front.user.template.UserDetailTemplate;
 import java.util.concurrent.Callable;
 import org.iglooproject.wicket.more.link.descriptor.generator.IPageLinkGenerator;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
@@ -30,9 +30,7 @@ public class BasicApplicationNotificationUrlBuilderServiceImpl
         new Callable<IPageLinkGenerator>() {
           @Override
           public IPageLinkGenerator call() {
-            return AdministrationUserDetailTemplate.mapper()
-                .ignoreParameter2()
-                .map(GenericEntityModel.of(user));
+            return UserDetailTemplate.mapper().ignoreParameter2().map(GenericEntityModel.of(user));
           }
         };
 

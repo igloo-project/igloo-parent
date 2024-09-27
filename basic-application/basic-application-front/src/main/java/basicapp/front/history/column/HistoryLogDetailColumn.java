@@ -2,6 +2,7 @@ package basicapp.front.history.column;
 
 import basicapp.back.business.history.model.HistoryDifference;
 import basicapp.back.business.history.model.HistoryLog;
+import basicapp.back.business.history.search.HistoryLogSort;
 import basicapp.back.util.binding.Bindings;
 import basicapp.front.history.component.DefaultHistoryDifferencePanel;
 import basicapp.front.history.component.HistoryLogDetailColumnPanel;
@@ -21,7 +22,6 @@ import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializablePredicate2;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
-import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 
 /**

@@ -79,7 +79,7 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
                     "security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
                 .setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
                 .setDefaultValue(
-                    new StringResourceModel("security.user.password.help")
+                    new StringResourceModel("user.common.form.password.help")
                         .setParameters(
                             ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN)))));
 

@@ -2,7 +2,7 @@ package basicapp.front.common.form;
 
 import basicapp.back.business.referencedata.model.ReferenceData;
 import basicapp.back.business.referencedata.model.comparator.ReferenceDataComparator;
-import basicapp.front.common.renderer.ReferenceDataRenderer;
+import basicapp.front.referencedata.renderer.ReferenceDataRenderer;
 import java.util.Collection;
 import org.apache.wicket.model.IModel;
 import org.iglooproject.functional.SerializableSupplier2;

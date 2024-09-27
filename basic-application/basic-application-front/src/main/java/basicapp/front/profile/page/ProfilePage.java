@@ -30,7 +30,7 @@ public class ProfilePage extends ProfileTemplate {
     addBreadCrumbElement(
         new BreadCrumbElement(BindingModel.of(userModel, Bindings.user().fullName())));
 
-    add(new CoreLabel("pageTitle", BindingModel.of(userModel, Bindings.user().fullName())));
+    add(new CoreLabel("title", BindingModel.of(userModel, Bindings.user().fullName())));
 
     add(new ProfileDescriptionPanel("description", userModel));
   }

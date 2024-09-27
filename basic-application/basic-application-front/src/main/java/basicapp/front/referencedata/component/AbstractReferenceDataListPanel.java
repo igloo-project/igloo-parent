@@ -4,7 +4,7 @@ import static basicapp.front.common.util.CssClassConstants.BTN_TABLE_ROW_ACTION;
 
 import basicapp.back.business.referencedata.model.ReferenceData;
 import basicapp.front.common.renderer.ActionRenderers;
-import basicapp.front.referencedata.form.AbstractReferenceDataPopup;
+import basicapp.front.referencedata.popup.AbstractReferenceDataPopup;
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.bootstrap.modal.OneParameterModalOpenAjaxAction;
 import igloo.wicket.component.EnclosureContainer;

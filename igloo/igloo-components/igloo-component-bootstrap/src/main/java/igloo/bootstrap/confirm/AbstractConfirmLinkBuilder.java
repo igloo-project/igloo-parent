@@ -176,7 +176,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O>
   @Override
   public IConfirmLinkBuilderStepOnclick<L, O> confirm() {
     this.yesLabelModel = new ResourceModel("common.action.confirm");
-    this.noLabelModel = new ResourceModel("common.cancel");
+    this.noLabelModel = new ResourceModel("common.action.cancel");
     this.yesIconModel = new Model<>("fa fa-fw fa-check");
     this.noIconModel = new Model<>();
     this.yesButtonModel = new Model<>("btn btn-success");
@@ -187,7 +187,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O>
   @Override
   public IConfirmLinkBuilderStepOnclick<L, O> validate() {
     this.yesLabelModel = new ResourceModel("common.action.validate");
-    this.noLabelModel = new ResourceModel("common.cancel");
+    this.noLabelModel = new ResourceModel("common.action.cancel");
     this.yesIconModel = new Model<>("fa fa-fw fa-check");
     this.noIconModel = new Model<>();
     this.yesButtonModel = new Model<>("btn btn-success");
@@ -198,7 +198,7 @@ public abstract class AbstractConfirmLinkBuilder<L extends AbstractLink, O>
   @Override
   public IConfirmLinkBuilderStepOnclick<L, O> save() {
     this.yesLabelModel = new ResourceModel("common.action.save");
-    this.noLabelModel = new ResourceModel("common.cancel");
+    this.noLabelModel = new ResourceModel("common.action.cancel");
     this.yesIconModel = new Model<>("fa fa-fw fa-check");
     this.noIconModel = new Model<>();
     this.yesButtonModel = new Model<>("btn btn-success");

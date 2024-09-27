@@ -2,6 +2,7 @@ package basicapp.front.history.model;
 
 import basicapp.back.business.history.model.HistoryLog;
 import basicapp.back.business.history.search.HistoryLogSearchQueryData;
+import basicapp.back.business.history.search.HistoryLogSort;
 import basicapp.back.business.history.search.IHistoryLogSearchQuery;
 import basicapp.back.util.binding.Bindings;
 import com.google.common.collect.ImmutableMap;
@@ -11,7 +12,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.functional.Suppliers2;
-import org.iglooproject.jpa.more.business.history.search.HistoryLogSort;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel;
 import org.iglooproject.wicket.more.markup.html.sort.model.CompositeSortModel.CompositingStrategy;
 import org.iglooproject.wicket.more.model.GenericEntityModel;
@@ -43,6 +43,9 @@ public class HistoryLogDataProvider
             new DataModel<>(HistoryLogSearchQueryData::new)
                 .bind(Bindings.historyLogSearchQueryData().dateMin(), Model.of())
                 .bind(Bindings.historyLogSearchQueryData().dateMax(), Model.of())
+                .bind(
+                    Bindings.historyLogSearchQueryData().eventTypes(),
+                    CollectionCopyModel.serializable(Suppliers2.linkedHashSet()))
                 .bind(Bindings.historyLogSearchQueryData().subject(), new GenericEntityModel<>())
                 .bind(Bindings.historyLogSearchQueryData().allObjects(), Model.of())
                 .bind(Bindings.historyLogSearchQueryData().mainObject(), Model.of())

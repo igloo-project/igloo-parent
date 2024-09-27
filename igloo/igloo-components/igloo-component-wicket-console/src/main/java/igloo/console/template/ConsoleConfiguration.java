@@ -5,7 +5,7 @@ import com.google.common.collect.Sets;
 import igloo.console.maintenance.authentication.page.ConsoleMaintenanceAuthenticationPage;
 import igloo.console.maintenance.data.page.ConsoleMaintenanceDataPage;
 import igloo.console.maintenance.file.page.ConsoleMaintenanceFilePage;
-import igloo.console.maintenance.gestion.page.ConsoleMaintenanceGestionPage;
+import igloo.console.maintenance.management.page.ConsoleMaintenanceManagementPage;
 import igloo.console.maintenance.properties.page.ConsoleMaintenancePropertiesPage;
 import igloo.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import igloo.console.maintenance.task.page.ConsoleMaintenanceTaskDetailPage;
@@ -24,7 +24,6 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.UrlUtils;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.settings.ResourceSettings;
-import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItem;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuItemRelatedPage;
 import org.iglooproject.wicket.more.console.common.model.ConsoleMenuSection;
@@ -39,8 +38,6 @@ public final class ConsoleConfiguration {
   private final List<ConsoleMenuSection> menuSections = Lists.newArrayList();
 
   private String baseUrl = null;
-
-  private String consoleTitleKey;
 
   private Set<ResourceReference> cssResourcesReferences = Sets.newLinkedHashSet();
 
@@ -63,9 +60,8 @@ public final class ConsoleConfiguration {
     return INSTANCE;
   }
 
-  public static ConsoleConfiguration build(
-      String baseUrl, IPropertyService propertyService, ResourceSettings resourceSettings) {
-    return build(baseUrl, "common.console", propertyService, resourceSettings, null);
+  public static ConsoleConfiguration build(String baseUrl, ResourceSettings resourceSettings) {
+    return build(baseUrl, resourceSettings, null);
   }
 
   /**
@@ -76,12 +72,9 @@ public final class ConsoleConfiguration {
    */
   public static ConsoleConfiguration build(
       String baseUrl,
-      String consoleTitleKey,
-      IPropertyService propertyService,
       ResourceSettings resourceSettings,
       Consumer<ConsoleConfiguration> customConfiguration) {
     INSTANCE.setBaseUrl(UrlUtils.normalizePath(baseUrl));
-    INSTANCE.setConsoleTitleKey(consoleTitleKey);
 
     if (customConfiguration == null) {
       INSTANCE.buildDefault();
@@ -98,48 +91,48 @@ public final class ConsoleConfiguration {
     ConsoleMenuSection maintenanceMenuSection =
         new ConsoleMenuSection(
             "maintenanceMenuSection",
-            "console.maintenance",
+            "console.navigation.maintenance",
             "maintenance",
             ConsoleMaintenanceSearchPage.class);
     ConsoleMenuItem maintenanceSearchMenuItem =
         new ConsoleMenuItem(
             "maintenanceSearchMenuItem",
-            "console.maintenance.search",
+            "console.navigation.maintenance.search",
             "search",
             ConsoleMaintenanceSearchPage.class);
     maintenanceMenuSection.addMenuItem(maintenanceSearchMenuItem);
     ConsoleMenuItem maintenanceGestionMenuItem =
         new ConsoleMenuItem(
-            "maintenanceGestionMenuItem",
-            "console.maintenance.gestion",
-            "gestion",
-            ConsoleMaintenanceGestionPage.class);
+            "maintenanceManagementMenuItem",
+            "console.navigation.maintenance.management",
+            "management",
+            ConsoleMaintenanceManagementPage.class);
     maintenanceMenuSection.addMenuItem(maintenanceGestionMenuItem);
     ConsoleMenuItem maintenanceDataMenuItem =
         new ConsoleMenuItem(
             "maintenanceDataMenuItem",
-            "console.maintenance.data",
+            "console.navigation.maintenance.data",
             "data",
             ConsoleMaintenanceDataPage.class);
     maintenanceMenuSection.addMenuItem(maintenanceDataMenuItem);
     ConsoleMenuItem maintenancePropertiesMenuItem =
         new ConsoleMenuItem(
             "maintenancePropertiesMenuItem",
-            "console.maintenance.properties",
+            "console.navigation.maintenance.properties",
             "properties",
             ConsoleMaintenancePropertiesPage.class);
     maintenanceMenuSection.addMenuItem(maintenancePropertiesMenuItem);
     ConsoleMenuItem maintenanceAuthenticationMenuItem =
         new ConsoleMenuItem(
             "maintenanceAuthenticationMenuItem",
-            "console.maintenance.authentication",
+            "console.navigation.maintenance.authentication",
             "authentication",
             ConsoleMaintenanceAuthenticationPage.class);
     maintenanceMenuSection.addMenuItem(maintenanceAuthenticationMenuItem);
     ConsoleMenuItem maintenanceTaskMenuItem =
         new ConsoleMenuItem(
             "maintenanceTaskMenuItem",
-            "console.maintenance.tasks",
+            "console.navigation.maintenance.task",
             "task",
             ConsoleMaintenanceTaskListPage.class);
     ConsoleMenuItemRelatedPage maintenanceTaskDetailPage =
@@ -150,7 +143,7 @@ public final class ConsoleConfiguration {
     ConsoleMenuItem maintenanceFileMenuItem =
         new ConsoleMenuItem(
             "maintenanceFileMenuItem",
-            "console.maintenance.file",
+            "console.navigation.maintenance.file",
             "file",
             ConsoleMaintenanceFilePage.class);
     maintenanceMenuSection.addMenuItem(maintenanceFileMenuItem);
@@ -261,14 +254,6 @@ public final class ConsoleConfiguration {
 
   public void setBaseUrl(String baseUrl) {
     this.baseUrl = baseUrl;
-  }
-
-  public String getConsoleTitleKey() {
-    return consoleTitleKey;
-  }
-
-  public void setConsoleTitleKey(String consoleTitleKey) {
-    this.consoleTitleKey = consoleTitleKey;
   }
 
   public Set<ResourceReference> getCssResourcesReferences() {

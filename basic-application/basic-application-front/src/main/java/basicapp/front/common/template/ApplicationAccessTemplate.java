@@ -57,7 +57,7 @@ public abstract class ApplicationAccessTemplate extends AbstractWebPageTemplate 
             .add(new ClassAttributeAppender(BasicApplicationSession.get().getEnvironmentModel())));
 
     addHeadPageTitlePrependedElement(
-        new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
+        new BreadCrumbElement(new ResourceModel("common.application.name")));
     add(createHeadPageTitle("headPageTitle"));
 
     add(new ApplicationAccessEnvironmentPanel("environment"));

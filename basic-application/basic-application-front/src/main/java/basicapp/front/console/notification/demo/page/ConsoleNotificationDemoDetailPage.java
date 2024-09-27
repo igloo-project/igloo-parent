@@ -44,9 +44,10 @@ public class ConsoleNotificationDemoDetailPage extends ConsoleNotificationDemoTe
       PageParameters parameters, IModel<INotificationContentDescriptor> descriptorModel) {
     super(parameters);
 
-    addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.notifications")));
-
     this.descriptorModel = descriptorModel;
+
+    addBreadCrumbElement(
+        new BreadCrumbElement(new ResourceModel("console.navigation.notification.notification")));
 
     descriptorWithContextModel =
         LoadableDetachableModel.of(

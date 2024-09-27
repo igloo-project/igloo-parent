@@ -6,33 +6,33 @@
 		<div class="content-header-container">
 			<div class="content-header">
 				<h1 class="content-header-title">
-					<wicket:message key="console.notifications" />
+					<wicket:message key="console.notification.demo.detail.title" />
 				</h1>
 			</div>
 		</div>
-		<div class="content-lead-section">
-			<div class="content-lead-container">
-				<form wicket:id="form">
-					<div class="row row-form">
-						<div class="form-group col-lg-4 col-2xl-3">
-							<label wicket:for="locale" class="sr-only"><wicket:label /></label>
-							<div class="input-group">
-								<span class="input-group-text"><span class="fa fa-fw fa-language" /></span>
-								<select wicket:id="locale" class="form-control" />
-							</div>
+	</div>
+	<div class="content-lead-section">
+		<div class="content-lead-container">
+			<form wicket:id="form">
+				<div class="row row-form">
+					<div class="form-group col-lg-4 col-2xl-3">
+						<label wicket:for="locale" class="sr-only"><wicket:label /></label>
+						<div class="input-group">
+							<span class="input-group-text"><span class="fa fa-fw fa-language" /></span>
+							<select wicket:id="locale" class="form-control" />
 						</div>
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
-		<div class="content-body-section">
-			<div class="content-body-container">
-				<div class="content-body">
-					<div class="card card-page">
-						<div wicket:id="subject" class="card-header lead font-weight-normal" />
-						<div class="card-body">
-							<iframe wicket:id="body" style="height: 700px;" title="" wicket:message="title:console.notification.demo.detail.body" />
-						</div>
+	</div>
+	<div class="content-body-section">
+		<div class="content-body-container">
+			<div class="content-body">
+				<div class="card card-main">
+					<div wicket:id="subject" class="card-header lead font-weight-normal" />
+					<div class="card-body">
+						<iframe wicket:id="body" style="height: 700px;" title="" wicket:message="title:console.notification.demo.detail.body" />
 					</div>
 				</div>
 			</div>

@@ -7,7 +7,7 @@
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
 				<span class="navbar-toggler-icon" />
 			</button>
-			<a class="navbar-brand" wicket:id="home"><wicket:message key="common.rootPageTitle" /></a>
+			<a class="navbar-brand" wicket:id="home"><wicket:message key="common.application.name" /></a>
 		</div>
 		<div class="navbar-body collapse navbar-collapse" id="navbarSupportedContent">
 			<ul wicket:id="navbarNavContainer" class="navbar-nav">
@@ -37,9 +37,9 @@
 						<wicket:container wicket:id="userFullName" />
 					</a>
 				</li>
-				<wicket:enclosure child="signInAsMe">
+				<wicket:enclosure child="signInAsUndo">
 					<li class="nav-item">
-						<button wicket:id="signInAsMe" class="btn btn-success" type="button" wicket:message="title:common.signInAsMe">
+						<button wicket:id="signInAsUndo" class="btn btn-success" type="button" wicket:message="title:authentication.signInAs.action.undo">
 							<span class="fa fa-fw fa-undo" />
 						</button>
 					</li>

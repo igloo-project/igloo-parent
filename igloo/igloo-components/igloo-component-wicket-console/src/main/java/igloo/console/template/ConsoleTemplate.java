@@ -7,7 +7,6 @@ import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.Bootstrap5JavaScriptResourceReference;
 import igloo.bootstrap5.markup.html.template.js.bootstrap.dropdown.BootstrapDropdownBehavior;
-import igloo.console.maintenance.search.page.ConsoleMaintenanceSearchPage;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.component.EnclosureContainer;
@@ -67,7 +66,9 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
                     "lang", AbstractCoreSession.get().getLocale().getLanguage())));
 
     addHeadPageTitlePrependedElement(
-        new BreadCrumbElement(new ResourceModel("common.rootPageTitle")));
+        new BreadCrumbElement(new ResourceModel("console.common.application.name")));
+    addHeadPageTitlePrependedElement(
+        new BreadCrumbElement(new ResourceModel("console.common.console")));
     add(createHeadPageTitle("headPageTitle"));
 
     EnclosureContainer navbarNavContainer = new EnclosureContainer("navbarNavContainer");
@@ -185,25 +186,18 @@ public abstract class ConsoleTemplate extends AbstractWebPageTemplate {
             .getConsoleHeaderAdditionalContentComponentFactory()
             .create("headerAdditionalContent"));
 
-    addBreadCrumbElement(
-        new BreadCrumbElement(
-            new ResourceModel("common.application"), getApplicationHomePageLinkDescriptor()));
-    addBreadCrumbElement(
-        new BreadCrumbElement(
-            new ResourceModel("common.console"), ConsoleMaintenanceSearchPage.linkDescriptor()));
-
     add(createBodyBreadCrumb("breadCrumb").add(displayBreadcrumb().thenShow()));
 
     add(
         new CoreLabel(
             "applicationVersion",
             new StringResourceModel(
-                "common.version.application",
+                "console.common.application.version.application",
                 ApplicationPropertyModel.of(SpringPropertyIds.VERSION))),
         new CoreLabel(
             "iglooVersion",
             new StringResourceModel(
-                "common.version.igloo",
+                "console.common.application.version.igloo",
                 ApplicationPropertyModel.of(SpringPropertyIds.IGLOO_VERSION))));
 
     add(

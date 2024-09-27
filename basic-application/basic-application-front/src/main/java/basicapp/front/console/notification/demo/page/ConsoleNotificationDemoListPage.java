@@ -17,14 +17,12 @@ import java.util.List;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.iglooproject.jpa.exception.ServiceException;
 import org.iglooproject.spring.notification.model.INotificationContentDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
 import org.iglooproject.wicket.more.link.descriptor.builder.LinkDescriptorBuilder;
-import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement;
 import org.iglooproject.wicket.more.markup.repeater.collection.SpecificModelCollectionView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +42,6 @@ public class ConsoleNotificationDemoListPage extends ConsoleNotificationDemoTemp
 
   public ConsoleNotificationDemoListPage(PageParameters parameters) {
     super(parameters);
-
-    addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.notifications")));
 
     add(
         new Link<Void>("sendExample") {

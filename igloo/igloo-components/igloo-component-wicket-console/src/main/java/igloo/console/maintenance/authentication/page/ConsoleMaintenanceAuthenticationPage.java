@@ -39,7 +39,7 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>>
     super(parameters);
 
     addBreadCrumbElement(
-        new BreadCrumbElement(new ResourceModel("console.maintenance.authentication")));
+        new BreadCrumbElement(new ResourceModel("console.navigation.maintenance.authentication")));
 
     add(
         new Form<Void>("form") {
@@ -85,7 +85,8 @@ public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>>
         }.add(
             new TextField<>("username", usernameModel)
                 .setRequired(true)
-                .setLabel(new ResourceModel("console.signIn.username"))
+                .setLabel(
+                    new ResourceModel("console.maintenance.authentication.signInAs.form.username"))
                 .add(new LabelPlaceholderBehavior())));
   }
 

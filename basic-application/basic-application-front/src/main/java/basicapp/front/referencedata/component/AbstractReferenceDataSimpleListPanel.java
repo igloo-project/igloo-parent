@@ -62,7 +62,7 @@ public abstract class AbstractReferenceDataSimpleListPanel<
                                 : Model.of(""))
                     .end()
                     .bootstrapCard()
-                    .count("referenceData.count")
+                    .count("referenceData.common.count")
                     .ajaxPagers())
             .build("results", propertyService.get(PORTFOLIO_ITEMS_PER_PAGE));
 

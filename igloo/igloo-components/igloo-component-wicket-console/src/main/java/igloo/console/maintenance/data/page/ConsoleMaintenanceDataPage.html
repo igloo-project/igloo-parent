@@ -7,7 +7,7 @@
 			<div class="content-header-container">
 				<div class="content-header">
 					<h1 class="content-header-title">
-						<wicket:message key="console.maintenance.data" />
+						<wicket:message key="console.maintenance.data.title" />
 					</h1>
 				</div>
 			</div>
@@ -18,7 +18,7 @@
 					<div class="card card-main">
 						<div class="card-header">
 							<div class="card-header-title">
-								<wicket:message key="console.maintenance.data.dataUpgrade.title" />
+								<wicket:message key="console.maintenance.data.dataUpgrades.title" />
 							</div>
 						</div>
 						<div class="card-body card-body-table">
@@ -26,9 +26,9 @@
 								<table class="table table-hover table-striped">
 									<thead>
 										<tr>
-											<th class="cell-w-400"><wicket:message key="console.maintenance.data.dataUpgrade.upgrade" /></th>
-											<th class="cell-w-150"><wicket:message key="console.maintenance.data.dataUpgrade.executionDate" /></th>
-											<th class="cell-w-60"><wicket:message key="console.maintenance.data.dataUpgrade.autoPerform" /></th>
+											<th class="cell-w-400"><wicket:message key="console.business.dataUpgradeRecord.name" /></th>
+											<th class="cell-w-150"><wicket:message key="console.business.dataUpgradeRecord.executionDate" /></th>
+											<th class="cell-w-60"><wicket:message key="console.business.dataUpgradeRecord.autoPerform" /></th>
 											<th class="cell-w-actions-1x cell-w-fit" />
 										</tr>
 									</thead>
@@ -40,11 +40,11 @@
 											<td class="cell-w-actions-1x cell-w-fit">
 												<div class="row row-table-action">
 													<div class="col-table-action">
-														<button wicket:id="execute" class="btn btn-primary btn-table-row-action" type="button">
+														<button wicket:id="execute" class="btn btn-primary btn-table-row-action" type="button" wicket:message="title:common.action.run">
 															<span class="fa fa-fw fa-play" />
 														</button>
-														<wicket:container wicket:id="alreadyExecutedContainer">
-															<span class="fa fa-fw fa-check" wicket:message="title:console.maintenance.data.dataUpgrade.alreadyExecuted" />
+														<wicket:container wicket:id="done">
+															<span class="fa fa-fw fa-check" wicket:message="title:console.maintenance.data.dataUpgrades.dataUpgrade.help.done" />
 														</wicket:container>
 													</div>
 												</div>

@@ -117,7 +117,7 @@ public abstract class AbstractExcelExportAjaxSubmitLink extends AjaxSubmitLink {
   }
 
   protected void onEmptyExport(Workbook workbook) {
-    error(getString("common.error.export.empty"));
+    error(getString("common.action.export.excel.error.empty"));
   }
 
   protected abstract Workbook generateWorkbook() throws ServiceException;

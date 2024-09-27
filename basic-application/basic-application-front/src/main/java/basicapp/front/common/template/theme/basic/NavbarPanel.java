@@ -195,14 +195,15 @@ public class NavbarPanel extends AbstractNavbarPanel {
         });
 
     add(
-        new AjaxLink<Void>("signInAsMe") {
+        new AjaxLink<Void>("signInAsUndo") {
           private static final long serialVersionUID = 1L;
 
           @Override
           public void onClick(AjaxRequestTarget target) {
             try {
               BasicApplicationSession.get().signInAsMe();
-              BasicApplicationSession.get().success(getString("authentication.back.success"));
+              BasicApplicationSession.get()
+                  .success(getString("authentication.signInAs.undo.success"));
             } catch (Exception e) {
               LOGGER.error("Erreur lors de la reconnexion de l'utilisateur.", e);
               Session.get().error(getString("common.error.unknown"));

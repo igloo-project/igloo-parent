@@ -32,7 +32,8 @@ public class ConsoleMaintenanceFilePage extends ConsoleMaintenanceTemplate {
   public ConsoleMaintenanceFilePage(PageParameters parameters) {
     super(parameters);
 
-    addBreadCrumbElement(new BreadCrumbElement(new ResourceModel("console.maintenance.file")));
+    addBreadCrumbElement(
+        new BreadCrumbElement(new ResourceModel("console.navigation.maintenance.file")));
 
     add(
         new Form<Void>("form") {
@@ -61,16 +62,19 @@ public class ConsoleMaintenanceFilePage extends ConsoleMaintenanceTemplate {
             new TextField<>("hashTableByteSize", hashTableByteSizeModel, Integer.class)
                 .setRequired(true)
                 .setLabel(
-                    new ResourceModel("console.maintenance.file.pathGeneration.hashTableByteSize"))
+                    new ResourceModel(
+                        "console.maintenance.file.pathGeneration.form.hashTableByteSize"))
                 .add(
                     new RangeValidator<>(
                         HashTableFileStorePathGeneratorImpl.MIN_HASH_TABLE_BYTE_SIZE,
                         HashTableFileStorePathGeneratorImpl.MAX_HASH_TABLE_BYTE_SIZE)),
             new TextField<>("fileKey", fileKeyModel)
                 .setRequired(true)
-                .setLabel(new ResourceModel("console.maintenance.file.pathGeneration.fileKey")),
+                .setLabel(
+                    new ResourceModel("console.maintenance.file.pathGeneration.form.fileKey")),
             new TextField<>("extension", extensionModel)
-                .setLabel(new ResourceModel("console.maintenance.file.pathGeneration.extension"))),
+                .setLabel(
+                    new ResourceModel("console.maintenance.file.pathGeneration.form.extension"))),
         new CoreLabel("path", pathModel).hideIfEmpty());
   }
 

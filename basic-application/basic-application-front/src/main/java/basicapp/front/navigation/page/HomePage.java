@@ -1,10 +1,9 @@
 package basicapp.front.navigation.page;
 
-import basicapp.front.administration.page.AdministrationBasicUserListPage;
 import basicapp.front.common.template.MainTemplate;
 import basicapp.front.profile.page.ProfilePage;
 import basicapp.front.referencedata.page.ReferenceDataPage;
-import igloo.wicket.component.CoreLabel;
+import basicapp.front.user.page.BasicUserListPage;
 import igloo.wicket.condition.Condition;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.model.ResourceModel;
@@ -25,12 +24,10 @@ public class HomePage extends MainTemplate {
     super(parameters);
 
     addBreadCrumbElement(
-        new BreadCrumbElement(new ResourceModel("home.pageTitle"), HomePage.linkDescriptor()));
-
-    add(new CoreLabel("pageTitle", new ResourceModel("home.pageTitle")));
+        new BreadCrumbElement(new ResourceModel("navigation.home"), HomePage.linkDescriptor()));
 
     add(
-        AdministrationBasicUserListPage.linkDescriptor().link("users").hideIfInvalid(),
+        BasicUserListPage.linkDescriptor().link("users").hideIfInvalid(),
         ReferenceDataPage.linkDescriptor().link("referenceData").hideIfInvalid(),
         ProfilePage.linkDescriptor().link("profile").hideIfInvalid());
   }
