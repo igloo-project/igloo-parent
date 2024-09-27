@@ -8,6 +8,7 @@ import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorit
 import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants.ROLE_ANONYMOUS;
 import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants.ROLE_AUTHENTICATED;
 
+import basicapp.back.business.role.service.IRoleService;
 import basicapp.back.business.user.model.atomic.UserType;
 import com.google.common.collect.ImmutableSortedSet;
 import igloo.security.ICoreUserDetailsService;
@@ -28,23 +29,15 @@ public class TestUserDetailsService extends AbstractBasicApplicationTestCase {
 
   @Autowired private ICoreUserDetailsService userDetailsService;
 
+  @Autowired private IRoleService roleService;
+
   @Test
   void testGetAuthoritiesAndPermissions_technicalUser()
       throws SecurityServiceException, ServiceException {
-    entityDatabaseHelper.createRole(
-        r ->
-            r.setPermissions(
-                ImmutableSortedSet.of(GLOBAL_REFERENCE_DATA_READ, GLOBAL_REFERENCE_DATA_WRITE)),
-        true);
 
-    entityDatabaseHelper.createRole(
-        r -> r.setPermissions(ImmutableSortedSet.of(GLOBAL_ROLE_WRITE, GLOBAL_ROLE_READ)), true);
-    entityDatabaseHelper.createUser(u -> u.setUsername("username"), true);
-
-    entityManagerReset();
-    UserDetails userDetails = userDetailsService.loadUserByUsername("username");
+    UserDetails userDetails = userDetailsService.loadUserByUsername(ADMIN_USERNAME);
     Assertions.assertThat(userDetails).isNotNull();
-    Assertions.assertThat(userDetails.getUsername()).isEqualTo("username");
+    Assertions.assertThat(userDetails.getUsername()).isEqualTo(ADMIN_USERNAME);
 
     Assertions.assertThat(userDetails.getAuthorities())
         .extracting(GrantedAuthority::getAuthority)
@@ -57,10 +50,9 @@ public class TestUserDetailsService extends AbstractBasicApplicationTestCase {
 
     Assertions.assertThat(permissions)
         .containsExactlyInAnyOrder(
-            GLOBAL_REFERENCE_DATA_READ,
-            GLOBAL_REFERENCE_DATA_WRITE,
-            GLOBAL_ROLE_WRITE,
-            GLOBAL_ROLE_READ);
+            roleService.list().stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .toArray(String[]::new));
   }
 
   @Test

@@ -55,7 +55,8 @@ public abstract class AbstractTestCase {
   @Autowired(required = false)
   private IHibernateSearchService hibernateSearchService;
 
-  protected abstract void cleanAll() throws ServiceException, SecurityServiceException;
+  /** Override to clean database with services (without flyway) */
+  protected void cleanAll() throws ServiceException, SecurityServiceException {}
 
   protected static <E extends GenericEntity<?, ? super E>> void cleanEntities(
       IGenericEntityService<?, E> service) throws ServiceException, SecurityServiceException {
@@ -165,7 +166,7 @@ public abstract class AbstractTestCase {
    * and it can be cached only at first retrieval. This behavior lead to unexpected and inconsistent
    * result in TestCache.
    */
-  private void clearCaches() {
+  protected void clearCaches() {
     ((SessionImpl) getEntityManager().getDelegate())
         .getSessionFactory()
         .getCache()
