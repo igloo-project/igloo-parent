@@ -1,59 +1,31 @@
 package test.core.business.announcement;
 
-import static basicapp.back.security.model.BasicApplicationPermissionConstants.GLOBAL_ANNOUNCEMENT_WRITE;
-
 import basicapp.back.business.announcement.model.Announcement;
 import basicapp.back.business.announcement.model.atomic.AnnouncementType;
+import basicapp.back.business.announcement.service.business.IAnnouncementService;
 import basicapp.back.business.announcement.service.controller.IAnnouncementControllerService;
-import basicapp.back.business.user.model.atomic.UserType;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.DateUtil;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.jdbc.Sql;
 import test.core.AbstractBasicApplicationTestCase;
 import test.core.config.spring.SpringBootTestBasicApplication;
 
 @SpringBootTestBasicApplication
 public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
 
-  private static final String BASIC_USERNAME_WITH_PERMISSIONS = "BASIC_USERNAME_WITH_PERMISSIONS";
-  private static final String ADMIN_USERNAME = "ADMIN_USERNAME";
-  private static final String BASIC_USERNAME_WITHOUT_PERMISSIONS =
-      "BASIC_USERNAME_WITHOUT_PERMISSIONS";
-
   @Autowired private IAnnouncementControllerService announcementControllerService;
 
-  @Override
-  @BeforeEach
-  public void init() throws SecurityServiceException, ServiceException {
-    super.init();
-    entityDatabaseHelper.createUser(
-        u -> {
-          u.setUsername(BASIC_USERNAME_WITHOUT_PERMISSIONS);
-          u.setType(UserType.BASIC);
-        },
-        true);
-    entityDatabaseHelper.createUser(u -> u.setUsername(ADMIN_USERNAME), true);
-    addPermissions(
-        entityDatabaseHelper.createUser(
-            u -> {
-              u.setUsername(BASIC_USERNAME_WITH_PERMISSIONS);
-              u.setType(UserType.BASIC);
-            },
-            true),
-        GLOBAL_ANNOUNCEMENT_WRITE);
-  }
+  @Autowired protected IAnnouncementService announcementService;
 
   @WithUserDetails(
       value = BASIC_USERNAME_WITH_PERMISSIONS,
@@ -92,25 +64,10 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
     }
 
     @Test
+    @Sql(scripts = {"/scripts/announcement-test.sql"})
     void saveNewAnnouncement_update() throws SecurityServiceException, ServiceException {
-      Announcement announcement =
-          entityDatabaseHelper.createAnnouncement(
-              a -> {
-                a.getTitle().setFr("testTitre");
-                a.getDescription().setFr("testDescription");
-              },
-              true);
-      announcement
-          .getCreation()
-          .setDate(LocalDate.of(2024, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-      announcement
-          .getModification()
-          .setDate(LocalDate.of(2024, 1, 1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-      announcementService.flush();
-
-      entityManagerReset();
-      Announcement announcementToUpdate = announcementService.getById(announcement.getId());
-      announcementToUpdate.setType(AnnouncementType.OTHER);
+      Announcement announcement = announcementService.getById(-1L);
+      announcement.setType(AnnouncementType.OTHER);
       announcementService.saveAnnouncement(announcementService.getById(announcement.getId()));
       entityManagerReset();
 
@@ -157,16 +114,15 @@ public class TestAnnouncementService extends AbstractBasicApplicationTestCase {
 
   @Nested
   class TestDeleteAnnoucement {
+
+    @Sql(scripts = {"/scripts/announcement-test.sql"})
     @WithUserDetails(
         value = BASIC_USERNAME_WITH_PERMISSIONS,
         setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @Test
     void testDeleteAnnoucement() throws SecurityServiceException, ServiceException {
-      Announcement announcement = entityDatabaseHelper.createAnnouncement(null, true);
-      entityManagerReset();
       Assertions.assertThat(announcementService.list()).size().isEqualTo(1);
-      announcementControllerService.deleteAnnouncement(
-          announcementService.getById(announcement.getId()));
+      announcementControllerService.deleteAnnouncement(announcementService.getById(-1L));
       entityManagerReset();
       Assertions.assertThat(announcementService.list()).isEmpty();
     }
