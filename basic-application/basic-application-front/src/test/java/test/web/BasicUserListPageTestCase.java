@@ -19,9 +19,12 @@ import org.iglooproject.wicket.more.markup.repeater.table.DecoratedCoreDataTable
 import org.iglooproject.wicket.more.markup.repeater.table.column.CoreLabelLinkColumnPanel;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
+import test.core.PSQLTestContainerConfiguration;
 import test.web.config.spring.SpringBootTestBasicApplicationWebapp;
 
 @SpringBootTestBasicApplicationWebapp
+@Import(PSQLTestContainerConfiguration.class)
 class BasicUserListPageTestCase extends AbstractBasicApplicationWebappTestCase {
 
   @Test

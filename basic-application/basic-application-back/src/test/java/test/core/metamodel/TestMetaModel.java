@@ -2,10 +2,13 @@ package test.core.metamodel;
 
 import basicapp.back.business.common.model.PostalCode;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
 import test.core.AbstractBasicApplicationTestCase;
+import test.core.PSQLTestContainerConfiguration;
 import test.core.config.spring.SpringBootTestBasicApplication;
 
 @SpringBootTestBasicApplication
+@Import(PSQLTestContainerConfiguration.class)
 class TestMetaModel extends AbstractBasicApplicationTestCase {
 
   @Test
