@@ -39,6 +39,10 @@ public class HistoryLogSearchQueryData implements ISearchQueryData<HistoryLog> {
   private Collection<HistoryEventType> mandatoryDifferencesEventTypes =
       EnumSet.noneOf(HistoryEventType.class);
 
+  public Instant getDateMin() {
+    return dateMin;
+  }
+
   public void setDateMin(Instant dateMin) {
     this.dateMin = dateMin;
   }
@@ -69,10 +73,6 @@ public class HistoryLogSearchQueryData implements ISearchQueryData<HistoryLog> {
 
   public void setSubject(User subject) {
     this.subject = subject;
-  }
-
-  public Instant getDateMin() {
-    return dateMin;
   }
 
   public HistoryEntityReference getAllObjects() {
