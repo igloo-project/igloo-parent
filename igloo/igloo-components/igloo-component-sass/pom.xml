@@ -19,6 +19,10 @@
 			<artifactId>igloo-component-autoprefixer</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		// TODO ajouter la version dans un dependencie igloo-maven + ajouter la dependence pour protobuf dernière version de la serie 3 (même que sass-embedded)
+		// Dans dependencies-html
+		// jquery on est en v3
+		// bootstrap composant non utilisé sur igloo
 		<dependency>
 			<groupId>de.larsgrefer.sass</groupId>
 			<artifactId>sass-embedded-host</artifactId>
