@@ -9,7 +9,7 @@ import igloo.wicket.renderer.Renderer;
 import java.util.Map;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.commons.util.fieldpath.FieldPathComponent;
-import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
+import org.iglooproject.jpa.business.generic.model.AbstractGenericEntityReference;
 import org.iglooproject.jpa.more.business.history.model.embeddable.HistoryValue;
 
 public abstract class AbstractHistoryRenderer<T> extends Renderer<T> {
@@ -37,7 +37,7 @@ public abstract class AbstractHistoryRenderer<T> extends Renderer<T> {
   }
 
   private static String getEntityResourceKeyPart(HistoryValue object) {
-    GenericEntityReference<?, ?> reference = object.getReference();
+    AbstractGenericEntityReference<?, ?> reference = object.getReference();
     if (reference != null) {
       Class<?> objectClass = object.getReference().getType();
       return ENTITY_RESOURCE_KEY_PARTS.get(objectClass);

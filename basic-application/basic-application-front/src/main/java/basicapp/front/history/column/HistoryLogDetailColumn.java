@@ -21,7 +21,7 @@ import org.bindgen.BindingRoot;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
 import org.iglooproject.functional.Predicates2;
 import org.iglooproject.functional.SerializablePredicate2;
-import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
+import org.iglooproject.jpa.business.generic.model.AbstractGenericEntityReference;
 import org.iglooproject.wicket.more.markup.repeater.table.column.AbstractCoreColumn;
 
 /**
@@ -82,7 +82,7 @@ public class HistoryLogDetailColumn extends AbstractCoreColumn<HistoryLog, Histo
       Item<ICellPopulator<HistoryLog>> cellItem, String componentId, IModel<HistoryLog> rowModel) {
     SerializablePredicate2<HistoryDifference> filter = null;
     if (!fieldsWhiteList.isEmpty()) {
-      GenericEntityReference<?, ?> mainObjectEntityReference =
+      AbstractGenericEntityReference<?, ?> mainObjectEntityReference =
           rowModel.getObject().getMainObject().getReference();
       if (mainObjectEntityReference != null) {
         // com.google.common.collect.AbstractMapBasedMultimap$WrappedSet is not serializable...

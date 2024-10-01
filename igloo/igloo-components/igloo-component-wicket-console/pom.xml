@@ -120,6 +120,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!-- Override micrometer-->
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-tools</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	

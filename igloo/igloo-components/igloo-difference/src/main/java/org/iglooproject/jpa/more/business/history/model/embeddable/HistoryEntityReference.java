@@ -1,7 +1,16 @@
 package org.iglooproject.jpa.more.business.history.model.embeddable;
 
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import org.bindgen.Bindable;
+import org.hibernate.annotations.JavaType;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
+import org.hibernate.type.descriptor.java.ClassJavaType;
+import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
+import org.iglooproject.jpa.business.generic.model.AbstractGenericEntityReference;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 
@@ -16,10 +25,20 @@ import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
  */
 @Embeddable
 @Bindable
+@Access(AccessType.FIELD)
 public final class HistoryEntityReference
-    extends GenericEntityReference<Long, GenericEntity<Long, ?>> {
+    extends AbstractGenericEntityReference<Long, GenericEntity<Long, ?>> {
 
   private static final long serialVersionUID = -1385838799400769763L;
+
+  @Column(nullable = true)
+  @JavaType(ClassJavaType.class)
+  @JdbcType(VarcharJdbcType.class)
+  private /* final */ Class<? extends GenericEntity<Long, ?>> type;
+
+  @Column(nullable = true)
+  @GenericField
+  private /* final */ Long id;
 
   public static HistoryEntityReference from(
       GenericEntityReference<Long, ?> genericEntityReference) {
@@ -28,8 +47,8 @@ public final class HistoryEntityReference
         : new HistoryEntityReference(genericEntityReference);
   }
 
-  protected HistoryEntityReference() { // Pour Hibernate
-  }
+  // Pour Hibernate
+  protected HistoryEntityReference() {}
 
   public HistoryEntityReference(
       Class<? extends GenericEntity<Long, ?>> entityClass, Long entityId) {
@@ -43,5 +62,25 @@ public final class HistoryEntityReference
   public HistoryEntityReference(
       GenericEntityReference<Long, ? extends GenericEntity<Long, ?>> genericEntityReference) {
     super(genericEntityReference.getType(), genericEntityReference.getId());
+  }
+
+  @Override
+  public Long getId() {
+    return id;
+  }
+
+  @Override
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  @Override
+  public Class<? extends GenericEntity<Long, ?>> getType() {
+    return type;
+  }
+
+  @Override
+  public void setType(Class<? extends GenericEntity<Long, ?>> type) {
+    this.type = type;
   }
 }

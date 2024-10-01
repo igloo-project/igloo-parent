@@ -3,6 +3,7 @@ package org.iglooproject.jpa.more.business.history.service;
 import com.google.common.base.Optional;
 import java.util.Locale;
 import org.iglooproject.commons.util.rendering.IRenderer;
+import org.iglooproject.jpa.business.generic.model.AbstractGenericEntityReference;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.business.generic.service.IEntityService;
@@ -125,7 +126,7 @@ public abstract class AbstractHistoryValueServiceImpl implements IHistoryValueSe
       return Optional.of(false);
     }
 
-    GenericEntityReference<Long, ?> referenceReference = historyValue.getReference();
+    AbstractGenericEntityReference<Long, ?> referenceReference = historyValue.getReference();
     if (referenceReference != null) {
       if (!(value instanceof GenericEntity)) {
         return Optional.of(false);
