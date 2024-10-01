@@ -17,14 +17,11 @@ public class AnnouncementPermissionEvaluatorImpl
 
   @Override
   public boolean hasPermission(User user, Announcement announcement, Permission permission) {
-
     if (is(permission, ANNOUNCEMENT_WRITE)) {
       return canWriteAnnouncement(user);
-    }
-    if (is(permission, ANNOUNCEMENT_REMOVE)) {
+    } else if (is(permission, ANNOUNCEMENT_REMOVE)) {
       return canRemoveAnnouncement(user);
     }
-
     return false;
   }
 

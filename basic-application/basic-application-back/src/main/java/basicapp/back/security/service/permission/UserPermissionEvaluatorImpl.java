@@ -40,38 +40,27 @@ public class UserPermissionEvaluatorImpl extends AbstractGenericPermissionEvalua
   public boolean hasPermission(User user, User targetUser, Permission permission) {
     if (is(permission, USER_READ)) {
       return canReadUser(user, targetUser);
-    }
-    if (is(permission, USER_WRITE)) {
+    } else if (is(permission, USER_WRITE)) {
       return canWriteUser(user, targetUser);
-    }
-    if (is(permission, USER_TECHNICAL_WRITE)) {
+    } else if (is(permission, USER_TECHNICAL_WRITE)) {
       return canWriteTechicalUser(user);
-    }
-    if (is(permission, USER_BASIC_WRITE)) {
+    } else if (is(permission, USER_BASIC_WRITE)) {
       return canWriteBasicUser(user, targetUser);
-    }
-    if (is(permission, USER_ENABLE)) {
+    } else if (is(permission, USER_ENABLE)) {
       return canEnableUser(user, targetUser);
-    }
-    if (is(permission, USER_DISABLE)) {
+    } else if (is(permission, USER_DISABLE)) {
       return canDisableUser(user, targetUser);
-    }
-    if (is(permission, USER_EDIT_PASSWORD)) {
+    } else if (is(permission, USER_EDIT_PASSWORD)) {
       return canUserEditPassword(user, targetUser);
-    }
-    if (is(permission, USER_RECOVERY_PASSWORD)) {
+    } else if (is(permission, USER_RECOVERY_PASSWORD)) {
       return canUserRecoveryPassword(user, targetUser);
-    }
-    if (is(permission, ADMIN_EDIT_PASSWORD)) {
+    } else if (is(permission, ADMIN_EDIT_PASSWORD)) {
       return canAdminEditPassword(user, targetUser);
-    }
-    if (is(permission, ADMIN_RECOVERY_PASSWORD)) {
+    } else if (is(permission, ADMIN_RECOVERY_PASSWORD)) {
       return canAdminRecoveryPassword(user, targetUser);
-    }
-    if (is(permission, USER_OPEN_ANNONCEMENT)) {
+    } else if (is(permission, USER_OPEN_ANNONCEMENT)) {
       return canOpenAnnouncement(user, targetUser);
-    }
-    if (is(permission, USER_CLOSE_ANNONCEMENT)) {
+    } else if (is(permission, USER_CLOSE_ANNONCEMENT)) {
       return canCloseAnnouncement(user, targetUser);
     }
     return false;

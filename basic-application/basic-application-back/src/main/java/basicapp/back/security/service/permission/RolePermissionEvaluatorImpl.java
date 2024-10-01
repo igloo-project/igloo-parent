@@ -19,8 +19,7 @@ public class RolePermissionEvaluatorImpl extends AbstractGenericPermissionEvalua
   public boolean hasPermission(User user, Role role, Permission permission) {
     if (is(permission, ROLE_READ)) {
       return canRead(user);
-    }
-    if (is(permission, ROLE_WRITE)) {
+    } else if (is(permission, ROLE_WRITE)) {
       return canWrite(user);
     }
     return false;

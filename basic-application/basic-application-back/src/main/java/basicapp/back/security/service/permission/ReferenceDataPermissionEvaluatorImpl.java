@@ -21,11 +21,9 @@ public class ReferenceDataPermissionEvaluatorImpl
   public boolean hasPermission(User user, ReferenceData<?> referenceData, Permission permission) {
     if (is(permission, REFERENCE_DATA_READ)) {
       return canRead(user);
-    }
-    if (is(permission, REFERENCE_DATA_WRITE)) {
+    } else if (is(permission, REFERENCE_DATA_WRITE)) {
       return canWrite(user, referenceData);
     }
-
     return false;
   }
 
