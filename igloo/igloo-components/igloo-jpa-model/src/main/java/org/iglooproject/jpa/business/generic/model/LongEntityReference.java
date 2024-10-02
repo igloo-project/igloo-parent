@@ -16,7 +16,7 @@ import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 @Bindable
 @Access(AccessType.FIELD)
 public final class LongEntityReference
-    extends AbstractGenericEntityReference<Long, GenericEntity<Long, ?>> {
+    extends GenericEntityReference<Long, GenericEntity<Long, ?>> {
 
   private static final long serialVersionUID = -1385838799400769763L;
 

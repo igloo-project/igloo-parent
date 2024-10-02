@@ -5,7 +5,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.iglooproject.commons.util.fieldpath.FieldPath;
-import org.iglooproject.jpa.business.generic.model.AbstractGenericEntityReference;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 import org.iglooproject.jpa.more.business.history.model.AbstractHistoryDifference;
@@ -15,7 +14,7 @@ public class TestHistoryDifferenceKey {
 
   private final FieldPath fieldPath;
 
-  private final AbstractGenericEntityReference<?, ?> keyAsGenericEntityReference;
+  private final GenericEntityReference<?, ?> keyAsGenericEntityReference;
 
   private final String keyAsString;
 

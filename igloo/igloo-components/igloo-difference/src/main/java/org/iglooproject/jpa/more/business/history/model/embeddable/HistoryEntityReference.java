@@ -10,7 +10,6 @@ import org.hibernate.annotations.JdbcType;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.type.descriptor.java.ClassJavaType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
-import org.iglooproject.jpa.business.generic.model.AbstractGenericEntityReference;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 
@@ -27,7 +26,7 @@ import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
 @Bindable
 @Access(AccessType.FIELD)
 public final class HistoryEntityReference
-    extends AbstractGenericEntityReference<Long, GenericEntity<Long, ?>> {
+    extends GenericEntityReference<Long, GenericEntity<Long, ?>> {
 
   private static final long serialVersionUID = -1385838799400769763L;
 
