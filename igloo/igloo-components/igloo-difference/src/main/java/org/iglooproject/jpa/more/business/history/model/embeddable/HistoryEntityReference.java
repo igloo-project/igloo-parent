@@ -1,7 +1,5 @@
 package org.iglooproject.jpa.more.business.history.model.embeddable;
 
-import jakarta.persistence.Access;
-import jakarta.persistence.AccessType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import org.bindgen.Bindable;
@@ -20,11 +18,13 @@ import org.iglooproject.jpa.business.generic.model.GenericEntityReference;
  * <p>For this reason, we <strong>do not</strong> override {@link #equals(Object)} and {@link
  * #hashCode()}.
  *
+ * <p>Annotations Hibernate on accessors because of {@link GenericEntityReference} parent class
+ * fields
+ *
  * @see org.iglooproject.jpa.more.business.history.service.AbstractHistoryValueServiceImpl
  */
 @Embeddable
 @Bindable
-@Access(AccessType.FIELD)
 public final class HistoryEntityReference
     extends GenericEntityReference<Long, GenericEntity<Long, ?>> {
 
@@ -64,6 +64,8 @@ public final class HistoryEntityReference
   }
 
   @Override
+  @Column(nullable = true)
+  @GenericField
   public Long getId() {
     return id;
   }
@@ -74,6 +76,9 @@ public final class HistoryEntityReference
   }
 
   @Override
+  @Column(nullable = true)
+  @JavaType(ClassJavaType.class)
+  @JdbcType(VarcharJdbcType.class)
   public Class<? extends GenericEntity<Long, ?>> getType() {
     return type;
   }

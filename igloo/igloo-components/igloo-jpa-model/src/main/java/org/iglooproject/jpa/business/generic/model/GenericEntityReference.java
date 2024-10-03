@@ -1,9 +1,6 @@
 package org.iglooproject.jpa.business.generic.model;
 
 import com.google.common.base.Verify;
-import jakarta.persistence.Access;
-import jakarta.persistence.AccessType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 import java.io.Serializable;
@@ -11,26 +8,19 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.JavaType;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
-import org.hibernate.type.descriptor.java.ClassJavaType;
-import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 
-@Access(AccessType.FIELD)
+/**
+ * 241003 - Hibernate 6.6 not authorize @Embedded and @MappedSuperClass annotations. this class is
+ * not an entity, annotation hibernate must be set on childens accessors
+ */
 public class GenericEntityReference<
         K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
     implements IReference<E>, Serializable {
 
   private static final long serialVersionUID = 1357434247523209721L;
 
-  @Column(nullable = true)
-  @JavaType(ClassJavaType.class)
-  @JdbcType(VarcharJdbcType.class)
   private /* final */ Class<? extends E> type;
 
-  @Column(nullable = true)
-  @GenericField
   private /* final */ K id;
 
   public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
