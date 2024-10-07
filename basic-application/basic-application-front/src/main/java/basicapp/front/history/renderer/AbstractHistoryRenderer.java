@@ -2,8 +2,7 @@ package basicapp.front.history.renderer;
 
 import basicapp.back.business.history.model.HistoryDifference;
 import basicapp.back.business.history.model.HistoryLog;
-import basicapp.back.business.user.model.BasicUser;
-import basicapp.back.business.user.model.TechnicalUser;
+import basicapp.back.business.user.model.User;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableMap;
 import igloo.wicket.renderer.Renderer;
@@ -24,10 +23,7 @@ public abstract class AbstractHistoryRenderer<T> extends Renderer<T> {
   protected static final String HISTORY_DIFFERENCE_ROOT = "history.difference";
 
   private static final Map<Class<?>, String> ENTITY_RESOURCE_KEY_PARTS =
-      ImmutableMap.<Class<?>, String>builder()
-          .put(TechnicalUser.class, ".user")
-          .put(BasicUser.class, ".user")
-          .build();
+      ImmutableMap.<Class<?>, String>builder().put(User.class, ".user").build();
 
   protected static String getEntityResourceKeyPart(HistoryDifference difference) {
     HistoryLog log = difference.getRootLog();

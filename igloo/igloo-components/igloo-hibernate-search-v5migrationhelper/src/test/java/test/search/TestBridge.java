@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 import org.hibernate.search.engine.search.common.ValueConvert;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.util.common.SearchException;
+import org.iglooproject.jpa.business.generic.model.LongEntityReference;
 import org.iglooproject.jpa.more.autoconfigure.JpaMoreAutoConfiguration;
 import org.iglooproject.jpa.more.autoconfigure.JpaMoreModelAutoConfiguration;
 import org.iglooproject.jpa.more.autoconfigure.JpaMorePropertyRegistryAutoConfiguration;
@@ -310,8 +311,8 @@ class TestBridge {
     em.persist(l1);
     em.persist(l2);
     em.flush();
-    BridgeLinkedEntity.Reference r1 = new BridgeLinkedEntity.Reference(l1);
-    BridgeLinkedEntity.Reference r2 = new BridgeLinkedEntity.Reference(l2);
+    LongEntityReference r1 = new LongEntityReference(l1);
+    LongEntityReference r2 = new LongEntityReference(l2);
     b1.reference = r1;
     em.persist(b1);
     TestTransaction.flagForCommit();

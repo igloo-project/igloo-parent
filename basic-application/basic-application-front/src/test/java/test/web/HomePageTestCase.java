@@ -2,6 +2,7 @@ package test.web;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import basicapp.back.security.model.BasicApplicationPermissionConstants;
 import basicapp.front.common.template.theme.advanced.SidebarMenuPanel;
 import basicapp.front.navigation.page.HomePage;
 import com.google.common.collect.ImmutableList;
@@ -125,8 +126,13 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
       boolean hasRoleMenu = false;
 
       for (String authority : menuItem.getAuthorities()) {
-        if (authenticationService.hasRole(authority)) {
-          hasRoleMenu = true;
+        try {
+          if (authenticationService.hasRole(authority)
+              || authenticationService.hasPermission(authority)) {
+            hasRoleMenu = true;
+          }
+        } catch (IllegalArgumentException e) {
+          hasRoleMenu = false;
         }
       }
 
@@ -152,7 +158,10 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
     // Menu
     HOME(null, localize("navigation.home"), 0, CoreAuthorityConstants.ROLE_AUTHENTICATED),
     REFERENCE_DATA(
-        null, localize("navigation.referenceData"), 1, CoreAuthorityConstants.ROLE_ADMIN),
+        null,
+        localize("navigation.referenceData"),
+        1,
+        BasicApplicationPermissionConstants.GLOBAL_REFERENCE_DATA_READ),
     ADMINISTRATION(
         null, localize("navigation.administration"), 2, CoreAuthorityConstants.ROLE_ADMIN),
     CONSOLE(null, localize("navigation.console"), 3, CoreAuthorityConstants.ROLE_ADMIN),
@@ -162,22 +171,24 @@ class HomePageTestCase extends AbstractBasicApplicationWebappTestCase {
         ADMINISTRATION,
         localize("navigation.administration.basicUser"),
         0,
-        CoreAuthorityConstants.ROLE_ADMIN),
+        BasicApplicationPermissionConstants.GLOBAL_USER_READ),
     ADMINISTRATION_TECHNICAL_USER(
         ADMINISTRATION,
         localize("navigation.administration.technicalUser"),
         1,
         CoreAuthorityConstants.ROLE_ADMIN),
-    ADMINISTRATION_USERGROUP(
+    ADMINISTRATION_ROLE(
         ADMINISTRATION,
-        localize("navigation.administration.userGroup"),
+        localize("navigation.administration.role"),
         2,
-        CoreAuthorityConstants.ROLE_ADMIN),
+        BasicApplicationPermissionConstants.GLOBAL_ROLE_READ),
+
     ADMINISTRATION_ANNOUNCEMENT(
         ADMINISTRATION,
         localize("navigation.administration.announcement"),
         3,
-        CoreAuthorityConstants.ROLE_ADMIN);
+        BasicApplicationPermissionConstants.GLOBAL_ANNOUNCEMENT_READ),
+    ;
 
     private String label;
 

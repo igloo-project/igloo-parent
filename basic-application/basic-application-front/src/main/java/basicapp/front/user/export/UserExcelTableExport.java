@@ -2,6 +2,7 @@ package basicapp.front.user.export;
 
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.UserBinding;
+import basicapp.front.user.renderer.UserRenderer;
 import com.google.common.collect.ImmutableList;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -31,6 +32,7 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
           new ColumnInformation("business.user.firstName"),
           new ColumnInformation("business.user.email"),
           new ColumnInformation("business.user.enabled"),
+          new ColumnInformation("business.user.roles"),
           new ColumnInformation("business.user.creationDate"),
           new ColumnInformation("business.user.lastUpdateDate"),
           new ColumnInformation("business.user.lastLoginDate"));
@@ -83,6 +85,8 @@ public class UserExcelTableExport extends AbstractSimpleExcelTableExport {
     } else {
       addTextCell(row, columnIndex++, "Non");
     }
+
+    addTextCell(row, columnIndex++, UserRenderer.roles().render(user, getLocale()));
 
     Instant creationDate = binding.creationDate().getSafely();
     if (creationDate != null) {

@@ -8,16 +8,20 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import test.core.TestCorePackage;
+import test.core.TestEntityDatabaseHelper;
 
 @Configuration
-@Import({
-  BasicApplicationCoreCommonConfiguration.class,
-})
+@Import({BasicApplicationCoreCommonConfiguration.class})
 @ComponentScan(basePackageClasses = TestCorePackage.class)
 public class BasicApplicationCoreTestCommonConfig {
 
   @Bean
   public IRendererService rendererService() {
     return new EmptyRendererServiceImpl();
+  }
+
+  @Bean
+  public TestEntityDatabaseHelper entityDatabaseHelper() {
+    return new TestEntityDatabaseHelper();
   }
 }

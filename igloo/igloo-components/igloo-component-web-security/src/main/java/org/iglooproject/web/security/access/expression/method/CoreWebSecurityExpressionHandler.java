@@ -21,7 +21,6 @@ public class CoreWebSecurityExpressionHandler extends DefaultWebSecurityExpressi
     CoreWebSecurityExpressionRoot root = new CoreWebSecurityExpressionRoot(authentication, fi);
     root.setCorePermissionEvaluator(getCorePermissionEvaluator());
     root.setTrustResolver(trustResolver);
-    root.setRoleHierarchy(getRoleHierarchy());
     return root;
   }
 

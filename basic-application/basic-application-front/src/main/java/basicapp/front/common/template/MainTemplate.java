@@ -6,7 +6,7 @@ import static org.iglooproject.jpa.more.property.JpaMorePropertyIds.MAINTENANCE;
 
 import basicapp.back.security.model.BasicApplicationAuthorityConstants;
 import basicapp.back.security.service.IBasicApplicationAuthenticationService;
-import basicapp.back.security.service.ISecurityManagementService;
+import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.front.BasicApplicationApplication;
 import basicapp.front.BasicApplicationSession;
 import basicapp.front.announcement.page.AnnouncementListPage;
@@ -14,10 +14,10 @@ import basicapp.front.common.component.AnnouncementsPanel;
 import basicapp.front.common.template.theme.BasicApplicationApplicationTheme;
 import basicapp.front.common.template.theme.common.BootstrapBreakpointPanel;
 import basicapp.front.referencedata.page.ReferenceDataPage;
+import basicapp.front.role.page.RoleListPage;
 import basicapp.front.security.password.page.SecurityPasswordExpirationPage;
 import basicapp.front.user.page.BasicUserListPage;
 import basicapp.front.user.page.TechnicalUserListPage;
-import basicapp.front.usergroup.page.UserGroupListPage;
 import com.google.common.collect.ImmutableList;
 import igloo.bootstrap.tooltip.BootstrapTooltipBehavior;
 import igloo.bootstrap.tooltip.BootstrapTooltipOptions;
@@ -54,7 +54,7 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
 
   @SpringBean private IPropertyService propertyService;
 
-  @SpringBean private ISecurityManagementService securityManagementService;
+  @SpringBean private ISecurityManagementControllerService securityManagementController;
 
   @SpringBean private IBasicApplicationAuthenticationService authenticationService;
 
@@ -70,7 +70,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
     }
 
     if (BasicApplicationSession.get().getOriginalAuthentication() == null
-        && securityManagementService.isPasswordExpired(BasicApplicationSession.get().getUser())) {
+        && securityManagementController.isPasswordExpired(
+            BasicApplicationSession.get().getUser())) {
       throw SecurityPasswordExpirationPage.linkDescriptor().newRestartResponseException();
     }
 
@@ -124,8 +125,8 @@ public abstract class MainTemplate extends AbstractWebPageTemplate {
                 TechnicalUserListPage.linkDescriptor()
                     .navigationMenuItem(
                         new ResourceModel("navigation.administration.technicalUser")),
-                UserGroupListPage.linkDescriptor()
-                    .navigationMenuItem(new ResourceModel("navigation.administration.userGroup")),
+                RoleListPage.linkDescriptor()
+                    .navigationMenuItem(new ResourceModel("navigation.administration.role")),
                 AnnouncementListPage.linkDescriptor()
                     .navigationMenuItem(
                         new ResourceModel("navigation.administration.announcement"))),

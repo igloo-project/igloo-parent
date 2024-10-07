@@ -4,7 +4,7 @@ import basicapp.back.business.common.util.BasicApplicationLocale;
 import igloo.hibernateconfig.api.HibernateSearchAnalyzer;
 import igloo.hibernateconfig.api.HibernateSearchNormalizer;
 import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Transient;
 import java.util.Collection;
 import java.util.Locale;
@@ -14,7 +14,7 @@ import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextFi
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.KeywordField;
 import org.iglooproject.jpa.more.business.localization.model.AbstractLocalizedText;
 
-@MappedSuperclass
+@Embeddable
 @Bindable
 public class LocalizedText extends AbstractLocalizedText {
 

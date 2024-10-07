@@ -1,7 +1,7 @@
 package basicapp.back.security.service;
 
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.service.IUserService;
+import basicapp.back.business.user.service.business.IUserService;
 import org.iglooproject.jpa.security.service.CoreAuthenticationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 

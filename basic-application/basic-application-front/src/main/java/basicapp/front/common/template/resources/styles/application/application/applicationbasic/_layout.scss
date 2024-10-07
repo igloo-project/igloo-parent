@@ -101,6 +101,19 @@ body {
 						padding: 20px $layout-container-padding-x;
 					}
 				}
+				
+				.content-footer-section {
+					background-color: $white;
+					border-top: 1px solid rgba(0, 0, 0, .09);
+					border-bottom: 1px solid rgba(0, 0, 0, .09);
+					
+					.content-footer-container {
+						@include make-container();
+						@include make-container-max-widths();
+						
+						padding: 15px $layout-container-padding-x;
+					}
+				}
 			}
 		}
 	}

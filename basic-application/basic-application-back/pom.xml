@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>basic-application</artifactId>
 		<groupId>org.iglooproject.archetype</groupId>
-		<version>6.0.0-Alpha16</version>
+		<version>6.0.0-Alpha17</version>
 	</parent>
 	
 	<artifactId>basic-application-back</artifactId>
@@ -218,6 +218,11 @@
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	
 	<build>
@@ -305,6 +310,14 @@
 			<dependency>
 				<groupId>org.iglooproject</groupId>
 				<artifactId>dependencies-quality-annotations</artifactId>
+				<version>${igloo-maven.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- Override micrometer-->
+			<dependency>
+				<groupId>org.iglooproject</groupId>
+				<artifactId>dependencies-tools</artifactId>
 				<version>${igloo-maven.version}</version>
 				<type>pom</type>
 				<scope>import</scope>

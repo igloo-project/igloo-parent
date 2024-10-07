@@ -1,11 +1,11 @@
 package basicapp.front.user.panel;
 
-import basicapp.back.business.user.model.TechnicalUser;
-import basicapp.back.business.user.search.TechnicalUserSearchQueryData;
+import basicapp.back.business.user.model.User;
+import basicapp.back.business.user.model.atomic.UserType;
+import basicapp.back.business.user.search.UserSearchQueryData;
 import basicapp.back.util.binding.Bindings;
-import basicapp.front.user.form.TechnicalUserAjaxDropDownSingleChoice;
+import basicapp.front.user.form.UserAjaxDropDownSingleChoice;
 import basicapp.front.user.page.TechnicalUserDetailPage;
-import basicapp.front.usergroup.form.UserGroupDropDownSingleChoice;
 import igloo.wicket.markup.html.form.PageableSearchForm;
 import igloo.wicket.model.BindingModel;
 import igloo.wicket.model.Detachables;
@@ -30,33 +30,27 @@ public class TechnicalUserListSearchPanel extends Panel {
 
   private static final long serialVersionUID = -4624527265796845060L;
 
-  private final IModel<TechnicalUser> quickAccessModel = new GenericEntityModel<>();
+  private final IModel<User> quickAccessModel = new GenericEntityModel<>();
 
   public TechnicalUserListSearchPanel(
-      String id, IPageable pageable, IModel<TechnicalUserSearchQueryData> dataModel) {
+      String id, IPageable pageable, IModel<UserSearchQueryData> dataModel) {
     super(id);
 
     add(
         new PageableSearchForm<>("form", pageable)
             .add(
-                new TextField<String>(
-                        "name",
-                        BindingModel.of(dataModel, Bindings.technicalUserDtoSearch().term()))
+                new TextField<>(
+                        "name", BindingModel.of(dataModel, Bindings.userSearchQueryData().term()))
                     .setLabel(new ResourceModel("business.user.name"))
-                    .add(new LabelPlaceholderBehavior()),
-                new UserGroupDropDownSingleChoice(
-                        "userGroup",
-                        BindingModel.of(dataModel, Bindings.technicalUserDtoSearch().group()))
-                    .setLabel(new ResourceModel("business.user.group"))
                     .add(new LabelPlaceholderBehavior()),
                 new EnumDropDownSingleChoice<>(
                         "enabledFilter",
-                        BindingModel.of(
-                            dataModel, Bindings.technicalUserDtoSearch().enabledFilter()),
+                        BindingModel.of(dataModel, Bindings.userSearchQueryData().active()),
                         EnabledFilter.class)
                     .setLabel(new ResourceModel("business.user.enabled.state"))
                     .add(new LabelPlaceholderBehavior()),
-                new TechnicalUserAjaxDropDownSingleChoice("quickAccess", quickAccessModel)
+                new UserAjaxDropDownSingleChoice(
+                        "quickAccess", quickAccessModel, UserType.TECHNICAL)
                     .setLabel(new ResourceModel("common.quickAccess"))
                     .add(new LabelPlaceholderBehavior())
                     .add(

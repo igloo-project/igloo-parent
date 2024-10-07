@@ -27,6 +27,6 @@ public class UserDifferenceServiceImpl extends AbstractGenericEntityDifferenceSe
         Bindings.user().lastName(),
         Bindings.user().email(),
         Bindings.user().locale(),
-        Bindings.user().groups());
+        Bindings.user().type());
   }
 }

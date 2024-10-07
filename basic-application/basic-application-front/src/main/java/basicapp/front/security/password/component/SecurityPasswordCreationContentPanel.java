@@ -3,14 +3,14 @@ package basicapp.front.security.password.component;
 import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.typedescriptor.UserTypeDescriptor;
-import basicapp.back.security.service.ISecurityManagementService;
-import basicapp.front.common.model.UserTypeDescriptorModel;
+import basicapp.back.security.service.controller.ISecurityManagementControllerService;
+import basicapp.back.util.binding.Bindings;
 import basicapp.front.common.validator.UserPasswordValidator;
 import igloo.igloojs.showpassword.ShowPasswordBehavior;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.markup.html.panel.GenericPanel;
+import igloo.wicket.model.BindingModel;
 import igloo.wicket.model.Detachables;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -39,9 +39,7 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
   private static final Logger LOGGER =
       LoggerFactory.getLogger(SecurityPasswordCreationContentPanel.class);
 
-  @SpringBean private ISecurityManagementService securityManagementService;
-
-  private final IModel<? extends UserTypeDescriptor<? extends User>> userTypeDescriptorModel;
+  @SpringBean private ISecurityManagementControllerService securityManagementController;
 
   private final IModel<String> emailModel = Model.of("");
 
@@ -49,8 +47,6 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
 
   public SecurityPasswordCreationContentPanel(String wicketId, IModel<User> userModel) {
     super(wicketId, userModel);
-
-    userTypeDescriptorModel = UserTypeDescriptorModel.fromUser(getModel());
 
     ModelValidatingForm<?> form = new ModelValidatingForm<>("form");
     add(form);
@@ -75,8 +71,7 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
         new BlankLink("showPassword").add(new ShowPasswordBehavior(password)),
         new CoreLabel(
             "passwordHelp",
-            new StringResourceModel(
-                    "security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
+            new StringResourceModel("user.common.form.password.help")
                 .setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
                 .setDefaultValue(
                     new StringResourceModel("user.common.form.password.help")
@@ -84,8 +79,7 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
                             ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN)))));
 
     form.add(
-        new UserPasswordValidator(
-                userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), password)
+        new UserPasswordValidator(BindingModel.of(userModel, Bindings.user().type()), password)
             .userModel(getModel()));
 
     form.add(
@@ -96,7 +90,7 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
           protected void onSubmit(AjaxRequestTarget target) {
             try {
               User user = SecurityPasswordCreationContentPanel.this.getModelObject();
-              securityManagementService.updatePassword(user, passwordModel.getObject());
+              securityManagementController.updatePassword(user, passwordModel.getObject());
 
               Session.get().success(getString("security.password.creation.validate.success"));
 
@@ -121,6 +115,6 @@ public class SecurityPasswordCreationContentPanel extends GenericPanel<User> {
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(userTypeDescriptorModel, emailModel, passwordModel);
+    Detachables.detach(emailModel, passwordModel);
   }
 }

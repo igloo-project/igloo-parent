@@ -12,7 +12,8 @@ import basicapp.back.business.notification.service.INotificationService;
 import basicapp.back.business.user.model.User;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestInitiator;
 import basicapp.back.business.user.model.atomic.UserPasswordRecoveryRequestType;
-import basicapp.back.business.user.service.IUserService;
+import basicapp.back.business.user.model.atomic.UserType;
+import basicapp.back.business.user.service.business.IUserService;
 import basicapp.back.security.model.SecurityOptions;
 import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.ImmutableList;
@@ -23,8 +24,6 @@ import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
-import org.iglooproject.jpa.security.business.user.model.GenericUser;
-import org.iglooproject.jpa.util.HibernateUtils;
 import org.iglooproject.spring.property.service.IPropertyService;
 import org.iglooproject.spring.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,34 +43,42 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
 
   private final SecurityOptions securityOptionsDefault;
 
-  private final Map<Class<? extends GenericUser<?, ?>>, SecurityOptions> securityOptionsUsers;
+  private final Map<UserType, SecurityOptions> securityOptionsUsers;
 
   public SecurityManagementServiceImpl(
       SecurityOptions securityOptionsDefault,
-      ImmutableMap<Class<? extends GenericUser<?, ?>>, SecurityOptions> securityOptionsUsers) {
+      ImmutableMap<UserType, SecurityOptions> securityOptionsUsers) {
     this.securityOptionsDefault = securityOptionsDefault;
     this.securityOptionsUsers = ImmutableMap.copyOf(securityOptionsUsers);
   }
 
   @Override
-  public SecurityOptions getSecurityOptionsDefault() {
-    return securityOptionsDefault;
-  }
-
-  @Override
-  public SecurityOptions getSecurityOptions(Class<? extends User> clazz) {
-    if (securityOptionsUsers.containsKey(clazz)) {
-      return securityOptionsUsers.get(clazz);
+  public void updatePassword(User user, String password, User author)
+      throws ServiceException, SecurityServiceException {
+    if (user == null || !StringUtils.hasText(password)) {
+      return;
     }
-    return getSecurityOptionsDefault();
-  }
 
-  @Override
-  public SecurityOptions getSecurityOptions(User user) {
-    if (user == null) {
-      return getSecurityOptionsDefault();
+    userService.setPasswords(user, password);
+    user.getPasswordInformation().setLastUpdateDate(Instant.now());
+
+    if (getSecurityOptions(user).isPasswordHistoryEnabled()) {
+      EvictingQueue<String> historyQueue =
+          EvictingQueue.create(propertyService.get(PASSWORD_HISTORY_COUNT));
+
+      for (String oldPassword : user.getPasswordInformation().getHistory()) {
+        historyQueue.offer(oldPassword);
+      }
+      historyQueue.offer(user.getPasswordHash());
+
+      user.getPasswordInformation().setHistory(ImmutableList.copyOf(historyQueue));
     }
-    return getSecurityOptions(HibernateUtils.unwrap(user).getClass());
+
+    user.getPasswordRecoveryRequest().reset();
+    userService.update(user);
+
+    historyLogService.log(
+        HistoryEventType.PASSWORD_UPDATE, user, HistoryLogAdditionalInformationBean.empty());
   }
 
   @Override
@@ -121,6 +128,12 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
   }
 
   @Override
+  public boolean checkPassword(String password, User user)
+      throws ServiceException, SecurityServiceException {
+    return passwordEncoder.matches(password, user.getPasswordHash());
+  }
+
+  @Override
   public boolean isPasswordExpired(User user) {
     if (user == null
         || user.getPasswordInformation().getLastUpdateDate() == null
@@ -157,43 +170,23 @@ public class SecurityManagementServiceImpl implements ISecurityManagementService
   }
 
   @Override
-  public void updatePassword(User user, String password)
-      throws ServiceException, SecurityServiceException {
-    updatePassword(user, password, user);
+  public SecurityOptions getSecurityOptionsDefault() {
+    return securityOptionsDefault;
   }
 
   @Override
-  public void updatePassword(User user, String password, User author)
-      throws ServiceException, SecurityServiceException {
-    if (user == null || !StringUtils.hasText(password)) {
-      return;
+  public SecurityOptions getSecurityOptions(UserType userType) {
+    if (securityOptionsUsers.containsKey(userType)) {
+      return securityOptionsUsers.get(userType);
     }
-
-    userService.setPasswords(user, password);
-    user.getPasswordInformation().setLastUpdateDate(Instant.now());
-
-    if (getSecurityOptions(user).isPasswordHistoryEnabled()) {
-      EvictingQueue<String> historyQueue =
-          EvictingQueue.create(propertyService.get(PASSWORD_HISTORY_COUNT));
-
-      for (String oldPassword : user.getPasswordInformation().getHistory()) {
-        historyQueue.offer(oldPassword);
-      }
-      historyQueue.offer(user.getPasswordHash());
-
-      user.getPasswordInformation().setHistory(ImmutableList.copyOf(historyQueue));
-    }
-
-    user.getPasswordRecoveryRequest().reset();
-    userService.update(user);
-
-    historyLogService.log(
-        HistoryEventType.PASSWORD_UPDATE, user, HistoryLogAdditionalInformationBean.empty());
+    return getSecurityOptionsDefault();
   }
 
   @Override
-  public boolean checkPassword(String password, User user)
-      throws ServiceException, SecurityServiceException {
-    return passwordEncoder.matches(password, user.getPasswordHash());
+  public SecurityOptions getSecurityOptions(User user) {
+    if (user == null) {
+      return getSecurityOptionsDefault();
+    }
+    return getSecurityOptions(user.getType());
   }
 }

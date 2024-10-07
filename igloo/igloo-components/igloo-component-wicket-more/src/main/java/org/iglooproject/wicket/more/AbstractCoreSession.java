@@ -43,7 +43,7 @@ import org.springframework.security.web.authentication.switchuser.SwitchUserGran
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 
-public abstract class AbstractCoreSession<U extends GenericUser<U, ?>>
+public abstract class AbstractCoreSession<U extends GenericUser<U>>
     extends AuthenticatedWebSession {
 
   private static final long serialVersionUID = 2591467597835056981L;

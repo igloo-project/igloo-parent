@@ -6,7 +6,7 @@ import basicapp.back.business.history.model.HistoryLog;
 import basicapp.back.business.history.model.atomic.HistoryEventType;
 import basicapp.back.business.history.model.bean.HistoryLogAdditionalInformationBean;
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.service.IUserService;
+import basicapp.back.business.user.service.business.IUserService;
 import java.time.Instant;
 import java.util.List;
 import org.iglooproject.functional.Supplier2;

@@ -1,16 +1,14 @@
 package basicapp.back.util.init.service;
 
 import basicapp.back.business.BasicApplicationCoreCommonBusinessPackage;
-import basicapp.back.business.user.model.BasicUser;
-import basicapp.back.business.user.model.TechnicalUser;
-import basicapp.back.business.user.model.UserGroup;
+import basicapp.back.business.role.model.Role;
+import basicapp.back.business.user.model.User;
 import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.Map;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 import org.iglooproject.jpa.more.util.init.service.AbstractImportDataServiceImpl;
-import org.iglooproject.jpa.security.business.authority.model.Authority;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +24,8 @@ public class ImportDataServiceImpl extends AbstractImportDataServiceImpl {
   @Override
   protected void importMainBusinessItems(
       Map<String, Map<String, GenericEntity<Long, ?>>> idsMapping, Workbook workbook) {
-    doImportItem(idsMapping, workbook, Authority.class);
-    doImportItem(idsMapping, workbook, UserGroup.class);
-    doImportItem(idsMapping, workbook, TechnicalUser.class);
-    doImportItem(idsMapping, workbook, BasicUser.class);
+    doImportItem(idsMapping, workbook, Role.class);
+    doImportItem(idsMapping, workbook, User.class);
   }
 
   @Override

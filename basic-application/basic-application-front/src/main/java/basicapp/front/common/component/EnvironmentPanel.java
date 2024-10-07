@@ -1,6 +1,6 @@
 package basicapp.front.common.component;
 
-import basicapp.back.business.user.model.TechnicalUser;
+import basicapp.back.business.user.predicate.UserPredicates;
 import basicapp.back.config.util.Environment;
 import basicapp.front.BasicApplicationSession;
 import com.google.common.collect.ImmutableList;
@@ -35,6 +35,6 @@ public class EnvironmentPanel extends GenericPanel<Environment> {
 
     setVisible(
         VISIBLE_ALERTS.contains(getModelObject())
-            || BasicApplicationSession.get().getUser() instanceof TechnicalUser);
+            || UserPredicates.technical().apply(BasicApplicationSession.get().getUser()));
   }
 }

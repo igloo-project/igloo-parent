@@ -42,8 +42,12 @@ public class UserDataProvider
         dataModelOperator.apply(
             new DataModel<>(UserSearchQueryData::new)
                 .bind(Bindings.userSearchQueryData().term(), Model.of())
-                .bind(Bindings.userSearchQueryData().group(), new GenericEntityModel<>())
-                .bind(Bindings.userSearchQueryData().enabledFilter(), Model.of())));
+                .bind(Bindings.userSearchQueryData().type(), Model.of())
+                .bind(Bindings.userSearchQueryData().lastName(), Model.of())
+                .bind(Bindings.userSearchQueryData().firstName(), Model.of())
+                .bind(Bindings.userSearchQueryData().email(), Model.of())
+                .bind(Bindings.userSearchQueryData().role(), new GenericEntityModel<>())
+                .bind(Bindings.userSearchQueryData().active(), Model.of())));
   }
 
   public UserDataProvider(IModel<UserSearchQueryData> dataModel) {

@@ -48,6 +48,16 @@ public class UserSearchQueryImpl implements IUserSearchQuery {
         .fetchTotalHitCount();
   }
 
+  @Override
+  public Collection<Long> listIds(UserSearchQueryData data, Map<UserSort, ISort.SortOrder> sorts) {
+    return Search.session(entityManager)
+        .search(User.class)
+        .select(f -> f.id(Long.class))
+        .where(predicateContributor(data))
+        .sort(sortContributor(sorts))
+        .fetchAllHits();
+  }
+
   private BiConsumer<
           ? super SearchPredicateFactory, ? super SimpleBooleanPredicateClausesCollector<?>>
       predicateContributor(UserSearchQueryData data) {
@@ -72,16 +82,34 @@ public class UserSearchQueryImpl implements IUserSearchQuery {
                               .matching(wildcardTokensOr(data.getTerm())));
                     }));
       }
-      if (data.getGroup() != null) {
-        root.add(f.match().field(User.GROUPS).matching(data.getGroup()));
+      if (data.getType() != null) {
+        root.add(f.match().field(User.TYPE).matching(data.getType()));
       }
-      if (data.getEnabledFilter() != null
-          && !Objects.equals(data.getEnabledFilter(), EnabledFilter.ALL)) {
+      if (data.getLastName() != null) {
+        root.add(
+            f.simpleQueryString()
+                .field(User.LAST_NAME)
+                .matching(wildcardTokensOr(data.getLastName())));
+      }
+      if (data.getFirstName() != null) {
+        root.add(
+            f.simpleQueryString()
+                .field(User.FIRST_NAME)
+                .matching(wildcardTokensOr(data.getFirstName())));
+      }
+      if (data.getEmail() != null) {
+        root.add(
+            f.simpleQueryString().field(User.EMAIL).matching(wildcardTokensOr(data.getEmail())));
+      }
+      if (data.getRole() != null) {
+        root.add(f.match().field(User.ROLES).matching(data.getRole()));
+      }
+      if (data.getActive() != null && !Objects.equals(data.getActive(), EnabledFilter.ALL)) {
         boolean active =
-            switch (data.getEnabledFilter()) {
+            switch (data.getActive()) {
               case DISABLED_ONLY -> false;
               case ENABLED_ONLY -> true;
-              default -> throw new IllegalSwitchValueException(data.getEnabledFilter());
+              default -> throw new IllegalSwitchValueException(data.getActive());
             };
         root.add(f.match().field(User.ENABLED).matching(active));
       }

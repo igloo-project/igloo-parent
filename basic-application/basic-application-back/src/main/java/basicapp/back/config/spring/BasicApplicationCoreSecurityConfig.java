@@ -4,12 +4,10 @@ import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PA
 import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS;
 
-import basicapp.back.business.user.model.BasicUser;
-import basicapp.back.business.user.model.TechnicalUser;
+import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.security.model.BasicApplicationPermission;
 import basicapp.back.security.model.SecurityOptions;
 import basicapp.back.security.service.BasicApplicationAuthenticationServiceImpl;
-import basicapp.back.security.service.BasicApplicationPermissionEvaluator;
 import basicapp.back.security.service.BasicApplicationSecurityServiceImpl;
 import basicapp.back.security.service.BasicApplicationUserDetailsServiceImpl;
 import basicapp.back.security.service.IBasicApplicationAuthenticationService;
@@ -17,8 +15,8 @@ import basicapp.back.security.service.IBasicApplicationSecurityService;
 import basicapp.back.security.service.IBasicApplicationUserDetailsService;
 import basicapp.back.security.service.ISecurityManagementService;
 import basicapp.back.security.service.SecurityManagementServiceImpl;
+import basicapp.back.security.service.permission.BasicApplicationPermissionEvaluator;
 import com.google.common.collect.ImmutableMap;
-import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.jpa.security.service.AuthenticationUsernameComparison;
 import org.iglooproject.jpa.security.service.ICorePermissionEvaluator;
 import org.iglooproject.jpa.security.service.NamedPermissionFactory;
@@ -90,9 +88,9 @@ public class BasicApplicationCoreSecurityConfig {
                                 .forbiddenPasswords(
                                     propertyService.get(
                                         SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS)))),
-        ImmutableMap.<Class<? extends GenericUser<?, ?>>, SecurityOptions>builder()
+        ImmutableMap.<UserType, SecurityOptions>builder()
             .put(
-                TechnicalUser.class,
+                UserType.TECHNICAL,
                 SecurityOptions.create(
                     securityOptions ->
                         securityOptions
@@ -109,7 +107,7 @@ public class BasicApplicationCoreSecurityConfig {
                                             propertyService.get(
                                                 SECURITY_PASSWORD_USER_FORBIDDEN_PASSWORDS)))))
             .put(
-                BasicUser.class,
+                UserType.BASIC,
                 SecurityOptions.create(
                     securityOptions ->
                         securityOptions

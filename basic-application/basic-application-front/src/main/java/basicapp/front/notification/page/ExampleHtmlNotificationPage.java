@@ -1,23 +1,28 @@
 package basicapp.front.notification.page;
 
 import basicapp.back.business.user.model.User;
+import basicapp.back.business.user.predicate.UserPredicates;
 import basicapp.back.util.binding.Bindings;
 import basicapp.back.util.time.DateTimePattern;
 import basicapp.front.BasicApplicationApplication;
 import basicapp.front.notification.model.InstantToDateModel;
 import basicapp.front.notification.template.AbstractHtmlNotificationPage;
+import basicapp.front.user.page.BasicUserDetailPage;
+import basicapp.front.user.page.TechnicalUserDetailPage;
 import basicapp.front.user.renderer.UserEnabledRenderer;
-import basicapp.front.user.template.UserDetailTemplate;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.model.BindingModel;
 import igloo.wicket.renderer.Renderer;
 import java.time.Instant;
 import java.util.Locale;
+import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.iglooproject.wicket.more.link.descriptor.IPageLinkDescriptor;
+import org.iglooproject.wicket.more.link.descriptor.mapper.ITwoParameterLinkDescriptorMapper;
 import org.iglooproject.wicket.more.markup.html.bootstrap.common.behavior.BootstrapColorBehavior;
 
 public class ExampleHtmlNotificationPage extends AbstractHtmlNotificationPage<User> {
@@ -52,17 +57,18 @@ public class ExampleHtmlNotificationPage extends AbstractHtmlNotificationPage<Us
 
     add(new ExternalLink("link", urlModel), new ExternalLink("url", urlModel, urlModel));
 
+    LoadableDetachableModel<String> userLink =
+        LoadableDetachableModel.of(
+            () -> {
+              ITwoParameterLinkDescriptorMapper<IPageLinkDescriptor, User, Page> mapper =
+                  UserPredicates.technical().apply(userModel.getObject())
+                      ? TechnicalUserDetailPage.MAPPER
+                      : BasicUserDetailPage.MAPPER;
+              return mapper.ignoreParameter2().map(userModel).bypassPermissions().fullUrl();
+            });
     add(
         new ExternalLink(
-            "userLink",
-            LoadableDetachableModel.of(
-                () ->
-                    UserDetailTemplate.mapper()
-                        .ignoreParameter2()
-                        .map(userModel)
-                        .bypassPermissions()
-                        .fullUrl()),
-            BindingModel.of(userModel, Bindings.user().username())),
+            "basicUserLink", userLink, BindingModel.of(userModel, Bindings.user().username())),
         new CoreLabel("firstname", BindingModel.of(userModel, Bindings.user().firstName())),
         new CoreLabel("lastname", BindingModel.of(userModel, Bindings.user().lastName())),
         new CoreLabel("enabled", UserEnabledRenderer.get().asModel(userModel))

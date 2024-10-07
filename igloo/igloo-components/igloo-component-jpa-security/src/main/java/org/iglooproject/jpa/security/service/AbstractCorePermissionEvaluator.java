@@ -10,18 +10,15 @@ import java.util.Collections;
 import java.util.List;
 import org.iglooproject.jpa.security.business.user.model.GenericUser;
 import org.iglooproject.jpa.security.business.user.service.IGenericUserService;
-import org.iglooproject.jpa.security.hierarchy.IPermissionHierarchy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.PermissionFactory;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.core.Authentication;
 
-public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?>>
+public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T>>
     implements ICorePermissionEvaluator {
 
   @Autowired private PermissionFactory permissionFactory;
-
-  @Autowired private IPermissionHierarchy permissionHierarchy;
 
   @Autowired private IGenericUserService<T> userService;
 
@@ -131,17 +128,8 @@ public abstract class AbstractCorePermissionEvaluator<T extends GenericUser<T, ?
 
   protected boolean checkAcceptablePermissions(
       T user, Object targetDomainObject, List<Permission> permissions) {
-    // les doublons de permissions sont retirés dans getAcceptablePermissions
-    List<Permission> acceptablePermissions =
-        permissionHierarchy.getAcceptablePermissions(permissions);
-    for (Permission permission : acceptablePermissions) {
-      // Il faut posséder au moins une des permissions acceptées
-      boolean allowed = hasPermission(user, targetDomainObject, permission);
-      if (allowed) {
-        return true;
-      }
-    }
-    return false;
+    return permissions.stream()
+        .anyMatch(permission -> hasPermission(user, targetDomainObject, permission));
   }
 
   /** {@see org.springframework.security.acls.AclPermissionEvaluator#resolvePermission(Object)} */

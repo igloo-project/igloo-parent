@@ -28,6 +28,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
       "igloo.profile=test",
       "spring.jpa.properties.hibernate.search.enabled=false",
       "spring.jpa.hibernate.ddl-auto=create-drop",
-      "spring.jpa.igloo.old-style-transaction-advisor=true"
+      "spring.jpa.igloo.old-style-transaction-advisor=true",
+      "igloo.system.roles=ROLE_SYSTEM ROLE_ADMIN ROLE_AUTHENTICATED ROLE_ANONYMOUS"
     })
 public @interface SpringBootTestJpaSecurity {}

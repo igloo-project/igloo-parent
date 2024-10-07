@@ -1,9 +1,10 @@
 package basicapp.front.profile.component;
 
+import static basicapp.back.security.model.BasicApplicationPermissionConstants.USER_EDIT_PASSWORD;
+
 import basicapp.back.business.user.model.User;
-import basicapp.back.security.service.ISecurityManagementService;
+import basicapp.back.security.service.controller.ISecurityManagementControllerService;
 import basicapp.back.util.binding.Bindings;
-import basicapp.front.BasicApplicationSession;
 import basicapp.front.user.popup.UserPasswordEditPopup;
 import igloo.bootstrap.modal.AjaxModalOpenBehavior;
 import igloo.wicket.component.CoreLabel;
@@ -20,15 +21,15 @@ import org.wicketstuff.wiquery.core.events.MouseEvent;
 
 public class ProfileDescriptionPanel extends GenericPanel<User> {
 
-  private static final long serialVersionUID = -1923855993008983060L;
+  private static final long serialVersionUID = 1L;
 
-  @SpringBean private ISecurityManagementService securityManagementService;
+  @SpringBean private ISecurityManagementControllerService securityManagementController;
 
   public ProfileDescriptionPanel(String id, IModel<User> userModel) {
     super(id, userModel);
 
-    UserPasswordEditPopup<User> passwordEditPopup =
-        new UserPasswordEditPopup<>("passwordEditPopup", userModel);
+    UserPasswordEditPopup passwordEditPopup =
+        new UserPasswordEditPopup("passwordEditPopup", userModel);
     add(passwordEditPopup);
 
     IModel<String> emailModel = BindingModel.of(userModel, Bindings.user().email());
@@ -36,13 +37,7 @@ public class ProfileDescriptionPanel extends GenericPanel<User> {
     add(
         new BlankLink("passwordEdit")
             .add(new AjaxModalOpenBehavior(passwordEditPopup, MouseEvent.CLICK))
-            .add(
-                Condition.isTrue(
-                        () ->
-                            securityManagementService
-                                .getSecurityOptions(BasicApplicationSession.get().getUser())
-                                .isPasswordUserUpdateEnabled())
-                    .thenShow()),
+            .add(Condition.permission(userModel, USER_EDIT_PASSWORD).thenShow()),
         new CoreLabel("username", BindingModel.of(userModel, Bindings.user().username()))
             .showPlaceholder(),
         new BooleanIcon("enabled", BindingModel.of(userModel, Bindings.user().enabled())),

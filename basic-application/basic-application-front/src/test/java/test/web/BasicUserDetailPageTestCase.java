@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import basicapp.front.user.page.BasicUserDetailPage;
 import basicapp.front.user.page.BasicUserListPage;
-import basicapp.front.user.template.UserDetailTemplate;
 import org.apache.wicket.markup.html.link.Link;
 import org.iglooproject.jpa.exception.SecurityServiceException;
 import org.iglooproject.jpa.exception.ServiceException;
@@ -23,9 +22,8 @@ class BasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase
   @Test
   void initPage() throws ServiceException, SecurityServiceException {
     authenticateUser(administrator);
-
     String url =
-        UserDetailTemplate.mapper().ignoreParameter2().map(GenericEntityModel.of(basicUser)).url();
+        BasicUserDetailPage.MAPPER.ignoreParameter2().map(GenericEntityModel.of(basicUser)).url();
     tester.executeUrl(url);
 
     tester.assertRenderedPage(BasicUserDetailPage.class);
@@ -36,7 +34,7 @@ class BasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase
     authenticateUser(administrator);
 
     String url =
-        UserDetailTemplate.mapper().ignoreParameter2().map(GenericEntityModel.of(basicUser)).url();
+        BasicUserDetailPage.MAPPER.ignoreParameter2().map(GenericEntityModel.of(basicUser)).url();
     tester.executeUrl(url);
 
     tester.assertRenderedPage(BasicUserDetailPage.class);
@@ -69,7 +67,7 @@ class BasicUserDetailPageTestCase extends AbstractBasicApplicationWebappTestCase
     authenticateUser(administrator);
 
     String url =
-        UserDetailTemplate.mapper().ignoreParameter2().map(GenericEntityModel.of(basicUser)).url();
+        BasicUserDetailPage.MAPPER.ignoreParameter2().map(GenericEntityModel.of(basicUser)).url();
     tester.executeUrl(url);
 
     assertTrue(basicUser.isEnabled());

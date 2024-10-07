@@ -1,6 +1,7 @@
 package basicapp.front.user.form;
 
 import basicapp.back.business.user.model.User;
+import basicapp.back.business.user.model.atomic.UserType;
 import basicapp.back.business.user.search.IUserSearchQuery;
 import basicapp.back.business.user.search.UserSearchQueryData;
 import basicapp.back.business.user.search.UserSort;
@@ -21,7 +22,11 @@ public class UserAjaxDropDownSingleChoice extends GenericSelect2AjaxDropDownSing
   private static final long serialVersionUID = 7076114890845943476L;
 
   public UserAjaxDropDownSingleChoice(String id, IModel<User> model) {
-    this(id, model, new ChoiceProvider());
+    this(id, model, new ChoiceProvider(null));
+  }
+
+  public UserAjaxDropDownSingleChoice(String id, IModel<User> model, UserType userType) {
+    this(id, model, new ChoiceProvider(userType));
   }
 
   public UserAjaxDropDownSingleChoice(
@@ -35,8 +40,11 @@ public class UserAjaxDropDownSingleChoice extends GenericSelect2AjaxDropDownSing
 
     @SpringBean private IUserSearchQuery searchQuery;
 
-    public ChoiceProvider() {
+    private final UserType userType;
+
+    public ChoiceProvider(UserType userType) {
       super(User.class, UserRenderer.get());
+      this.userType = userType;
       Injector.get().inject(this);
     }
 
@@ -44,7 +52,10 @@ public class UserAjaxDropDownSingleChoice extends GenericSelect2AjaxDropDownSing
     protected void query(String term, int offset, int limit, Response<User> response) {
       UserSearchQueryData data = new UserSearchQueryData();
       data.setTerm(term);
-      data.setEnabledFilter(EnabledFilter.ENABLED_ONLY);
+      if (userType != null) {
+        data.setType(userType);
+      }
+      data.setActive(EnabledFilter.ENABLED_ONLY);
       Map<UserSort, SortOrder> sorts =
           ImmutableMap.of(
               UserSort.SCORE, UserSort.SCORE.getDefaultOrder(),

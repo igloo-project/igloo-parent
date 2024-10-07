@@ -3,15 +3,15 @@ package basicapp.front.security.password.component;
 import static basicapp.back.property.BasicApplicationCorePropertyIds.SECURITY_PASSWORD_LENGTH_MIN;
 
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.typedescriptor.UserTypeDescriptor;
-import basicapp.back.security.service.ISecurityManagementService;
+import basicapp.back.security.service.controller.ISecurityManagementControllerService;
+import basicapp.back.util.binding.Bindings;
 import basicapp.front.BasicApplicationSession;
-import basicapp.front.common.model.UserTypeDescriptorModel;
 import basicapp.front.common.validator.UserPasswordValidator;
 import igloo.igloojs.showpassword.ShowPasswordBehavior;
 import igloo.wicket.component.CoreLabel;
 import igloo.wicket.feedback.FeedbackUtils;
 import igloo.wicket.markup.html.panel.GenericPanel;
+import igloo.wicket.model.BindingModel;
 import igloo.wicket.model.Detachables;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
@@ -39,16 +39,12 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
   private static final Logger LOGGER =
       LoggerFactory.getLogger(SecurityPasswordExpirationContentPanel.class);
 
-  @SpringBean private ISecurityManagementService securityManagementService;
-
-  private final IModel<? extends UserTypeDescriptor<? extends User>> userTypeDescriptorModel;
+  @SpringBean private ISecurityManagementControllerService securityManagementControllerService;
 
   private final IModel<String> passwordModel = Model.of();
 
   public SecurityPasswordExpirationContentPanel(String id) {
     super(id, BasicApplicationSession.get().getUserModel());
-
-    userTypeDescriptorModel = UserTypeDescriptorModel.fromUser(getModel());
 
     ModelValidatingForm<?> form = new ModelValidatingForm<>("form");
     add(form);
@@ -64,17 +60,11 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
         new BlankLink("showPassword").add(new ShowPasswordBehavior(password)),
         new CoreLabel(
             "passwordHelp",
-            new StringResourceModel(
-                    "security.${resourceKeyBase}.password.help", userTypeDescriptorModel)
-                .setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))
-                .setDefaultValue(
-                    new StringResourceModel("user.common.form.password.help")
-                        .setParameters(
-                            ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN)))));
+            new StringResourceModel("user.common.form.password.help")
+                .setParameters(ApplicationPropertyModel.of(SECURITY_PASSWORD_LENGTH_MIN))));
 
     form.add(
-        new UserPasswordValidator(
-                userTypeDescriptorModel.map(UserTypeDescriptor::getClazz), password)
+        new UserPasswordValidator(BindingModel.of(getModel(), Bindings.user().type()), password)
             .userModel(getModel()));
 
     form.add(
@@ -85,7 +75,7 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
           protected void onSubmit(AjaxRequestTarget target) {
             try {
               User user = BasicApplicationSession.get().getUser();
-              securityManagementService.updatePassword(user, passwordModel.getObject());
+              securityManagementControllerService.updatePassword(user, passwordModel.getObject());
 
               Session.get().success(getString("security.password.expiration.validate.success"));
 
@@ -110,6 +100,6 @@ public class SecurityPasswordExpirationContentPanel extends GenericPanel<User> {
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(userTypeDescriptorModel, passwordModel);
+    Detachables.detach(passwordModel);
   }
 }

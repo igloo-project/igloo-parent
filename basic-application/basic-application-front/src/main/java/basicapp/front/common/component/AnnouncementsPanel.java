@@ -1,17 +1,14 @@
 package basicapp.front.common.component;
 
 import basicapp.back.business.announcement.model.Announcement;
-import basicapp.back.business.announcement.service.IAnnouncementService;
+import basicapp.back.business.announcement.service.controller.IAnnouncementControllerService;
 import basicapp.back.business.user.model.User;
-import basicapp.back.business.user.service.IUserService;
+import basicapp.back.business.user.service.controller.IUserControllerService;
 import basicapp.front.BasicApplicationSession;
 import igloo.wicket.behavior.ClassAttributeAppender;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.model.Detachables;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -30,37 +27,30 @@ import org.slf4j.LoggerFactory;
 
 public class AnnouncementsPanel extends Panel {
 
-  private static final long serialVersionUID = 9097065669590214330L;
+  private static final long serialVersionUID = 1L;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AnnouncementsPanel.class);
 
-  @SpringBean private IAnnouncementService announcementService;
+  @SpringBean private IAnnouncementControllerService announcementControllerService;
 
-  @SpringBean private IUserService userService;
+  @SpringBean private IUserControllerService userControllerService;
 
   private final IModel<List<Announcement>> announcementsModel =
-      new LoadableDetachableModel<List<Announcement>>() {
-        private static final long serialVersionUID = 1L;
+      LoadableDetachableModel.of(() -> announcementControllerService.listEnabled());
 
-        @Override
-        protected List<Announcement> load() {
-          return announcementService.listEnabled();
-        }
-      };
-
-  private final IModel<Boolean> closeModel = Model.of(Boolean.FALSE);
+  private final IModel<Boolean> openModel = Model.of(Boolean.TRUE);
 
   public AnnouncementsPanel(String id) {
     super(id);
     setOutputMarkupId(true);
 
-    Condition openCondition = Condition.isFalse(closeModel);
+    Condition openCondition = Condition.isTrue(openModel);
 
     add(
         new EnclosureContainer("container")
             .condition(openCondition)
             .add(
-                new CollectionView<Announcement>(
+                new CollectionView<>(
                     "announcements", announcementsModel, GenericEntityModel.factory()) {
                   private static final long serialVersionUID = 1L;
 
@@ -75,12 +65,10 @@ public class AnnouncementsPanel extends Panel {
                   @Override
                   public void onClick(AjaxRequestTarget target) {
                     try {
-                      closeModel.setObject(Boolean.TRUE);
+                      openModel.setObject(Boolean.FALSE);
 
                       User user = BasicApplicationSession.get().getUser();
-                      user.getAnnouncementInformation().setLastActionDate(Instant.now());
-                      user.getAnnouncementInformation().setOpen(!closeModel.getObject());
-                      userService.update(user);
+                      userControllerService.closeAnnouncement(user);
 
                       AjaxListeners.add(target, AjaxListeners.refresh(AnnouncementsPanel.this));
                     } catch (Exception e) {
@@ -95,12 +83,10 @@ public class AnnouncementsPanel extends Panel {
           @Override
           public void onClick(AjaxRequestTarget target) {
             try {
-              closeModel.setObject(Boolean.FALSE);
+              openModel.setObject(Boolean.TRUE);
 
               User user = BasicApplicationSession.get().getUser();
-              user.getAnnouncementInformation().setLastActionDate(Instant.now());
-              user.getAnnouncementInformation().setOpen(!closeModel.getObject());
-              userService.update(user);
+              userControllerService.openAnnouncement(user);
 
               AjaxListeners.add(target, AjaxListeners.refresh(AnnouncementsPanel.this));
             } catch (Exception e) {
@@ -112,7 +98,7 @@ public class AnnouncementsPanel extends Panel {
 
     add(
         new ClassAttributeAppender(
-            Condition.isTrue(closeModel).then("header-alert-section-dismissed").otherwise("")));
+            Condition.isFalse(openModel).then("header-alert-section-dismissed").otherwise("")));
   }
 
   @Override
@@ -121,30 +107,18 @@ public class AnnouncementsPanel extends Panel {
 
     if (announcementsModel.getObject().isEmpty()) {
       setVisible(false);
-      closeModel.setObject(Boolean.TRUE);
+      openModel.setObject(Boolean.FALSE);
       return;
     }
 
     setVisible(true);
 
-    Instant lastActionDate =
-        BasicApplicationSession.get().getUser().getAnnouncementInformation().getLastActionDate();
-    LocalDateTime mostRecentPublicationStartDate =
-        announcementService.getMostRecentPublicationStartDate();
-
-    if (lastActionDate == null
-        || LocalDateTime.ofInstant(lastActionDate, ZoneId.systemDefault())
-            .isBefore(mostRecentPublicationStartDate)) {
-      closeModel.setObject(Boolean.FALSE);
-    } else {
-      closeModel.setObject(
-          !BasicApplicationSession.get().getUser().getAnnouncementInformation().isOpen());
-    }
+    openModel.setObject(announcementControllerService.isOpen());
   }
 
   @Override
   protected void onDetach() {
     super.onDetach();
-    Detachables.detach(announcementsModel, closeModel);
+    Detachables.detach(announcementsModel, openModel);
   }
 }

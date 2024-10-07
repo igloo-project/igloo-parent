@@ -22,7 +22,7 @@ import org.iglooproject.wicket.more.markup.html.template.model.BreadCrumbElement
 import org.iglooproject.wicket.more.security.page.LoginSuccessPage;
 import org.springframework.security.authentication.DisabledException;
 
-public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U, ?>>
+public class ConsoleMaintenanceAuthenticationPage<U extends GenericUser<U>>
     extends ConsoleMaintenanceTemplate {
 
   private static final long serialVersionUID = 3401416708867386953L;

@@ -6,7 +6,6 @@ import igloo.hibernateconfig.api.HibernateSearchNormalizer;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Transient;
-import java.util.SortedSet;
 import org.bindgen.Bindable;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
@@ -18,9 +17,8 @@ import org.iglooproject.spring.util.StringUtils;
 
 @MappedSuperclass
 @Bindable
-public abstract class GenericSimpleUser<
-        U extends GenericSimpleUser<U, G>, G extends GenericUserGroup<G, U>>
-    extends GenericUser<U, G> implements ISimpleUser, INotificationRecipient {
+public abstract class GenericSimpleUser<U extends GenericSimpleUser<U>> extends GenericUser<U>
+    implements ISimpleUser, INotificationRecipient {
 
   private static final long serialVersionUID = 4869548461178261021L;
 
@@ -62,14 +60,6 @@ public abstract class GenericSimpleUser<
     super(username, passwordHash);
     setFirstName(firstName);
     setLastName(lastName);
-  }
-
-  /*
-   * Works around a bindgen bug, where bindgen seems unable to substitute a concrete type to the "G" type parameter if we don't override this method here.
-   */
-  @Override
-  public SortedSet<G> getGroups() {
-    return super.getGroups(); // NOSONAR
   }
 
   @Override

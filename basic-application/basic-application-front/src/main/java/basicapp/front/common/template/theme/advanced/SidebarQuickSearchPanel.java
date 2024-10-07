@@ -1,10 +1,9 @@
 package basicapp.front.common.template.theme.advanced;
 
-import static org.iglooproject.jpa.security.business.authority.util.CoreAuthorityConstants.ROLE_ADMIN;
-
 import basicapp.back.business.user.model.User;
+import basicapp.back.security.model.BasicApplicationPermissionConstants;
 import basicapp.front.user.form.UserAjaxDropDownSingleChoice;
-import basicapp.front.user.template.UserDetailTemplate;
+import basicapp.front.user.page.BasicUserDetailPage;
 import igloo.wicket.component.EnclosureContainer;
 import igloo.wicket.condition.Condition;
 import igloo.wicket.model.Detachables;
@@ -23,7 +22,7 @@ import org.iglooproject.wicket.more.model.GenericEntityModel;
 
 public class SidebarQuickSearchPanel extends Panel {
 
-  private static final long serialVersionUID = -4710074067415473028L;
+  private static final long serialVersionUID = 1L;
 
   private final IModel<User> searchUserModel = GenericEntityModel.of((User) null);
 
@@ -50,7 +49,7 @@ public class SidebarQuickSearchPanel extends Panel {
                                   public void onBeforeRespond(
                                       Map<String, Component> map, AjaxRequestTarget target) {
                                     IPageLinkDescriptor linkDescriptor =
-                                        UserDetailTemplate.mapper()
+                                        BasicUserDetailPage.MAPPER
                                             .setParameter2(
                                                 new ComponentPageModel(
                                                     SidebarQuickSearchPanel.this))
@@ -66,7 +65,9 @@ public class SidebarQuickSearchPanel extends Panel {
                                     }
                                   }
                                 }))
-                    .add(Condition.role(ROLE_ADMIN).thenShow())));
+                    .add(
+                        Condition.permission(BasicApplicationPermissionConstants.GLOBAL_USER_READ)
+                            .thenShow())));
   }
 
   @Override
