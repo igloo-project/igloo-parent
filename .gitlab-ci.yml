@@ -138,9 +138,9 @@ maven-deploy:
   - if: $CI_COMMIT_BRANCH == "dev"
   - if: $CI_COMMIT_BRANCH == "igloo-boot"
   - if: $CI_COMMIT_BRANCH == "igloo-boot-dev"
-  - if: $CI_COMMIT_BRANCH == /^ft-.*-deploy$/
-  - if: $CI_COMMIT_BRANCH == /^hf-.*$/
-  - if: $CI_COMMIT_BRANCH == /^igloo-boot-hf-.*$/
+  - if: $CI_COMMIT_BRANCH =~ /^ft-.*-deploy$/
+  - if: $CI_COMMIT_BRANCH =~ /^hf-.*$/
+  - if: $CI_COMMIT_BRANCH =~ /^igloo-boot-hf-.*$/
   tags:
     - docker
 

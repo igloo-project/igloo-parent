@@ -2,7 +2,6 @@ package org.iglooproject.jpa.more.business.localization.model;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Transient;
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +12,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.bindgen.Bindable;
 import org.springframework.util.StringUtils;
 
-@MappedSuperclass
 @Bindable
 public abstract class AbstractLocalizedText implements ILocalizedText {
 

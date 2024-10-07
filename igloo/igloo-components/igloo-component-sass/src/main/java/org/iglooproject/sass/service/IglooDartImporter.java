@@ -1,11 +1,11 @@
 package org.iglooproject.sass.service;
 
+import com.sass_lang.embedded_protocol.Syntax;
 import de.larsgrefer.sass.embedded.importer.ClasspathImporter;
 import de.larsgrefer.sass.embedded.importer.WebjarsImporter;
 import de.larsgrefer.sass.embedded.util.SyntaxUtil;
 import java.io.IOException;
 import java.net.URL;
-import sass.embedded_protocol.EmbeddedSass.Syntax;
 
 /**
  * Handle both webjars (<code>META-INF/resources/webjars/...</code>) and scoped (<code>$(scope-NAME)/path/file<code>)

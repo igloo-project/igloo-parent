@@ -1,40 +1,26 @@
 package org.iglooproject.jpa.business.generic.model;
 
 import com.google.common.base.Verify;
-import jakarta.persistence.Access;
-import jakarta.persistence.AccessType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
-import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Transient;
 import java.io.Serializable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.JavaType;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
-import org.hibernate.type.descriptor.java.ClassJavaType;
-import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 
-@Embeddable
-@MappedSuperclass
-@Access(AccessType.FIELD)
+/**
+ * 241003 - Hibernate 6.6 not authorize @Embedded and @MappedSuperClass annotations. this class is
+ * not an entity, annotation hibernate must be set on childens accessors
+ */
 public class GenericEntityReference<
         K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
     implements IReference<E>, Serializable {
 
   private static final long serialVersionUID = 1357434247523209721L;
 
-  @Column(nullable = true)
-  @JavaType(ClassJavaType.class)
-  @JdbcType(VarcharJdbcType.class)
   private /* final */ Class<? extends E> type;
 
-  @Column(nullable = true)
-  @GenericField
   private /* final */ K id;
 
   public static <K extends Comparable<K> & Serializable, E extends GenericEntity<K, ?>>
@@ -59,16 +45,16 @@ public class GenericEntityReference<
   public GenericEntityReference(E entity) {
     Verify.verifyNotNull(entity, "The referenced entity must not be null");
     Verify.verify(!entity.isNew(), "The referenced entity must not be transient");
-    this.type = (Class<? extends E>) GenericEntity.GET_CLASS_FUNCTION.apply(entity);
-    this.id = entity.getId();
+    setType((Class<? extends E>) GenericEntity.GET_CLASS_FUNCTION.apply(entity));
+    setId(entity.getId());
   }
 
   public GenericEntityReference(Class<? extends E> entityClass, K entityId) {
     super();
     Verify.verifyNotNull(entityClass, "entityClass must not be null");
     Verify.verifyNotNull(entityId, "entityId must not be null");
-    this.type = entityClass;
-    this.id = entityId;
+    setType(entityClass);
+    setId(entityId);
   }
 
   @Override
@@ -76,9 +62,17 @@ public class GenericEntityReference<
     return type;
   }
 
+  public void setType(Class<? extends E> type) {
+    this.type = type;
+  }
+
   @Override
   public K getId() {
     return id;
+  }
+
+  public void setId(K id) {
+    this.id = id;
   }
 
   @SuppressWarnings("unchecked")

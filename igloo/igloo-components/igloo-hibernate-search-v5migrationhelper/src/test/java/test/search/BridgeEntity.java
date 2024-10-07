@@ -11,6 +11,7 @@ import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.ValueBridgeRef
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
+import org.iglooproject.jpa.business.generic.model.LongEntityReference;
 import org.iglooproject.jpa.search.bridge.GenericEntityIdBridge;
 import org.iglooproject.jpa.search.bridge.GenericEntityReferenceIdBridge;
 
@@ -40,7 +41,7 @@ public class BridgeEntity extends GenericEntity<Long, BridgeEntity> {
   @GenericField(
       valueBridge = @ValueBridgeRef(type = GenericEntityReferenceIdBridge.class),
       projectable = Projectable.YES)
-  public BridgeLinkedEntity.Reference reference;
+  public LongEntityReference reference;
 
   @Override
   public Long getId() {
