@@ -2,6 +2,7 @@ package org.iglooproject.sass.service;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.io.Resources;
+import de.larsgrefer.sass.embedded.CompileSuccess;
 import de.larsgrefer.sass.embedded.SassCompilationFailedException;
 import de.larsgrefer.sass.embedded.SassCompiler;
 import de.larsgrefer.sass.embedded.SassCompilerFactory;
@@ -25,7 +26,6 @@ import org.iglooproject.sass.exceptions.UnknownScssScope;
 import org.iglooproject.sass.model.ScssStylesheetInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sass.embedded_protocol.EmbeddedSass.OutboundMessage.CompileResponse.CompileSuccess;
 
 public class ScssServiceImpl implements IScssService, IScopeResolver {
 
@@ -155,7 +155,7 @@ public class ScssServiceImpl implements IScssService, IScopeResolver {
   private void updateImportedStylesheets(
       CompileSuccess compileSuccess, ScssStylesheetInformation compiledStylesheet)
       throws IOException {
-    for (String urlString : compileSuccess.getLoadedUrlsList()) {
+    for (String urlString : compileSuccess.getLoadedUrls()) {
       try {
         long lastModified = lastModified(urlString);
         compiledStylesheet.addImportedStylesheet(

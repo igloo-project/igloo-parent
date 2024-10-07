@@ -1,6 +1,7 @@
 package org.iglooproject.imports.table.opencsv.scanner;
 
 import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -83,7 +84,7 @@ public class OpenCsvImportFileScanner
         CSVReader csvReader = createCsvReader(reader, filename)) {
       CsvTable sheet = new CsvTable(csvReader.readAll());
       visitor.visitTable(navigator, sheet);
-    } catch (IOException e) {
+    } catch (IOException | CsvException e) {
       throw new TableImportFileException(e, navigator.getLocation(null, null, null));
     }
   }
@@ -103,7 +104,7 @@ public class OpenCsvImportFileScanner
         CSVReader csvReader = createCsvReader(reader, filename)) {
       CsvTable sheet = new CsvTable(csvReader.readAll());
       visitor.visitTable(navigator, sheet);
-    } catch (IOException e) {
+    } catch (IOException | CsvException e) {
       throw new TableImportFileException(e, navigator.getLocation(null, null, null));
     }
   }

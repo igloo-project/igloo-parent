@@ -30,7 +30,9 @@ const Default = {
         '<div class="modal-content">' +
         '<div class="modal-header">' +
             '<div class="modal-title"></div>' +
-            '<button class="btn-close" data-bs-dismiss="modal" type="button"></button>' +
+            '<button class="btn-close btn-close-icon" type="button" data-bs-dismiss="modal">' +
+                '<span class="fa fa-lg fa-fw fa-times"></span>' +
+            '</button>' +
         '</div>' +
         '<div class="modal-body"></div>' +
         '<div class="modal-footer">' +
