@@ -105,7 +105,7 @@
 		<dependency>
 			<groupId>org.iglooproject.components</groupId>
 			<artifactId>igloo-component-jpa-test</artifactId>
-			<version>6.0.0-UPDATE-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
