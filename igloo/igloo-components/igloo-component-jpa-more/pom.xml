@@ -91,12 +91,6 @@
 			<groupId>org.hibernate.search</groupId>
 			<artifactId>hibernate-search-backend-lucene</artifactId>
 		</dependency>
-
-		<!--override lucene version because of CVE-2024-45772 vulnerability-->
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-facet</artifactId>
-		</dependency>
 		
 		<!-- Bindgen -->
 		
