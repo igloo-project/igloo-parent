@@ -6,9 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import org.bindgen.Bindable;
-import org.hibernate.annotations.JavaType;
+import org.hibernate.Length;
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.type.descriptor.java.StringJavaType;
 import org.iglooproject.jpa.business.generic.model.GenericEntity;
 
 @Entity
@@ -23,8 +22,7 @@ public class Parameter extends GenericEntity<Long, Parameter> {
   @Column(nullable = false, unique = true)
   private String name;
 
-  @Column
-  @JavaType(StringJavaType.class)
+  @Column(length = Length.LONG32)
   private String stringValue;
 
   public Parameter() {
